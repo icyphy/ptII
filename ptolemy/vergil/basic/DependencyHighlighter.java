@@ -29,6 +29,7 @@
 package ptolemy.vergil.basic;
 
 import java.awt.event.ActionEvent;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Iterator;
 
@@ -37,8 +38,12 @@ import ptolemy.actor.CompositeActor;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.Manager;
 import ptolemy.actor.gui.ColorAttribute;
+import ptolemy.actor.gui.Configuration;
+import ptolemy.actor.gui.DialogTableau;
+import ptolemy.actor.gui.Effigy;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.expr.SingletonParameter;
+import ptolemy.kernel.Entity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.Location;
@@ -207,32 +212,46 @@ public class DependencyHighlighter extends NodeControllerFactory {
             super(controller);
 
             HighlightDependents highlight = new HighlightDependents(
-                    "Highlight dependents", true, false);
+                    "Highlight dependents", true, false, false);
             _menuFactory.addMenuItemFactory(new MenuActionFactory(highlight));
 
+            // Only one menu choice for listing because the dialog has
+            // checkboxes to select between dependencies and prerequisites.
+            HighlightDependents listDependents = new HighlightDependents(
+                    "List dependents & prereqs.", true, false, true);
+            _menuFactory.addMenuItemFactory(new MenuActionFactory(listDependents));
+
             HighlightDependents clear1 = new HighlightDependents(
-                    "Clear dependents", true, true);
+                    "Clear dependents", true, true, false);
             _menuFactory.addMenuItemFactory(new MenuActionFactory(clear1));
 
             HighlightDependents prerequisites = new HighlightDependents(
-                    "Highlight prerequisites", false, false);
+                    "Highlight prerequisites", false, false, false);
             _menuFactory
                     .addMenuItemFactory(new MenuActionFactory(prerequisites));
 
             HighlightDependents clear2 = new HighlightDependents(
-                    "Clear prerequisites", false, true);
+                    "Clear prerequisites", false, true, false);
             _menuFactory.addMenuItemFactory(new MenuActionFactory(clear2));
         }
     }
 
     /** The action for the commands added to the context menu.
+     *  @param commandName The name that appears in the menu.
+     *  @param forward True if dependents are to be highlighted or listed.
+     *  If false, then the the prerequisites are highlighted or listed.
+     *  @param clear True if the highlight or prerequisite is to be cleared.
+     *  If false, then the dependency or prerequisite is highlighted.
+     *  @param list True if a list dialog is to be displayed.  If false,
+     *  then the dependents or prerequisites are highlighted.
      */
     private class HighlightDependents extends FigureAction {
         public HighlightDependents(String commandName, boolean forward,
-                boolean clear) {
+                boolean clear, boolean list) {
             super(commandName);
             _forward = forward;
             _clear = clear;
+            _list = list;
         }
 
         public void actionPerformed(ActionEvent e) {
@@ -245,33 +264,44 @@ public class DependencyHighlighter extends NodeControllerFactory {
             // to be accurate. This is because higher-order components
             // and Publisher and Subscriber connections may not have yet
             // been created.
-            NamedObj toplevel = actor.toplevel();
-            if (toplevel instanceof Actor) {
-                Manager manager = ((Actor) toplevel).getManager();
-                if (manager == null) {
-                    try {
-                        manager = new Manager(toplevel.workspace(), "manager");
-                        ((CompositeActor) toplevel).setManager(manager);
-                    } catch (IllegalActionException ex) {
-                        MessageHandler.error("Failed to create a Manager.", ex);
-                        return;
-                    }
-                }
-                try {
-                    manager.preinitializeIfNecessary();
-                } catch (KernelException e1) {
-                    MessageHandler.error("Preinitialize failed.", e1);
-                    return;
-                }
+            try {
+                BasicGraphFrame frame = BasicGraphFrame.getBasicGraphFrame(actor.toplevel());
+                frame.report("Preinitializing");
+                long startTime = (new Date()).getTime();
+                Manager.preinitializeThenWrapup((Actor)actor);
+                frame.report("Done Preinitializing: " + Manager.timeAndMemory(startTime));
+            } catch (KernelException ex) {
+                MessageHandler.error("Preinitialize failed.", ex);
+                return;
             }
-            StringBuffer moml = new StringBuffer("<group>");
-            HashSet<NamedObj> visited = new HashSet<NamedObj>();
-            _addHighlights(actor, moml, visited, _forward, _clear);
-            moml.append("</group>");
-            actor.requestChange(new MoMLChangeRequest(this, actor
-                    .getContainer(), moml.toString()));
+
+            if (_list) {
+                // List the dependencies or prerequisites in a dialog
+                // This is similar to code in BasicGraphFrame for
+                // SearchResultDialog.
+                Effigy effigy = Configuration.findEffigy(actor.toplevel());
+                Configuration configuration = (Configuration)effigy.toplevel();
+
+                DialogTableau dialogTableau = DialogTableau.createDialog(
+                        BasicGraphFrame.getBasicGraphFrame(actor.toplevel()),
+                        configuration, effigy,
+                        DependencyResultsDialog.class, (Entity)actor);
+
+                if (dialogTableau != null) {
+                    dialogTableau.show();
+                }
+
+            } else {
+                // Highlight or clear the dependency or prerequisite.
+                StringBuffer moml = new StringBuffer("<group>");
+                HashSet<NamedObj> visited = new HashSet<NamedObj>();
+                _addHighlights(actor, moml, visited, _forward, _clear);
+                moml.append("</group>");
+                actor.requestChange(new MoMLChangeRequest(this, actor
+                                .getContainer(), moml.toString()));
+            }
         }
 
-        private boolean _forward, _clear;
+        private boolean _forward, _clear, _list;
     }
 }

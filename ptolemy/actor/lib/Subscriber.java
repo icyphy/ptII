@@ -31,12 +31,14 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
+import ptolemy.actor.AtomicActor;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.Receiver;
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.lib.Publisher;
+import ptolemy.actor.util.ActorDependencies; 
 import ptolemy.data.BooleanToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
@@ -45,6 +47,7 @@ import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Workspace;
@@ -256,49 +259,12 @@ public class Subscriber extends TypedAtomicActor {
 
     /** Return a Set of Publishers that are connected to this Subscriber
      *  @return A Set of Publishers that are connected to this Subscriber.
-     *  @exception IllegalActionException If thrown when a Manager is added to
+     *  @exception KernelException If thrown when a Manager is added to
      *  the top level or if preinitialize() fails.
      */
-    public Set<Publisher> publishers()
-            throws IllegalActionException {
-        // This method will be used by the gui so that the user can
-        // ask which Publishers are connected to a Subscriber
-
-        // If we don't call preinitialize(), then connections will not
-        // have been made.  See the Publisher-4.2.5 Tcl test.
-        Publisher._preinitializeThenWrapup(this);
-
-        Set<Publisher> results = new HashSet<Publisher>();
-        Iterator ports = input.sourcePortList().iterator();
-        while (ports.hasNext()) {
-            IOPort port = (IOPort) ports.next();
-            NamedObj container = port.getContainer();
-            if (container instanceof Publisher) {
-                results.add((Publisher) container);
-            } else {
-                results.addAll(_publishers(port));
-                // Handle ports in TypedComposites?
-                // FIXME: This seems wrong.  Why getRemoteReceivers()?
-                // Can't we simplify this?
-                Receiver[][] receivers = port.getRemoteReceivers();
-                if (receivers != null) {
-                    for (int i = 0; i < receivers.length; i++) {
-                        if (receivers[i] != null) {
-                            for (int j = 0; j < receivers[i].length; j++) {
-                                if (receivers[i][j] != null) {
-                                    IOPort remotePort = receivers[i][j]
-                                            .getContainer();
-                                    if (remotePort != null) {
-                                        results.addAll(_publishers(remotePort));
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        return results;
+    public Set<AtomicActor> publishers()
+            throws KernelException {
+        return ActorDependencies.prerequisites(this, Publisher.class);
     }
 
     /** Override the base class to ensure that there is a publisher.
@@ -400,56 +366,5 @@ public class Subscriber extends TypedAtomicActor {
 
     /** Cached global parameter. */
     protected boolean _global;
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         private methods                   ////
-
-    /** Return the set of all the publishers connected to a port.
-     *  This method traverses opaque composites.   
-     *  @param remotePort The port to be checked   
-     *  @return The Set of all Publishers connected to the port.
-     */
-    private Set<Publisher> _publishers(IOPort remotePort) {
-        Set<Publisher> results = new HashSet<Publisher>();
-        NamedObj container = remotePort.getContainer();
-        if (container instanceof Publisher) {
-            results.add((Publisher) container);
-        } else {
-
-            // Handle cases where the Publisher is deep inside opaque actors.
-            for( IOPort insidePort : remotePort.insideSourcePortList()) {
-                Iterator sourcePorts = insidePort.insideSourcePortList().iterator();
-                while (sourcePorts.hasNext()) {
-                    IOPort sourcePort = (IOPort)sourcePorts.next();
-                    container = sourcePort.getContainer();
-                    if (container instanceof Publisher) {
-                        results.add((Publisher) container);
-                    } else {
-                        results.addAll(_publishers(sourcePort));
-                    }
-                }
-            }
-
-            // Handle cases where the Subscriber is deep inside opaque actors.
-            Iterator remoteSourcePorts = remotePort.sourcePortList().iterator();
-            while (remoteSourcePorts.hasNext()) {
-                IOPort remoteSourcePort = (IOPort)remoteSourcePorts.next();
-                container = remoteSourcePort.getContainer();
-                if (container instanceof Publisher) {
-                    results.add((Publisher) container);
-                }
-                Iterator sourcePorts = remoteSourcePort.sourcePortList().iterator();
-                while (sourcePorts.hasNext()) {
-                    IOPort sourcePort = (IOPort)sourcePorts.next();
-                    container = sourcePort.getContainer();
-                    if (container instanceof Publisher) {
-                        results.add((Publisher) container);
-                    } else {
-                        results.addAll(_publishers(sourcePort));
-                    }
-                }
-            }
-        }
-    return results;
-    }
 }
+

@@ -31,12 +31,14 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
+import ptolemy.actor.AtomicActor;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.Manager;
 import ptolemy.actor.Receiver;
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
+import ptolemy.actor.util.ActorDependencies;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
@@ -231,8 +233,14 @@ public class Publisher extends TypedAtomicActor {
                                             .equals("")))) {
                                 if (((BooleanToken) propagateNameChanges
                                         .getToken()).booleanValue()) {
-                                    _updateChannelNameOfConnectedSubscribers(
-                                            _channel, newValue);
+                                    try {
+                                        _updateChannelNameOfConnectedSubscribers(
+                                                _channel, newValue);
+                                    } catch (KernelException ex) {
+                                        throw new IllegalActionException(this, ex,
+                                                "Failed to set channel to "
+                                                + newValue);
+                                    }
                                 }
                             }
                             ((CompositeActor) container).registerPublisherPort(
@@ -288,51 +296,12 @@ public class Publisher extends TypedAtomicActor {
 
     /** Return a Set of Subscribers that are connected to this Publisher.
      *  @return A Set of Subscribers that are connected to this Publisher
-     *  @exception IllegalActionException If thrown when a Manager is added to
+     *  @exception KernelException If thrown when a Manager is added to
      *  the top level or if preinitialize() fails.
      */
-    public Set<Subscriber> subscribers()
-            throws IllegalActionException {
-        //System.out.println("Publisher.subscribers: start");
-        // This method will be used by the gui so that the user can
-        // ask which Subscribers are connected to a Publisher.
-
-        Publisher._preinitializeThenWrapup(this);
-
-        Set<Subscriber> results = new HashSet<Subscriber>();
-
-        // For each port, find the Subscriber.
-        //for (IOPort port : output.deepConnectedInPortList()) {
-        Iterator ports = output.sinkPortList().iterator();
-        while (ports.hasNext()) {
-            IOPort port = (IOPort) ports.next();
-            NamedObj container = port.getContainer();
-            if (container instanceof Subscriber) {
-                results.add((Subscriber) container);
-            } else {
-                results.addAll(_subscribers(port));
-                // Handle ports in TypedComposites?
-                Receiver[][] receivers = port.getRemoteReceivers();
-                if (receivers != null) {
-                    for (int i = 0; i < receivers.length; i++) {
-                        if (receivers[i] != null) {
-                            for (int j = 0; j < receivers[i].length; j++) {
-                                if (receivers[i][j] != null) {
-                                    IOPort remotePort = receivers[i][j]
-                                            .getContainer();
-                                    if (remotePort != null) {
-                                        results.addAll(_subscribers(remotePort));
-                                        //System.out.println("Publisher.subscribers0: " + results);
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        //System.out.println("Publisher.subscribers: end " + results);
-        return results;
+    public Set<AtomicActor> subscribers()
+            throws KernelException {
+        return ActorDependencies.dependents(this, Subscriber.class);
     }   
 
     /** Read at most one input token from each
@@ -390,52 +359,6 @@ public class Publisher extends TypedAtomicActor {
         super.setContainer(container);
     }
 
-
-    ///////////////////////////////////////////////////////////////////
-    ////                       package  protected methods          ////
-
-    /** Invoke preinitialize() and wrapup().  This method is used to
-     *  create connections for Publishers and Subscribers.
-     *  @param actor The actor to preinitialize().
-     *  @exception IllegalActionException If thrown when a Manager is added to
-     *  the top level or if preinitialize() fails.
-     */
-    static void _preinitializeThenWrapup(TypedAtomicActor actor)
-            throws IllegalActionException {
-        // This method is package protected do that Subscriber.publishers()
-        // can call it.
-
-        // If preinitialize() has not yet been called, then we don't
-        // yet know what Subscribers are using connected to the
-        // Publisher.
-        Manager manager = actor.getManager();
-        if (manager == null) {
-            CompositeActor toplevel = (CompositeActor) (actor.getContainer()
-                    .toplevel());
-            manager = new Manager(toplevel.workspace(), "PubManager");
-            toplevel.setManager(manager);
-        }
-        try {
-            // Create connections between Publishers and Subscribers.
-            manager.preinitializeAndResolveTypes();
-        } catch (KernelException ex) {
-            throw new IllegalActionException(actor, ex,
-                    "Failed to preinitialize() while trying to update the connected"
-                            + " Subscribers.");
-        } finally {
-            try {
-                manager.wrapup();
-            } catch (Throwable throwable) {
-                // The Exit actor causes Manager.wrapup() to throw this.
-                if (!manager.isExitingAfterWrapup()) {
-                    throw new IllegalActionException(actor, throwable,
-                            "Manager.wrapup() failed while trying to update the names"
-                                    + " of the connected Subscribers.");
-                }
-            }
-        }
-    }
-
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
 
@@ -445,79 +368,22 @@ public class Publisher extends TypedAtomicActor {
     /** Cached variable indicating whether publishing is global. */
     protected boolean _global;
 
-    ///////////////////////////////////////////////////////////////////
-    ////                         private methods                   ////
-
-
-    /** Return the set of all the subscribers connected to a port.
-     *  This method traverses opaque composites.   
-     *  @param remotePort The port to be checked   
-     *  @return The Set of all Subscribers connected to the port.
-     */
-    private Set<Subscriber> _subscribers(IOPort remotePort) {
-        //System.out.println("Publisher._subscribers(): " + remotePort.getFullName());
-        Set<Subscriber> results = new HashSet<Subscriber>();
-        NamedObj container = remotePort.getContainer();
-        if (container instanceof Subscriber) {
-            results.add((Subscriber) container);
-        } else {
-
-            // Handle cases where the Publisher is deep inside opaque actors.
-            Iterator insidePorts = remotePort.sinkPortList().iterator();
-            while (insidePorts.hasNext()) {
-                IOPort insidePort = (IOPort)insidePorts.next();
-                container = insidePort.getContainer();
-                if (container instanceof Subscriber) {
-                    results.add((Subscriber) container);
-                }
-                Iterator sourcePorts = insidePort.sinkPortList().iterator();
-                while (sourcePorts.hasNext()) {
-                    IOPort sourcePort = (IOPort)sourcePorts.next();
-                    container = sourcePort.getContainer();
-                    if (container instanceof Subscriber) {
-                        results.add((Subscriber) container);
-                    } else {
-                        results.addAll(_subscribers(sourcePort));
-                    }
-                }
-            }
-
-            // Handle cases where the Subscriber is deep inside opaque actors.
-            for( IOPort insidePort : remotePort.insideSourcePortList()) {
-                //System.out.println("Publisher._subscribers(): " + remotePort.getFullName() + " insidePort: " + insidePort.getFullName());
-                container = insidePort.getContainer();
-                if (container instanceof Subscriber) {
-                    results.add((Subscriber) container);
-                } 
-                Iterator sourcePorts = insidePort.deepConnectedInPortList().iterator();
-                while (sourcePorts.hasNext()) {
-                    IOPort sourcePort = (IOPort)sourcePorts.next();
-                    //System.out.println("Publisher._subscribers(): " + remotePort.getFullName() + " insidePort: " + insidePort.getFullName() + " sourcePort: " + sourcePort.getFullName());
-                    container = sourcePort.getContainer();
-                    if (container instanceof Subscriber) {
-                        results.add((Subscriber) container);
-                    } else {
-                        results.addAll(_subscribers(sourcePort));
-                    }
-                }
-            }
-        }
-        return results;
-    }
-
     /** Update the channel name of any connected Subscribers.
      *  Note that the channel name of connected Subscription Aggregators
      *  are not updated.
      *  @param previousChannelName The previous name of the channel.
      *  @param newChannelName The new name of the channel.
-     *  @exception IllegalActionException If thrown when a Manager is added to
+     *  @exception KernelException If thrown when a Manager is added to
      *  the top level, or when the channel name of a Subscriber is changed.
      */
     private void _updateChannelNameOfConnectedSubscribers(
             String previousChannelName, String newChannelName)
-            throws IllegalActionException {
+            throws KernelException {
 
-        for (Subscriber subscriber : subscribers()) {
+        // We use subscribers() here so that we get any subscribers in
+        // Opaque TypedCompositeActors.
+        for (AtomicActor atomicActor : subscribers()) {
+            Subscriber subscriber = (Subscriber)atomicActor;
             if (subscriber.channel.getExpression().equals(
                             previousChannelName)) {
                 // Avoid updating SubscriptionAggregators that have regular

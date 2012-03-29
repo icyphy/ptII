@@ -62,6 +62,7 @@ JSRCS = \
 	ContextMenuFactoryCreator.java \
 	CustomizeDocumentationAction.java \
 	DependencyHighlighter.java \
+	DependencyResultsDialog.java \
 	DocAttribute.java \
 	DocViewerFactory.java \
 	EditorDropTarget.java \

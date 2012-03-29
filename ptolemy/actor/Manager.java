@@ -972,6 +972,49 @@ public class Manager extends NamedObj implements Runnable {
         }
     }
 
+    /** Invoke preinitialize() and wrapup(). 
+     *   
+     *  <p>If the model has not been preinitialized since the last
+     *  change to its structure, that must be done now for the result
+     *  to be accurate. This is because higher-order components
+     *  and Publisher and Subscriber connections may not have yet
+     *   been created.</p>
+     *
+     *  @param actor The actor upon which to call preinitialize() on
+     *  its toplevel.
+     *  @exception KernelException If thrown when a Manager is added to
+     *  the top level or if preinitialize() fails.
+     */
+    public static void preinitializeThenWrapup(Actor actor)
+            throws KernelException {
+        // If preinitialize() has not yet been called, then we don't
+        // yet know what Subscribers are using connected to the
+        // Publisher.
+        Manager manager = actor.getManager();
+        if (manager == null) {
+            CompositeActor toplevel = (CompositeActor) ((NamedObj)actor).toplevel();
+            manager = new Manager(toplevel.workspace(), "PubManager");
+            toplevel.setManager(manager);
+        }
+        try {
+            // Create connections between Publishers and Subscribers.
+            manager.preinitializeIfNecessary();
+        } finally {
+            try {
+                // FIXME: should this be synchronized on this?
+                if ((manager.getState() != IDLE) && (manager.getState() != WRAPPING_UP)) {
+                    manager.wrapup();
+                }
+            } catch (Throwable throwable) {
+                // The Exit actor causes Manager.wrapup() to throw this.
+                if (!manager.isExitingAfterWrapup()) {
+                    throw new IllegalActionException(actor, throwable,
+                            "Manager.wrapup() failed.");
+                }
+            }
+        }
+    }
+
     /** Remove a listener from the list of listeners that are notified
      *  of execution events.  If the specified listener is not on the list,
      *  do nothing.
