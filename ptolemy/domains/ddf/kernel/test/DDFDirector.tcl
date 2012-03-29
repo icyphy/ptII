@@ -122,7 +122,13 @@ test DDFDirector-5.1 {Test action methods} {
 } {{0
 1
 2
-} {.E1.D3 Preinitializing ...
+} {attribute ptolemy.data.expr.Parameter {.E1.D3.iterations} 6 changed
+.E1.D3 Preinitializing ...
+attribute ptolemy.kernel.util.SingletonConfigurableAttribute {.E1.D3._iconDescription} changed
+attribute ptolemy.data.expr.Parameter {.E1.D3.startTime} value undefined changed
+attribute ptolemy.data.expr.Parameter {.E1.D3.stopTime} value undefined changed
+attribute ptolemy.data.expr.Parameter {.E1.D3.iterations} 6 changed
+attribute ptolemy.data.expr.Parameter {.E1.D3.maximumReceiverCapacity} 0 changed
 Invoking preinitialize():  .E1.Ramp
 Invoking preinitialize():  .E1.Consumer
 .E1.D3 Finished preinitialize().

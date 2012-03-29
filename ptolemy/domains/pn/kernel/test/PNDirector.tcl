@@ -113,15 +113,19 @@ test PNDirector-5.2.1 {cover debug basic block} {
     regsub -all [java::call System getProperty "line.separator"] \
 	        [$stream toString] "\n" debugOutput
     # Truncate debugging output because it varies
-    puts $debugOutput 	
-    list [string range $debugOutput 0 178]
+    #puts $debugOutput 	
+    list [string range $debugOutput 0 594]
 } {{.E0.D3 Preinitializing ...
+attribute ptolemy.kernel.util.SingletonConfigurableAttribute {.E0.D3._iconDescription} changed
+attribute ptolemy.data.expr.Parameter {.E0.D3.startTime} value undefined changed
+attribute ptolemy.data.expr.Parameter {.E0.D3.stopTime} value undefined changed
+attribute ptolemy.data.expr.Parameter {.E0.D3.initialQueueCapacity} 1 changed
+attribute ptolemy.data.expr.Parameter {.E0.D3.maximumQueueCapacity} 65536 changed
 Invoking preinitialize():  .E0.A1
 Invoking preinitialize():  .E0.A2
 .E0.D3 Finished preinitialize().
 Called initialize().
 Invoking initialize():  .E0.A1}}
-
 
 ######################################################################
 ####

@@ -135,8 +135,11 @@ test TMReceiver-4.4 {put port that has a container} {
 
 } {{.top.TMDirector Preinitializing ...
 Updating TMDirector parameter _iconDescription
+attribute ptolemy.kernel.util.SingletonConfigurableAttribute {.top.TMDirector._iconDescription} changed
 Updating TMDirector parameter startTime
+attribute ptolemy.data.expr.Parameter {.top.TMDirector.startTime} value undefined changed
 Updating TMDirector parameter stopTime
+attribute ptolemy.data.expr.Parameter {.top.TMDirector.stopTime} value undefined changed
 Updating TMDirector parameter preemptive
 Updating TMDirector parameter defaultTaskExecutionTime
 Updating TMDirector parameter synchronizeToRealTime
@@ -145,6 +148,7 @@ Invoking preinitialize():  .top.A0
 enqueue event: to TMEvent(token = 2, priority = 5, destination = ptolemy.actor.TypedAtomicActor {.top.A0}, hasStarted = false, processingTime = -1.0)
 enqueue event: to TMEvent(token = 7, priority = 4, destination = ptolemy.actor.TypedAtomicActor {.top.A0}, hasStarted = false, processingTime = -1.0)
 }}
+
 
 
 
