@@ -253,7 +253,7 @@ test SubscriptionAggregator-4.0 {7*9*11 SubscriptionAggregators} {
 
     [$e3 getManager] execute
 
-    puts [$e3 exportMoML]
+    #puts [$e3 exportMoML]
     # This hack is necessary because of problems with crnl under windows
     regsub -all [java::call System getProperty "line.separator"] \
 	        [$stream toString] "\n" output
