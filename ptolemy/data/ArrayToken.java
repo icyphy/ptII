@@ -110,6 +110,8 @@ public class ArrayToken extends AbstractNotConvertibleToken {
      *  type argument or use the "emptyArray" function from the expression
      *  language.
      *  @param value An (not empty) array of tokens.
+     *  @param length The number of elements to be used from the
+     *  specified array.
      *  @exception IllegalActionException If the length of the given array is
      *   zero.
      */
@@ -1058,6 +1060,8 @@ public class ArrayToken extends AbstractNotConvertibleToken {
      *  this array token unchanged. The element type of the new array is the
      *  least upper bound of the element type of this array and the specified
      *  value.
+     *  @param index The index of the element to be updated.
+     *  @param value The value of the element to be updated.
      *  @throws IllegalActionException Should not be thrown in this base class.
      */
     public ArrayToken update(int index, Token value) throws IllegalActionException {

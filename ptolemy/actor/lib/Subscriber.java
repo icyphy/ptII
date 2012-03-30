@@ -257,7 +257,7 @@ public class Subscriber extends TypedAtomicActor {
         }
     }
 
-    /** Return a Set of Publishers that are connected to this Subscriber
+    /** Return a Set of Publishers that are connected to this Subscriber.
      *  @return A Set of Publishers that are connected to this Subscriber.
      *  @exception KernelException If thrown when a Manager is added to
      *  the top level or if preinitialize() fails.

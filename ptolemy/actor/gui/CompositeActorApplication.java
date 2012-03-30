@@ -92,7 +92,7 @@ public class CompositeActorApplication {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Close any ModeFrames opened in processArgs() 
+    /** Close any ModeFrames opened in processArgs().
      */   
     public void close() {
         // Mainly used for testing.
@@ -190,6 +190,7 @@ public class CompositeActorApplication {
      *  We then start the model running.
      *
      *  @param model The model to execute.
+     *  @return The ModelFrame that for the model.
      *  @see ptolemy.actor.Manager#startRun()
      */
     public synchronized ModelFrame startRun(CompositeActor model) {

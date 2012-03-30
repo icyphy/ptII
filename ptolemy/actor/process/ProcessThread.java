@@ -79,9 +79,9 @@ public class ProcessThread extends PtolemyThread {
     /** Construct a thread to be used for the execution of the
      *  iteration methods of the actor. This increases the count of active
      *  actors in the director.
-     *  @param actor The actor that needs to be executed.
-     *  @param director The director responsible for the execution of this
-     *  actor.
+     *  @param actor The actor to be executed.
+     *  @param director The director responsible for the execution of
+     *  the actor.
      */
     public ProcessThread(Actor actor, ProcessDirector director) {
         super();
@@ -339,10 +339,13 @@ public class ProcessThread extends PtolemyThread {
     ///////////////////////////////////////////////////////////////////
     ////                       protected variables                 ////    
     
+    /** The actor that to be executed. */
     protected Actor _actor;
     
+    /** The director responsible for the execution of the actor. */
     protected ProcessDirector _director;
 
+    /** The Manager of the actor. */
     protected Manager _manager;
     
     ///////////////////////////////////////////////////////////////////

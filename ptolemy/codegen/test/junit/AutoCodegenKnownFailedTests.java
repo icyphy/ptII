@@ -72,6 +72,9 @@ public class AutoCodegenKnownFailedTests extends AutoCodegenTests {
      *            {@link #THERE_ARE_NO_AUTO_TESTS}, then the method returns
      *            immediately.
      *  @param generatorPackage Either "ptolemy.codegen.c" or "ptolemy.codegen.java"
+     *  @param inline True of inline code is to be generated.
+     *  @exception Throwable If there is a problem generating,
+     *  compiling or running the code.
      */
     public void runModel(String fullPath, String generatorPackage,
             boolean inline)

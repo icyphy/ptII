@@ -295,6 +295,8 @@ public class UserActorLibrary {
      *  @exception IOException if the user library cannot be found.
      *  @exception IllegalActionException If there is a problem creating
      *  the entity in the library.
+     *  @exception NameDuplicationException If a entity with the same
+     *  name already exists in the library.
      *  @since Ptolemy II 5.2
      */
     public static void saveComponentInLibrary(Configuration configuration,
