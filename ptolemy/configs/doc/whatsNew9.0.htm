@@ -111,7 +111,38 @@ See also the <a href="completeDemos.htm">Complete Demonstrations</a> page.
 
 <ul>
 <li><i>New Domain Polymorphic actors</i>:
- <ul>
+ <ul> 
+   <li>ArrayUpdate
+<blockquote>
+<p> Patricia Derler, Chris Shaver, and Edward Lee have developed a starting
+point for a much smarter way of handling arrays in dataflow
+models...</p>
+
+<p>In particular, there is now in the Array library an ArrayUpdate
+actor, whose output is the same array as its input except that
+one element is replaced with a new value.  Please try it out
+for the radar model.</p>
+
+<p>The key here is that this is done efficiently for large arrays.
+The input array does not get copied. Instead, the output array
+references the input array and encodes the diff.  The input
+array is unchanged, and hence may be used safely by other
+actors to which it is destined without introducing nondeterminacy.</p>
+
+<p>This is only a starting point because there are many other array
+operations that should be similarly encoded as diffs.  There is
+a bit of work to be done here, and we need to make sure to be
+measuring performance effects.</p>
+
+<p>The current implementation has the interesting property that
+makes copying arrays unnecessary most of the time. However, it has
+the unfortunate side effect of making copying arrays more expensive
+(we can no longer use the low-level System.arraycopy() mechanism
+in Java). It would be interesting to do a systematic performance
+evaluation of this.  I believe that if we combine this method
+with a PN director and a manycore machine, that we might get
+good utilization of parallelism on the machine. </p>
+<blockquote>
  </ul>
 
 <li><i>Database actors</i>
