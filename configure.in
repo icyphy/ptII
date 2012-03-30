@@ -2583,9 +2583,9 @@ else
 	PT_MSG_RESULT([$PTJUNIT_JAR])
 	AC_MSG_CHECKING([for the JUnitParams, needed by our JUnit tests])
 	AC_ARG_WITH(junitparams, [  --with-junitparams=JARFILE       use JUnitParams Testing Framework from JARFILE,
-                          defaults to \$PTII/lib/JUnitParams-0.3.0.jar],
+                          defaults to \$PTII/lib/JUnitParams-0.4.0.jar],
 	JUNITPARAMS_JAR=$withval,
-	JUNITPARAMS_JAR=$PTII/lib/JUnitParams-0.3.0.jar)
+	JUNITPARAMS_JAR=$PTII/lib/JUnitParams-0.4.0.jar)
         if test -f "$JUNITPARAMS_JAR"; then
 	    PT_MSG_RESULT([$PTJUNITPARAMS_JAR])
             JUNIT_JARS="${JUNIT_JAR}${CLASSPATHSEPARATOR}${JUNITPARAMS_JAR}"
@@ -2596,11 +2596,11 @@ else
     fi	
 
     if test "$PTJUNIT_DIR" = ""; then
-        AC_MSG_WARN([Failed to find junit-4.8.2.jar and/or JUnitParams-0.3.0.jar
+        AC_MSG_WARN([Failed to find junit-4.8.2.jar and/or JUnitParams-0.4.0.jar
     Perhaps the JUnit Java Unit Testing Framework is not installed?
     You need not download JUnit unless you want to run the unit tests.])
 	# Note that we don't substitute in the ${PTII} here
-	JUNIT_JARS='${PTII}/lib/junit-4.8.2.jar${CLASSPATHSEPARATOR}${PTII}/lib/JUnitParams-0.3.0.jar'
+	JUNIT_JARS='${PTII}/lib/junit-4.8.2.jar${CLASSPATHSEPARATOR}${PTII}/lib/JUnitParams-0.4.0.jar'
     fi
 fi
 
