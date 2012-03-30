@@ -469,9 +469,20 @@ See $PTII/doc/coding/maven.htm
       <version>5.1.2</version>
     </dependency>
     <dependency>
+      <groupId>javax.servlet</groupId>
+      <artifactId>servlet-api</artifactId>
+      <version>2.5</version>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
       <groupId>jdom</groupId>
       <artifactId>jdom</artifactId>
       <version>1.0</version>
+    </dependency>
+    <dependency> <!-- $PTII/org/ptango/lib -->
+      <groupId>org.eclipse.jetty</groupId>
+      <artifactId>jetty-server</artifactId>
+      <version>7.4.1.v20110513</version>
     </dependency>
     <dependency>
        <groupId>org.python</groupId>
@@ -493,6 +504,7 @@ See $PTII/doc/coding/maven.htm
       <artifactId>jxta</artifactId>
       <version>2.0</version>
     </dependency>
+
 
     <!-- <dependency>
       <groupId>log4j</groupId>
