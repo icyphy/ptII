@@ -1608,7 +1608,7 @@ Optional Packages:
   --with-junit=JARFILE       use JUnit Testing Framework from JARFILE,
                           defaults to \$PTII/lib/junit-4.8.2.jar
   --with-junitparams=JARFILE       use JUnitParams Testing Framework from JARFILE,
-                          defaults to \$PTII/lib/JUnitParams-0.3.0.jar
+                          defaults to \$PTII/lib/JUnitParams-0.4.0.jar
   --with-jxl=JARFILE       use Java Excel API from JARFILE,
                           defaults to \$PTII/ptolemy/actor/lib/excel/jxl.jar
   --with-jython=DIR       use jython.jar from DIR,
@@ -8131,7 +8131,7 @@ $as_echo_n "checking for the JUnitParams, needed by our JUnit tests... " >&6; }
 if test "${with_junitparams+set}" = set; then :
   withval=$with_junitparams; JUNITPARAMS_JAR=$withval
 else
-  JUNITPARAMS_JAR=$PTII/lib/JUnitParams-0.3.0.jar
+  JUNITPARAMS_JAR=$PTII/lib/JUnitParams-0.4.0.jar
 fi
 
         if test -f "$JUNITPARAMS_JAR"; then
@@ -8146,14 +8146,14 @@ $as_echo "$PTJUNITPARAMS_JAR" >&6; }; fi
     fi
 
     if test "$PTJUNIT_DIR" = ""; then
-        { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Failed to find junit-4.8.2.jar and/or JUnitParams-0.3.0.jar
+        { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Failed to find junit-4.8.2.jar and/or JUnitParams-0.4.0.jar
     Perhaps the JUnit Java Unit Testing Framework is not installed?
     You need not download JUnit unless you want to run the unit tests." >&5
-$as_echo "$as_me: WARNING: Failed to find junit-4.8.2.jar and/or JUnitParams-0.3.0.jar
+$as_echo "$as_me: WARNING: Failed to find junit-4.8.2.jar and/or JUnitParams-0.4.0.jar
     Perhaps the JUnit Java Unit Testing Framework is not installed?
     You need not download JUnit unless you want to run the unit tests." >&2;}
 	# Note that we don't substitute in the ${PTII} here
-	JUNIT_JARS='${PTII}/lib/junit-4.8.2.jar${CLASSPATHSEPARATOR}${PTII}/lib/JUnitParams-0.3.0.jar'
+	JUNIT_JARS='${PTII}/lib/junit-4.8.2.jar${CLASSPATHSEPARATOR}${PTII}/lib/JUnitParams-0.4.0.jar'
     fi
 fi
 
