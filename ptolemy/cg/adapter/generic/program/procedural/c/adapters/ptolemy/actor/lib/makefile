@@ -83,6 +83,7 @@ JSRCS = \
 	Synchronizer.java \
 	TimeDelay.java \
 	Test.java \
+	TrigFunction.java \
 	UnaryMathFunction.java
 
 OTHER_FILES_TO_BE_JARED = \
