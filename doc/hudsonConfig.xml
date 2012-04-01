@@ -323,7 +323,7 @@ PTINYOS_MOMLROOT=${WORKSPACE}/vendors/ptinyos/moml
 
 &lt;p&gt;Check console output at &lt;a href=&quot;$BUILD_URL&quot;&gt;$BUILD_URL&lt;/a&gt; to view the results.&lt;/p&gt;
 
-&lt;p&gt;&lt;a href=&quot;http://sisyphus.eecs.berkeley.edu:8080/job/ptII/lastCompletedBuild/testReport/&quot;&gt;Test Report&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;http://sisyphus.eecs.berkeley.edu/hudson/job/ptII/lastCompletedBuild/testReport/&quot;&gt;Test Report&lt;/a&gt;.&lt;/p&gt;
 
 
 ${JELLY_SCRIPT}
