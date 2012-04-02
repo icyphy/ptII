@@ -75,15 +75,15 @@ public class Blur extends Transformer {
         if (input.hasToken(0)) {
             ObjectToken inputToken = (ObjectToken) input.get(0);
             Object inputObject = inputToken.getValue();
-            if (!(inputObject instanceof OpenCV)) {
+            if (!(inputObject instanceof OpenCVImageObject)) {
                 throw new IllegalActionException(this,
                         "Input is required to be an instance of OpenCV. Got "
                                 + inputObject.getClass());
             }
-            OpenCV openCV = (OpenCV) inputObject;
+            OpenCV openCV = ((OpenCVImageObject) inputObject).openCV;
             openCV.copy(openCV.image(0));
             openCV.blur(OpenCV.BLUR, 13); //Does not have to be 13. Can be any odd number.
-            output.send(0, new ObjectToken(openCV));
+            output.send(0, new ObjectToken(new OpenCVImageObject(openCV, openCV.image())));
         }
     }
 

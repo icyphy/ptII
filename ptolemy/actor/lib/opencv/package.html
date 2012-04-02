@@ -64,20 +64,51 @@ cp processing-1.1/lib/core.jar /usr/java/default/jre/lib/ext/
 </ol>
 
 <h3>Installing OpenCV under Mac OS X</h3>
-<p>>Note that Under Mac OS 1.5, you <b>must</b> be running Java 1.5
-because Java 1.6 is 64 bit and OpenCV appears to come with only 32 bit
-libraries.  You will get something about
+
+<p>>Note that Under Mac OS, you <b>must</b> be running a 32-bit version of Java.
+In Mac OS 10.6 and later, the default version is a 64-bit version.  To run a 32-bit version,
+invoke Java with <code>-d32</code>.  To test, try:
+<pre>
+bash-3.2$ java -d32 -version
+java version "1.6.0_29"
+Java(TM) SE Runtime Environment (build 1.6.0_29-b11-402-11D50b)
+Java HotSpot(TM) Client VM (build 20.4-b02-402, mixed mode)
+bash-3.2$ 
+</pre>
+A 64-bit version will look like:
+<pre>
+bash-3.2$ java -version
+java version "1.6.0_29"
+Java(TM) SE Runtime Environment (build 1.6.0_29-b11-402-11D50b)
+Java HotSpot(TM) 64-Bit Server VM (build 20.4-b02-402, mixed mode)
+</pre>
+
+<p>If you try to run with a 64-bit version, you will get something about
 <pre>
 !!!required library not found:  Can't find dependent Libraries
 Verify that the java.library.path is correctly set and the path exists
 in your system Path
 </pre>
+
+<p>To pass the <code>-d32</code> flag to vergil under Mac OS X, do
+<pre>
+export JAVAFLAGS=-d32
+$PTII/bin/vergil -v $PTII/ptolemy/actor/lib/opencv/demo/OpenCVReader/OpenCVReader.xml 
+</pre>
+The <code>-v</code> causes vergil to display the command line arguments so that you can check to see that <code>-d32</code> was passed.
+
+If the model is run in 64-bit mode, you will see an UnsatisfiedLinkError error message.
+
 <ol>
- <li> Download <a href="http://ubaa.net/shared/processing/opencv/download/opencv-framework.1.1.dmg"><code>http://ubaa.net/shared/processing/opencv/download/opencv-framework.1.1.dmg</code></a>
+ <li> Download <a href="http://ubaa.net/shared/processing/opencv/download/01/opencv-framework.1.1.dmg"><code>http://ubaa.net/shared/processing/opencv/download/01/opencv-framework.1.1.dmg</code></a>
  <li> Install <code>opencv-framework.1.1.dmg</code>, which will
  create <code>/Library/Frameworks/OpenCV.framework/</code>
- <li> Download Processing from
+ <li> Download the 1.5.1 version of Processing from
   <a href="http://processing.org/download/index.html"><code>http://processing.org/download/index.html</code></a>
+ <li> Unzip <code>processing-1.5.1-macosx.zip</code> and then do
+  <pre>
+sudo mv ~/Downloads/Processing.app/ /Applications/
+  </pre
  <li> Copy <code>core.jar</code> from Processing to the extensions directory
   <pre>
 sudo cp /Applications/Processing.app/Contents/Resources/Java/core.jar /System/Library/Java/Extensions/
@@ -87,7 +118,7 @@ sudo cp /Applications/Processing.app/Contents/Resources/Java/core.jar /System/Li
   extensions folder and needs PImage, so even if core.jar is on your
   classpath, it will only be found if it is in the extensions folder.
   
- <li> Download and unzip<a href="http://ubaa.net/shared/processing/opencv/download/opencv_01.zip"><code>http://ubaa.net/shared/processing/opencv/download/opencv_01.zip</code></a>
+ <li> Download and unzip<a href="http://ubaa.net/shared/processing/opencv/download/01/opencv_01.zip"><code>http://ubaa.net/shared/processing/opencv/download/01/opencv_01.zip</code></a>
  <li> Copy the <code>.jar</code> and <code>.jnilib</code> to
  <code>/System/Library/Java/Extensions</code>:
  <pre>

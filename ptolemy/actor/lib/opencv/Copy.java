@@ -72,28 +72,30 @@ public class Copy extends Transformer {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-    /** Output an OpenCV object
+    /** Output an OpenCV object.
      *  @exception IllegalActionException If thrown while writing to the port.
      */
     public void fire() throws IllegalActionException {
         if (input.hasToken(0)) {
             ObjectToken inputToken = (ObjectToken) input.get(0);
             Object inputObject = inputToken.getValue();
-            if (!(inputObject instanceof OpenCV)) {
+            if (!(inputObject instanceof OpenCVImageObject)) {
                 throw new IllegalActionException(this,
-                        "Input is required to be an instance of OpenCV. Got "
-                                + inputObject.getClass());
+                        "Input is required to be an instance of OpenCVImageObject. Got "
+                        + inputObject.getClass().getName());
             }
 
-            OpenCV openCV = (OpenCV) inputObject;
-            OpenCV my_copy = new OpenCV();
+            OpenCV openCV = ((OpenCVImageObject) inputObject).openCV;
 
-            my_copy.allocate(openCV.width, openCV.height);
-            my_copy.copy(openCV.image());
-            my_copy.width = openCV.width;
-            my_copy.height = openCV.height;
-            output.send(0, new ObjectToken(openCV));
-            output.send(1, new ObjectToken(my_copy));
+            // FIXME: this should copy to as many ports as are present, not just 2.
+            OpenCV openCVCopy = new OpenCV();
+
+            openCVCopy.allocate(openCV.width, openCV.height);
+            openCVCopy.copy(openCV.image());
+            openCVCopy.width = openCV.width;
+            openCVCopy.height = openCV.height;
+            output.send(0, new ObjectToken(new OpenCVImageObject(openCV, openCV.image())));
+            output.send(1, new ObjectToken(new OpenCVImageObject(openCVCopy, openCVCopy.image())));
 
         }
     }
