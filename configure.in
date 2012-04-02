@@ -2952,16 +2952,16 @@ else
 	       PT_MSG_RESULT($OPENCV_JAR)
 	       # Here, we should not be adding OPENCV_JAR to Eclipse
 	       # if OpenCV.jar was in the jre
-               case "`uname -s`" in
-	       Darwin) 
-  	            AC_MSG_WARN([Not including
-   $OPENCV_JAR
-   to the Eclipse classpath under Darwin because it is already present.])
-      	  	   ;;
-               *)
+               #case "`uname -s`" in
+	       #Darwin) 
+  	       #     AC_MSG_WARN([Not including
+   #$OPENCV_JAR
+   #to the Eclipse classpath under Darwin because it is already present.])
+      	  	   #;;
+               #*)
 	           updateClasspath "$OPENCV_JAR"
-		   ;;
-               esac
+		   #;;
+               #esac
 	    else 
        	       AC_MSG_WARN([Either we could not find 
     hypermedia.video.OpenCV or else it was already in the JRE.
@@ -2987,16 +2987,16 @@ else
 		if test -f "$PROCESSING_CORE_JAR"; then
 		    PT_MSG_RESULT($PROCESSING_CORE_JAR)
    		    PTPROCESSING_JARS=$PROCESSING_CORE_JAR
-                    case "`uname -s`" in
-	       	    Darwin) 
-  	                AC_MSG_WARN([Not including
-   $PROCESSING_CORE_JAR
-   in the Eclipse classpath under Darwin because it is already present.])
-      	  	        ;;
-               	    *)
+                    #case "`uname -s`" in
+	       	    #Darwin) 
+  	            #    AC_MSG_WARN([Not including
+   #$PROCESSING_CORE_JAR
+   #in the Eclipse classpath under Darwin because it is already present.])
+      	  	        #;;
+               	    #*)
 			updateClasspath "$PROCESSING_CORE_JAR"
-		        ;;
-                    esac
+		        #;;
+                    #esac
                 else
        	       AC_MSG_WARN([Either we could not find 
     processing.core.PImage or else it was already in the JRE.
@@ -3045,18 +3045,20 @@ else
    	         JAVACV_JAR='${PTII}/vendors/misc/javacv-bin/javacv.jar'
             fi
 
-            AC_MSG_CHECKING([for Java Native Access (JNA) jar])
-            if test -f "$PTII/lib/jna.jar"; then
-	        PT_MSG_RESULT($PTII/lib/jna.jar)
-		JNA_JAR="$PTII/lib/jna.jar"
-	        updateClasspath "$JNA_JAR"
-	    else
-	        AC_MSG_WARN([Failed to find $PTII/lib/jna.jar,
+	    if test -z "$JNA_JAR"; then
+	        AC_MSG_CHECKING([for Java Native Access (JNA) jar])
+                if test -f "$PTII/lib/jna.jar"; then
+	            PT_MSG_RESULT($PTII/lib/jna.jar)
+		    JNA_JAR="$PTII/lib/jna.jar"
+	            updateClasspath "$JNA_JAR"
+	        else
+	            AC_MSG_WARN([Failed to find $PTII/lib/jna.jar,
     JNA is the Java Native Access interfaced, used by the OpenCV
     vision actors in ptolemy/actor/lib/opencv/javacv.
     These actors are optional, but require JNA.
     For more information about JNA, see https://jna.dev.java.net/])	
-    	         updateExcludes "ptolemy/actor/lib/opencv/javacv/"
+    	            updateExcludes "ptolemy/actor/lib/opencv/javacv/"
+                fi
     	    fi
 
 	    
