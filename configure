@@ -8667,19 +8667,16 @@ $as_echo "ok" >&6; }; else { $as_echo "$as_me:${as_lineno-$LINENO}: result: $OPE
 $as_echo "$OPENCV_JAR" >&6; }; fi
 	       # Here, we should not be adding OPENCV_JAR to Eclipse
 	       # if OpenCV.jar was in the jre
-               case "`uname -s`" in
-	       Darwin)
-  	            { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Not including
-   $OPENCV_JAR
-   to the Eclipse classpath under Darwin because it is already present." >&5
-$as_echo "$as_me: WARNING: Not including
-   $OPENCV_JAR
-   to the Eclipse classpath under Darwin because it is already present." >&2;}
-      	  	   ;;
-               *)
+               #case "`uname -s`" in
+	       #Darwin)
+  	       #     AC_MSG_WARN([Not including
+   #$OPENCV_JAR
+   #to the Eclipse classpath under Darwin because it is already present.])
+      	  	   #;;
+               #*)
 	           updateClasspath "$OPENCV_JAR"
-		   ;;
-               esac
+		   #;;
+               #esac
 	    else
        	       { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Either we could not find
     hypermedia.video.OpenCV or else it was already in the JRE.
@@ -8718,19 +8715,16 @@ $as_echo_n "checking for Processing Library... " >&6; }
 $as_echo "ok" >&6; }; else { $as_echo "$as_me:${as_lineno-$LINENO}: result: $PROCESSING_CORE_JAR" >&5
 $as_echo "$PROCESSING_CORE_JAR" >&6; }; fi
    		    PTPROCESSING_JARS=$PROCESSING_CORE_JAR
-                    case "`uname -s`" in
-	       	    Darwin)
-  	                { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Not including
-   $PROCESSING_CORE_JAR
-   in the Eclipse classpath under Darwin because it is already present." >&5
-$as_echo "$as_me: WARNING: Not including
-   $PROCESSING_CORE_JAR
-   in the Eclipse classpath under Darwin because it is already present." >&2;}
-      	  	        ;;
-               	    *)
+                    #case "`uname -s`" in
+	       	    #Darwin)
+  	            #    AC_MSG_WARN([Not including
+   #$PROCESSING_CORE_JAR
+   #in the Eclipse classpath under Darwin because it is already present.])
+      	  	        #;;
+               	    #*)
 			updateClasspath "$PROCESSING_CORE_JAR"
-		        ;;
-                    esac
+		        #;;
+                    #esac
                 else
        	       { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Either we could not find
     processing.core.PImage or else it was already in the JRE.
@@ -8805,16 +8799,17 @@ $as_echo "$as_me: WARNING: Failed to find PTII/vendors/misc/javacv-bin/javacv.ja
    	         JAVACV_JAR='${PTII}/vendors/misc/javacv-bin/javacv.jar'
             fi
 
-            { $as_echo "$as_me:${as_lineno-$LINENO}: checking for Java Native Access (JNA) jar" >&5
+	    if test -z "$JNA_JAR"; then
+	        { $as_echo "$as_me:${as_lineno-$LINENO}: checking for Java Native Access (JNA) jar" >&5
 $as_echo_n "checking for Java Native Access (JNA) jar... " >&6; }
-            if test -f "$PTII/lib/jna.jar"; then
-	        if test "${PTVERBOSE:-none}" = "none"; then { $as_echo "$as_me:${as_lineno-$LINENO}: result: ok" >&5
+                if test -f "$PTII/lib/jna.jar"; then
+	            if test "${PTVERBOSE:-none}" = "none"; then { $as_echo "$as_me:${as_lineno-$LINENO}: result: ok" >&5
 $as_echo "ok" >&6; }; else { $as_echo "$as_me:${as_lineno-$LINENO}: result: $PTII/lib/jna.jar" >&5
 $as_echo "$PTII/lib/jna.jar" >&6; }; fi
-		JNA_JAR="$PTII/lib/jna.jar"
-	        updateClasspath "$JNA_JAR"
-	    else
-	        { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Failed to find $PTII/lib/jna.jar,
+		    JNA_JAR="$PTII/lib/jna.jar"
+	            updateClasspath "$JNA_JAR"
+	        else
+	            { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Failed to find $PTII/lib/jna.jar,
     JNA is the Java Native Access interfaced, used by the OpenCV
     vision actors in ptolemy/actor/lib/opencv/javacv.
     These actors are optional, but require JNA.
@@ -8824,7 +8819,8 @@ $as_echo "$as_me: WARNING: Failed to find $PTII/lib/jna.jar,
     vision actors in ptolemy/actor/lib/opencv/javacv.
     These actors are optional, but require JNA.
     For more information about JNA, see https://jna.dev.java.net/" >&2;}
-    	         updateExcludes "ptolemy/actor/lib/opencv/javacv/"
+    	            updateExcludes "ptolemy/actor/lib/opencv/javacv/"
+                fi
     	    fi
 
 
