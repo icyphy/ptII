@@ -1,0 +1,32 @@
+<html>
+<head>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+<!-- $Id: portConfigurerDialog.htm 34371 2004-07-29 00:02:09Z rowland $ -->
+<title>Actor Dependency Analysis</title>
+</head>
+<body>
+<h1>Actor Dependency Analysis</h1>
+<p>
+  The Dependency Results Dialog shows the prerequisites and dependents of an actor.
+</p>
+
+<p>
+  The prerequisites of an actor are the upstream actors that have outputs that can
+  send data to the input of the actor.
+</p>
+
+<p>
+  The dependendents of an actor are the downstream actors that have inputs that can
+  receive data from an output of an actor.
+</p>
+
+<p>To enable the Actor Dependency Analysis, in vergil select Utilities
+  -&gt; Analysis and drag the
+  <a href="ptdoc:ptolemy.vergil.basic.DependencyHighlighter">DependencyHighlighter</a>
+  attribute to the actor and drop the attribute on the actor.
+  The right click context menu of the actor will then get several menu choices including
+  "List dependents &amp; prereqs".
+</p>
+
+</body>
+</html>

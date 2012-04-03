@@ -59,6 +59,7 @@ import ptolemy.actor.gui.DialogTableau;
 import ptolemy.actor.gui.PtolemyDialog;
 import ptolemy.gui.Query;
 import ptolemy.gui.QueryListener;
+import ptolemy.gui.Top;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.ChangeRequest;
@@ -92,24 +93,37 @@ public class SearchResultsDialog extends PtolemyDialog
      */
     public SearchResultsDialog(DialogTableau tableau, Frame owner,
             Entity target, Configuration configuration) {
-        super("Find in " + target.getName(), tableau, owner,
+        this("Find in " + target.getName(), tableau, owner,
+                target, configuration);
+    }
+
+    /** Construct a dialog for search results.
+     *  @param title The title of the dialog   
+     *  @param tableau The DialogTableau.
+     *  @param owner The frame that, per the user, is generating the dialog.
+     *  @param target The object on which the search is to be done.
+     *  @param configuration The configuration to use to open the help screen
+     *   (or null if help is not supported).
+     */
+    public SearchResultsDialog(String title, DialogTableau tableau, Frame owner,
+            Entity target, Configuration configuration) {
+        super(title, tableau, owner,
                 target, configuration);
         
+        _owner = owner;
         _target = target;
-        
+
         _query = new Query();
-        _query.addLine("text", "Find", _previousSearchTerm);
-        _query.setColumns(3);
-        _query.addCheckBox("values", "Include values", true);
-        _query.addCheckBox("names", "Include names", true);
-        _query.addCheckBox("recursive", "Recursive search", true);
-        _query.addCheckBox("case", "Case sensitive", false);
+
+        _initializeQuery();
+
         getContentPane().add(_query, BorderLayout.NORTH);
         _query.addQueryListener(this);
 
         _resultsTableModel = new ResultsTableModel();
         _resultsTable = new JTable(_resultsTableModel);
         _resultsTable.setDefaultRenderer(NamedObj.class, new NamedObjRenderer());
+
         // If you change the height, then check that a few rows can be added.
         // Also, check the setRowHeight call below.
         _resultsTable.setPreferredScrollableViewportSize(new Dimension(300, 300));
@@ -220,8 +234,7 @@ public class SearchResultsDialog extends PtolemyDialog
      *  @param target The target.
      */
     protected void _highlightResult(final NamedObj target) {
-        if (target instanceof NamedObj) {
-            ChangeRequest request = new ChangeRequest(this, "Error Highlighter") {
+        ChangeRequest request = new ChangeRequest(this, "Error Highlighter") {
                 protected void _execute() throws Exception {
                     _addHighlightIfNeeded(target);
                     NamedObj container = target.getContainer();
@@ -231,9 +244,20 @@ public class SearchResultsDialog extends PtolemyDialog
                     }
                 }
             };
-            request.setPersistent(false);
-            ((NamedObj) target).requestChange(request);
-        }
+        request.setPersistent(false);
+        ((NamedObj) target).requestChange(request);
+    }
+
+    /** Initialize the query dialog.
+     *  Derived classes may change the layout of the query dialog.
+     */
+    protected void _initializeQuery() {
+        _query.addLine("text", "Find", _previousSearchTerm);
+        _query.setColumns(3);
+        _query.addCheckBox("values", "Include values", true);
+        _query.addCheckBox("names", "Include names", true);
+        _query.addCheckBox("recursive", "Recursive search", true);
+        _query.addCheckBox("case", "Case sensitive", false);
     }
 
     /** Opens the nearest composite actor above the target in the hierarchy.
@@ -253,6 +277,17 @@ public class SearchResultsDialog extends PtolemyDialog
         }
     }
     
+    /** Report a message to either the status bar or message handler.
+     *  @param message The message.   
+     */   
+    public void _report(String message) {
+        if (_owner instanceof Top) {
+            ((Top)_owner).report(message);
+        } else {
+            MessageHandler.message(message);
+        }
+    }
+
     /** Perform a search and update the results table.
      */
     protected void _search() {
@@ -334,7 +369,7 @@ public class SearchResultsDialog extends PtolemyDialog
      */
     protected URL _getHelpURL() {
         URL helpURL = getClass().getClassLoader().getResource(
-                "ptolemy/actor/gui/doc/SearchResultsDialog.htm");
+                "ptolemy/vergil/basic/doc/SearchResultsDialog.htm");
         return helpURL;
     }
 
@@ -357,6 +392,26 @@ public class SearchResultsDialog extends PtolemyDialog
             super._processButtonPress(button);
         }
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected fields                  ////
+
+    /** The The frame that, per the user, is generating the dialog.
+     *  Typically a BasicGraphFrame.
+     */
+    protected Frame _owner;
+
+    /** Model for the table. */
+    protected ResultsTableModel _resultsTableModel = null;
+
+    /** The query portion of the dialog. */
+    protected Query _query;
+
+    /** Table for search results. */
+    protected JTable _resultsTable;
+
+    /** The entity on which search is performed. */
+    protected Entity _target;
 
     ///////////////////////////////////////////////////////////////////
     ////                         private method                    ////
@@ -397,29 +452,17 @@ public class SearchResultsDialog extends PtolemyDialog
     /** Previous search term, if any. */
     private String _previousSearchTerm = "";
     
-    /** Table for search results. */
-    private JTable _resultsTable;
-
-    /** Model for the table. */
-    private ResultsTableModel _resultsTableModel = null;
-
     /** The results of the latest search. */
     private NamedObj[] _results = null;
     
-    /** The query portion of the dialog. */
-    private Query _query;
-
     /** The Search button. */
     private JButton _searchButton;
-    
-    /** The entity on which search is performed. */
-    private NamedObj _target;
     
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
 
     /** Comparator for sorting named objects alphabetically by name. */
-    class NamedObjComparator implements Comparator<NamedObj> {
+    static class NamedObjComparator implements Comparator<NamedObj> {
         public int compare(NamedObj arg0, NamedObj arg1) {
             return (arg0.getFullName().compareTo(arg1.getFullName()));
         }
@@ -429,7 +472,7 @@ public class SearchResultsDialog extends PtolemyDialog
     class NamedObjRenderer extends DefaultTableCellRenderer {
         public void setValue(Object value) {
             String fullName = ((NamedObj)value).getFullName();
-            // Strip the name of the model name and the leading and tailing period.
+            // Strip the name of the model name and the leading and trailing period.
             String strippedName = fullName.substring(_target.getName().length() + 2);
             setText(strippedName);
         }

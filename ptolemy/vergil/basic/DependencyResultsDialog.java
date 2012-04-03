@@ -90,8 +90,7 @@ import ptolemy.util.MessageHandler;
    @Pt.ProposedRating Yellow (cxh)
    @Pt.AcceptedRating Red (cxh)
 */
-public class DependencyResultsDialog extends PtolemyDialog 
-    implements ListSelectionListener, QueryListener {
+public class DependencyResultsDialog extends SearchResultsDialog {
 
     /** Construct a dialog for search results.
      *  @param tableau The DialogTableau.
@@ -104,184 +103,30 @@ public class DependencyResultsDialog extends PtolemyDialog
             Entity target, Configuration configuration) {
         super("Dependency analysis for " + target.getName(), tableau, owner,
                 target, configuration);
-        
-        _owner = owner;
-        _target = target;
-        
-        _query = new Query();
-
-        // FIXME: we could use the text field to specify the filter class.
-        //_query.addLine("text", "Find", _previousSearchTerm);
-
-        _query.setColumns(2);
-        _query.addCheckBox("prerequisites", "Prerequisites", true);
-        _query.addCheckBox("dependents", "Dependents", true);
-        //_query.addCheckBox("recursive", "Recursive search", true);
-        //_query.addCheckBox("case", "Case sensitive", false);
-        getContentPane().add(_query, BorderLayout.NORTH);
-        _query.addQueryListener(this);
-
-        _resultsTableModel = new ResultsTableModel();
-        _resultsTable = new JTable(_resultsTableModel);
-        _resultsTable.setDefaultRenderer(NamedObj.class, new NamedObjRenderer());
-        // If you change the height, then check that a few rows can be added.
-        // Also, check the setRowHeight call below.
-        _resultsTable.setPreferredScrollableViewportSize(new Dimension(300, 300));
-        
-        ListSelectionModel selectionModel = _resultsTable.getSelectionModel();
-        selectionModel.addListSelectionListener(this);
-
-        addKeyListener(new KeyAdapter() {
-                public void keyTyped(KeyEvent ke) {
-                    if (ke.getKeyChar() == '\n') {
-                        _search();
-                    }
-                }
-            });
-
-        // Make the contents of the table scrollable and visible.
-        JScrollPane scrollPane = new JScrollPane(_resultsTable);
-        getContentPane().add(scrollPane, BorderLayout.CENTER);
-        
-        _resultsTable.addKeyListener(new KeyAdapter() {
-                public void keyReleased(KeyEvent event) {
-                    int code = event.getKeyCode();
-                    if (code == KeyEvent.VK_ENTER) {
-                        _search();
-                    } else if (code == KeyEvent.VK_ESCAPE) {
-                        _cancel();
-                    }
-                }
-            });
-
-        _resultsTable.addMouseListener(new MouseAdapter() {
-                @Override
-                public void mouseClicked(MouseEvent e) {
-                    // TODO Auto-generated method stub
-                    // super.mouseClicked(e);
-                    int button = e.getButton();
-                    int count = e.getClickCount();
-                    if (button == MouseEvent.BUTTON1 && count == 2) {
-                        int[] selected = _resultsTable.getSelectedRows();
-                        for (int i = 0; i < selected.length; i++) {
-                            NamedObj selectedObject = (NamedObj) _resultsTableModel.getValueAt(selected[i], 0);
-                            _openResult(selectedObject);
-                        }
-                    }
-                }
-            });
-        
-        
-        pack();
-        setVisible(true);
+        _resultsTable.setDefaultRenderer(NamedObj.class, new DependencyResultsNamedObjRenderer());
     }
 
-    ///////////////////////////////////////////////////////////////////
-    ////                         public methods                    ////
-
-    /** Execute the search. This is called to 
-     *  notify this dialog that one of the search options has changed.
-     *  @param name The name of the query field that changed.
-     */
-    public void changed(String name) {
-        _search();
-    }
-
-    /** Override to clear highlights. */
-    public void dispose() {
-        _clearHighlights();
-        super.dispose();
-    }
-    
-    /** React to notice that the selection has changed.
-     *  @param event The selection event.
-     */
-    public void valueChanged(ListSelectionEvent event) {
-        if (event.getValueIsAdjusting()) {
-            // Selection change is not finished. Ignore.
-            return;
-        }
-        _clearHighlights();
-
-        // Highlight new selection.
-        int[] selected = _resultsTable.getSelectedRows();
-        for (int i = 0; i < selected.length; i++) {
-            NamedObj selectedObject = (NamedObj) _resultsTableModel.getValueAt(selected[i], 0);
-            _highlightResult(selectedObject);
-        }
-    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
-    /** Clear all highlights.
+    /** Initialize the query dialog.
+     *  Derived classes may change the layout of the query dialog.
      */
-    protected void _clearHighlights() {
-        // Clear previous highlights.
-        ChangeRequest request = new ChangeRequest(this, "Error Dehighlighter") {
-                protected void _execute() throws Exception {
-                    for (Attribute highlight : _highlights) {
-                        highlight.setContainer(null);
-                    }
-                }
-            };
-        request.setPersistent(false);
-        _target.requestChange(request);
+    protected void _initializeQuery() {
+        _query.setColumns(2);
+        _query.addCheckBox("prerequisites", "Prerequisites", true);
+        _query.addCheckBox("dependents", "Dependents", true);
     }
 
-    /** Highlight the specified object and all its containers to
-     *  indicate that it matches the search criteria.
-     *  @param target The target.
-     */
-    protected void _highlightResult(final NamedObj target) {
-        if (target instanceof NamedObj) {
-            ChangeRequest request = new ChangeRequest(this, "Error Highlighter") {
-                    protected void _execute() throws Exception {
-                        _addHighlightIfNeeded(target);
-                        NamedObj container = target.getContainer();
-                        while (container != null) {
-                            _addHighlightIfNeeded(container);
-                            container = container.getContainer();
-                        }
-                    }
-                };
-            request.setPersistent(false);
-            ((NamedObj) target).requestChange(request);
-        }
-    }
-
-    /** Opens the nearest composite actor above the target in the hierarchy.
-     *  @param target The target.
-     */
-    protected void _openResult(final NamedObj target) {
-        NamedObj container = target.getContainer();
-        while (container != null && !(container instanceof CompositeActor)) {
-            container = container.getContainer();
-        }
-        if (container != null) {
-            try {
-                _configuration.openInstance(container);
-            } catch (Throwable throwable) {
-                MessageHandler.error("Failed to open container", throwable);
-            }
-        }
-    }
     
     /** Perform a search and update the results table.
      */
     protected void _search() {
-//         String findText = _query.getStringValue("text");
-//         if (findText.trim().equals("")) {
-//             MessageHandler.message("Please enter a search term");
-//             return;
-//         }
-//         _previousSearchTerm = findText;
         boolean prerequisites = _query.getBooleanValue("prerequisites");
         boolean dependents = _query.getBooleanValue("dependents");
-        //boolean recursiveSearch = _query.getBooleanValue("recursive");
-        //boolean caseSensitive = _query.getBooleanValue("case");
         try {
-            Set<NamedObj>results = _find((Actor)_target, prerequisites, dependents);
+            Set<NamedObj>results = _findDependencies((Actor)_target, prerequisites, dependents);
             _resultsTableModel.setContents(results);
             if (results.size() == 0) {
                 MessageHandler.message("No prerequisites and/or dependents.");
@@ -293,14 +138,6 @@ public class DependencyResultsDialog extends PtolemyDialog
         }
     }
 
-    /** Create buttons.
-     *  @param panel The panel into which to put the buttons.
-     */
-    protected void _createExtendedButtons(JPanel panel) {
-        _searchButton = new JButton("Search");
-        panel.add(_searchButton);
-    }
-
     /** Return a list of objects in the model that match the
      *  specified search.
      *  @param actor The actor to be searched.
@@ -309,7 +146,7 @@ public class DependencyResultsDialog extends PtolemyDialog
      *  @return The Set of objects in the model that match the specified search.
      *  @exception KernelException If thrown while preinitializing() or wrapping up.
      */
-    protected Set<NamedObj> _find(
+    protected Set<NamedObj> _findDependencies(
             Actor actor, boolean prerequisites, boolean dependents) throws KernelException {
 
         // FIXME: we could add a field to the search box for specifying the filter
@@ -319,43 +156,15 @@ public class DependencyResultsDialog extends PtolemyDialog
         SortedSet<NamedObj> result = new TreeSet<NamedObj>(new NamedObjComparator());
         if (prerequisites) {
             _report("Generating prerequisite information.");
+            System.out.println("_findDependencies: " + actor);
             result.addAll(ActorDependencies.prerequisites(actor, clazz));
-            _report("Done generating prequisite information.");
+            _report("");
         }
         if (dependents) {
             _report("Generating dependency information.");
             result.addAll(ActorDependencies.dependents(actor, clazz));
-            _report("Done generating dependency information.");
+            _report("");
         }
-
-        //         Iterator<NamedObj> objects = container.containedObjectsIterator();
-        //         while (objects.hasNext()) {
-        //             NamedObj object = objects.next();
-        //             if (includeNames) {
-        //                 String name = object.getName();
-        //                 if (!caseSensitive) {
-        //                     name = name.toLowerCase();
-        //                 }
-        //                 if (name.contains(text)) {
-        //                     result.add(object);
-        //                 }
-        //             }
-        //             if (includeValues && object instanceof Settable) {
-        //                 Settable.Visibility visible = ((Settable)object).getVisibility();
-        //                 if (!visible.equals(Settable.NONE) && !visible.equals(Settable.EXPERT)) { 
-        //                     String value = ((Settable)object).getExpression();
-        //                     if (!caseSensitive) {
-        //                         value = value.toLowerCase();
-        //                     }
-        //                     if (value.contains(text)) {
-        //                         result.add(object);
-        //                     }
-        //                 }
-        //             }
-        //             if (recursive) {
-        //                 result.addAll(_find(object, text, includeValues, includeNames, recursive, caseSensitive));
-        //             }
-        //         }
         return result;
     }
     
@@ -364,188 +173,19 @@ public class DependencyResultsDialog extends PtolemyDialog
      */
     protected URL _getHelpURL() {
         URL helpURL = getClass().getClassLoader().getResource(
-                "ptolemy/actor/gui/doc/DependencyResultsDialog.htm");
+                "ptolemy/vergil/basic/doc/DependencyResultsDialog.htm");
         return helpURL;
     }
 
-    /** Process a button press.
-     *  @param button The button.
-     */
-    protected void _processButtonPress(String button) {
-        // If the user has typed in a port name, but not
-        // moved the focus, we want to tell the model the
-        // data has changed.
-        if (_resultsTable.isEditing()) {
-            _resultsTable.editingStopped(new ChangeEvent(button));
-        }
-
-        // The button semantics are
-        // Add - Add a new port.
-        if (button.equals("Search")) {
-            _search();
-        } else {
-            super._processButtonPress(button);
-        }
-    }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         private method                    ////
-
-    /** Add a highlight color to the specified target if it is
-     *  not already present.
-     *  @param target The target to highlight.
-     *  @exception IllegalActionException If the highlight cannot be added.
-     *  @exception NameDuplicationException Should not be thrown.
-     */
-    private void _addHighlightIfNeeded(NamedObj target)
-            throws IllegalActionException, NameDuplicationException {
-        Attribute highlightColor = target.getAttribute("_highlightColor");
-        if (highlightColor instanceof ColorAttribute) {
-            // There is already a highlight. Set its color.
-            ((ColorAttribute) highlightColor)
-                .setExpression(_HIGHLIGHT_COLOR);
-            _highlights.add(highlightColor);
-        } else if (highlightColor == null) {
-            highlightColor = new ColorAttribute(target, "_highlightColor");
-            ((ColorAttribute) highlightColor)
-                .setExpression(_HIGHLIGHT_COLOR);
-            highlightColor.setPersistent(false);
-            ((ColorAttribute) highlightColor).setVisibility(Settable.EXPERT);
-            _highlights.add(highlightColor);
-        }
-    }
-
-    /** Report a message to either the status bar or message handler.
-     *  @param message The message.   
-     */   
-    private void _report(String message) {
-        if (_owner instanceof Top) {
-            ((Top)_owner).report(message);
-        } else {
-            MessageHandler.message(message);
-        }
-    }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         private variables                 ////
-
-    /** The color to use for the highlight. */
-    private static String _HIGHLIGHT_COLOR = "{0.6, 0.6, 1.0, 1.0}";
-    
-    /** Highlights that have been created. */
-    private Set<Attribute> _highlights = new HashSet<Attribute>();
-    
-    /** The The frame that, per the user, is generating the dialog.
-     *  Typically a BasicGraphFrame.
-     */
-    private Frame _owner;
-
-    /** Previous search term, if any. */
-    //private String _previousSearchTerm = "";
-    
-    /** Table for search results. */
-    private JTable _resultsTable;
-
-    /** Model for the table. */
-    private ResultsTableModel _resultsTableModel = null;
-
-    /** The results of the latest search. */
-    private NamedObj[] _results = null;
-    
-    /** The query portion of the dialog. */
-    private Query _query;
-
-    /** The Search button. */
-    private JButton _searchButton;
-    
-    /** The entity on which search is performed. */
-    private Entity _target;
-    
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
 
-    /** Comparator for sorting named objects alphabetically by name. */
-    class NamedObjComparator implements Comparator<NamedObj> {
-        public int compare(NamedObj arg0, NamedObj arg1) {
-            return (arg0.getFullName().compareTo(arg1.getFullName()));
-        }
-    }
-
     /** Default renderer for results table. */
-    class NamedObjRenderer extends DefaultTableCellRenderer {
+    class DependencyResultsNamedObjRenderer extends DefaultTableCellRenderer {
         public void setValue(Object value) {
-            String fullName = ((NamedObj)value).getFullName();
-            // Strip the name of the model name.
+         String fullName = ((NamedObj)value).getFullName();
             String strippedName = fullName.substring(fullName.indexOf(".", 1));
             setText(strippedName);
         }
     }
-
-    /** The table model for the search results table. */
-    class ResultsTableModel extends AbstractTableModel {
-        
-        /** Populate the _results list.
-         */
-        public ResultsTableModel() {
-            _results = new NamedObj[0];
-        }
-
-        /** Return the number of columns, which is one.
-	 *  @return the number of columns, which is 1.   
-         */
-        public int getColumnCount() {
-            return 1;
-        }
-
-        /** Get the number of rows.
-         *  @return the number of rows.
-         */
-        public int getRowCount() {
-            return _results.length;
-        }
-
-        /** Get the column header name.
-	 *  @return The string "Found in (select to highlight, double-click to open)".   
-         *  @see javax.swing.table.TableModel#getColumnName(int)
-         */
-        public String getColumnName(int col) {
-            return "Found in (select to highlight, double-click to open):";
-        }
-
-        /** Get the value at a particular row and column.
-         *  @param row The row.
-         *  @param col The column.
-	 *  @return the value.
-         */
-        public Object getValueAt(int row, int col) {
-            return _results[row];
-        }
-
-        /** Return NameObj.class.
-         *  @param column The column number.
-         *  @return Return NamedObj.class.
-         */
-        public Class getColumnClass(int column) {
-            return NamedObj.class;
-        }
-
-        /** Return false. Search result cells are not editable.
-         *  @param row The row number.
-         *  @param column The column number.
-         *  @return false.
-         */
-        public boolean isCellEditable(int row, int column) {
-            return false;
-        }
-        
-        public void setContents(Set<NamedObj> results) {
-            _results = new NamedObj[results.size()];
-            int i = 0;
-            for (NamedObj result : results) {
-                _results[i++] = result;
-            }
-            fireTableDataChanged();
-        }
-    }
-
 }
