@@ -777,6 +777,7 @@ out.println("\\begin{document}");
 
     /** Return whether the plot uses color.
      *  @return True if the plot uses color.
+     *  @see #setColor(boolean)
      */
     public boolean getColor() {
         return _usecolor;
@@ -827,17 +828,19 @@ out.println("\\begin{document}");
         return null;
     }
 
-    /** Get the file specification that was given by setDataurl.
-     *  This method is deprecated.  Use read() instead.
-     *  @deprecated
+    /** Get the file specification that was given by setDataurl().
+     *  @return the file specification
+     *  @see #setDataurl(String)
+     *  @deprecated Use read() instead.
      */
     public String getDataurl() {
         return _filespec;
     }
 
-    /** Get the document base that was set by setDocumentBase.
-     *  This method is deprecated.  Use read() instead.
-     *  @deprecated
+    /** Get the document base that was set by setDocumentBase().
+     *  @return the document base.
+     *  @see #setDocumentBase(URL)
+     *  @deprecated Use read() instead.
      */
     public URL getDocumentBase() {
         return _documentBase;
@@ -845,6 +848,7 @@ out.println("\\begin{document}");
 
     /** Return whether the grid is drawn.
      *  @return True if a grid is drawn.
+     *  @see #setGrid(boolean)
      */
     public boolean getGrid() {
         return _grid;
@@ -963,6 +967,7 @@ out.println("\\begin{document}");
     /** Get the label for the X (horizontal) axis, or null if none has
      *  been set.
      *  @return The X label.
+     *  @see #setXLabel(String)
      */
     public synchronized String getXLabel() {
         return _xlabel;
@@ -970,6 +975,7 @@ out.println("\\begin{document}");
 
     /** Return whether the X axis is drawn with a logarithmic scale.
      *  @return True if the X axis is logarithmic.
+     *  @see #setXLog(String)
      */
     public boolean getXLog() {
         return _xlog;
@@ -984,6 +990,7 @@ out.println("\\begin{document}");
      *  @return An array of two doubles where the first element is the
      *  minimum and the second element is the maximum.
      *  @see #getXAutoRange()
+     *  @see #setXRange(double, double)
      */
     public synchronized double[] getXRange() {
         double[] result = new double[2];
@@ -1006,6 +1013,7 @@ out.println("\\begin{document}");
      *  which specifies the X tick locations (as instances of Double),
      *  and the second of which specifies the corresponding labels.
      *  @return The X ticks.
+     *  @see #setXTicks(Vector[])
      */
     public synchronized Vector[] getXTicks() {
         if (_xticks == null) {
@@ -1035,6 +1043,7 @@ out.println("\\begin{document}");
     /** Get the label for the Y (vertical) axis, or null if none has
      *  been set.
      *  @return The Y label.
+     *  @see #setYLabel(String)
      */
     public String getYLabel() {
         return _ylabel;
@@ -1042,6 +1051,7 @@ out.println("\\begin{document}");
 
     /** Return whether the Y axis is drawn with a logarithmic scale.
      *  @return True if the Y axis is logarithmic.
+     *  @see #setYLog(boolean)
      */
     public boolean getYLog() {
         return _ylog;
@@ -1056,6 +1066,7 @@ out.println("\\begin{document}");
      *  @return An array of two doubles where the first element is the
      *  minimum and the second element is the maximum.
      *  @see #getYAutoRange()
+     *  @see #setYRange(double, double)
      */
     public synchronized double[] getYRange() {
         double[] result = new double[2];
@@ -1132,17 +1143,19 @@ out.println("\\begin{document}");
     }
 
     /** Syntactic sugar for parseFile(filespec, documentBase).
-     *  This method is deprecated.  Use read() to read the old file
+     *  @param filespec The file to be read.   
+     *  @deprecated  Use read() to read the old file
      *  format, or use one of the classes in the plotml package to
      *  read the XML-based file format.
-     *  @deprecated
      */
     public void parseFile(String filespec) {
         parseFile(filespec, (URL) null);
     }
 
     /** Open up the input file, which could be stdin, a URL, or a file.
-     *  @deprecated This method is deprecated.  Use read() instead.
+     *  @param filespec The file to be read.   
+     *  @param documentBase The base of the URL  
+     *  @deprecated Use read() instead.
      */
     public synchronized void parseFile(String filespec, URL documentBase) {
         DataInputStream in = null;
@@ -1442,6 +1455,7 @@ out.println("\\begin{document}");
      *  should be used only by applets, which normally do not have menus.
      *  This method should only be called from within the event dispatch
      *  thread, since it interacts with swing.
+     *  @param visible If true, make the fill button appear.
      *  @see #destroy()
      */
     public synchronized void setButtons(boolean visible) {
@@ -1600,6 +1614,7 @@ out.println("\\begin{document}");
     /** If the argument is false, draw the plot without using color
      *  (in black and white).  Otherwise, draw it in color (the default).
      *  @param useColor False to draw in back and white.
+     *  @see #getColor()
      */
     public synchronized void setColor(boolean useColor) {
         // Changing legend means we need to repaint the offscreen buffer.
@@ -1622,16 +1637,18 @@ out.println("\\begin{document}");
     }
 
     /** Set the file to read when init() is called.
-     *  This method is deprecated.  Use read() instead.
-     *  @deprecated
+     *  @param filespec the file to be read   
+     *  @see #getDataurl()
+     *  @deprecated Use read() instead.
      */
     public void setDataurl(String filespec) {
         _filespec = filespec;
     }
 
     /** Set the document base to used when init() is called to read a URL.
-     *  This method is deprecated.  Use read() instead.
-     *  @deprecated
+     *  @param documentBase The document base to be used.   
+     *  @see #getDocumentBase()
+     *  @deprecated   Use read() instead.
      */
     public void setDocumentBase(URL documentBase) {
         _documentBase = documentBase;
@@ -1650,6 +1667,7 @@ out.println("\\begin{document}");
 
     /** Control whether the grid is drawn.
      *  @param grid If true, a grid is drawn.
+     *  @see #getGrid()
      */
     public synchronized void setGrid(boolean grid) {
         // Changing legend means we need to repaint the offscreen buffer.
@@ -1783,6 +1801,7 @@ out.println("\\begin{document}");
 
     /** Set the label for the X (horizontal) axis.
      *  @param label The label.
+     *  @see #getXlabel()
      */
     public synchronized void setXLabel(String label) {
         // Changing legend means we need to repaint the offscreen buffer.
@@ -1796,6 +1815,7 @@ out.println("\\begin{document}");
      *  logarithmic axis, then setXLog(true) should be called before
      *  adding any data points.
      *  @param xlog If true, logarithmic axis is used.
+     *  @see #getXLog()
      */
     public synchronized void setXLog(boolean xlog) {
         // Changing legend means we need to repaint the offscreen buffer.
@@ -1812,6 +1832,7 @@ out.println("\\begin{document}");
      *  the min and max values should be in log units.
      *  @param min The left extent of the range.
      *  @param max The right extent of the range.
+     *  @see #getXRange()
      */
     public synchronized void setXRange(double min, double max) {
         // Changing legend means we need to repaint the offscreen buffer.
@@ -1825,6 +1846,7 @@ out.println("\\begin{document}");
 
     /** Set the label for the Y (vertical) axis.
      *  @param label The label.
+     *  @see #getYLabel()
      */
     public synchronized void setYLabel(String label) {
         // Changing legend means we need to repaint the offscreen buffer.
@@ -1838,6 +1860,7 @@ out.println("\\begin{document}");
      *  logarithmic axis, then setYLog(true) should be called before
      *  adding any data points.
      *  @param ylog If true, logarithmic axis is used.
+     *  @see #getYLog()
      */
     public synchronized void setYLog(boolean ylog) {
         // Changing legend means we need to repaint the offscreen buffer.
@@ -1854,6 +1877,7 @@ out.println("\\begin{document}");
      *  the min and max values should be in log units.
      *  @param min The bottom extent of the range.
      *  @param max The top extent of the range.
+     *  @see #getYRange()
      */
     public synchronized void setYRange(double min, double max) {
         // Changing legend means we need to repaint the offscreen buffer.

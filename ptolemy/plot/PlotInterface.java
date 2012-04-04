@@ -34,6 +34,14 @@ import java.net.URL;
 ///////////////////////////////////////////////////////////////////
 //// PlotInterface
 
+/**
+ * Definitions for an object that plots data.
+ * @author ahuseyno
+ * @version $Id$
+ * @since Ptolemy II 8.1
+ * @Pt.ProposedRating Red (cxh)
+ * @Pt.AcceptedRating Red (cxh)
+ */
 public interface PlotInterface extends PlotBoxInterface {
     public void addLegend(int dataset, String legend);
 
@@ -175,7 +183,7 @@ public interface PlotInterface extends PlotBoxInterface {
      *  plotted point down to the x axis.
      *  A plot with such lines is also known as a stem plot.
      *  @return True if this is an impulse plot
-     *  @see #setImpulses
+     *  @see #setImpulses(boolean)
      */
     public boolean getImpulses();
 
@@ -298,7 +306,7 @@ public interface PlotInterface extends PlotBoxInterface {
      *  plotted point down to the x axis.  Otherwise, this feature is
      *  disabled.  A plot with such lines is also known as a stem plot.
      *  @param on If true, draw a stem plot.
-     *  @see #getImpulses
+     *  @see #getImpulses()
      */
     public void setImpulses(boolean on);
 

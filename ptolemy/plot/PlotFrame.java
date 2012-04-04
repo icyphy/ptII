@@ -295,34 +295,34 @@ public class PlotFrame extends JFrame implements PropertyChangeListener,
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
 
-    /** @serial The plot object held by this frame. */
-
-    // FIXME: uncomment final when we upgrade to jdk1.2
+    /** The plot object held by this frame. */
     public/*final*/PlotBox plot;
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
 
-    /** @serial Menubar for this frame. */
-    protected JMenuBar _menubar = new JMenuBar();
-
-    /** @serial Edit menu for this frame. */
-    protected JMenu _editMenu = new JMenu("Edit");
-
-    /** @serial File menu for this frame. */
-    protected JMenu _fileMenu = new JMenu("File");
-
-    /** @serial Special menu for this frame. */
-    protected JMenu _specialMenu = new JMenu("Special");
-
-    /** @serial Directory that contains the input file. */
+    /** Directory that contains the input file. */
     protected File _directory = null;
 
-    /** @serial The input file. */
+    /** Edit menu for this frame. */
+    protected JMenu _editMenu = new JMenu("Edit");
+
+    /** The input file. */
     protected File _file = null;
+
+    /** File menu for this frame. */
+    protected JMenu _fileMenu = new JMenu("File");
+
+    /** Menubar for this frame. */
+    protected JMenuBar _menubar = new JMenuBar();
+
+    /** Special menu for this frame. */
+    protected JMenu _specialMenu = new JMenu("Special");
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
+
+    /** Display a menu that describes the Plotter. */
     protected void _about() {
         JOptionPane
                 .showMessageDialog(
@@ -335,7 +335,7 @@ public class PlotFrame extends JFrame implements PropertyChangeListener,
                                 + ", Build: $Id$\n\n"
                                 + "For more information, see\n"
                                 + "http://ptolemy.eecs.berkeley.edu/java/ptplot\n\n"
-                                + "Copyright (c) 1997-2011, "
+                                + "Copyright (c) 1997-2012, "
                                 + "The Regents of the University of California.",
                         "About Ptolemy Plot", JOptionPane.INFORMATION_MESSAGE);
     }

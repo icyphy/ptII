@@ -37,6 +37,14 @@ import java.util.Vector;
 ///////////////////////////////////////////////////////////////////
 //// PlotBoxInterface
 
+/**
+ * Definitions for an object that contains a plotter.
+ * @author ahuseyno
+ * @version $Id$
+ * @since Ptolemy II 8.1
+ * @Pt.ProposedRating Red (cxh)
+ * @Pt.AcceptedRating Red (cxh)
+ */
 public interface PlotBoxInterface {
 
     ///////////////////////////////////////////////////////////////////
@@ -145,6 +153,7 @@ public interface PlotBoxInterface {
 
     /** Return whether the plot uses color.
      *  @return True if the plot uses color.
+     *  @see #setColor(boolean)
      */
     public boolean getColor();
 
@@ -154,22 +163,25 @@ public interface PlotBoxInterface {
      */
     public Object[] getColors();
 
-    /** Get the file specification that was given by setDataurl.
-     *  This method is deprecated.  Use read() instead.
-     *  @deprecated
+    /** Get the file specification that was given by setDataurl().
+     *  @return the file specification
+     *  @see #setDataurl(String)
+     *  @deprecated Use read() instead.
      */
     @Deprecated
     public String getDataurl();
 
-    /** Get the document base that was set by setDocumentBase.
-     *  This method is deprecated.  Use read() instead.
-     *  @deprecated
+    /** Get the document base that was set by setDocumentBase().
+     *  @return the document base.
+     *  @see #setDocumentBase(URL)
+     *  @deprecated Use read() instead.
      */
     @Deprecated
     public URL getDocumentBase();
 
     /** Return whether the grid is drawn.
      *  @return True if a grid is drawn.
+     *  @see #setGrid(boolean)
      */
     public boolean getGrid();
 
@@ -247,11 +259,13 @@ public interface PlotBoxInterface {
     /** Get the label for the X (horizontal) axis, or null if none has
      *  been set.
      *  @return The X label.
+     *  @see #setXLabel(String)
      */
     public String getXLabel();
 
     /** Return whether the X axis is drawn with a logarithmic scale.
      *  @return True if the X axis is logarithmic.
+     *  @see #setXLog(String)
      */
     public boolean getXLog();
 
@@ -264,6 +278,7 @@ public interface PlotBoxInterface {
      *  @return An array of two doubles where the first element is the
      *  minimum and the second element is the maximum.
      *  @see #getXAutoRange()
+     *  @see #setXRange(double, double)
      */
     public double[] getXRange();
 
@@ -272,6 +287,7 @@ public interface PlotBoxInterface {
      *  which specifies the X tick locations (as instances of Double),
      *  and the second of which specifies the corresponding labels.
      *  @return The X ticks.
+     *  @see #setXTicks(Vector[])
      */
     public Vector[] getXTicks();
 
@@ -287,11 +303,13 @@ public interface PlotBoxInterface {
     /** Get the label for the Y (vertical) axis, or null if none has
      *  been set.
      *  @return The Y label.
+     *  @see #setYLabel(String)
      */
     public String getYLabel();
 
     /** Return whether the Y axis is drawn with a logarithmic scale.
      *  @return True if the Y axis is logarithmic.
+     *  @see #setYLog(boolean)
      */
     public boolean getYLog();
 
@@ -304,6 +322,7 @@ public interface PlotBoxInterface {
      *  @return An array of two doubles where the first element is the
      *  minimum and the second element is the maximum.
      *  @see #getYAutoRange()
+     *  @see #setYRange(double, double)
      */
     public double[] getYRange();
 
@@ -324,16 +343,18 @@ public interface PlotBoxInterface {
     public void init();
 
     /** Syntactic sugar for parseFile(filespec, documentBase).
-     *  This method is deprecated.  Use read() to read the old file
+     *  @param filespec The file to be read.   
+     *  @deprecated  Use read() to read the old file
      *  format, or use one of the classes in the plotml package to
      *  read the XML-based file format.
-     *  @deprecated
      */
     @Deprecated
     public void parseFile(String filespec);
 
     /** Open up the input file, which could be stdin, a URL, or a file.
-     *  @deprecated This method is deprecated.  Use read() instead.
+     *  @param filespec The file to be read.   
+     *  @param documentBase The base of the URL  
+     *  @deprecated Use read() instead.
      */
     @Deprecated
     public void parseFile(String filespec, URL documentBase);
@@ -391,6 +412,9 @@ public interface PlotBoxInterface {
      */
     public void renameLegend(int dataset, String newName);
 
+    /** Repaint the object. */
+    public void repaint();
+
     /** Reset the X and Y axes to the ranges that were first specified
      *  using setXRange() and setYRange(). If these methods have not been
      *  called, then reset to the default ranges.
@@ -427,6 +451,7 @@ public interface PlotBoxInterface {
      *  should be used only by applets, which normally do not have menus.
      *  This method should only be called from within the event dispatch
      *  thread, since it interacts with swing.
+     *  @param visible If true, make the fill button appear.
      *  @see #destroy()
      */
     public void setButtons(boolean visible);
@@ -442,6 +467,7 @@ public interface PlotBoxInterface {
     /** If the argument is false, draw the plot without using color
      *  (in black and white).  Otherwise, draw it in color (the default).
      *  @param useColor False to draw in back and white.
+     *  @see #getColor()
      */
     public void setColor(boolean useColor);
 
@@ -454,15 +480,17 @@ public interface PlotBoxInterface {
     public void setColors(Object[] colors);
 
     /** Set the file to read when init() is called.
-     *  This method is deprecated.  Use read() instead.
-     *  @deprecated
+     *  @param filespec the file to be read   
+     *  @see #getDataurl()
+     *  @deprecated Use read() instead.
      */
     @Deprecated
     public void setDataurl(String filespec);
 
     /** Set the document base to used when init() is called to read a URL.
-     *  This method is deprecated.  Use read() instead.
-     *  @deprecated
+     *  @param documentBase The document base to be used.   
+     *  @see #getDocumentBase()
+     *  @deprecated   Use read() instead.
      */
     @Deprecated
     public void setDocumentBase(URL documentBase);
@@ -474,6 +502,7 @@ public interface PlotBoxInterface {
 
     /** Control whether the grid is drawn.
      *  @param grid If true, a grid is drawn.
+     *  @see #getGrid()
      */
     public void setGrid(boolean grid);
 
@@ -538,6 +567,7 @@ public interface PlotBoxInterface {
 
     /** Set the label for the X (horizontal) axis.
      *  @param label The label.
+     *  @see #getXlabel()
      */
     public void setXLabel(String label);
 
@@ -546,6 +576,7 @@ public interface PlotBoxInterface {
      *  logarithmic axis, then setXLog(true) should be called before
      *  adding any data points.
      *  @param xlog If true, logarithmic axis is used.
+     *  @see #getXLog()
      */
     public void setXLog(boolean xlog);
 
@@ -557,11 +588,13 @@ public interface PlotBoxInterface {
      *  the min and max values should be in log units.
      *  @param min The left extent of the range.
      *  @param max The right extent of the range.
+     *  @see #getXRange()
      */
     public void setXRange(double min, double max);
 
     /** Set the label for the Y (vertical) axis.
      *  @param label The label.
+     *  @see #getYLabel()
      */
     public void setYLabel(String label);
 
@@ -570,6 +603,7 @@ public interface PlotBoxInterface {
      *  logarithmic axis, then setYLog(true) should be called before
      *  adding any data points.
      *  @param ylog If true, logarithmic axis is used.
+     *  @see #getYLog()
      */
     public void setYLog(boolean ylog);
 
@@ -581,6 +615,7 @@ public interface PlotBoxInterface {
      *  the min and max values should be in log units.
      *  @param min The bottom extent of the range.
      *  @param max The top extent of the range.
+     *  @see #getYRange()
      */
     public void setYRange(double min, double max);
 
@@ -661,7 +696,4 @@ public interface PlotBoxInterface {
      *  @param highy The high end of the new Y range.
      */
     public void zoom(double lowx, double lowy, double highx, double highy);
-
-    public void repaint();
-
 }
