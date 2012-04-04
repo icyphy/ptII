@@ -28,25 +28,32 @@
 
 package ptolemy.actor.lib.conversions;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+
+import java.net.MalformedURLException;
+import java.net.URL;
+
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import ptolemy.actor.parameters.SharedParameter;
 import ptolemy.data.ArrayToken;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.IntToken;
+import ptolemy.data.LongToken;
+import ptolemy.data.ObjectToken;
 import ptolemy.data.RecordToken;
 import ptolemy.data.StringToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
-import ptolemy.domains.dde.kernel.NullToken;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -81,8 +88,24 @@ public class JSONToRecord extends Converter {
         throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
-        data = new Parameter(this, "data");
-        data.setExpression("");
+        dataSource = new Parameter(this, "dataSource");
+        dataSource.setTypeEquals(BaseType.STRING);
+        dataSource.setExpression("");
+        
+        typeSignature = new Parameter(this, "typeSignature");
+        typeSignature.setExpression("");
+        
+        strictTyping = new Parameter(this, "strictTyping");
+        strictTyping.setExpression("true");
+        strictTyping.setTypeEquals(BaseType.BOOLEAN);
+        
+        trainingMode = new SharedParameter(this, "trainingMode", getClass(),
+                "false");
+        trainingMode.setTypeEquals(BaseType.BOOLEAN);
+        
+        useCachedData = new SharedParameter(this, "useCachedData", getClass(),
+                "false");
+        useCachedData.setTypeEquals(BaseType.BOOLEAN);
         
         // Set the input type.  The output type is set in preinitialize()
         input.setTypeEquals(BaseType.STRING);  
@@ -99,16 +122,15 @@ public class JSONToRecord extends Converter {
      */
     public void fire() throws IllegalActionException {
         super.fire();
-        StringToken inputToken = (StringToken) input.get(0);
-        _inputString = inputToken.stringValue();
-
-        RecordToken outputToken;
-		try {
+        Token outputToken;
+        boolean strict = ((BooleanToken) strictTyping.getToken())
+                .booleanValue();
+        
+        try {
 			outputToken = _parseJSON();
-			//outputToken = _iterateJSONObject(new JSONObject(_inputString));
 			// Check that the type of this token matches the type
 			// assigned to the output port in preinitialize()
-			if (!outputToken.getType().equals(output.getType())) {
+			if (strict && !outputToken.getType().equals(output.getType())) {
 			    throw new IllegalActionException(this, "JSON data" +
 			       " type has changed since model initialization.");
 			}
@@ -124,10 +146,7 @@ public class JSONToRecord extends Converter {
      *  @exception IllegalActionException If there is no director.
      */
     public boolean prefire() throws IllegalActionException {
-        if (!input.hasToken(0)) {
-            return false;
-        }
-
+    	_readInput(); // TODO: should it return 0 or throw exception?
         return super.prefire();
     }
     
@@ -137,33 +156,79 @@ public class JSONToRecord extends Converter {
      *  This assumption is checked in the fire() method.
      *  @exception IllegalActionException Not thrown here
      */
-    
-    
     public void preinitialize() throws IllegalActionException {
         
-        // Create a RecordToken from the value in the data parameter
-        // Start with a default empty record
-        Token token = data.getToken();
-        RecordToken value = new RecordToken();
+        Token value = new RecordToken();
         
-        if (token != null && token instanceof StringToken) {
-            _inputString = ((StringToken)token).stringValue();
+        if (((BooleanToken) strictTyping.getToken())
+                .booleanValue()) {
+            _readInput();
             try {
                 value = _parseJSON();
-                // value = _iterateJSONObject(new JSONObject(_inputString));
-            } catch(IllegalActionException e) {
-                // Catch exception and proceed to default case
             } catch(JSONException e) {
                 // Catch exception and proceed to default case
+            	// TODO
             }
         } 
         // Set type to record's type (the empty record's type in default case)
         output.setTypeEquals(value.getType());
-
     }
     
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
+    
+    void _readInput() throws IllegalActionException {
+    	if (_inputString != null && ((BooleanToken) useCachedData.getToken()).booleanValue())
+    		return;
+    	
+    	String src = dataSource.getToken().toString().replaceAll("\"","").trim();
+        BufferedReader in = null;
+        String buff = "";
+        StringBuilder json = new StringBuilder();
+        
+        if (src == null || src.equals(""))
+        	throw new RuntimeException("Please specify a valid JSON resource for " + this._elementName + ".");
+        
+        if (src.matches("^[a-zA-Z]+://.*$")) {
+           	try {
+           		URL url = new URL(src);
+           		try {
+					in = new BufferedReader(new InputStreamReader(url.openStream()));
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+           		
+           	} catch (MalformedURLException e1) {
+           		e1.printStackTrace();
+           	}
+        }
+        else {
+         	throw new RuntimeException("TODO: Handle local path?");
+           	// TODO: not a fully qualified URI, probably a local path, absolute or relative
+        }
+       		
+        if (in == null)
+        	throw new RuntimeException("Could not open JSON resource: " + src);
+        
+        _inputString = "";
+        try {
+			while ((buff = in.readLine()) != null) {
+			  json.append(buff);
+			}
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+        _inputString = json.toString().trim();
+    }
+    
+    Token _parseJSON() throws IllegalActionException, JSONException {
+    	if (_inputString.charAt(0) == '{')
+    		return _scanJSONObject(new JSONObject(_inputString));
+    	else
+    		return _scanJSONArray(new JSONArray(_inputString));
+    }
     
     /** Map an given value to the appropriate Token class and return the 
      *  new Token.  
@@ -177,25 +242,29 @@ public class JSONToRecord extends Converter {
     	
 		// The value can be any of these types: 
     	// Boolean, Number, String, or the JSONObject.NULL
-		
 		if (value instanceof JSONArray)
-			return _iterateJSONArray((JSONArray)value);
+			return _scanJSONArray((JSONArray)value);
 		else if (value instanceof JSONObject)
-			return _iterateJSONObject((JSONObject)value);
+			return _scanJSONObject((JSONObject)value);
 		else {
-		    if (value instanceof String)
-		        return new RecordToken((String)value);
-		    else if (value instanceof Boolean)
-	            return new BooleanToken((Boolean)value);
+			Token t;
+		    if (value instanceof Boolean)
+	            t = new BooleanToken((Boolean)value);
 		    else if (value instanceof Integer)
-	            return new IntToken((Integer)value);
+	            t = new IntToken((Integer)value);
+		    else if (value instanceof Long)
+		    	t = new LongToken((Long)value);
 		    else if (value instanceof Double)
-		    	return new DoubleToken((Double)value);
+		    	t = new DoubleToken((Double)value);
 		    else if (value instanceof String)
-		    	return new StringToken((String)value);
+		    	t = new StringToken((String)value);
+		    else if (value.equals(JSONObject.NULL))
+		    	t = new ObjectToken(null);
 		    else
-			    throw new IllegalActionException("Unable to map value of" +
-		    " class " + value.getClass().toString() + " to token.");
+			    throw new IllegalActionException("Unable to map value of " +
+			    		value.getClass().toString() + " to token.");
+			return t;
+
 		} 
 
     }
@@ -210,27 +279,18 @@ public class JSONToRecord extends Converter {
      * @throws JSONException 
      * @throws IllegalActionException 
      */
-    RecordToken _iterateJSONArray(JSONArray array) throws JSONException, 
+    ArrayToken _scanJSONArray(JSONArray array) throws JSONException, 
             IllegalActionException {
-    	ArrayList<String> names = new ArrayList<String>();
-        ArrayList<Token> values = new ArrayList<Token>();
+    	ArrayList<Token> values = new ArrayList<Token>();
     	
         Object value;
-        String name;
         
     	for (int i = 0; i < array.length(); ++i) {
-    		
-    		name = Integer.toString(i);
-        	value = array.get(i);
-        	// ignore empty records
-    		if (value == null || value.equals(JSONObject.NULL))
-    			continue;
-    		names.add(name);
+    		value = array.get(i);
     		values.add(_mapValueToToken(value));
     	}
     	
-        return new RecordToken(names.toArray(new String[names.size()]), 
-                values.toArray(new Token[values.size()]));
+        return new ArrayToken(values.toArray(new Token[values.size()]));
     }
     
     
@@ -245,7 +305,7 @@ public class JSONToRecord extends Converter {
      * @throws JSONException 
      * @throws IllegalActionException 
      */
-    RecordToken _iterateJSONObject(JSONObject object) throws JSONException, 
+    RecordToken _scanJSONObject(JSONObject object) throws JSONException, 
             IllegalActionException {
     	ArrayList<String> names = new ArrayList<String>();
         ArrayList<Token> values = new ArrayList<Token>();
@@ -257,9 +317,6 @@ public class JSONToRecord extends Converter {
         while (i.hasNext()) {
         	name = (String)i.next();
         	value = object.get(name);
-        	// ignore empty records
-    		if (value == null || value.equals(JSONObject.NULL))
-    			continue;
     		names.add(name);
     		values.add(_mapValueToToken(value));
         }
@@ -268,287 +325,40 @@ public class JSONToRecord extends Converter {
                 values.toArray(new Token[values.size()]));
     }
     
-
-    
-    /** Extract a RecordToken, which could contain nested RecordTokens,
-     * from the given JSON-formatted String of name/value pairs.  
-     * Throws an exception if the input string is not valid JSON.
-     * 
-     * @param inputString  The JSON-formatted string to extract a RecordToken 
-     * from
-     * @return A RecordToken containing fields and values corresponding to the
-     * JSON name and value pairs
-     * @throws JSONException 
-     * @throws IllegalActionException 
-     */
-    RecordToken _parseJSON() throws JSONException, IllegalActionException {
-        
-        // This class directly converts a JSON formatted String to a Ptolemy II
-        // RecordToken.  Some conversion notes:
-        //
-        // There is an org.json.JSONObject class, which might be helpful
-        // in the future if we want to print a RecordToken to a web page
-        // and manipulate with Javascript.  This would require including the
-        // org.json library:
-        // http://www.json.org/javadoc/org/json/JSONObject.html
-        //
-        // (BTW - $PTII/org/json/JSONObject.java is in the tree)
-        //
-        // The java.util.StringTokenizer class can extract a set of substrings
-        // using a set of delimiters, but due to the ability to have nested
-        // JSON objects, this did not seem like a good fit to parse the complete
-        // string
-        
-    	
-        // Regular expressions are used to check for valid JSON format
-        // Strings are trimmed to remove leading and trailing whitespace
-        // (removing all whitespace is incorrect since there may be a name
-        // or string value that contains a space, for example "My Tag"
-
-        // Copy inputString to workingString so we can use the original 
-        // inputString in error messages
-        _workingString = new StringBuilder(_inputString.trim());
-        ArrayList<String> names = new ArrayList();
-        ArrayList<Token> values = new ArrayList();
-         
-        // String may be encapsulated in []; if so, remove
-        // String should have the format { } 
-        Pattern pattern = Pattern.compile("\\[.*\\]");
-        Matcher matcher = pattern.matcher(_workingString);
-        
-        // Use delete instead of deleteCharAt, since the latter is inefficient
-        // http://stackoverflow.com/questions/5212928/how-to-trim-a-java-stringbuilder
-        if (matcher.matches()) {
-            _workingString.delete(0,1);
-            _workingString
-              .delete(_workingString.length() - 1, _workingString.length());
-        }
-        
-        pattern = Pattern.compile("\\{.*\\}");
-        matcher = pattern.matcher(_workingString);
-        if (!matcher.matches()) {
-            throw new IllegalActionException(this, 
-               _inputString + " is not a valid JSON string.  Unmatched curly " +
-                    		"braces.");
-        }
-     
-        // Parse list of name/value pairs into field/values for a RecordToken
-        do {
-            if (_workingString.charAt(0) == ',') {
-                _workingString.delete(0,1);
-            }
-            
-            // Find next name / value pair
-            // Of the form " " : 
-            int colonIndex = _workingString.indexOf(":");
-            int quoteIndex = _workingString.indexOf("\"");
-            
-            if (colonIndex == -1 || quoteIndex == -1 
-                    || quoteIndex == _workingString.length() - 1) {
-                throw new IllegalActionException(this, 
-                        _inputString + " is not a valid JSON string. " + 
-                            "Improperly formatted name/value pair.");
-            }
-            
-            int secondQuoteIndex = _workingString.indexOf("\"", quoteIndex + 1);
-            
-            // Name cannot be empty
-            if (secondQuoteIndex == -1 || secondQuoteIndex == quoteIndex + 1) {
-                throw new IllegalActionException(this, 
-                        _inputString + " is not a valid JSON string.  " + 
-                            "Empty or improperly formatted name.");
-            }
-            
-            String name = _workingString.substring(quoteIndex + 1, 
-                    secondQuoteIndex);
-            
-            // Create a new token, which is a NullToken by default
-            // Findbugs was warning about a Dead Local Store here.
-            Token value = null;
-            
-            // The value is next in the JSON string.  It can be:
-            // - Another JSON string, indicated by a curly brace {
-            // - An array, indicated by a square brace [
-            // - A string, indicated by a double quote "
-            // - The boolean literals true or false
-            // - The literal null
-            // - A number, indicated by a numeric value
-            // Please see:  http://www.json.org/
-    
-            _workingString.delete(0, colonIndex + 1);
-            // The String .trim() method to remove whitespace is not defined
-            // for StringBuilder 
-            // (StringBuilder's .trim() method does something else)
-            _workingString = 
-                new StringBuilder(_workingString.toString().trim());            
-            
-            if (_workingString.length() < 1) {
-                throw new IllegalActionException(this, 
-                        _inputString + " is not a valid JSON string.  " + "" +
-                            "Empty or improperly formatted value.");
-            }
-            
-            value = _parseNextValue();
-            
-            names.add(name);
-            values.add(value);
-            
-            _workingString = 
-                new StringBuilder(_workingString.toString().trim()); 
-            
-            // Check for more fields, indicated by a comma
-        }
-        while(_workingString.charAt(0) == ',');   
-
-        return new RecordToken(names.toArray(new String[names.size()]), 
-                values.toArray(new Token[values.size()]));
-        
-    }
-
-    /** Parse the next value and return a Token containing this value.  Update
-     * the workingString variable to remove this value.
-     * 
-     * @return A Token containing the next value.  Note that the next value may
-     * a non-scalar type like an ArrayToken or a RecordToken.
-     */
-    private Token _parseNextValue() throws IllegalActionException{
-        Token value = new NullToken();
-        
-        _workingString = 
-            new StringBuilder(_workingString.toString().trim());
-                    
-        switch (_workingString.charAt(0)) {
-        case '{':
-            // TODO:  Handle records
-            break;
-        case '[' :
-            // Delete [ 
-            _workingString.delete(0, 1);
-             
-            // Create a new ArrayList to append tokens to
-            // ArrayToken's append method requires an ArrayToken argument,
-            // so we will instead use the ArrayList to append each element
-            // and then create an ArrayToken at the end of the array
-            // There is no method in ArrayToken to append a single element
-            ArrayList<Token> tokenArray = new ArrayList<Token>();
-            tokenArray.add(_parseNextValue());
-            
-            // If more values, keep adding them to the array
-            while (_workingString.charAt(0) == ',') {
-                _workingString.delete(0,1);
-                tokenArray.add(_parseNextValue());
-            }           
-            
-            // Create a new ArrayToken with all of the tokens
-            value = new ArrayToken(tokenArray
-                    .toArray(new Token[tokenArray.size()]));
-          
-            // When at the end of the array, remove ] and return
-            _workingString.delete(0, 1);
-            _workingString = 
-                new StringBuilder(_workingString.toString().trim()); 
-            
-            break;
-        case '\"' :
-            
-            // String can be any character except " (watch for escaped \")
-            int index = 1;
-            while (_workingString.length() > index) {
-                index = _workingString.indexOf("\"", index);
-                // If more characters, and found a non-escaped double quote,
-                // extract the string
-                if (index == 0 || index == -1) {
-                    throw new IllegalActionException(this, 
-                            _inputString + " is not a valid JSON string.  " +
-                                "Empty or improperly formatted value.");
-
-                }  else if (_workingString.charAt(index - 1) != '\\') {
-                   value = 
-                       new StringToken(_workingString.substring(1, index));
-                   _workingString.delete(0, index + 1);
-                   break;
-                }
-                // Otherwise, keep looking
-            }               
-            break;
-        // Allow case-insensitive true, false and null
-        case 't': case 'T':
-            if (_workingString.substring(0, 4).equalsIgnoreCase("true")) {
-                value = new BooleanToken(true);
-                _workingString.delete(0, 4);
-            } else {             
-                throw new IllegalActionException(this, 
-                    _inputString + " is not a valid JSON string.  " +
-                        " Improperly formatted value.");
-            }
-            break;
-        case 'f': case 'F':
-            if (_workingString.substring(0, 5).equalsIgnoreCase("false")) {
-                value = new BooleanToken(false);
-                _workingString.delete(0, 5);
-            } else {             
-                throw new IllegalActionException(this, 
-                    _inputString + " is not a valid JSON string.  " +
-                        " Improperly formatted value.");
-            }
-            break;
-        case 'n': case 'N':
-            if (_workingString.substring(0, 4).equalsIgnoreCase("null")) {
-                value = new NullToken();
-                _workingString.delete(0, 4);
-            } else {             
-                throw new IllegalActionException(this, 
-                    _inputString + " is not a valid JSON string.  " +
-                        " Improperly formatted value.");
-            }
-            break;
-        default:
-            // Check for a numeric value; otherwise, throw exception   
-            // Numeric values can have digits, a period, more digits, and
-            // an exponent.
-            Pattern pattern = Pattern.compile("\\d*\\.?\\d*[eE]?\\d*");
-            Matcher matcher = pattern.matcher(_workingString);
-            
-            if (matcher.find()) {
-                String numberString 
-                    = _workingString.substring(0, matcher.end());
-                
-                _workingString.delete(0, matcher.end());
-                
-                // JSON appears to have looser type requirements than Ptolemy II
-                // The elements in an array might be of different types
-                // (see http://new.openbms.org/backend/api/data/uuid/b5c86c2a-7025-5af5-8c34-6bcc73740592?limit=2
-                // which has an integer and a double in one array)
-                // To handle this, this class currently treats all numbers
-                // as doubles
-                // Note that if it's also possible to mix strings and numbers
-                // then this class will not handle this situation correctly
-                // New features will be needed
-                    try {
-                        double number = Double.parseDouble(numberString);
-                        value = new DoubleToken(number);
-                    } catch(NumberFormatException e) {
-                        throw new IllegalActionException(this, 
-                           _inputString + " is not a valid JSON string.  " +
-                                    " Improperly formatted value.");
-                        }
-            } else {             
-                throw new IllegalActionException(this, 
-                        _inputString + " is not a valid JSON string.  " +
-                            " Improperly formatted value.");
-            }
-    }
-        return value;
-    }
-    
     ///////////////////////////////////////////////////////////////////
     ////                         ports and parameters              ////
+    // TODO: rewrite comments 
     
+    public Parameter dataSource;
+
     /** A parameter containing sample JSON data with the same type 
      *  signature as any data accepted by the input port. Used 
      *  in the preinitialize method to calculate the output type.
      */
-    public Parameter data;
+    public Parameter typeSignature;
+        
+    /** If true, then only data that matches the type signature stored in
+     *  <i>typeSignature</i> is accepted as input from the data source.
+     */
+    public Parameter strictTyping;
+    
+    /** If true, then do not type check inputs, but rather collect them
+     *  into the <i>correctTypes</i> array. This parameter is a boolean,
+     *  and it defaults to false. It is a shared parameter, meaning
+     *  that changing it for any one instance in a model will change
+     *  it for all instances in the model.
+     */
+    public SharedParameter trainingMode;
+    
+    /** If true, then no new data is read from the input source, but
+     *  cached data is used instead. This parameter is a boolean,
+     *  and it defaults to false. This parameter is a boolean,
+     *  and it defaults to false. It is a shared parameter, meaning
+     *  that changing it for any one instance in a model will change
+     *  it for all instances in the model. Useful for debugging, to 
+     *  speedup model execution, or in case of limited connectivity.
+     */
+    public SharedParameter useCachedData;
     
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
@@ -557,9 +367,5 @@ public class JSONToRecord extends Converter {
      * initialize working String, and used in error messages.
      */
     private String _inputString;
-    
-    /** A variable holding the remaining part of the input String to be 
-     * parsed.
-     */
-    private StringBuilder _workingString;   
+      
 }
