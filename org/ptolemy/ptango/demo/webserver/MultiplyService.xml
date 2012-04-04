@@ -1,0 +1,95 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="MultiplyService" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.0.devel">
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={153, 96, 959, 623}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[736, 507]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{368.0, 253.5}">
+    </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model illustrates how to gather input from a website, &#10;run a Ptolemy model, then produce an output website.&#10;&#10;The HttpCompositeServiceProvider displays an HTML form &#10;upon receiving an HTTP get request, and maps the forms&#10;fields to its input ports and executes the model &#10;upon receiving an HTTP post request.&#10;&#10;Types MUST be assigned to the input and output ports&#10;&#10;The input HTML form is located at /pages/index.html">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[300.0, 25.0]">
+        </property>
+    </property>
+    <property name="DDF Director" class="ptolemy.domains.ddf.kernel.DDFDirector">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 50.0]">
+        </property>
+    </property>
+    <entity name="WebServer" class="org.ptolemy.ptango.lib.WebServer">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[210.0, 50.0]">
+        </property>
+    </entity>
+    <entity name="HttpCompositeServiceProvider" class="org.ptolemy.ptango.lib.HttpCompositeServiceProvider">
+        <property name="path" class="ptolemy.data.expr.StringParameter" value="/multiply">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[110.0, 130.0]">
+        </property>
+        <port name="firstNumber" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{20.0, 200.0}">
+            </property>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
+            </property>
+        </port>
+        <port name="secondNumber" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{20.0, 240.0}">
+            </property>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
+            </property>
+        </port>
+        <port name="result" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{580.0, 200.0}">
+            </property>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
+            </property>
+        </port>
+        <entity name="MultiplyDivide" class="ptolemy.actor.lib.MultiplyDivide">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[270.0, 200.0]">
+            </property>
+            <port name="multiply" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="multiport"/>
+                <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
+                </property>
+            </port>
+            <port name="divide" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="multiport"/>
+                <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
+                </property>
+            </port>
+            <port name="output" class="ptolemy.actor.TypedIOPort">
+                <property name="output"/>
+                <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
+                </property>
+            </port>
+        </entity>
+        <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <link port="firstNumber" relation="relation"/>
+        <link port="secondNumber" relation="relation2"/>
+        <link port="result" relation="relation3"/>
+        <link port="MultiplyDivide.multiply" relation="relation"/>
+        <link port="MultiplyDivide.multiply" relation="relation2"/>
+        <link port="MultiplyDivide.output" relation="relation3"/>
+    </entity>
+</entity>

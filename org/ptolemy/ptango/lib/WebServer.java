@@ -29,7 +29,8 @@
 
 package org.ptolemy.ptango.lib;
 
-import javax.servlet.http.HttpServlet;
+import java.io.InputStream;
+import java.util.Iterator;
 
 import org.eclipse.jetty.server.Connector;
 import org.eclipse.jetty.server.Handler;
@@ -41,8 +42,10 @@ import org.eclipse.jetty.servlet.ServletHolder;
 
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.TypedAtomicActor;
+import ptolemy.actor.TypedIOPort;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.NamedObj;
 
 ///////////////////////////////////////////////////////////////////
 //// WebServer
@@ -75,6 +78,10 @@ public class WebServer extends TypedAtomicActor {
         _actorContextHandler = 
             new ServletContextHandler(ServletContextHandler.SESSIONS);
         _actorContextHandler.setContextPath("/");
+        // "C:\Ptolemy\ptII\org\ptolemy\ptango\demo\webserver\pages"
+        //_actorContextHandler.setResourceBase("C:/Ptolemy/ptII/org/ptolemy/ptango/demo/webserver/pages");
+        _actorContextHandler.setResourceBase("./");
+
         
         // Create a Jetty server and set its properties
         _server = new Server();
@@ -88,8 +95,20 @@ public class WebServer extends TypedAtomicActor {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
     
-    /** Start the web server in a new thread.
-     *  Reference:  http://wiki.eclipse.org/Jetty/Tutorial/Embedding_Jetty
+    /** Collect servlets from all model objects implementing HttpService 
+     *  and start the web server in a new thread.
+     *  
+     * In the current implementation, servlets must be registered before the
+     * Jetty server starts.  Servlets are not allowed to be added to a running
+     * ContextHandler.  Currently, the Jetty server is started once and runs 
+     * until the model finishes executing.  It would also be possible to pause
+     * the server, add a servlet, and restart the server, which would allow
+     * a model to dynamically add servlets.  This might cause strange behavior
+     * to an outside observer, however, since some HttpRequests could fail 
+     * if a servlet has not been loaded yet.
+     * 
+     *  References:  
+     *  http://wiki.eclipse.org/Jetty/Tutorial/Embedding_Jetty
      *  http://ptrthomas.wordpress.com/2009/01/24/how-to-start-and-stop-jetty-revisited/
      *  http://draconianoverlord.com/2009/01/10/war-less-dev-with-jetty.html
      *  @exception IllegalActionException Not thrown in this base class.
@@ -97,33 +116,43 @@ public class WebServer extends TypedAtomicActor {
     public void initialize() throws IllegalActionException {
         super.initialize();        
         
-        // Start the server in a new thread
-        _serverThread = new Thread(new RunnableServer());
-        _serverThread.start();
-
-    }
-    
-    /** Clear the list of context handlers so that an completely new list is 
-     *  generated during the next preinitialize() in case the model changes.
-     *
-     *  @exception IllegalActionException Not thrown in this class.
-     */
-    public void fire() throws IllegalActionException {
-        
         // Create an empty collection to store the context handlers and
         // a new context handler to hold servlets from the actors
-        // This is done in fire() in case the model is re-started, since the
-        // collection must be cleared before other actors register their 
-        // servlets in preinitialize()
-        if (_contextHandlers.getHandlers() != null &&
-                _contextHandlers.getHandlers().length > 0) {
-            _contextHandlers = new ContextHandlerCollection();
+        _contextHandlers = new ContextHandlerCollection();
+        _actorContextHandler = 
+            new ServletContextHandler(ServletContextHandler.SESSIONS);
+        _actorContextHandler.setContextPath("/");   
         
-            _actorContextHandler = 
-                new ServletContextHandler(ServletContextHandler.SESSIONS);
-            _actorContextHandler.setContextPath("/");
+        // Since Jetty is in /ptserver, set resource base relative to /ptserver
+        // TODO:  Set to path of the model that contains this actor
+        // How to figure this out?
+        _actorContextHandler
+            .setResourceBase("./org/ptolemy/ptango/demo/webserver");
+        
+        // Collect servlets from all model objects implementing HttpService       
+        NamedObj topLevel = this;
+        topLevel = topLevel.toplevel();      
+        
+        Iterator objects = topLevel.containedObjectsIterator();
+        Object object = null;
+        HttpService service = null;
+        
+        while(objects.hasNext()) { 
+            object = objects.next(); 
+            if (object instanceof HttpService) {   
+                service = (HttpService) object;
+                _actorContextHandler
+                    .addServlet(new ServletHolder(service.getServlet()), 
+                            service.getRelativePath().getPath());
+            }
         }
-    }
+              
+        // Start the server in a new thread
+        _contextHandlers.setHandlers(new Handler[] {_actorContextHandler});
+        _server.setHandler(_contextHandlers);
+        _serverThread = new Thread(new RunnableServer());
+        _serverThread.start();
+    }   
     
     /** Check if the server is still running.  If so, return true.  If not,
      *  return false.
@@ -145,31 +174,6 @@ public class WebServer extends TypedAtomicActor {
     }
     */
 
-    
-    /** Register a servlet with this WebServer.  An actor with a servlet should 
-     * call this in its initialize() method to register its servlet. 
-     * 
-     * In the current implementation, servlets must be registered before the
-     * Jetty server starts.  Servlets are not allowed to be added to a running
-     * ContextHandler.  Currently, the Jetty server is started once and runs 
-     * until the model finishes executing.  It would also be possible to pause
-     * the server, add a servlet, and restart the server, which would allow
-     * a model to dynamically add servlets.  This might cause strange behavior
-     * to an outside observer, however, since some HttpRequests could fail 
-     * if a servlet has not been loaded yet.
-     * 
-     * @param servlet  The servlet to register with this web server
-     * @param path  The relative path to map this servlet to
-     */
-    public void registerServlet(HttpServlet servlet, String path) {
-        
-        // FIXME:  How to check that this path is legal?
-        _actorContextHandler.addServlet(new ServletHolder(servlet), path); 
-        
-        _contextHandlers.setHandlers(new Handler[] {_actorContextHandler});
-        _server.setHandler(_contextHandlers);
-    }
-    
     /** Instruct the thread running the web server to the stop the server and
      *  terminate itself.
      */
@@ -179,6 +183,9 @@ public class WebServer extends TypedAtomicActor {
          _serverThread.interrupt();
          _serverThread = null;
      }
+     
+     ///////////////////////////////////////////////////////////////////
+     ////                         private variables                 ////
      
      /** A Runnable class to run a Jetty web server in a separate thread.
       * 
@@ -200,6 +207,7 @@ public class WebServer extends TypedAtomicActor {
              try {
                 _server.start();
                 _server.join();
+           
              } catch(Exception e){
                  // Notify thread users and terminate the server and this thread 
                  // if an exception occurs
@@ -222,9 +230,6 @@ public class WebServer extends TypedAtomicActor {
         }
          
      }
-     
-    ///////////////////////////////////////////////////////////////////
-    ////                         private variables                 ////
      
      /** A context handler which stores all of the servlets registered 
       *  by other actors.

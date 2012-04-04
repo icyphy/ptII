@@ -30,11 +30,11 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[210.0, 60.0]">
         </property>
     </entity>
-    <entity name="HttpService_English" class="org.ptolemy.ptango.lib.HttpService">
+    <entity name="HttpServiceProvider_English" class="org.ptolemy.ptango.lib.HttpServiceProvider">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[105.0, 145.0]">
         </property>
     </entity>
-    <entity name="HttpService_Italian" class="org.ptolemy.ptango.lib.HttpService">
+    <entity name="HttpServiceProvider_Italian" class="org.ptolemy.ptango.lib.HttpServiceProvider">
         <property name="message" class="ptolemy.data.expr.StringParameter" value="Buongiorno Mondo">
         </property>
         <property name="path" class="ptolemy.data.expr.StringParameter" value="/it/*">
@@ -42,7 +42,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[105.0, 220.0]">
         </property>
     </entity>
-    <entity name="HttpService_French" class="org.ptolemy.ptango.lib.HttpService">
+    <entity name="HttpServiceProvider_French" class="org.ptolemy.ptango.lib.HttpServiceProvider">
         <property name="message" class="ptolemy.data.expr.StringParameter" value="Bonjour le Monde">
         </property>
         <property name="path" class="ptolemy.data.expr.StringParameter" value="/fr/*">

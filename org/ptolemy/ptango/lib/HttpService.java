@@ -1,20 +1,10 @@
 package org.ptolemy.ptango.lib;
-import java.io.IOException;
-import java.util.Iterator;
+import java.net.URI;
 
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
-import ptolemy.actor.CompositeActor;
-import ptolemy.actor.TypedAtomicActor;
-import ptolemy.data.expr.StringParameter;
-import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.kernel.util.NamedObj;
 
-/* An actor that handles an HttpRequest to the given path.
+/* An interface which actors implement to handle HTTP requests.
 
  Copyright (c) 1997-2011 The Regents of the University of California.
  All rights reserved.
@@ -42,9 +32,14 @@ import ptolemy.kernel.util.NamedObj;
 
  */
 
-/** An actor that handles an HttpRequest to the given path.  This actor creates
- *  a servlet, registers this servlet with the WebServer during preinitialize(),
- *  and displays its content at the specified path when a request is received.
+/** An interface which actors implement to handle HTTP requests.  The interface
+ *  allows the relative path for the HTTP request to be set and obtained, 
+ *  and provides a servlet to handle requests.
+ *  
+ *  Note that "HttpService" is also the name of an OSGi interface.  If OSGi is 
+ *  incorporated in Ptolemy in the future, we might want to rename this 
+ *  interface.
+ *  http://www.osgi.org/javadoc/r4v42/org/osgi/service/http/HttpService.html
  *  
  *  @author ltrnc
  *  @version $Id$
@@ -54,125 +49,27 @@ import ptolemy.kernel.util.NamedObj;
  *  @see org.ptolemy.ptango.WebServer
  */
 
-public class HttpService extends TypedAtomicActor {
-    public HttpService(CompositeActor container, String name)
-        throws IllegalActionException, NameDuplicationException {
-        super(container, name);
+public interface HttpService {
 
-        message = new StringParameter(this, "message");
-        message.setExpression("Hello World");
-        
-        path = new StringParameter(this, "path");
-        path.setExpression("/*");
-    }
-    
     ///////////////////////////////////////////////////////////////////
     ////                     public methods                        ////
     
-    /** Register this actor's servlet(s) with the WebServer.
-     *
-     *  @exception IllegalActionException If no WebServer actor is found at the
-     *  top level of the model or if this actor is the top level actor.
+    /** Returns the relative path that this HttpService is mapped to. 
+     * 
+     * @return The relative path that this HttpService is mapped to.
      */
-    public void preinitialize() throws IllegalActionException {
-        // Create a new servlet mapped to the given URL that displays the
-        // given message
-        // Note that if the parameters are updated while the model is 
-        // running - e.g. during fire() - the changes will not propagate
-        
-        // Find the WebServer actor in this model.  
-        // Throw an IllegalActionException if none is found
-        NamedObj topLevel = this;
-        topLevel = topLevel.toplevel();
-        
-        if (topLevel.equals(this)) {
-            throw new IllegalActionException(this, "HttpRequestActor is not" +
-            		"allowed to be the top-level actor");
-        }
-        
-        // Find the WebServer actor.  Currently this code requires it to be
-        // immediately contained by the top-level actor.
-        // (is that true or does containedObjectsIterator() traverse hierarchy?)
-        Iterator objects = topLevel.containedObjectsIterator();
-        WebServer webServerActor = null;
-        Object object = null;
-        
-        while(objects.hasNext()) {
-            object = objects.next();
-            if (object instanceof WebServer) {
-                webServerActor = (WebServer) object; 
-            }
-        }
-        
-        if (webServerActor == null){
-            throw new IllegalActionException(this, "No WebServer actor found. "+
-             "Please make sure one is present at the top level of the model.");	
-        }
-        
-        // Register this actor's servlet with the WebServer
-        // TODO:  Check if path is valid (how?).  Check for duplicate paths?
-        // I think that will run OK (last added servlet takes precedence)
-        // but would be confusing to the user.
-        String mappedPath = "/*";
-        if (!path.getExpression().isEmpty()) {
-            mappedPath = path.getExpression().toString();
-        }  
-        
-        String displayMessage = "Hello World";
-        if (message.getExpression() != null) {
-            displayMessage = message.getExpression().toString();
-        }
-        
-        webServerActor
-            .registerServlet(new HelloServlet(displayMessage), mappedPath);
-    }
+    public URI getRelativePath();
     
-    ///////////////////////////////////////////////////////////////////
-    ////                     ports and parameters                  ////
-    
-    /** The message to display when a get request is received.
+    /** Returns an HttpServlet which is used to handle requests that
+     *  arrive at the given path.
+     * 
+     * @return An HttpServlet to handle requests. 
      */
-    public StringParameter message;
+    public HttpServlet getServlet();
     
-    /** The relative URL to map this servlet to. 
+    /** Set the relative path that this HttpService is mapped to.
+     * 
+     * @param path The relative path that this HttpService is mapped to.
      */
-    public StringParameter path;
-    
-    
-    /** A HelloWorld servlet example from 
-     *  http://wiki.eclipse.org/Jetty/Tutorial/Embedding_Jetty
-     */
-    private class HelloServlet extends HttpServlet
-    {
-        private String greeting="Hello World";
-        
-        /** Construct a servlet with the default greeting.
-         */     
-        public HelloServlet(){}
-        
-        /** Construct a servlet with the specified greeting.
-         * 
-         * @param greeting The message to display on the returned web page
-         */
-        public HelloServlet(String greeting)
-        {
-            this.greeting=greeting;
-        }
-        
-        /** Handle an HTTP get request by creating a web page as the HTTP 
-         *  response.
-         * 
-         * @param request  The HTTP get request
-         * @param response  The HTTP response to write a web page to
-         */
-        protected void doGet(HttpServletRequest request, 
-                HttpServletResponse response) 
-                throws ServletException, IOException
-        {
-            response.setContentType("text/html");
-            response.setStatus(HttpServletResponse.SC_OK);
-            response.getWriter().println("<h1>"+greeting+"</h1>");
-            // response.getWriter().println("session=" + request.getSession(true).getId());
-        }
-    }
+    public void setRelativePath(URI relativePath);
 }
