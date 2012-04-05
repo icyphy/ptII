@@ -27,6 +27,7 @@
 package ptolemy.actor.gui;
 
 import java.io.File;
+import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.net.URI;
@@ -43,6 +44,7 @@ import ptolemy.data.ArrayToken;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.StringToken;
 import ptolemy.data.Token;
+import ptolemy.data.expr.StringParameter;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.graph.Inequality;
@@ -707,6 +709,45 @@ public class Configuration extends CompositeEntity implements
             }
         }
 
+        return null;
+    }
+
+    /** Instantiate the class named by a StringParameter in the configuration.
+     *  @param parameterName The name of the StringParameter in the configuration.
+     *  @param constructerParameterTypes An array of parameter types, null if there
+     *  are no parameters
+     *  @param constructorParameterClass An array of objects to pass to the constructor.
+     *  @return an instance of the class named by parameterName, or
+     *  null if the configuration does not contain a parameter by that
+     *  name.
+     *  @exception ClassNotFoundException If the class named by
+     *  parameterName cannot be found.
+     *  @exception IllegalAccessException If the constructor is not accessible. 
+     *  @exception IllegalActionException If thrown while reading the
+     *  parameter named by parameterName.
+     *  @exception InstantiationException If the object cannot be instantiated
+     *  @exception java.lang.reflect.InvocationTargetException If
+     *  there is problem invoking the constructor.
+     *  @exception NoSuchMethodException If there is no constructor with the type.
+     */
+    public Object getStringParameterAsClass(String parameterName,
+            Class [] constructorParameterTypes,
+            Object [] constructorParameterClass) 
+            throws ClassNotFoundException, IllegalAccessException,
+            IllegalActionException, InstantiationException,
+            java.lang.reflect.InvocationTargetException, NoSuchMethodException {
+        // Deal with the PDF Action first.
+        StringParameter classNameParameter = (StringParameter)getAttribute(parameterName,
+                        StringParameter.class);
+
+        if (classNameParameter != null) {
+            String className = classNameParameter
+                .stringValue();
+            Class clazz = Class
+                .forName(className);
+            Constructor constructor = clazz.getDeclaredConstructor(constructorParameterTypes);
+            return constructor.newInstance(constructorParameterClass);
+        }
         return null;
     }
 
