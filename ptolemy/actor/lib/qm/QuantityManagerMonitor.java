@@ -149,7 +149,7 @@ public class QuantityManagerMonitor extends TypedAtomicActor implements
             List<Actor> list = ((CompositeActor) director.getContainer())
                     .entityList();
             for (Actor actor : list) {
-                if (actor instanceof MonitoredQuantityManager) {
+                if (actor instanceof QuantityManager) {
                     _quantityManagers.add((QuantityManager) actor);
                     ((MonitoredQuantityManager) actor).registerListener(this);
                 }

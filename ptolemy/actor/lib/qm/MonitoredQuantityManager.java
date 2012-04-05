@@ -46,6 +46,7 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.Workspace;
 
 /** This abstract class implements functionality to monitor the activity of a
  *  quantity manager as well as assign a color attribute to a quantity manager.
@@ -65,6 +66,10 @@ import ptolemy.kernel.util.NameDuplicationException;
 public abstract class MonitoredQuantityManager extends TypedAtomicActor
         implements QuantityManager {
 
+    public MonitoredQuantityManager(Workspace workspace) {
+        super(workspace);
+    }
+    
     /** Construct a MonitoredQuantityManager with a name and a container.
      *  The container argument must not be null, or a
      *  NullPointerException will be thrown.  This actor will use the
@@ -91,7 +96,7 @@ public abstract class MonitoredQuantityManager extends TypedAtomicActor
      *  @return A new intermediate receiver.
      *  @exception IllegalActionException Not thrown in this class but may be thrown in derived classes.
      */
-    public IntermediateReceiver getReceiver(Receiver receiver)
+    public Receiver getReceiver(Receiver receiver)
             throws IllegalActionException {
         IntermediateReceiver intermediateReceiver = new IntermediateReceiver(
                 this, receiver);

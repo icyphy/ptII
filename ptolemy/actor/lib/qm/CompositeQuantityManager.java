@@ -47,8 +47,8 @@ import ptolemy.actor.Receiver;
 import ptolemy.actor.TypedCompositeActor;
 import ptolemy.actor.gui.ColorAttribute;
 import ptolemy.actor.lib.qm.QuantityManagerListener.EventType;
-import ptolemy.actor.parameters.ParameterPort; 
-import ptolemy.data.Token; 
+import ptolemy.actor.parameters.ParameterPort;
+import ptolemy.data.Token;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
@@ -81,39 +81,6 @@ import ptolemy.kernel.util.Workspace;
  *  @Pt.AcceptedRating Red (derler)
  */
 public class CompositeQuantityManager extends TypedCompositeActor implements QuantityManager {
-
-    /** Construct a TypedCompositeActor in the default workspace with no
-     *  container and an empty string as its name. Add the actor to the
-     *  workspace directory.  You should set the local director or
-     *  executive director before attempting to send data to the actor or
-     *  to execute it. Increment the version number of the workspace.
-     *  @exception IllegalActionException If the container is incompatible
-     *   with this actor.
-     *  @exception NameDuplicationException If the name coincides with
-     *   an actor already in the container.
-     */
-    public CompositeQuantityManager() throws IllegalActionException, NameDuplicationException {
-        super();
-        _initialize();
-    }
-
-    /** Construct a TypedCompositeActor in the specified workspace with
-     *  no container and an empty string as a name. You can then change
-     *  the name with setName(). If the workspace argument is null, then
-     *  use the default workspace.  You should set the local director or
-     *  executive director before attempting to send data to the actor
-     *  or to execute it. Add the actor to the workspace directory.
-     *  Increment the version number of the workspace.
-     *  @param workspace The workspace that will list the actor.
-     *  @exception IllegalActionException If the container is incompatible
-     *   with this actor.
-     *  @exception NameDuplicationException If the name coincides with
-     *   an actor already in the container.
-     */
-    public CompositeQuantityManager(Workspace workspace) throws IllegalActionException, NameDuplicationException {
-        super(workspace); 
-        _initialize();
-    }
     
     /** Construct a TypedCompositeActor with a name and a container.
      *  The container argument must not be null, or a
@@ -137,19 +104,16 @@ public class CompositeQuantityManager extends TypedCompositeActor implements Qua
         _initialize();
     }
     
-    ///////////////////////////////////////////////////////////////////
-    ////                         public variables                  ////
-    
     /** The color associated with this actor used to highlight other
-     *  actors or connections that use this quantity manager. The
-     *  default value is the color red described by the expression
-     *  {1.0,0.0,0.0,1.0}.
+     *  actors or connections that use this quantity manager. The default value
+     *  is the color red described by the expression {1.0,0.0,0.0,1.0}.
      */
     public ColorAttribute color;
     
+    
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-
+    
     /** If the attribute is <i>color</i>, then update the highlighting colors
      *  in the model.
      *  @param attribute The attribute that changed.
@@ -178,6 +142,8 @@ public class CompositeQuantityManager extends TypedCompositeActor implements Qua
 					 "without specifying a port of a CompositeQuantityManager.");
     }    
     
+    
+    
     private boolean _receiversInvalid = true;
     
     /** Create a receiver to mediate a communication via the specified receiver. This
@@ -187,24 +153,26 @@ public class CompositeQuantityManager extends TypedCompositeActor implements Qua
      *  @return A new receiver.
      *  @exception IllegalActionException If the receiver cannot be created.
      */
-    public IntermediateReceiver getReceiver(Receiver receiver, IOPort port)
+    public Receiver getReceiver(Receiver receiver, IOPort port)
             throws IllegalActionException {
-        System.out.println(receiver + "  " + port + "  " + _outputMappings);
         if (_receiversInvalid) {
             _outputMappings.clear();
             _receiversInvalid = false;
         }
         IntermediateReceiver intermediateReceiver = new IntermediateReceiver(
-                this, receiver, port);
-        //intermediateReceiver.setContainer(port);
+                this, receiver, port); 
         
-        if (((IOPort)receiver.getContainer()).isOutput()) {
+        if (((IOPort)(receiver.getContainer())).isInput()) {
             Receiver[][] result = new Receiver[1][1]; 
             List<Receiver[][]> occurrences = new LinkedList<Receiver[][]>();
             occurrences.add(result);
             HashMap<IORelation, List<Receiver[][]>> map = new HashMap<IORelation, List<Receiver[][]>>();
             map.put(new IORelation(), occurrences);
             ((IOPort)receiver.getContainer()).setLocalReceiversTable(map);
+            ArrayList<Receiver> list = new ArrayList();
+            list.add(receiver);
+            _outputMappings.put(port, list);
+            return receiver;
         } else {
             List<Receiver> list = _outputMappings.get(port);
             if (list == null) {
@@ -298,7 +266,10 @@ public class CompositeQuantityManager extends TypedCompositeActor implements Qua
                     Token token = p.getInsideReceivers()[0][0].get();
                     for (Receiver receiver : receivers) {
                         receiver.put(token);
+                        sendQMTokenEvent((Actor) receiver.getContainer().getContainer(), 0,
+                                _tokenCount, EventType.SENT);
                     } 
+                    
                 }
             } 
         } finally {
@@ -382,6 +353,8 @@ public class CompositeQuantityManager extends TypedCompositeActor implements Qua
                 ((IOPort)port.insidePortList().get(i)).getReceivers()[0][0].put(token);
                 ((CompositeActor)getContainer()).getDirector().fireAtCurrentTime(this);
             } 
+            sendQMTokenEvent((Actor) source.getContainer().getContainer(),
+                    0, _tokenCount, EventType.RECEIVED); 
         } else {
             throw new IllegalActionException(this, 
                     "Outputs should be sent to target receivers in the fire, not in this method!");
@@ -402,10 +375,10 @@ public class CompositeQuantityManager extends TypedCompositeActor implements Qua
      * @throws NameDuplicationException If color attribute cannot be initialized.
      */
     private void _initialize() throws IllegalActionException, NameDuplicationException { 
-        color = new ColorAttribute(this, "_color");
-        color.setExpression("{1.0,0.0,0.0,1.0}");
         _listeners = new ArrayList();
         _outputMappings = new HashMap();
+        color = new ColorAttribute(this, "_color");
+        color.setExpression("{1.0,0.0,0.0,1.0}");
     }
     
     
