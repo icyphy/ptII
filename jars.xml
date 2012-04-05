@@ -656,6 +656,9 @@
 	<include name="ptolemy/vergil/basic/img/*.gif"/>
       </fileset>
       <fileset dir="${basedir}">
+	<include name="ptolemy/vergil/basic/imprt/*/*.class"/>
+      </fileset>
+      <fileset dir="${basedir}">
 	<include name="ptolemy/vergil/debugger/*.class"/>
       </fileset>
       <fileset dir="${basedir}">

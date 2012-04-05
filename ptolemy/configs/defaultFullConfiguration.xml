@@ -40,6 +40,12 @@
   <!-- Used in BasicGraphFrame.java -->
   <input source="ptolemy/vergil/basic/export/html/webExportConfiguration.xml"/>
  
+  <!-- Add support for importing Field Mock-up Units (FMUs). -->
+  <!-- Used in BasicGraphFrame.java -->
+  <property name="_importFMUActionClassName"
+            class="ptolemy.data.expr.StringParameter"
+            value="ptolemy.vergil.basic.imprt.fmu.ImportFMUAction"/>
+
   <!-- Use the KIELER graph layout algorithms. -->
   <!--  Used in BasicGraphFrame.java-->
   <property name="_layoutGraphAction"
