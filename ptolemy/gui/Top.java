@@ -641,7 +641,7 @@ public abstract class Top extends JFrame {
      *  @return The items in the File menu.
      */
     protected JMenuItem[] _createFileMenuItems() {
-        JMenuItem[] fileMenuItems = new JMenuItem[12];
+        JMenuItem[] fileMenuItems = new JMenuItem[13];
 
         fileMenuItems[0] = new JMenuItem("Open File", KeyEvent.VK_O);
         fileMenuItems[1] = new JMenuItem("Open URL", KeyEvent.VK_U);
@@ -649,21 +649,23 @@ public abstract class Top extends JFrame {
         fileMenuItems[_NEW_MENU_INDEX] = new JMenu("New");
         fileMenuItems[3] = new JMenuItem("Save", KeyEvent.VK_S);
         fileMenuItems[4] = new JMenuItem("Save As", KeyEvent.VK_A);
-        // The following assumes _EXPORT_MENU_INDEX = 5.
+        // The following assumes _IMPORT_MENU_INDEX = 5.
+        fileMenuItems[_IMPORT_MENU_INDEX] = new JMenu("Import");
+        // The following assumes _EXPORT_MENU_INDEX = 6.
         fileMenuItems[_EXPORT_MENU_INDEX] = new JMenu("Export");
-        fileMenuItems[6] = new JMenuItem("Print", KeyEvent.VK_P);
-        fileMenuItems[7] = new JMenuItem("Close", KeyEvent.VK_C);
+        fileMenuItems[7] = new JMenuItem("Print", KeyEvent.VK_P);
+        fileMenuItems[8] = new JMenuItem("Close", KeyEvent.VK_C);
 
         // Separators
-        fileMenuItems[8] = null;
-        fileMenuItems[10] = null;
+        fileMenuItems[9] = null;
+        fileMenuItems[11] = null;
 
         // History submenu
         JMenu history = new JMenu("Recent Files");
-        fileMenuItems[9] = history;
+        fileMenuItems[10] = history;
 
         // Exit
-        fileMenuItems[11] = new JMenuItem("Exit", KeyEvent.VK_Q);
+        fileMenuItems[12] = new JMenuItem("Exit", KeyEvent.VK_Q);
 
         if (StringUtilities.inApplet()) {
             JMenuItem[] appletFileMenuItems = new JMenuItem[8];
@@ -676,8 +678,8 @@ public abstract class Top extends JFrame {
             fileMenuItems[2].setEnabled(false);
             fileMenuItems[3].setEnabled(false);
             fileMenuItems[4].setEnabled(false);
-            fileMenuItems[5].setEnabled(false);
-            fileMenuItems[6].setEnabled(false);
+            fileMenuItems[_IMPORT_MENU_INDEX].setEnabled(false);
+            fileMenuItems[_EXPORT_MENU_INDEX].setEnabled(false);
             return fileMenuItems;
         }
 
@@ -689,34 +691,35 @@ public abstract class Top extends JFrame {
         // initializer because JMenu doesn't have an
         // appropriate constructor.
         fileMenuItems[2].setMnemonic(KeyEvent.VK_N);
-        fileMenuItems[5].setMnemonic(KeyEvent.VK_E);
+        fileMenuItems[_EXPORT_MENU_INDEX].setMnemonic(KeyEvent.VK_E);
 
-        // New and Export buttons disabled by default.
+        // New Import and Export buttons disabled by default.
         fileMenuItems[2].setEnabled(false);
-        fileMenuItems[5].setEnabled(false);
+        fileMenuItems[_IMPORT_MENU_INDEX].setEnabled(false);
+        fileMenuItems[_EXPORT_MENU_INDEX].setEnabled(false);
 
         // Save button = ctrl-s.
         fileMenuItems[3].setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S,
                 Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
 
         // Print button = ctrl-p.
-        fileMenuItems[6].setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_P,
+        fileMenuItems[7].setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_P,
                 Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
 
         // Print button disabled by default, unless this class implements
         // one of the JDK1.2 printing interfaces.
         if (Top.this instanceof Printable || Top.this instanceof Pageable) {
-            fileMenuItems[6].setEnabled(true);
+            fileMenuItems[7].setEnabled(true);
         } else {
-            fileMenuItems[6].setEnabled(false);
+            fileMenuItems[7].setEnabled(false);
         }
 
         // Close button = ctrl-w.
-        fileMenuItems[7].setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_W,
+        fileMenuItems[8].setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_W,
                 Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
 
         // Close button = ctrl-q.
-        fileMenuItems[11].setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Q,
+        fileMenuItems[12].setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Q,
                 Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
         // Sadly, the above doesn't actually work. Command-Q is not caught.
         
@@ -1227,8 +1230,11 @@ public abstract class Top extends JFrame {
     /** Index in the _fileMenuItems array of the New item. */
     protected static int _NEW_MENU_INDEX = 2;
 
+    /** Index in the _fileMenuItems array of the Import item. */
+    protected static int _IMPORT_MENU_INDEX = 5;
+
     /** Index in the _fileMenuItems array of the Export item. */
-    protected static int _EXPORT_MENU_INDEX = 5;
+    protected static int _EXPORT_MENU_INDEX = 6;
 
     /** Help menu for this frame. */
     protected JMenu _helpMenu = new JMenu("Help");
