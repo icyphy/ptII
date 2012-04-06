@@ -605,6 +605,7 @@ public class IOPort extends ComponentPort {
             // Avoid an infinite loop because getWidth() calls createReceivers().
             boolean createReceivers = false;
             int myWidth = _getWidth(createReceivers);
+            int channel = 0;
             boolean madeOne = false;
 
             while (outsideRelations.hasNext()) {
@@ -628,7 +629,7 @@ public class IOPort extends ComponentPort {
 
                     for (int i = 0; i < width; i++) {
                         // This throws an exception if there is no director.
-                        result[i][0] = _newReceiver();
+                        result[i][0] = _newReceiver(channel);
                         madeOne = true;
                     }
 
@@ -653,6 +654,7 @@ public class IOPort extends ComponentPort {
                     }
                 }
             }
+            channel++;
         }
 
         if (output) {
@@ -670,7 +672,7 @@ public class IOPort extends ComponentPort {
                     // receivers here.
                     for (int i = 0; i < width; i++) {
                         // This throws an exception if there is no director.
-                        result[i][0] = _newInsideReceiver();
+                        result[i][0] = _newInsideReceiver(i);
                     }
 
                     // Save it.  If we have previously seen this relation,
@@ -4201,12 +4203,13 @@ public class IOPort extends ComponentPort {
      *  <p>
      *  The returned receiver is either the new receiver, or another
      *  receiver wrapping it as specified in {@link #_wrapReceiver(Receiver)}.
+     *  @param channel Used to determine source port.
      *  @return A new receiver.
      *  @exception IllegalActionException If the port has no container,
      *   or the container is unable to return a new receiver (for example
      *   if it has no local director).
      */
-    protected Receiver _newInsideReceiver() throws IllegalActionException {
+    protected Receiver _newInsideReceiver(int channel) throws IllegalActionException {
         Nameable container = getContainer();
 
         if (container instanceof CompositeActor) {
@@ -4216,7 +4219,7 @@ public class IOPort extends ComponentPort {
                 Receiver receiver = castContainer.newInsideReceiver();
                 receiver.setContainer(this);
                 // return receiver;
-                return _wrapReceiver(receiver);
+                return _wrapReceiver(receiver, channel);
             }
         }
 
@@ -4237,13 +4240,13 @@ public class IOPort extends ComponentPort {
      *  <p>
      *  The returned receiver is either the new receiver, or another
      *  receiver wrapping it as specified in {@link #_wrapReceiver(Receiver)}.
-     *
+     *  @param channel Channel id used to determine the source port.
      *  @return A new receiver.
      *  @exception IllegalActionException If the port has no container,
      *   or the container is unable to return a new receiver (for example
      *   if it has no executive director).
      */
-    protected Receiver _newReceiver() throws IllegalActionException {
+    protected Receiver _newReceiver(int channel) throws IllegalActionException {
         Actor container = (Actor) getContainer();
 
         if (container == null) {
@@ -4253,7 +4256,7 @@ public class IOPort extends ComponentPort {
         Receiver receiver = container.newReceiver();
         receiver.setContainer(this);
         // return receiver;
-        return _wrapReceiver(receiver);
+        return _wrapReceiver(receiver, channel);
     }
 
     /** Remove the receivers associated with the specified
@@ -4308,7 +4311,8 @@ public class IOPort extends ComponentPort {
                 listener.portEvent(event);
             }
         }
-    }
+    } 
+    
 
     /** If this port has parameters whose values are tokens that contain
      *  an object implementing {@link QuantityManager}, then wrap the
@@ -4321,12 +4325,13 @@ public class IOPort extends ComponentPort {
      *  first quantity manager. Etc.
      *  @see QuantityManager
      *  @param receiver The receiver to wrap.
+     *  @param channel Channel id used to determine the source port.
      *  @return Either a new receiver wrapping the specified receiver,
      *   or the specified receiver.
      *  @exception IllegalActionException If any parameter of the port
      *   cannot be evaluated.
      */
-    protected Receiver _wrapReceiver(Receiver receiver)
+    protected Receiver _wrapReceiver(Receiver receiver, int channel)
             throws IllegalActionException {
         Receiver result = receiver;
         List qmList = getQuantityManagers();
@@ -4343,7 +4348,7 @@ public class IOPort extends ComponentPort {
             if (result instanceof IntermediateReceiver) {
                 IntermediateReceiver intermediateReceiver = (IntermediateReceiver) result;
                 intermediateReceiver.source = (Actor) ((IOPort) this
-                        .sourcePortList().get(0)).getContainer();
+                        .sourcePortList().get(channel)).getContainer();
             }
         } else {
 //            if (isOutput() && this.getContainer() instanceof CompositeActor
