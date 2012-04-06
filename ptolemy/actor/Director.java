@@ -877,6 +877,14 @@ public class Director extends Attribute implements Executable {
 
         _localClock.resetLocalTime(getModelStartTime());
         _localClock.start();
+        
+        // support old models that set time resolution in director.
+        Attribute timeResolution = getAttribute("timeResolution");
+        if (timeResolution != null) {
+            double timeResolutionDouble = ((DoubleToken) ((Parameter)timeResolution)
+                    .getToken()).doubleValue(); 
+            _localClock.setTimeResolution(timeResolutionDouble);
+        }
 
         // Initialize the contained actors.
         Nameable container = getContainer();
