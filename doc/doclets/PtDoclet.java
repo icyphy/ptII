@@ -89,6 +89,9 @@ public class PtDoclet {
                     + StringUtilities.getProperty("KEPLER"));
         }
 
+        // Used for keyword search of documentation
+        _ptIndexer = new PtIndexer();
+
         _outputDirectory = _getOutputDirectory(root.options());
         // We cache the names of all actors for which we generate text.
         FileWriter allNamedObjsWriter = null;
@@ -135,6 +138,7 @@ public class PtDoclet {
                 allNamedObjsWriter.close();
             }
         }
+        _ptIndexer.write(new File(_outputDirectory, "PtIndexer.ser").getCanonicalPath());
         return true;
     }
 
@@ -428,6 +432,8 @@ public class PtDoclet {
         String fileBaseName = className.replace('.', File.separatorChar)
                 + ".xml";
 
+        _ptIndexer.append(className, documentation);
+
         if (!StringUtilities.getProperty("KEPLER").equals("")) {
             // If we are running in Kepler, the put the output somewhere else.
             fileBaseName = className.substring(className.lastIndexOf('.') + 1)
@@ -461,9 +467,12 @@ public class PtDoclet {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
+    /** Header string for XML PtDoc output. */
+    private static String _header = "<?xml version=\"1.0\" standalone=\"yes\"?>\n<!DOCTYPE doc PUBLIC \"-//UC Berkeley//DTD DocML 1//EN\"\n    \"http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd\">\n";
+
     /** Directory to which the output is to be written. */
     private static String _outputDirectory;
 
-    /** Header string for XML PtDoc output. */
-    private static String _header = "<?xml version=\"1.0\" standalone=\"yes\"?>\n<!DOCTYPE doc PUBLIC \"-//UC Berkeley//DTD DocML 1//EN\"\n    \"http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd\">\n";
+    /** Index of keywords in the documentation. */
+    private static PtIndexer _ptIndexer;
 }

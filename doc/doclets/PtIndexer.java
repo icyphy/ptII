@@ -173,10 +173,13 @@ public class PtIndexer {
                     numberOfFiles++;
                     fileInput = new BufferedReader(new InputStreamReader(
                             new FileInputStream(fileName)));
+                    // Remove .xml
+                    fileName = fileName.substring(0, fileName.lastIndexOf("."));
+                    // Replace "./" with "" and then "/" with "."
+                    String className = fileName.replace("./", "").replace("/", ".");
                     while ((line = fileInput.readLine()) != null) {
                         numberOfLines++;
-                        // Replace "./" with "" and then "/" with "."
-                        ptIndexer.append(fileName.replace("./", "").replace("/", "."), line);
+                        ptIndexer.append(className, line);
                     }
                 }
                 System.out.println("Read " + numberOfFiles + " files, " + numberOfLines + " lines.");
@@ -332,6 +335,7 @@ public class PtIndexer {
                 }
             }
         }
+        System.out.println("PtIndexer wrote " + fileName);
     }
 
     /** Compress _dictionary into to objects, one where the Key is
