@@ -251,15 +251,76 @@ public class PtIndexer {
      *  @exception IOException If the dictionary cannot be written.
      */
     public void write(String fileName) throws IOException {
-        // We could be crafty about how we write out the dictionary
-        // and compress it so that we store the words and a number
-        // where each bit of the number maps to table of definitions.
+        // Compress _dictionary into to objects, one where the Key is
+        //  a String that is the value to be searched for and the
+        //  Value is a Set of Shorts, where each element is the index
+        //  of an element in the _compressedDefinitions table.
+        int dictionarySize = _dictionary.size();
+        if (dictionarySize > Short.MAX_VALUE) {
+            // Short.MAX_VALUE is 2^15 or 32k.
+            throw new RuntimeException("The dictionary is "
+                    + dictionarySize + " elements, which is more than "
+                    + Short.MAX_VALUE + " so we can't compress.");
+        }
+        _compressedDefinitions = new String[dictionarySize];
+        // A map from the definition name (typically the class name)
+        // to the index in _compressedDefinitions
+        Map<String, Short> definitionsMap = new HashMap<String, Short>(dictionarySize);
+
+        // The dictionary consists of keys (the word to be searched
+        // for) and values (a set of locations, typically class
+        // names).  Iterate through the dictionary.  For each new
+        // location, add it to the _compressedDefinitions table of
+        // locations and note the index.  (We keep track of locations
+        // with a map from location to index for ease of retrieval.)
+        // Add an entry for the key to _compressedDictionary where the
+        // key is a set of Shorts where each short is an index into
+        // _compressedDictionary.
+        short keyCount = 0;
+        String key = "";
+        // The uncompressed locations.
+        Set<String> definitions = null;
+        Set<Short> compressedDefinitions = null;
+        for( Map.Entry<String, Set<String>> entry :  _dictionary.entrySet()) {
+           key = entry.getKey();
+           definitions = entry.getValue();
+           for (String definition: definitions) {
+               // See if the definition has already been mapped.
+               Short definitionIndex = definitionsMap.get(definition);
+               if (definitionIndex == null) {
+                   // The definition (typically the class path)
+                   // is not in the map from definition name to index
+                   // into _compressedDefinitions, so add it now.
+                   definitionsMap.put(definition, keyCount);
+                   // Add the definition to the array of definitions:
+                   _compressedDefinitions[keyCount] = definition;
+                   definitionIndex = new Short(keyCount++);
+               }
+               // The value of definitionsIndex is now the index of
+               // the element in _compressedDefinitions.
+
+               compressedDefinitions = _compressedDictionary.get(key);
+               if (compressedDefinitions == null) {
+                   // _compressedDictionary does not have an element for key, add one now.
+                   // Since definitionsIndex is the first index, we just add it.
+                   compressedDefinitions = new HashSet<Short>();
+                   compressedDefinitions.add(definitionIndex);
+                   _compressedDictionary.put(key, compressedDefinitions); 
+               } else {
+                   // _compressedDictionary already has an element for key.
+                   compressedDefinitions.add(definitionIndex);
+               }
+           }
+        }
+
         FileOutputStream fileOutputStream = null;
         ObjectOutputStream objectOutputStream = null;
         try {
             fileOutputStream = new FileOutputStream(fileName);
             objectOutputStream = new ObjectOutputStream(fileOutputStream);
-            objectOutputStream.writeObject(_dictionary);
+            //objectOutputStream.writeObject(_dictionary);
+            objectOutputStream.writeObject(_compressedDictionary);
+            objectOutputStream.writeObject(_compressedDefinitions);
         } finally {
             try {
                 if (objectOutputStream != null) {
@@ -279,6 +340,17 @@ public class PtIndexer {
      *  classname.
      */
     private Map<String, Set<String>> _dictionary = new HashMap<String, Set<String>>();
+
+    /** A compressed dictionary, where the Key is a String that is the value to
+     *  be searched for and the Value is a Set of Shorts, where each element is an 
+     *  index of an element in the _compressedDefinitions table.
+     */
+    private Map<String, Set<Short>> _compressedDictionary = new HashMap<String, Set<Short>>();
+
+    /** The compressed table of definitions, where each element is
+     * typically a dot-separated class name where a key was found.
+     */
+    private String[] _compressedDefinitions = new String[]{};
 
     /** The set of common words that are not indexed. 
      *  One way to update this is with: 
