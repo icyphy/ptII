@@ -4203,6 +4203,27 @@ public class IOPort extends ComponentPort {
      *  <p>
      *  The returned receiver is either the new receiver, or another
      *  receiver wrapping it as specified in {@link #_wrapReceiver(Receiver)}.
+     *  @return A new receiver.
+     *  @exception IllegalActionException If the port has no container,
+     *   or the container is unable to return a new receiver (for example
+     *   if it has no local director).
+     */
+    protected Receiver _newInsideReceiver() throws IllegalActionException {
+        return _newInsideReceiver(0);
+    }
+
+    /** Create a new receiver compatible with the local director.
+     *  This is done by asking the local director of the container for
+     *  a new receiver, and then setting its
+     *  container to this port.  This allows actors to work across
+     *  several domains, since often the only domain-specific part of
+     *  of an actor is its receivers.  Derived classes may choose to
+     *  handle this directly, creating whatever specific type of receiver
+     *  they want. This method is not read-synchronized
+     *  on the workspace, so the caller should be.
+     *  <p>
+     *  The returned receiver is either the new receiver, or another
+     *  receiver wrapping it as specified in {@link #_wrapReceiver(Receiver)}.
      *  @param channel Used to determine source port.
      *  @return A new receiver.
      *  @exception IllegalActionException If the port has no container,
@@ -4226,6 +4247,27 @@ public class IOPort extends ComponentPort {
         throw new IllegalActionException(this,
                 "Can only create inside receivers for a port of a non-atomic, "
                         + "opaque entity.");
+    }
+
+    /** Create a new receiver compatible with the executive director.
+     *  This is done by asking the
+     *  containing actor for a new receiver, and then setting its
+     *  container to this port.  This allows actors to work across
+     *  several domains, since often the only domain-specific part of
+     *  of an actor is its receivers.  Derived classes may choose to
+     *  handle this directly, creating whatever specific type of receiver
+     *  they want.  This method is not write-synchronized
+     *  on the workspace, so the caller should be.
+     *  <p>
+     *  The returned receiver is either the new receiver, or another
+     *  receiver wrapping it as specified in {@link #_wrapReceiver(Receiver)}.
+     *  @return A new receiver.
+     *  @exception IllegalActionException If the port has no container,
+     *   or the container is unable to return a new receiver (for example
+     *   if it has no executive director).
+     */
+    protected Receiver _newReceiver() throws IllegalActionException {
+        return _newReceiver(0);
     }
 
     /** Create a new receiver compatible with the executive director.
@@ -4313,6 +4355,28 @@ public class IOPort extends ComponentPort {
         }
     } 
     
+
+    /** If this port has parameters whose values are tokens that contain
+     *  an object implementing {@link QuantityManager}, then wrap the
+     *  receiver specified in the argument using those quantity managers.
+     *  If there are no such parameters, then simply return the specified
+     *  receiver. If there is one such parameter, then use the quantity
+     *  manager to wrap the specified receiver in a new receiver, and return
+     *  that receiver. If there are two such parameters, then use the second
+     *  quantity manager to create a receiver that wraps that created by the
+     *  first quantity manager. Etc.
+     *  @see QuantityManager
+     *  @param receiver The receiver to wrap.
+     *  @param channel Channel id used to determine the source port.
+     *  @return Either a new receiver wrapping the specified receiver,
+     *   or the specified receiver.
+     *  @exception IllegalActionException If any parameter of the port
+     *   cannot be evaluated.
+     */
+    protected Receiver _wrapReceiver(Receiver receiver)
+            throws IllegalActionException {
+        return _wrapReceiver(receiver, 0);
+    }
 
     /** If this port has parameters whose values are tokens that contain
      *  an object implementing {@link QuantityManager}, then wrap the
