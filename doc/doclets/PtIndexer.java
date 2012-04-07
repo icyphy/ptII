@@ -37,7 +37,9 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.StreamTokenizer;
 import java.io.StringReader;
+import java.math.BigInteger;
 import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -102,7 +104,7 @@ public class PtIndexer {
     /** A test driver for the indexer.
      *  <p>Usage:</p>
      *  <pre>
-     *  java -classpath $PTII doc.doclets.PtIndexer [target]
+     *  java -classpath $PTII doc.doclets.PtIndexer [-c] [target]
      *  </pre>
      *
      *  <p>If called with no arguments, create the dictionary
@@ -123,10 +125,12 @@ public class PtIndexer {
      *  find . -name "*.xml" | java -classpath $PTII doc.doclets.PtIndexer
      *  </pre>
      *
-     *  <p>
-     *  If called with one argument, then the argument is assumed
-     *  to be a target and the collection of places where target is
-     *  found is returned.</p>
+     *  <p>If called with <code>-c</code> then use compression.</p>
+     *
+     *  <p> If called with one argument that is not <code>-c</code>,
+     *  then the argument is assumed to be a target and the collection
+     *  of places where target is found is returned.</p>
+     *
      *  @param args The arguments, if any
      *  @exception IOException If thrown while reading the input files or dictionary.
      *  @exception ClassNotFoundException If the file does not contain the 
@@ -135,12 +139,27 @@ public class PtIndexer {
     public static void main(String args[]) throws IOException, ClassNotFoundException {
         String usage = "Usage: java -classpath $PTII doc.doclets.PtIndexer [target]";
         String dictionaryFile = "PtIndexer.ser";
-        if (args.length > 1) {
+
+        if (args.length > 2) {
             System.err.println(usage);
             return;
         }
+        String target = null;
+        if (args.length >= 1) {
+            if (args[0].equals("-c")) {
+                _useCompression = true;
+                if (args.length == 2) {
+                    target = args[1];
+                }
+            } else {
+                target = args[0];
+            }
+        }
+        if (_useCompression) {
+            dictionaryFile = "PtIndexerCompressed.ser";
+        }
         PtIndexer ptIndexer = new PtIndexer();
-        if (args.length == 0) {
+        if (target == null) {
             // Read file names from stdin and created PtIndexer.ser
             BufferedReader stdin = null;
             BufferedReader fileInput = null;
@@ -177,7 +196,7 @@ public class PtIndexer {
         } else {
             ptIndexer.read(dictionaryFile);
             // Look up the argument.
-            System.out.println(ptIndexer.search(args[0]));
+            System.out.println(ptIndexer.search(target));
         }
     }
 
@@ -193,7 +212,14 @@ public class PtIndexer {
         try {
             fileInputStream = new FileInputStream(fileName);
             objectInputStream = new ObjectInputStream(fileInputStream);
-            _dictionary = (Map<String, Set<String>>)objectInputStream.readObject();
+            if (_useCompression) {
+                _compressedDictionary = (Map<String, BigInteger>)objectInputStream.readObject();
+                _compressedDefinitions = (String[]) objectInputStream.readObject();
+                System.out.println("_compressedDictionary size: " + _compressedDictionary.size());
+                System.out.println("_compressedDefinitions size: " + _compressedDefinitions.length);
+            } else {
+                _dictionary = (Map<String, Set<String>>)objectInputStream.readObject();
+            }
         } finally {
             try {
                 if (objectInputStream != null) {
@@ -208,6 +234,10 @@ public class PtIndexer {
     }
 
     /** Search the dictionary for matches.
+     *   
+     *  <p> The target is converted to lower case and then the
+     *  dictionary is searched.</p>
+     *
      *  @param target The string to match.
      *  @return a collection of matches or null if there are no matches
      */
@@ -215,7 +245,26 @@ public class PtIndexer {
         // We return a Collection because eventually we should return
         // a list ordered by the number of occurances.
         // FIXME: should we copy this so it can be modified?
-        return _dictionary.get(target);
+
+        // The StreamTokenizer converts to lowercase so the
+        // dictionary is lower case.
+        if (_useCompression) {
+            BigInteger indices = _compressedDictionary.get(target.toLowerCase());
+            if (indices == null) {
+                return null;
+            }
+            int lastBit = indices.bitLength();
+            System.out.println(indices + " lastBit: " + lastBit + " size: " + _compressedDefinitions.length);
+            Set results = new HashSet();
+            for (int i = 0; i <= lastBit; i++) {
+                if (indices.testBit(i)) {
+                    results.add(_compressedDefinitions[i]);
+                }
+            }
+            return results;
+        } else {
+            return _dictionary.get(target.toLowerCase());
+        }
     }
 
     /** Return statistics about the dictionary.
@@ -251,76 +300,27 @@ public class PtIndexer {
      *  @exception IOException If the dictionary cannot be written.
      */
     public void write(String fileName) throws IOException {
-        // Compress _dictionary into to objects, one where the Key is
-        //  a String that is the value to be searched for and the
-        //  Value is a Set of Shorts, where each element is the index
-        //  of an element in the _compressedDefinitions table.
-        int dictionarySize = _dictionary.size();
-        if (dictionarySize > Short.MAX_VALUE) {
-            // Short.MAX_VALUE is 2^15 or 32k.
-            throw new RuntimeException("The dictionary is "
-                    + dictionarySize + " elements, which is more than "
-                    + Short.MAX_VALUE + " so we can't compress.");
+        if (_useCompression) {
+            _compress();
         }
-        _compressedDefinitions = new String[dictionarySize];
-        // A map from the definition name (typically the class name)
-        // to the index in _compressedDefinitions
-        Map<String, Short> definitionsMap = new HashMap<String, Short>(dictionarySize);
-
-        // The dictionary consists of keys (the word to be searched
-        // for) and values (a set of locations, typically class
-        // names).  Iterate through the dictionary.  For each new
-        // location, add it to the _compressedDefinitions table of
-        // locations and note the index.  (We keep track of locations
-        // with a map from location to index for ease of retrieval.)
-        // Add an entry for the key to _compressedDictionary where the
-        // key is a set of Shorts where each short is an index into
-        // _compressedDictionary.
-        short keyCount = 0;
-        String key = "";
-        // The uncompressed locations.
-        Set<String> definitions = null;
-        Set<Short> compressedDefinitions = null;
-        for( Map.Entry<String, Set<String>> entry :  _dictionary.entrySet()) {
-           key = entry.getKey();
-           definitions = entry.getValue();
-           for (String definition: definitions) {
-               // See if the definition has already been mapped.
-               Short definitionIndex = definitionsMap.get(definition);
-               if (definitionIndex == null) {
-                   // The definition (typically the class path)
-                   // is not in the map from definition name to index
-                   // into _compressedDefinitions, so add it now.
-                   definitionsMap.put(definition, keyCount);
-                   // Add the definition to the array of definitions:
-                   _compressedDefinitions[keyCount] = definition;
-                   definitionIndex = new Short(keyCount++);
-               }
-               // The value of definitionsIndex is now the index of
-               // the element in _compressedDefinitions.
-
-               compressedDefinitions = _compressedDictionary.get(key);
-               if (compressedDefinitions == null) {
-                   // _compressedDictionary does not have an element for key, add one now.
-                   // Since definitionsIndex is the first index, we just add it.
-                   compressedDefinitions = new HashSet<Short>();
-                   compressedDefinitions.add(definitionIndex);
-                   _compressedDictionary.put(key, compressedDefinitions); 
-               } else {
-                   // _compressedDictionary already has an element for key.
-                   compressedDefinitions.add(definitionIndex);
-               }
-           }
-        }
-
         FileOutputStream fileOutputStream = null;
         ObjectOutputStream objectOutputStream = null;
         try {
             fileOutputStream = new FileOutputStream(fileName);
             objectOutputStream = new ObjectOutputStream(fileOutputStream);
-            //objectOutputStream.writeObject(_dictionary);
-            objectOutputStream.writeObject(_compressedDictionary);
-            objectOutputStream.writeObject(_compressedDefinitions);
+
+            if (_useCompression) {
+                objectOutputStream.writeObject(_compressedDictionary);
+                objectOutputStream.writeObject(_compressedDefinitions);
+                //             System.out.println("_dictionary.get(\"ramp\"): " + _dictionary.get("ramp"));
+                //             System.out.println("_compressedDictionary size: " + _compressedDictionary.size());
+                //             System.out.println("_compressedDictionary.get(\"ramp\") " + _compressedDictionary.get("ramp"));
+                //             System.out.println("_compressedDefinitions size: " + _compressedDefinitions.length);
+                //             System.out.println("_compressedDefinitions[1]: " + _compressedDefinitions[1]);
+            } else {
+                objectOutputStream.writeObject(_dictionary);
+            }
+
         } finally {
             try {
                 if (objectOutputStream != null) {
@@ -334,6 +334,74 @@ public class PtIndexer {
         }
     }
 
+    /** Compress _dictionary into to objects, one where the Key is
+     * a String that is the value to be searched for and the Value
+     * is an Integer, where each 1 bit in the binary
+     * representation of BigInteger is the index of an element in the
+     * _compressedDefinitions table.  Thus, if the value is 5, the
+     * binary representation is 1001, which means that the key
+     * is found in the 3rd and 1st elements in _compressedDefinitions.
+     * Note that 0th element of _compressedDefintions is not
+     * used, as there is no way to specify the 0th element in 
+     * the Integer.
+     */
+    private void _compress() {
+
+        int dictionarySize = _dictionary.size();
+        // We don't use the 0th element because we can't create an Integer
+        // with a binary representation that will refer to it.
+        _compressedDefinitions = new String[dictionarySize + 1];
+
+        // A map from the definition name (typically the class name)
+        // to the index in _compressedDefinitions
+        Map<String, Integer> definitionsMap = new HashMap<String, Integer>(dictionarySize);
+
+        // The dictionary consists of keys (the word to be searched
+        // for) and values (a set of locations, typically class
+        // names).  Iterate through the dictionary.  For each new
+        // location, add it to the _compressedDefinitions table of
+        // locations and note the index.  (We keep track of locations
+        // with a map from location to index for ease of retrieval.)
+
+        // We don't use the 0th element, so we start at 1.
+        int keyCount = 1;
+        String key = "";
+        // The uncompressed locations.
+        Set<String> definitions = null;
+        BigInteger indices = null;
+        for( Map.Entry<String, Set<String>> entry :  _dictionary.entrySet()) {
+           key = entry.getKey();
+           definitions = entry.getValue();
+           for (String definition: definitions) {
+               // See if the definition has already been mapped.
+               Integer definitionIndex = definitionsMap.get(definition);
+               if (definitionIndex == null) {
+                   // The definition (typically the class path)
+                   // is not in the map from definition name to index
+                   // into _compressedDefinitions, so add it now.
+                   definitionsMap.put(definition, keyCount);
+                   // Add the definition to the array of definitions:
+                   _compressedDefinitions[keyCount] = definition;
+                   definitionIndex = new Integer(keyCount++);
+               }
+               // The value of definitionsIndex is now the index of
+               // the element in _compressedDefinitions.
+
+               indices = _compressedDictionary.get(key);
+               if (indices == null) {
+                   // _compressedDictionary does not have an element for key, add one now.
+                   // Since definitionsIndex is the first index, we just add it.
+                   indices = new BigInteger("0");
+                   indices = indices.setBit(definitionIndex.intValue());
+                   _compressedDictionary.put(key, indices);
+               } else {
+                   // _compressedDictionary already has an element for key.
+                   indices = indices.setBit(definitionIndex.intValue());
+                   _compressedDictionary.put(key, indices);
+               }
+           }
+        }
+    }
     /** The dictionary, where the key is the word and the value is
      *  a Set of Strings where each element names a place where the word
      *  is used.  For searching actors, the key element is a dot-separated
@@ -341,16 +409,22 @@ public class PtIndexer {
      */
     private Map<String, Set<String>> _dictionary = new HashMap<String, Set<String>>();
 
-    /** A compressed dictionary, where the Key is a String that is the value to
-     *  be searched for and the Value is a Set of Shorts, where each element is an 
-     *  index of an element in the _compressedDefinitions table.
+    /** A compressed dictionary, where the key is a String that is the target to
+     *  be searched for and the value is an BigInteger, where each 1 bit in the
+     *  BigInteger corresponds with an index of an element in the _compressedDefinitions table.
      */
-    private Map<String, Set<Short>> _compressedDictionary = new HashMap<String, Set<Short>>();
+    private Map<String, BigInteger> _compressedDictionary = new HashMap<String, BigInteger>();
 
     /** The compressed table of definitions, where each element is
-     * typically a dot-separated class name where a key was found.
+     *  typically a dot-separated class name (the location) where a key
+     *  was found.
      */
     private String[] _compressedDefinitions = new String[]{};
+
+    
+    /** True if compression is used.
+     */   
+    private static boolean _useCompression = false;
 
     /** The set of common words that are not indexed. 
      *  One way to update this is with: 
