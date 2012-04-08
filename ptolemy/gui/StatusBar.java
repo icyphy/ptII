@@ -107,6 +107,9 @@ public class StatusBar extends JPanel {
      */
     public void setMessage(String message) {
         _message.setText(message);
+        // Force an immediate repaint, since this message might be a
+        // status update about actions in progress.
+        _message.paintImmediately(_message.getBounds());
     }
 
     ///////////////////////////////////////////////////////////////////
