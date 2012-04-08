@@ -46,7 +46,6 @@ import javax.swing.text.Document;
 
 import ptolemy.actor.injection.PortablePlaceable;
 import ptolemy.gui.UndoListener;
-import ptolemy.kernel.util.InternalErrorException;
 
 ///////////////////////////////////////////////////////////////////
 //// TextEditor

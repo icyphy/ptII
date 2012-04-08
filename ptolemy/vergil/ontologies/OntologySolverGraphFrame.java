@@ -59,7 +59,6 @@ import ptolemy.vergil.basic.AbstractBasicGraphModel;
 import ptolemy.vergil.basic.BasicGraphPane;
 import ptolemy.vergil.basic.ExtendedGraphFrame;
 import ptolemy.vergil.basic.IconController;
-
 import diva.canvas.Figure;
 import diva.graph.GraphController;
 import diva.graph.GraphPane;

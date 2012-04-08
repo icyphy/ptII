@@ -34,7 +34,6 @@ import java.util.HashSet;
 import java.util.Iterator;
 
 import ptolemy.actor.Actor;
-import ptolemy.actor.CompositeActor;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.Manager;
 import ptolemy.actor.gui.ColorAttribute;

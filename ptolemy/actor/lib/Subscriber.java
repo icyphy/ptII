@@ -27,18 +27,13 @@
  */
 package ptolemy.actor.lib;
 
-import java.util.HashSet;
-import java.util.Iterator;
 import java.util.Set;
 
 import ptolemy.actor.AtomicActor;
 import ptolemy.actor.CompositeActor;
-import ptolemy.actor.IOPort;
-import ptolemy.actor.Receiver;
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
-import ptolemy.actor.lib.Publisher;
-import ptolemy.actor.util.ActorDependencies; 
+import ptolemy.actor.util.ActorDependencies;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;

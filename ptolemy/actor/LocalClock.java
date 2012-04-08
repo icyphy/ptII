@@ -30,11 +30,8 @@ import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 
-import javax.swing.event.ChangeListener;
-
 import ptolemy.actor.parameters.SharedParameter;
 import ptolemy.actor.util.Time;
-import ptolemy.data.DoubleToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.util.AbstractSettableAttribute;
@@ -45,7 +42,6 @@ import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.ValueListener;
 import ptolemy.kernel.util.Workspace;
-import ptolemy.math.ExtendedMath;
 
 /** A clock that keeps track of model time at a level of the model hierarchy
  *  and relates it to the time of the enclosing model, if there is one. The time

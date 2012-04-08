@@ -32,11 +32,9 @@ import ptolemy.actor.injection.PortableContainer;
 import ptolemy.actor.injection.PortablePlaceable;
 import ptolemy.actor.injection.PtolemyInjector;
 import ptolemy.actor.lib.Const;
-import ptolemy.data.expr.Parameter;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.kernel.util.Workspace;
 
 ///////////////////////////////////////////////////////////////////
 //// ConstPlaceable

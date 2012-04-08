@@ -29,6 +29,7 @@
 package diva.util.java2d.test.junit;
 
 import org.junit.Assert;
+
 import diva.util.java2d.Polygon2D;
 
 ///////////////////////////////////////////////////////////////////

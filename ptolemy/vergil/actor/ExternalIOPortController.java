@@ -41,7 +41,7 @@ import javax.swing.SwingConstants;
 import ptolemy.actor.CustomRenderedPort;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.parameters.ParameterPort;
-import ptolemy.data.type.Typeable; 
+import ptolemy.data.type.Typeable;
 import ptolemy.kernel.Port;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;

@@ -29,7 +29,6 @@
 package ptolemy.vergil.basic.export;
 
 import java.awt.Color;
-import java.awt.Toolkit;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -40,7 +39,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
-
 
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
@@ -56,7 +54,6 @@ import ptolemy.actor.gui.PtolemyEffigy;
 import ptolemy.actor.gui.Tableau;
 import ptolemy.actor.gui.TableauFrame;
 import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.attributes.URIAttribute;
 import ptolemy.kernel.util.BasicModelErrorHandler;
 import ptolemy.util.FileUtilities;
 import ptolemy.util.StringUtilities;

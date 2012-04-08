@@ -63,7 +63,6 @@ import ptolemy.util.MessageHandler;
 import ptolemy.vergil.basic.BasicGraphPane;
 import ptolemy.vergil.basic.ExtendedGraphFrame;
 import diva.graph.GraphPane;
-import diva.gui.GUIUtilities;
 
 ///////////////////////////////////////////////////////////////////
 //// FSMGraphFrame

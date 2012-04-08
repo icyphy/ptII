@@ -27,42 +27,22 @@
 
 package ptolemy.vergil.basic.imprt.fmu;
 
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Graphics2D;
 import java.awt.event.ActionEvent;
-import java.awt.event.KeyEvent;
 import java.awt.geom.Rectangle2D;
-import java.awt.print.PageFormat;
-import java.awt.print.Paper;
-import java.awt.print.Printable;
 import java.io.File;
-import java.io.FileOutputStream;
-import java.net.URL;
-import java.util.LinkedList;
 
 import javax.swing.AbstractAction;
-import javax.swing.JFileChooser;
 
-import ptolemy.actor.gui.BrowserEffigy;
-import ptolemy.actor.gui.Configuration;
 import ptolemy.actor.gui.PtolemyQuery;
 import ptolemy.gui.ComponentDialog;
-import ptolemy.gui.ExtensionFilenameFilter;
-import ptolemy.gui.JFileChooserBugFix;
-import ptolemy.gui.PtGUIUtilities;
-import ptolemy.gui.PtFileChooser;
 import ptolemy.gui.Query;
 import ptolemy.gui.Top;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.moml.MoMLChangeRequest;
 import ptolemy.util.MessageHandler;
-import ptolemy.util.StringUtilities;
 import ptolemy.vergil.basic.AbstractBasicGraphModel;
 import ptolemy.vergil.basic.BasicGraphFrame;
-
 import diva.graph.GraphController;
-import diva.gui.GUIUtilities;
 
 ///////////////////////////////////////////////////////////////////
 //// ImportFMUAction

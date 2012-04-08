@@ -2,8 +2,8 @@ package ptolemy.domains.coroutine.lib;
 
 import ptolemy.domains.coroutine.kernel.AtomicContinuationActor;
 import ptolemy.domains.coroutine.kernel.ControlEntryToken;
-import ptolemy.domains.coroutine.kernel.ControlExitToken;
 import ptolemy.domains.coroutine.kernel.ControlEntryToken.EntryLocation;
+import ptolemy.domains.coroutine.kernel.ControlExitToken;
 import ptolemy.domains.coroutine.kernel.ControlExitToken.ExitLocation;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;

@@ -39,8 +39,8 @@ import javax.swing.SwingConstants;
 
 import ptolemy.actor.IOPort;
 import ptolemy.actor.gui.ColorAttribute;
-import ptolemy.actor.lib.qm.CompositeQuantityManager;
 import ptolemy.actor.gui.PtolemyPreferences;
+import ptolemy.actor.lib.qm.CompositeQuantityManager;
 import ptolemy.actor.lib.qm.MonitoredQuantityManager;
 import ptolemy.actor.parameters.ParameterPort;
 import ptolemy.data.BooleanToken;

@@ -29,7 +29,6 @@ package ptolemy.gui;
 import java.awt.Container;
 import java.awt.FileDialog;
 import java.awt.Frame;
-
 import java.io.File;
 import java.io.IOException;
 

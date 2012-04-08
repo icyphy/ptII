@@ -3,7 +3,6 @@
  */
 package ptolemy.domains.coroutine.kernel;
 
-import ptolemy.domains.coroutine.kernel.ControlEntryToken.EntryLocation;
 
 /**
  * @author shaver

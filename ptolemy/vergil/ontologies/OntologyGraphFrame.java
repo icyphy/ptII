@@ -38,7 +38,6 @@ import ptolemy.moml.LibraryAttribute;
 import ptolemy.vergil.basic.BasicGraphPane;
 import ptolemy.vergil.basic.ExtendedGraphFrame;
 import diva.graph.GraphPane;
-import diva.gui.GUIUtilities;
 
 /** A graph editor frame for ontology models. Given a composite entity and
  *  a tableau, it creates an editor and populates the menus and toolbar. This
