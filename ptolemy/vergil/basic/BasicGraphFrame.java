@@ -30,12 +30,15 @@ package ptolemy.vergil.basic;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Event;
 import java.awt.FileDialog;
 import java.awt.FlowLayout;
 import java.awt.Frame;
 import java.awt.Graphics;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.Toolkit;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.ClipboardOwner;
@@ -70,21 +73,25 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Stack;
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
-import javax.swing.BoxLayout;
+import javax.swing.BorderFactory;
 import javax.swing.JComponent;
 import javax.swing.JFileChooser;
+import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
+import javax.swing.JTextField;
 import javax.swing.JToolBar;
 import javax.swing.JTree;
 import javax.swing.KeyStroke;
 import javax.swing.filechooser.FileFilter;
+import javax.swing.tree.TreePath;
 
 import ptolemy.actor.DesignPatternGetMoMLAction;
 import ptolemy.actor.IOPort;
@@ -1250,7 +1257,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
      *  @param configuration The configuration.
      *  @param entity The entity to save.
      *  @since Ptolemy 2.1
-     *  @deprecated Use {@link ptolemy.actor.gui.UserActorLibrary#saveComponentInLibrary(Configuration, Entity)}
+     *  @deprecated Use {@link ptolemy.actor.gui.UserActor#saveComponentInLibrary(Configuration, Entity)}
      */
     public static void saveComponentInLibrary(Configuration configuration,
             Entity entity) {
@@ -1743,9 +1750,6 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
     protected JMenuItem[] _createFileMenuItems() {
         JMenuItem[] fileMenuItems = super._createFileMenuItems();
 
-        JMenu importMenu = (JMenu) fileMenuItems[_IMPORT_MENU_INDEX];
-        importMenu.setEnabled(true);
-
         JMenu exportMenu = (JMenu) fileMenuItems[_EXPORT_MENU_INDEX];
         exportMenu.setEnabled(true);
 
@@ -1761,23 +1765,33 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
             .configurations().get(0);
         // NOTE: Configuration should not be null, but just in case:
         if (configuration != null) {
-            // PDF Action.
             try {
-                _importFMUAction = (AbstractAction) configuration.getStringParameterAsClass("_importFMUActionClassName",
-                        new Class [] { Top.class},
-                        new Object [] {this});
-            } catch (Throwable throwable) {
-                // We do not want to abort at this point because the worst
-                // case is that we will have no Import FMU in the menu.
-                // That is better than preventing the user from opening a model.
-                System.err.println("Warning: Tried to create the Import FMU menu item, but failed: "
-                            + throwable);
-            }
-            // PDF Action.
-            try {
-                _exportPDFAction = (AbstractAction) configuration.getStringParameterAsClass("_exportPDFActionClassName",
-                        new Class [] { Top.class},
-                        new Object [] {this});
+                // Deal with the PDF Action first.
+                StringParameter exportPDFActionClassNameParameter = (StringParameter) configuration
+                    .getAttribute("_exportPDFActionClassName",
+                            StringParameter.class);
+
+                if (exportPDFActionClassNameParameter != null) {
+                    if (_exportPDFAction == null) {
+                        String exportPDFActionClassName = exportPDFActionClassNameParameter
+                            .stringValue();
+                        try {
+                            Class exportPDFActionClass = Class
+                                .forName(exportPDFActionClassName);
+                            Constructor exportPDFActionConstructor = exportPDFActionClass
+                                .getDeclaredConstructor(Top.class);
+                            _exportPDFAction = (AbstractAction) exportPDFActionConstructor
+                                .newInstance(this);
+                        } catch (Throwable throwable) {
+                            throw new InternalErrorException(
+                                    null,
+                                    throwable,
+                                    "Failed to construct export PDF class \""
+                                    + exportPDFActionClassName
+                                    + "\", which was read from the configuration.");
+                        }
+                    }
+                }
             } catch (Throwable throwable) {
                 // We do not want to abort at this point because the worst
                 // case is that we will have no Export PDF in the menu.
@@ -1787,12 +1801,35 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
                 //            + throwable);
             }
 
-
-            // Deal with the HTML Action next.
             try { 
-                _exportHTMLAction = (AbstractAction) configuration.getStringParameterAsClass("_exportHTMLActionClassName",
-                        new Class [] {BasicGraphFrame.class},
-                        new Object [] {this});
+                // Deal with the HTML Action next.
+                // Look in the configuration for the action class name.
+                // If there is none, then there will be no Export to Web.
+                StringParameter exportHTMLActionClassNameParameter = (StringParameter) configuration
+                    .getAttribute("_exportHTMLActionClassName",
+                            StringParameter.class);
+
+                if (exportHTMLActionClassNameParameter != null) {
+                    if (_exportHTMLAction == null) {
+                        String exportHTMLActionClassName = exportHTMLActionClassNameParameter
+                            .stringValue();
+                        try {
+                            Class exportHTMLActionClass = Class
+                                .forName(exportHTMLActionClassName);
+                            Constructor exportHTMLActionConstructor = exportHTMLActionClass
+                                .getDeclaredConstructor(BasicGraphFrame.class);
+                            _exportHTMLAction = (AbstractAction) exportHTMLActionConstructor
+                                .newInstance(this);
+                        } catch (Throwable throwable) {
+                            throw new InternalErrorException(
+                                    null,
+                                    throwable,
+                                    "Failed to construct export HTML class \""
+                                    + exportHTMLActionClassName
+                                    + "\", which was read from the configuration.");
+                        }
+                    }
+                }
             } catch (Throwable throwable) {
                 // We do not want to abort at this point because the worst
                 // case is that we will have no Export to Web in the menu.
@@ -1829,12 +1866,6 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
 //                 }
 
         // End of block to uncomment.
-
-        if (_importFMUAction != null) {
-            // Insert the Import FMU item.
-            JMenuItem importItem = new JMenuItem(_importFMUAction);
-            importMenu.add(importItem);
-        }
 
         if (_exportPDFAction != null) {
             // Insert the Export PDF item.
@@ -2184,7 +2215,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
                 // Note that the location is of the frame, while the size
                 // is of the scrollpane.
                 _rightComponent.setMinimumSize(new Dimension(200, 200));
-                _rightComponent.setPreferredSize(new Dimension(600, 400));
+                _rightComponent.setPreferredSize(new Dimension(700, 450));
                 _rightComponent.setSize(600, 400);
             }
 
@@ -2202,12 +2233,12 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
             // Create the panner.
             _graphPanner = new JCanvasPanner(getJGraph());
             _graphPanner.setPreferredSize(new Dimension(200, 150));
-            _graphPanner.setMaximumSize(new Dimension(200, 150));
+            // _graphPanner.setMaximumSize(new Dimension(200, 450));
             _graphPanner.setSize(200, 150);
         }
 
         // NOTE: Border causes all kinds of problems!
-        // _graphPanner.setBorder(BorderFactory.createEtchedBorder());
+        _graphPanner.setBorder(BorderFactory.createEtchedBorder());
         // Create the library of actors, or use the one in the entity,
         // if there is one.
         // FIXME: How do we make changes to the library persistent?
@@ -2289,17 +2320,57 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
 
             _libraryScrollPane = new JScrollPane(_library);
             _libraryScrollPane.setMinimumSize(new Dimension(200, 200));
-            _libraryScrollPane.setPreferredSize(new Dimension(200, 200));
+            _libraryScrollPane.setPreferredSize(new Dimension(200, 300));
 
             // create the palette on the left.
             _palettePane = new JPanel();
             _palettePane.setBorder(null);
-            _palettePane
-                    .setLayout(new BoxLayout(_palettePane, BoxLayout.Y_AXIS));
+            _palettePane.setLayout(new GridBagLayout());
+            
+            // create a query for search.
+            JPanel findPanel = new JPanel(new GridBagLayout());
+            
+            // Put in the label.
+            GridBagConstraints labelConstraints = new GridBagConstraints();
+            labelConstraints.gridx = 0;
+            labelConstraints.gridy = 0;
+            JLabel label = new JLabel("Find:");
+            findPanel.add(label, labelConstraints);
 
-            _palettePane.add(_libraryScrollPane, BorderLayout.CENTER);
+            // Put in the entry box.
+            _findInLibraryEntryBox = new JTextField(12);
+            _findInLibraryEntryBox.addActionListener(new FindInLibraryAction());
+            GridBagConstraints entryBoxConstraints = new GridBagConstraints();
+            entryBoxConstraints.gridx = 1;
+            entryBoxConstraints.gridy = 0;
+            entryBoxConstraints.fill = GridBagConstraints.HORIZONTAL;
+            entryBoxConstraints.weightx = 1.0;
+            findPanel.add(_findInLibraryEntryBox, entryBoxConstraints);
+            
+            // Put in the find panel.
+            GridBagConstraints findPanelConstraints = new GridBagConstraints();
+            findPanelConstraints.gridx = 0;
+            findPanelConstraints.gridy = 0;
+            findPanelConstraints.fill = GridBagConstraints.HORIZONTAL;
+            _palettePane.add(findPanel, findPanelConstraints);
+
+            // Put in the library.
+            GridBagConstraints libraryConstraints = new GridBagConstraints();
+            libraryConstraints.gridx = 0;
+            libraryConstraints.gridy = 1;
+            libraryConstraints.fill = GridBagConstraints.BOTH;
+            libraryConstraints.weightx = 1.0;
+            libraryConstraints.weighty = 0.7;
+            _palettePane.add(_libraryScrollPane, libraryConstraints);
+            
+            // Add the graph panner.
             if (_graphPanner != null) {
-                _palettePane.add(_graphPanner, BorderLayout.SOUTH);
+                GridBagConstraints pannerConstraints = new GridBagConstraints();
+                pannerConstraints.gridx = 0;
+                pannerConstraints.gridy = 2;
+                pannerConstraints.weighty = 0.3;
+                pannerConstraints.fill = GridBagConstraints.BOTH;
+                _palettePane.add(_graphPanner, pannerConstraints);
             }
 
             _splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, true);
@@ -2806,9 +2877,6 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
      */
     protected JCanvasPanner _graphPanner;
 
-    /** The import FMU (Field Mock-up Unit) action. */
-    protected Action _importFMUAction;
-
     /** The instance of JGraph for this editor. */
     protected JGraph _jgraph;
 
@@ -2889,21 +2957,31 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
      */
     private IGuiAction _createLayoutAction() {
         try {
-            Object object = getConfiguration().getStringParameterAsClass("_layoutGraphAction",
-                    null, null);
-            if (object instanceof IGuiAction) {
-                // If the action is a filter and the model is set, ask the action
-                // whether is supports the model.
-                if (object instanceof Filter && getModel() != null) {
-                    if (!((Filter) object).accept(getModel())) {
-                        return null;
+            StringParameter layoutGraphActionParameter = (StringParameter) getConfiguration()
+                    .getAttribute("_layoutGraphAction", StringParameter.class);
+            if (layoutGraphActionParameter != null) {
+                // Try to find the class given in the configuration.
+                Class layoutGraphActionClass = Class.forName(
+                        layoutGraphActionParameter.stringValue());
+
+                // Try to create an instance using the default constructor.
+                Object object = layoutGraphActionClass.getDeclaredConstructor()
+                        .newInstance();
+
+                if (object instanceof IGuiAction) {
+                    // If the action is a filter and the model is set, ask the action
+                    // whether is supports the model.
+                    if (object instanceof Filter && getModel() != null) {
+                        if (!((Filter) object).accept(getModel())) {
+                            return null;
+                        }
                     }
+                    
+                    return (IGuiAction) object;
                 }
-                return (IGuiAction) object;
             }
         } catch (Exception exception) {
-            // Ignore.
-            // System.out.println("Failed to read _layoutGraphAction from the configuration: " + exception);
+            // Fail silently!
         }
         return null;
     }
@@ -2911,6 +2989,9 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
+    /** The entry box for find in library. */
+    JTextField _findInLibraryEntryBox;
+    
     /** A layer adapter to handle the mousePressed event. */
     private MousePressedLayerAdapter _mousePressedLayerAdapter;
 
@@ -2997,6 +3078,20 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
         /** Copy and delete the current selection. */
         public void actionPerformed(ActionEvent e) {
             cut();
+        }
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    //// DeletionListener
+
+    /** An ActionListener for handling deletion events. */
+    private class DeletionListener implements ActionListener {
+        /** Delete any nodes or edges from the graph that are
+         *  currently selected.  In addition, delete any edges
+         *  that are connected to any deleted nodes.
+         */
+        public void actionPerformed(ActionEvent e) {
+            delete();
         }
     }
 
@@ -3265,9 +3360,9 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
     ///////////////////////////////////////////////////////////////////
     //// FindAction
 
-    /** Action to copy the current selection. */
+    /** Action to search for text in a model. */
     protected class FindAction extends AbstractAction {
-        /** Create a new action to copy the current selection. */
+        /** Create a new action to search for text. */
         public FindAction() {
             super("Find");
             putValue("tooltip",
@@ -3289,6 +3384,137 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
             }
         }
     }
+    
+    ///////////////////////////////////////////////////////////////////
+    //// FindInLibraryAction
+
+    /** An ActionListener for handling deletion events. */
+    private class FindInLibraryAction implements ActionListener {
+        /** Delete any nodes or edges from the graph that are
+         *  currently selected.  In addition, delete any edges
+         *  that are connected to any deleted nodes.
+         */
+        public void actionPerformed(ActionEvent e) {
+            _library.clearSelection();
+            String text = _findInLibraryEntryBox.getText().trim().toLowerCase();
+            if (text.equals("")) {
+                // Nothing to search for. Ignore.
+                _previousText = null;
+                return;
+            }
+            NamedObj root = (NamedObj)_libraryModel.getRoot();
+            if (!(text.equals(_previousText))) {
+                // Restart the search from the beginning.
+                if (_stack == null) {
+                    _stack = new Stack<NamedObj>();
+                    _indexes = new Stack<Integer>();
+                } else {
+                    _stack.clear();
+                    _indexes.clear();
+                }
+                _stack.push(root);
+                _indexes.push(Integer.valueOf(1));
+            }
+            _previousText = text;
+            try {
+                // Indicate that something is happening with the cursor.
+                // setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+                _findInLibraryEntryBox.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+                _library.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+                
+                // Put a message in the progress bar at the bottom of the window.
+                // FIXME: Sadly, this doesn't work.
+                report("Opening Libraries ...");
+                
+                // Traverse the model until we get a match.
+                // _stack will be empty only when no further match is found.
+                boolean foundOne = false;
+                int index = 0;
+                while (!_stack.isEmpty()) {
+                    NamedObj parent = _stack.peek();
+                    if(_findInSublibrary(text, parent, index)) {
+                        // Found one. Stop the search.
+                        foundOne = true;
+                        break;
+                    } else {
+                        // Pop up one level and continue the search.
+                        _stack.pop();
+                        index = _indexes.pop();
+                    }
+                }
+                if (!foundOne) {
+                    // Reached the end of the library.
+                    try {
+                        if (MessageHandler.yesNoCancelQuestion("Reached the end of the library. Start search again from the top?")) {
+                            // Restart the search.
+                            _stack.clear();
+                            _indexes.clear();
+                            _stack.push(root);
+                            _indexes.push(Integer.valueOf(0));
+
+                            actionPerformed(e);
+                        }
+                    } catch (CancelException e1) {
+                        // Canceled by user.
+                        return;
+                    }
+                }
+            } finally {
+                // Restore the cursor.
+                // setCursor(Cursor.getDefaultCursor());
+                _findInLibraryEntryBox.setCursor(Cursor.getDefaultCursor());
+                _library.setCursor(Cursor.getDefaultCursor());
+                
+                // Clear the message in the progress bar at the bottom of the window.
+                report("");
+            }
+        }
+        
+        /** Search the specified library for a name or class name that
+         *  contains the specified text.
+         *  @param text The text to search for.
+         *  @param library The library to search.
+         *  @param index The index at which to start the search.
+         *  @return True if a match is found.
+         */
+        private boolean _findInSublibrary(String text, NamedObj library, int index) {
+            int count = _libraryModel.getChildCount(library);
+            for (int i = index; i < count; i++) {
+                NamedObj candidate = (NamedObj) _libraryModel.getChild(library, i);
+                String name = candidate.getName();
+                if (name.toLowerCase().contains(text)) {
+                    // Found a match to the name.
+                    _stack.push(candidate);
+                    Object[] path = _stack.toArray();
+                    TreePath pathToHit = new TreePath(path);
+                    _library.makeVisible(pathToHit);
+                    _library.scrollPathToVisible(pathToHit);
+                    _library.addSelectionPath(pathToHit);
+                    // Start the next search at the next item.
+                    _indexes.push(Integer.valueOf(i + 1));
+                    return true;
+                }
+                // Not a match. See whether any of its children are a match.
+                int childCount = _libraryModel.getChildCount(candidate);
+                if (!_libraryModel.isLeaf(candidate) && childCount > 0) {
+                    _stack.push(candidate);
+                    _indexes.push(Integer.valueOf(i + 1));
+                    if (_findInSublibrary(text, candidate, 0)) {
+                        return true;
+                    } else {
+                        _stack.pop();
+                        _indexes.pop();
+                    }
+                }
+            }
+            return false;
+        }
+        
+        private String _previousText;
+        private Stack<NamedObj> _stack;
+        private Stack<Integer> _indexes;
+    }
+
 
     ///////////////////////////////////////////////////////////////////
     //// LinkElementProperties
@@ -3448,19 +3674,9 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
         }
     }
 
-    /** An ActionListener for handling deletion events. */
-    private class DeletionListener implements ActionListener {
-        /** Delete any nodes or edges from the graph that are
-         *  currently selected.  In addition, delete any edges
-         *  that are connected to any deleted nodes.
-         */
-        public void actionPerformed(ActionEvent e) {
-            delete();
-        }
-    }
-
     ///////////////////////////////////////////////////////////////////
     //// OpenContainerAction
+    
     /** An action to open the container of this entity. */
     private class OpenContainerAction extends AbstractAction {
         /** Construct an open container action.  This action opens
