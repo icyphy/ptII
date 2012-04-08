@@ -357,13 +357,18 @@ public class Manager extends NamedObj implements Runnable {
                         // during the pause.
                         synchronized (this) {
                             _setState(PAUSED);
-
-                            while (_pauseRequested && !_finishRequested) {
-                                try {
-                                    wait();
-                                } catch (InterruptedException e) {
-                                    // ignore.
+                            try {
+                                // Enable processing of change requests so that editing is live.
+                                setDeferringChangeRequests(false);
+                                while (_pauseRequested && !_finishRequested) {
+                                    try {
+                                        wait();
+                                    } catch (InterruptedException e) {
+                                        // ignore.
+                                    }
                                 }
+                            } finally {
+                                setDeferringChangeRequests(true);
                             }
                         }
                     }
