@@ -48,6 +48,7 @@ import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.Nameable;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.moml.EntityLibrary;
 import ptolemy.vergil.toolbox.PtolemyTransferable;
@@ -85,6 +86,28 @@ public class PTree extends JTree {
         DragSource.getDefaultDragSource().createDefaultDragGestureRecognizer(
                 this, DnDConstants.ACTION_COPY_OR_MOVE,
                 new PTreeDragGestureListener());
+    }
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
+
+    /** Give a string representation of the node value.
+     *  If the value is a Nameable, this returns its name.
+     *  Otherwise, it returns value.toString();
+     */
+    public String convertValueToText(Object value,
+            boolean selected,
+            boolean expanded,
+            boolean leaf,
+            int row,
+            boolean hasFocus) {
+        String result;
+        if (value instanceof Nameable) {
+            result = ((Nameable)value).getName();
+        } else {
+            result = value.toString();
+        }
+        return result;
     }
 
     ///////////////////////////////////////////////////////////////////
