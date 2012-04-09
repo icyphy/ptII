@@ -69,6 +69,9 @@ public class PtIndexer {
      *  <p>The value of the words parameter is split into words
      *  and a map entry is created where the word is the key
      *  and the location is an element in a List.
+     *  @param location The dot separated classname where the
+     *  value of the words parameter is found.
+     *  @param words The words found in the location.
      *  @exception IOException If thrown by the tokenizer.
      */
     public void append(String location, String words) throws IOException {
@@ -244,7 +247,7 @@ public class PtIndexer {
      *  @param target The string to match.
      *  @return a collection of matches or null if there are no matches
      */
-    public Collection<String> search(String target) throws IOException {
+    public Collection<String> search(String target) {
         // We return a Collection because eventually we should return
         // a list ordered by the number of occurances.
         // FIXME: should we copy this so it can be modified?
