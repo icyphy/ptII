@@ -877,20 +877,6 @@ public class Director extends Attribute implements Executable {
 
         _localClock.resetLocalTime(getModelStartTime());
         _localClock.start();
-        
-        // Support old models that set time resolution in director.
-        Attribute timeResolution = getAttribute("timeResolution");
-        if (timeResolution != null) {
-            double timeResolutionDouble = ((DoubleToken) ((Parameter)timeResolution)
-                    .getToken()).doubleValue(); 
-            try {
-                timeResolution.setContainer(null);
-            } catch (NameDuplicationException e) {
-                // Can't happen.
-                e.printStackTrace();
-            }
-            _localClock.setTimeResolution(timeResolutionDouble);
-        }
 
         // Initialize the contained actors.
         Nameable container = getContainer();
@@ -1806,6 +1792,21 @@ public class Director extends Attribute implements Executable {
             NameDuplicationException {
         _localClock = new LocalClock(this, "LocalClock");
         _localClock.setVisibility(Settable.NOT_EDITABLE);
+        
+        // Support old models that set time resolution in director.
+        Attribute timeResolution = getAttribute("timeResolution");
+        if (timeResolution != null) {
+            double timeResolutionDouble = ((DoubleToken) ((Parameter)timeResolution)
+                    .getToken()).doubleValue(); 
+            try {
+                timeResolution.setContainer(null);
+            } catch (NameDuplicationException e) {
+                // Can't happen.
+                e.printStackTrace();
+            }
+            _localClock.setTimeResolution(timeResolutionDouble);
+        }
+        
         _zeroTime = new Time(this, 0.0);
 
         startTime = new Parameter(this, "startTime");
