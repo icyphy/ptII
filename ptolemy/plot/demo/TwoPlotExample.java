@@ -42,8 +42,9 @@ import ptolemy.plot.Plot;
 //// TwoPlotExample
 
 /**
- TwoPlotExample is a simple example that uses displays two plots side by side
- To compile and run this application, do the following:
+ TwoPlotExample is a simple example that uses displays two plots side by side.
+
+ <p>To compile and run this application, do the following:</p>
  <pre>
  javac -classpath ../../.. TwoPlotExample.java
  java -classpath ../../.. ptolemy.plot.demo.TwoPlotExample
