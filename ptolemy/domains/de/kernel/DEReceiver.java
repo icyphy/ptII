@@ -225,6 +225,9 @@ public class DEReceiver extends AbstractReceiver {
                             throw new IllegalActionException(getContainer(),
                                     "Does not have a DEDirector.");
                         }
+                    } else {
+                        throw new IllegalActionException(getContainer(),
+                                "No outside director found.");
                     }
                 }
             } finally {
