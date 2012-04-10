@@ -1752,6 +1752,9 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
     protected JMenuItem[] _createFileMenuItems() {
         JMenuItem[] fileMenuItems = super._createFileMenuItems();
 
+        JMenu importMenu = (JMenu) fileMenuItems[_IMPORT_MENU_INDEX];
+        importMenu.setEnabled(true);
+
         JMenu exportMenu = (JMenu) fileMenuItems[_EXPORT_MENU_INDEX];
         exportMenu.setEnabled(true);
 
@@ -1767,33 +1770,23 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
             .configurations().get(0);
         // NOTE: Configuration should not be null, but just in case:
         if (configuration != null) {
+            // Import Functional Mock-up (FMU) Action.
             try {
-                // Deal with the PDF Action first.
-                StringParameter exportPDFActionClassNameParameter = (StringParameter) configuration
-                    .getAttribute("_exportPDFActionClassName",
-                            StringParameter.class);
-
-                if (exportPDFActionClassNameParameter != null) {
-                    if (_exportPDFAction == null) {
-                        String exportPDFActionClassName = exportPDFActionClassNameParameter
-                            .stringValue();
-                        try {
-                            Class exportPDFActionClass = Class
-                                .forName(exportPDFActionClassName);
-                            Constructor exportPDFActionConstructor = exportPDFActionClass
-                                .getDeclaredConstructor(Top.class);
-                            _exportPDFAction = (AbstractAction) exportPDFActionConstructor
-                                .newInstance(this);
-                        } catch (Throwable throwable) {
-                            throw new InternalErrorException(
-                                    null,
-                                    throwable,
-                                    "Failed to construct export PDF class \""
-                                    + exportPDFActionClassName
-                                    + "\", which was read from the configuration.");
-                        }
-                    }
-                }
+                _importFMUAction = (AbstractAction) configuration.getStringParameterAsClass("_importFMUActionClassName",
+                        new Class [] { Top.class},
+                        new Object [] {this});
+            } catch (Throwable throwable) {
+                // We do not want to abort at this point because the worst
+                // case is that we will have no Import FMU in the menu.
+                // That is better than preventing the user from opening a model.
+                System.err.println("Warning: Tried to create the Import FMU menu item, but failed: "
+                            + throwable);
+            }
+            // PDF Action.
+            try {
+                _exportPDFAction = (AbstractAction) configuration.getStringParameterAsClass("_exportPDFActionClassName",
+                        new Class [] { Top.class},
+                        new Object [] {this});
             } catch (Throwable throwable) {
                 // We do not want to abort at this point because the worst
                 // case is that we will have no Export PDF in the menu.
@@ -1803,35 +1796,12 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
                 //            + throwable);
             }
 
-            try { 
-                // Deal with the HTML Action next.
-                // Look in the configuration for the action class name.
-                // If there is none, then there will be no Export to Web.
-                StringParameter exportHTMLActionClassNameParameter = (StringParameter) configuration
-                    .getAttribute("_exportHTMLActionClassName",
-                            StringParameter.class);
 
-                if (exportHTMLActionClassNameParameter != null) {
-                    if (_exportHTMLAction == null) {
-                        String exportHTMLActionClassName = exportHTMLActionClassNameParameter
-                            .stringValue();
-                        try {
-                            Class exportHTMLActionClass = Class
-                                .forName(exportHTMLActionClassName);
-                            Constructor exportHTMLActionConstructor = exportHTMLActionClass
-                                .getDeclaredConstructor(BasicGraphFrame.class);
-                            _exportHTMLAction = (AbstractAction) exportHTMLActionConstructor
-                                .newInstance(this);
-                        } catch (Throwable throwable) {
-                            throw new InternalErrorException(
-                                    null,
-                                    throwable,
-                                    "Failed to construct export HTML class \""
-                                    + exportHTMLActionClassName
-                                    + "\", which was read from the configuration.");
-                        }
-                    }
-                }
+            // Deal with the HTML Action next.
+            try { 
+                _exportHTMLAction = (AbstractAction) configuration.getStringParameterAsClass("_exportHTMLActionClassName",
+                        new Class [] {BasicGraphFrame.class},
+                        new Object [] {this});
             } catch (Throwable throwable) {
                 // We do not want to abort at this point because the worst
                 // case is that we will have no Export to Web in the menu.
@@ -1868,6 +1838,12 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
 //                 }
 
         // End of block to uncomment.
+
+        if (_importFMUAction != null) {
+            // Insert the Import FMU item.
+            JMenuItem importItem = new JMenuItem(_importFMUAction);
+            importMenu.add(importItem);
+        }
 
         if (_exportPDFAction != null) {
             // Insert the Export PDF item.
@@ -2878,6 +2854,9 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
      *  "actor library".  For example, see $PTII/bin/vergil -ptinyViewer.
      */
     protected JCanvasPanner _graphPanner;
+
+    /** The import FMU (Field Mock-up Unit) action. */
+    protected Action _importFMUAction;
 
     /** The instance of JGraph for this editor. */
     protected JGraph _jgraph;
