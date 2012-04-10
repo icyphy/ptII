@@ -2,10 +2,14 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="FMUBouncingBall" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.0.devel">
     </property>
     <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
         <property name="iterations" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+        <property name="allowDisconnectedGraphs" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="period" class="ptolemy.data.expr.Parameter" value="0.1">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{90, 30}">
         </property>
@@ -16,18 +20,100 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 60.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={433, 270, 813, 510}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={433, 270, 813, 588}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 478]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 239.0}">
     </property>
-    <entity name="FMUImport" class="ptolemy.actor.lib.fmi.FMUImport">
-        <property name="fmuFile" class="ptolemy.data.expr.FileParameter" value="BouncingBall.fmu">
+    <entity name="SequencePlotter" class="ptolemy.actor.lib.gui.SequencePlotter">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{175, 200}">
+        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{345, 205}">
         </property>
     </entity>
+    <entity name="BouncingBal" class="ptolemy.actor.lib.fmi.FMUImport">
+        <property name="fmuFile" class="ptolemy.data.expr.FileParameter" value="/Users/cxh/ptII/ptolemy/actor/lib/fmi/demo/FMUBouncingBall/BouncingBall.fmu">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[145.0, 225.0]">
+        </property>
+        <property name="g" class="ptolemy.data.expr.Parameter" value="9.81">
+        </property>
+        <property name="e" class="ptolemy.data.expr.Parameter" value="0.7">
+        </property>
+        <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{140, 75}">
+            </property>
+        </property>
+        <port name="h" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{580.0, 200.0}">
+            </property>
+        </port>
+        <port name="der(h)" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{580.0, 240.0}">
+            </property>
+        </port>
+        <port name="v" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{580.0, 280.0}">
+            </property>
+        </port>
+        <port name="der(v)" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{580.0, 320.0}">
+            </property>
+        </port>
+        <port name="g" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{580.0, 360.0}">
+            </property>
+        </port>
+        <port name="e" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{580.0, 400.0}">
+            </property>
+        </port>
+    </entity>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="SequencePlotter.input" relation="relation"/>
+    <link port="SequencePlotter.input" relation="relation2"/>
+    <link port="SequencePlotter.input" relation="relation3"/>
+    <link port="SequencePlotter.input" relation="relation4"/>
+    <link port="SequencePlotter.input" relation="relation5"/>
+    <link port="SequencePlotter.input" relation="relation6"/>
+    <link port="BouncingBal.h" relation="relation"/>
+    <link port="BouncingBal.der(h)" relation="relation2"/>
+    <link port="BouncingBal.v" relation="relation3"/>
+    <link port="BouncingBal.der(v)" relation="relation4"/>
+    <link port="BouncingBal.g" relation="relation5"/>
+    <link port="BouncingBal.e" relation="relation6"/>
 </entity>

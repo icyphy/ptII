@@ -142,8 +142,8 @@ public class OutputRow {
                 
                 // The value reference is an internal-use-only integer that refers to which variable we
                 // are to access.
-                int valueReference = scalarVariable.valueReference;
-                IntBuffer valueReferenceIntBuffer = IntBuffer.allocate(1).put(0, valueReference);
+                //int valueReference = scalarVariable.valueReference;
+                //IntBuffer valueReferenceIntBuffer = IntBuffer.allocate(1).put(0, valueReference);
                 if (scalarVariable.type instanceof FMIBooleanType) {
                     boolean result = scalarVariable.getBoolean(fmiComponent);
                     file.format("%c%b", separator, result);

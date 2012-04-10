@@ -41,7 +41,7 @@ import com.sun.jna.Pointer;
 import com.sun.jna.ptr.PointerByReference;
 
 ///////////////////////////////////////////////////////////////////
-//// ScalarVariable
+//// FMIScalarVariable
 
 /**
  * An object that represents the ScalarVariable element of a
