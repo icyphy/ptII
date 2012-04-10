@@ -31,6 +31,8 @@ import java.io.File;
 import java.util.LinkedList;
 import java.util.List;
 
+import com.sun.jna.NativeLibrary;
+
 ///////////////////////////////////////////////////////////////////
 //// FMUModelDescription
 
@@ -90,4 +92,9 @@ public class FMIModelDescription {
 
     /** The list of ScalarVariable elements. */
     public List<FMIScalarVariable> modelVariables = new LinkedList<FMIScalarVariable>();
+
+    /** The NativeLibrary associated with the platform-dependent
+     * shared library in the .fmu file.
+     */
+    public NativeLibrary nativeLibrary;
 }

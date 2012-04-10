@@ -27,6 +27,8 @@
 */
 package org.ptolemy.fmi;
 
+import com.sun.jna.NativeLibrary;
+
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.File;
@@ -186,13 +188,17 @@ public class FMUFile {
            
         // FIXME: handle Vendor annotations
 
+        String sharedLibrary = FMUFile.fmuSharedLibrary(fmiModelDescription);
+        // Load the shared library
+        fmiModelDescription.nativeLibrary = NativeLibrary.getInstance(sharedLibrary);
+
         // ModelVariables
         // NodeList is not a list, it only has getLength() and item(). #fail.
         NodeList scalarVariables = document.getElementsByTagName("ScalarVariable");
 
         for (int i = 0; i < scalarVariables.getLength(); i++) {
             Element element = (Element) scalarVariables.item(i);
-            fmiModelDescription.modelVariables.add(new FMIScalarVariable(element));
+            fmiModelDescription.modelVariables.add(new FMIScalarVariable(fmiModelDescription, element));
         }
 
         return fmiModelDescription;

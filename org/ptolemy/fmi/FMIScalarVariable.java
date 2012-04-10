@@ -27,9 +27,18 @@
  */
 package org.ptolemy.fmi;
 
+import java.nio.ByteBuffer;
+import java.nio.CharBuffer;
+import java.nio.DoubleBuffer;
+import java.nio.IntBuffer;
+
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
+
+import com.sun.jna.Function;
+import com.sun.jna.Pointer;
+import com.sun.jna.ptr.PointerByReference;
 
 ///////////////////////////////////////////////////////////////////
 //// ScalarVariable
@@ -59,9 +68,11 @@ public class FMIScalarVariable {
     }
 
     /** Create a ScalarVariable from an XML Element.
+     *  @param fmiModelDescription the Model Description for this variable.
      *  @param element The XML Element that contains attributes.
      */
-    public FMIScalarVariable(Element element) {
+    public FMIScalarVariable(FMIModelDescription fmiModelDescription, Element element) {
+        this.fmiModelDescription = fmiModelDescription;
         name = element.getAttribute("name");
         description = element.getAttribute("description");
 
@@ -128,23 +139,128 @@ public class FMIScalarVariable {
             Node child = element.getChildNodes().item(i);
             if (child instanceof Element) {
                 Element childElement = (Element) child;
-                if (childElement.getNodeName().equals("Boolean")) {
+                String typeName = childElement.getNodeName();
+                if (typeName.equals("Boolean")) {
                     type = new FMIBooleanType(name, description, childElement);
-                } else if (childElement.getNodeName().equals("Enumeration")) {
+                } else if (typeName.equals("Enumeration")) {
                     type = new FMIIntegerType(name, description, childElement);
-                } else if (childElement.getNodeName().equals("Integer")) {
+                } else if (typeName.equals("Integer")) {
                     type = new FMIIntegerType(name, description, childElement);
-                } else if (childElement.getNodeName().equals("Real")) {
+                } else if (typeName.equals("Real")) {
                     type = new FMIRealType(name, description, childElement);
-                } else if (childElement.getNodeName().equals("String")) {
+                } else if (typeName.equals("String")) {
                     type = new FMIStringType(name, description, childElement);
                 } else {
                     throw new IllegalArgumentException(element + ": Child element \""
-                            + childElement.getNodeName()
+                            + typeName
                             + "\" not implemented yet.");
                 }
+                // The fmi .c function used to get the value of this variable
+                fmiGetFunction = fmiModelDescription.nativeLibrary.getFunction(fmiModelDescription.modelIdentifier
+                        + "_fmiGet" + typeName);
             }
         }
+    }
+
+    /** Return the value of this variable as a boolean.
+     *  @return the value of this variable as boolean.
+     */
+    public boolean getBoolean(Pointer fmiComponent) {
+        boolean result = false;
+        // valueReference is similar to an array index into a block of memory
+        // where the variables are defined.
+        int fmiFlag = 0;
+        if (type instanceof FMIBooleanType) {
+            IntBuffer valueReferenceIntBuffer = IntBuffer.allocate(1).put(0, valueReference);
+            ByteBuffer valueBuffer = ByteBuffer.allocate(1);
+            fmiFlag = ((Integer)fmiGetFunction.invokeInt(
+                            new Object[] {fmiComponent, valueReferenceIntBuffer,
+                                          new NativeSizeT(1), valueBuffer})).intValue();
+            if (fmiFlag > FMILibrary.FMIStatus.fmiWarning) {
+                throw new RuntimeException("Could not get " + name + " as a boolean: " + fmiFlag);
+            }
+            result = (valueBuffer.get(0) == 0);
+        }
+        return result;
+    }
+
+    /** Return the value of this variable as a double.
+     *  If the variable is of type FMIIntegerType,
+     *  the the integer value is cast to a double.
+     *  @return the value of this variable as double.
+     */
+    public double getDouble(Pointer fmiComponent) {
+        double result;
+        IntBuffer valueReferenceIntBuffer = IntBuffer.allocate(1).put(0, valueReference);
+        if (type instanceof FMIIntegerType) {
+            IntBuffer valueBuffer = IntBuffer.allocate(1);
+            int fmiFlag = ((Integer)fmiGetFunction.invokeInt(
+                            new Object[] {fmiComponent, valueReferenceIntBuffer,
+                                          new NativeSizeT(1), valueBuffer})).intValue();
+            if (fmiFlag > FMILibrary.FMIStatus.fmiWarning) {
+                throw new RuntimeException("Could not get " +
+                        name + " as an int: " + fmiFlag);
+            }
+            result = (double)valueBuffer.get(0);
+        } else if (type instanceof FMIRealType) {
+            DoubleBuffer valueBuffer = DoubleBuffer.allocate(1);
+            int fmiFlag = ((Integer)fmiGetFunction.invokeInt(
+                            new Object[] {fmiComponent, valueReferenceIntBuffer,
+                                          new NativeSizeT(1), valueBuffer})).intValue();
+            if (fmiFlag > FMILibrary.FMIStatus.fmiWarning) {
+                throw new RuntimeException("Could not get " +
+                        name + " as a double: " + fmiFlag);
+            }
+            result = valueBuffer.get(0);
+        } else {
+            throw new RuntimeException("Type " + type + " not supported.");
+        }
+        return result;
+    }
+
+    /** Return the value of this variable as an int.
+     *  @return the value of this variable as an int.
+     */
+    public int getInt(Pointer fmiComponent) {
+        int result;
+        int fmiFlag = 0;
+        if (type instanceof FMIIntegerType) {
+            IntBuffer valueReferenceIntBuffer = IntBuffer.allocate(1).put(0, valueReference);
+            IntBuffer valueBuffer = IntBuffer.allocate(1);
+            fmiFlag = ((Integer)fmiGetFunction.invokeInt(
+                            new Object[] {fmiComponent, valueReferenceIntBuffer,
+                                          new NativeSizeT(1), valueBuffer})).intValue();
+            if (fmiFlag > FMILibrary.FMIStatus.fmiWarning) {
+                throw new RuntimeException("Could not get " + name
+                        + " as an int: " + fmiFlag);
+            }
+            result = valueBuffer.get(0);
+        } else {
+            throw new RuntimeException("Type " + type + " not supported.");
+        }
+        return result;
+    }
+
+    /** Return the value of this variable as a String.
+     *  @return the value of this variable as a String.
+     */
+    public String getString(Pointer fmiComponent) {
+        String result = null; 
+        if (type instanceof FMIStringType) {
+            IntBuffer valueReferenceIntBuffer = IntBuffer.allocate(1).put(0, valueReference);
+            PointerByReference pointerByReference = new PointerByReference();
+            int fmiFlag = ((Integer)fmiGetFunction.invokeInt(
+                            new Object[] {fmiComponent, valueReferenceIntBuffer,
+                                          new NativeSizeT(1), pointerByReference})).intValue();
+            if (fmiFlag > FMILibrary.FMIStatus.fmiWarning) {
+                throw new RuntimeException("Could not get " + name
+                        + " as a String: " + fmiFlag);
+            }
+            result = pointerByReference.getValue().getString(0);
+        } else {
+            throw new RuntimeException("Type " + type + " not supported.");
+        }
+        return result;
     }
 
     /** Acceptable values for the alias xml attribute.
@@ -215,6 +331,17 @@ public class FMIScalarVariable {
     /** The value of the description xml attribute. */
     public String description;
 
+    /** The FMI .c function that gets the value of this variable. 
+     *  The name of the function depends on the value of the
+     *  fmiModelDescription.modelIdentifer field and the
+     *  type name.  A typical value for the Bouncing Ball
+     *  example might be "bouncingBall_fmiGetDouble".
+     */
+    public Function fmiGetFunction;
+
+    /** The Model Description for this variable. */
+    public FMIModelDescription fmiModelDescription;
+
     /** The value of the name xml attribute. */
     public String name;
 
@@ -226,4 +353,6 @@ public class FMIScalarVariable {
 
     /** The value of the variability xml attribute. */
     public Variability variability;
+
+
 }

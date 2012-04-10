@@ -38,7 +38,6 @@ import org.ptolemy.fmi.FMIScalarVariable.Alias;
 import com.sun.jna.Function;
 import com.sun.jna.NativeLibrary;
 import com.sun.jna.Pointer;
-import com.sun.jna.ptr.PointerByReference;
 
 /**
  * <p>This method is a port of outputRow() from
@@ -146,47 +145,14 @@ public class OutputRow {
                 int valueReference = scalarVariable.valueReference;
                 IntBuffer valueReferenceIntBuffer = IntBuffer.allocate(1).put(0, valueReference);
                 if (scalarVariable.type instanceof FMIBooleanType) {
-                    // The FMI 1.0 spec defines Booleans as being 8 bits.
-                    ByteBuffer valueBuffer = ByteBuffer.allocate(1);
-                    Function function = nativeLibrary.getFunction(fmiModelDescription.modelIdentifier
-                            + "_fmiGetBoolean");
-                    int fmiFlag = ((Integer)function.invokeInt(
-                                    new Object[] {fmiComponent, valueReferenceIntBuffer,
-                                                  new NativeSizeT(1), valueBuffer})).intValue();
-                    if (fmiFlag > FMILibrary.FMIStatus.fmiWarning) {
-                        throw new RuntimeException("Could not get the boolean with valueReference "
-                                + valueReference + ": " + fmiFlag);
-                    }
-                    byte result = valueBuffer.get(0);
-                    file.format("%c%d", separator, result);
-
+                    boolean result = scalarVariable.getBoolean(fmiComponent);
+                    file.format("%c%b", separator, result);
                 } else if (scalarVariable.type instanceof FMIIntegerType) {
                     // FIXME: handle Enumerations?
-                    IntBuffer valueBuffer = IntBuffer.allocate(1);
-                    Function function = nativeLibrary.getFunction(fmiModelDescription.modelIdentifier
-                            + "_fmiGetInteger");
-                    int fmiFlag = ((Integer)function.invokeInt(
-                                    new Object[] {fmiComponent, valueReferenceIntBuffer,
-                                                  new NativeSizeT(1), valueBuffer})).intValue();
-                    if (fmiFlag > FMILibrary.FMIStatus.fmiWarning) {
-                        throw new RuntimeException("Could not get the integer with valueReference "
-                                + valueReference + ": " + fmiFlag);
-                    }
-                    int result = valueBuffer.get(0);
+                    int result = scalarVariable.getInt(fmiComponent);
                     file.format("%c%d", separator, result);
-
                 } else if (scalarVariable.type instanceof FMIRealType) {
-                    DoubleBuffer valueBuffer = DoubleBuffer.allocate(1);
-                    Function function = nativeLibrary.getFunction(fmiModelDescription.modelIdentifier
-                            + "_fmiGetReal");
-                    int fmiFlag = ((Integer)function.invokeInt(
-                                    new Object[] {fmiComponent, valueReferenceIntBuffer,
-                                                  new NativeSizeT(1), valueBuffer})).intValue();
-                    if (fmiFlag > FMILibrary.FMIStatus.fmiWarning) {
-                        throw new RuntimeException("Could not get the real with valueReference "
-                                + valueReference + ": " + fmiFlag);
-                    }
-                    double result = valueBuffer.get(0);
+                    double result = scalarVariable.getDouble(fmiComponent);
                     if (separator==',') {
                         file.format(",%.16g", result);
                     } else {
@@ -194,21 +160,9 @@ public class OutputRow {
                         // If the separator is not a comma, then replace the decimal place with a comma.
                         file.format("%c%s", separator, Double.toString(result).replace('.', ','));
                     }
-
                 } else if (scalarVariable.type instanceof FMIStringType) {       
-                    PointerByReference pointerByReference = new PointerByReference();
-
-                    Function function = nativeLibrary.getFunction(fmiModelDescription.modelIdentifier
-                            + "_fmiGetString");
-                    int fmiFlag = ((Integer)function.invokeInt(
-                                    new Object[] {fmiComponent, valueReferenceIntBuffer,
-                                                  new NativeSizeT(1), pointerByReference})).intValue();
-                    if (fmiFlag > FMILibrary.FMIStatus.fmiWarning) {
-                        throw new RuntimeException("Could not get the string with valueReference "
-                                + valueReference + ": " + fmiFlag);
-                    }
-                    Pointer pointer = pointerByReference.getValue();
-                    file.format("%c%s", separator, pointer.getString(0));
+                    String result = scalarVariable.getString(fmiComponent);
+                    file.format("%c%s", separator, result);
                 } else {
                     file.format("%cNoValueForType=%s", separator, scalarVariable.type.getClass().getName());
                 }
