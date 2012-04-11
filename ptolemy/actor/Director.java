@@ -1116,6 +1116,22 @@ public class Director extends Attribute implements Executable {
         if (_debugging) {
             _debug(getFullName(), "Preinitializing ...");
         }
+        
+        // Support old models that set time resolution in director.
+        Attribute timeResolution = getAttribute("timeResolution");
+        if (timeResolution != null) {
+            double timeResolutionDouble = ((DoubleToken) ((Parameter)timeResolution)
+                    .getToken()).doubleValue(); 
+            try {
+                timeResolution.setContainer(null);
+            } catch (NameDuplicationException e) {
+                // Can't happen.
+                e.printStackTrace();
+            }
+            _localClock.globalTimeResolution.setToken("" + timeResolutionDouble);
+        }
+        _zeroTime = new Time(this, 0.0);
+        _localClock.initialize();
 
         // First invoke initializable methods.
         if (_initializables != null) {
@@ -1792,22 +1808,6 @@ public class Director extends Attribute implements Executable {
             NameDuplicationException {
         _localClock = new LocalClock(this, "LocalClock");
         _localClock.setVisibility(Settable.NOT_EDITABLE);
-        
-        // Support old models that set time resolution in director.
-        Attribute timeResolution = getAttribute("timeResolution");
-        if (timeResolution != null) {
-            double timeResolutionDouble = ((DoubleToken) ((Parameter)timeResolution)
-                    .getToken()).doubleValue(); 
-            try {
-                timeResolution.setContainer(null);
-            } catch (NameDuplicationException e) {
-                // Can't happen.
-                e.printStackTrace();
-            }
-            _localClock.setTimeResolution(timeResolutionDouble);
-        }
-        
-        _zeroTime = new Time(this, 0.0);
 
         startTime = new Parameter(this, "startTime");
         startTime.setTypeEquals(BaseType.DOUBLE);

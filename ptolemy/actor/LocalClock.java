@@ -110,11 +110,11 @@ public class LocalClock extends AbstractSettableAttribute implements ValueListen
         clockDrift.addValueListener(this);
         
         // Make sure getCurrentTime() never returns null.
-        _localTime = Time.NEGATIVE_INFINITY;
-        
-        _offset = _director._zeroTime;
+        _localTime = Time.NEGATIVE_INFINITY; 
         _drift = 1.0; 
     }
+    
+    
     
     /** The time precision used by this director. All time values are
      *  rounded to the nearest multiple of this number. This is a double
@@ -186,7 +186,10 @@ public class LocalClock extends AbstractSettableAttribute implements ValueListen
      *  @return The current local time. 
      */
     public String getExpression() {
-        return _localTime.toString();
+        if (_localTime == null)
+            return "";
+        else
+            return _localTime.toString();
     }
     
     /** Get the environment time that corresponds to the given local time.
@@ -289,6 +292,17 @@ public class LocalClock extends AbstractSettableAttribute implements ValueListen
     public final double getTimeResolution() {
         // This method is final for performance reason.
         return _timeResolution;
+    }
+    
+    /** Initialize parameters that cannot be initialized in the 
+     *  constructor. For instance, Time objects cannot be created
+     *  in the constructor because the time resolution might not be 
+     *  known yet. Older models have the timeResolution parameter
+     *  specified in the director which will only be loaded by the
+     *  MOMLParser after the director is initialized.
+     */
+    public void initialize() {
+        _offset = _director._zeroTime; 
     }
     
     /** Remove a listener from the list of listeners that is
@@ -420,6 +434,9 @@ public class LocalClock extends AbstractSettableAttribute implements ValueListen
     /** Commit the current local time. 
      */
     private void _commit() {
+        if (_offset == null) { // not initialized.
+            return;
+        }
         // skip if local time has never been set.
         if (_localTime != Time.NEGATIVE_INFINITY) {
             Time environmentTime = _director.getEnvironmentTime();  
