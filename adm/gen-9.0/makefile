@@ -2855,7 +2855,7 @@ update_andrews:
 	-ssh andrews mkdir $(PTEXTERNAL_NIGHTLY)/builds
 	#
 	@echo "Remove old tar files and logs"
-	ssh andrews find $(ANDREWS_HUDSON_HOME3/builds) -mtime +10 -ls -exec rm {} \;
+	ssh andrews find $(ANDREWS_HUDSON_HOME3)/builds -mtime +10 -ls -exec rm {} \;
 	ssh andrews rm -f \
 	   $(ANDREWS_HUDSON_HOME3)/builds/ptII$(PTII_VERSION)-`date +%Y-%m-%d`.tar.gz \
 	   $(ANDREWS_HUDSON_HOME3)/builds/ptII$(PTII_VERSION)-`date +%Y-%m-%d`.src.tar.gz \
