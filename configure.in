@@ -4172,17 +4172,17 @@ else
 
 	AC_MSG_CHECKING([for Jetty, used by ptserver ])
 	AC_ARG_WITH(jetty, [  --with-jetty=JAR       use jetty.jar from JAR,
-                          defaults to \$PTII/ptserver/lib/jetty-all-7.4.1.v20110513.jar],
+                          defaults to \$PTII/ptserver/lib/jetty-all-8.1.2.v20120308.jar],
 	PTJETTY_JAR=$withval,
-	PTJETTY_JAR=$PTII/ptserver/lib/jetty-all-7.4.1.v20110513.jar)
+	PTJETTY_JAR=$PTII/ptserver/lib/jetty-all-8.1.2.v20120308.jar)
         if test  -f "$PTJETTY_JAR"; then
 	    PT_MSG_RESULT([$PTJETTY_JAR])
 	
             AC_MSG_CHECKING([for Servlet, used by ptserver ])
 	    AC_ARG_WITH(servlet, [  --with-servlet=JAR       use servlet.jar from JAR,
-                          defaults to \$PTII/ptserver/lib/jservlet-api-2.5.jar],
+                          defaults to \$PTII/ptserver/lib/javax.servlet-api-3.0.1.jar],
 	    PTSERVLET_JAR=$withval,
-	    PTSERVLET_JAR=$PTII/ptserver/lib/servlet-api-2.5.jar)
+	    PTSERVLET_JAR=$PTII/ptserver/lib/javax.servlet-api-3.0.1.jar)
 
             if test  -f "$PTSERVLET_JAR"; then
 	        PT_MSG_RESULT([$PTSERVLET_JAR])
