@@ -1,4 +1,4 @@
-<!-- The input form for the webserver model
+<!-- The output page for the webserver model
 
  Copyright (c) 1997-2011 The Regents of the University of California.
  All rights reserved.
@@ -42,12 +42,14 @@
 		 that version and jQueryMobile.  jQuery 1.6.4 is the latest version 
 		 supported. --> 
 		 
+		 
 	<link rel="stylesheet" href="http://code.jquery.com/mobile/1.0/jquery.mobile-1.0.min.css" />
 	<script type="text/javascript" src="http://code.jquery.com/jquery-1.6.4.min.js"></script>
 	<script type="text/javascript" src="http://code.jquery.com/mobile/1.0/jquery.mobile-1.0.min.js"></script>
 
 	<title> Multiply with Ptolemy </title>
 </head>
+
 <body>
 
 <div data-role="page" data-theme="c">
@@ -57,24 +59,13 @@
 	</div>
 
 	<div data-role="content">
-		Please enter your two favorite numbers:
-		<form action="./multiply" method="post" >
-		
-			<div data-role="fieldcontain" class="ui-hide-label">
-				<label for="firstNumber">First number:</label>
-				<input type="text" name="firstNumber" id="firstNumber" value="" placeholder="First number"/>
-				</br>
-				</br>
-				<label for="secondNumber">Second number:</label>
-				<input type="text" name="secondNumber" id="secondNumber" value="" placeholder="Second number"/>			
-			</div>
-		
-			<div> Click the button and Ptolemy will multiply the numbers for you! <br />
-				<button type="submit" id="calculateButton"> Calculate </button>
-			</div>
-		</form>
+		The result is: 
+		<div id="result">  </div>
 	</div>
 </div>
 
 </body>
 </html>
+
+
+

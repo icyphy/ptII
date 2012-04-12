@@ -4,9 +4,11 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.URI;
-import java.util.Enumeration;
+import java.util.HashMap;
 import java.util.Iterator;
 
+import javax.servlet.AsyncContext;
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -15,10 +17,14 @@ import javax.servlet.http.HttpServletResponse;
 import ptolemy.actor.TypedCompositeActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.data.DoubleToken;
+import ptolemy.data.expr.FileParameter;
 import ptolemy.data.expr.StringParameter;
 import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.Port;
+import ptolemy.kernel.Relation;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.NamedObj;
 
 /* An actor that handles an HttpRequest to the given path.
 
@@ -72,6 +78,12 @@ public class HttpCompositeServiceProvider extends TypedCompositeActor
         path = new StringParameter(this, "path");
         path.setExpression("/*");
         setRelativePath(path.getExpression().toString());
+        
+        inputPage = new FileParameter(this, "inputPage");
+        inputPage.setExpression("/pages/index.html");
+        
+        outputPage = new FileParameter(this, "outputPage");
+        outputPage.setExpression("/pages/output.html");   
     }
     
     ///////////////////////////////////////////////////////////////////
@@ -93,6 +105,22 @@ public class HttpCompositeServiceProvider extends TypedCompositeActor
         return new HttpServiceServlet();
     }
     
+    /** This actor may be fired if there is an HttpResponse (contained in the
+     *  AsyncContext _asyncContext) to write to (i.e. a request has been 
+     *  received meaning _asyncContext is not null).
+     */
+   
+    public boolean prefire() throws IllegalActionException{
+        // First check other prefire() conditions.  Then, check if AsyncContext
+        // has been set so we can write a response
+        if (!super.prefire() || _asyncContext == null) {
+            return false;
+        }
+       
+        return true;
+    }
+    
+    
     /** Set the relative path that this actor will receive requests to.  This is
      *  set here in case the path does not conform to URI syntax rules.  If the
      *  path does not conform, an IllegalActionException is thrown.
@@ -105,6 +133,162 @@ public class HttpCompositeServiceProvider extends TypedCompositeActor
         if (!path.getExpression().isEmpty()) {
             setRelativePath(path.getExpression().toString());
         }         
+    }
+    
+    /** Invoke superclass postfire() and return true.  This actor is always 
+     *  ready to be fired again.
+     */
+    
+    // FIXME:  Is it OK to always return true here?  Had problems without this.
+    public boolean postfire() throws IllegalActionException {
+        super.postfire();
+        return true;
+    }
+    
+    /** Fire the actor and create an output page.
+     * 
+     * @exception IllegalActionException If there is no HttpResponse to write
+     *  the output page to.
+     */
+    public void fire() throws IllegalActionException{
+        super.fire();
+        if (_asyncContext == null) {
+            throw new IllegalActionException(this, "No response page for " +
+            		"the HttpService to write to");
+        }
+        
+        try {
+            // Write the response
+            // Do this after all ports are read, because if there is 
+            // problem with any port value, we want to return an error
+            // Currently this prints a list of port names and values
+            
+            // This should always be true since the doPost() method from the 
+            // HttpServlet creates the asynchronous context, but just in case... 
+            if (_asyncContext.getResponse() instanceof HttpServletResponse) {
+                HttpServletResponse response  
+                    = (HttpServletResponse)_asyncContext.getResponse();
+                
+                // TODO:  Right now, use output port names as variables.  Do 
+                // we want to change this since WebSink is inside of this actor?
+                // Should WebSource and WebSink be responsible for knowing the
+                // output file to write to?  Weird for pages with multiple 
+                // variables (or, allow multiple input / output ports per source
+                // and sink?  One source, sink per page?)
+                
+                // TODO:  Right now, WebSink is contained by 
+                // HttpCompositeService because we read its value in 
+                // the fire() of HttpCompositeService which must occur 
+                // after the fire() of WebSink, which would not happen in some
+                // MoCs if the WebSink is outside of of the HttpCompositeService
+                
+                // Find all WebSink actors
+                // These should be connected to a relation which connects to an
+                // output port
+                // FIXME:  Possible to obtain token from output port directly?
+                // Tried (with no luck):
+                 //DoubleToken outputToken = 
+                // (DoubleToken) ((TypedIOPort) outputPortList().get(0)).getInside(0);
+                HashMap resultsMap = new HashMap<String, String>();
+                    
+                // Loop through all output ports with connected WebSinks 
+                // to collect the names and values
+                // The values will be printed as strings to the response page,
+                // so the type is not an issue for an HTML output page
+                // This might change for other output formats?  
+                if (!outputPortList().isEmpty()) {
+                    Iterator outputs = outputPortList().iterator();
+                    
+                    while (outputs.hasNext()) {
+                        TypedIOPort output = (TypedIOPort) outputs.next();                       
+                        Iterator relations = 
+                            output.insideRelationList().iterator();
+                        while (relations.hasNext()) {
+                            Relation relation = (Relation) relations.next();
+                            Iterator sinks = 
+                                relation.linkedObjectsList().iterator();
+                            while (sinks.hasNext()) {
+                                NamedObj sink = (NamedObj) sinks.next();
+                                if (sink.getContainer() != null && 
+                                        sink.getContainer() instanceof WebSink){
+                                    WebSink webSink = 
+                                        (WebSink) sink.getContainer();
+                                    
+                                    resultsMap.put(output.getName()
+                                            , webSink.value.getValueAsString());                                 
+                                }
+                            }
+                        }
+                    }
+                } else {
+                    _writeError(response, HttpServletResponse.SC_NO_CONTENT, 
+                       "No output variables are defined for this web service.");
+                }
+                
+                // Write the response page
+                response.setContentType("text/javascript");
+                response.setStatus(HttpServletResponse.SC_OK);
+                PrintWriter writer = response.getWriter();      
+                
+                String fileName = outputPage.getExpression().toString();
+                if (fileName.isEmpty()) {
+                    // Assume /output.html
+                    fileName = "/output.html";
+                }
+                
+                // TODO:  Move to attributeChanged() method?
+                if (fileName.charAt(0) != '/') {
+                    fileName = "/" + fileName;
+                }
+                
+                 if (_servletContext != null) {               
+   
+                    BufferedReader reader = 
+                      new BufferedReader(
+                      new InputStreamReader(_servletContext
+                           .getResourceAsStream(fileName)));                         
+                    
+                    String line;
+                    
+                    // TODO:  This finds all the output variables line by line
+                    // Would be nice to insert variables as a group and use
+                    // e.g. Javascript to print the values in the correct spots
+                    // But, couldn't get Javascript to work as part of
+                    // an HttpResponse - worked OK loading page from file
+                    String key;
+                    Iterator keys;
+                    while((line = reader.readLine()) != null) {
+                        // Insert Javascript for variables just before </body> 
+                        keys = resultsMap.keySet().iterator();
+                        while(keys.hasNext()) {
+                            key = (String) keys.next();
+                            if (line.contains("<div id=\"" + key + "\">")) {
+                                    writer.println("<div id=\"" + key + "\">" +
+                                            (String) resultsMap.get(key) + 
+                                            "</div>");
+                                    resultsMap.remove(key);
+                                    break;
+                                } else {
+                                    writer.println(line);
+                                } 
+                            }
+                        }
+                    
+                    reader.close();
+                    writer.flush();
+                    }
+                }
+                
+            // Mark the AsyncContext as complete to show we are done processing
+            // this HttpRequest.  Set it to null so prefire() will return false
+            // since this actor should not be fired until receiving another
+            // request
+            _asyncContext.complete();
+            _asyncContext = null;
+            
+        } catch(IOException e){throw new IllegalActionException(this,"Problem" +
+        		"writing the response page.");
+        }
     }
     
 
@@ -140,14 +324,48 @@ public class HttpCompositeServiceProvider extends TypedCompositeActor
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
     
+    /** The file containing the HTML input form to display.
+     */
+    public FileParameter inputPage;
+    
     /** The message to display when a get request is received.
      */
     public StringParameter message;
+    
+    /** The file containing the HTML output page to display.
+     */
+    public FileParameter outputPage;
     
     /** The relative URL to map this servlet to. 
      */
     public StringParameter path; 
     
+    ///////////////////////////////////////////////////////////////////
+    ////                     private methods                      ////
+
+    /** Write an error message to the given HttpServletResponse.
+     *
+     * @param response The HttpServletResponse to write the message to
+     * @param responseCode  The HTTP response code for the message.  Should be
+     * one of HttpServletResponse.X
+     * @param message  The error message to write
+     */
+    private void _writeError(HttpServletResponse response, int responseCode,
+            String message)
+        throws IOException {
+        response.setContentType("text/html");
+        response.setStatus(responseCode);
+
+        PrintWriter writer = response.getWriter();                
+            
+        writer.println("<!DOCTYPE html>");
+        writer.println("<html>");
+        writer.println("<body>");
+        writer.println(message);
+        writer.println("</body>");
+        writer.println("</html>");                   
+        writer.flush();
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                     private variables                     ////
@@ -167,10 +385,8 @@ public class HttpCompositeServiceProvider extends TypedCompositeActor
             // Display a page with an input form and the results of any
             // prior computation, if any
             
-            // TODO:  Return HTML from a file (or better, return a "view" like
-            // in the Spring framework)
-            // Way to do this using relative file names based on the context?
-            // Possible for web apps, but I'm not sure about standlone servlets
+            // TODO:  Return a "view" like in the Spring framework to support 
+            // multiple representations
             
             // TODO:  A get request is ambiguous here - do we want to get the
             // input form or the results of the last computation?
@@ -179,10 +395,22 @@ public class HttpCompositeServiceProvider extends TypedCompositeActor
             response.setStatus(HttpServletResponse.SC_OK);
             PrintWriter writer = response.getWriter();                
             
+            
+            String fileName = inputPage.getExpression().toString();
+            if (fileName.isEmpty()) {
+                // Assume /index.html
+                fileName = "/index.html";
+            }
+            
+            // TODO:  Move to attributeChanged() method?
+            if (fileName.charAt(0) != '/') {
+                fileName = "/" + fileName;
+            }
+            
             BufferedReader reader = 
                 new BufferedReader(new InputStreamReader(getServletContext()
-                    .getResourceAsStream("/pages/index.html"))); 
-           
+                    .getResourceAsStream(fileName))); 
+            
             String line;
             while((line = reader.readLine()) != null) {
                 writer.println(line);
@@ -210,113 +438,109 @@ public class HttpCompositeServiceProvider extends TypedCompositeActor
                 HttpServletResponse response) 
                 throws ServletException, IOException
         {
-            String report = "";
-            
             // Map request parameters to input ports
             Iterator inputPorts = inputPortList().iterator();
             while (inputPorts.hasNext()) {
                 TypedIOPort inputPort = (TypedIOPort) inputPorts.next();
-                // How to handle typing here?  getParameter() always returns
-                // a string.
-                if (request.getParameter(inputPort.getName()) != null) {
-                    // Note that request.getParameter() is case sensitive!
-                    String data = request.getParameter(inputPort.getName());
-                    
-                    // TODO:  Require that the ports have declared types?
-                    // Otherwise, how to tell what the type is?
-                    // For now, assume double
-                    // Extract a token from the request and broadcast this
-                    // to the input port's receivers
-                    try {
-                        DoubleToken token = new DoubleToken(data);
-                        report = 
-                              report + inputPort.getName() + ": " + data + ",";
-                        inputPort.broadcast(token);
-                        _response = response;
-                        
-                    } catch(IllegalActionException e){
-                        response.setContentType("text/html");
-                        response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-                        PrintWriter writer = response.getWriter();                
-                        
-                        writer.println("<!DOCTYPE html>");
-                        writer.println("<html>");
-                        writer.println("<body>");
-                        writer.println("Problem with data value for " 
-                                + inputPort.getName());
-                        Enumeration elements = request.getParameterNames();
-                        while(elements.hasMoreElements()) {
-                            writer.println("Name: " + elements.nextElement().toString());
-                        }
-                    
-                        writer.println(request.getParameterNames().toString());
-                        writer.println("</body>");
-                        writer.println("</html>");                   
-                        writer.flush();
-                        
-                        throw new IOException("Input element for port " + 
-                       inputPort.getName() + " is incompatible with double.");
-                        
-                    }
-        
-                } else {
-                    response.setContentType("text/html");
-                    response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-                    PrintWriter writer = response.getWriter();                
-                    
-                    writer.println("<!DOCTYPE html>");
-                    writer.println("<html>");
-                    writer.println("<body>");
-                    writer.println("Problem with data value for " 
-                            + inputPort.getName());
-                    Enumeration elements = request.getParameterNames();
-                    while(elements.hasMoreElements()) {
-                        writer.println("Name: " 
-                                + elements.nextElement().toString());
-                    }
                 
-                    writer.println(request.getParameterNames().toString());
-                    writer.println("</body>");
-                    writer.println("</html>");                   
-                    writer.flush();
+                Iterator connectedPorts 
+                    = inputPort.connectedPortList().iterator();
+                
+                while(connectedPorts.hasNext()) {
+                    Port sourcePort = (Port) connectedPorts.next();
                     
-                    throw new IOException("Input element is missing " +
-                           "from HTTP request for port " + inputPort.getName());
-                    // Throw exception if value is missing for one of the ports?
-                    // Can I throw a Ptolemy exception?
-                    // How can I propagate this exception however?
-                    // Could I call a method from superclass which would throw it?
+                    // Check if this port is connected to a WebSource actor
+                    // This indicates that the port should retrieve data from the
+                    // HttpRequest
+                    if (sourcePort.getContainer() instanceof WebSource) {
+                        // Note that the argument to request.getParameter() 
+                        // is case sensitive!
+                        
+                        if (request.getParameter(inputPort.getName()) != null) {
+                            String data = 
+                                request.getParameter(inputPort.getName());
+                            
+                            // FIXME: Require that ports have declared types?
+                            // Otherwise, how to tell what the type is?
+                            // For now, assume double
+                            // Extract a token from the request and broadcast 
+                            // this to the input port's receivers
+                            try {
+                                // Collect tokens from the request, set the 
+                                // values of the WebSource actors and request
+                                // the WebSources to fire themselves
+                                DoubleToken token = new DoubleToken(data);
+                                ((WebSource) sourcePort.getContainer())
+                                    .value.setToken(token);
+                                
+                                WebSource webSource = 
+                                    (WebSource) sourcePort.getContainer();
+                              
+                                if (!webSource.requestFiringNow()) {
+                                    _writeError(response, 
+                                            HttpServletResponse.SC_BAD_REQUEST,
+                                            "Problem with data " +
+                                    	"value for " + inputPort.getName()); 
+                                }                                                
+                                
+                            } catch(IllegalActionException e){
+                                _writeError(response, 
+                                        HttpServletResponse.SC_BAD_REQUEST, 
+                                        "Problem with data value for " 
+                                        + inputPort.getName());                            
+                            }
+                
+                        } else {
+                            _writeError(response, 
+                                    HttpServletResponse.SC_BAD_REQUEST, 
+                                    "Problem with data value for " 
+                                    + inputPort.getName());
+                        }
+                    }
+                    break;
                 }
             }
             
-            // Write the response
-            // Do this after all ports are read, because if there is 
-            // problem with any port value, we want to return an error
-            // Currently this prints a list of port names and values
-            response.setContentType("text/html");
-            response.setStatus(HttpServletResponse.SC_OK);
-            PrintWriter writer = response.getWriter();                
-            
-            writer.println("<!DOCTYPE html>");
-            writer.println("<html>");
-            writer.println("<body>");
-            writer.println(report);
-            writer.println("</body>");
-            writer.println("</html>");                   
-            writer.flush();
-        }
+            // Store a copy of the response so the parent class can
+            // write to it and ask the director to fire the parent
+            // Store the servlet context so the fire() method can use it
+            try {
+                _asyncContext = request.startAsync();   
+                _servletContext = getServletContext();
+                // Only need this if no input ports?  If no WebSources?
+                if (inputPortList().isEmpty()) {
+                    getDirector()
+                        .fireAtCurrentTime(HttpCompositeServiceProvider.this);
+                }
+              
+            } catch(IllegalActionException e){
+                throw new IOException("Can't fire HttpService");
+            }
+
+        }       
     }  
+    
+    
+    /** An asynchronous context to store the HttpResponse to write the response
+     * to.  The context is started in doPost() when a POST request is received
+     * in order to store the HttpResponse so that the fire() method may write
+     * something to it later.
+     * References:
+     * https://blogs.oracle.com/enterprisetechtips/entry/asynchronous_support_in_servlet_3
+     * http://code.google.com/p/jquery-stream/wiki/EchoExample
+     */
+    private AsyncContext _asyncContext;
+    
+    /** A copy of the servlet context, which is set in the doPost() method of
+     *  HttpServiceServlet and used in the fire() method of the parent to 
+     *  read the output page file. 
+     */
+    private ServletContext _servletContext;
     
     /** The URI for the relative path from the "path" parameter.  
      *  A URI is used here to make sure the "path" parameter conforms to
      *  all of the URI naming conventions. 
      */
     private URI _URIpath;
-    
-    /** A copy of the HttpServletReponse to write the result to once the actor
-     *  has fired.
-     */
-    // TODO:  Actually print the response in fire()
-    private HttpServletResponse _response;  
     
 }
