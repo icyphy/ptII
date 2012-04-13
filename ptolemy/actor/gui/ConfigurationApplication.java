@@ -364,7 +364,7 @@ public class ConfigurationApplication implements ExecutionListener {
 	    model.setContainer(null);
 	    MoMLParser.purgeAllModelRecords();
 	} finally {
-	    System.setProperty("ptolemy.ptII.doNotExit", previousProperty);
+	    System.setProperty("ptolemy.ptII.doNotExit", previousPropertyValue);
 	}
     }
 
