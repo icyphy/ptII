@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="PtidesBasicMixedSimulator" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.0.devel">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="1">
@@ -10,13 +10,13 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="{115.0, 75.0}">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={233, 143, 841, 579}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={233, 143, 841, 588}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[628, 469]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[628, 478]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{314.0, 234.5}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{314.0, 239.0}">
     </property>
     <entity name="Plant Model" class="ptolemy.actor.TypedCompositeActor">
         <property name="_location" class="ptolemy.kernel.util.Location" value="{130.5, 200.0}">
@@ -26,8 +26,6 @@
         <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{309.0, 195.0}">
         </property>
         <property name="Continuous Director" class="ptolemy.domains.continuous.kernel.ContinuousDirector">
-            <property name="timeResolution" class="ptolemy.actor.parameters.SharedParameter" value="1E-12">
-            </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[90.0, 55.0]">
             </property>
         </property>
@@ -246,16 +244,6 @@
         <link port="SensorHandler2.input" relation="relation7"/>
         <link port="SensorHandler2.output" relation="relation6"/>
     </entity>
-    <entity name="Clock" class="ptolemy.actor.lib.Clock">
-        <property name="period" class="ptolemy.actor.parameters.PortParameter" value="1">
-        </property>
-        <property name="offsets" class="ptolemy.data.expr.Parameter" value="{0.0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9}">
-        </property>
-        <property name="values" class="ptolemy.data.expr.Parameter" value="{1, 1, 1, 1, 1, 0, 0, 0, 0, 0}">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[125.0, 335.0]">
-        </property>
-    </entity>
     <entity name="Network Model" class="ptolemy.actor.TypedCompositeActor">
         <property name="_location" class="ptolemy.kernel.util.Location" value="{220.5, 125.0}">
         </property>
@@ -353,6 +341,15 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[380.0, 80.0]">
         </property>
     </entity>
+    <entity name="DiscreteClock" class="ptolemy.actor.lib.DiscreteClock">
+        <property name="offsets" class="ptolemy.data.expr.Parameter" value="{0.0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9}">
+        </property>
+        <property name="values" class="ptolemy.data.expr.Parameter" value="{1, 1, 1, 1, 1, 0, 0, 0, 0, 0}">
+        </property>
+        <doc>Create periodic timed events.</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[120.0, 335.0]">
+        </property>
+    </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
@@ -386,7 +383,6 @@
     <link port="Platform.sensor" relation="relation2"/>
     <link port="Platform.actuator" relation="relation4"/>
     <link port="Platform.reference" relation="relation3"/>
-    <link port="Clock.output" relation="relation3"/>
     <link port="Network Model.in" relation="relation4"/>
     <link port="Network Model.out" relation="relation"/>
     <link port="Test.input" relation="relation3"/>
@@ -397,4 +393,5 @@
     <link port="Test4.input" relation="relation6"/>
     <link port="CurrentTime2.output" relation="relation6"/>
     <link port="CurrentTime2.trigger" relation="relation2"/>
+    <link port="DiscreteClock.output" relation="relation3"/>
 </entity>
