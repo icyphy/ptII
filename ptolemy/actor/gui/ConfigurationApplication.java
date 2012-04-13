@@ -356,12 +356,16 @@ public class ConfigurationApplication implements ExecutionListener {
         effigy.setModified(false);
 
         // Avoid calling System.exit().
+	String previousPropertyValue = StringUtilities.getProperty("ptolemy.ptII.doNotExit");
         System.setProperty("ptolemy.ptII.doNotExit", "true");
-
-        // FIXME: are all these necessary?
-        effigy.closeTableaux();
-        model.setContainer(null);
-        MoMLParser.purgeAllModelRecords();
+	try {
+	    // FIXME: are all these necessary?
+	    effigy.closeTableaux();
+	    model.setContainer(null);
+	    MoMLParser.purgeAllModelRecords();
+	} finally {
+	    System.setProperty("ptolemy.ptII.doNotExit", previousProperty);
+	}
     }
 
     /** Reduce the count of executing models by one.  If the number of
