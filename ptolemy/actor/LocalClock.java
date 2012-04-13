@@ -434,7 +434,7 @@ public class LocalClock extends AbstractSettableAttribute implements ValueListen
     /** Commit the current local time. 
      */
     private void _commit() {
-        if (_offset == null) { // not initialized.
+        if (_offset == null || _localTime == null) { // not initialized.
             return;
         }
         // skip if local time has never been set.
