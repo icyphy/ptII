@@ -39,6 +39,7 @@ import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.gt.data.MatchResult;
 import ptolemy.actor.lib.hoc.MultiCompositeActor;
 import ptolemy.actor.parameters.PortParameter;
+import ptolemy.actor.util.Time;
 import ptolemy.data.ActorToken;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.IntToken;
@@ -591,6 +592,8 @@ public class TransformationRule extends MultiCompositeActor implements
          */
         public void preinitialize() throws IllegalActionException {
             _stopRequested = false;
+            _zeroTime = new Time(this, 0.0);
+            _localClock.initialize();
         }
 
         /** Do nothing.
