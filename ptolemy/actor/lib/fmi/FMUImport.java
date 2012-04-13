@@ -383,7 +383,7 @@ public class FMUImport extends TypedAtomicActor {
         public class FMUFreeMemory implements FMICallbackFreeMemory {
             public void apply(Pointer pointer) {
                 //System.out.println("Java fmiFreeMemory " + pointer);
-                _pointers.remove(pointer)
+                _pointers.remove(pointer);
             }
         }
 	public class FMUStepFinished implements FMIStepFinished {
@@ -516,6 +516,8 @@ public class FMUImport extends TypedAtomicActor {
      */   
     NativeLibrary _nativeLibrary;
 
+    /** Keep references to memory that has been allocated and
+     *  avoid problems with the memory being garbage collected.   
+     */
     private static Set<Pointer> _pointers = new HashSet<Pointer>();
-
 }
