@@ -29,6 +29,8 @@ package org.ptolemy.fmi;
 
 import java.io.File;
 import java.io.PrintStream;
+import java.util.Set;
+import java.util.HashSet;
 
 import com.sun.jna.Function;
 import com.sun.jna.Memory;
@@ -79,13 +81,13 @@ public class FMUCoSimulation {
                 memory.clear();
                 Pointer pointer = alignedMemory.share(0);
 
-//                System.out.println("Java fmiAllocateMemory " + nobj + " " + size);
+                // Need to keep a reference so the memory does not get gc'd.
+                _pointers.add(pointer);
+
+//                 System.out.println("Java fmiAllocateMemory " + nobj + " " + size
 //                         + "\n        memory: " + memory + " " +  + memory.SIZE + " " + memory.SIZE % 4
 //                         + "\n alignedMemory: " + alignedMemory + " " + alignedMemory.SIZE + " " + alignedMemory.SIZE %4
-//                         + "\n       pointer: " + pointer + " " + pointer.SIZE + " " + pointer.SIZE % 4
-//                                    );
-
-
+//                         + "\n       pointer: " + pointer + " " + pointer.SIZE + " " + (pointer.SIZE % 4));
                 return pointer;
             }
         }
@@ -93,6 +95,7 @@ public class FMUCoSimulation {
         public class FMUFreeMemory implements FMICallbackFreeMemory {
             public void apply(Pointer obj) {
                 //System.out.println("Java fmiFreeMemory " + obj);
+                _pointers.remove(obj);
             }
         }
 	public class FMUStepFinished implements FMIStepFinished {
@@ -261,7 +264,9 @@ public class FMUCoSimulation {
             function = nativeLibrary.getFunction(modelIdentifier + "_fmiDoStep");
             while (time < endTime) {
                 if (enableLogging) {
-                    System.out.println("FMUCoSimulation: about to call " + modelIdentifier + "_fmiDoStep");
+                    System.out.println("FMUCoSimulation: about to call "
+                            + modelIdentifier + "_fmiDoStep(Component, /* time */ " + time
+                            + ", /* stepSize */" + stepSize + ", 1)");
                 }
                 fmiFlag = ((Integer)function.invokeInt(new Object[] {fmiComponent, time, stepSize, (byte)1})).intValue();
 
@@ -293,4 +298,10 @@ public class FMUCoSimulation {
             System.out.println("Results are in " + outputFile.getCanonicalPath());
         }
   }
+
+    /** Keep references to memory that has been allocated and
+     *  avoid problems with the memory being garbage collected.   
+     *  See http://osdir.com/ml/java.jna.user/2008-09/msg00065.html   
+     */   
+    private static Set<Pointer> _pointers = new HashSet<Pointer>();
 }

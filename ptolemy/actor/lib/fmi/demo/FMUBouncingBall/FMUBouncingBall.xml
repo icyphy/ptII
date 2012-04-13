@@ -28,14 +28,6 @@
     </property>
     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 239.0}">
     </property>
-    <entity name="SequencePlotter" class="ptolemy.actor.lib.gui.SequencePlotter">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute">
-        </property>
-        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{345, 205}">
-        </property>
-    </entity>
     <entity name="BouncingBal" class="ptolemy.actor.lib.fmi.FMUImport">
         <property name="fmuFile" class="ptolemy.data.expr.FileParameter" value="/Users/cxh/ptII/ptolemy/actor/lib/fmi/demo/FMUBouncingBall/BouncingBall.fmu">
         </property>
@@ -44,10 +36,6 @@
         <property name="g" class="ptolemy.data.expr.Parameter" value="9.81">
         </property>
         <property name="e" class="ptolemy.data.expr.Parameter" value="0.7">
-        </property>
-        <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
-            <property name="_location" class="ptolemy.kernel.util.Location" value="{140, 75}">
-            </property>
         </property>
         <port name="h" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -92,6 +80,14 @@
             </property>
         </port>
     </entity>
+    <entity name="SequencePlotter" class="ptolemy.actor.lib.gui.SequencePlotter">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute">
+        </property>
+        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{370, 195}">
+        </property>
+    </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
@@ -104,16 +100,16 @@
     </relation>
     <relation name="relation6" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <link port="SequencePlotter.input" relation="relation"/>
-    <link port="SequencePlotter.input" relation="relation2"/>
-    <link port="SequencePlotter.input" relation="relation3"/>
-    <link port="SequencePlotter.input" relation="relation4"/>
-    <link port="SequencePlotter.input" relation="relation5"/>
-    <link port="SequencePlotter.input" relation="relation6"/>
     <link port="BouncingBal.h" relation="relation"/>
     <link port="BouncingBal.der(h)" relation="relation2"/>
     <link port="BouncingBal.v" relation="relation3"/>
     <link port="BouncingBal.der(v)" relation="relation4"/>
     <link port="BouncingBal.g" relation="relation5"/>
     <link port="BouncingBal.e" relation="relation6"/>
+    <link port="SequencePlotter.input" relation="relation"/>
+    <link port="SequencePlotter.input" relation="relation2"/>
+    <link port="SequencePlotter.input" relation="relation3"/>
+    <link port="SequencePlotter.input" relation="relation4"/>
+    <link port="SequencePlotter.input" relation="relation5"/>
+    <link port="SequencePlotter.input" relation="relation6"/>
 </entity>

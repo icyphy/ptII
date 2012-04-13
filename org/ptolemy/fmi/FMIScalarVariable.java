@@ -209,7 +209,7 @@ public class FMIScalarVariable {
                                           new NativeSizeT(1), valueBuffer})).intValue();
             if (fmiFlag > FMILibrary.FMIStatus.fmiWarning) {
                 throw new RuntimeException("Could not get " +
-                        name + " as a double: " + fmiFlag);
+                        name + " as a double.  Method was " + fmiGetFunction + ", return value was:" + fmiFlag);
             }
             result = valueBuffer.get(0);
         } else {
