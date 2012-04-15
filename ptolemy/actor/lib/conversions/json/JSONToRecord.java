@@ -26,7 +26,7 @@
 
  */
 
-package ptolemy.actor.lib.conversions;
+package ptolemy.actor.lib.conversions.json;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -40,6 +40,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import ptolemy.actor.lib.conversions.Converter;
 import ptolemy.actor.parameters.SharedParameter;
 import ptolemy.data.ArrayToken;
 import ptolemy.data.BooleanToken;

@@ -5,89 +5,91 @@
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.0.devel">
     </property>
     <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
+        <property name="iterations" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
         <property name="allowDisconnectedGraphs" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-345.0, -265.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[180.0, 50.0]">
         </property>
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Booleans">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-455.0, -210.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 105.0]">
         </property>
     </property>
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Null:  Currently the type resolution hangs if the output goes to a Test actor - not sure why?">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-460.0, -35.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 280.0]">
         </property>
     </property>
     <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Integer">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-460.0, 40.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 355.0]">
         </property>
     </property>
     <property name="Annotation6" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Double">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-460.0, 125.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 440.0]">
         </property>
     </property>
     <property name="Annotation4" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Double with exponent">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-460.0, 210.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 525.0]">
         </property>
     </property>
     <property name="Annotation5" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="String">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-455.0, 300.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 615.0]">
         </property>
     </property>
     <property name="Annotation7" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Multiple fields">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-190.0, -215.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[335.0, 100.0]">
         </property>
     </property>
     <property name="Annotation8" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Surrounded by []">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-200.0, -120.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[325.0, 195.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={320, 21, 1402, 1031}, maximized=true}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 22, 1117, 878}, maximized=true}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1194, 912]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[904, 768]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{-135.5602829391892, 191.0779138513514}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{452.0, 384.0}">
     </property>
     <property name="Annotation9" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Arrays">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-200.0, 45.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[325.0, 360.0]">
         </property>
     </property>
     <property name="Annotation10" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Website data">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-200.0, 135.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[325.0, 450.0]">
         </property>
     </property>
     <property name="Annotation11" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Test with RecordDisassembler">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-210.0, 255.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[315.0, 570.0]">
         </property>
     </property>
-    <entity name="JSONToRecord" class="ptolemy.actor.lib.conversions.JSONToRecord">
+    <entity name="JSONToRecord" class="ptolemy.actor.lib.conversions.json.JSONToRecord">
         <property name="dataSource" class="ptolemy.data.expr.Parameter" value="&quot;http://stdio.nl/ptango/boolTrue.json&quot;">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-435.0, -155.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[90.0, 160.0]">
         </property>
     </entity>
     <entity name="Test" class="ptolemy.actor.lib.Test">
@@ -95,7 +97,7 @@
         </property>
         <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-315.0, -160.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[210.0, 155.0]">
         </property>
     </entity>
     <entity name="Test2" class="ptolemy.actor.lib.Test">
@@ -103,116 +105,103 @@
         </property>
         <property name="requireAllCorrectValues" class="ptolemy.actor.parameters.SharedParameter" value="true">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-315.0, -75.0]">
-        </property>
-    </entity>
-    <entity name="MonitorValue" class="ptolemy.actor.lib.gui.MonitorValue">
-        <doc>Monitor and display values</doc>
-        <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="20">
-        </property>
-        <property name="_icon" class="ptolemy.vergil.icon.UpdatedValueIcon">
-            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
-            </property>
-            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="displayWidth">
-            </property>
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-170.0, 20.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[210.0, 240.0]">
         </property>
     </entity>
     <entity name="Test3" class="ptolemy.actor.lib.Test">
         <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{{three = 3.0}}">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-305.0, 100.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[220.0, 415.0]">
         </property>
     </entity>
     <entity name="Test4" class="ptolemy.actor.lib.Test">
         <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{{pi = 3.14}}">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-300.0, 180.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[225.0, 495.0]">
         </property>
     </entity>
     <entity name="Test5" class="ptolemy.actor.lib.Test">
         <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{{mole = 6.02E23}}">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-295.0, 265.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[230.0, 580.0]">
         </property>
     </entity>
     <entity name="Test6" class="ptolemy.actor.lib.Test">
         <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{{uuid = &quot;6416334d-7fe8-5f64-9658-d0f9c07e44d9&quot;}}">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-295.0, 360.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[230.0, 675.0]">
         </property>
     </entity>
-    <entity name="JSONToRecord2" class="ptolemy.actor.lib.conversions.JSONToRecord">
+    <entity name="JSONToRecord2" class="ptolemy.actor.lib.conversions.json.JSONToRecord">
         <property name="dataSource" class="ptolemy.data.expr.Parameter" value="&quot;http://stdio.nl/ptango/boolFalse.json&quot;">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-435.0, -75.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[90.0, 240.0]">
         </property>
     </entity>
-    <entity name="JSONToRecord3" class="ptolemy.actor.lib.conversions.JSONToRecord">
+    <entity name="JSONToRecord3" class="ptolemy.actor.lib.conversions.json.JSONToRecord">
         <property name="dataSource" class="ptolemy.data.expr.Parameter" value="&quot;http://stdio.nl/ptango/null.json&quot;">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-435.0, 20.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[90.0, 335.0]">
         </property>
     </entity>
-    <entity name="JSONToRecord4" class="ptolemy.actor.lib.conversions.JSONToRecord">
+    <entity name="JSONToRecord4" class="ptolemy.actor.lib.conversions.json.JSONToRecord">
         <property name="dataSource" class="ptolemy.data.expr.Parameter" value="&quot;http://stdio.nl/ptango/int.json&quot;">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-435.0, 100.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[90.0, 415.0]">
         </property>
     </entity>
-    <entity name="JSONToRecord5" class="ptolemy.actor.lib.conversions.JSONToRecord">
+    <entity name="JSONToRecord5" class="ptolemy.actor.lib.conversions.json.JSONToRecord">
         <property name="dataSource" class="ptolemy.data.expr.Parameter" value="&quot;http://stdio.nl/ptango/double.json&quot;">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-435.0, 180.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[90.0, 495.0]">
         </property>
     </entity>
-    <entity name="JSONToRecord6" class="ptolemy.actor.lib.conversions.JSONToRecord">
+    <entity name="JSONToRecord6" class="ptolemy.actor.lib.conversions.json.JSONToRecord">
         <property name="dataSource" class="ptolemy.data.expr.Parameter" value="&quot;http://stdio.nl/ptango/exp.json&quot;">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-435.0, 265.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[90.0, 580.0]">
         </property>
     </entity>
-    <entity name="JSONToRecord7" class="ptolemy.actor.lib.conversions.JSONToRecord">
+    <entity name="JSONToRecord7" class="ptolemy.actor.lib.conversions.json.JSONToRecord">
         <property name="dataSource" class="ptolemy.data.expr.Parameter" value="&quot;http://stdio.nl/ptango/string.json&quot;">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-430.0, 360.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[95.0, 675.0]">
         </property>
     </entity>
     <entity name="Test7" class="ptolemy.actor.lib.Test">
         <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{{Readings = 75.5, uuid = &quot;6416334d-7fe8-5f64-9658-d0f9c07e44d9&quot;}}">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-50.0, -155.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[475.0, 160.0]">
         </property>
     </entity>
-    <entity name="JSONToRecord8" class="ptolemy.actor.lib.conversions.JSONToRecord">
+    <entity name="JSONToRecord8" class="ptolemy.actor.lib.conversions.json.JSONToRecord">
         <property name="dataSource" class="ptolemy.data.expr.Parameter" value="&quot;http://stdio.nl/ptango/multival.json&quot;">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-175.0, -155.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[350.0, 160.0]">
         </property>
     </entity>
-    <entity name="JSONToRecord9" class="ptolemy.actor.lib.conversions.JSONToRecord">
+    <entity name="JSONToRecord9" class="ptolemy.actor.lib.conversions.json.JSONToRecord">
         <property name="dataSource" class="ptolemy.data.expr.Parameter" value="&quot;http://stdio.nl/ptango/surrounded.json&quot;">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-175.0, -65.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[350.0, 250.0]">
         </property>
     </entity>
     <entity name="Test9" class="ptolemy.actor.lib.Test">
         <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{{fibonacci = {1.0, 1.0, 2.0, 3.0, 5.0}}}">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-25.0, 105.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[500.0, 420.0]">
         </property>
     </entity>
-    <entity name="JSONToRecord10" class="ptolemy.actor.lib.conversions.JSONToRecord">
+    <entity name="JSONToRecord10" class="ptolemy.actor.lib.conversions.json.JSONToRecord">
         <property name="dataSource" class="ptolemy.data.expr.Parameter" value="&quot;http://stdio.nl/ptango/fibonacci.json&quot;">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-180.0, 105.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[345.0, 420.0]">
         </property>
     </entity>
-    <entity name="JSONToRecord11" class="ptolemy.actor.lib.conversions.JSONToRecord">
+    <entity name="JSONToRecord11" class="ptolemy.actor.lib.conversions.json.JSONToRecord">
         <property name="dataSource" class="ptolemy.data.expr.Parameter" value="&quot;http://stdio.nl/ptango/website.json&quot;">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-180.0, 205.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[345.0, 520.0]">
         </property>
     </entity>
     <entity name="Test11" class="ptolemy.actor.lib.Test">
@@ -220,11 +209,11 @@
         </property>
         <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[74.5, 312.5]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[599.5, 627.5]">
         </property>
     </entity>
     <entity name="RecordDisassembler" class="ptolemy.actor.lib.RecordDisassembler">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-90.0, 295.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[435.0, 610.0]">
         </property>
         <port name="uuid" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -242,39 +231,31 @@
         </property>
         <property name="tolerance" class="ptolemy.data.expr.Parameter" value="7.550000000000003E-8">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[74.5, 377.5]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[599.5, 692.5]">
         </property>
     </entity>
-    <entity name="JSONToRecord12" class="ptolemy.actor.lib.conversions.JSONToRecord">
+    <entity name="JSONToRecord12" class="ptolemy.actor.lib.conversions.json.JSONToRecord">
         <property name="dataSource" class="ptolemy.data.expr.Parameter" value="&quot;http://stdio.nl/ptango/disassemble.json&quot;">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-195.0, 325.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[330.0, 640.0]">
         </property>
     </entity>
-    <entity name="MonitorValue2" class="ptolemy.actor.lib.gui.MonitorValue">
-        <doc>Monitor and display values</doc>
-        <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="20">
+    <entity name="Test8" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{{Readings = 75.5, uuid = &quot;6416334d-7fe8-5f64-9658-d0f9c07e44d9&quot;}}">
         </property>
-        <property name="_icon" class="ptolemy.vergil.icon.UpdatedValueIcon">
-            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
-            </property>
-            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="displayWidth">
-            </property>
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[40.830078125, -64.70703125]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[515.0, 245.0]">
         </property>
     </entity>
-    <entity name="MonitorValue3" class="ptolemy.actor.lib.gui.MonitorValue">
-        <doc>Monitor and display values</doc>
-        <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="20">
+    <entity name="Test10" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{{Readings = 75.5, uuid = &quot;6416334d-7fe8-5f64-9658-d0f9c07e44d9&quot;}}">
         </property>
-        <property name="_icon" class="ptolemy.vergil.icon.UpdatedValueIcon">
-            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
-            </property>
-            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="displayWidth">
-            </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[215.0, 335.0]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[52.96169662475586, 218.6921157836914]">
+    </entity>
+    <entity name="Test13" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{{Readings = 75.5, uuid = &quot;6416334d-7fe8-5f64-9658-d0f9c07e44d9&quot;}}">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[495.458984375, 513.701171875]">
         </property>
     </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
@@ -284,8 +265,6 @@
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation6" class="ptolemy.actor.TypedIORelation">
-    </relation>
-    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
     </relation>
@@ -303,12 +282,13 @@
     </relation>
     <relation name="relation9" class="ptolemy.actor.TypedIORelation">
     </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+    </relation>
     <relation name="relation14" class="ptolemy.actor.TypedIORelation">
     </relation>
     <link port="JSONToRecord.output" relation="relation"/>
     <link port="Test.input" relation="relation"/>
     <link port="Test2.input" relation="relation2"/>
-    <link port="MonitorValue.input" relation="relation3"/>
     <link port="Test3.input" relation="relation4"/>
     <link port="Test4.input" relation="relation5"/>
     <link port="Test5.input" relation="relation6"/>
@@ -331,6 +311,7 @@
     <link port="RecordDisassembler.Readings" relation="relation11"/>
     <link port="Test12.input" relation="relation11"/>
     <link port="JSONToRecord12.output" relation="relation13"/>
-    <link port="MonitorValue2.input" relation="relation9"/>
-    <link port="MonitorValue3.input" relation="relation14"/>
+    <link port="Test8.input" relation="relation9"/>
+    <link port="Test10.input" relation="relation3"/>
+    <link port="Test13.input" relation="relation14"/>
 </entity>

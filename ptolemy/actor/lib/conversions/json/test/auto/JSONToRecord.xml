@@ -98,7 +98,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[1215.0, 240.0]">
         </property>
     </property>
-    <entity name="JSONToRecord" class="ptolemy.actor.lib.conversions.JSONToRecord">
+    <entity name="JSONToRecord" class="ptolemy.actor.lib.conversions.json.JSONToRecord">
         <property name="data" class="ptolemy.data.expr.Parameter" value="&quot;{ \&quot;PtolemyIsGreat\&quot; : true }&quot;">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[310.0, 160.0]">
@@ -117,7 +117,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[120.0, 160.0]">
         </property>
     </entity>
-    <entity name="JSONToRecord2" class="ptolemy.actor.lib.conversions.JSONToRecord">
+    <entity name="JSONToRecord2" class="ptolemy.actor.lib.conversions.json.JSONToRecord">
         <property name="data" class="ptolemy.data.expr.Parameter" value="&quot;{ \&quot;PtolemyIsFromStanford\&quot; : false }&quot;">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[311.25, 230.0]">
@@ -136,7 +136,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[146.25, 230.0]">
         </property>
     </entity>
-    <entity name="JSONToRecord3" class="ptolemy.actor.lib.conversions.JSONToRecord">
+    <entity name="JSONToRecord3" class="ptolemy.actor.lib.conversions.json.JSONToRecord">
         <property name="data" class="ptolemy.data.expr.Parameter" value="&quot;{ \&quot;IAmANull\&quot; : null }&quot;">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[315.0, 325.0]">
@@ -155,7 +155,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[105.0, 325.0]">
         </property>
     </entity>
-    <entity name="JSONToRecord4" class="ptolemy.actor.lib.conversions.JSONToRecord">
+    <entity name="JSONToRecord4" class="ptolemy.actor.lib.conversions.json.JSONToRecord">
         <property name="data" class="ptolemy.data.expr.Parameter" value="&quot;{ \&quot;three\&quot; : 3 }&quot;">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[315.0, 405.0]">
@@ -174,7 +174,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[90.0, 405.0]">
         </property>
     </entity>
-    <entity name="JSONToRecord5" class="ptolemy.actor.lib.conversions.JSONToRecord">
+    <entity name="JSONToRecord5" class="ptolemy.actor.lib.conversions.json.JSONToRecord">
         <property name="data" class="ptolemy.data.expr.Parameter" value="&quot;{ \&quot;pi\&quot; : 3.14 }&quot;">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[315.0, 495.0]">
@@ -193,7 +193,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[90.0, 495.0]">
         </property>
     </entity>
-    <entity name="JSONToRecord6" class="ptolemy.actor.lib.conversions.JSONToRecord">
+    <entity name="JSONToRecord6" class="ptolemy.actor.lib.conversions.json.JSONToRecord">
         <property name="data" class="ptolemy.data.expr.Parameter" value="&quot;{ \&quot;mole\&quot; : 6.02e23 }&quot;">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[315.0, 600.0]">
@@ -225,7 +225,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[200.0, 695.0]">
         </property>
     </entity>
-    <entity name="JSONToRecord7" class="ptolemy.actor.lib.conversions.JSONToRecord">
+    <entity name="JSONToRecord7" class="ptolemy.actor.lib.conversions.json.JSONToRecord">
         <property name="data" class="ptolemy.data.expr.Parameter" value="&quot;{\&quot;uuid\&quot;: \&quot;6416334d-7fe8-5f64-9658-d0f9c07e44d9\&quot;}&quot;">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[420.0, 695.0]">
@@ -244,7 +244,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[870.0, 35.0]">
         </property>
     </entity>
-    <entity name="JSONToRecord8" class="ptolemy.actor.lib.conversions.JSONToRecord">
+    <entity name="JSONToRecord8" class="ptolemy.actor.lib.conversions.json.JSONToRecord">
         <property name="data" class="ptolemy.data.expr.Parameter" value="&quot;{\&quot;uuid\&quot;: \&quot;6416334d-7fe8-5f64-9658-d0f9c07e44d9\&quot;, \&quot;Readings\&quot;: 75.5}&quot;">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[755.0, 110.0]">
@@ -263,13 +263,13 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[870.0, 205.0]">
         </property>
     </entity>
-    <entity name="JSONToRecord9" class="ptolemy.actor.lib.conversions.JSONToRecord">
+    <entity name="JSONToRecord9" class="ptolemy.actor.lib.conversions.json.JSONToRecord">
         <property name="data" class="ptolemy.data.expr.Parameter" value="&quot;[{\&quot;uuid\&quot;: \&quot;6416334d-7fe8-5f64-9658-d0f9c07e44d9\&quot;, \&quot;Readings\&quot;: 75.5}]&quot;">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[805.0, 275.0]">
         </property>
     </entity>
-    <entity name="JSONToRecord10" class="ptolemy.actor.lib.conversions.JSONToRecord">
+    <entity name="JSONToRecord10" class="ptolemy.actor.lib.conversions.json.JSONToRecord">
         <property name="data" class="ptolemy.data.expr.Parameter" value="&quot;{ \&quot;fibonacci\&quot; : [1, 1, 2, 3, 5] }&quot;">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[940.0, 385.0]">
@@ -288,7 +288,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[750.0, 385.0]">
         </property>
     </entity>
-    <entity name="JSONToRecord11" class="ptolemy.actor.lib.conversions.JSONToRecord">
+    <entity name="JSONToRecord11" class="ptolemy.actor.lib.conversions.json.JSONToRecord">
         <property name="data" class="ptolemy.data.expr.Parameter" value="&quot;[{\&quot;uuid\&quot;: \&quot;b5c86c2a-7025-5af5-8c34-6bcc73740592\&quot;, \&quot;Readings\&quot;: [[1330872755000, 81.75], [1330872760000, 83.75]]}]&quot;">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[830.0, 565.0]">
@@ -395,7 +395,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[1430.0, 35.0]">
         </property>
     </entity>
-    <entity name="JSONToRecord12" class="ptolemy.actor.lib.conversions.JSONToRecord">
+    <entity name="JSONToRecord12" class="ptolemy.actor.lib.conversions.json.JSONToRecord">
         <property name="data" class="ptolemy.data.expr.Parameter" value="&quot;{\&quot;uuid\&quot;: \&quot;6416334d-7fe8-5f64-9658-d0f9c07e44d9\&quot;, \&quot;Readings\&quot;: 75.5}&quot;">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[1305.0, 130.0]">
@@ -452,7 +452,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[1320.0, 320.0]">
         </property>
     </entity>
-    <entity name="JSONToRecord13" class="ptolemy.actor.lib.conversions.JSONToRecord">
+    <entity name="JSONToRecord13" class="ptolemy.actor.lib.conversions.json.JSONToRecord">
         <property name="data" class="ptolemy.data.expr.Parameter" value="&quot;{\&quot;uuid\&quot;: \&quot;6416334d-7fe8-5f64-9658-d0f9c07e44d9\&quot;, \&quot;Readings\&quot;: 75.5}&quot;">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[1460.0, 320.0]">

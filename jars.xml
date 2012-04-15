@@ -287,6 +287,9 @@
 	<include name="ptolemy/actor/lib/conversions/*.xml"/>
       </fileset>
       <fileset dir="${basedir}">
+	<include name="ptolemy/actor/lib/conversions/json/*.class"/>
+      </fileset>
+      <fileset dir="${basedir}">
 	<include name="ptolemy/actor/lib/embeddedJava/*.class"/>
       </fileset>
       <fileset dir="${basedir}">

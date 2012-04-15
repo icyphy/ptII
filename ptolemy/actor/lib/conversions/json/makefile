@@ -1,8 +1,8 @@
-# Makefile for Java Ptolemy polymorphic actor classes
+# Makefile for Java Ptolemy polymorphic JSON (JavaScript Object Notation) classes
 #
 # @Authors: Christopher Hylands, based on a file by Thomas M. Parks
 #
-# @Version: $Id$
+# @Version: $Id: makefile 63131 2012-03-07 06:49:33Z cxh $
 #
 # @Copyright (c) 1999-2009 The Regents of the University of California.
 # All rights reserved.
@@ -29,15 +29,12 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-# This directory contains polymorphic actors.
+ME =		ptolemy/actor/lib/conversions/json
 
-ME =		ptolemy/actor/lib/conversions
-
-# PTJSON_DIR is set by $PTII/configure in $PTII/mk/ptII.mk
-DIRS = 		$(PTJSON_DIR) test
+DIRS = 		test
 
 # Root of the Java directory
-ROOT =		../../../..
+ROOT =		../../../../..
 
 CLASSPATH =	$(ROOT)
 
@@ -46,39 +43,17 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	conversions
+PTPACKAGE = 	json
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 # Keep this list alphabetized.
 JSRCS = \
-	AnythingToDouble.java \
-	BooleanToAnything.java \
-	CartesianToComplex.java \
-	CartesianToPolar.java \
-	ComplexToCartesian.java \
-	ComplexToPolar.java \
-	Converter.java \
-	DoubleToFix.java \
-	ExpressionToToken.java \
-	FixToDouble.java \
-	FixToFix.java \
-	IntArrayToString.java \
-	UnsignedByteArrayToString.java \
-	InUnitsOf.java \
-	LongToDouble.java \
-	PolarToCartesian.java \
-	PolarToComplex.java \
-	Round.java \
-	StringToIntArray.java \
-	StringToUnsignedByteArray.java \
-	StringToXML.java \
-	TokenToExpression.java 
+	JSONToRecord.java
 
 OTHER_FILES_TO_BE_JARED = \
-	conversions.xml
+	json.xml
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
-
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
@@ -87,16 +62,12 @@ MISC_FILES =	$(DIRS)
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
-	doc \
-	'ExpressionToToken$$1.class' \
-	'ExpressionToToken$$ExpressionScope.class'
+	doc
 
 JCLASS = $(JSRCS:%.java=%.class)
 
-
 all: jclass
 install: jclass jars
-
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk

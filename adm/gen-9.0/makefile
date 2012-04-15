@@ -1358,6 +1358,7 @@ JSALLDIRS = \
 	$(REMOTE1PTIIDIST)/ptolemy/actor/lib/colt \
 	$(REMOTE1PTIIDIST)/ptolemy/actor/lib/comm \
 	$(REMOTE1PTIIDIST)/ptolemy/actor/lib/conversions \
+	$(REMOTE1PTIIDIST)/ptolemy/actor/lib/conversions/json \
 	$(REMOTE1PTIIDIST)/ptolemy/actor/lib/fmi \
 	$(REMOTE1PTIIDIST)/ptolemy/actor/lib/hoc \
 	$(REMOTE1PTIIDIST)/ptolemy/actor/lib/io \

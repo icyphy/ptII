@@ -86,6 +86,10 @@
     </property>
   </entity>
 
+  <entity name="JSONToRecord"
+	  class="ptolemy.actor.lib.conversions.json.JSONToRecord">
+  </entity>
+
   <entity name="LongToDouble"
           class="ptolemy.actor.lib.conversions.LongToDouble">
   </entity>
