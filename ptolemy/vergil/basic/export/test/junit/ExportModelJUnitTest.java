@@ -106,6 +106,9 @@ public class ExportModelJUnitTest {
 			   + " -whiteBackground " + modelPath
 			   + " $PTII/" + modelDirectory + "/" + modelName);
 
+        // ExportModel.exportModel() calls System.exit() unless we set this property.
+        System.setProperty("ptolemy.ptII.doNotExit", "true");
+
         ExportModel exportModel = new ExportModel();
 	try {
 	    exportModel.exportModel(false /* copyJavaScriptFiles */,
