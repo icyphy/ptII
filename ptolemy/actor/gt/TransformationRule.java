@@ -586,7 +586,12 @@ public class TransformationRule extends MultiCompositeActor implements
             _localClock.start();
         }
 
-        /** Set stop requested to be false and do nothing else.
+        /** Set stop requested to be false, initialize zero time variable
+         *  and initialize the local clock. This cannot be done earlier
+         *  because the timeResolution might not be known. The base class
+         *  implements this functionality and because this director
+         *  does not call the base class we need to replicate the 
+         *  functionality here.
          *
          *  @exception IllegalActionException Not thrown in this class.
          */
