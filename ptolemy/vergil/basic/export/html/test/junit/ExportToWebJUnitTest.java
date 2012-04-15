@@ -96,6 +96,8 @@ public class ExportToWebJUnitTest {
         args[0] = "-run";
         args[1] = modelFileName;
         args[2] = directoryName;
+        // Export.main(args) calls System.exit() unless we set this property.
+        System.setProperty("ptolemy.ptII.doNotExit", "true");
         ExportModel.main(args);
         FileUtilities.deleteDirectory(new File(directoryName));
     }
