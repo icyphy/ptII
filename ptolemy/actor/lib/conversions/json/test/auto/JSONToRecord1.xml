@@ -240,22 +240,43 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[330.0, 640.0]">
         </property>
     </entity>
-    <entity name="Test8" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{{Readings = 75.5, uuid = &quot;6416334d-7fe8-5f64-9658-d0f9c07e44d9&quot;}}">
+    <entity name="MonitorValue" class="ptolemy.actor.lib.gui.MonitorValue">
+        <doc>Monitor and display values</doc>
+        <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="20">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[515.0, 245.0]">
+        <property name="_icon" class="ptolemy.vergil.icon.UpdatedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="displayWidth">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{520, 525}">
         </property>
     </entity>
-    <entity name="Test10" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{{Readings = 75.5, uuid = &quot;6416334d-7fe8-5f64-9658-d0f9c07e44d9&quot;}}">
+    <entity name="MonitorValue2" class="ptolemy.actor.lib.gui.MonitorValue">
+        <doc>Monitor and display values</doc>
+        <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="20">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[215.0, 335.0]">
+        <property name="_icon" class="ptolemy.vergil.icon.UpdatedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="displayWidth">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[680.0, 220.0]">
         </property>
     </entity>
-    <entity name="Test13" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{{Readings = 75.5, uuid = &quot;6416334d-7fe8-5f64-9658-d0f9c07e44d9&quot;}}">
+    <entity name="MonitorValue3" class="ptolemy.actor.lib.gui.MonitorValue">
+        <doc>Monitor and display values</doc>
+        <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="20">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[495.458984375, 513.701171875]">
+        <property name="_icon" class="ptolemy.vergil.icon.UpdatedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="displayWidth">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[320.0, 340.0]">
         </property>
     </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
@@ -280,11 +301,11 @@
     </relation>
     <relation name="relation13" class="ptolemy.actor.TypedIORelation">
     </relation>
+    <relation name="relation14" class="ptolemy.actor.TypedIORelation">
+    </relation>
     <relation name="relation9" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-    </relation>
-    <relation name="relation14" class="ptolemy.actor.TypedIORelation">
     </relation>
     <link port="JSONToRecord.output" relation="relation"/>
     <link port="Test.input" relation="relation"/>
@@ -311,7 +332,7 @@
     <link port="RecordDisassembler.Readings" relation="relation11"/>
     <link port="Test12.input" relation="relation11"/>
     <link port="JSONToRecord12.output" relation="relation13"/>
-    <link port="Test8.input" relation="relation9"/>
-    <link port="Test10.input" relation="relation3"/>
-    <link port="Test13.input" relation="relation14"/>
+    <link port="MonitorValue.input" relation="relation14"/>
+    <link port="MonitorValue2.input" relation="relation9"/>
+    <link port="MonitorValue3.input" relation="relation3"/>
 </entity>
