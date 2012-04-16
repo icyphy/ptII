@@ -58,7 +58,7 @@ test Director-2.1 {Constructor tests} {
 
     # These methods could be abstract, but are not for testing purposes
     # so we call them here
-    $d1 fireAtCurrentTime $e0
+    # do not call methods that access time objects before initialization $d1 fireAtCurrentTime $e0
 
     list [$d1 getFullName] [$d2 getFullName] [$d3 getFullName]
 } {.D1 .D2 .E0.D3}
@@ -105,9 +105,9 @@ test Director-5.1 {Test action methods} {
     #$a1 clear
     #set allowParam [getParameter $d3 allowDisconnectedGraphs]
     #$allowParam setToken [java::new ptolemy.data.BooleanToken true];
-    set r1 [$director getNextIterationTime]
     #puts [$e2 exportMoML]
     $manager initialize
+    set r1 [$director getNextIterationTime]
     #[$e2 getManager] execute
     $director iterate 3
     set r2 [$director getNextIterationTime]
