@@ -3789,7 +3789,7 @@ else
 	# Used in org/makefile
 	PTJSON_DIR=json
 	# Used in doc/makefile
-	PTJSON_PACKAGES=org.json
+	PTJSON_PACKAGES="org.json ptolemy.actor.lib.conversions.json"
     else
         AC_MSG_WARN([Failed to find $PTII/org/json/
     perhaps JSON is not installed?
