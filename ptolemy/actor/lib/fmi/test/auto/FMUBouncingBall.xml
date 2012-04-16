@@ -7,6 +7,8 @@
     <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
         <property name="iterations" class="ptolemy.data.expr.Parameter" value="10">
         </property>
+        <property name="period" class="ptolemy.data.expr.Parameter" value="0.1">
+        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{90, 30}">
         </property>
     </property>
@@ -59,7 +61,7 @@
         </port>
     </entity>
     <entity name="Test" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.955855, 0.81361, 0.573265, 0.23482, 0.1051318, 0.3376288, 0.4720258, 0.5083228, 0.4465198, 0.2866168}">
         </property>
         <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>
@@ -67,13 +69,13 @@
         </property>
     </entity>
     <entity name="Test2" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{-0.981, -1.962, -2.943, -3.924, 2.76642, 1.78542, 0.80442, -0.17658, -1.15758, -2.13858}">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[365.0, 225.0]">
         </property>
     </entity>
     <entity name="Test3" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{-0.981, -1.962, -2.943, -3.924, 2.76642, 1.78542, 0.80442, -0.17658, -1.15758, -2.13858}">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[370.0, 275.0]">
         </property>
