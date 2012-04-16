@@ -190,7 +190,30 @@ public class FMUFile {
 
         String sharedLibrary = FMUFile.fmuSharedLibrary(fmiModelDescription);
         // Load the shared library
-        fmiModelDescription.nativeLibrary = NativeLibrary.getInstance(sharedLibrary);
+        try {
+            fmiModelDescription.nativeLibrary = NativeLibrary.getInstance(sharedLibrary);
+        } catch (Throwable throwable) {
+            List<String> binariesFiles = new LinkedList<String>();
+            for (File file : fmiModelDescription.files) {
+                if (file.toString().indexOf("binaries") != -1) {
+                    binariesFiles.add(file.toString() + "\n");
+                }
+            }
+            String message = "Failed to load the \""
+                + sharedLibrary + "\" shared library, which was created "
+                + "by unzipping \"" +
+                fmuFileName
+                + "\". Usually, this is because the .fmu file does "
+                + "not contain a shared library for the current "
+                + "architecture.  The fmu file contained the "
+                + "following files with 'binaries' in the path:\n" 
+                + binariesFiles;
+            System.out.println(message + "\n Original error:\n " 
+                    + throwable);
+            // Note that Variable.propagate() will handle this error and
+            // hide it.
+            throw new IOException(message, throwable);
+        }
 
         // ModelVariables
         // NodeList is not a list, it only has getLength() and item(). #fail.

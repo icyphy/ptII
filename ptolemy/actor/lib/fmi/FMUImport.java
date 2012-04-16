@@ -50,6 +50,7 @@ import org.ptolemy.fmi.FMIScalarVariable;
 import org.ptolemy.fmi.FMIScalarVariable.Alias;
 import org.ptolemy.fmi.FMIScalarVariable.Causality;
 import org.ptolemy.fmi.FMUFile;
+import org.ptolemy.fmi.FMIType;
 import org.ptolemy.fmi.NativeSizeT;
 
 import ptolemy.actor.TypedAtomicActor;
@@ -65,7 +66,9 @@ import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.moml.MoMLChangeRequest;
 
 import com.sun.jna.Function;
 import com.sun.jna.Memory;
@@ -154,12 +157,11 @@ public class FMUImport extends TypedAtomicActor {
      */
     public void fire() throws IllegalActionException {
         super.fire();
-        System.out.println("FMUImport.fire()");
+        if (_debugging) {
+            _debug("FMUImport.fire()");
+        }
 
         String modelIdentifier = _fmiModelDescription.modelIdentifier;
-
-        // FIXME: Move this into _updateParameters for efficiency
-        Function function = _nativeLibrary.getFunction(modelIdentifier + "_fmiDoStep");
 
         // FIXME: In FMI-1.0, time is double.  This is not right.
         double time = getDirector().getModelTime().getDoubleValue();
@@ -167,11 +169,13 @@ public class FMUImport extends TypedAtomicActor {
         // FIXME: depending on SDFDirector here.
         double stepSize = ((ptolemy.domains.sdf.kernel.SDFDirector)getDirector()).periodValue();
 
-        System.out.println("FMIImport.fire(): about to call "
-                + modelIdentifier + "_fmiDoStep(Component, /* time */ " + time
-                + ", /* stepSize */" + stepSize + ", 1)");
+        if (_debugging) {
+            _debug("FMIImport.fire(): about to call "
+                    + modelIdentifier + "_fmiDoStep(Component, /* time */ " + time
+                    + ", /* stepSize */" + stepSize + ", 1)");
+        }
 
-        int fmiFlag = ((Integer)function.invokeInt(new Object[] {_fmiComponent, time, stepSize, (byte)1})).intValue();
+        int fmiFlag = ((Integer)_fmiDoStep.invokeInt(new Object[] {_fmiComponent, time, stepSize, (byte)1})).intValue();
 
         if (fmiFlag != FMILibrary.FMIStatus.fmiOK) {
             throw new IllegalActionException(this, "Could not simulate, " 
@@ -179,10 +183,14 @@ public class FMUImport extends TypedAtomicActor {
                     + ", /* stepSize */" + stepSize + ", 1) returned " + fmiFlag);
         }
 
-        System.out.println("FMUImport done calling " + modelIdentifier + "_fmiDoStep()");
+        if (_debugging) {
+            _debug("FMUImport done calling " + modelIdentifier + "_fmiDoStep()");
+        }
 
         for (FMIScalarVariable scalarVariable : _fmiModelDescription.modelVariables) {
-            System.out.println("FMUImport.fire(): " + scalarVariable.name);
+            if (_debugging) {
+                _debug("FMUImport.fire(): " + scalarVariable.name);
+            }
             if (scalarVariable.alias != null
                     && scalarVariable.alias != Alias.noAlias) {
                 // If the scalarVariable has an alias, then skip it.
@@ -212,8 +220,10 @@ public class FMUImport extends TypedAtomicActor {
 
                 TypedIOPort port = (TypedIOPort)getPort(scalarVariable.name);
 
-                System.out.println("FMUImport.fire(): " + scalarVariable.name + " " + token + " "
-                                   + scalarVariable.causality + " " + Causality.output);
+                if (_debugging) {
+                    _debug("FMUImport.fire(): " + scalarVariable.name + " " + token + " "
+                            + scalarVariable.causality + " " + Causality.output);
+                }
                 // FIXME: Why is Causality none?
                 if (scalarVariable.causality == Causality.none) {
                     port.send(0, token);
@@ -222,16 +232,6 @@ public class FMUImport extends TypedAtomicActor {
                 }
             }
         }
-
-
-
-//         String modelIdentifier = _fmiModelDescription.modelIdentifier;
-
-
-//         Function status = _nativeLibrary.getFunction(modelIdentifier + "_fmiGetStringStatus");
-//         System.out.println("FMIImport.fire(): about to call getStatus: " + _fmiComponent);
-//                 int fmiFlag2 = ((Integer)status.invokeInt(new Object[] {_fmiComponent, "getStatus", "test..."}));
-
     }
 
     /** Initialize the slave FMU.
@@ -241,21 +241,16 @@ public class FMUImport extends TypedAtomicActor {
     public void initialize() throws IllegalActionException {
         super.initialize();
 
-        System.out.println("FMIImport.initialize() START");
+        if (_debugging) {
+            _debug("FMIImport.initialize() START");
+        }
 
         String modelIdentifier = _fmiModelDescription.modelIdentifier;
 
-        Function status = _nativeLibrary.getFunction(modelIdentifier + "_fmiGetStringStatus");
-        System.out.println("FMIImport.initialize(): about to call getStatus: " + _fmiComponent);
-        int fmiFlag2 = ((Integer)status.invokeInt(new Object[] {_fmiComponent, FMILibrary.FMIStatusKind.fmiDoStepStatus, "test..."}));
-        if (fmiFlag2 > FMILibrary.FMIStatus.fmiWarning) {
-            System.out.println("Failed to get status " + status + " returned " + fmiFlag2);
+        if (_debugging) {
+            _debug("FMUCoSimulation: about to call " + modelIdentifier + "_fmiInitializeSlave");
         }
-
-        //if (_debugging) {
-            System.out.println("FMUCoSimulation: about to call " + modelIdentifier + "_fmiInitializeSlave");
-            //}
-        Function function = _nativeLibrary.getFunction(modelIdentifier + "_fmiInitializeSlave");
+        Function function = _fmiModelDescription.nativeLibrary.getFunction(modelIdentifier + "_fmiInitializeSlave");
 
         // FIXME: FMI-1.0 uses doubles for times.
         double startTime = getDirector().getModelStartTime().getDoubleValue();
@@ -266,7 +261,100 @@ public class FMUImport extends TypedAtomicActor {
                     + modelIdentifier + "_fmiInitializeSlave(Component, /* startTime */ " + startTime
                     + ", 1, /* stopTime */" + stopTime + ") returned " + fmiFlag);
         }
-        System.out.println("FMIImport.initialize() END");
+        if (_debugging) {
+            _debug("FMIImport.initialize() END");
+        }
+    }
+
+    /** Import a FMUFile.
+     *  @param originator The originator of the change request.
+     *  @param fmuFileName The .fmuFile
+     *  @param context The context in which the FMU actor is created.
+     *  @param x The x-axis value of the actor to be created.
+     *  @param y The y-axis value of the actor to be created.
+     *  @exception IllegalActionException If there is a problem instantiating the actor.
+     *  @exception IOException If there is a problem parsing the fmu file.
+     */
+    public static void importFMU(Object originator, String fmuFileName, NamedObj context, double x, double y) 
+            throws IllegalActionException, IOException {
+        // This method is called by the gui to import a fmu file and create the actor.
+        // The primary issue is that we need to define the ports early on and handle
+        // changes to the ports.
+        FMIModelDescription fmiModelDescription = FMUFile.parseFMUFile(fmuFileName);
+
+        // FIXME: Use URLs, not files so that we can work from JarZip files.
+
+        // If a location is given as a URL, construct MoML to
+        // specify a "source".
+        String source = "";
+        // FIXME: not sure about this
+        if (fmuFileName.startsWith("http://")) {
+            source = " source=\"" + fmuFileName.trim() + "\"";
+        }
+
+        String rootName = new File(fmuFileName).getName();
+        int index = rootName.lastIndexOf('.');
+        if (index != -1) {
+            rootName = rootName.substring(0, index);
+        }
+
+        // Instantiate ports and parameters.
+        StringBuffer parameterMoML = new StringBuffer();
+        StringBuffer portMoML = new StringBuffer();
+        for (FMIScalarVariable scalar : fmiModelDescription.modelVariables) {
+            if (scalar.type instanceof FMIRealType) {
+                if (scalar.variability == FMIScalarVariable.Variability.parameter) {
+                    // Parameter parameter = new Parameter(this, scalar.name);
+                    // parameter.setExpression(Double.toString(((FMIRealType)scalar.type).start));
+                    // // Prevent exporting this to MoML unless it has
+                    // // been overridden.
+                    // parameter.setDerivedLevel(1);
+
+                    // FIXME: Need to sanitize the name.
+                    parameterMoML.append("<property name=\"" + scalar.name
+                            + "\" class=\"ptolemy.data.expr.Parameter\" value =\""
+                            + Double.toString(((FMIRealType)scalar.type).start)
+                            + "\"></property>");
+                } {
+                    // // FIXME: All output ports?
+                    // TypedIOPort port = new TypedIOPort(this, scalar.name, false, true);
+                    // port.setDerivedLevel(1);
+                    // // FIXME: set the type
+                    // port.setTypeEquals(BaseType.DOUBLE);
+                    portMoML.append("<port name=\"" + scalar.name
+                            + "\" class=\"ptolemy.actor.TypedIOPort\">"
+                            + "<property name=\"output\"/>"
+                            + "<property name=\"_type\" "
+                            + "class=\"ptolemy.actor.TypeAttribute\" value=\""
+                            + _fmiType2PtolemyType(scalar.type) + "\"/>"
+                            + "</port>");
+                }
+            } else {
+                throw new IllegalActionException("Don't know how to handle "
+                        + scalar.type);
+            }
+        }
+
+        // FIXME: Get Undo/Redo working.
+
+        // Use the "auto" namespace group so that name collisions
+        // are automatically avoided by appending a suffix to the name.
+        String moml = "<group name=\"auto\">"
+            + "<entity name=\"" + rootName
+            + "\" class=\"ptolemy.actor.lib.fmi.FMUImport\"" + source + ">"
+            + "<property name=\"_location\" "
+            + "class=\"ptolemy.kernel.util.Location\" value=\"" + x
+            + ", " + y + "\"></property>"
+            + "<property name=\"fmuFile\""
+            + "class=\"ptolemy.data.expr.FileParameter\""
+            + "value=\"" + fmuFileName
+            + "\"></property>"
+            + parameterMoML
+            + portMoML
+            + "</entity></group>";
+        MoMLChangeRequest request = new MoMLChangeRequest(originator,
+                context, moml);
+        context.requestChange(request);
     }
 
     /** Instantiate the slave FMU component.
@@ -274,7 +362,10 @@ public class FMUImport extends TypedAtomicActor {
      */   
     public void preinitialize() throws IllegalActionException {
         super.preinitialize();
-        System.out.println("FMUImport.preinitialize()");
+        if (_debugging) {
+            _debug("FMUImport.preinitialize()");
+        }
+
         // The modelName may have spaces in it.   
         String modelIdentifier = _fmiModelDescription.modelIdentifier;
         
@@ -310,12 +401,11 @@ public class FMUImport extends TypedAtomicActor {
         // FIXME: Logging tends to cause segfaults because of vararg callbacks so we ignore it.
         loggingOn = (byte)0;
 
-        //if (_debugging) {
-            System.out.println("FMUCoSimulation: about to call " + modelIdentifier + "_fmiInstantiateSlave");
-            //}
+        if (_debugging) {
+            _debug("FMUCoSimulation: about to call " + modelIdentifier + "_fmiInstantiateSlave");
+        }
 
-        Function instantiateSlave = _nativeLibrary.getFunction(modelIdentifier + "_fmiInstantiateSlave");
-        _fmiComponent = (Pointer) instantiateSlave.invoke(Pointer.class,
+        _fmiComponent = (Pointer) _fmiInstantiateSlave.invoke(Pointer.class,
                 new Object [] {
                     modelIdentifier,
                     _fmiModelDescription.guid,
@@ -326,12 +416,7 @@ public class FMUImport extends TypedAtomicActor {
                     interactive,
                     callbacks,
                     loggingOn});
-
-        Function status = _nativeLibrary.getFunction(modelIdentifier + "_fmiGetStringStatus");
-        System.out.println("FMIImport.preinitialize(): about to call getStatus: " + _fmiComponent);
-        int fmiFlag2 = ((Integer)status.invokeInt(new Object[] {_fmiComponent, "getStatus", "test..."}));
-
-
+ 
         if (_fmiComponent.equals(Pointer.NULL)) {
             throw new RuntimeException("Could not instantiate Functional Mock-up Unit (FMU).");
         }
@@ -382,7 +467,6 @@ public class FMUImport extends TypedAtomicActor {
 
         public class FMUFreeMemory implements FMICallbackFreeMemory {
             public void apply(Pointer pointer) {
-                //System.out.println("Java fmiFreeMemory " + pointer);
                 _pointers.remove(pointer);
             }
         }
@@ -391,6 +475,29 @@ public class FMUImport extends TypedAtomicActor {
                 System.out.println("Java fmiStepFinished: " + c + " " + status);
             }
 	};
+    }
+
+    /** Given a FMIType object, return a string suitable for setting
+     *  the TypeAttribute.
+     *  @param type The FMIType object.
+     *  @return a string suitable for ptolemy.actor.TypeAttribute.
+     *  @exception IllegalActionException If the type is not supported.
+     */
+    private static String _fmiType2PtolemyType(FMIType type)
+            throws IllegalActionException {
+        if (type instanceof FMIBooleanType) {
+            return "boolean";
+        } else if (type instanceof FMIIntegerType) {
+            // FIXME: handle Enumerations?
+            return "int";
+        } else if (type instanceof FMIRealType) {
+            return "double";
+        } else if (type instanceof FMIStringType) {       
+            return "string";
+        } else {
+            throw new IllegalActionException("Type " + type
+                    + " not supported.");
+        }
     }
 
     /** Update the parameters listed in the modelDescription.xml file
@@ -406,7 +513,9 @@ public class FMUImport extends TypedAtomicActor {
     private void _updateParameters()
             throws IllegalActionException, NameDuplicationException {
 
-        System.out.println("FMUImport.updateParameters() START");
+        if (_debugging) {
+            _debug("FMUImport.updateParameters() START");
+        }
         // Unzip the fmuFile.  We probably need to do this
         // because we will need to load the shared library later.
         String fmuFileName = null;
@@ -426,71 +535,30 @@ public class FMUImport extends TypedAtomicActor {
             }
             _fmuFileModificationTime = modificationTime;
 
+            // Calling parseFMUFile also loads the share library.
             _fmiModelDescription = FMUFile.parseFMUFile(fmuFileName);
             
-//             // Instantiate ports and parameters.
-//             for (FMIScalarVariable scalar : _fmiModelDescription.modelVariables) {
-//                 if (scalar.type instanceof FMIRealType) {
-//                     if (scalar.variability == FMIScalarVariable.Variability.parameter) {
-//                         Parameter parameter = new Parameter(this, scalar.name);
-//                         parameter.setExpression(Double.toString(((FMIRealType)scalar.type).start));
-//                         // Prevent exporting this to MoML unless it has
-//                         // been overridden.
-//                         parameter.setDerivedLevel(1);
-//                     } {
-//                         // FIXME: All output ports?
-//                         TypedIOPort port = new TypedIOPort(this, scalar.name, false, true);
-//                         port.setDerivedLevel(1);
-//                         // FIXME: set the type
-//                         port.setTypeEquals(BaseType.DOUBLE);
-//                     }
-//                 } else {
-//                     throw new IllegalActionException("Don't know how to handle "
-//                             + scalar.type);
-//                 }
-//             }
-            
-            String library = null;
-            try {
-                library = FMUFile.fmuSharedLibrary(_fmiModelDescription);
-                System.out.println("About to load " + library);
-                _nativeLibrary = NativeLibrary.getInstance(library);
-            } catch (Throwable throwable) {
-                List<String> binariesFiles = new LinkedList<String>();
-                for (File file : _fmiModelDescription.files) {
-                    if (file.toString().indexOf("binaries") != -1) {
-                        binariesFiles.add(file.toString() + "\n");
-                    }
-                }
-                String message = "Failed to load the \""
-                        + library + "\" shared library, which was created "
-                        + "by unzipping \"" +
-                        fmuFile.asFile()
-                        + "\". Usually, this is because the .fmu file does "
-                        + "not contain a shared library for the current "
-                        + "architecture.  The fmu file contained the "
-                        + "following files with 'binaries' in the path:\n" 
-                        + binariesFiles;
-                System.out.println(this.getFullName() + ": "
-                        + message + "\n Original error:\n " 
-                        + throwable);
-                // Note that Variable.propagate() will handle this error and
-                // hide it.
-                throw new IllegalActionException(this, throwable, message);
-            }
-
+            _fmiDoStep = _fmiModelDescription.nativeLibrary.getFunction(
+                    _fmiModelDescription.modelIdentifier + "_fmiDoStep");
+            _fmiInstantiateSlave = _fmiModelDescription.nativeLibrary.getFunction(
+                    _fmiModelDescription.modelIdentifier + "_fmiInstantiateSlave");
 
         } catch (IOException ex) {
             throw new IllegalActionException(this, ex,
                     "Failed to unzip, read in or process \"" + fmuFileName + "\".");
         }
-        System.out.println("FMUImport.updateParameters() END");
+        if (_debugging) {
+            _debug("FMUImport.updateParameters() END");
+        }
     }
 
     /** The FMI component created by the
      * modelIdentifier_fmiInstantiateSlave() method.
      */
     private Pointer _fmiComponent = null;
+
+    /** The _fmoDoStep() function. */
+    private Function _fmiDoStep;
 
     /** The name of the fmuFile.
      *  The _fmuFileName field is set the first time we read
@@ -506,15 +574,13 @@ public class FMUImport extends TypedAtomicActor {
      */
     private long _fmuFileModificationTime = -1;
 
+    /** The _fmiInstantiateSlave function. */
+    Function _fmiInstantiateSlave;
+
     /** A representation of the fmiModelDescription element of a
      *  Functional Mock-up Unit (FMU) file.
      */
     FMIModelDescription _fmiModelDescription;
-
-    /** A reference to the shared library that was loaded from the
-     * .fmu file.
-     */   
-    NativeLibrary _nativeLibrary;
 
     /** Keep references to memory that has been allocated and
      *  avoid problems with the memory being garbage collected.   

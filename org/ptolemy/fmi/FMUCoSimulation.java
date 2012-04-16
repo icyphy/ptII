@@ -82,6 +82,7 @@ public class FMUCoSimulation {
                 Pointer pointer = alignedMemory.share(0);
 
                 // Need to keep a reference so the memory does not get gc'd.
+                // See http://osdir.com/ml/java.jna.user/2008-09/msg00065.html   
                 _pointers.add(pointer);
 
 //                 System.out.println("Java fmiAllocateMemory " + nobj + " " + size
@@ -301,7 +302,6 @@ public class FMUCoSimulation {
 
     /** Keep references to memory that has been allocated and
      *  avoid problems with the memory being garbage collected.   
-     *  See http://osdir.com/ml/java.jna.user/2008-09/msg00065.html   
      */   
     private static Set<Pointer> _pointers = new HashSet<Pointer>();
 }

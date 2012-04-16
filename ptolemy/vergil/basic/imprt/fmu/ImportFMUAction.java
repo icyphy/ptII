@@ -34,11 +34,12 @@ import java.io.File;
 import javax.swing.AbstractAction;
 
 import ptolemy.actor.gui.PtolemyQuery;
+import ptolemy.actor.lib.fmi.FMUImport;
 import ptolemy.gui.ComponentDialog;
 import ptolemy.gui.Query;
 import ptolemy.gui.Top;
+import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NamedObj;
-import ptolemy.moml.MoMLChangeRequest;
 import ptolemy.util.MessageHandler;
 import ptolemy.vergil.basic.AbstractBasicGraphModel;
 import ptolemy.vergil.basic.BasicGraphFrame;
@@ -145,43 +146,51 @@ public class ImportFMUAction extends AbstractAction {
                 double x = bounds.getWidth() / 2.0;
                 double y = bounds.getHeight() / 2.0;
 
-                String rootName = new File(_lastLocation).getName();
-                int index = rootName.lastIndexOf('.');
-                if (index != -1) {
-                    rootName = rootName.substring(0, index - 1);
+                // Unzip the fmuFile.  We probably need to do this
+                // because we will need to load the shared library later.
+                String fmuFileName = null;
+
+                // FIXME: Use URLs, not files so that we can work from JarZip files.
+            
+                // Only read the file if the name has changed from the last time we
+                // read the file or if the modification time has changed.
+                //fmuFileName = fmuFile.asFile().getCanonicalPath();
+                fmuFileName = _lastLocation;
+                if (fmuFileName == _fmuFileName) {
+                    return;
+                }
+                _fmuFileName = fmuFileName;
+                
+                long modificationTime = new File(fmuFileName).lastModified();
+                if (_fmuFileModificationTime == modificationTime) {
+                    return;
                 }
 
-                // If a location is given as a URL, construct MoML to
-                // specify a "source".
-                String source = "";
-                // FIXME: not sure about this
-                if (_lastLocation.startsWith("http://")) {
-                    source = " source=\"" + _lastLocation.trim() + "\"";
-                }
+                _fmuFileModificationTime = modificationTime;
 
-                // FIXME: Get Undo/Redo working.
-
-                // Use the "auto" namespace group so that name collisions
-                // are automatically avoided by appending a suffix to the name.
-                String moml = "<group name=\"auto\"><entity name=\"" + rootName
-                    + "\" class=\"ptolemy.actor.lib.fmi.FMUImport\"" + source
-                    + "><property name=\"_location\" "
-                    + "class=\"ptolemy.kernel.util.Location\" value=\"" + x
-                    + ", " + y + "\"></property> "
-                    + "<property name=\"fmuFile\""
-                    + "class=\"ptolemy.data.expr.FileParameter\""
-                    + "value=\"" + _lastLocation
-                    + "\"></property></entity></group>";
-                MoMLChangeRequest request = new MoMLChangeRequest(this,
-                        context, moml);
-                context.requestChange(request);
+                FMUImport.importFMU(this, fmuFileName, context, x, y);
             }
         } catch (Exception ex) {
             MessageHandler.error("Import FMU failed", ex);
         }
     }
+
     ///////////////////////////////////////////////////////////////////
     ////                    private variables
+
+    /** The name of the fmuFile.
+     *  The _fmuFileName field is set the first time we read
+     *  the file named by the <i>fmuFile</i> parameter.  The
+     *  file named by the <i>fmuFile</i> parameter is only read
+     *  if the name has changed or if the modification time of 
+     *  the file is later than the time the file was last read.
+     */
+    private String _fmuFileName = null;
+    
+    /** The modification time of the file named by the
+     *  <i>fmuFile</i> parameter the last time the file was read.
+     */
+    private long _fmuFileModificationTime = -1;
 
     /** The top-level window of the contents to be exported. */
     Top _frame;
