@@ -265,7 +265,7 @@ public interface PlotBoxInterface {
 
     /** Return whether the X axis is drawn with a logarithmic scale.
      *  @return True if the X axis is logarithmic.
-     *  @see #setXLog(String)
+     *  @see #setXLog(boolean)
      */
     public boolean getXLog();
 
@@ -287,7 +287,6 @@ public interface PlotBoxInterface {
      *  which specifies the X tick locations (as instances of Double),
      *  and the second of which specifies the corresponding labels.
      *  @return The X ticks.
-     *  @see #setXTicks(Vector[])
      */
     public Vector[] getXTicks();
 
@@ -567,7 +566,7 @@ public interface PlotBoxInterface {
 
     /** Set the label for the X (horizontal) axis.
      *  @param label The label.
-     *  @see #getXlabel()
+     *  @see #getXLabel()
      */
     public void setXLabel(String label);
 

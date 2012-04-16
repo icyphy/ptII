@@ -714,7 +714,7 @@ public class Configuration extends CompositeEntity implements
 
     /** Instantiate the class named by a StringParameter in the configuration.
      *  @param parameterName The name of the StringParameter in the configuration.
-     *  @param constructerParameterTypes An array of parameter types, null if there
+     *  @param constructorParameterTypes An array of parameter types, null if there
      *  are no parameters
      *  @param constructorParameterClass An array of objects to pass to the constructor.
      *  @return an instance of the class named by parameterName, or

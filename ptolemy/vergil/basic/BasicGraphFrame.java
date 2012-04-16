@@ -1259,7 +1259,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
      *  @param configuration The configuration.
      *  @param entity The entity to save.
      *  @since Ptolemy 2.1
-     *  @deprecated Use {@link ptolemy.actor.gui.UserActor#saveComponentInLibrary(Configuration, Entity)}
+     *  @deprecated Use {@link ptolemy.actor.gui.UserActorLibrary#saveComponentInLibrary(Configuration, Entity)}
      */
     public static void saveComponentInLibrary(Configuration configuration,
             Entity entity) {

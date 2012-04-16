@@ -4367,7 +4367,6 @@ public class IOPort extends ComponentPort {
      *  first quantity manager. Etc.
      *  @see QuantityManager
      *  @param receiver The receiver to wrap.
-     *  @param channel Channel id used to determine the source port.
      *  @return Either a new receiver wrapping the specified receiver,
      *   or the specified receiver.
      *  @exception IllegalActionException If any parameter of the port
