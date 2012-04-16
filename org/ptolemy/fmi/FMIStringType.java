@@ -59,6 +59,13 @@ public class FMIStringType extends FMIType {
         }
     }
 
+    /** Return the string value of the base element.
+     *  @return The string value.
+     */
+    public String toString() {
+        return start;
+    }
+
     /** The starting value of this integer. */ 
     public String start;
 }

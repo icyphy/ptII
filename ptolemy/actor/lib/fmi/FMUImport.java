@@ -90,6 +90,14 @@ import com.sun.jna.Pointer;
  * included in shared libraries included in the <code>.fmu</code>
  * file.</p>
  * 
+ * <p>To use this actor from within Vergil, use Import -&gt; Import
+ * FMU, which will prompt for a .fmu file. This actor is <b>not</b>
+ * available from the actor pane via drag and drop. The problem is
+ * that dragging and dropping this actor ends up trying to read
+ * fmuImport.fmu, which does not exist.  If we added such a file, then
+ * dragging and dropping the actor would create an arbitrary actor
+ * with arbitrary ports.</p>
+ *
  * <p>FMI documentation may be found at
  * <a href="http://www.modelisar.com/fmi.html">http://www.modelisar.com/fmi.html</a>.
  * </p>
@@ -225,10 +233,16 @@ public class FMUImport extends TypedAtomicActor {
                             + scalarVariable.causality + " " + Causality.output);
                 }
                 // FIXME: Why is Causality none?
-                if (scalarVariable.causality == Causality.none) {
-                    port.send(0, token);
-                } else if (scalarVariable.causality == Causality.input) {
+                switch (scalarVariable.causality) {
+                case internal:
+                    break;
+                case input:
                     token = port.get(0);
+                    break;
+                case output:
+                case none:
+                    port.send(0, token);
+                    break;
                 }
             }
         }
@@ -302,8 +316,8 @@ public class FMUImport extends TypedAtomicActor {
         StringBuffer parameterMoML = new StringBuffer();
         StringBuffer portMoML = new StringBuffer();
         for (FMIScalarVariable scalar : fmiModelDescription.modelVariables) {
-            if (scalar.type instanceof FMIRealType) {
-                if (scalar.variability == FMIScalarVariable.Variability.parameter) {
+            if (scalar.variability == FMIScalarVariable.Variability.parameter) {
+                    // Parameters
                     // Parameter parameter = new Parameter(this, scalar.name);
                     // parameter.setExpression(Double.toString(((FMIRealType)scalar.type).start));
                     // // Prevent exporting this to MoML unless it has
@@ -311,28 +325,46 @@ public class FMUImport extends TypedAtomicActor {
                     // parameter.setDerivedLevel(1);
 
                     // FIXME: Need to sanitize the name.
+                    // FIXME: Need to sanitize the value.
                     parameterMoML.append("<property name=\"" + scalar.name
                             + "\" class=\"ptolemy.data.expr.Parameter\" value =\""
-                            + Double.toString(((FMIRealType)scalar.type).start)
+                            + scalar.type
                             + "\"></property>");
-                } {
+                } else {
+                    // Ports
+
                     // // FIXME: All output ports?
                     // TypedIOPort port = new TypedIOPort(this, scalar.name, false, true);
                     // port.setDerivedLevel(1);
                     // // FIXME: set the type
                     // port.setTypeEquals(BaseType.DOUBLE);
+
+                    // Determine whether it is an input or output port.
+                    String causality = "";
+                    switch (scalar.causality) {
+                    case internal:
+                        System.out.println("Warning: " + fmuFileName
+                                + "Don't know how to handle internal of Causality " + scalar.causality
+                                + " for " + scalar.name);
+                        continue;
+                    case input:
+                        causality = "input";
+                        break;
+                    case output:
+                        // FIXME: is it ok to default Causality.none to output ports?  See BouncingBall
+                    case none:
+                        causality = "output";
+                        break;
+                    }
+
                     portMoML.append("<port name=\"" + scalar.name
                             + "\" class=\"ptolemy.actor.TypedIOPort\">"
-                            + "<property name=\"output\"/>"
+                            + "<property name=\"" + causality + "\"/>"
                             + "<property name=\"_type\" "
                             + "class=\"ptolemy.actor.TypeAttribute\" value=\""
                             + _fmiType2PtolemyType(scalar.type) + "\"/>"
                             + "</port>");
                 }
-            } else {
-                throw new IllegalActionException("Don't know how to handle "
-                        + scalar.type);
-            }
         }
 
         // FIXME: Get Undo/Redo working.

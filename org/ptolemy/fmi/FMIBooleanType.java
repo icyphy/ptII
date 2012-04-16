@@ -59,6 +59,13 @@ public class FMIBooleanType extends FMIType {
         }
     }
 
+    /** Return the string value of the base element.
+     *  @return The string value.
+     */
+    public String toString() {
+        return Boolean.toString(start);
+    }
+
     /** The starting value of this boolean. */
     public boolean start;
 }

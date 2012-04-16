@@ -64,6 +64,13 @@ public class FMIRealType extends FMIType {
         }
     }
 
+    /** Return the string value of the base element.
+     *  @return The string value.
+     */
+    public String toString() {
+        return Double.toString(start);
+    }
+
     // FIXME: need more documentation and to describe other variables.
 
     /** The starting value of this real. */ 

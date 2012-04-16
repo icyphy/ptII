@@ -59,6 +59,11 @@ public abstract class FMIType {
         }
     }
 
+    /** Return the string value of the base element.
+     *  @return The string value.
+     */
+    abstract public String toString();
+
     /** A description of the type. */
     public String description;
 
