@@ -45,6 +45,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 
@@ -182,7 +183,22 @@ public class FMUFile {
         }
         // FIXME: Handle numberOfContinuousStates, numberOfEventIndicators etc.
             
-        // FIXME: handle typeDefinitions
+        // TypeDefinitions
+        // NodeList is not a list, it only has getLength() and item(). #fail.
+        NodeList types = document.getElementsByTagName("Type");
+        for (int i = 0; i < types.getLength(); i++) {
+            Element element = (Element) types.item(i);
+            String elementTypeName = element.getAttribute("name");
+            NodeList children = element.getChildNodes();  // NodeList. Worst. Ever.
+            for (i = 0; i < children.getLength(); i ++) {
+                Node child = element.getChildNodes().item(i);
+                if (child instanceof Element) {
+                    Element childElement = (Element) child;
+                    String childTypeName = childElement.getNodeName();
+                    fmiModelDescription.typeDefinitions.put(elementTypeName, childTypeName);
+                }
+            }
+        }
 
         // FIXME: handle DefaultExperiment
            

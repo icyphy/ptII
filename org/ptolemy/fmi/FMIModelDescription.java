@@ -28,8 +28,10 @@
 package org.ptolemy.fmi;
 
 import java.io.File;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 import com.sun.jna.NativeLibrary;
 
@@ -97,4 +99,9 @@ public class FMIModelDescription {
      * shared library in the .fmu file.
      */
     public NativeLibrary nativeLibrary;
+
+    /** A map from TypeDefinition type name declarations to the
+     * defined type name.
+     */
+    public Map<String,String> typeDefinitions = new HashMap<String, String>();
 }
