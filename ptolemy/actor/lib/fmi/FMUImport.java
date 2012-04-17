@@ -53,7 +53,6 @@ import org.ptolemy.fmi.FMUFile;
 import org.ptolemy.fmi.FMIType;
 import org.ptolemy.fmi.NativeSizeT;
 
-import ptolemy.actor.FixedTypeActor;
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.gui.MessageHandler;
