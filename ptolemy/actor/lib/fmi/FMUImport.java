@@ -69,6 +69,7 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.moml.MoMLChangeRequest;
+import ptolemy.util.StringUtilities;
 
 import com.sun.jna.Function;
 import com.sun.jna.Memory;
@@ -317,8 +318,8 @@ public class FMUImport extends TypedAtomicActor {
         StringBuffer portMoML = new StringBuffer();
         for (FMIScalarVariable scalar : fmiModelDescription.modelVariables) {
             if (scalar.variability == FMIScalarVariable.Variability.parameter) {
-                    // Parameters
-                    // Parameter parameter = new Parameter(this, scalar.name);
+		 // Parameters
+		    // Parameter parameter = new Parameter(this, scalar.name);
                     // parameter.setExpression(Double.toString(((FMIRealType)scalar.type).start));
                     // // Prevent exporting this to MoML unless it has
                     // // been overridden.
@@ -326,7 +327,7 @@ public class FMUImport extends TypedAtomicActor {
 
                     // FIXME: Need to sanitize the name.
                     // FIXME: Need to sanitize the value.
-                    parameterMoML.append("<property name=\"" + scalar.name
+		parameterMoML.append("<property name=\"" + StringUtilities.sanitizeName(scalar.name)
                             + "\" class=\"ptolemy.data.expr.Parameter\" value =\""
                             + scalar.type
                             + "\"></property>");
@@ -357,7 +358,7 @@ public class FMUImport extends TypedAtomicActor {
                         break;
                     }
 
-                    portMoML.append("<port name=\"" + scalar.name
+                    portMoML.append("<port name=\"" + StringUtilities.sanitizeName(scalar.name)
                             + "\" class=\"ptolemy.actor.TypedIOPort\">"
                             + "<property name=\"" + causality + "\"/>"
                             + "<property name=\"_type\" "
