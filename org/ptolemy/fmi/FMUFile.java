@@ -186,12 +186,13 @@ public class FMUFile {
         // TypeDefinitions
         // NodeList is not a list, it only has getLength() and item(). #fail.
         NodeList types = document.getElementsByTagName("Type");
-        for (int i = 0; i < types.getLength(); i++) {
+        int length = types.getLength();
+        for (int i = 0; i < length; i++) {
             Element element = (Element) types.item(i);
             String elementTypeName = element.getAttribute("name");
             NodeList children = element.getChildNodes();  // NodeList. Worst. Ever.
-            for (i = 0; i < children.getLength(); i ++) {
-                Node child = element.getChildNodes().item(i);
+            for (int j = 0; j < children.getLength(); j ++) {
+                Node child = element.getChildNodes().item(j);
                 if (child instanceof Element) {
                     Element childElement = (Element) child;
                     String childTypeName = childElement.getNodeName();
