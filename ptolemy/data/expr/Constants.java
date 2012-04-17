@@ -241,7 +241,8 @@ public class Constants {
         _types.put("object", ObjectToken.NULL);
         // http://bugzilla.ecoinformatics.org/show_bug.cgi?id=5545
         // "Also, why is "xmltoken" an option in the list? For double you enter "double", not DoubleToken, etc."
-        _types.put("xml", new XMLToken());
+        XMLToken xmltoken = new XMLToken();
+        _types.put("xml", xmltoken);
         _types.put("scalar", new ConcreteScalarToken());
         _types.put("string", new StringToken(""));
         _types.put("unknown", new UnknownToken());
@@ -255,6 +256,9 @@ public class Constants {
         _table.put("nil", nil);
                 
         _table.put("null", ObjectToken.NULL);
+        
+        // add "xmltoken" since that's returned by BaseType.XmlTokenType.toString()
+        _table.put("xmltoken", xmltoken);
 
     }
 
