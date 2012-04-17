@@ -45,9 +45,42 @@ if {[string compare sdfModel [info procs sdfModel]] != 0} \
 ######################################################################
 ####
 #
-test FMUImport-1.1 {} {
+test FMUImport-1.1 {Test out importFMU} {
     set e1 [sdfModel 5]
     set fmuFile [java::call ptolemy.util.FileUtilities nameToFile {$CLASSPATH/org/ptolemy/fmi/fmu/cs/bouncingBall.fmu} [java::null]]
     java::call ptolemy.actor.lib.fmi.FMUImport importFMU $e1 [$fmuFile getCanonicalPath]  $e1 100.0 100.0
-    puts [$e1 exportMoML]
-} {}
+    set bouncingBall [$e1 getEntity {bouncingBall}]
+    set moml [$bouncingBall exportMoML]
+    regsub {value=".*/org/ptolemy/fmi/fmu/cs/bouncingBall.fmu"} $moml {value="$CLASSPATH/org/ptolemy/fmi/fmu/cs/bouncingBall.fmu"} moml2
+    list $moml2
+} {{<entity name="bouncingBall" class="ptolemy.actor.lib.fmi.FMUImport">
+    <property name="fmuFile" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/org/ptolemy/fmi/fmu/cs/bouncingBall.fmu">
+    </property>
+    <property name="_location" class="ptolemy.kernel.util.Location" value="100.0, 100.0">
+    </property>
+    <property name="g" class="ptolemy.data.expr.Parameter" value="9.81">
+    </property>
+    <property name="e" class="ptolemy.data.expr.Parameter" value="0.7">
+    </property>
+    <port name="h" class="ptolemy.actor.TypedIOPort">
+        <property name="output"/>
+        <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
+        </property>
+    </port>
+    <port name="der_h_" class="ptolemy.actor.TypedIOPort">
+        <property name="output"/>
+        <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
+        </property>
+    </port>
+    <port name="v" class="ptolemy.actor.TypedIOPort">
+        <property name="output"/>
+        <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
+        </property>
+    </port>
+    <port name="der_v_" class="ptolemy.actor.TypedIOPort">
+        <property name="output"/>
+        <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
+        </property>
+    </port>
+</entity>
+}}
