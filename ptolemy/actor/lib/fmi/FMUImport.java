@@ -53,8 +53,10 @@ import org.ptolemy.fmi.FMUFile;
 import org.ptolemy.fmi.FMIType;
 import org.ptolemy.fmi.NativeSizeT;
 
+import ptolemy.actor.FixedTypeActor;
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
+import ptolemy.gui.MessageHandler;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.IntToken;
@@ -314,6 +316,19 @@ public class FMUImport extends TypedAtomicActor {
         }
 
         // Instantiate ports and parameters.
+        int maximumNumberOfPortsToDisplay = 20;
+        int modelVariablesLength = fmiModelDescription.modelVariables.size();
+        String hide = "";
+        if (modelVariablesLength > maximumNumberOfPortsToDisplay) {
+            MessageHandler.message("Importing \"" + fmuFileName
+                    + "\" resulted in an actor with " + modelVariablesLength
+                    + "ports.  To show ports, right click and "
+                    + "select Customize -> Ports.");
+            hide = "<property name=\"_hide\" class=\"ptolemy.data.expr.SingletonParameter\" value=\"true\">\n"
+                + "</property>";
+        }
+
+        int portCount = 0;
         StringBuffer parameterMoML = new StringBuffer();
         StringBuffer portMoML = new StringBuffer();
         for (FMIScalarVariable scalar : fmiModelDescription.modelVariables) {
@@ -364,6 +379,7 @@ public class FMUImport extends TypedAtomicActor {
                             + "<property name=\"_type\" "
                             + "class=\"ptolemy.actor.TypeAttribute\" value=\""
                             + _fmiType2PtolemyType(scalar.type) + "\"/>"
+                            + (portCount++ > maximumNumberOfPortsToDisplay ? hide : "")
                             + "</port>");
                 }
         }
