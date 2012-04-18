@@ -59,9 +59,6 @@ public class FMIModelDescription {
     // This file intentionally has no getters and setters so that we
     // can easily access the elements in a very lightweight manner.
 
-    // FIXME: numberOfContinuousStates, numberOfEventIndicators and anything else.
-
-
     //  The files field is not in the xml, but as we pass around this object,
     //  add a field here.
     /** The list of files that were extracted from the .fmu file. */
@@ -99,6 +96,12 @@ public class FMIModelDescription {
      * shared library in the .fmu file.
      */
     public NativeLibrary nativeLibrary;
+
+    /** Number of continuous states. */
+    public int numberOfContinuousStates;
+
+    /** Number of event indicators. */
+    public int numberOfEventIndicators;
 
     /** A map from TypeDefinition type name declarations to the
      * defined type name.

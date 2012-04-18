@@ -96,7 +96,7 @@ public class FMIScalarVariable {
             }
         }
 
-        causality = Causality.none;
+        causality = Causality.internal;
         if (element.hasAttribute("causality")) {
             String attribute = element.getAttribute("causality");
             if (attribute.equals("input")) {

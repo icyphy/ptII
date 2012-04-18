@@ -95,7 +95,6 @@ public class FMUFile {
         if (osName.startsWith("mac")) {
             // JModelica seems to use darwin as the binary name
             osName = "darwin";
-            // FIXME: OpenModelica uses something different.
             extension = ".dylib";
         } else if (osName.startsWith("Windows")) {
             extension = ".dll";
@@ -108,7 +107,21 @@ public class FMUFile {
             + "binaries" + File.separator
             + osName + bitWidth + File.separator
             + fmiModelDescription.modelIdentifier + extension;
-        String canonicalPath = new File(library).getCanonicalPath();
+        File canonicalFile = new File(library).getCanonicalFile();
+        if (!canonicalFile.exists()) {
+            if (osName.startsWith("mac") || osName.startsWith("darwin")) {
+                // OpenModelica 1.8.1 uses darwin-x86_64
+                osName = "darwin-x86_";
+                extension = ".so";
+                library =  topDirectory + File.separator
+                    + "binaries" + File.separator
+                    + osName + bitWidth + File.separator
+                    + fmiModelDescription.modelIdentifier + extension;
+                canonicalFile = new File(library).getCanonicalFile();
+            }
+        }
+        String canonicalPath = canonicalFile.getCanonicalPath();
+
         return canonicalPath;
     }
 
@@ -181,7 +194,12 @@ public class FMUFile {
         if (root.hasAttribute("guid")) {
             fmiModelDescription.guid = root.getAttribute("guid");
         }
-        // FIXME: Handle numberOfContinuousStates, numberOfEventIndicators etc.
+        if (root.hasAttribute("numberOfContinuousStates")) {
+            fmiModelDescription.numberOfContinuousStates = Integer.valueOf(root.getAttribute("numberOfContinuousStates")).intValue();
+        }
+        if (root.hasAttribute("numberOfEventIndicators")) {
+            fmiModelDescription.numberOfEventIndicators = Integer.valueOf(root.getAttribute("numberOfEventIndicators")).intValue();
+        }
             
         // TypeDefinitions
         // NodeList is not a list, it only has getLength() and item(). #fail.
