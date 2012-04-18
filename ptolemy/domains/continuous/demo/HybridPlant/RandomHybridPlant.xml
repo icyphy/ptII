@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="RandomHybridPlant" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.0.devel">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="50.0">
@@ -172,13 +172,13 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[540.0, 105.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={217, 304, 876, 511}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={148, 176, 876, 588}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[663, 401]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[663, 478]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{331.5, 200.5}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{331.5, 239.0}">
     </property>
     <property name="Annotation8" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Hybrid model of a plant where a continuous flow&#10;of raw material is directed into bottles as the&#10;bottles (jobs) arrive. The top level is a discrete-&#10;event model with a modal continuous-time model&#10;inside. Model parameters are to the right.">
@@ -208,6 +208,26 @@
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model uses a PoissonClock to simulate &#10;the random arrival of events.&#10;Contrast this with the HybridPlant model which&#10;uses a Clock to simulate a deterministic arrival&#10;of events.">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[205.0, 320.0]">
+        </property>
+    </property>
+    <property name="_defaultWebExportParameters" class="ptolemy.vergil.basic.export.html.WebExportParameters">
+        <property name="directoryToExportTo" class="ptolemy.data.expr.FileParameter" value="/Users/eal/Projects/iCyPhy/icyphy/workPlan/RandomHybridPlant">
+            <property name="allowFiles" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="allowDirectories" class="ptolemy.data.expr.Parameter" value="true">
+            </property>
+        </property>
+        <property name="backgroundColor" class="ptolemy.actor.gui.ColorAttribute">
+        </property>
+        <property name="openCompositesBeforeExport" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="runBeforeExport" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="showInBrowser" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="copyJavaScriptFiles" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="usePtWebsite" class="ptolemy.data.expr.Parameter" value="false">
         </property>
     </property>
     <entity name="ModalModel" class="ptolemy.domains.modal.modal.ModalModel">
@@ -243,7 +263,7 @@
         <entity name="state library" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/configs/basicUtilities.xml"></input><entity name="state" class="ptolemy.domains.modal.kernel.State"><property name="_centerName" class="ptolemy.kernel.util.Attribute"></property><property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory"></property></entity></entity>
       </configure>
             </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={19, 133, 986, 502}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={20, 89, 984, 589}, maximized=false}">
             </property>
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[771, 384]">
             </property>
@@ -260,7 +280,7 @@
             <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
                 <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Filling the bottle at&#10;the in-flow rate (raw&#10;material buffer is empty).">
                 </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[-90.0, 280.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[-125.0, 280.0]">
                 </property>
             </property>
             <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -321,7 +341,7 @@
                 </property>
                 <property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory">
                 </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[35.0, 255.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[0.0, 235.0]">
                 </property>
             </entity>
             <entity name="init" class="ptolemy.domains.modal.kernel.State">
@@ -454,19 +474,19 @@
             <link port="init.outgoingPort" relation="relation4"/>
         </entity>
         <entity name="processing" class="ptolemy.domains.modal.modal.Refinement">
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={37, 208, 815, 518}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={37, 176, 813, 588}, maximized=false}">
             </property>
-            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 478]">
             </property>
             <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
             </property>
-            <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
+            <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 239.0}">
             </property>
             <property name="Continuous Director" class="ptolemy.domains.continuous.kernel.ContinuousDirector">
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 40.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[55.0, 40.0]">
                 </property>
             </property>
-            <property name="bottleInflowRate" class="ptolemy.data.expr.Parameter" value="2.0">
+            <property name="bottleInflowRate" class="ptolemy.data.expr.Parameter" value="1.5">
                 <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
                 </property>
                 <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -596,7 +616,7 @@
 <xLabel></xLabel>
 <yLabel></yLabel>
 <xRange min="0.0" max="50.0"/>
-<yRange min="0.0" max="10.000000000399996"/>
+<yRange min="0.0" max="10.00005"/>
 <noGrid/>
 </plot>?>
                 </configure>
@@ -733,7 +753,7 @@
 <title>Queue Status</title>
 <xLabel></xLabel>
 <yLabel></yLabel>
-<xRange min="0.0" max="48.0000000009"/>
+<xRange min="0.0" max="46.6001040512"/>
 <yRange min="0.0" max="10.0"/>
 <noGrid/>
 <default connected="no" marks="dots" stems="yes"/>
@@ -755,7 +775,7 @@
 <xLabel></xLabel>
 <yLabel></yLabel>
 <xRange min="0.0" max="50.0"/>
-<yRange min="-4.9999999999999725" max="4.500000000000001"/>
+<yRange min="-5.000000000000143E-5" max="4.500000000000001"/>
 <noGrid/>
 </plot>?>
         </configure>
