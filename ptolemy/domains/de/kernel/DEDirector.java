@@ -1008,18 +1008,12 @@ public class DEDirector extends Director implements SuperdenseTimeDirector {
             _debug("DEDirector: Called prefire().");
         }
 
+        // The following call sets the local time to match
+        // the environment time (with drift and offset taken into account),
+        // but it does not set the microstep. We do that below.
         super.prefire();
-        // NOTE: The inside model does not need to have the same
-        // microstep as that of the outside model (if it has one.)
-        // However, an increment of microstep of the inside model must
-        // trigger an increment of microstep of the outside model.
 
         // Have to also do this for the microstep.
-        /* NOTE: No, this is no longer the case.
-         * 
-         * The microstep should start at the lowest value of the microstep
-         * in the event queue. Unless there is an enclosed Continuous model,
-         * this will normally be 1.
         if (isEmbedded()) {
             Nameable container = getContainer();
             if (container instanceof CompositeActor) {
@@ -1031,7 +1025,6 @@ public class DEDirector extends Director implements SuperdenseTimeDirector {
                 }
             }
         }
-         */
         
         // A top-level DE director is always ready to fire.
         if (_isTopLevel()) {
@@ -1878,19 +1871,28 @@ public class DEDirector extends Director implements SuperdenseTimeDirector {
                 }
 
                 // If the event is in the future time, it is ignored
-                // and will be processed later.
-                // Note that it is fine for the new event to have a bigger
-                // microstep. This indicates that the embedded director is
-                // going to advance microstep.
-                // Note that conceptually, the outside and inside DE models
-                // share the same microstep and the current design and
-                // implementation assures that. However, the embedded DE
-                // director does ask for the microstep of the upper level
-                // DE director. They keep their own count of their
-                // microsteps. The reason for this is to avoid the
-                // difficulties caused by passing information across modal
-                // model layers.
-                if ((nextEvent.timeStamp().compareTo(getModelTime()) > 0)) {
+                // and will be processed later. There is some complexity
+                // here for backward compatibility with directors that do
+                // not support superdense time. If the enclosing director
+                // does not support superdense time, then we ignore the
+                // microstep. Otherwise, we require the microstep of
+                // the event to match the microstep that was set in
+                // prefire(), which matches the microstep of the enclosing
+                // director.
+                boolean microstepMatches = true;
+                Nameable container = getContainer();
+                if (container instanceof CompositeActor) {
+                    Director executiveDirector = ((CompositeActor) container)
+                            .getExecutiveDirector();
+                    if (executiveDirector instanceof SuperdenseTimeDirector) {
+                        // If the next event microstep in the past (which it should
+                        // not be normally), then we will consider it to match.
+                        microstepMatches = nextEvent.microstep() <= _microstep;
+                    }
+                }
+
+                int comparison = nextEvent.timeStamp().compareTo(getModelTime());
+                if (comparison > 0 || (comparison == 0 && !microstepMatches)) {
                     // reset the next event
                     nextEvent = null;
 
