@@ -234,15 +234,15 @@ public class FMUImport extends TypedAtomicActor {
                     _debug("FMUImport.fire(): " + scalarVariable.name + " " + token + " "
                             + scalarVariable.causality + " " + Causality.output);
                 }
-                // FIXME: Why is Causality none?
                 switch (scalarVariable.causality) {
-                case internal:
+                case none:
+                    // FIXME: should we do anything special if causality == none?
                     break;
                 case input:
                     token = port.get(0);
                     break;
                 case output:
-                case none:
+                case internal:
                     port.send(0, token);
                     break;
                 }
@@ -317,14 +317,12 @@ public class FMUImport extends TypedAtomicActor {
         // Instantiate ports and parameters.
         int maximumNumberOfPortsToDisplay = 20;
         int modelVariablesLength = fmiModelDescription.modelVariables.size();
-        String hide = "";
+        String hide = "  <property name=\"_hide\" class=\"ptolemy.data.expr.SingletonParameter\" value=\"true\"/>\n";
         if (modelVariablesLength > maximumNumberOfPortsToDisplay) {
             MessageHandler.message("Importing \"" + fmuFileName
                     + "\" resulted in an actor with " + modelVariablesLength
                     + "ports.  To show ports, right click and "
                     + "select Customize -> Ports.");
-            hide = "<property name=\"_hide\" class=\"ptolemy.data.expr.SingletonParameter\" value=\"true\">\n"
-                + "</property>";
         }
 
         int portCount = 0;
@@ -341,10 +339,10 @@ public class FMUImport extends TypedAtomicActor {
 
                     // FIXME: Need to sanitize the name.
                     // FIXME: Need to sanitize the value.
-		parameterMoML.append("<property name=\"" + StringUtilities.sanitizeName(scalar.name)
+		parameterMoML.append("  <property name=\"" + StringUtilities.sanitizeName(scalar.name)
                             + "\" class=\"ptolemy.data.expr.Parameter\" value =\""
                             + scalar.type
-                            + "\"></property>");
+                            + "\"/>\n");
                 } else {
                     // Ports
 
@@ -355,31 +353,32 @@ public class FMUImport extends TypedAtomicActor {
                     // port.setTypeEquals(BaseType.DOUBLE);
 
                     // Determine whether it is an input or output port.
+                    String internalHide = "";
                     String causality = "";
                     switch (scalar.causality) {
-                    case internal:
-                        System.out.println("Warning: " + fmuFileName
-                                + "Don't know how to handle internal of Causality " + scalar.causality
-                                + " for " + scalar.name);
-                        continue;
                     case input:
                         causality = "input";
                         break;
-                    case output:
-                        // FIXME: is it ok to default Causality.none to output ports?  See BouncingBall
                     case none:
+                        // FIXME: Not sure what to do with causality == none.
+                        continue;
+                    case output:
+                    case internal:
+                        // Internal ports get hidden.
                         causality = "output";
                         break;
                     }
 
-                    portMoML.append("<port name=\"" + StringUtilities.sanitizeName(scalar.name)
-                            + "\" class=\"ptolemy.actor.TypedIOPort\">"
-                            + "<property name=\"" + causality + "\"/>"
-                            + "<property name=\"_type\" "
+                    portMoML.append("  <port name=\"" + StringUtilities.sanitizeName(scalar.name)
+                            + "\" class=\"ptolemy.actor.TypedIOPort\">\n"
+                            + "    <property name=\"" + causality + "\"/>\n"
+                            + "    <property name=\"_type\" "
                             + "class=\"ptolemy.actor.TypeAttribute\" value=\""
-                            + _fmiType2PtolemyType(scalar.type) + "\"/>"
-                            + (portCount++ > maximumNumberOfPortsToDisplay ? hide : "")
-                            + "</port>");
+                            + _fmiType2PtolemyType(scalar.type) + "\"/>\n"
+                            // Hide the port if we have lots of ports or it is internal.
+                            + (portCount++ > maximumNumberOfPortsToDisplay
+                                    || scalar.causality == Causality.internal ? hide : "")
+                            + "  </port>\n");
                 }
         }
 
@@ -387,19 +386,20 @@ public class FMUImport extends TypedAtomicActor {
 
         // Use the "auto" namespace group so that name collisions
         // are automatically avoided by appending a suffix to the name.
-        String moml = "<group name=\"auto\">"
-            + "<entity name=\"" + rootName
-            + "\" class=\"ptolemy.actor.lib.fmi.FMUImport\"" + source + ">"
-            + "<property name=\"_location\" "
+        String moml = "<group name=\"auto\">\n"
+            + " <entity name=\"" + rootName
+            + "\" class=\"ptolemy.actor.lib.fmi.FMUImport\"" + source + ">\n"
+            + "  <property name=\"_location\" "
             + "class=\"ptolemy.kernel.util.Location\" value=\"" + x
-            + ", " + y + "\"></property>"
-            + "<property name=\"fmuFile\""
+            + ", " + y + "\">\n"
+            + "  </property>\n"
+            + "  <property name=\"fmuFile\""
             + "class=\"ptolemy.data.expr.FileParameter\""
-            + "value=\"" + fmuFileName
-            + "\"></property>"
+            + "value=\"" + fmuFileName + "\">\n"
+            + "  </property>\n"
             + parameterMoML
             + portMoML
-            + "</entity></group>";
+            + " </entity>\n</group>\n";
         MoMLChangeRequest request = new MoMLChangeRequest(originator,
                 context, moml);
         context.requestChange(request);
