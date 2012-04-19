@@ -170,6 +170,27 @@ public class TypedCompositeActor extends CompositeActor implements TypedActor {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    /** React to a change in the type of an attribute.  This method is
+     *  called by a contained attribute when its type changes.
+     *  In this base class, the method informs the director to invalidate
+     *  type resolution, if the director is not null.
+     *  Thus, by default, attribute type changes cause type resolution to
+     *  be redone at the next opportunity.
+     *  If an actor does not allow attribute types to change, then it should
+     *  override this method.
+     *  @param attribute The attribute whose type changed.
+     *  @exception IllegalActionException Not thrown in this base class.
+     *   Derived classes can throw this exception if type change is not allowed.
+     */
+    public void attributeTypeChanged(Attribute attribute)
+            throws IllegalActionException {
+        Director director = getDirector();
+
+        if (director != null) {
+            director.invalidateResolvedTypes();
+        }
+    }
+
     /** Create a new TypedIOPort with the specified name.
      *  The container of the port is set to this actor.
      *  This method is write-synchronized on the workspace.
