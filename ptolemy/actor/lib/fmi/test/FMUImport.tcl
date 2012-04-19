@@ -66,20 +66,28 @@ test FMUImport-1.1 {Test out importFMU} {
         <property name="output"/>
         <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
         </property>
+        <property name="_hide" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
     </port>
     <port name="der_h_" class="ptolemy.actor.TypedIOPort">
         <property name="output"/>
         <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
+        </property>
+        <property name="_hide" class="ptolemy.data.expr.SingletonParameter" value="true">
         </property>
     </port>
     <port name="v" class="ptolemy.actor.TypedIOPort">
         <property name="output"/>
         <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
         </property>
+        <property name="_hide" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
     </port>
     <port name="der_v_" class="ptolemy.actor.TypedIOPort">
         <property name="output"/>
         <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
+        </property>
+        <property name="_hide" class="ptolemy.data.expr.SingletonParameter" value="true">
         </property>
     </port>
 </entity>
