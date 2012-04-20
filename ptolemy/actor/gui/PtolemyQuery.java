@@ -30,6 +30,7 @@ package ptolemy.actor.gui;
 
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.KeyboardFocusManager;
 import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -416,14 +417,13 @@ public class PtolemyQuery extends Query implements QueryListener,
                 defaultValue, preferredBackgroundColor(attribute),
                 preferredForegroundColor(attribute), 1, DEFAULT_ENTRY_WIDTH);
                 area.setRows(Math.min(5, area.getLineCount()));
+                area.setFocusTraversalKeys(KeyboardFocusManager.FORWARD_TRAVERSAL_KEYS, null);
+                area.setFocusTraversalKeys(KeyboardFocusManager.BACKWARD_TRAVERSAL_KEYS, null);
+
                 area.addKeyListener(new KeyAdapter() {
                     public void keyPressed(KeyEvent e) {
                         int code = e.getKeyCode();
-                        if(code == KeyEvent.VK_TAB) {
-                            // FIXME: do what CTRL+TAB does 
-                            area.getRootPane().transferFocusDownCycle();
-                            e.consume();
-                        } else if (code == KeyEvent.VK_ENTER && !e.isShiftDown()) {
+                        if (code == KeyEvent.VK_ENTER && !e.isShiftDown()) {
                             e.consume();
                         } else if (code == KeyEvent.VK_ENTER && e.isShiftDown()) {
                             area.append("\n");
