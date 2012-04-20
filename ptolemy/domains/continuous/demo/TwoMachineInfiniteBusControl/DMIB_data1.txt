@@ -1,0 +1,37 @@
+# This file defines parameters in the current container.
+# Each non-comment line in the file is interpreted as a separate assignment.
+# The lines are of the form:
+# attributeName = value
+# where variableName is the name of the attribute
+# in a format suitable for ptolemy.kernel.util.NamedObj.setName()
+# (i.e., does not contain periods) and value is
+# the expression in the Ptolemy expression language.
+# Comments are lines that begin with the # character.
+# FIXME: After saving, you need to update the fileOrURLParameter by hand.
+# Sample line (remove the leading #):
+# foo = "bar"
+H1 = 5
+H2 = 3.5
+ws = 2*pi*60.0
+Pm1 = 0.28
+Pm2 = 0.75
+V1 = 1
+V2 = 1
+D = 0.01
+tf = 0
+tcr = 0.133
+a = 0.50735
+
+G11 = 0.0072
+G12 = 0.0137
+G1i  = 0
+G21 = 0.0137
+G22 = 0.098
+G2i  = 0.0299 
+
+B11 = -0.373
+B12 =   0.053
+B1i  =   0.3146
+B21 =   0.053
+B22 = -0.7497
+B2i  =   0.658

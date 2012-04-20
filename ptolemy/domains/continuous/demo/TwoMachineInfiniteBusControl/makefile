@@ -50,7 +50,13 @@ OTHER_FILES_TO_BE_JARED = \
 	TwoMachineInfiniteBusControl.xml
 
 EXTRA_SRCS = \
-	$(OTHER_FILES_TO_BE_JARED)
+	$(OTHER_FILES_TO_BE_JARED) \
+	data_normal.txt\
+	data_recovery.txt\
+	data_fault1.txt\
+	data_fault2.txt\
+	data_fault-on.txt\
+	DMIB_data.txt
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
