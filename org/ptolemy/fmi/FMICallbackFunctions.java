@@ -24,7 +24,7 @@
    PT_COPYRIGHT_VERSION_2
    COPYRIGHTENDKEY
 
-*/
+ */
 
 package org.ptolemy.fmi;
 
@@ -66,7 +66,7 @@ public class FMICallbackFunctions extends Structure {
 
     /** Instantiate a Java representation of the C structure that
      * contains the FMI call backs.
-     */   
+     */
     public FMICallbackFunctions() {
         super();
         initFieldOrder();
@@ -85,27 +85,29 @@ public class FMICallbackFunctions extends Structure {
      */
     public FMICallbackFunctions(FMICallbackLogger logger,
             FMICallbackAllocateMemory allocateMemory,
-            FMICallbackFreeMemory freeMemory,
-            FMIStepFinished stepFinished) {
+            FMICallbackFreeMemory freeMemory, FMIStepFinished stepFinished) {
         super();
         this.logger = logger;
         this.allocateMemory = allocateMemory;
         this.freeMemory = freeMemory;
         this.stepFinished = stepFinished;
         // Avoid crashes by aligning.
-        // See http://today.java.net/article/2009/11/11/simplify-native-code-access-jna
+        // See
+        // http://today.java.net/article/2009/11/11/simplify-native-code-access-jna
         setAlignType(Structure.ALIGN_GNUC);
         initFieldOrder();
     }
 
     /** Access the structure by value.
-     */   
-    public static class ByReference extends FMICallbackFunctions implements Structure.ByReference {
+     */
+    public static class ByReference extends FMICallbackFunctions implements
+            Structure.ByReference {
     };
 
     /** Access the structure by reference.
-     */   
-    public static class ByValue extends FMICallbackFunctions implements Structure.ByValue {
+     */
+    public static class ByValue extends FMICallbackFunctions implements
+            Structure.ByValue {
         /**  Access the structure by reference.  
          *    
          *  <p>See
@@ -123,7 +125,9 @@ public class FMICallbackFunctions extends Structure {
          * @param stepFinished The method called when the step is finished.
          * (C type: FmiStepFinished)
          */
-        public ByValue(FMICallbackLogger logger, FMICallbackAllocateMemory allocateMemory, FMICallbackFreeMemory freeMemory, FMIStepFinished stepFinished) {
+        public ByValue(FMICallbackLogger logger,
+                FMICallbackAllocateMemory allocateMemory,
+                FMICallbackFreeMemory freeMemory, FMIStepFinished stepFinished) {
             super(logger, allocateMemory, freeMemory, stepFinished);
         }
     };
@@ -140,7 +144,6 @@ public class FMICallbackFunctions extends Structure {
     /** C type: fiStepFinished. */
     public FMIStepFinished stepFinished;
 
-
     /** Set the initialization order of the fields so that the order
      * matches the order of the C structure.
      */
@@ -148,6 +151,7 @@ public class FMICallbackFunctions extends Structure {
         // Note that the name of this method does not have a leading
         // underscore because the name of the protected method in the
         // parent class does not have an underscore.
-        setFieldOrder(new String[]{"logger", "allocateMemory", "freeMemory", "stepFinished"});
+        setFieldOrder(new String[] { "logger", "allocateMemory", "freeMemory",
+                "stepFinished" });
     }
 }

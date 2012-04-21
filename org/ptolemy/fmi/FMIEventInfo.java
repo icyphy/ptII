@@ -24,10 +24,12 @@
    PT_COPYRIGHT_VERSION_2
    COPYRIGHTENDKEY
 
-*/
+ */
 
 package org.ptolemy.fmi;
+
 import com.sun.jna.Structure;
+
 /**
  * Functional Mock-up Interface (FMI) event information.
  *
@@ -48,7 +50,6 @@ import com.sun.jna.Structure;
  */
 public class FMIEventInfo extends Structure {
 
-
     /** Instantiate a Java structure that that represents the C
      * structure that contains information about events.
      */
@@ -66,9 +67,10 @@ public class FMIEventInfo extends Structure {
      * @param upcomingTimeEvent C type: fmiBoolean
      * @param nextEventTime C type: fmiReal
      */
-    public FMIEventInfo(byte iterationConverged, byte stateValueReferencesChanged,
-            byte stateValuesChanged, byte terminateSimulation,
-            byte upcomingTimeEvent, double nextEventTime) {
+    public FMIEventInfo(byte iterationConverged,
+            byte stateValueReferencesChanged, byte stateValuesChanged,
+            byte terminateSimulation, byte upcomingTimeEvent,
+            double nextEventTime) {
         super();
         this.iterationConverged = iterationConverged;
         this.stateValueReferencesChanged = stateValueReferencesChanged;
@@ -80,16 +82,19 @@ public class FMIEventInfo extends Structure {
     }
 
     /** Access the structure by value.
-     */   
-    public static class ByReference extends FMIEventInfo implements Structure.ByReference {
+     */
+    public static class ByReference extends FMIEventInfo implements
+            Structure.ByReference {
     };
 
     /** Access the structure by reference.
-     */   
-    public static class ByValue extends FMIEventInfo implements Structure.ByValue {
+     */
+    public static class ByValue extends FMIEventInfo implements
+            Structure.ByValue {
     };
 
-    // The fields below are in the order in which they are expected to be in the C structure.
+    // The fields below are in the order in which they are expected to be in the
+    // C structure.
 
     /** C type: fmiBoolean. */
     public byte iterationConverged;
@@ -116,6 +121,8 @@ public class FMIEventInfo extends Structure {
         // Note that the name of this method does not have a leading
         // underscore because the name of the protected method in the
         // parent class does not have an underscore.
-        setFieldOrder(new String[]{"iterationConverged", "stateValueReferencesChanged", "stateValuesChanged", "terminateSimulation", "upcomingTimeEvent", "nextEventTime"});
+        setFieldOrder(new String[] { "iterationConverged",
+                "stateValueReferencesChanged", "stateValuesChanged",
+                "terminateSimulation", "upcomingTimeEvent", "nextEventTime" });
     }
 }

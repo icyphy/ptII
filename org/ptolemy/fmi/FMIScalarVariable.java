@@ -28,7 +28,6 @@
 package org.ptolemy.fmi;
 
 import java.nio.ByteBuffer;
-import java.nio.CharBuffer;
 import java.nio.DoubleBuffer;
 import java.nio.IntBuffer;
 import java.util.HashSet;
@@ -73,7 +72,8 @@ public class FMIScalarVariable {
      *  @param fmiModelDescription the Model Description for this variable.
      *  @param element The XML Element that contains attributes.
      */
-    public FMIScalarVariable(FMIModelDescription fmiModelDescription, Element element) {
+    public FMIScalarVariable(FMIModelDescription fmiModelDescription,
+            Element element) {
         this.fmiModelDescription = fmiModelDescription;
         name = element.getAttribute("name");
         description = element.getAttribute("description");
@@ -92,7 +92,7 @@ public class FMIScalarVariable {
             } else {
                 throw new IllegalArgumentException("alias \"" + attribute
                         + "\" must be one of alias, negatedAlias or noAlias"
-                        + " in " + name + ", " + description); 
+                        + " in " + name + ", " + description);
             }
         }
 
@@ -110,19 +110,20 @@ public class FMIScalarVariable {
             } else {
                 throw new IllegalArgumentException("causality \"" + attribute
                         + "\" must be one of input, internal, output or none"
-                        + " in " + name + ", " + description); 
+                        + " in " + name + ", " + description);
             }
         }
 
         if (element.hasAttribute("valueReference")) {
-	    String valueReferenceString = element.getAttribute("valueReference");
-	    try {
-		valueReference = Long.valueOf(valueReferenceString);
-	    } catch (NumberFormatException ex) {
-		throw new NumberFormatException("Failed to parse valueReference "
-						+ valueReferenceString
-						+ " of " + name);
-	    }
+            String valueReferenceString = element
+                    .getAttribute("valueReference");
+            try {
+                valueReference = Long.valueOf(valueReferenceString);
+            } catch (NumberFormatException ex) {
+                throw new NumberFormatException(
+                        "Failed to parse valueReference "
+                                + valueReferenceString + " of " + name);
+            }
         }
 
         if (element.hasAttribute("variability")) {
@@ -136,15 +137,16 @@ public class FMIScalarVariable {
             } else if (attribute.equals("parameter")) {
                 variability = Variability.parameter;
             } else {
-                throw new IllegalArgumentException("variability \"" + attribute
-                        + "\" must be one of constant, continuous, discrete or parameter "
-                        + " in " + name + ", " + description); 
+                throw new IllegalArgumentException(
+                        "variability \""
+                                + attribute
+                                + "\" must be one of constant, continuous, discrete or parameter "
+                                + " in " + name + ", " + description);
             }
         }
 
-
-        NodeList children = element.getChildNodes();  // NodeList. Worst. Ever.
-        for (int i = 0; i < children.getLength(); i ++) {
+        NodeList children = element.getChildNodes(); // NodeList. Worst. Ever.
+        for (int i = 0; i < children.getLength(); i++) {
             Node child = element.getChildNodes().item(i);
             if (child instanceof Element) {
                 Element childElement = (Element) child;
@@ -153,7 +155,7 @@ public class FMIScalarVariable {
                     type = new FMIBooleanType(name, description, childElement);
                 } else if (typeName.equals("Enumeration")) {
                     type = new FMIIntegerType(name, description, childElement);
-		    typeName = "Integer";
+                    typeName = "Integer";
                 } else if (typeName.equals("Integer")) {
                     type = new FMIIntegerType(name, description, childElement);
                 } else if (typeName.equals("Real")) {
@@ -161,19 +163,20 @@ public class FMIScalarVariable {
                 } else if (typeName.equals("String")) {
                     type = new FMIStringType(name, description, childElement);
                 } else {
-		    if (!_errorElements.contains(typeName)) {
-			_errorElements.add(typeName);
-			System.out.println(element + ": Child element \""
-                            + typeName
-                            + "\" not implemented yet.");
-		    }
-		    typeName = "skip";
+                    if (!_errorElements.contains(typeName)) {
+                        _errorElements.add(typeName);
+                        System.out.println(element + ": Child element \""
+                                + typeName + "\" not implemented yet.");
+                    }
+                    typeName = "skip";
                 }
-		if (!typeName.equals("skip")) {
-		    // The fmi .c function used to get the value of this variable
-		    fmiGetFunction = fmiModelDescription.nativeLibrary.getFunction(fmiModelDescription.modelIdentifier
-										   + "_fmiGet" + typeName);
-		}
+                if (!typeName.equals("skip")) {
+                    // The fmi .c function used to get the value of this
+                    // variable
+                    fmiGetFunction = fmiModelDescription.nativeLibrary
+                            .getFunction(fmiModelDescription.modelIdentifier
+                                    + "_fmiGet" + typeName);
+                }
             }
         }
     }
@@ -187,15 +190,17 @@ public class FMIScalarVariable {
         // where the variables are defined.
         int fmiFlag = 0;
         if (type instanceof FMIBooleanType) {
-            IntBuffer valueReferenceIntBuffer = IntBuffer.allocate(1).put(0, (int)valueReference);
+            IntBuffer valueReferenceIntBuffer = IntBuffer.allocate(1).put(0,
+                    (int) valueReference);
             ByteBuffer valueBuffer = ByteBuffer.allocate(1);
-            fmiFlag = ((Integer)fmiGetFunction.invokeInt(
-                            new Object[] {fmiComponent, valueReferenceIntBuffer,
-                                          new NativeSizeT(1), valueBuffer})).intValue();
+            fmiFlag = ((Integer) fmiGetFunction.invokeInt(new Object[] {
+                    fmiComponent, valueReferenceIntBuffer, new NativeSizeT(1),
+                    valueBuffer })).intValue();
             if (fmiFlag > FMILibrary.FMIStatus.fmiWarning) {
-                throw new RuntimeException("Could not get " + name + " as a boolean: " + fmiFlag);
+                throw new RuntimeException("Could not get " + name
+                        + " as a boolean: " + fmiFlag);
             }
-            result = (valueBuffer.get(0) == 0);
+            result = valueBuffer.get(0) == 0;
         }
         return result;
     }
@@ -207,25 +212,27 @@ public class FMIScalarVariable {
      */
     public double getDouble(Pointer fmiComponent) {
         double result;
-        IntBuffer valueReferenceIntBuffer = IntBuffer.allocate(1).put(0, (int)valueReference);
+        IntBuffer valueReferenceIntBuffer = IntBuffer.allocate(1).put(0,
+                (int) valueReference);
         if (type instanceof FMIIntegerType) {
             IntBuffer valueBuffer = IntBuffer.allocate(1);
-            int fmiFlag = ((Integer)fmiGetFunction.invokeInt(
-                            new Object[] {fmiComponent, valueReferenceIntBuffer,
-                                          new NativeSizeT(1), valueBuffer})).intValue();
+            int fmiFlag = ((Integer) fmiGetFunction.invokeInt(new Object[] {
+                    fmiComponent, valueReferenceIntBuffer, new NativeSizeT(1),
+                    valueBuffer })).intValue();
             if (fmiFlag > FMILibrary.FMIStatus.fmiWarning) {
-                throw new RuntimeException("Could not get " +
-                        name + " as an int: " + fmiFlag);
+                throw new RuntimeException("Could not get " + name
+                        + " as an int: " + fmiFlag);
             }
-            result = (double)valueBuffer.get(0);
+            result = valueBuffer.get(0);
         } else if (type instanceof FMIRealType) {
             DoubleBuffer valueBuffer = DoubleBuffer.allocate(1);
-            int fmiFlag = ((Integer)fmiGetFunction.invokeInt(
-                            new Object[] {fmiComponent, valueReferenceIntBuffer,
-                                          new NativeSizeT(1), valueBuffer})).intValue();
+            int fmiFlag = ((Integer) fmiGetFunction.invokeInt(new Object[] {
+                    fmiComponent, valueReferenceIntBuffer, new NativeSizeT(1),
+                    valueBuffer })).intValue();
             if (fmiFlag > FMILibrary.FMIStatus.fmiWarning) {
-                throw new RuntimeException("Could not get " +
-                        name + " as a double.  Method was " + fmiGetFunction + ", return value was:" + fmiFlag);
+                throw new RuntimeException("Could not get " + name
+                        + " as a double.  Method was " + fmiGetFunction
+                        + ", return value was:" + fmiFlag);
             }
             result = valueBuffer.get(0);
         } else {
@@ -241,11 +248,12 @@ public class FMIScalarVariable {
         int result;
         int fmiFlag = 0;
         if (type instanceof FMIIntegerType) {
-            IntBuffer valueReferenceIntBuffer = IntBuffer.allocate(1).put(0, (int)valueReference);
+            IntBuffer valueReferenceIntBuffer = IntBuffer.allocate(1).put(0,
+                    (int) valueReference);
             IntBuffer valueBuffer = IntBuffer.allocate(1);
-            fmiFlag = ((Integer)fmiGetFunction.invokeInt(
-                            new Object[] {fmiComponent, valueReferenceIntBuffer,
-                                          new NativeSizeT(1), valueBuffer})).intValue();
+            fmiFlag = ((Integer) fmiGetFunction.invokeInt(new Object[] {
+                    fmiComponent, valueReferenceIntBuffer, new NativeSizeT(1),
+                    valueBuffer })).intValue();
             if (fmiFlag > FMILibrary.FMIStatus.fmiWarning) {
                 throw new RuntimeException("Could not get " + name
                         + " as an int: " + fmiFlag);
@@ -261,13 +269,14 @@ public class FMIScalarVariable {
      *  @return the value of this variable as a String.
      */
     public String getString(Pointer fmiComponent) {
-        String result = null; 
+        String result = null;
         if (type instanceof FMIStringType) {
-            IntBuffer valueReferenceIntBuffer = IntBuffer.allocate(1).put(0, (int)valueReference);
+            IntBuffer valueReferenceIntBuffer = IntBuffer.allocate(1).put(0,
+                    (int) valueReference);
             PointerByReference pointerByReference = new PointerByReference();
-            int fmiFlag = ((Integer)fmiGetFunction.invokeInt(
-                            new Object[] {fmiComponent, valueReferenceIntBuffer,
-                                          new NativeSizeT(1), pointerByReference})).intValue();
+            int fmiFlag = ((Integer) fmiGetFunction.invokeInt(new Object[] {
+                    fmiComponent, valueReferenceIntBuffer, new NativeSizeT(1),
+                    pointerByReference })).intValue();
             if (fmiFlag > FMILibrary.FMIStatus.fmiWarning) {
                 throw new RuntimeException("Could not get " + name
                         + " as a String: " + fmiFlag);
@@ -294,7 +303,7 @@ public class FMIScalarVariable {
         /** This is not an alias (the default). */
         noAlias
     };
-    
+
     /** Acceptable values for the causality xml attribute.
      *  Causality defines the visibility of the variable from outside of the model.
      */
@@ -314,7 +323,8 @@ public class FMIScalarVariable {
         /** The value does not affect computation.  Typically, "none"
          *  values are tool specific and used to enable logging.
          */
-        none}
+        none
+    }
 
     /** Acceptable values for the variability xml attribute.
      *  The variablity attribute defines when a value changes,
@@ -335,8 +345,8 @@ public class FMIScalarVariable {
         discrete,
         /** The value does not change after initailization.
          */
-        parameter}
-
+        parameter
+    }
 
     /** The value of the alias xml attribute. */
     public Alias alias;
@@ -362,7 +372,7 @@ public class FMIScalarVariable {
     public String name;
 
     /** The value of the type xml attribute. */
-    public FMIType type; 
+    public FMIType type;
 
     /** The value of the valueReference xml attribute.
      *  In FMI 1.0, a valueReference is typically 32-bits
@@ -374,9 +384,8 @@ public class FMIScalarVariable {
     /** The value of the variability xml attribute. */
     public Variability variability;
 
-
     /** The set of elements that we don't yet handle.
      *  This is used for error messages.	
-     */	
+     */
     private static Set<String> _errorElements = new HashSet<String>();
 }

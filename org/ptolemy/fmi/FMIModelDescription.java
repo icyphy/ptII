@@ -59,8 +59,8 @@ public class FMIModelDescription {
     // This file intentionally has no getters and setters so that we
     // can easily access the elements in a very lightweight manner.
 
-    //  The files field is not in the xml, but as we pass around this object,
-    //  add a field here.
+    // The files field is not in the xml, but as we pass around this object,
+    // add a field here.
     /** The list of files that were extracted from the .fmu file. */
     public List<File> files;
 
@@ -69,7 +69,7 @@ public class FMIModelDescription {
      * The fmiVersion field is set to 1.0 for FMI 1.0.
      */
     public String fmiVersion;
-    
+
     /** The FMI guid, typically the value of the guid
      * attribute from a .fmu file.
      * The value of guid in the modelDescription.xml file must match
@@ -106,5 +106,5 @@ public class FMIModelDescription {
     /** A map from TypeDefinition type name declarations to the
      * defined type name.
      */
-    public Map<String,String> typeDefinitions = new HashMap<String, String>();
+    public Map<String, String> typeDefinitions = new HashMap<String, String>();
 }

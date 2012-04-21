@@ -24,18 +24,13 @@
    PT_COPYRIGHT_VERSION_2
    COPYRIGHTENDKEY
 
-*/
+ */
 package org.ptolemy.fmi;
 
 import java.io.PrintStream;
-import java.nio.ByteBuffer;
-import java.nio.CharBuffer;
-import java.nio.DoubleBuffer;
-import java.nio.IntBuffer;
 
 import org.ptolemy.fmi.FMIScalarVariable.Alias;
 
-import com.sun.jna.Function;
 import com.sun.jna.NativeLibrary;
 import com.sun.jna.Pointer;
 
@@ -90,29 +85,29 @@ public class OutputRow {
      *  names should be printed.
      */
     public static void outputRow(NativeLibrary nativeLibrary,
-            FMIModelDescription fmiModelDescription,
-            Pointer fmiComponent, double time, 
-            PrintStream file, char separator, Boolean header) {
+            FMIModelDescription fmiModelDescription, Pointer fmiComponent,
+            double time, PrintStream file, char separator, Boolean header) {
         int i;
-        //         fmiReal r;
-        //         fmiInteger i;
-        //         fmiBoolean b;
-        //         fmiString s;
-        //         fmiValueReference vr;
+        // fmiReal r;
+        // fmiInteger i;
+        // fmiBoolean b;
+        // fmiString s;
+        // fmiValueReference vr;
 
         // Print the first column.
         if (header) {
             file.print("time");
         } else {
-            if (separator==',') {
+            if (separator == ',') {
                 file.format("%g", time);
             } else {
                 // Separator is ';' or '\t'
-                // If the separator is not a comma, then replace the decimal place with a comma.
+                // If the separator is not a comma, then replace the decimal
+                // place with a comma.
                 file.format("%s", Double.toString(time).replace('.', ','));
             }
         }
-    
+
         // Print all the other columns.
         for (FMIScalarVariable scalarVariable : fmiModelDescription.modelVariables) {
             if (scalarVariable.alias != null
@@ -123,12 +118,12 @@ public class OutputRow {
             }
             if (header) {
                 // Output header names.
-                if (separator==',') {
+                if (separator == ',') {
                     // Treat array element, e.g. print a[1, 2] as a[1.2]
                     file.format("%c", separator);
                     // FIXME: Just do a replace()
                     char[] s = scalarVariable.name.toCharArray();
-                    for(i = 0; i < s.length; i++) {
+                    for (i = 0; i < s.length; i++) {
                         if (s[i] != ' ') {
                             file.format("%c", s[i] == ',' ? '.' : s[i]);
                         }
@@ -136,14 +131,15 @@ public class OutputRow {
                 } else {
                     file.format("%c%s", separator, scalarVariable.name);
                 }
-            }
-            else {
+            } else {
                 // Output values.
-                
-                // The value reference is an internal-use-only integer that refers to which variable we
+
+                // The value reference is an internal-use-only integer that
+                // refers to which variable we
                 // are to access.
-                //int valueReference = scalarVariable.valueReference;
-                //IntBuffer valueReferenceIntBuffer = IntBuffer.allocate(1).put(0, valueReference);
+                // int valueReference = scalarVariable.valueReference;
+                // IntBuffer valueReferenceIntBuffer =
+                // IntBuffer.allocate(1).put(0, valueReference);
                 if (scalarVariable.type instanceof FMIBooleanType) {
                     boolean result = scalarVariable.getBoolean(fmiComponent);
                     file.format("%c%b", separator, result);
@@ -153,23 +149,26 @@ public class OutputRow {
                     file.format("%c%d", separator, result);
                 } else if (scalarVariable.type instanceof FMIRealType) {
                     double result = scalarVariable.getDouble(fmiComponent);
-                    if (separator==',') {
+                    if (separator == ',') {
                         file.format(",%.16g", result);
                     } else {
                         // separator is e.g. ';' or '\t'
-                        // If the separator is not a comma, then replace the decimal place with a comma.
-                        file.format("%c%s", separator, Double.toString(result).replace('.', ','));
+                        // If the separator is not a comma, then replace the
+                        // decimal place with a comma.
+                        file.format("%c%s", separator, Double.toString(result)
+                                .replace('.', ','));
                     }
-                } else if (scalarVariable.type instanceof FMIStringType) {       
+                } else if (scalarVariable.type instanceof FMIStringType) {
                     String result = scalarVariable.getString(fmiComponent);
                     file.format("%c%s", separator, result);
                 } else {
-                    file.format("%cNoValueForType=%s", separator, scalarVariable.type.getClass().getName());
+                    file.format("%cNoValueForType=%s", separator,
+                            scalarVariable.type.getClass().getName());
                 }
             }
         }
-    
+
         // Terminate this row.
-        file.format("\n"); 
+        file.format("\n");
     }
 }

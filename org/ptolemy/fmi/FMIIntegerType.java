@@ -66,6 +66,6 @@ public class FMIIntegerType extends FMIType {
         return Integer.toString(start);
     }
 
-    /** The starting value of this integer. */ 
+    /** The starting value of this integer. */
     public int start;
 }

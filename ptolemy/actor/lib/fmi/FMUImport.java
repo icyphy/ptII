@@ -24,57 +24,47 @@
    PT_COPYRIGHT_VERSION_2
    COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.actor.lib.fmi;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.Set;
 
-import org.ptolemy.fmi.FMICallbackFunctions;
 import org.ptolemy.fmi.FMIBooleanType;
+import org.ptolemy.fmi.FMICallbackFunctions;
 import org.ptolemy.fmi.FMIIntegerType;
 import org.ptolemy.fmi.FMILibrary;
-import org.ptolemy.fmi.FMILibrary.FMICallbackAllocateMemory;
-import org.ptolemy.fmi.FMILibrary.FMICallbackFreeMemory;
-import org.ptolemy.fmi.FMILibrary.FMICallbackLogger;
-import org.ptolemy.fmi.FMILibrary.FMIStepFinished;
-import org.ptolemy.fmi.FMIRealType;
-import org.ptolemy.fmi.FMIStringType;
 import org.ptolemy.fmi.FMIModelDescription;
 import org.ptolemy.fmi.FMIRealType;
 import org.ptolemy.fmi.FMIScalarVariable;
 import org.ptolemy.fmi.FMIScalarVariable.Alias;
 import org.ptolemy.fmi.FMIScalarVariable.Causality;
-import org.ptolemy.fmi.FMUFile;
+import org.ptolemy.fmi.FMIStringType;
 import org.ptolemy.fmi.FMIType;
+import org.ptolemy.fmi.FMUFile;
 import org.ptolemy.fmi.NativeSizeT;
 
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
-import ptolemy.gui.MessageHandler;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.StringToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.FileParameter;
-import ptolemy.data.expr.Parameter;
-import ptolemy.data.type.BaseType;
+import ptolemy.util.MessageHandler;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.NamedObj;
 import ptolemy.moml.MoMLChangeRequest;
 import ptolemy.util.StringUtilities;
 
 import com.sun.jna.Function;
 import com.sun.jna.Memory;
-import com.sun.jna.NativeLibrary;
 import com.sun.jna.Pointer;
 
 ///////////////////////////////////////////////////////////////////
@@ -137,8 +127,8 @@ public class FMUImport extends TypedAtomicActor {
      */
     public FileParameter fmuFile;
 
-    ///////////////////////////////////////////////////////////////////
-    ////                         public methods                    ////
+    // /////////////////////////////////////////////////////////////////
+    // // public methods ////
 
     /** If the specified attribute is <i>fmuFile</i>, then unzip
      *  the file and load in the .xml file, creating and deleting parameters
@@ -173,24 +163,27 @@ public class FMUImport extends TypedAtomicActor {
 
         String modelIdentifier = _fmiModelDescription.modelIdentifier;
 
-        // FIXME: In FMI-1.0, time is double.  This is not right.
+        // FIXME: In FMI-1.0, time is double. This is not right.
         double time = getDirector().getModelTime().getDoubleValue();
 
         // FIXME: depending on SDFDirector here.
-        double stepSize = ((ptolemy.domains.sdf.kernel.SDFDirector)getDirector()).periodValue();
+        double stepSize = ((ptolemy.domains.sdf.kernel.SDFDirector) getDirector())
+                .periodValue();
 
         if (_debugging) {
-            _debug("FMIImport.fire(): about to call "
-                    + modelIdentifier + "_fmiDoStep(Component, /* time */ " + time
+            _debug("FMIImport.fire(): about to call " + modelIdentifier
+                    + "_fmiDoStep(Component, /* time */ " + time
                     + ", /* stepSize */" + stepSize + ", 1)");
         }
 
-        int fmiFlag = ((Integer)_fmiDoStep.invokeInt(new Object[] {_fmiComponent, time, stepSize, (byte)1})).intValue();
+        int fmiFlag = ((Integer) _fmiDoStep.invokeInt(new Object[] {
+                _fmiComponent, time, stepSize, (byte) 1 })).intValue();
 
         if (fmiFlag != FMILibrary.FMIStatus.fmiOK) {
-            throw new IllegalActionException(this, "Could not simulate, " 
-                    + modelIdentifier + "_fmiDoStep(Component, /* time */ " + time
-                    + ", /* stepSize */" + stepSize + ", 1) returned " + fmiFlag);
+            throw new IllegalActionException(this, "Could not simulate, "
+                    + modelIdentifier + "_fmiDoStep(Component, /* time */ "
+                    + time + ", /* stepSize */" + stepSize + ", 1) returned "
+                    + fmiFlag);
         }
 
         if (_debugging) {
@@ -220,23 +213,25 @@ public class FMUImport extends TypedAtomicActor {
                 } else if (scalarVariable.type instanceof FMIRealType) {
                     double result = scalarVariable.getDouble(_fmiComponent);
                     token = new DoubleToken(result);
-                } else if (scalarVariable.type instanceof FMIStringType) {       
+                } else if (scalarVariable.type instanceof FMIStringType) {
                     String result = scalarVariable.getString(_fmiComponent);
                     token = new StringToken(result);
                 } else {
-                    throw new IllegalActionException("Type " + scalarVariable.type
-                            + " not supported.");
+                    throw new IllegalActionException("Type "
+                            + scalarVariable.type + " not supported.");
                 }
 
-                TypedIOPort port = (TypedIOPort)getPort(scalarVariable.name);
+                TypedIOPort port = (TypedIOPort) getPort(scalarVariable.name);
 
                 if (_debugging) {
-                    _debug("FMUImport.fire(): " + scalarVariable.name + " " + token + " "
-                            + scalarVariable.causality + " " + Causality.output);
+                    _debug("FMUImport.fire(): " + scalarVariable.name + " "
+                            + token + " " + scalarVariable.causality + " "
+                            + Causality.output);
                 }
                 switch (scalarVariable.causality) {
                 case none:
-                    // FIXME: should we do anything special if causality == none?
+                    // FIXME: should we do anything special if causality ==
+                    // none?
                     break;
                 case input:
                     token = port.get(0);
@@ -264,18 +259,23 @@ public class FMUImport extends TypedAtomicActor {
         String modelIdentifier = _fmiModelDescription.modelIdentifier;
 
         if (_debugging) {
-            _debug("FMUCoSimulation: about to call " + modelIdentifier + "_fmiInitializeSlave");
+            _debug("FMUCoSimulation: about to call " + modelIdentifier
+                    + "_fmiInitializeSlave");
         }
-        Function function = _fmiModelDescription.nativeLibrary.getFunction(modelIdentifier + "_fmiInitializeSlave");
+        Function function = _fmiModelDescription.nativeLibrary
+                .getFunction(modelIdentifier + "_fmiInitializeSlave");
 
         // FIXME: FMI-1.0 uses doubles for times.
         double startTime = getDirector().getModelStartTime().getDoubleValue();
         double stopTime = getDirector().getModelStopTime().getDoubleValue();
-        int fmiFlag = ((Integer)function.invoke(Integer.class,new Object[] {_fmiComponent, startTime, (byte)1, stopTime})).intValue();
+        int fmiFlag = ((Integer) function.invoke(Integer.class, new Object[] {
+                _fmiComponent, startTime, (byte) 1, stopTime })).intValue();
         if (fmiFlag > FMILibrary.FMIStatus.fmiWarning) {
-            throw new IllegalActionException(this, "Could not simulate, " 
-                    + modelIdentifier + "_fmiInitializeSlave(Component, /* startTime */ " + startTime
-                    + ", 1, /* stopTime */" + stopTime + ") returned " + fmiFlag);
+            throw new IllegalActionException(this, "Could not simulate, "
+                    + modelIdentifier
+                    + "_fmiInitializeSlave(Component, /* startTime */ "
+                    + startTime + ", 1, /* stopTime */" + stopTime
+                    + ") returned " + fmiFlag);
         }
         if (_debugging) {
             _debug("FMIImport.initialize() END");
@@ -291,12 +291,16 @@ public class FMUImport extends TypedAtomicActor {
      *  @exception IllegalActionException If there is a problem instantiating the actor.
      *  @exception IOException If there is a problem parsing the fmu file.
      */
-    public static void importFMU(Object originator, String fmuFileName, NamedObj context, double x, double y) 
+    public static void importFMU(Object originator, String fmuFileName,
+            NamedObj context, double x, double y)
             throws IllegalActionException, IOException {
-        // This method is called by the gui to import a fmu file and create the actor.
-        // The primary issue is that we need to define the ports early on and handle
+        // This method is called by the gui to import a fmu file and create the
+        // actor.
+        // The primary issue is that we need to define the ports early on and
+        // handle
         // changes to the ports.
-        FMIModelDescription fmiModelDescription = FMUFile.parseFMUFile(fmuFileName);
+        FMIModelDescription fmiModelDescription = FMUFile
+                .parseFMUFile(fmuFileName);
 
         // FIXME: Use URLs, not files so that we can work from JarZip files.
 
@@ -330,93 +334,91 @@ public class FMUImport extends TypedAtomicActor {
         StringBuffer portMoML = new StringBuffer();
         for (FMIScalarVariable scalar : fmiModelDescription.modelVariables) {
             if (scalar.variability == FMIScalarVariable.Variability.parameter) {
-		 // Parameters
-		    // Parameter parameter = new Parameter(this, scalar.name);
-                    // parameter.setExpression(Double.toString(((FMIRealType)scalar.type).start));
-                    // // Prevent exporting this to MoML unless it has
-                    // // been overridden.
-                    // parameter.setDerivedLevel(1);
+                // Parameters
+                // Parameter parameter = new Parameter(this, scalar.name);
+                // parameter.setExpression(Double.toString(((FMIRealType)scalar.type).start));
+                // // Prevent exporting this to MoML unless it has
+                // // been overridden.
+                // parameter.setDerivedLevel(1);
 
-                    // FIXME: Need to sanitize the name.
-                    // FIXME: Need to sanitize the value.
-		parameterMoML.append("  <property name=\"" + StringUtilities.sanitizeName(scalar.name)
-                            + "\" class=\"ptolemy.data.expr.Parameter\" value =\""
-                            + scalar.type
-                            + "\"/>\n");
-                } else {
-                    // Ports
+                // FIXME: Need to sanitize the name.
+                // FIXME: Need to sanitize the value.
+                parameterMoML.append("  <property name=\""
+                        + StringUtilities.sanitizeName(scalar.name)
+                        + "\" class=\"ptolemy.data.expr.Parameter\" value =\""
+                        + scalar.type + "\"/>\n");
+            } else {
+                // Ports
 
-                    // // FIXME: All output ports?
-                    // TypedIOPort port = new TypedIOPort(this, scalar.name, false, true);
-                    // port.setDerivedLevel(1);
-                    // // FIXME: set the type
-                    // port.setTypeEquals(BaseType.DOUBLE);
+                // // FIXME: All output ports?
+                // TypedIOPort port = new TypedIOPort(this, scalar.name, false,
+                // true);
+                // port.setDerivedLevel(1);
+                // // FIXME: set the type
+                // port.setTypeEquals(BaseType.DOUBLE);
 
-                    // Determine whether it is an input or output port.
-                    String internalHide = "";
-                    String causality = "";
-                    switch (scalar.causality) {
-                    case input:
-                        causality = "input";
-                        break;
-                    case none:
-                        // FIXME: Not sure what to do with causality == none.
-                        continue;
-                    case output:
-                    case internal:
-                        // Internal ports get hidden.
-                        causality = "output";
-                        break;
-                    }
-
-                    portMoML.append("  <port name=\"" + StringUtilities.sanitizeName(scalar.name)
-                            + "\" class=\"ptolemy.actor.TypedIOPort\">\n"
-                            + "    <property name=\"" + causality + "\"/>\n"
-                            + "    <property name=\"_type\" "
-                            + "class=\"ptolemy.actor.TypeAttribute\" value=\""
-                            + _fmiType2PtolemyType(scalar.type) + "\"/>\n"
-                            // Hide the port if we have lots of ports or it is internal.
-                            + (portCount++ > maximumNumberOfPortsToDisplay
-                                    || scalar.causality == Causality.internal ? hide : "")
-                            + "  </port>\n");
+                String causality = "";
+                switch (scalar.causality) {
+                case input:
+                    causality = "input";
+                    break;
+                case none:
+                    // FIXME: Not sure what to do with causality == none.
+                    continue;
+                case output:
+                case internal:
+                    // Internal ports get hidden.
+                    causality = "output";
+                    break;
                 }
+
+                portMoML.append("  <port name=\""
+                        + StringUtilities.sanitizeName(scalar.name)
+                        + "\" class=\"ptolemy.actor.TypedIOPort\">\n"
+                        + "    <property name=\"" + causality
+                        + "\"/>\n"
+                        + "    <property name=\"_type\" "
+                        + "class=\"ptolemy.actor.TypeAttribute\" value=\""
+                        + _fmiType2PtolemyType(scalar.type)
+                        + "\"/>\n"
+                        // Hide the port if we have lots of ports or it is
+                        // internal.
+                        + (portCount++ > maximumNumberOfPortsToDisplay
+                                || scalar.causality == Causality.internal ? hide
+                                : "") + "  </port>\n");
+            }
         }
 
         // FIXME: Get Undo/Redo working.
 
         // Use the "auto" namespace group so that name collisions
         // are automatically avoided by appending a suffix to the name.
-        String moml = "<group name=\"auto\">\n"
-            + " <entity name=\"" + rootName
-            + "\" class=\"ptolemy.actor.lib.fmi.FMUImport\"" + source + ">\n"
-            + "  <property name=\"_location\" "
-            + "class=\"ptolemy.kernel.util.Location\" value=\"" + x
-            + ", " + y + "\">\n"
-            + "  </property>\n"
-            + "  <property name=\"fmuFile\""
-            + "class=\"ptolemy.data.expr.FileParameter\""
-            + "value=\"" + fmuFileName + "\">\n"
-            + "  </property>\n"
-            + parameterMoML
-            + portMoML
-            + " </entity>\n</group>\n";
-        MoMLChangeRequest request = new MoMLChangeRequest(originator,
-                context, moml);
+        String moml = "<group name=\"auto\">\n" + " <entity name=\"" + rootName
+                + "\" class=\"ptolemy.actor.lib.fmi.FMUImport\"" + source
+                + ">\n" + "  <property name=\"_location\" "
+                + "class=\"ptolemy.kernel.util.Location\" value=\"" + x + ", "
+                + y + "\">\n" + "  </property>\n"
+                + "  <property name=\"fmuFile\""
+                + "class=\"ptolemy.data.expr.FileParameter\"" + "value=\""
+                + fmuFileName + "\">\n" + "  </property>\n" + parameterMoML
+                + portMoML + " </entity>\n</group>\n";
+        MoMLChangeRequest request = new MoMLChangeRequest(originator, context,
+                moml);
         context.requestChange(request);
     }
 
     /** Instantiate the slave FMU component.
      *  @exception IllegalActionException if it cannot be instantiated.
-     */   
+     */
     public void preinitialize() throws IllegalActionException {
         super.preinitialize();
         if (_debugging) {
             _debug("FMUImport.preinitialize()");
         }
 
-        // The modelName may have spaces in it.   
+        // The modelName may have spaces in it.
         String modelIdentifier = _fmiModelDescription.modelIdentifier;
-        
+
         String fmuLocation = null;
         try {
             // The URL of the fmu file.
@@ -425,8 +427,7 @@ public class FMUImport extends TypedAtomicActor {
             fmuLocation = new File(fmuFileName).toURI().toURL().toString();
         } catch (Exception ex) {
             throw new IllegalActionException(this, ex,
-                    "Failed to get the value of \""
-                    + fmuFile + "\"");
+                    "Failed to get the value of \"" + fmuFile + "\"");
         }
         // The tool to use if we have tool coupling.
         String mimeType = "application/x-fmu-sharedlibrary";
@@ -438,35 +439,30 @@ public class FMUImport extends TypedAtomicActor {
         byte interactive = 0;
         // Callbacks
         FMICallbackFunctions.ByValue callbacks = new FMICallbackFunctions.ByValue(
-                new FMULibrary.FMULogger(),
-                new FMULibrary.FMUAllocateMemory(),
+                new FMULibrary.FMULogger(), new FMULibrary.FMUAllocateMemory(),
                 new FMULibrary.FMUFreeMemory(),
                 new FMULibrary.FMUStepFinished());
 
         // FIXME: We should send logging messages to the debug listener.
-        byte loggingOn = (_debugging ? (byte)1 : (byte)0);
+        byte loggingOn = _debugging ? (byte) 1 : (byte) 0;
 
-        // FIXME: Logging tends to cause segfaults because of vararg callbacks so we ignore it.
-        loggingOn = (byte)0;
+        // FIXME: Logging tends to cause segfaults because of vararg callbacks
+        // so we ignore it.
+        loggingOn = (byte) 0;
 
         if (_debugging) {
-            _debug("FMUCoSimulation: about to call " + modelIdentifier + "_fmiInstantiateSlave");
+            _debug("FMUCoSimulation: about to call " + modelIdentifier
+                    + "_fmiInstantiateSlave");
         }
 
         _fmiComponent = (Pointer) _fmiInstantiateSlave.invoke(Pointer.class,
-                new Object [] {
-                    modelIdentifier,
-                    _fmiModelDescription.guid,
-                    fmuLocation,
-                    mimeType,
-                    timeout,
-                    visible,
-                    interactive,
-                    callbacks,
-                    loggingOn});
- 
+                new Object[] { modelIdentifier, _fmiModelDescription.guid,
+                        fmuLocation, mimeType, timeout, visible, interactive,
+                        callbacks, loggingOn });
+
         if (_fmiComponent.equals(Pointer.NULL)) {
-            throw new RuntimeException("Could not instantiate Functional Mock-up Unit (FMU).");
+            throw new RuntimeException(
+                    "Could not instantiate Functional Mock-up Unit (FMU).");
         }
     }
 
@@ -475,21 +471,32 @@ public class FMUImport extends TypedAtomicActor {
         // certain methods require interfaces as arguments, yet we
         // need to have method bodies, so we need an actual class.
         public class FMULogger implements FMICallbackLogger {
-            // What to do about jni callbacks with varargs?  
-            // See http://chess.eecs.berkeley.edu/ptexternal/wiki/Main/JNA#fmiCalbackLogger
-            public void apply(Pointer fmiComponent, String instanceName, int status, String category, String message/*, Pointer ... parameters*/) {
+            // What to do about jni callbacks with varargs?
+            // See
+            // http://chess.eecs.berkeley.edu/ptexternal/wiki/Main/JNA#fmiCalbackLogger
+            public void apply(Pointer fmiComponent, String instanceName,
+                    int status, String category, String message/*
+                                                                * , Pointer ...
+                                                                * parameters
+                                                                */) {
                 System.out.println("Java FMULogger, status: " + status);
-                System.out.println("Java FMULogger, message: " + message/*.getString(0)*/);
+                System.out.println("Java FMULogger, message: " + message/*
+                                                                         * .
+                                                                         * getString
+                                                                         * (0)
+                                                                         */);
             }
         }
-        //http://markmail.org/message/6ssggt4q6lkq3hen
+
+        // http://markmail.org/message/6ssggt4q6lkq3hen
 
         public class FMUAllocateMemory implements FMICallbackAllocateMemory {
             public Pointer apply(NativeSizeT nobj, NativeSizeT size) {
                 int numberOfObjects = nobj.intValue();
                 if (numberOfObjects <= 0) {
                     // instantiateModel() in fmuTemplate.c
-                    // will try to allocate 0 reals, integers, booleans or strings.
+                    // will try to allocate 0 reals, integers, booleans or
+                    // strings.
                     // However, instantiateModel() later checks to see if
                     // any of the allocated spaces are null and fails with
                     // "out of memory" if they are null.
@@ -500,11 +507,15 @@ public class FMUImport extends TypedAtomicActor {
                 memory.clear();
                 Pointer pointer = alignedMemory.share(0);
 
-//                 System.out.println("Java fmiAllocateMemory " + nobj + " " + size
-//                          + "\n        memory: " + memory + " " +  + memory.SIZE + " " + memory.SIZE % 4
-//                          + "\n alignedMemory: " + alignedMemory + " " + alignedMemory.SIZE + " " + alignedMemory.SIZE %4
-//                          + "\n       pointer: " + pointer + " " + pointer.SIZE + " " + pointer.SIZE % 4
-//                                     );
+                // System.out.println("Java fmiAllocateMemory " + nobj + " " +
+                // size
+                // + "\n        memory: " + memory + " " + + memory.SIZE + " " +
+                // memory.SIZE % 4
+                // + "\n alignedMemory: " + alignedMemory + " " +
+                // alignedMemory.SIZE + " " + alignedMemory.SIZE %4
+                // + "\n       pointer: " + pointer + " " + pointer.SIZE + " " +
+                // pointer.SIZE % 4
+                // );
 
                 // Need to keep a reference so the memory does not get gc'd.
                 _pointers.add(pointer);
@@ -518,11 +529,12 @@ public class FMUImport extends TypedAtomicActor {
                 _pointers.remove(pointer);
             }
         }
-	public class FMUStepFinished implements FMIStepFinished {
+
+        public class FMUStepFinished implements FMIStepFinished {
             public void apply(Pointer c, int status) {
                 System.out.println("Java fmiStepFinished: " + c + " " + status);
             }
-	};
+        };
     }
 
     /** Given a FMIType object, return a string suitable for setting
@@ -540,11 +552,10 @@ public class FMUImport extends TypedAtomicActor {
             return "int";
         } else if (type instanceof FMIRealType) {
             return "double";
-        } else if (type instanceof FMIStringType) {       
+        } else if (type instanceof FMIStringType) {
             return "string";
         } else {
-            throw new IllegalActionException("Type " + type
-                    + " not supported.");
+            throw new IllegalActionException("Type " + type + " not supported.");
         }
     }
 
@@ -558,18 +569,18 @@ public class FMUImport extends TypedAtomicActor {
      *  @exception NameDuplicationException If a paramater to be created
      *  has the same name as a pre-existing parameter.
      */
-    private void _updateParameters()
-            throws IllegalActionException, NameDuplicationException {
+    private void _updateParameters() throws IllegalActionException,
+            NameDuplicationException {
 
         if (_debugging) {
             _debug("FMUImport.updateParameters() START");
         }
-        // Unzip the fmuFile.  We probably need to do this
+        // Unzip the fmuFile. We probably need to do this
         // because we will need to load the shared library later.
         String fmuFileName = null;
         try {
             // FIXME: Use URLs, not files so that we can work from JarZip files.
-            
+
             // Only read the file if the name has changed from the last time we
             // read the file or if the modification time has changed.
             fmuFileName = fmuFile.asFile().getCanonicalPath();
@@ -585,15 +596,18 @@ public class FMUImport extends TypedAtomicActor {
 
             // Calling parseFMUFile also loads the share library.
             _fmiModelDescription = FMUFile.parseFMUFile(fmuFileName);
-            
-            _fmiDoStep = _fmiModelDescription.nativeLibrary.getFunction(
-                    _fmiModelDescription.modelIdentifier + "_fmiDoStep");
-            _fmiInstantiateSlave = _fmiModelDescription.nativeLibrary.getFunction(
-                    _fmiModelDescription.modelIdentifier + "_fmiInstantiateSlave");
+
+            _fmiDoStep = _fmiModelDescription.nativeLibrary
+                    .getFunction(_fmiModelDescription.modelIdentifier
+                            + "_fmiDoStep");
+            _fmiInstantiateSlave = _fmiModelDescription.nativeLibrary
+                    .getFunction(_fmiModelDescription.modelIdentifier
+                            + "_fmiInstantiateSlave");
 
         } catch (IOException ex) {
             throw new IllegalActionException(this, ex,
-                    "Failed to unzip, read in or process \"" + fmuFileName + "\".");
+                    "Failed to unzip, read in or process \"" + fmuFileName
+                            + "\".");
         }
         if (_debugging) {
             _debug("FMUImport.updateParameters() END");
@@ -616,7 +630,7 @@ public class FMUImport extends TypedAtomicActor {
      *  the file is later than the time the file was last read.
      */
     private String _fmuFileName = null;
-    
+
     /** The modification time of the file named by the
      *  <i>fmuFile</i> parameter the last time the file was read.
      */

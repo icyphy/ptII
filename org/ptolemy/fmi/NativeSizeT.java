@@ -24,10 +24,12 @@
    PT_COPYRIGHT_VERSION_2
    COPYRIGHTENDKEY
 
-*/
+ */
 package org.ptolemy.fmi;
+
 import com.sun.jna.IntegerType;
 import com.sun.jna.Native;
+
 /** A Java representation for a C type size_t, which is 32 or 64 bits.
  * @author Christopher Brooks
  * @version $Id$
@@ -46,6 +48,6 @@ public class NativeSizeT extends IntegerType {
      *  @param value The given value.
      */
     public NativeSizeT(long value) {
-        super(Native.SIZE_T_SIZE, value); 
+        super(Native.SIZE_T_SIZE, value);
     }
 }

@@ -24,19 +24,15 @@
    PT_COPYRIGHT_VERSION_2
    COPYRIGHTENDKEY
 
-*/
+ */
 package org.ptolemy.fmi;
 
 import java.io.File;
 import java.io.PrintStream;
-import java.util.Set;
-import java.util.HashSet;
 
 import com.sun.jna.Function;
-import com.sun.jna.Memory;
 import com.sun.jna.NativeLibrary;
 import com.sun.jna.Pointer;
-
 
 ///////////////////////////////////////////////////////////////////
 //// FMUCoSimulation
@@ -95,7 +91,8 @@ public class FMUCoSimulation extends FMUDriver {
      */
     public static void main(String[] args) throws Exception {
         FMUDriver._processArgs(args);
-        new FMUCoSimulation().simulate(_fmuFileName, _endTime, _stepSize, _enableLogging, _csvSeparator, _outputFileName);
+        new FMUCoSimulation().simulate(_fmuFileName, _endTime, _stepSize,
+                _enableLogging, _csvSeparator, _outputFileName);
     }
 
     /** Perform co-simulation using the named Functional Mock-up Unit (FMU) file.
@@ -110,22 +107,24 @@ public class FMUCoSimulation extends FMUDriver {
      *  the methods in the shared library.
      */
     public void simulate(String fmuFileName, double endTime, double stepSize,
-            boolean enableLogging, char csvSeparator, String outputFileName) throws Exception {
-            
+            boolean enableLogging, char csvSeparator, String outputFileName)
+            throws Exception {
 
         // Parse the .fmu file.
-        FMIModelDescription fmiModelDescription = FMUFile.parseFMUFile(fmuFileName);
+        FMIModelDescription fmiModelDescription = FMUFile
+                .parseFMUFile(fmuFileName);
 
         // Load the shared library.
         String sharedLibrary = FMUFile.fmuSharedLibrary(fmiModelDescription);
         if (enableLogging) {
-            System.out.println("FMUCoSimulation: about to load " + sharedLibrary);
+            System.out.println("FMUCoSimulation: about to load "
+                    + sharedLibrary);
         }
         NativeLibrary nativeLibrary = NativeLibrary.getInstance(sharedLibrary);
 
-        // The modelName may have spaces in it.   
+        // The modelName may have spaces in it.
         String modelIdentifier = fmiModelDescription.modelIdentifier;
-        
+
         // The URL of the fmu file.
         String fmuLocation = new File(fmuFileName).toURI().toURL().toString();
         // The tool to use if we have tool coupling.
@@ -138,46 +137,42 @@ public class FMUCoSimulation extends FMUDriver {
         byte interactive = 0;
         // Callbacks
         FMICallbackFunctions.ByValue callbacks = new FMICallbackFunctions.ByValue(
-                new FMULibrary.FMULogger(),
-                new FMULibrary.FMUAllocateMemory(),
+                new FMULibrary.FMULogger(), new FMULibrary.FMUAllocateMemory(),
                 new FMULibrary.FMUFreeMemory(),
                 new FMULibrary.FMUStepFinished());
         // Logging tends to cause segfaults because of vararg callbacks.
-        byte loggingOn = (enableLogging ? (byte)1 : (byte)0);
-        loggingOn = (byte)0;
+        byte loggingOn = enableLogging ? (byte) 1 : (byte) 0;
+        loggingOn = (byte) 0;
 
-        String instantiateSlaveFunctionName =  modelIdentifier + "_fmiInstantiateSlave";
-        Function instantiateSlave = FMUDriver.getFunction(nativeLibrary, enableLogging,
-                instantiateSlaveFunctionName);
+        String instantiateSlaveFunctionName = modelIdentifier
+                + "_fmiInstantiateSlave";
+        Function instantiateSlave = FMUDriver.getFunction(nativeLibrary,
+                enableLogging, instantiateSlaveFunctionName);
         Pointer fmiComponent = (Pointer) instantiateSlave.invoke(Pointer.class,
-                new Object [] {
-                    modelIdentifier,
-                    fmiModelDescription.guid,
-                    fmuLocation,
-                    mimeType,
-                    timeout,
-                    visible,
-                    interactive,
-                    callbacks,
-                    loggingOn});
+                new Object[] { modelIdentifier, fmiModelDescription.guid,
+                        fmuLocation, mimeType, timeout, visible, interactive,
+                        callbacks, loggingOn });
         if (fmiComponent.equals(Pointer.NULL)) {
             throw new RuntimeException("Could not instantiate model.");
         }
 
         double startTime = 0;
-        
-        
-        String initializeSlaveFunctionName = modelIdentifier + "_fmiInitializeSlave";
-        Function initializeSlaveFunction = FMUDriver.getFunction(nativeLibrary, enableLogging,
-                initializeSlaveFunctionName);
+
+        String initializeSlaveFunctionName = modelIdentifier
+                + "_fmiInitializeSlave";
+        Function initializeSlaveFunction = FMUDriver.getFunction(nativeLibrary,
+                enableLogging, initializeSlaveFunctionName);
         if (enableLogging) {
-            System.out.println("FMUCoSimulation: about to call " + initializeSlaveFunctionName);
+            System.out.println("FMUCoSimulation: about to call "
+                    + initializeSlaveFunctionName);
         }
-        int fmiFlag = ((Integer)initializeSlaveFunction.invoke(Integer.class, new Object[] {fmiComponent, startTime, (byte)1, endTime})).intValue();
+        int fmiFlag = ((Integer) initializeSlaveFunction.invoke(Integer.class,
+                new Object[] { fmiComponent, startTime, (byte) 1, endTime }))
+                .intValue();
         if (fmiFlag > FMILibrary.FMIStatus.fmiWarning) {
             throw new RuntimeException("Could not initialize slave: " + fmiFlag);
         }
-        
+
         File outputFile = new File(outputFileName);
         PrintStream file = null;
         try {
@@ -186,50 +181,62 @@ public class FMUCoSimulation extends FMUDriver {
                 System.out.println("FMUCoSimulation: about to write header");
             }
             // Generate header row
-            OutputRow.outputRow(nativeLibrary, fmiModelDescription, fmiComponent, startTime, file, csvSeparator, Boolean.TRUE);  
+            OutputRow.outputRow(nativeLibrary, fmiModelDescription,
+                    fmiComponent, startTime, file, csvSeparator, Boolean.TRUE);
             // Output the initial values.
-            OutputRow.outputRow(nativeLibrary, fmiModelDescription, fmiComponent, startTime, file, csvSeparator, Boolean.FALSE);
+            OutputRow.outputRow(nativeLibrary, fmiModelDescription,
+                    fmiComponent, startTime, file, csvSeparator, Boolean.FALSE);
             // Loop until the time is greater than the end time.
             double time = startTime;
-            
-            Function doStepFunction = FMUDriver.getFunction(nativeLibrary, enableLogging, modelIdentifier + "_fmiDoStep");
+
+            Function doStepFunction = FMUDriver.getFunction(nativeLibrary,
+                    enableLogging, modelIdentifier + "_fmiDoStep");
             while (time < endTime) {
                 if (enableLogging) {
                     System.out.println("FMUCoSimulation: about to call "
-                            + modelIdentifier + "_fmiDoStep(Component, /* time */ " + time
+                            + modelIdentifier
+                            + "_fmiDoStep(Component, /* time */ " + time
                             + ", /* stepSize */" + stepSize + ", 1)");
                 }
-                fmiFlag = ((Integer)doStepFunction.invokeInt(new Object[] {fmiComponent, time, stepSize, (byte)1})).intValue();
+                fmiFlag = ((Integer) doStepFunction.invokeInt(new Object[] {
+                        fmiComponent, time, stepSize, (byte) 1 })).intValue();
 
                 if (fmiFlag != FMILibrary.FMIStatus.fmiOK) {
                     throw new Exception("Could not simulate.  Time was " + time);
                 }
                 time += stepSize;
                 // Generate a line for this step
-                OutputRow.outputRow(nativeLibrary, fmiModelDescription, fmiComponent, time, file, csvSeparator, Boolean.FALSE);
+                OutputRow.outputRow(nativeLibrary, fmiModelDescription,
+                        fmiComponent, time, file, csvSeparator, Boolean.FALSE);
             }
-        } finally {            
+        } finally {
             if (file != null) {
                 file.close();
             }
-         }
-
-        if (enableLogging) {
-            System.out.println("FMUCoSimulation: about to call " + modelIdentifier + "_fmiTerminateSlave");
-        }
-        
-        Function terminateSlaveFunction = FMUDriver.getFunction(nativeLibrary, enableLogging,
-                modelIdentifier + "_fmiTerminateSlave");
-        fmiFlag = ((Integer)terminateSlaveFunction.invokeInt(new Object[] {fmiComponent})).intValue();
-        if (enableLogging) {
-            System.out.println("FMUCoSimulation: about to call " + modelIdentifier + "_fmiFreeSlaveInstance");
         }
 
-        Function freeSlaveInstanceFunction = FMUDriver.getFunction(nativeLibrary, enableLogging,
-                modelIdentifier + "_fmiFreeSlaveInstance");
-        fmiFlag = ((Integer)freeSlaveInstanceFunction.invokeInt(new Object[] {fmiComponent})).intValue();
         if (enableLogging) {
-            System.out.println("Results are in " + outputFile.getCanonicalPath());
+            System.out.println("FMUCoSimulation: about to call "
+                    + modelIdentifier + "_fmiTerminateSlave");
+        }
+
+        Function terminateSlaveFunction = FMUDriver.getFunction(nativeLibrary,
+                enableLogging, modelIdentifier + "_fmiTerminateSlave");
+        fmiFlag = ((Integer) terminateSlaveFunction
+                .invokeInt(new Object[] { fmiComponent })).intValue();
+        if (enableLogging) {
+            System.out.println("FMUCoSimulation: about to call "
+                    + modelIdentifier + "_fmiFreeSlaveInstance");
+        }
+
+        Function freeSlaveInstanceFunction = FMUDriver.getFunction(
+                nativeLibrary, enableLogging, modelIdentifier
+                        + "_fmiFreeSlaveInstance");
+        fmiFlag = ((Integer) freeSlaveInstanceFunction
+                .invokeInt(new Object[] { fmiComponent })).intValue();
+        if (enableLogging) {
+            System.out.println("Results are in "
+                    + outputFile.getCanonicalPath());
         }
     }
 }
