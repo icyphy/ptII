@@ -344,7 +344,11 @@ public class SRDirector extends FixedPointDirector implements PeriodicDirector {
      *  @return true If current time is appropriate for a firing.
      */
     public boolean prefire() throws IllegalActionException {
-        return super.prefire() && _periodicDirectorHelper.prefire();
+        boolean result = super.prefire() && _periodicDirectorHelper.prefire();
+        if (_debugging) {
+            _debug("Prefire returns " + result);
+        }
+        return result;
     }
 
     /** Call postfire() on all contained actors that were fired on the last
