@@ -206,7 +206,7 @@ public class PeriodicDirectorHelper {
         // the previous time plus the non-zero period.
         // If the enclosing time does not match or exceed
         // that (the latter could occur if we have been
-        // dormant in a modal model), then return false.
+        // dormant in an old-style modal model), then return false.
         // If the enclosing time exceeds the local current
         // time, then we must have been dormant. We need to
         // catch up.
