@@ -43,68 +43,17 @@ import com.sun.jna.Pointer;
 
 /** Read a Functional Mock-up Unit .fmu file and invoke it as a co-simulation.
  *  
- * @author Christopher Brooks
+ * <p>This file is based on fmusdk/src/model_exchange/fmusim_me/main.c:</p>
+ * <pre>
+ * Author: Jakob Mauss
+ * Copyright 2011 QTronic GmbH. All rights reserved. 
+ * </pre>
+ * @author Christopher Brooks, based on fmusim_cs/main.c by Jakob Mauss
  * @version $Id$
  * @Pt.ProposedRating Red (cxh)
  * @Pt.AcceptedRating Red (cxh)
  */
-public class FMUCoSimulation {
-
-
-    public interface FMULibrary extends FMILibrary {
-        // We need a class that implement the interface because
-        // certain methods require interfaces as arguments, yet we
-        // need to have method bodies, so we need an actual class.
-        public class FMULogger implements FMICallbackLogger {
-            // What to do about jni callbacks with varargs?  
-            // See http://chess.eecs.berkeley.edu/ptexternal/wiki/Main/JNA#fmiCalbackLogger
-            public void apply(Pointer fmiComponent, String instanceName, int status, String category, String message/*, Pointer ... parameters*/) {
-                System.out.println("Java FMULogger, status: " + status);
-                System.out.println("Java FMULogger, message: " + message/*.getString(0)*/);
-            }
-        }
-        //http://markmail.org/message/6ssggt4q6lkq3hen
-
-        public class FMUAllocateMemory implements FMICallbackAllocateMemory {
-            public Pointer apply(NativeSizeT nobj, NativeSizeT size) {
-                int numberOfObjects = nobj.intValue();
-                if (numberOfObjects <= 0) {
-                    // instantiateModel() in fmuTemplate.c
-                    // will try to allocate 0 reals, integers, booleans or strings.
-                    // However, instantiateModel() later checks to see if
-                    // any of the allocated spaces are null and fails with
-                    // "out of memory" if they are null.
-                    numberOfObjects = 1;
-                }
-                Memory memory = new Memory(numberOfObjects * size.intValue());
-                Memory alignedMemory = memory.align(4);
-                memory.clear();
-                Pointer pointer = alignedMemory.share(0);
-
-                // Need to keep a reference so the memory does not get gc'd.
-                // See http://osdir.com/ml/java.jna.user/2008-09/msg00065.html   
-                _pointers.add(pointer);
-
-//                 System.out.println("Java fmiAllocateMemory " + nobj + " " + size
-//                         + "\n        memory: " + memory + " " +  + memory.SIZE + " " + memory.SIZE % 4
-//                         + "\n alignedMemory: " + alignedMemory + " " + alignedMemory.SIZE + " " + alignedMemory.SIZE %4
-//                         + "\n       pointer: " + pointer + " " + pointer.SIZE + " " + (pointer.SIZE % 4));
-                return pointer;
-            }
-        }
-
-        public class FMUFreeMemory implements FMICallbackFreeMemory {
-            public void apply(Pointer obj) {
-                //System.out.println("Java fmiFreeMemory " + obj);
-                _pointers.remove(obj);
-            }
-        }
-	public class FMUStepFinished implements FMIStepFinished {
-            public void apply(Pointer c, int status) {
-                System.out.println("Java fmiStepFinished: " + c + " " + status);
-            }
-	};
-    }
+public class FMUCoSimulation extends FMUDriver {
 
     /** Perform co-simulation using the named Functional Mock-up Unit (FMU) file.
      *          
@@ -112,6 +61,11 @@ public class FMUCoSimulation {
      *  <pre>
      *  java -classpath ../../../lib/jna.jar:../../.. org.ptolemy.fmi.FMUCoSimulation \
      *  file.fmu [endTime] [stepTime] [loggingOn] [csvSeparator] [outputFile]
+     *  </pre>
+     *  <p>For example, under Mac OS X or Linux:
+     *  <pre>
+     *  java -classpath $PTII/lib/jna.jar:${PTII} org.ptolemy.fmi.FMUCoSimulation \
+     *  $PTII/org/ptolemy/fmi/fmu/cs/bouncingBall.fmu 1.0 0.1 1 c foo.csv
      *  </pre>
      *
      *  <p>The command line arguments have the following meaning:</p>
@@ -140,36 +94,8 @@ public class FMUCoSimulation {
      *  the methods in the shared library.
      */
     public static void main(String[] args) throws Exception {
-        String fmuFileName = args[0];
-        double endTime = 1.0; // In seconds
-        double stepSize = 0.1; // In seconds
-        boolean enableLogging = false;
-        char csvSeparator = ',';
-        String outputFileName = "results.csv";
-
-        if (args.length >= 2) {
-            endTime = Double.valueOf(args[1]);
-        }
-        if (args.length >= 3) {
-            stepSize = Double.valueOf(args[2]);
-        }
-        if (args.length >= 4) {
-            enableLogging = Boolean.valueOf(args[3]);
-        }
-        if (args.length >= 5) {
-            if (args[4].equals("c")) {
-                csvSeparator = ',';
-            } else if (args[4].equals("s")) {
-                csvSeparator = ';';
-            } else {
-                csvSeparator = args[4].charAt(0);
-            }
-        }
-        if (args.length >= 6) {
-            outputFileName = args[5];
-        }
-
-        simulate(fmuFileName, endTime, stepSize, enableLogging, csvSeparator, outputFileName);
+        FMUDriver._processArgs(args);
+        new FMUCoSimulation().simulate(_fmuFileName, _endTime, _stepSize, _enableLogging, _csvSeparator, _outputFileName);
     }
 
     /** Perform co-simulation using the named Functional Mock-up Unit (FMU) file.
@@ -183,7 +109,7 @@ public class FMUCoSimulation {
      *  @exception Exception If there is a problem parsing the .fmu file or invoking
      *  the methods in the shared library.
      */
-    public static void simulate(String fmuFileName, double endTime, double stepSize,
+    public void simulate(String fmuFileName, double endTime, double stepSize,
             boolean enableLogging, char csvSeparator, String outputFileName) throws Exception {
             
 
@@ -219,10 +145,10 @@ public class FMUCoSimulation {
         // Logging tends to cause segfaults because of vararg callbacks.
         byte loggingOn = (enableLogging ? (byte)1 : (byte)0);
         loggingOn = (byte)0;
-        if (enableLogging) {
-            System.out.println("FMUCoSimulation: about to call " + modelIdentifier + "_fmiInstantiateSlave");
-        }
-        Function instantiateSlave = nativeLibrary.getFunction(modelIdentifier + "_fmiInstantiateSlave");
+
+        String instantiateSlaveFunctionName =  modelIdentifier + "_fmiInstantiateSlave";
+        Function instantiateSlave = FMUDriver.getFunction(nativeLibrary, enableLogging,
+                instantiateSlaveFunctionName);
         Pointer fmiComponent = (Pointer) instantiateSlave.invoke(Pointer.class,
                 new Object [] {
                     modelIdentifier,
@@ -240,11 +166,14 @@ public class FMUCoSimulation {
 
         double startTime = 0;
         
+        
+        String initializeSlaveFunctionName = modelIdentifier + "_fmiInitializeSlave";
+        Function initializeSlaveFunction = FMUDriver.getFunction(nativeLibrary, enableLogging,
+                initializeSlaveFunctionName);
         if (enableLogging) {
-            System.out.println("FMUCoSimulation: about to call " + modelIdentifier + "_fmiInitializeSlave");
+            System.out.println("FMUCoSimulation: about to call " + initializeSlaveFunctionName);
         }
-        Function function = nativeLibrary.getFunction(modelIdentifier + "_fmiInitializeSlave");
-        int fmiFlag = ((Integer)function.invoke(Integer.class,new Object[] {fmiComponent, startTime, (byte)1, endTime})).intValue();
+        int fmiFlag = ((Integer)initializeSlaveFunction.invoke(Integer.class, new Object[] {fmiComponent, startTime, (byte)1, endTime})).intValue();
         if (fmiFlag > FMILibrary.FMIStatus.fmiWarning) {
             throw new RuntimeException("Could not initialize slave: " + fmiFlag);
         }
@@ -262,14 +191,15 @@ public class FMUCoSimulation {
             OutputRow.outputRow(nativeLibrary, fmiModelDescription, fmiComponent, startTime, file, csvSeparator, Boolean.FALSE);
             // Loop until the time is greater than the end time.
             double time = startTime;
-            function = nativeLibrary.getFunction(modelIdentifier + "_fmiDoStep");
+            
+            Function doStepFunction = FMUDriver.getFunction(nativeLibrary, enableLogging, modelIdentifier + "_fmiDoStep");
             while (time < endTime) {
                 if (enableLogging) {
                     System.out.println("FMUCoSimulation: about to call "
                             + modelIdentifier + "_fmiDoStep(Component, /* time */ " + time
                             + ", /* stepSize */" + stepSize + ", 1)");
                 }
-                fmiFlag = ((Integer)function.invokeInt(new Object[] {fmiComponent, time, stepSize, (byte)1})).intValue();
+                fmiFlag = ((Integer)doStepFunction.invokeInt(new Object[] {fmiComponent, time, stepSize, (byte)1})).intValue();
 
                 if (fmiFlag != FMILibrary.FMIStatus.fmiOK) {
                     throw new Exception("Could not simulate.  Time was " + time);
@@ -287,21 +217,19 @@ public class FMUCoSimulation {
         if (enableLogging) {
             System.out.println("FMUCoSimulation: about to call " + modelIdentifier + "_fmiTerminateSlave");
         }
-        function = nativeLibrary.getFunction(modelIdentifier + "_fmiTerminateSlave");
-        fmiFlag = ((Integer)function.invokeInt(new Object[] {fmiComponent})).intValue();
-
+        
+        Function terminateSlaveFunction = FMUDriver.getFunction(nativeLibrary, enableLogging,
+                modelIdentifier + "_fmiTerminateSlave");
+        fmiFlag = ((Integer)terminateSlaveFunction.invokeInt(new Object[] {fmiComponent})).intValue();
         if (enableLogging) {
             System.out.println("FMUCoSimulation: about to call " + modelIdentifier + "_fmiFreeSlaveInstance");
         }
-        function = nativeLibrary.getFunction(modelIdentifier + "_fmiFreeSlaveInstance");
-        fmiFlag = ((Integer)function.invokeInt(new Object[] {fmiComponent})).intValue();
+
+        Function freeSlaveInstanceFunction = FMUDriver.getFunction(nativeLibrary, enableLogging,
+                modelIdentifier + "_fmiFreeSlaveInstance");
+        fmiFlag = ((Integer)freeSlaveInstanceFunction.invokeInt(new Object[] {fmiComponent})).intValue();
         if (enableLogging) {
             System.out.println("Results are in " + outputFile.getCanonicalPath());
         }
-  }
-
-    /** Keep references to memory that has been allocated and
-     *  avoid problems with the memory being garbage collected.   
-     */   
-    private static Set<Pointer> _pointers = new HashSet<Pointer>();
+    }
 }

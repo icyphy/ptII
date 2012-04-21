@@ -126,19 +126,6 @@ public class FMUFile {
         return canonicalPath;
     }
 
-    /** Return a function by name.
-     *  @param nativeLibrary The shared library in which to look for the function.
-     *  @param enableLogging True if a message should be printed.
-     *  @param name The name of the function.
-     */
-    public static Function getFunction(NativeLibrary nativeLibrary, boolean enableLogging,
-            String name) {
-        if (enableLogging) {
-            System.out.println("FMUModelExchange: about to get the " + name  + " function.");
-        }
-        return nativeLibrary.getFunction(name);
-    }
-
     /** Read in a .fmu file and parse the modelDescription.xml file.
      *  @param fmuFileName the .fmu file
      *  @return An object that represents the structure of the

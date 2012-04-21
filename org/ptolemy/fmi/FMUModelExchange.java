@@ -50,92 +50,36 @@ import com.sun.jna.Pointer;
  * Author: Jakob Mauss
  * Copyright 2011 QTronic GmbH. All rights reserved. 
  * </pre>
-
+ *
  * @author Christopher Brooks, based on fmusim_me/main.c by Jakob Mauss
  * @version $Id: FMUModelExchange.java 63359 2012-04-16 06:45:49Z cxh $
  * @Pt.ProposedRating Red (cxh)
  * @Pt.AcceptedRating Red (cxh)
  */
-public class FMUModelExchange {
-
-    // FIXME: factor this out, it duplicates code in FMUCoSimulation
-    public interface FMULibrary extends FMILibrary {
-        // We need a class that implement the interface because
-        // certain methods require interfaces as arguments, yet we
-        // need to have method bodies, so we need an actual class.
-        public class FMULogger implements FMICallbackLogger {
-            // What to do about jni callbacks with varargs?  
-            // See http://chess.eecs.berkeley.edu/ptexternal/wiki/Main/JNA#fmiCalbackLogger
-            public void apply(Pointer fmiComponent, String instanceName, int status, String category, String message/*, Pointer ... parameters*/) {
-                System.out.println("Java FMULogger, status: " + status);
-                System.out.println("Java FMULogger, message: " + message/*.getString(0)*/);
-            }
-        }
-        //http://markmail.org/message/6ssggt4q6lkq3hen
-
-        public class FMUAllocateMemory implements FMICallbackAllocateMemory {
-            public Pointer apply(NativeSizeT nobj, NativeSizeT size) {
-                int numberOfObjects = nobj.intValue();
-                if (numberOfObjects <= 0) {
-                    // instantiateModel() in fmuTemplate.c
-                    // will try to allocate 0 reals, integers, booleans or strings.
-                    // However, instantiateModel() later checks to see if
-                    // any of the allocated spaces are null and fails with
-                    // "out of memory" if they are null.
-                    numberOfObjects = 1;
-                }
-                Memory memory = new Memory(numberOfObjects * size.intValue());
-                Memory alignedMemory = memory.align(4);
-                memory.clear();
-                Pointer pointer = alignedMemory.share(0);
-
-                // Need to keep a reference so the memory does not get gc'd.
-                // See http://osdir.com/ml/java.jna.user/2008-09/msg00065.html   
-                _pointers.add(pointer);
-
-//                 System.out.println("Java fmiAllocateMemory " + nobj + " " + size
-//                         + "\n        memory: " + memory + " " +  + memory.SIZE + " " + memory.SIZE % 4
-//                         + "\n alignedMemory: " + alignedMemory + " " + alignedMemory.SIZE + " " + alignedMemory.SIZE %4
-//                         + "\n       pointer: " + pointer + " " + pointer.SIZE + " " + (pointer.SIZE % 4));
-                return pointer;
-            }
-        }
-
-        public class FMUFreeMemory implements FMICallbackFreeMemory {
-            public void apply(Pointer obj) {
-                //System.out.println("Java fmiFreeMemory " + obj);
-                _pointers.remove(obj);
-            }
-        }
-	public class FMUStepFinished implements FMIStepFinished {
-            public void apply(Pointer c, int status) {
-                System.out.println("Java fmiStepFinished: " + c + " " + status);
-            }
-	};
-    }
+public class FMUModelExchange extends FMUDriver {
 
     /** Perform model exchange using the named Functional Mock-up Unit (FMU) file.
      *          
-     *  <p>Usage:</p>
-     *  <pre>
-     *  java -classpath ../../../lib/jna.jar:../../..\
-     *      org.ptolemy.fmi.FMUModelExchange \
-     *      file.fmu [endTime] [stepTime] [loggingOn] [csvSeparator] [outputFile]
-     *  </pre>
-     *  <p>For example:</p>
-     *  <pre>
-     *  java -classpath "${PTII}/lib/jna.jar:${PTII}/ptII" \
-     *       org.ptolemy.fmi.FMUModelExchange \
-     *       $PTII/org/ptolemy/fmi/fmu/me/bouncingBall.fmu \
-     *       1.0 0.1 true c bouncingBall.csv
-     *  </pre>
+     * <p>Usage:</p>
+     * <pre>
+     * java -classpath ../../../lib/jna.jar:../../.. org.ptolemy.fmi.FMUModelExchange \
+     * file.fmu [endTime] [stepTime] [loggingOn] [csvSeparator] [outputFile]
+     * </pre>
+     *
+     * <p>For example, under Mac OS X or Linux:
+     * <pre>
+     * java -classpath $PTII/lib/jna.jar:${PTII} org.ptolemy.fmi.FMUModelExchange \
+     * $PTII/org/ptolemy/fmi/fmu/me/bouncingBall.fmu 1.0 0.1 1 c foo.csv
+     * </pre>
+     *
      *  <p>The command line arguments have the following meaning:</p>
      *  <dl>
      *  <dt>file.fmu</dt>
-     *  <dd>The co-simulation Functional Mock-up Unit (FMU) file.  In FMI-1.0,
-     *  co-simulation fmu files contain a modelDescription.xml file that 
-     *  has an &lt;Implementation&gt; element.  Model exchange fmu files do not
-     *  have this element.</dd>
+     *  <dd>The model exchange Functional Mock-up
+     *  Unit (FMU) file.  In FMI-1.0, co-simulation fmu files contain
+     *  a modelDescription.xml file that has an &lt;Implementation&gt;
+     *  element.  Model exchange fmu files do not have this
+     *  element.</dd>
      *  <dt>endTime</dt>
      *  <dd>The endTime in seconds, defaults to 1.0.</dd>
      *  <dt>stepTime</dt>
@@ -155,39 +99,11 @@ public class FMUModelExchange {
      *  the methods in the shared library.
      */
     public static void main(String[] args) throws Exception {
-        String fmuFileName = args[0];
-        double endTime = 1.0; // In seconds
-        double stepSize = 0.1; // In seconds
-        boolean enableLogging = false;
-        char csvSeparator = ',';
-        String outputFileName = "results.csv";
-
-        if (args.length >= 2) {
-            endTime = Double.valueOf(args[1]);
-        }
-        if (args.length >= 3) {
-            stepSize = Double.valueOf(args[2]);
-        }
-        if (args.length >= 4) {
-            enableLogging = Boolean.valueOf(args[3]);
-        }
-        if (args.length >= 5) {
-            if (args[4].equals("c")) {
-                csvSeparator = ',';
-            } else if (args[4].equals("s")) {
-                csvSeparator = ';';
-            } else {
-                csvSeparator = args[4].charAt(0);
-            }
-        }
-        if (args.length >= 6) {
-            outputFileName = args[5];
-        }
-
-        simulate(fmuFileName, endTime, stepSize, enableLogging, csvSeparator, outputFileName);
+        FMUDriver._processArgs(args);
+        new FMUModelExchange().simulate(_fmuFileName, _endTime, _stepSize, _enableLogging, _csvSeparator, _outputFileName);
     }
 
-    /** Perform co-simulation using the named Functional Mock-up Unit (FMU) file.
+    /** Perform model exchange using the named Functional Mock-up Unit (FMU) file.
      *  @param fmuFileName The pathname of the co-simulation .fmu file
      *  @param endTime The ending time in seconds.
      *  @param stepSize The step size in seconds.
@@ -198,7 +114,7 @@ public class FMUModelExchange {
      *  @exception Exception If there is a problem parsing the .fmu file or invoking
      *  the methods in the shared library.
      */
-    public static void simulate(String fmuFileName, double endTime, double stepSize,
+    public void simulate(String fmuFileName, double endTime, double stepSize,
             boolean enableLogging, char csvSeparator, String outputFileName) throws Exception {
             
 
@@ -245,7 +161,7 @@ public class FMUModelExchange {
         Function instantiateModelFunction;
         String instantiateModelFunctionName = modelIdentifier + "_fmiInstantiateModel";
         try {
-            instantiateModelFunction = FMUFile.getFunction(nativeLibrary, enableLogging,
+            instantiateModelFunction = FMUDriver.getFunction(nativeLibrary, enableLogging,
                     instantiateModelFunctionName);
         } catch (UnsatisfiedLinkError ex) {
             throw new UnsatisfiedLinkError("Could not load "
@@ -279,7 +195,7 @@ public class FMUModelExchange {
         // Set the start time.
         double startTime = 0.0;
         String setTimeFunctionName = modelIdentifier + "_fmiSetTime";
-        Function setTimeFunction = FMUFile.getFunction(nativeLibrary, enableLogging,
+        Function setTimeFunction = FMUDriver.getFunction(nativeLibrary, enableLogging,
                 setTimeFunctionName);
         int fmiFlag = ((Integer)setTimeFunction.invoke(Integer.class,new Object[] {fmiComponent, startTime})).intValue();
         if (fmiFlag > FMILibrary.FMIStatus.fmiWarning) {
@@ -288,7 +204,7 @@ public class FMUModelExchange {
 
         // Initialize the model;
         String initializeFunctionName = modelIdentifier + "_fmiInitialize";
-        Function initializeFunction = FMUFile.getFunction(nativeLibrary, enableLogging, initializeFunctionName);
+        Function initializeFunction = FMUDriver.getFunction(nativeLibrary, enableLogging, initializeFunctionName);
         byte toleranceControlled = 0;
         FMIEventInfo eventInfo = new FMIEventInfo();
         if (enableLogging) {
@@ -321,27 +237,27 @@ public class FMUModelExchange {
             // Functions used within the while loop, organized
             // alphabetically.
             String completedIntegratorStepFunctionName = modelIdentifier + "_fmiCompletedIntegratorStep";
-            Function completedIntegratorStepFunction = FMUFile.getFunction(nativeLibrary, enableLogging,
+            Function completedIntegratorStepFunction = FMUDriver.getFunction(nativeLibrary, enableLogging,
                     completedIntegratorStepFunctionName);
 
             String getContinuousStatesFunctionName = modelIdentifier + "_fmiGetContinuousStates";
-            Function getContinuousStatesFunction = FMUFile.getFunction(nativeLibrary, enableLogging,
+            Function getContinuousStatesFunction = FMUDriver.getFunction(nativeLibrary, enableLogging,
                     getContinuousStatesFunctionName);
 
             String getDerivativesFunctionName = modelIdentifier + "_fmiGetDerivatives";
-            Function getDerivativesFunction = FMUFile.getFunction(nativeLibrary, enableLogging,
+            Function getDerivativesFunction = FMUDriver.getFunction(nativeLibrary, enableLogging,
                     getDerivativesFunctionName);
 
             String getEventIndicatorsFunctionName = modelIdentifier + "_fmiGetEventIndicators";
-            Function getEventIndicatorsFunction = FMUFile.getFunction(nativeLibrary, enableLogging,
+            Function getEventIndicatorsFunction = FMUDriver.getFunction(nativeLibrary, enableLogging,
                     getEventIndicatorsFunctionName);
 
             String eventUpdateFunctionName = modelIdentifier + "_fmiEventUpdate";
-            Function eventUpdateFunction = FMUFile.getFunction(nativeLibrary, enableLogging,
+            Function eventUpdateFunction = FMUDriver.getFunction(nativeLibrary, enableLogging,
                     eventUpdateFunctionName);
 
             String setContinuousStatesFunctionName = modelIdentifier + "_fmiSetContinuousStates";
-            Function setContinuousStatesFunction = FMUFile.getFunction(nativeLibrary, enableLogging,
+            Function setContinuousStatesFunction = FMUDriver.getFunction(nativeLibrary, enableLogging,
                     setContinuousStatesFunctionName);
 
 
@@ -484,7 +400,7 @@ public class FMUModelExchange {
                 numberOfSteps++;
             }
             String terminateFunctionName = modelIdentifier + "_fmiTerminate";
-            Function terminateFunction = FMUFile.getFunction(nativeLibrary, enableLogging,
+            Function terminateFunction = FMUDriver.getFunction(nativeLibrary, enableLogging,
                     terminateFunctionName);
         
             if (enableLogging) {
@@ -508,10 +424,4 @@ public class FMUModelExchange {
         System.out.println("  stepEvents: " + numberOfStepEvents);
         System.out.println("  timeEvents: " + numberOfTimeEvents);
     }
-
-    /** Keep references to memory that has been allocated and
-     *  avoid problems with the memory being garbage collected.   
-     */   
-    private static Set<Pointer> _pointers = new HashSet<Pointer>();
-
 }
