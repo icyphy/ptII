@@ -134,7 +134,7 @@ public class FMUFile {
     public static Function getFunction(NativeLibrary nativeLibrary, boolean enableLogging,
             String name) {
         if (enableLogging) {
-            System.out.println("FMUModelExchange: about to call " + name  + " and set the start time.");
+            System.out.println("FMUModelExchange: about to get the " + name  + " function.");
         }
         return nativeLibrary.getFunction(name);
     }

@@ -32,6 +32,7 @@ import java.io.PrintStream;
 import java.util.Set;
 import java.util.HashSet;
 
+import com.sun.jna.ptr.ByteByReference;
 import com.sun.jna.Function;
 import com.sun.jna.Memory;
 import com.sun.jna.Native;
@@ -262,29 +263,17 @@ public class FMUModelExchange {
             throw new RuntimeException("Could not instantiate model.");
         }
 
-        // Allocate memory.
-        int numberOfStates = fmiModelDescription.numberOfContinuousStates;
-        int numberOfEventIndicators = fmiModelDescription.numberOfEventIndicators;
-        FMULibrary.FMUAllocateMemory fmuAllocateMemory = new FMULibrary.FMUAllocateMemory();
-        //x    = (double *) calloc(nx, sizeof(double));
-        Pointer states = new Memory(numberOfStates * 4).share(0);
+        // Should these be on the heap?
+        final int numberOfStates = fmiModelDescription.numberOfContinuousStates;
+        final int numberOfEventIndicators = fmiModelDescription.numberOfEventIndicators;
+        double [] states = new double[numberOfStates];
+        double [] derivatives = new double[numberOfStates];
 
-        //xdot = (double *) calloc(nx, sizeof(double));
-        Pointer derivatives = new Memory(numberOfStates * 4).share(0);
-
-        Pointer eventIndicators = null;
-        Pointer preEventIndicators = null;
+        double [] eventIndicators = null;
+        double [] preEventIndicators = null;
         if (numberOfEventIndicators > 0) {
-            //z    =  (double *) calloc(numberOfEventIndicators, sizeof(double));
-            eventIndicators = new Memory(numberOfEventIndicators * 4).share(0);
-            //prez =  (double *) calloc(numberOfEventIndicators, sizeof(double));
-            preEventIndicators = new Memory(numberOfEventIndicators * 4).share(0);
-        }
-        if (states == null || derivatives == null 
-                || (numberOfEventIndicators > 0
-                        && (eventIndicators == null
-                                || preEventIndicators == null))) {
-            throw new RuntimeException("Out of memory!");
+            eventIndicators = new double[numberOfEventIndicators];
+            preEventIndicators = new double[numberOfEventIndicators];
         }
 
         // Set the start time.
@@ -358,6 +347,7 @@ public class FMUModelExchange {
 
             boolean stateEvent = false;
 
+            byte stepEvent = (byte)0;
             // Loop until the time is greater than the end time.
             while (time < endTime) {
                 if (enableLogging) {
@@ -397,9 +387,8 @@ public class FMUModelExchange {
                 // Perform a step.
                 for (int i = 0; i < numberOfStates; i++) {
                     // The forward Euler method.
-                    states.setDouble(i, states.getDouble(i) + (dt * derivatives.getDouble(i)));
+                    states[i] += dt * derivatives[i];
                 }
-                
                 
                 if (enableLogging) {
                     System.out.println("FMUModelExchange: about to call " + setContinuousStatesFunctionName);
@@ -409,12 +398,15 @@ public class FMUModelExchange {
                     throw new Exception("Could not set continuous states: " + fmiFlag + ". Time was " + time);
                 }
 
-                byte stepEvent = (byte)0;
                 // Check to see if we have completed the integrator step.
                 if (enableLogging) {
                     System.out.println("FMUModelExchange: about to call " + completedIntegratorStepFunctionName);
                 }
-                fmiFlag = ((Integer)completedIntegratorStepFunction.invoke(Integer.class,new Object[] {fmiComponent, stepEvent})).intValue();
+                // Pass stepEvent in by reference.  See
+                // https://github.com/twall/jna/blob/master/www/ByRefArguments.md
+                ByteByReference stepEventReference = new ByteByReference(stepEvent);
+                fmiFlag = ((Integer)completedIntegratorStepFunction.invoke(Integer.class,new Object[] {fmiComponent, stepEventReference})).intValue();
+                stepEvent = stepEventReference.getValue();
                 if (fmiFlag != FMILibrary.FMIStatus.fmiOK) {
                     throw new Exception("Could not set complete integrator step: " + fmiFlag + ". Time was " + time);
                 }
@@ -422,7 +414,7 @@ public class FMUModelExchange {
 
                 // Save the state events.
                 for (int i = 0; i < numberOfEventIndicators; i++) {
-                    preEventIndicators.setDouble(i, eventIndicators.getDouble(i));
+                    preEventIndicators[i] = eventIndicators[i];
                 }
                         
                 // Get the eventIndicators.
@@ -436,7 +428,7 @@ public class FMUModelExchange {
 
                 stateEvent = Boolean.FALSE;
                 for (int i = 0; i < numberOfEventIndicators; i++) {
-                    stateEvent = stateEvent || (preEventIndicators.getDouble(i) * eventIndicators.getDouble(i) < 0);  
+                    stateEvent = stateEvent || (preEventIndicators[i] * eventIndicators[i] < 0);  
                 }
 
                 // Handle Events
@@ -446,7 +438,7 @@ public class FMUModelExchange {
                         if (enableLogging) {
                             for (int i = 0; i < numberOfEventIndicators; i++) {
                                 System.out.println("state event " + 
-                                        ((preEventIndicators.getDouble(i) >0 && eventIndicators.getDouble(i)<0)
+                                        ((preEventIndicators[i] > 0 && eventIndicators[i] < 0)
                                                 ? "-\\-" : "-/-")
                                         + " eventIndicator[" + i + "], time: " + time);
                             }
@@ -491,7 +483,7 @@ public class FMUModelExchange {
                 OutputRow.outputRow(nativeLibrary, fmiModelDescription, fmiComponent, time, file, csvSeparator, Boolean.FALSE);
                 numberOfSteps++;
             }
-            String terminateFunctionName = modelIdentifier + "_fmiSetContinuousStates";
+            String terminateFunctionName = modelIdentifier + "_fmiTerminate";
             Function terminateFunction = FMUFile.getFunction(nativeLibrary, enableLogging,
                     terminateFunctionName);
         
@@ -508,10 +500,6 @@ public class FMUModelExchange {
                 file.close();
             }
         }
-
-        Function terminateFunction = FMUFile.getFunction(nativeLibrary, enableLogging,
-                modelIdentifier + "_fmiTerminateSlave");
-        fmiFlag = ((Integer)terminateFunction.invokeInt(new Object[] {fmiComponent})).intValue();
 
         System.out.println("Simulation from " + startTime + " to " + endTime + " was successful");
         System.out.println("  steps: " + numberOfSteps);
