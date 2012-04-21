@@ -1,4 +1,4 @@
-/* JUnit test for Functional Mock-up Unit Co-Simulation
+/* JUnit test for Functional Mock-up Unit Co-Simulation and Model Exchange.
 
  Copyright (c) 2012 The Regents of the University of California.
  All rights reserved.
@@ -36,22 +36,24 @@ import java.io.InputStreamReader;
 import java.io.IOException;
 
 import org.ptolemy.fmi.FMUCoSimulation;
+import org.ptolemy.fmi.FMUModelExchange;
 
 
 import static org.junit.Assert.assertArrayEquals;
 import org.junit.Assert;
 
 ///////////////////////////////////////////////////////////////////
-//// FMUCoSimulationJUnitTest
+//// FMUUnitTest
 /**
- * Invoke the FMUCoSimulation class on various .fmu files.
+ * Invoke the co-simulator and model exchanger on various Functional
+ * Mockup Unit (.fmu) files.
  * @author Christopher Brooks
  * @version $Id$
  * @since Ptolemy II 8.1
  * @Pt.ProposedRating Green (cxh)
  * @Pt.AcceptedRating Green (cxh)
  */
-public class FMUCoSimulationJUnitTest {
+public class FMUJUnitTest {
     /** Parse a Functional Mock-up Unit .fmu file, run it using co-simulation
      *  and compare the results against a known good file.
      *  
@@ -64,7 +66,7 @@ public class FMUCoSimulationJUnitTest {
      *  or if the results is not the same as the known good results.
      */
     public void cosimulate(String fmuFileName, String knownGoodFileName) throws Exception {
-        String resultsFileName = File.createTempFile("FMUCoSimulationJUnitTest", "csv").getCanonicalPath();
+        String resultsFileName = File.createTempFile("FMUJUnitTest", "csv").getCanonicalPath();
         System.out.println("To update " + knownGoodFileName + ", run:\n"
                 + "java -classpath \"" + topDirectory + "/lib/jna.jar:" + topDirectory
                 + "\" org.ptolemy.fmi.FMUCoSimulation "
@@ -73,8 +75,8 @@ public class FMUCoSimulationJUnitTest {
         FMUCoSimulation.simulate(fmuFileName,
                 1.0, 0.1, true /*logging*/, ',' , resultsFileName);
 
-        String results = FMUCoSimulationJUnitTest.readFile(resultsFileName);
-        String knownGood = FMUCoSimulationJUnitTest.readFile(knownGoodFileName);
+        String results = FMUJUnitTest.readFile(resultsFileName);
+        String knownGood = FMUJUnitTest.readFile(knownGoodFileName);
         if (results.length() != knownGood.length()) {
             Assert.fail(fmuFileName + ":results length "
                     + results.length() + " != known good length "
@@ -99,7 +101,7 @@ public class FMUCoSimulationJUnitTest {
      *  @exception Exception If there is a problem reading or running the test.
      */   
      @org.junit.Test
-     public void runBouncingBall() throws Exception {
+     public void cosimulateBouncingBall() throws Exception {
          cosimulate("bouncingBall");
      }
 
@@ -107,7 +109,7 @@ public class FMUCoSimulationJUnitTest {
      *  @exception Exception If there is a problem reading or running the test.
      */   
     @org.junit.Test
-    public void runDq() throws Exception {
+    public void cosimulateDq() throws Exception {
         cosimulate("dq");
     }
 
@@ -115,7 +117,7 @@ public class FMUCoSimulationJUnitTest {
      *  @exception Exception If there is a problem reading or running the test.
      */   
     @org.junit.Test
-    public void runInc() throws Exception {
+    public void cosimulateInc() throws Exception {
        cosimulate("inc");
     }
 
@@ -123,7 +125,7 @@ public class FMUCoSimulationJUnitTest {
      *  @exception Exception If there is a problem reading or running the test.
      */   
     @org.junit.Test
-    public void runValues() throws Exception {
+    public void cosimulateValues() throws Exception {
        cosimulate("values");
     }
 
@@ -131,19 +133,102 @@ public class FMUCoSimulationJUnitTest {
      *  @exception Exception If there is a problem reading or running the test.
      */   
     @org.junit.Test
-    public void runVanDerPol() throws Exception {
+    public void cosimulateVanDerPol() throws Exception {
         cosimulate("vanDerPol");
     }
 
-    /** Run FMI co-simulation tests.
+    /** Parse a Functional Mock-up Unit .fmu file, run it using model exchange
+     *  and compare the results against a known good file.
+     *  
+     *  @param fmuFileName The absolute pathname of the .fmu file.  Absolute
+     *  pathnames are used because this test could be run from anywhere.
+     *  @param knownGoodFileName The absolute pathname of the known good results.
+     *  Note that when the test is run, the output includes the command that could
+     *  be run to create the known good file.
+     *  @exception Exception If there is a problem reading or executing the test
+     *  or if the results is not the same as the known good results.
+     */
+    public void modelExchange(String fmuFileName, String knownGoodFileName) throws Exception {
+        String resultsFileName = File.createTempFile("FMUJUnitTest", "csv").getCanonicalPath();
+        System.out.println("To update " + knownGoodFileName + ", run:\n"
+                + "java -classpath \"" + topDirectory + "/lib/jna.jar:" + topDirectory
+                + "\" org.ptolemy.fmi.FMUModelExchange "
+                + fmuFileName + " 1.0 0.1 false c "
+                + knownGoodFileName);
+        FMUModelExchange.simulate(fmuFileName,
+                1.0, 0.1, true /*logging*/, ',' , resultsFileName);
+
+        String results = FMUJUnitTest.readFile(resultsFileName);
+        String knownGood = FMUJUnitTest.readFile(knownGoodFileName);
+        if (results.length() != knownGood.length()) {
+            Assert.fail(fmuFileName + ":results length "
+                    + results.length() + " != known good length "
+                    + knownGood.length()
+                    + "\nresults:\n" + results
+                    + "\nknownGood:\n" + knownGood);
+        }
+        assertArrayEquals(results.getBytes(), knownGood.getBytes());
+    }
+
+    /** Invoke the Model exchange driver on a .fmu file.
+     *  @param testName The name of the test with no file extension.
+     *  @exception Exception If there is a problem reading or executing the test
+     *  or if the results is not the same as the known good results.
+     */
+    public void modelExchange(String testName) throws Exception {
+        modelExchange(topDirectory + "/org/ptolemy/fmi/fmu/me/" + testName + ".fmu",
+                topDirectory + "/org/ptolemy/fmi/test/junit/" + testName + "_me.csv");
+    }
+
+    /** Run the bouncing ball model exchange functional mock-up unit test.
+     *  @exception Exception If there is a problem reading or running the test.
+     */   
+     @org.junit.Test
+     public void modelExchangeBouncingBall() throws Exception {
+         modelExchange("bouncingBall");
+     }
+
+    /** Run the dq model exchange functional mock-up unit test.
+     *  @exception Exception If there is a problem reading or running the test.
+     */   
+    @org.junit.Test
+    public void modelExchangeDq() throws Exception {
+        modelExchange("dq");
+    }
+
+    /** Run the inc model exchange functional mock-up unit test.
+     *  @exception Exception If there is a problem reading or running the test.
+     */   
+    @org.junit.Test
+    public void modelExchangeInc() throws Exception {
+       modelExchange("inc");
+    }
+
+    /** Run the values model exchange functional mock-up unit test.
+     *  @exception Exception If there is a problem reading or running the test.
+     */   
+    @org.junit.Test
+    public void modelExchangeValues() throws Exception {
+       modelExchange("values");
+    }
+
+    /** Run the vanDerPol model exchange functional mock-up unit test.
+     *  @exception Exception If there is a problem reading or running the test.
+     */   
+    @org.junit.Test
+    public void modelExchangeVanDerPol() throws Exception {
+        modelExchange("vanDerPol");
+    }
+
+    /** Run FMI model exchange tests.
      *  <p>To run these tests, either us <code>ant test</code> or run:   
-     *  <code>(cd ../../..; java -classpath lib/jna.jar:lib/junit-4.8.2.jar:. org.ptolemy.fmi.test.junit.FMUCoSimulationJUnitTest)</code></p>
+     *  <code>(cd ../../..; java -classpath lib/jna.jar:lib/junit-4.8.2.jar:. org.ptolemy.fmi.test.junit.FMUJUnitTest)</code></p>
      *
      *  @param args Not used.
      */
     public static void main(String args[]) {
         org.junit.runner.JUnitCore
-                .main("org.ptolemy.fmi.test.junit.FMUCoSimulationJUnitTest");
+                .main("org.ptolemy.fmi.test.junit.FMUJUnitTest");
     }
 
     /** Read in the named file and returns the contents as a string.
