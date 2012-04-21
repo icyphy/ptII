@@ -985,7 +985,4 @@ public class FixedPointDirector extends StaticSchedulingDirector implements
 
     /** The real time at which the model begins executing. */
     private long _realStartTime = 0L;
-    
-    /** Time with value 0.0. */
-    private Time _zeroTime;
 }
