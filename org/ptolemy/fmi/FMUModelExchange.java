@@ -113,7 +113,7 @@ public class FMUModelExchange extends FMUDriver {
     public void simulate(String fmuFileName, double endTime, double stepSize,
             boolean enableLogging, char csvSeparator, String outputFileName)
             throws Exception {
-
+        _enableLogging = enableLogging;
         // Parse the .fmu file.
         FMIModelDescription fmiModelDescription = FMUFile
                 .parseFMUFile(fmuFileName);
@@ -124,10 +124,10 @@ public class FMUModelExchange extends FMUDriver {
             System.out.println("FMUModelExchange: about to load "
                     + sharedLibrary);
         }
-        NativeLibrary nativeLibrary = NativeLibrary.getInstance(sharedLibrary);
+        _nativeLibrary = NativeLibrary.getInstance(sharedLibrary);
 
         // The modelName may have spaces in it.
-        String modelIdentifier = fmiModelDescription.modelIdentifier;
+        _modelIdentifier = fmiModelDescription.modelIdentifier;
 
         new File(fmuFileName).toURI().toURL().toString();
         int numberOfStateEvents = 0;
@@ -146,19 +146,18 @@ public class FMUModelExchange extends FMUDriver {
 
         // Instantiate the model.
         Function instantiateModelFunction;
-        String instantiateModelFunctionName = modelIdentifier
-                + "_fmiInstantiateModel";
         try {
-            instantiateModelFunction = FMUDriver.getFunction(nativeLibrary,
-                    enableLogging, instantiateModelFunctionName);
+            instantiateModelFunction = getFunction("_fmiInstantiateModel");
         } catch (UnsatisfiedLinkError ex) {
-            throw new UnsatisfiedLinkError("Could not load "
-                    + instantiateModelFunctionName
+            UnsatisfiedLinkError error = new UnsatisfiedLinkError("Could not load "
+                    + _modelIdentifier + "_fmiInstantiateModel()"
                     + ". This can happen when a co-simulation .fmu "
                     + "is run in a model exchange context.");
+            error.initCause(ex);
+            throw error;
         }
         Pointer fmiComponent = (Pointer) instantiateModelFunction.invoke(
-                Pointer.class, new Object[] { modelIdentifier,
+                Pointer.class, new Object[] { _modelIdentifier,
                         fmiModelDescription.guid, callbacks, loggingOn });
         if (fmiComponent.equals(Pointer.NULL)) {
             throw new RuntimeException("Could not instantiate model.");
@@ -179,32 +178,20 @@ public class FMUModelExchange extends FMUDriver {
 
         // Set the start time.
         double startTime = 0.0;
-        String setTimeFunctionName = modelIdentifier + "_fmiSetTime";
-        Function setTimeFunction = FMUDriver.getFunction(nativeLibrary,
-                enableLogging, setTimeFunctionName);
-        int fmiFlag = ((Integer) setTimeFunction.invoke(Integer.class,
-                new Object[] { fmiComponent, startTime })).intValue();
-        if (fmiFlag > FMILibrary.FMIStatus.fmiWarning) {
-            throw new RuntimeException("Could not set time to startTime: "
-                    + fmiFlag);
-        }
+        Function setTime = getFunction("_fmiSetTime");
+        invoke(setTime,
+                new Object[] { fmiComponent, startTime },
+                "Could not set time to start time: "
+                + startTime + ": ");
 
-        // Initialize the model;
-        String initializeFunctionName = modelIdentifier + "_fmiInitialize";
-        Function initializeFunction = FMUDriver.getFunction(nativeLibrary,
-                enableLogging, initializeFunctionName);
+        // Initialize the model.
         byte toleranceControlled = 0;
         FMIEventInfo eventInfo = new FMIEventInfo();
-        if (enableLogging) {
-            System.out.println("FMUModelExchange: about to call "
-                    + initializeFunctionName);
-        }
-        fmiFlag = ((Integer) initializeFunction.invoke(Integer.class,
-                new Object[] { fmiComponent, toleranceControlled, startTime,
-                        eventInfo })).intValue();
-        if (fmiFlag > FMILibrary.FMIStatus.fmiWarning) {
-            throw new RuntimeException("Could not initialize Model: " + fmiFlag);
-        }
+        invoke("_fmiInitialize",
+                new Object[] { fmiComponent, toleranceControlled,
+                               startTime, eventInfo},
+                "Could not initialize model: ");
+
         double time = startTime;
         if (eventInfo.terminateSimulation != 0) {
             System.out.println("Model terminated during initialization.");
@@ -219,78 +206,37 @@ public class FMUModelExchange extends FMUDriver {
                 System.out.println("FMUModelExchange: about to write header");
             }
             // Generate header row
-            OutputRow.outputRow(nativeLibrary, fmiModelDescription,
+            OutputRow.outputRow(_nativeLibrary, fmiModelDescription,
                     fmiComponent, startTime, file, csvSeparator, Boolean.TRUE);
             // Output the initial values.
-            OutputRow.outputRow(nativeLibrary, fmiModelDescription,
+            OutputRow.outputRow(_nativeLibrary, fmiModelDescription,
                     fmiComponent, startTime, file, csvSeparator, Boolean.FALSE);
 
             // Functions used within the while loop, organized
             // alphabetically.
-            String completedIntegratorStepFunctionName = modelIdentifier
-                    + "_fmiCompletedIntegratorStep";
-            Function completedIntegratorStepFunction = FMUDriver.getFunction(
-                    nativeLibrary, enableLogging,
-                    completedIntegratorStepFunctionName);
-
-            String getContinuousStatesFunctionName = modelIdentifier
-                    + "_fmiGetContinuousStates";
-            Function getContinuousStatesFunction = FMUDriver.getFunction(
-                    nativeLibrary, enableLogging,
-                    getContinuousStatesFunctionName);
-
-            String getDerivativesFunctionName = modelIdentifier
-                    + "_fmiGetDerivatives";
-            Function getDerivativesFunction = FMUDriver.getFunction(
-                    nativeLibrary, enableLogging, getDerivativesFunctionName);
-
-            String getEventIndicatorsFunctionName = modelIdentifier
-                    + "_fmiGetEventIndicators";
-            Function getEventIndicatorsFunction = FMUDriver.getFunction(
-                    nativeLibrary, enableLogging,
-                    getEventIndicatorsFunctionName);
-
-            String eventUpdateFunctionName = modelIdentifier
-                    + "_fmiEventUpdate";
-            Function eventUpdateFunction = FMUDriver.getFunction(nativeLibrary,
-                    enableLogging, eventUpdateFunctionName);
-
-            String setContinuousStatesFunctionName = modelIdentifier
-                    + "_fmiSetContinuousStates";
-            Function setContinuousStatesFunction = FMUDriver.getFunction(
-                    nativeLibrary, enableLogging,
-                    setContinuousStatesFunctionName);
+            Function completedIntegratorStep = getFunction("_fmiCompletedIntegratorStep");
+            Function eventUpdate = getFunction("_fmiEventUpdate");
+            Function getContinuousStates = getFunction("_fmiGetContinuousStates");
+            Function getDerivatives = getFunction("_fmiGetDerivatives");
+            Function getEventIndicators = getFunction("_fmiGetEventIndicators");
+            Function setContinuousStates = getFunction("_fmiSetContinuousStates");
 
             boolean stateEvent = false;
 
             byte stepEvent = (byte) 0;
             // Loop until the time is greater than the end time.
             while (time < endTime) {
-                if (enableLogging) {
-                    System.out.println("FMUModelExchange: about to call "
-                            + getContinuousStatesFunctionName);
-                }
-                fmiFlag = ((Integer) getContinuousStatesFunction
-                        .invokeInt(new Object[] { fmiComponent, states,
-                                numberOfStates })).intValue();
+                invoke(getContinuousStates,
+                        new Object[] { fmiComponent, states,
+                                       numberOfStates },
+                        "Could not get continuous states, time was "
+                        + time + ": ");
 
-                if (fmiFlag != FMILibrary.FMIStatus.fmiOK) {
-                    throw new Exception("Could not get continuous states. "
-                            + fmiFlag + " Time was " + time);
-                }
-
-                if (enableLogging) {
-                    System.out.println("FMUModelExchange: about to call "
-                            + getDerivativesFunctionName);
-                }
-                fmiFlag = ((Integer) getDerivativesFunction
-                        .invokeInt(new Object[] { fmiComponent, derivatives,
-                                numberOfStates })).intValue();
-
-                if (fmiFlag != FMILibrary.FMIStatus.fmiOK) {
-                    throw new Exception("Could not get derivatives. " + fmiFlag
-                            + " Time was " + time);
-                }
+                invoke(getDerivatives,
+                        new Object[] { fmiComponent, derivatives,
+                                       numberOfStates },
+                        "Could not get derivatives, time was "
+                        + time + ": ");
 
                 // Update time.
                 double stepStartTime = time;
@@ -301,16 +247,10 @@ public class FMUModelExchange extends FMUDriver {
                     time = eventInfo.nextEventTime;
                 }
                 double dt = time - stepStartTime;
-                if (enableLogging) {
-                    System.out.println("FMUModelExchange: about to call "
-                            + setTimeFunctionName);
-                }
-                fmiFlag = ((Integer) setTimeFunction.invoke(Integer.class,
-                        new Object[] { fmiComponent, time })).intValue();
-                if (fmiFlag != FMILibrary.FMIStatus.fmiOK) {
-                    throw new Exception("Could not set time: " + fmiFlag
-                            + ". Time was " + time);
-                }
+                invoke(setTime, 
+                        new Object[] { fmiComponent, time },
+                        "Could not set time, time was "
+                        + time + ": ");
 
                 // Perform a step.
                 for (int i = 0; i < numberOfStates; i++) {
@@ -318,36 +258,22 @@ public class FMUModelExchange extends FMUDriver {
                     states[i] += dt * derivatives[i];
                 }
 
-                if (enableLogging) {
-                    System.out.println("FMUModelExchange: about to call "
-                            + setContinuousStatesFunctionName);
-                }
-                fmiFlag = ((Integer) setContinuousStatesFunction.invoke(
-                        Integer.class, new Object[] { fmiComponent, states,
-                                numberOfStates })).intValue();
-                if (fmiFlag != FMILibrary.FMIStatus.fmiOK) {
-                    throw new Exception("Could not set continuous states: "
-                            + fmiFlag + ". Time was " + time);
-                }
+                invoke(setContinuousStates,
+                        new Object[] { fmiComponent, states,
+                                       numberOfStates },
+                        "Could not set continuous states, time was "
+                        + time + ": ");
 
                 // Check to see if we have completed the integrator step.
-                if (enableLogging) {
-                    System.out.println("FMUModelExchange: about to call "
-                            + completedIntegratorStepFunctionName);
-                }
                 // Pass stepEvent in by reference. See
                 // https://github.com/twall/jna/blob/master/www/ByRefArguments.md
                 ByteByReference stepEventReference = new ByteByReference(
                         stepEvent);
-                fmiFlag = ((Integer) completedIntegratorStepFunction.invoke(
-                        Integer.class, new Object[] { fmiComponent,
-                                stepEventReference })).intValue();
-                stepEvent = stepEventReference.getValue();
-                if (fmiFlag != FMILibrary.FMIStatus.fmiOK) {
-                    throw new Exception(
-                            "Could not set complete integrator step: "
-                                    + fmiFlag + ". Time was " + time);
-                }
+                invoke(completedIntegratorStep,
+                        new Object[] { fmiComponent,
+                                       stepEventReference },
+                        "Could not set complete integrator step, time was "
+                        + time + ": ");
 
                 // Save the state events.
                 for (int i = 0; i < numberOfEventIndicators; i++) {
@@ -355,18 +281,12 @@ public class FMUModelExchange extends FMUDriver {
                 }
 
                 // Get the eventIndicators.
-                if (enableLogging) {
-                    System.out.println("FMUModelExchange: about to call "
-                            + getEventIndicatorsFunctionName);
-                }
-                fmiFlag = ((Integer) getEventIndicatorsFunction.invoke(
-                        Integer.class, new Object[] { fmiComponent,
-                                eventIndicators, numberOfEventIndicators }))
-                        .intValue();
-                if (fmiFlag != FMILibrary.FMIStatus.fmiOK) {
-                    throw new Exception("Could not set get event indicators: "
-                            + fmiFlag + ". Time was " + time);
-                }
+                invoke(getEventIndicators,
+                        new Object[] { fmiComponent,
+                                       eventIndicators,
+                                       numberOfEventIndicators },
+                        "Could not set get event indicators, time was "
+                        + time + ": ");
 
                 stateEvent = Boolean.FALSE;
                 for (int i = 0; i < numberOfEventIndicators; i++) {
@@ -403,17 +323,11 @@ public class FMUModelExchange extends FMUDriver {
                         }
                     }
 
-                    if (enableLogging) {
-                        System.out.println("FMUModelExchange: about to call "
-                                + eventUpdateFunctionName);
-                    }
-                    fmiFlag = ((Integer) eventUpdateFunction.invoke(
-                            Integer.class, new Object[] { fmiComponent,
-                                    (byte) 0, eventInfo })).intValue();
-                    if (fmiFlag != FMILibrary.FMIStatus.fmiOK) {
-                        throw new Exception("Could not set update event: "
-                                + fmiFlag + ". Time was " + time);
-                    }
+                    invoke(eventUpdate,
+                            new Object[] { fmiComponent,
+                                           (byte) 0, eventInfo },
+                            "Could not set update event, time was "
+                            + time + ": ");
 
                     if (eventInfo.terminateSimulation != (byte) 0) {
                         System.out.println("Termination requested: " + time);
@@ -432,24 +346,13 @@ public class FMUModelExchange extends FMUDriver {
                 }
 
                 // Generate a line for this step
-                OutputRow.outputRow(nativeLibrary, fmiModelDescription,
+                OutputRow.outputRow(_nativeLibrary, fmiModelDescription,
                         fmiComponent, time, file, csvSeparator, Boolean.FALSE);
                 numberOfSteps++;
             }
-            String terminateFunctionName = modelIdentifier + "_fmiTerminate";
-            Function terminateFunction = FMUDriver.getFunction(nativeLibrary,
-                    enableLogging, terminateFunctionName);
-
-            if (enableLogging) {
-                System.out.println("FMUModelExchange: about to call "
-                        + terminateFunctionName);
-            }
-            fmiFlag = ((Integer) terminateFunction.invoke(Integer.class,
-                    new Object[] { fmiComponent })).intValue();
-            if (fmiFlag != FMILibrary.FMIStatus.fmiOK) {
-                throw new Exception("Could not terminates: " + fmiFlag);
-            }
-
+            invoke("_fmiTerminate",
+                    new Object[] { fmiComponent },
+                    "Could not terminate: "); 
         } finally {
             if (file != null) {
                 file.close();

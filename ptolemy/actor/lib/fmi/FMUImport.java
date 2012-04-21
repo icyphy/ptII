@@ -466,19 +466,33 @@ public class FMUImport extends TypedAtomicActor {
         }
     }
 
+    /** An interface that contains JNA callbacks.
+     */
     public interface FMULibrary extends FMILibrary {
-        // We need a class that implement the interface because
-        // certain methods require interfaces as arguments, yet we
-        // need to have method bodies, so we need an actual class.
+        /** The logging function.
+         * We need a class that implement the interface because
+         * certain methods require interfaces as arguments, yet we
+         * need to have method bodies, so we need an actual class.
+         */
         public class FMULogger implements FMICallbackLogger {
-            // What to do about jni callbacks with varargs?
-            // See
-            // http://chess.eecs.berkeley.edu/ptexternal/wiki/Main/JNA#fmiCalbackLogger
+            /** Log a message.
+             *  Note that arguments after the message are currently ignored.   
+             *  @param fmiComponent The component that was instantiated.
+             *  @param instanceName The name of the instance of the FMU.
+             *  @param status The fmiStatus, see
+             *  {@link org.ptolemy.fmi.FMILibrary.FMIStatus}
+             *  @param category The category, typically "log" or "error".
+             *  @param message The message
+             */
+
             public void apply(Pointer fmiComponent, String instanceName,
                     int status, String category, String message/*
                                                                 * , Pointer ...
                                                                 * parameters
                                                                 */) {
+                // What to do about jni callbacks with varargs?
+                // See
+                // http://chess.eecs.berkeley.edu/ptexternal/wiki/Main/JNA#fmiCalbackLogger
                 System.out.println("Java FMULogger, status: " + status);
                 System.out.println("Java FMULogger, message: " + message/*
                                                                          * .
@@ -488,9 +502,16 @@ public class FMUImport extends TypedAtomicActor {
             }
         }
 
-        // http://markmail.org/message/6ssggt4q6lkq3hen
+        /** Allocate memory. */
 
         public class FMUAllocateMemory implements FMICallbackAllocateMemory {
+            // See http://markmail.org/message/6ssggt4q6lkq3hen
+
+            /** Allocate memory.
+             *  @param numberOfObjects The number of objects to allocate.
+             *  @param size The size of the object in bytes.
+             *  @return a Pointer to the allocated memory.
+             */
             public Pointer apply(NativeSizeT nobj, NativeSizeT size) {
                 int numberOfObjects = nobj.intValue();
                 if (numberOfObjects <= 0) {
@@ -524,13 +545,23 @@ public class FMUImport extends TypedAtomicActor {
             }
         }
 
+        /** A callback that frees memory.
+         */
         public class FMUFreeMemory implements FMICallbackFreeMemory {
+            /** Free memory.
+             *  @param object The object to be freed.
+             */
             public void apply(Pointer pointer) {
                 _pointers.remove(pointer);
             }
         }
 
+        /** A callback for when the step is finished. */
         public class FMUStepFinished implements FMIStepFinished {
+            /** The step is finished.
+             *  @param fmiComponent The FMI component that was instantiate.
+             *  @param status The status flag.  See the FMI documentation.
+             */
             public void apply(Pointer c, int status) {
                 System.out.println("Java fmiStepFinished: " + c + " " + status);
             }
