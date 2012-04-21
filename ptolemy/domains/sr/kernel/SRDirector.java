@@ -27,6 +27,9 @@
 package ptolemy.domains.sr.kernel;
 
 import ptolemy.actor.Actor;
+import ptolemy.actor.CompositeActor;
+import ptolemy.actor.Director;
+import ptolemy.actor.SuperdenseTimeDirector;
 import ptolemy.actor.sched.FixedPointDirector;
 import ptolemy.actor.util.PeriodicDirector;
 import ptolemy.actor.util.PeriodicDirectorHelper;
@@ -38,6 +41,7 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.Nameable;
 import ptolemy.kernel.util.Workspace;
 
 ///////////////////////////////////////////////////////////////////
@@ -331,20 +335,50 @@ public class SRDirector extends FixedPointDirector implements PeriodicDirector {
         return ((DoubleToken) period.getToken()).doubleValue();
     }
 
-    /** Invoke super.prefire(), which will synchronize to real time, if appropriate.
-     *  Then if the <i>period</i> parameter is zero, return whatever the superclass
-     *  returns. Otherwise, return true only if the current time of the enclosing
-     *  director (if there is one) matches a multiple of the period. If the
-     *  current time of the enclosing director exceeds the time at which we
-     *  next expected to be invoked, then adjust that time to the least multiple
-     *  of the period that either matches or exceeds the time of the enclosing
-     *  director.
+    /** Return true if we are ready to fire, meaning that either (1) we are
+     *  at the top level, (2) the <i>period</i> parameter is zero (in which case we 
+     *  are always ready to fire, or (3) the <i>period</i> parameter is nonzero,
+     *  the current time matches the next expected execution time, and the
+     *  current microstep is 1. If this actor is enclosed within a director
+     *  that does not understand microsteps, then we ignore the microstep value.
+     *  This method will also synchronize to real time, if appropriate.
      *  @exception IllegalActionException If the <i>period</i>
      *   parameter cannot be evaluated.
      *  @return true If current time is appropriate for a firing.
      */
     public boolean prefire() throws IllegalActionException {
+        // The first call below sets current time to match the environment
+        // time. The second call, _periodicDirectorHelper.prefire(), checks
+        // to see whether current time is the next expected firing time.
         boolean result = super.prefire() && _periodicDirectorHelper.prefire();
+        
+        // If we are going to fire, then set the microstep to match that
+        // of the enclosing director, or set it to 1 if the enclosing
+        // director does not understand superdense time.
+        if (result && isEmbedded()) {
+            Nameable container = getContainer();
+            if (container instanceof CompositeActor) {
+                Director executiveDirector = ((CompositeActor) container)
+                        .getExecutiveDirector();
+                if (executiveDirector instanceof SuperdenseTimeDirector) {
+                    _index = ((SuperdenseTimeDirector) executiveDirector)
+                            .getIndex();
+                } else {
+                    _index = 1;
+                }
+                if (_debugging) {
+                    _debug("DEDirector: Set microstep to " + _index);
+                }
+            } else {
+                // No container. This should not happen.
+                throw new IllegalActionException(this, "SRDirector needs a CompositeActor container to execute");
+            }
+        } else {
+            // If either we are not going to fire or are at the top level,
+            // set the microstep to 1.
+            _index = 1;
+        }
+
         if (_debugging) {
             _debug("Prefire returns " + result);
         }

@@ -1023,6 +1023,9 @@ public class DEDirector extends Director implements SuperdenseTimeDirector {
                     _microstep = ((SuperdenseTimeDirector) executiveDirector)
                             .getIndex();
                 }
+                if (_debugging) {
+                    _debug("DEDirector: Set microstep to " + _microstep);
+                }
             }
         }
         

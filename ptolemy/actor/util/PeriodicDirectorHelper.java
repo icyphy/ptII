@@ -183,8 +183,10 @@ public class PeriodicDirectorHelper {
                 // Increment time to the next cycle.
                 ((Director) _director).setModelTime(_nextFiringTime);
             }
-            // Set the index to zero because the next firing will occur at
-            // a strictly greater time.
+            // Set the microstep to 1 for the next firing
+            // because the next firing will occur at
+            // a strictly greater time, and the microstep is always
+            // 1 when this director fires.
             if (_director instanceof SuperdenseTimeDirector) {
                 ((SuperdenseTimeDirector) _director).setIndex(1);
             }
@@ -192,7 +194,13 @@ public class PeriodicDirectorHelper {
     }
 
     /** If the <i>period</i> value is greater than zero, then return
-     *  true if the current time is a multiple of the value.
+     *  true if the current time is a multiple of the value and the
+     *  current microstep is 1. The associated director expects
+     *  to always be fired at microstep 1.  If there is an enclosing
+     *  director that does not understand superdense time, then we
+     *  ignore that microstep and agree to fire anyway. This means
+     *  simply that we will fire the first time that current time
+     *  matches a multiple of the period.
      *  @exception IllegalActionException If the <i>period</i>
      *   parameter cannot be evaluated.
      *  @return true If either the <i>period</i> has value 0.0 or
@@ -216,30 +224,22 @@ public class PeriodicDirectorHelper {
             int comparison = _nextFiringTime.compareTo(enclosingTime);
             if (comparison == 0) {
                 // The enclosing time matches the time we expect to fire.
-                // Note that we agree to fire whatever the superdense time
-                // index is because the meaning of <i>period</i> is that
-                // we will fire at any multiple of the period.
-                return true;
-                // NOTE: An alternative would be to not agree to fire
-                // if the index is not zero, but request
-                // a refiring at the next multiple of the period.
-                // If the enclosing director supports superdense time, then
-                // make sure we are at index zero before agreeing to fire.
-                // The code to do that is below.
-                /*
+                // If either these is no enclosing director or it does
+                // not understand superdense time, then we ignore the
+                // microstep. Otherwise, we insist that it be 1 in order
+                // to fire.
+                Director executiveDirector = ((Actor) _director.getContainer())
+                        .getExecutiveDirector();
                 if (executiveDirector instanceof SuperdenseTimeDirector) {
                     int index = ((SuperdenseTimeDirector) executiveDirector)
                             .getIndex();
-                    if (index > 0) {
-                        // If the index is not zero, do not agree to fire, but request
-                        // a refiring at the next multiple of the period.
-                        _nextFiringTime = _nextFiringTime.add(periodValue);
-                        _fireContainerAt(_nextFiringTime);
+                    if (index != 1) {
+                        // No need to call fireContainerAt() because
+                        // presumably we already did that.
                         return false;
                     }
                     return true;
                 }
-                */
             } else if (comparison > 0) {
                 // Enclosing time has not yet reached our expected firing time.
                 // No need to call fireAt(), since presumably we already
