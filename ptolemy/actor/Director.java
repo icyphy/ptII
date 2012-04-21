@@ -1668,9 +1668,6 @@ public class Director extends Attribute implements Executable {
                     "Attempted to transferInputs on a port is not an opaque"
                             + "input port.");
         }
-        if (port instanceof ParameterPort) {
-            int i = 0;
-        }
 
         boolean wasTransferred = false;
 
