@@ -97,7 +97,8 @@ public class FMUFile {
             // JModelica seems to use darwin as the binary name
             osName = "darwin";
             extension = ".dylib";
-        } else if (osName.startsWith("Windows")) {
+        } else if (osName.startsWith("windows")) {
+            osName = "win";
             extension = ".dll";
         }
         String bitWidth = "64";
