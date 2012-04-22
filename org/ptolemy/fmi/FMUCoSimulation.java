@@ -61,7 +61,7 @@ public class FMUCoSimulation extends FMUDriver {
      *  <p>For example, under Mac OS X or Linux:
      *  <pre>
      *  java -classpath $PTII/lib/jna.jar:${PTII} org.ptolemy.fmi.FMUCoSimulation \
-     *  $PTII/org/ptolemy/fmi/fmu/cs/bouncingBall.fmu 1.0 0.1 1 c foo.csv
+     *  $PTII/org/ptolemy/fmi/fmu/cs/bouncingBall.fmu 1.0 0.1 true c foo.csv
      *  </pre>
      *
      *  <p>The command line arguments have the following meaning:</p>

@@ -12,9 +12,23 @@ a <code>.fmu</code> extension.  A FMU file is a zip file that contains a file
 named <code>modelDescription.xml</code> and one or more platform-dependent 
 shared libraries.</p>
 
+<p> In FMI-1.0, co-simulation fmu files contain a modelDescription.xml
+file that has an &lt;Implementation&gt; element.  Model exchange fmu
+files do not have this element.</p>
+
+<p>See FMUCoSimulation.java and FMUModelExchange.java for simple examples
+that read in .fmu files and invoke methods in the the platform-dependent
+shared libraries.</p>
+
+<p>Sample .fmu files may be found in fmu/cs and fmu/me.  These files were
+generated using a port of the FMUSDK which may be found at
+<a href="http://github.com/cxbrooks/fmusdk">http://github.com/cxbrooks/fmusdk</a>.</p>
+
 <p> FMI documentation may be found at
 <a href="http://www.modelisar.com/fmi.html">http://www.modelisar.com/fmi.html</a>.
 </p>
+
+
 <p>
 @since Ptolemy II 8.1
 </body>
