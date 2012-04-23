@@ -128,7 +128,7 @@ public class GenerateCopyrights {
         _addIfPresent(copyrightsMap, "org.netbeans.api.visual.widget.Scene",
                 "lib/netbeans-visual-library-license.htm");
 
-        _addIfPresent(copyrightsMap, "org.ptolemy.fmi.driver.OutputRow"
+        _addIfPresent(copyrightsMap, "org.ptolemy.fmi.driver.OutputRow",
                 "org/ptolemy/fmi/driver/fmusdk-license.htm");
 
         _addIfPresent(copyrightsMap, "org.satlive.jsat.objects.ExternalLiteral",
