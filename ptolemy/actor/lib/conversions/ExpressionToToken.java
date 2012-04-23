@@ -200,9 +200,13 @@ public class ExpressionToToken extends Converter {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private members                   ////
+    
+    /** The parser to use. */
     private PtParser _parser = null;
 
+    /** The parse tree evaluator to use. */
     private ParseTreeEvaluator _parseTreeEvaluator = null;
 
+    /** The scope for the parser. */
     private ParserScope _scope = null;
 }
