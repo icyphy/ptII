@@ -190,6 +190,8 @@ public class FMIScalarVariable {
     }
 
     /** Return the value of this variable as a boolean.
+     *  @param fmiComponent The Functional Mock-up Interface (FMI)
+     *  component that contains a reference to the variable.
      *  @return the value of this variable as boolean.
      */
     public boolean getBoolean(Pointer fmiComponent) {
@@ -216,6 +218,8 @@ public class FMIScalarVariable {
     /** Return the value of this variable as a double.
      *  If the variable is of type FMIIntegerType,
      *  the the integer value is cast to a double.
+     *  @param fmiComponent The Functional Mock-up Interface (FMI)
+     *  component that contains a reference to the variable.
      *  @return the value of this variable as double.
      */
     public double getDouble(Pointer fmiComponent) {
@@ -250,6 +254,8 @@ public class FMIScalarVariable {
     }
 
     /** Return the value of this variable as an int.
+     *  @param fmiComponent The Functional Mock-up Interface (FMI)
+     *  component that contains a reference to the variable.
      *  @return the value of this variable as an int.
      */
     public int getInt(Pointer fmiComponent) {
@@ -274,6 +280,8 @@ public class FMIScalarVariable {
     }
 
     /** Return the value of this variable as a String.
+     *  @param fmiComponent The Functional Mock-up Interface (FMI)
+     *  component that contains a reference to the variable.
      *  @return the value of this variable as a String.
      */
     public String getString(Pointer fmiComponent) {

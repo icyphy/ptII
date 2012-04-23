@@ -58,7 +58,10 @@ import com.sun.jna.Pointer;
 public abstract class FMUDriver {
 
     /** Return a function by name.
-     *  @param name The name of the function.
+     *  @param name The name of the function.  The value of the
+     *  modelIdentifier is prepended to the value of this parameter to
+     *  yield the function name.
+     *  @return the function.
      */
     public Function getFunction(String name) {
         // This is syntactic sugar.
@@ -70,16 +73,26 @@ public abstract class FMUDriver {
     }
 
 
-    /** Invoke a function that returns an integer
+    /** Invoke a function that returns an integer representing the
+     *  FMIStatus return value.
      *  @param name The name of the function.
+     *  @param arguments The arguments to be passed to the function.
+     *  @param message The error message to be used if there is a problem.
+     *  The message should end with ": " because the return value
+     *  of the function will be printed after the error message.
      */
     public void invoke(String name, Object [] arguments, String message) {
         Function function = getFunction(name);
         invoke(function, arguments, message);
     }
 
-    /** Invoke a function that returns an integer
-     *  @param name The name of the function.
+    /** Invoke a function that returns an integer representing the
+     *  FMIStatus return value.
+     *  @param function The function to be invoked.
+     *  @param arguments The arguments to be passed to the function.
+     *  @param message The error message to be used if there is a problem.
+     *  The message should end with ": " because the return value
+     *  of the function will be printed after the error message.
      */
     public void invoke(Function function, Object [] arguments, String message) {
         if (_enableLogging) {

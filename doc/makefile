@@ -467,8 +467,7 @@ GRAPHTRANSFORMATIONPACKAGES = \
 # PTLBNL_PACKAGES set by configure in ptII/mk/ptII.mk if libexpat is found.
 # PTMATLAB_PACKAGES is set by configure in $PTII/mk/ptII.mk
 BCVTBPACKAGES = \
-	org.ptolemy.fmi \
-	org.ptolemy.fmi.test.junit \
+	$(PTFMI_PACKAGES) \
 	$(PTLBNL_PACKAGES) \
 	ptolemy.actor.lib.javasound \
 	ptolemy.actor.lib \
@@ -481,7 +480,6 @@ BCVTBPACKAGES = \
 	ptolemy.actor.gui.properties \
 	ptolemy.actor.gui.ptjacl \
 	ptolemy.actor.lib.embeddedJava \
-	ptolemy.actor.lib.fmi \
 	ptolemy.actor.lib.image \
 	ptolemy.actor.lib.io \
 	ptolemy.actor.lib.jopio \
@@ -633,7 +631,6 @@ ALLPACKAGES = \
 	$(PTDB_PACKAGES) \
 	$(PTDISTRIBUTED_PACKAGES) \
 	$(PTEXCEL_PACKAGES) \
-	$(PTFMI_PACKAGES) \
 	$(PTGR_PACKAGES) \
 	$(PTHOMER_PACKAGES) \
 	$(PTIDES_PACKAGES) \
