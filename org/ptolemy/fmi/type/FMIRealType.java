@@ -1,4 +1,4 @@
-/* An Functional Mock-up Interface String Type.
+/* An Functional Mock-up Interface Real Type.
 
  Copyright (c) 2012 The Regents of the University of California.
  All rights reserved.
@@ -25,16 +25,22 @@
  COPYRIGHTENDKEY
 
  */
-package org.ptolemy.fmi;
+package org.ptolemy.fmi.type;
 
 import org.w3c.dom.Element;
 
 ///////////////////////////////////////////////////////////////////
-//// FMIStringType
+//// FMIRealType
 
 /**
- * An Functional Mock-up Interface type that represents a String.
+ * An Functional Mock-up Interface type that represents a Real.
  * 
+ * <p>A Functional Mock-up Unit file is a .fmu file in zip format that
+ * contains a .xml file named "modelDescription.xml".  In that file,
+ * the ModelVariables element may contain elements such as
+ * ScalarVariable that in turn may contain elements like Real.  This
+ * class represents the Real type.</p>
+ *
  * <p>FMI documentation may be found at
  * <a href="http://www.modelisar.com/fmi.html">http://www.modelisar.com/fmi.html</a>.
  * </p>
@@ -44,18 +50,17 @@ import org.w3c.dom.Element;
  * @Pt.ProposedRating Red (cxh)
  * @Pt.AcceptedRating Red (cxh)
  */
-public class FMIStringType extends FMIType {
-
-    /** Construct a String FMU variable.
+public class FMIRealType extends FMIType {
+    /** Construct a Real FMU variable.
      *  @param name The name of this variable.
      *  @param description A description of this variable.
      *  @param element The XML element whose attributes are used to
      *  set the fields of this object.
      */
-    public FMIStringType(String name, String description, Element element) {
+    public FMIRealType(String name, String description, Element element) {
         super(name, description, element);
         if (element.hasAttribute("start")) {
-            start = element.getAttribute("start");
+            start = Double.valueOf(element.getAttribute("start"));
         }
     }
 
@@ -63,9 +68,11 @@ public class FMIStringType extends FMIType {
      *  @return The string value.
      */
     public String toString() {
-        return start;
+        return Double.toString(start);
     }
 
-    /** The starting value of this integer. */
-    public String start;
+    // FIXME: need more documentation and to describe other variables.
+
+    /** The starting value of this real. */
+    public double start;
 }

@@ -28,7 +28,7 @@
   <property name="junit.output.dir" value="${fmi.reports}/junit" />
 
   <!-- The tests that are run by the test target. -->
-  <property name="test.batch" value="org/ptolemy/fmi/test/junit/*.java" />
+  <property name="test.batch" value="org/ptolemy/fmi/driver/test/junit/*.java" />
 
 
 
@@ -76,7 +76,7 @@
 	  description="Run the junit tests in junit/*.java.">
     <echo>
       To run different tests, use -Dtest.batch, for example:
-      ant test -Dtest.batch=ptolemy/domains/continuous/**/junit/*.java
+      ant test -Dtest.batch=org/ptolemy/fmi/driver/test/junit/*.java
       To change format Use -Djunit.formatter=xml|brief|plain|failure, default is plain.
       Output is in ${junit.output.dir}.
 

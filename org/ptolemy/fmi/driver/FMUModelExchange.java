@@ -25,10 +25,15 @@
    COPYRIGHTENDKEY
 
  */
-package org.ptolemy.fmi;
+package org.ptolemy.fmi.driver;
 
 import java.io.File;
 import java.io.PrintStream;
+
+import org.ptolemy.fmi.FMICallbackFunctions;
+import org.ptolemy.fmi.FMIEventInfo;
+import org.ptolemy.fmi.FMIModelDescription;
+import org.ptolemy.fmi.FMUFile;
 
 import com.sun.jna.Function;
 import com.sun.jna.NativeLibrary;
@@ -40,11 +45,32 @@ import com.sun.jna.ptr.ByteByReference;
 
 /** Read a Functional Mock-up Unit .fmu file and invoke it as a model exchange.
  *  
- * <p>This file is based on fmusdk/src/model_exchange/fmusim_me/main.c:</p>
- * <pre>
- * Author: Jakob Mauss
- * Copyright 2011 QTronic GmbH. All rights reserved. 
- * </pre>
+ * <p>This file is based on fmusdk/src/model_exchange/fmusim_me/main.c
+ * by Jakob Mauss, which has the following license:</p>
+ *
+ * <p>FMU SDK license</p> 
+ *
+ * <p>Copyright (c) 2008-2011, QTronic GmbH. All rights reserved.
+ * The FmuSdk is licensed by the copyright holder under the BSD License
+ * (http://www.opensource.org/licenses/bsd-license.html):
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ * <br/>- Redistributions of source code must retain the above copyright notice,
+ *   this list of conditions and the following disclaimer.
+ * <br/>- Redistributions in binary form must reproduce the above copyright notice,
+ * this list of conditions and the following disclaimer in the documentation
+ * and/or other materials provided with the distribution.</p>
+ *
+ * <p>THIS SOFTWARE IS PROVIDED BY QTRONIC GMBH "AS IS" AND ANY EXPRESS OR 
+ * IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES 
+ * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. 
+ * IN NO EVENT SHALL QTRONIC GMBH BE LIABLE FOR ANY DIRECT, INDIRECT, 
+ * INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+ * NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, 
+ * DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY 
+ * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT 
+ * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF 
+ * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.</p>
  *
  * @author Christopher Brooks, based on fmusim_me/main.c by Jakob Mauss
  * @version $Id: FMUModelExchange.java 63359 2012-04-16 06:45:49Z cxh $

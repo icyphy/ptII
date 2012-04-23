@@ -1,4 +1,4 @@
-/* An Functional Mock-up Interface Boolean Type.
+/* An Functional Mock-up Interface Integer Type.
 
  Copyright (c) 2012 The Regents of the University of California.
  All rights reserved.
@@ -25,15 +25,15 @@
  COPYRIGHTENDKEY
 
  */
-package org.ptolemy.fmi;
+package org.ptolemy.fmi.type;
 
 import org.w3c.dom.Element;
 
 ///////////////////////////////////////////////////////////////////
-//// FMIBooleanType
+//// FMIIntegerType
 
 /**
- * An Functional Mock-up Interface type that represents a Boolean.
+ * An Functional Mock-up Interface type that represents an Integer.
  * 
  * <p>FMI documentation may be found at
  * <a href="http://www.modelisar.com/fmi.html">http://www.modelisar.com/fmi.html</a>.
@@ -44,18 +44,18 @@ import org.w3c.dom.Element;
  * @Pt.ProposedRating Red (cxh)
  * @Pt.AcceptedRating Red (cxh)
  */
-public class FMIBooleanType extends FMIType {
+public class FMIIntegerType extends FMIType {
 
-    /** Construct an Integerl FMU variable.
+    /** Construct an Integer FMU variable.
      *  @param name The name of this variable.
      *  @param description A description of this variable.
      *  @param element The XML element whose attributes are used to
      *  set the fields of this object.
      */
-    public FMIBooleanType(String name, String description, Element element) {
+    public FMIIntegerType(String name, String description, Element element) {
         super(name, description, element);
         if (element.hasAttribute("start")) {
-            start = Boolean.valueOf(element.getAttribute("start"));
+            start = Integer.valueOf(element.getAttribute("start"));
         }
     }
 
@@ -63,9 +63,9 @@ public class FMIBooleanType extends FMIType {
      *  @return The string value.
      */
     public String toString() {
-        return Boolean.toString(start);
+        return Integer.toString(start);
     }
 
-    /** The starting value of this boolean. */
-    public boolean start;
+    /** The starting value of this integer. */
+    public int start;
 }

@@ -33,6 +33,11 @@ import java.nio.IntBuffer;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.ptolemy.fmi.type.FMIBooleanType;
+import org.ptolemy.fmi.type.FMIIntegerType;
+import org.ptolemy.fmi.type.FMIRealType;
+import org.ptolemy.fmi.type.FMIStringType;
+import org.ptolemy.fmi.type.FMIType;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
@@ -67,6 +72,9 @@ public class FMIScalarVariable {
     /** Create an empty ScalarVariable. */
     public FMIScalarVariable() {
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////             public methods                                ////
 
     /** Create a ScalarVariable from an XML Element.
      *  @param fmiModelDescription the Model Description for this variable.
@@ -288,6 +296,9 @@ public class FMIScalarVariable {
         return result;
     }
 
+    ///////////////////////////////////////////////////////////////////
+    ////             inner classes                                 ////
+
     /** Acceptable values for the alias xml attribute.
      *  Alias variables occur during assignment operations.   
      */
@@ -348,6 +359,9 @@ public class FMIScalarVariable {
         parameter
     }
 
+    ///////////////////////////////////////////////////////////////////
+    ////             public fields                                 ////
+
     /** The value of the alias xml attribute. */
     public Alias alias;
 
@@ -383,6 +397,9 @@ public class FMIScalarVariable {
 
     /** The value of the variability xml attribute. */
     public Variability variability;
+
+    ///////////////////////////////////////////////////////////////////
+    ////             private fields                                ////
 
     /** The set of elements that we don't yet handle.
      *  This is used for error messages.	

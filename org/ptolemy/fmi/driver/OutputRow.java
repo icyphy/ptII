@@ -25,11 +25,17 @@
    COPYRIGHTENDKEY
 
  */
-package org.ptolemy.fmi;
+package org.ptolemy.fmi.driver;
 
 import java.io.PrintStream;
 
+import org.ptolemy.fmi.FMIModelDescription;
+import org.ptolemy.fmi.FMIScalarVariable;
 import org.ptolemy.fmi.FMIScalarVariable.Alias;
+import org.ptolemy.fmi.type.FMIBooleanType;
+import org.ptolemy.fmi.type.FMIIntegerType;
+import org.ptolemy.fmi.type.FMIRealType;
+import org.ptolemy.fmi.type.FMIStringType;
 
 import com.sun.jna.NativeLibrary;
 import com.sun.jna.Pointer;
@@ -38,20 +44,20 @@ import com.sun.jna.Pointer;
  * <p>This method is a port of outputRow() from
  * fmusdk/src/shared/sim_support.c which has the following license:
  *
- * FMU SDK license 
+ * <p>FMU SDK license</p> 
  *
- * Copyright (c) 2008-2011, QTronic GmbH. All rights reserved.
+ * <p>Copyright (c) 2008-2011, QTronic GmbH. All rights reserved.
  * The FmuSdk is licensed by the copyright holder under the BSD License
  * (http://www.opensource.org/licenses/bsd-license.html):
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
- * - Redistributions of source code must retain the above copyright notice,
+ * <br/>- Redistributions of source code must retain the above copyright notice,
  *   this list of conditions and the following disclaimer.
- * - Redistributions in binary form must reproduce the above copyright notice,
+ * <br/>- Redistributions in binary form must reproduce the above copyright notice,
  * this list of conditions and the following disclaimer in the documentation
- * and/or other materials provided with the distribution.
+ * and/or other materials provided with the distribution.</p>
  *
- * THIS SOFTWARE IS PROVIDED BY QTRONIC GMBH "AS IS" AND ANY EXPRESS OR 
+ * <p>THIS SOFTWARE IS PROVIDED BY QTRONIC GMBH "AS IS" AND ANY EXPRESS OR 
  * IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES 
  * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. 
  * IN NO EVENT SHALL QTRONIC GMBH BE LIABLE FOR ANY DIRECT, INDIRECT, 
@@ -60,7 +66,7 @@ import com.sun.jna.Pointer;
  * DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY 
  * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT 
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF 
- * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.</p>
  *
  * @author Christopher Brooks, based on sim_support.c by QTronic GmbH.
  * @version $Id$
@@ -68,6 +74,9 @@ import com.sun.jna.Pointer;
  * @Pt.AcceptedRating Red (cxh)
  */
 public class OutputRow {
+    ///////////////////////////////////////////////////////////////////
+    ////             public methods                                ////
+
     /** Output time and all non-alias variables in CSV format. If the
      *  separator is ',', columns are separated by ',' and '.' is used
      *  for floating-point numbers.  Otherwise, the given separator
@@ -171,4 +180,9 @@ public class OutputRow {
         // Terminate this row.
         file.format("\n");
     }
+
+    /** This class contains only static methods, so there is no public
+     * constructor.
+     */
+    private OutputRow() {}
 }

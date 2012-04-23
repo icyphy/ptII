@@ -26,7 +26,7 @@
 
  */
 
-package org.ptolemy.fmi.test.junit;
+package org.ptolemy.fmi.driver.test.junit;
 
 import java.io.BufferedReader;
 import java.io.DataInputStream;
@@ -35,8 +35,8 @@ import java.io.FileInputStream;
 import java.io.InputStreamReader;
 import java.io.IOException;
 
-import org.ptolemy.fmi.FMUCoSimulation;
-import org.ptolemy.fmi.FMUModelExchange;
+import org.ptolemy.fmi.driver.FMUCoSimulation;
+import org.ptolemy.fmi.driver.FMUModelExchange;
 
 
 import static org.junit.Assert.assertArrayEquals;
@@ -94,7 +94,7 @@ public class FMUJUnitTest {
      */
     public void cosimulate(String testName) throws Exception {
         cosimulate(topDirectory + "/org/ptolemy/fmi/fmu/cs/" + testName + ".fmu",
-                topDirectory + "/org/ptolemy/fmi/test/junit/" + testName + ".csv");
+                topDirectory + "/org/ptolemy/fmi/driver/test/junit/" + testName + ".csv");
     }
 
     /** Run the bouncing ball co-simulation functional mock-up unit test.
@@ -177,7 +177,7 @@ public class FMUJUnitTest {
      */
     public void modelExchange(String testName) throws Exception {
         modelExchange(topDirectory + "/org/ptolemy/fmi/fmu/me/" + testName + ".fmu",
-                topDirectory + "/org/ptolemy/fmi/test/junit/" + testName + "_me.csv");
+                topDirectory + "/org/ptolemy/fmi/driver/test/junit/" + testName + "_me.csv");
     }
 
     /** Run the bouncing ball model exchange functional mock-up unit test.

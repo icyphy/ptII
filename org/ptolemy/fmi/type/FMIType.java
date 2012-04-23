@@ -1,4 +1,4 @@
-/* An Functional Mock-up Interface Integer Type.
+/* An Functional Mock-up Interface Type.
 
  Copyright (c) 2012 The Regents of the University of California.
  All rights reserved.
@@ -25,15 +25,15 @@
  COPYRIGHTENDKEY
 
  */
-package org.ptolemy.fmi;
+package org.ptolemy.fmi.type;
 
 import org.w3c.dom.Element;
 
 ///////////////////////////////////////////////////////////////////
-//// FMIIntegerType
+//// FMIType
 
 /**
- * An Functional Mock-up Interface type that represents an Integer.
+ * An base class for Functional Mock-up Interface types like Real.
  * 
  * <p>FMI documentation may be found at
  * <a href="http://www.modelisar.com/fmi.html">http://www.modelisar.com/fmi.html</a>.
@@ -44,28 +44,39 @@ import org.w3c.dom.Element;
  * @Pt.ProposedRating Red (cxh)
  * @Pt.AcceptedRating Red (cxh)
  */
-public class FMIIntegerType extends FMIType {
+public abstract class FMIType {
 
-    /** Construct an Integerl FMU variable.
+    /** Construct a variable.
      *  @param name The name of this variable.
      *  @param description A description of this variable.
-     *  @param element The XML element whose attributes are used to
-     *  set the fields of this object.
+     *  @param element The XML Element that may contain a "fixed" element.
      */
-    public FMIIntegerType(String name, String description, Element element) {
-        super(name, description, element);
-        if (element.hasAttribute("start")) {
-            start = Integer.valueOf(element.getAttribute("start"));
+    public FMIType(String name, String description, Element element) {
+        this.name = name;
+        this.description = description;
+        if (element.hasAttribute("fixed")) {
+            fixed = Boolean.valueOf(element.getAttribute("fixed"));
         }
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////             public methods                                ////
 
     /** Return the string value of the base element.
      *  @return The string value.
      */
-    public String toString() {
-        return Integer.toString(start);
-    }
+    abstract public String toString();
 
-    /** The starting value of this integer. */
-    public int start;
+    ///////////////////////////////////////////////////////////////////
+    ////             public fields                                 ////
+
+    /** A description of the type. */
+    public String description;
+
+    // FIXME: describe what this means.
+    /** True if the value is fixed. */
+    public boolean fixed;
+
+    /** The name of the type. */
+    public String name;
 }

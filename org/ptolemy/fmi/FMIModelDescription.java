@@ -39,12 +39,12 @@ import com.sun.jna.NativeLibrary;
 //// FMUModelDescription
 
 /**
- * An object that represents the fmiModelDescription element of a 
+ * An object that represents the fmiModelDescription element of a
  * Functional Mock-up Interface (FMI) file.
  * 
- * <p>A Functional Mock-up Unit file is a .fmu file in zip format that contains a 
- * .xml file named "modelDescription.xml".  This class is a representation
- * of the elements of that file.</p>
+ * <p>A Functional Mock-up Unit file is a .fmu file in zip format that
+ * contains a .xml file named "modelDescription.xml".  This class is a
+ * representation of the elements of that file.</p>
  *
  * <p>FMI documentation may be found at
  * <a href="http://www.modelisar.com/fmi.html">http://www.modelisar.com/fmi.html</a>.
@@ -60,32 +60,31 @@ public class FMIModelDescription {
     // can easily access the elements in a very lightweight manner.
 
     // The files field is not in the xml, but as we pass around this object,
-    // add a field here.
+    // add a field here for easier access.
     /** The list of files that were extracted from the .fmu file. */
     public List<File> files;
 
     /** The fmiVersion, typically the value of the fmiVersion
-     * attribute from a .fmu file.
-     * The fmiVersion field is set to 1.0 for FMI 1.0.
+     * attribute from a .fmu file.  The fmiVersion field is set to 1.0
+     * for FMI 1.0.
      */
     public String fmiVersion;
 
-    /** The FMI guid, typically the value of the guid
-     * attribute from a .fmu file.
-     * The value of guid in the modelDescription.xml file must match
-     * the guid in the shared library.
+    /** The FMI guid, typically the value of the guid attribute from a
+     * .fmu file.  The value of guid in the modelDescription.xml file
+     * must match the guid in the shared library.
      */
     public String guid;
 
-    /** The FMI modelIdentifier, typically the value of the modelIdentifier
-     * attribute from a .fmu file.
-     * The modelIdentifier is the basename for the shared library.
+    /** The FMI modelIdentifier, typically the value of the
+     * modelIdentifier attribute from a .fmu file.  The
+     * modelIdentifier is the basename for the shared library.
      */
     public String modelIdentifier;
 
     /** The FMI modelName, typically the value of the modelName
-     * attribute from a .fmu file.
-     * The modelName may have spaces in it.
+     * attribute from a .fmu file.  The modelName may have spaces in
+     * it.
      */
     public String modelName;
 
