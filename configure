@@ -7907,7 +7907,7 @@ $as_echo "ok" >&6; }; else { $as_echo "$as_me:${as_lineno-$LINENO}: result: $PTI
 $as_echo "$PTII/lib/jna.jar" >&6; }; fi
 	JNA_JAR="$PTII/lib/jna.jar"
 	PTFMI_DIR=fmi
-	PTFMI_PACKAGES="ptolemy.actor.lib.fmi org.ptolemy.fmi"
+	PTFMI_PACKAGES="ptolemy.actor.lib.fmi org.ptolemy.fmi org.ptolemy.fmi.driver org.ptolemy.fmi.type"
         updateClasspath "$JNA_JAR"
     else
         { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Failed to find $PTII/lib/jna.jar,
