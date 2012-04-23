@@ -35,6 +35,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Locale;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
@@ -91,7 +92,7 @@ public class FMUFile {
 
         // Determine the path to the shared object.
         String topDirectory = modelDescriptionFile.getParent();
-        String osName = System.getProperty("os.name").toLowerCase();
+        String osName = System.getProperty("os.name").toLowerCase(Locale.getDefault());
         String extension = ".so";
         if (osName.startsWith("mac")) {
             // JModelica seems to use darwin as the binary name
@@ -168,9 +169,9 @@ public class FMUFile {
 
             // Parse using builder to get DOM representation of the XML file.
             document = db.parse(modelDescriptionFile.getCanonicalPath());
-        } catch (Exception ex) {
+        } catch (Throwable throwable) {
             throw new IOException("Failed to parse \"" + modelDescriptionFile
-                    + "\".", ex);
+                    + "\".", throwable);
         }
 
         Element root = document.getDocumentElement();
@@ -297,10 +298,6 @@ public class FMUFile {
     private static List<File> _unzip(String zipFileName) throws IOException {
         // FIXME: Use URLs, not files so that we can work from JarZip files.
         BufferedOutputStream destination = null;
-        FileInputStream fileInputStream = new FileInputStream(zipFileName);
-        ZipInputStream zipInputStream = new ZipInputStream(
-                new BufferedInputStream(fileInputStream));
-        ZipEntry entry;
         final int BUFFER = 2048;
         byte data[] = new byte[BUFFER];
 
@@ -318,7 +315,13 @@ public class FMUFile {
         String topDirectory = topDirectoryFile.getCanonicalPath();
         System.out.println("Extracting to " + topDirectory);
         List<File> files = new LinkedList<File>();
+        FileInputStream fileInputStream = null;
+        ZipInputStream zipInputStream = null;
         try {
+            fileInputStream = new FileInputStream(zipFileName);
+            zipInputStream = new ZipInputStream(
+                new BufferedInputStream(fileInputStream));
+            ZipEntry entry;
             while ((entry = zipInputStream.getNextEntry()) != null) {
                 // System.out.println("Extracting: " + entry);
                 String entryName = entry.getName();

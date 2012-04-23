@@ -288,43 +288,56 @@ public abstract class FMUDriver {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                  protected fields                         ////
+    ////                  protected methods                        ////
+
+    /** Set the _enableLogging field.
+     *  @param enableLogging the value of the enable logging field.
+     */
+    protected static void _setEnableLogging(boolean enableLogging) {
+        // This method exists so as to avoid a warning from FindBugs.   
+        _enableLogging = enableLogging;
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                  package protected fields                 ////
+
+    // FindBugs wants these package protected.
 
     /** The comma separated value separator.
      *  The initial value is ','.
      */
-    protected static char _csvSeparator = ',';
+    static char _csvSeparator = ',';
 
     /** True if logging is enabled.
      *  The initial value is false.
      */
-    protected static boolean _enableLogging = false;
+    static boolean _enableLogging = false;
 
     /** The end time, in seconds. 
      *  The initial default is 1.0.   
      */
-    protected static double _endTime = 1.0;
+    static double _endTime = 1.0;
 
     /** The name of the .fmu file.
      *  The initial default is the empty string.   
      */
-    protected static String _fmuFileName = "";
+    static String _fmuFileName = "";
 
     /** The modelIdentifier from modelDescription.xml. */
-    protected String _modelIdentifier;
+    String _modelIdentifier;
 
     /** The NativeLibrary that contains the functions. */
-    protected NativeLibrary _nativeLibrary;
+    NativeLibrary _nativeLibrary;
 
     /** The output file name.
      *  The initial value is "results.csv".
      */
-    protected static String _outputFileName = "results.csv";
+    static String _outputFileName = "results.csv";
 
     /** The step size, in seconds.
      *  The initial default is 0.1 seconds.
      */
-    protected static double _stepSize = 0.1;
+    static double _stepSize = 0.1;
 
     ///////////////////////////////////////////////////////////////////
     ////             private fields                                ////

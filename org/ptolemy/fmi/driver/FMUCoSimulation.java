@@ -137,7 +137,8 @@ public class FMUCoSimulation extends FMUDriver {
             boolean enableLogging, char csvSeparator, String outputFileName)
             throws Exception {
 
-        _enableLogging = enableLogging;
+        // Avoid a warning from FindBugs.
+        FMUDriver._setEnableLogging(enableLogging);
 
         // Parse the .fmu file.
         FMIModelDescription fmiModelDescription = FMUFile
@@ -145,7 +146,7 @@ public class FMUCoSimulation extends FMUDriver {
 
         // Load the shared library.
         String sharedLibrary = FMUFile.fmuSharedLibrary(fmiModelDescription);
-        _enableLogging = enableLogging;
+
         if (enableLogging) {
             System.out.println("FMUCoSimulation: about to load "
                     + sharedLibrary);

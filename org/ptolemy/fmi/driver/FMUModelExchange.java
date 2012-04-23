@@ -139,7 +139,9 @@ public class FMUModelExchange extends FMUDriver {
     public void simulate(String fmuFileName, double endTime, double stepSize,
             boolean enableLogging, char csvSeparator, String outputFileName)
             throws Exception {
-        _enableLogging = enableLogging;
+        // Avoid a warning from FindBugs.
+        FMUDriver._setEnableLogging(enableLogging);
+
         // Parse the .fmu file.
         FMIModelDescription fmiModelDescription = FMUFile
                 .parseFMUFile(fmuFileName);
