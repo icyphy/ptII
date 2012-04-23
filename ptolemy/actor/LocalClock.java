@@ -251,7 +251,7 @@ public class LocalClock extends AbstractSettableAttribute implements ValueListen
      *   committed local time, or if Time objects cannot be created.
      */
     public Time getLocalTimeForEnvironmentTime(Time time) throws IllegalActionException {
-        if (time.compareTo(_lastCommitEnvironmentTime) < 0) {
+        if (_lastCommitEnvironmentTime == null || time.compareTo(_lastCommitEnvironmentTime) < 0) {
             throw new IllegalActionException(
                     "Cannot compute local time for environment time " 
                     + time + " because "
