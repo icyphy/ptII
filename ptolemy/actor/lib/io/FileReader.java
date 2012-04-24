@@ -70,7 +70,7 @@ public class FileReader extends LimitedFiringSource {
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
-        output.setTypeEquals(BaseType.STRING);
+        // output.setTypeEquals(BaseType.STRING);
 
         fileOrURL = new FileParameter(this, "fileOrURL");
 
@@ -134,10 +134,10 @@ public class FileReader extends LimitedFiringSource {
 
         BufferedReader reader = null;
 
+        StringBuffer lineBuffer = new StringBuffer();
         try {
             reader = fileOrURL.openForReading();
 
-            StringBuffer lineBuffer = new StringBuffer();
             String newlineValue = ((StringToken) newline.getToken())
                     .stringValue();
             while (true) {
@@ -150,8 +150,6 @@ public class FileReader extends LimitedFiringSource {
                 lineBuffer = lineBuffer.append(line);
                 lineBuffer = lineBuffer.append(newlineValue);
             }
-
-            output.broadcast(new StringToken(lineBuffer.toString()));
         } catch (Throwable throwable) {
             throw new IllegalActionException(this, throwable,
                     "Failed to read '" + fileOrURL + "'");
@@ -160,5 +158,18 @@ public class FileReader extends LimitedFiringSource {
                 fileOrURL.close();
             }
         }
+        _handleFileData(lineBuffer.toString());
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                      protected methods                    ////
+
+    /** Send the specified string to the output.
+     *  @param fileContents The contents of the file or URL that was read.
+     *  @throws IllegalActionException If sending the data fails.
+     */
+    protected void _handleFileData(String fileContents)
+            throws IllegalActionException {
+        output.broadcast(new StringToken(fileContents));
     }
 }
