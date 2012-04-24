@@ -39,6 +39,10 @@
         <doc>Read an entire file and output as a string</doc>
       </entity>
       
+      <entity name="TokenReader" class="ptolemy.actor.lib.io.TokenReader">
+        <doc>Reads a string from a file or URL and parses it into tokens</doc>
+      </entity>
+      
       <entity name="FileWriter" class="ptolemy.actor.lib.FileWriter">
         <doc>Read an entire file and output as a string</doc>
       </entity>

@@ -26,6 +26,7 @@
  */
 package ptolemy.actor.lib.io;
 
+import java.util.LinkedList;
 import java.util.List;
 
 import ptolemy.actor.TypedIOPort;
@@ -35,6 +36,10 @@ import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.ParseTreeEvaluator;
 import ptolemy.data.expr.PtParser;
 import ptolemy.data.expr.StringParameter;
+import ptolemy.data.type.BaseType;
+import ptolemy.data.type.Type;
+import ptolemy.data.type.TypeLattice;
+import ptolemy.graph.CPO;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -69,7 +74,7 @@ public class TokenReader extends FileReader {
     public TokenReader(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        
+        output.setTypeEquals(BaseType.GENERAL);
         outputType = new Parameter(this, "outputType");
         
         errorHandlingStrategy = new StringParameter(this, "errorHandlingStrategy");
@@ -128,6 +133,7 @@ public class TokenReader extends FileReader {
         if (outputTypeValue != null) {
             // An output type has been specified.
             // Force the output to this type.
+        	// TODO: use setTypeAtMost() instead
             output.setTypeEquals(outputTypeValue.getType());
         } else {
             // Declare constraints that the output type must
@@ -140,10 +146,17 @@ public class TokenReader extends FileReader {
             // work because then default constraints result in the output
             // being greater than or equal to the trigger input, which is
             // boolean.
+            
+        	CPO lattice = TypeLattice.lattice();
+        	List<Type> portTypeList = new LinkedList<Type>();
             List<TypedIOPort> destinations = output.sinkPortList();
+            
             for (TypedIOPort destination : destinations) {
-                destination.setTypeAtLeast(output);
+            	portTypeList.add(destination.getType());
             }
+            output.setTypeEquals((Type) lattice.greatestLowerBound(portTypeList.toArray()));
+            //output.setTypeAtMost((Type) lattice.greatestLowerBound(portTypeList.toArray()));
+            
         }
     }
     
@@ -174,12 +187,18 @@ public class TokenReader extends FileReader {
         }
 
         Token outputTypeValue = outputType.getToken();
+        // TODO: shouldn't output port type be set regardless of where the definition comes from? Also: do this in preinitialize()
+        
+        Token convertedToken = output.getType().convert(result);
+        //output.broadcast(convertedToken);
+        output.broadcast(result);
         if (outputTypeValue != null) {
             // An output type has been specified. Try to convert
             // the parsed token to that type.
-            Token convertedToken = outputTypeValue.getType().convert(result);
-            output.broadcast(convertedToken);
+            //Token convertedToken = outputTypeValue.getType().convert(result);
+            //output.broadcast(convertedToken);
         } else {
+        	
             // An output data type has not been specified.
             // First, try to convert to the type that the output resolved to. 
         }

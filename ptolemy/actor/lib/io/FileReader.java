@@ -70,7 +70,7 @@ public class FileReader extends LimitedFiringSource {
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
-        // output.setTypeEquals(BaseType.STRING);
+        output.setTypeEquals(BaseType.STRING);
 
         fileOrURL = new FileParameter(this, "fileOrURL");
 
