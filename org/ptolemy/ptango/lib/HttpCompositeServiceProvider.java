@@ -6,6 +6,8 @@ import java.io.PrintWriter;
 import java.net.URI;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
 
 import javax.servlet.AsyncContext;
 import javax.servlet.ServletContext;
@@ -16,6 +18,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import ptolemy.actor.TypedCompositeActor;
 import ptolemy.actor.TypedIOPort;
+import ptolemy.actor.gui.PtolemyFrame;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.expr.FileParameter;
 import ptolemy.data.expr.StringParameter;
@@ -25,6 +28,9 @@ import ptolemy.kernel.Relation;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
+import ptolemy.vergil.basic.ExportParameters;
+import ptolemy.vergil.basic.export.html.WebExportable;
+import ptolemy.vergil.basic.export.html.WebExporter;
 
 /* An actor that handles an HttpRequest to the given path.
 
@@ -67,13 +73,10 @@ import ptolemy.kernel.util.NamedObj;
  */
 
 public class HttpCompositeServiceProvider extends TypedCompositeActor 
-        implements HttpService{
+        implements HttpService, WebExporter{
     public HttpCompositeServiceProvider(CompositeEntity container, String name)
     throws IllegalActionException, NameDuplicationException {
         super(container, name);
-
-        message = new StringParameter(this, "message");
-        message.setExpression("Hello World");
         
         path = new StringParameter(this, "path");
         path.setExpression("/*");
@@ -88,6 +91,42 @@ public class HttpCompositeServiceProvider extends TypedCompositeActor
     
     ///////////////////////////////////////////////////////////////////
     ////                     public methods                        ////
+    
+    /** WebExportables call this method to add web content to the page
+     *  returned by the HttpCompositeServiceProvider.  
+     *  Copied from ptolemy.vergil.basic.export.html.ExportHTMLAction 
+     *  
+     *  Add HTML content at the specified position.
+     *  The position is expected to be one of "head", "start", "end",
+     *  or anything else. In the latter case, the value
+     *  of the position attribute is a filename
+     *  into which the content is written.
+     *  If <i>onceOnly</i> is true, then if identical content has
+     *  already been added to the specified position, then it is not
+     *  added again.
+     *  @param position The position for the content.
+     *  @param onceOnly True to prevent duplicate content.
+     *  @param content The content to add.
+     *  @see ptolemy.vergil.basic.export.html.ExportHTMLAction
+     */
+    // FIXME:  Move some web export functionality out of ptolemy.vergil?  
+    // Would like this to be able to run without GUI.
+    public void addContent(String position, boolean onceOnly, String content) {
+        List <StringBuffer> contents = _contents.get(position);
+
+        if (contents == null) {
+            contents = new LinkedList<StringBuffer>();
+            _contents.put(position, contents);
+        }
+        if (onceOnly) {
+            // Check to see whether contents are already present.
+            if (contents.contains(content)) {
+                return;
+            }
+        }
+        contents.add(new StringBuffer(content));     
+    }
+    
     /** Returns the relative path that this HttpService is mapped to. 
      * 
      * @return The relative path that this HttpService is mapped to.
@@ -103,6 +142,19 @@ public class HttpCompositeServiceProvider extends TypedCompositeActor
      */
     public HttpServlet getServlet() {
         return new HttpServiceServlet();
+    }
+    
+    /** Initialize the data structures into which web content is collected.
+     */
+    public void initialize() throws IllegalActionException {
+        super.initialize();
+        
+        // TODO:  Other data structures from unimplemented methods for
+        // WebExporter interface
+        _contents = new HashMap<String,List<StringBuffer>>();
+        _contents.put("head", new LinkedList<StringBuffer>());
+        _contents.put("start", new LinkedList<StringBuffer>());
+        _contents.put("end", new LinkedList<StringBuffer>());
     }
     
     /** This actor may be fired if there is an HttpResponse (contained in the
@@ -129,6 +181,7 @@ public class HttpCompositeServiceProvider extends TypedCompositeActor
      */
     
     public void preinitialize() throws IllegalActionException {
+        super.preinitialize();
         
         if (!path.getExpression().isEmpty()) {
             setRelativePath(path.getExpression().toString());
@@ -220,10 +273,20 @@ public class HttpCompositeServiceProvider extends TypedCompositeActor
                             }
                         }
                     }
-                } else {
+                } 
+                
+                /* This is no longer an error - could have content 
+                 * defined by WebExportables
+                 */
+                /*
+                else {
                     _writeError(response, HttpServletResponse.SC_NO_CONTENT, 
                        "No output variables are defined for this web service.");
                 }
+                */
+                
+                // Get web content from all contained WebExportables
+                _addAllContent(this);
                 
                 // Write the response page
                 response.setContentType("text/javascript");
@@ -255,25 +318,44 @@ public class HttpCompositeServiceProvider extends TypedCompositeActor
                     // e.g. Javascript to print the values in the correct spots
                     // But, couldn't get Javascript to work as part of
                     // an HttpResponse - worked OK loading page from file
+                    // FIXME:  All of this assumes nice line spacing in the 
+                    // source file...
                     String key;
                     Iterator keys;
                     while((line = reader.readLine()) != null) {
-                        // Insert Javascript for variables just before </body> 
-                        keys = resultsMap.keySet().iterator();
-                        while(keys.hasNext()) {
-                            key = (String) keys.next();
-                            if (line.contains("<div id=\"" + key + "\">")) {
-                                    writer.println("<div id=\"" + key + "\">" +
-                                            (String) resultsMap.get(key) + 
-                                            "</div>");
+                        // Insert elements from WebExportables into <head>
+                        // Assumes file contains <head> </head>
+                        if (line.contains("</head>")) {
+                            _printHTML(writer, "head");
+                        } 
+                        
+                        // Insert elements from WebExportables into <body>
+                        if (line.contains("<body>")) {
+                            _printHTML(writer, "start");
+                        } 
+                        
+                        // Insert elements from WebExportables before </body>
+                        if (line.contains("</body>")) {
+                            _printHTML(writer, "end");
+                        } 
+                        
+                        // Insert Javascript for variables 
+                        if (!resultsMap.keySet().isEmpty()) {
+                            keys = resultsMap.keySet().iterator();
+                            while(keys.hasNext()) {
+                                key = (String) keys.next();
+                                if (line.contains("<div id=\"" + key + "\">")) {
+                                    line = "<div id=\"" + key + "\">" + 
+                                        (String) resultsMap.get(key) + "</div>";
                                     resultsMap.remove(key);
                                     break;
-                                } else {
-                                    writer.println(line);
                                 } 
                             }
                         }
-                    
+                        
+                        writer.println(line);
+                        }
+                           
                     reader.close();
                     writer.flush();
                     }
@@ -328,10 +410,6 @@ public class HttpCompositeServiceProvider extends TypedCompositeActor
      */
     public FileParameter inputPage;
     
-    /** The message to display when a get request is received.
-     */
-    public StringParameter message;
-    
     /** The file containing the HTML output page to display.
      */
     public FileParameter outputPage;
@@ -342,6 +420,43 @@ public class HttpCompositeServiceProvider extends TypedCompositeActor
     
     ///////////////////////////////////////////////////////////////////
     ////                     private methods                      ////
+   
+    /** Finds all contained WebExportables and gets their web content.
+     * 
+     * @param container The container to search for WebExportables
+     * @exception If something is wrong with the specification of the outside 
+     * content
+     */
+    private void _addAllContent(NamedObj container) 
+        throws IllegalActionException {
+        if (container instanceof WebExportable) {
+            ((WebExportable) container).provideOutsideContent(this);
+        } else {
+            Iterator objects = container.containedObjectsIterator();
+            while (objects.hasNext()) {
+                _addAllContent((NamedObj) objects.next());
+            }
+        }  
+    }
+    
+    /** Copied from ptolemy.vergil.basic.export.html.ExportHTMLAction 
+     *  Print the HTML in the _contents structure corresponding to the
+     *  specified position to the specified writer. Each item in the
+     *  _contents structure is written on one line.
+     *  @param writer The writer to print to.
+     *  @param position The position.
+     *  @see ptolemy.vergil.basic.export.html.ExportHTMLAction
+     */
+    private void _printHTML(PrintWriter writer, String position) {
+        if (_contents != null) {
+            List<StringBuffer> contents = _contents.get(position);
+            if (contents != null) {
+                for (StringBuffer content : contents) {
+                    writer.println(content);
+                }
+            }
+        }
+    }
 
     /** Write an error message to the given HttpServletResponse.
      *
@@ -531,6 +646,9 @@ public class HttpCompositeServiceProvider extends TypedCompositeActor
      */
     private AsyncContext _asyncContext;
     
+    /** Content added by position. */
+    private HashMap<String,List<StringBuffer>> _contents;
+    
     /** A copy of the servlet context, which is set in the doPost() method of
      *  HttpServiceServlet and used in the fire() method of the parent to 
      *  read the output page file. 
@@ -542,5 +660,30 @@ public class HttpCompositeServiceProvider extends TypedCompositeActor
      *  all of the URI naming conventions. 
      */
     private URI _URIpath;
+
+    @Override
+    public boolean defineAreaAttribute(NamedObj object, String attribute,
+            String value, boolean overwrite) {
+        // TODO Auto-generated method stub
+        return false;
+    }
+
+    @Override
+    public ExportParameters getExportParameters() {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public PtolemyFrame getFrame() {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public void setTitle(String title, boolean showInHTML) {
+        // TODO Auto-generated method stub
+        
+    }
     
 }
