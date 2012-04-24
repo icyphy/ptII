@@ -56,7 +56,8 @@ JSRCS = \
 	ExpressionWriter.java \
 	LineReader.java \
 	LineWriter.java \
-	FileReader.java
+	FileReader.java \
+	TokenReader.java
 
 OTHER_FILES_TO_BE_JARED = \
 	io.xml
