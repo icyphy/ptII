@@ -48,8 +48,15 @@ import ptolemy.kernel.util.NameDuplicationException;
 //// TokenReader
 
 /**
- An actor that reads a string from a file or URL, parses it assuming it is defining a record, and outputs the record.
- 
+ An actor that reads a string expression from a file or URL upon receiving a 
+ signal on its <i>trigger</i> input port, and outputs a token that is the 
+ result of evaluating the read string. The file or URL is specified by the 
+ <i>FileOrURL</i> parameter or set using the <i>FileOrURL</i> port. If the 
+ file or URL cannot be read, the expression cannot be parsed successfully,
+ or the resulting token does not match the type constraint of the output port,
+ the value of the <i>errorHandlingStrategy</i> parameter determines the 
+ behavior of this actor.
+ TODO: describe automatic port constraint setting 
  FIXME: More here. Particularly, document output type handling.
 
  @author Edward A. Lee
@@ -62,8 +69,8 @@ import ptolemy.kernel.util.NameDuplicationException;
 public class TokenReader extends FileReader {
     
     /** Construct an actor with a name and a container.
-     *  The container argument must not be null, or a
-     *  NullPointerException will be thrown.
+     *  The container argument must not be null, or a NullPointerException 
+     *  will be thrown.
      *  @param container The container.
      *  @param name The name of this actor.
      *  @exception IllegalActionException If the container is incompatible
