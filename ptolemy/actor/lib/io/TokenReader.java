@@ -26,7 +26,7 @@
  */
 package ptolemy.actor.lib.io;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 import ptolemy.actor.TypedIOPort;
@@ -37,9 +37,11 @@ import ptolemy.data.expr.ParseTreeEvaluator;
 import ptolemy.data.expr.PtParser;
 import ptolemy.data.expr.StringParameter;
 import ptolemy.data.type.BaseType;
+import ptolemy.data.type.MonotonicFunction;
 import ptolemy.data.type.Type;
 import ptolemy.data.type.TypeLattice;
 import ptolemy.graph.CPO;
+import ptolemy.graph.InequalityTerm;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -81,7 +83,6 @@ public class TokenReader extends FileReader {
     public TokenReader(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        output.setTypeEquals(BaseType.GENERAL);
         outputType = new Parameter(this, "outputType");
         
         errorHandlingStrategy = new StringParameter(this, "errorHandlingStrategy");
@@ -92,9 +93,16 @@ public class TokenReader extends FileReader {
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
 
-    /** The strategy to use if the file or URL cannot be read, the data read from the file
-     *  or URL cannot be parsed, or the parsed token cannot be converted into a token of the type
-     *  given by <i>outputType</i>, if such a type is given.
+    /** The strategy to use if:
+     *  <ul>
+     *  <li> the file or URL cannot be read,
+     *  <li> the data read from the file or the URL cannot be parsed,
+     *  <li> the parsed token cannot be converted into a token of the type
+     *  given by <i>outputType</i>, if such a type is given, or
+     *  <li> the parsed token cannot
+     *  be converted to a token of the resolved type of the output, if no <i>outputType</i>
+     *  is given.
+     *  </ul>
      *  This is a string that has the following
      *  possible values: "Do Nothing" or "Throw Exception", where
      *  "Throw Exception" is the default.
@@ -136,11 +144,11 @@ public class TokenReader extends FileReader {
      * 
      */
     public void preinitialize() throws IllegalActionException {
+        super.preinitialize();
         Token outputTypeValue = outputType.getToken();
         if (outputTypeValue != null) {
             // An output type has been specified.
             // Force the output to this type.
-        	// TODO: use setTypeAtMost() instead
             output.setTypeEquals(outputTypeValue.getType());
         } else {
             // Declare constraints that the output type must
@@ -152,18 +160,14 @@ public class TokenReader extends FileReader {
             // removing the string declaration in the base class doesn't
             // work because then default constraints result in the output
             // being greater than or equal to the trigger input, which is
-            // boolean.
-            
-        	CPO lattice = TypeLattice.lattice();
-        	List<Type> portTypeList = new LinkedList<Type>();
-            List<TypedIOPort> destinations = output.sinkPortList();
-            
-            for (TypedIOPort destination : destinations) {
-            	portTypeList.add(destination.getType());
+            // boolean.            
+            if (_outputTypeConstraintsFunction == null) {
+                _outputTypeConstraintsFunction = new GLBFunction();
             }
-            output.setTypeEquals((Type) lattice.greatestLowerBound(portTypeList.toArray()));
-            //output.setTypeAtMost((Type) lattice.greatestLowerBound(portTypeList.toArray()));
+            output.setTypeAtLeast(_outputTypeConstraintsFunction);
             
+            // Next, need to add constraints for destination ports that have
+            // fixed types.
         }
     }
     
@@ -186,37 +190,109 @@ public class TokenReader extends FileReader {
             _parseTreeEvaluator = new ParseTreeEvaluator();
         }
 
+        // FIXME: Evaluating a parse tree that comes from an untrusted
+        // source creates a security problem.
         Token result = _parseTreeEvaluator.evaluateParseTree(parseTree);
 
         if (result == null) {
             throw new IllegalActionException(this,
                     "Expression yields a null result: " + fileContents);
         }
-
-        Token outputTypeValue = outputType.getToken();
-        // TODO: shouldn't output port type be set regardless of where the definition comes from? Also: do this in preinitialize()
         
-        Token convertedToken = output.getType().convert(result);
-        //output.broadcast(convertedToken);
-        output.broadcast(result);
-        if (outputTypeValue != null) {
-            // An output type has been specified. Try to convert
-            // the parsed token to that type.
-            //Token convertedToken = outputTypeValue.getType().convert(result);
-            //output.broadcast(convertedToken);
-        } else {
-        	
-            // An output data type has not been specified.
-            // First, try to convert to the type that the output resolved to. 
+        if (!output.getType().isCompatible(result.getType())) {
+            // Handle the error according to the error policy.
+            // FIXME: Fall through to the broadcast, which will throw
+            // an exception.
         }
+        output.broadcast(result);
     }
     
     ///////////////////////////////////////////////////////////////////
     ////                         private members                   ////
+    
+    /** Monotonic function used for setting output type constraints. */
+    private GLBFunction _outputTypeConstraintsFunction;
     
     /** The parser to use. */
     private PtParser _parser = null;
 
     /** The parse tree evaluator to use. */
     private ParseTreeEvaluator _parseTreeEvaluator = null;
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                         inner classes                     ////
+    
+    /** This class implements a monotonic function that returns the
+     *  greatest lower bound (GLB) of its arguments. The arguments
+     *  will be port type variables for all destination ports that this
+     *  actor sends data to. We will use this function to define a
+     *  type constraint asserting that the type of the output is
+     *  greater than or equal to the GLB of the destinations.
+     *  <p>
+     *  NOTE: It may seem counterintuitive that the constraint is
+     *  "greater than or equal to" rather than "less than or equal to."
+     *  But the latter constraint is already implied by the connections,
+     *  since the output port type is required to be less than or equal
+     *  to each destination port type.  The combination of these
+     *  constraints has the effect of setting the type of the output
+     *  equal to the GLB of the types of the destination ports.
+     *  This resolved type is, in fact, the most general type that
+     *  satisfies the contraints of all the downstream ports.
+     */
+    private class GLBFunction extends MonotonicFunction {
+
+        ///////////////////////////////////////////////////////////////
+        ////                       public inner methods            ////
+        
+        /** Return the current value of this monotonic function.
+         *  @return A Type.
+         */
+        public Object getValue() throws IllegalActionException {
+            InequalityTerm[] variables = getVariables();
+            Object[] types = new Type[variables.length + _cachedTypes.length];
+            for (int i = 0; i < variables.length; i++) {
+                types[i] = variables[i].getValue();
+            }
+            for (int i = 0; i < _cachedTypes.length; i++) {
+                types[variables.length + i] = _cachedTypes[i];
+            }
+            // If there are no destination outputs at all, then set
+            // the output type to general.
+            if (types.length == 0) {
+                return BaseType.GENERAL;
+            }
+            CPO lattice = TypeLattice.lattice();
+            return lattice.greatestLowerBound(types);
+        }
+
+        /** Return the type variables for this function, which are
+         *  the type variables for all the destination ports.
+         *  @return An array of InequalityTerm.
+         */
+        public InequalityTerm[] getVariables() {
+            if (workspace().getVersion() == _cachedTermsWorkspaceVersion) {
+                return _cachedTerms;
+            }
+            ArrayList<InequalityTerm> portTypeTermList = new ArrayList<InequalityTerm>();
+            ArrayList<Type> portTypeList = new ArrayList<Type>();
+            List<TypedIOPort> destinations = output.sinkPortList();
+            
+            for (TypedIOPort destination : destinations) {
+                InequalityTerm destinationTypeTerm = destination.getTypeTerm();
+                if (destinationTypeTerm.isSettable()) {
+                    portTypeTermList.add(destinationTypeTerm);
+                } else {
+                    portTypeList.add(destination.getType());
+                }
+            }
+            _cachedTerms = portTypeTermList.toArray(new InequalityTerm[0]);
+            _cachedTypes = portTypeList.toArray(new Type[0]);
+            _cachedTermsWorkspaceVersion = workspace().getVersion();
+            return _cachedTerms;
+        }
+        
+        private Type[] _cachedTypes;
+        private InequalityTerm[] _cachedTerms;
+        private long _cachedTermsWorkspaceVersion = -1;
+    }
 }
