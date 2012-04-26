@@ -49,9 +49,15 @@ import ptolemy.kernel.util.NameDuplicationException;
 /**
  This actor reads a string expression from the input port and outputs
  the token resulting from the evaluation.  The type of the output port
- defaults to general, meaning that the only output will be a pure
- event.  In order to usefully use this class, the type of the output
- port must be set to the type of the expression that is expected.
+ defaults to general.  In order to usefully use this class, you will
+ probably want to set the type of the output
+ port to the type of the expression that is expected.
+ If the input string parses to something that does not match
+ the specified output data type, then a run-time type check error
+ will occur when this actor tries to produce its output.
+ <p>
+ The expression input can refer to any variable that is in scope
+ for this actor.
 
  @author  Steve Neuendorffer
  @version $Id$
