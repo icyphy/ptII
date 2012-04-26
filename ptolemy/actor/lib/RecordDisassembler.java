@@ -188,7 +188,10 @@ public class RecordDisassembler extends TypedAtomicActor {
         ///////////////////////////////////////////////////////////////
         ////                       public inner methods            ////
 
-        /** Return the function result.
+        /** Return the current value of this monotonic function.
+         *  Specifically, this is a function of one variable, the type
+         *  variable for the input port. If the input port type is
+         *  unknown, return unknown.
          *  @return A Type.
          */
         public Object getValue() throws IllegalActionException {
@@ -226,7 +229,7 @@ public class RecordDisassembler extends TypedAtomicActor {
         }
 
         /** Return the type variable in this inequality term. If the
-         *  type of the input port is not declared, return an one
+         *  type of the input port is not declared, return a one
          *  element array containing the inequality term representing
          *  the type of the port; otherwise, return an empty array.
          *  @return An array of InequalityTerm.
