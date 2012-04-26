@@ -76,6 +76,7 @@ This FAQ can be found at:
   	<li> <a href="#pdf"><b>4.7 How do I create a PDF of a model?</b></a>
   	<li> <a href="#img"><b>4.8 How do I create an image (GIF or PNG) of a model?</b></a>
   	<li> <a href="#multicore"><b>4.9 What about multicore?</b></a>
+  	<li> <a href="#unitSystem"><b>4.10 What about Unit Systems and Ontologies?</b></a>
 	</menu>
 
 <li> <a href="#ptolemy II faq: extending"><b>5. Extending Ptolemy II</b></a>
@@ -1092,6 +1093,35 @@ ptolemy/vergil/basic/ExportImage.java will create an image:
   
   
   See also <a href="#CodeGen"><b>5.9 What about Code Generation?</b></a>.
+
+<dt> <a name="unitSystem"><b>4.10 What about Unit Systems and Ontologies?</b></a></dt>
+<dd>
+There are at least three unit systems in Ptolemy II.
+<ol>
+<li> Static units, see:
+   <ul>
+     <li> Documentation about units in the expression language: $PTII/doc/expressionsa12.htm or
+       <a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptIIlatest/ptII/doc/expressionsa12.htm">http://ptolemy.eecs.berkeley.edu/ptolemyII/ptIIlatest/ptII/doc/expressionsa12.htm</a></li>
+     <li> A Static Unit system demonstration by Rowland R Johnson, see
+       <code>$PTII/ptolemy/data/unit/demo/StaticUnits/StaticUnits.xml</code>
+       or <a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptIIlatest/ptII/ptolemy/data/unit/demo/StaticUnits/StaticUnits.htm" target="_top">http://ptolemy.eecs.berkeley.edu/ptolemyII/ptIIlatest/ptII/ptolemy/data/unit/demo/StaticUnits/StaticUnits.htm</a></li>
+     </ul>
+	 
+<li> Dynamic units, see:
+     <code>$PTII/ptolemy/data/unit/demo/Units/Units.xml</code>
+     See <a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptIIlatest/ptII/ptolemy/data/unit/demo/Units/Units.htm" target="_top">http://ptolemy.eecs.berkeley.edu/ptolemyII/ptIIlatest/ptII/ptolemy/data/unit/demo/Units/Units.htm</a>
+</li>
+
+<li> The Unit System example from the ontologies work, see
+  <code>$PTIIptolemy/data/ontologies/demo/UnitSystemExample/UnitSystemExample.xml</code>.
+  To get access to this model, go to
+  <a href="http://chess.eecs.berkeley.edu/ptexternal" target="_top">http://chess.eecs.berkeley.edu</a>
+  <br/>See also [<a href="#5">5</a>] above and :
+  Ben Lickly, Charles Shelton, Elizabeth Latronico, Edward A.
+  Lee. ``<a href="http://chess.eecs.berkeley.edu/pubs/862.html" target="_top">A Practical Ontology Framework for Static Model Analysis</a>''. EMSOFT '11: Proceedings of the Ninth
+  International Conference on Embedded Software, ACM, 23-32,
+  10, October, 2011.
+</dd>
 
 </dl>
 
