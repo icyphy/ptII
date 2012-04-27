@@ -652,7 +652,7 @@ public class FMUImport extends TypedAtomicActor {
             // Only read the file if the name has changed from the last time we
             // read the file or if the modification time has changed.
             fmuFileName = fmuFile.asFile().getCanonicalPath();
-            if (fmuFileName == _fmuFileName) {
+            if (fmuFileName.equals(_fmuFileName)) {
                 return;
             }
             _fmuFileName = fmuFileName;
