@@ -549,23 +549,23 @@ public class FMUImport extends TypedAtomicActor {
              *  @param size The size of the object in bytes.
              *  @return a Pointer to the allocated memory.
              */
-            public Pointer apply(NativeSizeT nobj, NativeSizeT size) {
-                int numberOfObjects = nobj.intValue();
-                if (numberOfObjects <= 0) {
+            public Pointer apply(NativeSizeT numberOfObjects, NativeSizeT size) {
+                int numberOfObjectsValue = numberOfObjects.intValue();
+                if (numberOfObjectsValue <= 0) {
                     // instantiateModel() in fmuTemplate.c
                     // will try to allocate 0 reals, integers, booleans or
                     // strings.
                     // However, instantiateModel() later checks to see if
                     // any of the allocated spaces are null and fails with
                     // "out of memory" if they are null.
-                    numberOfObjects = 1;
+                    numberOfObjectsValue = 1;
                 }
-                Memory memory = new Memory(numberOfObjects * size.intValue());
+                Memory memory = new Memory(numberOfObjectsValue * size.intValue());
                 Memory alignedMemory = memory.align(4);
                 memory.clear();
                 Pointer pointer = alignedMemory.share(0);
 
-                // System.out.println("Java fmiAllocateMemory " + nobj + " " +
+                // System.out.println("Java fmiAllocateMemory " + numberOfObjectsValue + " " +
                 // size
                 // + "\n        memory: " + memory + " " + + memory.SIZE + " " +
                 // memory.SIZE % 4
@@ -586,7 +586,7 @@ public class FMUImport extends TypedAtomicActor {
          */
         public class FMUFreeMemory implements FMICallbackFreeMemory {
             /** Free memory.
-             *  @param object The object to be freed.
+             *  @param pointer A JNA Pointer to the object to be freed.
              */
             public void apply(Pointer pointer) {
                 _pointers.remove(pointer);
@@ -599,8 +599,9 @@ public class FMUImport extends TypedAtomicActor {
              *  @param fmiComponent The FMI component that was instantiate.
              *  @param status The status flag.  See the FMI documentation.
              */
-            public void apply(Pointer c, int status) {
-                System.out.println("Java fmiStepFinished: " + c + " " + status);
+            public void apply(Pointer fmiComponent, int status) {
+                System.out.println("Java fmiStepFinished: " + fmiComponent
+                        + " " + status);
             }
         };
     }
