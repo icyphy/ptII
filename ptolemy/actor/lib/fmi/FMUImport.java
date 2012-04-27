@@ -203,6 +203,13 @@ public class FMUImport extends TypedAtomicActor {
 
             Token token = null;
             if (scalarVariable.variability != FMIScalarVariable.Variability.parameter) {
+                if (scalarVariable.causality == Causality.none
+                        || scalarVariable.causality == Causality.internal) {
+                    // Skip none and internal so we don't get the value
+                    // unnecessarily.
+                    continue;
+                }
+
                 if (scalarVariable.type instanceof FMIBooleanType) {
                     boolean result = scalarVariable.getBoolean(_fmiComponent);
                     token = new BooleanToken(result);
@@ -230,14 +237,14 @@ public class FMUImport extends TypedAtomicActor {
                 }
                 switch (scalarVariable.causality) {
                 case none:
-                    // FIXME: should we do anything special if causality ==
-                    // none?
+                case internal:
+                    // We should not get to here, but include this 
+                    // for completeness.
                     break;
                 case input:
                     token = port.get(0);
                     break;
                 case output:
-                case internal:
                     port.send(0, token);
                     break;
                 }
@@ -360,12 +367,15 @@ public class FMUImport extends TypedAtomicActor {
                 String causality = "";
                 switch (scalar.causality) {
                 case input:
+                    portCount++;
                     causality = "input";
                     break;
                 case none:
                     // FIXME: Not sure what to do with causality == none.
                     continue;
                 case output:
+                    portCount++;
+                    // Drop through to internal
                 case internal:
                     // Internal ports get hidden.
                     causality = "output";
@@ -383,7 +393,7 @@ public class FMUImport extends TypedAtomicActor {
                         + "\"/>\n"
                         // Hide the port if we have lots of ports or it is
                         // internal.
-                        + (portCount++ > maximumNumberOfPortsToDisplay
+                        + (portCount > maximumNumberOfPortsToDisplay
                                 || scalar.causality == Causality.internal ? hide
                                 : "") + "  </port>\n");
             }
@@ -448,7 +458,7 @@ public class FMUImport extends TypedAtomicActor {
 
         // FIXME: Logging tends to cause segfaults because of vararg callbacks
         // so we ignore it.
-        loggingOn = (byte) 0;
+        loggingOn = (byte) 1;
 
         if (_debugging) {
             _debug("FMUCoSimulation: about to call " + modelIdentifier
@@ -463,6 +473,33 @@ public class FMUImport extends TypedAtomicActor {
         if (_fmiComponent.equals(Pointer.NULL)) {
             throw new RuntimeException(
                     "Could not instantiate Functional Mock-up Unit (FMU).");
+        }
+    }
+
+    /** Terminate and free the slave fmu.
+     *  @exception IllegalActionException If the slave fmu cannot be
+     *  terminated or freed.
+     */
+    public void wrapup() throws IllegalActionException {
+        String modelIdentifier = _fmiModelDescription.modelIdentifier;
+        Function fmiTerminateSlave = _fmiModelDescription.nativeLibrary
+                .getFunction(modelIdentifier + "_fmiTerminateSlave");
+        int fmiFlag = ((Integer) fmiTerminateSlave.invokeInt(new Object[] {
+                _fmiComponent})).intValue();
+        if (fmiFlag > FMILibrary.FMIStatus.fmiWarning) {
+            throw new IllegalActionException(this,
+                    "Could not terminate slave: " + fmiFlag);
+        }
+
+        Function fmiFreeSlaveInstance = _fmiModelDescription.nativeLibrary
+                .getFunction(modelIdentifier + "_fmiFreeSlaveInstance");
+        fmiFlag = ((Integer) fmiFreeSlaveInstance.invokeInt(new Object[] {
+                _fmiComponent})).intValue();
+        if (fmiFlag > FMILibrary.FMIStatus.fmiWarning) {
+            if (_debugging) {
+                _debug("Could not free slave instance: "
+                        + fmiFlag);
+            }
         }
     }
 
