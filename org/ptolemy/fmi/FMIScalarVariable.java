@@ -293,11 +293,24 @@ public class FMIScalarVariable {
             int fmiFlag = ((Integer) fmiGetFunction.invokeInt(new Object[] {
                     fmiComponent, valueReferenceIntBuffer, new NativeSizeT(1),
                     pointerByReference })).intValue();
-            if (fmiFlag > FMILibrary.FMIStatus.fmiWarning) {
-                throw new RuntimeException("Could not get " + name
-                        + " as a String: " + fmiFlag);
+            if (fmiFlag >= FMILibrary.FMIStatus.fmiWarning) {
+                String message = "Could not get " + name
+                        + " as a String: " + fmiFlag;
+                if (fmiFlag == FMILibrary.FMIStatus.fmiWarning) {
+                    new Exception("Warning: " + message).printStackTrace();
+                } else { 
+                    throw new RuntimeException(message);
+                }
             }
-            result = pointerByReference.getValue().getString(0);
+            Pointer reference = pointerByReference.getValue();
+            if (reference == null)  {
+                // If _fmiGetString is not supported, then we might
+                // have reference == null.
+                // FIXME: should this be null or the empty string?
+                result = "";
+            } else {
+                result = pointerByReference.getValue().getString(0);
+            }
         } else {
             throw new RuntimeException("Type " + type + " not supported.");
         }
