@@ -69,7 +69,7 @@ public class FMUJUnitTest {
         String resultsFileName = File.createTempFile("FMUJUnitTest", "csv").getCanonicalPath();
         System.out.println("To update " + knownGoodFileName + ", run:\n"
                 + "java -classpath \"" + topDirectory + "/lib/jna.jar:" + topDirectory
-                + "\" org.ptolemy.fmi.FMUCoSimulation "
+                + "\" org.ptolemy.fmi.driver.FMUCoSimulation "
                 + fmuFileName + " 1.0 0.1 false c "
                 + knownGoodFileName);
         new FMUCoSimulation().simulate(fmuFileName,
@@ -152,7 +152,7 @@ public class FMUJUnitTest {
         String resultsFileName = File.createTempFile("FMUJUnitTest", "csv").getCanonicalPath();
         System.out.println("To update " + knownGoodFileName + ", run:\n"
                 + "java -classpath \"" + topDirectory + "/lib/jna.jar:" + topDirectory
-                + "\" org.ptolemy.fmi.FMUModelExchange "
+                + "\" org.ptolemy.fmi.driver.FMUModelExchange "
                 + fmuFileName + " 1.0 0.1 false c "
                 + knownGoodFileName);
         new FMUModelExchange().simulate(fmuFileName,
