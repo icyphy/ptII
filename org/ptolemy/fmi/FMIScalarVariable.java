@@ -187,6 +187,10 @@ public class FMIScalarVariable {
                     fmiGetFunction = fmiModelDescription.nativeLibrary
                             .getFunction(fmiModelDescription.modelIdentifier
                                     + "_fmiGet" + typeName);
+                    fmiSetFunction = fmiModelDescription.nativeLibrary
+                            .getFunction(fmiModelDescription.modelIdentifier
+                                    + "_fmiSet" + typeName);
+
                 }
             }
         }
@@ -199,24 +203,9 @@ public class FMIScalarVariable {
      *  @see #setBoolean(Pointer, boolean)
      */
     public boolean getBoolean(Pointer fmiComponent) {
-        boolean result = false;
-        // valueReference is similar to an array index into a block of memory
-        // where the variables are defined.
-        int fmiFlag = 0;
-        if (type instanceof FMIBooleanType) {
-            IntBuffer valueReferenceIntBuffer = IntBuffer.allocate(1).put(0,
-                    (int) valueReference);
-            ByteBuffer valueBuffer = ByteBuffer.allocate(1);
-            fmiFlag = ((Integer) fmiGetFunction.invokeInt(new Object[] {
-                    fmiComponent, valueReferenceIntBuffer, new NativeSizeT(1),
-                    valueBuffer })).intValue();
-            if (fmiFlag > FMILibrary.FMIStatus.fmiWarning) {
-                throw new RuntimeException("Could not get " + name
-                        + " as a boolean: " + fmiFlag);
-            }
-            result = valueBuffer.get(0) == 0;
-        }
-        return result;
+        ByteBuffer valueBuffer = ByteBuffer.allocate(1);
+        _getValue(fmiComponent, valueBuffer, FMIBooleanType.class);
+        return valueBuffer.get(0) == 0;
     }
 
     /** Return the value of this variable as a double.
@@ -233,24 +222,11 @@ public class FMIScalarVariable {
                 (int) valueReference);
         if (type instanceof FMIIntegerType) {
             IntBuffer valueBuffer = IntBuffer.allocate(1);
-            int fmiFlag = ((Integer) fmiGetFunction.invokeInt(new Object[] {
-                    fmiComponent, valueReferenceIntBuffer, new NativeSizeT(1),
-                    valueBuffer })).intValue();
-            if (fmiFlag > FMILibrary.FMIStatus.fmiWarning) {
-                throw new RuntimeException("Could not get " + name
-                        + " as an int: " + fmiFlag);
-            }
+            _getValue(fmiComponent, valueBuffer, FMIIntegerType.class);
             result = valueBuffer.get(0);
         } else if (type instanceof FMIRealType) {
             DoubleBuffer valueBuffer = DoubleBuffer.allocate(1);
-            int fmiFlag = ((Integer) fmiGetFunction.invokeInt(new Object[] {
-                    fmiComponent, valueReferenceIntBuffer, new NativeSizeT(1),
-                    valueBuffer })).intValue();
-            if (fmiFlag > FMILibrary.FMIStatus.fmiWarning) {
-                throw new RuntimeException("Could not get " + name
-                        + " as a double.  Method was " + fmiGetFunction
-                        + ", return value was:" + fmiFlag);
-            }
+            _getValue(fmiComponent, valueBuffer, FMIRealType.class);
             result = valueBuffer.get(0);
         } else {
             throw new RuntimeException("Type " + type + " not supported.");
@@ -265,24 +241,9 @@ public class FMIScalarVariable {
      *  @see #setInt(Pointer, int)
      */
     public int getInt(Pointer fmiComponent) {
-        int result;
-        int fmiFlag = 0;
-        if (type instanceof FMIIntegerType) {
-            IntBuffer valueReferenceIntBuffer = IntBuffer.allocate(1).put(0,
-                    (int) valueReference);
-            IntBuffer valueBuffer = IntBuffer.allocate(1);
-            fmiFlag = ((Integer) fmiGetFunction.invokeInt(new Object[] {
-                    fmiComponent, valueReferenceIntBuffer, new NativeSizeT(1),
-                    valueBuffer })).intValue();
-            if (fmiFlag > FMILibrary.FMIStatus.fmiWarning) {
-                throw new RuntimeException("Could not get " + name
-                        + " as an int: " + fmiFlag);
-            }
-            result = valueBuffer.get(0);
-        } else {
-            throw new RuntimeException("Type " + type + " not supported.");
-        }
-        return result;
+        IntBuffer valueBuffer = IntBuffer.allocate(1);
+        _getValue(fmiComponent, valueBuffer, FMIIntegerType.class);
+        return valueBuffer.get(0);
     }
 
     /** Return the value of this variable as a String.
@@ -292,34 +253,14 @@ public class FMIScalarVariable {
      *  @see #setString(Pointer, String)
      */
     public String getString(Pointer fmiComponent) {
+        PointerByReference pointerByReference = new PointerByReference();
+        _getValue(fmiComponent, pointerByReference, FMIStringType.class);
+        Pointer reference = pointerByReference.getValue();
         String result = null;
-        if (type instanceof FMIStringType) {
-            IntBuffer valueReferenceIntBuffer = IntBuffer.allocate(1).put(0,
-                    (int) valueReference);
-            PointerByReference pointerByReference = new PointerByReference();
-            int fmiFlag = ((Integer) fmiGetFunction.invokeInt(new Object[] {
-                    fmiComponent, valueReferenceIntBuffer, new NativeSizeT(1),
-                    pointerByReference })).intValue();
-            if (fmiFlag >= FMILibrary.FMIStatus.fmiWarning) {
-                String message = "Could not get " + name
-                        + " as a String: " + fmiFlag;
-                if (fmiFlag == FMILibrary.FMIStatus.fmiWarning) {
-                    new Exception("Warning: " + message).printStackTrace();
-                } else { 
-                    throw new RuntimeException(message);
-                }
-            }
-            Pointer reference = pointerByReference.getValue();
-            if (reference == null)  {
-                // If _fmiGetString is not supported, then we might
-                // have reference == null.
-                // FIXME: should this be null or the empty string?
-                result = "";
-            } else {
-                result = reference.getString(0);
-            }
-        } else {
-            throw new RuntimeException("Type " + type + " not supported.");
+        if (reference != null)  {
+            // If _fmiGetString is not supported, then we might
+            // have reference == null.
+            result = reference.getString(0);
         }
         return result;
     }
@@ -370,7 +311,7 @@ public class FMIScalarVariable {
         reference.setString(0, value);
         pointerByReference.setValue(reference);
 
-        _setValue(fmiComponent, value, FMIStringType.class);
+        _setValue(fmiComponent, pointerByReference, FMIStringType.class);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -459,6 +400,14 @@ public class FMIScalarVariable {
     /** The Model Description for this variable. */
     public FMIModelDescription fmiModelDescription;
 
+    /** The FMI .c function that sets the value of this variable. 
+     *  The name of the function depends on the value of the
+     *  fmiModelDescription.modelIdentifer field and the
+     *  type name.  A typical value for the Bouncing Ball
+     *  example might be "bouncingBall_fmiSetDouble".
+     */
+    public Function fmiSetFunction;
+
     /** The value of the name xml attribute. */
     public String name;
 
@@ -478,6 +427,46 @@ public class FMIScalarVariable {
     ///////////////////////////////////////////////////////////////////
     ////             private methods                               ////
 
+    
+    /** Get or set the value of this variable.
+     *  @param fmiComponent The Functional Mock-up Interface (FMI)
+     *  component that contains a reference to the variable.
+     *  @param valueBuffer The buffer that contains the value to be gotten or set.
+     *  For booleans, doubles and integeers, this is a Buffer, for
+     *  String it is a PointerByReference
+     *  @param typeClass The expected class of the type.
+     *  @param getOrSetFunction the fmiGet or fmiSet function. 
+     */
+    private void _getOrSetValue(Pointer fmiComponent, Object valueBuffer, Class typeClass, Function getOrSetFunction) {
+        // This is syntactic sugar that helps us avoid duplicated code.
+        if (!typeClass.isInstance(type)) {
+            throw new RuntimeException("Variable " + name +
+                    " is not a " + typeClass.getName()
+                    + ", it is a " + type.getClass().getName());
+        }
+        IntBuffer valueReferenceIntBuffer = IntBuffer.allocate(1).put(0,
+                (int) valueReference);
+        int fmiFlag = ((Integer) getOrSetFunction.invokeInt(new Object[] {
+                            fmiComponent, valueReferenceIntBuffer, new NativeSizeT(1),
+                            valueBuffer })).intValue();
+        if (fmiFlag > FMILibrary.FMIStatus.fmiWarning) {
+            throw new RuntimeException("Could not get or set " + name
+                    + " as a " + typeClass.getName() + ": " + fmiFlag);
+        }
+    }
+
+    /** Get the value of this variable.
+     *  @param fmiComponent The Functional Mock-up Interface (FMI)
+     *  component that contains a reference to the variable.
+     *  @param valueBuffer The buffer that contains the value to be gotten.
+     *  For booleans, doubles and integeers, this is a Buffer, for
+     *  String it is a PointerByReference
+     *  @param typeClass The expected class of the type.
+     */
+    private void _getValue(Pointer fmiComponent, Object valueBuffer, Class typeClass) {
+        _getOrSetValue(fmiComponent, valueBuffer, typeClass, fmiGetFunction);
+    }
+
     /** Set the value of this variable.
      *  @param fmiComponent The Functional Mock-up Interface (FMI)
      *  component that contains a reference to the variable.
@@ -487,20 +476,7 @@ public class FMIScalarVariable {
      *  @param typeClass The expected class of the type.
      */
     private void _setValue(Pointer fmiComponent, Object valueBuffer, Class typeClass) {
-        if (!typeClass.isInstance(type)) {
-            throw new RuntimeException("Variable " + name +
-                    " is not a " + typeClass.getName()
-                    + ", it is a " + type.getClass().getName());
-        }
-        IntBuffer valueReferenceIntBuffer = IntBuffer.allocate(1).put(0,
-                (int) valueReference);
-        int fmiFlag = ((Integer) fmiGetFunction.invokeInt(new Object[] {
-                            fmiComponent, valueReferenceIntBuffer, new NativeSizeT(1),
-                            valueBuffer })).intValue();
-        if (fmiFlag > FMILibrary.FMIStatus.fmiWarning) {
-            throw new RuntimeException("Could not set " + name
-                    + " as a " + typeClass.getName() + ": " + fmiFlag);
-        }
+        _getOrSetValue(fmiComponent, valueBuffer, typeClass, fmiSetFunction);
     }
 
     ///////////////////////////////////////////////////////////////////
