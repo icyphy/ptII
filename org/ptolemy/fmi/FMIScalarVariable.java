@@ -44,6 +44,7 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
+import com.sun.jna.Memory;
 import com.sun.jna.Function;
 import com.sun.jna.Pointer;
 import com.sun.jna.ptr.PointerByReference;
@@ -363,8 +364,13 @@ public class FMIScalarVariable {
      *  @see #getString(Pointer);
      */
     public void setString(Pointer fmiComponent, String value) {
-        CharBuffer valueBuffer = CharBuffer.allocate(1).put(value);
-        _setValue(fmiComponent, valueBuffer, FMIStringType.class);
+        PointerByReference pointerByReference = new PointerByReference();
+        // Include the trailing null character.
+        Pointer reference = new Memory(value.length() + 1).share(0);
+        reference.setString(0, value);
+        pointerByReference.setValue(reference);
+
+        _setValue(fmiComponent, value, FMIStringType.class);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -476,9 +482,11 @@ public class FMIScalarVariable {
      *  @param fmiComponent The Functional Mock-up Interface (FMI)
      *  component that contains a reference to the variable.
      *  @param valueBuffer The buffer that contains the value to be set.
+     *  For booleans, doubles and integeers, this is a Buffer, for
+     *  String it is a PointerByReference
      *  @param typeClass The expected class of the type.
      */
-    private void _setValue(Pointer fmiComponent, Buffer valueBuffer, Class typeClass) {
+    private void _setValue(Pointer fmiComponent, Object valueBuffer, Class typeClass) {
         if (!typeClass.isInstance(type)) {
             throw new RuntimeException("Variable " + name +
                     " is not a " + typeClass.getName()
