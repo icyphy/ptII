@@ -36,7 +36,7 @@ DIRS = 		driver type
 # Root of the Ptolemy II directory
 ROOT =		../../..
 
-CLASSPATH =	$(ROOT)
+CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(JNA_JAR)
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
@@ -80,7 +80,8 @@ OPTIONAL_FILES = \
 	$(PTCLASSALLJAR) \
 	$(PTAUXJAR) \
 
-KRUFT = \
+KRUFT =
+
 JCLASS = $(JSRCS:%.java=%.class)
 
 # make jars will build $(OTHER_JARS)

@@ -27,6 +27,8 @@
  */
 package org.ptolemy.fmi;
 
+import java.nio.CharBuffer;
+import java.nio.Buffer;
 import java.nio.ByteBuffer;
 import java.nio.DoubleBuffer;
 import java.nio.IntBuffer;
@@ -193,6 +195,7 @@ public class FMIScalarVariable {
      *  @param fmiComponent The Functional Mock-up Interface (FMI)
      *  component that contains a reference to the variable.
      *  @return the value of this variable as boolean.
+     *  @see #setBoolean(Pointer, boolean)
      */
     public boolean getBoolean(Pointer fmiComponent) {
         boolean result = false;
@@ -221,6 +224,7 @@ public class FMIScalarVariable {
      *  @param fmiComponent The Functional Mock-up Interface (FMI)
      *  component that contains a reference to the variable.
      *  @return the value of this variable as double.
+     *  @see #setDouble(Pointer, double)
      */
     public double getDouble(Pointer fmiComponent) {
         double result;
@@ -257,6 +261,7 @@ public class FMIScalarVariable {
      *  @param fmiComponent The Functional Mock-up Interface (FMI)
      *  component that contains a reference to the variable.
      *  @return the value of this variable as an int.
+     *  @see #setInt(Pointer, int)
      */
     public int getInt(Pointer fmiComponent) {
         int result;
@@ -283,6 +288,7 @@ public class FMIScalarVariable {
      *  @param fmiComponent The Functional Mock-up Interface (FMI)
      *  component that contains a reference to the variable.
      *  @return the value of this variable as a String.
+     *  @see #setString(Pointer, String)
      */
     public String getString(Pointer fmiComponent) {
         String result = null;
@@ -309,12 +315,56 @@ public class FMIScalarVariable {
                 // FIXME: should this be null or the empty string?
                 result = "";
             } else {
-                result = pointerByReference.getValue().getString(0);
+                result = reference.getString(0);
             }
         } else {
             throw new RuntimeException("Type " + type + " not supported.");
         }
         return result;
+    }
+
+    /** Set the value of this variable as a boolean.
+     *  @param fmiComponent The Functional Mock-up Interface (FMI)
+     *  component that contains a reference to the variable.
+     *  @param value The value of this variable.
+     */
+    public void setBoolean(Pointer fmiComponent, boolean value) {
+        ByteBuffer valueBuffer = ByteBuffer.allocate(1).put(0, (value ? (byte)1 : (byte)0));
+        _setValue(fmiComponent, valueBuffer, FMIBooleanType.class);
+    }
+
+    /** Set the value of this variable as a double.
+     *  @param fmiComponent The Functional Mock-up Interface (FMI)
+     *  component that contains a reference to the variable.
+     *  @param value The value of this variable.
+     *  @see #getDouble(Pointer)
+     */
+    public void setDouble(Pointer fmiComponent, double value) {
+        DoubleBuffer valueBuffer = DoubleBuffer.allocate(1).put(0, value);
+        _setValue(fmiComponent, valueBuffer, FMIRealType.class);
+    }
+
+    /** Set the value of this variable as an integer.
+     *  @param fmiComponent The Functional Mock-up Interface (FMI)
+     *  component that contains a reference to the variable.
+     *  @param value The value of this variable.
+     *  @see #getInt(Pointer);
+     */
+    public void setInt(Pointer fmiComponent, int value) {
+        IntBuffer valueBuffer = IntBuffer.allocate(1).put(0, value);
+        // FIXME: What about enums?
+        _setValue(fmiComponent, valueBuffer, FMIIntegerType.class);
+    }
+
+    /** Set the value of this variable as a String.
+     *  @param fmiComponent The Functional Mock-up Interface (FMI)
+     *  component that contains a reference to the variable.
+     *  @param value The value of this variable.
+     *  @see #getString(Pointer);
+     */
+    public void setString(Pointer fmiComponent, String value) {
+        CharBuffer valueBuffer = CharBuffer.allocate(1).put(value);
+        _setValue(fmiComponent, valueBuffer, FMIStringType.class);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -418,6 +468,32 @@ public class FMIScalarVariable {
 
     /** The value of the variability xml attribute. */
     public Variability variability;
+
+    ///////////////////////////////////////////////////////////////////
+    ////             private methods                               ////
+
+    /** Set the value of this variable.
+     *  @param fmiComponent The Functional Mock-up Interface (FMI)
+     *  component that contains a reference to the variable.
+     *  @param valueBuffer The buffer that contains the value to be set.
+     *  @param typeClass The expected class of the type.
+     */
+    private void _setValue(Pointer fmiComponent, Buffer valueBuffer, Class typeClass) {
+        if (!typeClass.isInstance(type)) {
+            throw new RuntimeException("Variable " + name +
+                    " is not a " + typeClass.getName()
+                    + ", it is a " + type.getClass().getName());
+        }
+        IntBuffer valueReferenceIntBuffer = IntBuffer.allocate(1).put(0,
+                (int) valueReference);
+        int fmiFlag = ((Integer) fmiGetFunction.invokeInt(new Object[] {
+                            fmiComponent, valueReferenceIntBuffer, new NativeSizeT(1),
+                            valueBuffer })).intValue();
+        if (fmiFlag > FMILibrary.FMIStatus.fmiWarning) {
+            throw new RuntimeException("Could not set " + name
+                    + " as a " + typeClass.getName() + ": " + fmiFlag);
+        }
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////             private fields                                ////

@@ -303,8 +303,11 @@ public abstract class FMUDriver {
 
     // FindBugs wants these package protected.
 
-    /** The comma separated value separator.
-     *  The initial value is ','.
+    /** The comma separated value separator.  The initial value is
+     *  ','.  If the separator is ',', columns are separated by ','
+     *  and '.' is used for floating-point numbers.  Otherwise, the
+     *  given separator (e.g. ';' or '\t') is to separate columns, and
+     *  ',' is used as decimal dot in floating-point numbers.
      */
     static char _csvSeparator = ',';
 

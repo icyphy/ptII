@@ -152,7 +152,9 @@ public class FMUImport extends TypedAtomicActor {
         super.attributeChanged(attribute);
     }
 
-    /**
+    /** Read data from input ports, fire the slave fmu and then write data
+     *  to the output ports.    
+     *    
      *  @exception IllegalActionException If there is no director.
      */
     public void fire() throws IllegalActionException {
@@ -162,6 +164,51 @@ public class FMUImport extends TypedAtomicActor {
         }
 
         String modelIdentifier = _fmiModelDescription.modelIdentifier;
+
+        // FIXME: Iterate through the scalarVariables and set all the parameters
+
+        // Iterate through the scalarVariables and set all the inputs.
+        for (FMIScalarVariable scalarVariable : _fmiModelDescription.modelVariables) {
+            if (_debugging) {
+                _debug("FMUImport.fire(): " + scalarVariable.name);
+            }
+            if (scalarVariable.alias != null
+                    && scalarVariable.alias != Alias.noAlias) {
+                // If the scalarVariable has an alias, then skip it.
+                // In bouncingBall.fmu, g has an alias, so it is skipped.
+                continue;
+            }
+
+            if (scalarVariable.variability != FMIScalarVariable.Variability.parameter) {
+                if (scalarVariable.causality != Causality.input) {
+                    continue;
+                }
+                TypedIOPort port = (TypedIOPort) getPort(scalarVariable.name);
+
+                Token token = port.get(0);
+
+                // FIXME: What about arrays?
+                if (scalarVariable.type instanceof FMIBooleanType) {
+                    scalarVariable.setBoolean(_fmiComponent,
+                            ((BooleanToken)token).booleanValue());
+                } else if (scalarVariable.type instanceof FMIIntegerType) {
+                    // FIXME: handle Enumerations?
+                    scalarVariable.setInt(_fmiComponent,
+                            ((IntToken)token).intValue());
+                } else if (scalarVariable.type instanceof FMIRealType) {
+                    scalarVariable.setDouble(_fmiComponent,
+                            ((DoubleToken)token).doubleValue());
+                } else if (scalarVariable.type instanceof FMIStringType) {
+                    scalarVariable.setString(_fmiComponent,
+                            ((StringToken)token).stringValue());
+                } else {
+                    throw new IllegalActionException("Type "
+                            + scalarVariable.type + " not supported.");
+                }
+            }
+        }
+
+        // Call fmiDoStep() with the current data.
 
         // FIXME: In FMI-1.0, time is double. This is not right.
         double time = getDirector().getModelTime().getDoubleValue();
@@ -190,6 +237,10 @@ public class FMUImport extends TypedAtomicActor {
             _debug("FMUImport done calling " + modelIdentifier + "_fmiDoStep()");
         }
 
+        // FIXME: should we update all the Parameters?
+
+
+        // Iterate through the scalarVariables and get all the outputs.
         for (FMIScalarVariable scalarVariable : _fmiModelDescription.modelVariables) {
             if (_debugging) {
                 _debug("FMUImport.fire(): " + scalarVariable.name);
@@ -201,14 +252,14 @@ public class FMUImport extends TypedAtomicActor {
                 continue;
             }
 
-            Token token = null;
             if (scalarVariable.variability != FMIScalarVariable.Variability.parameter) {
-                if (scalarVariable.causality == Causality.none
-                        || scalarVariable.causality == Causality.internal) {
-                    // Skip none and internal so we don't get the value
-                    // unnecessarily.
+                TypedIOPort port = (TypedIOPort) getPort(scalarVariable.name);
+
+                if (port.getWidth() <= 0) {
                     continue;
                 }
+
+                Token token = null;
 
                 if (scalarVariable.type instanceof FMIBooleanType) {
                     boolean result = scalarVariable.getBoolean(_fmiComponent);
@@ -228,26 +279,12 @@ public class FMUImport extends TypedAtomicActor {
                             + scalarVariable.type + " not supported.");
                 }
 
-                TypedIOPort port = (TypedIOPort) getPort(scalarVariable.name);
-
                 if (_debugging) {
                     _debug("FMUImport.fire(): " + scalarVariable.name + " "
                             + token + " " + scalarVariable.causality + " "
                             + Causality.output);
                 }
-                switch (scalarVariable.causality) {
-                case none:
-                case internal:
-                    // We should not get to here, but include this 
-                    // for completeness.
-                    break;
-                case input:
-                    token = port.get(0);
-                    break;
-                case output:
-                    port.send(0, token);
-                    break;
-                }
+                port.send(0, token);
             }
         }
     }
@@ -455,10 +492,6 @@ public class FMUImport extends TypedAtomicActor {
 
         // FIXME: We should send logging messages to the debug listener.
         byte loggingOn = _debugging ? (byte) 1 : (byte) 0;
-
-        // FIXME: Logging tends to cause segfaults because of vararg callbacks
-        // so we ignore it.
-        loggingOn = (byte) 1;
 
         if (_debugging) {
             _debug("FMUCoSimulation: about to call " + modelIdentifier

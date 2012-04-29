@@ -107,6 +107,12 @@ public class FMUModelExchange extends FMUDriver {
      *  <dd>The time between steps in seconds, defaults to 0.1.</dd>
      *  <dt>enableLogging</dt>
      *  <dd>If "true", then enable logging.  The default is false.</dd>
+     *  <dt>separator</dt>
+     *  <dd>The comma separated value separator, the default value is
+     *  ',', If the separator is ',', columns are separated by ',' and
+     *  '.' is used for floating-point numbers.  Otherwise, the given
+     *  separator (e.g. ';' or '\t') is to separate columns, and ','
+     *  is used as decimal dot in floating-point numbers. 
      *  <dt>outputFile</dt>
      *  <dd>The name of the output file.  The default is results.csv</dd>
      *  </dl>
