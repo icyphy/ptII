@@ -257,7 +257,7 @@ public class FMUImport extends TypedAtomicActor {
             if (scalarVariable.variability != FMIScalarVariable.Variability.parameter) {
                 TypedIOPort port = (TypedIOPort) getPort(scalarVariable.name);
 
-                if (port.getWidth() <= 0) {
+                if (port == null || port.getWidth() <= 0) {
                     continue;
                 }
 
