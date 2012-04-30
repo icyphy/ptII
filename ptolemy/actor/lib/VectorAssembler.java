@@ -31,6 +31,7 @@ package ptolemy.actor.lib;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.DoubleMatrixToken;
 import ptolemy.data.ScalarToken;
+import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
@@ -112,13 +113,27 @@ public class VectorAssembler extends Transformer {
             data = new double[size][1];
 
             for (int i = 0; i < size; i++) {
-                data[i][0] = ((ScalarToken) input.get(i)).doubleValue();
+                Token token = input.get(i);
+                try {
+                    data[i][0] = ((ScalarToken)token).doubleValue();
+                } catch (ClassCastException ex) {
+                    throw new IllegalActionException(this, ex,
+                            "Cannot cast \"" + token
+                            + "\" to a ScalarToken");
+                }
             }
         } else {
             data = new double[1][size];
 
             for (int i = 0; i < size; i++) {
-                data[0][i] = ((ScalarToken) input.get(i)).doubleValue();
+                Token token = input.get(i);
+                try {
+                    data[0][i] = ((ScalarToken) token).doubleValue();
+                } catch (ClassCastException ex) {
+                    throw new IllegalActionException(this, ex,
+                            "Cannot cast \"" + token
+                            + "\" to a ScalarToken");
+                }
             }
         }
 
