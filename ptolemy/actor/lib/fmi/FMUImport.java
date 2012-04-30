@@ -56,6 +56,7 @@ import ptolemy.data.IntToken;
 import ptolemy.data.StringToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.FileParameter;
+import ptolemy.data.expr.Parameter;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
@@ -129,8 +130,8 @@ public class FMUImport extends TypedAtomicActor {
      */
     public FileParameter fmuFile;
 
-    // /////////////////////////////////////////////////////////////////
-    // // public methods ////
+    ///////////////////////////////////////////////////////////////////
+    ////                     public methods                        ////
 
     /** If the specified attribute is <i>fmuFile</i>, then unzip
      *  the file and load in the .xml file, creating and deleting parameters
@@ -150,7 +151,6 @@ public class FMUImport extends TypedAtomicActor {
                 throw new IllegalActionException(this, e, "Name duplication");
             }
         }
-
         super.attributeChanged(attribute);
     }
 
@@ -167,10 +167,34 @@ public class FMUImport extends TypedAtomicActor {
 
         String modelIdentifier = _fmiModelDescription.modelIdentifier;
 
-        // FIXME: Iterate through the scalarVariables and set all the parameters
+        // Loop through the scalar variables and find a scalar variable that
+        // has variability == "parameter" and is not an input or output.
+        // We can't do this in attributeChanged() because setting a scalar variable
+        // requires that _fmiComponent be non-null, which happens in preinitialize();
+        for (FMIScalarVariable scalar : _fmiModelDescription.modelVariables) {
+            if (scalar.variability == FMIScalarVariable.Variability.parameter
+                    && scalar.causality != Causality.input
+                    && scalar.causality != Causality.output) {
+                String sanitizedName = StringUtilities.sanitizeName(scalar.name);
+                Parameter parameter = (Parameter)getAttribute(sanitizedName, Parameter.class);
+                if (parameter != null) {
+                    _setScalarVariable(scalar, parameter.getToken());
+                }
+            }
+        }
 
+
+        ////////////////
         // Iterate through the scalarVariables and set all the inputs.
         for (FMIScalarVariable scalarVariable : _fmiModelDescription.modelVariables) {
+            // FIXME: Page 27 of the FMI-1.0 CS spec says that for
+            // variability==parameter and causality==input, we can
+            // only call fmiSet* between fmiInstantiateSlave() and
+            // fmiInitializeSlave()
+
+            // However, the example on p32 has fmiSetReal called
+            // inside the while() loop?
+
             if (_debugging) {
                 _debug("FMUImport.fire(): " + scalarVariable.name);
             }
@@ -187,32 +211,17 @@ public class FMUImport extends TypedAtomicActor {
                 }
                 TypedIOPort port = (TypedIOPort) getPort(scalarVariable.name);
 
-                Token token = port.get(0);
-
-                // FIXME: What about arrays?
-                if (scalarVariable.type instanceof FMIBooleanType) {
-                    scalarVariable.setBoolean(_fmiComponent,
-                            ((BooleanToken)token).booleanValue());
-                } else if (scalarVariable.type instanceof FMIIntegerType) {
-                    // FIXME: handle Enumerations?
-                    scalarVariable.setInt(_fmiComponent,
-                            ((IntToken)token).intValue());
-                } else if (scalarVariable.type instanceof FMIRealType) {
-                    scalarVariable.setDouble(_fmiComponent,
-                            ((DoubleToken)token).doubleValue());
-                } else if (scalarVariable.type instanceof FMIStringType) {
-                    scalarVariable.setString(_fmiComponent,
-                            ((StringToken)token).stringValue());
-                } else {
-                    throw new IllegalActionException("Type "
-                            + scalarVariable.type + " not supported.");
+                if (port != null && port.hasToken(0)) {
+                    Token token = port.get(0);
+                    _setScalarVariable(scalarVariable, token);
                 }
             }
         }
 
+        ////////////////
         // Call fmiDoStep() with the current data.
 
-        // FIXME: In FMI-1.0, time is double. This is not right.
+        // FIXME: FMI-1.0 uses doubles for time.
         double time = getDirector().getModelTime().getDoubleValue();
 
         // FIXME: depending on SDFDirector here.
@@ -223,6 +232,7 @@ public class FMUImport extends TypedAtomicActor {
             _debug("FMIImport.fire(): about to call " + modelIdentifier
                     + "_fmiDoStep(Component, /* time */ " + time
                     + ", /* stepSize */" + stepSize + ", 1)");
+
         }
 
         int fmiFlag = ((Integer) _fmiDoStep.invokeInt(new Object[] {
@@ -239,9 +249,7 @@ public class FMUImport extends TypedAtomicActor {
             _debug("FMUImport done calling " + modelIdentifier + "_fmiDoStep()");
         }
 
-        // FIXME: should we update all the Parameters?
-
-
+        ////////////////
         // Iterate through the scalarVariables and get all the outputs.
         for (FMIScalarVariable scalarVariable : _fmiModelDescription.modelVariables) {
             if (_debugging) {
@@ -258,6 +266,13 @@ public class FMUImport extends TypedAtomicActor {
                 TypedIOPort port = (TypedIOPort) getPort(scalarVariable.name);
 
                 if (port == null || port.getWidth() <= 0) {
+                    // Either it is not a port or not connected.
+                    // Check to see if we should update the parameter.
+                    String sanitizedName = StringUtilities.sanitizeName(scalarVariable.name);
+                    Parameter parameter = (Parameter)getAttribute(sanitizedName, Parameter.class);
+                    if (parameter != null) {
+                        _setParameter(parameter, scalarVariable);
+                    }
                     continue;
                 }
 
@@ -291,42 +306,41 @@ public class FMUImport extends TypedAtomicActor {
         }
     }
 
-    /** Initialize the slave FMU.
-     *  @exception IllegalActionException If the slave FMU cannot be
-     *  initialized.
-     */
-    public void initialize() throws IllegalActionException {
-        super.initialize();
+   /** Initialize the slave FMU.
+    *  @exception IllegalActionException If the slave FMU cannot be
+    *  initialized.
+    */
+   public void initialize() throws IllegalActionException {
+       super.initialize();
+       if (_debugging) {
+           _debug("FMIImport.initialize() START");
+       }
 
-        if (_debugging) {
-            _debug("FMIImport.initialize() START");
-        }
+       String modelIdentifier = _fmiModelDescription.modelIdentifier;
 
-        String modelIdentifier = _fmiModelDescription.modelIdentifier;
+       if (_debugging) {
+           _debug("FMUCoSimulation: about to call " + modelIdentifier
+                   + "_fmiInitializeSlave");
+       }
+       Function function = _fmiModelDescription.nativeLibrary
+               .getFunction(modelIdentifier + "_fmiInitializeSlave");
 
-        if (_debugging) {
-            _debug("FMUCoSimulation: about to call " + modelIdentifier
-                    + "_fmiInitializeSlave");
-        }
-        Function function = _fmiModelDescription.nativeLibrary
-                .getFunction(modelIdentifier + "_fmiInitializeSlave");
-
-        // FIXME: FMI-1.0 uses doubles for times.
-        double startTime = getDirector().getModelStartTime().getDoubleValue();
-        double stopTime = getDirector().getModelStopTime().getDoubleValue();
-        int fmiFlag = ((Integer) function.invoke(Integer.class, new Object[] {
-                _fmiComponent, startTime, (byte) 1, stopTime })).intValue();
-        if (fmiFlag > FMILibrary.FMIStatus.fmiWarning) {
-            throw new IllegalActionException(this, "Could not simulate, "
-                    + modelIdentifier
-                    + "_fmiInitializeSlave(Component, /* startTime */ "
-                    + startTime + ", 1, /* stopTime */" + stopTime
-                    + ") returned " + fmiFlag);
-        }
-        if (_debugging) {
-            _debug("FMIImport.initialize() END");
-        }
-    }
+       // FIXME: FMI-1.0 uses doubles for times.
+       double startTime = getDirector().getModelStartTime().getDoubleValue();
+       double stopTime = getDirector().getModelStopTime().getDoubleValue();
+       int fmiFlag = ((Integer) function.invoke(Integer.class, new Object[] {
+               _fmiComponent, startTime, (byte) 1, stopTime })).intValue();
+       if (fmiFlag > FMILibrary.FMIStatus.fmiWarning) {
+           throw new IllegalActionException(this, "Could not simulate, "
+                   + modelIdentifier
+                   + "_fmiInitializeSlave(Component, /* startTime */ "
+                   + startTime + ", 1, /* stopTime */" + stopTime
+                   + ") returned " + fmiFlag);
+       }
+       if (_debugging) {
+           _debug("FMIImport.initialize() END");
+       }
+   }
 
     /** Import a FMUFile.
      *  @param originator The originator of the change request.
@@ -769,6 +783,69 @@ public class FMUImport extends TypedAtomicActor {
             return "string";
         } else {
             throw new IllegalActionException("Type " + type + " not supported.");
+        }
+    }
+
+    /** Set a Ptolemy II Parameter to the value of a FMI
+     *  ScalarVariable.
+     *  @param parameter The Ptolemy parameter to be set.
+     *  @param scalar The FMI scalar variable that contains the value
+     *  to be set
+     *  @exception IllegalActionException If the scalar is of a type
+     *  that is not handled.
+     */
+    private void _setParameter(Parameter parameter, FMIScalarVariable scalar) 
+            throws IllegalActionException {
+        // FIXME: What about arrays?
+        if (scalar.type instanceof FMIBooleanType) {
+            parameter.setToken(new BooleanToken(scalar.getBoolean(_fmiComponent)));
+        } else if (scalar.type instanceof FMIIntegerType) {
+            // FIXME: handle Enumerations?
+            parameter.setToken(new IntToken(scalar.getInt(_fmiComponent)));
+        } else if (scalar.type instanceof FMIRealType) {
+            parameter.setToken(new DoubleToken(scalar.getDouble(_fmiComponent)));
+        } else if (scalar.type instanceof FMIStringType) {
+            parameter.setToken(new StringToken(scalar.getString(_fmiComponent)));
+        } else {
+            throw new IllegalActionException("Type "
+                    + scalar.type + " not supported.");
+        }
+    }
+
+    /** Set a FMI scalar variable to the value of a Ptolemy token.
+     *  @param scalar the FMI scalar to be set.
+     *  @param token the Ptolemy token that contains the value to be set.
+     *  @exception IllegalActionException If the scalar is of a type
+     *  that is not handled or if the type of the token does not match
+     *  the type of the scalar.
+     */
+    private void _setScalarVariable(FMIScalarVariable scalar, Token token) 
+        throws IllegalActionException {
+        try {
+            // FIXME: What about arrays?
+            if (scalar.type instanceof FMIBooleanType) {
+                scalar.setBoolean(_fmiComponent,
+                        ((BooleanToken)token).booleanValue());
+            } else if (scalar.type instanceof FMIIntegerType) {
+                // FIXME: handle Enumerations?
+                scalar.setInt(_fmiComponent,
+                        ((IntToken)token).intValue());
+            } else if (scalar.type instanceof FMIRealType) {
+                scalar.setDouble(_fmiComponent,
+                        ((DoubleToken)token).doubleValue());
+            } else if (scalar.type instanceof FMIStringType) {
+                scalar.setString(_fmiComponent,
+                        ((StringToken)token).stringValue());
+            } else {
+                throw new IllegalActionException("Type "
+                        + scalar.type + " not supported.");
+            }
+        } catch (ClassCastException ex) {
+            throw new IllegalActionException(this, ex,
+                    "Could not cast a token \"" + token
+                    + "\" of type " + token.getType() 
+                    + " to an FMI scalar variable of type "
+                    + scalar.type);
         }
     }
 
