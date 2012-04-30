@@ -125,9 +125,11 @@ public interface FMILibrary extends Library {
          *  defined by the tool that created the fmu.
          *  @param message The message in printf format
          */
-        // FIXME: Handle vargargs
         void apply(Pointer fmiComponent, String instanceName, int status,
-                String category, String message/* , Pointer ... parameters */);
+                String category, String message, Pointer /*...*/ parameters);
+        // What to do about jni callbacks with varargs?
+        // See
+        // http://chess.eecs.berkeley.edu/ptexternal/wiki/Main/JNA#fmiCallbackLogger
     };
 
     /** A callback for the fmiCallbackAllocateMemory() function.

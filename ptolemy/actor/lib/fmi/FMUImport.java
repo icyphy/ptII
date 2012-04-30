@@ -29,8 +29,10 @@ package ptolemy.actor.lib.fmi;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.StringTokenizer;
 
 import org.ptolemy.fmi.FMICallbackFunctions;
 import org.ptolemy.fmi.FMILibrary;
@@ -492,7 +494,7 @@ public class FMUImport extends TypedAtomicActor {
 
         // FIXME: We should send logging messages to the debug listener.
         byte loggingOn = _debugging ? (byte) 1 : (byte) 0;
-
+        loggingOn = 1;
         if (_debugging) {
             _debug("FMUCoSimulation: about to call " + modelIdentifier
                     + "_fmiInstantiateSlave");
@@ -556,19 +558,128 @@ public class FMUImport extends TypedAtomicActor {
              */
 
             public void apply(Pointer fmiComponent, String instanceName,
-                    int status, String category, String message/*
-                                                                * , Pointer ...
-                                                                * parameters
-                                                                */) {
+                    int status, String category, String message, Pointer /*...*/ parameters) {
                 // What to do about jni callbacks with varargs?
                 // See
-                // http://chess.eecs.berkeley.edu/ptexternal/wiki/Main/JNA#fmiCalbackLogger
-                System.out.println("Java FMULogger, status: " + status);
-                System.out.println("Java FMULogger, message: " + message/*
-                                                                         * .
-                                                                         * getString
-                                                                         * (0)
-                                                                         */);
+                // http://chess.eecs.berkeley.edu/ptexternal/wiki/Main/JNA#fmiCallbackLogger
+                //System.out.println("Java FMULogger, status: " + status);
+                //System.out.println("Java FMULogger, message: " + message);
+
+
+                // FIXME: Need to handle the fmi-specific # format:
+                // #<Type><valueReference#, where <Type> is one of
+                // r, i, b or s. To print a #, use ##.
+
+                if (parameters != null ) {
+                    StringTokenizer tokenizer = new StringTokenizer(message, "%", false /* Return delimiters */); 
+                    ArrayList <Object> parameterList = new ArrayList<Object>();
+                    long nativeLong = Pointer.nativeValue(parameters);
+                    int offset = 0;
+                    if (!message.startsWith("%") && tokenizer.hasMoreTokens()) {
+                        // Throw away the first token.
+                        tokenizer.nextToken();
+                    }
+                    while (tokenizer.hasMoreTokens()) {
+                        String token = tokenizer.nextToken();
+                        boolean foundType = false;
+                        for(int i = 0 ; i < token.length() && !foundType; i++) {
+                            char type = token.charAt(i);
+                            //System.out.println("Token: " + token + " " + type + " " + offset);
+                            switch (type) {
+                            case 'd':
+                            case 'i':
+                            case 'o': // Unsigned octal
+                            case 'u': // Unsigned decimal
+                            case 'x': // Unsigned hex
+                            case 'X': // Unsigned hex
+                                foundType = true;
+                                //String s = parameters.toString();
+                                //int [] value0 = newPointer.getIntArray(offset, 1);
+
+                                //int value = newPointer.getInt(offset);
+                                //System.out.println("Token: " + token + " " + conversion + ": " + type + " " + value + " " + value0[0] + " " + Integer.toHexString(value) + " " + s);
+                                //parameterList.add(Integer.valueOf(value));
+                                if (!_printedMessage) {
+                                    _printedMessage = true;
+                                    System.out.println("FIXME: logger: don't know how to get integers, using 666 instead.");
+                                }
+                                parameterList.add(Integer.valueOf(666));
+                                offset += 4;
+                                break;
+                            case 'f': // Doubles
+                            case 'e':
+                            case 'E':
+                            case 'g':
+                            case 'G':
+                                foundType = true;
+                                if (!_printedMessage) {
+                                    _printedMessage = true;
+                                    System.out.println("FIXME: logger: don't know how to get doubles, using 666.666 instead.");
+                                }
+                                //parameterList.add(Double.valueOf(parameters.getDouble(offset++)));
+                                parameterList.add(Double.valueOf(666.666));
+                                offset += 4;
+                                break;
+                            case 'c': // Unsigned char
+                                foundType = true;
+                                //parameterList.add(new Character(parameters.getChar(offset++)));
+                                if (!_printedMessage) {
+                                    _printedMessage = true;
+                                    System.out.println("FIXME: logger: don't know how to get chars, using ! instead.");
+                                }
+                                parameterList.add(new Character('!'));
+                                offset += 1;
+                                break;
+                            case 's': // String
+                                foundType = true;
+                                String result = "";
+                                if (offset == 0) {
+                                    result = new String(parameters.getString(offset));
+                                } else {
+                                    if (!_printedMessage) {
+                                        _printedMessage = true;
+                                        System.out.println("FIXME: logger: don't know how to get string other than the first string, using FIXME instead.");                                    
+                                    }
+                                    result = "FIXME";
+                                }
+                                offset += 4;
+                                //System.out.println("Token: " + token + " " + conversion + ": " + type + " " + result);
+                                parameterList.add(result);
+                                break;
+                            case 'p': // Pointer
+                                foundType = true;
+                                //parameterList.add(parameters.getPointer(offset++).toString());
+                                if (!_printedMessage) {
+                                    _printedMessage = true;
+                                    System.out.println("FIXME: logger: don't know how to get long other than the first string, using 666 instead.");                                    
+                                }
+                                parameterList.add(Long.valueOf(666));
+                                break;
+                            case 'n':
+                                // FIXME: Don't know how to handle this:
+                                // "The argument shall be a
+                                // pointer to an integer into which is
+                                // written the number of characters
+                                // written to the output stream so far
+                                // by this call to fprintf .  No
+                                // argument is converted."
+                                foundType = true;
+                                break;
+                            case '%':
+                                // FIXME: what about %%?
+                                foundType = true;
+                                break;
+                            default:
+                                break;
+                            }                                
+                        }
+                    }
+                    // Java format does not handle %u.  Lamers.
+                    message = message.replace("%u", "%d");
+                    //System.out.println("Java FMULogger, message0: " + message + " " + parameterList.size() + " " + parameterList);
+                    System.out.format("Java FMULogger: " + message, parameterList.toArray());
+                    System.out.println("");
+                }
             }
         }
 
@@ -750,4 +861,45 @@ public class FMUImport extends TypedAtomicActor {
      *  avoid problems with the memory being garbage collected.   
      */
     private static Set<Pointer> _pointers = new HashSet<Pointer>();
+
+    private static String printMemory(Pointer pointer, int size) {
+        // FIXME: This method is copied from the JNA distribution.
+        // It should be properly credited or removed.
+        final int BYTES_PER_ROW = 4;
+        String LS = System.getProperty("line.separator");
+        byte[] buf = pointer.getByteArray(0, size);
+        StringBuffer contents = new StringBuffer(LS);
+        for (int i=0;i < buf.length;i++) {
+            if ((i % BYTES_PER_ROW) == 0) {
+                contents.append("[");
+            }
+            if (buf[i] >=0 && buf[i] < 16) {
+                contents.append("0");
+            }
+            contents.append(Integer.toHexString(buf[i] & 0xFF));
+            if ((i % BYTES_PER_ROW) == BYTES_PER_ROW-1 && i < buf.length-1) {
+                contents.append("]" + LS);
+            }
+        }
+
+        contents.append("]");
+
+        for (int i=0;i < buf.length;i++) {
+            if ((i % BYTES_PER_ROW) == 0) {
+                contents.append("<");
+            }
+            //if (buf[i] >=0 && buf[i] < 16) {
+            //    contents.append("0");
+            //}
+            contents.append(new Character((char)(buf[i] & 0xff)));
+            if ((i % BYTES_PER_ROW) == BYTES_PER_ROW-1 && i < buf.length-1) {
+                contents.append(">" + LS);
+            }
+        }
+        contents.append(">");
+        return contents.toString();
+    }
+
+    // True if we printed the fixme message.
+    private static boolean _printedMessage = false;
 }

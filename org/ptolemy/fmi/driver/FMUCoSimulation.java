@@ -82,12 +82,12 @@ public class FMUCoSimulation extends FMUDriver {
      *          
      *  <p>Usage:</p>
      *  <pre>
-     *  java -classpath ../../../lib/jna.jar:../../.. org.ptolemy.fmi.FMUCoSimulation \
+     *  java -classpath ../../../lib/jna.jar:../../.. org.ptolemy.fmi.driver.FMUCoSimulation \
      *  file.fmu [endTime] [stepTime] [loggingOn] [csvSeparator] [outputFile]
      *  </pre>
      *  <p>For example, under Mac OS X or Linux:
      *  <pre>
-     *  java -classpath $PTII/lib/jna.jar:${PTII} org.ptolemy.fmi.FMUCoSimulation \
+     *  java -classpath $PTII/lib/jna.jar:${PTII} org.ptolemy.fmi.driver.FMUCoSimulation \
      *  $PTII/org/ptolemy/fmi/fmu/cs/bouncingBall.fmu 1.0 0.1 true c foo.csv
      *  </pre>
      *

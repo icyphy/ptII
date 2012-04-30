@@ -203,10 +203,8 @@ public abstract class FMUDriver {
              *  @param message The message
              */
             public void apply(Pointer fmiComponent, String instanceName,
-                    int status, String category, String message/*
-                                                                * , Pointer ...
-                                                                * parameters
-                                                                */) {
+                    int status, String category, String message, Pointer /*...*/
+                                                                 parameters) {
                 // FIXME: What to do about jni callbacks with varargs?
                 // See
                 // http://chess.eecs.berkeley.edu/ptexternal/wiki/Main/JNA#fmiCalbackLogger
@@ -296,6 +294,7 @@ public abstract class FMUDriver {
     protected static void _setEnableLogging(boolean enableLogging) {
         // This method exists so as to avoid a warning from FindBugs.   
         _enableLogging = enableLogging;
+        _enableLogging = true;
     }
 
     ///////////////////////////////////////////////////////////////////
