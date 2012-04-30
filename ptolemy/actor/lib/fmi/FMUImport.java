@@ -122,11 +122,11 @@ public class FMUImport extends TypedAtomicActor {
         fmuFile.setExpression("fmuImport.fmu");
     }
 
-    /** The Functional Mock-up Unit (FMU) file.
-     *  The FMU file is a zip file that contains a file named "modelDescription.xml"
-     *  and any necessary shared libraries.  The file is read when this
-     *  actor is instantiated or when the file name changes.  The initial default
-     *  value is "fmuImport.fmu".
+    /** The Functional Mock-up Unit (FMU) file.  The FMU file is a zip
+     *  file that contains a file named "modelDescription.xml" and any
+     *  necessary shared libraries.  The file is read when this actor
+     *  is instantiated or when the file name changes.  The initial
+     *  default value is "fmuImport.fmu".
      */
     public FileParameter fmuFile;
 
@@ -167,22 +167,7 @@ public class FMUImport extends TypedAtomicActor {
 
         String modelIdentifier = _fmiModelDescription.modelIdentifier;
 
-        // Loop through the scalar variables and find a scalar variable that
-        // has variability == "parameter" and is not an input or output.
-        // We can't do this in attributeChanged() because setting a scalar variable
-        // requires that _fmiComponent be non-null, which happens in preinitialize();
-        for (FMIScalarVariable scalar : _fmiModelDescription.modelVariables) {
-            if (scalar.variability == FMIScalarVariable.Variability.parameter
-                    && scalar.causality != Causality.input
-                    && scalar.causality != Causality.output) {
-                String sanitizedName = StringUtilities.sanitizeName(scalar.name);
-                Parameter parameter = (Parameter)getAttribute(sanitizedName, Parameter.class);
-                if (parameter != null) {
-                    _setScalarVariable(scalar, parameter.getToken());
-                }
-            }
-        }
-
+        // Ptolemy parameters are read in preinitia
 
         ////////////////
         // Iterate through the scalarVariables and set all the inputs.
@@ -314,6 +299,24 @@ public class FMUImport extends TypedAtomicActor {
        super.initialize();
        if (_debugging) {
            _debug("FMIImport.initialize() START");
+       }
+
+       // Loop through the scalar variables and find a scalar
+       // variable that has variability == "parameter" and is not an
+       // input or output.  We can't do this in attributeChanged()
+       // because setting a scalar variable requires that
+       // _fmiComponent be non-null, which happens in
+       // preinitialize();
+       for (FMIScalarVariable scalar : _fmiModelDescription.modelVariables) {
+           if (scalar.variability == FMIScalarVariable.Variability.parameter
+                   && scalar.causality != Causality.input
+                   && scalar.causality != Causality.output) {
+               String sanitizedName = StringUtilities.sanitizeName(scalar.name);
+               Parameter parameter = (Parameter)getAttribute(sanitizedName, Parameter.class);
+               if (parameter != null) {
+                   _setScalarVariable(scalar, parameter.getToken());
+               }
+           }
        }
 
        String modelIdentifier = _fmiModelDescription.modelIdentifier;
