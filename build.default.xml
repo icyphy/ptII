@@ -83,7 +83,7 @@
     <pathelement location="ptolemy/actor/ptalon/antlr/antlr.jar" />
     <pathelement location="lib/PDFRenderer.jar" />
     <pathelement location="ptserver/lib/hessian-4.0.7.jar" />
-    <pathelement location="ptserver/lib/jetty-all-7.4.1.v20110513.jar" />
+    <pathelement location="ptserver/lib/jetty-all-8.1.2.v20120308.jar" />
     <pathelement location="ptserver/lib/servlet-api-2.5.jar" />
     <pathelement location="ptserver/lib/wmqtt.jar" />
     <pathelement location="lib/org-netbeans-api-visual.jar" />
@@ -121,6 +121,7 @@
     <exclude name="lib/" />
     <exclude name="mk/" />
     <exclude name="org/ptolemy/fmi/" />
+    <exclude name="org/ptolemy/ptango/" />
     <exclude name="ptdb/" />
     <exclude name="ptolemy/actor/corba/" />
     <exclude name="ptolemy/actor/lib/embeddedJava/" />
@@ -158,6 +159,7 @@
     <exclude name="ptolemy/moml/jxta/" />
     <exclude name="ptolemy/plot/servlet/" />
     <exclude name="ptolemy/vergil/basic/export/itextpdf/" />
+    <exclude name="ptolemy/vergil/basic/imprt/fmu/" />
     <exclude name="ptserver/" />
     <exclude name="reports/" />
     <exclude name="signed/" />
