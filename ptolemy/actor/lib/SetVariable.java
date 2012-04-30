@@ -58,10 +58,20 @@ import ptolemy.util.MessageHandler;
 //// SetVariable
 
 /**
- <p>Set the value of a variable contained by the container.  The result
+ <p>Set the value of a variable. If there is a variable or parameter
+ in scope with a name matching <i>variableName</i>, then that
+ variable is the one to be set. If there is no such variable,
+ then one will be created in the container of this actor.
+ A variable is in scope if it is contained by the container,
+ the container's container, or any container above in the hierarchy.
+ <b>NOTE:</b> We recommend always creating a parameter with
+ a name matching <i>variableName</i>, because then the model is
+ explicit about which variable will be set. It also makes it easier
+ to monitor the variable updates.
+ </p><p>
+ The update to the variable
  may occur at two different times, depending on the value of the
  <it>delayed</it> parameter.
- </p><p>
  If <i>delayed</i> is true, then the change to
  the value of the variable is implemented in a change request, and
  consequently will not take hold until the end of the current
@@ -70,12 +80,10 @@ import ptolemy.util.MessageHandler;
  (independent of the schedule of execution of the actors),
  assuming there is only a single instance of SetVariable writing
  to the variable.
- </p><p>
  If <i>delayed</i> is false, then the change to the value of
  the variable is performed immediately in the fire() method.
  This allows more frequent
- reconfiguration, and can mimic the operation of PGM's graph
- variables. However, this can result in nondeterminism if
+ reconfiguration. However, this can result in nondeterminism if
  the variable values are observed by any other actor in
  the system. If you are trying to communicate with another
  actor without wiring, use the Publisher and Subscriber
@@ -85,7 +93,7 @@ import ptolemy.util.MessageHandler;
  the <i>output</i> port produces the same token provided at
  the <i>input</i> port when the actor fires, after the
  specified variable has been set. This can be used, even with
- <i>delayed</i> set to false, to ensure determinacy, by
+ <i>delayed</i> set to false, to ensure determinacy by
  triggering downstream actions only after the variable has
  been set.
  </p><p>
@@ -96,19 +104,14 @@ import ptolemy.util.MessageHandler;
  of Variable, then no output is
  produced on the first firing.
  </p><p>
- The variable can be either any attribute that implements
- the Settable interface. If it is in addition an instance of
- Variable, then the input token is used directly to set the
+ The variable can be any attribute that implements
+ the Settable interface, which includes Parameter.
+ If it is in addition an instance of
+ Variable or Parameter, then the input token is used directly to set the
  value, and the type of the variable is constrained to be
  the same as the type of the input. Otherwise, then input
  token is converted to a string and the setExpression() method
  on the variable is used to set the value.
- </p><p>
- The variable can occur anywhere in the hierarchy above
- the current level.  If the variable is not found in the container,
- then the container of the container is checked until we reach the
- top level. If still no variable is found, then a variable is
- created in the container.
  </p><p>
  For efficiency, the variable update does not automatically
  trigger a repaint in Vergil. If the variable value is being used
