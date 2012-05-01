@@ -405,6 +405,8 @@ mvn -Dmaven.repo.local=/var/lib/hudson/jobs/ptII/workspace/.maven/repo install:i
           <hudson.tasks.Shell>
             <command>export PTII=$WORKSPACE
 pwd
+cp build.default.xml build.xml
+ant
 ./configure
 Xvfb :2 -screen 0 1024x768x24 &amp;                                                                                            
 export DISPLAY=localhost:2.0
