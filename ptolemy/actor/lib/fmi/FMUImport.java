@@ -590,7 +590,7 @@ public class FMUImport extends TypedAtomicActor {
                 if (parameters != null ) {
                     StringTokenizer tokenizer = new StringTokenizer(message, "%", false /* Return delimiters */); 
                     ArrayList <Object> parameterList = new ArrayList<Object>();
-                    long nativeLong = Pointer.nativeValue(parameters);
+                    //long nativeLong = Pointer.nativeValue(parameters);
                     int offset = 0;
                     if (!message.startsWith("%") && tokenizer.hasMoreTokens()) {
                         // Throw away the first token.
@@ -639,19 +639,19 @@ public class FMUImport extends TypedAtomicActor {
                                 break;
                             case 'c': // Unsigned char
                                 foundType = true;
-                                //parameterList.add(new Character(parameters.getChar(offset++)));
+                                //parameterList.add(Character.valueOf(parameters.getChar(offset++)));
                                 if (!_printedMessage) {
                                     _printedMessage = true;
                                     System.out.println("FIXME: logger: don't know how to get chars, using ! instead.");
                                 }
-                                parameterList.add(new Character('!'));
+                                parameterList.add(Character.valueOf('!'));
                                 offset += 1;
                                 break;
                             case 's': // String
                                 foundType = true;
                                 String result = "";
                                 if (offset == 0) {
-                                    result = new String(parameters.getString(offset));
+                                    result = parameters.getString(offset);
                                 } else {
                                     if (!_printedMessage) {
                                         _printedMessage = true;
@@ -971,7 +971,7 @@ public class FMUImport extends TypedAtomicActor {
             //if (buf[i] >=0 && buf[i] < 16) {
             //    contents.append("0");
             //}
-            contents.append(new Character((char)(buf[i] & 0xff)));
+            contents.append(Character.valueOf((char)(buf[i] & 0xff)));
             if ((i % BYTES_PER_ROW) == BYTES_PER_ROW-1 && i < buf.length-1) {
                 contents.append(">" + LS);
             }
