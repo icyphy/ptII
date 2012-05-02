@@ -44,6 +44,7 @@ test ant-1.1 {Check the build.default.xml file} {
     set dir [pwd]
     cd $PTII
     exec cp build.xml build.xml.bak
+    puts "# Copying build.default.xml to build.xml"
     exec cp build.default.xml build.xml
     puts "# Running ant clean"
     puts [exec ant clean]

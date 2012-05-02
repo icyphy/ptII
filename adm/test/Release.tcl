@@ -44,6 +44,8 @@ test release-1.1 {Check for missing makefiles} {
     exec make --no-print-directory --silent missingMakefiles
 } {./config/makefile
 ./doc/coding/templates/makefile
+./org/ptolemy/fmi/driver/test/junit/makefile
+./org/ptolemy/ptango/lib/makefile
 ./ptolemy/backtrack/automatic/ptolemy/actor/lib/makefile
 ./ptolemy/backtrack/automatic/ptolemy/domains/sdf/lib/makefile
 ./ptolemy/backtrack/automatic/ptolemy/math/makefile
@@ -72,6 +74,7 @@ doc.tutorial.domains
 doc.tutorial.graph
 doc.tutorial.graph.junit
 doc.tutorial.gui
+org.ptolemy.ptango.lib
 ptolemy.actor.corba
 ptolemy.actor.corba.CoordinatorUtil
 ptolemy.actor.corba.CorbaIOUtil
@@ -113,11 +116,37 @@ set currentDirectory [pwd]
 test release-3.1 {Run svn status and look for files that should be checked in.  See ptII/adm/bin/svnignoreupdate for a script to fix this} {
 
     cd "$PTII"
-    set result [exec svn status]
+    set result {}
+    set status [exec svn status]
+    set data [split $status "\n"]
+    foreach line $data {
+	# Skip directories in /demo/ because they were created by exporting MoML
+	if [regexp {/demo/} $line] {
+	    set fields [split $line " "]
+	    set directory [lindex $fields [expr {[llength $fields] - 1}]]
+	    if [file isdirectory $directory] {
+		# puts "$directory is a directory"
+	    } else {
+		lappend $result $line
+	    }
+	} else {
+	    append result "\n$line"
+	}
+    }
+
     set result1 \
-{M       lib/matlabLinux.jar
-M       lib/matlab.jar
-?       ptolemy/matlab/META-INF}
+{
+?       .maven
+?       cobertura.ser
+?       reports
+?       ptolemy/configs/doc/ClassesIllustrated
+?       ptolemy/matlab/META-INF
+?       ptolemy/moml/test/NoPackageActor.java
+?       ptolemy/actor/lib/jai/test/auto/PtolemyII.bmp
+?       ptolemy/actor/lib/jai/test/auto/PtolemyII.jpg
+?       ptolemy/actor/lib/jai/test/auto/PtolemyII.tif
+?       ptolemy/actor/lib/jai/test/auto/PtolemyII.pgm
+?       ptserver/test/PtolemyServer.log}
     if { $result == $result1 } {
 	puts "Result was:\n$result\nWhich is ok"
         set result {}
