@@ -49,6 +49,7 @@ JSRCS =
 
 # Non-graphical Java tests written in Tcl
 JSIMPLE_TESTS = \
+	ant.tcl \
 	license.tcl \
 	Release.tcl
 
