@@ -840,7 +840,7 @@ For example:
     </junit>
   </target>
 
-  <target name="test.single" depends="build, initReports"
+  <target name="test.single" depends="initReports"
 	  description="Run a single JUnit test by classname (ptolemy.actor.lib.test.junit.JUnitTclTest).">
     <echo>
       ==test.single==
