@@ -2422,7 +2422,7 @@ else
         PT_MSG_RESULT($PTII/lib/jna.jar)
 	JNA_JAR="$PTII/lib/jna.jar"
 	PTFMI_DIR=fmi
-	PTFMI_PACKAGES="ptolemy.actor.lib.fmi org.ptolemy.fmi org.ptolemy.fmi.driver org.ptolemy.fmi.type"
+	PTFMI_PACKAGES="ptolemy.actor.lib.fmi org.ptolemy.fmi org.ptolemy.fmi.driver org.ptolemy.fmi.type ptolemy.vergil.basic.imprt.fmu"
         updateClasspath "$JNA_JAR"
     else
         AC_MSG_WARN([Failed to find $PTII/lib/jna.jar,
