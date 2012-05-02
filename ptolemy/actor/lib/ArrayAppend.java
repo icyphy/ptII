@@ -28,6 +28,7 @@
 package ptolemy.actor.lib;
 
 import ptolemy.data.ArrayToken;
+import ptolemy.data.Token;
 import ptolemy.data.type.ArrayType;
 import ptolemy.data.type.Type;
 import ptolemy.kernel.CompositeEntity;
@@ -119,9 +120,16 @@ public class ArrayAppend extends Transformer {
         int resultWidth = 0;
         for (int i = 0; i < width; i++) {
             if (input.hasToken(i)) {
-                ArrayToken token = (ArrayToken) input.get(i);
-                arraysToAppend[i] = token;
-                resultWidth += token.length();
+                Token token = input.get(i);
+                try {
+                    ArrayToken arrayToken = (ArrayToken) token;
+                    arraysToAppend[i] = arrayToken;
+                    resultWidth += arrayToken.length();
+                } catch (ClassCastException ex) {
+                    throw new IllegalActionException(this, ex,
+                            "Cannot cast \"" + token
+                            + "\" to an ArrayToken");
+                }
             }
         }
         if (resultWidth > 0) {
