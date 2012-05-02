@@ -45,6 +45,7 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import ptolemy.actor.Manager;
 import ptolemy.kernel.util.KernelException;
 import ptolemy.util.StringUtilities;
 import ptolemy.vergil.basic.export.ExportModel;
@@ -111,6 +112,7 @@ public class ExportModelJUnitTest {
 
         ExportModel exportModel = new ExportModel();
 	try {
+	    long startTime = new Date().getTime();
 	    exportModel.exportModel(false /* copyJavaScriptFiles */,
 				    true /* force */,
 				    "htm",
@@ -121,6 +123,7 @@ public class ExportModelJUnitTest {
 				    outputDirectory,
 				    false /* save */,
 				    true /* whitebackground */);
+	    System.out.println(Manager.timeAndMemory(startTime));
 	} catch (Throwable throwable) {
 	    throwable.printStackTrace();
 	    // If exporting html throws an exception, then that is a
