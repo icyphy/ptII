@@ -116,6 +116,9 @@ set currentDirectory [pwd]
 test release-3.1 {Run svn status and look for files that should be checked in.  See ptII/adm/bin/svnignoreupdate for a script to fix this} {
 
     cd "$PTII"
+    if {[glob -nocomplain {*.class}] != {}} {
+	exec rm [glob -nocomplain {*.class}]
+    } 
     set result {}
     set status [exec svn status]
     set data [split $status "\n"]
