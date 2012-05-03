@@ -242,10 +242,15 @@ public abstract class FMUDriver {
 
                 // Need to keep a reference so the memory does not get gc'd.
                 // See http://osdir.com/ml/java.jna.user/2008-09/msg00065.html
-                _pointers.add(pointer);
+                pointers.add(pointer);
 
                 return pointer;
             }
+
+            /** Keep references to memory that has been allocated and
+             *  avoid problems with the memory being garbage collected.   
+             */
+            public static Set<Pointer> pointers = new HashSet<Pointer>();
         }
 
         /** A callback that frees memory.
@@ -255,7 +260,7 @@ public abstract class FMUDriver {
              *  @param object The object to be freed.
              */
             public void apply(Pointer object) {
-                _pointers.remove(object);
+                FMUAllocateMemory.pointers.remove(object);
             }
         }
 
@@ -327,12 +332,4 @@ public abstract class FMUDriver {
      *  The initial default is 0.1 seconds.
      */
     static double _stepSize = 0.1;
-
-    ///////////////////////////////////////////////////////////////////
-    ////             private fields                                ////
-
-    /** Keep references to memory that has been allocated and
-     *  avoid problems with the memory being garbage collected.   
-     */
-    private static Set<Pointer> _pointers = new HashSet<Pointer>();
 }
