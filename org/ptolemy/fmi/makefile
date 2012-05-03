@@ -63,6 +63,7 @@ JSRCS = \
 	FMIModelDescription.java \
 	FMIScalarVariable.java \
 	FMUFile.java \
+	FMULog.java \
 	NativeSizeT.java
 
 # Files that are not compiled, such as .tcl and .itcl files.

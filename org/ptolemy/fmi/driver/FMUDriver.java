@@ -32,6 +32,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.ptolemy.fmi.FMILibrary;
+import org.ptolemy.fmi.FMULog;
 import org.ptolemy.fmi.NativeSizeT;
 
 import com.sun.jna.Function;
@@ -185,13 +186,15 @@ public abstract class FMUDriver {
     ////                     inner classes                         ////
 
     /** An interface that contains JNA callbacks.
+     *  We need a class that implement the interface because
+     *  certain methods require interfaces as arguments, yet we
+     *  need to have method bodies, so we need an actual class.
      */
     public interface FMULibrary extends FMILibrary {
-        /** The logging function.
-         * We need a class that implement the interface because
-         * certain methods require interfaces as arguments, yet we
-         * need to have method bodies, so we need an actual class.
-         */
+        // FIXME: It would be nice if we could have these inner classes
+        // defined in the main fmi package.
+
+        /** The logging callback function. */
         public class FMULogger implements FMICallbackLogger {
             /** Log a message.
              *  Note that arguments after the message are currently ignored.   
@@ -205,22 +208,12 @@ public abstract class FMUDriver {
             public void apply(Pointer fmiComponent, String instanceName,
                     int status, String category, String message, Pointer /*...*/
                                                                  parameters) {
-                // FIXME: What to do about jni callbacks with varargs?
-                // See
-                // http://chess.eecs.berkeley.edu/ptexternal/wiki/Main/JNA#fmiCalbackLogger
-
-                System.out.println("Java FMULogger, status: " + status);
-                System.out.println("Java FMULogger, message: " + message/*
-                                                                         * .
-                                                                         * getString
-                                                                         * (0)
-                                                                         */);
+                FMULog.log(fmiComponent, instanceName, status, category, message, parameters);
             }
         }
 
         /** Allocate memory. */
         public class FMUAllocateMemory implements FMICallbackAllocateMemory {
-            // http://markmail.org/message/6ssggt4q6lkq3hen
 
             /** Allocate memory.
              *  @param numberOfObjects The number of objects to allocate.
@@ -228,6 +221,8 @@ public abstract class FMUDriver {
              *  @return a Pointer to the allocated memory.
              */
             public Pointer apply(NativeSizeT numberOfObjects, NativeSizeT size) {
+                // For hints, see http://markmail.org/message/6ssggt4q6lkq3hen
+
                 int numberOfObjectsValue = numberOfObjects.intValue();
                 if (numberOfObjectsValue <= 0) {
                     // instantiateModel() in fmuTemplate.c
@@ -249,14 +244,6 @@ public abstract class FMUDriver {
                 // See http://osdir.com/ml/java.jna.user/2008-09/msg00065.html
                 _pointers.add(pointer);
 
-                // System.out.println("Java fmiAllocateMemory " +
-                // numberOfObjects + " " + size
-                // + "\n        memory: " + memory + " " + + memory.SIZE + " " +
-                // memory.SIZE % 4
-                // + "\n alignedMemory: " + alignedMemory + " " +
-                // alignedMemory.SIZE + " " + alignedMemory.SIZE %4
-                // + "\n       pointer: " + pointer + " " + pointer.SIZE + " " +
-                // (pointer.SIZE % 4));
                 return pointer;
             }
         }
