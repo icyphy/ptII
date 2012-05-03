@@ -54,9 +54,11 @@ import ptolemy.kernel.util.Workspace;
  parameter.
  If an input arrives while the server is busy, then that input is
  queued until the server becomes free, at which point it is produced
- on the output with a delay given by the <i>serviceTime</i> parameter.
+ on the output with a delay given by the <i>serviceTime</i> parameter
+ value at the time that the input arrived.
  If several inputs arrive while the server is busy, then they are
  served on a first-come, first-served basis.
+ On every firing, produce an output indicating the final queue size.
 
  @see ptolemy.actor.lib.TimeDelay
 
@@ -193,6 +195,7 @@ public class Server extends DETransformer {
     /** If there is input, read it and put it in the queue.
      *  If the service time has expired for a token currently
      *  in the queue, then send that token on the output.
+     *  Produce an output indicating the current queue size.
      *  @exception IllegalActionException If the serviceTime is invalid,
      *   or if an error occurs sending the output token.
      */
@@ -202,18 +205,38 @@ public class Server extends DETransformer {
 
         // Consume the input.
         if (input.hasToken(0)) {
-            _queue.put(input.get(0));
-            size.send(0, new IntToken(_queue.size()));
+            serviceTime.update();
+            double serviceTimeValue = ((DoubleToken) serviceTime.getToken())
+                    .doubleValue();
+            Token token = input.get(0);
+            _queue.put(new Job(token, serviceTimeValue));
+            if (_debugging) {
+                _debug("Read input with value " + token
+                        + ", and put into queue, which now has size"
+                        + _queue.size()
+                        + " at time "
+                        + currentTime
+                        + ". Event will be processes with service time "
+                        + serviceTimeValue);
+            }
         }
 
         // If appropriate, produce output.
         if (_queue.size() > 0 && currentTime.compareTo(_nextTimeFree) == 0) {
-            Token outputToken = (Token) _queue.take();
+            Job job = (Job) _queue.take();
+            Token outputToken = job.payload;
             output.send(0, outputToken);
-            size.send(0, new IntToken(_queue.size()));
             // Indicate that the server is free.
             _nextTimeFree = Time.NEGATIVE_INFINITY;
+            if (_debugging) {
+                _debug("Produced output " + outputToken
+                        + ", so queue now has size "
+                        + _queue.size()
+                        + " at time "
+                        + currentTime);
+            }
         }
+        size.send(0, new IntToken(_queue.size()));
     }
 
     /** Reset the states of the server to indicate that the server is ready
@@ -232,13 +255,14 @@ public class Server extends DETransformer {
      *  @return Whatever the superclass returns.
      */
     public boolean postfire() throws IllegalActionException {
-        serviceTime.update();
-        double serviceTimeValue = ((DoubleToken) serviceTime.getToken())
-                .doubleValue();
         Time currentTime = getDirector().getModelTime();
 
         if (_nextTimeFree.equals(Time.NEGATIVE_INFINITY) && _queue.size() > 0) {
-            _nextTimeFree = currentTime.add(serviceTimeValue);
+            Job job = (Job)_queue.get(0);
+            _nextTimeFree = currentTime.add(job.serviceTime);
+            if (_debugging) {
+                _debug("In postfire, requesting a refiring at time " + _nextTimeFree);
+            }
             _fireAt(_nextTimeFree);
         }
         return super.postfire();
@@ -252,4 +276,17 @@ public class Server extends DETransformer {
 
     /** The FIFOQueue. */
     protected FIFOQueue _queue;
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                         inner classes                     ////
+
+    /** A data structure containing a token and a service time. */
+    private class Job {
+        public Job (Token payload, double serviceTime) {
+            this.payload = payload;
+            this.serviceTime = serviceTime;
+        }
+        public Token payload;
+        public double serviceTime;
+    }
 }
