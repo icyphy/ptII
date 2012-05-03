@@ -49,6 +49,10 @@
     <delete quiet="true">
       <fileset dir="org/ptolemy/fmi"
 	       includes="*.class" />
+      <fileset dir="org/ptolemy/fmi/driver"
+	       includes="*.class" />
+      <fileset dir="org/ptolemy/fmi/driver/test/junit"
+	       includes="*.class" />
     </delete>
   </target>
 
