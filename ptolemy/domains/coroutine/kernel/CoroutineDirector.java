@@ -4,10 +4,13 @@
 package ptolemy.domains.coroutine.kernel;
 
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
+import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Director;
 import ptolemy.actor.Executable;
@@ -16,13 +19,16 @@ import ptolemy.actor.Receiver;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.sched.FixedPointReceiver;
 import ptolemy.data.ArrayToken;
-import ptolemy.data.StringToken;
 import ptolemy.data.Token;
+import ptolemy.data.StringToken;
+import ptolemy.data.RecordToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.domains.coroutine.kernel.ControlEntryToken.EntryLocation;
 import ptolemy.domains.coroutine.kernel.ControlExitToken.ExitLocation;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.Entity;
+import ptolemy.kernel.Port;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Nameable;
@@ -73,7 +79,7 @@ public class CoroutineDirector extends Director implements Continuation {
         _nextLocation = null;
         _currentControlPath = new LinkedList();
         while (true) {
-            System.out.print("\nEntering : " + currL.continuation());
+            if (_debugging) _debug("\nEntering : " + currL.continuation());
             ControlExitToken ex = _enterWith(currL);
             _currentControlPath.add(currL.continuation());
             if (ex == null) {
@@ -81,33 +87,33 @@ public class CoroutineDirector extends Director implements Continuation {
                 break;
             }
             if (ex.isSuspend()) {
-                System.out.print("\nSuspending.\n");
+                if (_debugging) _debug("\nSuspending.\n");
                 _nextLocation = new InternalEntryLocation(currL.continuation(), ControlEntryToken.Resume());
                 break;
             }
             if (ex.isTerminate()) {
-                System.out.print("\nTerminating.\n");
+                if (_debugging) _debug("\nTerminating.\n");
                 _nextLocation = new InternalEntryLocation(_initContinuation, ControlEntryToken.Init());
                 break;
             }
             if (ex.isLocation()) {
                 InternalExitLocation iex = _exitFrom(currL, ex);
-                System.out.print("\nExiting with location : " + ex.getLocation() + "\n");
+                if (_debugging) _debug("\nExiting with location : " + ex.getLocation() + "\n");
                 if (iex == null) break;
                 
                 // Add exit logic
                 if (_nextMap.containsKey(iex)) {
                     InternalEntryLocation nloc = _nextMap.get(iex);
-                    System.out.print("\nMoving to continuation : " + nloc.continuation() + ", with entry : " + nloc.entry() + "\n");
+                    if (_debugging) _debug("\nMoving to continuation : " + nloc.continuation() + ", with entry : " + nloc.entry() + "\n");
                     currL = nloc;
                     if (currL == _currentLocation) {
-                        System.out.print("\nControl cycle.");
+                        if (_debugging) _debug("\nControl cycle.");
                         break;
                     }
                     continue;
                 }
                 else {
-                    System.out.print("\nOff the map.");
+                    if (_debugging) _debug("\nOff the map.");
                     break;
                 }
             }
@@ -119,7 +125,7 @@ public class CoroutineDirector extends Director implements Continuation {
         for (Object ent : entities) {
             if (!(ent instanceof Executable) || ent instanceof Continuation) continue;
             Executable e = (Executable)ent;
-            System.out.print("\nFiring : " + e + "\n");
+            if (_debugging) _debug("\nFiring : " + e + "\n");
             e.fire();
         }
     }
@@ -294,11 +300,11 @@ public class CoroutineDirector extends Director implements Continuation {
     }
     
     public void debugShowMap() {
-        System.out.print("\nNext Map:\n");
+        if (_debugging) _debug("\nNext Map:\n");
         for (Map.Entry<InternalExitLocation, InternalEntryLocation> ent : _nextMap.entrySet()) {
-            System.out.print("\n    " + ent.getKey() + " => " + ent.getValue());
+            if (_debugging) _debug("\n    " + ent.getKey() + " => " + ent.getValue());
         }
-        System.out.print("\n");
+        if (_debugging) _debug("\n");
     }
     
     public String[] _extractMapSpec(Token t, int n) {
@@ -336,7 +342,7 @@ public class CoroutineDirector extends Director implements Continuation {
         for (Continuation c : _currentControlPath) {
             if (!(c instanceof Executable)) continue;
             Executable e = (Executable)c;
-            System.out.print("\nPostfiring : " + c + "\n");
+            if (_debugging) _debug("\nPostfiring : " + c + "\n");
             pfret = pfret && e.postfire();
         }
         
