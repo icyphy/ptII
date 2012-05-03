@@ -2069,7 +2069,7 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
         public ptolemy.data.Token get(String name)
                 throws IllegalActionException {
             Variable results = getVariable(name);
-            if (results != null) {
+            if (results != null && results.getToken() != null) {
                 return results.getToken();
             } else {
                 NamedObj reference;
