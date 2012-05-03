@@ -7,6 +7,7 @@
       <group>
 <doc>Array manipulation actors</doc>
 
+<entity name="ArrayAccumulate" class="ptolemy.actor.lib.ArrayAccumulate"/>
 <entity name="ArrayAppend" class="ptolemy.actor.lib.ArrayAppend"/>
 <entity name="ArrayAverage" class="ptolemy.actor.lib.ArrayAverage"/>
 <entity name="ArrayContains" class="ptolemy.actor.lib.ArrayContains"/>

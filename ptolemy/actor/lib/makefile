@@ -127,6 +127,7 @@ JSRCS = \
 	AddSubtract.java \
 	AbsoluteValue.java \
 	Accumulator.java \
+	ArrayAccumulate.java \
 	ArrayAppend.java \
 	ArrayAverage.java \
 	ArrayContains.java \
@@ -142,6 +143,7 @@ JSRCS = \
 	ArraySort.java \
 	ArraySum.java \
 	ArrayToElements.java \
+	ArrayToMatrix.java \
 	ArrayUpdate.java \
 	Average.java \
 	Bernoulli.java \
@@ -186,6 +188,7 @@ JSRCS = \
 	LinearDifferenceEquationSystem.java \
 	LookupTable.java \
 	MathFunction.java \
+	MatrixToArray.java \
 	MaxIndex.java \
 	Maximum.java \
 	MicrostepDelay.java \
@@ -267,6 +270,7 @@ OTHER_FILES_TO_BE_JARED = \
 	AbsoluteValueIcon.xml \
     AccumulatorIcon.png \
     AccumulatorIcon.xml \
+    ArrayAccumulateIcon.xml \
     ArrayAppendIcon.xml \
     ArrayExtractIcon.xml \
     ArrayUpdateIcon.xml \

@@ -28,7 +28,6 @@
 package ptolemy.actor.lib;
 
 import ptolemy.data.ArrayToken;
-import ptolemy.data.Token;
 import ptolemy.data.type.ArrayType;
 import ptolemy.data.type.Type;
 import ptolemy.kernel.CompositeEntity;
@@ -37,26 +36,22 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 
 ///////////////////////////////////////////////////////////////////
-//// ArrayAppend
+//// ArrayAccumulate
 
 /**
- An actor that appends ArrayTokens together.  This actor has a single input
- multiport, and a single output port.  The types on the input and the output
- port must both be the same array type.  During each firing, this actor reads
- up to one ArrayToken from each channel of the input port and creates an
- ArrayToken of the same type on the output port.  If no token is available on
- a particular channel, then there will be no contribution to the output.
- The output is an array of length equal to the sum of the lengths of
- the input arrays (which may be zero if either there are no input
- arrays or the lengths of the input arrays are all zero).
+ An actor that accumulates input arrays into a growing array that
+ includes the contents of all input arrays.  Upon firing, this actor reads
+ an input array, appends it to the accumulating array, and outputs
+ the new array. The length of the output array grows by the size
+ of the input array on each firing.
 
- @author Steve Neuendorffer
+ @author Edward A. Lee
  @version $Id$
- @since Ptolemy II 1.0
- @Pt.ProposedRating Green (celaine)
- @Pt.AcceptedRating Green (cxh)
+ @since Ptolemy II 9.0
+ @Pt.ProposedRating Yellow (cxh)
+ @Pt.AcceptedRating Red (eal)
  */
-public class ArrayAppend extends Transformer {
+public class ArrayAccumulate extends Transformer {
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -65,13 +60,9 @@ public class ArrayAppend extends Transformer {
      *  @exception NameDuplicationException If the container already has an
      *   actor with this name.
      */
-    public ArrayAppend(CompositeEntity container, String name)
+    public ArrayAccumulate(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
-
-        // The input is a multiport.
-        input.setMultiport(true);
-
         // Set type constraints.
         input.setTypeAtLeast(ArrayType.ARRAY_BOTTOM);
         output.setTypeAtLeast(input);
@@ -89,7 +80,7 @@ public class ArrayAppend extends Transformer {
      *   an attribute that cannot be cloned.
      */
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        ArrayAppend newObject = (ArrayAppend) (super.clone(workspace));
+        ArrayAccumulate newObject = (ArrayAccumulate) (super.clone(workspace));
 
         // Set the type constraints.
         newObject.input.setTypeAtLeast(ArrayType.ARRAY_BOTTOM);
@@ -98,47 +89,64 @@ public class ArrayAppend extends Transformer {
         return newObject;
     }
 
-    /** Consume at most one ArrayToken from each channel of the input port
-     *  and produce a single ArrayToken on the output
-     *  port that contains all of the tokens contained in all of the
-     *  arrays read from the input. If all input arrays are empty,
-     *  or if there are no input arrays, then output an empty array
-     *  of the appropriate type.
+    /** Consume at most one ArrayToken from the input, append it
+     *  to the accumulating token, and produce the accumulated result
+     *  on the output.
      *  @exception IllegalActionException If a runtime type conflict occurs,
      *   or if there are no input channels.
      */
     public void fire() throws IllegalActionException {
         super.fire();
-        int width = input.getWidth();
-        if (width == 0) {
-            throw new IllegalActionException(this, "No input channels.");
-        }
         // NOTE: Do not use System.arraycopy here because the
         // arrays being appended may be subclasses of ArrayToken,
         // so values have to be accessed via the getElement() method,
         // which is overridden in the subclasses. Use the append()
         // method of ArrayToken instead.
-        ArrayToken[] arraysToAppend = new ArrayToken[width];
-        int resultWidth = 0;
-        for (int i = 0; i < width; i++) {
-            if (input.hasToken(i)) {
-                Token token = input.get(i);
-                try {
-                    ArrayToken arrayToken = (ArrayToken) token;
-                    arraysToAppend[i] = arrayToken;
-                    resultWidth += arrayToken.length();
-                } catch (ClassCastException ex) {
-                    throw new IllegalActionException(this, ex,
-                            "Cannot cast \"" + token
-                            + "\" to an ArrayToken");
-                }
+        if (input.hasToken(0)) {
+            ArrayToken token = (ArrayToken)input.get(0);
+            if (_accumulating == null) {
+                _tentativeAccumulating = token;
+                output.send(0, token);
+            } else {
+                _arrays[0] = _accumulating;
+                _arrays[1] = token;
+                _tentativeAccumulating = ArrayToken.append(_arrays);
+                output.send(0, ArrayToken.append(_arrays));
             }
-        }
-        if (resultWidth > 0) {
-            output.send(0, ArrayToken.append(arraysToAppend));
         } else {
             Type elementType = ((ArrayType)output.getType()).getElementType();
             output.send(0, new ArrayToken(elementType));
         }
     }
+    
+    /** Initialize this actor to have an empty accumulating array.
+     *  @exception IllegalActionException If the superclass throws it.
+     */
+    public void initialize() throws IllegalActionException {
+        super.initialize();
+        _accumulating = null;
+        _tentativeAccumulating = null;
+    }
+    
+    /** Record the accumulating array and return true;
+     *  @return True.
+     *  @exception IllegalActionException If the superclass throws it.
+     */
+    public boolean postfire() throws IllegalActionException {
+        boolean result = super.postfire();
+        _accumulating = _tentativeAccumulating;
+        return result;
+    }
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
+
+    /** The accumulating array. */
+    private ArrayToken _accumulating;
+    
+    /** An array to use (repeatedly) to append arrays. */
+    private ArrayToken[] _arrays = new ArrayToken[2];
+    
+    /** The tentative accumulating array. */
+    private ArrayToken _tentativeAccumulating;
 }

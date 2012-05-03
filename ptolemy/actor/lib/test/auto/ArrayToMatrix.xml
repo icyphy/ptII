@@ -1,0 +1,491 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="ArrayToMatrix" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.0.devel">
+    </property>
+    <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
+        <property name="iterations" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <property name="allowDisconnectedGraphs" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[62.5, 35.0]">
+        </property>
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={620, 22, 885, 1024}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[672, 914]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{336.0, 457.0}">
+    </property>
+    <entity name="ArrayToMatrix" class="ptolemy.actor.lib.ArrayToMatrix">
+        <property name="rowVector" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[365.0, 725.0]">
+        </property>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="[fix(0.5,2,1)]">
+            </property>
+        </port>
+    </entity>
+    <entity name="Const" class="ptolemy.actor.lib.Const">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="{fix(0.25,4,1), fix(0.5,4,1), fix(0.75,4,1)}">
+        </property>
+        <doc>Create a constant sequence.</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[175.0, 725.0]">
+        </property>
+    </entity>
+    <entity name="Test" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{[fix(0.25,4,1); fix(0.5,4,1); fix(0.75,4,1)]}">
+        </property>
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[495.0, 725.0]">
+        </property>
+    </entity>
+    <entity name="ArrayToMatrix2" class="ptolemy.actor.lib.ArrayToMatrix">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[362.5, 655.0]">
+        </property>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="[fix(0.5,2,1)]">
+            </property>
+        </port>
+    </entity>
+    <entity name="Const2" class="ptolemy.actor.lib.Const">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="{fix(0.25,4,1), fix(0.5,4,1), fix(0.75,4,1)}">
+        </property>
+        <doc>Create a constant sequence.</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[170.0, 655.0]">
+        </property>
+    </entity>
+    <entity name="Test2" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{[fix(0.25,4,1), fix(0.5,4,1), fix(0.75,4,1)]}">
+        </property>
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[492.5, 655.0]">
+        </property>
+    </entity>
+    <entity name="ArrayToMatrix3" class="ptolemy.actor.lib.ArrayToMatrix">
+        <property name="rowVector" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[370.0, 865.0]">
+        </property>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="[long]">
+            </property>
+        </port>
+    </entity>
+    <entity name="Const3" class="ptolemy.actor.lib.Const">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="{1L, 2, 3}">
+        </property>
+        <doc>Create a constant sequence.</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[250.0, 865.0]">
+        </property>
+    </entity>
+    <entity name="Test3" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{[1L; 2L; 3L]}">
+        </property>
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[500.0, 865.0]">
+        </property>
+    </entity>
+    <entity name="ArrayToMatrix4" class="ptolemy.actor.lib.ArrayToMatrix">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[367.5, 795.0]">
+        </property>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="[long]">
+            </property>
+        </port>
+    </entity>
+    <entity name="Const4" class="ptolemy.actor.lib.Const">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="{1L, 2, 3}">
+        </property>
+        <doc>Create a constant sequence.</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[247.5, 795.0]">
+        </property>
+    </entity>
+    <entity name="Test4" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{[1L, 2L, 3L]}">
+        </property>
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[497.5, 795.0]">
+        </property>
+    </entity>
+    <entity name="ArrayToMatrix5" class="ptolemy.actor.lib.ArrayToMatrix">
+        <property name="rowVector" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[347.5, 170.0]">
+        </property>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="[int]">
+            </property>
+        </port>
+    </entity>
+    <entity name="Const5" class="ptolemy.actor.lib.Const">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="{1, 2, 3}">
+        </property>
+        <doc>Create a constant sequence.</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[227.5, 170.0]">
+        </property>
+    </entity>
+    <entity name="Test5" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{[1; 2; 3]}">
+        </property>
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[477.5, 170.0]">
+        </property>
+    </entity>
+    <entity name="ArrayToMatrix6" class="ptolemy.actor.lib.ArrayToMatrix">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[345.0, 100.0]">
+        </property>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="[int]">
+            </property>
+        </port>
+    </entity>
+    <entity name="Const6" class="ptolemy.actor.lib.Const">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="{1, 2, 3}">
+        </property>
+        <doc>Create a constant sequence.</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[225.0, 100.0]">
+        </property>
+    </entity>
+    <entity name="Test6" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{[1, 2, 3]}">
+        </property>
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[475.0, 100.0]">
+        </property>
+    </entity>
+    <entity name="ArrayToMatrix7" class="ptolemy.actor.lib.ArrayToMatrix">
+        <property name="rowVector" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[352.5, 310.0]">
+        </property>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="[double]">
+            </property>
+        </port>
+    </entity>
+    <entity name="Const7" class="ptolemy.actor.lib.Const">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="{1.0, 2, 3}">
+        </property>
+        <doc>Create a constant sequence.</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[232.5, 310.0]">
+        </property>
+    </entity>
+    <entity name="Test7" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{[1.0; 2.0; 3.0]}">
+        </property>
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[482.5, 310.0]">
+        </property>
+    </entity>
+    <entity name="ArrayToMatrix8" class="ptolemy.actor.lib.ArrayToMatrix">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[350.0, 240.0]">
+        </property>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="[double]">
+            </property>
+        </port>
+    </entity>
+    <entity name="Const8" class="ptolemy.actor.lib.Const">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="{1.0, 2, 3}">
+        </property>
+        <doc>Create a constant sequence.</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[230.0, 240.0]">
+        </property>
+    </entity>
+    <entity name="Test8" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{[1.0, 2.0, 3.0]}">
+        </property>
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[480.0, 240.0]">
+        </property>
+    </entity>
+    <entity name="ArrayToMatrix9" class="ptolemy.actor.lib.ArrayToMatrix">
+        <property name="rowVector" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[360.0, 455.0]">
+        </property>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="[boolean]">
+            </property>
+        </port>
+    </entity>
+    <entity name="Const9" class="ptolemy.actor.lib.Const">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="{true, false, false}">
+        </property>
+        <doc>Create a constant sequence.</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[240.0, 455.0]">
+        </property>
+    </entity>
+    <entity name="Test9" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{[true; false; false]}">
+        </property>
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[490.0, 455.0]">
+        </property>
+    </entity>
+    <entity name="ArrayToMatrix10" class="ptolemy.actor.lib.ArrayToMatrix">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[357.5, 385.0]">
+        </property>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="[boolean]">
+            </property>
+        </port>
+    </entity>
+    <entity name="Const10" class="ptolemy.actor.lib.Const">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="{true, false, true}">
+        </property>
+        <doc>Create a constant sequence.</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[237.5, 385.0]">
+        </property>
+    </entity>
+    <entity name="Test10" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{[true, false, true]}">
+        </property>
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[487.5, 385.0]">
+        </property>
+    </entity>
+    <entity name="ArrayToMatrix11" class="ptolemy.actor.lib.ArrayToMatrix">
+        <property name="rowVector" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[365.0, 595.0]">
+        </property>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="[complex]">
+            </property>
+        </port>
+    </entity>
+    <entity name="Const11" class="ptolemy.actor.lib.Const">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="{i, 2, 3}">
+        </property>
+        <doc>Create a constant sequence.</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[245.0, 595.0]">
+        </property>
+    </entity>
+    <entity name="Test11" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{[0.0 + 1.0i; 2.0 + 0.0i; 3.0 + 0.0i]}">
+        </property>
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[495.0, 595.0]">
+        </property>
+    </entity>
+    <entity name="ArrayToMatrix12" class="ptolemy.actor.lib.ArrayToMatrix">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[362.5, 525.0]">
+        </property>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="[complex]">
+            </property>
+        </port>
+    </entity>
+    <entity name="Const12" class="ptolemy.actor.lib.Const">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="{i, 2, 3}">
+        </property>
+        <doc>Create a constant sequence.</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[242.5, 525.0]">
+        </property>
+    </entity>
+    <entity name="Test12" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{[0.0 + 1.0i, 2.0 + 0.0i, 3.0 + 0.0i]}">
+        </property>
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[492.5, 525.0]">
+        </property>
+    </entity>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation7" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation8" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation9" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation10" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation11" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation12" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation13" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation14" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation15" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation16" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation17" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation18" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation19" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation20" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation21" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation22" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation23" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation24" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="ArrayToMatrix.input" relation="relation2"/>
+    <link port="ArrayToMatrix.output" relation="relation"/>
+    <link port="Const.output" relation="relation2"/>
+    <link port="Test.input" relation="relation"/>
+    <link port="ArrayToMatrix2.input" relation="relation4"/>
+    <link port="ArrayToMatrix2.output" relation="relation3"/>
+    <link port="Const2.output" relation="relation4"/>
+    <link port="Test2.input" relation="relation3"/>
+    <link port="ArrayToMatrix3.input" relation="relation6"/>
+    <link port="ArrayToMatrix3.output" relation="relation5"/>
+    <link port="Const3.output" relation="relation6"/>
+    <link port="Test3.input" relation="relation5"/>
+    <link port="ArrayToMatrix4.input" relation="relation8"/>
+    <link port="ArrayToMatrix4.output" relation="relation7"/>
+    <link port="Const4.output" relation="relation8"/>
+    <link port="Test4.input" relation="relation7"/>
+    <link port="ArrayToMatrix5.input" relation="relation10"/>
+    <link port="ArrayToMatrix5.output" relation="relation9"/>
+    <link port="Const5.output" relation="relation10"/>
+    <link port="Test5.input" relation="relation9"/>
+    <link port="ArrayToMatrix6.input" relation="relation12"/>
+    <link port="ArrayToMatrix6.output" relation="relation11"/>
+    <link port="Const6.output" relation="relation12"/>
+    <link port="Test6.input" relation="relation11"/>
+    <link port="ArrayToMatrix7.input" relation="relation14"/>
+    <link port="ArrayToMatrix7.output" relation="relation13"/>
+    <link port="Const7.output" relation="relation14"/>
+    <link port="Test7.input" relation="relation13"/>
+    <link port="ArrayToMatrix8.input" relation="relation16"/>
+    <link port="ArrayToMatrix8.output" relation="relation15"/>
+    <link port="Const8.output" relation="relation16"/>
+    <link port="Test8.input" relation="relation15"/>
+    <link port="ArrayToMatrix9.input" relation="relation18"/>
+    <link port="ArrayToMatrix9.output" relation="relation17"/>
+    <link port="Const9.output" relation="relation18"/>
+    <link port="Test9.input" relation="relation17"/>
+    <link port="ArrayToMatrix10.input" relation="relation20"/>
+    <link port="ArrayToMatrix10.output" relation="relation19"/>
+    <link port="Const10.output" relation="relation20"/>
+    <link port="Test10.input" relation="relation19"/>
+    <link port="ArrayToMatrix11.input" relation="relation22"/>
+    <link port="ArrayToMatrix11.output" relation="relation21"/>
+    <link port="Const11.output" relation="relation22"/>
+    <link port="Test11.input" relation="relation21"/>
+    <link port="ArrayToMatrix12.input" relation="relation24"/>
+    <link port="ArrayToMatrix12.output" relation="relation23"/>
+    <link port="Const12.output" relation="relation24"/>
+    <link port="Test12.input" relation="relation23"/>
+</entity>
