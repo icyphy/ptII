@@ -1,0 +1,163 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="SRinContinuous" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.0.devel">
+    </property>
+    <property name="Continuous Director" class="ptolemy.domains.continuous.kernel.ContinuousDirector">
+        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="5.0">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-555.0, -120.0]">
+        </property>
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 22, 1024, 741}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[811, 631]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{-229.8921342329545, 138.9965968276515}">
+    </property>
+    <entity name="DiscreteClock" class="ptolemy.actor.lib.DiscreteClock">
+        <doc>Create periodic timed events.</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-510.0, -30.0]">
+        </property>
+    </entity>
+    <entity name="TimeDelay" class="ptolemy.actor.lib.TimeDelay">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-390.0, -30.0]">
+        </property>
+    </entity>
+    <entity name="DelayComposite" class="ptolemy.actor.TypedCompositeActor">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{-400.0, 110.0}">
+        </property>
+        <property name="SR Director" class="ptolemy.domains.sr.kernel.SRDirector">
+            <property name="period" class="ptolemy.data.expr.Parameter" value="1.0">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[75.0, 40.0]">
+            </property>
+        </property>
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={383, 231, 913, 588}, maximized=false}">
+        </property>
+        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 478]">
+        </property>
+        <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+        </property>
+        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{350.0, 239.0}">
+        </property>
+        <port name="port" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[35.0, 115.0]">
+            </property>
+        </port>
+        <port name="port2" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[595.0, 115.0]">
+            </property>
+        </port>
+        <entity name="TimeDelay" class="ptolemy.actor.lib.TimeDelay">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[145.0, 120.0]">
+            </property>
+        </entity>
+        <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <link port="port" relation="relation"/>
+        <link port="port2" relation="relation2"/>
+        <link port="TimeDelay.input" relation="relation"/>
+        <link port="TimeDelay.output" relation="relation2"/>
+    </entity>
+    <entity name="CurrentTime" class="ptolemy.actor.lib.CurrentTime">
+        <doc>Output the current time.</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-275.0, 85.0]">
+        </property>
+    </entity>
+    <entity name="CurrentMicrostep" class="ptolemy.actor.lib.CurrentMicrostep">
+        <doc>Output the current microstep.</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-280.0, 145.0]">
+        </property>
+    </entity>
+    <entity name="CurrentTime2" class="ptolemy.actor.lib.CurrentTime">
+        <doc>Output the current time.</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-240.0, -50.0]">
+        </property>
+    </entity>
+    <entity name="CurrentMicrostep2" class="ptolemy.actor.lib.CurrentMicrostep">
+        <doc>Output the current microstep.</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-240.0, 5.0]">
+        </property>
+    </entity>
+    <entity name="NonStrictTest" class="ptolemy.actor.lib.NonStrictTest">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{1.0, 2.0, 3.0, 4.0, 5.0}">
+        </property>
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{-80, -55}">
+        </property>
+    </entity>
+    <entity name="NonStrictTest2" class="ptolemy.actor.lib.NonStrictTest">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{1, 1, 1, 1, 1}">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-75.0, 15.0]">
+        </property>
+    </entity>
+    <entity name="NonStrictTest3" class="ptolemy.actor.lib.NonStrictTest">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{1.0, 2.0, 3.0, 4.0, 5.0}">
+        </property>
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-65.0, 80.0]">
+        </property>
+    </entity>
+    <entity name="NonStrictTest4" class="ptolemy.actor.lib.NonStrictTest">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{1, 1, 1, 1, 1}">
+        </property>
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-60.0, 150.0]">
+        </property>
+    </entity>
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="vertex1" value="[-335.0, -30.0]">
+        </vertex>
+    </relation>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="vertex1" value="[-445.0, -30.0]">
+        </vertex>
+    </relation>
+    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="vertex1" value="[-320.0, 110.0]">
+        </vertex>
+    </relation>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation7" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="DiscreteClock.output" relation="relation2"/>
+    <link port="TimeDelay.input" relation="relation2"/>
+    <link port="TimeDelay.output" relation="relation4"/>
+    <link port="DelayComposite.port" relation="relation2"/>
+    <link port="DelayComposite.port2" relation="relation5"/>
+    <link port="CurrentTime.output" relation="relation6"/>
+    <link port="CurrentTime.trigger" relation="relation5"/>
+    <link port="CurrentMicrostep.output" relation="relation3"/>
+    <link port="CurrentMicrostep.trigger" relation="relation5"/>
+    <link port="CurrentTime2.output" relation="relation"/>
+    <link port="CurrentTime2.trigger" relation="relation4"/>
+    <link port="CurrentMicrostep2.output" relation="relation7"/>
+    <link port="CurrentMicrostep2.trigger" relation="relation4"/>
+    <link port="NonStrictTest.input" relation="relation"/>
+    <link port="NonStrictTest2.input" relation="relation7"/>
+    <link port="NonStrictTest3.input" relation="relation6"/>
+    <link port="NonStrictTest4.input" relation="relation3"/>
+</entity>
