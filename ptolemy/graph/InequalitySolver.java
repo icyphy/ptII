@@ -503,14 +503,14 @@ public class InequalitySolver {
             if (prevNS == null) {
                 prevNS = _NS;
             } else if (_NS.size() > 0 && prevNS.size() == _NS.size() && prevNS.containsAll(_NS) && loopCnt > 1) {
-                loopCnt++;
                 String errorMessage = "";
                 for (Object o : _NS) {
                     Integer i = (Integer) o; 
                     errorMessage += " (" + ((Info)_Ilist.get(i))._ineq.getGreaterTerm() + ", " + ((Info)_Ilist.get(i))._ineq.getLesserTerm() + ") ";
                 }
-                throw new InvalidStateException("Cound not resolve types: " + errorMessage);
+                throw new IllegalActionException("Cound not resolve types: " + errorMessage);
             }
+            loopCnt++;
         }
 
         // Check the inequalities not involved in the above iteration.
