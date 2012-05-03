@@ -56,6 +56,7 @@ import cern.jet.random.Exponential;
  </pre>
  The above description of Exponential is
  <a href="doc-files/colt-copyright.htm">copyrighted</a>.
+ Note that the mean is 1/lambda, and the standard deviation is 1/lambda^2.
 
  <p>A definition of the Exponential distribution can be found at
  <a href="http://www.cern.ch/RD11/rkb/AN16pp/node78.html#SECTION000780000000000000000"><code>http://www.cern.ch/RD11/rkb/AN16pp/node78.html#SECTION000780000000000000000</code></a>
