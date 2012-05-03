@@ -55,7 +55,8 @@ public abstract class MonotonicFunction implements InequalityTerm {
         return null;
     }
 
-    /** Return the result of this monotonic function.   Derived
+    /** Return the current value of this monotonic function given the
+     *  current value of the variables returned by getVariables().   Derived
      *  classes should implement this method to return the current value
      *  of the monotonic function.
      *  @exception IllegalActionException Thrown in derived classes if
@@ -65,7 +66,8 @@ public abstract class MonotonicFunction implements InequalityTerm {
      */
     public abstract Object getValue() throws IllegalActionException;
 
-    /** Return the type variables in this inequality term.  Derived
+    /** Return the type variables in this inequality term. These are
+     *  the variables on which the value of the function depends.  Derived
      *  classes should implement this method to return an array of
      *  InequalityTerms that this function depends on.
      *  @return An array of InequalityTerm.
