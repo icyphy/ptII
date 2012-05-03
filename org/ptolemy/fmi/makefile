@@ -63,6 +63,7 @@ JSRCS = \
 	FMIModelDescription.java \
 	FMIScalarVariable.java \
 	FMUFile.java \
+	FMULibrary.java \
 	FMULog.java \
 	NativeSizeT.java
 

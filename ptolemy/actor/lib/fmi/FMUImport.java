@@ -42,6 +42,7 @@ import org.ptolemy.fmi.FMIScalarVariable;
 import org.ptolemy.fmi.FMIScalarVariable.Alias;
 import org.ptolemy.fmi.FMIScalarVariable.Causality;
 import org.ptolemy.fmi.FMUFile;
+import org.ptolemy.fmi.FMULibrary;
 import org.ptolemy.fmi.NativeSizeT;
 import org.ptolemy.fmi.type.FMIBooleanType;
 import org.ptolemy.fmi.type.FMIIntegerType;
@@ -168,7 +169,9 @@ public class FMUImport extends TypedAtomicActor {
 
         String modelIdentifier = _fmiModelDescription.modelIdentifier;
 
-        // Ptolemy parameters are read in preinitia
+        // Ptolemy parameters are read in initialize() because the fmi
+        // version of the parameters must be written before
+        // fmiInitializeSlave() is called.
 
         ////////////////
         // Iterate through the scalarVariables and set all the inputs.
@@ -371,7 +374,7 @@ public class FMUImport extends TypedAtomicActor {
         // If a location is given as a URL, construct MoML to
         // specify a "source".
         String source = "";
-        // FIXME: not sure about this
+        // FIXME: not sure about this.
         if (fmuFileName.startsWith("http://")) {
             source = " source=\"" + fmuFileName.trim() + "\"";
         }
@@ -405,7 +408,6 @@ public class FMUImport extends TypedAtomicActor {
                 // // been overridden.
                 // parameter.setDerivedLevel(1);
 
-                // FIXME: Need to sanitize the name.
                 // FIXME: Need to sanitize the value.
                 parameterMoML.append("  <property name=\""
                         + StringUtilities.sanitizeName(scalar.name)
@@ -556,97 +558,8 @@ public class FMUImport extends TypedAtomicActor {
         }
     }
 
-    /** An interface that contains JNA callbacks.
-     */
-    public interface FMULibrary extends FMILibrary {
-        /** The logging function.
-         * We need a class that implement the interface because
-         * certain methods require interfaces as arguments, yet we
-         * need to have method bodies, so we need an actual class.
-         */
-        public class FMULogger implements FMICallbackLogger {
-            /** Log a message.
-             *  Note that arguments after the message are currently ignored.   
-             *  @param fmiComponent The component that was instantiated.
-             *  @param instanceName The name of the instance of the FMU.
-             *  @param status The fmiStatus, see
-             *  {@link org.ptolemy.fmi.FMILibrary.FMIStatus}
-             *  @param category The category, typically "log" or "error".
-             *  @param message The message
-             */
-
-            public void apply(Pointer fmiComponent, String instanceName,
-                    int status, String category, String message, Pointer /*...*/ parameters) {
-                FMULog.log(fmiComponent, instanceName, status, category, message, parameters);
-            }
-        }
-
-        /** Allocate memory. */
-
-        public class FMUAllocateMemory implements FMICallbackAllocateMemory {
-            // See http://markmail.org/message/6ssggt4q6lkq3hen
-
-            /** Allocate memory.
-             *  @param numberOfObjects The number of objects to allocate.
-             *  @param size The size of the object in bytes.
-             *  @return a Pointer to the allocated memory.
-             */
-            public Pointer apply(NativeSizeT numberOfObjects, NativeSizeT size) {
-                int numberOfObjectsValue = numberOfObjects.intValue();
-                if (numberOfObjectsValue <= 0) {
-                    // instantiateModel() in fmuTemplate.c
-                    // will try to allocate 0 reals, integers, booleans or
-                    // strings.
-                    // However, instantiateModel() later checks to see if
-                    // any of the allocated spaces are null and fails with
-                    // "out of memory" if they are null.
-                    numberOfObjectsValue = 1;
-                }
-                Memory memory = new Memory(numberOfObjectsValue * size.intValue());
-                Memory alignedMemory = memory.align(4);
-                memory.clear();
-                Pointer pointer = alignedMemory.share(0);
-
-                // System.out.println("Java fmiAllocateMemory " + numberOfObjectsValue + " " +
-                // size
-                // + "\n        memory: " + memory + " " + + memory.SIZE + " " +
-                // memory.SIZE % 4
-                // + "\n alignedMemory: " + alignedMemory + " " +
-                // alignedMemory.SIZE + " " + alignedMemory.SIZE %4
-                // + "\n       pointer: " + pointer + " " + pointer.SIZE + " " +
-                // pointer.SIZE % 4
-                // );
-
-                // Need to keep a reference so the memory does not get gc'd.
-                _pointers.add(pointer);
-
-                return pointer;
-            }
-        }
-
-        /** A callback that frees memory.
-         */
-        public class FMUFreeMemory implements FMICallbackFreeMemory {
-            /** Free memory.
-             *  @param pointer A JNA Pointer to the object to be freed.
-             */
-            public void apply(Pointer pointer) {
-                _pointers.remove(pointer);
-            }
-        }
-
-        /** A callback for when the step is finished. */
-        public class FMUStepFinished implements FMIStepFinished {
-            /** The step is finished.
-             *  @param fmiComponent The FMI component that was instantiate.
-             *  @param status The status flag.  See the FMI documentation.
-             */
-            public void apply(Pointer fmiComponent, int status) {
-                System.out.println("Java fmiStepFinished: " + fmiComponent
-                        + " " + status);
-            }
-        };
-    }
+    ///////////////////////////////////////////////////////////////////
+    ////                     private methods                       ////
 
     /** Given a FMIType object, return a string suitable for setting
      *  the TypeAttribute.
@@ -788,6 +701,9 @@ public class FMUImport extends TypedAtomicActor {
         }
     }
 
+    ///////////////////////////////////////////////////////////////////
+    ////                     private fields                        ////
+
     /** The FMI component created by the
      * modelIdentifier_fmiInstantiateSlave() method.
      */
@@ -811,56 +727,10 @@ public class FMUImport extends TypedAtomicActor {
     private long _fmuFileModificationTime = -1;
 
     /** The _fmiInstantiateSlave function. */
-    Function _fmiInstantiateSlave;
+    private Function _fmiInstantiateSlave;
 
     /** A representation of the fmiModelDescription element of a
      *  Functional Mock-up Unit (FMU) file.
      */
-    FMIModelDescription _fmiModelDescription;
-
-    /** Keep references to memory that has been allocated and
-     *  avoid problems with the memory being garbage collected.   
-     */
-    private static Set<Pointer> _pointers = new HashSet<Pointer>();
-
-    private static String printMemory(Pointer pointer, int size) {
-        // FIXME: This method is copied from the JNA distribution.
-        // It should be properly credited or removed.
-        final int BYTES_PER_ROW = 4;
-        String LS = System.getProperty("line.separator");
-        byte[] buf = pointer.getByteArray(0, size);
-        StringBuffer contents = new StringBuffer(LS);
-        for (int i=0;i < buf.length;i++) {
-            if ((i % BYTES_PER_ROW) == 0) {
-                contents.append("[");
-            }
-            if (buf[i] >=0 && buf[i] < 16) {
-                contents.append("0");
-            }
-            contents.append(Integer.toHexString(buf[i] & 0xFF));
-            if ((i % BYTES_PER_ROW) == BYTES_PER_ROW-1 && i < buf.length-1) {
-                contents.append("]" + LS);
-            }
-        }
-
-        contents.append("]");
-
-        for (int i=0;i < buf.length;i++) {
-            if ((i % BYTES_PER_ROW) == 0) {
-                contents.append("<");
-            }
-            //if (buf[i] >=0 && buf[i] < 16) {
-            //    contents.append("0");
-            //}
-            contents.append(Character.valueOf((char)(buf[i] & 0xff)));
-            if ((i % BYTES_PER_ROW) == BYTES_PER_ROW-1 && i < buf.length-1) {
-                contents.append(">" + LS);
-            }
-        }
-        contents.append(">");
-        return contents.toString();
-    }
-
-    // True if we printed the fixme message.
-    private static boolean _printedMessage = false;
+    private FMIModelDescription _fmiModelDescription;
 }

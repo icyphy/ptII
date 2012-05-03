@@ -34,6 +34,7 @@ import org.ptolemy.fmi.FMICallbackFunctions;
 import org.ptolemy.fmi.FMIEventInfo;
 import org.ptolemy.fmi.FMIModelDescription;
 import org.ptolemy.fmi.FMUFile;
+import org.ptolemy.fmi.FMULibrary;
 
 import com.sun.jna.Function;
 import com.sun.jna.NativeLibrary;
