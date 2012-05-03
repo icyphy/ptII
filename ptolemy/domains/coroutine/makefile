@@ -30,7 +30,7 @@
 
 ME =		ptolemy/domains/coroutine
 
-DIRS =		kernel demo doc test lib
+DIRS =		kernel lib
 
 # Root of Ptolemy II directory
 ROOT =		../../..
@@ -54,7 +54,7 @@ PTCLASSALLJAR = $(PTPACKAGE).jar
 # Files or directories that are present, but that 'make checkjunk'
 # should not complain about
 # Don't include demo or DIRS here, or else 'make sources' will run 'make demo'
-MISC_FILES =	kernel test lib
+MISC_FILES =	kernel lib
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
