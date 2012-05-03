@@ -18,9 +18,9 @@
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[507, 705]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.931286481522">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.5294801555087">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{264.3603515625, 390.4031931860208}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{470.927734375, 677.6418615939349}">
     </property>
     <property name="om1" class="ptolemy.data.expr.Parameter" value="0.0">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -127,10 +127,6 @@
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Control response time">
         </property>
         <property name="_location" class="ptolemy.kernel.util.RelativeLocation" value="[755.0, 245.0]">
-            <property name="relativeTo" class="ptolemy.kernel.util.StringAttribute">
-            </property>
-            <property name="relativeToElementName" class="ptolemy.kernel.util.StringAttribute">
-            </property>
         </property>
     </property>
     <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -189,8 +185,8 @@
 <title>DMIB Simulation</title>
 <xLabel>time (s)</xLabel>
 <yLabel>w</yLabel>
-<xRange min="0.0" max="10.0"/>
-<yRange min="-26.534677634402257" max="199.6808504052932"/>
+<xRange min="0.0" max="6.1683827929"/>
+<yRange min="-26.019006540562096" max="96.99714058410665"/>
 </plot>?>
         </configure>
     </entity>
@@ -215,7 +211,7 @@
 <title>System Trajectory During Control</title>
 <xLabel>w (Slip Frequency)</xLabel>
 <yLabel>w_dot ( Acceleration)</yLabel>
-<xRange min="-2.5" max="27.990205549837555"/>
+<xRange min="-2.5" max="27.290586881155225"/>
 <yRange min="-47.5" max="47.5"/>
 <default marks="points"/>
 </plot>?>
@@ -265,7 +261,7 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[225.0, 285.0]">
         </property>
-        <property name="t_control" class="ptolemy.data.expr.Parameter" value="1">
+        <property name="t_control" class="ptolemy.data.expr.Parameter" value="0.1">
         </property>
         <port name="delta1" class="ptolemy.domains.modal.modal.ModalPort">
             <property name="output"/>
