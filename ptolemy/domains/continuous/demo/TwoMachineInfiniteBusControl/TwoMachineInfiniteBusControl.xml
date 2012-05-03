@@ -14,13 +14,13 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="{100, 40}">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 22, 720, 815}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 22, 1440, 815}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[507, 705]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1227, 705]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.5294801555087">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.9936479316206">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{470.927734375, 677.6418615939349}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{486.0937749335106, 295.697265625}">
     </property>
     <property name="om1" class="ptolemy.data.expr.Parameter" value="0.0">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -60,7 +60,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[645.0, 195.0]">
         </property>
     </property>
-    <property name="d1" class="ptolemy.data.expr.Parameter" value="0.2">
+    <property name="d1" class="ptolemy.data.expr.Parameter" value="0.3">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -98,7 +98,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[645.0, 215.0]">
         </property>
     </property>
-    <property name="t_response" class="ptolemy.data.expr.Parameter" value="0.3">
+    <property name="t_response" class="ptolemy.data.expr.Parameter" value="0.1">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -160,7 +160,7 @@
         </property>
     </property>
     <property name="Annotation6" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="t_control &lt;= 0.1476 &#10;for stability (empirical)">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="t_control &lt;= 0.15&#10;for stability (empirical)">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[145.0, 330.0]">
         </property>
@@ -172,11 +172,11 @@
         </property>
         <property name="legend" class="ptolemy.kernel.util.StringAttribute" value="delta1,w1, w_dot1, delta2, w2, w_dot2">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={720, 22, 720, 815}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={560, 22, 720, 815}, maximized=false}">
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[720, 771]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[505.0, 250.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[520.0, 255.0]">
         </property>
         <configure>
 <?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
@@ -185,14 +185,14 @@
 <title>DMIB Simulation</title>
 <xLabel>time (s)</xLabel>
 <yLabel>w</yLabel>
-<xRange min="0.0" max="6.1683827929"/>
-<yRange min="-26.019006540562096" max="96.99714058410665"/>
+<xRange min="0.0" max="10.0"/>
+<yRange min="-8.030904573864074" max="15.853640989096075"/>
 </plot>?>
         </configure>
     </entity>
     <entity name="CurrentTime" class="ptolemy.actor.lib.CurrentTime">
         <doc>Output the current time.</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 260.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[25.0, 250.0]">
         </property>
     </entity>
     <entity name="XYPlotter" class="ptolemy.actor.lib.gui.XYPlotter">
@@ -211,7 +211,7 @@
 <title>System Trajectory During Control</title>
 <xLabel>w (Slip Frequency)</xLabel>
 <yLabel>w_dot ( Acceleration)</yLabel>
-<xRange min="-2.5" max="27.290586881155225"/>
+<xRange min="-2.5672599289057776" max="3.1629720314861283"/>
 <yRange min="-47.5" max="47.5"/>
 <default marks="points"/>
 </plot>?>
@@ -242,7 +242,7 @@
         </property>
     </entity>
     <entity name="AddSubtract" class="ptolemy.actor.lib.AddSubtract">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[140.78125, 287.8515625]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{140.0, 285.0}">
         </property>
     </entity>
     <entity name="Const" class="ptolemy.actor.lib.Const">
@@ -259,9 +259,9 @@
     <entity name="TMIB" class="ptolemy.domains.modal.modal.ModalModel">
         <property name="_tableauFactory" class="ptolemy.vergil.modal.modal.ModalTableauFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[225.0, 285.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{225.0, 285.0}">
         </property>
-        <property name="t_control" class="ptolemy.data.expr.Parameter" value="0.1">
+        <property name="t_control" class="ptolemy.data.expr.Parameter" value="0.14">
         </property>
         <port name="delta1" class="ptolemy.domains.modal.modal.ModalPort">
             <property name="output"/>
@@ -326,9 +326,9 @@ dynamics of the remaining generator become unstable. </text></svg></configure>
             </property>
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 478]">
             </property>
-            <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+            <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.64">
             </property>
-            <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{350.0, 239.0}">
+            <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{350.0, 239.0000000000001}">
             </property>
             <port name="delta1" class="ptolemy.domains.modal.modal.RefinementPort">
                 <property name="input"/>
@@ -400,7 +400,7 @@ dynamics of the remaining generator become unstable. </text></svg></configure>
                 </property>
                 <property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory">
                 </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[490.0, 220.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[470.0, 220.0]">
                 </property>
             </entity>
             <entity name="state2" class="ptolemy.domains.modal.kernel.State">
@@ -420,7 +420,7 @@ dynamics of the remaining generator become unstable. </text></svg></configure>
                 </property>
                 <property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory">
                 </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[645.0, 220.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[620.0, 220.0]">
                 </property>
             </entity>
             <entity name="Recovery" class="ptolemy.domains.modal.kernel.State">
@@ -430,19 +430,7 @@ dynamics of the remaining generator become unstable. </text></svg></configure>
                 </property>
                 <property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory">
                 </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[825.0, 210.0]">
-                </property>
-            </entity>
-            <entity name="state" class="ptolemy.domains.modal.kernel.State">
-                <property name="isInitialState" class="ptolemy.data.expr.Parameter" value="false">
-                    <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
-                    </property>
-                </property>
-                <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
-                </property>
-                <property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory">
-                </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[845.0, 50.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[840.0, 215.0]">
                 </property>
             </entity>
             <relation name="relation" class="ptolemy.domains.modal.kernel.Transition">
@@ -495,14 +483,6 @@ dynamics of the remaining generator become unstable. </text></svg></configure>
                 <property name="defaultTransition" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
             </relation>
-            <relation name="relation6" class="ptolemy.domains.modal.kernel.Transition">
-                <property name="setActions" class="ptolemy.domains.modal.kernel.CommitActionsAttribute" value="Recovery.w1zero = om1;&#10;Recovery.w2zero = om2;&#10;Recovery.delta1 = d1;&#10;Recovery.delta2 = d2">
-                </property>
-                <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="-0.5389835541255973">
-                </property>
-                <property name="gamma" class="ptolemy.data.expr.Parameter" value="1.5630751939625478">
-                </property>
-            </relation>
             <link port="normal.incomingPort" relation="relation2"/>
             <link port="normal.outgoingPort" relation="relation"/>
             <link port="fault-on.incomingPort" relation="relation"/>
@@ -513,8 +493,6 @@ dynamics of the remaining generator become unstable. </text></svg></configure>
             <link port="1 line without G2.incomingPort" relation="relation4"/>
             <link port="1 line without G2.outgoingPort" relation="relation5"/>
             <link port="Recovery.incomingPort" relation="relation5"/>
-            <link port="Recovery.incomingPort" relation="relation6"/>
-            <link port="state.outgoingPort" relation="relation6"/>
         </entity>
         <entity name="filltank" class="ptolemy.domains.modal.modal.Refinement">
             <property name="factor" class="ptolemy.data.expr.Parameter" value="ws / (2*H1)">
@@ -572,7 +550,7 @@ dynamics of the remaining generator become unstable. </text></svg></configure>
             <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{497.3234042553191, 433.0}">
             </property>
             <property name="ParameterSet" class="ptolemy.actor.parameters.ParameterSet">
-                <property name="fileOrURL" class="ptolemy.data.expr.FileParameter" value="data_normal.txt">
+                <property name="fileOrURL" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/ptolemy/domains/continuous/demo/TwoMachineInfiniteBusControl/data_normal.txt">
                 </property>
                 <property name="checkForFileUpdates" class="ptolemy.data.expr.Parameter" value="true">
                 </property>
@@ -586,10 +564,10 @@ dynamics of the remaining generator become unstable. </text></svg></configure>
       </svg>
     </configure>
                 </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[590.0, 80.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[635.0, 215.0]">
                 </property>
             </property>
-            <property name="delta1" class="ptolemy.data.expr.Parameter" value="0.2">
+            <property name="delta1" class="ptolemy.data.expr.Parameter" value="0.3">
                 <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
                 </property>
                 <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -1196,7 +1174,7 @@ dynamics of the remaining generator become unstable. </text></svg></configure>
                 </property>
             </property>
             <property name="ParameterSet" class="ptolemy.actor.parameters.ParameterSet">
-                <property name="fileOrURL" class="ptolemy.data.expr.FileParameter" value="data_fault-on.txt">
+                <property name="fileOrURL" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/ptolemy/domains/continuous/demo/TwoMachineInfiniteBusControl/data_fault-on.txt">
                 </property>
                 <property name="_editorFactory" class="ptolemy.actor.gui.FileOrURLEditorFactory">
                 </property>
@@ -1211,7 +1189,7 @@ dynamics of the remaining generator become unstable. </text></svg></configure>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="{515.0, 80.0}">
                 </property>
             </property>
-            <property name="delta1" class="ptolemy.data.expr.Parameter" value="0.2">
+            <property name="delta1" class="ptolemy.data.expr.Parameter" value="0.3">
                 <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
                 </property>
                 <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -1469,7 +1447,7 @@ dynamics of the remaining generator become unstable. </text></svg></configure>
             <relation name="relation11" class="ptolemy.actor.TypedIORelation">
                 <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
                 </property>
-                <vertex name="vertex1" value="{730.0, 710.0}">
+                <vertex name="vertex1" value="[580.0, 620.0]">
                 </vertex>
             </relation>
             <link port="delta1" relation="relation9"/>
@@ -1510,7 +1488,7 @@ dynamics of the remaining generator become unstable. </text></svg></configure>
             </property>
             <property name="factor" class="ptolemy.data.expr.Parameter" value="ws / (2*H1)">
             </property>
-            <property name="w1zero" class="ptolemy.data.expr.Parameter" value="10.6790203600084">
+            <property name="w1zero" class="ptolemy.data.expr.Parameter" value="2.0042381257875">
                 <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
                 </property>
                 <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -1529,7 +1507,7 @@ dynamics of the remaining generator become unstable. </text></svg></configure>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="{-125.0, 65.0}">
                 </property>
             </property>
-            <property name="w2zero" class="ptolemy.data.expr.Parameter" value="31.2193271911444">
+            <property name="w2zero" class="ptolemy.data.expr.Parameter" value="5.4469421996498">
                 <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
                 </property>
                 <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -1549,7 +1527,7 @@ dynamics of the remaining generator become unstable. </text></svg></configure>
                 </property>
             </property>
             <property name="ParameterSet" class="ptolemy.actor.parameters.ParameterSet">
-                <property name="fileOrURL" class="ptolemy.data.expr.FileParameter" value="data_fault1.txt">
+                <property name="fileOrURL" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/ptolemy/domains/continuous/demo/TwoMachineInfiniteBusControl/data_fault1.txt">
                 </property>
                 <property name="_editorFactory" class="ptolemy.actor.gui.FileOrURLEditorFactory">
                 </property>
@@ -1564,7 +1542,7 @@ dynamics of the remaining generator become unstable. </text></svg></configure>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="{335.0, 90.0}">
                 </property>
             </property>
-            <property name="delta1" class="ptolemy.data.expr.Parameter" value="4.7111095489234">
+            <property name="delta1" class="ptolemy.data.expr.Parameter" value="0.4464253573007">
                 <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
                 </property>
                 <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -1583,7 +1561,7 @@ dynamics of the remaining generator become unstable. </text></svg></configure>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[-105.0, 110.0]">
                 </property>
             </property>
-            <property name="delta2" class="ptolemy.data.expr.Parameter" value="16.9950705201503">
+            <property name="delta2" class="ptolemy.data.expr.Parameter" value="0.386075953053">
                 <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
                 </property>
                 <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -1845,7 +1823,7 @@ dynamics of the remaining generator become unstable. </text></svg></configure>
             <link port="Scale2.output" relation="relation7"/>
         </entity>
         <entity name="withoutG2" class="ptolemy.domains.modal.modal.Refinement">
-            <property name="w1zero" class="ptolemy.data.expr.Parameter" value="14.2125620514411">
+            <property name="w1zero" class="ptolemy.data.expr.Parameter" value="3.1629720314861">
                 <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
                 </property>
                 <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -1864,7 +1842,7 @@ dynamics of the remaining generator become unstable. </text></svg></configure>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="{-115.0, 75.0}">
                 </property>
             </property>
-            <property name="w2zero" class="ptolemy.data.expr.Parameter" value="33.956986024745">
+            <property name="w2zero" class="ptolemy.data.expr.Parameter" value="6.7015388091774">
                 <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
                 </property>
                 <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -1883,7 +1861,7 @@ dynamics of the remaining generator become unstable. </text></svg></configure>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="{-125.0, 100.0}">
                 </property>
             </property>
-            <property name="delta1" class="ptolemy.data.expr.Parameter" value="7.3505953474666">
+            <property name="delta1" class="ptolemy.data.expr.Parameter" value="0.9795951313726">
                 <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
                 </property>
                 <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -1902,7 +1880,7 @@ dynamics of the remaining generator become unstable. </text></svg></configure>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="{-95.0, 120.0}">
                 </property>
             </property>
-            <property name="delta2" class="ptolemy.data.expr.Parameter" value="23.5338736657734">
+            <property name="delta2" class="ptolemy.data.expr.Parameter" value="1.6596791403781">
                 <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
                 </property>
                 <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -1924,7 +1902,7 @@ dynamics of the remaining generator become unstable. </text></svg></configure>
             <property name="factor" class="ptolemy.data.expr.Parameter" value="ws / (2*H1)">
             </property>
             <property name="ParameterSet" class="ptolemy.actor.parameters.ParameterSet">
-                <property name="fileOrURL" class="ptolemy.data.expr.FileParameter" value="data_fault2.txt">
+                <property name="fileOrURL" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/ptolemy/domains/continuous/demo/TwoMachineInfiniteBusControl/data_fault2.txt">
                 </property>
                 <property name="_editorFactory" class="ptolemy.actor.gui.FileOrURLEditorFactory">
                 </property>
@@ -1940,7 +1918,7 @@ dynamics of the remaining generator become unstable. </text></svg></configure>
                 </property>
             </property>
             <property name="Continuous Director" class="ptolemy.domains.continuous.kernel.ContinuousDirector">
-                <property name="_location" class="ptolemy.kernel.util.Location" value="{110, 125}">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[170.0, 65.0]">
                 </property>
             </property>
             <port name="delta1" class="ptolemy.domains.modal.modal.RefinementPort">
@@ -1965,12 +1943,12 @@ dynamics of the remaining generator become unstable. </text></svg></configure>
             </port>
             <port name="delta2" class="ptolemy.domains.modal.modal.RefinementPort">
                 <property name="output"/>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[945.7273864746094, 735.2566833496094]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[915.0, 730.0]">
                 </property>
             </port>
             <port name="omega2" class="ptolemy.domains.modal.modal.RefinementPort">
                 <property name="output"/>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[550.0, 810.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[495.0, 810.0]">
                 </property>
             </port>
             <port name="time" class="ptolemy.domains.modal.modal.RefinementPort">
@@ -2110,138 +2088,6 @@ dynamics of the remaining generator become unstable. </text></svg></configure>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="{675.0, 575.0}">
                 </property>
             </entity>
-            <entity name="change in w1dot2" class="ptolemy.domains.continuous.lib.Integrator">
-                <property name="initialState" class="ptolemy.actor.parameters.PortParameter" value="w1zero">
-                </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="{250.0, 400.0}">
-                </property>
-            </entity>
-            <entity name="change in w3" class="ptolemy.domains.continuous.lib.Integrator">
-                <property name="initialState" class="ptolemy.actor.parameters.PortParameter" value="delta1">
-                </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="{505.0, 400.0}">
-                </property>
-            </entity>
-            <entity name="Expression5" class="ptolemy.actor.lib.Expression">
-                <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="Pm1 - D*W1 - Pe1">
-                </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="{480.0, 245.0}">
-                </property>
-                <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
-                    <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
-                    </property>
-                    <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
-                    </property>
-                </property>
-                <port name="W1" class="ptolemy.actor.TypedIOPort">
-                    <property name="input"/>
-                </port>
-                <port name="Pe1" class="ptolemy.actor.TypedIOPort">
-                    <property name="input"/>
-                </port>
-            </entity>
-            <entity name="Expression6" class="ptolemy.actor.lib.Expression">
-                <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="G11 + G12*cos(DELTA1 - DELTA2) + B12*sin(DELTA1-DELTA2) + G1i*cos(DELTA1) + B1i*sin(DELTA1)">
-                </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="{215.0, 305.0}">
-                </property>
-                <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
-                    <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
-                    </property>
-                    <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
-                    </property>
-                </property>
-                <property name="_flipPortsHorizontal" class="ptolemy.data.expr.Parameter" value="true">
-                </property>
-                <port name="DELTA1" class="ptolemy.actor.TypedIOPort">
-                    <property name="input"/>
-                    <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-                    </property>
-                </port>
-                <port name="DELTA2" class="ptolemy.actor.TypedIOPort">
-                    <property name="input"/>
-                    <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-                    </property>
-                </port>
-            </entity>
-            <entity name="Scale3" class="ptolemy.actor.lib.Scale">
-                <property name="factor" class="ptolemy.data.expr.Parameter" value="ws / (2*H1*a)">
-                </property>
-                <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
-                    <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="factor">
-                    </property>
-                </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="{645.0, 245.0}">
-                </property>
-            </entity>
-            <entity name="change in w2dot2" class="ptolemy.domains.continuous.lib.Integrator">
-                <property name="initialState" class="ptolemy.actor.parameters.PortParameter" value="w2zero">
-                </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="{290.0, 740.0}">
-                </property>
-            </entity>
-            <entity name="change in w4" class="ptolemy.domains.continuous.lib.Integrator">
-                <property name="initialState" class="ptolemy.actor.parameters.PortParameter" value="delta2">
-                </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="{545.0, 740.0}">
-                </property>
-            </entity>
-            <entity name="Expression7" class="ptolemy.actor.lib.Expression">
-                <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="Pm2 - D*W2 - Pe2">
-                </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="{520.0, 585.0}">
-                </property>
-                <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
-                    <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
-                    </property>
-                    <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
-                    </property>
-                </property>
-                <port name="W2" class="ptolemy.actor.TypedIOPort">
-                    <property name="input"/>
-                    <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-                    </property>
-                </port>
-                <port name="Pe2" class="ptolemy.actor.TypedIOPort">
-                    <property name="input"/>
-                    <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-                    </property>
-                </port>
-            </entity>
-            <entity name="Expression8" class="ptolemy.actor.lib.Expression">
-                <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="G22 + G21*cos(DELTA2 - DELTA1) + B21*sin(DELTA2-DELTA1) + G2i*cos(DELTA2) + B2i*sin(DELTA2)">
-                </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="{340.0, 640.0}">
-                </property>
-                <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
-                    <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
-                    </property>
-                    <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
-                    </property>
-                </property>
-                <property name="_flipPortsHorizontal" class="ptolemy.data.expr.Parameter" value="true">
-                </property>
-                <port name="DELTA2" class="ptolemy.actor.TypedIOPort">
-                    <property name="input"/>
-                    <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-                    </property>
-                </port>
-                <port name="DELTA1" class="ptolemy.actor.TypedIOPort">
-                    <property name="input"/>
-                    <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-                    </property>
-                </port>
-            </entity>
-            <entity name="Scale4" class="ptolemy.actor.lib.Scale">
-                <property name="factor" class="ptolemy.data.expr.Parameter" value="ws / (2*H2)">
-                </property>
-                <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
-                    <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="factor">
-                    </property>
-                </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="{685.0, 585.0}">
-                </property>
-            </entity>
             <relation name="relation" class="ptolemy.actor.TypedIORelation">
                 <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
                 </property>
@@ -2286,56 +2132,12 @@ dynamics of the remaining generator become unstable. </text></svg></configure>
                 <vertex name="vertex1" value="{750.0, 730.0}">
                 </vertex>
             </relation>
-            <relation name="relation11" class="ptolemy.actor.TypedIORelation">
-                <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
-                </property>
-                <vertex name="vertex1" value="{405.0, 400.0}">
-                </vertex>
-            </relation>
-            <relation name="relation12" class="ptolemy.actor.TypedIORelation">
-            </relation>
-            <relation name="relation13" class="ptolemy.actor.TypedIORelation">
-            </relation>
-            <relation name="relation14" class="ptolemy.actor.TypedIORelation">
-                <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
-                </property>
-                <vertex name="vertex1" value="{435.0, 740.0}">
-                </vertex>
-            </relation>
-            <relation name="relation15" class="ptolemy.actor.TypedIORelation">
-            </relation>
-            <relation name="relation16" class="ptolemy.actor.TypedIORelation">
-            </relation>
-            <relation name="relation17" class="ptolemy.actor.TypedIORelation">
-                <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
-                </property>
-                <vertex name="vertex1" value="{260.0, 545.0}">
-                </vertex>
-            </relation>
-            <relation name="relation18" class="ptolemy.actor.TypedIORelation">
-                <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
-                </property>
-                <vertex name="vertex1" value="{680.0, 400.0}">
-                </vertex>
-            </relation>
-            <relation name="relation19" class="ptolemy.actor.TypedIORelation">
-                <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
-                </property>
-                <vertex name="vertex1" value="{210.0, 220.0}">
-                </vertex>
-            </relation>
-            <relation name="relation20" class="ptolemy.actor.TypedIORelation">
-                <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
-                </property>
-                <vertex name="vertex1" value="[760.0, 740.0]">
-                </vertex>
-            </relation>
-            <link port="delta1" relation="relation18"/>
-            <link port="omega1" relation="relation11"/>
-            <link port="omegaDot1" relation="relation19"/>
-            <link port="omegaDot2" relation="relation17"/>
-            <link port="delta2" relation="relation20"/>
-            <link port="omega2" relation="relation14"/>
+            <link port="delta1" relation="relation8"/>
+            <link port="omega1" relation="relation"/>
+            <link port="omegaDot1" relation="relation9"/>
+            <link port="omegaDot2" relation="relation7"/>
+            <link port="delta2" relation="relation10"/>
+            <link port="omega2" relation="relation4"/>
             <link port="change in w1dot.derivative" relation="relation9"/>
             <link port="change in w1dot.state" relation="relation"/>
             <link port="change in w.derivative" relation="relation"/>
@@ -2360,37 +2162,13 @@ dynamics of the remaining generator become unstable. </text></svg></configure>
             <link port="Expression4.DELTA1" relation="relation8"/>
             <link port="Scale2.input" relation="relation5"/>
             <link port="Scale2.output" relation="relation7"/>
-            <link port="change in w1dot2.derivative" relation="relation19"/>
-            <link port="change in w1dot2.state" relation="relation11"/>
-            <link port="change in w3.derivative" relation="relation11"/>
-            <link port="change in w3.state" relation="relation18"/>
-            <link port="Expression5.output" relation="relation12"/>
-            <link port="Expression5.W1" relation="relation11"/>
-            <link port="Expression5.Pe1" relation="relation13"/>
-            <link port="Expression6.output" relation="relation13"/>
-            <link port="Expression6.DELTA1" relation="relation18"/>
-            <link port="Expression6.DELTA2" relation="relation20"/>
-            <link port="Scale3.input" relation="relation12"/>
-            <link port="Scale3.output" relation="relation19"/>
-            <link port="change in w2dot2.derivative" relation="relation17"/>
-            <link port="change in w2dot2.state" relation="relation14"/>
-            <link port="change in w4.derivative" relation="relation14"/>
-            <link port="change in w4.state" relation="relation20"/>
-            <link port="Expression7.output" relation="relation15"/>
-            <link port="Expression7.W2" relation="relation14"/>
-            <link port="Expression7.Pe2" relation="relation16"/>
-            <link port="Expression8.output" relation="relation16"/>
-            <link port="Expression8.DELTA2" relation="relation20"/>
-            <link port="Expression8.DELTA1" relation="relation18"/>
-            <link port="Scale4.input" relation="relation15"/>
-            <link port="Scale4.output" relation="relation17"/>
         </entity>
         <entity name="Recovery" class="ptolemy.domains.modal.modal.Refinement">
             <property name="Continuous Director" class="ptolemy.domains.continuous.kernel.ContinuousDirector">
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[-835.0, 65.0]">
                 </property>
             </property>
-            <property name="w1zero" class="ptolemy.data.expr.Parameter" value="16.9708759720083">
+            <property name="w1zero" class="ptolemy.data.expr.Parameter" value="2.919590719551">
                 <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
                 </property>
                 <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -2409,7 +2187,7 @@ dynamics of the remaining generator become unstable. </text></svg></configure>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[-840.0, 170.0]">
                 </property>
             </property>
-            <property name="w2zero" class="ptolemy.data.expr.Parameter" value="40.0802345288408">
+            <property name="w2zero" class="ptolemy.data.expr.Parameter" value="10.2893257672073">
                 <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
                 </property>
                 <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -2428,7 +2206,7 @@ dynamics of the remaining generator become unstable. </text></svg></configure>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[-850.0, 195.0]">
                 </property>
             </property>
-            <property name="delta1" class="ptolemy.data.expr.Parameter" value="11.5905664853866">
+            <property name="delta1" class="ptolemy.data.expr.Parameter" value="1.2852756466728">
                 <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
                 </property>
                 <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -2447,7 +2225,7 @@ dynamics of the remaining generator become unstable. </text></svg></configure>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[-870.0, 295.0]">
                 </property>
             </property>
-            <property name="delta2" class="ptolemy.data.expr.Parameter" value="34.6641788804573">
+            <property name="delta2" class="ptolemy.data.expr.Parameter" value="2.5124972380153">
                 <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
                 </property>
                 <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -2467,7 +2245,7 @@ dynamics of the remaining generator become unstable. </text></svg></configure>
                 </property>
             </property>
             <property name="ParameterSet" class="ptolemy.actor.parameters.ParameterSet">
-                <property name="fileOrURL" class="ptolemy.data.expr.FileParameter" value="data_recovery.txt">
+                <property name="fileOrURL" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/ptolemy/domains/continuous/demo/TwoMachineInfiniteBusControl/data_recovery.txt">
                 </property>
                 <property name="_editorFactory" class="ptolemy.actor.gui.FileOrURLEditorFactory">
                 </property>
@@ -2826,13 +2604,13 @@ dynamics of the remaining generator become unstable. </text></svg></configure>
     <relation name="relation11" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
-        <vertex name="vertex1" value="[390.0, 260.0]">
+        <vertex name="vertex1" value="[395.0, 265.0]">
         </vertex>
     </relation>
     <relation name="relation7" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
-        <vertex name="vertex1" value="[355.0, 270.0]">
+        <vertex name="vertex1" value="[355.0, 275.0]">
         </vertex>
     </relation>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
