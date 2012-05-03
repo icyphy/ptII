@@ -288,7 +288,7 @@ public class TypedCompositeActor extends CompositeActor implements TypedActor {
                     solver.solveLeast();
                 } catch (InvalidStateException ex) {
                     throw new InvalidStateException(topLevel, ex,
-                            "The basic type lattic was: "
+                            "Invalid state in type system. The basic type lattice was: "
                                     + TypeLattice.basicLattice());
                 }
 
