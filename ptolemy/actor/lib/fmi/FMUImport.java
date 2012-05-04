@@ -156,9 +156,21 @@ public class FMUImport extends TypedAtomicActor {
         super.attributeChanged(attribute);
     }
 
-    /** Read data from input ports, fire the slave fmu and then write data
-     *  to the output ports.    
-     *    
+    /** Read data from output ports, set the input ports and invoke
+     * fmiDoStep() of the slave fmu.
+     *   
+     * <p>Note that we get the outputs <b>before</b> invoking
+     * fmiDoStep() of the slave fmu so that we can get the data for
+     * time 0.  This is done so that FMUs can share initialization
+     * data if necessary.  For details, see the Section 3.4, Pseudo
+     * Code Example in the FMI-1.0 Co-simulation Specification at
+     * <a href="http://www.modelisar.com/specifications/FMI_for_CoSimulation_v1.0.pdf">http://www.modelisar.com/specifications/FMI_for_CoSimulation_v1.0.pdf<a>..  For
+     * an explanation, see figure 4 of
+     * <br/>
+     * Michael Wetter,
+     * "<a href="http://dx.doi.org/10.1080/19401493.2010.518631">Co-simulation of building energy and control systems with the Building Controls Virtual Test Bed</a>,"
+     * Journal of Building Performance Simulation, Volume 4, Issue 3, 2011.
+     *
      *  @exception IllegalActionException If there is no director.
      */
     public void fire() throws IllegalActionException {
@@ -172,6 +184,63 @@ public class FMUImport extends TypedAtomicActor {
         // Ptolemy parameters are read in initialize() because the fmi
         // version of the parameters must be written before
         // fmiInitializeSlave() is called.
+
+        ////////////////
+        // Iterate through the scalarVariables and get all the outputs.
+        // See the method comment for why we do this before calling fmiDoStep()
+        for (FMIScalarVariable scalarVariable : _fmiModelDescription.modelVariables) {
+            if (_debugging) {
+                _debug("FMUImport.fire(): " + scalarVariable.name);
+            }
+            if (scalarVariable.alias != null
+                    && scalarVariable.alias != Alias.noAlias) {
+                // If the scalarVariable has an alias, then skip it.
+                // In bouncingBall.fmu, g has an alias, so it is skipped.
+                continue;
+            }
+
+            if (scalarVariable.variability != FMIScalarVariable.Variability.parameter) {
+                TypedIOPort port = (TypedIOPort) getPort(scalarVariable.name);
+
+                if (port == null || port.getWidth() <= 0) {
+                    // Either it is not a port or not connected.
+                    // Check to see if we should update the parameter.
+                    String sanitizedName = StringUtilities.sanitizeName(scalarVariable.name);
+                    Parameter parameter = (Parameter)getAttribute(sanitizedName, Parameter.class);
+                    if (parameter != null) {
+                        _setParameter(parameter, scalarVariable);
+                    }
+                    continue;
+                }
+
+                Token token = null;
+
+                if (scalarVariable.type instanceof FMIBooleanType) {
+                    boolean result = scalarVariable.getBoolean(_fmiComponent);
+                    token = new BooleanToken(result);
+                } else if (scalarVariable.type instanceof FMIIntegerType) {
+                    // FIXME: handle Enumerations?
+                    int result = scalarVariable.getInt(_fmiComponent);
+                    token = new IntToken(result);
+                } else if (scalarVariable.type instanceof FMIRealType) {
+                    double result = scalarVariable.getDouble(_fmiComponent);
+                    token = new DoubleToken(result);
+                } else if (scalarVariable.type instanceof FMIStringType) {
+                    String result = scalarVariable.getString(_fmiComponent);
+                    token = new StringToken(result);
+                } else {
+                    throw new IllegalActionException("Type "
+                            + scalarVariable.type + " not supported.");
+                }
+
+                if (_debugging) {
+                    _debug("FMUImport.fire(): " + scalarVariable.name + " "
+                            + token + " " + scalarVariable.causality + " "
+                            + Causality.output);
+                }
+                port.send(0, token);
+            }
+        }
 
         ////////////////
         // Iterate through the scalarVariables and set all the inputs.
@@ -238,61 +307,6 @@ public class FMUImport extends TypedAtomicActor {
             _debug("FMUImport done calling " + modelIdentifier + "_fmiDoStep()");
         }
 
-        ////////////////
-        // Iterate through the scalarVariables and get all the outputs.
-        for (FMIScalarVariable scalarVariable : _fmiModelDescription.modelVariables) {
-            if (_debugging) {
-                _debug("FMUImport.fire(): " + scalarVariable.name);
-            }
-            if (scalarVariable.alias != null
-                    && scalarVariable.alias != Alias.noAlias) {
-                // If the scalarVariable has an alias, then skip it.
-                // In bouncingBall.fmu, g has an alias, so it is skipped.
-                continue;
-            }
-
-            if (scalarVariable.variability != FMIScalarVariable.Variability.parameter) {
-                TypedIOPort port = (TypedIOPort) getPort(scalarVariable.name);
-
-                if (port == null || port.getWidth() <= 0) {
-                    // Either it is not a port or not connected.
-                    // Check to see if we should update the parameter.
-                    String sanitizedName = StringUtilities.sanitizeName(scalarVariable.name);
-                    Parameter parameter = (Parameter)getAttribute(sanitizedName, Parameter.class);
-                    if (parameter != null) {
-                        _setParameter(parameter, scalarVariable);
-                    }
-                    continue;
-                }
-
-                Token token = null;
-
-                if (scalarVariable.type instanceof FMIBooleanType) {
-                    boolean result = scalarVariable.getBoolean(_fmiComponent);
-                    token = new BooleanToken(result);
-                } else if (scalarVariable.type instanceof FMIIntegerType) {
-                    // FIXME: handle Enumerations?
-                    int result = scalarVariable.getInt(_fmiComponent);
-                    token = new IntToken(result);
-                } else if (scalarVariable.type instanceof FMIRealType) {
-                    double result = scalarVariable.getDouble(_fmiComponent);
-                    token = new DoubleToken(result);
-                } else if (scalarVariable.type instanceof FMIStringType) {
-                    String result = scalarVariable.getString(_fmiComponent);
-                    token = new StringToken(result);
-                } else {
-                    throw new IllegalActionException("Type "
-                            + scalarVariable.type + " not supported.");
-                }
-
-                if (_debugging) {
-                    _debug("FMUImport.fire(): " + scalarVariable.name + " "
-                            + token + " " + scalarVariable.causality + " "
-                            + Causality.output);
-                }
-                port.send(0, token);
-            }
-        }
     }
 
    /** Initialize the slave FMU.
