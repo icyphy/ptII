@@ -624,6 +624,14 @@ public class DerivedUnitConcept extends UnitConcept {
     private static List<UnitConcept> _findEquivalentUnitConcepts(
             DimensionRepresentativeConcept dimension, ScalarToken newUnitFactor)
             throws IllegalActionException {
+        
+        // Create an epsilon for testing unit factor closeness that is small
+        // relative to the value of the unit factor.
+        // It must be scaled to account for precision errors for very large
+        // and very small unit scale factors.
+        double unitFactorEpsilon = newUnitFactor.doubleValue();
+        double base10Exponent = Math.log(unitFactorEpsilon)/Math.log(10.0);
+        unitFactorEpsilon = Math.pow(10.0, base10Exponent - 9.0);
 
         List<UnitConcept> matchingUnits = new ArrayList<UnitConcept>();
         for (UnitConcept unit : dimension.getAllUnits()) {
@@ -641,7 +649,8 @@ public class DerivedUnitConcept extends UnitConcept {
                                 .getComponentBaseUnits()));
             }
             if (noUnitOffsets
-                    && newUnitFactor.isCloseTo(unitFactor).booleanValue()) {
+                    && newUnitFactor.isCloseTo(unitFactor,
+                            unitFactorEpsilon).booleanValue()) {
                 matchingUnits.add(unit);
             }
         }

@@ -1,0 +1,109 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+
+<group>
+  
+  <entity name="Velocity" class="ptolemy.data.ontologies.lattice.unit.SIDerivedDimensionRepresentativeConcept">
+  	<property name="solutionColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,1.0,0.0,1.0}"/>
+  	<property name="dimensionArray" class="ptolemy.data.expr.Parameter" value="{ {Dimension = &quot;LengthConcept&quot;, Exponent = 1}, {Dimension = &quot;TimeConcept&quot;, Exponent = -1} }">
+		<property name="style" class="ptolemy.actor.gui.style.NotEditableLineStyle"/>
+  	</property>
+  	<property name="LengthConcept" class="ptolemy.data.expr.Parameter"/>
+  	<property name="TimeConcept" class="ptolemy.data.expr.Parameter"/>
+  	<property name="unitFullName" class="ptolemy.kernel.util.StringAttribute" value="meters_per_second" />
+  	<property name="unitAbbreviation" class="ptolemy.kernel.util.StringAttribute" value="m_per_s" />
+	<property name="baseUnitRecord" class="ptolemy.data.expr.Parameter" value="{ LengthConcept = {&quot;m&quot;}, TimeConcept = {&quot;s&quot;} }" />
+    <property name="LatticeElementIcon" class="ptolemy.vergil.ontologies.MultipleConceptIcon"/>
+  </entity>
+  
+  <entity name="Acceleration" class="ptolemy.data.ontologies.lattice.unit.SIDerivedDimensionRepresentativeConcept">
+  	<property name="solutionColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,0.6,0.6,1.0}"/>  	
+  	<property name="dimensionArray" class="ptolemy.data.expr.Parameter" value="{ {Dimension = &quot;LengthConcept&quot;, Exponent = 1}, {Dimension = &quot;TimeConcept&quot;, Exponent = -2} }">
+		<property name="style" class="ptolemy.actor.gui.style.NotEditableLineStyle"/>
+  	</property>
+  	<property name="LengthConcept" class="ptolemy.data.expr.Parameter"/>
+  	<property name="TimeConcept" class="ptolemy.data.expr.Parameter"/>
+  	<property name="unitFullName" class="ptolemy.kernel.util.StringAttribute" value="meters_per_second_squared" />
+  	<property name="unitAbbreviation" class="ptolemy.kernel.util.StringAttribute" value="m_per_s2" />	
+	<property name="baseUnitRecord" class="ptolemy.data.expr.Parameter" value="{ LengthConcept = {&quot;m&quot;}, TimeConcept = {&quot;s&quot;, &quot;s&quot;} }" />
+    <property name="LatticeElementIcon" class="ptolemy.vergil.ontologies.MultipleConceptIcon"/>
+  </entity>
+  
+  <entity name="Volume" class="ptolemy.data.ontologies.lattice.unit.DerivedDimensionRepresentativeConcept">
+  	<property name="solutionColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.6,0.6,1.0}"/>
+  	<property name="dimensionArray" class="ptolemy.data.expr.Parameter" value="{ {Dimension = &quot;LengthConcept&quot;, Exponent = 3} }">
+		<property name="style" class="ptolemy.actor.gui.style.NotEditableLineStyle"/>
+  	</property>
+  	<property name="LengthConcept" class="ptolemy.data.expr.Parameter"/>
+	<property name="unitFullName" class="ptolemy.kernel.util.StringAttribute" value="liter" />
+  	<property name="unitAbbreviation" class="ptolemy.kernel.util.StringAttribute" value="L" />
+	<property name="baseUnitRecord" class="ptolemy.data.expr.Parameter" value="{ LengthConcept = {&quot;dm&quot;, &quot;dm&quot;, &quot;dm&quot;} }" />
+    <property name="LatticeElementIcon" class="ptolemy.vergil.ontologies.MultipleConceptIcon"/>
+  </entity>
+  
+  <entity name="Force" class="ptolemy.data.ontologies.lattice.unit.SIDerivedDimensionRepresentativeConcept">
+  	<property name="solutionColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.2,0.0,1.0}"/>
+  	<property name="dimensionArray" class="ptolemy.data.expr.Parameter" value="{ {Dimension = &quot;MassConcept&quot;, Exponent = 1}, {Dimension = &quot;AccelerationConcept&quot;, Exponent = 1} }">
+		<property name="style" class="ptolemy.actor.gui.style.NotEditableLineStyle"/>
+  	</property>
+  	<property name="MassConcept" class="ptolemy.data.expr.Parameter"/>
+  	<property name="AccelerationConcept" class="ptolemy.data.expr.Parameter"/>
+  	<property name="unitFullName" class="ptolemy.kernel.util.StringAttribute" value="newton" />
+  	<property name="unitAbbreviation" class="ptolemy.kernel.util.StringAttribute" value="N" />
+	<property name="baseUnitRecord" class="ptolemy.data.expr.Parameter" value="{ MassConcept = {&quot;kg&quot;}, AccelerationConcept = {&quot;m_per_s2&quot;} }" />
+    <property name="LatticeElementIcon" class="ptolemy.vergil.ontologies.MultipleConceptIcon"/>
+  </entity>
+  
+  <entity name="Area" class="ptolemy.data.ontologies.lattice.unit.SIDerivedDimensionRepresentativeConcept">
+  	<property name="solutionColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.4,1.0,0.6,1.0}"/>
+  	<property name="dimensionArray" class="ptolemy.data.expr.Parameter" value="{ {Dimension = &quot;LengthConcept&quot;, Exponent = 2} }">
+		<property name="style" class="ptolemy.actor.gui.style.NotEditableLineStyle"/>
+  	</property>
+  	<property name="LengthConcept" class="ptolemy.data.expr.Parameter"/>
+  	<property name="unitFullName" class="ptolemy.kernel.util.StringAttribute" value="meters_squared" />
+  	<property name="unitAbbreviation" class="ptolemy.kernel.util.StringAttribute" value="m2" />
+	<property name="baseUnitRecord" class="ptolemy.data.expr.Parameter" value="{ LengthConcept = {&quot;m&quot;, &quot;m&quot;} }" />
+    <property name="LatticeElementIcon" class="ptolemy.vergil.ontologies.MultipleConceptIcon"/>
+  </entity>
+  
+  <entity name="Pressure" class="ptolemy.data.ontologies.lattice.unit.SIDerivedDimensionRepresentativeConcept">
+  	<property name="solutionColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.6,1.0,1.0}"/>
+  	<property name="dimensionArray" class="ptolemy.data.expr.Parameter" value="{ {Dimension = &quot;ForceConcept&quot;, Exponent = 1}, {Dimension = &quot;AreaConcept&quot;, Exponent = -1} }">
+		<property name="style" class="ptolemy.actor.gui.style.NotEditableLineStyle"/>
+  	</property>
+  	<property name="ForceConcept" class="ptolemy.data.expr.Parameter"/>
+  	<property name="AreaConcept" class="ptolemy.data.expr.Parameter"/>
+  	<property name="unitFullName" class="ptolemy.kernel.util.StringAttribute" value="pascal" />
+  	<property name="unitAbbreviation" class="ptolemy.kernel.util.StringAttribute" value="Pa" />
+	<property name="baseUnitRecord" class="ptolemy.data.expr.Parameter" value="{ ForceConcept = {&quot;N&quot;}, AreaConcept = {&quot;m2&quot;} }" />
+    <property name="LatticeElementIcon" class="ptolemy.vergil.ontologies.MultipleConceptIcon"/>
+  </entity>
+  
+  <entity name="Work" class="ptolemy.data.ontologies.lattice.unit.SIDerivedDimensionRepresentativeConcept">
+  	<property name="solutionColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.4,0.4,0.0,1.0}"/>
+  	<property name="dimensionArray" class="ptolemy.data.expr.Parameter" value="{ {Dimension = &quot;ForceConcept&quot;, Exponent = 1}, {Dimension = &quot;LengthConcept&quot;, Exponent = 1} }">
+		<property name="style" class="ptolemy.actor.gui.style.NotEditableLineStyle"/>
+  	</property>
+  	<property name="ForceConcept" class="ptolemy.data.expr.Parameter"/>
+  	<property name="LengthConcept" class="ptolemy.data.expr.Parameter"/>
+  	<property name="unitFullName" class="ptolemy.kernel.util.StringAttribute" value="joule" />
+  	<property name="unitAbbreviation" class="ptolemy.kernel.util.StringAttribute" value="J" />
+	<property name="baseUnitRecord" class="ptolemy.data.expr.Parameter" value="{ ForceConcept = {&quot;N&quot;}, LengthConcept = {&quot;m&quot;} }" />
+    <property name="LatticeElementIcon" class="ptolemy.vergil.ontologies.MultipleConceptIcon"/>
+  </entity>
+  
+  <entity name="Power" class="ptolemy.data.ontologies.lattice.unit.SIDerivedDimensionRepresentativeConcept">
+  	<property name="solutionColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.8,0.4,1.0,1.0}"/>
+  	<property name="dimensionArray" class="ptolemy.data.expr.Parameter" value="{ {Dimension = &quot;WorkConcept&quot;, Exponent = 1}, {Dimension = &quot;TimeConcept&quot;, Exponent = -1} }">
+		<property name="style" class="ptolemy.actor.gui.style.NotEditableLineStyle"/>
+  	</property>
+  	<property name="WorkConcept" class="ptolemy.data.expr.Parameter"/>
+  	<property name="TimeConcept" class="ptolemy.data.expr.Parameter"/>
+  	<property name="unitFullName" class="ptolemy.kernel.util.StringAttribute" value="watt" />
+  	<property name="unitAbbreviation" class="ptolemy.kernel.util.StringAttribute" value="W" />
+	<property name="baseUnitRecord" class="ptolemy.data.expr.Parameter" value="{ WorkConcept = {&quot;J&quot;}, TimeConcept = {&quot;s&quot;} }" />
+    <property name="LatticeElementIcon" class="ptolemy.vergil.ontologies.MultipleConceptIcon"/>
+  </entity>
+
+</group>

@@ -60,6 +60,9 @@ OTHER_FILES_TO_BE_JARED = \
 	MultiplyDivideUnits.xml \
 	NewtonsCradle.xml \
 	NewtonsCradleMoreConstraints.xml \
+	SIUnitExample.xml \
+	SIUnitOntology.xml \
+	SIUnitSolverModel.xml \
 	TimeUnitIntegration.xml \
 	UnitSystemExample.xml
 

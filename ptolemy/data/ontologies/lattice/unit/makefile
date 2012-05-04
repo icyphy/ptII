@@ -56,12 +56,18 @@ JSRCS = \
 	DimensionlessConcept.java \
 	DimensionRepresentativeConcept.java \
 	MultiplyOrDivideUnitConcepts.java \
+	SIBaseDimensionRepresentativeConcept.java \
+	SIDerivedDimensionRepresentativeConcept.java \
+	SIPrefixUnitConversionInfo.java \
+	SIUnitPrefixes.java \
 	UnitConcept.java \
 	UnitConversionInfo.java
 	
 OTHER_FILES_TO_BE_JARED = \
 	baseDimensionsLibrary.xml \
+	baseSIDimensionsLibrary.xml \
 	derivedDimensionsLibrary.xml \
+	derivedSIDimensionsLibrary.xml \
 	unitDimensionsLibrary.xml
 
 EXTRA_SRCS =    $(JSRCS) $(OTHER_FILES_TO_BE_JARED)

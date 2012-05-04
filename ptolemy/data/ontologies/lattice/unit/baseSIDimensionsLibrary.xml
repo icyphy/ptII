@@ -1,0 +1,71 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+
+<group>
+  
+  <entity name="Mass" class="ptolemy.data.ontologies.lattice.unit.SIBaseDimensionRepresentativeConcept">
+  	<property name="unitFullName" class="ptolemy.kernel.util.StringAttribute" value="gram" />
+  	<property name="unitAbbreviation" class="ptolemy.kernel.util.StringAttribute" value="g" />
+  	<property name="solutionColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.4,0.0,1.0}"/>
+    <property name="LatticeElementIcon" class="ptolemy.vergil.ontologies.MultipleConceptIcon"/>
+  </entity>
+  
+  <entity name="Length" class="ptolemy.data.ontologies.lattice.unit.SIBaseDimensionRepresentativeConcept">
+    <property name="unitFullName" class="ptolemy.kernel.util.StringAttribute" value="meter" />
+  	<property name="unitAbbreviation" class="ptolemy.kernel.util.StringAttribute" value="m" />
+  	<property name="solutionColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.4,1.0,1.0}"/>
+    <property name="LatticeElementIcon" class="ptolemy.vergil.ontologies.MultipleConceptIcon"/>
+  </entity>
+  
+  <entity name="Time" class="ptolemy.data.ontologies.lattice.unit.SIBaseDimensionRepresentativeConcept">
+    <property name="unitFullName" class="ptolemy.kernel.util.StringAttribute" value="second" />
+  	<property name="unitAbbreviation" class="ptolemy.kernel.util.StringAttribute" value="s" />
+  	<property name="solutionColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,1.0,1.0,1.0}"/>
+  	<property name="hourFactor" class="ptolemy.data.expr.Parameter" value="3600.0">
+		<property name="style" class="ptolemy.actor.gui.style.NotEditableLineStyle"/>
+  	</property>
+  	<property name="dayFactor" class="ptolemy.data.expr.Parameter" value="24.0*hourFactor">
+		<property name="style" class="ptolemy.actor.gui.style.NotEditableLineStyle"/>
+  	</property>
+  	<property name="minute" class="ptolemy.data.ontologies.lattice.unit.UnitConversionInfo" value="{ Factor = 60.0 }">
+  		<property name="style" class="ptolemy.actor.gui.style.NotEditableLineStyle"/>
+  	</property>
+	<property name="hour" class="ptolemy.data.ontologies.lattice.unit.UnitConversionInfo" value="{ Factor = hourFactor }">
+		<property name="style" class="ptolemy.actor.gui.style.NotEditableLineStyle"/>
+  	</property>
+	<property name="day" class="ptolemy.data.ontologies.lattice.unit.UnitConversionInfo" value="{ Factor = dayFactor }">
+		<property name="style" class="ptolemy.actor.gui.style.NotEditableLineStyle"/>
+  	</property>
+    <property name="LatticeElementIcon" class="ptolemy.vergil.ontologies.MultipleConceptIcon"/>
+  </entity>
+  
+  <entity name="Current" class="ptolemy.data.ontologies.lattice.unit.SIBaseDimensionRepresentativeConcept">
+  	<property name="unitFullName" class="ptolemy.kernel.util.StringAttribute" value="ampere" />
+  	<property name="unitAbbreviation" class="ptolemy.kernel.util.StringAttribute" value="A" />
+  	<property name="solutionColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,0.0,1.0,1.0}"/>
+    <property name="LatticeElementIcon" class="ptolemy.vergil.ontologies.MultipleConceptIcon"/>
+  </entity>
+  
+  <entity name="Temperature" class="ptolemy.data.ontologies.lattice.unit.SIBaseDimensionRepresentativeConcept">
+  	<property name="unitFullName" class="ptolemy.kernel.util.StringAttribute" value="kelvin" />
+  	<property name="unitAbbreviation" class="ptolemy.kernel.util.StringAttribute" value="K" />
+  	<property name="solutionColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,0.4,0.0,1.0}"/>
+    <property name="LatticeElementIcon" class="ptolemy.vergil.ontologies.MultipleConceptIcon"/>
+  </entity>
+  
+  <entity name="Substance" class="ptolemy.data.ontologies.lattice.unit.SIBaseDimensionRepresentativeConcept">
+  	<property name="unitFullName" class="ptolemy.kernel.util.StringAttribute" value="mole" />
+  	<property name="unitAbbreviation" class="ptolemy.kernel.util.StringAttribute" value="mol" />
+  	<property name="solutionColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,1.0,0.0,1.0}"/>
+    <property name="LatticeElementIcon" class="ptolemy.vergil.ontologies.MultipleConceptIcon"/>
+  </entity>
+  
+  <entity name="LightIntensity" class="ptolemy.data.ontologies.lattice.unit.SIBaseDimensionRepresentativeConcept">
+  	<property name="unitFullName" class="ptolemy.kernel.util.StringAttribute" value="candela" />
+  	<property name="unitAbbreviation" class="ptolemy.kernel.util.StringAttribute" value="cd" />
+  	<property name="solutionColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.8,0.8,0.0,1.0}"/>
+    <property name="LatticeElementIcon" class="ptolemy.vergil.ontologies.MultipleConceptIcon"/>
+  </entity>
+
+</group>

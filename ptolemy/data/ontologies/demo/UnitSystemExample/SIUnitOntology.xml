@@ -1,0 +1,882 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE class PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<class name="SIUnitOntology" extends="ptolemy.data.ontologies.Ontology">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.0.devel">
+    </property>
+    <property name="_library" class="ptolemy.moml.LibraryAttribute">
+        <configure>
+		<entity name="library" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/data/ontologies/ontologyLibrary.xml"></input></entity>
+	      </configure>
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={105, 128, 1470, 793}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1257, 683]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{628.5, 341.5}">
+    </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This ontology model demonstrates how to build an ontology for SI-based units.  Each concept&#10;in the ontology represents a quantity that is measured with SI units.  Each quantity can&#10;have units with any of the standard prefixes (kilo-, milli-, etc.) specified in the udunits2&#10;database.  Derived units are hierarchically constructed from base units.  For example, the&#10;&quot;Force&quot; concept's units are derived from the units in &quot;Mass&quot; and &quot;Acceleration.&quot; Each concept&#10;can be specified to use the unit's full name or abbreviated symbol.  The symbol is the default.&#10;&#10;NOTE: If you change a concept's unit name or switch from using the symbol to the full name, you have&#10;to make sure any other concept that has units that depend on this unit specification are changed&#10;to match it.  For example, if you change the &quot;Mass&quot; concept's units to use the full name instead&#10;of the symbol (from 'g' to 'gram') then the &quot;Force&quot; concept's base unit specification must change from:&#10;&#10;{ MassConcept = {&quot;kg&quot;}, AccelerationConcept = {&quot;m_per_s2&quot;} }&#10;to&#10;{ MassConcept = {&quot;kilogram&quot;}, AccelerationConcept = {&quot;m_per_s2&quot;} }">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[535.0, 405.0]">
+        </property>
+    </property>
+    <entity name="Mass" class="ptolemy.data.ontologies.lattice.unit.SIBaseDimensionRepresentativeConcept">
+        <property name="unitFullName" class="ptolemy.kernel.util.StringAttribute" value="gram">
+        </property>
+        <property name="unitAbbreviation" class="ptolemy.kernel.util.StringAttribute" value="g">
+        </property>
+        <property name="solutionColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.4,0.0,1.0}">
+        </property>
+        <property name="LatticeElementIcon" class="ptolemy.vergil.ontologies.MultipleConceptIcon">
+        </property>
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[160.0, 195.0]">
+        </property>
+        <property name="g" class="ptolemy.data.ontologies.lattice.unit.SIPrefixUnitConversionInfo" value="{Factor = 1.0}">
+        </property>
+        <property name="Yg" class="ptolemy.data.ontologies.lattice.unit.SIPrefixUnitConversionInfo" value="{Factor = 1.0E24}">
+        </property>
+        <property name="Zg" class="ptolemy.data.ontologies.lattice.unit.SIPrefixUnitConversionInfo" value="{Factor = 1.0E21}">
+        </property>
+        <property name="Eg" class="ptolemy.data.ontologies.lattice.unit.SIPrefixUnitConversionInfo" value="{Factor = 1.0E18}">
+        </property>
+        <property name="Pg" class="ptolemy.data.ontologies.lattice.unit.SIPrefixUnitConversionInfo" value="{Factor = 1.0E15}">
+        </property>
+        <property name="Tg" class="ptolemy.data.ontologies.lattice.unit.SIPrefixUnitConversionInfo" value="{Factor = 1.0E12}">
+        </property>
+        <property name="Gg" class="ptolemy.data.ontologies.lattice.unit.SIPrefixUnitConversionInfo" value="{Factor = 1.0E9}">
+        </property>
+        <property name="Mg" class="ptolemy.data.ontologies.lattice.unit.SIPrefixUnitConversionInfo" value="{Factor = 1.0E6}">
+        </property>
+        <property name="kg" class="ptolemy.data.ontologies.lattice.unit.SIPrefixUnitConversionInfo" value="{Factor = 1000.0}">
+        </property>
+        <property name="hg" class="ptolemy.data.ontologies.lattice.unit.SIPrefixUnitConversionInfo" value="{Factor = 100.0}">
+        </property>
+        <property name="dag" class="ptolemy.data.ontologies.lattice.unit.SIPrefixUnitConversionInfo" value="{Factor = 10.0}">
+        </property>
+        <property name="dg" class="ptolemy.data.ontologies.lattice.unit.SIPrefixUnitConversionInfo" value="{Factor = 0.1}">
+        </property>
+        <property name="cg" class="ptolemy.data.ontologies.lattice.unit.SIPrefixUnitConversionInfo" value="{Factor = 0.01}">
+        </property>
+        <property name="mg" class="ptolemy.data.ontologies.lattice.unit.SIPrefixUnitConversionInfo" value="{Factor = 1.0E-3}">
+        </property>
+        <property name="ug" class="ptolemy.data.ontologies.lattice.unit.SIPrefixUnitConversionInfo" value="{Factor = 1.0E-6}">
+        </property>
+        <property name="ng" class="ptolemy.data.ontologies.lattice.unit.SIPrefixUnitConversionInfo" value="{Factor = 1.0E-9}">
+        </property>
+        <property name="pg" class="ptolemy.data.ontologies.lattice.unit.SIPrefixUnitConversionInfo" value="{Factor = 1.0E-12}">
+        </property>
+        <property name="fg" class="ptolemy.data.ontologies.lattice.unit.SIPrefixUnitConversionInfo" value="{Factor = 1.0E-15}">
+        </property>
+        <property name="ag" class="ptolemy.data.ontologies.lattice.unit.SIPrefixUnitConversionInfo" value="{Factor = 1.0E-18}">
+        </property>
+        <property name="zg" class="ptolemy.data.ontologies.lattice.unit.SIPrefixUnitConversionInfo" value="{Factor = 1.0E-21}">
+        </property>
+        <property name="yg" class="ptolemy.data.ontologies.lattice.unit.SIPrefixUnitConversionInfo" value="{Factor = 1.0E-24}">
+        </property>
+    </entity>
+    <entity name="Length" class="ptolemy.data.ontologies.lattice.unit.SIBaseDimensionRepresentativeConcept">
+        <property name="unitFullName" class="ptolemy.kernel.util.StringAttribute" value="meter">
+        </property>
+        <property name="unitAbbreviation" class="ptolemy.kernel.util.StringAttribute" value="m">
+        </property>
+        <property name="solutionColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.4,1.0,1.0}">
+        </property>
+        <property name="LatticeElementIcon" class="ptolemy.vergil.ontologies.MultipleConceptIcon">
+        </property>
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[255.0, 215.0]">
+        </property>
+        <property name="m" class="ptolemy.data.ontologies.lattice.unit.SIPrefixUnitConversionInfo" value="{Factor = 1.0}">
+        </property>
+        <property name="Ym" class="ptolemy.data.ontologies.lattice.unit.SIPrefixUnitConversionInfo" value="{Factor = 1.0E24}">
+        </property>
+        <property name="Zm" class="ptolemy.data.ontologies.lattice.unit.SIPrefixUnitConversionInfo" value="{Factor = 1.0E21}">
+        </property>
+        <property name="Em" class="ptolemy.data.ontologies.lattice.unit.SIPrefixUnitConversionInfo" value="{Factor = 1.0E18}">
+        </property>
+        <property name="Pm" class="ptolemy.data.ontologies.lattice.unit.SIPrefixUnitConversionInfo" value="{Factor = 1.0E15}">
+        </property>
+        <property name="Tm" class="ptolemy.data.ontologies.lattice.unit.SIPrefixUnitConversionInfo" value="{Factor = 1.0E12}">
+        </property>
+        <property name="Gm" class="ptolemy.data.ontologies.lattice.unit.SIPrefixUnitConversionInfo" value="{Factor = 1.0E9}">
+        </property>
+        <property name="Mm" class="ptolemy.data.ontologies.lattice.unit.SIPrefixUnitConversionInfo" value="{Factor = 1.0E6}">
+        </property>
+        <property name="km" class="ptolemy.data.ontologies.lattice.unit.SIPrefixUnitConversionInfo" value="{Factor = 1000.0}">
+        </property>
+        <property name="hm" class="ptolemy.data.ontologies.lattice.unit.SIPrefixUnitConversionInfo" value="{Factor = 100.0}">
+        </property>
+        <property name="dam" class="ptolemy.data.ontologies.lattice.unit.SIPrefixUnitConversionInfo" value="{Factor = 10.0}">
+        </property>
+        <property name="dm" class="ptolemy.data.ontologies.lattice.unit.SIPrefixUnitConversionInfo" value="{Factor = 0.1}">
+        </property>
+        <property name="cm" class="ptolemy.data.ontologies.lattice.unit.SIPrefixUnitConversionInfo" value="{Factor = 0.01}">
+        </property>
+        <property name="mm" class="ptolemy.data.ontologies.lattice.unit.SIPrefixUnitConversionInfo" value="{Factor = 1.0E-3}">
+        </property>
+        <property name="um" class="ptolemy.data.ontologies.lattice.unit.SIPrefixUnitConversionInfo" value="{Factor = 1.0E-6}">
+        </property>
+        <property name="nm" class="ptolemy.data.ontologies.lattice.unit.SIPrefixUnitConversionInfo" value="{Factor = 1.0E-9}">
+        </property>
+        <property name="pm" class="ptolemy.data.ontologies.lattice.unit.SIPrefixUnitConversionInfo" value="{Factor = 1.0E-12}">
+        </property>
+        <property name="fm" class="ptolemy.data.ontologies.lattice.unit.SIPrefixUnitConversionInfo" value="{Factor = 1.0E-15}">
+        </property>
+        <property name="am" class="ptolemy.data.ontologies.lattice.unit.SIPrefixUnitConversionInfo" value="{Factor = 1.0E-18}">
+        </property>
+        <property name="zm" class="ptolemy.data.ontologies.lattice.unit.SIPrefixUnitConversionInfo" value="{Factor = 1.0E-21}">
+        </property>
+        <property name="ym" class="ptolemy.data.ontologies.lattice.unit.SIPrefixUnitConversionInfo" value="{Factor = 1.0E-24}">
+        </property>
+    </entity>
+    <entity name="Time" class="ptolemy.data.ontologies.lattice.unit.SIBaseDimensionRepresentativeConcept">
+        <property name="unitFullName" class="ptolemy.kernel.util.StringAttribute" value="second">
+        </property>
+        <property name="unitAbbreviation" class="ptolemy.kernel.util.StringAttribute" value="s">
+        </property>
+        <property name="solutionColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,1.0,1.0,1.0}">
+        </property>
+        <property name="hourFactor" class="ptolemy.data.expr.Parameter" value="3600.0">
+            <property name="style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+            </property>
+        </property>
+        <property name="dayFactor" class="ptolemy.data.expr.Parameter" value="24.0*hourFactor">
+            <property name="style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+            </property>
+        </property>
+        <property name="minute" class="ptolemy.data.ontologies.lattice.unit.UnitConversionInfo" value="{ Factor = 60.0 }">
+            <property name="style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+            </property>
+        </property>
+        <property name="hour" class="ptolemy.data.ontologies.lattice.unit.UnitConversionInfo" value="{ Factor = hourFactor }">
+            <property name="style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+            </property>
+        </property>
+        <property name="day" class="ptolemy.data.ontologies.lattice.unit.UnitConversionInfo" value="{ Factor = dayFactor }">
+            <property name="style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+            </property>
+        </property>
+        <property name="LatticeElementIcon" class="ptolemy.vergil.ontologies.MultipleConceptIcon">
+        </property>
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[360.0, 225.0]">
+        </property>
+        <property name="s" class="ptolemy.data.ontologies.lattice.unit.SIPrefixUnitConversionInfo" value="{Factor = 1.0}">
+        </property>
+        <property name="Ys" class="ptolemy.data.ontologies.lattice.unit.SIPrefixUnitConversionInfo" value="{Factor = 1.0E24}">
+        </property>
+        <property name="Zs" class="ptolemy.data.ontologies.lattice.unit.SIPrefixUnitConversionInfo" value="{Factor = 1.0E21}">
+        </property>
+        <property name="Es" class="ptolemy.data.ontologies.lattice.unit.SIPrefixUnitConversionInfo" value="{Factor = 1.0E18}">
+        </property>
+        <property name="Ps" class="ptolemy.data.ontologies.lattice.unit.SIPrefixUnitConversionInfo" value="{Factor = 1.0E15}">
+        </property>
+        <property name="Ts" class="ptolemy.data.ontologies.lattice.unit.SIPrefixUnitConversionInfo" value="{Factor = 1.0E12}">
+        </property>
+        <property name="Gs" class="ptolemy.data.ontologies.lattice.unit.SIPrefixUnitConversionInfo" value="{Factor = 1.0E9}">
+        </property>
+        <property name="Ms" class="ptolemy.data.ontologies.lattice.unit.SIPrefixUnitConversionInfo" value="{Factor = 1.0E6}">
+        </property>
+        <property name="ks" class="ptolemy.data.ontologies.lattice.unit.SIPrefixUnitConversionInfo" value="{Factor = 1000.0}">
+        </property>
+        <property name="hs" class="ptolemy.data.ontologies.lattice.unit.SIPrefixUnitConversionInfo" value="{Factor = 100.0}">
+        </property>
+        <property name="das" class="ptolemy.data.ontologies.lattice.unit.SIPrefixUnitConversionInfo" value="{Factor = 10.0}">
+        </property>
+        <property name="ds" class="ptolemy.data.ontologies.lattice.unit.SIPrefixUnitConversionInfo" value="{Factor = 0.1}">
+        </property>
+        <property name="cs" class="ptolemy.data.ontologies.lattice.unit.SIPrefixUnitConversionInfo" value="{Factor = 0.01}">
+        </property>
+        <property name="ms" class="ptolemy.data.ontologies.lattice.unit.SIPrefixUnitConversionInfo" value="{Factor = 1.0E-3}">
+        </property>
+        <property name="us" class="ptolemy.data.ontologies.lattice.unit.SIPrefixUnitConversionInfo" value="{Factor = 1.0E-6}">
+        </property>
+        <property name="ns" class="ptolemy.data.ontologies.lattice.unit.SIPrefixUnitConversionInfo" value="{Factor = 1.0E-9}">
+        </property>
+        <property name="ps" class="ptolemy.data.ontologies.lattice.unit.SIPrefixUnitConversionInfo" value="{Factor = 1.0E-12}">
+        </property>
+        <property name="fs" class="ptolemy.data.ontologies.lattice.unit.SIPrefixUnitConversionInfo" value="{Factor = 1.0E-15}">
+        </property>
+        <property name="as" class="ptolemy.data.ontologies.lattice.unit.SIPrefixUnitConversionInfo" value="{Factor = 1.0E-18}">
+        </property>
+        <property name="zs" class="ptolemy.data.ontologies.lattice.unit.SIPrefixUnitConversionInfo" value="{Factor = 1.0E-21}">
+        </property>
+        <property name="ys" class="ptolemy.data.ontologies.lattice.unit.SIPrefixUnitConversionInfo" value="{Factor = 1.0E-24}">
+        </property>
+    </entity>
+    <entity name="Velocity" class="ptolemy.data.ontologies.lattice.unit.SIDerivedDimensionRepresentativeConcept">
+        <property name="dimensionArray" class="ptolemy.data.expr.Parameter" value="{ {Dimension = &quot;LengthConcept&quot;, Exponent = 1}, {Dimension = &quot;TimeConcept&quot;, Exponent = -1} }">
+            <property name="style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+            </property>
+        </property>
+        <property name="unitFullName" class="ptolemy.kernel.util.StringAttribute" value="meters_per_second">
+        </property>
+        <property name="unitAbbreviation" class="ptolemy.kernel.util.StringAttribute" value="m_per_s">
+        </property>
+        <property name="baseUnitRecord" class="ptolemy.data.expr.Parameter" value="{ LengthConcept = {&quot;m&quot;}, TimeConcept = {&quot;s&quot;} }">
+        </property>
+        <property name="solutionColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,1.0,0.0,1.0}">
+        </property>
+        <property name="LengthConcept" class="ptolemy.data.expr.Parameter" value="Length">
+        </property>
+        <property name="TimeConcept" class="ptolemy.data.expr.Parameter" value="Time">
+        </property>
+        <property name="LatticeElementIcon" class="ptolemy.vergil.ontologies.MultipleConceptIcon">
+        </property>
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[445.0, 245.0]">
+        </property>
+        <property name="m_per_s" class="ptolemy.data.ontologies.lattice.unit.SIPrefixUnitConversionInfo" value="{Factor = 1.0, LengthConcept = {&quot;m&quot;}, TimeConcept = {&quot;s&quot;}}">
+        </property>
+        <property name="Ym_per_s" class="ptolemy.data.ontologies.lattice.unit.SIPrefixUnitConversionInfo" value="{Factor = 1.0E24, LengthConcept = {&quot;m&quot;}, TimeConcept = {&quot;s&quot;}}">
+        </property>
+        <property name="Zm_per_s" class="ptolemy.data.ontologies.lattice.unit.SIPrefixUnitConversionInfo" value="{Factor = 1.0E21, LengthConcept = {&quot;m&quot;}, TimeConcept = {&quot;s&quot;}}">
+        </property>
+        <property name="Em_per_s" class="ptolemy.data.ontologies.lattice.unit.SIPrefixUnitConversionInfo" value="{Factor = 1.0E18, LengthConcept = {&quot;m&quot;}, TimeConcept = {&quot;s&quot;}}">
+        </property>
+        <property name="Pm_per_s" class="ptolemy.data.ontologies.lattice.unit.SIPrefixUnitConversionInfo" value="{Factor = 1.0E15, LengthConcept = {&quot;m&quot;}, TimeConcept = {&quot;s&quot;}}">
+        </property>
+        <property name="Tm_per_s" class="ptolemy.data.ontologies.lattice.unit.SIPrefixUnitConversionInfo" value="{Factor = 1.0E12, LengthConcept = {&quot;m&quot;}, TimeConcept = {&quot;s&quot;}}">
+        </property>
+        <property name="Gm_per_s" class="ptolemy.data.ontologies.lattice.unit.SIPrefixUnitConversionInfo" value="{Factor = 1.0E9, LengthConcept = {&quot;m&quot;}, TimeConcept = {&quot;s&quot;}}">
+        </property>
+        <property name="Mm_per_s" class="ptolemy.data.ontologies.lattice.unit.SIPrefixUnitConversionInfo" value="{Factor = 1.0E6, LengthConcept = {&quot;m&quot;}, TimeConcept = {&quot;s&quot;}}">
+        </property>
+        <property name="km_per_s" class="ptolemy.data.ontologies.lattice.unit.SIPrefixUnitConversionInfo" value="{Factor = 1000.0, LengthConcept = {&quot;m&quot;}, TimeConcept = {&quot;s&quot;}}">
+        </property>
+        <property name="hm_per_s" class="ptolemy.data.ontologies.lattice.unit.SIPrefixUnitConversionInfo" value="{Factor = 100.0, LengthConcept = {&quot;m&quot;}, TimeConcept = {&quot;s&quot;}}">
+        </property>
+        <property name="dam_per_s" class="ptolemy.data.ontologies.lattice.unit.SIPrefixUnitConversionInfo" value="{Factor = 10.0, LengthConcept = {&quot;m&quot;}, TimeConcept = {&quot;s&quot;}}">
+        </property>
+        <property name="dm_per_s" class="ptolemy.data.ontologies.lattice.unit.SIPrefixUnitConversionInfo" value="{Factor = 0.1, LengthConcept = {&quot;m&quot;}, TimeConcept = {&quot;s&quot;}}">
+        </property>
+        <property name="cm_per_s" class="ptolemy.data.ontologies.lattice.unit.SIPrefixUnitConversionInfo" value="{Factor = 0.01, LengthConcept = {&quot;m&quot;}, TimeConcept = {&quot;s&quot;}}">
+        </property>
+        <property name="mm_per_s" class="ptolemy.data.ontologies.lattice.unit.SIPrefixUnitConversionInfo" value="{Factor = 1.0E-3, LengthConcept = {&quot;m&quot;}, TimeConcept = {&quot;s&quot;}}">
+        </property>
+        <property name="um_per_s" class="ptolemy.data.ontologies.lattice.unit.SIPrefixUnitConversionInfo" value="{Factor = 1.0E-6, LengthConcept = {&quot;m&quot;}, TimeConcept = {&quot;s&quot;}}">
+        </property>
+        <property name="nm_per_s" class="ptolemy.data.ontologies.lattice.unit.SIPrefixUnitConversionInfo" value="{Factor = 1.0E-9, LengthConcept = {&quot;m&quot;}, TimeConcept = {&quot;s&quot;}}">
+        </property>
+        <property name="pm_per_s" class="ptolemy.data.ontologies.lattice.unit.SIPrefixUnitConversionInfo" value="{Factor = 1.0E-12, LengthConcept = {&quot;m&quot;}, TimeConcept = {&quot;s&quot;}}">
+        </property>
+        <property name="fm_per_s" class="ptolemy.data.ontologies.lattice.unit.SIPrefixUnitConversionInfo" value="{Factor = 1.0E-15, LengthConcept = {&quot;m&quot;}, TimeConcept = {&quot;s&quot;}}">
+        </property>
+        <property name="am_per_s" class="ptolemy.data.ontologies.lattice.unit.SIPrefixUnitConversionInfo" value="{Factor = 1.0E-18, LengthConcept = {&quot;m&quot;}, TimeConcept = {&quot;s&quot;}}">
+        </property>
+        <property name="zm_per_s" class="ptolemy.data.ontologies.lattice.unit.SIPrefixUnitConversionInfo" value="{Factor = 1.0E-21, LengthConcept = {&quot;m&quot;}, TimeConcept = {&quot;s&quot;}}">
+        </property>
+        <property name="ym_per_s" class="ptolemy.data.ontologies.lattice.unit.SIPrefixUnitConversionInfo" value="{Factor = 1.0E-24, LengthConcept = {&quot;m&quot;}, TimeConcept = {&quot;s&quot;}}">
+        </property>
+    </entity>
+    <entity name="Acceleration" class="ptolemy.data.ontologies.lattice.unit.SIDerivedDimensionRepresentativeConcept">
+        <property name="dimensionArray" class="ptolemy.data.expr.Parameter" value="{ {Dimension = &quot;LengthConcept&quot;, Exponent = 1}, {Dimension = &quot;TimeConcept&quot;, Exponent = -2} }">
+            <property name="style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+            </property>
+        </property>
+        <property name="unitFullName" class="ptolemy.kernel.util.StringAttribute" value="meters_per_second_squared">
+        </property>
+        <property name="unitAbbreviation" class="ptolemy.kernel.util.StringAttribute" value="m_per_s2">
+        </property>
+        <property name="baseUnitRecord" class="ptolemy.data.expr.Parameter" value="{ LengthConcept = {&quot;m&quot;}, TimeConcept = {&quot;s&quot;, &quot;s&quot;} }">
+        </property>
+        <property name="solutionColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,0.6,0.6,1.0}">
+        </property>
+        <property name="LengthConcept" class="ptolemy.data.expr.Parameter" value="Length">
+        </property>
+        <property name="TimeConcept" class="ptolemy.data.expr.Parameter" value="Time">
+        </property>
+        <property name="LatticeElementIcon" class="ptolemy.vergil.ontologies.MultipleConceptIcon">
+        </property>
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[555.0, 245.0]">
+        </property>
+        <property name="m_per_s2" class="ptolemy.data.ontologies.lattice.unit.SIPrefixUnitConversionInfo" value="{Factor = 1.0, LengthConcept = {&quot;m&quot;}, TimeConcept = {&quot;s&quot;, &quot;s&quot;}}">
+        </property>
+        <property name="Ym_per_s2" class="ptolemy.data.ontologies.lattice.unit.SIPrefixUnitConversionInfo" value="{Factor = 1.0E24, LengthConcept = {&quot;m&quot;}, TimeConcept = {&quot;s&quot;, &quot;s&quot;}}">
+        </property>
+        <property name="Zm_per_s2" class="ptolemy.data.ontologies.lattice.unit.SIPrefixUnitConversionInfo" value="{Factor = 1.0E21, LengthConcept = {&quot;m&quot;}, TimeConcept = {&quot;s&quot;, &quot;s&quot;}}">
+        </property>
+        <property name="Em_per_s2" class="ptolemy.data.ontologies.lattice.unit.SIPrefixUnitConversionInfo" value="{Factor = 1.0E18, LengthConcept = {&quot;m&quot;}, TimeConcept = {&quot;s&quot;, &quot;s&quot;}}">
+        </property>
+        <property name="Pm_per_s2" class="ptolemy.data.ontologies.lattice.unit.SIPrefixUnitConversionInfo" value="{Factor = 1.0E15, LengthConcept = {&quot;m&quot;}, TimeConcept = {&quot;s&quot;, &quot;s&quot;}}">
+        </property>
+        <property name="Tm_per_s2" class="ptolemy.data.ontologies.lattice.unit.SIPrefixUnitConversionInfo" value="{Factor = 1.0E12, LengthConcept = {&quot;m&quot;}, TimeConcept = {&quot;s&quot;, &quot;s&quot;}}">
+        </property>
+        <property name="Gm_per_s2" class="ptolemy.data.ontologies.lattice.unit.SIPrefixUnitConversionInfo" value="{Factor = 1.0E9, LengthConcept = {&quot;m&quot;}, TimeConcept = {&quot;s&quot;, &quot;s&quot;}}">
+        </property>
+        <property name="Mm_per_s2" class="ptolemy.data.ontologies.lattice.unit.SIPrefixUnitConversionInfo" value="{Factor = 1.0E6, LengthConcept = {&quot;m&quot;}, TimeConcept = {&quot;s&quot;, &quot;s&quot;}}">
+        </property>
+        <property name="km_per_s2" class="ptolemy.data.ontologies.lattice.unit.SIPrefixUnitConversionInfo" value="{Factor = 1000.0, LengthConcept = {&quot;m&quot;}, TimeConcept = {&quot;s&quot;, &quot;s&quot;}}">
+        </property>
+        <property name="hm_per_s2" class="ptolemy.data.ontologies.lattice.unit.SIPrefixUnitConversionInfo" value="{Factor = 100.0, LengthConcept = {&quot;m&quot;}, TimeConcept = {&quot;s&quot;, &quot;s&quot;}}">
+        </property>
+        <property name="dam_per_s2" class="ptolemy.data.ontologies.lattice.unit.SIPrefixUnitConversionInfo" value="{Factor = 10.0, LengthConcept = {&quot;m&quot;}, TimeConcept = {&quot;s&quot;, &quot;s&quot;}}">
+        </property>
+        <property name="dm_per_s2" class="ptolemy.data.ontologies.lattice.unit.SIPrefixUnitConversionInfo" value="{Factor = 0.1, LengthConcept = {&quot;m&quot;}, TimeConcept = {&quot;s&quot;, &quot;s&quot;}}">
+        </property>
+        <property name="cm_per_s2" class="ptolemy.data.ontologies.lattice.unit.SIPrefixUnitConversionInfo" value="{Factor = 0.01, LengthConcept = {&quot;m&quot;}, TimeConcept = {&quot;s&quot;, &quot;s&quot;}}">
+        </property>
+        <property name="mm_per_s2" class="ptolemy.data.ontologies.lattice.unit.SIPrefixUnitConversionInfo" value="{Factor = 1.0E-3, LengthConcept = {&quot;m&quot;}, TimeConcept = {&quot;s&quot;, &quot;s&quot;}}">
+        </property>
+        <property name="um_per_s2" class="ptolemy.data.ontologies.lattice.unit.SIPrefixUnitConversionInfo" value="{Factor = 1.0E-6, LengthConcept = {&quot;m&quot;}, TimeConcept = {&quot;s&quot;, &quot;s&quot;}}">
+        </property>
+        <property name="nm_per_s2" class="ptolemy.data.ontologies.lattice.unit.SIPrefixUnitConversionInfo" value="{Factor = 1.0E-9, LengthConcept = {&quot;m&quot;}, TimeConcept = {&quot;s&quot;, &quot;s&quot;}}">
+        </property>
+        <property name="pm_per_s2" class="ptolemy.data.ontologies.lattice.unit.SIPrefixUnitConversionInfo" value="{Factor = 1.0E-12, LengthConcept = {&quot;m&quot;}, TimeConcept = {&quot;s&quot;, &quot;s&quot;}}">
+        </property>
+        <property name="fm_per_s2" class="ptolemy.data.ontologies.lattice.unit.SIPrefixUnitConversionInfo" value="{Factor = 1.0E-15, LengthConcept = {&quot;m&quot;}, TimeConcept = {&quot;s&quot;, &quot;s&quot;}}">
+        </property>
+        <property name="am_per_s2" class="ptolemy.data.ontologies.lattice.unit.SIPrefixUnitConversionInfo" value="{Factor = 1.0E-18, LengthConcept = {&quot;m&quot;}, TimeConcept = {&quot;s&quot;, &quot;s&quot;}}">
+        </property>
+        <property name="zm_per_s2" class="ptolemy.data.ontologies.lattice.unit.SIPrefixUnitConversionInfo" value="{Factor = 1.0E-21, LengthConcept = {&quot;m&quot;}, TimeConcept = {&quot;s&quot;, &quot;s&quot;}}">
+        </property>
+        <property name="ym_per_s2" class="ptolemy.data.ontologies.lattice.unit.SIPrefixUnitConversionInfo" value="{Factor = 1.0E-24, LengthConcept = {&quot;m&quot;}, TimeConcept = {&quot;s&quot;, &quot;s&quot;}}">
+        </property>
+    </entity>
+    <entity name="Force" class="ptolemy.data.ontologies.lattice.unit.SIDerivedDimensionRepresentativeConcept">
+        <property name="dimensionArray" class="ptolemy.data.expr.Parameter" value="{ {Dimension = &quot;MassConcept&quot;, Exponent = 1}, {Dimension = &quot;AccelerationConcept&quot;, Exponent = 1} }">
+            <property name="style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+            </property>
+        </property>
+        <property name="unitFullName" class="ptolemy.kernel.util.StringAttribute" value="newton">
+        </property>
+        <property name="unitAbbreviation" class="ptolemy.kernel.util.StringAttribute" value="N">
+        </property>
+        <property name="baseUnitRecord" class="ptolemy.data.expr.Parameter" value="{ MassConcept = {&quot;kg&quot;}, AccelerationConcept = {&quot;m_per_s2&quot;} }">
+        </property>
+        <property name="solutionColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.2,0.0,1.0}">
+        </property>
+        <property name="MassConcept" class="ptolemy.data.expr.Parameter" value="Mass">
+        </property>
+        <property name="AccelerationConcept" class="ptolemy.data.expr.Parameter" value="Acceleration">
+        </property>
+        <property name="LatticeElementIcon" class="ptolemy.vergil.ontologies.MultipleConceptIcon">
+        </property>
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[675.0, 230.0]">
+        </property>
+        <property name="N" class="ptolemy.data.ontologies.lattice.unit.SIPrefixUnitConversionInfo" value="{AccelerationConcept = {&quot;m_per_s2&quot;}, Factor = 1.0, MassConcept = {&quot;kg&quot;}}">
+        </property>
+        <property name="YN" class="ptolemy.data.ontologies.lattice.unit.SIPrefixUnitConversionInfo" value="{AccelerationConcept = {&quot;m_per_s2&quot;}, Factor = 1.0E24, MassConcept = {&quot;kg&quot;}}">
+        </property>
+        <property name="ZN" class="ptolemy.data.ontologies.lattice.unit.SIPrefixUnitConversionInfo" value="{AccelerationConcept = {&quot;m_per_s2&quot;}, Factor = 1.0E21, MassConcept = {&quot;kg&quot;}}">
+        </property>
+        <property name="EN" class="ptolemy.data.ontologies.lattice.unit.SIPrefixUnitConversionInfo" value="{AccelerationConcept = {&quot;m_per_s2&quot;}, Factor = 1.0E18, MassConcept = {&quot;kg&quot;}}">
+        </property>
+        <property name="PN" class="ptolemy.data.ontologies.lattice.unit.SIPrefixUnitConversionInfo" value="{AccelerationConcept = {&quot;m_per_s2&quot;}, Factor = 1.0E15, MassConcept = {&quot;kg&quot;}}">
+        </property>
+        <property name="TN" class="ptolemy.data.ontologies.lattice.unit.SIPrefixUnitConversionInfo" value="{AccelerationConcept = {&quot;m_per_s2&quot;}, Factor = 1.0E12, MassConcept = {&quot;kg&quot;}}">
+        </property>
+        <property name="GN" class="ptolemy.data.ontologies.lattice.unit.SIPrefixUnitConversionInfo" value="{AccelerationConcept = {&quot;m_per_s2&quot;}, Factor = 1.0E9, MassConcept = {&quot;kg&quot;}}">
+        </property>
+        <property name="MN" class="ptolemy.data.ontologies.lattice.unit.SIPrefixUnitConversionInfo" value="{AccelerationConcept = {&quot;m_per_s2&quot;}, Factor = 1.0E6, MassConcept = {&quot;kg&quot;}}">
+        </property>
+        <property name="kN" class="ptolemy.data.ontologies.lattice.unit.SIPrefixUnitConversionInfo" value="{AccelerationConcept = {&quot;m_per_s2&quot;}, Factor = 1000.0, MassConcept = {&quot;kg&quot;}}">
+        </property>
+        <property name="hN" class="ptolemy.data.ontologies.lattice.unit.SIPrefixUnitConversionInfo" value="{AccelerationConcept = {&quot;m_per_s2&quot;}, Factor = 100.0, MassConcept = {&quot;kg&quot;}}">
+        </property>
+        <property name="daN" class="ptolemy.data.ontologies.lattice.unit.SIPrefixUnitConversionInfo" value="{AccelerationConcept = {&quot;m_per_s2&quot;}, Factor = 10.0, MassConcept = {&quot;kg&quot;}}">
+        </property>
+        <property name="dN" class="ptolemy.data.ontologies.lattice.unit.SIPrefixUnitConversionInfo" value="{AccelerationConcept = {&quot;m_per_s2&quot;}, Factor = 0.1, MassConcept = {&quot;kg&quot;}}">
+        </property>
+        <property name="cN" class="ptolemy.data.ontologies.lattice.unit.SIPrefixUnitConversionInfo" value="{AccelerationConcept = {&quot;m_per_s2&quot;}, Factor = 0.01, MassConcept = {&quot;kg&quot;}}">
+        </property>
+        <property name="mN" class="ptolemy.data.ontologies.lattice.unit.SIPrefixUnitConversionInfo" value="{AccelerationConcept = {&quot;m_per_s2&quot;}, Factor = 1.0E-3, MassConcept = {&quot;kg&quot;}}">
+        </property>
+        <property name="uN" class="ptolemy.data.ontologies.lattice.unit.SIPrefixUnitConversionInfo" value="{AccelerationConcept = {&quot;m_per_s2&quot;}, Factor = 1.0E-6, MassConcept = {&quot;kg&quot;}}">
+        </property>
+        <property name="nN" class="ptolemy.data.ontologies.lattice.unit.SIPrefixUnitConversionInfo" value="{AccelerationConcept = {&quot;m_per_s2&quot;}, Factor = 1.0E-9, MassConcept = {&quot;kg&quot;}}">
+        </property>
+        <property name="pN" class="ptolemy.data.ontologies.lattice.unit.SIPrefixUnitConversionInfo" value="{AccelerationConcept = {&quot;m_per_s2&quot;}, Factor = 1.0E-12, MassConcept = {&quot;kg&quot;}}">
+        </property>
+        <property name="fN" class="ptolemy.data.ontologies.lattice.unit.SIPrefixUnitConversionInfo" value="{AccelerationConcept = {&quot;m_per_s2&quot;}, Factor = 1.0E-15, MassConcept = {&quot;kg&quot;}}">
+        </property>
+        <property name="aN" class="ptolemy.data.ontologies.lattice.unit.SIPrefixUnitConversionInfo" value="{AccelerationConcept = {&quot;m_per_s2&quot;}, Factor = 1.0E-18, MassConcept = {&quot;kg&quot;}}">
+        </property>
+        <property name="zN" class="ptolemy.data.ontologies.lattice.unit.SIPrefixUnitConversionInfo" value="{AccelerationConcept = {&quot;m_per_s2&quot;}, Factor = 1.0E-21, MassConcept = {&quot;kg&quot;}}">
+        </property>
+        <property name="yN" class="ptolemy.data.ontologies.lattice.unit.SIPrefixUnitConversionInfo" value="{AccelerationConcept = {&quot;m_per_s2&quot;}, Factor = 1.0E-24, MassConcept = {&quot;kg&quot;}}">
+        </property>
+    </entity>
+    <entity name="Dimensionless" class="ptolemy.data.ontologies.lattice.unit.DimensionlessConcept">
+        <property name="solutionColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,1.0,1.0,1.0}">
+        </property>
+        <property name="LatticeElementIcon" class="ptolemy.vergil.ontologies.ConceptIcon">
+        </property>
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[55.0, 165.0]">
+        </property>
+    </entity>
+    <entity name="Conflict" class="ptolemy.data.ontologies.FiniteConcept">
+        <property name="isAcceptable" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="solutionColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,0.0,0.0,1.0}">
+        </property>
+        <property name="LatticeElementIcon" class="ptolemy.vergil.ontologies.ConceptIcon">
+        </property>
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[530.0, 35.0]">
+        </property>
+    </entity>
+    <entity name="Unknown" class="ptolemy.data.ontologies.FiniteConcept">
+        <property name="solutionColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.6,0.6,1.0}">
+        </property>
+        <property name="LatticeElementIcon" class="ptolemy.vergil.ontologies.ConceptIcon">
+        </property>
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[445.0, 415.0]">
+        </property>
+    </entity>
+    <entity name="Area" class="ptolemy.data.ontologies.lattice.unit.SIDerivedDimensionRepresentativeConcept">
+        <property name="dimensionArray" class="ptolemy.data.expr.Parameter" value="{ {Dimension = &quot;LengthConcept&quot;, Exponent = 2} }">
+            <property name="style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+            </property>
+        </property>
+        <property name="unitFullName" class="ptolemy.kernel.util.StringAttribute" value="meters_squared">
+        </property>
+        <property name="unitAbbreviation" class="ptolemy.kernel.util.StringAttribute" value="m2">
+        </property>
+        <property name="baseUnitRecord" class="ptolemy.data.expr.Parameter" value="{ LengthConcept = {&quot;m&quot;, &quot;m&quot;} }">
+        </property>
+        <property name="solutionColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.4,1.0,0.6,1.0}">
+        </property>
+        <property name="LengthConcept" class="ptolemy.data.expr.Parameter" value="Length">
+        </property>
+        <property name="LatticeElementIcon" class="ptolemy.vergil.ontologies.MultipleConceptIcon">
+        </property>
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[770.0, 245.0]">
+        </property>
+        <property name="m2" class="ptolemy.data.ontologies.lattice.unit.SIPrefixUnitConversionInfo" value="{Factor = 1.0, LengthConcept = {&quot;m&quot;, &quot;m&quot;}}">
+        </property>
+        <property name="Ym2" class="ptolemy.data.ontologies.lattice.unit.SIPrefixUnitConversionInfo" value="{Factor = 1.0E24, LengthConcept = {&quot;m&quot;, &quot;m&quot;}}">
+        </property>
+        <property name="Zm2" class="ptolemy.data.ontologies.lattice.unit.SIPrefixUnitConversionInfo" value="{Factor = 1.0E21, LengthConcept = {&quot;m&quot;, &quot;m&quot;}}">
+        </property>
+        <property name="Em2" class="ptolemy.data.ontologies.lattice.unit.SIPrefixUnitConversionInfo" value="{Factor = 1.0E18, LengthConcept = {&quot;m&quot;, &quot;m&quot;}}">
+        </property>
+        <property name="Pm2" class="ptolemy.data.ontologies.lattice.unit.SIPrefixUnitConversionInfo" value="{Factor = 1.0E15, LengthConcept = {&quot;m&quot;, &quot;m&quot;}}">
+        </property>
+        <property name="Tm2" class="ptolemy.data.ontologies.lattice.unit.SIPrefixUnitConversionInfo" value="{Factor = 1.0E12, LengthConcept = {&quot;m&quot;, &quot;m&quot;}}">
+        </property>
+        <property name="Gm2" class="ptolemy.data.ontologies.lattice.unit.SIPrefixUnitConversionInfo" value="{Factor = 1.0E9, LengthConcept = {&quot;m&quot;, &quot;m&quot;}}">
+        </property>
+        <property name="Mm2" class="ptolemy.data.ontologies.lattice.unit.SIPrefixUnitConversionInfo" value="{Factor = 1.0E6, LengthConcept = {&quot;m&quot;, &quot;m&quot;}}">
+        </property>
+        <property name="km2" class="ptolemy.data.ontologies.lattice.unit.SIPrefixUnitConversionInfo" value="{Factor = 1000.0, LengthConcept = {&quot;m&quot;, &quot;m&quot;}}">
+        </property>
+        <property name="hm2" class="ptolemy.data.ontologies.lattice.unit.SIPrefixUnitConversionInfo" value="{Factor = 100.0, LengthConcept = {&quot;m&quot;, &quot;m&quot;}}">
+        </property>
+        <property name="dam2" class="ptolemy.data.ontologies.lattice.unit.SIPrefixUnitConversionInfo" value="{Factor = 10.0, LengthConcept = {&quot;m&quot;, &quot;m&quot;}}">
+        </property>
+        <property name="dm2" class="ptolemy.data.ontologies.lattice.unit.SIPrefixUnitConversionInfo" value="{Factor = 0.1, LengthConcept = {&quot;m&quot;, &quot;m&quot;}}">
+        </property>
+        <property name="cm2" class="ptolemy.data.ontologies.lattice.unit.SIPrefixUnitConversionInfo" value="{Factor = 0.01, LengthConcept = {&quot;m&quot;, &quot;m&quot;}}">
+        </property>
+        <property name="mm2" class="ptolemy.data.ontologies.lattice.unit.SIPrefixUnitConversionInfo" value="{Factor = 1.0E-3, LengthConcept = {&quot;m&quot;, &quot;m&quot;}}">
+        </property>
+        <property name="um2" class="ptolemy.data.ontologies.lattice.unit.SIPrefixUnitConversionInfo" value="{Factor = 1.0E-6, LengthConcept = {&quot;m&quot;, &quot;m&quot;}}">
+        </property>
+        <property name="nm2" class="ptolemy.data.ontologies.lattice.unit.SIPrefixUnitConversionInfo" value="{Factor = 1.0E-9, LengthConcept = {&quot;m&quot;, &quot;m&quot;}}">
+        </property>
+        <property name="pm2" class="ptolemy.data.ontologies.lattice.unit.SIPrefixUnitConversionInfo" value="{Factor = 1.0E-12, LengthConcept = {&quot;m&quot;, &quot;m&quot;}}">
+        </property>
+        <property name="fm2" class="ptolemy.data.ontologies.lattice.unit.SIPrefixUnitConversionInfo" value="{Factor = 1.0E-15, LengthConcept = {&quot;m&quot;, &quot;m&quot;}}">
+        </property>
+        <property name="am2" class="ptolemy.data.ontologies.lattice.unit.SIPrefixUnitConversionInfo" value="{Factor = 1.0E-18, LengthConcept = {&quot;m&quot;, &quot;m&quot;}}">
+        </property>
+        <property name="zm2" class="ptolemy.data.ontologies.lattice.unit.SIPrefixUnitConversionInfo" value="{Factor = 1.0E-21, LengthConcept = {&quot;m&quot;, &quot;m&quot;}}">
+        </property>
+        <property name="ym2" class="ptolemy.data.ontologies.lattice.unit.SIPrefixUnitConversionInfo" value="{Factor = 1.0E-24, LengthConcept = {&quot;m&quot;, &quot;m&quot;}}">
+        </property>
+    </entity>
+    <entity name="Pressure" class="ptolemy.data.ontologies.lattice.unit.SIDerivedDimensionRepresentativeConcept">
+        <property name="dimensionArray" class="ptolemy.data.expr.Parameter" value="{ {Dimension = &quot;ForceConcept&quot;, Exponent = 1}, {Dimension = &quot;AreaConcept&quot;, Exponent = -1} }">
+            <property name="style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+            </property>
+        </property>
+        <property name="unitFullName" class="ptolemy.kernel.util.StringAttribute" value="pascal">
+        </property>
+        <property name="unitAbbreviation" class="ptolemy.kernel.util.StringAttribute" value="Pa">
+        </property>
+        <property name="baseUnitRecord" class="ptolemy.data.expr.Parameter" value="{ ForceConcept = {&quot;N&quot;}, AreaConcept = {&quot;m2&quot;} }">
+        </property>
+        <property name="solutionColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.6,1.0,1.0}">
+        </property>
+        <property name="ForceConcept" class="ptolemy.data.expr.Parameter" value="Force">
+        </property>
+        <property name="AreaConcept" class="ptolemy.data.expr.Parameter" value="Area">
+        </property>
+        <property name="LatticeElementIcon" class="ptolemy.vergil.ontologies.MultipleConceptIcon">
+        </property>
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[885.0, 250.0]">
+        </property>
+        <property name="Pa" class="ptolemy.data.ontologies.lattice.unit.SIPrefixUnitConversionInfo" value="{AreaConcept = {&quot;m2&quot;}, Factor = 1.0, ForceConcept = {&quot;N&quot;}}">
+        </property>
+        <property name="YPa" class="ptolemy.data.ontologies.lattice.unit.SIPrefixUnitConversionInfo" value="{AreaConcept = {&quot;m2&quot;}, Factor = 1.0E24, ForceConcept = {&quot;N&quot;}}">
+        </property>
+        <property name="ZPa" class="ptolemy.data.ontologies.lattice.unit.SIPrefixUnitConversionInfo" value="{AreaConcept = {&quot;m2&quot;}, Factor = 1.0E21, ForceConcept = {&quot;N&quot;}}">
+        </property>
+        <property name="EPa" class="ptolemy.data.ontologies.lattice.unit.SIPrefixUnitConversionInfo" value="{AreaConcept = {&quot;m2&quot;}, Factor = 1.0E18, ForceConcept = {&quot;N&quot;}}">
+        </property>
+        <property name="PPa" class="ptolemy.data.ontologies.lattice.unit.SIPrefixUnitConversionInfo" value="{AreaConcept = {&quot;m2&quot;}, Factor = 1.0E15, ForceConcept = {&quot;N&quot;}}">
+        </property>
+        <property name="TPa" class="ptolemy.data.ontologies.lattice.unit.SIPrefixUnitConversionInfo" value="{AreaConcept = {&quot;m2&quot;}, Factor = 1.0E12, ForceConcept = {&quot;N&quot;}}">
+        </property>
+        <property name="GPa" class="ptolemy.data.ontologies.lattice.unit.SIPrefixUnitConversionInfo" value="{AreaConcept = {&quot;m2&quot;}, Factor = 1.0E9, ForceConcept = {&quot;N&quot;}}">
+        </property>
+        <property name="MPa" class="ptolemy.data.ontologies.lattice.unit.SIPrefixUnitConversionInfo" value="{AreaConcept = {&quot;m2&quot;}, Factor = 1.0E6, ForceConcept = {&quot;N&quot;}}">
+        </property>
+        <property name="kPa" class="ptolemy.data.ontologies.lattice.unit.SIPrefixUnitConversionInfo" value="{AreaConcept = {&quot;m2&quot;}, Factor = 1000.0, ForceConcept = {&quot;N&quot;}}">
+        </property>
+        <property name="hPa" class="ptolemy.data.ontologies.lattice.unit.SIPrefixUnitConversionInfo" value="{AreaConcept = {&quot;m2&quot;}, Factor = 100.0, ForceConcept = {&quot;N&quot;}}">
+        </property>
+        <property name="daPa" class="ptolemy.data.ontologies.lattice.unit.SIPrefixUnitConversionInfo" value="{AreaConcept = {&quot;m2&quot;}, Factor = 10.0, ForceConcept = {&quot;N&quot;}}">
+        </property>
+        <property name="dPa" class="ptolemy.data.ontologies.lattice.unit.SIPrefixUnitConversionInfo" value="{AreaConcept = {&quot;m2&quot;}, Factor = 0.1, ForceConcept = {&quot;N&quot;}}">
+        </property>
+        <property name="cPa" class="ptolemy.data.ontologies.lattice.unit.SIPrefixUnitConversionInfo" value="{AreaConcept = {&quot;m2&quot;}, Factor = 0.01, ForceConcept = {&quot;N&quot;}}">
+        </property>
+        <property name="mPa" class="ptolemy.data.ontologies.lattice.unit.SIPrefixUnitConversionInfo" value="{AreaConcept = {&quot;m2&quot;}, Factor = 1.0E-3, ForceConcept = {&quot;N&quot;}}">
+        </property>
+        <property name="uPa" class="ptolemy.data.ontologies.lattice.unit.SIPrefixUnitConversionInfo" value="{AreaConcept = {&quot;m2&quot;}, Factor = 1.0E-6, ForceConcept = {&quot;N&quot;}}">
+        </property>
+        <property name="nPa" class="ptolemy.data.ontologies.lattice.unit.SIPrefixUnitConversionInfo" value="{AreaConcept = {&quot;m2&quot;}, Factor = 1.0E-9, ForceConcept = {&quot;N&quot;}}">
+        </property>
+        <property name="pPa" class="ptolemy.data.ontologies.lattice.unit.SIPrefixUnitConversionInfo" value="{AreaConcept = {&quot;m2&quot;}, Factor = 1.0E-12, ForceConcept = {&quot;N&quot;}}">
+        </property>
+        <property name="fPa" class="ptolemy.data.ontologies.lattice.unit.SIPrefixUnitConversionInfo" value="{AreaConcept = {&quot;m2&quot;}, Factor = 1.0E-15, ForceConcept = {&quot;N&quot;}}">
+        </property>
+        <property name="aPa" class="ptolemy.data.ontologies.lattice.unit.SIPrefixUnitConversionInfo" value="{AreaConcept = {&quot;m2&quot;}, Factor = 1.0E-18, ForceConcept = {&quot;N&quot;}}">
+        </property>
+        <property name="zPa" class="ptolemy.data.ontologies.lattice.unit.SIPrefixUnitConversionInfo" value="{AreaConcept = {&quot;m2&quot;}, Factor = 1.0E-21, ForceConcept = {&quot;N&quot;}}">
+        </property>
+        <property name="yPa" class="ptolemy.data.ontologies.lattice.unit.SIPrefixUnitConversionInfo" value="{AreaConcept = {&quot;m2&quot;}, Factor = 1.0E-24, ForceConcept = {&quot;N&quot;}}">
+        </property>
+    </entity>
+    <entity name="Work" class="ptolemy.data.ontologies.lattice.unit.SIDerivedDimensionRepresentativeConcept">
+        <property name="dimensionArray" class="ptolemy.data.expr.Parameter" value="{ {Dimension = &quot;ForceConcept&quot;, Exponent = 1}, {Dimension = &quot;LengthConcept&quot;, Exponent = 1} }">
+            <property name="style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+            </property>
+        </property>
+        <property name="unitFullName" class="ptolemy.kernel.util.StringAttribute" value="joule">
+        </property>
+        <property name="unitAbbreviation" class="ptolemy.kernel.util.StringAttribute" value="J">
+        </property>
+        <property name="baseUnitRecord" class="ptolemy.data.expr.Parameter" value="{ ForceConcept = {&quot;N&quot;}, LengthConcept = {&quot;m&quot;} }">
+        </property>
+        <property name="solutionColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.4,0.4,0.0,1.0}">
+        </property>
+        <property name="ForceConcept" class="ptolemy.data.expr.Parameter" value="Force">
+        </property>
+        <property name="LengthConcept" class="ptolemy.data.expr.Parameter" value="Length">
+        </property>
+        <property name="LatticeElementIcon" class="ptolemy.vergil.ontologies.MultipleConceptIcon">
+        </property>
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[1010.0, 250.0]">
+        </property>
+        <property name="J" class="ptolemy.data.ontologies.lattice.unit.SIPrefixUnitConversionInfo" value="{Factor = 1.0, ForceConcept = {&quot;N&quot;}, LengthConcept = {&quot;m&quot;}}">
+        </property>
+        <property name="YJ" class="ptolemy.data.ontologies.lattice.unit.SIPrefixUnitConversionInfo" value="{Factor = 1.0E24, ForceConcept = {&quot;N&quot;}, LengthConcept = {&quot;m&quot;}}">
+        </property>
+        <property name="ZJ" class="ptolemy.data.ontologies.lattice.unit.SIPrefixUnitConversionInfo" value="{Factor = 1.0E21, ForceConcept = {&quot;N&quot;}, LengthConcept = {&quot;m&quot;}}">
+        </property>
+        <property name="EJ" class="ptolemy.data.ontologies.lattice.unit.SIPrefixUnitConversionInfo" value="{Factor = 1.0E18, ForceConcept = {&quot;N&quot;}, LengthConcept = {&quot;m&quot;}}">
+        </property>
+        <property name="PJ" class="ptolemy.data.ontologies.lattice.unit.SIPrefixUnitConversionInfo" value="{Factor = 1.0E15, ForceConcept = {&quot;N&quot;}, LengthConcept = {&quot;m&quot;}}">
+        </property>
+        <property name="TJ" class="ptolemy.data.ontologies.lattice.unit.SIPrefixUnitConversionInfo" value="{Factor = 1.0E12, ForceConcept = {&quot;N&quot;}, LengthConcept = {&quot;m&quot;}}">
+        </property>
+        <property name="GJ" class="ptolemy.data.ontologies.lattice.unit.SIPrefixUnitConversionInfo" value="{Factor = 1.0E9, ForceConcept = {&quot;N&quot;}, LengthConcept = {&quot;m&quot;}}">
+        </property>
+        <property name="MJ" class="ptolemy.data.ontologies.lattice.unit.SIPrefixUnitConversionInfo" value="{Factor = 1.0E6, ForceConcept = {&quot;N&quot;}, LengthConcept = {&quot;m&quot;}}">
+        </property>
+        <property name="kJ" class="ptolemy.data.ontologies.lattice.unit.SIPrefixUnitConversionInfo" value="{Factor = 1000.0, ForceConcept = {&quot;N&quot;}, LengthConcept = {&quot;m&quot;}}">
+        </property>
+        <property name="hJ" class="ptolemy.data.ontologies.lattice.unit.SIPrefixUnitConversionInfo" value="{Factor = 100.0, ForceConcept = {&quot;N&quot;}, LengthConcept = {&quot;m&quot;}}">
+        </property>
+        <property name="daJ" class="ptolemy.data.ontologies.lattice.unit.SIPrefixUnitConversionInfo" value="{Factor = 10.0, ForceConcept = {&quot;N&quot;}, LengthConcept = {&quot;m&quot;}}">
+        </property>
+        <property name="dJ" class="ptolemy.data.ontologies.lattice.unit.SIPrefixUnitConversionInfo" value="{Factor = 0.1, ForceConcept = {&quot;N&quot;}, LengthConcept = {&quot;m&quot;}}">
+        </property>
+        <property name="cJ" class="ptolemy.data.ontologies.lattice.unit.SIPrefixUnitConversionInfo" value="{Factor = 0.01, ForceConcept = {&quot;N&quot;}, LengthConcept = {&quot;m&quot;}}">
+        </property>
+        <property name="mJ" class="ptolemy.data.ontologies.lattice.unit.SIPrefixUnitConversionInfo" value="{Factor = 1.0E-3, ForceConcept = {&quot;N&quot;}, LengthConcept = {&quot;m&quot;}}">
+        </property>
+        <property name="uJ" class="ptolemy.data.ontologies.lattice.unit.SIPrefixUnitConversionInfo" value="{Factor = 1.0E-6, ForceConcept = {&quot;N&quot;}, LengthConcept = {&quot;m&quot;}}">
+        </property>
+        <property name="nJ" class="ptolemy.data.ontologies.lattice.unit.SIPrefixUnitConversionInfo" value="{Factor = 1.0E-9, ForceConcept = {&quot;N&quot;}, LengthConcept = {&quot;m&quot;}}">
+        </property>
+        <property name="pJ" class="ptolemy.data.ontologies.lattice.unit.SIPrefixUnitConversionInfo" value="{Factor = 1.0E-12, ForceConcept = {&quot;N&quot;}, LengthConcept = {&quot;m&quot;}}">
+        </property>
+        <property name="fJ" class="ptolemy.data.ontologies.lattice.unit.SIPrefixUnitConversionInfo" value="{Factor = 1.0E-15, ForceConcept = {&quot;N&quot;}, LengthConcept = {&quot;m&quot;}}">
+        </property>
+        <property name="aJ" class="ptolemy.data.ontologies.lattice.unit.SIPrefixUnitConversionInfo" value="{Factor = 1.0E-18, ForceConcept = {&quot;N&quot;}, LengthConcept = {&quot;m&quot;}}">
+        </property>
+        <property name="zJ" class="ptolemy.data.ontologies.lattice.unit.SIPrefixUnitConversionInfo" value="{Factor = 1.0E-21, ForceConcept = {&quot;N&quot;}, LengthConcept = {&quot;m&quot;}}">
+        </property>
+        <property name="yJ" class="ptolemy.data.ontologies.lattice.unit.SIPrefixUnitConversionInfo" value="{Factor = 1.0E-24, ForceConcept = {&quot;N&quot;}, LengthConcept = {&quot;m&quot;}}">
+        </property>
+    </entity>
+    <entity name="Power" class="ptolemy.data.ontologies.lattice.unit.SIDerivedDimensionRepresentativeConcept">
+        <property name="dimensionArray" class="ptolemy.data.expr.Parameter" value="{ {Dimension = &quot;WorkConcept&quot;, Exponent = 1}, {Dimension = &quot;TimeConcept&quot;, Exponent = -1} }">
+            <property name="style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+            </property>
+        </property>
+        <property name="unitFullName" class="ptolemy.kernel.util.StringAttribute" value="watt">
+        </property>
+        <property name="unitAbbreviation" class="ptolemy.kernel.util.StringAttribute" value="W">
+        </property>
+        <property name="baseUnitRecord" class="ptolemy.data.expr.Parameter" value="{ WorkConcept = {&quot;J&quot;}, TimeConcept = {&quot;s&quot;} }">
+        </property>
+        <property name="solutionColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.8,0.4,1.0,1.0}">
+        </property>
+        <property name="WorkConcept" class="ptolemy.data.expr.Parameter" value="Work">
+        </property>
+        <property name="TimeConcept" class="ptolemy.data.expr.Parameter" value="Time">
+        </property>
+        <property name="LatticeElementIcon" class="ptolemy.vergil.ontologies.MultipleConceptIcon">
+        </property>
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[1135.0, 255.0]">
+        </property>
+        <property name="W" class="ptolemy.data.ontologies.lattice.unit.SIPrefixUnitConversionInfo" value="{Factor = 1.0, TimeConcept = {&quot;s&quot;}, WorkConcept = {&quot;J&quot;}}">
+        </property>
+        <property name="YW" class="ptolemy.data.ontologies.lattice.unit.SIPrefixUnitConversionInfo" value="{Factor = 1.0E24, TimeConcept = {&quot;s&quot;}, WorkConcept = {&quot;J&quot;}}">
+        </property>
+        <property name="ZW" class="ptolemy.data.ontologies.lattice.unit.SIPrefixUnitConversionInfo" value="{Factor = 1.0E21, TimeConcept = {&quot;s&quot;}, WorkConcept = {&quot;J&quot;}}">
+        </property>
+        <property name="EW" class="ptolemy.data.ontologies.lattice.unit.SIPrefixUnitConversionInfo" value="{Factor = 1.0E18, TimeConcept = {&quot;s&quot;}, WorkConcept = {&quot;J&quot;}}">
+        </property>
+        <property name="PW" class="ptolemy.data.ontologies.lattice.unit.SIPrefixUnitConversionInfo" value="{Factor = 1.0E15, TimeConcept = {&quot;s&quot;}, WorkConcept = {&quot;J&quot;}}">
+        </property>
+        <property name="TW" class="ptolemy.data.ontologies.lattice.unit.SIPrefixUnitConversionInfo" value="{Factor = 1.0E12, TimeConcept = {&quot;s&quot;}, WorkConcept = {&quot;J&quot;}}">
+        </property>
+        <property name="GW" class="ptolemy.data.ontologies.lattice.unit.SIPrefixUnitConversionInfo" value="{Factor = 1.0E9, TimeConcept = {&quot;s&quot;}, WorkConcept = {&quot;J&quot;}}">
+        </property>
+        <property name="MW" class="ptolemy.data.ontologies.lattice.unit.SIPrefixUnitConversionInfo" value="{Factor = 1.0E6, TimeConcept = {&quot;s&quot;}, WorkConcept = {&quot;J&quot;}}">
+        </property>
+        <property name="kW" class="ptolemy.data.ontologies.lattice.unit.SIPrefixUnitConversionInfo" value="{Factor = 1000.0, TimeConcept = {&quot;s&quot;}, WorkConcept = {&quot;J&quot;}}">
+        </property>
+        <property name="hW" class="ptolemy.data.ontologies.lattice.unit.SIPrefixUnitConversionInfo" value="{Factor = 100.0, TimeConcept = {&quot;s&quot;}, WorkConcept = {&quot;J&quot;}}">
+        </property>
+        <property name="daW" class="ptolemy.data.ontologies.lattice.unit.SIPrefixUnitConversionInfo" value="{Factor = 10.0, TimeConcept = {&quot;s&quot;}, WorkConcept = {&quot;J&quot;}}">
+        </property>
+        <property name="dW" class="ptolemy.data.ontologies.lattice.unit.SIPrefixUnitConversionInfo" value="{Factor = 0.1, TimeConcept = {&quot;s&quot;}, WorkConcept = {&quot;J&quot;}}">
+        </property>
+        <property name="cW" class="ptolemy.data.ontologies.lattice.unit.SIPrefixUnitConversionInfo" value="{Factor = 0.01, TimeConcept = {&quot;s&quot;}, WorkConcept = {&quot;J&quot;}}">
+        </property>
+        <property name="mW" class="ptolemy.data.ontologies.lattice.unit.SIPrefixUnitConversionInfo" value="{Factor = 1.0E-3, TimeConcept = {&quot;s&quot;}, WorkConcept = {&quot;J&quot;}}">
+        </property>
+        <property name="uW" class="ptolemy.data.ontologies.lattice.unit.SIPrefixUnitConversionInfo" value="{Factor = 1.0E-6, TimeConcept = {&quot;s&quot;}, WorkConcept = {&quot;J&quot;}}">
+        </property>
+        <property name="nW" class="ptolemy.data.ontologies.lattice.unit.SIPrefixUnitConversionInfo" value="{Factor = 1.0E-9, TimeConcept = {&quot;s&quot;}, WorkConcept = {&quot;J&quot;}}">
+        </property>
+        <property name="pW" class="ptolemy.data.ontologies.lattice.unit.SIPrefixUnitConversionInfo" value="{Factor = 1.0E-12, TimeConcept = {&quot;s&quot;}, WorkConcept = {&quot;J&quot;}}">
+        </property>
+        <property name="fW" class="ptolemy.data.ontologies.lattice.unit.SIPrefixUnitConversionInfo" value="{Factor = 1.0E-15, TimeConcept = {&quot;s&quot;}, WorkConcept = {&quot;J&quot;}}">
+        </property>
+        <property name="aW" class="ptolemy.data.ontologies.lattice.unit.SIPrefixUnitConversionInfo" value="{Factor = 1.0E-18, TimeConcept = {&quot;s&quot;}, WorkConcept = {&quot;J&quot;}}">
+        </property>
+        <property name="zW" class="ptolemy.data.ontologies.lattice.unit.SIPrefixUnitConversionInfo" value="{Factor = 1.0E-21, TimeConcept = {&quot;s&quot;}, WorkConcept = {&quot;J&quot;}}">
+        </property>
+        <property name="yW" class="ptolemy.data.ontologies.lattice.unit.SIPrefixUnitConversionInfo" value="{Factor = 1.0E-24, TimeConcept = {&quot;s&quot;}, WorkConcept = {&quot;J&quot;}}">
+        </property>
+    </entity>
+    <relation name="relation" class="ptolemy.data.ontologies.ConceptRelation">
+        <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.0031447373909807737">
+        </property>
+        <property name="gamma" class="ptolemy.data.expr.Parameter" value="-2.684605238031374">
+        </property>
+    </relation>
+    <relation name="relation2" class="ptolemy.data.ontologies.ConceptRelation">
+        <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.0031447373909807737">
+        </property>
+        <property name="gamma" class="ptolemy.data.expr.Parameter" value="-2.480084068037659">
+        </property>
+    </relation>
+    <relation name="relation3" class="ptolemy.data.ontologies.ConceptRelation">
+        <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.0031447373909807737">
+        </property>
+        <property name="gamma" class="ptolemy.data.expr.Parameter" value="-2.0893705900977526">
+        </property>
+    </relation>
+    <relation name="relation4" class="ptolemy.data.ontologies.ConceptRelation">
+        <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.0031447373909807737">
+        </property>
+        <property name="gamma" class="ptolemy.data.expr.Parameter" value="-1.4230615630775194">
+        </property>
+    </relation>
+    <relation name="relation5" class="ptolemy.data.ontologies.ConceptRelation">
+        <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.0031447373909807737">
+        </property>
+        <property name="gamma" class="ptolemy.data.expr.Parameter" value="-0.7849001391019983">
+        </property>
+    </relation>
+    <relation name="relation6" class="ptolemy.data.ontologies.ConceptRelation">
+        <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.0031447373909807737">
+        </property>
+        <property name="gamma" class="ptolemy.data.expr.Parameter" value="-0.42246197856098766">
+        </property>
+    </relation>
+    <relation name="relation7" class="ptolemy.data.ontologies.ConceptRelation">
+        <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.06703404105738363">
+        </property>
+        <property name="gamma" class="ptolemy.data.expr.Parameter" value="-0.29568061818573604">
+        </property>
+    </relation>
+    <relation name="relation8" class="ptolemy.data.ontologies.ConceptRelation">
+        <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.0031447373909807737">
+        </property>
+        <property name="gamma" class="ptolemy.data.expr.Parameter" value="-0.42127651814738054">
+        </property>
+    </relation>
+    <relation name="relation9" class="ptolemy.data.ontologies.ConceptRelation">
+        <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.0031447373909807737">
+        </property>
+        <property name="gamma" class="ptolemy.data.expr.Parameter" value="-0.6570997014985496">
+        </property>
+    </relation>
+    <relation name="relation10" class="ptolemy.data.ontologies.ConceptRelation">
+        <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.0031447373909807737">
+        </property>
+        <property name="gamma" class="ptolemy.data.expr.Parameter" value="-1.0636182752368715">
+        </property>
+    </relation>
+    <relation name="relation11" class="ptolemy.data.ontologies.ConceptRelation">
+        <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.0031447373909807737">
+        </property>
+        <property name="gamma" class="ptolemy.data.expr.Parameter" value="-1.7473850069910764">
+        </property>
+    </relation>
+    <relation name="relation12" class="ptolemy.data.ontologies.ConceptRelation">
+        <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.0031447373909807737">
+        </property>
+        <property name="gamma" class="ptolemy.data.expr.Parameter" value="-2.391884966574994">
+        </property>
+    </relation>
+    <relation name="relation13" class="ptolemy.data.ontologies.ConceptRelation">
+        <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.0031447373909807737">
+        </property>
+        <property name="gamma" class="ptolemy.data.expr.Parameter" value="-2.7113483713124777">
+        </property>
+    </relation>
+    <relation name="relation14" class="ptolemy.data.ontologies.ConceptRelation">
+        <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.0031447373909807737">
+        </property>
+        <property name="gamma" class="ptolemy.data.expr.Parameter" value="-2.836718472406223">
+        </property>
+    </relation>
+    <relation name="relation15" class="ptolemy.data.ontologies.ConceptRelation">
+        <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.0031447373909807737">
+        </property>
+        <property name="gamma" class="ptolemy.data.expr.Parameter" value="-0.5246149315937838">
+        </property>
+    </relation>
+    <relation name="relation16" class="ptolemy.data.ontologies.ConceptRelation">
+        <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.0031447373909807737">
+        </property>
+        <property name="gamma" class="ptolemy.data.expr.Parameter" value="-2.7085918744591715">
+        </property>
+    </relation>
+    <relation name="relation17" class="ptolemy.data.ontologies.ConceptRelation">
+        <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.0031447373909807737">
+        </property>
+        <property name="gamma" class="ptolemy.data.expr.Parameter" value="-2.8139341058000165">
+        </property>
+    </relation>
+    <relation name="relation18" class="ptolemy.data.ontologies.ConceptRelation">
+        <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.0031447373909807737">
+        </property>
+        <property name="gamma" class="ptolemy.data.expr.Parameter" value="-0.44983377305617306">
+        </property>
+    </relation>
+    <relation name="relation19" class="ptolemy.data.ontologies.ConceptRelation">
+        <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.0031447373909807737">
+        </property>
+        <property name="gamma" class="ptolemy.data.expr.Parameter" value="-2.846263415183121">
+        </property>
+    </relation>
+    <relation name="relation20" class="ptolemy.data.ontologies.ConceptRelation">
+        <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.0031447373909807737">
+        </property>
+        <property name="gamma" class="ptolemy.data.expr.Parameter" value="-0.36804038337189043">
+        </property>
+    </relation>
+    <relation name="relation21" class="ptolemy.data.ontologies.ConceptRelation">
+        <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.0031447373909807737">
+        </property>
+        <property name="gamma" class="ptolemy.data.expr.Parameter" value="-0.25204355353597857">
+        </property>
+    </relation>
+    <relation name="relation22" class="ptolemy.data.ontologies.ConceptRelation">
+        <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.0031447373909807737">
+        </property>
+        <property name="gamma" class="ptolemy.data.expr.Parameter" value="-2.7913893926372393">
+        </property>
+    </relation>
+    <link port="Mass.belowPort" relation="relation2"/>
+    <link port="Mass.abovePort" relation="relation9"/>
+    <link port="Length.belowPort" relation="relation3"/>
+    <link port="Length.abovePort" relation="relation10"/>
+    <link port="Time.belowPort" relation="relation4"/>
+    <link port="Time.abovePort" relation="relation11"/>
+    <link port="Velocity.belowPort" relation="relation5"/>
+    <link port="Velocity.abovePort" relation="relation12"/>
+    <link port="Acceleration.belowPort" relation="relation6"/>
+    <link port="Acceleration.abovePort" relation="relation13"/>
+    <link port="Force.belowPort" relation="relation7"/>
+    <link port="Force.abovePort" relation="relation14"/>
+    <link port="Dimensionless.belowPort" relation="relation"/>
+    <link port="Dimensionless.abovePort" relation="relation8"/>
+    <link port="Conflict.belowPort" relation="relation8"/>
+    <link port="Conflict.belowPort" relation="relation9"/>
+    <link port="Conflict.belowPort" relation="relation10"/>
+    <link port="Conflict.belowPort" relation="relation12"/>
+    <link port="Conflict.belowPort" relation="relation13"/>
+    <link port="Conflict.belowPort" relation="relation14"/>
+    <link port="Conflict.belowPort" relation="relation11"/>
+    <link port="Conflict.belowPort" relation="relation16"/>
+    <link port="Conflict.belowPort" relation="relation17"/>
+    <link port="Conflict.belowPort" relation="relation19"/>
+    <link port="Conflict.belowPort" relation="relation22"/>
+    <link port="Unknown.abovePort" relation="relation"/>
+    <link port="Unknown.abovePort" relation="relation2"/>
+    <link port="Unknown.abovePort" relation="relation3"/>
+    <link port="Unknown.abovePort" relation="relation4"/>
+    <link port="Unknown.abovePort" relation="relation5"/>
+    <link port="Unknown.abovePort" relation="relation6"/>
+    <link port="Unknown.abovePort" relation="relation7"/>
+    <link port="Unknown.abovePort" relation="relation15"/>
+    <link port="Unknown.abovePort" relation="relation18"/>
+    <link port="Unknown.abovePort" relation="relation20"/>
+    <link port="Unknown.abovePort" relation="relation21"/>
+    <link port="Area.belowPort" relation="relation15"/>
+    <link port="Area.abovePort" relation="relation16"/>
+    <link port="Pressure.belowPort" relation="relation18"/>
+    <link port="Pressure.abovePort" relation="relation17"/>
+    <link port="Work.belowPort" relation="relation20"/>
+    <link port="Work.abovePort" relation="relation19"/>
+    <link port="Power.belowPort" relation="relation21"/>
+    <link port="Power.abovePort" relation="relation22"/>
+</class>
