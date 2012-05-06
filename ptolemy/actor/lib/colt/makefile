@@ -71,7 +71,25 @@ JSRCS = \
 
 OTHER_FILES_TO_BE_JARED = \
 	colt.xml \
-	colt-copyright.htm
+	colt-copyright.htm \
+	ColtExponentialIcon.xml \
+	ColtBinomialIcon.xml \
+	ColtPoissonSlowIcon.xml \
+	ColtLogarithmicIcon.xml \
+	ColtVonMisesIcon.xml \
+	ColtBetaIcon.xml \
+	ColtNegativeBinomialIcon.xml \
+	ColtChiSquareIcon.xml \
+	ColtHyperGeometricIcon.xml \
+	ColtNormalIcon.xml \
+	ColtPoissonIcon.xml \
+	ColtBinomialSelectorIcon.xml \
+	ColtRandomSourceIcon.xml \
+	ColtExponentialPowerIcon.xml \
+	ColtZetaIcon.xml \
+	ColtStudentTIcon.xml \
+	ColtBreitWignerIcon.xml \
+	ColtGammaIcon.xml
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 

@@ -284,7 +284,9 @@ OTHER_FILES_TO_BE_JARED = \
 	ConfigurationSelectIcon.xml \
 	ConfigurationSwitchIcon.xml \
 	DBIcon.xml \
+	Dice.gif \
 	DiscardIcon.xml \
+	DiscreteRandomSourceIcon.xml \
 	DistributorIcon.xml \
 	GaussianIcon.xml \
 	IIRIcon.xml \
