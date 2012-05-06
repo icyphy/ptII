@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="ABP" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.0.beta">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.0.devel">
     </property>
     <property name="forwardLossProbability" class="ptolemy.data.expr.Parameter" value="0.3">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -169,13 +169,13 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="[165.0, 10.0]">
             </property>
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={369, 347, 813, 510}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={369, 347, 813, 588}, maximized=false}">
         </property>
-        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 478]">
         </property>
         <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
         </property>
-        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
+        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 239.0}">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -380,7 +380,7 @@
                     </property>
                 </property>
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[310.0, 250.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[115.0, 180.0]">
             </property>
         </entity>
         <entity name="Server" class="ptolemy.domains.de.lib.Server">
@@ -484,7 +484,7 @@
                     </property>
                 </property>
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[145.0, 135.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[185.0, 135.0]">
             </property>
         </entity>
         <entity name="BooleanSwitch" class="ptolemy.actor.lib.BooleanSwitch">
@@ -504,27 +504,25 @@
             <vertex name="vertex" value="[240.0, 135.0]">
             </vertex>
         </relation>
-        <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-            <property name="width" class="ptolemy.data.expr.Parameter" value="1">
-            </property>
-        </relation>
-        <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-            <property name="width" class="ptolemy.data.expr.Parameter" value="1">
-            </property>
-            <vertex name="vertex1" value="[135.0, 285.0]">
-            </vertex>
-        </relation>
         <relation name="relation5" class="ptolemy.actor.TypedIORelation">
         </relation>
         <relation name="relation4" class="ptolemy.actor.TypedIORelation">
         </relation>
-        <link port="input" relation="relation2"/>
+        <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+            <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+            </property>
+            <vertex name="vertex1" value="[60.0, 135.0]">
+            </vertex>
+        </relation>
+        <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <link port="input" relation="relation6"/>
         <link port="output" relation="relation4"/>
-        <link port="uniform.output" relation="relation3"/>
-        <link port="uniform.trigger" relation="relation"/>
-        <link port="Server.input" relation="relation2"/>
+        <link port="uniform.output" relation="relation2"/>
+        <link port="uniform.trigger" relation="relation6"/>
+        <link port="Server.input" relation="relation6"/>
         <link port="Server.output" relation="relation"/>
-        <link port="Server.serviceTime" relation="relation3"/>
+        <link port="Server.serviceTime" relation="relation2"/>
         <link port="BooleanSwitch.input" relation="relation"/>
         <link port="BooleanSwitch.control" relation="relation5"/>
         <link port="BooleanSwitch.trueOutput" relation="relation4"/>
@@ -551,8 +549,8 @@
 <title>Events</title>
 <xLabel>Time</xLabel>
 <yLabel>Events</yLabel>
-<xRange min="3.4510022049" max="99.4894139817"/>
-<yRange min="0.0" max="11.0"/>
+<xRange min="5.908513416" max="99.3855065825"/>
+<yRange min="0.0" max="10.0"/>
 <noGrid/>
 <default connected="no" marks="dots" stems="yes"/>
 </plot>?>
@@ -792,7 +790,7 @@
             </property>
             <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{352.6420454545454, 258.9363952020202}">
             </property>
-            <property name="count" class="ptolemy.data.expr.Parameter" value="5">
+            <property name="count" class="ptolemy.data.expr.Parameter" value="4">
                 <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
                 </property>
                 <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -1038,7 +1036,7 @@
             </property>
             <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{322.325284090909, 193.0312499999999}">
             </property>
-            <property name="msg" class="ptolemy.data.expr.Parameter" value="11">
+            <property name="msg" class="ptolemy.data.expr.Parameter" value="10">
                 <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
                 </property>
                 <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">

@@ -159,9 +159,9 @@
     </entity>
     <entity name="ColtExponential" class="ptolemy.actor.lib.colt.ColtExponential">
         <doc>Create a sequence of Exponential random variables</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[385.0, 280.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[311.36907958984375, 288.5146484375]">
         </property>
-        <property name="_flipPortsHorizontal" class="ptolemy.data.expr.Parameter" value="true">
+        <property name="_flipPortsHorizontal" class="ptolemy.data.expr.Parameter" value="false">
             <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
             </property>
         </property>
@@ -265,71 +265,11 @@
                 </property>
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[313.875, 223.0]">
-        </property>
-    </entity>
-    <entity name="SingleEvent" class="ptolemy.actor.lib.SingleEvent">
-        <property name="value" class="ptolemy.data.expr.Parameter" value="0.0">
-        </property>
-        <property name="SingleEventIcon" class="ptolemy.vergil.icon.EditorIcon">
-            <property name="rectangle" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[0.0, 0.0]">
-                </property>
-                <property name="width" class="ptolemy.data.expr.Parameter" value="60">
-                </property>
-                <property name="height" class="ptolemy.data.expr.Parameter" value="40">
-                </property>
-                <property name="centered" class="ptolemy.data.expr.Parameter" value="true">
-                </property>
-                <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 1.0, 1.0, 1.0}">
-                </property>
-            </property>
-            <property name="ellipse" class="ptolemy.vergil.kernel.attributes.EllipseAttribute">
-                <property name="_location" class="ptolemy.kernel.util.Location" value="{1.0, -9.0}">
-                </property>
-                <property name="lineColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.0,0.6,1.0}">
-                </property>
-                <property name="width" class="ptolemy.data.expr.Parameter" value="6.0">
-                </property>
-                <property name="height" class="ptolemy.data.expr.Parameter" value="6.0">
-                </property>
-                <property name="centered" class="ptolemy.data.expr.Parameter" value="true">
-                </property>
-                <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.0,0.6,1.0}">
-                </property>
-            </property>
-            <property name="line2" class="ptolemy.vergil.kernel.attributes.LineAttribute">
-                <property name="_location" class="ptolemy.kernel.util.Location" value="{1.0, -5.0}">
-                </property>
-                <property name="x" class="ptolemy.data.expr.Parameter" value="0.0">
-                </property>
-                <property name="y" class="ptolemy.data.expr.Parameter" value="15.0">
-                </property>
-            </property>
-            <property name="line" class="ptolemy.vergil.kernel.attributes.LineAttribute">
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[-19.0, 11.0]">
-                </property>
-                <property name="x" class="ptolemy.data.expr.Parameter" value="40.0">
-                </property>
-                <property name="y" class="ptolemy.data.expr.Parameter" value="0.0">
-                </property>
-            </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={292, 266, 815, 518}, maximized=false}">
-            </property>
-            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
-            </property>
-            <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="4.0">
-            </property>
-            <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{0.0, 0.0}">
-            </property>
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[540.0, 275.0]">
-        </property>
-        <property name="_flipPortsHorizontal" class="ptolemy.data.expr.Parameter" value="true">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[400.0, 210.0]">
         </property>
     </entity>
     <entity name="NonStrictTest" class="ptolemy.actor.lib.NonStrictTest">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32}">
         </property>
         <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>
@@ -343,7 +283,7 @@
         </property>
     </entity>
     <entity name="NonStrictTest3" class="ptolemy.actor.lib.NonStrictTest">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{1, 0, 1, 2, 3, 4, 5, 4, 5, 6, 7, 8, 7, 8, 7, 6, 5, 6, 5, 6, 7, 6, 7, 8, 7, 8, 7, 8, 9, 8, 7, 8, 7, 6, 7, 6, 7, 8, 9, 10, 9, 8, 7, 8, 7, 6, 7, 8, 7, 6, 5, 6, 7, 8, 9, 8, 9, 10, 11, 12, 11, 10, 9, 10, 9, 10, 9, 8, 9, 8}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{1, 0, 1, 2, 3, 4, 5, 4, 3, 2, 1, 2, 1, 2, 3, 4, 5, 4, 5, 4, 5, 6, 5, 6, 7, 6, 7, 6, 5, 4, 3, 4, 5, 6, 7, 6, 5, 4, 5, 6, 5, 4, 5, 6, 5, 4, 3, 4, 3, 4, 5, 6, 7, 8, 9, 10, 9, 8, 7, 8, 7, 8, 9, 8, 7, 8, 7, 6, 7, 6, 5, 6}">
         </property>
         <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>
@@ -367,10 +307,8 @@
     <relation name="relation6" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="[458.875, 223.0]">
+        <vertex name="vertex1" value="[465.0, 210.0]">
         </vertex>
-    </relation>
-    <relation name="relation9" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation10" class="ptolemy.actor.TypedIORelation">
     </relation>
@@ -387,13 +325,11 @@
     <link port="Ramp.trigger" relation="relation"/>
     <link port="PoissonClock2.output" relation="relation5"/>
     <link port="ColtExponential.output" relation="relation6"/>
-    <link port="ColtExponential.trigger" relation="relation3"/>
-    <link port="ColtExponential.trigger" relation="relation9"/>
+    <link port="ColtExponential.trigger" relation="relation2"/>
     <link port="Server.input" relation="relation2"/>
     <link port="Server.output" relation="relation3"/>
     <link port="Server.serviceTime" relation="relation6"/>
     <link port="Server.size" relation="relation8"/>
-    <link port="SingleEvent.output" relation="relation9"/>
     <link port="NonStrictTest.input" relation="relation3"/>
     <link port="NonStrictTest2.input" relation="relation10"/>
     <link port="NonStrictTest3.input" relation="relation8"/>

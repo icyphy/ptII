@@ -2,9 +2,9 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="QueueAndServer" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.0.beta">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.0.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 0, 815, 770}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 22, 813, 762}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 652]">
     </property>
@@ -39,7 +39,7 @@
         </property>
     </property>
     <property name="Annotation4" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The upper model uses a Server actor, where the service time is provided by the&#10;grey input. When the model starts up, the SingleEvent actor triggers the&#10;generation of an exponential random variable (by the ColtExponential actor).&#10;That random variable provides the service time for the first event provided&#10;by the PoissonClock actor. When that service time expires, the token is&#10;produced on the output, triggering generation of the next exponential random&#10;variable providing the next service time.">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The upper model uses a Server actor, where the service time is provided by the&#10;grey input. When an event arrives, the  ColtExponential actor generates an&#10;exponential random variable that provides the service time for the event.&#10;The PoissonClock actor provides the events to be serviced, which arrive&#10;according to a Poisson process. If an event arrives before the service time&#10;has expired for the event currently being served, then it is queued until the&#10;server becomes free.">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[20.0, 70.0]">
         </property>
@@ -150,7 +150,7 @@
     <entity name="TimedPlotter" class="ptolemy.actor.lib.gui.TimedPlotter">
         <property name="legend" class="ptolemy.kernel.util.StringAttribute" value="Server, Queue">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={499, 36, 508, 355}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={891, 150, 500, 344}, maximized=false}">
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
         </property>
@@ -163,7 +163,7 @@
 <title>Outputs from Server and Queue</title>
 <xLabel>time</xLabel>
 <yLabel>value</yLabel>
-<xRange min="0.13522082" max="49.2228954028"/>
+<xRange min="0.192418415" max="49.9378039408"/>
 <yRange min="0.0" max="43.0"/>
 <noGrid/>
 <default connected="no" marks="dots" stems="yes"/>
@@ -173,7 +173,7 @@
     <entity name="TimedPlotter2" class="ptolemy.actor.lib.gui.TimedPlotter">
         <property name="legend" class="ptolemy.kernel.util.StringAttribute" value="Server, Queue">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={498, 394, 508, 355}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={895, 531, 500, 344}, maximized=false}">
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
         </property>
@@ -186,8 +186,8 @@
 <title>Size of Queue</title>
 <xLabel>time</xLabel>
 <yLabel>size</yLabel>
-<xRange min="0.0" max="49.2228954028"/>
-<yRange min="0.0" max="13.0"/>
+<xRange min="0.0" max="49.9378039408"/>
+<yRange min="0.0" max="8.0"/>
 <noGrid/>
 <default connected="no" marks="dots" stems="yes"/>
 </plot>?>
@@ -201,9 +201,9 @@
     </entity>
     <entity name="ColtExponential" class="ptolemy.actor.lib.colt.ColtExponential">
         <doc>Create a sequence of Exponential random variables</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[385.0, 280.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[310.0, 285.0]">
         </property>
-        <property name="_flipPortsHorizontal" class="ptolemy.data.expr.Parameter" value="true">
+        <property name="_flipPortsHorizontal" class="ptolemy.data.expr.Parameter" value="false">
             <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
             </property>
         </property>
@@ -307,67 +307,7 @@
                 </property>
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[313.875, 223.0]">
-        </property>
-    </entity>
-    <entity name="SingleEvent" class="ptolemy.actor.lib.SingleEvent">
-        <property name="value" class="ptolemy.data.expr.Parameter" value="0.0">
-        </property>
-        <property name="SingleEventIcon" class="ptolemy.vergil.icon.EditorIcon">
-            <property name="rectangle" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[0.0, 0.0]">
-                </property>
-                <property name="width" class="ptolemy.data.expr.Parameter" value="60">
-                </property>
-                <property name="height" class="ptolemy.data.expr.Parameter" value="40">
-                </property>
-                <property name="centered" class="ptolemy.data.expr.Parameter" value="true">
-                </property>
-                <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 1.0, 1.0, 1.0}">
-                </property>
-            </property>
-            <property name="ellipse" class="ptolemy.vergil.kernel.attributes.EllipseAttribute">
-                <property name="_location" class="ptolemy.kernel.util.Location" value="{1.0, -9.0}">
-                </property>
-                <property name="lineColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.0,0.6,1.0}">
-                </property>
-                <property name="width" class="ptolemy.data.expr.Parameter" value="6.0">
-                </property>
-                <property name="height" class="ptolemy.data.expr.Parameter" value="6.0">
-                </property>
-                <property name="centered" class="ptolemy.data.expr.Parameter" value="true">
-                </property>
-                <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.0,0.6,1.0}">
-                </property>
-            </property>
-            <property name="line2" class="ptolemy.vergil.kernel.attributes.LineAttribute">
-                <property name="_location" class="ptolemy.kernel.util.Location" value="{1.0, -5.0}">
-                </property>
-                <property name="x" class="ptolemy.data.expr.Parameter" value="0.0">
-                </property>
-                <property name="y" class="ptolemy.data.expr.Parameter" value="15.0">
-                </property>
-            </property>
-            <property name="line" class="ptolemy.vergil.kernel.attributes.LineAttribute">
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[-19.0, 11.0]">
-                </property>
-                <property name="x" class="ptolemy.data.expr.Parameter" value="40.0">
-                </property>
-                <property name="y" class="ptolemy.data.expr.Parameter" value="0.0">
-                </property>
-            </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={292, 266, 815, 518}, maximized=false}">
-            </property>
-            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
-            </property>
-            <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="4.0">
-            </property>
-            <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{0.0, 0.0}">
-            </property>
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[540.0, 275.0]">
-        </property>
-        <property name="_flipPortsHorizontal" class="ptolemy.data.expr.Parameter" value="true">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[390.0, 215.0]">
         </property>
     </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
@@ -385,12 +325,10 @@
     <relation name="relation7" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="[458.875, 223.0]">
+        <vertex name="vertex1" value="[455.0, 215.0]">
         </vertex>
     </relation>
     <relation name="relation8" class="ptolemy.actor.TypedIORelation">
-    </relation>
-    <relation name="relation9" class="ptolemy.actor.TypedIORelation">
     </relation>
     <link port="Queue.input" relation="relation2"/>
     <link port="Queue.output" relation="relation8"/>
@@ -405,11 +343,9 @@
     <link port="TimedPlotter2.input" relation="relation7"/>
     <link port="PoissonClock2.output" relation="relation5"/>
     <link port="ColtExponential.output" relation="relation6"/>
-    <link port="ColtExponential.trigger" relation="relation3"/>
-    <link port="ColtExponential.trigger" relation="relation9"/>
+    <link port="ColtExponential.trigger" relation="relation2"/>
     <link port="Server.input" relation="relation2"/>
     <link port="Server.output" relation="relation3"/>
     <link port="Server.serviceTime" relation="relation6"/>
     <link port="Server.size" relation="relation4"/>
-    <link port="SingleEvent.output" relation="relation9"/>
 </entity>
