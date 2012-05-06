@@ -320,8 +320,10 @@ OTHER_FILES_TO_BE_JARED = \
 	math.xml \
 	matrix.xml \
 	random.xml \
+	RandomIntegerIcon.xml \
 	randomNoColt.xml \
 	realtime.xml \
+	RicianIcon.xml \
 	sequencecontrol.xml \
 	SequenceIcon.xml \
 	sequencesinks.xml \
