@@ -29,8 +29,10 @@ package ptolemy.actor.lib.colt;
 
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.parameters.PortParameter;
+import ptolemy.data.BooleanToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.LongToken;
+import ptolemy.data.expr.SingletonParameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
@@ -85,10 +87,14 @@ public class ColtBinomialSelector extends ColtRandomSource {
 
         trials = new PortParameter(this, "trials", new IntToken(1));
         trials.setTypeEquals(BaseType.INT);
+        new SingletonParameter(trials, "_showName")
+                .setToken(BooleanToken.TRUE);
 
         populations = new TypedIOPort(this, "populations", true, false);
         populations.setMultiport(true);
         populations.setTypeEquals(BaseType.LONG);
+        new SingletonParameter(populations, "_showName")
+                .setToken(BooleanToken.TRUE);
 
         output.setMultiport(true);
         output.setTypeEquals(BaseType.INT);
