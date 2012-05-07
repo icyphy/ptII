@@ -256,6 +256,12 @@ public class IfNodeFunction extends MonotonicityConceptFunction {
         return evaluatedToken.conceptValue();
     }
 
+    /** Determine if the given concept is either monotonic or is a finite
+     *  set of counterexamples away from being monotonic.
+     *  @param c The concept in question.
+     *  @return True, if the concept represents a monotonic or close to
+     *   monotonic function. False, otherwise.
+     */
     private boolean _isAlmostMonotonic(Concept c) {
         try {
             if (_monotonicConcept.isAboveOrEqualTo(c)) {
@@ -289,6 +295,8 @@ public class IfNodeFunction extends MonotonicityConceptFunction {
      *
      *  @param variable The name of the variable in the conditional.
      *  @param constant The constant c.
+     *  @param inputConceptValues The concept analysis results for the
+     *   subexpressions of this this conditional.
      *  @return Monotonic, if the function is monotonic.
      *    Nonmonotonic, otherwise.
      *  @exception IllegalActionException If there is a problem
@@ -301,10 +309,6 @@ public class IfNodeFunction extends MonotonicityConceptFunction {
         Concept e2Monotonicity = inputConceptValues.get(2);
         MonotonicityCounterexamples toCheck = null;
         if (e2Monotonicity instanceof FlatTokenInfiniteConcept) {
-            /*
-            toCheck = ((MonotonicityCounterexamplesToken) ((FlatTokenInfiniteConcept) e2Monotonicity)
-                    .getTokenValue()).monotonicityCounterexamplesValue();
-                    */
             toCheck = MonotonicityCounterexamples.fromToken(
                     ((FlatTokenInfiniteConcept) e2Monotonicity).getTokenValue());
         } else {
@@ -337,7 +341,6 @@ public class IfNodeFunction extends MonotonicityConceptFunction {
         if (counterexamples.containsCounterexamples()) {
             return FlatTokenInfiniteConcept.createFlatTokenInfiniteConcept(
                     _monotonicityAnalysisOntology, _nonMonotonicRepresentative,
-                    //new MonotonicityCounterexamplesToken(counterexamples));
                     counterexamples.toToken());
         } else {
             return _monotonicConcept;
