@@ -1,4 +1,4 @@
-/* 
+/* A simple singleton type for all ConceptTokens.
  * 
  * Copyright (c) 2012 The Regents of the University of California. All
  * rights reserved.
@@ -22,38 +22,30 @@
 package ptolemy.data.ontologies;
 
 import ptolemy.data.Token;
-import ptolemy.data.TupleToken;
-import ptolemy.data.type.BaseType;
 import ptolemy.data.type.StructuredType;
 import ptolemy.data.type.Type;
 import ptolemy.graph.CPO;
-import ptolemy.kernel.util.IllegalActionException;
 
-/**
+/** A simple singleton type for all ConceptTokens.
+ *
  *  @author Ben Lickly
  *  @version $Id$
  *  @since Ptolemy II 9.0
  *  @Pt.ProposedRating Red (blickly)
  *  @Pt.AcceptedRating Red (blickly)
- *
  */
 public class ConceptType extends StructuredType {
 
-    public static final ConceptType CONCEPT = new ConceptType();
-    /**
-     *  
+    /** The representative type for all ConceptTokens.
      */
-    public ConceptType() {
-    }
+    public static final ConceptType CONCEPT = new ConceptType();
 
-    /**
-     *  @param t
-     *  @return
-     *  @throws IllegalActionException
-     *  @see ptolemy.data.type.BaseType#convert(ptolemy.data.Token)
+    /** Convert the specified token into a ConceptToken.
+     *  @param token Any token.
+     *  @return The argument unchanged, if it was a ConceptToken.
      */
     @Override
-    public ConceptToken convert(Token token) throws IllegalActionException {
+    public ConceptToken convert(Token token) {
         if (!(token instanceof ConceptToken)) {
             throw new IllegalArgumentException(
                     Token.notSupportedIncomparableConversionMessage(token,
@@ -62,105 +54,91 @@ public class ConceptType extends StructuredType {
         return (ConceptToken)token;
     }
 
-    /**
-     *  @return
-     *  @see ptolemy.data.type.Type#getTokenClass()
+    /** Return the class for tokens that this type represents.
+     *  @return ConceptToken.class
      */
     @Override
-    public Class getTokenClass() {
+    public Class<ConceptToken> getTokenClass() {
         return ConceptToken.class;
     }
 
-    /**
-     *  @param type
-     *  @return
-     *  @see ptolemy.data.type.Type#isCompatible(ptolemy.data.type.Type)
+    /** Test if the argument is compatible with this type.
+     *  @param type A type.
+     *  @return True if it is a ConceptType.
      */
     @Override
     public boolean isCompatible(Type type) {
         return (type instanceof ConceptType);
     }
 
-    /**
-     *  @return
-     *  @see ptolemy.data.type.Type#isConstant()
+    /** Test if this type is constant.
+     *  @return True.
      */
     @Override
     public boolean isConstant() {
         return true;
     }
 
-    /**
-     *  @return
-     *  @see ptolemy.data.type.Type#isInstantiable()
+    /** Test if this Type corresponds to an instantiable token class.
+     *  @return True.
      */
     @Override
     public boolean isInstantiable() {
         return true;
     }
 
-    /**
-     *  @param type
-     *  @return
-     *  @see ptolemy.data.type.Type#isSubstitutionInstance(ptolemy.data.type.Type)
+    /** Detect if the specified type is a substitution instance of this type.
+     *  @param type A type to check.
+     *  @return True, if the given type is equal to ConceptType.
      */
     @Override
     public boolean isSubstitutionInstance(Type type) {
         return equals(type);
     }
 
-    /**
-     *  @return
-     *  @throws CloneNotSupportedException
-     *  @see ptolemy.data.type.StructuredType#clone()
+    /** Do nothing, since this is a singleton type.
+     *  @return The instance being cloned.
      */
     @Override
-    public ConceptType clone() throws CloneNotSupportedException {
-        return new ConceptType();
+    public ConceptType clone() {
+        return this;
     }
 
-    /**
-     *  @param type
-     *  @see ptolemy.data.type.StructuredType#initialize(ptolemy.data.type.Type)
+    /** Do nothing, since there are no unknown subtypes.
+     *  @param type Ignored.
      */
     @Override
-    public void initialize(Type type) {
+    public void initialize(Type type) {}
 
-    }
-
-    /**
-     *  @param type
-     *  @return
-     *  @see ptolemy.data.type.StructuredType#_compare(ptolemy.data.type.StructuredType)
+    /** Compare this type with the specified type.
+     *  @param type Another instance of the ConceptType singleton type.
+     *  @return CPO.SAME, since this is a singleton type.
      */
     @Override
     protected int _compare(StructuredType type) {
         return CPO.SAME;
     }
 
-    /**
-     *  @return
-     *  @see ptolemy.data.type.StructuredType#_getRepresentative()
+    /** Return the representative of this type.
+     *  @return The unique representative of this singleton type.
      */
     @Override
     protected StructuredType _getRepresentative() {
         return CONCEPT;
     }
 
-    /**
-     *  @param type
-     *  @return
-     *  @see ptolemy.data.type.StructuredType#_greatestLowerBound(ptolemy.data.type.StructuredType)
+    /** Take the greatest lower bound of this type with the specified type.
+     *  @param type Another instance of the ConceptType singleton type.
+     *  @return The unique representative of this singleton type.
      */
     @Override
     protected StructuredType _greatestLowerBound(StructuredType type) {
         return CONCEPT;
     }
 
-    /**
-     *  @param type
-     *  @return
-     *  @see ptolemy.data.type.StructuredType#_leastUpperBound(ptolemy.data.type.StructuredType)
+    /** Take the least upper bound of this type with the specified type.
+     *  @param type Another instance of the ConceptType singleton type.
+     *  @return The unique representative of this singleton type.
      */
     @Override
     protected StructuredType _leastUpperBound(StructuredType type) {
