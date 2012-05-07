@@ -59,7 +59,7 @@
   <target name="fmu_cs" depends="build"
 	  description="Run a co-simulation.  To use a specific .fmu file, run ant fmu_cs -Dfmu=org/ptolemy/fmi/fmu/cs/bouncingBall.fmu"
 	  >
-    <java classname="org.ptolemy.fmi.FMUCoSimulation"
+    <java classname="org.ptolemy.fmi.driver.FMUCoSimulation"
 	  fork="true">
       <classpath>
 	<path refid="fmi.classpath"/>

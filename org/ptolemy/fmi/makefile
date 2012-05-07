@@ -43,9 +43,9 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Variables and rules used to create source file distributions
-PTPACKAGE = 	fmu
+PTPACKAGE = 	fmi
 PTVERSION =	1.0
-PTDIST =	javafmu$(PTVERSION)
+PTDIST =	jfmi$(PTVERSION)
 PTCLASSJAR =
 
 # Include the .class files from these jars in PTCLASSALLJAR
@@ -86,9 +86,6 @@ KRUFT =
 
 JCLASS = $(JSRCS:%.java=%.class)
 
-# make jars will build $(OTHER_JARS)
-OTHER_JARS = $(PXGRAPHAPPLETJAR) $(PLOTMLAPPLETJAR) $(PLOTAPPLICATIONJAR)
-
 all: sources jclass
 
 install: all jars 
@@ -105,183 +102,162 @@ PTTMPME= $(PTTMPDIR)/$(PTDIST)/$(ME)
 # Fix the temporary directory used when building a distribution
 fixtmpdist:
 	@echo "Fixing $(PTTMPDIR)/$(PTDIST)"
-	echo "all makefiles sources install docs depend checkjunk sccsinfo sccsclean test extraclean clean: mk/ptII.mk" > $(PTTMPDIR)/$(PTDIST)/makefile
-	echo '	cd com/microstar/xml/; make $$@' >>$(PTTMPDIR)/$(PTDIST)/makefile
-	echo '# Generate ptII.mk by running configure' >> \
-		$(PTTMPDIR)/$(PTDIST)/makefile
-	echo 'mk/ptII.mk: configure mk/ptII.mk.in' >> \
-		$(PTTMPDIR)/$(PTDIST)/makefile
-	echo '	./configure' >> $(PTTMPDIR)/$(PTDIST)/makefile
-	echo "realclean itcldocs tests idocs weblint dists:" >> \
-		$(PTTMPDIR)/$(PTDIST)/makefile
-	echo "	echo \"Nothing need be done for $$@ in ptolemy/plot)\"" >> \
-		$(PTTMPDIR)/$(PTDIST)/makefile
-	echo "$(PTDIST) - A Java plotting package" > \
-		$(PTTMPDIR)/$(PTDIST)/README.txt
-	echo "Ptplot is a set of two dimensional signal plotters" >> \
-		$(PTTMPDIR)/$(PTDIST)/README.txt
-	echo "implemented in Java." >>  $(PTTMPDIR)/$(PTDIST)/README.txt
-	echo "Ptplot is embeddable in applets and applications." >> \
-		$(PTTMPDIR)/$(PTDIST)/README.txt
-	echo "For more information, see ptolemy/plot/doc/index.htm" >> \
-		$(PTTMPDIR)/$(PTDIST)/README.txt
-	echo "" >> $(PTTMPDIR)/$(PTDIST)/README.txt
-	echo "Installer notes:" >> $(PTTMPDIR)/$(PTDIST)/README.txt
-	echo "If you are using the auto installer, then note that" >> \
-		$(PTTMPDIR)/$(PTDIST)/README.txt
-	echo "under Windows, the Ptplot programs will be added to" >> \
-		$(PTTMPDIR)/$(PTDIST)/README.txt
-	echo "your start menu under Ptolemy -> Ptplot.  Note further" >> \
-		$(PTTMPDIR)/$(PTDIST)/README.txt
-	echo "that directory names with spaces do not work very well" >> \
-		$(PTTMPDIR)/$(PTDIST)/README.txt
-	echo " because of limitations Java 1.4.0" >> \
+	echo "$(PTDIST) - A Java Wrapper for the Functional Mock-up Interface" > \
 		$(PTTMPDIR)/$(PTDIST)/README.txt
 	echo "" >> \
 		$(PTTMPDIR)/$(PTDIST)/README.txt
-	echo "If you are building from a tar or zip file, then note that" >> \
+	echo "The Functional Mock-up Interface (FMI) is used to allow" >> \
 		$(PTTMPDIR)/$(PTDIST)/README.txt
-	echo "the file ptplot${PTVERSION}.tar.gz or" >> \
+	echo "modeling tools to share blocks of code for co-simulation and model" >> \
 		$(PTTMPDIR)/$(PTDIST)/README.txt
-	echo "ptplot${PTVERSION}.zip, will unpack into a directory" >> \
+	echo "exchange.  We have developed a BSD-licensed interface between Java" >> \
 		$(PTTMPDIR)/$(PTDIST)/README.txt
-	echo "called ptplot${PTVERSION}, and the configure-make-make install" \
-		>> $(PTTMPDIR)/$(PTDIST)/README.txt
-	echo "process will not install any files outside of this " >> \
-		$(PTTMPDIR)/$(PTDIST)/README.txt
-	echo "ptplot${PTVERSION} directory." >> \
-		$(PTTMPDIR)/$(PTDIST)/README.txt
-	echo "So, if you unpack the TAR file into /usr/local, after " >> \
-		$(PTTMPDIR)/$(PTDIST)/README.txt
-	echo "installing you will have /usr/local/ptplot${PTVERSION}," >> \
-		$(PTTMPDIR)/$(PTDIST)/README.txt
-	echo "and you may want to tell users to add " >> \
-		$(PTTMPDIR)/$(PTDIST)/README.txt
-	echo "/usr/local/ptplot${PTVERSION}/bin to their PATH." >> \
-		$(PTTMPDIR)/$(PTDIST)/README.txt
-	echo "The scripts in the bin directory will run the plotter" >> \
-		$(PTTMPDIR)/$(PTDIST)/README.txt
-	echo "as a standalone application, or they can add" >> \
-		$(PTTMPDIR)/$(PTDIST)/README.txt
-	echo "/usr/local/ptplot${PTVERSION} to their Java CLASSPATH." >> \
-		$(PTTMPDIR)/$(PTDIST)/README.txt
-	echo "" >> $(PTTMPDIR)/$(PTDIST)/README.txt
-	echo "To build under Solaris:" >> \
-		$(PTTMPDIR)/$(PTDIST)/README.txt
-	echo "Set the PTII variable to this directory: " >> \
-		$(PTTMPDIR)/$(PTDIST)/README.txt
-	echo "PTII=`pwd` " >> \
-		$(PTTMPDIR)/$(PTDIST)/README.txt
-	echo "Then configure and make:" >> \
-		$(PTTMPDIR)/$(PTDIST)/README.txt
-	echo "./configure" >> \
-		$(PTTMPDIR)/$(PTDIST)/README.txt
-	echo "make install" >> \
-		$(PTTMPDIR)/$(PTDIST)/README.txt
-	echo "bin/ptplot" >> \
+	echo "and FMI that we call JFMI." >> \
 		$(PTTMPDIR)/$(PTDIST)/README.txt
 	echo "" >> \
 		$(PTTMPDIR)/$(PTDIST)/README.txt
-	@echo "Remove test from ptolemy/plot/makefile"
-	cat "$(PTII)/ptolemy/plot/makefile" | \
-		sed "s/ test / /" | \
-		sed "s/\ttest/\t/" > \
-		$(PTTMPDIR)/$(PTDIST)/ptolemy/plot/makefile
-	#@echo "JShield needs the ico file to be in the top level directory"
-	#cp $(PTTMPME)/doc/img/ptplot.ico \
-	#	$(PTTMPDIR)/$(PTDIST)
-	@echo "Copy over xml stuff"
-	mkdir -p $(PTTMPDIR)/$(PTDIST)/com
-	cp -r "$(PTII)/com/microstar" "$(PTII)/com/makefile" \
-		$(PTTMPDIR)/$(PTDIST)/com
-	@echo "Copy over bin"
-	mkdir -p $(PTTMPDIR)/$(PTDIST)/bin
-	cp -r   "$(PTII)/bin/ptinvoke.in" \
-		$(PTTMPDIR)/$(PTDIST)/bin
-	@echo "Create bin/makefile"
-	echo "ME =		bin" >> $(PTTMPDIR)/$(PTDIST)/bin/makefile
-	echo "ROOT =		.." >> 	$(PTTMPDIR)/$(PTDIST)/bin/makefile
-	# Use awk here so that make variables don't get substituted
-	echo "foo" | \
-		awk '{	  printf("CONFIG =\t%c%s/mk/ptII.mk\n",36,"(ROOT)"); \
-			 printf("include %c%s\n", 36,"(CONFIG)"); \
-		}'  >> 		$(PTTMPDIR)/$(PTDIST)/bin/makefile
-	echo "SHELL_FILES = \\" >> $(PTTMPDIR)/$(PTDIST)/bin/makefile
-	echo "	histogram \\" >> $(PTTMPDIR)/$(PTDIST)/bin/makefile
-	echo "	ptplot \\" >> $(PTTMPDIR)/$(PTDIST)/bin/makefile
-	echo "	pxgraph" >> $(PTTMPDIR)/$(PTDIST)/bin/makefile
-	echo "# DOS batch files" >> $(PTTMPDIR)/$(PTDIST)/bin/makefile
-	echo "BAT_FILES = \\" >> $(PTTMPDIR)/$(PTDIST)/bin/makefile
-	echo "	histogram.bat \\" >> $(PTTMPDIR)/$(PTDIST)/bin/makefile
-	echo "	ptplot.bat \\" >> $(PTTMPDIR)/$(PTDIST)/bin/makefile
-	echo "	pxgraph.bat " >> $(PTTMPDIR)/$(PTDIST)/bin/makefile
-	echo "" >> $(PTTMPDIR)/$(PTDIST)/bin/makefile
-	echo "EXTRA_SRCS = \\" >> $(PTTMPDIR)/$(PTDIST)/bin/makefile
-	echo "	ptinvoke.in \\" >> $(PTTMPDIR)/$(PTDIST)/bin/makefile
-	echo "foo" | \
-		awk '{	 printf("\t%c%s\n", 36, "(BAT_FILES)")}' \
-		>> $(PTTMPDIR)/$(PTDIST)/bin/makefile
-	echo "" >> $(PTTMPDIR)/$(PTDIST)/bin/makefile
-	echo 'all: ptinvoke $$(BAT_FILES)' >> $(PTTMPDIR)/$(PTDIST)/bin/makefile
-	echo "	-chmod a+x ptinvoke" >> $(PTTMPDIR)/$(PTDIST)/bin/makefile
-	echo "	rm -f histogram" >> $(PTTMPDIR)/$(PTDIST)/bin/makefile
-	echo "	ln -s ptinvoke histogram" >> \
-		$(PTTMPDIR)/$(PTDIST)/bin/makefile
-	echo "	rm -f ptplot" >> $(PTTMPDIR)/$(PTDIST)/bin/makefile
-	echo "	ln -s ptinvoke ptplot" >> $(PTTMPDIR)/$(PTDIST)/bin/makefile
-	echo "	rm -f pxgraph" >> $(PTTMPDIR)/$(PTDIST)/bin/makefile
-	echo "	ln -s ptinvoke pxgraph" >> \
-		$(PTTMPDIR)/$(PTDIST)/bin/makefile
-	echo "" >> $(PTTMPDIR)/$(PTDIST)/bin/makefile
-	echo "install: all" >> $(PTTMPDIR)/$(PTDIST)/bin/makefile
-	echo "foo" | \
-		awk '{	 printf("\t-chmod a+x %c%s %c%s\n", 36, "(SHELL_FILES)", 36, "(BAT_FILES)")}' >> \
-		$(PTTMPDIR)/$(PTDIST)/bin/makefile
-	echo "" >> $(PTTMPDIR)/$(PTDIST)/bin/makefile
-	echo "ptinvoke: ptinvoke.in ../config.status" >> \
-		$(PTTMPDIR)/$(PTDIST)/bin/makefile
-	echo "	(cd ..; ./config.status)" >> \
-		$(PTTMPDIR)/$(PTDIST)/bin/makefile
-	echo "# zip might not get the permissions of configure right, so we run /bin/sh" >> $(PTTMPDIR)/$(PTDIST)/bin/makefile
-	echo "../config.status: ../configure" >> \
-		$(PTTMPDIR)/$(PTDIST)/bin/makefile
-	echo "	(cd ..; /bin/sh ./configure)" >> \
-		$(PTTMPDIR)/$(PTDIST)/bin/makefile
-	echo "" >> $(PTTMPDIR)/$(PTDIST)/bin/makefile
-	echo 'makebat: ptinvoke' >> $(PTTMPDIR)/$(PTDIST)/bin/makefile
-	echo '	rm -f makebat' >> $(PTTMPDIR)/$(PTDIST)/bin/makefile
-	echo '	ln -s ptinvoke makebat' >> $(PTTMPDIR)/$(PTDIST)/bin/makefile
-	echo "" >> $(PTTMPDIR)/$(PTDIST)/bin/makefile
-	echo '$$(BAT_FILES): makebat' >> $(PTTMPDIR)/$(PTDIST)/bin/makefile
-	# We need $@ in bin/makefile, so we use awk to avoid substitution
-	echo "foo" | \
-		awk '{	 printf("\trm -f %c%c%c%c\n", 34, 36, 64, 34); printf("\t./makebat -q %c%cbasename %c%c .bat%c%c\n", 34, 96, 36, 64, 96, 34); }' >> $(PTTMPDIR)/$(PTDIST)/bin/makefile
-	echo "" >> $(PTTMPDIR)/$(PTDIST)/bin/makefile
-	echo "# Get the rest of the rules" >> \
-		$(PTTMPDIR)/$(PTDIST)/bin/makefile
-	echo "foo" | \
-		awk '{	 printf("include %c%s/mk/ptcommon.mk\n", 36, "(ROOT)")}' >> \
-		$(PTTMPDIR)/$(PTDIST)/bin/makefile
+	echo "Build instructions:" >> \
+		$(PTTMPDIR)/$(PTDIST)/README.txt
+	echo "To build, download and install Apache ant from https://ant.apache.org/" >> \
+		$(PTTMPDIR)/$(PTDIST)/README.txt
+	echo "cd to org/ptolemy/fmi and run ant: " >> \
+		$(PTTMPDIR)/$(PTDIST)/README.txt
+	echo "  cd org/ptolemy/fmi" >> \
+		$(PTTMPDIR)/$(PTDIST)/README.txt
+	echo "  ant" >> \
+		$(PTTMPDIR)/$(PTDIST)/README.txt
+	echo "" >> \
+		$(PTTMPDIR)/$(PTDIST)/README.txt
+	echo "To run an example under Mac OS or Linux, try:" >> \
+		$(PTTMPDIR)/$(PTDIST)/README.txt
+	echo "  cd org/ptolemy/fmi" >> \
+		$(PTTMPDIR)/$(PTDIST)/README.txt
+	echo "  java -classpath ../../../lib/jna.jar:../.. \\"  >> \
+		$(PTTMPDIR)/$(PTDIST)/README.txt
+	echo "     org.ptolemy.fmi.driver.FMUCoSimulation \\"  >> \
+		$(PTTMPDIR)/$(PTDIST)/README.txt
+	echo "     fmu/cs/bouncingBall.fmu 1.0 0.1 true c results.csv " >> \
+		$(PTTMPDIR)/$(PTDIST)/README.txt
+	echo "Then look at the contents of the results.csv file" >> \
+		$(PTTMPDIR)/$(PTDIST)/README.txt
+	echo "" >> \
+		$(PTTMPDIR)/$(PTDIST)/README.txt
+	echo "Sponsors:" >> \
+		$(PTTMPDIR)/$(PTDIST)/README.txt
+	echo "JFMI was developed under a Department of Energy Contract" >> \
+		$(PTTMPDIR)/$(PTDIST)/README.txt
+	echo "for the Building Controls Virtual Test Bed (BCVTB) see http://simulationresearch.lbl.gov/bcvtb" >> \
+		$(PTTMPDIR)/$(PTDIST)/README.txt
+	echo "" >> \
+		$(PTTMPDIR)/$(PTDIST)/README.txt
+	echo "Additional support was provided by Ptolemy II, which is supported " >> \
+		$(PTTMPDIR)/$(PTDIST)/README.txt
+	echo "by the following organizations:" >> \
+		$(PTTMPDIR)/$(PTDIST)/README.txt
+	echo "The Center for Hybrid and Embedded Software Systems (CHESS)" >> \
+		$(PTTMPDIR)/$(PTDIST)/README.txt
+	echo "at UC Berkeley, which receives support from the" >> \
+		$(PTTMPDIR)/$(PTDIST)/README.txt
+	echo "National Science Foundation (NSF awards #0720882 (CSR-EHS: PRET),"  >> \
+		$(PTTMPDIR)/$(PTDIST)/README.txt
+	echo "#1035672 (CPS: PTIDES), and #0931843 (ActionWebs)),"  >> \
+		$(PTTMPDIR)/$(PTDIST)/README.txt
+	echo "the U. S. Army Research Laboratory (ARL #W911NF-11-2-0038),"  >> \
+		$(PTTMPDIR)/$(PTDIST)/README.txt
+	echo "the Air Force Research Lab (AFRL), the Multiscale Systems Center (MuSyC),"  >> \
+		$(PTTMPDIR)/$(PTDIST)/README.txt
+	echo "one of six research centers funded under the Focus Center Research Program,"  >> \
+		$(PTTMPDIR)/$(PTDIST)/README.txt
+	echo "a Semiconductor Research Corporation program, and the following companies:"  >> \
+		$(PTTMPDIR)/$(PTDIST)/README.txt
+	echo "Bosch, National Instruments, Thales, and Toyota."  >> \
+		$(PTTMPDIR)/$(PTDIST)/README.txt
+	echo ""  >> \
+		$(PTTMPDIR)/$(PTDIST)/README.txt
+	echo "Authors: "  >> \
+		$(PTTMPDIR)/$(PTDIST)/README.txt
+	echo "David Broman (UC Berkeley)"  >> \
+		$(PTTMPDIR)/$(PTDIST)/README.txt
+	echo "Christopher Brooks (UC Berkeley)"  >> \
+		$(PTTMPDIR)/$(PTDIST)/README.txt
+	echo "Edward A. Lee (UC Berkeley)"  >> \
+		$(PTTMPDIR)/$(PTDIST)/README.txt
+	echo "Thierry Stephane Nouidui (Lawrence Berkeley National Laboratory)"   >> \
+		$(PTTMPDIR)/$(PTDIST)/README.txt
+	echo "Michael Wetter (Lawrence Berkeley National Laboratory)"  >> \
+		$(PTTMPDIR)/$(PTDIST)/README.txt
+	echo ""  >> \
+		$(PTTMPDIR)/$(PTDIST)/README.txt
+	echo "Support: "  >> \
+		$(PTTMPDIR)/$(PTDIST)/README.txt
+	echo "This package is delivered without support.  However, the BCVTB mailing list" >> \
+		$(PTTMPDIR)/$(PTDIST)/README.txt
+	echo "at https://groups.google.com/group/bcvtb maybe be used for questions." >> \
+		$(PTTMPDIR)/$(PTDIST)/README.txt
+	# Update copyright
+	sed  -e 's/1995-//' -e 's/Ptolemy II system/JFMI distribution/' \
+		$(PTTMPDIR)/$(PTDIST)/copyright.txt | \
+		grep -v "Ptolemy II includes the work of others, to see those copyrights" | \
+		grep -v "the copyright link on the splash page or see copyright.htm." > \
+		$(PTTMPDIR)/$(PTDIST)/license.txt
+	echo "" >> \
+		$(PTTMPDIR)/$(PTDIST)/license.txt
+	echo "JFMI includes the work of others:" >> \
+		$(PTTMPDIR)/$(PTDIST)/license.txt
+	echo "* The Java Native Access (JNA) package, which is released under LGPL, see" >> \
+		$(PTTMPDIR)/$(PTDIST)/license.txt
+	echo "lib/jna-license.ht" >> \
+		$(PTTMPDIR)/$(PTDIST)/license.txt
+	echo "* FMUSDK, which is released with a BSD license, see" >> \
+		$(PTTMPDIR)/$(PTDIST)/license.txt
+	echo "org/ptolemy/fmi/driver/fmusdk-license.htm" >> \
+		$(PTTMPDIR)/$(PTDIST)/license.txt
+	echo "* JUnit, which is released with a Common Public License, see" >> \
+		$(PTTMPDIR)/$(PTDIST)/license.txt
+	echo "lib/junit-license.htm" >> \
+		$(PTTMPDIR)/$(PTDIST)/license.txt
+	echo "At runtime, only JNA is required.  FMUSDK and JUnit are used for testing only." >> \
+		$(PTTMPDIR)/$(PTDIST)/license.txt
+	rm -f $(PTTMPDIR)/$(PTDIST)/copyright.txt $(PTTMPDIR)/$(PTDIST)/._copyright.txt
+	#
+	@echo "Copy over jna stuff"
+	mkdir -p $(PTTMPDIR)/$(PTDIST)/lib
+	cp "$(PTII)/lib/jna.jar" "$(PTII)/lib/jna-license.htm" \
+		$(PTTMPDIR)/$(PTDIST)/lib
+	cp "$(PTII)/lib/junit-4.8.2.jar" "$(PTII)/lib/junit-license.htm" \
+		$(PTTMPDIR)/$(PTDIST)/lib
+	@echo "Remove files we don't want to ship"
+	rm -rf $(PTTMPDIR)/$(PTDIST)/autom4te.cache \
+		$(PTTMPDIR)/$(PTDIST)/config \
+		$(PTTMPDIR)/$(PTDIST)/configure* \
+		$(PTTMPDIR)/$(PTDIST)/mk \
+		$(PTTMPDIR)/$(PTDIST)/.classpath.in
+	find $(PTTMPDIR)/$(PTDIST) -name "makefile" -exec rm {} \; 
+	find $(PTTMPDIR)/$(PTDIST) -name "*.class" -exec rm {} \; 
+	find $(PTTMPDIR)/$(PTDIST) -name "#*" -exec rm {} \; 
+	find $(PTTMPDIR)/$(PTDIST) -name ".#*" -exec rm {} \; 
+	find $(PTTMPDIR)/$(PTDIST) -name "*~" -exec rm {} \; 
+	find $(PTTMPDIR)/$(PTDIST)/org/ptolemy/fmi -name "*.jar" -exec rm {} \; 
 	#
 	# Setting up doc/codeDoc directory
 	#
 	mkdir -p $(PTTMPDIR)/$(PTDIST)/doc/codeDoc
 	cd $(PTTMPDIR)/$(PTDIST); \
-	CLASSPATH=. "$(JAVADOC)" $(JDOCFLAGS) -d doc/codeDoc \
+	CLASSPATH=.$(CLASSPATHSEPARATOR)$(PTII)/lib/jna.jar "$(JAVADOC)" $(JDOCFLAGS) -d doc/codeDoc \
 		org.ptolemy.fmi \
 		org.ptolemy.fmi.driver \
 		org.ptolemy.fmi.type
 	@echo "Fixing up doc/download directory"
 	rm -rf $(PTTMPME)/doc/download
-	mkdir $(PTTMPME)/doc/download
+	mkdir -p $(PTTMPME)/doc/download
 	echo "<html>" > $(PTTMPME)/doc/download/index.htm
 	echo "<head>" >> $(PTTMPME)/doc/download/index.htm
-	echo "<title>Download Ptplot</title>" >> $(PTTMPME)/doc/download/index.htm
+	echo "<title>Download JFMI</title>" >> $(PTTMPME)/doc/download/index.htm
 	echo '<link href="../default.css" rel="stylesheet" type="text/css">' >> $(PTTMPME)/doc/download/index.htm
 	echo '<body bgcolor="#ffffff">'  >> $(PTTMPME)/doc/download/index.htm
-	echo "<H1>Download Ptplot</H1>" >> $(PTTMPME)/doc/download/index.htm
-	echo "The Ptplot distribution itself does not include all the available download formats." >> $(PTTMPME)/doc/download/index.htm
-	echo 'See <a href="http://ptolemy.eecs.berkeley.edu/java/ptplot" target="_top"><code>http://ptolemy.eecs.berkeley.edu/java/ptplot</code></a>' >> $(PTTMPME)/doc/download/index.htm
+	echo "<H1>Download JFMI</H1>" >> $(PTTMPME)/doc/download/index.htm
+	echo "The JFMI distribution itself does not include all the available download formats." >> $(PTTMPME)/doc/download/index.htm
+	echo 'See <a href="http://ptolemy.eecs.berkeley.edu/java/jfmi" target="_top"><code>http://ptolemy.eecs.berkeley.edu/jfmi/ptplot</code></a>' >> $(PTTMPME)/doc/download/index.htm
 	echo "</body>" >> $(PTTMPME)/doc/download/index.htm
 	echo "</html>" >> $(PTTMPME)/doc/download/index.htm
 	chmod -R a+r $(PTTMPDIR)/$(PTDIST)

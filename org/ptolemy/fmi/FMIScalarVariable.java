@@ -290,7 +290,7 @@ public class FMIScalarVariable {
      *  @param fmiComponent The Functional Mock-up Interface (FMI)
      *  component that contains a reference to the variable.
      *  @param value The value of this variable.
-     *  @see #getInt(Pointer);
+     *  @see #getInt(Pointer)
      */
     public void setInt(Pointer fmiComponent, int value) {
         IntBuffer valueBuffer = IntBuffer.allocate(1).put(0, value);
@@ -302,7 +302,7 @@ public class FMIScalarVariable {
      *  @param fmiComponent The Functional Mock-up Interface (FMI)
      *  component that contains a reference to the variable.
      *  @param value The value of this variable.
-     *  @see #getString(Pointer);
+     *  @see #getString(Pointer)
      */
     public void setString(Pointer fmiComponent, String value) {
         PointerByReference pointerByReference = new PointerByReference();
