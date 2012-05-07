@@ -106,13 +106,45 @@ fixtmpdist:
 		$(PTTMPDIR)/$(PTDIST)/README.txt
 	echo "" >> \
 		$(PTTMPDIR)/$(PTDIST)/README.txt
-	echo "The Functional Mock-up Interface (FMI) is used to allow" >> \
+	echo "A Functional Mock-up Unit (FMU) is a file that contains functionality"  >> \
 		$(PTTMPDIR)/$(PTDIST)/README.txt
-	echo "modeling tools to share blocks of code for co-simulation and model" >> \
+	echo "that may be invoked either via co-simulation or model exchange." >> \
 		$(PTTMPDIR)/$(PTDIST)/README.txt
-	echo "exchange.  We have developed a BSD-licensed interface between Java" >> \
+	echo "Typically, a FMU file has a .fmu extension. A FMU file is a zip file" >> \
 		$(PTTMPDIR)/$(PTDIST)/README.txt
-	echo "and FMI that we call JFMI." >> \
+	echo "that contains a file named modelDescription.xml and one or more" >> \
+		$(PTTMPDIR)/$(PTDIST)/README.txt
+	echo "platform-dependent shared libraries." >> \
+		$(PTTMPDIR)/$(PTDIST)/README.txt
+	echo "" >> \
+		$(PTTMPDIR)/$(PTDIST)/README.txt
+	echo "JFMI is a BSD-licensed interface between Java" >> \
+		$(PTTMPDIR)/$(PTDIST)/README.txt
+	echo "and FMI." >> \
+		$(PTTMPDIR)/$(PTDIST)/README.txt
+	echo "" >> \
+		$(PTTMPDIR)/$(PTDIST)/README.txt
+	echo "See org/ptolemy/fmi/driver/FMUCoSimulation.java and" >> \
+		$(PTTMPDIR)/$(PTDIST)/README.txt
+	echo "org/ptolemy/fmi/driver/FMUModelExchange.java" >> \
+		$(PTTMPDIR)/$(PTDIST)/README.txt
+	echo "for simple examples that read in .fmu files and invoke methods in" >> \
+		$(PTTMPDIR)/$(PTDIST)/README.txt
+	echo "the the platform-dependent shared libraries." >> \
+		$(PTTMPDIR)/$(PTDIST)/README.txt
+	echo "" >> \
+		$(PTTMPDIR)/$(PTDIST)/README.txt
+	echo "Sample .fmu files may be found in fmu/cs and fmu/me." >> \
+		$(PTTMPDIR)/$(PTDIST)/README.txt
+	echo "for the following architectures: darwin64, linux32, linux64, win32 and win64." >> \
+		$(PTTMPDIR)/$(PTDIST)/README.txt
+	echo "These files were generated using a port of the FMUSDK which may be found at" >> \
+		$(PTTMPDIR)/$(PTDIST)/README.txt
+	echo "http://github.com/cxbrooks/fmusdk." >> \
+		$(PTTMPDIR)/$(PTDIST)/README.txt
+	echo "" >> \
+		$(PTTMPDIR)/$(PTDIST)/README.txt
+	echo "FMI documentation may be found at http://www.modelisar.com/fmi.html"  >> \
 		$(PTTMPDIR)/$(PTDIST)/README.txt
 	echo "" >> \
 		$(PTTMPDIR)/$(PTDIST)/README.txt
@@ -206,7 +238,7 @@ fixtmpdist:
 		$(PTTMPDIR)/$(PTDIST)/license.txt
 	echo "* The Java Native Access (JNA) package, which is released under LGPL, see" >> \
 		$(PTTMPDIR)/$(PTDIST)/license.txt
-	echo "lib/jna-license.ht" >> \
+	echo "lib/jna-license.htm" >> \
 		$(PTTMPDIR)/$(PTDIST)/license.txt
 	echo "* FMUSDK, which is released with a BSD license, see" >> \
 		$(PTTMPDIR)/$(PTDIST)/license.txt
