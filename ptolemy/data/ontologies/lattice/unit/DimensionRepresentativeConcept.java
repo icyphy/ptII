@@ -135,10 +135,10 @@ public abstract class DimensionRepresentativeConcept extends
                             + unitParameter.getName();
                     Concept unitConcept = getOntology().getConceptByString(
                             unitConceptString);
-                    if (unitConcept instanceof DerivedUnitConcept
-                            && this.equals(((DerivedUnitConcept) unitConcept)
+                    if (unitConcept instanceof UnitConcept
+                            && this.equals(((UnitConcept) unitConcept)
                                     .getDimension())) {
-                        _unitList.add((DerivedUnitConcept) unitConcept);
+                        _unitList.add((UnitConcept) unitConcept);
                     }
                 } catch (IllegalActionException ex) {
                     throw new IllegalActionException(this, ex,

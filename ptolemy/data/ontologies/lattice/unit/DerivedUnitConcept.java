@@ -502,8 +502,8 @@ public class DerivedUnitConcept extends UnitConcept {
      *   base dimension map will be derived.
      *  @param baseDimensionMap The map of base dimensions to exponents needed
      *   for creating the base component units map.
-     *  @return The map of base dimensions to exponents that composes the given
-     *   dimension map.
+     *  @return The map of base dimensions to lists of base units that composes the given
+     *   component units map.
      *  @exception IllegalActionException Thrown if an invalid dimension concept
      *   is found.
      */
@@ -689,6 +689,31 @@ public class DerivedUnitConcept extends UnitConcept {
         return foundDimensions;
     }
 
+    /** Find a BaseUnitConcept in the given unit list that is from the same
+     *  dimension as that of the specified BaseUnitConcept, or null if no such
+     *  BaseUnitConcept exists.
+     *  @param unitList The list of BaseUnitConcepts to be searched.
+     *  @param baseUnitToFind The BaseUnitConcept to look for matching
+     *   BaseUnitConcepts in the unitList.
+     *  @return A BaseUnitConcept from the list that is from the same
+     *   dimension as that of the specified BaseUnitConcept, or null if no such
+     *   BaseUnitConcept exists.
+     */
+    private static BaseUnitConcept _findSameUnitFromDimension(
+            List<BaseUnitConcept> unitList, BaseUnitConcept baseUnitToFind) {
+        BaseDimensionRepresentativeConcept baseDimension =
+                (BaseDimensionRepresentativeConcept) baseUnitToFind.getDimension();
+        
+        for (BaseUnitConcept unit : unitList) {
+            BaseDimensionRepresentativeConcept dimension =
+                    (BaseDimensionRepresentativeConcept) unit.getDimension();
+            if (dimension.equals(baseDimension)) {
+               return unit; 
+            }
+        }
+        return null;
+    }
+
     /** Return the least upper bound of all the dimensionless concepts in the
      *  ontology, or null if there are no dimensionless
      *  concepts in the ontology.
@@ -815,8 +840,11 @@ public class DerivedUnitConcept extends UnitConcept {
         }
     }
 
-    /** Return a new list of BaseUnitConcepts that removes all the elements
-     *  of the elementsToBeRemoved list from the originalList.
+    /** Return a new list of BaseUnitConcepts that removes one
+     *  BaseUnitConcept from the originalList for each BaseUnitConcept element
+     *  of the elementsToBeRemoved.  The BaseUnitConcept that is removed must
+     *  either be the same unit concept or a unit concept belonging to that
+     *  dimension.
      *  @param originalList The original list of BaseUnitConcepts.
      *  @param elementsToBeRemoved The list of BaseUnitConcepts to be removed
      *   from the originalList.
@@ -843,7 +871,23 @@ public class DerivedUnitConcept extends UnitConcept {
             List<BaseUnitConcept> resultList = new ArrayList<BaseUnitConcept>(
                     originalList);
             for (BaseUnitConcept unitToBeRemoved : elementsToBeRemoved) {
-                resultList.remove(unitToBeRemoved);
+                if (resultList.contains(unitToBeRemoved)) {
+                    resultList.remove(unitToBeRemoved);
+                } else {
+                    
+                    // If the unit is not found, but a unit from
+                    // the same dimension is found, we still must remove
+                    // it so that the final dimensions match.
+                    // The conversion factor has already been calculated by
+                    // the newUnitFactor variable passed into
+                    // findUnitByComponentMapsAndUnitFactor().
+                    BaseUnitConcept unitFromSameDimension =
+                            _findSameUnitFromDimension(originalList,
+                                                       unitToBeRemoved);
+                    if (unitFromSameDimension != null) {
+                        resultList.remove(unitFromSameDimension);
+                    }
+                }
             }
             return resultList;
         }
