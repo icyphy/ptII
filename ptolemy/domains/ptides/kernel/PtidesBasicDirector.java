@@ -422,9 +422,7 @@ public class PtidesBasicDirector extends DEDirector {
         schedulerExecutionTimeBound = new Parameter(this,
                 "schedulerExecutionTime");
         schedulerExecutionTimeBound.setTypeEquals(BaseType.DOUBLE);
-        schedulerExecutionTimeBound.setExpression("0.0");
-
-        _zero = new Time(this);
+        schedulerExecutionTimeBound.setExpression("0.0"); 
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -946,10 +944,6 @@ public class PtidesBasicDirector extends DEDirector {
     /** Execution time of last actor fired. */
     protected Time _lastExecutionTime;
 
-    /** Zero time.
-     */
-    protected static Time _zero;
-
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
@@ -968,7 +962,7 @@ public class PtidesBasicDirector extends DEDirector {
      */
     protected void _actorFired() throws IllegalActionException {
 
-        if (_lastExecutionTime.compareTo(_zero) == 0) {
+        if (_lastExecutionTime.compareTo(_zeroTime) == 0) {
             _sendExecutionTimeEvent(_lastActorFired, ExecutionEventType.START);
             _sendExecutionTimeEvent(_lastActorFired, ExecutionEventType.STOP);
         }
@@ -2002,7 +1996,7 @@ public class PtidesBasicDirector extends DEDirector {
         Time executionTime = new Time(this, _getExecutionTime(inPort,
                 actorToFire));
         _lastExecutionTime = executionTime;
-        if (executionTime.compareTo(_zero) == 0) {
+        if (executionTime.compareTo(_zeroTime) == 0) {
             // If execution time is zero, return the actor.
             // It will be fired now.
             setTag(timeStampOfEventFromQueue, microstepOfEventFromQueue);
@@ -2117,7 +2111,7 @@ public class PtidesBasicDirector extends DEDirector {
         }
         Time timeDifference = platformTime
                 .subtract(realTimeClock._lastPlatformTime);
-        if (timeDifference.compareTo(_zero) < 0) {
+        if (timeDifference.compareTo(_zeroTime) < 0) {
             throw new IllegalActionException("While getting the oracle time "
                     + "for a platform time, the last platform time saved "
                     + "was in the past, which makes it impossible to get "
@@ -2162,7 +2156,7 @@ public class PtidesBasicDirector extends DEDirector {
         } else {
             Time timeDifference = thisOracleTime
                     .subtract(realTimeClock._lastOracleTime);
-            if (timeDifference.compareTo(_zero) < 0) {
+            if (timeDifference.compareTo(_zeroTime) < 0) {
                 throw new IllegalActionException(
                         "While getting the platform time "
                                 + "for a oracle time, the last oracle time saved "
@@ -2274,7 +2268,7 @@ public class PtidesBasicDirector extends DEDirector {
         Time waitUntilPhysicalTime = event.timeStamp().subtract(delayOffset);
         Tag platformPhysicalTag = getPlatformPhysicalTag(platformTimeClock);
         int compare = platformPhysicalTag.timestamp.subtract(
-                waitUntilPhysicalTime).compareTo(_zero);
+                waitUntilPhysicalTime).compareTo(_zeroTime);
         int microstep = platformPhysicalTag.microstep;
         if ((compare > 0) || compare == 0 && (microstep >= event.microstep())) {
             return true;
@@ -3185,7 +3179,7 @@ public class PtidesBasicDirector extends DEDirector {
                     .subtract(_physicalTimeExecutionStarted);
             currentEventList.remainingExecutionTime = currentEventList.remainingExecutionTime
                     .subtract(elapsedTime);
-            if (currentEventList.remainingExecutionTime.compareTo(_zero) < 0) {
+            if (currentEventList.remainingExecutionTime.compareTo(_zeroTime) < 0) {
                 // This should not occur.
                 throw new IllegalActionException(
                         this,
