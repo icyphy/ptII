@@ -2,9 +2,9 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="MonotonicityDimensionLattice3WayIfNonmonotonic" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.0.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1497, 185, 1177, 664}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={103, 185, 1177, 664}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[964, 554]">
     </property>
@@ -21,7 +21,7 @@
     <property name="MonotonicitySolver" class="ptolemy.data.ontologies.lattice.LatticeOntologySolver">
         <property name="modelURL" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/ptolemy/data/ontologies/demo/MonotonicityAnalysis/DimensionSystemMonotonicitySolverModel.xml">
         </property>
-        <property name="_trainedConceptRecordArray" class="ptolemy.data.expr.Parameter" value="{{Concept = &quot;{x = NonMonotonic_{&lt;object(Unknown: ptolemy.data.ontologies.FiniteConcept), object(Velocity: ptolemy.data.ontologies.FiniteConcept)&gt;}}&quot;, NamedObj = &quot;.MonotonicityDimensionLattice3WayIfNonmonotonic.Expression.expression&quot;}, {Concept = &quot;{x = NonMonotonic_{&lt;object(Unknown: ptolemy.data.ontologies.FiniteConcept), object(Velocity: ptolemy.data.ontologies.FiniteConcept)&gt;}}&quot;, NamedObj = &quot;.MonotonicityDimensionLattice3WayIfNonmonotonic.Expression.output&quot;}}">
+        <property name="_trainedConceptRecordArray" class="ptolemy.data.expr.Parameter" value="{{Concept = &quot;{x = NonMonotonic_{&lt;Unknown, Velocity&gt;}}&quot;, NamedObj = &quot;.MonotonicityDimensionLattice3WayIfNonmonotonic.Expression.expression&quot;}, {Concept = &quot;{x = NonMonotonic_{&lt;Unknown, Velocity&gt;}}&quot;, NamedObj = &quot;.MonotonicityDimensionLattice3WayIfNonmonotonic.Expression.output&quot;}}">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[325.0, 80.0]">
         </property>
@@ -48,7 +48,7 @@
             </property>
             <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,0.4,0.8,1.0}">
             </property>
-            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="{x = NonMonotonic_{&lt;object(Unknown: ptolemy.data.ontologies.FiniteConcept), object(Velocity: ptolemy.data.ontologies.FiniteConcept)&gt;}}">
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="{x = NonMonotonic_{&lt;Unknown, Velocity&gt;}}">
             </property>
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
@@ -65,7 +65,7 @@
             <property name="output"/>
             <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,0.4,0.8,1.0}">
             </property>
-            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="{x = NonMonotonic_{&lt;object(Unknown: ptolemy.data.ontologies.FiniteConcept), object(Velocity: ptolemy.data.ontologies.FiniteConcept)&gt;}}">
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="{x = NonMonotonic_{&lt;Unknown, Velocity&gt;}}">
             </property>
         </port>
         <port name="x" class="ptolemy.actor.TypedIOPort">
