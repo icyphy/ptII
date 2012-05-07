@@ -67,6 +67,13 @@ public class ConceptToken extends ObjectToken implements PartiallyOrderedToken {
         return (Concept) getValue();
     }
 
+    /** Return the type of this token.
+     *  @return ConceptType.CONCEPT
+     */
+    public ConceptType getType() {
+        return ConceptType.CONCEPT;
+    }
+
     /** Compare this ConceptToken to the given argument, and return true if
      *  they refer to the same concept in the same lattice.  If either is null,
      *  return false.

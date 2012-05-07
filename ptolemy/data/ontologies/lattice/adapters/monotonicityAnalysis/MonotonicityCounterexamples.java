@@ -29,7 +29,6 @@ import java.util.Map.Entry;
 import java.util.Set;
 
 import ptolemy.data.ArrayToken;
-import ptolemy.data.ObjectToken;
 import ptolemy.data.Token;
 import ptolemy.data.TupleToken;
 import ptolemy.data.ontologies.Concept;
@@ -91,17 +90,9 @@ public class MonotonicityCounterexamples {
                         "for creating MonotonicityCounterexamples:" +
                         "TupleTokens must be of length 2.");
             }
-            ObjectToken x1 = (ObjectToken) tupleToken.getElement(0);
-            ObjectToken x2 = (ObjectToken) tupleToken.getElement(1);
-            result.add((Concept)x1.getValue(), (Concept)x2.getValue());
-
-            /* Apparently because of the way ArrayTokens work, I need
-             * to create a ConceptType class before the following code will
-             * work.  TODO: Create ConceptType class to mirror ConceptToken.
             ConceptToken x1 = (ConceptToken) tupleToken.getElement(0);
             ConceptToken x2 = (ConceptToken) tupleToken.getElement(1);
             result.add(x1.conceptValue(), x2.conceptValue());
-             */
         }
         return result;
     }
