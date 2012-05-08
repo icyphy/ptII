@@ -21,7 +21,7 @@
     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 239.0}">
     </property>
     <entity name="Test" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{1.9916872433227, 1.96806938451, 1.9330814860897, 1.8894301524569, 1.8389047268197, 1.7826351314533, 1.7212813677031, 1.6551634356841, 1.5843456477276, 1.5086877500333, 1.4278720765888, 1.3414130024619}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{2.0, 1.9916872433227, 1.96806938451, 1.9330814860897, 1.8894301524569, 1.8389047268197, 1.7826351314533, 1.7212813677031, 1.6551634356841, 1.5843456477276, 1.5086877500333, 1.4278720765888}">
         </property>
         <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>
@@ -29,7 +29,7 @@
         </property>
     </entity>
     <entity name="Test2" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{-0.1749078005195, -0.3040353158164, -0.4011034217131, -0.4766290023006, -0.5382532180055, -0.5914193229793, -0.6400257278621, -0.6869452189053, -0.7344078019754, -0.7842765316458, -0.8382484339064, -0.8980062535599}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.0, -0.1749078005195, -0.3040353158164, -0.4011034217131, -0.4766290023006, -0.5382532180055, -0.5914193229793, -0.6400257278621, -0.6869452189053, -0.7344078019754, -0.7842765316458, -0.8382484339064}">
         </property>
         <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>
@@ -37,7 +37,7 @@
         </property>
     </entity>
     <entity name="Test3" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{-0.1749078005195, -0.3040353158164, -0.4011034217131, -0.4766290023006, -0.5382532180055, -0.5914193229793, -0.6400257278621, -0.6869452189053, -0.7344078019754, -0.7842765316458, -0.8382484339064, -0.8980062535599}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.0, -0.1749078005195, -0.3040353158164, -0.4011034217131, -0.4766290023006, -0.5382532180055, -0.5914193229793, -0.6400257278621, -0.6869452189053, -0.7344078019754, -0.7842765316458, -0.8382484339064}">
         </property>
         <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>
@@ -45,7 +45,7 @@
         </property>
     </entity>
     <entity name="Test4" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{-1.4727676192455, -1.0944855925946, -0.8353400243513, -0.6645192110387, -0.5570166905198, -0.4946492198679, -0.4650327588567, -0.4601768898206, -0.4752788746115, -0.507842095244, -0.5570839557778, -0.6235568222658}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{-2.0, -1.4727676192455, -1.0944855925946, -0.8353400243513, -0.6645192110387, -0.5570166905198, -0.4946492198679, -0.4650327588567, -0.4601768898206, -0.4752788746115, -0.507842095244, -0.5570839557778}">
         </property>
         <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>
