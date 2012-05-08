@@ -287,6 +287,7 @@ OTHER_FILES_TO_BE_JARED = \
 	CounterIcon.xml \
 	DBIcon.xml \
 	Dice.gif \
+	DifferentialIcon.xml \
 	DiscardIcon.xml \
 	DiscreteRandomSourceIcon.xml \
 	DistributorIcon.xml \
