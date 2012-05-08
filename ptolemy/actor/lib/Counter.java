@@ -29,8 +29,10 @@ package ptolemy.actor.lib;
 
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
+import ptolemy.data.BooleanToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.Token;
+import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
@@ -71,8 +73,10 @@ public class Counter extends TypedAtomicActor {
         super(container, name);
         increment = new TypedIOPort(this, "increment", true, false);
         increment.setTypeEquals(BaseType.GENERAL);
+        new Parameter(increment, "_showName", BooleanToken.TRUE);
         decrement = new TypedIOPort(this, "decrement", true, false);
         decrement.setTypeEquals(BaseType.GENERAL);
+        new Parameter(decrement, "_showName", BooleanToken.TRUE);
         output = new TypedIOPort(this, "output", false, true);
         output.setTypeEquals(BaseType.INT);
     }

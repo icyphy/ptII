@@ -274,6 +274,7 @@ OTHER_FILES_TO_BE_JARED = \
     ArrayAppendIcon.xml \
     ArrayExtractIcon.xml \
     ArrayUpdateIcon.xml \
+    AverageIcon.xml \
     BernoulliIcon.xml \
     BooleanMultiplexorIcon.xml \
 	BooleanSelectIcon.xml \
@@ -283,6 +284,7 @@ OTHER_FILES_TO_BE_JARED = \
 	ComputeHistogramIcon.xml \
 	ConfigurationSelectIcon.xml \
 	ConfigurationSwitchIcon.xml \
+	CounterIcon.xml \
 	DBIcon.xml \
 	Dice.gif \
 	DiscardIcon.xml \
@@ -290,6 +292,8 @@ OTHER_FILES_TO_BE_JARED = \
 	DistributorIcon.xml \
 	GaussianIcon.xml \
 	IIRIcon.xml \
+	LimiterIcon.xml \
+	LookupTableIcon.xml \
 	MicrostepDelayIcon.xml \
 	MultiplexorIcon.xml \
 	TriangularIcon.xml \

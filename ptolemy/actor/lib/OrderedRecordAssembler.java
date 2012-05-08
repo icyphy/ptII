@@ -45,6 +45,11 @@ import ptolemy.kernel.util.NameDuplicationException;
  (instances of TypedIOPort).  This actor is polymorphic. The type constraint
  is that the type of each record field is no less than the type of the
  corresponding input port.
+ <p>
+ This actor differs from the RecordAssembler in that it ensures that the
+ order of the fields of the record is preserved, matching the order
+ of the input ports. This is probably not relevant unless you are writing
+ Java code that iterates over the fields of the record.
 
  @author Ben Leinfelder
  @version $Id$
