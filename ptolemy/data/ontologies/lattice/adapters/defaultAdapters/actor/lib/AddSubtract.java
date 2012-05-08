@@ -31,14 +31,12 @@ import java.util.List;
 
 import ptolemy.actor.IOPort;
 import ptolemy.data.ontologies.ConceptFunction;
+import ptolemy.data.ontologies.ConceptFunctionDefinitionAttribute;
 import ptolemy.data.ontologies.ConceptFunctionInequalityTerm;
-import ptolemy.data.ontologies.lattice.AddConceptFunctionDefinition;
 import ptolemy.data.ontologies.lattice.ApplyBinaryFunctionToMultipleArguments;
 import ptolemy.data.ontologies.lattice.LatticeOntologyAdapter;
 import ptolemy.data.ontologies.lattice.LatticeOntologySolver;
 import ptolemy.data.ontologies.lattice.LatticeOntologySolver.ConstraintType;
-import ptolemy.data.ontologies.lattice.SubtractConceptFunctionDefinition;
-import ptolemy.data.ontologies.lattice.UnaryOperationMonotonicFunctionDefinition;
 import ptolemy.graph.Inequality;
 import ptolemy.graph.InequalityTerm;
 import ptolemy.kernel.util.IllegalActionException;
@@ -65,13 +63,13 @@ public class AddSubtract extends LatticeOntologyAdapter {
             ptolemy.actor.lib.AddSubtract actor) throws IllegalActionException {
         super(solver, actor, false);
 
-        _addDefinition = (AddConceptFunctionDefinition) (_solver
+        _addDefinition = (ConceptFunctionDefinitionAttribute) (_solver
                 .getContainedModel())
                 .getAttribute(LatticeOntologySolver.ADD_FUNCTION_NAME);
-        _negateDefinition = (UnaryOperationMonotonicFunctionDefinition) (_solver
+        _negateDefinition = (ConceptFunctionDefinitionAttribute) (_solver
                 .getContainedModel())
                 .getAttribute(LatticeOntologySolver.NEGATE_FUNCTION_NAME);
-        _subtractDefinition = (SubtractConceptFunctionDefinition) (_solver
+        _subtractDefinition = (ConceptFunctionDefinitionAttribute) (_solver
                 .getContainedModel())
                 .getAttribute(LatticeOntologySolver.SUBTRACT_FUNCTION_NAME);
 
@@ -182,11 +180,11 @@ public class AddSubtract extends LatticeOntologyAdapter {
     ////                         private variables                 ////
 
     /** The multiplication concept function definition found in the solver model. */
-    private AddConceptFunctionDefinition _addDefinition;
+    private ConceptFunctionDefinitionAttribute _addDefinition;
 
     /** The division concept function definition found in the solver model. */
-    private UnaryOperationMonotonicFunctionDefinition _negateDefinition;
+    private ConceptFunctionDefinitionAttribute _negateDefinition;
 
     /** The multiplication concept function definition found in the solver model. */
-    private SubtractConceptFunctionDefinition _subtractDefinition;
+    private ConceptFunctionDefinitionAttribute _subtractDefinition;
 }
