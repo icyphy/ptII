@@ -236,7 +236,7 @@ public class DEReceiver extends AbstractReceiver {
         }
 
         throw new IllegalActionException(getContainer(),
-                "Does not have a IOPort as the container of the receiver.");
+                "Does not have an IOPort as the container of the receiver.");
     }
 
     ///////////////////////////////////////////////////////////////////
