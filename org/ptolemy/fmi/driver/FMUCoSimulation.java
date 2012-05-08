@@ -31,6 +31,7 @@ import java.io.File;
 import java.io.PrintStream;
 
 import org.ptolemy.fmi.FMICallbackFunctions;
+import org.ptolemy.fmi.FMILibrary;
 import org.ptolemy.fmi.FMIModelDescription;
 import org.ptolemy.fmi.FMUFile;
 import org.ptolemy.fmi.FMULibrary;
@@ -240,9 +241,15 @@ public class FMUCoSimulation extends FMUDriver {
                 new Object[] { fmiComponent },
                 "Could not terminate slave: ");
 
-        invoke("_fmiFreeSlaveInstance",
-                new Object[] { fmiComponent },
-                "Could not free slave instance: ");
+        // Don't throw an exception while freeing a slave.  Some
+        // fmiTerminateSlave calls free the slave for us.
+        Function freeSlave = getFunction("_fmiFreeSlaveInstance");
+        int fmiFlag = ((Integer) freeSlave.invoke(Integer.class,
+                        new Object[] { fmiComponent })).intValue();
+        if (fmiFlag >= FMILibrary.FMIStatus.fmiWarning) {
+            new Exception("Warning: Could not free slave instance: " + fmiFlag).printStackTrace();
+        }
+
         if (enableLogging) {
             System.out.println("Results are in "
                     + outputFile.getCanonicalPath());
