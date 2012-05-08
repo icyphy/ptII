@@ -304,7 +304,7 @@ DIST_DIR = $(DIST_BASE)/$(PTDIST)
 update_ftp:
 	ssh bennett rm -rf $(DIST_DIR)
 	cat $(PTDIST).tar.gz | ssh bennett "cd $(DIST_BASE); gtar -zxf -"
-	ssh bennett "cd $(DIST_BASE)/$(PTDIST)_tmp/; tar -cf - . | (cd $(DIST_DIR)/ptolemy/plot/doc/download; tar -xpf -)"
-	scp doc/download/index.htm bennett:$(DIST_DIR)/ptolemy/plot/doc/download
-	scp $(PTDIST).tar.gz bennett:$(DIST_DIR)/ptolemy/plot/
-	scp $(PTDIST).zip bennett:$(DIST_DIR)/ptolemy/plot/
+	ssh bennett "cd $(DIST_BASE)/$(PTDIST)_tmp/; tar -cf - . | (cd $(DIST_DIR)/org/ptolemy/fmi/doc/download; tar -xpf -)"
+	#scp doc/download/index.htm bennett:$(DIST_DIR)/org/ptolemy/fmi/doc/download
+	scp $(PTDIST).tar.gz bennett:$(DIST_DIR)/org/ptolemy/fmi
+	scp $(PTDIST).zip bennett:$(DIST_DIR)/org/ptolemy/fmi
