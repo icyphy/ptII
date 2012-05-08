@@ -269,13 +269,12 @@ fixtmpdist:
 	find $(PTTMPDIR)/$(PTDIST) -name "#*" -exec rm {} \; 
 	find $(PTTMPDIR)/$(PTDIST) -name ".#*" -exec rm {} \; 
 	find $(PTTMPDIR)/$(PTDIST) -name "*~" -exec rm {} \; 
-	find $(PTTMPDIR)/$(PTDIST)/org/ptolemy/fmi -name "*.jar" -exec rm {} \; 
 	#
 	# Setting up doc/codeDoc directory
 	#
 	mkdir -p $(PTTMPDIR)/$(PTDIST)/doc/codeDoc
 	cd $(PTTMPDIR)/$(PTDIST); \
-	CLASSPATH=.$(CLASSPATHSEPARATOR)$(PTII)/lib/jna.jar "$(JAVADOC)" $(JDOCFLAGS) -d doc/codeDoc \
+	CLASSPATH=".$(CLASSPATHSEPARATOR)$(PTII)/lib/jna.jar" "$(JAVADOC)" $(JDOCFLAGS) -d doc/codeDoc \
 		org.ptolemy.fmi \
 		org.ptolemy.fmi.driver \
 		org.ptolemy.fmi.type
