@@ -1,0 +1,24 @@
+Barker  B-2 440 444 1aa2001c-48b0-544e-825f-dfe6293306fb
+Bechtel Center B-5 968 444 1f73f787-c669-5cfb-91f7-23f9b9d62911
+Birge Hall C-5 968 622 78be3e02-dd41-595b-9abb-ea442582aec5
+Boalt and Simon Hall D-6 1144 800 6a6fb070-4ef2-5573-9c20-2a37810e92a2
+Chavez Center D-3 616 800 51e0edaa-b845-58f3-b223-3f2cca5bb24e
+Cory Hall B-5 968 444 626803d9-05a7-55ca-8fca-e25ac38e3154
+Donner Laboratory B-5 968 444 b634e1c1-a0e1-5044-b3cd-ce63b1280a19
+East Asian Library C-4 792 622 0432e878-43a1-5fae-a86f-0ffa6df7737d
+Evans Hall B-5 968 444 dd7de17b-ffb4-5580-bff3-0ba997820e15
+Hildebrand Hall C-5 968 622 8d1e0514-bb52-59de-b46b-514acda0584e
+Koshland B-2 440 444 10bf6480-9259-54ec-aa49-19918df6b482
+LSA New (as of 7/22/10) C-3 616 622
+Latimer Hall C-5  968 622 5f427714-92bb-54a3-b94e-d5fe1c0c4cee
+McCone B-4 792 444 25ca5cbc-8c81-5ec6-925d-3eab4356bad1
+Morgan Hall B-2 440 444 a2e1a96c-41b9-5b67-a48b-4d77f960688f
+Mulford Hall B-2 440 444 1c4fb0f1-eaff-5093-9453-a287dcdd9d19
+Stephens Hall D-5 968 800 09e3f579-3896-564e-ad1f-7b26e92223f8
+Sutardja Dai Hall B-5 968 444 5054bec4-b7b0-5e3a-b7d0-dcf670ab400d
+Tan Hall C-5 968 622 3270cd29-bbb8-54f7-89bb-2cf731d7197d
+Tang Center E-2 440 978 60bb2f6d-d10c-5930-ba3e-c939d0d74a14
+Tolman Hall B-3 616 444 277cb41c-2265-561d-a2bf-a963c0e7b573
+Warren Hall/Oxford Tract A-1 264 266 631b5413-51a5-552e-bc37-a0e37ccf8262
+Wheeler Hall C-4 792 622 56085d63-f0b7-562a-b53c-37cad0e7eab7
+
