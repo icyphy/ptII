@@ -820,7 +820,23 @@ public class CachedMethod {
         } catch (IllegalActionException ex) {
             // Ignore..
             //          ex.printStackTrace();
+        } catch (InternalErrorException ex2) {
+            // Ignore.
+
+            // If formal is a char, then convertJavaTypeToTokenType(formal)
+            // will throw an InternalErrorException.
+            // One way to trigger this is to have an expression with
+            // the value: "valueOf(input)".  What happens is that
+            // String.valueOf(char) and String.valueOf(char[]) will be 
+            // checked, which causes convertTypeTypeToTokenType() to 
+            // throw the InternalErrorException.
+            //new Exception("formal: " + formal 
+            //        + " formal.isPrimitive(): "
+            //        + formal.isPrimitive()
+            //        + " formal.isArray(): "
+            //        + formal.isArray(), ex2).printStackTrace();
         }
+    }
 
         return IMPOSSIBLE_CONVERSION;
     }
