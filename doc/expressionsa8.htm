@@ -65,6 +65,12 @@ in the expression langauge</center>
 <tr><td width="237">ptolemy.math.Complex </td><td width="237">ptolemy.math.FixPoint </td></tr>
 <tr><td width="237">ptolemy.math.ExtendedMath </td><td width="237">ptolemy.data.ObjectToken </td></tr></table>
 
+<div class="p">
+Note that calling methods such as String.format() that have an
+argument of Object [] can be difficult because of problems specifying
+an array of Java Objects such as java.lang.Double instead of
+ptolemy.data.type.DoubleToken.
+</div> 
 
 <div class="p"><!----></div> 
 In most cases, a function that operates on scalar arguments can also operate on arrays and matrices. Thus, for example, you can fill a row vector with a sine wave using an expression like
