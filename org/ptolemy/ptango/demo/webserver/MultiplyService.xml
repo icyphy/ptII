@@ -4,16 +4,16 @@
 <entity name="MultiplyService" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.0.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={70, 11, 1158, 695}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={78, 127, 1158, 750}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[935, 579]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[935, 634]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.25">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{287.7575757575758, 201.5629734848484}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{287.7575757575758, 223.5629734848484}">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model illustrates how to gather input from a website, &#10;run a Ptolemy model, then produce an output website.&#10;&#10;Please run the model, then point your browser to:&#10;http://localhost:8080/multiply&#10;&#10;The HttpCompositeServiceProvider displays an HTML form &#10;upon receiving an HTTP get request, and maps the forms&#10;fields to its input ports and executes the model &#10;upon receiving an HTTP post request.&#10;&#10;Types MUST be assigned to the input and output ports&#10;of HttpCompositeServiceProvider&#10;&#10;There is still a bug somewhere regarding re-starting&#10;the model.  If you stop the model, then execute it &#10;again, for some reason the SDF director in &#10;HttpCompositeServiceProvider doesn't appear to do anything">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model illustrates how to gather input from a website, &#10;run a Ptolemy model, then produce an output website.&#10;&#10;Please run the model, then point your browser to:&#10;http://localhost:8080/multiply&#10;&#10;The HttpCompositeServiceProvider displays an HTML form &#10;upon receiving an HTTP get request, and maps the forms&#10;fields to its input ports and executes the model &#10;upon receiving an HTTP post request.&#10;&#10;There is still a bug somewhere regarding re-starting&#10;the model.  If you stop the model, then execute it &#10;again, for some reason the SDF director in &#10;HttpCompositeServiceProvider doesn't appear to do anything">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[275.0, 0.0]">
         </property>
@@ -28,6 +28,56 @@
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Be sure to Uncheck to box&#10;&quot;stopWhenQueueIsEmpty&quot;&#10;in the DE Director">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[30.0, 90.0]">
+        </property>
+    </property>
+    <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="A type must be specified &#10;for each WebSource's &#10;&quot;input&quot; and &quot;output&quot; ports">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-50.0, 225.0]">
+        </property>
+    </property>
+    <property name="firstNumber" class="ptolemy.data.expr.Parameter" value="1">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+            </property>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[40.0, 165.0]">
+        </property>
+    </property>
+    <property name="Annotation4" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author:  Beth Latronico">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-50.0, 440.0]">
+        </property>
+    </property>
+    <property name="secondNumber" class="ptolemy.data.expr.Parameter" value="2">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+            </property>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[40.0, 185.0]">
         </property>
     </property>
     <entity name="WebServer" class="org.ptolemy.ptango.lib.WebServer">
@@ -68,8 +118,6 @@
         </port>
         <port name="firstNumber" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
-            </property>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="{20.0, 200.0}">
@@ -77,8 +125,6 @@
         </port>
         <port name="secondNumber" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
-            </property>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="{20.0, 240.0}">
@@ -135,6 +181,10 @@
         <link port="WebSink.input" relation="relation4"/>
     </entity>
     <entity name="WebSource" class="org.ptolemy.ptango.lib.WebSource">
+        <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="firstNumber">
+        </property>
+        <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
         <doc>Placeholder for input from a web page.</doc>
         <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
             <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
@@ -144,8 +194,26 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[-35.0, 320.0]">
         </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
+            </property>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
+            </property>
+        </port>
     </entity>
     <entity name="WebSource2" class="org.ptolemy.ptango.lib.WebSource">
+        <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="secondNumber">
+        </property>
+        <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
         <doc>Placeholder for input from a web page.</doc>
         <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
             <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
@@ -155,6 +223,20 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[-35.0, 375.0]">
         </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
+            </property>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
+            </property>
+        </port>
     </entity>
     <entity name="MonitorValue" class="ptolemy.actor.lib.gui.MonitorValue">
         <doc>Monitor and display values</doc>

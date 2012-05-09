@@ -12,6 +12,9 @@
 <property name="HTMLText" class="ptolemy.vergil.basic.export.html.HTMLText" value="HTML export text">
 </property>
 
+<property name="HTMLImage" class="ptolemy.vergil.basic.export.html.HTMLImage" value="HTML image">
+</property>
+
 <!------------------------------------------->
 <property name="IconLink" class="ptolemy.vergil.basic.export.html.IconLink" value="http://ptolemy.org">
   <property name="linkTarget" value="_blank"/>

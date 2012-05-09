@@ -71,7 +71,8 @@ public class ExportParameters {
      *  false for copyJavaScriptFiles,
      *  false for openCompositesBeforeExport,
      *  false for runBeforeExport,
-     *  and true for showInBrowser.
+     *  true for showInBrowser, 
+     *  and empty String for HTMLPathForFiles.
      *  @param directoryToExportTo The directory to export to.
      */
     public ExportParameters(File directoryToExportTo) {
@@ -82,6 +83,7 @@ public class ExportParameters {
         showInBrowser = true;
         copyJavaScriptFiles = false;
         _jsCopier = null;
+        HTMLPathForFiles = "";
     }
     
     /** Construct an instance of this data structure that is
@@ -98,6 +100,7 @@ public class ExportParameters {
         showInBrowser = template.showInBrowser;
         copyJavaScriptFiles = template.copyJavaScriptFiles;
         _jsCopier = template._jsCopier;
+        HTMLPathForFiles = template.HTMLPathForFiles;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -150,6 +153,19 @@ public class ExportParameters {
     /** The directory to export to.
      */
     public File directoryToExportTo;
+    
+    /** The path to use for accessing the file in the HTML code.  This can 
+     *  differ from the physical location of the file in the file system 
+     *  depending on how the exporter accesses the files.  For example,
+     *  an HttpService uses a URL as a path since the WebServer has a 
+     *  resource handler to serve files.  The HTML to include e.g. an image 
+     *  would be:
+     *  <img src="/files/imagename.gif"> </img>
+     *  
+     *  even though the image is stored in $PTT/org/ptolemy/ptango/temp, since
+     *  the resource handler is mapped to http://hostname:port/servicename/files
+     */
+    public String HTMLPathForFiles;
     
     /** If true, hierarchically open all composite actors
      *  in the model before exporting (so that these also

@@ -27,8 +27,16 @@
  */
 package org.ptolemy.ptango.lib;
 
+import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.lib.Const;
+import ptolemy.actor.lib.SetVariable;
+import ptolemy.data.BooleanToken;
+import ptolemy.data.EventToken;
+import ptolemy.data.Token;
+import ptolemy.data.expr.Variable;
+import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Settable;
@@ -55,7 +63,7 @@ import ptolemy.kernel.util.Settable;
  * @see org.ptolemy.ptango.HttpService
  * @see org.ptolemy.ptango.HttpCompositeServiceProvider
  */
-public class WebSource extends Const {
+public class WebSource extends SetVariable {
     /** Construct an actor with the given container and name.
      *  The output and trigger ports are also constructed.
      *  @param container The container.
@@ -69,9 +77,44 @@ public class WebSource extends Const {
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
         
-        value.setExpression("1.0");
-        value.setVisibility(Settable.NOT_EDITABLE);
+    
+        //value.setExpression("1.0");
+        //value.setVisibility(Settable.NOT_EDITABLE);
+        
+        event = new TypedIOPort(this, "event", false, true);
+        event.setTypeEquals(BaseType.EVENT);
     }
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                     ports and parameters                  ////
+
+    /** A token is sent on this output port once per requestFireNow() request.
+     */
+    public TypedIOPort event = null;
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                     public methods                        ////
+    
+    /** In addition to the data token on the "output" port, send a token
+     * on the "event" port if requestFireNow() has been called since the 
+     * last firing.
+     */
+    
+    public void fire() throws IllegalActionException {
+        
+        // The HttpService calls setValue() on the WebSource
+        // Always send the value regardless of whether delay is true or false
+        Attribute variable = getModifiedVariable();
+        if (variable instanceof Variable) {
+            Token token = ((Variable) variable).getToken();
+            output.send(0, token);
+        }
+       
+        if (_generateEvent) {
+            event.send(0, new EventToken());
+        }
+    }
+    
     
     /** Request that this actor be fired.  Used by an HttpService to indicate
      *  that data has arrived.  Returns true if the WebSource is able to 
@@ -90,10 +133,33 @@ public class WebSource extends Const {
     
     public boolean requestFiringNow() {
         try {
+            _generateEvent = true;
             getDirector().fireAtCurrentTime(this);
         } catch(IllegalActionException e){
+            _generateEvent = false;
             return false;
         }
         return true;
     }
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
+
+    /** Set the value of the associated container's variable.
+     *  @param value The new value.
+     */
+    public void setValue(Token value) throws IllegalActionException {
+        ((Variable) getModifiedVariable()).setToken(value);
+    }
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                     private variables                     ////
+    
+    /** Set to true if an event should be generated at the next fire().
+     */
+    // FIXME: It's possible that multiple events are received before the 
+    // next fire() - what should we do then?  Could make this an integer
+    // but we also need a queue to store the data values.  The queue 
+    // probably needs to be a bounded queue.
+    boolean _generateEvent;
 }

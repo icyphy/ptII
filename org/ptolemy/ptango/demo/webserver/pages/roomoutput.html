@@ -48,6 +48,7 @@
 	<script type="text/javascript" src="http://code.jquery.com/mobile/1.0/jquery.mobile-1.0.min.js"></script>
 
 	<title> Room temperature model </title>
+	
 </head>
 
 <body>
@@ -58,10 +59,25 @@
 		<h1> Room temperature model </h1>
 	</div>
 
-	<div data-role="content">
-		The room temperature is: 
-		<div id="result">  </div>
+	<div data-role="content" id="content" name="content">
+	
+		<div id="scripts" name="scripts">
+
+		</div>
+		
+		The final room temperature is: 
+		<div id="result">  </div> 
+		<div> </br> </br> </div>
+		<div id="graph" name="graph">
+		
+		</div>
 	</div>
+	
+	<div data-role="footer"> 
+		<img src="/files/PtolemyIISmallIcon.gif"> </image>
+		Powered by Ptolemy II 
+	</div>
+
 </div>
 
 </body>

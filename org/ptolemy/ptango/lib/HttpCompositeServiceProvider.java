@@ -1,5 +1,6 @@
 package org.ptolemy.ptango.lib;
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
@@ -28,6 +29,7 @@ import ptolemy.kernel.Relation;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
+import ptolemy.vergil.basic.BasicGraphFrame;
 import ptolemy.vergil.basic.ExportParameters;
 import ptolemy.vergil.basic.export.html.WebExportable;
 import ptolemy.vergil.basic.export.html.WebExporter;
@@ -87,6 +89,7 @@ public class HttpCompositeServiceProvider extends TypedCompositeActor
         
         outputPage = new FileParameter(this, "outputPage");
         outputPage.setExpression("/pages/output.html");   
+        
     }
     
     ///////////////////////////////////////////////////////////////////
@@ -125,6 +128,24 @@ public class HttpCompositeServiceProvider extends TypedCompositeActor
             }
         }
         contents.add(new StringBuffer(content));     
+    }
+    
+    /** Return the ExportParameters for the service which specify a directory
+     * to write temporary files to.
+     * 
+     * @return The ExportParameters for the service which specify a directory
+     *  to write temporary files to
+     */
+    public ExportParameters getExportParameters() {
+        return _exportParameters;
+    }
+    
+    /** Return the BasicGraphFrame for the model
+     * 
+     * @return The BasicGraphFrame for the model
+     */
+    public PtolemyFrame getFrame() {
+        return BasicGraphFrame.getBasicGraphFrame(toplevel());
     }
     
     /** Returns the relative path that this HttpService is mapped to. 
@@ -273,23 +294,13 @@ public class HttpCompositeServiceProvider extends TypedCompositeActor
                             }
                         }
                     }
-                } 
-                
-                /* This is no longer an error - could have content 
-                 * defined by WebExportables
-                 */
-                /*
-                else {
-                    _writeError(response, HttpServletResponse.SC_NO_CONTENT, 
-                       "No output variables are defined for this web service.");
-                }
-                */
+                }                 
                 
                 // Get web content from all contained WebExportables
                 _addAllContent(this);
                 
                 // Write the response page
-                response.setContentType("text/javascript");
+                response.setContentType("text/html");
                 response.setStatus(HttpServletResponse.SC_OK);
                 PrintWriter writer = response.getWriter();      
                 
@@ -322,22 +333,20 @@ public class HttpCompositeServiceProvider extends TypedCompositeActor
                     // source file...
                     String key;
                     Iterator keys;
+                        
                     while((line = reader.readLine()) != null) {
+                        
                         // Insert elements from WebExportables into <head>
                         // Assumes file contains <head> </head>
                         if (line.contains("</head>")) {
                             _printHTML(writer, "head");
                         } 
                         
-                        // Insert elements from WebExportables into <body>
-                        if (line.contains("<body>")) {
-                            _printHTML(writer, "start");
-                        } 
                         
                         // Insert elements from WebExportables before </body>
                         if (line.contains("</body>")) {
                             _printHTML(writer, "end");
-                        } 
+                        }                       
                         
                         // Insert Javascript for variables 
                         if (!resultsMap.keySet().isEmpty()) {
@@ -354,6 +363,25 @@ public class HttpCompositeServiceProvider extends TypedCompositeActor
                         }
                         
                         writer.println(line);
+                        
+                        // Insert elements from WebExportables into <body>
+                        if (line.contains("<body>")) {
+                            _printHTML(writer, "start");
+                        } 
+                        
+                        // Insert elements from WebExportables by matching id
+                        
+                        if (!_contents.keySet().isEmpty()) {
+                            keys = _contents.keySet().iterator();
+                            while(keys.hasNext()) {
+                                // FIXME:  What to do about start, head, end?
+                                key = (String) keys.next();
+                                if (line.contains("id=\"" + key + "\"")) {
+                                    _printHTML(writer, key);
+                                }
+                            }
+                        }
+                        
                         }
                            
                     reader.close();
@@ -430,7 +458,13 @@ public class HttpCompositeServiceProvider extends TypedCompositeActor
     private void _addAllContent(NamedObj container) 
         throws IllegalActionException {
         if (container instanceof WebExportable) {
-            ((WebExportable) container).provideOutsideContent(this);
+            // provideOutsideContent() should call this.addContent()
+            // TODO:  Need to figure out how to handle provideContent() vs. 
+            // provideOutsideContent() (vs. provide a whole page?)  
+            
+            //((WebExportable) container).provideOutsideContent(this);
+            ((WebExportable) container).provideContent(this);
+            
         } else {
             Iterator objects = container.containedObjectsIterator();
             while (objects.hasNext()) {
@@ -552,7 +586,26 @@ public class HttpCompositeServiceProvider extends TypedCompositeActor
         protected void doPost(HttpServletRequest request, 
                 HttpServletResponse response) 
                 throws ServletException, IOException
-        {
+        {        
+            // Open directory for writing temporary files
+            File directory;
+            try {
+                directory = 
+                    WebServer.getFilesDirectory(WebServer.DirectoryType.TEMP);
+            } catch(IllegalActionException e){
+                _writeError(response, 
+                        HttpServletResponse.SC_INTERNAL_SERVER_ERROR, 
+                        "Unable to save images to temp directory.");
+               throw new IOException("Unable to save images to temp directory");
+            }
+            
+            _exportParameters = new ExportParameters(directory);
+            
+            // The WebServer offers a resource handler to serve files
+            // The HttpService uses this path for references to files in the
+            // HTML code of the HttpResponse
+            _exportParameters.HTMLPathForFiles= WebServer.getHTMLPathForFiles();
+            
             // Map request parameters to input ports
             Iterator inputPorts = inputPortList().iterator();
             while (inputPorts.hasNext()) {
@@ -585,8 +638,10 @@ public class HttpCompositeServiceProvider extends TypedCompositeActor
                                 // values of the WebSource actors and request
                                 // the WebSources to fire themselves
                                 DoubleToken token = new DoubleToken(data);
+                                //((WebSource) sourcePort.getContainer())
+                                //    .value.setToken(token);
                                 ((WebSource) sourcePort.getContainer())
-                                    .value.setToken(token);
+                                    .setValue(token);
                                 
                                 WebSource webSource = 
                                     (WebSource) sourcePort.getContainer();
@@ -623,10 +678,10 @@ public class HttpCompositeServiceProvider extends TypedCompositeActor
                 _asyncContext = request.startAsync();   
                 _servletContext = getServletContext();
                 // Only need this if no input ports?  If no WebSources?
-                if (inputPortList().isEmpty()) {
+                //if (inputPortList().isEmpty()) {
                     getDirector()
                         .fireAtCurrentTime(HttpCompositeServiceProvider.this);
-                }
+               // } 
               
             } catch(IllegalActionException e){
                 throw new IOException("Can't fire HttpService");
@@ -649,6 +704,9 @@ public class HttpCompositeServiceProvider extends TypedCompositeActor
     /** Content added by position. */
     private HashMap<String,List<StringBuffer>> _contents;
     
+    /** Options for exporting HTML. */
+    private ExportParameters _exportParameters;
+    
     /** A copy of the servlet context, which is set in the doPost() method of
      *  HttpServiceServlet and used in the fire() method of the parent to 
      *  read the output page file. 
@@ -661,23 +719,15 @@ public class HttpCompositeServiceProvider extends TypedCompositeActor
      */
     private URI _URIpath;
 
-    @Override
+    /** Add an attribute and the value of that attribute
+     * Really want to be able to pass in an id instead of a NamedObj
+     * 
+     * e.g. exporter.defineAreaAttribute(object, eventTypeValue, stringValue(), true);
+     */
     public boolean defineAreaAttribute(NamedObj object, String attribute,
             String value, boolean overwrite) {
         // TODO Auto-generated method stub
         return false;
-    }
-
-    @Override
-    public ExportParameters getExportParameters() {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    @Override
-    public PtolemyFrame getFrame() {
-        // TODO Auto-generated method stub
-        return null;
     }
 
     @Override

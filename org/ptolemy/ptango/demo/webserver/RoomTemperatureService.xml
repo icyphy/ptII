@@ -4,18 +4,18 @@
 <entity name="RoomTemperatureService" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.0.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={5, 130, 1206, 586}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={112, 390, 947, 586}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[983, 470]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[724, 470]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.8">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{472.6060606060606, 201.7348484848485}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{310.7310606060606, 201.7348484848485}">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
         <property name="stopWhenQueueIsEmpty" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, -15.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, -30.0]">
         </property>
     </property>
     <property name="TDay" class="ptolemy.data.expr.Parameter" value="22.0">
@@ -37,7 +37,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[210.0, 40.0]">
         </property>
     </property>
-    <property name="TNight" class="ptolemy.data.expr.Parameter" value="14.0">
+    <property name="TNight" class="ptolemy.data.expr.Parameter" value="18.0">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -71,13 +71,19 @@
     <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Authors:  Beth Latronico, Michael Wetter (ptolemy-room demo)">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-35.0, 200.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-50.0, 270.0]">
         </property>
     </property>
     <property name="Annotation4" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="stopQueueWhenEmpty &#10;must be unchecked&#10;in DE director">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-70.0, 20.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-70.0, 0.0]">
+        </property>
+    </property>
+    <property name="Annotation5" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="A type must be specified&#10;for each WebSource's &#10;&quot;input&quot; and &quot;output&quot; ports">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-45.0, 200.0]">
         </property>
     </property>
     <entity name="HttpCompositeServiceProvider" class="org.ptolemy.ptango.lib.HttpCompositeServiceProvider">
@@ -85,12 +91,12 @@
         </property>
         <property name="outputPage" class="ptolemy.data.expr.FileParameter" value="/pages/roomoutput.html">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{145.0, 120.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[190.0, 120.0]">
         </property>
         <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
-            <property name="iterations" class="ptolemy.data.expr.Parameter" value="(2*24*3600-0)/60+1">
+            <property name="iterations" class="ptolemy.data.expr.Parameter" value="10">
             </property>
-            <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
+            <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="2880">
             </property>
             <property name="allowDisconnectedGraphs" class="ptolemy.data.expr.Parameter" value="true">
             </property>
@@ -99,57 +105,6 @@
             <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="false">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="{90.0, 35.0}">
-            </property>
-        </property>
-        <property name="timeStep" class="ptolemy.data.expr.Parameter" value="60">
-            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
-                <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
-                </property>
-            </property>
-            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-                <configure>
-      <svg>
-        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
-      </svg>
-    </configure>
-            </property>
-            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
-            </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="{170.0, 25.0}">
-            </property>
-        </property>
-        <property name="startTime" class="ptolemy.data.expr.Parameter" value="0">
-            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
-                <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
-                </property>
-            </property>
-            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-                <configure>
-      <svg>
-        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
-      </svg>
-    </configure>
-            </property>
-            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
-            </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="{170.0, 45.0}">
-            </property>
-        </property>
-        <property name="finalTime" class="ptolemy.data.expr.Parameter" value="2*24*3600">
-            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
-                <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
-                </property>
-            </property>
-            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-                <configure>
-      <svg>
-        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
-      </svg>
-    </configure>
-            </property>
-            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
-            </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="{170.0, 65.0}">
             </property>
         </property>
         <property name="annotation" class="ptolemy.kernel.util.Attribute">
@@ -165,8 +120,7 @@ Output of the room model is the new room temperature T_{k+1}.
 
 The room model and the control action is computed in Ptolemy II.
 
-The simulation is slowed down for better visualization of the room temperature
-using a Sleep actor.
+Time is in minutes and the simulation runs for two virtual days.
 
 To see the implementation of the room temperature visualization,
 right-click on the room model, and then select "Open Actor." Then you will see
@@ -208,19 +162,13 @@ on the colored rectangle shows how the variable "TRoom" is used to assign the co
             <property name="_location" class="ptolemy.kernel.util.Location" value="{45.0, 500.0}">
             </property>
         </property>
-        <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-            <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Delay to slow down simulation.">
-            </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="{35.0, 150.0}">
-            </property>
-        </property>
         <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
             <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Note:  For SDF director, &#10;period was originally timestep not 0">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[30.0, 85.0]">
             </property>
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={50, 42, 923, 586}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={158, 49, 923, 586}, maximized=false}">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 470]">
         </property>
@@ -228,24 +176,12 @@ on the colored rectangle shows how the variable "TRoom" is used to assign the co
         </property>
         <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{350.0, 235.0}">
         </property>
-        <port name="TDay" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
+        <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+            <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The SequencePlotter has an HTMLImage attribute&#10;This exports the graph to the web page &#10;returned by the HttpService&#10;&#10;Double-click on SequencePlotter, then click&#10;&quot;Configure&quot; next to HTMLImage&#10;&#10;The textPosition &quot;graph&quot; instructs the exporter&#10;to place the content as a child of the element&#10;with id &quot;graph&quot;">
             </property>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{710.0, 520.0}">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="{20.0, 200.0}">
-            </property>
-        </port>
-        <port name="TNight" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="{20.0, 240.0}">
-            </property>
-            <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
-            </property>
-        </port>
+        </property>
         <port name="result" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
@@ -255,36 +191,20 @@ on the colored rectangle shows how the variable "TRoom" is used to assign the co
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
         </port>
-        <entity name="plotter" class="ptolemy.actor.lib.gui.TimedPlotter">
-            <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="false">
+        <port name="TDay" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
-            <property name="legend" class="ptolemy.kernel.util.StringAttribute" value="TSetPoi, TRoo, 10*y">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[20.0, 305.0]">
             </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={489, 261, 575, 450}, maximized=false}">
+        </port>
+        <port name="TNight" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
-            <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[559, 391]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[20.0, 265.0]">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="{740.0, 470.0}">
-            </property>
-            <property name="_expertMode" class="ptolemy.kernel.util.SingletonAttribute">
-            </property>
-            <configure>
-<?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
-"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
-<plot>
-<title></title>
-<xLabel>time in s</xLabel>
-<yLabel></yLabel>
-<xRange min="0.0" max="172800.0"/>
-<yRange min="0.0" max="22.0"/>
-</plot>?>
-            </configure>
-        </entity>
-        <entity name="CurrentTime" class="ptolemy.actor.lib.CurrentTime">
-            <doc>Output the current time.</doc>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="{90.0, 460.0}">
-            </property>
-        </entity>
+        </port>
         <entity name="room" class="ptolemy.actor.TypedCompositeActor">
             <property name="_location" class="ptolemy.kernel.util.Location" value="{625.0, 375.0}">
             </property>
@@ -307,7 +227,7 @@ on the colored rectangle shows how the variable "TRoom" is used to assign the co
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[40.0, 55.0]">
                 </property>
             </property>
-            <property name="tau" class="ptolemy.data.expr.Parameter" value="6*3600">
+            <property name="tau" class="ptolemy.data.expr.Parameter" value="6*60">
                 <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
                 </property>
                 <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -393,7 +313,7 @@ on the colored rectangle shows how the variable "TRoom" is used to assign the co
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[35.0, 15.0]">
                 </property>
             </property>
-            <property name="delTime" class="ptolemy.data.expr.Parameter" value="timeStep">
+            <property name="delTime" class="ptolemy.data.expr.Parameter" value="1">
                 <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
                     <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
                     </property>
@@ -434,7 +354,7 @@ on the colored rectangle shows how the variable "TRoom" is used to assign the co
                     </property>
                 </property>
             </property>
-            <property name="TRoom" class="ptolemy.data.expr.Parameter" value="9.9861111111111">
+            <property name="TRoom" class="ptolemy.data.expr.Parameter" value="17.3809524094175">
                 <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
                 </property>
                 <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -752,7 +672,7 @@ on the colored rectangle shows how the variable "TRoom" is used to assign the co
                 </property>
             </entity>
             <entity name="dayStart" class="ptolemy.actor.lib.Const">
-                <property name="value" class="ptolemy.data.expr.Parameter" value="7*3600">
+                <property name="value" class="ptolemy.data.expr.Parameter" value="7*60">
                 </property>
                 <doc>Create a constant sequence.</doc>
                 <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
@@ -787,7 +707,7 @@ on the colored rectangle shows how the variable "TRoom" is used to assign the co
                 </property>
             </entity>
             <entity name="nightStart" class="ptolemy.actor.lib.Const">
-                <property name="value" class="ptolemy.data.expr.Parameter" value="18*3600">
+                <property name="value" class="ptolemy.data.expr.Parameter" value="18*60">
                 </property>
                 <doc>Create a constant sequence.</doc>
                 <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
@@ -839,7 +759,7 @@ on the colored rectangle shows how the variable "TRoom" is used to assign the co
                 </port>
             </entity>
             <entity name="timeOfDay" class="ptolemy.actor.lib.Expression">
-                <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="in % 86400">
+                <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="in % 1440">
                 </property>
                 <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                     <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
@@ -905,53 +825,46 @@ on the colored rectangle shows how the variable "TRoom" is used to assign the co
             <link port="timeOfDay.output" relation="relation2"/>
             <link port="timeOfDay.in" relation="relation8"/>
         </entity>
-        <entity name="SetVariable" class="ptolemy.actor.lib.SetVariable">
-            <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="TDay">
-            </property>
-            <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
-                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="variableName">
-                </property>
-                <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
-                </property>
-            </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[110.0, 200.0]">
-            </property>
-        </entity>
-        <entity name="SetVariable2" class="ptolemy.actor.lib.SetVariable">
-            <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="TNight">
-            </property>
-            <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
-                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="variableName">
-                </property>
-                <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
-                </property>
-            </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[110.0, 240.0]">
-            </property>
-        </entity>
-        <entity name="MonitorValue" class="ptolemy.actor.lib.gui.MonitorValue">
-            <doc>Monitor and display values</doc>
-            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="20">
-            </property>
-            <property name="_icon" class="ptolemy.vergil.icon.UpdatedValueIcon">
-                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
-                </property>
-                <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="displayWidth">
-                </property>
-            </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[835.0, 350.0]">
-            </property>
-            <property name="IconScript" class="ptolemy.vergil.basic.export.html.IconScript" value="writeMyText(value)">
-                <property name="script" class="ptolemy.data.expr.StringParameter" value="function writeMyText(text) {&#10;    document.getElementById(&quot;result&quot;).innerHTML = text;&#10;};">
-                </property>
-                <property name="endText" class="ptolemy.data.expr.StringParameter" value="">
-                </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="{780, 375}">
-                </property>
-            </property>
-        </entity>
         <entity name="WebSink" class="org.ptolemy.ptango.lib.WebSink">
             <property name="_location" class="ptolemy.kernel.util.Location" value="[895.0, 480.0]">
+            </property>
+        </entity>
+        <entity name="SequencePlotter" class="ptolemy.actor.lib.gui.SequencePlotter">
+            <property name="automaticRescale" class="ptolemy.data.expr.Parameter" value="true">
+            </property>
+            <property name="legend" class="ptolemy.kernel.util.StringAttribute" value="Desired Temp, Room Temp, Heater">
+            </property>
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={382, 220, 516, 359}, maximized=false}">
+            </property>
+            <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
+            </property>
+            <property name="xUnit" class="ptolemy.data.expr.Parameter" value="0.0167">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[730.0, 465.0]">
+            </property>
+            <property name="HTMLImage" class="ptolemy.vergil.basic.export.html.HTMLImage" value="">
+                <property name="displayText" class="ptolemy.data.expr.StringParameter" value="Temperature vs. time">
+                </property>
+                <property name="textPosition" class="ptolemy.vergil.basic.export.html.HTMLTextPosition" value="graph">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{745, 490}">
+                </property>
+            </property>
+            <configure>
+<?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
+"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
+<plot>
+<title>SequencePlotter</title>
+<xRange min="0.0" max="50.50080000000037"/>
+<yRange min="0.0" max="40.0"/>
+</plot>?>
+            </configure>
+        </entity>
+        <entity name="Ramp" class="ptolemy.actor.lib.Ramp">
+            <property name="init" class="ptolemy.actor.parameters.PortParameter" value="1">
+            </property>
+            <doc>Create a sequence of tokens with increasing value</doc>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{70, 460}">
             </property>
         </entity>
         <relation name="relation" class="ptolemy.actor.TypedIORelation">
@@ -976,10 +889,6 @@ on the colored rectangle shows how the variable "TRoom" is used to assign the co
             <vertex name="vertex1" value="{245.0, 460.0}">
             </vertex>
         </relation>
-        <relation name="relation5" class="ptolemy.actor.TypedIORelation">
-            <property name="width" class="ptolemy.data.expr.Parameter" value="1">
-            </property>
-        </relation>
         <relation name="relation6" class="ptolemy.actor.TypedIORelation">
             <property name="width" class="ptolemy.data.expr.Parameter" value="1">
             </property>
@@ -998,15 +907,7 @@ on the colored rectangle shows how the variable "TRoom" is used to assign the co
         </relation>
         <relation name="relation9" class="ptolemy.actor.TypedIORelation">
         </relation>
-        <relation name="relation10" class="ptolemy.actor.TypedIORelation">
-        </relation>
-        <link port="TDay" relation="relation9"/>
-        <link port="TNight" relation="relation10"/>
         <link port="result" relation="relation8"/>
-        <link port="plotter.input" relation="relation4"/>
-        <link port="plotter.input" relation="relation2"/>
-        <link port="plotter.input" relation="relation5"/>
-        <link port="CurrentTime.output" relation="relation7"/>
         <link port="room.TOut" relation="relation"/>
         <link port="room.TRoo" relation="relation8"/>
         <link port="room.y" relation="relation3"/>
@@ -1017,13 +918,14 @@ on the colored rectangle shows how the variable "TRoom" is used to assign the co
         <link port="controlError.minus" relation="relation2"/>
         <link port="controlError.output" relation="relation6"/>
         <link port="Scale.input" relation="relation3"/>
-        <link port="Scale.output" relation="relation5"/>
+        <link port="Scale.output" relation="relation9"/>
         <link port="TSetPoi.in" relation="relation7"/>
         <link port="TSetPoi.out" relation="relation4"/>
-        <link port="SetVariable.input" relation="relation9"/>
-        <link port="SetVariable2.input" relation="relation10"/>
-        <link port="MonitorValue.input" relation="relation8"/>
         <link port="WebSink.input" relation="relation8"/>
+        <link port="SequencePlotter.input" relation="relation4"/>
+        <link port="SequencePlotter.input" relation="relation2"/>
+        <link port="SequencePlotter.input" relation="relation9"/>
+        <link port="Ramp.output" relation="relation7"/>
         <link relation1="relation2" relation2="relation8"/>
     </entity>
     <entity name="WebServer" class="org.ptolemy.ptango.lib.WebServer">
@@ -1031,19 +933,65 @@ on the colored rectangle shows how the variable "TRoom" is used to assign the co
         </property>
     </entity>
     <entity name="WebSource" class="org.ptolemy.ptango.lib.WebSource">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-10.0, 100.0]">
+        <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="TDay">
         </property>
+        <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{-10.0, 100.0}">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
+            </property>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
+            </property>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+        </port>
+        <port name="event" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+        </port>
     </entity>
     <entity name="WebSource2" class="org.ptolemy.ptango.lib.WebSource">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-10.0, 145.0]">
+        <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="TNight">
         </property>
+        <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-10.0, 165.0]">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
+            </property>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
+            </property>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+        </port>
+        <port name="event" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+        </port>
     </entity>
-    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <link port="HttpCompositeServiceProvider.TDay" relation="relation"/>
-    <link port="HttpCompositeServiceProvider.TNight" relation="relation2"/>
-    <link port="WebSource.output" relation="relation"/>
-    <link port="WebSource2.output" relation="relation2"/>
+    <link port="HttpCompositeServiceProvider.TDay" relation="relation3"/>
+    <link port="HttpCompositeServiceProvider.TNight" relation="relation5"/>
+    <link port="WebSource.output" relation="relation3"/>
+    <link port="WebSource2.output" relation="relation5"/>
 </entity>

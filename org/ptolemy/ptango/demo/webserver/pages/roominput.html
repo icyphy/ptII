@@ -45,24 +45,12 @@
 	<link rel="stylesheet" href="http://code.jquery.com/mobile/1.0/jquery.mobile-1.0.min.css" />
 	<script type="text/javascript" src="http://code.jquery.com/jquery-1.6.4.min.js"></script>
 	<script type="text/javascript" src="http://code.jquery.com/mobile/1.0/jquery.mobile-1.0.min.js"></script>
-
-	<script type="text/javascript"> 
-	// Based on http://www.queness.com/post/160/create-a-ajax-based-form-submission-with-jquery
-		function submitData() {
-	        //Get the data from all the fields
-	        var TDay = $('input[name=TDay]');
-	        var TNight = $('input[name=TNight]');
-	        
-	        //organize the data properly
-	        var data = 'TDay=' + TDay.val() + '&TNight=' + email.val();
-		}
-	</script>
-	 
+ 
 	<title> Room temperature model </title>
 </head>
 <body>
 
-<div data-role="page" data-theme="c">
+<div name="page" id="page" data-role="page" data-theme="c">
 
 	<div data-role="header">
 		<h1> Room temperature model </h1>
@@ -70,7 +58,10 @@
 
 	<div data-role="content">
 		Please enter the desired daytime and nighttime temperatures, in Celsius:
-		<form action="./simulate" method="post" >
+		<!--  The form action does nothing, since we want to submit the form
+		  using ajax instead, using an onclick method for the submit button -->
+		<!--  <form action="javascript:void(0);" method="post" > -->
+		<form action="./simulate" method="post" > 
 		
 			<div data-role="fieldcontain">
 				<label for="TDay">Daytime: </label>
@@ -83,6 +74,11 @@
 				<button type="submit" id="calculateButton"> Calculate </button>
 			</div>
 		</form>
+	</div>
+	
+	<div data-role="footer"> 
+		<img src="/files/PtolemyIISmallIcon.gif"> </image>
+		Powered by Ptolemy II 
 	</div>
 </div>
 
