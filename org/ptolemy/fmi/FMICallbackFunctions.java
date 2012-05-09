@@ -36,7 +36,10 @@ import org.ptolemy.fmi.FMILibrary.FMIStepFinished;
 import com.sun.jna.Structure;
 
 /**
- * Functional Mock-up Interface (FMI) callback functions.
+ * Functional Mock-up Interface (FMI) callback functions needed by
+ * Java Native Access (JNA) so that a FMU * can perform functions like
+ * allocating and freeing memory, printing log messages and handle the
+ * end of a step.
  *
  * <p>The C language interface to Functional Mock-up Unit (FMU) files
  * includes a fmiCallbackFunctions struct whose elements are callbacks

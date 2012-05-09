@@ -54,6 +54,7 @@ import com.sun.jna.ptr.PointerByReference;
 
 /**
  * An object that represents the ScalarVariable element of a
+ * modelDescription.xml file contained within a 
  * Functional Mock-up Interface .fmu XML file.
  * 
  * <p>A Functional Mock-up Unit file is a .fmu file in zip format that

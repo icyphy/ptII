@@ -39,7 +39,14 @@ import java.util.Set;
 import java.util.StringTokenizer;
 
 /**
- * An interface that contains JNA callbacks.
+ * An interface that is used by Java Native Access (JNA) to handle callbacks.
+ *
+ * <p>This class contains implementations of methods that are registered
+ * with the FMI and then called back from by the FMI.  The callback
+ * methods allocate and free memory, handle logging and are sometimes
+ * called when the step ends.  For each callback we define an inner class
+ * that implements the appropriate interface and has one method that
+ * provides the body of the callback.</p>
  *
  * <p>For details about how Callbacks work in JNA, see
  * <a href="http://twall.github.com/jna/3.4.0/javadoc/overview-summary.html#callbacks">http://twall.github.com/jna/3.4.0/javadoc/overview-summary.html#callbacks</a>.</p>

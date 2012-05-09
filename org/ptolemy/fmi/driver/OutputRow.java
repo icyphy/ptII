@@ -41,7 +41,9 @@ import com.sun.jna.NativeLibrary;
 import com.sun.jna.Pointer;
 
 /**
- * <p>This method is a port of outputRow() from
+ * Given a fmu component, output the current state.
+ *
+ * <p>This class is a port of outputRow() from
  * fmusdk/src/shared/sim_support.c which has the following license:
  *
  * <p>FMU SDK license</p> 

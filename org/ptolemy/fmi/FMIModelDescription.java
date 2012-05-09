@@ -40,7 +40,8 @@ import com.sun.jna.NativeLibrary;
 
 /**
  * An object that represents the fmiModelDescription element of a
- * Functional Mock-up Interface (FMI) file.
+ * modelDescription.xml file contained within a 
+ * Functional Mock-up Interface (.fmu) file.
  * 
  * <p>A Functional Mock-up Unit file is a .fmu file in zip format that
  * contains a .xml file named "modelDescription.xml".  This class is a

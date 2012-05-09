@@ -53,10 +53,12 @@ import com.sun.jna.NativeLibrary;
 //// FMUFile
 
 /**
- * Parse a Functional Mock-up Interface (FMI) 1.0 Model Exchange 
- * Functional Mock-up Unit (FMU) file.
+ * Parse a Functional Mock-up Interface (FMI) 1.0 Functional Mock-up
+ * Unit (FMU) file and create a FMIModelDescription for later use.
  * 
- * 
+ * <p>The parseFMUFile() method in this class is the primary entry
+ * point into this package.</p>
+ *
  * <p>FMI documentation may be found at
  * <a href="http://www.modelisar.com/fmi.html">http://www.modelisar.com/fmi.html</a>.
  * </p>

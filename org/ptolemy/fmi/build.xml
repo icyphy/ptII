@@ -30,7 +30,10 @@
   <!-- The tests that are run by the test target. -->
   <property name="test.batch" value="org/ptolemy/fmi/driver/test/junit/*.java" />
 
-
+  <!-- Ant patternsets. Alphabetize, please -->
+  <patternset id="fmi.excludes">
+    <exclude name="**/adm/"/>
+  </patternset>
 
   <target name="build"
 	  description="Compile the java files."
@@ -40,6 +43,7 @@
 	   debuglevel="${debuglevel}"
 	   includeAntRuntime="false">
       <src path="${basedir}/org/ptolemy/fmi" />
+      <patternset refid="fmi.excludes" />
       <classpath refid="fmi.classpath" />
     </javac>
   </target>
