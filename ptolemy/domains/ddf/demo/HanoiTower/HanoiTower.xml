@@ -2,13 +2,13 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="HanoiTower" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.0.beta">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.0.devel">
     </property>
     <property name="DDF Director" class="ptolemy.domains.ddf.kernel.DDFDirector">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 45.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 30, 896, 504}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 30, 894, 588}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[681, 397]">
     </property>
@@ -981,13 +981,13 @@ http://java.sun.com/products/java-media/3D/</text></svg></configure>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[80.0, 55.0]">
             </property>
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={12, 56, 996, 575}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={12, 56, 994, 588}, maximized=false}">
         </property>
-        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[781, 468]">
+        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[781, 478]">
         </property>
         <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
         </property>
-        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{390.5, 234.0}">
+        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{390.5, 239.0}">
         </property>
         <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
             <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This part basically simulates the disk moving and does the book keeping. It represents&#10;disks on three towers with three arrays. On receiving each moving command which has &#10;the form (1, i, j), meaning moving one disk from tower i to tower j, it outputs the index&#10;of the disk that is to be moved, the moving vector and stores the status of disks on&#10;each tower after moving. ">
@@ -1018,61 +1018,67 @@ http://java.sun.com/products/java-media/3D/</text></svg></configure>
         <entity name="GetDisksOnTowers" class="ptolemy.actor.TypedCompositeActor">
             <property name="_location" class="ptolemy.kernel.util.Location" value="[275.0, 240.0]">
             </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={96, 185, 845, 535}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={605, 426, 1015, 588}, maximized=false}">
             </property>
-            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[630, 400]">
+            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[802, 478]">
             </property>
             <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
             </property>
-            <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{-205.9326073232323, -290.8576388888889}">
+            <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{-119.9326073232323, -251.8576388888889}">
             </property>
             <port name="port" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[-505.0, -350.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[-505.0, -380.0]">
                 </property>
             </port>
             <port name="port2" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[-505.0, -295.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[-505.25, -310.0]">
                 </property>
             </port>
             <port name="port3" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[-505.0, -235.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{-505.0, -240.0}">
                 </property>
             </port>
             <port name="port4" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[-205.0, -380.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{5.0, -225.0}">
                 </property>
             </port>
             <port name="port5" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[-205.0, -245.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{5.0, -280.0}">
                 </property>
             </port>
             <port name="port6" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[-205.0, -190.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{5.0, -375.0}">
                 </property>
             </port>
             <port name="port7" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, -390.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{200.0, -240.0}">
                 </property>
             </port>
             <port name="port8" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, -285.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{200.0, -310.0}">
                 </property>
             </port>
             <port name="port9" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, -200.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{200.0, -375.0}">
                 </property>
             </port>
             <entity name="DisksOnTower0" class="ptolemy.domains.sdf.lib.SampleDelay">
-                <property name="initialOutputs" class="ptolemy.data.expr.Parameter" value="sourceTower==0?{createSequence(-1,1,numberOfDisks+1)}:{{-1}}">
+                <property name="initialOutputs" class="ptolemy.data.expr.Parameter" value="sourceTower==0 ?&#10;  {createSequence(-1,1,numberOfDisks+1)}&#10;  :{{-1}}">
+                    <property name="style" class="ptolemy.actor.gui.style.TextStyle">
+                        <property name="height" class="ptolemy.data.expr.Parameter" value="10">
+                        </property>
+                        <property name="width" class="ptolemy.data.expr.Parameter" value="30">
+                        </property>
+                    </property>
                 </property>
                 <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                     <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="initialOutputs">
@@ -1080,11 +1086,17 @@ http://java.sun.com/products/java-media/3D/</text></svg></configure>
                     <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="20">
                     </property>
                 </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[-355.0, -350.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[-315.0, -380.0]">
                 </property>
             </entity>
             <entity name="DisksOnTower1" class="ptolemy.domains.sdf.lib.SampleDelay">
-                <property name="initialOutputs" class="ptolemy.data.expr.Parameter" value="sourceTower==1?{createSequence(-1,1,numberOfDisks+1)}:{{-1}}">
+                <property name="initialOutputs" class="ptolemy.data.expr.Parameter" value="sourceTower==1 ?&#10;  {createSequence(-1,1,numberOfDisks+1)}&#10;  :{{-1}}">
+                    <property name="style" class="ptolemy.actor.gui.style.TextStyle">
+                        <property name="height" class="ptolemy.data.expr.Parameter" value="10">
+                        </property>
+                        <property name="width" class="ptolemy.data.expr.Parameter" value="30">
+                        </property>
+                    </property>
                 </property>
                 <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                     <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="initialOutputs">
@@ -1092,11 +1104,17 @@ http://java.sun.com/products/java-media/3D/</text></svg></configure>
                     <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="20">
                     </property>
                 </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[-355.0, -295.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[-315.25, -310.0]">
                 </property>
             </entity>
             <entity name="DisksOnTower2" class="ptolemy.domains.sdf.lib.SampleDelay">
-                <property name="initialOutputs" class="ptolemy.data.expr.Parameter" value="sourceTower==2?{createSequence(-1,1,numberOfDisks+1)}:{{-1}}">
+                <property name="initialOutputs" class="ptolemy.data.expr.Parameter" value="sourceTower==2 ?&#10;   {createSequence(-1,1,numberOfDisks+1)}&#10;   :{{-1}}">
+                    <property name="style" class="ptolemy.actor.gui.style.TextStyle">
+                        <property name="height" class="ptolemy.data.expr.Parameter" value="10">
+                        </property>
+                        <property name="width" class="ptolemy.data.expr.Parameter" value="30">
+                        </property>
+                    </property>
                 </property>
                 <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                     <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="initialOutputs">
@@ -1104,52 +1122,72 @@ http://java.sun.com/products/java-media/3D/</text></svg></configure>
                     <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="20">
                     </property>
                 </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[-355.0, -235.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{-315.0, -240.0}">
                 </property>
             </entity>
             <entity name="ArrayElement" class="ptolemy.actor.lib.ArrayElement">
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[-10.0, -285.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{120.0, -310.0}">
                 </property>
             </entity>
             <entity name="ArrayElement2" class="ptolemy.actor.lib.ArrayElement">
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[-10.0, -390.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{120.0, -240.0}">
                 </property>
             </entity>
             <entity name="ArrayElement3" class="ptolemy.actor.lib.ArrayElement">
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[-5.0, -200.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{120.0, -375.0}">
                 </property>
             </entity>
             <entity name="ElementsToArray" class="ptolemy.actor.lib.ElementsToArray">
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[-215.0, -295.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{-115.0, -305.0}">
                 </property>
             </entity>
             <relation name="relation" class="ptolemy.actor.TypedIORelation">
-                <vertex name="vertex1" value="[-160.0, -295.0]">
+                <vertex name="vertex1" value="{45.0, -330.0}">
                 </vertex>
+                <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;ArrayElement.input&quot;,x=120.0,y=-310.0}, tail={id=&quot;relation.vertex1&quot;,x=45.0,y=-330.0}, points={45.0,-320.0} },{ head={id=&quot;ElementsToArray.output&quot;,x=-115.0,y=-305.0}, tail={id=&quot;relation.vertex1&quot;,x=45.0,y=-330.0}, points={-20.0,-305.0,-20.0,-330.0} },{ head={id=&quot;ArrayElement3.input&quot;,x=120.0,y=-375.0}, tail={id=&quot;relation.vertex1&quot;,x=45.0,y=-330.0}, points={45.0,-385.0} },{ head={id=&quot;ArrayElement2.input&quot;,x=120.0,y=-240.0}, tail={id=&quot;relation.vertex1&quot;,x=45.0,y=-330.0}, points={45.0,-250.0} } }">
+                </property>
             </relation>
             <relation name="relation2" class="ptolemy.actor.TypedIORelation">
             </relation>
             <relation name="relation3" class="ptolemy.actor.TypedIORelation">
             </relation>
             <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+                <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;DisksOnTower2.output&quot;,x=-315.0,y=-240.0}, tail={id=&quot;ElementsToArray.input&quot;,x=-115.0,y=-305.0,index=3}, points={-160.0,-240.0,-160.0,-305.0} } }">
+                </property>
             </relation>
             <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+                <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;port._location&quot;,x=-505.0,y=-380.0}, tail={id=&quot;DisksOnTower0.input&quot;,x=-315.0,y=-380.0}, points={} } }">
+                </property>
             </relation>
             <relation name="relation6" class="ptolemy.actor.TypedIORelation">
             </relation>
             <relation name="relation7" class="ptolemy.actor.TypedIORelation">
+                <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;port3._location&quot;,x=-505.0,y=-240.0}, tail={id=&quot;DisksOnTower2.input&quot;,x=-315.0,y=-240.0}, points={} } }">
+                </property>
             </relation>
             <relation name="relation8" class="ptolemy.actor.TypedIORelation">
+                <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;port7._location&quot;,x=200.0,y=-240.0}, tail={id=&quot;ArrayElement2.output&quot;,x=120.0,y=-240.0}, points={} } }">
+                </property>
             </relation>
             <relation name="relation9" class="ptolemy.actor.TypedIORelation">
+                <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;port8._location&quot;,x=200.0,y=-310.0}, tail={id=&quot;ArrayElement.output&quot;,x=120.0,y=-310.0}, points={} } }">
+                </property>
             </relation>
             <relation name="relation10" class="ptolemy.actor.TypedIORelation">
+                <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;port9._location&quot;,x=200.0,y=-375.0}, tail={id=&quot;ArrayElement3.output&quot;,x=120.0,y=-375.0}, points={} } }">
+                </property>
             </relation>
             <relation name="relation11" class="ptolemy.actor.TypedIORelation">
+                <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;port4._location&quot;,x=5.0,y=-225.0}, tail={id=&quot;ArrayElement2.index&quot;,x=120.0,y=-240.0}, points={30.0,-225.0,30.0,-230.0} } }">
+                </property>
             </relation>
             <relation name="relation12" class="ptolemy.actor.TypedIORelation">
+                <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;port5._location&quot;,x=5.0,y=-280.0}, tail={id=&quot;ArrayElement.index&quot;,x=120.0,y=-310.0}, points={30.0,-280.0,30.0,-300.0} } }">
+                </property>
             </relation>
             <relation name="relation13" class="ptolemy.actor.TypedIORelation">
+                <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;port6._location&quot;,x=5.0,y=-375.0}, tail={id=&quot;ArrayElement3.index&quot;,x=120.0,y=-375.0}, points={60.0,-375.0,60.0,-365.0} } }">
+                </property>
             </relation>
             <link port="port" relation="relation5"/>
             <link port="port2" relation="relation6"/>
@@ -1323,9 +1361,9 @@ http://java.sun.com/products/java-media/3D/</text></svg></configure>
                 <property name="width" class="ptolemy.data.expr.Parameter" value="1">
                 </property>
             </relation>
-	    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+            <relation name="relation2" class="ptolemy.actor.TypedIORelation">
                 <property name="width" class="ptolemy.data.expr.Parameter" value="1">
-                </property>		    
+                </property>
             </relation>
             <relation name="relation3" class="ptolemy.actor.TypedIORelation">
                 <vertex name="vertex1" value="[155.0, 295.0]">
