@@ -422,6 +422,7 @@ public class InequalitySolver {
         // type resolution application involving structured types, where
         // the type term for an element of a structured type does not have
         // a reference to the term of its enclosing type.
+        // This occurs in feedback loops with structure types.
         boolean allSatisfied = false;
 
         LinkedList prevNS = null;
@@ -500,15 +501,17 @@ public class InequalitySolver {
             }
             
             // Avoid infinite loops.
+            // The issue is that in feedback loops, we may have arrays of arrays or arrays,
+            // forever.  We have to truncate the search at some point, so we limit the depth.
             if (prevNS == null) {
                 prevNS = _NS;
-            } else if (_NS.size() > 0 && prevNS.size() == _NS.size() && prevNS.containsAll(_NS) && loopCnt > 1) {
+            } else if (_NS.size() > 0 && prevNS.size() == _NS.size() && prevNS.containsAll(_NS) && loopCnt > _DEPTH_LIMIT) {
                 String errorMessage = "";
                 for (Object o : _NS) {
                     Integer i = (Integer) o; 
                     errorMessage += " (" + ((Info)_Ilist.get(i))._ineq.getGreaterTerm() + ", " + ((Info)_Ilist.get(i))._ineq.getLesserTerm() + ") ";
                 }
-                throw new IllegalActionException("Cound not resolve types: " + errorMessage);
+                throw new IllegalActionException("Cannot not resolve types: " + errorMessage);
             }
             loopCnt++;
         }
@@ -542,4 +545,7 @@ public class InequalitySolver {
     // Each entry in _Clist is a vector of Integers containing the
     // index of inequalities in _Ilist.
     private Hashtable _Clist = new Hashtable();
+    
+    /** Limit the depth of arrays of arrays tolerated by type inferences. */
+    private static int _DEPTH_LIMIT = 1000;
 }
