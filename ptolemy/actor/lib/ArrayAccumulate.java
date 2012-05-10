@@ -86,6 +86,7 @@ public class ArrayAccumulate extends Transformer {
         newObject.input.setTypeAtLeast(ArrayType.ARRAY_BOTTOM);
         newObject.output.setTypeAtLeast(newObject.input);
         newObject.output.setTypeAtLeast(ArrayType.ARRAY_UNSIZED_BOTTOM);
+        newObject._arrays = new ArrayToken[2];
         return newObject;
     }
 
