@@ -836,8 +836,6 @@ public class CachedMethod {
             //        + " formal.isArray(): "
             //        + formal.isArray(), ex2).printStackTrace();
         }
-    }
-
         return IMPOSSIBLE_CONVERSION;
     }
 
