@@ -9,6 +9,7 @@
 
   <patternset id="ptII.jars">
     <include name="com/jgoodies/jgoodies.jar" />
+    <include name="contrib/contrib.jar" />
     <include name="doc/codeDoc.jar" />
     <include name="doc/codeDocHyVisual.jar" />
     <include name="doc/codeDocViptos.jar" />
@@ -185,6 +186,15 @@
 
   <target name="jars"
 	  description="Build jar files.">
+
+    <!-- contrib/contrib.jar -->
+    <jar defaultexcludes="yes"
+	 destfile="${basedir}/contrib/contrib.jar"
+	 >
+      <fileset dir="${basedir}">
+	<include name="contrib/**/*.class"/>
+      </fileset>
+    </jar>
 
     <!-- doc/docConfig.jar -->
     <jar defaultexcludes="yes"

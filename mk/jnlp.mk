@@ -462,6 +462,7 @@ FULL_ONLY_JNLP_JARS = \
 	$(CODEGEN_JARS) \
 	$(RTMAUDE_JARS) \
 	$(COPERNICUS_JARS) \
+	contrib/contrib.jar \
 	doc/design/design.jar \
 	doc/img/img.jar \
 	$(PTJACL_JARS) \
