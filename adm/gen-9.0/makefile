@@ -2861,6 +2861,7 @@ update_andrews:
 	   $(ANDREWS_HUDSON_HOME3)/builds/ptII$(PTII_VERSION)-`date +%Y-%m-%d`.tar.gz \
 	   $(ANDREWS_HUDSON_HOME3)/builds/ptII$(PTII_VERSION)-`date +%Y-%m-%d`.src.tar.gz \
 	   $(ANDREWS_HUDSON_HOME3)/builds/ptII$(PTII_WINDOWS_VERSION)_setup_windows-`date +%Y-%m-%d`.exe \
+	   $(ANDREWS_HUDSON_HOME3)/builds/ptII$(PTII_WINDOWS_VERSION)_setup_windows_64-`date +%Y-%m-%d`.exe \
 	   $(ANDREWS_HUDSON_HOME3)/builds/ptII$(PTII_VERSION).setup.mac-`date +%Y-%m-%d`.app.tar.gz \
 	   $(ANDREWS_HUDSON_HOME3)/builds/ptIInightly_mail-`date +%Y-%m-%d`.txt \
 	   $(ANDREWS_HUDSON_HOME3)/builds/ptIInightly-`date +%Y-%m-%d`.htm \
@@ -2868,6 +2869,7 @@ update_andrews:
 	   $(PTEXTERNAL_NIGHTLY)/builds/ptII$(PTII_VERSION)-`date +%Y-%m-%d`.tar.gz \
 	   $(PTEXTERNAL_NIGHTLY)/builds/ptII$(PTII_VERSION)-`date +%Y-%m-%d`.src.tar.gz \
 	   $(PTEXTERNAL_NIGHTLY)/builds/ptII$(PTII_WINDOWS_VERSION)_setup_windows-`date +%Y-%m-%d`.exe \
+	   $(PTEXTERNAL_NIGHTLY)/builds/ptII$(PTII_WINDOWS_VERSION)_setup_windows_64-`date +%Y-%m-%d`.exe \
 	   $(PTEXTERNAL_NIGHTLY)/builds/ptII$(PTII_VERSION).setup.mac-`date +%Y-%m-%d`.app.tar.gz \
 	   $(PTEXTERNAL_NIGHTLY)/builds/ptIInightly_mail-`date +%Y-%m-%d`.txt \
 	   $(PTEXTERNAL_NIGHTLY)/builds/ptIInightly-`date +%Y-%m-%d`.htm \
@@ -2875,10 +2877,12 @@ update_andrews:
 	   $(ANDREWS_HUDSON_HOME3)/builds/ptII-latest.tar.gz \
 	   $(ANDREWS_HUDSON_HOME3)/builds/ptII-latest.src.tar.gz \
 	   $(ANDREWS_HUDSON_HOME3)/builds/ptII-latest_setup_windows.exe \
+	   $(ANDREWS_HUDSON_HOME3)/builds/ptII-latest_setup_windows_64.exe \
 	   $(ANDREWS_HUDSON_HOME3)/builds/ptII-latest.setup.mac.app.tar.gz \
 	   $(PTEXTERNAL_NIGHTLY)/builds/ptII-latest.tar.gz \
 	   $(PTEXTERNAL_NIGHTLY)/builds/ptII-latest.src.tar.gz \
 	   $(PTEXTERNAL_NIGHTLY)/builds/ptII-latest_setup_windows.exe \
+	   $(PTEXTERNAL_NIGHTLY)/builds/ptII-latest_setup_windows_64.exe \
 	   $(PTEXTERNAL_NIGHTLY)/builds/ptII-latest.setup.mac.app.tar.gz \
 	   $(PTEXTERNAL_NIGHTLY)/builds/ptIInightly_mail-latest.txt \
 	   $(PTEXTERNAL_NIGHTLY)/builds/ptIInightly-latest.htm \
@@ -2894,6 +2898,8 @@ update_andrews:
 		$(ANDREWS_HUDSON_HOME3)/builds/ptII$(PTII_VERSION)-`date +%Y-%m-%d`.src.tar.gz
 	-ssh andrews ln $(ANDREWS_HUDSON_HOME3)/ptII/adm/gen-$(PTII_MAJOR_VERSION)/ptII$(PTII_WINDOWS_VERSION)_setup_windows.exe \
 		$(ANDREWS_HUDSON_HOME3)/builds/ptII$(PTII_WINDOWS_VERSION)_setup_windows-`date +%Y-%m-%d`.exe
+	-ssh andrews ln $(ANDREWS_HUDSON_HOME3)/ptII/adm/gen-$(PTII_MAJOR_VERSION)/ptII$(PTII_WINDOWS_VERSION)_setup_windows_64.exe \
+		$(ANDREWS_HUDSON_HOME3)/builds/ptII$(PTII_WINDOWS_VERSION)_setup_windows_64-`date +%Y-%m-%d`.exe
 	-ssh andrews ln $(ANDREWS_HUDSON_HOME3)/ptII/adm/gen-$(PTII_MAJOR_VERSION)/ptII$(PTII_VERSION).setup.mac.app.tar.gz \
 		$(ANDREWS_HUDSON_HOME3)/builds/ptII$(PTII_VERSION).setup.mac-`date +%Y-%m-%d`.app.tar.gz
 	-ssh andrews ln $(ANDREWS_HUDSON_HOME3)/ptII/adm/logs/ptIInightly_mail.txt \
@@ -2910,6 +2916,8 @@ update_andrews:
 		$(PTEXTERNAL_NIGHTLY)/builds
 	-ssh andrews ln -s $(ANDREWS_HUDSON_HOME3)/builds/ptII$(PTII_WINDOWS_VERSION)_setup_windows-`date +%Y-%m-%d`.exe \
 		$(PTEXTERNAL_NIGHTLY)/builds
+	-ssh andrews ln -s $(ANDREWS_HUDSON_HOME3)/builds/ptII$(PTII_WINDOWS_VERSION)_setup_windows_64-`date +%Y-%m-%d`.exe \
+		$(PTEXTERNAL_NIGHTLY)/builds
 	-ssh andrews ln -s $(ANDREWS_HUDSON_HOME3)/builds/ptII$(PTII_VERSION).setup.mac-`date +%Y-%m-%d`.app.tar.gz \
 		$(PTEXTERNAL_NIGHTLY)/builds
 	# 
@@ -2920,6 +2928,8 @@ update_andrews:
 		$(PTEXTERNAL_NIGHTLY)/builds/ptII-latest.src.tar.gz
 	-ssh andrews ln -s $(PTEXTERNAL_NIGHTLY)/builds/ptII$(PTII_WINDOWS_VERSION)_setup_windows-`date +%Y-%m-%d`.exe \
 		$(PTEXTERNAL_NIGHTLY)/builds/ptII-latest_setup_windows.exe
+	-ssh andrews ln -s $(PTEXTERNAL_NIGHTLY)/builds/ptII$(PTII_WINDOWS_VERSION)_setup_windows_64-`date +%Y-%m-%d`.exe \
+		$(PTEXTERNAL_NIGHTLY)/builds/ptII-latest_setup_windows_64.exe
 	-ssh andrews ln -s $(PTEXTERNAL_NIGHTLY)/builds/ptII$(PTII_VERSION).setup.mac-`date +%Y-%m-%d`.app.tar.gz \
 	   $(PTEXTERNAL_NIGHTLY)/builds/ptII-latest.setup.mac.app.tar.gz
 
