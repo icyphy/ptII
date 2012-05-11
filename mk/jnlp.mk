@@ -468,6 +468,7 @@ FULL_ONLY_JNLP_JARS = \
 	$(PTJACL_JARS) \
 	ptolemy/actor/gt/gt.jar \
 	ptolemy/actor/gt/demo/demo.jar \
+	ptolemy/actor/lib/conversions/json/json.jar \
 	ptolemy/actor/lib/io/comm/comm.jar \
 	ptolemy/actor/lib/io/comm/demo/demo.jar \
 	vendors/misc/rxtx/RXTXcomm.jar \
