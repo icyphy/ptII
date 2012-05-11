@@ -121,7 +121,6 @@ test AttributeValueAttribute-6.2 {Test description} {
     {ptolemy.data.expr.StringParameter {.N.C.fontFamily} "SansSerif"}
     {ptolemy.data.expr.Parameter {.N.C.bold} false}
     {ptolemy.data.expr.Parameter {.N.C.italic} false}
-    {ptolemy.data.expr.Parameter {.N.C.center} false}
     {ptolemy.data.expr.StringParameter {.N.C.anchor} "northwest"}
     {ptolemy.kernel.util.StringAttribute {.N.C.attributeName}}
     {ptolemy.data.expr.Parameter {.N.C.displayWidth} 6}
@@ -278,7 +277,6 @@ test AttributeValueAttribute-8.1 {setContainer} {
     {ptolemy.data.expr.StringParameter {.N.C.A.fontFamily} "SansSerif"}
     {ptolemy.data.expr.Parameter {.N.C.A.bold} false}
     {ptolemy.data.expr.Parameter {.N.C.A.italic} false}
-    {ptolemy.data.expr.Parameter {.N.C.A.center} false}
     {ptolemy.data.expr.StringParameter {.N.C.A.anchor} "northwest"}
     {ptolemy.kernel.util.StringAttribute {.N.C.A.attributeName} attributes {
     }}
@@ -310,7 +308,6 @@ test AttributeValueAttribute-8.3 {setContainer, then setContainer again} {
     {ptolemy.data.expr.StringParameter {.N.D.A.fontFamily} "SansSerif"}
     {ptolemy.data.expr.Parameter {.N.D.A.bold} false}
     {ptolemy.data.expr.Parameter {.N.D.A.italic} false}
-    {ptolemy.data.expr.Parameter {.N.D.A.center} false}
     {ptolemy.data.expr.StringParameter {.N.D.A.anchor} "northwest"}
     {ptolemy.kernel.util.StringAttribute {.N.D.A.attributeName} attributes {
     }}

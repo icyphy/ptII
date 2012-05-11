@@ -113,8 +113,6 @@ test UpdateAnnotation-1.1 {Fix an old style annotation} {
         </property>
         <property name="italic" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="center" class="ptolemy.data.expr.Parameter" value="false">
-        </property>
         <property name="anchor" class="ptolemy.data.expr.StringParameter" value="northwest">
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model repeatedly evaluates an expression, a function of two ramp&#10;signals, slow and fast. Try right clicking on the expr actor, select&#10;&quot;Configure&quot; and change it to &quot;cos(slow)*cos(fast)&quot; and then run&#10;the demo with View-&gt;Run Window-&gt;Go. Other interesting alternatives&#10;include:&#10;    &quot;cos(fast*cos(slow))&quot;&#10;    &quot;0.2*slow + cos(fast)&quot;">
@@ -193,8 +191,6 @@ test UpdateAnnotation-1.2 {Fix an old style author annotation} {
         <property name="bold" class="ptolemy.data.expr.Parameter" value="false">
         </property>
         <property name="italic" class="ptolemy.data.expr.Parameter" value="false">
-        </property>
-        <property name="center" class="ptolemy.data.expr.Parameter" value="false">
         </property>
         <property name="anchor" class="ptolemy.data.expr.StringParameter" value="northwest">
         </property>
