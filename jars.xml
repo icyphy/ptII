@@ -733,6 +733,7 @@
       </fileset>
       <fileset dir="${basedir}">
 	<include name="ptolemy/vergil/basic/export/html/*.class"/>
+	<include name="ptolemy/vergil/basic/export/html/*.xml"/>
       </fileset>
       <fileset dir="${basedir}">
 	<include name="ptolemy/vergil/basic/export/html/javascript/*.css"/>
