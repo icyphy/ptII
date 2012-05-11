@@ -38,6 +38,7 @@
     <include name="ptolemy/actor/lib/colt/colt.jar" />
     <include name="ptolemy/actor/lib/colt/demo/demo.jar" />
     <include name="ptolemy/actor/lib/comm/demo/demo.jar" />
+    <include name="ptolemy/actor/lib/conversions/json/json.jar" />
     <include name="ptolemy/actor/lib/database/database.jar" />
     <include name="ptolemy/actor/lib/hoc/demo/demo.jar" />
     <include name="ptolemy/actor/lib/io/comm/comm.jar" />
@@ -295,9 +296,6 @@
       </fileset>
       <fileset dir="${basedir}">
 	<include name="ptolemy/actor/lib/conversions/*.xml"/>
-      </fileset>
-      <fileset dir="${basedir}">
-	<include name="ptolemy/actor/lib/conversions/json/*.class"/>
       </fileset>
       <fileset dir="${basedir}">
 	<include name="ptolemy/actor/lib/embeddedJava/*.class"/>
@@ -1749,10 +1747,10 @@
 	 destfile="${basedir}/ptolemy/actor/lib/mail/demo/demo.jar"
 	 >
       <fileset dir="${basedir}">
-	<include name="ptolemy/actor/lib/jai/demo/SendMail/*.txt"/>
+	<include name="ptolemy/actor/lib/mail/demo/SendMail/*.txt"/>
       </fileset>
       <fileset dir="${basedir}">
-	<include name="ptolemy/actor/lib/jai/demo/SendMail/*.xml"/>
+	<include name="ptolemy/actor/lib/mail/demo/SendMail/*.xml"/>
       </fileset>
     </jar>
 
@@ -4236,6 +4234,18 @@
 	<include name="ptolemy/actor/lib/comm/demo/ViterbiDecoder/*.xml"/>
       </fileset>
     </jar>
+
+    <!-- ptolemy/actor/lib/conversions/json/json.jar -->
+    <jar defaultexcludes="yes"
+	 destfile="${basedir}/ptolemy/actor/lib/conversions/json/json.jar"
+	 >
+      <fileset dir="${basedir}">
+	<include name="ptolemy/actor/lib/conversions/json/*.class"/>
+	<include name="ptolemy/actor/lib/conversions/json/*.xml"/>
+      </fileset>
+    </jar>
+
+
 
     <!-- ptolemy/actor/lib/hoc/demo/demo.jar -->
     <jar defaultexcludes="yes"
