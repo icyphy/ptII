@@ -43,7 +43,6 @@ import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
-import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.Workspace;
 import ptolemy.vergil.icon.TextIcon;
 
@@ -116,11 +115,6 @@ public class AbstractTextAttribute extends VisibleAttribute {
         italic.setExpression("false");
         italic.setTypeEquals(BaseType.BOOLEAN);
 
-        center = new Parameter(this, "center");
-        center.setToken(BooleanToken.FALSE);
-        center.setTypeEquals(BaseType.BOOLEAN);
-        center.setVisibility(Settable.EXPERT);
-        
         anchor = new StringParameter(this, "anchor");
         anchor.setExpression("northwest");
         anchor.addChoice("center");
@@ -148,11 +142,6 @@ public class AbstractTextAttribute extends VisibleAttribute {
      *  This defaults to false.
      */
     public Parameter bold;
-
-    /** A boolean parameter that controls whether the origin of the text is
-     *  center (if true) or north-west. This defaults to false.
-     */
-    public Parameter center;
 
     /** The font family. This is a string that defaults to "SansSerif".
      */
@@ -184,13 +173,7 @@ public class AbstractTextAttribute extends VisibleAttribute {
      */
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
-        if (attribute == center) {
-            if (((BooleanToken) center.getToken()).booleanValue()) {
-                _icon.setAnchor(SwingConstants.CENTER);
-            } else {
-                _icon.setAnchor(SwingConstants.NORTH_WEST);
-            }
-        } else if (attribute == anchor) {
+        if (attribute == anchor) {
             String anchorValue = anchor.stringValue();
             if (anchorValue.equals("center")) {
                 _icon.setAnchor(SwingConstants.CENTER);
