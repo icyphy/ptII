@@ -22,6 +22,7 @@
     <include name="doc/img/img.jar" />
     <include name="lbnl/demo/demo.jar" />
     <include name="lbnl/lbnl.jar" />
+    <include name="org/json/json.jar" />
     <include name="org/mlc/mlc.jar" />
     <include name="ptolemy/actor/gt/demo/demo.jar" />
     <include name="ptolemy/actor/gt/gt.jar" />
@@ -2217,6 +2218,9 @@
 	<include name="ptolemy/domains/ptides/lib/*.xml"/>
       </fileset>
       <fileset dir="${basedir}">
+	<include name="ptolemy/domains/ptides/lib/io/*.class"/>
+      </fileset>
+      <fileset dir="${basedir}">
 	<include name="ptolemy/domains/ptides/lib/luminary/*.class"/>
       </fileset>
       <fileset dir="${basedir}">
@@ -3341,6 +3345,16 @@
       </fileset>
       <fileset dir="${basedir}">
 	<include name="com/jgoodies/forms/util/*.class"/>
+      </fileset>
+    </jar>
+
+    <!-- org/json/json.jar -->
+    <jar defaultexcludes="yes"
+	 destfile="${basedir}/org/json/json.jar"
+	 >
+      <fileset dir="${basedir}">
+	<include name="org/json/*.htm"/>
+	<include name="org/json/*.class"/>
       </fileset>
     </jar>
 
