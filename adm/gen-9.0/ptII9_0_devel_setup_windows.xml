@@ -151,7 +151,7 @@ The Ptiny pack is required.
             <file src="../../jar_dist/lib/kieler.jar"
                   targetdir="$INSTALL_PATH/lib"/>
             <file src="../../jar_dist/ptolemy/vergil/basic/layout/layout.jar"
-                  targetdir="$INSTALL_PATH/lib/vergil/basic/layout"/>
+                  targetdir="$INSTALL_PATH/ptolemy/vergil/basic/layout"/>
             <file src="../../jar_dist/ptolemy/ptsupport.jar"
                   targetdir="$INSTALL_PATH/ptolemy"/>
             <file src="../../jar_dist/ptolemy/vergil/vergil.jar"
