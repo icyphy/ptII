@@ -1,4 +1,4 @@
-/* An actor that outputs the maximum value that it has received since the start
+/* An actor that outputs the minimum value that it has received since the start
 of execution.
 
  Copyright (c) 2008 The Regents of the University of California.
@@ -36,10 +36,11 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 
 /**
+ Output the minimum value seen since the start of execution of the model.
  On each firing, this actor consumes exactly one scalar token at its input port.
- The value of the token is compared to the maximum value maintained since the
- start of the execution. The greater of the two is output to the output port in
- the same firing, and the maximum value is set with that greater value in
+ The value of the token is compared to the minimum value maintained since the
+ start of the execution. The lesser of the two is output to the output port in
+ the same firing, and the minimum value is set with that greater value in
  postfire().
 
  @author Thomas Huining Feng
@@ -47,9 +48,8 @@ import ptolemy.kernel.util.Workspace;
  @since Ptolemy II 8.0
  @Pt.ProposedRating Yellow (tfeng)
  @Pt.AcceptedRating Red (tfeng)
- @deprecated Use RunningMaximum.
  */
-public class MovingMaximum extends Transformer {
+public class RunningMinimum extends Transformer {
 
     /** Construct an actor with the specified container and name.
      *
@@ -60,7 +60,7 @@ public class MovingMaximum extends Transformer {
      *  @exception NameDuplicationException If the container already has an
      *   actor with this name.
      */
-    public MovingMaximum(CompositeEntity container, String name)
+    public RunningMinimum(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
@@ -82,14 +82,14 @@ public class MovingMaximum extends Transformer {
      *  @return A new ComponentEntity.
      */
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        MovingMaximum newObject = (MovingMaximum) super.clone(workspace);
+        RunningMinimum newObject = (RunningMinimum) super.clone(workspace);
         newObject.input.setTypeAtMost(BaseType.SCALAR);
         newObject.output.setTypeSameAs(newObject.input);
         return newObject;
     }
 
     /** Consume a token at the input port, and produce the greater of that value
-     *  and the maintained maximum value to the output port.
+     *  and the maintained minimum value to the output port.
      *
      *  @exception IllegalActionException If getting token from input or
      *  sending token to output throws it.
@@ -98,14 +98,14 @@ public class MovingMaximum extends Transformer {
         super.fire();
 
         _value = (ScalarToken) input.get(0);
-        if (_maximum == null || _value.isGreaterThan(_maximum).booleanValue()) {
+        if (_minimum == null || _value.isLessThan(_minimum).booleanValue()) {
             output.broadcast(_value);
         } else {
-            output.broadcast(_maximum);
+            output.broadcast(_minimum);
         }
     }
 
-    /** Initialize the maintained maximum value to be null so it will be set
+    /** Initialize the maintained minimum value to be null so it will be set
      *  with the first input at the input port.
      *
      *  @exception IllegalActionException If the initialize() method of the
@@ -114,11 +114,11 @@ public class MovingMaximum extends Transformer {
     public void initialize() throws IllegalActionException {
         super.initialize();
 
-        _maximum = null;
+        _minimum = null;
     }
 
-    /** Commit the maximum value observed since the start of execution to the
-     *  maximum field to be compared with later inputs.
+    /** Commit the minimum value observed since the start of execution to the
+     *  minimum field to be compared with later inputs.
      *
      *  @exception IllegalActionException If the postfire() method of the
      *  superclass throws it.
@@ -126,8 +126,8 @@ public class MovingMaximum extends Transformer {
     public boolean postfire() throws IllegalActionException {
         boolean result = super.postfire();
 
-        if (_maximum == null || _value.isGreaterThan(_maximum).booleanValue()) {
-            _maximum = _value;
+        if (_minimum == null || _value.isLessThan(_minimum).booleanValue()) {
+            _minimum = _value;
         }
 
         return result;
@@ -143,8 +143,8 @@ public class MovingMaximum extends Transformer {
         return super.prefire() && input.hasToken(0);
     }
 
-    // The maximum value observed so far.
-    private ScalarToken _maximum;
+    // The minimum value observed so far.
+    private ScalarToken _minimum;
 
     // The value observed in the current firing.
     private ScalarToken _value;

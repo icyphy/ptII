@@ -220,6 +220,8 @@ JSRCS = \
 	RemoveNilTokens.java \
 	ResettableTimer.java \
 	Rician.java \
+	RunningMaximum.java \
+	RunningMinimum.java \
 	Sampler.java \
 	Scale.java \
 	Select.java \
@@ -295,11 +297,18 @@ OTHER_FILES_TO_BE_JARED = \
 	IIRIcon.xml \
 	LimiterIcon.xml \
 	LookupTableIcon.xml \
+	MaximumIcon.xml \
 	MicrostepDelayIcon.xml \
+	MinimumIcon.xml \
 	MultiplexorIcon.xml \
+	MovingAverageIcon.xml \
 	TriangularIcon.xml \
 	PowerEstimate.xml \
+	QuantizerIcon.xml \
+	RemainderIcon.xml \
 	ResettableTimerIcon.xml \
+	RunningMaximumIcon.xml \
+	RunningMinimumIcon.xml \
 	SelectIcon.xml \
 	Sinewave.gif \
 	Sinewave.xml \

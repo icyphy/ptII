@@ -36,6 +36,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 
 /**
+ Output the maximum value seen since the start of execution of the model.
  On each firing, this actor consumes exactly one scalar token at its input port.
  The value of the token is compared to the maximum value maintained since the
  start of the execution. The greater of the two is output to the output port in
@@ -47,9 +48,8 @@ import ptolemy.kernel.util.Workspace;
  @since Ptolemy II 8.0
  @Pt.ProposedRating Yellow (tfeng)
  @Pt.AcceptedRating Red (tfeng)
- @deprecated Use RunningMaximum.
  */
-public class MovingMaximum extends Transformer {
+public class RunningMaximum extends Transformer {
 
     /** Construct an actor with the specified container and name.
      *
@@ -60,7 +60,7 @@ public class MovingMaximum extends Transformer {
      *  @exception NameDuplicationException If the container already has an
      *   actor with this name.
      */
-    public MovingMaximum(CompositeEntity container, String name)
+    public RunningMaximum(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
@@ -82,7 +82,7 @@ public class MovingMaximum extends Transformer {
      *  @return A new ComponentEntity.
      */
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        MovingMaximum newObject = (MovingMaximum) super.clone(workspace);
+        RunningMaximum newObject = (RunningMaximum) super.clone(workspace);
         newObject.input.setTypeAtMost(BaseType.SCALAR);
         newObject.output.setTypeSameAs(newObject.input);
         return newObject;

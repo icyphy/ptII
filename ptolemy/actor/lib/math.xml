@@ -51,9 +51,6 @@
   <entity name="MovingAverage" class="ptolemy.actor.lib.MovingAverage">
   </entity>
 
-  <entity name="MovingMaximum" class="ptolemy.actor.lib.MovingMaximum">
-  </entity>
-
   <entity name="MultiplyDivide" class="ptolemy.actor.lib.MultiplyDivide">
   </entity>
 
@@ -61,6 +58,12 @@
   </entity>
 
   <entity name="Remainder" class="ptolemy.actor.lib.Remainder">
+  </entity>
+
+  <entity name="RunningMaximum" class="ptolemy.actor.lib.RunningMaximum">
+  </entity>
+
+  <entity name="RunningMinimum" class="ptolemy.actor.lib.RunningMinimum">
   </entity>
 
   <entity name="Scale" class="ptolemy.actor.lib.Scale">
