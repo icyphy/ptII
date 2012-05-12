@@ -138,7 +138,8 @@ public class Scheduler extends MonitoredQuantityManager {
      *  FIXME: specialized ports do contain the parameters, don't
      *  have to get the attribute with the string! For now leave it
      *  that way to support older models that do not use PtidesPorts.
-     *  @param port The port the deviceDelay is associated with.
+     *  @param namedObj The Parameter
+     *  @param parameterName The name of the parameter.
      *  @return the value of the deviceDelay parameter if the parameter is not
      *  null. Otherwise return null.
      *  @exception IllegalActionException If the token of the deviceDelay
