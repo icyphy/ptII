@@ -36,10 +36,11 @@ ROOT =		../../../..
 
 DIRS =		AssemblyLine Clock ClockDrift \
 		Inspection LineFault LongRuns ModalModel \
-		OpenQueingNetwork \
-		QueueAndServer TimingParadox \
-		Trilateration RealTimeComposite \
-		SmartSender VariableDelay
+		OpenQueueingNetwork \
+		QueueAndServer \
+		RealTimeComposite SmartSender \
+		TimingParadox Trilateration \
+		VariableDelay
 
 CLASSPATH =	$(ROOT)
 
@@ -60,6 +61,7 @@ PTCLASSALLJARS = \
 	LineFault/LineFault.jar \
 	LongRuns/LongRuns.jar \
 	ModalModel/ModalModel.jar \
+	OpenQueueingNetwork/OpenQueueingNetwork.jar \
 	QueueAndServer/QueueAndServer.jar \
 	RealTimeComposite/RealTimeComposite.jar \
 	SmartSender/SmartSender.jar \

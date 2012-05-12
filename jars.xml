@@ -5372,6 +5372,9 @@
 	<include name="ptolemy/domains/de/demo/ModalModel/*.xml"/>
       </fileset>
       <fileset dir="${basedir}">
+	<include name="ptolemy/domains/de/demo/OpenQueueingNetwork/*.xml"/>
+      </fileset>
+      <fileset dir="${basedir}">
 	<include name="ptolemy/domains/de/demo/QueueAndServer/*.xml"/>
       </fileset>
       <fileset dir="${basedir}">
@@ -5388,6 +5391,9 @@
       </fileset>
       <fileset dir="${basedir}">
 	<include name="ptolemy/domains/de/demo/TimingParadox/*.xml"/>
+      </fileset>
+      <fileset dir="${basedir}">
+	<include name="ptolemy/domains/de/demo/Trilateration/*.pdf"/>
       </fileset>
       <fileset dir="${basedir}">
 	<include name="ptolemy/domains/de/demo/Trilateration/*.xml"/>

@@ -47,6 +47,7 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 JSRCS =
 
 OTHER_FILES_TO_BE_JARED = \
+	Trilateration.pdf \
 	Trilateration.xml
 
 EXTRA_SRCS = \
