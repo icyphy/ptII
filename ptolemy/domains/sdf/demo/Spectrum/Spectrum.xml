@@ -62,11 +62,11 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[145.0, 15.0]">
         </property>
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[670, 478]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[670, 472]">
     </property>
     <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[102, 100]">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 30, 883, 588}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 30, 883, 582}, maximized=false}">
     </property>
     <property name="carrierFrequency" class="ptolemy.data.expr.Parameter" value="2000.0">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -147,7 +147,7 @@
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0290592855022">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{334.5400390624999, 244.1454844916044}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{334.5400390625, 241.2302005597015}">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="textSize" class="ptolemy.data.expr.Parameter" value="12">
@@ -167,6 +167,55 @@
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Select &quot;Run Window&quot; from the View menu to execute the model,&#10;-or click on the red triangle in the toolbar.&#10;-Try changing the parameters in the run window or on the diagram.">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[225.0, 370.0]">
+        </property>
+    </property>
+    <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="See also MaximumEntropySpectrum.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[335.0, 445.0]">
+        </property>
+        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="$PTII/ptolemy/domains/sdf/demo/MaximumEntropySpectrum/MaximumEntropySpectrum.xml">
+            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+                </property>
+            </property>
+            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">LL</text>
+      </svg>
+    </configure>
+            </property>
+            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{230, 455}">
+            </property>
+        </property>
+        <property name="IconLink" class="ptolemy.vergil.basic.export.html.IconLink" value="../../MaximumEntropySpectrum/index.html">
+            <property name="linkTarget" class="ptolemy.vergil.basic.export.html.LinkTarget" value="_blank">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{420, 450}">
+            </property>
+        </property>
+    </property>
+    <property name="_defaultWebExportParameters" class="ptolemy.vergil.basic.export.html.WebExportParameters">
+        <property name="directoryToExportTo" class="ptolemy.data.expr.FileParameter" value="">
+            <property name="allowFiles" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="allowDirectories" class="ptolemy.data.expr.Parameter" value="true">
+            </property>
+        </property>
+        <property name="backgroundColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,1.0,1.0,1.0}">
+        </property>
+        <property name="openCompositesBeforeExport" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="runBeforeExport" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="showInBrowser" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="copyJavaScriptFiles" class="ptolemy.data.expr.Parameter" value="false">
         </property>
     </property>
     <entity name="Noise Source" class="ptolemy.actor.lib.Gaussian">
