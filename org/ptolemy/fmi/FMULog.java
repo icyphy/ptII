@@ -60,8 +60,11 @@ public class FMULog {
      *  @param instanceName The name of the instance of the FMU.
      *  @param status The fmiStatus, see
      *  {@link org.ptolemy.fmi.FMILibrary.FMIStatus}
-     *  @param category The category, typically "log" or "error".
-     *  @param message The message
+     *  @param category The category of the message, 
+     *  defined by the tool that created the fmu.  Typical
+     *  values are "log" or "error".
+     *  @param message The message in printf format
+     *  @param parameters The printf style parameters.
      */
     public static void log(Pointer fmiComponent, String instanceName,
             int status, String category, String message, Pointer /*...*/ parameters) {
@@ -190,44 +193,4 @@ public class FMULog {
 
     // True if we printed the fixme message.
     private static boolean _printedMessage = false;
-
-    public class MemoryPrinter {
-        String printMemory(Pointer pointer, int size) {
-            // FIXME: This method is copied from the JNA distribution.
-        // It should be properly credited or removed.
-        final int BYTES_PER_ROW = 4;
-        String LS = System.getProperty("line.separator");
-        byte[] buf = pointer.getByteArray(0, size);
-        StringBuffer contents = new StringBuffer(LS);
-        for (int i=0;i < buf.length;i++) {
-            if ((i % BYTES_PER_ROW) == 0) {
-                contents.append("[");
-            }
-            if (buf[i] >=0 && buf[i] < 16) {
-                contents.append("0");
-            }
-            contents.append(Integer.toHexString(buf[i] & 0xFF));
-            if ((i % BYTES_PER_ROW) == BYTES_PER_ROW-1 && i < buf.length-1) {
-                contents.append("]" + LS);
-            }
-        }
-
-        contents.append("]");
-
-        for (int i=0;i < buf.length;i++) {
-            if ((i % BYTES_PER_ROW) == 0) {
-                contents.append("<");
-            }
-            //if (buf[i] >=0 && buf[i] < 16) {
-            //    contents.append("0");
-            //}
-            contents.append(Character.valueOf((char)(buf[i] & 0xff)));
-            if ((i % BYTES_PER_ROW) == BYTES_PER_ROW-1 && i < buf.length-1) {
-                contents.append(">" + LS);
-            }
-        }
-        contents.append(">");
-        return contents.toString();
-        }
-    }
 }

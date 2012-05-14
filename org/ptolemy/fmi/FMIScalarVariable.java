@@ -270,6 +270,7 @@ public class FMIScalarVariable {
      *  @param fmiComponent The Functional Mock-up Interface (FMI)
      *  component that contains a reference to the variable.
      *  @param value The value of this variable.
+     *  @see #getBoolean(Pointer fmiComponent)
      */
     public void setBoolean(Pointer fmiComponent, boolean value) {
         ByteBuffer valueBuffer = ByteBuffer.allocate(1).put(0, (value ? (byte)1 : (byte)0));

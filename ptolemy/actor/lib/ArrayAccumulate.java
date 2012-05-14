@@ -129,7 +129,7 @@ public class ArrayAccumulate extends Transformer {
         _tentativeAccumulating = null;
     }
     
-    /** Record the accumulating array and return true;
+    /** Record the accumulating array and return true.
      *  @return True.
      *  @exception IllegalActionException If the superclass throws it.
      */

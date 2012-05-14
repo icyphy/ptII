@@ -95,13 +95,13 @@ public class TokenReader extends FileReader {
 
     /** The strategy to use if:
      *  <ul>
-     *  <li> the file or URL cannot be read,
-     *  <li> the data read from the file or the URL cannot be parsed,
+     *  <li> the file or URL cannot be read,</li>
+     *  <li> the data read from the file or the URL cannot be parsed,</li>
      *  <li> the parsed token cannot be converted into a token of the type
-     *  given by <i>outputType</i>, if such a type is given, or
+     *  given by <i>outputType</i>, if such a type is given, or</li>
      *  <li> the parsed token cannot
      *  be converted to a token of the resolved type of the output, if no <i>outputType</i>
-     *  is given.
+     *  is given.</li>
      *  </ul>
      *  This is a string that has the following
      *  possible values: "Do Nothing" or "Throw Exception", where
@@ -140,7 +140,7 @@ public class TokenReader extends FileReader {
         }
     }
     
-    /** FIXME
+    /** Set the type according to the value of the outputType parameter.
      * 
      */
     public void preinitialize() throws IllegalActionException {

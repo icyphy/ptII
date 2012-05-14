@@ -72,8 +72,11 @@ public interface FMULibrary extends FMILibrary {
          *  @param instanceName The name of the instance of the FMU.
          *  @param status The fmiStatus, see
          *  {@link org.ptolemy.fmi.FMILibrary.FMIStatus}
-         *  @param category The category, typically "log" or "error".
-         *  @param message The message
+         *  @param category The category of the message, 
+         *  defined by the tool that created the fmu.  Typical
+         *  values are "log" or "error".
+         *  @param message The message in printf format
+         *  @param parameters The printf style parameters.
          */
         public void apply(Pointer fmiComponent, String instanceName,
                 int status, String category, String message, Pointer /*...*/

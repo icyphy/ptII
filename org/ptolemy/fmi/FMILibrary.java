@@ -124,6 +124,7 @@ public interface FMILibrary extends Library {
          *  @param category The category of the message, typically
          *  defined by the tool that created the fmu.
          *  @param message The message in printf format
+         *  @param parameters The printf style parameters.
          */
         void apply(Pointer fmiComponent, String instanceName, int status,
                 String category, String message, Pointer /*...*/ parameters);

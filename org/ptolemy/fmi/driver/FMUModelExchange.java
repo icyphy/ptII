@@ -130,6 +130,16 @@ public class FMUModelExchange extends FMUDriver {
         FMUDriver._processArgs(args);
         new FMUModelExchange().simulate(_fmuFileName, _endTime, _stepSize,
                 _enableLogging, _csvSeparator, _outputFileName);
+        System.out.println("Clearing memory");
+        org.ptolemy.fmi.FMULibrary.FMUAllocateMemory.pointers.clear();
+
+        try {
+            System.out.println("about to sleep");
+            Thread.sleep(1000000);
+        } catch (Throwable throwable) {
+            System.out.println(throwable);
+        }
+
     }
 
     /** Perform model exchange using the named Functional Mock-up Unit (FMU) file.
