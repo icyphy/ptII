@@ -7,9 +7,12 @@ base=vergil
 cmdLine=""
 icon=$ROOT/doc/img/ptIIplanet.ico
 mainClass=ptolemy.vergil.VergilApplication
-fileVersion=6.0.0.1
-PTVERSION=6.0-devel
-classPath="<cp>$ROOT</cp>"
+fileVersion=9.0.0.1
+PTVERSION=9.0-devel
+
+classPath="<cp>%HOME%/.ptolemyII</cp>
+<cp>$ROOT</cp>"
+
 if [ $# -gt 0 ]; then
    base=$1
    shift
@@ -55,7 +58,7 @@ cat <<EOF
   <stayAlive>true</stayAlive>
   <icon>${icon}</icon>
   <jre>
-    <minVersion>1.4.0</minVersion>
+    <minVersion>1.6.0</minVersion>
     <maxHeapSize>512</maxHeapSize>
     <path>jre</path>
   </jre>
@@ -67,7 +70,7 @@ cat <<EOF
     <fileVersion>${fileVersion}</fileVersion>
     <txtFileVersion>${PTVERSION}</txtFileVersion>
     <fileDescription>Ptolemy II Application</fileDescription>
-    <copyright>Copyright (c) 1995-2009 The Regents of the University of California. All rights reserved. http://ptolemy.eecs.berkeley.edu/copyright.htm</copyright>
+    <copyright>Copyright (c) 1995-2012 The Regents of the University of California. All rights reserved. http://ptolemy.eecs.berkeley.edu/copyright.htm</copyright>
     <productVersion>${fileVersion}</productVersion>
     <txtProductVersion>${PTVERSION}</txtProductVersion>
     <productName>Ptolemy II</productName>
