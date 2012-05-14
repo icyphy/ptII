@@ -33,6 +33,7 @@ import java.io.PrintStream;
 import org.ptolemy.fmi.FMICallbackFunctions;
 import org.ptolemy.fmi.FMIEventInfo;
 import org.ptolemy.fmi.FMIModelDescription;
+import org.ptolemy.fmi.FMULibrary;
 import org.ptolemy.fmi.FMUFile;
 
 import com.sun.jna.Function;
