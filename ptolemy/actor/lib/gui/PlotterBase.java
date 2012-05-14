@@ -347,10 +347,16 @@ public class PlotterBase extends TypedAtomicActor implements Configurable,
                 // will inherit the  background color of its parent."
                 plot.setBackground(null);
             }
-        }
 
-        // If configurations have been deferred, implement them now.
-        _implementDeferredConfigurations();
+            // If the container is non-null and configurations have
+            // been deferred, implement them now.
+            // There was a bug here where we got a ConcurrentModificationException
+            // because ModelPane.setModel() called ModelPane._closeDisplays(),
+            // which called PlotterBase.place(null) and then _implementDeferredConfigurations
+            // iterated through the list of bases while it was being modified.
+            // To replicate, do open Spectrum.xml and do View -> Run Window.
+            _implementDeferredConfigurations();
+        }
     }
 
     /** Clear the plot, if there is one.  Notice that unlike
