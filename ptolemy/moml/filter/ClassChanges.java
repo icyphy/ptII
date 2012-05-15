@@ -400,6 +400,43 @@ public class ClassChanges extends MoMLFilterSimple {
         _classChanges.put("ptolemy.actor.lib.MonitorValue",
                 "ptolemy.actor.lib.gui.MonitorValue");
 
+        // Classes moved from vergil.export.html to vergil.export.web
+        _classChanges.put("ptolemy.vergil.basic.export.html.AreaEventType",
+                "ptolemy.vergil.basic.export.web.AreaEventType");
+        _classChanges.put("ptolemy.vergil.basic.export.html.DefaultIconLink",
+                "ptolemy.vergil.basic.export.web.DefaultIconLink");
+        _classChanges.put("ptolemy.vergil.basic.export.html.DefaultIconScript",
+                "ptolemy.vergil.basic.export.web.DefaultIconScript");
+        _classChanges.put("ptolemy.vergil.basic.export.html.DefaultTitle",
+                "ptolemy.vergil.basic.export.web.DefaultTitle");
+        _classChanges.put("ptolemy.vergil.basic.export.html.HTMLImage",
+                "ptolemy.vergil.basic.export.web.HTMLImage");
+        _classChanges.put("ptolemy.vergil.basic.export.html.HTMLText",
+                "ptolemy.vergil.basic.export.web.HTMLText");
+        _classChanges.put("ptolemy.vergil.basic.export.html.HTMLTextPosition",
+                "ptolemy.vergil.basic.export.web.HTMLTextPosition");
+        _classChanges.put("ptolemy.vergil.basic.export.html.IconLink",
+                "ptolemy.vergil.basic.export.web.IconLink");
+        _classChanges.put("ptolemy.vergil.basic.export.html.IconScript",
+                "ptolemy.vergil.basic.export.web.IconScript");
+        _classChanges.put("ptolemy.vergil.basic.export.html.LinkTarget",
+                "ptolemy.vergil.basic.export.web.LinkTarget");
+        _classChanges.put("ptolemy.vergil.basic.export.html.LinkToOpenTableaux",
+                "ptolemy.vergil.basic.export.web.LinkToOpenTableaux");
+        _classChanges.put("ptolemy.vergil.basic.export.html.ParameterDisplayIconScript",
+                "ptolemy.vergil.basic.export.web.ParameterDisplayIconScript");
+        _classChanges.put("ptolemy.vergil.basic.export.html.Title",
+                "ptolemy.vergil.basic.export.web.Title");
+        _classChanges.put("ptolemy.vergil.basic.export.html.WebContent",
+                "ptolemy.vergil.basic.export.web.WebContent");
+        _classChanges.put("ptolemy.vergil.basic.export.html.WebExportParameters",
+                "ptolemy.vergil.basic.export.web.WebExportParameters");
+        _classChanges.put("ptolemy.vergil.basic.export.html.WebExportable",
+                "ptolemy.vergil.basic.export.web.WebExportable");
+        _classChanges.put("ptolemy.vergil.basic.export.html.WebExporter",
+                "ptolemy.vergil.basic.export.web.WebExporter");
+
+
     }
 
     // Set of class names that are obsolete and should be simply

@@ -420,14 +420,14 @@
         <property name="_location" class="ptolemy.kernel.util.RelativeLocation" value="[170.0, 149.5]">
         </property>
     </property>
-    <property name="title" class="ptolemy.vergil.basic.export.html.DefaultTitle" value="EECS Undergraduate Curriculum, UC Berkeley">
+    <property name="title" class="ptolemy.vergil.basic.export.web.DefaultTitle" value="EECS Undergraduate Curriculum, UC Berkeley">
         <property name="displayText" class="ptolemy.data.expr.StringParameter" value="Title for the web page">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[820.0, 360.0]">
         </property>
     </property>
-    <property name="DefaultIconScript2" class="ptolemy.vergil.basic.export.html.DefaultIconScript" value="writeText('Mouse over the courses to replace this text with the course title.')">
-        <property name="eventType" class="ptolemy.vergil.basic.export.html.AreaEventType" value="onmouseover">
+    <property name="DefaultIconScript2" class="ptolemy.vergil.basic.export.web.DefaultIconScript" value="writeText('Mouse over the courses to replace this text with the course title.')">
+        <property name="eventType" class="ptolemy.vergil.basic.export.web.AreaEventType" value="onmouseover">
         </property>
         <property name="script" class="ptolemy.data.expr.StringParameter" value="function writeText(text) {&#10;    document.getElementById(&quot;afterImage&quot;).innerHTML = text;&#10;};">
         </property>
@@ -436,8 +436,8 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[820.0, 380.0]">
         </property>
     </property>
-    <property name="HTMLText" class="ptolemy.vergil.basic.export.html.HTMLText" value="&lt;h2&gt;EECS/COE requirements:&lt;/h2&gt;&#10;&lt;ul&gt;&#10;&lt;li&gt; 120 units total &lt;/li&gt;&#10;&lt;li&gt; 30 units math &amp; science, including: &#10;    &lt;ul&gt;&#10;    &lt;li&gt; 11 units science w/ Physics 7A/B &lt;/li&gt;&#10;    &lt;li&gt; Math 1A/B, 53, 54 &lt;/li&gt;&#10;    &lt;li&gt; Physics 7C or Chem 1A, 1B,    3AB, 4AB, 5, Bio 1A, 1B, Astro 7A, MCB 32 or ... &lt;/li&gt;&#10;    &lt;/ul&gt;&#10;&lt;li&gt; EECS 20, 40, 61A, 61B, 61C &lt;/li&gt;&#10;&lt;/ul&gt;">
-        <property name="textPosition" class="ptolemy.vergil.basic.export.html.HTMLTextPosition" value="end">
+    <property name="HTMLText" class="ptolemy.vergil.basic.export.web.HTMLText" value="&lt;h2&gt;EECS/COE requirements:&lt;/h2&gt;&#10;&lt;ul&gt;&#10;&lt;li&gt; 120 units total &lt;/li&gt;&#10;&lt;li&gt; 30 units math &amp; science, including: &#10;    &lt;ul&gt;&#10;    &lt;li&gt; 11 units science w/ Physics 7A/B &lt;/li&gt;&#10;    &lt;li&gt; Math 1A/B, 53, 54 &lt;/li&gt;&#10;    &lt;li&gt; Physics 7C or Chem 1A, 1B,    3AB, 4AB, 5, Bio 1A, 1B, Astro 7A, MCB 32 or ... &lt;/li&gt;&#10;    &lt;/ul&gt;&#10;&lt;li&gt; EECS 20, 40, 61A, 61B, 61C &lt;/li&gt;&#10;&lt;/ul&gt;">
+        <property name="textPosition" class="ptolemy.vergil.basic.export.web.HTMLTextPosition" value="end">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[820.0, 400.0]">
         </property>
@@ -449,8 +449,8 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[870.0, 590.0]">
         </property>
-        <property name="IconLink" class="ptolemy.vergil.basic.export.html.IconLink" value="http://ptolemy.org/~eal/curriculum/index.html">
-            <property name="linkTarget" class="ptolemy.vergil.basic.export.html.LinkTarget" value="_self">
+        <property name="IconLink" class="ptolemy.vergil.basic.export.web.IconLink" value="http://ptolemy.org/~eal/curriculum/index.html">
+            <property name="linkTarget" class="ptolemy.vergil.basic.export.web.LinkTarget" value="_self">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="{650, 680}">
             </property>
@@ -465,8 +465,8 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[505.0, 710.0]">
         </property>
-        <property name="IconLink" class="ptolemy.vergil.basic.export.html.IconLink" value="http://ptolemy.org/~eal/curriculum/Classification/index.html">
-            <property name="linkTarget" class="ptolemy.vergil.basic.export.html.LinkTarget" value="_self">
+        <property name="IconLink" class="ptolemy.vergil.basic.export.web.IconLink" value="http://ptolemy.org/~eal/curriculum/Classification/index.html">
+            <property name="linkTarget" class="ptolemy.vergil.basic.export.web.LinkTarget" value="_self">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="{425, 675}">
             </property>
@@ -481,8 +481,8 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[505.0, 675.0]">
         </property>
-        <property name="IconLink" class="ptolemy.vergil.basic.export.html.IconLink" value="http://ptolemy.org/~eal/curriculum/Classification/index.html">
-            <property name="linkTarget" class="ptolemy.vergil.basic.export.html.LinkTarget" value="_self">
+        <property name="IconLink" class="ptolemy.vergil.basic.export.web.IconLink" value="http://ptolemy.org/~eal/curriculum/Classification/index.html">
+            <property name="linkTarget" class="ptolemy.vergil.basic.export.web.LinkTarget" value="_self">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="{415, 655}">
             </property>
@@ -497,8 +497,8 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[505.0, 640.0]">
         </property>
-        <property name="IconLink" class="ptolemy.vergil.basic.export.html.IconLink" value="http://ptolemy.org/~eal/curriculum/Classification/index.html">
-            <property name="linkTarget" class="ptolemy.vergil.basic.export.html.LinkTarget" value="_self">
+        <property name="IconLink" class="ptolemy.vergil.basic.export.web.IconLink" value="http://ptolemy.org/~eal/curriculum/Classification/index.html">
+            <property name="linkTarget" class="ptolemy.vergil.basic.export.web.LinkTarget" value="_self">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="{430, 610}">
             </property>
@@ -513,8 +513,8 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[505.0, 745.0]">
         </property>
-        <property name="IconLink" class="ptolemy.vergil.basic.export.html.IconLink" value="http://ptolemy.org/~eal/curriculum/Classification/index.html">
-            <property name="linkTarget" class="ptolemy.vergil.basic.export.html.LinkTarget" value="_self">
+        <property name="IconLink" class="ptolemy.vergil.basic.export.web.IconLink" value="http://ptolemy.org/~eal/curriculum/Classification/index.html">
+            <property name="linkTarget" class="ptolemy.vergil.basic.export.web.LinkTarget" value="_self">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="{435, 720}">
             </property>
@@ -537,8 +537,8 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[260.0, 640.0]">
         </property>
-        <property name="IconLink" class="ptolemy.vergil.basic.export.html.IconLink" value="http://ptolemy.org/~eal/curriculum/SampleProgramSystems/index.html">
-            <property name="linkTarget" class="ptolemy.vergil.basic.export.html.LinkTarget" value="_self">
+        <property name="IconLink" class="ptolemy.vergil.basic.export.web.IconLink" value="http://ptolemy.org/~eal/curriculum/SampleProgramSystems/index.html">
+            <property name="linkTarget" class="ptolemy.vergil.basic.export.web.LinkTarget" value="_self">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="{180, 620}">
             </property>
@@ -553,8 +553,8 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[260.0, 675.0]">
         </property>
-        <property name="IconLink" class="ptolemy.vergil.basic.export.html.IconLink" value="http://ptolemy.org/~eal/curriculum/SampleProgramSystems/index.html">
-            <property name="linkTarget" class="ptolemy.vergil.basic.export.html.LinkTarget" value="_self">
+        <property name="IconLink" class="ptolemy.vergil.basic.export.web.IconLink" value="http://ptolemy.org/~eal/curriculum/SampleProgramSystems/index.html">
+            <property name="linkTarget" class="ptolemy.vergil.basic.export.web.LinkTarget" value="_self">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="{180, 655}">
             </property>
@@ -569,8 +569,8 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[260.0, 710.0]">
         </property>
-        <property name="IconLink" class="ptolemy.vergil.basic.export.html.IconLink" value="http://ptolemy.org/~eal/curriculum/SampleProgramSystems/index.html">
-            <property name="linkTarget" class="ptolemy.vergil.basic.export.html.LinkTarget" value="_self">
+        <property name="IconLink" class="ptolemy.vergil.basic.export.web.IconLink" value="http://ptolemy.org/~eal/curriculum/SampleProgramSystems/index.html">
+            <property name="linkTarget" class="ptolemy.vergil.basic.export.web.LinkTarget" value="_self">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="{180, 685}">
             </property>
@@ -585,8 +585,8 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[260.0, 745.0]">
         </property>
-        <property name="IconLink" class="ptolemy.vergil.basic.export.html.IconLink" value="http://ptolemy.org/~eal/curriculum/SampleProgramSystems/index.html">
-            <property name="linkTarget" class="ptolemy.vergil.basic.export.html.LinkTarget" value="_self">
+        <property name="IconLink" class="ptolemy.vergil.basic.export.web.IconLink" value="http://ptolemy.org/~eal/curriculum/SampleProgramSystems/index.html">
+            <property name="linkTarget" class="ptolemy.vergil.basic.export.web.LinkTarget" value="_self">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="{175, 720}">
             </property>
@@ -650,8 +650,8 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[395.0, 575.0]">
         </property>
     </property>
-    <property name="_defaultWebExportParameters" class="ptolemy.vergil.basic.export.html.WebExportParameters">
-        <property name="directoryToExportTo" class="ptolemy.data.expr.FileParameter" value="/Users/eal/CVSImages/public_html/tmp/EECScourses">
+    <property name="_defaultWebExportParameters" class="ptolemy.vergil.basic.export.web.WebExportParameters">
+        <property name="directoryToExportTo" class="ptolemy.data.expr.FileParameter" value="EECScourses">
             <property name="allowFiles" class="ptolemy.data.expr.Parameter" value="false">
             </property>
             <property name="allowDirectories" class="ptolemy.data.expr.Parameter" value="true">
@@ -675,14 +675,14 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{325.0, 145.0}">
         </property>
-        <property name="IconScript" class="ptolemy.vergil.basic.export.html.IconScript" value="writeText('$title')">
-            <property name="eventType" class="ptolemy.vergil.basic.export.html.AreaEventType" value="onmouseover">
+        <property name="IconScript" class="ptolemy.vergil.basic.export.web.IconScript" value="writeText('$title')">
+            <property name="eventType" class="ptolemy.vergil.basic.export.web.AreaEventType" value="onmouseover">
             </property>
         </property>
-        <property name="title" class="ptolemy.vergil.basic.export.html.Title" value="Structure and Interpretation of Signals and Systems">
+        <property name="title" class="ptolemy.vergil.basic.export.web.Title" value="Structure and Interpretation of Signals and Systems">
         </property>
-        <property name="icon link" class="ptolemy.vergil.basic.export.html.IconLink" value="http://general-catalog.berkeley.edu/catalog/gcc_search_sends_request/?p_dept_cd=EL%20ENG&amp;p_number=$(this.getName())">
-            <property name="linkTarget" class="ptolemy.vergil.basic.export.html.LinkTarget" value="_lightbox">
+        <property name="icon link" class="ptolemy.vergil.basic.export.web.IconLink" value="http://general-catalog.berkeley.edu/catalog/gcc_search_sends_request/?p_dept_cd=EL%20ENG&amp;p_number=$(this.getName())">
+            <property name="linkTarget" class="ptolemy.vergil.basic.export.web.LinkTarget" value="_lightbox">
             </property>
         </property>
     </entity>
@@ -693,14 +693,14 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[325.0, 180.0]">
         </property>
-        <property name="IconScript" class="ptolemy.vergil.basic.export.html.IconScript" value="writeText('$title')">
-            <property name="eventType" class="ptolemy.vergil.basic.export.html.AreaEventType" value="onmouseover">
+        <property name="IconScript" class="ptolemy.vergil.basic.export.web.IconScript" value="writeText('$title')">
+            <property name="eventType" class="ptolemy.vergil.basic.export.web.AreaEventType" value="onmouseover">
             </property>
         </property>
-        <property name="title" class="ptolemy.vergil.basic.export.html.Title" value="Introduction to Microelectronic Circuits">
+        <property name="title" class="ptolemy.vergil.basic.export.web.Title" value="Introduction to Microelectronic Circuits">
         </property>
-        <property name="icon link" class="ptolemy.vergil.basic.export.html.IconLink" value="http://general-catalog.berkeley.edu/catalog/gcc_search_sends_request/?p_dept_cd=EL%20ENG&amp;p_number=$(this.getName())">
-            <property name="linkTarget" class="ptolemy.vergil.basic.export.html.LinkTarget" value="_lightbox">
+        <property name="icon link" class="ptolemy.vergil.basic.export.web.IconLink" value="http://general-catalog.berkeley.edu/catalog/gcc_search_sends_request/?p_dept_cd=EL%20ENG&amp;p_number=$(this.getName())">
+            <property name="linkTarget" class="ptolemy.vergil.basic.export.web.LinkTarget" value="_lightbox">
             </property>
         </property>
     </entity>
@@ -711,14 +711,14 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[205.0, 365.0]">
         </property>
-        <property name="IconScript" class="ptolemy.vergil.basic.export.html.IconScript" value="writeText('$title')">
-            <property name="eventType" class="ptolemy.vergil.basic.export.html.AreaEventType" value="onmouseover">
+        <property name="IconScript" class="ptolemy.vergil.basic.export.web.IconScript" value="writeText('$title')">
+            <property name="eventType" class="ptolemy.vergil.basic.export.web.AreaEventType" value="onmouseover">
             </property>
         </property>
-        <property name="title" class="ptolemy.vergil.basic.export.html.Title" value="Structure and Interpretation of Computer Programs">
+        <property name="title" class="ptolemy.vergil.basic.export.web.Title" value="Structure and Interpretation of Computer Programs">
         </property>
-        <property name="icon link" class="ptolemy.vergil.basic.export.html.IconLink" value="http://general-catalog.berkeley.edu/catalog/gcc_search_sends_request/?p_dept_cd=COMPSCI&amp;p_number=$(this.getName())">
-            <property name="linkTarget" class="ptolemy.vergil.basic.export.html.LinkTarget" value="_lightbox">
+        <property name="icon link" class="ptolemy.vergil.basic.export.web.IconLink" value="http://general-catalog.berkeley.edu/catalog/gcc_search_sends_request/?p_dept_cd=COMPSCI&amp;p_number=$(this.getName())">
+            <property name="linkTarget" class="ptolemy.vergil.basic.export.web.LinkTarget" value="_lightbox">
             </property>
         </property>
     </entity>
@@ -729,14 +729,14 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[260.0, 365.0]">
         </property>
-        <property name="IconScript" class="ptolemy.vergil.basic.export.html.IconScript" value="writeText('$title')">
-            <property name="eventType" class="ptolemy.vergil.basic.export.html.AreaEventType" value="onmouseover">
+        <property name="IconScript" class="ptolemy.vergil.basic.export.web.IconScript" value="writeText('$title')">
+            <property name="eventType" class="ptolemy.vergil.basic.export.web.AreaEventType" value="onmouseover">
             </property>
         </property>
-        <property name="title" class="ptolemy.vergil.basic.export.html.Title" value="Data Structures">
+        <property name="title" class="ptolemy.vergil.basic.export.web.Title" value="Data Structures">
         </property>
-        <property name="icon link" class="ptolemy.vergil.basic.export.html.IconLink" value="http://general-catalog.berkeley.edu/catalog/gcc_search_sends_request/?p_dept_cd=COMPSCI&amp;p_number=$(this.getName())">
-            <property name="linkTarget" class="ptolemy.vergil.basic.export.html.LinkTarget" value="_lightbox">
+        <property name="icon link" class="ptolemy.vergil.basic.export.web.IconLink" value="http://general-catalog.berkeley.edu/catalog/gcc_search_sends_request/?p_dept_cd=COMPSCI&amp;p_number=$(this.getName())">
+            <property name="linkTarget" class="ptolemy.vergil.basic.export.web.LinkTarget" value="_lightbox">
             </property>
         </property>
     </entity>
@@ -747,14 +747,14 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[335.0, 480.0]">
         </property>
-        <property name="IconScript" class="ptolemy.vergil.basic.export.html.IconScript" value="writeText('$title')">
-            <property name="eventType" class="ptolemy.vergil.basic.export.html.AreaEventType" value="onmouseover">
+        <property name="IconScript" class="ptolemy.vergil.basic.export.web.IconScript" value="writeText('$title')">
+            <property name="eventType" class="ptolemy.vergil.basic.export.web.AreaEventType" value="onmouseover">
             </property>
         </property>
-        <property name="title" class="ptolemy.vergil.basic.export.html.Title" value="Machine Structures">
+        <property name="title" class="ptolemy.vergil.basic.export.web.Title" value="Machine Structures">
         </property>
-        <property name="icon link" class="ptolemy.vergil.basic.export.html.IconLink" value="http://general-catalog.berkeley.edu/catalog/gcc_search_sends_request/?p_dept_cd=COMPSCI&amp;p_number=$(this.getName())">
-            <property name="linkTarget" class="ptolemy.vergil.basic.export.html.LinkTarget" value="_lightbox">
+        <property name="icon link" class="ptolemy.vergil.basic.export.web.IconLink" value="http://general-catalog.berkeley.edu/catalog/gcc_search_sends_request/?p_dept_cd=COMPSCI&amp;p_number=$(this.getName())">
+            <property name="linkTarget" class="ptolemy.vergil.basic.export.web.LinkTarget" value="_lightbox">
             </property>
         </property>
     </entity>
@@ -765,14 +765,14 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[200.0, 540.0]">
         </property>
-        <property name="IconScript" class="ptolemy.vergil.basic.export.html.IconScript" value="writeText('$title')">
-            <property name="eventType" class="ptolemy.vergil.basic.export.html.AreaEventType" value="onmouseover">
+        <property name="IconScript" class="ptolemy.vergil.basic.export.web.IconScript" value="writeText('$title')">
+            <property name="eventType" class="ptolemy.vergil.basic.export.web.AreaEventType" value="onmouseover">
             </property>
         </property>
-        <property name="title" class="ptolemy.vergil.basic.export.html.Title" value="Discrete Mathematics and Probability Theory">
+        <property name="title" class="ptolemy.vergil.basic.export.web.Title" value="Discrete Mathematics and Probability Theory">
         </property>
-        <property name="icon link" class="ptolemy.vergil.basic.export.html.IconLink" value="http://general-catalog.berkeley.edu/catalog/gcc_search_sends_request/?p_dept_cd=COMPSCI&amp;p_number=$(this.getName())">
-            <property name="linkTarget" class="ptolemy.vergil.basic.export.html.LinkTarget" value="_lightbox">
+        <property name="icon link" class="ptolemy.vergil.basic.export.web.IconLink" value="http://general-catalog.berkeley.edu/catalog/gcc_search_sends_request/?p_dept_cd=COMPSCI&amp;p_number=$(this.getName())">
+            <property name="linkTarget" class="ptolemy.vergil.basic.export.web.LinkTarget" value="_lightbox">
             </property>
         </property>
     </entity>
@@ -783,14 +783,14 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[625.0, 390.0]">
         </property>
-        <property name="IconScript" class="ptolemy.vergil.basic.export.html.IconScript" value="writeText('$title')">
-            <property name="eventType" class="ptolemy.vergil.basic.export.html.AreaEventType" value="onmouseover">
+        <property name="IconScript" class="ptolemy.vergil.basic.export.web.IconScript" value="writeText('$title')">
+            <property name="eventType" class="ptolemy.vergil.basic.export.web.AreaEventType" value="onmouseover">
             </property>
         </property>
-        <property name="title" class="ptolemy.vergil.basic.export.html.Title" value="Components and Design Techniques for DigitalSystems">
+        <property name="title" class="ptolemy.vergil.basic.export.web.Title" value="Components and Design Techniques for DigitalSystems">
         </property>
-        <property name="icon link" class="ptolemy.vergil.basic.export.html.IconLink" value="http://general-catalog.berkeley.edu/catalog/gcc_search_sends_request/?p_dept_cd=COMPSCI&amp;p_number=$(this.getName())">
-            <property name="linkTarget" class="ptolemy.vergil.basic.export.html.LinkTarget" value="_lightbox">
+        <property name="icon link" class="ptolemy.vergil.basic.export.web.IconLink" value="http://general-catalog.berkeley.edu/catalog/gcc_search_sends_request/?p_dept_cd=COMPSCI&amp;p_number=$(this.getName())">
+            <property name="linkTarget" class="ptolemy.vergil.basic.export.web.LinkTarget" value="_lightbox">
             </property>
         </property>
     </entity>
@@ -801,14 +801,14 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[735.0, 390.0]">
         </property>
-        <property name="IconScript" class="ptolemy.vergil.basic.export.html.IconScript" value="writeText('$title')">
-            <property name="eventType" class="ptolemy.vergil.basic.export.html.AreaEventType" value="onmouseover">
+        <property name="IconScript" class="ptolemy.vergil.basic.export.web.IconScript" value="writeText('$title')">
+            <property name="eventType" class="ptolemy.vergil.basic.export.web.AreaEventType" value="onmouseover">
             </property>
         </property>
-        <property name="title" class="ptolemy.vergil.basic.export.html.Title" value="Computer Architecture and Engineering">
+        <property name="title" class="ptolemy.vergil.basic.export.web.Title" value="Computer Architecture and Engineering">
         </property>
-        <property name="icon link" class="ptolemy.vergil.basic.export.html.IconLink" value="http://general-catalog.berkeley.edu/catalog/gcc_search_sends_request/?p_dept_cd=COMPSCI&amp;p_number=$(this.getName())">
-            <property name="linkTarget" class="ptolemy.vergil.basic.export.html.LinkTarget" value="_lightbox">
+        <property name="icon link" class="ptolemy.vergil.basic.export.web.IconLink" value="http://general-catalog.berkeley.edu/catalog/gcc_search_sends_request/?p_dept_cd=COMPSCI&amp;p_number=$(this.getName())">
+            <property name="linkTarget" class="ptolemy.vergil.basic.export.web.LinkTarget" value="_lightbox">
             </property>
         </property>
     </entity>
@@ -819,14 +819,14 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[425.0, 335.0]">
         </property>
-        <property name="IconScript" class="ptolemy.vergil.basic.export.html.IconScript" value="writeText('$title')">
-            <property name="eventType" class="ptolemy.vergil.basic.export.html.AreaEventType" value="onmouseover">
+        <property name="IconScript" class="ptolemy.vergil.basic.export.web.IconScript" value="writeText('$title')">
+            <property name="eventType" class="ptolemy.vergil.basic.export.web.AreaEventType" value="onmouseover">
             </property>
         </property>
-        <property name="title" class="ptolemy.vergil.basic.export.html.Title" value="User Interface Design and Development">
+        <property name="title" class="ptolemy.vergil.basic.export.web.Title" value="User Interface Design and Development">
         </property>
-        <property name="icon link" class="ptolemy.vergil.basic.export.html.IconLink" value="http://general-catalog.berkeley.edu/catalog/gcc_search_sends_request/?p_dept_cd=COMPSCI&amp;p_number=$(this.getName())">
-            <property name="linkTarget" class="ptolemy.vergil.basic.export.html.LinkTarget" value="_lightbox">
+        <property name="icon link" class="ptolemy.vergil.basic.export.web.IconLink" value="http://general-catalog.berkeley.edu/catalog/gcc_search_sends_request/?p_dept_cd=COMPSCI&amp;p_number=$(this.getName())">
+            <property name="linkTarget" class="ptolemy.vergil.basic.export.web.LinkTarget" value="_lightbox">
             </property>
         </property>
     </entity>
@@ -837,14 +837,14 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[220.0, 270.0]">
         </property>
-        <property name="IconScript" class="ptolemy.vergil.basic.export.html.IconScript" value="writeText('$title')">
-            <property name="eventType" class="ptolemy.vergil.basic.export.html.AreaEventType" value="onmouseover">
+        <property name="IconScript" class="ptolemy.vergil.basic.export.web.IconScript" value="writeText('$title')">
+            <property name="eventType" class="ptolemy.vergil.basic.export.web.AreaEventType" value="onmouseover">
             </property>
         </property>
-        <property name="title" class="ptolemy.vergil.basic.export.html.Title" value="Multivariable Calculus">
+        <property name="title" class="ptolemy.vergil.basic.export.web.Title" value="Multivariable Calculus">
         </property>
-        <property name="icon link" class="ptolemy.vergil.basic.export.html.IconLink" value="http://general-catalog.berkeley.edu/catalog/gcc_search_sends_request/?p_dept_name=Mathematics&amp;p_number=53">
-            <property name="linkTarget" class="ptolemy.vergil.basic.export.html.LinkTarget" value="_lightbox">
+        <property name="icon link" class="ptolemy.vergil.basic.export.web.IconLink" value="http://general-catalog.berkeley.edu/catalog/gcc_search_sends_request/?p_dept_name=Mathematics&amp;p_number=53">
+            <property name="linkTarget" class="ptolemy.vergil.basic.export.web.LinkTarget" value="_lightbox">
             </property>
         </property>
     </entity>
@@ -855,14 +855,14 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[220.0, 300.0]">
         </property>
-        <property name="IconScript" class="ptolemy.vergil.basic.export.html.IconScript" value="writeText('$title')">
-            <property name="eventType" class="ptolemy.vergil.basic.export.html.AreaEventType" value="onmouseover">
+        <property name="IconScript" class="ptolemy.vergil.basic.export.web.IconScript" value="writeText('$title')">
+            <property name="eventType" class="ptolemy.vergil.basic.export.web.AreaEventType" value="onmouseover">
             </property>
         </property>
-        <property name="title" class="ptolemy.vergil.basic.export.html.Title" value="Linear Algebra and Differential Equations">
+        <property name="title" class="ptolemy.vergil.basic.export.web.Title" value="Linear Algebra and Differential Equations">
         </property>
-        <property name="icon link" class="ptolemy.vergil.basic.export.html.IconLink" value="http://general-catalog.berkeley.edu/catalog/gcc_search_sends_request/?p_dept_name=Mathematics&amp;p_number=54">
-            <property name="linkTarget" class="ptolemy.vergil.basic.export.html.LinkTarget" value="_lightbox">
+        <property name="icon link" class="ptolemy.vergil.basic.export.web.IconLink" value="http://general-catalog.berkeley.edu/catalog/gcc_search_sends_request/?p_dept_name=Mathematics&amp;p_number=54">
+            <property name="linkTarget" class="ptolemy.vergil.basic.export.web.LinkTarget" value="_lightbox">
             </property>
         </property>
     </entity>
@@ -873,14 +873,14 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[660.0, 450.0]">
         </property>
-        <property name="IconScript" class="ptolemy.vergil.basic.export.html.IconScript" value="writeText('$title')">
-            <property name="eventType" class="ptolemy.vergil.basic.export.html.AreaEventType" value="onmouseover">
+        <property name="IconScript" class="ptolemy.vergil.basic.export.web.IconScript" value="writeText('$title')">
+            <property name="eventType" class="ptolemy.vergil.basic.export.web.AreaEventType" value="onmouseover">
             </property>
         </property>
-        <property name="title" class="ptolemy.vergil.basic.export.html.Title" value="Operating Systems and System Programming">
+        <property name="title" class="ptolemy.vergil.basic.export.web.Title" value="Operating Systems and System Programming">
         </property>
-        <property name="icon link" class="ptolemy.vergil.basic.export.html.IconLink" value="http://general-catalog.berkeley.edu/catalog/gcc_search_sends_request/?p_dept_cd=COMPSCI&amp;p_number=$(this.getName())">
-            <property name="linkTarget" class="ptolemy.vergil.basic.export.html.LinkTarget" value="_lightbox">
+        <property name="icon link" class="ptolemy.vergil.basic.export.web.IconLink" value="http://general-catalog.berkeley.edu/catalog/gcc_search_sends_request/?p_dept_cd=COMPSCI&amp;p_number=$(this.getName())">
+            <property name="linkTarget" class="ptolemy.vergil.basic.export.web.LinkTarget" value="_lightbox">
             </property>
         </property>
     </entity>
@@ -891,14 +891,14 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[660.0, 480.0]">
         </property>
-        <property name="IconScript" class="ptolemy.vergil.basic.export.html.IconScript" value="writeText('$title')">
-            <property name="eventType" class="ptolemy.vergil.basic.export.html.AreaEventType" value="onmouseover">
+        <property name="IconScript" class="ptolemy.vergil.basic.export.web.IconScript" value="writeText('$title')">
+            <property name="eventType" class="ptolemy.vergil.basic.export.web.AreaEventType" value="onmouseover">
             </property>
         </property>
-        <property name="title" class="ptolemy.vergil.basic.export.html.Title" value="Programming Languages and Compilers">
+        <property name="title" class="ptolemy.vergil.basic.export.web.Title" value="Programming Languages and Compilers">
         </property>
-        <property name="icon link" class="ptolemy.vergil.basic.export.html.IconLink" value="http://general-catalog.berkeley.edu/catalog/gcc_search_sends_request/?p_dept_cd=COMPSCI&amp;p_number=$(this.getName())">
-            <property name="linkTarget" class="ptolemy.vergil.basic.export.html.LinkTarget" value="_lightbox">
+        <property name="icon link" class="ptolemy.vergil.basic.export.web.IconLink" value="http://general-catalog.berkeley.edu/catalog/gcc_search_sends_request/?p_dept_cd=COMPSCI&amp;p_number=$(this.getName())">
+            <property name="linkTarget" class="ptolemy.vergil.basic.export.web.LinkTarget" value="_lightbox">
             </property>
         </property>
     </entity>
@@ -909,14 +909,14 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[660.0, 510.0]">
         </property>
-        <property name="IconScript" class="ptolemy.vergil.basic.export.html.IconScript" value="writeText('$title')">
-            <property name="eventType" class="ptolemy.vergil.basic.export.html.AreaEventType" value="onmouseover">
+        <property name="IconScript" class="ptolemy.vergil.basic.export.web.IconScript" value="writeText('$title')">
+            <property name="eventType" class="ptolemy.vergil.basic.export.web.AreaEventType" value="onmouseover">
             </property>
         </property>
-        <property name="title" class="ptolemy.vergil.basic.export.html.Title" value="Software Engineering">
+        <property name="title" class="ptolemy.vergil.basic.export.web.Title" value="Software Engineering">
         </property>
-        <property name="icon link" class="ptolemy.vergil.basic.export.html.IconLink" value="http://general-catalog.berkeley.edu/catalog/gcc_search_sends_request/?p_dept_cd=COMPSCI&amp;p_number=$(this.getName())">
-            <property name="linkTarget" class="ptolemy.vergil.basic.export.html.LinkTarget" value="_lightbox">
+        <property name="icon link" class="ptolemy.vergil.basic.export.web.IconLink" value="http://general-catalog.berkeley.edu/catalog/gcc_search_sends_request/?p_dept_cd=COMPSCI&amp;p_number=$(this.getName())">
+            <property name="linkTarget" class="ptolemy.vergil.basic.export.web.LinkTarget" value="_lightbox">
             </property>
         </property>
     </entity>
@@ -927,14 +927,14 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[660.0, 540.0]">
         </property>
-        <property name="IconScript" class="ptolemy.vergil.basic.export.html.IconScript" value="writeText('$title')">
-            <property name="eventType" class="ptolemy.vergil.basic.export.html.AreaEventType" value="onmouseover">
+        <property name="IconScript" class="ptolemy.vergil.basic.export.web.IconScript" value="writeText('$title')">
+            <property name="eventType" class="ptolemy.vergil.basic.export.web.AreaEventType" value="onmouseover">
             </property>
         </property>
-        <property name="title" class="ptolemy.vergil.basic.export.html.Title" value="Efficient Algorithms and Intractable Problems">
+        <property name="title" class="ptolemy.vergil.basic.export.web.Title" value="Efficient Algorithms and Intractable Problems">
         </property>
-        <property name="icon link" class="ptolemy.vergil.basic.export.html.IconLink" value="http://general-catalog.berkeley.edu/catalog/gcc_search_sends_request/?p_dept_cd=COMPSCI&amp;p_number=$(this.getName())">
-            <property name="linkTarget" class="ptolemy.vergil.basic.export.html.LinkTarget" value="_lightbox">
+        <property name="icon link" class="ptolemy.vergil.basic.export.web.IconLink" value="http://general-catalog.berkeley.edu/catalog/gcc_search_sends_request/?p_dept_cd=COMPSCI&amp;p_number=$(this.getName())">
+            <property name="linkTarget" class="ptolemy.vergil.basic.export.web.LinkTarget" value="_lightbox">
             </property>
         </property>
     </entity>
@@ -945,14 +945,14 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[735.0, 480.0]">
         </property>
-        <property name="IconScript" class="ptolemy.vergil.basic.export.html.IconScript" value="writeText('$title')">
-            <property name="eventType" class="ptolemy.vergil.basic.export.html.AreaEventType" value="onmouseover">
+        <property name="IconScript" class="ptolemy.vergil.basic.export.web.IconScript" value="writeText('$title')">
+            <property name="eventType" class="ptolemy.vergil.basic.export.web.AreaEventType" value="onmouseover">
             </property>
         </property>
-        <property name="title" class="ptolemy.vergil.basic.export.html.Title" value="Computability and Complexity">
+        <property name="title" class="ptolemy.vergil.basic.export.web.Title" value="Computability and Complexity">
         </property>
-        <property name="icon link" class="ptolemy.vergil.basic.export.html.IconLink" value="http://general-catalog.berkeley.edu/catalog/gcc_search_sends_request/?p_dept_cd=COMPSCI&amp;p_number=$(this.getName())">
-            <property name="linkTarget" class="ptolemy.vergil.basic.export.html.LinkTarget" value="_lightbox">
+        <property name="icon link" class="ptolemy.vergil.basic.export.web.IconLink" value="http://general-catalog.berkeley.edu/catalog/gcc_search_sends_request/?p_dept_cd=COMPSCI&amp;p_number=$(this.getName())">
+            <property name="linkTarget" class="ptolemy.vergil.basic.export.web.LinkTarget" value="_lightbox">
             </property>
         </property>
     </entity>
@@ -963,14 +963,14 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[425.0, 390.0]">
         </property>
-        <property name="IconScript" class="ptolemy.vergil.basic.export.html.IconScript" value="writeText('$title')">
-            <property name="eventType" class="ptolemy.vergil.basic.export.html.AreaEventType" value="onmouseover">
+        <property name="IconScript" class="ptolemy.vergil.basic.export.web.IconScript" value="writeText('$title')">
+            <property name="eventType" class="ptolemy.vergil.basic.export.web.AreaEventType" value="onmouseover">
             </property>
         </property>
-        <property name="title" class="ptolemy.vergil.basic.export.html.Title" value="Foundations of Computer Graphics">
+        <property name="title" class="ptolemy.vergil.basic.export.web.Title" value="Foundations of Computer Graphics">
         </property>
-        <property name="icon link" class="ptolemy.vergil.basic.export.html.IconLink" value="http://general-catalog.berkeley.edu/catalog/gcc_search_sends_request/?p_dept_cd=COMPSCI&amp;p_number=$(this.getName())">
-            <property name="linkTarget" class="ptolemy.vergil.basic.export.html.LinkTarget" value="_lightbox">
+        <property name="icon link" class="ptolemy.vergil.basic.export.web.IconLink" value="http://general-catalog.berkeley.edu/catalog/gcc_search_sends_request/?p_dept_cd=COMPSCI&amp;p_number=$(this.getName())">
+            <property name="linkTarget" class="ptolemy.vergil.basic.export.web.LinkTarget" value="_lightbox">
             </property>
         </property>
     </entity>
@@ -981,14 +981,14 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[660.0, 570.0]">
         </property>
-        <property name="IconScript" class="ptolemy.vergil.basic.export.html.IconScript" value="writeText('$title')">
-            <property name="eventType" class="ptolemy.vergil.basic.export.html.AreaEventType" value="onmouseover">
+        <property name="IconScript" class="ptolemy.vergil.basic.export.web.IconScript" value="writeText('$title')">
+            <property name="eventType" class="ptolemy.vergil.basic.export.web.AreaEventType" value="onmouseover">
             </property>
         </property>
-        <property name="title" class="ptolemy.vergil.basic.export.html.Title" value="Introduction to Database Systems">
+        <property name="title" class="ptolemy.vergil.basic.export.web.Title" value="Introduction to Database Systems">
         </property>
-        <property name="icon link" class="ptolemy.vergil.basic.export.html.IconLink" value="http://general-catalog.berkeley.edu/catalog/gcc_search_sends_request/?p_dept_cd=COMPSCI&amp;p_number=$(this.getName())">
-            <property name="linkTarget" class="ptolemy.vergil.basic.export.html.LinkTarget" value="_lightbox">
+        <property name="icon link" class="ptolemy.vergil.basic.export.web.IconLink" value="http://general-catalog.berkeley.edu/catalog/gcc_search_sends_request/?p_dept_cd=COMPSCI&amp;p_number=$(this.getName())">
+            <property name="linkTarget" class="ptolemy.vergil.basic.export.web.LinkTarget" value="_lightbox">
             </property>
         </property>
     </entity>
@@ -999,14 +999,14 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[425.0, 425.0]">
         </property>
-        <property name="IconScript" class="ptolemy.vergil.basic.export.html.IconScript" value="writeText('$title')">
-            <property name="eventType" class="ptolemy.vergil.basic.export.html.AreaEventType" value="onmouseover">
+        <property name="IconScript" class="ptolemy.vergil.basic.export.web.IconScript" value="writeText('$title')">
+            <property name="eventType" class="ptolemy.vergil.basic.export.web.AreaEventType" value="onmouseover">
             </property>
         </property>
-        <property name="title" class="ptolemy.vergil.basic.export.html.Title" value="Introduction to Artificial Intelligence">
+        <property name="title" class="ptolemy.vergil.basic.export.web.Title" value="Introduction to Artificial Intelligence">
         </property>
-        <property name="icon link" class="ptolemy.vergil.basic.export.html.IconLink" value="http://general-catalog.berkeley.edu/catalog/gcc_search_sends_request/?p_dept_cd=COMPSCI&amp;p_number=$(this.getName())">
-            <property name="linkTarget" class="ptolemy.vergil.basic.export.html.LinkTarget" value="_lightbox">
+        <property name="icon link" class="ptolemy.vergil.basic.export.web.IconLink" value="http://general-catalog.berkeley.edu/catalog/gcc_search_sends_request/?p_dept_cd=COMPSCI&amp;p_number=$(this.getName())">
+            <property name="linkTarget" class="ptolemy.vergil.basic.export.web.LinkTarget" value="_lightbox">
             </property>
         </property>
     </entity>
@@ -1017,14 +1017,14 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[225.0, 205.0]">
         </property>
-        <property name="IconScript" class="ptolemy.vergil.basic.export.html.IconScript" value="writeText('$title')">
-            <property name="eventType" class="ptolemy.vergil.basic.export.html.AreaEventType" value="onmouseover">
+        <property name="IconScript" class="ptolemy.vergil.basic.export.web.IconScript" value="writeText('$title')">
+            <property name="eventType" class="ptolemy.vergil.basic.export.web.AreaEventType" value="onmouseover">
             </property>
         </property>
-        <property name="title" class="ptolemy.vergil.basic.export.html.Title" value="Physics for Scientists and Engineers">
+        <property name="title" class="ptolemy.vergil.basic.export.web.Title" value="Physics for Scientists and Engineers">
         </property>
-        <property name="icon link" class="ptolemy.vergil.basic.export.html.IconLink" value="http://general-catalog.berkeley.edu/catalog/gcc_search_sends_request/?p_dept_name=Physics&amp;p_number=7A">
-            <property name="linkTarget" class="ptolemy.vergil.basic.export.html.LinkTarget" value="_lightbox">
+        <property name="icon link" class="ptolemy.vergil.basic.export.web.IconLink" value="http://general-catalog.berkeley.edu/catalog/gcc_search_sends_request/?p_dept_name=Physics&amp;p_number=7A">
+            <property name="linkTarget" class="ptolemy.vergil.basic.export.web.LinkTarget" value="_lightbox">
             </property>
         </property>
     </entity>
@@ -1035,14 +1035,14 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[225.0, 240.0]">
         </property>
-        <property name="IconScript" class="ptolemy.vergil.basic.export.html.IconScript" value="writeText('$title')">
-            <property name="eventType" class="ptolemy.vergil.basic.export.html.AreaEventType" value="onmouseover">
+        <property name="IconScript" class="ptolemy.vergil.basic.export.web.IconScript" value="writeText('$title')">
+            <property name="eventType" class="ptolemy.vergil.basic.export.web.AreaEventType" value="onmouseover">
             </property>
         </property>
-        <property name="title" class="ptolemy.vergil.basic.export.html.Title" value="Physics for Scientists and Engineers">
+        <property name="title" class="ptolemy.vergil.basic.export.web.Title" value="Physics for Scientists and Engineers">
         </property>
-        <property name="icon link" class="ptolemy.vergil.basic.export.html.IconLink" value="http://general-catalog.berkeley.edu/catalog/gcc_search_sends_request/?p_dept_name=Physics&amp;p_number=7B">
-            <property name="linkTarget" class="ptolemy.vergil.basic.export.html.LinkTarget" value="_lightbox">
+        <property name="icon link" class="ptolemy.vergil.basic.export.web.IconLink" value="http://general-catalog.berkeley.edu/catalog/gcc_search_sends_request/?p_dept_name=Physics&amp;p_number=7B">
+            <property name="linkTarget" class="ptolemy.vergil.basic.export.web.LinkTarget" value="_lightbox">
             </property>
         </property>
     </entity>
@@ -1053,14 +1053,14 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[645.0, 180.0]">
         </property>
-        <property name="IconScript" class="ptolemy.vergil.basic.export.html.IconScript" value="writeText('$title')">
-            <property name="eventType" class="ptolemy.vergil.basic.export.html.AreaEventType" value="onmouseover">
+        <property name="IconScript" class="ptolemy.vergil.basic.export.web.IconScript" value="writeText('$title')">
+            <property name="eventType" class="ptolemy.vergil.basic.export.web.AreaEventType" value="onmouseover">
             </property>
         </property>
-        <property name="title" class="ptolemy.vergil.basic.export.html.Title" value="Power Electronics">
+        <property name="title" class="ptolemy.vergil.basic.export.web.Title" value="Power Electronics">
         </property>
-        <property name="icon link" class="ptolemy.vergil.basic.export.html.IconLink" value="http://general-catalog.berkeley.edu/catalog/gcc_search_sends_request/?p_dept_cd=EL%20ENG&amp;p_number=$(this.getName())">
-            <property name="linkTarget" class="ptolemy.vergil.basic.export.html.LinkTarget" value="_lightbox">
+        <property name="icon link" class="ptolemy.vergil.basic.export.web.IconLink" value="http://general-catalog.berkeley.edu/catalog/gcc_search_sends_request/?p_dept_cd=EL%20ENG&amp;p_number=$(this.getName())">
+            <property name="linkTarget" class="ptolemy.vergil.basic.export.web.LinkTarget" value="_lightbox">
             </property>
         </property>
     </entity>
@@ -1071,14 +1071,14 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[575.0, 180.0]">
         </property>
-        <property name="IconScript" class="ptolemy.vergil.basic.export.html.IconScript" value="writeText('$title')">
-            <property name="eventType" class="ptolemy.vergil.basic.export.html.AreaEventType" value="onmouseover">
+        <property name="IconScript" class="ptolemy.vergil.basic.export.web.IconScript" value="writeText('$title')">
+            <property name="eventType" class="ptolemy.vergil.basic.export.web.AreaEventType" value="onmouseover">
             </property>
         </property>
-        <property name="title" class="ptolemy.vergil.basic.export.html.Title" value="Microelectronic Devices and Circuits">
+        <property name="title" class="ptolemy.vergil.basic.export.web.Title" value="Microelectronic Devices and Circuits">
         </property>
-        <property name="icon link" class="ptolemy.vergil.basic.export.html.IconLink" value="http://general-catalog.berkeley.edu/catalog/gcc_search_sends_request/?p_dept_cd=EL%20ENG&amp;p_number=$(this.getName())">
-            <property name="linkTarget" class="ptolemy.vergil.basic.export.html.LinkTarget" value="_lightbox">
+        <property name="icon link" class="ptolemy.vergil.basic.export.web.IconLink" value="http://general-catalog.berkeley.edu/catalog/gcc_search_sends_request/?p_dept_cd=EL%20ENG&amp;p_number=$(this.getName())">
+            <property name="linkTarget" class="ptolemy.vergil.basic.export.web.LinkTarget" value="_lightbox">
             </property>
         </property>
     </entity>
@@ -1089,14 +1089,14 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[540.0, 270.0]">
         </property>
-        <property name="IconScript" class="ptolemy.vergil.basic.export.html.IconScript" value="writeText('$title')">
-            <property name="eventType" class="ptolemy.vergil.basic.export.html.AreaEventType" value="onmouseover">
+        <property name="IconScript" class="ptolemy.vergil.basic.export.web.IconScript" value="writeText('$title')">
+            <property name="eventType" class="ptolemy.vergil.basic.export.web.AreaEventType" value="onmouseover">
             </property>
         </property>
-        <property name="title" class="ptolemy.vergil.basic.export.html.Title" value="Electromagnetic Fields and Waves">
+        <property name="title" class="ptolemy.vergil.basic.export.web.Title" value="Electromagnetic Fields and Waves">
         </property>
-        <property name="icon link" class="ptolemy.vergil.basic.export.html.IconLink" value="http://general-catalog.berkeley.edu/catalog/gcc_search_sends_request/?p_dept_cd=EL%20ENG&amp;p_number=$(this.getName())">
-            <property name="linkTarget" class="ptolemy.vergil.basic.export.html.LinkTarget" value="_lightbox">
+        <property name="icon link" class="ptolemy.vergil.basic.export.web.IconLink" value="http://general-catalog.berkeley.edu/catalog/gcc_search_sends_request/?p_dept_cd=EL%20ENG&amp;p_number=$(this.getName())">
+            <property name="linkTarget" class="ptolemy.vergil.basic.export.web.LinkTarget" value="_lightbox">
             </property>
         </property>
     </entity>
@@ -1107,14 +1107,14 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[340.0, 240.0]">
         </property>
-        <property name="IconScript" class="ptolemy.vergil.basic.export.html.IconScript" value="writeText('$title')">
-            <property name="eventType" class="ptolemy.vergil.basic.export.html.AreaEventType" value="onmouseover">
+        <property name="IconScript" class="ptolemy.vergil.basic.export.web.IconScript" value="writeText('$title')">
+            <property name="eventType" class="ptolemy.vergil.basic.export.web.AreaEventType" value="onmouseover">
             </property>
         </property>
-        <property name="title" class="ptolemy.vergil.basic.export.html.Title" value="Physics for Scientists and Engineers">
+        <property name="title" class="ptolemy.vergil.basic.export.web.Title" value="Physics for Scientists and Engineers">
         </property>
-        <property name="icon link" class="ptolemy.vergil.basic.export.html.IconLink" value="http://general-catalog.berkeley.edu/catalog/gcc_search_sends_request/?p_dept_name=Physics&amp;p_number=7C">
-            <property name="linkTarget" class="ptolemy.vergil.basic.export.html.LinkTarget" value="_lightbox">
+        <property name="icon link" class="ptolemy.vergil.basic.export.web.IconLink" value="http://general-catalog.berkeley.edu/catalog/gcc_search_sends_request/?p_dept_name=Physics&amp;p_number=7C">
+            <property name="linkTarget" class="ptolemy.vergil.basic.export.web.LinkTarget" value="_lightbox">
             </property>
         </property>
     </entity>
@@ -1125,14 +1125,14 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[420.0, 240.0]">
         </property>
-        <property name="IconScript" class="ptolemy.vergil.basic.export.html.IconScript" value="writeText('$title')">
-            <property name="eventType" class="ptolemy.vergil.basic.export.html.AreaEventType" value="onmouseover">
+        <property name="IconScript" class="ptolemy.vergil.basic.export.web.IconScript" value="writeText('$title')">
+            <property name="eventType" class="ptolemy.vergil.basic.export.web.AreaEventType" value="onmouseover">
             </property>
         </property>
-        <property name="title" class="ptolemy.vergil.basic.export.html.Title" value="Introduction to Optical Engineering">
+        <property name="title" class="ptolemy.vergil.basic.export.web.Title" value="Introduction to Optical Engineering">
         </property>
-        <property name="icon link" class="ptolemy.vergil.basic.export.html.IconLink" value="http://general-catalog.berkeley.edu/catalog/gcc_search_sends_request/?p_dept_cd=EL%20ENG&amp;p_number=$(this.getName())">
-            <property name="linkTarget" class="ptolemy.vergil.basic.export.html.LinkTarget" value="_lightbox">
+        <property name="icon link" class="ptolemy.vergil.basic.export.web.IconLink" value="http://general-catalog.berkeley.edu/catalog/gcc_search_sends_request/?p_dept_cd=EL%20ENG&amp;p_number=$(this.getName())">
+            <property name="linkTarget" class="ptolemy.vergil.basic.export.web.LinkTarget" value="_lightbox">
             </property>
         </property>
     </entity>
@@ -1143,14 +1143,14 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[575.0, 150.0]">
         </property>
-        <property name="IconScript" class="ptolemy.vergil.basic.export.html.IconScript" value="writeText('$title')">
-            <property name="eventType" class="ptolemy.vergil.basic.export.html.AreaEventType" value="onmouseover">
+        <property name="IconScript" class="ptolemy.vergil.basic.export.web.IconScript" value="writeText('$title')">
+            <property name="eventType" class="ptolemy.vergil.basic.export.web.AreaEventType" value="onmouseover">
             </property>
         </property>
-        <property name="title" class="ptolemy.vergil.basic.export.html.Title" value="Signals and Systems">
+        <property name="title" class="ptolemy.vergil.basic.export.web.Title" value="Signals and Systems">
         </property>
-        <property name="icon link" class="ptolemy.vergil.basic.export.html.IconLink" value="http://general-catalog.berkeley.edu/catalog/gcc_search_sends_request/?p_dept_cd=EL%20ENG&amp;p_number=$(this.getName())">
-            <property name="linkTarget" class="ptolemy.vergil.basic.export.html.LinkTarget" value="_lightbox">
+        <property name="icon link" class="ptolemy.vergil.basic.export.web.IconLink" value="http://general-catalog.berkeley.edu/catalog/gcc_search_sends_request/?p_dept_cd=EL%20ENG&amp;p_number=$(this.getName())">
+            <property name="linkTarget" class="ptolemy.vergil.basic.export.web.LinkTarget" value="_lightbox">
             </property>
         </property>
     </entity>
@@ -1161,14 +1161,14 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[725.0, 90.0]">
         </property>
-        <property name="IconScript" class="ptolemy.vergil.basic.export.html.IconScript" value="writeText('$title')">
-            <property name="eventType" class="ptolemy.vergil.basic.export.html.AreaEventType" value="onmouseover">
+        <property name="IconScript" class="ptolemy.vergil.basic.export.web.IconScript" value="writeText('$title')">
+            <property name="eventType" class="ptolemy.vergil.basic.export.web.AreaEventType" value="onmouseover">
             </property>
         </property>
-        <property name="title" class="ptolemy.vergil.basic.export.html.Title" value="Introduction to Communication Systems">
+        <property name="title" class="ptolemy.vergil.basic.export.web.Title" value="Introduction to Communication Systems">
         </property>
-        <property name="icon link" class="ptolemy.vergil.basic.export.html.IconLink" value="http://general-catalog.berkeley.edu/catalog/gcc_search_sends_request/?p_dept_cd=EL%20ENG&amp;p_number=$(this.getName())">
-            <property name="linkTarget" class="ptolemy.vergil.basic.export.html.LinkTarget" value="_lightbox">
+        <property name="icon link" class="ptolemy.vergil.basic.export.web.IconLink" value="http://general-catalog.berkeley.edu/catalog/gcc_search_sends_request/?p_dept_cd=EL%20ENG&amp;p_number=$(this.getName())">
+            <property name="linkTarget" class="ptolemy.vergil.basic.export.web.LinkTarget" value="_lightbox">
             </property>
         </property>
     </entity>
@@ -1179,14 +1179,14 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[575.0, 300.0]">
         </property>
-        <property name="IconScript" class="ptolemy.vergil.basic.export.html.IconScript" value="writeText('$title')">
-            <property name="eventType" class="ptolemy.vergil.basic.export.html.AreaEventType" value="onmouseover">
+        <property name="IconScript" class="ptolemy.vergil.basic.export.web.IconScript" value="writeText('$title')">
+            <property name="eventType" class="ptolemy.vergil.basic.export.web.AreaEventType" value="onmouseover">
             </property>
         </property>
-        <property name="title" class="ptolemy.vergil.basic.export.html.Title" value="Introduction to Communication Networks">
+        <property name="title" class="ptolemy.vergil.basic.export.web.Title" value="Introduction to Communication Networks">
         </property>
-        <property name="icon link" class="ptolemy.vergil.basic.export.html.IconLink" value="http://general-catalog.berkeley.edu/catalog/gcc_search_sends_request/?p_dept_cd=EL%20ENG&amp;p_number=$(this.getName())">
-            <property name="linkTarget" class="ptolemy.vergil.basic.export.html.LinkTarget" value="_lightbox">
+        <property name="icon link" class="ptolemy.vergil.basic.export.web.IconLink" value="http://general-catalog.berkeley.edu/catalog/gcc_search_sends_request/?p_dept_cd=EL%20ENG&amp;p_number=$(this.getName())">
+            <property name="linkTarget" class="ptolemy.vergil.basic.export.web.LinkTarget" value="_lightbox">
             </property>
         </property>
     </entity>
@@ -1197,14 +1197,14 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[725.0, 120.0]">
         </property>
-        <property name="IconScript" class="ptolemy.vergil.basic.export.html.IconScript" value="writeText('$title')">
-            <property name="eventType" class="ptolemy.vergil.basic.export.html.AreaEventType" value="onmouseover">
+        <property name="IconScript" class="ptolemy.vergil.basic.export.web.IconScript" value="writeText('$title')">
+            <property name="eventType" class="ptolemy.vergil.basic.export.web.AreaEventType" value="onmouseover">
             </property>
         </property>
-        <property name="title" class="ptolemy.vergil.basic.export.html.Title" value="Digital Signal Processing">
+        <property name="title" class="ptolemy.vergil.basic.export.web.Title" value="Digital Signal Processing">
         </property>
-        <property name="icon link" class="ptolemy.vergil.basic.export.html.IconLink" value="http://general-catalog.berkeley.edu/catalog/gcc_search_sends_request/?p_dept_cd=EL%20ENG&amp;p_number=$(this.getName())">
-            <property name="linkTarget" class="ptolemy.vergil.basic.export.html.LinkTarget" value="_lightbox">
+        <property name="icon link" class="ptolemy.vergil.basic.export.web.IconLink" value="http://general-catalog.berkeley.edu/catalog/gcc_search_sends_request/?p_dept_cd=EL%20ENG&amp;p_number=$(this.getName())">
+            <property name="linkTarget" class="ptolemy.vergil.basic.export.web.LinkTarget" value="_lightbox">
             </property>
         </property>
     </entity>
@@ -1215,14 +1215,14 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[725.0, 150.0]">
         </property>
-        <property name="IconScript" class="ptolemy.vergil.basic.export.html.IconScript" value="writeText('$title')">
-            <property name="eventType" class="ptolemy.vergil.basic.export.html.AreaEventType" value="onmouseover">
+        <property name="IconScript" class="ptolemy.vergil.basic.export.web.IconScript" value="writeText('$title')">
+            <property name="eventType" class="ptolemy.vergil.basic.export.web.AreaEventType" value="onmouseover">
             </property>
         </property>
-        <property name="title" class="ptolemy.vergil.basic.export.html.Title" value="Introduction to Robotics">
+        <property name="title" class="ptolemy.vergil.basic.export.web.Title" value="Introduction to Robotics">
         </property>
-        <property name="icon link" class="ptolemy.vergil.basic.export.html.IconLink" value="http://general-catalog.berkeley.edu/catalog/gcc_search_sends_request/?p_dept_cd=EL%20ENG&amp;p_number=$(this.getName())">
-            <property name="linkTarget" class="ptolemy.vergil.basic.export.html.LinkTarget" value="_lightbox">
+        <property name="icon link" class="ptolemy.vergil.basic.export.web.IconLink" value="http://general-catalog.berkeley.edu/catalog/gcc_search_sends_request/?p_dept_cd=EL%20ENG&amp;p_number=$(this.getName())">
+            <property name="linkTarget" class="ptolemy.vergil.basic.export.web.LinkTarget" value="_lightbox">
             </property>
         </property>
     </entity>
@@ -1233,14 +1233,14 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[725.0, 180.0]">
         </property>
-        <property name="IconScript" class="ptolemy.vergil.basic.export.html.IconScript" value="writeText('$title')">
-            <property name="eventType" class="ptolemy.vergil.basic.export.html.AreaEventType" value="onmouseover">
+        <property name="IconScript" class="ptolemy.vergil.basic.export.web.IconScript" value="writeText('$title')">
+            <property name="eventType" class="ptolemy.vergil.basic.export.web.AreaEventType" value="onmouseover">
             </property>
         </property>
-        <property name="title" class="ptolemy.vergil.basic.export.html.Title" value="Feedback Control">
+        <property name="title" class="ptolemy.vergil.basic.export.web.Title" value="Feedback Control">
         </property>
-        <property name="icon link" class="ptolemy.vergil.basic.export.html.IconLink" value="http://general-catalog.berkeley.edu/catalog/gcc_search_sends_request/?p_dept_cd=EL%20ENG&amp;p_number=$(this.getName())">
-            <property name="linkTarget" class="ptolemy.vergil.basic.export.html.LinkTarget" value="_lightbox">
+        <property name="icon link" class="ptolemy.vergil.basic.export.web.IconLink" value="http://general-catalog.berkeley.edu/catalog/gcc_search_sends_request/?p_dept_cd=EL%20ENG&amp;p_number=$(this.getName())">
+            <property name="linkTarget" class="ptolemy.vergil.basic.export.web.LinkTarget" value="_lightbox">
             </property>
         </property>
     </entity>
@@ -1300,14 +1300,14 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[505.0, 90.0]">
         </property>
-        <property name="IconScript" class="ptolemy.vergil.basic.export.html.IconScript" value="writeText('$title')">
-            <property name="eventType" class="ptolemy.vergil.basic.export.html.AreaEventType" value="onmouseover">
+        <property name="IconScript" class="ptolemy.vergil.basic.export.web.IconScript" value="writeText('$title')">
+            <property name="eventType" class="ptolemy.vergil.basic.export.web.AreaEventType" value="onmouseover">
             </property>
         </property>
-        <property name="title" class="ptolemy.vergil.basic.export.html.Title" value="Integrated-Circuit Devices">
+        <property name="title" class="ptolemy.vergil.basic.export.web.Title" value="Integrated-Circuit Devices">
         </property>
-        <property name="icon link" class="ptolemy.vergil.basic.export.html.IconLink" value="http://general-catalog.berkeley.edu/catalog/gcc_search_sends_request/?p_dept_cd=EL%20ENG&amp;p_number=$(this.getName())">
-            <property name="linkTarget" class="ptolemy.vergil.basic.export.html.LinkTarget" value="_lightbox">
+        <property name="icon link" class="ptolemy.vergil.basic.export.web.IconLink" value="http://general-catalog.berkeley.edu/catalog/gcc_search_sends_request/?p_dept_cd=EL%20ENG&amp;p_number=$(this.getName())">
+            <property name="linkTarget" class="ptolemy.vergil.basic.export.web.LinkTarget" value="_lightbox">
             </property>
         </property>
     </entity>
@@ -1318,14 +1318,14 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[645.0, 240.0]">
         </property>
-        <property name="IconScript" class="ptolemy.vergil.basic.export.html.IconScript" value="writeText('$title')">
-            <property name="eventType" class="ptolemy.vergil.basic.export.html.AreaEventType" value="onmouseover">
+        <property name="IconScript" class="ptolemy.vergil.basic.export.web.IconScript" value="writeText('$title')">
+            <property name="eventType" class="ptolemy.vergil.basic.export.web.AreaEventType" value="onmouseover">
             </property>
         </property>
-        <property name="title" class="ptolemy.vergil.basic.export.html.Title" value="Linear Integrated Circuits">
+        <property name="title" class="ptolemy.vergil.basic.export.web.Title" value="Linear Integrated Circuits">
         </property>
-        <property name="icon link" class="ptolemy.vergil.basic.export.html.IconLink" value="http://general-catalog.berkeley.edu/catalog/gcc_search_sends_request/?p_dept_cd=EL%20ENG&amp;p_number=$(this.getName())">
-            <property name="linkTarget" class="ptolemy.vergil.basic.export.html.LinkTarget" value="_lightbox">
+        <property name="icon link" class="ptolemy.vergil.basic.export.web.IconLink" value="http://general-catalog.berkeley.edu/catalog/gcc_search_sends_request/?p_dept_cd=EL%20ENG&amp;p_number=$(this.getName())">
+            <property name="linkTarget" class="ptolemy.vergil.basic.export.web.LinkTarget" value="_lightbox">
             </property>
         </property>
     </entity>
@@ -1336,14 +1336,14 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[645.0, 270.0]">
         </property>
-        <property name="IconScript" class="ptolemy.vergil.basic.export.html.IconScript" value="writeText('$title')">
-            <property name="eventType" class="ptolemy.vergil.basic.export.html.AreaEventType" value="onmouseover">
+        <property name="IconScript" class="ptolemy.vergil.basic.export.web.IconScript" value="writeText('$title')">
+            <property name="eventType" class="ptolemy.vergil.basic.export.web.AreaEventType" value="onmouseover">
             </property>
         </property>
-        <property name="title" class="ptolemy.vergil.basic.export.html.Title" value="Introduction to Digital Integrated Circuits">
+        <property name="title" class="ptolemy.vergil.basic.export.web.Title" value="Introduction to Digital Integrated Circuits">
         </property>
-        <property name="icon link" class="ptolemy.vergil.basic.export.html.IconLink" value="http://general-catalog.berkeley.edu/catalog/gcc_search_sends_request/?p_dept_cd=EL%20ENG&amp;p_number=$(this.getName())">
-            <property name="linkTarget" class="ptolemy.vergil.basic.export.html.LinkTarget" value="_lightbox">
+        <property name="icon link" class="ptolemy.vergil.basic.export.web.IconLink" value="http://general-catalog.berkeley.edu/catalog/gcc_search_sends_request/?p_dept_cd=EL%20ENG&amp;p_number=$(this.getName())">
+            <property name="linkTarget" class="ptolemy.vergil.basic.export.web.LinkTarget" value="_lightbox">
             </property>
         </property>
     </entity>
@@ -1354,14 +1354,14 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[725.0, 240.0]">
         </property>
-        <property name="IconScript" class="ptolemy.vergil.basic.export.html.IconScript" value="writeText('$title')">
-            <property name="eventType" class="ptolemy.vergil.basic.export.html.AreaEventType" value="onmouseover">
+        <property name="IconScript" class="ptolemy.vergil.basic.export.web.IconScript" value="writeText('$title')">
+            <property name="eventType" class="ptolemy.vergil.basic.export.web.AreaEventType" value="onmouseover">
             </property>
         </property>
-        <property name="title" class="ptolemy.vergil.basic.export.html.Title" value="Integrated Circuits for Communications">
+        <property name="title" class="ptolemy.vergil.basic.export.web.Title" value="Integrated Circuits for Communications">
         </property>
-        <property name="icon link" class="ptolemy.vergil.basic.export.html.IconLink" value="http://general-catalog.berkeley.edu/catalog/gcc_search_sends_request/?p_dept_cd=EL%20ENG&amp;p_number=$(this.getName())">
-            <property name="linkTarget" class="ptolemy.vergil.basic.export.html.LinkTarget" value="_lightbox">
+        <property name="icon link" class="ptolemy.vergil.basic.export.web.IconLink" value="http://general-catalog.berkeley.edu/catalog/gcc_search_sends_request/?p_dept_cd=EL%20ENG&amp;p_number=$(this.getName())">
+            <property name="linkTarget" class="ptolemy.vergil.basic.export.web.LinkTarget" value="_lightbox">
             </property>
         </property>
     </entity>
@@ -1372,14 +1372,14 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[540.0, 210.0]">
         </property>
-        <property name="IconScript" class="ptolemy.vergil.basic.export.html.IconScript" value="writeText('$title')">
-            <property name="eventType" class="ptolemy.vergil.basic.export.html.AreaEventType" value="onmouseover">
+        <property name="IconScript" class="ptolemy.vergil.basic.export.web.IconScript" value="writeText('$title')">
+            <property name="eventType" class="ptolemy.vergil.basic.export.web.AreaEventType" value="onmouseover">
             </property>
         </property>
-        <property name="title" class="ptolemy.vergil.basic.export.html.Title" value="Microfabrication Technology">
+        <property name="title" class="ptolemy.vergil.basic.export.web.Title" value="Microfabrication Technology">
         </property>
-        <property name="icon link" class="ptolemy.vergil.basic.export.html.IconLink" value="http://general-catalog.berkeley.edu/catalog/gcc_search_sends_request/?p_dept_cd=EL%20ENG&amp;p_number=$(this.getName())">
-            <property name="linkTarget" class="ptolemy.vergil.basic.export.html.LinkTarget" value="_lightbox">
+        <property name="icon link" class="ptolemy.vergil.basic.export.web.IconLink" value="http://general-catalog.berkeley.edu/catalog/gcc_search_sends_request/?p_dept_cd=EL%20ENG&amp;p_number=$(this.getName())">
+            <property name="linkTarget" class="ptolemy.vergil.basic.export.web.LinkTarget" value="_lightbox">
             </property>
         </property>
     </entity>
@@ -1392,14 +1392,14 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[530.0, 365.0]">
         </property>
-        <property name="IconScript" class="ptolemy.vergil.basic.export.html.IconScript" value="writeText('$title')">
-            <property name="eventType" class="ptolemy.vergil.basic.export.html.AreaEventType" value="onmouseover">
+        <property name="IconScript" class="ptolemy.vergil.basic.export.web.IconScript" value="writeText('$title')">
+            <property name="eventType" class="ptolemy.vergil.basic.export.web.AreaEventType" value="onmouseover">
             </property>
         </property>
-        <property name="title" class="ptolemy.vergil.basic.export.html.Title" value="Introductory Microcomputer Interfacing Laboratory">
+        <property name="title" class="ptolemy.vergil.basic.export.web.Title" value="Introductory Microcomputer Interfacing Laboratory">
         </property>
-        <property name="icon link" class="ptolemy.vergil.basic.export.html.IconLink" value="http://general-catalog.berkeley.edu/catalog/gcc_search_sends_request/?p_dept_cd=EL%20ENG&amp;p_number=$(this.getName())">
-            <property name="linkTarget" class="ptolemy.vergil.basic.export.html.LinkTarget" value="_lightbox">
+        <property name="icon link" class="ptolemy.vergil.basic.export.web.IconLink" value="http://general-catalog.berkeley.edu/catalog/gcc_search_sends_request/?p_dept_cd=EL%20ENG&amp;p_number=$(this.getName())">
+            <property name="linkTarget" class="ptolemy.vergil.basic.export.web.LinkTarget" value="_lightbox">
             </property>
         </property>
     </entity>
@@ -1410,14 +1410,14 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[535.0, 240.0]">
         </property>
-        <property name="IconScript" class="ptolemy.vergil.basic.export.html.IconScript" value="writeText('$title')">
-            <property name="eventType" class="ptolemy.vergil.basic.export.html.AreaEventType" value="onmouseover">
+        <property name="IconScript" class="ptolemy.vergil.basic.export.web.IconScript" value="writeText('$title')">
+            <property name="eventType" class="ptolemy.vergil.basic.export.web.AreaEventType" value="onmouseover">
             </property>
         </property>
-        <property name="title" class="ptolemy.vergil.basic.export.html.Title" value="Introductory Electronic Transducer Laboratory">
+        <property name="title" class="ptolemy.vergil.basic.export.web.Title" value="Introductory Electronic Transducer Laboratory">
         </property>
-        <property name="icon link" class="ptolemy.vergil.basic.export.html.IconLink" value="http://general-catalog.berkeley.edu/catalog/gcc_search_sends_request/?p_dept_cd=EL%20ENG&amp;p_number=$(this.getName())">
-            <property name="linkTarget" class="ptolemy.vergil.basic.export.html.LinkTarget" value="_lightbox">
+        <property name="icon link" class="ptolemy.vergil.basic.export.web.IconLink" value="http://general-catalog.berkeley.edu/catalog/gcc_search_sends_request/?p_dept_cd=EL%20ENG&amp;p_number=$(this.getName())">
+            <property name="linkTarget" class="ptolemy.vergil.basic.export.web.LinkTarget" value="_lightbox">
             </property>
         </property>
     </entity>
@@ -1428,14 +1428,14 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{725.0, 300.0}">
         </property>
-        <property name="IconScript" class="ptolemy.vergil.basic.export.html.IconScript" value="writeText('$title')">
-            <property name="eventType" class="ptolemy.vergil.basic.export.html.AreaEventType" value="onmouseover">
+        <property name="IconScript" class="ptolemy.vergil.basic.export.web.IconScript" value="writeText('$title')">
+            <property name="eventType" class="ptolemy.vergil.basic.export.web.AreaEventType" value="onmouseover">
             </property>
         </property>
-        <property name="title" class="ptolemy.vergil.basic.export.html.Title" value="Mechatronic Design Laboratory">
+        <property name="title" class="ptolemy.vergil.basic.export.web.Title" value="Mechatronic Design Laboratory">
         </property>
-        <property name="icon link" class="ptolemy.vergil.basic.export.html.IconLink" value="http://general-catalog.berkeley.edu/catalog/gcc_search_sends_request/?p_dept_cd=EL%20ENG&amp;p_number=$(this.getName())">
-            <property name="linkTarget" class="ptolemy.vergil.basic.export.html.LinkTarget" value="_lightbox">
+        <property name="icon link" class="ptolemy.vergil.basic.export.web.IconLink" value="http://general-catalog.berkeley.edu/catalog/gcc_search_sends_request/?p_dept_cd=EL%20ENG&amp;p_number=$(this.getName())">
+            <property name="linkTarget" class="ptolemy.vergil.basic.export.web.LinkTarget" value="_lightbox">
             </property>
         </property>
     </entity>
@@ -1446,14 +1446,14 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[610.0, 120.0]">
         </property>
-        <property name="IconScript" class="ptolemy.vergil.basic.export.html.IconScript" value="writeText('$title')">
-            <property name="eventType" class="ptolemy.vergil.basic.export.html.AreaEventType" value="onmouseover">
+        <property name="IconScript" class="ptolemy.vergil.basic.export.web.IconScript" value="writeText('$title')">
+            <property name="eventType" class="ptolemy.vergil.basic.export.web.AreaEventType" value="onmouseover">
             </property>
         </property>
-        <property name="title" class="ptolemy.vergil.basic.export.html.Title" value="Probability and Random Processes">
+        <property name="title" class="ptolemy.vergil.basic.export.web.Title" value="Probability and Random Processes">
         </property>
-        <property name="icon link" class="ptolemy.vergil.basic.export.html.IconLink" value="http://general-catalog.berkeley.edu/catalog/gcc_search_sends_request/?p_dept_cd=EL%20ENG&amp;p_number=$(this.getName())">
-            <property name="linkTarget" class="ptolemy.vergil.basic.export.html.LinkTarget" value="_lightbox">
+        <property name="icon link" class="ptolemy.vergil.basic.export.web.IconLink" value="http://general-catalog.berkeley.edu/catalog/gcc_search_sends_request/?p_dept_cd=EL%20ENG&amp;p_number=$(this.getName())">
+            <property name="linkTarget" class="ptolemy.vergil.basic.export.web.LinkTarget" value="_lightbox">
             </property>
         </property>
     </entity>
@@ -1466,14 +1466,14 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[725.0, 210.0]">
         </property>
-        <property name="IconScript" class="ptolemy.vergil.basic.export.html.IconScript" value="writeText('$title')">
-            <property name="eventType" class="ptolemy.vergil.basic.export.html.AreaEventType" value="onmouseover">
+        <property name="IconScript" class="ptolemy.vergil.basic.export.web.IconScript" value="writeText('$title')">
+            <property name="eventType" class="ptolemy.vergil.basic.export.web.AreaEventType" value="onmouseover">
             </property>
         </property>
-        <property name="title" class="ptolemy.vergil.basic.export.html.Title" value="Neural and Nonlinear Information Processing">
+        <property name="title" class="ptolemy.vergil.basic.export.web.Title" value="Neural and Nonlinear Information Processing">
         </property>
-        <property name="icon link" class="ptolemy.vergil.basic.export.html.IconLink" value="http://general-catalog.berkeley.edu/catalog/gcc_search_sends_request/?p_dept_cd=EL%20ENG&amp;p_number=$(this.getName())">
-            <property name="linkTarget" class="ptolemy.vergil.basic.export.html.LinkTarget" value="_lightbox">
+        <property name="icon link" class="ptolemy.vergil.basic.export.web.IconLink" value="http://general-catalog.berkeley.edu/catalog/gcc_search_sends_request/?p_dept_cd=EL%20ENG&amp;p_number=$(this.getName())">
+            <property name="linkTarget" class="ptolemy.vergil.basic.export.web.LinkTarget" value="_lightbox">
             </property>
         </property>
     </entity>
@@ -1486,14 +1486,14 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[730.0, 270.0]">
         </property>
-        <property name="IconScript" class="ptolemy.vergil.basic.export.html.IconScript" value="writeText('$title')">
-            <property name="eventType" class="ptolemy.vergil.basic.export.html.AreaEventType" value="onmouseover">
+        <property name="IconScript" class="ptolemy.vergil.basic.export.web.IconScript" value="writeText('$title')">
+            <property name="eventType" class="ptolemy.vergil.basic.export.web.AreaEventType" value="onmouseover">
             </property>
         </property>
-        <property name="title" class="ptolemy.vergil.basic.export.html.Title" value="Image Processing and Reconstruction Tomography">
+        <property name="title" class="ptolemy.vergil.basic.export.web.Title" value="Image Processing and Reconstruction Tomography">
         </property>
-        <property name="icon link" class="ptolemy.vergil.basic.export.html.IconLink" value="http://general-catalog.berkeley.edu/catalog/gcc_search_sends_request/?p_dept_cd=EL%20ENG&amp;p_number=$(this.getName())">
-            <property name="linkTarget" class="ptolemy.vergil.basic.export.html.LinkTarget" value="_lightbox">
+        <property name="icon link" class="ptolemy.vergil.basic.export.web.IconLink" value="http://general-catalog.berkeley.edu/catalog/gcc_search_sends_request/?p_dept_cd=EL%20ENG&amp;p_number=$(this.getName())">
+            <property name="linkTarget" class="ptolemy.vergil.basic.export.web.LinkTarget" value="_lightbox">
             </property>
         </property>
     </entity>
@@ -1504,14 +1504,14 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[625.0, 360.0]">
         </property>
-        <property name="IconScript" class="ptolemy.vergil.basic.export.html.IconScript" value="writeText('$title')">
-            <property name="eventType" class="ptolemy.vergil.basic.export.html.AreaEventType" value="onmouseover">
+        <property name="IconScript" class="ptolemy.vergil.basic.export.web.IconScript" value="writeText('$title')">
+            <property name="eventType" class="ptolemy.vergil.basic.export.web.AreaEventType" value="onmouseover">
             </property>
         </property>
-        <property name="title" class="ptolemy.vergil.basic.export.html.Title" value="Introduction to Embedded Systems">
+        <property name="title" class="ptolemy.vergil.basic.export.web.Title" value="Introduction to Embedded Systems">
         </property>
-        <property name="icon link" class="ptolemy.vergil.basic.export.html.IconLink" value="http://general-catalog.berkeley.edu/catalog/gcc_search_sends_request/?p_dept_cd=EL%20ENG&amp;p_number=$(this.getName())">
-            <property name="linkTarget" class="ptolemy.vergil.basic.export.html.LinkTarget" value="_lightbox">
+        <property name="icon link" class="ptolemy.vergil.basic.export.web.IconLink" value="http://general-catalog.berkeley.edu/catalog/gcc_search_sends_request/?p_dept_cd=EL%20ENG&amp;p_number=$(this.getName())">
+            <property name="linkTarget" class="ptolemy.vergil.basic.export.web.LinkTarget" value="_lightbox">
             </property>
         </property>
     </entity>
@@ -1522,14 +1522,14 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[660.0, 420.0]">
         </property>
-        <property name="IconScript" class="ptolemy.vergil.basic.export.html.IconScript" value="writeText('$title')">
-            <property name="eventType" class="ptolemy.vergil.basic.export.html.AreaEventType" value="onmouseover">
+        <property name="IconScript" class="ptolemy.vergil.basic.export.web.IconScript" value="writeText('$title')">
+            <property name="eventType" class="ptolemy.vergil.basic.export.web.AreaEventType" value="onmouseover">
             </property>
         </property>
-        <property name="title" class="ptolemy.vergil.basic.export.html.Title" value="Computer Security">
+        <property name="title" class="ptolemy.vergil.basic.export.web.Title" value="Computer Security">
         </property>
-        <property name="icon link" class="ptolemy.vergil.basic.export.html.IconLink" value="http://general-catalog.berkeley.edu/catalog/gcc_search_sends_request/?p_dept_cd=COMPSCI&amp;p_number=$(this.getName())">
-            <property name="linkTarget" class="ptolemy.vergil.basic.export.html.LinkTarget" value="_lightbox">
+        <property name="icon link" class="ptolemy.vergil.basic.export.web.IconLink" value="http://general-catalog.berkeley.edu/catalog/gcc_search_sends_request/?p_dept_cd=COMPSCI&amp;p_number=$(this.getName())">
+            <property name="linkTarget" class="ptolemy.vergil.basic.export.web.LinkTarget" value="_lightbox">
             </property>
         </property>
     </entity>
@@ -1540,14 +1540,14 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[530.0, 405.0]">
         </property>
-        <property name="IconScript" class="ptolemy.vergil.basic.export.html.IconScript" value="writeText('$title')">
-            <property name="eventType" class="ptolemy.vergil.basic.export.html.AreaEventType" value="onmouseover">
+        <property name="IconScript" class="ptolemy.vergil.basic.export.web.IconScript" value="writeText('$title')">
+            <property name="eventType" class="ptolemy.vergil.basic.export.web.AreaEventType" value="onmouseover">
             </property>
         </property>
-        <property name="title" class="ptolemy.vergil.basic.export.html.Title" value="Optimization Models in Engineering">
+        <property name="title" class="ptolemy.vergil.basic.export.web.Title" value="Optimization Models in Engineering">
         </property>
-        <property name="icon link" class="ptolemy.vergil.basic.export.html.IconLink" value="http://general-catalog.berkeley.edu/catalog/gcc_search_sends_request/?p_dept_cd=EL%20ENG&amp;p_number=$(this.getName())">
-            <property name="linkTarget" class="ptolemy.vergil.basic.export.html.LinkTarget" value="_lightbox">
+        <property name="icon link" class="ptolemy.vergil.basic.export.web.IconLink" value="http://general-catalog.berkeley.edu/catalog/gcc_search_sends_request/?p_dept_cd=EL%20ENG&amp;p_number=$(this.getName())">
+            <property name="linkTarget" class="ptolemy.vergil.basic.export.web.LinkTarget" value="_lightbox">
             </property>
         </property>
     </entity>
@@ -1558,14 +1558,14 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[505.0, 120.0]">
         </property>
-        <property name="IconScript" class="ptolemy.vergil.basic.export.html.IconScript" value="writeText('$title')">
-            <property name="eventType" class="ptolemy.vergil.basic.export.html.AreaEventType" value="onmouseover">
+        <property name="IconScript" class="ptolemy.vergil.basic.export.web.IconScript" value="writeText('$title')">
+            <property name="eventType" class="ptolemy.vergil.basic.export.web.AreaEventType" value="onmouseover">
             </property>
         </property>
-        <property name="title" class="ptolemy.vergil.basic.export.html.Title" value="Fundamentals of Photovoltaic Devices">
+        <property name="title" class="ptolemy.vergil.basic.export.web.Title" value="Fundamentals of Photovoltaic Devices">
         </property>
-        <property name="icon link" class="ptolemy.vergil.basic.export.html.IconLink" value="http://general-catalog.berkeley.edu/catalog/gcc_search_sends_request/?p_dept_cd=EL%20ENG&amp;p_number=$(this.getName())">
-            <property name="linkTarget" class="ptolemy.vergil.basic.export.html.LinkTarget" value="_lightbox">
+        <property name="icon link" class="ptolemy.vergil.basic.export.web.IconLink" value="http://general-catalog.berkeley.edu/catalog/gcc_search_sends_request/?p_dept_cd=EL%20ENG&amp;p_number=$(this.getName())">
+            <property name="linkTarget" class="ptolemy.vergil.basic.export.web.LinkTarget" value="_lightbox">
             </property>
         </property>
     </entity>
@@ -1576,14 +1576,14 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[425.0, 95.0]">
         </property>
-        <property name="IconScript" class="ptolemy.vergil.basic.export.html.IconScript" value="writeText('$title')">
-            <property name="eventType" class="ptolemy.vergil.basic.export.html.AreaEventType" value="onmouseover">
+        <property name="IconScript" class="ptolemy.vergil.basic.export.web.IconScript" value="writeText('$title')">
+            <property name="eventType" class="ptolemy.vergil.basic.export.web.AreaEventType" value="onmouseover">
             </property>
         </property>
-        <property name="title" class="ptolemy.vergil.basic.export.html.Title" value="Introduction to Microelectromechanical Systems">
+        <property name="title" class="ptolemy.vergil.basic.export.web.Title" value="Introduction to Microelectromechanical Systems">
         </property>
-        <property name="icon link" class="ptolemy.vergil.basic.export.html.IconLink" value="http://general-catalog.berkeley.edu/catalog/gcc_search_sends_request/?p_dept_cd=EL%20ENG&amp;p_number=$(this.getName())">
-            <property name="linkTarget" class="ptolemy.vergil.basic.export.html.LinkTarget" value="_lightbox">
+        <property name="icon link" class="ptolemy.vergil.basic.export.web.IconLink" value="http://general-catalog.berkeley.edu/catalog/gcc_search_sends_request/?p_dept_cd=EL%20ENG&amp;p_number=$(this.getName())">
+            <property name="linkTarget" class="ptolemy.vergil.basic.export.web.LinkTarget" value="_lightbox">
             </property>
         </property>
     </entity>
@@ -1594,14 +1594,14 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[735.0, 510.0]">
         </property>
-        <property name="IconScript" class="ptolemy.vergil.basic.export.html.IconScript" value="writeText('$title')">
-            <property name="eventType" class="ptolemy.vergil.basic.export.html.AreaEventType" value="onmouseover">
+        <property name="IconScript" class="ptolemy.vergil.basic.export.web.IconScript" value="writeText('$title')">
+            <property name="eventType" class="ptolemy.vergil.basic.export.web.AreaEventType" value="onmouseover">
             </property>
         </property>
-        <property name="title" class="ptolemy.vergil.basic.export.html.Title" value="Combinatorics and Discrete Probability">
+        <property name="title" class="ptolemy.vergil.basic.export.web.Title" value="Combinatorics and Discrete Probability">
         </property>
-        <property name="icon link" class="ptolemy.vergil.basic.export.html.IconLink" value="http://general-catalog.berkeley.edu/catalog/gcc_search_sends_request/?p_dept_cd=COMPSCI&amp;p_number=$(this.getName())">
-            <property name="linkTarget" class="ptolemy.vergil.basic.export.html.LinkTarget" value="_lightbox">
+        <property name="icon link" class="ptolemy.vergil.basic.export.web.IconLink" value="http://general-catalog.berkeley.edu/catalog/gcc_search_sends_request/?p_dept_cd=COMPSCI&amp;p_number=$(this.getName())">
+            <property name="linkTarget" class="ptolemy.vergil.basic.export.web.LinkTarget" value="_lightbox">
             </property>
         </property>
     </entity>
@@ -1612,14 +1612,14 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[735.0, 540.0]">
         </property>
-        <property name="IconScript" class="ptolemy.vergil.basic.export.html.IconScript" value="writeText('$title')">
-            <property name="eventType" class="ptolemy.vergil.basic.export.html.AreaEventType" value="onmouseover">
+        <property name="IconScript" class="ptolemy.vergil.basic.export.web.IconScript" value="writeText('$title')">
+            <property name="eventType" class="ptolemy.vergil.basic.export.web.AreaEventType" value="onmouseover">
             </property>
         </property>
-        <property name="title" class="ptolemy.vergil.basic.export.html.Title" value="Algorithms for Computational Biology">
+        <property name="title" class="ptolemy.vergil.basic.export.web.Title" value="Algorithms for Computational Biology">
         </property>
-        <property name="icon link" class="ptolemy.vergil.basic.export.html.IconLink" value="http://general-catalog.berkeley.edu/catalog/gcc_search_sends_request/?p_dept_cd=COMPSCI&amp;p_number=$(this.getName())">
-            <property name="linkTarget" class="ptolemy.vergil.basic.export.html.LinkTarget" value="_lightbox">
+        <property name="icon link" class="ptolemy.vergil.basic.export.web.IconLink" value="http://general-catalog.berkeley.edu/catalog/gcc_search_sends_request/?p_dept_cd=COMPSCI&amp;p_number=$(this.getName())">
+            <property name="linkTarget" class="ptolemy.vergil.basic.export.web.LinkTarget" value="_lightbox">
             </property>
         </property>
     </entity>
@@ -1630,14 +1630,14 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[735.0, 570.0]">
         </property>
-        <property name="IconScript" class="ptolemy.vergil.basic.export.html.IconScript" value="writeText('$title')">
-            <property name="eventType" class="ptolemy.vergil.basic.export.html.AreaEventType" value="onmouseover">
+        <property name="IconScript" class="ptolemy.vergil.basic.export.web.IconScript" value="writeText('$title')">
+            <property name="eventType" class="ptolemy.vergil.basic.export.web.AreaEventType" value="onmouseover">
             </property>
         </property>
-        <property name="title" class="ptolemy.vergil.basic.export.html.Title" value="Quantum Information Science and Technology">
+        <property name="title" class="ptolemy.vergil.basic.export.web.Title" value="Quantum Information Science and Technology">
         </property>
-        <property name="icon link" class="ptolemy.vergil.basic.export.html.IconLink" value="http://general-catalog.berkeley.edu/catalog/gcc_search_sends_request/?p_dept_cd=COMPSCI&amp;p_number=$(this.getName())">
-            <property name="linkTarget" class="ptolemy.vergil.basic.export.html.LinkTarget" value="_lightbox">
+        <property name="icon link" class="ptolemy.vergil.basic.export.web.IconLink" value="http://general-catalog.berkeley.edu/catalog/gcc_search_sends_request/?p_dept_cd=COMPSCI&amp;p_number=$(this.getName())">
+            <property name="linkTarget" class="ptolemy.vergil.basic.export.web.LinkTarget" value="_lightbox">
             </property>
         </property>
     </entity>
@@ -1648,14 +1648,14 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[530.0, 330.0]">
         </property>
-        <property name="IconScript" class="ptolemy.vergil.basic.export.html.IconScript" value="writeText('$title')">
-            <property name="eventType" class="ptolemy.vergil.basic.export.html.AreaEventType" value="onmouseover">
+        <property name="IconScript" class="ptolemy.vergil.basic.export.web.IconScript" value="writeText('$title')">
+            <property name="eventType" class="ptolemy.vergil.basic.export.web.AreaEventType" value="onmouseover">
             </property>
         </property>
-        <property name="title" class="ptolemy.vergil.basic.export.html.Title" value="Introduction to Electric Power Systems">
+        <property name="title" class="ptolemy.vergil.basic.export.web.Title" value="Introduction to Electric Power Systems">
         </property>
-        <property name="icon link" class="ptolemy.vergil.basic.export.html.IconLink" value="http://general-catalog.berkeley.edu/catalog/gcc_search_sends_request/?p_dept_cd=EL%20ENG&amp;p_number=$(this.getName())">
-            <property name="linkTarget" class="ptolemy.vergil.basic.export.html.LinkTarget" value="_lightbox">
+        <property name="icon link" class="ptolemy.vergil.basic.export.web.IconLink" value="http://general-catalog.berkeley.edu/catalog/gcc_search_sends_request/?p_dept_cd=EL%20ENG&amp;p_number=$(this.getName())">
+            <property name="linkTarget" class="ptolemy.vergil.basic.export.web.LinkTarget" value="_lightbox">
             </property>
         </property>
     </entity>
@@ -1666,14 +1666,14 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{615.0, 330.0}">
         </property>
-        <property name="IconScript" class="ptolemy.vergil.basic.export.html.IconScript" value="writeText('$title')">
-            <property name="eventType" class="ptolemy.vergil.basic.export.html.AreaEventType" value="onmouseover">
+        <property name="IconScript" class="ptolemy.vergil.basic.export.web.IconScript" value="writeText('$title')">
+            <property name="eventType" class="ptolemy.vergil.basic.export.web.AreaEventType" value="onmouseover">
             </property>
         </property>
-        <property name="title" class="ptolemy.vergil.basic.export.html.Title" value="Introduction to Electric Power Systems">
+        <property name="title" class="ptolemy.vergil.basic.export.web.Title" value="Introduction to Electric Power Systems">
         </property>
-        <property name="icon link" class="ptolemy.vergil.basic.export.html.IconLink" value="http://general-catalog.berkeley.edu/catalog/gcc_search_sends_request/?p_dept_cd=EL%20ENG&amp;p_number=$(this.getName())">
-            <property name="linkTarget" class="ptolemy.vergil.basic.export.html.LinkTarget" value="_lightbox">
+        <property name="icon link" class="ptolemy.vergil.basic.export.web.IconLink" value="http://general-catalog.berkeley.edu/catalog/gcc_search_sends_request/?p_dept_cd=EL%20ENG&amp;p_number=$(this.getName())">
+            <property name="linkTarget" class="ptolemy.vergil.basic.export.web.LinkTarget" value="_lightbox">
             </property>
         </property>
     </entity>
