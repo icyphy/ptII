@@ -48,6 +48,7 @@ the time of the top level director.
 @since Ptolemy II 8.0
 @Pt.ProposedRating Yellow (jiazou)
 @Pt.AcceptedRating
+@deprecated Use CurrentTime with useLocalTime unchecked.
 */
 public class TopLevelCurrentTime extends TimedSource {
     /** Construct an actor with the given container and name.

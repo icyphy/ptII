@@ -14,6 +14,7 @@
       <property name="displayWidth" value="60"/>
    </property>
 </entity>
+<!-- The following actor doesn't work as advertised.
 <entity name="ConstPlaceable" class="ptolemy.actor.lib.gui.ConstPlaceable">
 <doc>Create a constant sequence that is visible in a GUI.</doc>
    <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
@@ -21,6 +22,7 @@
       <property name="displayWidth" value="60"/>
    </property>
 </entity>
+-->
 <entity name="StringConst" class="ptolemy.actor.lib.StringConst">
 <doc>Create a constant sequence with a string value.</doc>
    <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
