@@ -60,9 +60,7 @@ JSRCS = \
 	TokenReader.java
 
 OTHER_FILES_TO_BE_JARED = \
-	io.xml \
-	'TokenReader$$1.class' \
-	'TokenReader$$GLBFunction.class'
+	io.xml
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
@@ -76,7 +74,9 @@ MISC_FILES = test
 OPTIONAL_FILES = \
 	demo \
         doc \
-	comm
+	comm \
+	'TokenReader$$1.class' \
+	'TokenReader$$GLBFunction.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 
