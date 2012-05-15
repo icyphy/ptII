@@ -258,6 +258,22 @@ public class DDFDirector extends Director {
         }
     }
 
+    /** Clone the director into the specified workspace. This calls the
+     *  base class and then sets the attribute public members to refer
+     *  to the attributes of the new director.
+     *  @param workspace The workspace for the new director.
+     *  @return A new director.
+     *  @exception CloneNotSupportedException If a derived class contains
+     *  an attribute that cannot be cloned.
+     */
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        DDFDirector newObject = (DDFDirector) super.clone(workspace);
+        newObject._actorsInfo = new HashMap();
+        newObject._actorsToCheckNumberOfFirings = new LinkedList();
+        newObject._disabledActors = new HashSet();
+        return newObject;
+    }
+
     /** Set the flag indicating whether type resolution is disabled or not.
      *  This method is used in an ActorRecursion actor. When a composite
      *  actor is cloned into an ActorRecursion actor, type compatibility

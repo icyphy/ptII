@@ -39,6 +39,7 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
+import ptolemy.kernel.util.Workspace;
 
 ///////////////////////////////////////////////////////////////////
 //// ModelRepaintController
@@ -89,6 +90,25 @@ public class ModelRepaintController extends Attribute {
         SingletonParameter hideName = new SingletonParameter(this, "_hideName");
         hideName.setToken(BooleanToken.TRUE);
         hideName.setVisibility(Settable.EXPERT);
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
+
+    /** Clone the controller into the specified workspace. This calls the
+     *  base class and then sets the attribute public members to refer
+     *  to the attributes of the new controller
+     *  @param workspace The workspace for the new controller
+     *  @return A new controller
+     *  @exception CloneNotSupportedException If a derived class contains
+     *  an attribute that cannot be cloned.
+     */
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        ModelRepaintController newObject = (ModelRepaintController) super.clone(workspace);
+        newObject._executable = null;
+        newObject._repaintOnPostFire = (Parameter)newObject.getAttribute("repaintOnPostFire");
+        newObject._repaintOnWrapUp = (Parameter)newObject.getAttribute("repaintOnWrapUp");
+        return newObject;
     }
 
     /** Specify the container NamedObj, adding this attribute to the

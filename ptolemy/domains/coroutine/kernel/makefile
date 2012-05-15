@@ -71,13 +71,20 @@ MISC_FILES =	$(DIRS)
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
-OPTIONAL_FILES = 
+OPTIONAL_FILES = \
+	'ControlEntryToken$$ControlType.class' \
+	'ControlEntryToken$$EntryLocation.class' \
+	'ControlExitToken$$ControlType.class' \
+	'ControlExitToken$$ExitLocation.class' \
+	'ControlToken$$ControlType.class' \
+	'ControlToken$$Location.class' \
+	'CoroutineDirector$$InternalEntryLocation.class' \
+	'CoroutineDirector$$InternalExitLocation.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 
 all: jclass
 install: all jars
-
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk

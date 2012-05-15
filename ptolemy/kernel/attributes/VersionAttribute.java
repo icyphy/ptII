@@ -38,6 +38,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.StringAttribute;
+import ptolemy.kernel.util.Workspace;
 
 ///////////////////////////////////////////////////////////////////
 //// VersionAttribute
@@ -114,6 +115,20 @@ public class VersionAttribute extends StringAttribute implements Comparable {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+
+    /** Clone the attribute into the specified workspace. This calls the
+     *  base class and then sets the attribute public members to refer
+     *  to the attributes of the new attribute
+     *  @param workspace The workspace for the new attribute
+     *  @return A new director.
+     *  @exception CloneNotSupportedException If a derived class contains
+     *  an attribute that cannot be cloned.
+     */
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        VersionAttribute newObject = (VersionAttribute) super.clone(workspace);
+        newObject._tupleList = new LinkedList();
+        return newObject;
+    }
 
     /** Compare the value of this VersionAttribute against the argument
      *  according to the VersionAttribute syntax and padding rules.  For

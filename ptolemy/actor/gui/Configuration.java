@@ -292,7 +292,7 @@ public class Configuration extends CompositeEntity implements
         Configuration cloneConfiguration = (Configuration) clone();
 
         // Check TypedAtomicActors and Attributes
-        Iterator containedObjects = containedObjectsIterator();
+        Iterator containedObjects = deepNamedObjList().iterator();
         while (containedObjects.hasNext()) {
             NamedObj containedObject = (NamedObj) containedObjects.next();
             // Check the clone fields on AtomicActors and Attributes.
@@ -301,9 +301,25 @@ public class Configuration extends CompositeEntity implements
             if (containedObject instanceof TypedAtomicActor
                     || containedObject instanceof Attribute) {
                 try {
-                    results.append(_checkCloneFields(containedObject));
+                    results.append(checkCloneFields(containedObject));
                 } catch (Throwable throwable) {
                     throw new InternalErrorException(containedObject, null,
+                            throwable, "The check for "
+                                    + "clone methods properly setting "
+                                    + "the fields failed.");
+                }
+            }
+        }
+
+        containedObjects = deepCompositeEntityList().iterator();
+        for (CompositeEntity composite : deepCompositeEntityList()) {
+            Iterator attributes = composite.attributeList().iterator();
+            while (attributes.hasNext()) {
+                Attribute attribute = (Attribute)attributes.next();
+                try {
+                    results.append(checkCloneFields(attribute));
+                } catch (Throwable throwable) {
+                    throw new InternalErrorException(attribute, null,
                             throwable, "The check for "
                                     + "clone methods properly setting "
                                     + "the fields failed.");
@@ -319,7 +335,7 @@ public class Configuration extends CompositeEntity implements
             if (entity instanceof TypedAtomicActor) {
                 // Check atomic actors for clone problems
                 try {
-                    results.append(_checkCloneFields((TypedAtomicActor) entity));
+                    results.append(checkCloneFields((TypedAtomicActor) entity));
                 } catch (Throwable throwable) {
                     throw new InternalErrorException((TypedAtomicActor) entity,
                             null, throwable, "The check for "
@@ -471,6 +487,51 @@ public class Configuration extends CompositeEntity implements
                 }
             }
         }
+        return results.toString();
+    }
+
+    /** Check that clone(Workspace) method properly sets the fields.
+     *  In a cloned Director, Attribute or Actor, all
+     *  private fields should either point to null or to
+     *  distinct objects.
+     *  @param namedObj The NamedObj, usually a Director, Attribute
+     *  or actor to be checked.
+     *  @return A string containing an error message if there is a problem,
+     *  otherwise return the empty string.
+     *  @exception CloneNotSupportedException If namedObj does not support
+     *  clone(Workspace).
+     *  @exception IllegalAccessException If there is a problem getting
+     *  a field.
+     *  @exception ClassNotFoundException If a class cannot be found.
+     */
+    public static String checkCloneFields(NamedObj namedObj)
+            throws CloneNotSupportedException, IllegalAccessException,
+            ClassNotFoundException {
+        NamedObj namedObjClone = (NamedObj) namedObj.clone(new Workspace());
+
+        StringBuffer results = new StringBuffer();
+        Class namedObjClass = namedObj.getClass();
+
+        // We check only the public, protected and private fields
+        // declared in this class, but not inherited fields.
+        Field[] namedObjFields = namedObjClass.getDeclaredFields();
+        for (int i = 0; i < namedObjFields.length; i++) {
+            Field field = namedObjFields[i];
+            results.append(_checkCloneField(namedObj, namedObjClone, field));
+        }
+
+//         // Get the fields of the parent classes
+//         Class clazz = namedObjClass;
+//         while (clazz != NamedObj.class && clazz != null) {
+//             System.out.println("==== Class: " + clazz.getName());
+//             clazz = clazz.getSuperclass();
+//             namedObjFields = clazz.getDeclaredFields();
+//             for (int i = 0; i < namedObjFields.length; i++) {
+//                 Field field = namedObjFields[i];
+//                 field.setAccessible(true);        
+//                 results.append(_checkCloneField(namedObj, namedObjClone, field));
+//             }
+//         }
         return results.toString();
     }
 
@@ -1100,6 +1161,9 @@ public class Configuration extends CompositeEntity implements
      *  distinct objects.
      *  @param namedObj The NamedObj, usually a Director, Attribute
      *  or actor to be checked.
+     *  @param namedObjClone the clone of the namedObj, created with
+     *  clone(new Workspace())
+     *  @param field The field to be checked.
      *  @return A string containing an error message if there is a problem,
      *  otherwise return the empty string.
      *  @exception CloneNotSupportedException If namedObj does not support
@@ -1108,104 +1172,97 @@ public class Configuration extends CompositeEntity implements
      *  a field.
      *  @exception ClassNotFoundException If a class cannot be found.
      */
-    private String _checkCloneFields(NamedObj namedObj)
+    private static String _checkCloneField(NamedObj namedObj, NamedObj namedObjClone, Field field) 
             throws CloneNotSupportedException, IllegalAccessException,
             ClassNotFoundException {
-        NamedObj namedObjClone = (NamedObj) namedObj.clone(new Workspace());
-
-        StringBuffer results = new StringBuffer();
-
         Class namedObjClass = namedObj.getClass();
-        // We check only the fields declared in this class.
-        // FIXME: should we check all fields?
-        Field[] namedObjFields = namedObjClass.getDeclaredFields();
-        for (int i = 0; i < namedObjFields.length; i++) {
-            Field field = namedObjFields[i];
-            // Tell the security manager we want to read private fields.
-            // This will fail in an applet.
-            field.setAccessible(true);
-            Class fieldType = field.getType();
-            if (!fieldType.isPrimitive()
-                    && field.get(namedObj) != null
-                    && !Modifier.isStatic(field.getModifiers())
-                    /*&& !fieldType.isArray()*/
-                    // Skip fields introduced by javascope
-                    && !fieldType.toString().equals(
-                            "COM.sun.suntest.javascope.database.CoverageUnit")
-                    && !field.getName().equals("js$p")
-                    // Skip fields introduced by backtracking
-                    && !(field.getName().indexOf("$RECORD$") != -1)
-                    && !(field.getName().indexOf("$RECORDS") != -1)
-                    && !(field.getName().indexOf("$CHECKPOINT") != -1)
-		    // Skip dependency injection fields
-		    && !(field.getName().indexOf("_implementation")!= -1) 
-                    // Skip immutables
-                    && !fieldType.equals(java.net.InetAddress.class)
-                    && !fieldType.equals(java.util.regex.Pattern.class)
-                    && !fieldType.equals(String.class)
-                    && !fieldType.equals(Token.class)
-                    && !fieldType.equals(Settable.Visibility.class)) {
+        StringBuffer results = new StringBuffer();
+        // Tell the security manager we want to read private fields.
+        // This will fail in an applet.
+        field.setAccessible(true);
+        Class fieldType = field.getType();
+        if (!fieldType.isPrimitive()
+                && field.get(namedObj) != null
+                && !Modifier.isStatic(field.getModifiers())
+                /*&& !fieldType.isArray()*/
+                // Skip fields introduced by javascope
+                && !fieldType.toString().equals(
+                        "COM.sun.suntest.javascope.database.CoverageUnit")
+                && !field.getName().equals("js$p")
+                // Skip fields introduced by backtracking
+                && !(field.getName().indexOf("$RECORD$") != -1)
+                && !(field.getName().indexOf("$RECORDS") != -1)
+                && !(field.getName().indexOf("$CHECKPOINT") != -1)
+                // Skip dependency injection fields
+                && !(field.getName().indexOf("_implementation")!= -1) 
+                // Skip immutables
+                && !fieldType.equals(java.net.InetAddress.class)
+                && !fieldType.equals(java.util.regex.Pattern.class)
+                && !fieldType.equals(String.class)
+                && !fieldType.equals(Token.class)
+                && !fieldType.equals(Settable.Visibility.class)) {
 
-                // If an object is equal and the default hashCode() from
-                // Object is the same, then we have a problem.
-                if ((field.get(namedObj)).equals(field.get(namedObjClone))
-                        && (System.identityHashCode(field.get(namedObj)) == System
-                                .identityHashCode(field.get(namedObjClone)))) {
+            // If an object is equal and the default hashCode() from
+            // Object is the same, then we have a problem.
+            if ((field.get(namedObj)).equals(field.get(namedObjClone))
+                    && (System.identityHashCode(field.get(namedObj)) == System
+                            .identityHashCode(field.get(namedObjClone)))) {
 
-                    // Determine what code should go in clone(W)
-                    String assignment = field.getName();
-                    // FIXME: extend this to more types
-                    if (Class.forName("ptolemy.kernel.Port").isAssignableFrom(
-                            fieldType)) {
-                        assignment = ".getPort(\"" + assignment + "\")";
-                        //                       } else if (fieldType.isInstance( new Attribute())) {
-                    } else if (Class.forName("ptolemy.kernel.util.Attribute")
-                            .isAssignableFrom(fieldType)) {
-                        Attribute fieldAttribute = (Attribute) field
-                                .get(namedObjClone);
+                // Determine what code should go in clone(W)
+                String assignment = field.getName();
+                // FIXME: extend this to more types
+                if (Class.forName("ptolemy.kernel.Port").isAssignableFrom(
+                                fieldType)) {
+                    assignment = ".getPort(\"" + assignment + "\")";
+                    //                       } else if (fieldType.isInstance( new Attribute())) {
+                } else if (Class.forName("ptolemy.kernel.util.Attribute")
+                        .isAssignableFrom(fieldType)) {
+                    Attribute fieldAttribute = (Attribute) field
+                        .get(namedObjClone);
 
-                        if (fieldAttribute.getContainer() != namedObjClone) {
-                            // If the attribute is actually contained by a Port
-                            // and not by the AtomicActor, then get its value.
-                            // SDF actors that have ports that have
-                            // tokenConsumptionRate and tokenProductionRate
-                            // such as ConvolutionalCoder need this.
-                            assignment = "."
-                                    + fieldAttribute.getContainer().getName()
-                                    + ".getAttribute(\""
-                                    + fieldAttribute.getName() + "\")";
-                        } else {
-                            assignment = ".getAttribute(\"" + assignment
-                                    + "\")";
-                        }
+                    if (fieldAttribute.getContainer() != namedObjClone) {
+                        // If the attribute is actually contained by a Port
+                        // and not by the AtomicActor, then get its value.
+                        // SDF actors that have ports that have
+                        // tokenConsumptionRate and tokenProductionRate
+                        // such as ConvolutionalCoder need this.
+                        assignment = "."
+                            + fieldAttribute.getContainer().getName()
+                            + ".getAttribute(\""
+                            + fieldAttribute.getName() + "\")";
                     } else {
-                        assignment = "\n\t/* Get the object method "
-                                + "or null?  */ " + assignment;
+                        assignment = ".getAttribute(\"" + assignment
+                            + "\")";
                     }
-
-                    String shortClassName = field
-                            .getType()
-                            .getName()
-                            .substring(
-                                    field.getType().getName().lastIndexOf(".") + 1);
-
-                    results.append("The " + field.getName() + " "
-                            + field.getType().getName() + " field"
-                            + "\n\tin the clone of \""
-                            + namedObjClass.getName()
-                            + "\"\n\tdoes not point to an "
-                            + "object distinct from the "
-                            + "master.  \n\tThis may cause problems with "
-                            + "actor oriented classes."
-                            + "\n\tThe clone(Workspace) "
-                            + "method should have a line "
-                            + "like:\n newObject." + field.getName() + " = ("
-                            + shortClassName + ")newObject" + assignment
-                            + ";\n");
+                } else {
+                    assignment = "\n\t/* Get the object method "
+                        + "or null?  */ " + assignment;
                 }
+
+                String shortClassName = field
+                    .getType()
+                    .getName()
+                    .substring(
+                            field.getType().getName().lastIndexOf(".") + 1);
+
+                results.append("The " + field.getName() + " "
+                        + field.getType().getName() + " field"
+                        + "\n\tin the clone of \""
+                        + namedObjClass.getName()
+                        + "\"\n\tdoes not point to an "
+                        + "object distinct from the "
+                        + "master.  \n\tThis may cause problems with "
+                        + "actor oriented classes."
+                        + "\n\tThe clone(Workspace) "
+                        + "method should have a line "
+                        + "like:\n newObject." + field.getName() + " = ("
+                        + shortClassName + ")newObject" + assignment
+                        + ";\n");
             }
+
         }
         return results.toString();
+
     }
 
     /** Return an identifier for the specified effigy based on its

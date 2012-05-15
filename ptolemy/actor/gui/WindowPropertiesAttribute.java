@@ -46,6 +46,7 @@ import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
+import ptolemy.kernel.util.Workspace;
 
 ///////////////////////////////////////////////////////////////////
 //// WindowPropertiesAttribute
@@ -98,6 +99,20 @@ public class WindowPropertiesAttribute extends Parameter implements
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+
+    /** Clone the attribute into the specified workspace. This calls the
+     *  base class and then sets the attribute public members to refer
+     *  to the attributes of the new attribute
+     *  @param workspace The workspace for the new attribute
+     *  @return A new director.
+     *  @exception CloneNotSupportedException If a derived class contains
+     *  an attribute that cannot be cloned.
+     */
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        WindowPropertiesAttribute newObject = (WindowPropertiesAttribute) super.clone(workspace);
+        newObject._listeningTo = new WeakReference<Frame>(null);
+        return newObject;
+    }
 
     /** Do nothing. This method is
      *  invoked when the component has been made invisible.

@@ -207,6 +207,8 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
         newObject._controllerVersion = -1;
         newObject._localReceiverMaps = new HashMap();
         newObject._localReceiverMapsVersion = -1;
+        newObject._stateRefinementsToPostfire = new LinkedList<Actor>();
+        newObject._transitionRefinementsToPostfire = new LinkedList<Actor>();
         return newObject;
     }
 

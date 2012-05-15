@@ -43,6 +43,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 import ptolemy.util.MessageHandler;
 
+
 ///////////////////////////////////////////////////////////////////
 //// RendezvousDirector
 
@@ -108,6 +109,19 @@ public class RendezvousDirector extends CompositeProcessDirector {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    /** Clone the director into the specified workspace. This calls the
+     *  base class and then sets the attribute public members to refer
+     *  to the attributes of the new director.
+     *  @param workspace The workspace for the new director.
+     *  @return A new director.
+     *  @exception CloneNotSupportedException If a derived class contains
+     *  an attribute that cannot be cloned.
+     */
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        RendezvousDirector newObject = (RendezvousDirector) super.clone(workspace);
+        newObject._resultMaps = new HashMap();
+        return newObject;
+    }
     /** Return a new instance of RendezvousReceiver compatible with
      *  this director.
      *  @return A new instance of RendezvousReceiver.
