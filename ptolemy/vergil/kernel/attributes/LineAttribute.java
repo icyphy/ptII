@@ -37,6 +37,7 @@ import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
+import ptolemy.kernel.util.Workspace;
 
 ///////////////////////////////////////////////////////////////////
 //// LineAttribute
@@ -120,13 +121,35 @@ public class LineAttribute extends ShapeAttribute {
         }
     }
 
+    /** Clone the object into the specified workspace. The new object is
+     *  <i>not</i> added to the directory of that workspace (you must do this
+     *  yourself if you want it there).
+     *  The result is an object with no container.
+     *  @param workspace The workspace for the cloned object.
+     *  @exception CloneNotSupportedException Not thrown in this base class
+     *  @return The new Attribute.
+     */
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        LineAttribute newObject = (LineAttribute) super.clone(workspace);
+
+        // The cloned icon ends up referring to the clonee's shape.
+        // We need to fix that here.
+        try {
+            newObject._icon.attributeChanged(x);
+        } catch (IllegalActionException e) {
+            // Should not occur.
+            throw new CloneNotSupportedException(e.getMessage());
+        }
+        return newObject;
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
     /** Return a line.
      *  @return A line.
      */
-    public Shape _getDefaultShape() {
+    protected Shape _getDefaultShape() {
         return new Line2D.Double(0.0, 0.0, 20.0, 20.0);
     }
 }
