@@ -1198,8 +1198,12 @@ public class Configuration extends CompositeEntity implements
                 // Skip immutables
                 && !fieldType.equals(java.net.InetAddress.class)
                 && !fieldType.equals(java.util.regex.Pattern.class)
+                // SharedParameter has a _containerClass field
+                && !fieldType.equals(Class.class)
                 && !fieldType.equals(String.class)
                 && !fieldType.equals(Token.class)
+                // Variable has various type fields
+                && !fieldType.equals(ptolemy.data.type.Type.class)
                 && !fieldType.equals(Settable.Visibility.class)) {
 
             // If an object is equal and the default hashCode() from
