@@ -95,7 +95,7 @@ bcvtbModels.txt: $(ROOT)/ptolemy/actor/gui/HTMLAbout.class ../doc/completeDemosB
 	mv $@.sorted $@
 
 ../doc/completeDemosBcvtb.htm: ../doc/completeDemos.htm
-	(cd ../doc; $(MAKE) completeDemosBcvtb.htm
+	(cd ../doc; $(MAKE) completeDemosBcvtb.htm)
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
