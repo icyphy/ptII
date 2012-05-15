@@ -88,6 +88,9 @@ public class DatabaseInsert extends Sink {
         // This is OK because lossless conversion occurs at the
         // output, which (as of 6/19/08) leaves the record unchanged.
         input.setTypeEquals(new ArrayType(BaseType.RECORD));
+
+        // The fire() method only reads from channel 0 of the input port.
+        input.setMultiport(false);
     }
 
     ///////////////////////////////////////////////////////////////////
