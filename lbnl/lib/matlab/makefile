@@ -80,7 +80,7 @@ MDLSRCS = \
 	BCVTB.mdl \
 	BSDSocket.mdl
 
-EXTRA_SRCS =	$(JSRCS) $(CSRCS) $(HSRCS) $(MSRCS) $(MEXMACISRCS) \
+EXTRA_SRCS =	$(JSRCS) $(CSRCS) $(HSRCS) $(MSRCS) \
 		$(MDLSRCS) $(OTHER_FILES_TO_BE_JARED)
 
 # Sources that may or may not be present, but if they are present, we don't
@@ -92,7 +92,8 @@ MISC_FILES = \
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
-OPTIONAL_FILES = 
+OPTIONAL_FILES = \
+	$(MEXMACISRCS)
 
 JCLASS = $(JSRCS:%.java=%.class)
 
