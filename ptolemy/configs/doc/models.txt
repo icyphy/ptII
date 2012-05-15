@@ -153,6 +153,7 @@ $CLASSPATH/ptolemy/domains/continuous/demo/Switch/Switch.xml
 $CLASSPATH/ptolemy/domains/continuous/demo/Thermostat/Thermostat.xml
 $CLASSPATH/ptolemy/domains/continuous/demo/Transmission/EfficiencyCurve.xml
 $CLASSPATH/ptolemy/domains/continuous/demo/Transmission/Transmission.xml
+$CLASSPATH/ptolemy/domains/continuous/demo/TwoMachineInfiniteBusControl/TwoMachineInfiniteBusControl.xml
 $CLASSPATH/ptolemy/domains/continuous/demo/V2V/V2V.xml
 $CLASSPATH/ptolemy/domains/csp/demo/Barrier/Barrier.xml
 $CLASSPATH/ptolemy/domains/csp/demo/ResourcePool/ResourcePool.xml
@@ -216,6 +217,7 @@ $CLASSPATH/ptolemy/domains/de/demo/ClockDrift/ClockDrift.xml
 $CLASSPATH/ptolemy/domains/de/demo/Inspection/Inspection.xml
 $CLASSPATH/ptolemy/domains/de/demo/LongRuns/LongRuns.xml
 $CLASSPATH/ptolemy/domains/de/demo/ModalModel/ModalModel.xml
+$CLASSPATH/ptolemy/domains/de/demo/OpenQueueingNetwork/OpenQueueingNetwork.xml
 $CLASSPATH/ptolemy/domains/de/demo/QueueAndServer/QueueAndServer.xml
 $CLASSPATH/ptolemy/domains/de/demo/RealTimeComposite/RealTimeComposite.xml
 $CLASSPATH/ptolemy/domains/de/demo/SmartSender/SmartSender.xml
