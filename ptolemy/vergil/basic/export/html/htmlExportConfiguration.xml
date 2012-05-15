@@ -12,13 +12,13 @@
             
   <!-- Add default script for exporting HTML. -->
   <property name="_parameterDisplayIconScript"
-            class="ptolemy.vergil.basic.export.html.ParameterDisplayIconScript"/>
+            class="ptolemy.vergil.basic.export.web.ParameterDisplayIconScript"/>
  
   <!-- Add default links to open tableaux to use on export to HTML. -->
   <property name="_linkToOpenTableaux"
-            class="ptolemy.vergil.basic.export.html.LinkToOpenTableaux"/>
+            class="ptolemy.vergil.basic.export.web.LinkToOpenTableaux"/>
  
   <!-- Provide model name as the default title on export to HTML. -->
   <property name="_defaultTitle"
-            class="ptolemy.vergil.basic.export.html.DefaultTitle"/>
+            class="ptolemy.vergil.basic.export.web.DefaultTitle"/>
 </group>

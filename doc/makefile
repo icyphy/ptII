@@ -3,7 +3,7 @@
 # Version: $Id$
 # Makefile Author: Christopher Hylands
 #
-# Copyright (c) 1997-2011 The Regents of the University of California.
+# Copyright (c) 1997-2012 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -226,6 +226,7 @@ COREPACKAGES = \
 	ptolemy.vergil.basic \
 	ptolemy.vergil.basic.export \
 	ptolemy.vergil.basic.export.html \
+	ptolemy.vergil.basic.export.web \
 	ptolemy.vergil.basic.layout \
 	ptolemy.vergil.basic.layout.kieler \
 	ptolemy.vergil.debugger \

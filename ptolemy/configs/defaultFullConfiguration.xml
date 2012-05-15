@@ -38,7 +38,7 @@
 
   <!-- Add support for exporting HTML. -->
   <!-- Used in BasicGraphFrame.java -->
-  <input source="ptolemy/vergil/basic/export/html/webExportConfiguration.xml"/>
+  <input source="ptolemy/vergil/basic/export/html/htmlExportConfiguration.xml"/>
  
   <!-- Add support for importing Field Mock-up Units (FMUs). -->
   <!-- Used in BasicGraphFrame.java -->

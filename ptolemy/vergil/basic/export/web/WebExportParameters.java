@@ -26,7 +26,7 @@
 
  */
 
-package ptolemy.vergil.basic.export.html;
+package ptolemy.vergil.basic.export.web;
 
 import ptolemy.actor.gui.ColorAttribute;
 import ptolemy.data.BooleanToken;

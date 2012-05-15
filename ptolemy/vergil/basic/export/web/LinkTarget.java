@@ -1,4 +1,4 @@
-/* Parameter specifying the position into which to export HTML text.
+/* Parameter specifying the target for an HTML link.
 
  Copyright (c) 2011 The Regents of the University of California.
  All rights reserved.
@@ -26,7 +26,7 @@
 
  */
 
-package ptolemy.vergil.basic.export.html;
+package ptolemy.vergil.basic.export.web;
 
 import ptolemy.data.expr.StringParameter;
 import ptolemy.kernel.util.IllegalActionException;
@@ -35,18 +35,19 @@ import ptolemy.kernel.util.NamedObj;
 
 
 ///////////////////////////////////////////////////////////////////
-//// HTMLTextPosition
+//// LinkTarget
 /**
- * Parameter specifying the position into which to export HTML text.
+ * Parameter specifying the target for an HTML link.
  * The parameter offers the following possibilities:
  *  <ul>
- *  <li><b>end</b>: Put the text at the end of the HTML file.
- *  <li><b>head</b>: Put the text in the header section.
- *  <li><b>start</b>: Put the text at the start of the body section.
- *  <li><i>anything_else</i>: Put the text in a separate HTML file
- *   named <i>anything_else</i>.
+ *  <li><b>_lightbox</b>: Open in a lightbox-style popup frame.
+ *  <li><b>_blank</b>: Open in a new window or tab.
+ *  <li><b>_self</b>: Open in the same frame as it was clicked.
+ *  <li><b>_parent</b>: Open in the parent frameset.
+ *  <li><b>_top</b>: Open in the full body of the window.
+ *  <li><b><i>framename</i></b>: Open in a named frame.
  *  </ul>
- *  The default is "start".
+ *  The default is "_lightbox".
  *
  * @author Edward A. Lee
  * @version $Id$
@@ -54,7 +55,7 @@ import ptolemy.kernel.util.NamedObj;
  * @Pt.ProposedRating Red (cxh)
  * @Pt.AcceptedRating Red (cxh)
  */
-public class HTMLTextPosition extends StringParameter {
+public class LinkTarget extends StringParameter {
 
     /** Create an instance of this parameter.
      *  @param container The container.
@@ -62,13 +63,14 @@ public class HTMLTextPosition extends StringParameter {
      *  @throws IllegalActionException If the superclass throws it.
      *  @throws NameDuplicationException If the superclass throws it.
      */
-    public HTMLTextPosition(NamedObj container, String name)
+    public LinkTarget(NamedObj container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-                
-        addChoice("end");
-        addChoice("head");
-        addChoice("start");
-        setExpression("start");
+        
+        addChoice("_lightbox");
+        addChoice("_blank");
+        addChoice("_self");
+        addChoice("_top");
+        setExpression("_lightbox");
     }
 }

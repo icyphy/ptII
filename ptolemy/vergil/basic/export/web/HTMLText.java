@@ -26,7 +26,7 @@
 
  */
 
-package ptolemy.vergil.basic.export.html;
+package ptolemy.vergil.basic.export.web;
 
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;

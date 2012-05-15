@@ -33,7 +33,7 @@ import java.io.File;
 
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.NamedObj;
-import ptolemy.vergil.basic.export.html.WebExportParameters;
+import ptolemy.vergil.basic.export.web.WebExportParameters;
 
 
 ///////////////////////////////////////////////////////////////////

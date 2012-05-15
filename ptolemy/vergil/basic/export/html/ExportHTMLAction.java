@@ -77,6 +77,12 @@ import ptolemy.util.StringUtilities;
 import ptolemy.vergil.basic.BasicGraphFrame;
 import ptolemy.vergil.basic.ExportParameters;
 import ptolemy.vergil.basic.HTMLExportable;
+import ptolemy.vergil.basic.export.web.DefaultIconLink;
+import ptolemy.vergil.basic.export.web.DefaultIconScript;
+import ptolemy.vergil.basic.export.web.Title;
+import ptolemy.vergil.basic.export.web.WebExportParameters;
+import ptolemy.vergil.basic.export.web.WebExportable;
+import ptolemy.vergil.basic.export.web.WebExporter;
 import diva.canvas.Figure;
 import diva.canvas.JCanvas;
 import diva.graph.GraphController;
@@ -897,32 +903,6 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable, 
                     translateY, attribute);
         }
         return result;
-    }
-
-    /** Return the title of the specified object. If it contains a parameter
-     *  of class {@link Title}, then return the title specified by that class.
-     *  Otherwise, if the object is an instance of FSMActor contained by
-     *  a ModalModel, then return the
-     *  name of its container, not the name of the FSMActor.
-     *  Otherwise, return the name of the object.
-     *  @param object The object.
-     *  @return A title for the object.
-     *  @throws IllegalActionException If accessing the title attribute fails..
-     */
-    protected static String _getTitleText(NamedObj object) throws IllegalActionException {
-        // If the object contains an IconLink parameter, then use that instead of the default.
-        // If it has more than one, then just use the first one.
-        List<Title> links = object.attributeList(Title.class);
-        if (links != null && links.size() > 0) {
-            return links.get(0).stringValue();
-        }
-        if (object instanceof FSMActor) {
-            NamedObj container = object.getContainer();
-            if (container instanceof ModalModel) {
-                return container.getName();
-            }
-        }
-        return object.getName();
     }
     
     /** Provide default HTML content by cloning any

@@ -33,7 +33,7 @@
 ME =		ptolemy/vergil/basic/export
 
 # PTITEXTPDF_DIR is set to itextpdf if iText.jar was found by configure.
-DIRS =		html $(PTITEXTPDF_DIR) test
+DIRS =		html $(PTITEXTPDF_DIR) test web
 
 # Root of the Java directory
 ROOT =		../../../..
@@ -47,14 +47,15 @@ include $(CONFIG)
 # Used to build jar files
 PTPACKAGE = 	export
 PTCLASSJAR =	$(PTPACKAGE).jar
-# We don't include the subjars because ptiny should not include the export facilities.
-#PTCLASSALLJAR =
+# We don't include the all the subjars because ptiny should not include the export facilities.
+PTCLASSALLJAR = \
+	web/web.jar 
 
 PTAUXALLJAR = exportFull.jar
 
 # Include the .class files from these jars in PTAUXALLJARS
 PTAUXALLJARS = \
-		html/html.jar
+		html/html.jar \
 
 # Note that itextpdf/itextpdf.jar is optional
 

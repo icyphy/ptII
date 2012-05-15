@@ -53,28 +53,10 @@ PTCLASSALLJARS = \
 	javascript/javascript.jar
 
 JSRCS = \
-	AreaEventType.java \
-	DefaultIconLink.java \
-	DefaultIconScript.java \
-	DefaultTitle.java \
-	ExportHTMLAction.java \
-	HTMLText.java \
-	HTMLTextPosition.java \
-	IconLink.java \
-	IconScript.java \
-	LinkTarget.java \
-	LinkToOpenTableaux.java \
-	ParameterDisplayIconScript.java \
-	Title.java \
-	WebContent.java \
-	WebExportable.java \
-	WebExportable.java \
-	WebExportParameters.java \
-	WebExporter.java
+	ExportHTMLAction.java
 
 OTHER_FILES_TO_BE_JARED = \
-	utilityWebExport.xml \
-	webExportConfiguration.xml
+	htmlExportConfiguration.xml
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 

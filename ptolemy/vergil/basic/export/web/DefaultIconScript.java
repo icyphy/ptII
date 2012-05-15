@@ -26,14 +26,11 @@
 
  */
 
-package ptolemy.vergil.basic.export.html;
+package ptolemy.vergil.basic.export.web;
 
 import java.util.List;
 
-import ptolemy.data.BooleanToken;
-import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.StringParameter;
-import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -41,12 +38,23 @@ import ptolemy.kernel.util.NamedObj;
 
 
 ///////////////////////////////////////////////////////////////////
-//// DefaultTitle
+//// DefaultIconScript
 /**
- * A parameter specifying default title to associate
- * with a model and with components in the model.
- * By default, this attribute uses the model name
- * and component names as the title.
+ * A parameter specifying default JavaScript actions to associate
+ * with icons in model. Putting this attribute into a model causes
+ * the icons of entities, attributes, or both, to be assigned a
+ * default action of type given by <i>eventType</i>, where the
+ * action is defined by the value of this parameter.
+ * This will replace any configuration default that targets
+ * the same event type, includes the same objects, and
+ * targets the same instanceOf possibilities.
+ * <p>
+ * A typical use of this would be to set its string value
+ * to something like "foo(args)" where foo is a JavaScript function
+ * defined in the <i>script</i> parameter.
+ * You can also provide HTML text to insert into the start or
+ * end sections of the container's web page.
+ * </p>
  *
  * @author Edward A. Lee
  * @version $Id$
@@ -54,7 +62,7 @@ import ptolemy.kernel.util.NamedObj;
  * @Pt.ProposedRating Red (cxh)
  * @Pt.AcceptedRating Red (cxh)
  */
-public class DefaultTitle extends WebContent implements WebExportable {
+public class DefaultIconScript extends IconScript {
 
     /** Create an instance of this parameter.
      *  @param container The container.
@@ -62,22 +70,14 @@ public class DefaultTitle extends WebContent implements WebExportable {
      *  @throws IllegalActionException If the superclass throws it.
      *  @throws NameDuplicationException If the superclass throws it.
      */
-    public DefaultTitle(NamedObj container, String name)
+    public DefaultIconScript(NamedObj container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
         
-        _icon.setIconText("T");
-        displayText.setExpression("Default title to give to icons in the model.");
-                
-        showTitleInHTML = new Parameter(this, "showTitleInHTML");
-        showTitleInHTML.setExpression("true");
-        showTitleInHTML.setTypeEquals(BaseType.BOOLEAN);
-
         include = new StringParameter(this, "include");
         include.addChoice("Entities");
         include.addChoice("Attributes");
         include.addChoice("All");
-        include.addChoice("None");
         include.setExpression("Entities");
         
         instancesOf = new StringParameter(this, "instancesOf");
@@ -89,44 +89,27 @@ public class DefaultTitle extends WebContent implements WebExportable {
     /** If non-empty (the default), specifies a class name.
      *  Only entities or attributes (depending on <i>include</i>)
      *  implementing the specified
-     *  class will be assigned the title defined by this
-     *  DefaultTitle parameter.
+     *  class will be assigned the control defined by this
+     *  DefaultIconScript parameter.
      */
     public StringParameter instancesOf;
 
-    /** Specification of whether to provide the title for
+    /** Specification of whether to provide the default behavior for
      *  Attributes, Entities, or both. This is either "Entities" (the
-     *  default), "Attributes", "All", or "None".
+     *  default), "Attributes", or "All".
      */
     public StringParameter include;
-    
-    /** If set to true, then the title given by this parameter
-     *  will be shown in the HTML prior to the image of the model
-     *  (as well as in the image of the model, if it is visible
-     *  when the export to web occurs). This is a boolean that
-     *  defaults to true.
-     */
-    public Parameter showTitleInHTML;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
     /** Provide content to the specified web exporter to be
      *  included in a web page for the container of this object.
-     *  This class provides a default title for the web page
-     *  and for each object
+     *  This class provides default outside content for each object
      *  as specified by <i>include</i> and <i>instancesOf</i>.
      *  @throws IllegalActionException If a subclass throws it.
      */
     public void provideContent(WebExporter exporter) throws IllegalActionException {
-        
-        String titleValue = stringValue();
-        if (titleValue == null || titleValue.equals("")) {
-            // Use the model name as the default title.
-            titleValue = getContainer().getName();
-        }
-        exporter.setTitle(titleValue, ((BooleanToken)showTitleInHTML.getToken()).booleanValue());
-        
         boolean entities = false, attributes = false;
         String includeValue = include.stringValue().toLowerCase();
         if (includeValue.equals("all")) {
@@ -174,24 +157,26 @@ public class DefaultTitle extends WebContent implements WebExportable {
         }
     }
     
-    /** Override the base class to not provide a title area attribute that is
-     *  the name of the component.
+    /** Override the base class to not provide any outside content.
      *  @throws IllegalActionException If a subclass throws it.
      */
     public void provideOutsideContent(WebExporter exporter) throws IllegalActionException {
-        String titleValue = stringValue();
-        if (titleValue == null || titleValue.equals("")) {
-            // Use the model name as the default title.
-            titleValue = getContainer().getName();
-        }
-        exporter.defineAreaAttribute(getContainer(), "title", titleValue, true);
     }
     
     ///////////////////////////////////////////////////////////////////
     ////                       protected methods                   ////
 
-    /** Provide a title area attribute to the specified web exporter to be
-     *  included in a web page for the container of this object.
+    /** Provide content to the specified web exporter and object to be
+     *  included in a web page.
+     *  This class provides an area attribute, and also
+     *  the value of <i>script</i>, <i>startText</i>,
+     *  and <i>endText</i>, if any has been provided.
+     *  If the <i>eventType</i> parameter is "default", then
+     *  remove all previously defined defaults and use the global
+     *  defaults.
+     *  These value get inserted into the container's container's
+     *  corresponding HTML sections, where the <i>script</i>
+     *  is inserted inside a JavaScript HTML element.
      *  @param exporter The exporter.
      *  @param object The object.
      *  @throws IllegalActionException If evaluating the value
@@ -200,7 +185,27 @@ public class DefaultTitle extends WebContent implements WebExportable {
     protected void _provideOutsideContent(WebExporter exporter, NamedObj object)
             throws IllegalActionException {
         if (object != null) {
-            exporter.defineAreaAttribute(object, "title", object.getName(), true);
+            String eventTypeValue = eventType.stringValue();
+            if (!eventTypeValue.trim().equals("")) {
+                // Last argument specifies to overwrite any previous value defined.
+                exporter.defineAreaAttribute(object, eventTypeValue, stringValue(), true);
+            }
+        }
+        String scriptValue = script.stringValue();
+        if (!scriptValue.trim().equals("")) {
+            exporter.addContent("head", true, "<script type=\"text/javascript\">\n"
+                    + scriptValue
+                    + "\n</script>\n");
+        }
+        
+        String startTextValue = startText.stringValue();
+        if (!startTextValue.trim().equals("")) {
+            exporter.addContent("start", true, startTextValue);
+        }
+
+        String endTextValue = endText.stringValue();
+        if (!endTextValue.trim().equals("")) {
+            exporter.addContent("end", true, endTextValue);
         }
     }
 }

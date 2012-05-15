@@ -26,7 +26,7 @@
 
  */
 
-package ptolemy.vergil.basic.export.html;
+package ptolemy.vergil.basic.export.web;
 
 import java.awt.Frame;
 import java.awt.print.PrinterException;
@@ -65,14 +65,14 @@ import ptolemy.vergil.basic.HTMLExportable;
  * text is displayed in the model, or make the attribute disappear altogether
  * in the model (for this, just set <i>displayText</i> to an empty string).
  * 
- * Based on ptolemy.vergil.basic.export.html.HTMLText
+ * Based on ptolemy.vergil.basic.export.web.HTMLText
  *
  * @author Beth Latronico
  * @version $Id$
  * @since Ptolemy II 8.1
  * @see ptolemy.gui.ImageExportable
- * @see ptolemy.vergil.basic.export.html.HTMLText
- * @see ptolemy.vergil.basic.export.html.LinkToOpenTableaux
+ * @see ptolemy.vergil.basic.export.web.HTMLText
+ * @see ptolemy.vergil.basic.export.web.LinkToOpenTableaux
 
  * @Pt.ProposedRating Red (ltrnc)
  * @Pt.AcceptedRating Red (ltrnc)

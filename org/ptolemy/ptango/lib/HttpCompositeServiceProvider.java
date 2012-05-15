@@ -31,8 +31,8 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.vergil.basic.BasicGraphFrame;
 import ptolemy.vergil.basic.ExportParameters;
-import ptolemy.vergil.basic.export.html.WebExportable;
-import ptolemy.vergil.basic.export.html.WebExporter;
+import ptolemy.vergil.basic.export.web.WebExportable;
+import ptolemy.vergil.basic.export.web.WebExporter;
 
 /* An actor that handles an HttpRequest to the given path.
 

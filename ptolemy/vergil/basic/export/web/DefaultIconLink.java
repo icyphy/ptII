@@ -26,7 +26,7 @@
 
  */
 
-package ptolemy.vergil.basic.export.html;
+package ptolemy.vergil.basic.export.web;
 
 import java.util.List;
 
@@ -38,23 +38,15 @@ import ptolemy.kernel.util.NamedObj;
 
 
 ///////////////////////////////////////////////////////////////////
-//// DefaultIconScript
+//// DefaultIconLink
 /**
- * A parameter specifying default JavaScript actions to associate
+ * A parameter specifying default hyperlink to associate
  * with icons in model. Putting this attribute into a model causes
  * the icons of entities, attributes, or both, to be assigned a
- * default action of type given by <i>eventType</i>, where the
- * action is defined by the value of this parameter.
- * This will replace any configuration default that targets
- * the same event type, includes the same objects, and
+ * default hyperlink to the URI given by <i>linkTarget</i>.
+ * This will replace any configuration default link that 
+ * includes the same objects, and
  * targets the same instanceOf possibilities.
- * <p>
- * A typical use of this would be to set its string value
- * to something like "foo(args)" where foo is a JavaScript function
- * defined in the <i>script</i> parameter.
- * You can also provide HTML text to insert into the start or
- * end sections of the container's web page.
- * </p>
  *
  * @author Edward A. Lee
  * @version $Id$
@@ -62,7 +54,7 @@ import ptolemy.kernel.util.NamedObj;
  * @Pt.ProposedRating Red (cxh)
  * @Pt.AcceptedRating Red (cxh)
  */
-public class DefaultIconScript extends IconScript {
+public class DefaultIconLink extends IconLink {
 
     /** Create an instance of this parameter.
      *  @param container The container.
@@ -70,7 +62,7 @@ public class DefaultIconScript extends IconScript {
      *  @throws IllegalActionException If the superclass throws it.
      *  @throws NameDuplicationException If the superclass throws it.
      */
-    public DefaultIconScript(NamedObj container, String name)
+    public DefaultIconLink(NamedObj container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
         
@@ -90,11 +82,11 @@ public class DefaultIconScript extends IconScript {
      *  Only entities or attributes (depending on <i>include</i>)
      *  implementing the specified
      *  class will be assigned the control defined by this
-     *  DefaultIconScript parameter.
+     *  DefaultIconLink parameter.
      */
     public StringParameter instancesOf;
 
-    /** Specification of whether to provide the default behavior for
+    /** Specification of whether to provide the link for
      *  Attributes, Entities, or both. This is either "Entities" (the
      *  default), "Attributes", or "All".
      */
@@ -105,7 +97,7 @@ public class DefaultIconScript extends IconScript {
 
     /** Provide content to the specified web exporter to be
      *  included in a web page for the container of this object.
-     *  This class provides default outside content for each object
+     *  This class provides default link for each object
      *  as specified by <i>include</i> and <i>instancesOf</i>.
      *  @throws IllegalActionException If a subclass throws it.
      */
@@ -166,17 +158,10 @@ public class DefaultIconScript extends IconScript {
     ///////////////////////////////////////////////////////////////////
     ////                       protected methods                   ////
 
-    /** Provide content to the specified web exporter and object to be
-     *  included in a web page.
-     *  This class provides an area attribute, and also
-     *  the value of <i>script</i>, <i>startText</i>,
-     *  and <i>endText</i>, if any has been provided.
-     *  If the <i>eventType</i> parameter is "default", then
-     *  remove all previously defined defaults and use the global
-     *  defaults.
-     *  These value get inserted into the container's container's
-     *  corresponding HTML sections, where the <i>script</i>
-     *  is inserted inside a JavaScript HTML element.
+    /** Provide content to the specified web exporter to be
+     *  included in a web page for the container of this object.
+     *  This class defines an href attribute to associate with
+     *  the area of the image map corresonding to its container.
      *  @param exporter The exporter.
      *  @param object The object.
      *  @throws IllegalActionException If evaluating the value
@@ -185,27 +170,20 @@ public class DefaultIconScript extends IconScript {
     protected void _provideOutsideContent(WebExporter exporter, NamedObj object)
             throws IllegalActionException {
         if (object != null) {
-            String eventTypeValue = eventType.stringValue();
-            if (!eventTypeValue.trim().equals("")) {
-                // Last argument specifies to overwrite any previous value defined.
-                exporter.defineAreaAttribute(object, eventTypeValue, stringValue(), true);
+            // Last argument specifies to overwrite any previous value defined.
+            if (!stringValue().trim().equals("")) {
+                exporter.defineAreaAttribute(object, "href", stringValue(), true);
+                String targetValue = linkTarget.stringValue();
+                if (!targetValue.trim().equals("")) {
+                    if (targetValue.equals("_lightbox")) {
+                        // Strangely, the class has to be "iframe".
+                        // I don't understand why it can't be "lightbox".
+                        exporter.defineAreaAttribute(object, "class", "iframe", true);
+                    } else {
+                        exporter.defineAreaAttribute(object, "target", targetValue, true);
+                    }
+                }
             }
-        }
-        String scriptValue = script.stringValue();
-        if (!scriptValue.trim().equals("")) {
-            exporter.addContent("head", true, "<script type=\"text/javascript\">\n"
-                    + scriptValue
-                    + "\n</script>\n");
-        }
-        
-        String startTextValue = startText.stringValue();
-        if (!startTextValue.trim().equals("")) {
-            exporter.addContent("start", true, startTextValue);
-        }
-
-        String endTextValue = endText.stringValue();
-        if (!endTextValue.trim().equals("")) {
-            exporter.addContent("end", true, endTextValue);
         }
     }
 }

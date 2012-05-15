@@ -26,11 +26,14 @@
 
  */
 
-package ptolemy.vergil.basic.export.html;
+package ptolemy.vergil.basic.export.web;
 
 import java.util.List;
 
+import ptolemy.data.BooleanToken;
+import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.StringParameter;
+import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -38,15 +41,12 @@ import ptolemy.kernel.util.NamedObj;
 
 
 ///////////////////////////////////////////////////////////////////
-//// DefaultIconLink
+//// DefaultTitle
 /**
- * A parameter specifying default hyperlink to associate
- * with icons in model. Putting this attribute into a model causes
- * the icons of entities, attributes, or both, to be assigned a
- * default hyperlink to the URI given by <i>linkTarget</i>.
- * This will replace any configuration default link that 
- * includes the same objects, and
- * targets the same instanceOf possibilities.
+ * A parameter specifying default title to associate
+ * with a model and with components in the model.
+ * By default, this attribute uses the model name
+ * and component names as the title.
  *
  * @author Edward A. Lee
  * @version $Id$
@@ -54,7 +54,7 @@ import ptolemy.kernel.util.NamedObj;
  * @Pt.ProposedRating Red (cxh)
  * @Pt.AcceptedRating Red (cxh)
  */
-public class DefaultIconLink extends IconLink {
+public class DefaultTitle extends WebContent implements WebExportable {
 
     /** Create an instance of this parameter.
      *  @param container The container.
@@ -62,14 +62,22 @@ public class DefaultIconLink extends IconLink {
      *  @throws IllegalActionException If the superclass throws it.
      *  @throws NameDuplicationException If the superclass throws it.
      */
-    public DefaultIconLink(NamedObj container, String name)
+    public DefaultTitle(NamedObj container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
         
+        _icon.setIconText("T");
+        displayText.setExpression("Default title to give to icons in the model.");
+                
+        showTitleInHTML = new Parameter(this, "showTitleInHTML");
+        showTitleInHTML.setExpression("true");
+        showTitleInHTML.setTypeEquals(BaseType.BOOLEAN);
+
         include = new StringParameter(this, "include");
         include.addChoice("Entities");
         include.addChoice("Attributes");
         include.addChoice("All");
+        include.addChoice("None");
         include.setExpression("Entities");
         
         instancesOf = new StringParameter(this, "instancesOf");
@@ -81,27 +89,44 @@ public class DefaultIconLink extends IconLink {
     /** If non-empty (the default), specifies a class name.
      *  Only entities or attributes (depending on <i>include</i>)
      *  implementing the specified
-     *  class will be assigned the control defined by this
-     *  DefaultIconLink parameter.
+     *  class will be assigned the title defined by this
+     *  DefaultTitle parameter.
      */
     public StringParameter instancesOf;
 
-    /** Specification of whether to provide the link for
+    /** Specification of whether to provide the title for
      *  Attributes, Entities, or both. This is either "Entities" (the
-     *  default), "Attributes", or "All".
+     *  default), "Attributes", "All", or "None".
      */
     public StringParameter include;
+    
+    /** If set to true, then the title given by this parameter
+     *  will be shown in the HTML prior to the image of the model
+     *  (as well as in the image of the model, if it is visible
+     *  when the export to web occurs). This is a boolean that
+     *  defaults to true.
+     */
+    public Parameter showTitleInHTML;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
     /** Provide content to the specified web exporter to be
      *  included in a web page for the container of this object.
-     *  This class provides default link for each object
+     *  This class provides a default title for the web page
+     *  and for each object
      *  as specified by <i>include</i> and <i>instancesOf</i>.
      *  @throws IllegalActionException If a subclass throws it.
      */
     public void provideContent(WebExporter exporter) throws IllegalActionException {
+        
+        String titleValue = stringValue();
+        if (titleValue == null || titleValue.equals("")) {
+            // Use the model name as the default title.
+            titleValue = getContainer().getName();
+        }
+        exporter.setTitle(titleValue, ((BooleanToken)showTitleInHTML.getToken()).booleanValue());
+        
         boolean entities = false, attributes = false;
         String includeValue = include.stringValue().toLowerCase();
         if (includeValue.equals("all")) {
@@ -149,19 +174,24 @@ public class DefaultIconLink extends IconLink {
         }
     }
     
-    /** Override the base class to not provide any outside content.
+    /** Override the base class to not provide a title area attribute that is
+     *  the name of the component.
      *  @throws IllegalActionException If a subclass throws it.
      */
     public void provideOutsideContent(WebExporter exporter) throws IllegalActionException {
+        String titleValue = stringValue();
+        if (titleValue == null || titleValue.equals("")) {
+            // Use the model name as the default title.
+            titleValue = getContainer().getName();
+        }
+        exporter.defineAreaAttribute(getContainer(), "title", titleValue, true);
     }
     
     ///////////////////////////////////////////////////////////////////
     ////                       protected methods                   ////
 
-    /** Provide content to the specified web exporter to be
+    /** Provide a title area attribute to the specified web exporter to be
      *  included in a web page for the container of this object.
-     *  This class defines an href attribute to associate with
-     *  the area of the image map corresonding to its container.
      *  @param exporter The exporter.
      *  @param object The object.
      *  @throws IllegalActionException If evaluating the value
@@ -170,20 +200,7 @@ public class DefaultIconLink extends IconLink {
     protected void _provideOutsideContent(WebExporter exporter, NamedObj object)
             throws IllegalActionException {
         if (object != null) {
-            // Last argument specifies to overwrite any previous value defined.
-            if (!stringValue().trim().equals("")) {
-                exporter.defineAreaAttribute(object, "href", stringValue(), true);
-                String targetValue = linkTarget.stringValue();
-                if (!targetValue.trim().equals("")) {
-                    if (targetValue.equals("_lightbox")) {
-                        // Strangely, the class has to be "iframe".
-                        // I don't understand why it can't be "lightbox".
-                        exporter.defineAreaAttribute(object, "class", "iframe", true);
-                    } else {
-                        exporter.defineAreaAttribute(object, "target", targetValue, true);
-                    }
-                }
-            }
+            exporter.defineAreaAttribute(object, "title", object.getName(), true);
         }
     }
 }

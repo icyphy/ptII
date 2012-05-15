@@ -26,7 +26,7 @@
 
  */
 
-package ptolemy.vergil.basic.export.html;
+package ptolemy.vergil.basic.export.web;
 
 import java.awt.Frame;
 import java.awt.print.PrinterException;
@@ -45,7 +45,9 @@ import ptolemy.actor.gui.Configuration;
 import ptolemy.actor.gui.Effigy;
 import ptolemy.actor.gui.PtolemyEffigy;
 import ptolemy.actor.gui.Tableau;
+import ptolemy.domains.modal.kernel.FSMActor;
 import ptolemy.domains.modal.kernel.State;
+import ptolemy.domains.modal.modal.ModalModel;
 import ptolemy.gui.ImageExportable;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.Instantiable;
@@ -211,6 +213,32 @@ public class LinkToOpenTableaux extends DefaultIconLink {
     
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
+    
+    /** Return the title of the specified object. If it contains a parameter
+     *  of class {@link Title}, then return the title specified by that class.
+     *  Otherwise, if the object is an instance of FSMActor contained by
+     *  a ModalModel, then return the
+     *  name of its container, not the name of the FSMActor.
+     *  Otherwise, return the name of the object.
+     *  @param object The object.
+     *  @return A title for the object.
+     *  @throws IllegalActionException If accessing the title attribute fails..
+     */
+    private static String _getTitleText(NamedObj object) throws IllegalActionException {
+        // If the object contains an IconLink parameter, then use that instead of the default.
+        // If it has more than one, then just use the first one.
+        List<Title> links = object.attributeList(Title.class);
+        if (links != null && links.size() > 0) {
+            return links.get(0).stringValue();
+        }
+        if (object instanceof FSMActor) {
+            NamedObj container = object.getContainer();
+            if (container instanceof ModalModel) {
+                return container.getName();
+            }
+        }
+        return object.getName();
+    }
 
     /** For the specified effigy, define the relevant href, target,
      *  and class area attributes
@@ -263,7 +291,7 @@ public class LinkToOpenTableaux extends DefaultIconLink {
                 // Add to table of contents file if we are using the Ptolemy website infrastructure.
                 boolean usePtWebsite = Boolean.valueOf(StringUtilities.getProperty("ptolemy.ptII.exportHTML.usePtWebsite"));
                 if (usePtWebsite) {
-                    String destinationTitle = ExportHTMLAction._getTitleText(destinationObject);
+                    String destinationTitle = LinkToOpenTableaux._getTitleText(destinationObject);
                     if (destinationTitle.length() > 16) {
                         //Truncate the text so that it does not overflow the toc.
                         destinationTitle = destinationTitle.substring(0,16) + ".";
