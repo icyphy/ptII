@@ -214,6 +214,7 @@ public class PNDirector extends CompositeProcessDirector {
      */
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         PNDirector newObject = (PNDirector) super.clone(workspace);
+        newObject._processListeners = new LinkedList();
         newObject._readBlockedQueues = new HashMap();
         newObject._receivers = new LinkedList();
         newObject._writeBlockedQueues = new HashMap();
