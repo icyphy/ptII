@@ -106,7 +106,8 @@ MISC_FILES =	 $(DIRS) \
 OPTIONAL_FILES = \
 	doc \
 	'EventButton$$1.class' \
-	'EventButton$$ButtonListener.class'
+	'EventButton$$ButtonListener.class' \
+	'Server$$Job.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 

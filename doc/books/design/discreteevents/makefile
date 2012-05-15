@@ -1,10 +1,9 @@
-# Makefile for domains tutorial
+# Makefile for the Ptolemy II discrete event book
 #
-# @Authors: Christopher Hylands, based on a file by Thomas M. Parks
+# Version: $Id: makefile 56354 2009-11-28 16:48:25Z cxh $
+# Makefile Author: Christopher Brooks
 #
-# @Version: $Id$
-#
-# @Copyright (c) 2010 The Regents of the University of California.
+# Copyright (c) 2012 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -28,47 +27,33 @@
 #
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
+##########################################################################
 
-ME =		doc/tutorial/domains
+ME =		doc/books/design/discreteevents
 
+# Sub directories to run make in.
 DIRS =
 
-# Root of the Ptolemy II directory
-ROOT =		../../..
-
-# These classes use ptolemy/actor/gui/PlotTableauFrame.java which requires
-# diva.jar, so we add diva.jar to the CLASSPATH in case PlotTableauFrame.java
-# has not yet been compiled.
-CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(DIVA_JAR)
+# Root of Ptolemy II directory
+ROOT =		../../../..
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
-# Used to build jar files
-PTPACKAGE = 	domains
-PTCLASSJAR =
+PTPACKAGE = 	discreteevents
+PTCLASSJAR =	$(PTPACKAGE).jar
+#PTCLASSALLJAR =	$(PTPACKAGE).jar
 
-JSRCS = \
-	AmorphousDirector.java \
-	LeftRightDirector.java \
-	NondogmaticPNDirector.java
-
-MODELS = \
-	AmorphousExample.xml \
-	InconsistentModel.xml \
-	LeftRightModel.xml \
-	NondogmaticPNModel.xml \
-	NondogmaticPNModelSimpler.xml \
-	SensorModel.xml
+# Include the .class files from these jars in PTCLASSALLJAR
+#PTCLASSALLJARS =
 
 OTHER_FILES_TO_BE_JARED = \
-	domainOverview.htm \
-	index.htm
+	ThreadedComposite.xml
 
-EXTRA_SRCS =	$(JSRCS) \
-	$(MODELS) \
-	$(OTHER_FILES_TO_BE_JARED)
+EXTRA_SRCS = $(OTHER_FILES_TO_BE_JARED)
+
+KRUFT =
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
@@ -76,23 +61,10 @@ MISC_FILES =	$(DIRS)
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
-OPTIONAL_FILES = \
-	doc \
-	'AmorphousDirector$$DelegatingReceiver.class' \
-	'LeftRightDirector$$LeftRightScheduler.class' \
-	'LeftRightDirector$$LeftRightScheduler$$LeftRightComparator.class' \
-	'NondogmaticPNDirector$$FlexibleReceiver.class' \
-	$(PTCLASSJAR) \
-	$(PTCLASSALLJAR)
+OPTIONAL_FILES =
 
-JCLASS = $(JSRCS:%.java=%.class)
+all: suball
+install: all jars
 
-all: jclass
-install: jclass jars
-
-demo: all
-	$(ROOT)/bin/vergil $(MODELS)
-
-
-# Get the rest of the rules
-include $(ROOT)/mk/ptcommon.mk
+# We don't include common.mk since we don't use the compiler here
+include $(ROOT)/mk/ptno-compile.mk

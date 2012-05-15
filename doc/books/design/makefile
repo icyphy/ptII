@@ -32,7 +32,7 @@
 ME =		doc/books/design
 
 # Sub directories to run make in.
-DIRS =		modal synchronous time
+DIRS =		discreteevents modal synchronous time
 
 # Root of Ptolemy II directory
 ROOT =		../../..

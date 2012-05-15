@@ -61,8 +61,10 @@ OTHER_FILES_TO_BE_JARED = \
 	NewtonsCradle.xml \
 	NewtonsCradleMoreConstraints.xml \
 	SIUnitExample.xml \
+	SIUnitExampleMultiport.xml \
 	SIUnitOntology.xml \
 	SIUnitSolverModel.xml \
+	 SIUnitSolverModelMultiport.xml \
 	TimeUnitIntegration.xml \
 	UnitSystemExample.xml
 

@@ -64,6 +64,7 @@ JSRCS = \
 	ConceptGraph.java \
 	ConceptRelation.java \
 	ConceptToken.java \
+	ConceptType.java \
 	DAGConceptGraph.java \
 	ExpressionConceptFunction.java \
 	ExpressionConceptFunctionDefinitionAttribute.java \

@@ -1,10 +1,9 @@
-# Makefile for the ptolemy/vergil/basic/export/image package
+# Makefile for the Ptolemy II SystemDMS book, fsm chapter
 #
-# @Authors: Christopher Hylands, based on a file by Thomas M. Parks
+# Version: $Id: makefile 62006 2011-09-17 21:27:28Z cxh $
+# Makefile Author: Christopher Brooks
 #
-# @Version: $Id$
-#
-# @Copyright (c) 2011 The Regents of the University of California.
+# Copyright (c) 2012 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -28,55 +27,42 @@
 #
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
+##########################################################################
 
+ME =		doc/books/systems/fsm
 
-ME =		ptolemy/vergil/basic/export/image
+# Sub directories to run make in.
+# Don't include src directory, since we don't ship it with the release
+DIRS =		test
 
-DIRS =
-
-# Root of the Java directory
-ROOT =		../../../../..
-
-CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(DIVA_JAR)
+# Root of Ptolemy II directory
+ROOT =		../../../..
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
-# Used to build jar files
-PTPACKAGE = 	image
-PTCLASSJAR =	 $(PTPACKAGE).jar
-#PTCLASSALLJAR =
+PTPACKAGE = 	fsm
+PTCLASSJAR = 	$(PTPACKAGE).jar
 
-# Include the .class files from these jars in PTCLASSALLJAR
-#PTCLASSALLJARS =
+EXAMPLE_MODELS = \
+	ABROFlat_SA.xml \
+	FinalStatesReset.xml
 
-JSRCS = \
-	ExportImage.java
+OTHER_FILES_TO_BE_JARED = $(EXAMPLE_MODELS)
 
-EXTRA_SRCS =	$(JSRCS)
-
+EXTRA_SRCS = $(OTHER_FILES_TO_BE_JARED)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
 MISC_FILES =	$(DIRS)
 
 # make checkjunk will not report OPTIONAL_FILES as trash
-# make realclean removes OPTIONAL_FILES
-OPTIONAL_FILES = \
-	$(PTCLASSJAR) \
-	'ExportImage$$1.class' \
-	'ExportImage$$2.class' \
-	'ExportImage$$3.class' \
-	'ExportImage$$4.class' \
-	'ExportImage$$5.class' \
-	'ExportImage$$6.class' \
-	'ExportImage$$7.class'
-
-JCLASS = $(JSRCS:%.java=%.class)
+# make distclean removes OPTIONAL_FILES
+OPTIONAL_FILES =
 
 all: jclass
 install: jclass jars
 
-# Get the rest of the rules
-include $(ROOT)/mk/ptcommon.mk
+# We don't include common.mk since we don't use the compiler here
+include $(ROOT)/mk/ptno-compile.mk

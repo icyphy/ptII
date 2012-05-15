@@ -1,10 +1,10 @@
-# Makefile for the JUnit Kernel tests
+# Makefile for the Java classes used to test models used in the fsm chapter
 #
-# @Authors: Christopher Brooks
+# @Authors: Christopher Brooks (makefile only)
 #
-# @Version: $Id$
+# @Version: $Id: makefile 62042 2011-09-21 14:54:34Z cxh $
 #
-# @Copyright (c) 2010-2011 The Regents of the University of California.
+# @Copyright (c) 2009 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -30,22 +30,24 @@
 # 						COPYRIGHTENDKEY
 
 # Location of this directory, relative to the Ptolemy II directory
-ME =		ptolemy/vergil/basic/kieler/test/junit
+ME =		doc/books/systems/fsm/test
+
+DIRS =		$(PTJUNIT_DIR)
 
 # Root of the Ptolemy II directory
-ROOT =		../../../../../../..
+ROOT =		../../../../..
 
-# JUNIT_JAR is searched for by $PTII/configure and set in $PTII/mk/ptII.mk
-# KIELER_JAR is set in $PTII/mk/ptII.mk to $(PTII)/lib/kieler.jar
-CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(JUNIT_JARS)$(CLASSPATHSEPARATOR)$(PTJACL_JAR)$(CLASSPATHSEPARATOR)$(KIELER_JAR)$(CLASSPATHSEPARATOR)$(GUAVA_JAR)
+CLASSPATH =	$(ROOT)
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
-JSRCS = \
-	JUnitTclTest.java \
-	KielerJUnitTest.java
+# Tcl sources that are part of the testing infrastructure
+TCL_SRCS = \
+	testDefs.tcl
+
+JSRCS =
 
 # Non-graphical Java tests written in Tcl
 # If there are no tests, we use a dummy file so that the script that builds
@@ -65,27 +67,20 @@ EXTRA_SRCS =	$(TCL_SRCS) $(JSRCS) #$(JSIMPLE_TESTS) #$(JGRAPHICAL_TESTS)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
-MISC_FILES = \
-	models
+MISC_FILES =	 junit \
+	alljtests.tcl \
+	auto
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
-OPTIONAL_FILES = \
-	'KielerJUnitTest$$1.class' \
-	'KielerJUnitTest$$2.class' \
-	'KielerJUnitTest$$3.class' \
-	'KielerJUnitTest$$4.class' \
-	'KielerJUnitTest$$5.class' \
-	'KielerJUnitTest$$6.class'
+OPTIONAL_FILES =
 
 JCLASS =	$(JSRCS:%.java=%.class)
 
 # Don't include all or install rules here, we want the user
 # to run 'make tests' to run the tests.
 
-# JUNIT_JAVA_ARGS is set in $PTII/mk/ptII.mk
-tests:: $(EXTRA_SRCS) jclass test_java #test_jsimple
-	-CLASSPATH="$(CLASSPATH)" "$(JAVA)" $(JUNIT_JAVA_ARGS) org.junit.runner.JUnitCore ptolemy.vergil.basic.layout.kieler.test.junit.KielerJUnitTest
+tests:: $(EXTRA_SRCS) jclass test_java test_jsimple
 
 test_java: jclass
 
@@ -93,10 +88,9 @@ test_java: jclass
 KERNEL_TESTDEFS = $(ROOT)/util/testsuite/testDefs.tcl
 
 # These tests do not require a graphics terminal, but do use Jacl and Java
-test_jsimple: $(EXTRA_SRCS) jclass $(KERNEL_TESTDEFS) alljtests.tcl
-	$(JTCLSH) alljtests.tcl
-
-
+# We remove certain files from /tmp before and after running.
+test_jsimple: $(EXTRA_SRCS) jclass $(KERNEL_TESTDEFS) alljtests.tcl test_auto
+	-$(JTCLSH) alljtests.tcl
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk

@@ -187,6 +187,9 @@ public class GenerateCopyrights {
         _addIfPresent(copyrightsMap, "ptolemy.copernicus.kernel.KernelMain",
                 "ptolemy/copernicus/kernel/soot-copyright.html");
 
+        _addIfPresent(copyrightsMap, "ptolemy.data.ontologies.Concept",
+                "ptolemy/data/ontologies/doc/udunits2Database/udunits-license.htm");
+
         _addIfPresent(copyrightsMap, "ptolemy.domains.gr.kernel.GRActor",
                 "ptolemy/domains/gr/lib/java3d-copyright.htm");
         _addIfPresent(copyrightsMap, "ptolemy.domains.gr.lib.quicktime.MovieViewScreen2D",

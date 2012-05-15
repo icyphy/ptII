@@ -32,7 +32,7 @@
 ME =		doc/books/systems
 
 # Sub directories to run make in.
-DIRS =		continuous dataflow discreteevents expressions intro \
+DIRS =		continuous dataflow discreteevents expressions fsm intro \
 		modal plotter pn synchronous vergil
 
 # Root of Ptolemy II directory
@@ -49,6 +49,7 @@ PTCLASSJAR =
 PTCLASSALLJARS = \
 	dataflow/dataflow.jar \
 	intro/intro.jar \
+	fsm/fsm.jar \
 	modal/modal.jar \
 	synchronous/synchronous.jar \
 	vergil/vergil.jar

@@ -43,7 +43,7 @@ EXPERIMENTAL_DOMAINS =
 #   Java 3D was found
 # PTSPACE_DIR is set to space by configure in $PTII/mk/ptII.mk if
 #   ojdbc6.jar was found.
-DOMAINS =	ca ci continuous csp ct curriculum \
+DOMAINS =	ca ci continuous coroutine csp ct curriculum \
 	        dde ddf de fsm hdf modal pn sdf dt \
 	        giotto ontologies petrinet rendezvous \
 		$(PTPSDF_DIR) ptera pthales ptides ptinyos $(PTSPACE_DIR) \

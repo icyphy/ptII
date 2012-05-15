@@ -4,7 +4,7 @@
 #
 # @Version: $Id$
 #
-# @Copyright (c) 1998-2011 The Regents of the University of California.
+# @Copyright (c) 1998-2012 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -41,7 +41,8 @@ DIRS =		BouncingBall Brownian CarTracking \
 		LevelCrossingDetector LevelCrossingDetectorDetectsGlitches \
 		Lorenz NewtonsCradle Noise Poisson Pendulum3D SampledClocks Satellite \
 		SigmaDelta SinuBouncingBall Sinusoid SquareWave \
-		Starmac StickyMasses Switch Thermostat Transmission V2V
+		Starmac StickyMasses Switch \
+		Thermostat Transmission TwoMachineInfiniteBusControl V2V
 
 CLASSPATH =	$(ROOT)
 
@@ -84,8 +85,8 @@ PTCLASSALLJARS = \
 	Switch/Switch.jar \
 	Thermostat/Thermostat.jar \
 	Transmission/Transmission.jar \
+	TwoMachineInfiniteBusControl/TwoMachineInfiniteBusControl.jar \
 	V2V/V2V.jar
-
 
 PTCLASSALLJAR = $(PTPACKAGE).jar
 

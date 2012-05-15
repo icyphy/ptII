@@ -107,6 +107,8 @@ OTHER_FILES_TO_BE_JARED = \
 	eclipseNewJavaProject2.png \
 	eclipseNewProject.png \
 	eclipsePreferencesGeneralWorkspace.png \
+	eclipsePreferencesGeneralWorkspaceWindows.png \
+	eclipseWorkspaceLauncherWindows.png \
 	eclipseWorkspaceLauncher.png \
 	navnext.gif \
 	navprev.gif \

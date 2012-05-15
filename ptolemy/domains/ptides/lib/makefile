@@ -90,9 +90,11 @@ OPTIONAL_FILES = \
 	'MulticoreExecutionTimeMonitor$$1.class' \
 	'MulticoreExecutionTimeMonitor$$2.class' \
 	'MulticoreExecutionTimeMonitor$$3.class' \
+	'MulticoreExecutionTimeMonitor$$4.class' \
 	'MulticoreExecutionTimeMonitor$$ParallelMonitor.class' \
 	'NetworkReceiver$$1.class' \
 	'NetworkReceiver$$PortFunction.class' \
+	'PlatformTimeMonitor$$PlatformTimePlotterEditorFactory.class' \
 	'ScheduleListener$$ScheduleEventType.class' \
 	'SchedulePlotter$$SchedulePlotterEditorFactory.class'
 

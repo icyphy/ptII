@@ -4,7 +4,7 @@
 #
 # @Version: $Id$
 #
-# @Copyright (c) 2011 The Regents of the University of California.
+# @Copyright (c) 2011-2012 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -67,7 +67,8 @@ MISC_FILES = test
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
 	demo \
-	doc
+	doc \
+	'FMUImport$$1.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 

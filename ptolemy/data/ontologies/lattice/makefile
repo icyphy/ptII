@@ -100,6 +100,7 @@ MISC_FILES = $(DIRS)
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
 	'ConceptTermManager$$InequalityTerm.class' \
+	'LatticeOntologyAdapter$$1.class' \
 	'LatticeOntologySolver$$ConstraintType.class' \
 	'NonProductLatticeCounterExample$$ProductExampleType.class'		
 

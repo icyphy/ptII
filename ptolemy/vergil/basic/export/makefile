@@ -62,7 +62,8 @@ PTAUXALLJARS = \
 JSRCS = \
 	ExportModel.java
 
-EXTRA_SRCS =	$(JSRCS)
+EXTRA_SRCS =	$(JSRCS) \
+	exportModelX11 
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
@@ -71,7 +72,17 @@ MISC_FILES =	$(DIRS)
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make realclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
-	$(PTCLASSJAR)
+	$(PTCLASSJAR) \
+	'ExportModel$$1.class' \
+	'ExportModel$$2$1.class' \
+	'ExportModel$$2.class' \
+	'ExportModel$$2$$1.class' \
+	'ExportModel$$3.class' \
+	'ExportModel$$4.class' \
+	'ExportModel$$5.class' \
+	'ExportModel$$6.class' \
+	'ExportModel$$7.class' \
+	'ExportModel$$8.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 

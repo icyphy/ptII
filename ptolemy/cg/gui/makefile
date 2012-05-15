@@ -64,7 +64,8 @@ OPTIONAL_FILES = \
 	'CodeGeneratorGUI$$2.class' \
 	'CodeGeneratorGUI$$3.class' \
 	'CodeGeneratorGUI$$4.class' \
-	'CodeGeneratorGUI$$5.class' 
+	'CodeGeneratorGUI$$5.class' \
+	'CodeGeneratorGUI$$MoreInfoButtonActionListener.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 

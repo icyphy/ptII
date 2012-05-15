@@ -76,6 +76,11 @@ MEXMACISRCS = \
 	establishBSDSocket.mexmaci \
 	exchangeDoublesWithBSDSocket.mexmaci
 
+MEXMACISRCS64 = \
+	closeBSDSocket.mexmaci64 \
+	establishBSDSocket.mexmaci64 \
+	exchangeDoublesWithBSDSocket.mexmaci64
+
 MDLSRCS = \
 	BCVTB.mdl \
 	BSDSocket.mdl
@@ -93,7 +98,8 @@ MISC_FILES = \
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
-	$(MEXMACISRCS)
+	$(MEXMACISRCS) \
+	$(MEXMACISRCS64)
 
 JCLASS = $(JSRCS:%.java=%.class)
 

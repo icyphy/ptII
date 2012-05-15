@@ -4,7 +4,7 @@
 #
 # $Id$
 #
-# @Copyright (c) 2009 The Regents of the University of California.
+# @Copyright (c) 2009-2012 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -53,6 +53,7 @@ PTCLASSALLJARS =
 
 JSRCS = \
 	Display.java \
+	MonitorValue.java \
 	TimedPlotter.java
 
 OTHER_FILES_TO_BE_JARED = \

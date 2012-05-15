@@ -3,7 +3,7 @@
 #
 # @Version: $Id$
 #
-# @Copyright (c) 2009 The Regents of the University of California.
+# @Copyright (c) 2012 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -51,12 +51,13 @@ OTHER_FILES_TO_BE_JARED = \
 
 EXTRA_SRCS = \
 	$(OTHER_FILES_TO_BE_JARED) \
-	data_normal.txt\
-	data_recovery.txt\
-	data_fault1.txt\
-	data_fault2.txt\
-	data_fault-on.txt\
-	DMIB_data.txt
+	data_normal.txt \
+	data_recovery.txt \
+	data_fault1.txt \
+	data_fault2.txt \
+	data_fault-on.txt \
+	DMIB_data.txt \
+	DMIB_data1.txt
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.

@@ -115,6 +115,8 @@ OPTIONAL_FILES = \
 	'BasicGraphFrame$$2.class' \
 	'BasicGraphFrame$$ExportHTMLAction.class' \
 	'BasicGraphFrame$$ExportImageAction.class' \
+	'BasicGraphFrame$$FindAction.class' \
+	'BasicGraphFrame$$FindInLibraryAction.class' \
 	'BasicGraphFrame$$FolderFileFilter.class' \
 	'BasicGraphFrame$$IconVisibleLocation.class' \
 	'BasicGraphFrame$$DeletionListener.class' \
@@ -150,6 +152,7 @@ OPTIONAL_FILES = \
 	'CustomizeDocumentationAction$$3.class' \
 	'DependencyHighlighter$$DependencyController.class' \
 	'DependencyHighlighter$$HighlightDependents.class' \
+	'DependencyResultsDialog$$DependencyResultsNamedObjRenderer.class' \
 	'EditorDropTarget$$1.class' \
 	'EditorDropTarget$$DTListener.class' \
 	'ExtendedGraphFrame$$FullScreenAction.class' \
@@ -167,6 +170,14 @@ OPTIONAL_FILES = \
 	'RunnableGraphController$$PauseModelAction.class' \
 	'RunnableGraphController$$RunModelAction.class' \
 	'RunnableGraphController$$StopModelAction.class' \
+	'SearchResultsDialog$$1.class' \
+	'SearchResultsDialog$$2.class' \
+	'SearchResultsDialog$$3.class' \
+	'SearchResultsDialog$$4.class' \
+	'SearchResultsDialog$$5.class' \
+	'SearchResultsDialog$$NamedObjComparator.class' \
+	'SearchResultsDialog$$NamedObjRenderer.class' \
+	'SearchResultsDialog$$ResultsTableModel.class' \
 	'WithIconGraphController$$NewPortAction$$1.class' \
 	'WithIconGraphController$$NewPortAction.class'
 
