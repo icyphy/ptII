@@ -160,7 +160,7 @@ PTAUXALLJAR =	docConfig.jar
 # that refers to other files. 
 OTHER_FILES_TO_BE_JARED = \
 	$(VERGIL_DOCS) \
-	$(UI_FILES_TO_BE_JARED) \
+	$(UI_FILES_TO_BE_JARED)
 
 	#doc/design/usingVergil/index.htm 
 
@@ -168,6 +168,8 @@ OTHER_FILES_TO_BE_JARED = \
 # want make checkjunk to barf on them.
 MISC_FILES = \
 	$(DIRS) \
+	eclipse \
+	hudsonConfig.xml \
 	$(VERGIL_DOCS) \
 	img \
 	tutorial

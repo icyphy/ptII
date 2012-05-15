@@ -72,7 +72,8 @@ OPTIONAL_FILES = \
 	$(PTCLASSJAR) \
 	'ExportHTMLAction$$DirectoryFilter.class' \
 	'ExportHTMLAction$$IconVisibleLocation.class' \
-	'ExportHTMLAction$$1.class'
+	'ExportHTMLAction$$1.class' \
+	'ExportHTMLAction$$1$$1.class'
 
 JCLASS= $(JSRCS:%.java=%.class)
 
