@@ -166,6 +166,7 @@
     <include name="ptolemy/moml/demo/demo.jar" />
     <include name="ptolemy/plot/plotapplication.jar" />
     <include name="ptolemy/ptsupport.jar" />
+    <include name="ptolemy/vergil/basic/export/web/web.jar" />
     <include name="ptolemy/vergil/basic/export/exportFull.jar" />
     <include name="ptolemy/vergil/basic/layout/layout.jar" />
     <include name="ptolemy/vergil/fsm/fmv/fmv.jar" />
@@ -720,6 +721,16 @@
       </fileset>
       <fileset dir="${basedir}">
 	<include name="ptolemy/vergil/unit/*.class"/>
+      </fileset>
+    </jar>
+
+    <!-- ptolemy/vergil/basic/export/web/web.jar -->
+    <jar defaultexcludes="yes"
+	 destfile="${basedir}/ptolemy/vergil/basic/export/web/web.jar"
+	 >
+      <fileset dir="${basedir}">
+	<include name="ptolemy/vergil/basic/export/web/*.class"/>
+	<include name="ptolemy/vergil/basic/export/web/*.xml"/>
       </fileset>
     </jar>
 
