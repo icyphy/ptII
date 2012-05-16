@@ -48,6 +48,7 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS = \
 	ClassAndEntityTreeModel.java \
+	CompositeTreeModel.java \
 	EntityTreeModel.java \
 	FullTreeModel.java \
 	PTree.java \

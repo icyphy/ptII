@@ -86,6 +86,7 @@ import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
+import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
 import javax.swing.JToolBar;
 import javax.swing.JTree;
@@ -153,6 +154,7 @@ import ptolemy.vergil.kernel.AttributeNodeModel;
 import ptolemy.vergil.toolbox.MenuItemFactory;
 import ptolemy.vergil.toolbox.MoveAction;
 import ptolemy.vergil.tree.EntityTreeModel;
+import ptolemy.vergil.tree.CompositeTreeModel;
 import ptolemy.vergil.tree.PTree;
 import ptolemy.vergil.tree.PTreeMenuCreator;
 import ptolemy.vergil.tree.VisibleTreeModel;
@@ -2331,15 +2333,25 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
             findPanelConstraints.fill = GridBagConstraints.HORIZONTAL;
             _palettePane.add(findPanel, findPanelConstraints);
 
-            // Put in the library.
-            GridBagConstraints libraryConstraints = new GridBagConstraints();
-            libraryConstraints.gridx = 0;
-            libraryConstraints.gridy = 1;
-            libraryConstraints.fill = GridBagConstraints.BOTH;
-            libraryConstraints.weightx = 1.0;
-            libraryConstraints.weighty = 0.7;
-            _palettePane.add(_libraryScrollPane, libraryConstraints);
-            
+            // The Hierarchy browser
+            _treeViewModel = new CompositeTreeModel((CompositeEntity)getModel());
+            // Second arguments prevents parameter values from showing in the library.
+            _treeView = new PTree(_treeViewModel, false);
+            _treeView.setBackground(BACKGROUND_COLOR);
+
+            // Put in the tabbed pane that contains the hierarchy browser and the library
+            JTabbedPane tabbedPane = new JTabbedPane();
+            tabbedPane.add("Library", _libraryScrollPane);
+            tabbedPane.add("Tree", _treeView);
+
+            GridBagConstraints tabbedPaneConstraints = new GridBagConstraints();
+            tabbedPaneConstraints.gridx = 0;
+            tabbedPaneConstraints.gridy = 1;
+            tabbedPaneConstraints.fill = GridBagConstraints.BOTH;
+            tabbedPaneConstraints.weightx = 1.0;
+            tabbedPaneConstraints.weighty = 0.7;
+            _palettePane.add(tabbedPane, tabbedPaneConstraints);
+
             // Add the graph panner.
             if (_graphPanner != null) {
                 GridBagConstraints pannerConstraints = new GridBagConstraints();
@@ -2901,6 +2913,12 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
 
     /** The library. */
     protected CompositeEntity _topLibrary;
+
+    /** The tree view of the model, used for browsing large models. */
+    protected PTree _treeView;
+
+    /** The tree view  model. */
+    protected CompositeTreeModel _treeViewModel;
 
     /** Action for zoom fitting. */
     protected Action _zoomFitAction = new ZoomFitAction("Zoom Fit");
