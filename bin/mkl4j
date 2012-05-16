@@ -11,6 +11,7 @@ fileVersion=9.0.0.1
 PTVERSION=9.0-devel
 
 classPath="<cp>%HOME%/.ptolemyII</cp>
+<cp>%HOME%/.ptolemyII/*</cp>
 <cp>$ROOT</cp>"
 
 if [ $# -gt 0 ]; then
