@@ -363,6 +363,8 @@ The Ptiny pack is required.
                   targetdir="$INSTALL_PATH/vendors/misc/joystick"/>
             <file src="../../jar_dist/ptolemy/actor/lib/jxta/jxta.jar"
                   targetdir="$INSTALL_PATH/ptolemy/actor/lib/jxta"/>
+            <file src="../../jar_dist/ptolemy/actor/lib/mail/mail.jar"
+                  targetdir="$INSTALL_PATH/ptolemy/actor/lib/mail"/>
             <file src="../../jar_dist/ptolemy/actor/ptalon/gt/gt.jar"
                   targetdir="$INSTALL_PATH/ptolemy/actor/ptalon/gt"/>
             <file src="../../jar_dist/ptolemy/actor/ptalon/gt/demo/demo.jar"
