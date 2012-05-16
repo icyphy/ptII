@@ -104,7 +104,11 @@ public class GTIngredientsAttribute extends StringAttribute {
      */
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         GTIngredientsAttribute newObject = (GTIngredientsAttribute) super.clone(workspace);
-        newObject._ingredientList = null;
+        try {
+            newObject._parse();
+        } catch (MalformedStringException ex) {
+            throw new CloneNotSupportedException("Failed to clone: " + ex);
+        }
         return newObject;
     }
 
