@@ -662,7 +662,7 @@ For example:
        test.long - runs tests that are fairly long (called by the test target)
        test.long - runs tests that are longest (called by the test target)
        test.report - runs batch of tests specified by a path with wildcards (output=files)
-       test.short - runs tests that are fairly fast (called by the test target)
+       test.short - runs tests that are fairly fast (~30 min., called by the test target)
        test.single target runs single test specified by its class name (output=stdout)
 
       timeout = ${timeout.longest} milliseconds
@@ -712,7 +712,7 @@ For example:
        test.long - runs tests that are fairly long (called by the test target)
        test.long - runs tests that are longest (called by the test target)
        test.report - runs batch of tests specified by a path with wildcards (output=files)
-       test.short - runs tests that are fairly fast (called by the test target)
+       test.short - runs tests that are fairly fast (~30 min., called by the test target)
        test.single target runs single test specified by its class name (output=stdout)
 
       timeout = ${timeout.longest} milliseconds
@@ -758,7 +758,7 @@ For example:
        test.long - runs tests that are fairly long (called by the test target)
        test.long - runs tests that are longest (called by the test target)
        test.report - runs batch of tests specified by a path with wildcards (output=files)
-       test.short - runs tests that are fairly fast (called by the test target)
+       test.short - runs tests that are fairly fast (~30 min., called by the test target)
        test.single target runs single test specified by its class name (output=stdout)
 
       test.batch = ${test.batch}
@@ -794,6 +794,7 @@ For example:
       human readable output to stdout.
 
       The default is to run all the fairly short-running tests.
+      On a fast machine, these tests take around 30 minutes.
 
       To run different tests, use -Dtest.batch, for example:
          ant test.short -Dtest.batch=ptolemy/domains/continuous/**/junit/*.java
