@@ -29,6 +29,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
  */
 package ptolemy.actor.gt;
 
+import ptolemy.kernel.util.Workspace;
 import java.lang.reflect.InvocationTargetException;
 import java.util.LinkedList;
 

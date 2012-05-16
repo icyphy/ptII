@@ -170,6 +170,19 @@ public class DDEDirector extends CompositeProcessDirector {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    /** Clone the object into the specified workspace. The new object is
+     *  <i>not</i> added to the directory of that workspace (you must do this
+     *  yourself if you want it there).
+     *  The result is an object with no container.
+     *  @param workspace The workspace for the cloned object.
+     *  @exception CloneNotSupportedException Not thrown in this base class
+     *  @return The new object.
+     */
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        DDEDirector newObject = (DDEDirector) super.clone(workspace);
+        newObject._writeBlockedQueues = new HashMap();
+        return newObject;
+    }
     /**
      * Schedule an actor to be fired at the specified time. If the thread that
      * calls this method is an instance of DDEThread, then the specified actor

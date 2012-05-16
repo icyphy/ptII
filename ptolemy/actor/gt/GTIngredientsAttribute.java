@@ -94,6 +94,20 @@ public class GTIngredientsAttribute extends StringAttribute {
         _init();
     }
 
+    /** Clone the object into the specified workspace. The new object is
+     *  <i>not</i> added to the directory of that workspace (you must do this
+     *  yourself if you want it there).
+     *  The result is an object with no container.
+     *  @param workspace The workspace for the cloned object.
+     *  @exception CloneNotSupportedException Not thrown in this base class
+     *  @return The new object.
+     */
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        GTIngredientsAttribute newObject = (GTIngredientsAttribute) super.clone(workspace);
+        newObject._ingredientList = null;
+        return newObject;
+    }
+
     /** Parse the expression of this attribute if necessary and return the
      *  up-to-date ingredient list contained in this attribute.
      *
@@ -157,7 +171,7 @@ public class GTIngredientsAttribute extends StringAttribute {
         _ingredientList = GTIngredientList.parse(this, super.getExpression());
     }
 
-    /** The ingredient list obtained from the last expression  parsing.
+    /** The ingredient list obtained from the last expression parsing.
      */
     private GTIngredientList _ingredientList = null;
 

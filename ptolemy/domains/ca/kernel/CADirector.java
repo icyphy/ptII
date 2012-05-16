@@ -52,6 +52,7 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Nameable;
+import ptolemy.kernel.util.Workspace;
 
 /**
  * A Cellular Automata director.
@@ -188,6 +189,24 @@ public class CADirector extends Director {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+
+    /** Clone the object into the specified workspace. The new object is
+     *  <i>not</i> added to the directory of that workspace (you must do this
+     *  yourself if you want it there).
+     *  The result is an object with no container.
+     *  @param workspace The workspace for the cloned object.
+     *  @exception CloneNotSupportedException Not thrown in this base class
+     *  @return The new object.
+     */
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        CADirector newObject = (CADirector) super.clone(workspace);
+        newObject.delay = (Parameter)newObject.getAttribute("delay");
+        newObject.initialMatrix = (Parameter)newObject.getAttribute("initialMatrix");
+        newObject.iterations = (Parameter)newObject.getAttribute("iterations");
+        newObject.random = (Parameter)newObject.getAttribute("random");
+        newObject.size = (Parameter)newObject.getAttribute("size");
+        return newObject;
+    }
 
     /**
      * Iterate the relevant actors on the canvas for a single grid location.

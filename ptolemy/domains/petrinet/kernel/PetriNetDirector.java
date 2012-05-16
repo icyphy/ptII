@@ -399,6 +399,8 @@ public class PetriNetDirector extends Director {
         // work.
         PetriNetDirector newObject = (PetriNetDirector) (super.clone(workspace));
 
+        newObject.iterations = (Parameter)newObject.getAttribute("iterations");
+
         // It is too soon to generate the new generator because
         // all clones will have the same actor name, which results
         // in the same seed.

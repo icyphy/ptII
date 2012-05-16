@@ -50,6 +50,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.ValueListener;
+import ptolemy.kernel.util.Workspace;
 import ptolemy.moml.MoMLParser;
 import ptolemy.moml.filter.MoMLFilterSimple;
 
@@ -103,6 +104,20 @@ public class DesignPatternImporter extends Attribute implements GTAttribute,
      */
     public void attributeChanged(Settable settable) {
         update();
+    }
+
+    /** Clone the object into the specified workspace. The new object is
+     *  <i>not</i> added to the directory of that workspace (you must do this
+     *  yourself if you want it there).
+     *  The result is an object with no container.
+     *  @param workspace The workspace for the cloned object.
+     *  @exception CloneNotSupportedException Not thrown in this base class
+     *  @return The new object.
+     */
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        DesignPatternImporter newObject = (DesignPatternImporter) super.clone(workspace);
+        newObject._lastValues = new HashMap<String, Token>();
+        return newObject;
     }
 
     /** Set the container of this importer, and update the new

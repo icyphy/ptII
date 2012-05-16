@@ -72,10 +72,10 @@ proc _dropTest {toplevel namedObj cloneConfiguration stream printStream isAttrib
     set fullName [[java::cast ptolemy.kernel.util.NamedObj $namedObj] getName $cloneConfiguration]
 
     set className [[$namedObj getClass] getName]
-    if [regexp {\.gui\.} $className] {
-	puts "Skipping $className, it contains .gui., which causes problems in a headless environment"
-	return
-    }
+    #if [regexp {\.gui\.} $className] {
+    #	puts "Skipping $className, it contains .gui., which causes problems in a headless environment"
+    #	return
+    #}
     # Check for attributes that contain attributes that fail when
     # put into an unnamed top level.
     # ptolemy.cg.kernel.generic.GenericCodeGenerator
@@ -179,34 +179,38 @@ foreach i $configs {
     # Alphabetical please
     $inputFileNamesToSkip add "/apps/apps.xml"
     $inputFileNamesToSkip add "/apps/superb/superb.xml"
-    $inputFileNamesToSkip add "/attributes/decorative.xml"
+    #$inputFileNamesToSkip add "/attributes/decorative.xml"
     $inputFileNamesToSkip add "/chic/chic.xml"
     #$inputFileNamesToSkip add "/codegen.xml"
-    $inputFileNamesToSkip add "/configs/ellipse.xml"
-    $inputFileNamesToSkip add "/gr.xml"
+    #$inputFileNamesToSkip add "/configs/ellipse.xml"
+    #$inputFileNamesToSkip add "/gr.xml"
     $inputFileNamesToSkip add "/io/comm/comm.xml"
-    $inputFileNamesToSkip add "/image.xml"
+    #$inputFileNamesToSkip add "/image.xml"
     #$inputFileNamesToSkip add "/experimentalDirectors.xml"
-    $inputFileNamesToSkip add "/lib/interactive.xml"
-    $inputFileNamesToSkip add "/line.xml"
+    #$inputFileNamesToSkip add "/lib/interactive.xml"
+    #$inputFileNamesToSkip add "/line.xml"
     $inputFileNamesToSkip add "/jai/jai.xml"
     $inputFileNamesToSkip add "/jmf/jmf.xml"
     $inputFileNamesToSkip add "/joystick/jstick.xml"
     $inputFileNamesToSkip add "/jxta/jxta.xml"
     $inputFileNamesToSkip add "/ptinyos/lib/lib-composite.xml"
-    $inputFileNamesToSkip add "/rectangle.xml"
+    #$inputFileNamesToSkip add "/rectangle.xml"
     $inputFileNamesToSkip add "TOSIndex.xml"
     $inputFileNamesToSkip add "/quicktime.xml"
     $inputFileNamesToSkip add "/matlab.xml"
     #$inputFileNamesToSkip add "/x10/x10.xml"
-    $inputFileNamesToSkip add "utilityIDAttribute.xml"
+    #$inputFileNamesToSkip add "utilityIDAttribute.xml"
 
+    if {[java::call ptolemy.gui.PtGUIUtilities macOSLookAndFeel]} {
+	puts "Skipping backtrack.xml because Backtracking has problems on the Mac"
+	$inputFileNamesToSkip add "/backtrack.xml"
+    }
     # Tell the parser to skip inputting the above files
     java::field $parser inputFileNamesToSkip $inputFileNamesToSkip 
 
     # Filter out graphical classes while inside MoMLParser
     # See ptII/util/testsuite/removeGraphicalClasses.tcl
-    removeGraphicalClasses $parser
+    #removeGraphicalClasses $parser
 
     set loader [[$parser getClass] getClassLoader]
     
@@ -413,6 +417,11 @@ foreach i $configs {
 			#puts "attr: [java::instanceof $attr ptolemy.kernel.util.Attribute] [$attr toString] "
 			
 			set attribute [java::cast ptolemy.kernel.util.Attribute $attr]
+
+			if [java::instanceof $attribute ptolemy.domains.tm.kernel.SchedulePlotter] {
+			    puts "Skipping drop test of tm.kernel.SchedulePlotter because it must be dropped into a container that has a TMDirector"
+			    continue
+			}
 
 			set r [_dropTest $toplevel $attribute $cloneConfiguration $stream $printStream 1]
 			if {[llength $r] != 0} {

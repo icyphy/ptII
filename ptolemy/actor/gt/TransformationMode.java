@@ -94,9 +94,12 @@ public class TransformationMode extends ChoiceParameter implements
         TransformationMode newObject = (TransformationMode) super
                 .clone(workspace);
         newObject._masterRule = null;
+        newObject._matchResults = new LinkedList<MatchResult>();
+        newObject._matcher = new GraphMatcher();
         newObject._random = new Random();
         newObject._workingCopy = null;
         newObject._workingCopyVersion = -1;
+        newObject._workspace = new Workspace();
         return newObject;
     }
 

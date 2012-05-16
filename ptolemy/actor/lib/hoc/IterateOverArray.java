@@ -232,7 +232,7 @@ public class IterateOverArray extends MirrorComposite {
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         IterateOverArray result = (IterateOverArray) super.clone(workspace);
         try {
-            new IterateDirector(result, uniqueName("IterateDirector"));
+            result.new IterateDirector(result, uniqueName("IterateDirector"));
         } catch (Throwable throwable) {
             new CloneNotSupportedException("Could not clone: " + throwable);
         }

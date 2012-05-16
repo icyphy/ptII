@@ -242,6 +242,24 @@ public class DTDirector extends SDFDirector {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    /** Clone the object into the specified workspace. The new object is
+     *  <i>not</i> added to the directory of that workspace (you must do this
+     *  yourself if you want it there).
+     *  The result is an object with no container.
+     *  @param workspace The workspace for the cloned object.
+     *  @exception CloneNotSupportedException Not thrown in this base class
+     *  @return The new object.
+     */
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        DTDirector newObject = (DTDirector) super.clone(workspace);
+        try {
+            newObject._reset();
+        } catch (Throwable throwable) {
+            throw new CloneNotSupportedException("Could not clone: " + throwable);
+        }
+        return newObject;
+    }
+
     /** Go through the schedule and iterate every actor with calls to
      *  prefire() , fire() , and postfire().  If this director is not
      *  in the top-level, get the outside director's current time; and

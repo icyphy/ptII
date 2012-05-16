@@ -56,6 +56,7 @@ import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
+import ptolemy.kernel.util.Workspace;
 
 ///////////////////////////////////////////////////////////////////
 //// LatticeOntologySolver
@@ -188,6 +189,23 @@ public class LatticeOntologySolver extends OntologySolver {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+
+    /** Clone the object into the specified workspace. The new object is
+     *  <i>not</i> added to the directory of that workspace (you must do this
+     *  yourself if you want it there).
+     *  The result is an object with no container.
+     *  @param workspace The workspace for the cloned object.
+     *  @exception CloneNotSupportedException Not thrown in this base class
+     *  @return The new object.
+     */
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        LatticeOntologySolver newObject = (LatticeOntologySolver) super.clone(workspace);
+        newObject._annotatedObjects = new HashSet<Object>();
+        newObject._constraintManager = new ConstraintManager(newObject);
+        newObject._trainedConceptRecordArray = (Parameter)newObject.getAttribute("_trainedConceptRecordArray");
+        return newObject;
+    }
+
 
     /**
      * Get the list of affected InequalityTerms from the OntologySolver's
@@ -973,10 +991,10 @@ public class LatticeOntologySolver extends OntologySolver {
     ////                         private variables                 ////
 
     /** The set of Objects that have been manually annotated. */
-    private final HashSet<Object> _annotatedObjects = new HashSet<Object>();
+    private /*final*/ HashSet<Object> _annotatedObjects = new HashSet<Object>();
 
     /** The constraint manager that keeps track of all the constraints in the model for the LatticeOntologySolver. */
-    private final ConstraintManager _constraintManager = new ConstraintManager(
+    private /*final*/ ConstraintManager _constraintManager = new ConstraintManager(
             this);
 
     /** The concept term manager that keeps track of all the concept terms in the model for the LatticeOntologySolver. */

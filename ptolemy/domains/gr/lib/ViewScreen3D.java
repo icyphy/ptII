@@ -62,6 +62,7 @@ import ptolemy.domains.gr.kernel.ViewScreenInterface;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.Workspace;
 
 import com.sun.j3d.utils.behaviors.mouse.MouseRotate;
 import com.sun.j3d.utils.behaviors.mouse.MouseTranslate;
@@ -209,6 +210,18 @@ public class ViewScreen3D extends GRActor3D implements Placeable,
      */
     public void addChild(Node node) {
         _addChild(node);
+    }
+
+    /** Clone the actor into the specified workspace.
+     *  @param workspace The workspace for the new object.
+     *  @return A new actor.
+     *  @exception CloneNotSupportedException If a derived class contains
+     *   an attribute that cannot be cloned.
+     */
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        ViewScreen3D newObject = (ViewScreen3D) super.clone(workspace);
+        newObject._lastTransform = new Transform3D();
+        return newObject;
     }
 
     /** Fire this actor.*/

@@ -144,6 +144,7 @@ public class TransformationAttribute extends Attribute implements Configurable,
             newObject._configurer
                     .setManager(new Manager(workspace, "_manager"));
             newObject._configurer.setConfiguredObject(newObject);
+            newObject._executionListeners = new LinkedList<ExecutionListener>();
             newObject._modelUpdater = (PteraModalModel) _modelUpdater
                     .clone(workspace);
             newObject._modelUpdater.setContainer(newObject._configurer);

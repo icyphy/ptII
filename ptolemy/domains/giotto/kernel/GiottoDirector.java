@@ -161,6 +161,19 @@ public class GiottoDirector extends StaticSchedulingDirector implements
         }
     }
 
+    /** Clone the object into the specified workspace. The new object is
+     *  <i>not</i> added to the directory of that workspace (you must do this
+     *  yourself if you want it there).
+     *  The result is an object with no container.
+     *  @param workspace The workspace for the cloned object.
+     *  @exception CloneNotSupportedException Not thrown in this base class
+     *  @return The new object.
+     */
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        GiottoDirector newObject = (GiottoDirector)super.clone(workspace);
+        newObject._receivers = new LinkedList();
+        return newObject;
+    }
     /** Fire a complete iteration and advance time to the current time plus
      *  the period value. A complete iteration consists of several minor cycles.
      *  At each minor cycle, iterate actors in the corresponding minor cycle

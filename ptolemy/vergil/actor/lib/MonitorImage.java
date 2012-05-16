@@ -38,6 +38,7 @@ import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.Workspace;
 import ptolemy.vergil.icon.ImageIcon;
 
 ///////////////////////////////////////////////////////////////////
@@ -79,6 +80,18 @@ public class MonitorImage extends Sink {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+
+    /** Clone the actor into the specified workspace.
+     *  @param workspace The workspace for the new object.
+     *  @return A new actor.
+     *  @exception CloneNotSupportedException If a derived class contains
+     *   an attribute that cannot be cloned.
+     */
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        MonitorImage newObject = (MonitorImage) super.clone(workspace);
+        newObject._icon = (ImageIcon)newObject.getAttribute("_icon");
+        return newObject;
+    }
 
     /** Read at most one token from the input and record its value.
      *  @exception IllegalActionException If the input token does not

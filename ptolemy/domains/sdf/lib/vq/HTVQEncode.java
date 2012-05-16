@@ -42,6 +42,7 @@ import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.Workspace;
 import ptolemy.math.IntegerMatrixMath;
 import ptolemy.util.FileUtilities;
 
@@ -187,6 +188,21 @@ public class HTVQEncode extends Transformer {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+
+    /** Clone the actor into the specified workspace.
+     *  @param workspace The workspace for the new object.
+     *  @return A new actor.
+     *  @exception CloneNotSupportedException If a derived class contains
+     *   an attribute that cannot be cloned.
+     */
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        HTVQEncode newObject = (HTVQEncode) super.clone(workspace);
+        newObject.ipbuf_encodep1 = new int[8][8];
+        newObject.ipbuf_encodep2 = new int[8][8];
+        newObject._codeBook = new int[6][256][];
+        newObject._lookupTable = new int[6][65536];
+        return newObject;
+    }
 
     /**
      * Fire this actor.

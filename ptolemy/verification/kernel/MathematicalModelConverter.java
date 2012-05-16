@@ -47,6 +47,7 @@ import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
+import ptolemy.kernel.util.Workspace;
 import ptolemy.util.MessageHandler;
 import ptolemy.verification.gui.MathematicalModelConverterGUIFactory;
 import ptolemy.verification.kernel.maude.RTMaudeUtility;
@@ -125,11 +126,24 @@ public class MathematicalModelConverter extends Attribute {
 
     }
 
-    ///////////////////////////////////////////////////////////////////
-    // parameters ////
 
     ///////////////////////////////////////////////////////////////////
     // public methods ////
+
+    /** Clone the object into the specified workspace. The new object is
+     *  <i>not</i> added to the directory of that workspace (you must do this
+     *  yourself if you want it there).
+     *  The result is an object with no container.
+     *  @param workspace The workspace for the cloned object.
+     *  @exception CloneNotSupportedException Not thrown in this base class
+     *  @return The new object.
+     */
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        MathematicalModelConverter newObject = (MathematicalModelConverter) super.clone(workspace);
+        // setContainer() should be called after cloning.
+        newObject._model = null;
+        return newObject;
+    }
 
     public StringBuffer generateCode(ModelType modelType,
             String inputTemporalFormula, FormulaType formulaType,
@@ -372,6 +386,23 @@ public class MathematicalModelConverter extends Attribute {
                 return "Invoke NuSMV";
             }
         }
+    }
+
+    /** Set the model to the container.
+     *  @param container
+     *  @exception IllegalActionException If the action would result in a
+     *   recursive containment structure, or if
+     *   this entity and container are not in the same workspace, or
+     *   if the protected method _checkContainer() throws it, or if
+     *   a contained Settable becomes invalid and the error handler
+     *   throws it.
+     *  @exception NameDuplicationException If the name of this entity
+     *   collides with a name already in the container.   
+     */
+    public void setContainer(CompositeEntity container)
+            throws IllegalActionException, NameDuplicationException {
+        super.setContainer(container);
+        _model = container;
     }
 
     ///////////////////////////////////////////////////////////////////
