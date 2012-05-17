@@ -43,6 +43,7 @@ import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.StringAttribute;
 
 /** 
  * <p>Output the average of the inputs after the last time a true token is
@@ -106,6 +107,7 @@ public class Average extends Transformer implements Rollbackable {
         super(container, name);
         reset = new TypedIOPort(this, "reset", true, false);
         reset.setTypeEquals(BaseType.BOOLEAN);
+        new StringAttribute(reset, "_cardinal").setExpression("SOUTH");
     }
 
     /**     

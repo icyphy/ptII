@@ -39,6 +39,8 @@ import ptolemy.backtrack.util.CheckpointRecord;
 import ptolemy.backtrack.util.FieldRecord;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.LongToken;
+import ptolemy.data.Token;
+import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.SingletonParameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
@@ -113,6 +115,17 @@ public abstract class RandomSource extends Source implements Rollbackable {
      */
     public SharedParameter seed;
 
+    /**     
+     * This private seed overrides the shared seed parameter to specify a 
+     * particular seed rather than using System.currentTimeMillis() or
+     * hashCode() to compute the seed value. 
+     * By default, this parameter is empty, which means that the shared seed
+     * parameter is used.
+     * WARNING: It is up to the user to make sure that different seed
+     * values are used in different random number generators.
+     */
+    public Parameter privateSeed;
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
     // It is too soon to generate the new generator because
@@ -120,6 +133,12 @@ public abstract class RandomSource extends Source implements Rollbackable {
     // in the same seed.
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
+    // BTW - the reason to use the full name here is so that
+    // each random number generator generates a sequence
+    // of different random numbers.  If we use just the
+    // display name, then two actors that have the same
+    // name will generate the same sequence of numbers which
+    // is bad for Monte Carlo simulations.
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
     /**     
@@ -155,21 +174,29 @@ public abstract class RandomSource extends Source implements Rollbackable {
         super(container, name);
         seed = new SharedParameter(this, "seed", RandomSource.class, "0L");
         seed.setTypeEquals(BaseType.LONG);
+        privateSeed = new Parameter(this, "privateSeed");
+        privateSeed.setTypeEquals(BaseType.LONG);
         resetOnEachRun = new SharedParameter(this, "resetOnEachRun", RandomSource.class, "false");
         resetOnEachRun.setTypeEquals(BaseType.BOOLEAN);
         new SingletonParameter(trigger, "_showName").setToken(BooleanToken.TRUE);
     }
 
     /**     
-     * If the attribute is <i>seed</i>
+     * If the attribute is <i>seed</i> or <i>useThisSeed</i> 
      * then create the base random number generator.
      * @param attribute The attribute that changed.
      * @exception IllegalActionException If the change is not acceptable
      * to this container (not thrown in this base class).
      */
     public void attributeChanged(Attribute attribute) throws IllegalActionException  {
-        if (attribute == seed) {
-            long seedValue = ((LongToken)(seed.getToken())).longValue();
+        if (attribute == seed || attribute == privateSeed) {
+            long seedValue;
+            Token privateSeedToken = privateSeed.getToken();
+            if (privateSeedToken != null) {
+                seedValue = ((LongToken)privateSeedToken).longValue();
+            } else {
+                seedValue = ((LongToken)seed.getToken()).longValue();
+            }
             if (seedValue != _generatorSeed) {
                 _needNewGenerator = true;
             }
@@ -240,12 +267,19 @@ public abstract class RandomSource extends Source implements Rollbackable {
      * seed Token.
      */
     protected void _createGenerator() throws IllegalActionException  {
-        long seedValue = ((LongToken)(seed.getToken())).longValue();
-        _generatorSeed = seedValue;
-        if (seedValue == 0L) {
-            seedValue = System.currentTimeMillis() + hashCode();
+        long seedValue;
+        Token privateSeedToken = privateSeed.getToken();
+        if (privateSeedToken != null) {
+            seedValue = ((LongToken)privateSeedToken).longValue();
+            _generatorSeed = seedValue;
         } else {
-            seedValue = seedValue + getFullName().hashCode();
+            seedValue = ((LongToken)seed.getToken()).longValue();
+            _generatorSeed = seedValue;
+            if (seedValue == 0L) {
+                seedValue = System.currentTimeMillis() + hashCode();
+            } else {
+                seedValue = seedValue + getFullName().hashCode();
+            }
         }
         _random = new Random(seedValue);
         _needNewGenerator = false;
