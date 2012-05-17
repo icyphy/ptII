@@ -65,6 +65,9 @@ public enum SIUnitPrefixes {
     ATTO (1e-18, "atto", "a"),
     ZEPTO (1e-21, "zepto", "z"),
     YOCTO (1e-24, "yocto", "y");
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                         private enumeration constructor   ////
 
     /** Create a new SI unit prefix with the given conversion factor, name,
      *  and symbol.
@@ -72,7 +75,7 @@ public enum SIUnitPrefixes {
      *  @param prefixName The name of the unit prefix as a string.
      *  @param prefixSymbol The short symbol for the unit prefix as a string.
      */
-    SIUnitPrefixes(double unitFactor, String prefixName, String prefixSymbol) {
+    private SIUnitPrefixes(double unitFactor, String prefixName, String prefixSymbol) {
         this._unitFactor = unitFactor;
         this._prefixName = new String(prefixName);
         this._prefixSymbol = new String(prefixSymbol);
@@ -91,14 +94,14 @@ public enum SIUnitPrefixes {
     /** Return the name of the given unit prefix as a string.
      *  @return The name of the unit prefix as a string.
      */
-    public String Name() {
+    public String prefixName() {
         return _prefixName;
     }
     
     /** Return the short symbol representing the given unit prefix as a string. 
      *  @return The short symbol for the unit prefix as a string.
      */
-    public String Symbol() {
+    public String prefixSymbol() {
         return _prefixSymbol;
     }
     

@@ -101,9 +101,9 @@ public class SIPrefixUnitConversionInfo extends UnitConversionInfo {
             for (SIUnitPrefixes prefix : SIUnitPrefixes.values()) {
                 String completeUnitName = null;
                 if (useSymbols) {
-                    completeUnitName = prefix.Symbol().concat(unitName);
+                    completeUnitName = prefix.prefixSymbol().concat(unitName);
                 } else {
-                    completeUnitName = prefix.Name().concat(unitName);
+                    completeUnitName = prefix.prefixName().concat(unitName);
                 }
 
                 createUnitConversionParameterForFactor(dimension, completeUnitName,
@@ -117,6 +117,9 @@ public class SIPrefixUnitConversionInfo extends UnitConversionInfo {
             		"SI prefix units can be created.");
         }
     }
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                         private static methods            ////
     
     /** Create a new SIPrefixUnitConversionInfo parameter for the given
      *  DimensionRepresentativeConcept with the given unit name and
