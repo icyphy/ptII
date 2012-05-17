@@ -258,6 +258,9 @@
 	<include name="ptolemy/actor/gui/*.gif"/>
       </fileset>
       <fileset dir="${basedir}">
+	<include name="ptolemy/actor/gui/*.htm"/>
+      </fileset>
+      <fileset dir="${basedir}">
 	<include name="ptolemy/actor/gui/doc/*.gif"/>
       </fileset>
       <fileset dir="${basedir}">
@@ -594,6 +597,9 @@
 	<include name="ptolemy/gui/*.class"/>
       </fileset>
       <fileset dir="${basedir}">
+	<include name="ptolemy/gui/*.htm"/>
+      </fileset>
+      <fileset dir="${basedir}">
 	<include name="ptolemy/kernel/*.class"/>
       </fileset>
       <fileset dir="${basedir}">
@@ -610,6 +616,9 @@
       </fileset>
       <fileset dir="${basedir}">
 	<include name="ptolemy/media/*.class"/>
+      </fileset>
+      <fileset dir="${basedir}">
+	<include name="ptolemy/media/*.htm"/>
       </fileset>
       <fileset dir="${basedir}">
 	<include name="ptolemy/media/javasound/*.class"/>
@@ -3126,8 +3135,14 @@
 	<include name="ptolemy/data/ontologies/doc/*.ppt"/>
       </fileset>
       <fileset dir="${basedir}">
-	<include name="ptolemy/data/ontologies/doc/*.zargo"/>
+	<include name="ptolemy/data/ontologies/doc/udunits2Database/*.htm"/>
       </fileset>
+      <fileset dir="${basedir}">
+	<include name="ptolemy/data/ontologies/doc/udunits2Database/*.xml"/>
+      </fileset>
+      <!-- fileset dir="${basedir}" -->
+	<!-- include name="ptolemy/data/ontologies/doc/*.zargo"/ -->
+      <!-- /fileset -->
       <fileset dir="${basedir}">
 	<include name="ptolemy/data/ontologies/gui/*.class"/>
       </fileset>
