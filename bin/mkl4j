@@ -10,9 +10,17 @@ mainClass=ptolemy.vergil.VergilApplication
 fileVersion=9.0.0.1
 PTVERSION=9.0-devel
 
-classPath="<cp>%HOME%/.ptolemyII</cp>
-<cp>%HOME%/.ptolemyII/*</cp>
-<cp>$ROOT</cp>"
+# Sigh.  Look in %HOMEPATH% and %HOME%. See
+# http://www.askvg.com/list-of-environment-variables-in-windows-xp-vista-and-7/
+# However, there is a bug:
+# http://bugs.sun.com/view_bug.do?bug_id=4787931
+
+classPath="<cp>%HOMEPATH%/.ptolemyII</cp>
+    <cp>%HOMEPATH%/.ptolemyII/*</cp>
+    <cp>%HOME%/.ptolemyII</cp>
+    <cp>%HOME%/.ptolemyII/*</cp>
+    <cp>contrib/contrib.jar</cp>
+    <cp>$ROOT</cp>"
 
 if [ $# -gt 0 ]; then
    base=$1
