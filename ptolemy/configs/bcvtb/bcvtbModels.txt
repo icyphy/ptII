@@ -23,6 +23,7 @@ $CLASSPATH/ptolemy/domains/continuous/demo/SquareWave/SquareWave.xml
 $CLASSPATH/ptolemy/domains/continuous/demo/Switch/Switch.xml
 $CLASSPATH/ptolemy/domains/continuous/demo/Thermostat/Thermostat.xml
 $CLASSPATH/ptolemy/domains/continuous/demo/Transmission/Transmission.xml
+$CLASSPATH/ptolemy/domains/continuous/demo/TwoMachineInfiniteBusControl/TwoMachineInfiniteBusControl.xml
 $CLASSPATH/ptolemy/domains/continuous/demo/V2V/V2V.xml
 $CLASSPATH/ptolemy/domains/modal/demo/Blending/Blending.xml
 $CLASSPATH/ptolemy/domains/modal/demo/Case/Case.xml
