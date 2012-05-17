@@ -43,12 +43,14 @@ import ptolemy.kernel.util.Workspace;
  token equal to NaN.  This is useful if you wish to force an output
  from a generic actor to always output doubles.
 
- <p>
+ <p>If you want to convert a string to a double, see the
+ {@link ptolemy.actor.lib.io.ExpressionToToken} actor.</p>
+
  @author Adam Cataldo
  @Pt.ProposedRating Green (eal)
  @Pt.AcceptedRating Red (cxh)
 
- @see ptolemy.data.BooleanToken
+ * @see ptolemy.data.BooleanToken
  */
 public class AnythingToDouble extends Converter {
     /** Construct an actor with the given container and name.
