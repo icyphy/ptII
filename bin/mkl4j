@@ -49,8 +49,10 @@ if [ ! $# -eq 0 ]; then
            echo "$0: warning: $1 does not exist" 1>&2
            exit 2
        fi
+	# Remove $PTII/ for files like /var/lib/hudson/jobs/ptII/workspace/vendors/oracle/javamail/mail.jar
+       jarfile=`echo $1 | sed "s@$PTII/@@"`; \
        classPath="$classPath
-    <cp>$1</cp>"
+    <cp>$jarfile</cp>"
        shift
    done
 fi
