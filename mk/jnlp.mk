@@ -1096,16 +1096,18 @@ vergil.jnlp: vergil.jnlp.in $(SIGNED_DIR) $(KEYSTORE)
 # problems with cvs and applets.
 jnlp_sign: jnlp_sign1 $(JNLPS) $(KEYSTORE)
 jnlp_sign1: $(SIGNED_DIR) $(NATIVE_SIGNED_LIB_JARS)
+	# Remove $PTII/ for files like /var/lib/hudson/jobs/ptII/workspace/vendors/oracle/javamail/mail.jar
 	@set $(ALL_NON_APPLICATION_JNLP_JARS); \
 	for x do \
 		if [ ! -f $$x ]; then \
 			echo "Warning: $$x does not exist, skipping."; \
 			continue; \
 		fi; \
-		if [ ! -f $(SIGNED_DIR)/$$x ]; then \
-			echo "#  Copying $$x to $(SIGNED_DIR)/"; \
-			mkdir -p $(SIGNED_DIR)/`dirname $$x`; \
-			cp -p $$x `dirname $(SIGNED_DIR)/$$x`; \
+		jarfile=`echo $$x | sed "s@$$PTII/@@"`; \
+		if [ ! -f $(SIGNED_DIR)/$$jarfile ]; then \
+			echo "#  Copying $$jarfile to $(SIGNED_DIR)/"; \
+			mkdir -p $(SIGNED_DIR)/`dirname $$jarfile`; \
+			cp -p $$jarfile `dirname $(SIGNED_DIR)/$$jarfile`; \
 		fi; \
 		echo "# Signing $(SIGNED_DIR)/$$x"; \
 		"$(JARSIGNER)" \
@@ -1137,12 +1139,14 @@ $(JAR_DIST_DIR): $(NATIVE_SIGNED_LIB_JARS)
 	if [ ! -d $(JAR_DIST_DIR) ]; then \
 		mkdir -p $(JAR_DIST_DIR); \
 	fi
+	# Remove $PTII/ for files like /var/lib/hudson/jobs/ptII/workspace/vendors/oracle/javamail/mail.jar
 	set $(ALL_NON_APPLICATION_JNLP_JARS); \
 	for x do \
-		if [ ! -f $(JAR_DIST_DIR)/$$x ]; then \
-			echo "#  Copying $$x to $(JAR_DIST_DIR)/"; \
-			mkdir -p $(JAR_DIST_DIR)/`dirname $$x`; \
-			cp -p $$x `dirname $(JAR_DIST_DIR)/$$x`; \
+		jarfile=`echo $$x | sed "s@$$PTII/@@"`; \
+		if [ ! -f $(JAR_DIST_DIR)/$$jarfile ]; then \
+			echo "#  Copying $$jarfile to $(JAR_DIST_DIR)/"; \
+			mkdir -p $(JAR_DIST_DIR)/`dirname $$jarfile`; \
+			cp -p $$jarfile `dirname $(JAR_DIST_DIR)/$$jarfile`; \
 		fi; \
 	done;
 
