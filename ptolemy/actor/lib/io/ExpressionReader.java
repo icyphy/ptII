@@ -28,6 +28,7 @@
 package ptolemy.actor.lib.io;
 
 import ptolemy.data.expr.Variable;
+import ptolemy.data.BooleanToken;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -104,6 +105,11 @@ public class ExpressionReader extends LineReader {
         if (_currentLine != null) {
             _expressionEvaluator.setExpression(_currentLine);
             output.broadcast(_expressionEvaluator.getToken());
+        }
+        if (_nextLine == null) {
+            endOfFile.broadcast(BooleanToken.TRUE);
+        } else {
+            endOfFile.broadcast(BooleanToken.FALSE);
         }
     }
 
