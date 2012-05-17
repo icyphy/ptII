@@ -448,6 +448,8 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
 
             NamedObj newObject = (NamedObj) super.clone();
 
+            newObject._changeLock = new SerializableObject();
+
             // The clone should have its own listeners, otherwise
             // debug messages from the clone will go to the master.
             // See 8.1.0 in NamedObj.tcl. Credit: Colin Endicott
