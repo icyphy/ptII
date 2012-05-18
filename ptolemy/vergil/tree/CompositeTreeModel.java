@@ -67,37 +67,16 @@ import ptolemy.kernel.Entity;
  @Pt.ProposedRating Red (eal)
  @Pt.AcceptedRating Red (johnr)
  */
-public class CompositeTreeModel implements TreeModel {
+public class CompositeTreeModel extends EntityTreeModel {
     /** Create a new tree model with the specified root.
      *  @param root The root of the tree.
      */
     public CompositeTreeModel(CompositeEntity root) {
-        setRoot(root);
+        super(root);
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-
-    /** Add a listener to this model.
-     *  @param listener The listener to add.
-     *  @see #removeTreeModelListener(TreeModelListener)
-     */
-    public void addTreeModelListener(TreeModelListener listener) {
-        // In http://bugzilla.ecoinformatics.org/show_bug.cgi?id=4801,
-        // Jianwu Wang found that the _listenerList attribute in
-        // ptolemy.vergil.tree.EntityTreeModel was leaking memory.
-        // This attribute keeps holding some references, so that
-        // instances of EntityTreeModel and its sub-classes can not be
-        // GCed when a window is open and closed.
-        //
-        // When it and its sub-classes are used in Kepler,
-        // addTreeModelListener() and removeTreeModelListener()
-        // functions of EntityTreeModel class are called implicitly.
-        // Jianwu did not find a good way to clean up after a window
-        // is closed.  Changing the _listenerList attribute using
-        // WeakReference fixe the leak.
-        _listenerList.add(new WeakReference(listener));
-    }
 
     /** Get the child of the given parent at the given index.
      *  If the child does not exist, then return null.
@@ -145,14 +124,6 @@ public class CompositeTreeModel implements TreeModel {
         return entity.entityList(CompositeActor.class).indexOf(child);
     }
 
-    /** Get the root of this tree model.
-     *  @return A NamedObj, usually an Entity.
-     *  @see #setRoot(NamedObj)
-     */
-    public Object getRoot() {
-        return _root;
-    }
-
     /** Return true if the object is a leaf node.  In this base class,
      *  an object is a leaf node if it is not an instance of CompositeEntity.
      *  @param object The object in question.
@@ -165,136 +136,10 @@ public class CompositeTreeModel implements TreeModel {
 
         // NOTE: The following is probably not a good idea because it
         // will force evaluation of the contents of a Library prematurely.
-        // if (((CompositeEntity)object).numEntities() == 0) return true;
+        if (getChildCount(object) == 0) {
+            return true;
+        }
         return false;
     }
 
-    /** Set the object that this treemodel looks at.
-     *  @param root The root NamedObj
-     *  @see #getRoot()
-     */
-    public void setRoot(NamedObj root) {
-        if (_root != null) {
-            _root.removeChangeListener(_rootListener);
-        }
-
-        _root = root;
-
-        if (_root != null) {
-            _root.addChangeListener(_rootListener);
-        }
-    }
-
-    /** Remove the specified listener.
-     *  @param listener The listener to remove.
-     *  @see #addTreeModelListener(TreeModelListener)
-     */
-    public void removeTreeModelListener(TreeModelListener listener) {
-        int i = 0;
-        int size = _listenerList.size();
-        while (i < size) {
-            Object _listener = ((WeakReference) _listenerList.get(i)).get();
-            if (_listener == null) {
-                _listenerList.remove(i);
-                size--;
-            } else {
-                if (_listener == listener) {
-                    _listenerList.remove(i);
-                    size--;
-                }
-                i++;
-            }
-        }
-    }
-
-    /** Notify listeners that the object at the given path has changed.
-     *  @param path The path of the node that has changed.
-     *  @param newValue The new value of the node.
-     */
-    public void valueForPathChanged(TreePath path, Object newValue) {
-        Iterator listeners = _listenerList.iterator();
-        TreeModelEvent event = new TreeModelEvent(this, path);
-
-        while (listeners.hasNext()) {
-            Object listener = ((WeakReference) listeners.next()).get();
-            if (listener != null) {
-                ((TreeModelListener) listener).treeStructureChanged(event);
-            }
-        }
-    }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         inner classes                     ////
-
-    /** A ChangeListener that updates the Tree. */
-    public class TreeUpdateListener implements ChangeListener {
-        /** Trigger an update of the tree.  If the change
-         *  request indicates that it is localized, then only
-         *  the relevant portion of the tree is updated.
-         *  Otherwise, the entire tree is modified.
-         */
-        public void changeExecuted(final ChangeRequest change) {
-            // System.out.println("change = " + change);
-            // Note that this should be in the swing thread.
-            SwingUtilities.invokeLater(new Runnable() {
-                public void run() {
-                    ArrayList path = new ArrayList();
-                    Object root = getRoot();
-
-                    // If the change request is local, then it
-                    // should return non-null to this method.
-                    NamedObj locality = change.getLocality();
-
-                    if (locality == null) {
-                        path.add(0, root);
-                    } else {
-                        // The change has a declared locality.
-                        // Construct a path to that locality.
-                        NamedObj container = locality;
-
-                        while (container != root) {
-                            if (container == null) {
-                                // This should not occur, but if it
-                                // does, we revert to just using the
-                                // root.
-                                path = new ArrayList();
-                                path.add(0, root);
-                                break;
-                            }
-
-                            path.add(0, container);
-                            container = container.getContainer();
-                        }
-                    }
-
-                    valueForPathChanged(new TreePath(path.toArray()), locality);
-                }
-            });
-        }
-
-        /** Trigger an update of the tree.  If the change
-         *  request indicates that it is localized, then only
-         *  the relevant portion of the tree is updated.
-         *  Otherwise, the entire tree is modified.
-         */
-        public void changeFailed(ChangeRequest change, Exception exception) {
-            // We do the same thing whether the change succeeded or failed.
-            changeExecuted(change);
-        }
-    }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         protected variables               ////
-
-    /** The root of the tree. */
-    protected NamedObj _root = null;
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         private variables                 ////
-
-    /** The list of listeners. */
-    private List _listenerList = new LinkedList<WeakReference>();
-
-    /** The model listener. */
-    private ChangeListener _rootListener = new TreeUpdateListener();
 }

@@ -93,6 +93,11 @@ import javax.swing.JTree;
 import javax.swing.KeyStroke;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.tree.TreePath;
+import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.DefaultTreeCellRenderer;
+import javax.swing.tree.TreeSelectionModel;
+import javax.swing.event.TreeSelectionEvent;
+import javax.swing.event.TreeSelectionListener;
 
 import ptolemy.actor.DesignPatternGetMoMLAction;
 import ptolemy.actor.IOPort;
@@ -157,6 +162,7 @@ import ptolemy.vergil.tree.EntityTreeModel;
 import ptolemy.vergil.tree.CompositeTreeModel;
 import ptolemy.vergil.tree.PTree;
 import ptolemy.vergil.tree.PTreeMenuCreator;
+import ptolemy.vergil.tree.PtolemyTreeCellRenderer;
 import ptolemy.vergil.tree.VisibleTreeModel;
 import diva.canvas.CanvasUtilities;
 import diva.canvas.Figure;
@@ -2194,8 +2200,8 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
                 // Note that the location is of the frame, while the size
                 // is of the scrollpane.
                 _rightComponent.setMinimumSize(new Dimension(200, 200));
-                _rightComponent.setPreferredSize(new Dimension(700, 450));
-                _rightComponent.setSize(600, 400);
+                _rightComponent.setPreferredSize(new Dimension(700, 500));
+                _rightComponent.setSize(600, 450);
             }
 
             _initBasicGraphFrameSetZoomAndPan();
@@ -2298,6 +2304,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
             _library.addMouseListener(_libraryContextMenuCreator);
 
             _libraryScrollPane = new JScrollPane(_library);
+            // See _treeViewScrollPane below.
             _libraryScrollPane.setMinimumSize(new Dimension(200, 200));
             _libraryScrollPane.setPreferredSize(new Dimension(200, 300));
 
@@ -2333,16 +2340,43 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
             findPanelConstraints.fill = GridBagConstraints.HORIZONTAL;
             _palettePane.add(findPanel, findPanelConstraints);
 
-            // The Hierarchy browser
-            _treeViewModel = new CompositeTreeModel((CompositeEntity)getModel());
+            // The Hierarchy Tree browser.
+            _treeViewModel = new CompositeTreeModel((CompositeEntity)getModel().toplevel());
+
             // Second arguments prevents parameter values from showing in the library.
             _treeView = new PTree(_treeViewModel, false);
+            _treeView.addTreeSelectionListener(new HierarchyTreeSelectionListener());
             _treeView.setBackground(BACKGROUND_COLOR);
+            _treeView.setCellRenderer(new HierarchyTreeCellRenderer());
+
+            _treeViewScrollPane = new JScrollPane(_treeView);
+            // See _libraryScrollPane above.
+            _treeViewScrollPane.setMinimumSize(new Dimension(200, 200));
+            _treeViewScrollPane.setPreferredSize(new Dimension(200, 300));
+
+            // Make the Ptolemy model visible in the tree.
+            TreePath modelTreePath = null;
+            {
+                // Traverse the Ptolemy model hierarchy, create a list, reverse it, 
+                // create an array and then a TreePath.
+                List<CompositeEntity> compositeList = new LinkedList<CompositeEntity>();
+                CompositeEntity composite = (CompositeEntity) getModel();
+                while (composite != null) {
+                    compositeList.add(composite);
+                    composite = (CompositeEntity) composite.getContainer();
+                }
+                java.util.Collections.reverse(compositeList);
+                Object [] composites = compositeList.toArray();
+                modelTreePath = new TreePath(composites);
+            }
+            _treeView.expandPath(modelTreePath);
+            _treeView.makeVisible(modelTreePath);
+            _treeView.scrollPathToVisible(modelTreePath);
 
             // Put in the tabbed pane that contains the hierarchy browser and the library
-            JTabbedPane tabbedPane = new JTabbedPane();
-            tabbedPane.add("Library", _libraryScrollPane);
-            tabbedPane.add("Tree", _treeView);
+            JTabbedPane libraryTreeTabbedPane = new JTabbedPane();
+            libraryTreeTabbedPane.add("Library", _libraryScrollPane);
+            libraryTreeTabbedPane.add("Tree", _treeViewScrollPane);
 
             GridBagConstraints tabbedPaneConstraints = new GridBagConstraints();
             tabbedPaneConstraints.gridx = 0;
@@ -2350,7 +2384,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
             tabbedPaneConstraints.fill = GridBagConstraints.BOTH;
             tabbedPaneConstraints.weightx = 1.0;
             tabbedPaneConstraints.weighty = 0.7;
-            _palettePane.add(tabbedPane, tabbedPaneConstraints);
+            _palettePane.add(libraryTreeTabbedPane, tabbedPaneConstraints);
 
             // Add the graph panner.
             if (_graphPanner != null) {
@@ -2916,6 +2950,9 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
 
     /** The tree view of the model, used for browsing large models. */
     protected PTree _treeView;
+
+    /** The tree view scroll pane. */
+    protected JScrollPane _treeViewScrollPane;
 
     /** The tree view  model. */
     protected CompositeTreeModel _treeViewModel;
@@ -3559,6 +3596,63 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
         public final Object element;
         public final IOPort port;
         public final ElementInLinkType type;
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    //// HierarchyTreeCellRenderer
+
+    /** Render a cell in the model hierarchy tree.  The model being
+     *  displayed is highlighted.
+     */
+    class HierarchyTreeCellRenderer extends PtolemyTreeCellRenderer {
+
+        /** Create a new rendition for the given object.
+         *  If the object is the same as the currently displayed Ptolemy
+         *  model, then make it bold.
+         */
+        public Component getTreeCellRendererComponent(
+                JTree tree,
+                Object value,
+                boolean sel,
+                boolean expanded,
+                boolean leaf,
+                int row,
+                boolean hasFocus) {
+
+             DefaultTreeCellRenderer component = (DefaultTreeCellRenderer) super
+                 .getTreeCellRendererComponent(tree, value, selected, expanded,
+                         leaf, row, hasFocus);
+             if (getModel().equals(value)) {
+                 component.setText("<html><b>" + component.getText() + "</b></html>");
+             }
+            return this;
+        }
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    //// HierarchyTreeSelectionListener
+
+    /** The user selected a node in the Hierarchy tree browser */
+    private class HierarchyTreeSelectionListener implements TreeSelectionListener {
+        /** The value of the selection in the model hierarchy tree
+         *  browser changed.
+         *  @param event The event.
+         */
+        public void valueChanged(TreeSelectionEvent event) {
+            // Returns the last path element of the selection.
+            // This method is useful only when the selection model allows a single selection.
+            Object lastSelectedPathComponent = _treeView.getLastSelectedPathComponent();
+            TreePath anchorPath = _treeView.getAnchorSelectionPath();
+            System.out.println("BFG.valueChanged: " + (anchorPath != null ? anchorPath.getClass() : "null")
+                    + " " + anchorPath);
+            if (lastSelectedPathComponent instanceof NamedObj) {
+                try {
+                    getConfiguration().openInstance((NamedObj)lastSelectedPathComponent);
+                } catch (Throwable throwable) {
+                    MessageHandler.error("Could not open " + lastSelectedPathComponent, throwable);
+                }
+            }
+        }
     }
 
     ///////////////////////////////////////////////////////////////////
