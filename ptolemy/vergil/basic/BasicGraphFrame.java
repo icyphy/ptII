@@ -2340,43 +2340,52 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
             findPanelConstraints.fill = GridBagConstraints.HORIZONTAL;
             _palettePane.add(findPanel, findPanelConstraints);
 
-            // The Hierarchy Tree browser.
-            _treeViewModel = new CompositeTreeModel((CompositeEntity)getModel().toplevel());
+            // The Hierarchy Tree browser for CompositeEntities.
+            NamedObj model = getModel();
+            if (!(model instanceof CompositeEntity)) {
+                // EditIconFrame will have a EditorIcon as a model, not a CompositeEntity.
+                _treeViewScrollPane = null;
+            } else {
+                _treeViewModel = new CompositeTreeModel((CompositeEntity)getModel().toplevel());
 
-            // Second arguments prevents parameter values from showing in the library.
-            _treeView = new PTree(_treeViewModel, false);
-            _treeView.addTreeSelectionListener(new HierarchyTreeSelectionListener());
-            _treeView.setBackground(BACKGROUND_COLOR);
-            _treeView.setCellRenderer(new HierarchyTreeCellRenderer());
+                // Second arguments prevents parameter values from showing in the library,
+                // I'm not sure if that is relevant for the hierarchy tree browser.
+                _treeView = new PTree(_treeViewModel, false);
+                _treeView.addTreeSelectionListener(new HierarchyTreeSelectionListener());
+                _treeView.setBackground(BACKGROUND_COLOR);
+                _treeView.setCellRenderer(new HierarchyTreeCellRenderer());
 
-            _treeViewScrollPane = new JScrollPane(_treeView);
-            // See _libraryScrollPane above.
-            _treeViewScrollPane.setMinimumSize(new Dimension(200, 200));
-            _treeViewScrollPane.setPreferredSize(new Dimension(200, 300));
+                _treeViewScrollPane = new JScrollPane(_treeView);
+                // See _libraryScrollPane above.
+                _treeViewScrollPane.setMinimumSize(new Dimension(200, 200));
+                _treeViewScrollPane.setPreferredSize(new Dimension(200, 300));
 
-            // Make the Ptolemy model visible in the tree.
-            TreePath modelTreePath = null;
-            {
-                // Traverse the Ptolemy model hierarchy, create a list, reverse it, 
-                // create an array and then a TreePath.
-                List<CompositeEntity> compositeList = new LinkedList<CompositeEntity>();
-                CompositeEntity composite = (CompositeEntity) getModel();
-                while (composite != null) {
-                    compositeList.add(composite);
-                    composite = (CompositeEntity) composite.getContainer();
+                // Make the Ptolemy model visible in the tree.
+                TreePath modelTreePath = null;
+                {
+                    // Traverse the Ptolemy model hierarchy, create a list, reverse it, 
+                    // create an array and then a TreePath.
+                    List<CompositeEntity> compositeList = new LinkedList<CompositeEntity>();
+                    CompositeEntity composite = (CompositeEntity) getModel();
+                    while (composite != null) {
+                        compositeList.add(composite);
+                        composite = (CompositeEntity) composite.getContainer();
+                    }
+                    java.util.Collections.reverse(compositeList);
+                    Object [] composites = compositeList.toArray();
+                    modelTreePath = new TreePath(composites);
                 }
-                java.util.Collections.reverse(compositeList);
-                Object [] composites = compositeList.toArray();
-                modelTreePath = new TreePath(composites);
+                _treeView.expandPath(modelTreePath);
+                _treeView.makeVisible(modelTreePath);
+                _treeView.scrollPathToVisible(modelTreePath);
             }
-            _treeView.expandPath(modelTreePath);
-            _treeView.makeVisible(modelTreePath);
-            _treeView.scrollPathToVisible(modelTreePath);
 
             // Put in the tabbed pane that contains the hierarchy browser and the library
             JTabbedPane libraryTreeTabbedPane = new JTabbedPane();
             libraryTreeTabbedPane.add("Library", _libraryScrollPane);
-            libraryTreeTabbedPane.add("Tree", _treeViewScrollPane);
+            if (_treeViewScrollPane != null) {
+                libraryTreeTabbedPane.add("Tree", _treeViewScrollPane);
+            }
 
             GridBagConstraints tabbedPaneConstraints = new GridBagConstraints();
             tabbedPaneConstraints.gridx = 0;
