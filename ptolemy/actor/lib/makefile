@@ -295,6 +295,7 @@ OTHER_FILES_TO_BE_JARED = \
 	DistributorIcon.xml \
 	GaussianIcon.xml \
 	IIRIcon.xml \
+	InterpolatorIcon.xml \
 	LimiterIcon.xml \
 	LookupTableIcon.xml \
 	MaximumIcon.xml \
@@ -304,6 +305,7 @@ OTHER_FILES_TO_BE_JARED = \
 	MovingAverageIcon.xml \
 	TriangularIcon.xml \
 	PowerEstimate.xml \
+	PulseIcon.xml \
 	QuantizerIcon.xml \
 	RemainderIcon.xml \
 	ResettableTimerIcon.xml \
