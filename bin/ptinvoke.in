@@ -1298,14 +1298,19 @@ done
 
 # The Cygwin value of $HOME is not understood by Java under Windows.
 if [ "$windows" = "yes" ]; then
-    tmpHOME="`cygpath --mixed $HOME`"
+    if [ -z "$HOME" ]; then
+	# If $HOME is not set, try the Windows %HOMEPATH% variable.
+	homePtolemyIIClasspath="%HOMEPATH%/.ptolemyII${CLASSPATHSEPARATOR}%HOMEPATH%/.ptolemyII/*"
+    else 
+        tmpHOME="`cygpath --mixed $HOME`"
+	homePtolemyIIClasspath="%HOMEPATH%/.ptolemyII/${CLASSPATHSEPARATOR}%HOMEPATH%/.ptolemyII/*${CLASSPATHSEPARATOR}${tmpHOME}/.ptolemyII${CLASSPATHSEPARATOR}${tmpHOME}/.ptolemyII/*"
+    fi
 else
-    tmpHOME="$HOME"
+    # Append any .jar files in $HOME/ptolemyII 
+    # See http://docs.oracle.com/javase/7/docs/technotes/tools/windows/classpath.html
+    homePtolemyIIClasspath="$HOME/.ptolemyII${CLASSPATHSEPARATOR}${HOME}/.ptolemyII/*"
 fi
 
-# Append any .jar files in $HOME/ptolemyII 
-# See http://docs.oracle.com/javase/7/docs/technotes/tools/windows/classpath.html
-homePtolemyIIClasspath="$tmpHOME/.ptolemyII${CLASSPATHSEPARATOR}${tmpHOME}/.ptolemyII/*"
 
 # Add the user classpath (we prepend to be able to override classes,
 # but Berkeley prefers to append, so that the user does not 
