@@ -304,6 +304,18 @@ public class IOPortController extends AttributeController {
         return getDirection(portRotation);
     }
 
+    /** The text used in the MoveAction.TO_FIRST action menu choice.
+     */
+    protected String _moveToFirstDescription() {
+        return "Move to First";
+    }
+
+    /** The text used in the MoveAction.TO_LAST action menu choice.
+     */
+    protected String _moveToLastDescription() {
+        return "Move to Last";
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
 

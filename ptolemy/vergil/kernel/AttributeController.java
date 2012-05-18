@@ -89,9 +89,10 @@ public class AttributeController extends IconController {
 
             // Note that we also have "Send to Back" and "Bring to Front" in
             // vergil/basic/BasicGraphFrame.java
+            // Derived classes like IOPortController override _moveToFirstDescription()
             Action[] appearanceActions = {
-                    new MoveAction("Send to Back", MoveAction.TO_FIRST),
-                    new MoveAction("Bring to Front", MoveAction.TO_LAST) };
+                new MoveAction(_moveToFirstDescription(), MoveAction.TO_FIRST),
+                new MoveAction(_moveToLastDescription(), MoveAction.TO_LAST) };
             _appearanceMenuActionFactory = new MenuActionFactory(
                     appearanceActions, "Appearance");
             _menuFactory.addMenuItemFactory(_appearanceMenuActionFactory);
@@ -142,6 +143,20 @@ public class AttributeController extends IconController {
         return "Attribute";
     }
 
+    /** The text used in the MoveAction.TO_FIRST action menu choice.
+     *  Derived classes like IOPortController change this.   
+     */
+    protected String _moveToFirstDescription() {
+        return "Send to Back";
+    }
+
+    /** The text used in the MoveAction.TO_LAST action menu choice.
+     *  Derived classes like IOPortController change this.
+     */
+    protected String _moveToLastDescription() {
+        return "Bring to Front";
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                     public members                        ////
 
@@ -157,11 +172,11 @@ public class AttributeController extends IconController {
     /** The appearance menu factory. */
     protected MenuActionFactory _appearanceMenuActionFactory;
 
-    /** Action to launch rename dialog. */
-    protected RenameDialogAction _renameAction;
-
     /** Action to listen to debug messages. */
     protected ListenToAction _listenToAction;
+
+    /** Action to launch rename dialog. */
+    protected RenameDialogAction _renameAction;
 
     ///////////////////////////////////////////////////////////////////
     ////                     private members                       ////
