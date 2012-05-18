@@ -202,6 +202,17 @@ concatenate() function. For example,
 
 </pre>
 
+
+You can update an element of an array using the
+update() function, for example,
+<pre>
+&#62;&#62;&nbsp;{1,&nbsp;2,&nbspl3}.update(0,&nbsp;4)
+{4, 2, 3}
+</pre>
+The update() function creates a new array.
+
+<br/>(Actually, update() creates a new token of type UpdatedArrayToken which keeps track of updated elements in a token while preserving the unchanged elements.  The alternative would be to produce a new ArrayToken, which would result allocating memory and copying the entire source array.)
+
 <div class="p"><!----></div>
     <h3><a name="tth_sEc4.2">
 4.2</a>&nbsp;&nbsp;Matrices</h3>
