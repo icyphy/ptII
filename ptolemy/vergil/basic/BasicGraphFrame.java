@@ -3652,8 +3652,6 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
             // This method is useful only when the selection model allows a single selection.
             Object lastSelectedPathComponent = _treeView.getLastSelectedPathComponent();
             TreePath anchorPath = _treeView.getAnchorSelectionPath();
-            System.out.println("BFG.valueChanged: " + (anchorPath != null ? anchorPath.getClass() : "null")
-                    + " " + anchorPath);
             if (lastSelectedPathComponent instanceof NamedObj) {
                 try {
                     getConfiguration().openInstance((NamedObj)lastSelectedPathComponent);
