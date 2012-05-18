@@ -60,7 +60,7 @@ JSIMPLE_TESTS = \
 	Documentation.tcl \
 	EntityLibrary.tcl \
 	ImportAttribute.tcl \
-	LevelCrossingLinkTest.xml \
+	LevelCrossingLinkTest.tcl \
 	LibraryAttribute.tcl \
 	LibraryBuilder.tcl \
 	Location.tcl \
