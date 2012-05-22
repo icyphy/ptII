@@ -3631,7 +3631,8 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
              DefaultTreeCellRenderer component = (DefaultTreeCellRenderer) super
                  .getTreeCellRendererComponent(tree, value, selected, expanded,
                          leaf, row, hasFocus);
-             if (getModel().equals(value)) {
+             NamedObj model = getModel();
+             if (model != null && component != null && model.equals(value)) {
                  component.setText("<html><b>" + component.getText() + "</b></html>");
              }
             return this;
