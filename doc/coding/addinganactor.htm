@@ -351,16 +351,16 @@
       <ol>
 	<li>Create a file named <code>myactors.xml</code> with the contents below:
 	  <pre>
-	    &lt;?xml version="1.0" standalone="no"?&gt;
-	    &lt;!DOCTYPE class PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
-	    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd"&gt;
-	    &lt;class name="MyActors" extends="ptolemy.moml.EntityLibrary"&gt;
-	    &lt;configure&gt;
-	    &lt;group&gt;
+&lt;?xml version="1.0" standalone="no"?&gt;
+  &lt;!DOCTYPE class PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+  "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd"&gt;
+&lt;class name="MyActors" extends="ptolemy.moml.EntityLibrary"&gt;
+    &lt;configure&gt;
+	&lt;group&gt;
             &lt;entity name="Ramp2" class="ptolemy.actor.lib.Ramp2"/&gt;
-	    &lt;/group&gt;
-	    &lt;/configure&gt;
-	    &lt;/class&gt;
+        &lt;/group&gt;
+    &lt;/configure&gt;
+&lt;/class&gt;
 	  </pre>
 	</li>
 	<li> Start up vergil, do File -&gt; New -&gt; Graph Editor</li>
@@ -401,28 +401,28 @@
 	and add Ramp2 just after the lines for Ramp
 	<br>Change:
 	<pre>
-	  &lt;entity name="Ramp" class="ptolemy.actor.lib.Ramp"&gt;
-	  &lt;doc&gt;Create a sequence of tokens with increasing value&lt;/doc&gt;
-	  &lt;/entity&gt;
+&lt;entity name="Ramp" class="ptolemy.actor.lib.Ramp"&gt;
+    &lt;doc&gt;Create a sequence of tokens with increasing value&lt;/doc&gt;
+&lt;/entity&gt;
 
-	  &lt;entity name="Sinewave" class="ptolemy.actor.lib.Sinewave"/&gt;
+&lt;entity name="Sinewave" class="ptolemy.actor.lib.Sinewave"/&gt;
 	</pre>
 	To:
 	<pre>
-	  &lt;entity name="Ramp" class="ptolemy.actor.lib.Ramp"&gt;
-	  &lt;doc&gt;Create a sequence of tokens with increasing value&lt;/doc&gt;
-	  &lt;/entity&gt;
+&lt;entity name="Ramp" class="ptolemy.actor.lib.Ramp"&gt;
+    &lt;doc&gt;Create a sequence of tokens with increasing value&lt;/doc&gt;
+&lt;/entity&gt;
 
-	  <B>&lt;entity name="Ramp2" class="ptolemy.actor.lib.Ramp2"&gt;
-	    &lt;doc&gt;Create a sequence of tokens with increasing value 2&lt;/doc&gt;
-	    &lt;/entity&gt;
-	  </B>
+<B>&lt;entity name="Ramp2" class="ptolemy.actor.lib.Ramp2"&gt;
+    &lt;doc&gt;Create a sequence of tokens with increasing value 2&lt;/doc&gt;
+&lt;/entity&gt;
+</B>
 
-	  &lt;entity name="Sinewave" class="ptolemy.actor.lib.Sinewave"/&gt;
+&lt;entity name="Sinewave" class="ptolemy.actor.lib.Sinewave"/&gt;
 	</pre>
       </li>
 
-      <li> Start up Vergi and click on File -&gt; New -&gt; Graph Editor</li>
+      <li> Start up Vergil and click on File -&gt; New -&gt; Graph Editor</li>
       <li> In the Graph Editor window, click on Actors -&gt; Sources -&gt; SequenceSources
 	<br/The Ramp2 actor will appear.</li>
 
@@ -442,21 +442,21 @@
       is called <CODE>$PTII/ptolemy/actor/lib/myactors.xml</CODE>,
       and it contains one actor, <CODE>Ramp2</CODE>:</p>
     <pre>
-      &lt;?xml version="1.0" standalone="no"?&gt;
-      &lt;!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
-      "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd"&gt;
-      &lt;entity name="myactors" class="ptolemy.moml.EntityLibrary"&gt;
-      &lt;configure&gt;
-      &lt;?moml
-      &lt;group&gt;
-      &lt;doc&gt;My Actors&lt;/doc&gt;
-      &lt;entity name="Ramp2" class="ptolemy.actor.lib.Ramp2"&gt;
-      &lt;doc&gt;Create a sequence of tokens with increasing value of 2&lt;/doc&gt;
-      &lt;/entity&gt;
-      &lt;/group&gt;
-      ?&gt;
-      &lt;/configure&gt;
-      &lt;/entity&gt;
+&lt;?xml version="1.0" standalone="no"?&gt;
+  &lt;!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+  "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd"&gt;
+&lt;entity name="myactors" class="ptolemy.moml.EntityLibrary"&gt;
+    &lt;configure&gt;
+        &lt;?moml
+           &lt;group&gt;
+               &lt;doc&gt;My Actors&lt;/doc&gt;
+               &lt;entity name="Ramp2" class="ptolemy.actor.lib.Ramp2"&gt;
+                   &lt;doc&gt;Create a sequence of tokens with increasing value of 2&lt;/doc&gt;
+               &lt;/entity&gt;
+           &lt;/group&gt;
+         ?&gt;
+    &lt;/configure&gt;
+&lt;/entity&gt;
     </pre>
 
     <p>Note that the xml involving the Ramp2 actor is inside a &lt;configure&gt;...&lt;configure&gt; 
