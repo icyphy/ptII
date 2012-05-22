@@ -28,10 +28,11 @@
       <li><a href="#ImportLibrary">Import Library</a></li>
       <li><a href="#editing">Editing the configuration files</li>
       <li><a href="#AddingANewPalette">Adding a new palette</a></li>
-        <ul>
-	  <li><a href="#AddingAPaletteToTheUserConfiguration">Adding a palette to the user configuration</a></li>
-	  <li><a href="#AddingAPaletteToTheDefaultConfiguration">Adding a palette to the default configuration</a></li>
-	</ul>
+      <ul>
+	<li><a href="#AddingAPaletteToTheUserConfiguration">Adding a palette to the user configuration</a></li>
+	<li><a href="#AddingAPaletteToTheDefaultConfiguration">Adding a palette to the default configuration</a></li>
+      </ul>
+      <li><a href="#AddingToTheClasspath">Adding to the Java Classpath</a></li>
     </ul>
 
     <h2><a name="overview">Overview</a></h2>
@@ -150,21 +151,21 @@
       <a href="../install.htm"><CODE>$PTII/doc/install.htm</CODE></a>
     <p>Under Windows Server 2008 R2  with Java 7 and Cygwin, to do the setup, I did:</p>
     <pre>
-export PTII=c:/Ptolemy/ptII9.0.devel
-cd "$PTII"
-./configure
-make fast &gt;&amp; make.out
+      export PTII=c:/Ptolemy/ptII9.0.devel
+      cd "$PTII"
+      ./configure
+      make fast &gt;&amp; make.out
     </pre>
     <p>Configure and make usually generate a few warnings.</p>
     <p>An alternative is to use <a href="https://ant.apache.org/#in_browser" target="_top">Apache Ant</a>.
       Under Mac OS X 10.7, first install Ant, then download the Ptolemy II development tree:</p>
     <pre>
-cd
-svn co https://source.eecs.berkeley.edu/svn/chess/ptII/trunk ptII
-cd ptII
-export PTII=`pwd`
-cp build.default.xml build.xml
-ant
+      cd
+      svn co https://source.eecs.berkeley.edu/svn/chess/ptII/trunk ptII
+      cd ptII
+      export PTII=`pwd`
+      cp build.default.xml build.xml
+      ant
     </pre>
     <p>Below are the steps necessary to create the <code>.java</code> file for an actor and compile it:</p>
     <ol>
@@ -173,8 +174,8 @@ ant
 	  <li> In this case, we are just copying a <CODE>Ramp.java</CODE> to
 	    <CODE>Ramp2.java</CODE>
 	    <pre>
-cd $PTII/ptolemy/actor/lib	
-cp -p Ramp.java Ramp2.java
+	      cd $PTII/ptolemy/actor/lib	
+	      cp -p Ramp.java Ramp2.java
 	    </pre>
 	    Note that if we had copied our java code from a <i>different directory</i>,
 	    we would also have to change the package
@@ -186,40 +187,40 @@ cp -p Ramp.java Ramp2.java
 	  <li> Edit <CODE>Ramp2.java</CODE> and
 	    <ul>
 	      <li>Change: <pre>
-public class Ramp extends SequenceSource {
+		  public class Ramp extends SequenceSource {
 		</pre>
 		to:
 		<pre>
-public class Ramp<B>2</B> extends SequenceSource {
+		  public class Ramp<B>2</B> extends SequenceSource {
 		</pre>
 	      </li>
 	      <li> Change:
 		<pre>
-public Ramp(CompositeEntity container, String name)
-        throws NameDuplicationException, IllegalActionException  {
+		  public Ramp(CompositeEntity container, String name)
+		  throws NameDuplicationException, IllegalActionException  {
 		</pre>
 		to:
 		<pre>
-public Ramp<B>2</B>(CompositeEntity container, String name)
-        throws NameDuplicationException, IllegalActionException  {
+		  public Ramp<B>2</B>(CompositeEntity container, String name)
+		  throws NameDuplicationException, IllegalActionException  {
 		</pre>
 	      </li>
 	      <li> Change:
 		<pre>
-step.setExpression("1");
+		  step.setExpression("1");
 		</pre>
 		to:
 		<pre>
-step.setExpression("<B>2</B>");
+		  step.setExpression("<B>2</B>");
 		</pre>
 	      </li>
 	      <li> Change:
 		<pre>
-Ramp newObject = (Ramp)super.clone(workspace);
+		  Ramp newObject = (Ramp)super.clone(workspace);
 		</pre>
 		to:
 		<pre>
-Ramp<B>2</B> newObject = (Ramp<B>2</B>)super.clone(workspace);
+		  Ramp<B>2</B> newObject = (Ramp<B>2</B>)super.clone(workspace);
 		</pre>
 	      </li>
 	    </ul>
@@ -234,15 +235,15 @@ Ramp<B>2</B> newObject = (Ramp<B>2</B>)super.clone(workspace);
 	A good place for this is just after the <CODE>Ramp.java \</CODE>
 	line:
 	<pre>
-	Quantizer.java \
-	Ramp.java \
-	RandomSource.java \
+	  Quantizer.java \
+	  Ramp.java \
+	  RandomSource.java \
 	</pre>
 	<pre>
-	Quantizer.java \
-	Ramp.java \
-	<B>Ramp2.java \</B>
-	RandomSource.java \
+	  Quantizer.java \
+	  Ramp.java \
+	  <B>Ramp2.java \</B>
+	  RandomSource.java \
 	</pre>
 	Note that there is a <b>TAB</b> character before <code>Ramp2.java</code>.
 	<br/>This step is not strictly necessary, but it is good programming
@@ -256,14 +257,14 @@ Ramp<B>2</B> newObject = (Ramp<B>2</B>)super.clone(workspace);
 	will descend into the subdirectories and compile any needed files
 	and eventually run
 	<pre>
-rm -f `basename Ramp2.java .java`.class
-CLASSPATH="../../.." "/cygdrive/c/j2sdk1.4.2_06/bin/javac" -g -O Ramp2.java
+	  rm -f `basename Ramp2.java .java`.class
+	  CLASSPATH="../../.." "/cygdrive/c/j2sdk1.4.2_06/bin/javac" -g -O Ramp2.java
 	</pre>
 	and <CODE>Ramp2.class</CODE> will be produced.
 	<br/><i><code>ant</code> users:</i> Run
 	<pre>
-cd $PTII
-ant
+	  cd $PTII
+	  ant
 	</pre>
       </li>
     </ol>
@@ -350,16 +351,16 @@ ant
       <ol>
 	<li>Create a file named <code>myactors.xml</code> with the contents below:
 	  <pre>
-&lt;?xml version="1.0" standalone="no"?&gt;
-&lt;!DOCTYPE class PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
-    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd"&gt;
-&lt;class name="MyActors" extends="ptolemy.moml.EntityLibrary"&gt;
-   &lt;configure&gt;
-     &lt;group&gt;
-        &lt;entity name="Ramp2" class="ptolemy.actor.lib.Ramp2"/&gt;
-     &lt;/group&gt;
-   &lt;/configure&gt;
-&lt;/class&gt;
+	    &lt;?xml version="1.0" standalone="no"?&gt;
+	    &lt;!DOCTYPE class PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+	    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd"&gt;
+	    &lt;class name="MyActors" extends="ptolemy.moml.EntityLibrary"&gt;
+	    &lt;configure&gt;
+	    &lt;group&gt;
+            &lt;entity name="Ramp2" class="ptolemy.actor.lib.Ramp2"/&gt;
+	    &lt;/group&gt;
+	    &lt;/configure&gt;
+	    &lt;/class&gt;
 	  </pre>
 	</li>
 	<li> Start up vergil, do File -&gt; New -&gt; Graph Editor</li>
@@ -373,93 +374,93 @@ ant
 	<li> Import MyActors as above.</li>
 	<li>In the left hand actor pane, right click on the UserLibrary and select Open for Editing.</li>
 	<li> A new window will appear with UserLibrary.xml in the
-	title bar.  In that window open the MyActors palette and drag the Ramp2 actor into the main pane.
+	  title bar.  In that window open the MyActors palette and drag the Ramp2 actor into the main pane.
 	  This will add the Ramp2 actor to UserLibrary.</li>
       </ol>
 
-      <p><i>FIXME:</i> It would be nice if we could import the library directly into the User Library.</p>
+    <p><i>FIXME:</i> It would be nice if we could import the library directly into the User Library.</p>
 
-      <p><b>Pros:</b> An actor developer can create a file that lists custom actors
-	and send it to a model builder.</p>
-	
-      <p><b>Cons:</b> The actor developer must also send a <code>.jar</code> file that
-	includes the <code>.class</code> and/or <code>.xml</code> definitions of
-	the custom actors.</p>
-      
-      <h2><a name="editing">Editing the configuration files</h2>
-      <p>Ptolemy II reads configuration files from <code>$PTII/ptolemy/configs</code>.
-	A custom configuration can be created in that directory and invoked using a command-line
-	option to <code>$PTII/bin/vergil</code> or <code>ptolemy.vergil.VergilApplication</code>.</p>
-	
-      <ol>
-	<li> There are many ways to make a custom actor permanently available.  One way is to edit
-	  the Ptolemy II configuration.  This method is best if only one person is using Ptolemy II.
-	  A downside is that an update of Ptolemy II will require readding the actor. 
-	  <br/>An upside is that it is easy.
-	  <br/>Edit <CODE>$PTII/ptolemy/actor/lib/sequencesources.xml</CODE>
-	  and add Ramp2 just after the lines for Ramp
-	  <br>Change:
-	  <pre>
-&lt;entity name="Ramp" class="ptolemy.actor.lib.Ramp"&gt;
-&lt;doc&gt;Create a sequence of tokens with increasing value&lt;/doc&gt;
-&lt;/entity&gt;
+    <p><b>Pros:</b> An actor developer can create a file that lists custom actors
+      and send it to a model builder.</p>
+    
+    <p><b>Cons:</b> The actor developer must also send a <code>.jar</code> file that
+      includes the <code>.class</code> and/or <code>.xml</code> definitions of
+      the custom actors.</p>
+    
+    <h2><a name="editing">Editing the configuration files</h2>
+    <p>Ptolemy II reads configuration files from <code>$PTII/ptolemy/configs</code>.
+      A custom configuration can be created in that directory and invoked using a command-line
+      option to <code>$PTII/bin/vergil</code> or <code>ptolemy.vergil.VergilApplication</code>.</p>
+    
+    <ol>
+      <li> There are many ways to make a custom actor permanently available.  One way is to edit
+	the Ptolemy II configuration.  This method is best if only one person is using Ptolemy II.
+	A downside is that an update of Ptolemy II will require readding the actor. 
+	<br/>An upside is that it is easy.
+	<br/>Edit <CODE>$PTII/ptolemy/actor/lib/sequencesources.xml</CODE>
+	and add Ramp2 just after the lines for Ramp
+	<br>Change:
+	<pre>
+	  &lt;entity name="Ramp" class="ptolemy.actor.lib.Ramp"&gt;
+	  &lt;doc&gt;Create a sequence of tokens with increasing value&lt;/doc&gt;
+	  &lt;/entity&gt;
 
-&lt;entity name="Sinewave" class="ptolemy.actor.lib.Sinewave"/&gt;
-	  </pre>
-	  To:
-	  <pre>
-&lt;entity name="Ramp" class="ptolemy.actor.lib.Ramp"&gt;
-&lt;doc&gt;Create a sequence of tokens with increasing value&lt;/doc&gt;
-&lt;/entity&gt;
+	  &lt;entity name="Sinewave" class="ptolemy.actor.lib.Sinewave"/&gt;
+	</pre>
+	To:
+	<pre>
+	  &lt;entity name="Ramp" class="ptolemy.actor.lib.Ramp"&gt;
+	  &lt;doc&gt;Create a sequence of tokens with increasing value&lt;/doc&gt;
+	  &lt;/entity&gt;
 
-<B>&lt;entity name="Ramp2" class="ptolemy.actor.lib.Ramp2"&gt;
-&lt;doc&gt;Create a sequence of tokens with increasing value 2&lt;/doc&gt;
-&lt;/entity&gt;
-</B>
+	  <B>&lt;entity name="Ramp2" class="ptolemy.actor.lib.Ramp2"&gt;
+	    &lt;doc&gt;Create a sequence of tokens with increasing value 2&lt;/doc&gt;
+	    &lt;/entity&gt;
+	  </B>
 
-&lt;entity name="Sinewave" class="ptolemy.actor.lib.Sinewave"/&gt;
-	  </pre>
-	</li>
+	  &lt;entity name="Sinewave" class="ptolemy.actor.lib.Sinewave"/&gt;
+	</pre>
+      </li>
 
-	<li> Start up Vergi and click on File -&gt; New -&gt; Graph Editor</code></li>
-        <li> In the Graph Editor window, click on Actors -&gt; Sources -&gt; SequenceSources
-	  <br/The Ramp2 actor will appear.</li>
+      <li> Start up Vergi and click on File -&gt; New -&gt; Graph Editor</li>
+      <li> In the Graph Editor window, click on Actors -&gt; Sources -&gt; SequenceSources
+	<br/The Ramp2 actor will appear.</li>
 
-      </ol>
+		</ol>
 
-      <p><b>Pros:</b> Creating a custom configuration gives the actor developer control
-	over what actors are easily available to the model builder.  In this way, it is possible
-	to hide or remove little-used, confusing or unused actors.</p>
+    <p><b>Pros:</b> Creating a custom configuration gives the actor developer control
+      over what actors are easily available to the model builder.  In this way, it is possible
+      to hide or remove little-used, confusing or unused actors.</p>
 
-      <p><b>Cons:</b> This method requires editing configuration <code>.xml</code> and possibly
-	a custom Ptolemy II distribution for use by model builders.</p>
+    <p><b>Cons:</b> This method requires editing configuration <code>.xml</code> and possibly
+      a custom Ptolemy II distribution for use by model builders.</p>
 
-      <h2><a name="AddingANewPalette">Adding a new palette</a></h2>
+    <h2><a name="AddingANewPalette">Adding a new palette</a></h2>
 
-      <p>To add a new set of actors, we first create a .xml file
+    <p>To add a new set of actors, we first create a .xml file
       that lists the actor.  In this case, the file
       is called <CODE>$PTII/ptolemy/actor/lib/myactors.xml</CODE>,
       and it contains one actor, <CODE>Ramp2</CODE>:</p>
     <pre>
-&lt;?xml version="1.0" standalone="no"?&gt;
-  &lt;!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+      &lt;?xml version="1.0" standalone="no"?&gt;
+      &lt;!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
       "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd"&gt;
-&lt;entity name="myactors" class="ptolemy.moml.EntityLibrary"&gt;
-    &lt;configure&gt;
-        &lt;?moml
-            &lt;group&gt;
-                &lt;doc&gt;My Actors&lt;/doc&gt;
-                &lt;entity name="Ramp2" class="ptolemy.actor.lib.Ramp2"&gt;
-                     &lt;doc&gt;Create a sequence of tokens with increasing value of 2&lt;/doc&gt;
-                &lt;/entity&gt;
-            &lt;/group&gt;
-        ?&gt;
-   &lt;/configure&gt;
-&lt;/entity&gt;
+      &lt;entity name="myactors" class="ptolemy.moml.EntityLibrary"&gt;
+      &lt;configure&gt;
+      &lt;?moml
+      &lt;group&gt;
+      &lt;doc&gt;My Actors&lt;/doc&gt;
+      &lt;entity name="Ramp2" class="ptolemy.actor.lib.Ramp2"&gt;
+      &lt;doc&gt;Create a sequence of tokens with increasing value of 2&lt;/doc&gt;
+      &lt;/entity&gt;
+      &lt;/group&gt;
+      ?&gt;
+      &lt;/configure&gt;
+      &lt;/entity&gt;
     </pre>
 
     <p>Note that the xml involving the Ramp2 actor is inside a &lt;configure&gt;...&lt;configure&gt; 
-    block, which prevents the actor from being instantiated until the file is viewed in the actor palette.</p>
+      block, which prevents the actor from being instantiated until the file is viewed in the actor palette.</p>
 
 
     <p>Below we discuss two ways of adding the configuration:</p>
@@ -483,23 +484,23 @@ ant
       <code>c:/Users/<i>yourlogin</i>/.ptolemyII/UserLibrary.xml</code></p>
     <p>Edit UserLibrary.xml and change:</p>
     <pre>
-&lt;entity name="UserLibrary" class="ptolemy.moml.EntityLibrary"/&gt;
+      &lt;entity name="UserLibrary" class="ptolemy.moml.EntityLibrary"/&gt;
     </pre>
     <p>to:</p>
     <pre>
-&lt;entity name="UserLibrary" class="ptolemy.moml.EntityLibrary"&gt;
-&lt;group&gt;
-&lt;input source="ptolemy/actor/lib/myactors.xml"/&gt;
-&lt;/group&gt;
-&lt;/entity&gt;
+      &lt;entity name="UserLibrary" class="ptolemy.moml.EntityLibrary"&gt;
+      &lt;group&gt;
+      &lt;input source="ptolemy/actor/lib/myactors.xml"/&gt;
+      &lt;/group&gt;
+      &lt;/entity&gt;
     </pre>
     <p>Note that you must remove the slash in the first line:</p>
     <pre>
-&lt;entity name="UserLibrary" class="ptolemy.moml.EntityLibrary"<b>/</b>&gt;
+      &lt;entity name="UserLibrary" class="ptolemy.moml.EntityLibrary"<b>/</b>&gt;
     </pre>
     <p>becomes:</p>
     <pre>
-&lt;entity name="UserLibrary" class="ptolemy.moml.EntityLibrary"&gt;
+      &lt;entity name="UserLibrary" class="ptolemy.moml.EntityLibrary"&gt;
     </pre>
     <p>After changing UserLibrary.xml, restart vergil and the myactors
       sub-palette will appear under UserLibrary.</p>
@@ -535,16 +536,184 @@ ant
 
     <p>In <CODE>ptolemy/configs/basicActorLibrary.xml</CODE> we change</p>
     <pre>
-&lt;input source="ptolemy/actor/lib/sources.xml"/&gt;
+      &lt;input source="ptolemy/actor/lib/sources.xml"/&gt;
     </pre>
     <p>to:</p>
     <pre>
-<b>&lt;input source="ptolemy/actor/lib/myactors.xml"/&gt;</b>
-&lt;input source="ptolemy/actor/lib/sources.xml"/&gt;
+      <b>&lt;input source="ptolemy/actor/lib/myactors.xml"/&gt;</b>
+      &lt;input source="ptolemy/actor/lib/sources.xml"/&gt;
     </pre>
 
     <p>Then restart vergil, and your myactors sub-palette will appear under
       'actor library'.</p>
+
+    <h3><a name="AddingToTheClasspath">Adding to the Java Classpath</a></h3>
+    <p>We consider two cases where you would like to make a custom actor available:</p>
+    <ol>
+
+      <li>If your custom actor has is based on a .java file, then the
+	user must make your custom actor's .class file visible to the
+	Ptolemy II runtime.</li>
+
+      <li>If your custom actor is defined in a .xml or .moml file, then the user must make
+	your custom actor's .xml or .moml file visible to the Ptolemy II runtime.</li>
+    </ol>
+
+    <p>Both situations involve the user making files visible to the Ptolemy II runtime by
+      placing files in a location where the Ptolemy II runtime will find the files.  In Java,
+      this is know as "Adding a file to the classpath.".  For details about the classpath, see the
+      <a href="http://docs.oracle.com/javase/tutorial/essential/environment/paths.html#in_browser">Java Tutorial PATH and CLASSPATH page</a></p>
+
+    <p>A few things to keep in mind about the Java classpath:</p>
+    <ul>
+      <li>If java is invoked with <code>-classpath</code> or <code>-cp</code>, then
+	the <code>CLASSPATH</code> environment variable is <b>not read</b>.</li>
+      <li>Under Window Cygwin, Java does not understand paths like <code>/cygdrive/c/Ptolemy/ptII</code>.
+	Instead, use <code>c:/Ptolemy/ptII</code>.</li>
+      <li>Java 1.6 and later handle wildcards in the classpath.  If the classpath ends in <code>*</code>
+	then that directory is searched for files that end in <code>.jar</code> and <code>.JAR</code>.
+	(However, under Mac OS X with Java 1.6.0_31, Java classpath wildcards seem not to work, see <a href="#MacVergilApp">below</a>).
+      <li>From within vergil, to check the classpath, do: 
+	<ol>
+	  <li> File -&gt; New -&gt Graph Editor</li>
+	  <li> View -&gt; JVM Properties</li>
+	  <li> Then look for the <code>java.class.path</code> property.</li>
+	</ol>
+      </li>
+    </ul>
+
+    <p>Ptolemy II is available on several platforms and can be built in various ways.  Below is a list
+      of possibilities:</p>
+    <ul>
+      <li>Windows
+	<ul>
+	  <li><a href="#WindowsVergilExe">Installed from the Windows Installer, invoked using <code>vergil.exe</code></a></li>
+	  <li><a href="#WindowsVergilBat">Built using ./configure or Ant, invoked using <code>$PTII/bin/vergil.bat</code></a></li>
+	  <li><a href="#VergilShellScript">Built using ./configure or Ant, invoked using <code>$PTII/bin/vergil</code></a></li>
+
+	</ul>
+      </li>
+      <li>Linux/Unix/Mac OS X
+	<ul>
+	  <li><a href="#VergilShellScript">Built using ./configure or Ant, invoked using <code>$PTII/bin/vergil</code></a></li>
+	</ul>
+      </li>
+
+      <li>Mac OS X
+	<ul>
+	  <li><a href="#MacVergilApp">Macintosh, invoked using <code>$PTII/bin/Vergil.app</code></a></li>
+	</ul>
+      </li>
+    </ul>
+
+    <h4><a name="WindowsVergilExe">Installed from the Windows Installer, invoked using <code>vergil.exe</code></a></h4>
+    <p>The Windows <code>vergil.exe</code> is what gets invoked with the user installs Ptolemy II via
+      the Windows installer and then invokes Ptolemy via the Windows Start Menu.</p>
+
+    <p>The <code>vergil.exe</code> binary is created
+      using <a href="http://launch4j.sourceforge.net/#in_browser">launch4j</a>.
+      When the installer is being built, a list of directories in
+      which to search are passed to launch4j and then encoded
+      in <code>vergil.exe</code>.  A list of these directories may be found in <code>$PTII/bin/mkl4j</code>.</p>
+
+    <p>As of May, 2012, the directories that are searched by <code>vergil.exe</code>:</p>
+    <dl>
+      <dt><code>%HOMEPATH%/.ptolemyII</code></dt>
+      <dd>Any .class files in this directory or any subdirectories</dd>
+      <dt><code>%HOMEPATH%/.ptolemyII/*</code></dt>
+      <dd>Any .jar or .JAR files in this directory</dd>
+
+      <dt><code>%HOME%/.ptolemyII</code></dt>
+      <dd>Any .class files in this directory or any subdirectories</dd>
+      <dt><code>%HOME%/.ptolemyII/*</code></dt>
+      <dd>Any .jar or .JAR files in this directory</dd>
+      <dt><code>contrib/contrib.jar</code></dt>
+      <dd>The <code>contrib/contrib.jar</code> file in the directory
+	where <code>vergil.exe</code> is invoked.  Typically, this
+	is <code>c:\Ptolemy\ptII<i>N.M</i></code>,
+	here <code><i>N.M</i></code> is the release number.</dd>
+      <dt><code>$ROOT</code></dt>
+      <dd>The directory where <code>vergil.exe</code> is invoked.
+	Typically, this is <code>c:\Ptolemy\ptII<i>N.M</i></code>,
+	here <code><i>N.M</i></code> is the release number.</dd>
+      <dt><i>other jar files .  .  . </i></dt>
+      <dd>Other jar files in the Ptolemy II release</dd>
+    </dl>			     
+
+    <p>Under Windows <code>%HOMEPATH%</code> is set to various
+      locations depending on the version of Windows,
+      see <a href="http://www.askvg.com/list-of-environment-variables-in-windows-xp-vista-and-7/#in_browser">http://www.askvg.com/list-of-environment-variables-in-windows-xp-vista-and-7/</a>.
+      Under Windows 7, <code>%HOMEPATH%</code> is
+      typically <code>C:\Users\<i>username</i></code>.</p>
+
+    <p>Under Windows <code>%HOME%</code> is not set by default, but
+      since some Cygwin applications use it, <code>%HOME%</code> may
+      be set in your environment.</p>
+
+    <p>So, under Windows when invoking <code>vergil.exe</code> if you
+      have .class files, then adding them to
+      either <code>%HOMEPATH%/.ptolemyII</code>
+      or <code>%HOME%/.ptolemyII</code> or to the location where Ptolemy
+      is installed is a good bet.</p>
+
+    <p>If you have .jar files, then place them in either <code>%HOMEPATH%/.ptolemyII</code> or <code>%HOME%/.ptolemyII</code> or replace contrib.jar with your jar file.</p>
+
+
+    <h4><a name="WindowsVergilBat">Built using ./configure or Ant, invoked using <code>$PTII/bin/vergil.bat</code></a></h4>
+
+    <p>The <code>$PTII/bin/vergil.bat</code> DOS batch file is created by running <code>make</code>
+      in <code>$PTII/bin</code>.  The <code>vergil.bat</code> file looks in the directories listed 
+      for <code>vergil.exe</code>.</p>
+
+    <h4><a name="VergilShellScript">Built using ./configure or Ant, invoked using <code>$PTII/bin/vergil</code></a></h4>
+
+    <p>The <code>$PTII/bin/vergil</code> shell script is a symbolic
+      link to <code>$PTII/bin/ptinvoke</code>.
+      The <code>$PTII/bin/ptinvoke</code> script is created from
+      the <code>$PTII/bin/ptinvoke.in</code>, which is in turn created
+      by running <code>configure</code> in <code>$PTII</code>.</p>
+    <p>To update <code>$PTII/bin/vergil</code>:</p>
+    <pre>
+      cd $PTII
+      ./configure
+      cd $PTII/bin
+      make
+    </pre>
+
+    <p>The <code>$PTII/bin/vergil</code> shell script can be run from
+    any platform where Ptolemy II has been built from sources.  The
+    Windows installer <b>does not</b> include a
+    working <code>$PTII/bin/vergil</code> file.</p>
+
+    <p>The <code>$PTII/bin/vergil</code> script searches from the same
+      directories as <code>vergil.exe</code> above,
+      except <code>%HOMEPATH%/.ptolemyII</code>
+      and <code>%HOMEPATH/.ptolemyII/*</code> are <b>not</b>
+      searched.</p>
+
+    <h4><a name="MacVergilApp">Macintosh, invoked using <code>$PTII/bin/Vergil.app</code></a></h4>
+    <p>Under Mac OS X, the <code>$PTII/bin/Vergil.app</code> script is created by invoking 
+      <code>$PTII/bin/makeapp</code>, which is a symbolic
+      link to <code>$PTII/bin/ptinvoke</code>.
+      The <code>$PTII/bin/ptinvoke</code> script is created from
+      the <code>$PTII/bin/ptinvoke.in</code>, which is in turn created
+      by running <code>configure</code> in <code>$PTII</code>.</p>
+    <p>To update <code>$PTII/bin/Vergil.app</code>:</p>
+    <pre>
+      cd $PTII
+      ./configure
+      cd $PTII/bin
+      make
+    </pre>
+
+    <p><code>$PTII/bin/Vergil.app</code> is a directory that is contains
+      <code>bin/Vergil.app/Contents/Info.plist</code> which is the file that is created by running
+      <code>$PTII/bin/makeapp</code>.</p>
+
+    <p>Unfortunately, Mac OS X Java 1.6.0_31-b04-415-11M3635 does not seem to support Java wildcard paths
+      like <code>$HOME/.ptolemyII/*</code>.  The workaround is to open
+      <code>$PTII/bin/Vergil.app/Contents/Info.plist</code> with an editor and add the .jar files by hand.</p>
+
 
     <h2>Conclusion</h2>
     <p>In the above, we have shown various ways of including user defined custom actors in Ptolemy II.</p>
