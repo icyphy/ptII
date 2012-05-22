@@ -1319,9 +1319,9 @@ if [ "$CLASSPATH" != "" ]; then
 	# $CLASSPATH may have double quotes in it.  Sadly, installing
 	# the Quicktime Java tool sets CLASSPATH to something like
         # .:"C:\Program Files\Java\j2re1.4.2_06\lib\ext\QTJava.zip"
-    CLASSPATH="${homePtolemyIIClasspath}${CLASSPATHSEPARATOR}$PTII_DIR${CLASSPATHSEPARATOR}$jarfile${CLASSPATHSEPARATOR}`echo "${CLASSPATH}" | sed 's/"/\\\\"/g'`"
+    CLASSPATH="${homePtolemyIIClasspath}${CLASSPATHSEPARATOR}${PTII_DIR}/contrib/contrib.jar${CLASSPATHSEPARATOR}$PTII_DIR${CLASSPATHSEPARATOR}$jarfile${CLASSPATHSEPARATOR}`echo "${CLASSPATH}" | sed 's/"/\\\\"/g'`"
 else
-    CLASSPATH="${homePtolemyIIClasspath}${CLASSPATHSEPARATOR}$PTII_DIR${CLASSPATHSEPARATOR}$jarfile"
+    CLASSPATH="${homePtolemyIIClasspath}${CLASSPATHSEPARATOR}${PTII_DIR}/contrib/contrib.jar${CLASSPATHSEPARATOR}$PTII_DIR${CLASSPATHSEPARATOR}$jarfile"
 fi
 
 if [ "$windows" = "yes" ]; then
@@ -1448,12 +1448,23 @@ if [ "$error" = "none" ]; then
       <string>1.6</string>
       <key>ClassPath</key>
       <array>
-       <string>\$APP_PACKAGE/../..</string>
+       <string>\$USER_HOME/.ptolemyII</string>
+       <string>\$USER_HOME/.ptolemyII/*</string>
 EOF
+        # Unfortunately, Java 1.6.0_31 does not support Java wildcards in the classpath
+	(cd $HOME/.ptolemyII; ls *.jar) | \
+	  awk '{ for(i=1;i<=NF;i++) { print "       <string>$USER_HOME/.ptolemyII/" $i "</string>"}}' >> $MACAPP_PLIST
+
+cat >>$MACAPP_PLIST <<EOF2
+
+       <string>\$APP_PACKAGE/../../contrib/contrib.jar</string>
+       <string>\$APP_PACKAGE/../..</string>
+EOF2
 
 	(cd $PTII; make echo_plist_jars JARS=${MACAPP_CONFIG}_JNLP_JARS) | \
 	  awk '{ for(i=1;i<=NF;i++) { print "       <string>$APP_PACKAGE/../../" $i "</string>"}}' >> $MACAPP_PLIST
-	cat >>$MACAPP_PLIST <<EOF2
+
+	cat >>$MACAPP_PLIST <<EOF3
       </array>
       <key>VMOptions</key>
       <string>-Xmx1024m</string>
@@ -1471,7 +1482,7 @@ EOF
     </dict>
   </dict>
 </plist>
-EOF2
+EOF3
 
 	else    
 	    eval exec $str
