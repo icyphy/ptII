@@ -195,7 +195,7 @@ public class ArrayExtract extends Transformer {
             } catch (IndexOutOfBoundsException ex) {
                 throw new IllegalActionException(this,
                         "Parameter values out of range for the array supplied."
-                                + "inputArray has length" + inputArray.length);
+                                + "inputArray has length " + inputArray.length);
             }
         }
     }
