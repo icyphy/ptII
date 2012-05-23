@@ -116,7 +116,7 @@ public class URIAttribute extends SingletonAttribute {
     /** Return the URI from which the specified model was read,
      *  or null if there is no such URI.
      *  This is obtained by finding a URIAttribute in the first
-     *  container above this attribute in the hierarchy that has
+     *  container above the specified container in the hierarchy that has
      *  such an attribute.  Note that this URI may represent a
      *  file on the local filesystem, in which case it will use
      *  the "file" scheme.
