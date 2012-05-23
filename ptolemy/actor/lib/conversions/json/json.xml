@@ -6,8 +6,8 @@
     <?moml
        <group>
 	 <doc>JSON Conversion actors</doc>
-	 <entity name="JSONToRecord"
-		 class="ptolemy.actor.lib.conversions.json.JSONToRecord">
+	 <entity name="JSONToToken"
+		 class="ptolemy.actor.lib.conversions.json.JSONToToken">
 	 </entity>
        </group>
        ?>

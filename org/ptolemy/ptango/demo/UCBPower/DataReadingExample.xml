@@ -10,7 +10,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[195.0, 45.0]">
         </property>
     </property>
-    <property name="useOnlineData" class="ptolemy.data.expr.Parameter" value="true">
+    <property name="useOnlineData" class="ptolemy.data.expr.Parameter" value="false">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -32,16 +32,18 @@
     <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
         <property name="iterations" class="ptolemy.data.expr.Parameter" value="1">
         </property>
+        <property name="allowDisconnectedGraphs" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[90.0, 90.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={176, 93, 928, 614}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={276, 60, 920, 644}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 498]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 518]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.8">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{350.0, 249.0}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{447.0833333333333, 304.9166666666667}">
     </property>
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This URL is for the power consumption of Cory Hall from 00:00 May 16 to 00:00 May 17.  ">
@@ -94,11 +96,39 @@
         </port>
     </entity>
     <entity name="Display" class="ptolemy.actor.lib.gui.Display">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={469, 269, 342, 262}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1472, 329, 801, 874}, maximized=false}">
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[326, 203]">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[440.0, 265.0]">
+        </property>
+    </entity>
+    <entity name="JSONToToken" class="ptolemy.actor.lib.conversions.json.JSONToToken">
+        <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[205.0, 425.0]">
+        </property>
+        <property name="_expertMode" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="general">
+            </property>
+        </port>
+    </entity>
+    <entity name="FileReader" class="ptolemy.actor.lib.io.FileReader">
+        <property name="fileOrURL" class="ptolemy.data.expr.FileParameter" value="data/CoryHallMay16toMay17.txt">
+        </property>
+        <doc>Read an entire file and output as a string</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[105.0, 425.0]">
+        </property>
+    </entity>
+    <entity name="Display2" class="ptolemy.actor.lib.gui.Display">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-86, 337, 801, 874}, maximized=false}">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[326, 203]">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[435.0, 455.0]">
         </property>
     </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
@@ -107,10 +137,18 @@
     </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
     </relation>
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+    </relation>
     <link port="OnlineDataFileReader.output" relation="relation"/>
     <link port="LocalDataFileReader.output" relation="relation2"/>
     <link port="Expression.output" relation="relation3"/>
     <link port="Expression.online" relation="relation"/>
     <link port="Expression.local" relation="relation2"/>
     <link port="Display.input" relation="relation3"/>
+    <link port="JSONToToken.input" relation="relation4"/>
+    <link port="JSONToToken.output" relation="relation5"/>
+    <link port="FileReader.output" relation="relation4"/>
+    <link port="Display2.input" relation="relation5"/>
 </entity>
