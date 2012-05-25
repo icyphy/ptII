@@ -69,6 +69,7 @@ PTCLASSALLJAR = $(PTPACKAGE).jar
 
 # Keep this list alphabetized.
 JSRCS = \
+	AbstractInitializableAttribute.java \
 	AbstractReceiver.java \
 	Actor.java \
 	ActorFiringListener.java \
