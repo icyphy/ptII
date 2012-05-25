@@ -116,6 +116,7 @@ public class ModelParameter extends Parameter implements Initializable {
         newObject._model = null;
         newObject._token = null;
         newObject._tokenVersion = -1;
+        newObject._initializables = null;
         return newObject;
     }
 
