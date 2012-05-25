@@ -928,10 +928,10 @@ on the colored rectangle shows how the variable "TRoom" is used to assign the co
         <link port="Ramp.output" relation="relation7"/>
         <link relation1="relation2" relation2="relation8"/>
     </entity>
-    <entity name="WebServer" class="org.ptolemy.ptango.lib.WebServer">
+    <property name="WebServer" class="org.ptolemy.ptango.lib.WebServer">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[140.0, -5.0]">
         </property>
-    </entity>
+    </property>
     <entity name="WebSource" class="org.ptolemy.ptango.lib.WebSource">
         <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="TDay">
         </property>

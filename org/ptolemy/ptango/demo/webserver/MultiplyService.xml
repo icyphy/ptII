@@ -80,10 +80,10 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[40.0, 185.0]">
         </property>
     </property>
-    <entity name="WebServer" class="org.ptolemy.ptango.lib.WebServer">
+    <property name="WebServer" class="org.ptolemy.ptango.lib.WebServer">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[215.0, 50.0]">
         </property>
-    </entity>
+    </property>
     <entity name="HttpCompositeServiceProvider" class="org.ptolemy.ptango.lib.HttpCompositeServiceProvider">
         <property name="path" class="ptolemy.data.expr.StringParameter" value="/multiply">
         </property>

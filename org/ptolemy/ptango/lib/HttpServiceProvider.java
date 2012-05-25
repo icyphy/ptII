@@ -45,7 +45,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  *  a servlet, registers this servlet with the WebServer during preinitialize(),
  *  and displays its content at the specified path when a request is received.
  *  
- *  @author ltrnc
+ *  @author Elizabeth Latronico
  *  @version $Id$
  *  @since Ptolemy II 9.0
  *  @Pt.ProposedRating Red (ltrnc)
@@ -53,8 +53,14 @@ import ptolemy.kernel.util.NameDuplicationException;
  *  @see org.ptolemy.ptango.WebServer
  */
 
-public class HttpServiceProvider extends TypedAtomicActor 
-    implements HttpService{
+public class HttpServiceProvider extends TypedAtomicActor implements HttpService{
+    
+    /** Create an instance of the actor.
+     * @param container The container
+     * @param name The name.
+     * @throws IllegalActionException If the superclass throws it.
+     * @throws NameDuplicationException If the super
+     */
     public HttpServiceProvider(CompositeActor container, String name)
         throws IllegalActionException, NameDuplicationException {
         super(container, name);
@@ -69,6 +75,7 @@ public class HttpServiceProvider extends TypedAtomicActor
     
     ///////////////////////////////////////////////////////////////////
     ////                     public methods                        ////
+    
     /** Returns the relative path that this HttpService is mapped to. 
      * 
      * @return The relative path that this HttpService is mapped to.
@@ -106,7 +113,7 @@ public class HttpServiceProvider extends TypedAtomicActor
         
         if (!path.getExpression().isEmpty()) {
             setRelativePath(path.getExpression().toString());
-        }         
+        }
     }
     
     /** Set the relative path that this HttpService is mapped to, and ensure

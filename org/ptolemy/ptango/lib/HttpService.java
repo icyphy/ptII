@@ -1,11 +1,12 @@
+/* An interface for actors that handle HTTP requests */
+
 package org.ptolemy.ptango.lib;
+
 import java.net.URI;
 
 import javax.servlet.http.HttpServlet;
 
-
-/* An interface which actors implement to handle HTTP requests.
-
+/* 
  Copyright (c) 1997-2011 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
@@ -32,7 +33,7 @@ import javax.servlet.http.HttpServlet;
 
  */
 
-/** An interface which actors implement to handle HTTP requests.  The interface
+/** An interface for actors that handle HTTP requests.  The interface
  *  allows the relative path for the HTTP request to be set and obtained, 
  *  and provides a servlet to handle requests.
  *  
@@ -41,7 +42,7 @@ import javax.servlet.http.HttpServlet;
  *  interface.
  *  http://www.osgi.org/javadoc/r4v42/org/osgi/service/http/HttpService.html
  *  
- *  @author ltrnc
+ *  @author Elizabeth Latronico
  *  @version $Id$
  *  @since Ptolemy II 9.0
  *  @Pt.ProposedRating Red (ltrnc)
@@ -56,7 +57,7 @@ public interface HttpService {
     
     /** Returns the relative path that this HttpService is mapped to. 
      * 
-     * @return The relative path that this HttpService is mapped to.
+     *  @return The relative path that this HttpService is mapped to.
      */
     public URI getRelativePath();
     

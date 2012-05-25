@@ -29,6 +29,7 @@ import ptolemy.kernel.Relation;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
+import ptolemy.util.StringUtilities;
 import ptolemy.vergil.basic.BasicGraphFrame;
 import ptolemy.vergil.basic.ExportParameters;
 import ptolemy.vergil.basic.export.web.WebExportable;
@@ -452,11 +453,11 @@ public class HttpCompositeServiceProvider extends TypedCompositeActor
     /** Finds all contained WebExportables and gets their web content.
      * 
      * @param container The container to search for WebExportables
-     * @exception If something is wrong with the specification of the outside 
+     * @exception IllegalActionException If something is wrong with the specification of the outside 
      * content
      */
     private void _addAllContent(NamedObj container) 
-        throws IllegalActionException {
+            throws IllegalActionException {
         if (container instanceof WebExportable) {
             // provideOutsideContent() should call this.addContent()
             // TODO:  Need to figure out how to handle provideContent() vs. 
@@ -588,16 +589,7 @@ public class HttpCompositeServiceProvider extends TypedCompositeActor
                 throws ServletException, IOException
         {        
             // Open directory for writing temporary files
-            File directory;
-            try {
-                directory = 
-                    WebServer.getFilesDirectory(WebServer.DirectoryType.TEMP);
-            } catch(IllegalActionException e){
-                _writeError(response, 
-                        HttpServletResponse.SC_INTERNAL_SERVER_ERROR, 
-                        "Unable to save images to temp directory.");
-               throw new IOException("Unable to save images to temp directory");
-            }
+            File directory = new File(StringUtilities.getProperty("java.io.tmpdir"));
             
             _exportParameters = new ExportParameters(directory);
             

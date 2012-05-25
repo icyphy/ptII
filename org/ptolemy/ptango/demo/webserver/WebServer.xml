@@ -26,10 +26,10 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[280.0, 35.0]">
         </property>
     </property>
-    <entity name="WebServer" class="org.ptolemy.ptango.lib.WebServer">
+    <property name="WebServer" class="org.ptolemy.ptango.lib.WebServer">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[210.0, 60.0]">
         </property>
-    </entity>
+    </property>
     <entity name="HttpServiceProvider_English" class="org.ptolemy.ptango.lib.HttpServiceProvider">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[105.0, 145.0]">
         </property>
