@@ -58,19 +58,38 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 
 
-/** An actor that handles an HTTP request by producing an output and
- *  waiting for an input to give a response.
- *  This actor creates a servlet.
- *  When this actor receives an HTTP request, if the model is running
- *  (initialize() has been called and wrapup() has not), then it
+/** An actor that handles an HTTP request by producing output,
+ *  requesting a firing, and waiting for an input that provides a response.
+ *  This actor requires that the model that contains it includes an
+ *  instance of {@link WebServer}, which discovers this actor and
+ *  delegates HTTP requests to a servlet that this actor creates.
+ *  <p>
+ *  The <i>path</i> parameter specifies which HTTP requests will
+ *  be delegated to this actor. If the base URL for the web server
+ *  is "http://localhost:8080", say, then request of the form
+ *  "http://localhost:8080/<i>path</i>" will be delegated to this
+ *  actor.
+ *  <p>
+ *  When this actor receives an HTTP request, if the web server is running
+ *  (initialize() has been called and wrapup() has not), then this actor
  *  issues a request for the director to fire it at the greater of
  *  the current time of the director or the time elapsed since
  *  the last invocation of initialize() (in seconds).
  *  When the actor fires, it produces on its output ports the details
- *  of the request. It expects to be fired again some time later
- *  with the response to send appearing on its input ports.
+ *  of the request, time stamped by the elapsed time since the model
+ *  started executing. It expects to be in a model that will fire
+ *  it again again some time later
+ *  with the response to HTTP request provided on its input ports.
  *  If that response does not arrive within <i>timeout</i>
  *  (default 10000) milliseconds, then it issues a timeout response.
+ *  <p>
+ *  This actor should be used in DE model and should be in a feedback
+ *  loop, so that producing outputs causes inputs to appear.
+ *  The downstream model should be used to construct a response.
+ *  For example, to simply serve a web page, put a
+ *  {@link FileReader} actor and a {@link MicrostepDelay}
+ *  (to make the feedback loop work) downstream in a feedback
+ *  loop connected back to the input.
  *  
  *  @author Elizabeth Latronico and Edward A. Lee
  *  @version $Id$
@@ -98,12 +117,11 @@ public class HttpActor extends TypedAtomicActor implements HttpService {
         response.setTypeEquals(BaseType.STRING);
         response.setMultiport(true);
         
-        cookies = new TypedIOPort(this, "cookies", false, true);
+        // cookies = new TypedIOPort(this, "cookies", false, true);
         // FIXME: The following requires the output to be a record.
         // This won't work until new type system is checked in.
         // cookies.setTypeAtMost(RecordType.EMPTY_RECORD);
-        cookies.setTypeEquals(BaseType.GENERAL);
-        new Parameter(cookies, "_showName").setExpression("true");
+        // new Parameter(cookies, "_showName").setExpression("true");
         
         timeout = new Parameter(this, "timeout");
         timeout.setExpression("10000L");
@@ -129,38 +147,46 @@ public class HttpActor extends TypedAtomicActor implements HttpService {
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 
-    /** The cookies provided by a request.
+    /** An output that sends the cookies provided by a request.
      *  If there are any cookies, then the output provided by this
      *  port will be a record of the form {cookieName = value, ...}.
      */
     // FIXME: Cookies have many other fields. Do we need to include them?
-    public TypedIOPort cookies;
+    // Leave out altogether for now.
+    // public TypedIOPort cookies;
 
-    /** The relative URL to map this servlet to.
+    /** The relative URL of HTTP requests that this actor handles.
      *  This is a string that defaults to "/*", meaning that all
-     *  requests are handled.
+     *  requests are handled, unless there is another instance
+     *  of the actor with a more specific path that matches.
+     *  Preference is given to longer paths. So, for example,
+     *  a request "http://localhost:8080/foo/bar" will be
+     *  delegated to an actor with <i>path</i> = "/foo/bar/*",
+     *  if there is one, and otherwise to an actor with
+     *  <i>path</i> = "/foo/*", if there is one, and finally
+     *  to an actor with <i>path</i> = "/*", if the first two
+     *  don't exist.  If two actors specify the same path,
+     *  then it is undefined which one gets the request.
      */
     public StringParameter path;
     
-    /** The parameters included in a get request.
+    /** An output port that sends parameters included in a get request.
      *  These are values appended to the URL in the form
      *  of ...?name=value. The output will be a record with
      *  one field for each name. If the request assigns multiple
-     *  values to the name, then the field value of the record
+     *  values to the same name, then the field value of the record
      *  will be an array of strings. Otherwise, it will simply
      *  be a string.
      */
     public TypedIOPort getParameters;
 
-    /** The relative URI of a get request.
-     *  When a get request is received from
-     *  a web server, then this actor will request a firing,
-     *  and on that firing, it will send the URI
-     *  of the request, relative to the base, to this output port.
+    /** An output port that sends the relative URI of a get request,
+     *  which must match the pattern given by the <i>path</i> parameter.
+     *  This has type string.
      */
     public TypedIOPort getRequestURI;
 
-    /** The parameters included in a post request.
+    /** An output port that sends parameters included in a post request.
      *  The output will be a record with
      *  one field for each name. If the request assigns multiple
      *  values to the name, then the field value of the record
@@ -169,15 +195,14 @@ public class HttpActor extends TypedAtomicActor implements HttpService {
      */
     public TypedIOPort postParameters;
 
-    /** The relative URI of a post request.
-     *  When a post request is received from
-     *  a web server, then this actor will request a firing,
-     *  and on that firing, it will send the URI
-     *  of the request, relative to the base, to this output port.
+    /** An output port that sends the relative URI of a post request,
+     *  which must match the pattern given by the <i>path</i> parameter.
+     *  This has type string.
      */
     public TypedIOPort postRequestURI;
 
-    /** The response to issue to a request. When this input port
+    /** An input port on which to provide the
+     *  response to issue to an HTTP request. When this input port
      *  receives an event, if there is a pending get or post request from
      *  a web server, then that pending request responds with the
      *  value of the input. Otherwise, the response is recorded,
@@ -191,6 +216,8 @@ public class HttpActor extends TypedAtomicActor implements HttpService {
     /** The time in milliseconds to wait after producing the details
      *  of a request on the output ports for a response to appear at
      *  the input ports. This is a long that defaults to 10,000.
+     *  If this time expires before an input is received, then this actor
+     *  will issue a generic timeout response to the HTTP request.
      */
     public Parameter timeout;
 
@@ -222,7 +249,7 @@ public class HttpActor extends TypedAtomicActor implements HttpService {
         }
     }
 
-    /** Clone the attribute.
+    /** Clone the actor.
      *  @param workspace The workspace in which to place the cloned attribute.
      *  @exception CloneNotSupportedException Not thrown in this base class.
      *  @see java.lang.Object#clone()
@@ -230,11 +257,18 @@ public class HttpActor extends TypedAtomicActor implements HttpService {
      */
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         HttpActor newObject = (HttpActor) super.clone(workspace);
+        // newObject._cookies = null;
         newObject._initializeModelTime = null;
+        newObject._initializeRealTime = 0L;
+        newObject._parameters = null;
+        newObject._requestURI = null;
+        newObject._response = null;
+        newObject._URIpath = null;
         return newObject;
     }
 
-    /** Returns the relative path that this HttpService is mapped to.
+    /** Return the relative path that this HttpService is mapped to,
+     *  which is the value of the <i>path</i> parameter.
      *  This method is required by the HttpService interface.
      *  @return The relative path that this HttpService is mapped to.
      */
@@ -243,7 +277,7 @@ public class HttpActor extends TypedAtomicActor implements HttpService {
     }
 
     /** Create and return an HttpServlet that is used to handle requests that
-     *  arrive at the given path.
+     *  arrive at the path given by the <i>path</i> parameter.
      *  This method is required by the HttpService interface.
      *  @return An HttpServlet to handle requests. 
      */
@@ -257,8 +291,14 @@ public class HttpActor extends TypedAtomicActor implements HttpService {
         return new ActorServlet();
     }
     
-    /** FIXME
-     *  @exception IllegalActionException FIXME.
+    /** Respond to an HTTP request. If there is a
+     *  response at the input port, then record that
+     *  response and notify the servlet thread that a response
+     *  is ready. Otherwise, if the servlet has received
+     *  an HTTP request, then produce on the output ports
+     *  the details of the request.
+     *  @exception IllegalActionException If sending the
+     *   outputs fails.
      */
     public void fire() throws IllegalActionException {
         // The methods of the servlet are invoked in another
@@ -285,6 +325,9 @@ public class HttpActor extends TypedAtomicActor implements HttpService {
                     postParameters.send(0, _parameters);
                 }
                 _requestURI = null;
+                /* FIXME: Omitting cookies for now.
+                 * In any case, when we put this back in,
+                 * this work should be done in the servlet.
                 if (_cookies != null && _cookies.length > 0) {
                     // Construct a record.
                     String[] labels = new String[_cookies.length];
@@ -295,14 +338,15 @@ public class HttpActor extends TypedAtomicActor implements HttpService {
                     }
                     cookies.send(0, new RecordToken(labels, values));
                 }
+                */
             }
         }
     }
 
-    /** Set the relative path for which this actor will receive requests.  This is
-     *  set here in case the path does not conform to URI syntax rules.  If the
-     *  path does not conform, an IllegalActionException is thrown.
-     *  @exception IllegalActionException If the path is invalid URI syntax
+    /** Record the current model time and the current real time
+     *  so that output events can be time stamped with the elapsed
+     *  time since model start.
+     *  @exception IllegalActionException If the superclass throws it.
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
@@ -314,7 +358,7 @@ public class HttpActor extends TypedAtomicActor implements HttpService {
         
     /** Set the relative path that this HttpService is mapped to.
      *  This method is required by the HttpService interface.
-     * @param path The relative path that this HttpService is mapped to.
+     *  @param path The relative path that this HttpService is mapped to.
      */
     public void setRelativePath(URI path) {
         _URIpath = path;
@@ -324,7 +368,7 @@ public class HttpActor extends TypedAtomicActor implements HttpService {
     ////                     private variables                     ////
     
     /** Cookies provided as part of a get request. */
-    private Cookie[] _cookies;
+    // private Cookie[] _cookies;
     
     /** The model time at which this actor was last initialized. */
     private Time _initializeModelTime;
@@ -353,8 +397,20 @@ public class HttpActor extends TypedAtomicActor implements HttpService {
     ///////////////////////////////////////////////////////////////////
     ////                     inner classes                         ////    
     
-    /** FIXME 
-     *  http://wiki.eclipse.org/Jetty/Tutorial/Embedding_Jetty
+    /** A servlet providing implementations of get and post.
+     *  The way this servlet works is that when a get or post
+     *  HTTP request is received, it records the properties of
+     *  the request (the URI and parameters) and requests a
+     *  firing of the enclosing actor at model time equal to
+     *  the time elapsed since the start of execution of the model.
+     *  The thread making the get or post request then suspends,
+     *  giving the model a chance to execute. When the model has
+     *  determined what the response to the request should be,
+     *  it notifies this servlet thread, which then completes
+     *  the handling of the request, sending back the response
+     *  that has been provided by the enclosing actor.
+     *   
+     *  @see http://wiki.eclipse.org/Jetty/Tutorial/Embedding_Jetty
      */
     protected class ActorServlet extends HttpServlet {
         
@@ -364,7 +420,7 @@ public class HttpActor extends TypedAtomicActor implements HttpService {
          *  while waiting for the response. This strategy helps prevent a pending
          *  get request from overlapping with a pending put request. The second
          *  request will be postponed until the first has been completely handled.
-         *  @see http://docs.oracle.com/javaee/6/api/javax/servlet/http/HttpServletRequest.html
+         *  
          *  @param request The HTTP get request.
          *  @param response The HTTP response to write to.
          */
@@ -374,13 +430,12 @@ public class HttpActor extends TypedAtomicActor implements HttpService {
             _handleRequest(request, response, 0);
         }
         
-        /** Handle an HTTP put request by creating a web page as the HTTP 
+        /** Handle an HTTP post request by creating a web page as the HTTP 
          *  response.
          *  NOTE: This method is synchronized, and the lock is _not_ released
          *  while waiting for the response. This strategy helps prevent a pending
          *  get request from overlapping with a pending put request. The second
          *  request will be postponed until the first has been completely handled.
-         *  @see http://docs.oracle.com/javaee/6/api/javax/servlet/http/HttpServletRequest.html
          *  @param request The HTTP get request.
          *  @param response The HTTP response to write to.
          */
@@ -390,12 +445,12 @@ public class HttpActor extends TypedAtomicActor implements HttpService {
             _handleRequest(request, response, 1);
         }
         
-        /** Handle an HTTP get or put request by creating a web page as the HTTP 
+        /** Handle an HTTP get or post request by creating a web page as the HTTP 
          *  response.
          *  @see http://docs.oracle.com/javaee/6/api/javax/servlet/http/HttpServletRequest.html
-         *  @param request The HTTP get request.
+         *  @param request The HTTP request.
          *  @param response The HTTP response to write to.
-         *  @param type The type of request. 0 for get, 1 for put.
+         *  @param type The type of request. 0 for get, 1 for post.
          */
         private void _handleRequest(HttpServletRequest request, 
                 HttpServletResponse response, int type) 
@@ -406,7 +461,7 @@ public class HttpActor extends TypedAtomicActor implements HttpService {
             synchronized(HttpActor.this) {
                 _requestURI = request.getRequestURI();
                 _requestType = type;
-                _cookies = request.getCookies();
+                // _cookies = request.getCookies();
                 if (_debugging) {
                     _debug("Received get request with URI: " + _requestURI);
                     _debug("Requesting firing at the current time.");
@@ -452,7 +507,7 @@ public class HttpActor extends TypedAtomicActor implements HttpService {
                     _writeError(response, HttpServletResponse.SC_BAD_REQUEST, e1.getMessage());
                 }
                 
-                // FIXME: Other information?
+                // FIXME: Other information? E.g.
                 // response.getWriter().println("session=" + request.getSession(true).getId());
                 try {
                     long elapsedRealTime = System.currentTimeMillis() - _initializeRealTime;
