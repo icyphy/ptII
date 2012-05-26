@@ -265,8 +265,9 @@ public class ImageIcon extends DynamicEditorIcon implements ImageObserver {
 			// which is thrown by java.awt.Image.getScaledInstance() when the height or width is 0.
 			// This occurs when running 
 			// $PTII/bin/ptcg -language java $PTII/ptolemy/moml/filter/test/auto/modulation2.xml
+		        // Negative argument indicates to maintain aspect ratio.
 			_scaledImage = _image.getScaledInstance(newWidth,
-								newHeight, Image.SCALE_SMOOTH);
+								-1, Image.SCALE_SMOOTH);
 
 			_scalePercentageImplemented = _scalePercentage;
 
