@@ -15,7 +15,7 @@
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model launches a web server and provides a service&#10;available at http://localhost:8080/ptolemnizer.&#10;Run the model and navigate to that location&#10;(or click on this comment).">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[280.0, 305.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[170.0, 5.0]">
         </property>
         <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="http://localhost:8080/ptolemnizer#in_browser">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -42,36 +42,101 @@
         </property>
         <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{80.0, 55.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[80.0, 40.0]">
         </property>
     </property>
     <property name="WebServer" class="org.ptolemy.ptango.lib.WebServer">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[665.0, 105.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[615.0, 50.0]">
+        </property>
+    </property>
+    <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.8,0.0,0.0,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="FIXME: HttpActor has output types declared for postParameters&#10;and getParameters.&#10;This will not be necessary. Remove that declaration when possible.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[20.0, 405.0]">
+        </property>
+    </property>
+    <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The upper loop handles HTTP get requests&#10;by posting the web page given in the FileReader.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[285.0, 110.0]">
+        </property>
+    </property>
+    <property name="Annotation4" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The lower loop handles HTTP post requests&#10;by extracting text from post, Ptolemnizing it,&#10;and returning the result in a web page.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[285.0, 195.0]">
         </property>
     </property>
     <entity name="HttpActor" class="org.ptolemy.ptango.lib.HttpActor">
         <property name="path" class="ptolemy.data.expr.StringParameter" value="/ptolemnizer/*">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 230.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[60.0, 180.0]">
+        </property>
+        <port name="getParameters" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="general">
+            </property>
+        </port>
+        <port name="postParameters" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="{text=string}">
+            </property>
+        </port>
+    </entity>
+    <entity name="MicrostepDelay" class="ptolemy.actor.lib.MicrostepDelay">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[60.0, 100.0]">
+        </property>
+        <property name="_flipPortsHorizontal" class="ptolemy.data.expr.Parameter" value="true">
         </property>
     </entity>
-    <entity name="CurrentTime" class="ptolemy.actor.lib.CurrentTime">
-        <doc>Output the current time.</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[185.0, 330.0]">
+    <entity name="FileReader" class="ptolemy.actor.lib.io.FileReader">
+        <property name="fileOrURL" class="ptolemy.data.expr.FileParameter" value="$PTII/org/ptolemy/ptango/demo/WebServerDE/pages/index.html">
+        </property>
+        <doc>Read an entire file and output as a string</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[200.0, 150.0]">
         </property>
     </entity>
-    <entity name="Display" class="ptolemy.actor.lib.gui.Display">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={906, 751, 484, 208}, maximized=false}">
+    <entity name="RecordDisassembler" class="ptolemy.actor.lib.RecordDisassembler">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[130.0, 230.0]">
         </property>
-        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[484, 164]">
+        <port name="text" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+        </port>
+    </entity>
+    <entity name="MicrostepDelay2" class="ptolemy.actor.lib.MicrostepDelay">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[80.0, 375.0]">
         </property>
-        <property name="title" class="ptolemy.data.expr.StringParameter" value="Get Requests">
+        <property name="_flipPortsHorizontal" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[450.0, 185.0]">
+    </entity>
+    <entity name="Ptolemnizer" class="ptolemy.actor.lib.python.PythonScript">
+        <property name="script" class="ptolemy.kernel.util.StringAttribute" value="from ptolemy.data import StringToken&#10;class Main :&#10;  &quot;ptolemizer&quot;&#10;  def fire(self) :&#10;    # read input, compute, send output&#10;    t = self.in.get(0)&#10;    s = t.stringValue()&#10;    s = self.ptolemize(s)&#10;    t = StringToken(s)&#10;    self.out.broadcast(t)&#10;    return&#10;&#10;  def ptolemize(self, s) :&#10;    l = list(s)&#10;    length = len(l)&#10;    if length == 0 :&#10;      return ''&#10;    if length == 1 :&#10;      if l[0] == 't' :&#10;        return 'pt'&#10;      else :&#10;        return l[0]&#10;    if l[0] == 't' and l[1] != 'h' :&#10;      l[0] = 'pt'&#10;    i = 1&#10;    while i &lt; length - 1 :&#10;      if l[i-1] == ' ' and l[i] == 't' and l[i+1] != 'h' :&#10;        l[i] = 'pt'&#10;      i = i + 1&#10;    if l[-2] == ' ' and l[-1] == 't' :&#10;      l[-1] = 'pt'&#10;    return reduce(lambda x,y: x+y, l, '')">
+            <property name="style" class="ptolemy.actor.gui.style.TextStyle">
+            </property>
         </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.TextEditorConfigureFactory">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="script">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[205.0, 335.0]">
+        </property>
+        <port name="in" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="string">
+            </property>
+        </port>
+        <port name="out" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="string">
+            </property>
+        </port>
     </entity>
     <entity name="StringConst" class="ptolemy.actor.lib.StringConst">
-        <property name="value" class="ptolemy.data.expr.Parameter" value=" at time ">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="&lt;h1&gt;Ptolemnized Text&lt;/h1&gt;">
         </property>
         <doc>Create a constant sequence with a string value.</doc>
         <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
@@ -82,73 +147,52 @@
             <property name="displayHeight" class="ptolemy.data.expr.Parameter" value="10">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[185.0, 265.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[290.0, 285.0]">
         </property>
     </entity>
     <entity name="AddSubtract" class="ptolemy.actor.lib.AddSubtract">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[315.0, 250.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[425.0, 345.0]">
         </property>
     </entity>
-    <entity name="MicrostepDelay" class="ptolemy.actor.lib.MicrostepDelay">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[35.0, 145.0]">
-        </property>
-        <property name="_flipPortsHorizontal" class="ptolemy.data.expr.Parameter" value="true">
-        </property>
-    </entity>
-    <entity name="FileReader" class="ptolemy.actor.lib.io.FileReader">
-        <property name="fileOrURL" class="ptolemy.data.expr.FileParameter" value="$PTII/org/ptolemy/ptango/demo/WebServerDE/pages/index.html">
-        </property>
-        <doc>Read an entire file and output as a string</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[185.0, 185.0]">
-        </property>
-    </entity>
-    <entity name="Display2" class="ptolemy.actor.lib.gui.Display">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={364, 695, 484, 208}, maximized=false}">
-        </property>
-        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[484, 164]">
-        </property>
-        <property name="title" class="ptolemy.data.expr.StringParameter" value="Put Requests">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[145.0, 400.0]">
-        </property>
-    </entity>
-    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
-        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
-        </property>
-        <vertex name="vertex1" value="[130.0, 230.0]">
-        </vertex>
-    </relation>
-    <relation name="relation" class="ptolemy.actor.TypedIORelation">
-    </relation>
-    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-    </relation>
-    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
-        </property>
-        <vertex name="vertex1" value="[385.0, 250.0]">
-        </vertex>
-    </relation>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation6" class="ptolemy.actor.TypedIORelation">
     </relation>
+    <relation name="relation8" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation10" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="vertex1" value="[155.0, 285.0]">
+        </vertex>
+    </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+    </relation>
     <relation name="relation7" class="ptolemy.actor.TypedIORelation">
     </relation>
     <link port="HttpActor.response" relation="relation4"/>
-    <link port="HttpActor.getRequestURI" relation="relation5"/>
-    <link port="HttpActor.putRequestURI" relation="relation7"/>
-    <link port="CurrentTime.output" relation="relation2"/>
-    <link port="CurrentTime.trigger" relation="relation5"/>
-    <link port="Display.input" relation="relation3"/>
-    <link port="StringConst.output" relation="relation"/>
-    <link port="StringConst.trigger" relation="relation5"/>
-    <link port="AddSubtract.plus" relation="relation5"/>
-    <link port="AddSubtract.plus" relation="relation"/>
-    <link port="AddSubtract.plus" relation="relation2"/>
-    <link port="AddSubtract.output" relation="relation3"/>
+    <link port="HttpActor.response" relation="relation10"/>
+    <link port="HttpActor.getRequestURI" relation="relation"/>
+    <link port="HttpActor.postParameters" relation="relation8"/>
     <link port="MicrostepDelay.input" relation="relation6"/>
     <link port="MicrostepDelay.output" relation="relation4"/>
     <link port="FileReader.output" relation="relation6"/>
-    <link port="FileReader.trigger" relation="relation5"/>
-    <link port="Display2.input" relation="relation7"/>
+    <link port="FileReader.trigger" relation="relation"/>
+    <link port="RecordDisassembler.input" relation="relation8"/>
+    <link port="RecordDisassembler.text" relation="relation2"/>
+    <link port="MicrostepDelay2.input" relation="relation7"/>
+    <link port="MicrostepDelay2.output" relation="relation10"/>
+    <link port="Ptolemnizer.in" relation="relation2"/>
+    <link port="Ptolemnizer.out" relation="relation5"/>
+    <link port="StringConst.output" relation="relation3"/>
+    <link port="StringConst.trigger" relation="relation2"/>
+    <link port="AddSubtract.plus" relation="relation3"/>
+    <link port="AddSubtract.plus" relation="relation5"/>
+    <link port="AddSubtract.output" relation="relation7"/>
 </entity>

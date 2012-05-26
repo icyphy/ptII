@@ -42,10 +42,11 @@
 		 that version and jQueryMobile.  jQuery 1.6.4 is the latest version 
 		 supported. --> 
 		 
+<!-- Uncomment this to get handheld look and feel		 
 	<link rel="stylesheet" href="http://code.jquery.com/mobile/1.0/jquery.mobile-1.0.min.css" />
 	<script type="text/javascript" src="http://code.jquery.com/jquery-1.6.4.min.js"></script>
 	<script type="text/javascript" src="http://code.jquery.com/mobile/1.0/jquery.mobile-1.0.min.js"></script>
-
+-->
 	<title> Website Ptolemnizer </title>
 </head>
 <body>
@@ -57,13 +58,13 @@
 	</div>
 
 	<div data-role="content">
-		Please enter a URL:
+		Please enter text to Ptolemnize:
 		<!-- could have an action="suburl" in the form item to send the post to another actor. -->
 		<form action="ptolemnizer" method="post" >
 		
 			<div data-role="fieldcontain" class="ui-hide-label">
-				<label for="URL">URL:</label>
-				<input type="text" name="URL" id="URL" value="" placeholder="http://ptolemy.org"/>
+				<label for="text">text:</label>
+				<input type="text" name="text" id="text" value="" width="80" placeholder="text to tolemnize"/>
 				</br>
 			</div>
 		

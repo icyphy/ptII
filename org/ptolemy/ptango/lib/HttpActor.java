@@ -29,8 +29,10 @@
 package org.ptolemy.ptango.lib;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.net.URI;
 import java.util.Map;
+import java.util.Set;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.Cookie;
@@ -42,6 +44,7 @@ import ptolemy.actor.CompositeActor;
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.util.Time;
+import ptolemy.data.ArrayToken;
 import ptolemy.data.LongToken;
 import ptolemy.data.RecordToken;
 import ptolemy.data.StringToken;
@@ -93,6 +96,7 @@ public class HttpActor extends TypedAtomicActor implements HttpService {
         
         response = new TypedIOPort(this, "response", true, false);
         response.setTypeEquals(BaseType.STRING);
+        response.setMultiport(true);
         
         cookies = new TypedIOPort(this, "cookies", false, true);
         // FIXME: The following requires the output to be a record.
@@ -109,9 +113,17 @@ public class HttpActor extends TypedAtomicActor implements HttpService {
         getRequestURI.setTypeEquals(BaseType.STRING);
         new Parameter(getRequestURI, "_showName").setExpression("true");
 
-        putRequestURI = new TypedIOPort(this, "putRequestURI", false, true);
-        putRequestURI.setTypeEquals(BaseType.STRING);
-        new Parameter(putRequestURI, "_showName").setExpression("true");
+        // NOTE: The type will be inferred from how this output is used.
+        getParameters = new TypedIOPort(this, "getParameters", false, true);
+        new Parameter(getParameters, "_showName").setExpression("true");
+
+        postRequestURI = new TypedIOPort(this, "postRequestURI", false, true);
+        postRequestURI.setTypeEquals(BaseType.STRING);
+        new Parameter(postRequestURI, "_showName").setExpression("true");
+        
+        // NOTE: The type will be inferred from how this output is used.
+        postParameters = new TypedIOPort(this, "postParameters", false, true);
+        new Parameter(postParameters, "_showName").setExpression("true");
     }
     
     ///////////////////////////////////////////////////////////////////
@@ -130,6 +142,16 @@ public class HttpActor extends TypedAtomicActor implements HttpService {
      */
     public StringParameter path;
     
+    /** The parameters included in a get request.
+     *  These are values appended to the URL in the form
+     *  of ...?name=value. The output will be a record with
+     *  one field for each name. If the request assigns multiple
+     *  values to the name, then the field value of the record
+     *  will be an array of strings. Otherwise, it will simply
+     *  be a string.
+     */
+    public TypedIOPort getParameters;
+
     /** The relative URI of a get request.
      *  When a get request is received from
      *  a web server, then this actor will request a firing,
@@ -138,19 +160,31 @@ public class HttpActor extends TypedAtomicActor implements HttpService {
      */
     public TypedIOPort getRequestURI;
 
-    /** The relative URI of a put request.
-     *  When a put request is received from
+    /** The parameters included in a post request.
+     *  The output will be a record with
+     *  one field for each name. If the request assigns multiple
+     *  values to the name, then the field value of the record
+     *  will be an array of strings. Otherwise, it will simply
+     *  be a string.
+     */
+    public TypedIOPort postParameters;
+
+    /** The relative URI of a post request.
+     *  When a post request is received from
      *  a web server, then this actor will request a firing,
      *  and on that firing, it will send the URI
      *  of the request, relative to the base, to this output port.
      */
-    public TypedIOPort putRequestURI;
+    public TypedIOPort postRequestURI;
 
     /** The response to issue to a request. When this input port
-     *  receives an event, if there is a pending get request from
+     *  receives an event, if there is a pending get or post request from
      *  a web server, then that pending request responds with the
      *  value of the input. Otherwise, the response is recorded,
-     *  and the next get request received will be given the response.
+     *  and the next get or post request received will be given the response.
+     *  For convenience, this is a multiport, and a response can be
+     *  provided on input channel. If multiple responses are provided,
+     *  the last one will prevail.
      */
     public TypedIOPort response;
     
@@ -231,20 +265,24 @@ public class HttpActor extends TypedAtomicActor implements HttpService {
         // thread, so we use this actor for mutual exclusion.
         synchronized(this) {
             super.fire();
-            if (response.getWidth() > 0 && response.hasToken(0)) {
-                _response = ((StringToken)response.get(0)).stringValue();
-                if (_debugging) {
-                    _debug("Received response on the input port: " + _response);
+            for (int i = 0; i < response.getWidth(); i++) {
+                if (response.hasToken(i)) {
+                    _response = ((StringToken)response.get(i)).stringValue();
+                    if (_debugging) {
+                        _debug("Received response on the input port: " + _response);
+                    }
+                    // If there is a pending request, notify it.
+                    notifyAll();
                 }
-                // If there is a pending request, notify it.
-                notifyAll();
             }
             // If there is a pending request, produce outputs for that request.
             if (_requestURI != null) {
                 if (_requestType == 0) {
                     getRequestURI.send(0, new StringToken(_requestURI));
+                    getParameters.send(0, _parameters);
                 } else {
-                    putRequestURI.send(0, new StringToken(_requestURI));     
+                    postRequestURI.send(0, new StringToken(_requestURI));     
+                    postParameters.send(0, _parameters);
                 }
                 _requestURI = null;
                 if (_cookies != null && _cookies.length > 0) {
@@ -293,6 +331,9 @@ public class HttpActor extends TypedAtomicActor implements HttpService {
     
     /** The real time at which this actor was last initialized, in milliseconds. */
     private long _initializeRealTime;
+    
+    /** Parameters received in a get or post. */
+    private RecordToken _parameters;
     
     /** The type of request. 0 for get, 1 for put. */
     private int _requestType;
@@ -370,7 +411,47 @@ public class HttpActor extends TypedAtomicActor implements HttpService {
                     _debug("Received get request with URI: " + _requestURI);
                     _debug("Requesting firing at the current time.");
                 }
-                Map<String, String[]> parameter = request.getParameterMap();
+                // Get the parameters that have been either posted or included
+                // as assignments in a get using the URL syntax ...?name=value.
+                // Note that each parameter name may have more than one value,
+                // hence the array of strings.
+                Map<String, String[]> parameterMap = request.getParameterMap();
+                // Convert these parameters to a record token to send to
+                // the appropriate output.
+                Set<String> names = parameterMap.keySet();
+                String[] fieldNames = new String[names.size()];
+                Token[] fieldValues = new Token[names.size()];
+                int i = 0;
+                for (String name : names) {
+                    fieldNames[i] = name;
+                    String[] values = parameterMap.get(name);
+                    if (values == null || values.length == 0) {
+                        fieldValues[i] = StringToken.NIL;
+                    } else if (values.length == 1) {
+                        fieldValues[i] = new StringToken(values[0]);
+                    } else {
+                        // More than one value. Use an array.
+                        StringToken[] arrayEntries = new StringToken[values.length];
+                        for (int j = 0; j < values.length; j++) {
+                            arrayEntries[i] = new StringToken(values[j]);
+                        }
+                        try {
+                            ArrayToken array = new ArrayToken(arrayEntries);
+                            fieldValues[i] = array;
+                        } catch (IllegalActionException e) {
+                            _writeError(response, HttpServletResponse.SC_BAD_REQUEST, e.getMessage());
+                            return;
+                        }
+                    }
+                    i++;
+                }
+                try {
+                    _parameters = new RecordToken(fieldNames, fieldValues);
+                    
+                } catch (IllegalActionException e1) {
+                    _writeError(response, HttpServletResponse.SC_BAD_REQUEST, e1.getMessage());
+                }
+                
                 // FIXME: Other information?
                 // response.getWriter().println("session=" + request.getSession(true).getId());
                 try {
@@ -379,10 +460,7 @@ public class HttpActor extends TypedAtomicActor implements HttpService {
                     // Note that fireAt() will modify the requested firing time if it is in the past.
                     getDirector().fireAt(HttpActor.this, timeOfRequest);
                 } catch (IllegalActionException e) {
-                    // Will this response be seen?
-                    response.setContentType("text/html");
-                    response.setStatus(HttpServletResponse.SC_OK);
-                    response.getWriter().println("<h1> Exception requesting firing:</h1><p>" + e.getMessage());
+                    _writeError(response, HttpServletResponse.SC_BAD_REQUEST, e.getMessage());
                     return;
                     // throw new ServletException(e.getMessage());
                 }
@@ -429,9 +507,34 @@ public class HttpActor extends TypedAtomicActor implements HttpService {
                         _debug("Responding to get request: " + _response);
                     }
                     response.getWriter().println(_response);
-                    _response = null;
                 }
+                _response = null;
             }
+        }
+        
+        /** Write an error message to the given HttpServletResponse.
+         *  @param response The HttpServletResponse to write the message to.
+         *  @param responseCode The HTTP response code for the message.  Should be
+         *   one of HttpServletResponse.X
+         *  @param message The error message to write.
+         *  @throws IOException If the write fails.
+         */
+        private void _writeError(
+                HttpServletResponse response, int responseCode, String message)
+                throws IOException {
+            response.setContentType("text/html");
+            response.setStatus(responseCode);
+
+            PrintWriter writer = response.getWriter();                
+
+            writer.println("<!DOCTYPE html>");
+            writer.println("<html>");
+            writer.println("<body>");
+            writer.println("<h1> Error </h1>");
+            writer.println(message);
+            writer.println("</body>");
+            writer.println("</html>");                   
+            writer.flush();
         }
     }
 }
