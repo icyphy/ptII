@@ -1,0 +1,47 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="Interpolator" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.0.devel">
+    </property>
+    <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
+        <property name="iterations" class="ptolemy.data.expr.Parameter" value="80">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{100, 60}">
+        </property>
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={562, 348, 913, 588}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 478]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{350.0, 239.0}">
+    </property>
+    <entity name="Interpolator" class="ptolemy.actor.lib.Interpolator">
+        <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="0">
+        </property>
+        <property name="indexes" class="ptolemy.data.expr.Parameter" value="{0, 10, 20, 30}">
+        </property>
+        <property name="values" class="ptolemy.data.expr.Parameter" value="{4.0, 0.0, 2.0, -1.0}">
+        </property>
+        <property name="order" class="ptolemy.data.expr.Parameter" value="3">
+        </property>
+        <property name="period" class="ptolemy.data.expr.Parameter" value="40">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[120.0, 165.0]">
+        </property>
+    </entity>
+    <entity name="Test" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{4.0, 3.9375, 3.68, 3.2725, 2.76, 2.1875, 1.6, 1.0425, 0.56, 0.1975, 0.0, -0.0205, 0.096, 0.3165, 0.608, 0.9375, 1.272, 1.5785, 1.824, 1.9755, 2.0, 1.8665, 1.5920000000001, 1.2155, 0.776, 0.3125000000001, -0.136, -0.5304999999999, -0.8319999999999, -1.0015, -1.0, -0.7835000000001, -0.3680000000001, 0.1955, 0.8559999999998, 1.5624999999999, 2.2639999999997, 2.9094999999999, 3.4479999999998, 3.8284999999999, 4.0, 3.9375, 3.68, 3.2725, 2.76, 2.1875, 1.6, 1.0425, 0.56, 0.1975, 0.0, -0.0205, 0.096, 0.3165, 0.608, 0.9375, 1.272, 1.5785, 1.824, 1.9755, 2.0, 1.8665, 1.5920000000001, 1.2155, 0.776, 0.3125000000001, -0.136, -0.5304999999999, -0.8319999999999, -1.0015, -1.0, -0.7835000000001, -0.3680000000001, 0.1955, 0.8559999999998, 1.5624999999999, 2.2639999999997, 2.9094999999999, 3.4479999999998, 3.8284999999999}">
+        </property>
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{295, 165}">
+        </property>
+    </entity>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="Interpolator.output" relation="relation"/>
+    <link port="Test.input" relation="relation"/>
+</entity>
