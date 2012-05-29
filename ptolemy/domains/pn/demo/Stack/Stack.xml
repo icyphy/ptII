@@ -10,9 +10,9 @@
         <property name="_renderFirst" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
     </property>
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.0.beta">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.0.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1, 22, 1153, 615}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1, 22, 1174, 634}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[940, 505]">
     </property>
@@ -39,7 +39,7 @@
     <entity name="StackCounter" class="ptolemy.actor.TypedCompositeActor">
         <property name="_location" class="ptolemy.kernel.util.Location" value="{340.0, 265.0}">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 22, 1172, 863}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 22, 1193, 863}, maximized=false}">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[959, 753]">
         </property>
@@ -48,7 +48,7 @@
         <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{479.5, 376.5}">
         </property>
         <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-            <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This rather complicated model has stack-like behavior. Given any input (true or false) on the&#10;&quot;push&quot; input port, it produces a sequence of outputs beginning with &quot;true&quot; followed by as&#10;many &quot;false&quot; tokens as there elements on the stack. If the &quot;push&quot; input is true, it adds&#10;one element to the stack before producing the output. If the &quot;push&quot; input is false, it&#10;removes one element from the stack before producing the output sequence. If the stack&#10;has no elements, then it does not remove an element.  For example, if the &quot;push&quot;&#10;input sequence is&#10;   {false, true, true, false, true}&#10;then the output sequence will be&#10;   {true, true, false, true, false, false, true, false, true, false, false, true}&#10;Aligning the inputs with the output sequence they cause, this is:&#10;&#10;   push input    output sequence&#10;  ---------    -------------&#10;  false               true&#10;  true                true, false&#10;  true                true, false, false&#10;  false               true, false&#10;  true                true, false, false&#10;&#10;A final output of value &quot;true&quot; is produced, but then if there are no further inputs,&#10;the model halts.  Notice that every sequence begins with &quot;true&quot;.&#10;&#10;&#10;&#10;">
+            <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This rather complicated model has stack-like behavior. Given any input (true or false) on the&#10;&quot;push&quot; input port, it produces a sequence of outputs beginning with &quot;true&quot; followed by as&#10;many &quot;false&quot; tokens as there elements on the stack. If the &quot;push&quot; input is true, it adds&#10;one element to the stack before producing the output. If the &quot;push&quot; input is false, it&#10;removes one element from the stack before producing the output sequence. If the stack&#10;has no elements, then it does not remove an element.  For example, if the &quot;push&quot;&#10;input sequence is&#10;   {false, true, true, false, true}&#10;then the output sequence will be&#10;   {true, true, false, true, false, false, true, false, true, false, false, true}&#10;Aligning the inputs with the output sequence they cause, this is:&#10;&#10;   push input    output sequence&#10;  ---------    -------------&#10;                        true&#10;  false               true&#10;  true                true, false&#10;  true                true, false, false&#10;  false               true, false&#10;  true                true, false, false&#10;&#10;A final output of value &quot;true&quot; is produced, but then if there are no further inputs,&#10;the model halts.  Notice that every sequence begins with &quot;true&quot;.&#10;&#10;&#10;&#10;">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[10.0, 20.0]">
             </property>
