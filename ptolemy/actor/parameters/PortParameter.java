@@ -27,6 +27,10 @@
  */
 package ptolemy.actor.parameters;
 
+import java.util.LinkedList;
+import java.util.List;
+
+import ptolemy.actor.Initializable;
 import ptolemy.actor.TypedActor;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
@@ -69,6 +73,9 @@ import ptolemy.kernel.util.Workspace;
  </ul>
  These two techniques do not change the persistent value, so after
  these are used, the persistent value and current value may be different.
+ <p>
+ When the container for this parameter is initialized, the current
+ value of the parameter is reset to match the persistent value.
  <p>
  When using this parameter in an actor, care must be exercised
  to call update() exactly once per firing prior to calling getToken().
@@ -121,7 +128,7 @@ import ptolemy.kernel.util.Workspace;
  @Pt.ProposedRating Green (eal)
  @Pt.AcceptedRating Yellow (neuendor)
  */
-public class PortParameter extends Parameter {
+public class PortParameter extends Parameter implements Initializable {
     /** Construct a parameter with the given name contained by the specified
      *  entity. The container argument must not be null, or a
      *  NullPointerException will be thrown.  This parameter will create
@@ -173,6 +180,20 @@ public class PortParameter extends Parameter {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    /** Add the specified object to the list of objects whose
+     *  preinitialize(), initialize(), and wrapup()
+     *  methods should be invoked upon invocation of the corresponding
+     *  methods of this object.
+     *  @param initializable The object whose methods should be invoked.
+     *  @see #removeInitializable(Initializable)
+     */
+    public void addInitializable(Initializable initializable) {
+        if (_initializables == null) {
+            _initializables = new LinkedList<Initializable>();
+        }
+        _initializables.add(initializable);
+    }
+    
     /** React to a change in an attribute.  This method is called by
      *  a contained attribute when its value changes.  In this class,
      *  if the attribute is an instance of Location, then the location
@@ -224,7 +245,7 @@ public class PortParameter extends Parameter {
      */
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         PortParameter newObject = (PortParameter) super.clone(workspace);
-
+        newObject._initializables = null;
         // Cannot establish an association with the cloned port until
         // that port is cloned and the container of both is set.
         newObject._port = null;
@@ -241,6 +262,37 @@ public class PortParameter extends Parameter {
         return _port;
     }
 
+    /** Reset the current value to match the persistent value.
+     *  @exception IllegalActionException If thrown by a subclass.
+     */
+    public void initialize() throws IllegalActionException {
+        invalidate();
+        validate();
+    }
+
+    /** Do nothing.
+     *  @exception IllegalActionException If thrown by a subclass.
+     */
+    public void preinitialize() throws IllegalActionException {
+    }
+
+    /** Remove the specified object from the list of objects whose
+     *  preinitialize(), initialize(), and wrapup()
+     *  methods should be invoked upon invocation of the corresponding
+     *  methods of this object. If the specified object is not
+     *  on the list, do nothing.
+     *  @param initializable The object whose methods should no longer be invoked.
+     *  @see #addInitializable(Initializable)
+     */
+    public void removeInitializable(Initializable initializable) {
+        if (_initializables != null) {
+            _initializables.remove(initializable);
+            if (_initializables.size() == 0) {
+                _initializables = null;
+            }
+        }
+    }
+     
     /** Set the container of this parameter. If the container is different
      *  from what it was before and there is an associated port, then
      *  break the association.  If the new container has a port with the
@@ -252,11 +304,22 @@ public class PortParameter extends Parameter {
      *  @exception IllegalActionException If the superclass throws it.
      *  @exception NameDuplicationException If the superclass throws it.
      */
-    public void setContainer(Entity entity) throws IllegalActionException,
+    public void setContainer(NamedObj entity) throws IllegalActionException,
             NameDuplicationException {
+        if (!(entity instanceof Entity)) {
+            throw new IllegalActionException(this, "Container is required to be an Entity.");
+        }
         Entity previousContainer = (Entity) getContainer();
-        super.setContainer(entity);
 
+        NamedObj oldContainer = getContainer();
+        if (oldContainer instanceof Initializable) {
+            ((Initializable) oldContainer).removeInitializable(this);
+        }
+        super.setContainer(entity);
+        if (entity instanceof Initializable) {
+            ((Initializable) entity).addInitializable(this);
+        }
+        
         // If there is an associated port, and the container has changed,
         // break the association.
         if ((_port != null) && (entity != previousContainer)) {
@@ -268,7 +331,7 @@ public class PortParameter extends Parameter {
         // and establish an association.
         if (entity instanceof TypedActor) {
             // Establish association with the port.
-            Port port = entity.getPort(getName());
+            Port port = ((Entity)entity).getPort(getName());
 
             if (port instanceof ParameterPort) {
                 _port = (ParameterPort) port;
@@ -400,6 +463,12 @@ public class PortParameter extends Parameter {
         }
     }
 
+    /** Do nothing.
+     *  @exception IllegalActionException If thrown by a subclass.
+     */
+     public void wrapup() throws IllegalActionException {
+     }
+
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
@@ -443,7 +512,13 @@ public class PortParameter extends Parameter {
     protected ParameterPort _port;
 
     ///////////////////////////////////////////////////////////////////
-    ////                         private members                   ////
-    // Indicator that we are in the midst of setting the name.
+    ////                         private variables                 ////
+    
+    /** List of objects whose (pre)initialize() and wrapup() methods should be
+     *  slaved to these.
+     */
+    private transient List<Initializable> _initializables;       
+
+    /** Indicator that we are in the midst of setting the name. */
     private boolean _settingName = false;
 }
