@@ -4,18 +4,18 @@
 <entity name="WebServerDE" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.0.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 22, 983, 634}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 22, 1225, 880}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[749, 524]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[991, 770]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.3866768696793">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{374.5, 262.0}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{364.3291015624999, 281.1734378941725}">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model launches a web server and provides a service&#10;available at http://localhost:8080/ptolemnizer.&#10;Run the model and navigate to that location&#10;(or click on this comment).">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[170.0, 5.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{170.0, 5.0}">
         </property>
         <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="http://localhost:8080/ptolemnizer#in_browser">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -46,7 +46,11 @@
         </property>
     </property>
     <property name="WebServer" class="org.ptolemy.ptango.lib.WebServer">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[615.0, 50.0]">
+        <property name="resourceBase" class="ptolemy.data.expr.FileParameter" value="$PTII/org/ptolemy/ptango/demo/WebServerDE/img">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[685.0, 50.0]">
+        </property>
+        <property name="resourceBase2" class="ptolemy.data.expr.FileParameter" value="$PTII/org/ptolemy/ptango/demo/files">
         </property>
     </property>
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -54,19 +58,29 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="FIXME: HttpActor has output types declared for postParameters&#10;and getParameters.&#10;This will not be necessary. Remove that declaration when possible.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[20.0, 405.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 475.0]">
         </property>
     </property>
     <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The upper loop handles HTTP get requests&#10;by posting the web page given in the FileReader.">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The upper loop handles HTTP get requests&#10;by posting the web page given in the FileReader.&#10;The HTML file it serves is specified by a path&#10;relative to the location of this demo.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[285.0, 110.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[285.0, 95.0]">
         </property>
     </property>
     <property name="Annotation4" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The lower loop handles HTTP post requests&#10;by extracting text from post, Ptolemnizing it,&#10;and returning the result in a web page.">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[285.0, 195.0]">
+        </property>
+    </property>
+    <property name="Annotation5" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="12">
+        </property>
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.0,0.0,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="NOTE: the &quot;img&quot; elements refer a files&#10;with a path relative to the resourceBase&#10;parameters of the WebServer.&#10;You can add as many FileParameters&#10;as you like to the WebServer, and the&#10;specified files or URLs will be used&#10;to find resources referenced in web&#10;pages served.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[475.0, 335.0]">
         </property>
     </property>
     <entity name="HttpActor" class="org.ptolemy.ptango.lib.HttpActor">
@@ -92,14 +106,14 @@
         </property>
     </entity>
     <entity name="FileReader" class="ptolemy.actor.lib.io.FileReader">
-        <property name="fileOrURL" class="ptolemy.data.expr.FileParameter" value="$PTII/org/ptolemy/ptango/demo/WebServerDE/pages/index.html">
+        <property name="fileOrURL" class="ptolemy.data.expr.FileParameter" value="pages/index.html">
         </property>
         <doc>Read an entire file and output as a string</doc>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[200.0, 150.0]">
         </property>
     </entity>
     <entity name="RecordDisassembler" class="ptolemy.actor.lib.RecordDisassembler">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[130.0, 230.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[50.0, 265.0]">
         </property>
         <port name="text" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -108,7 +122,7 @@
         </port>
     </entity>
     <entity name="MicrostepDelay2" class="ptolemy.actor.lib.MicrostepDelay">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[80.0, 375.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[75.0, 450.0]">
         </property>
         <property name="_flipPortsHorizontal" class="ptolemy.data.expr.Parameter" value="true">
         </property>
@@ -136,7 +150,7 @@
         </port>
     </entity>
     <entity name="StringConst" class="ptolemy.actor.lib.StringConst">
-        <property name="value" class="ptolemy.data.expr.Parameter" value="&lt;h1&gt;Ptolemnized Text&lt;/h1&gt;">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="&lt;img src=&quot;Icon.gif&quot;/&gt;&lt;h1&gt;Ptolemnized Text&lt;/h1&gt;">
         </property>
         <doc>Create a constant sequence with a string value.</doc>
         <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
@@ -147,11 +161,26 @@
             <property name="displayHeight" class="ptolemy.data.expr.Parameter" value="10">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[290.0, 285.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[345.0, 285.0]">
         </property>
     </entity>
     <entity name="AddSubtract" class="ptolemy.actor.lib.AddSubtract">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[425.0, 345.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[435.0, 350.0]">
+        </property>
+    </entity>
+    <entity name="StringConst2" class="ptolemy.actor.lib.StringConst">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="&lt;p&gt;&lt;img src=&quot;files/PtolemyIISmallIcon.gif&quot;/&gt;">
+        </property>
+        <doc>Create a constant sequence with a string value.</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="80">
+            </property>
+            <property name="displayHeight" class="ptolemy.data.expr.Parameter" value="10">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[245.0, 385.0]">
         </property>
     </entity>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
@@ -167,7 +196,7 @@
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
-        <vertex name="vertex1" value="[155.0, 285.0]">
+        <vertex name="vertex1" value="[95.0, 285.0]">
         </vertex>
     </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
@@ -175,6 +204,8 @@
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation7" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation9" class="ptolemy.actor.TypedIORelation">
     </relation>
     <link port="HttpActor.response" relation="relation4"/>
     <link port="HttpActor.response" relation="relation10"/>
@@ -194,5 +225,8 @@
     <link port="StringConst.trigger" relation="relation2"/>
     <link port="AddSubtract.plus" relation="relation3"/>
     <link port="AddSubtract.plus" relation="relation5"/>
+    <link port="AddSubtract.plus" relation="relation9"/>
     <link port="AddSubtract.output" relation="relation7"/>
+    <link port="StringConst2.output" relation="relation9"/>
+    <link port="StringConst2.trigger" relation="relation2"/>
 </entity>

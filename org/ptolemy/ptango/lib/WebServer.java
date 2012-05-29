@@ -32,6 +32,7 @@ package org.ptolemy.ptango.lib;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -52,6 +53,7 @@ import ptolemy.actor.AbstractInitializableAttribute;
 import ptolemy.actor.CompositeActor;
 import ptolemy.data.expr.FileParameter;
 import ptolemy.kernel.attributes.URIAttribute;
+import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
@@ -64,7 +66,13 @@ import ptolemy.kernel.util.Workspace;
  *  HTTP requests to objects in the model that implement
  *  {@link HttpService}. The server is set up during
  *  {@link #initialize()} and taken down during
- *  {@link #wrapup()}.
+ *  {@link #wrapup()}.  The <i>resourceBase</i>
+ *  parameter gives a directory or URL relative to which this
+ *  web server should look for resources (like image files and
+ *  the like).
+ *  You can add additional resource bases by adding additional
+ *  parameters of type ptolemy.data.expr.FileParameter to
+ *  this WebServer (select Configure in the context menu).
  *  
  *   @see http://wiki.eclipse.org/Jetty/Tutorial
  *
@@ -74,7 +82,6 @@ import ptolemy.kernel.util.Workspace;
  *   @Pt.ProposedRating Yellow (eal)
  *   @Pt.AcceptedRating Red (ltrnc)
  */
-
 public class WebServer extends AbstractInitializableAttribute {
     
     /** Construct an instance of the attribute.
@@ -106,6 +113,28 @@ public class WebServer extends AbstractInitializableAttribute {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+    
+    /** React to a change in an attribute.  If the attribute is an
+     *  instance of FileParameter and the server is running (initialize()
+     *  has been called and wrapup() has not), then update the resource
+     *  handlers in the server.
+     *  @param attribute The attribute that changed.
+     *  @exception IllegalActionException If the change is not acceptable
+     *   to this container (not thrown in this base class).
+     */
+    public void attributeChanged(Attribute attribute) throws IllegalActionException {
+        if (attribute instanceof FileParameter) {
+            // Resource handlers are being changed. If the
+            // server is running, reset the resource handler.
+            if (_server != null && _server.isRunning()) {
+                // FIXME: Does this need to be synchronized on the server?
+                // Sadly, Jetty is undocumented.
+                _setResourceHandlers();
+            }
+        } else {
+            super.attributeChanged(attribute);
+        }
+    }
     
     /** Clone the attribute.
      *  @param workspace The workspace in which to place the cloned attribute.
@@ -175,56 +204,14 @@ public class WebServer extends AbstractInitializableAttribute {
             }
         }
         
-        // Create a resource handler to serve files such as images, audio, ...
-        // See also http://restlet-discuss.1400322.n2.nabble.com/Jetty-Webapp-td7313234.html
-        ContextHandler fileHandler = new ContextHandler();
-        // FIXME: The following is inappropriate and doesn't seem to do anything anyway.
-        // fileHandler.setContextPath("/files");
+        // Create a resource handler to serve files such as images, audio, etc.,
+        // from parameters of type FileParameter contained by this WebServer.
+        _setResourceHandlers();
         
-        ResourceHandler resourceHandler = new ResourceHandler();
-        resourceHandler.setDirectoriesListed(true);
-        // Sadly, Jetty is completely undocumented, but it appears that
-        // setResourceBase() is just like setBaseResource() except that it
-        // takes a string. So I think the setBaseResource() below will override
-        // the next line.
-        resourceHandler.setResourceBase(".");
-        fileHandler.setHandler(resourceHandler);
-
-        // Specify directories or URLs in which to look for resources.
-        // These are given by all instances of FileParameter in this
-        // WebServer.
-        // ResourceHandler example:
-        // http://cxf.547215.n5.nabble.com/serve-static-content-through-jetty-td5467064.html
-        // ResourceCollection example:
-        // http://stackoverflow.com/questions/2405038/multiple-webroot-folders-with-jetty
-        ArrayList<FileResource> resources = new ArrayList<FileResource>();
-        List<FileParameter> bases = attributeList(FileParameter.class);
-        for (FileParameter base : bases) {
-            try {
-                resources.add(new FileResource(base.asURL()));
-            } catch(URISyntaxException e2){
-                throw new IllegalActionException(this,
-                        "Resource base is not a valid URI: " + base.stringValue());
-            } catch(IOException e3){
-                throw new IllegalActionException(this, 
-                        "Can't access resource base: " + base.stringValue());
-            };
-        }
-        resourceHandler.setBaseResource(
-                new ResourceCollection(resources.toArray(new FileResource[resources.size()])));    
-
         //Start the server in a new thread with our handlers
-        //The server passes requests to handlers in the same order as this array
-        //Therefore, make sure resourceHandler so that any request for a file
-        //(e.g. an image file) is handled by the resourceHandler
-        _handlers = new HandlerList();
-        _handlers
-           .setHandlers(new Handler[] {fileHandler, _actorContextHandler});
-        _server.setHandler(_handlers);
-        
         _serverThread = new Thread(new RunnableServer());
         _serverThread.start();
-    }   
+    }
     
     /** Instruct the thread running the web server to the stop the server and
      *  terminate itself.
@@ -234,6 +221,69 @@ public class WebServer extends AbstractInitializableAttribute {
          _serverThread = null;
      }
      
+     ///////////////////////////////////////////////////////////////////
+     ////                         protected methods                 ////
+
+     /** Create a resource handler to serve files such as images, audio, etc.,
+      *  from parameters of type FileParameter contained by this WebServer.
+      *  This will also set the _actorContextHandler (for servlets)
+      *  that is set up in initialize().  Note that this method is called
+      *  in initialize() and may be called again during execution to change
+      *  the resource handler.
+      *  @throws IllegalActionException If a FileParameter is found that is
+      *   not a valid URI or references a resource that cannot be found.
+      */
+     protected void _setResourceHandlers() throws IllegalActionException {
+         // Create a resource handler to serve files such as images, audio, ...
+         // See also http://restlet-discuss.1400322.n2.nabble.com/Jetty-Webapp-td7313234.html
+         ContextHandler fileHandler = new ContextHandler();
+         // FIXME: The following is inappropriate and doesn't seem to do anything anyway.
+         // fileHandler.setContextPath("/files");
+         
+         ResourceHandler resourceHandler = new ResourceHandler();
+         resourceHandler.setDirectoriesListed(true);
+         // Sadly, Jetty is completely undocumented, but it appears that
+         // setResourceBase() is just like setBaseResource() except that it
+         // takes a string. So I think the setBaseResource() below will override
+         // the next line.
+         resourceHandler.setResourceBase(".");
+
+         // Specify directories or URLs in which to look for resources.
+         // These are given by all instances of FileParameter in this
+         // WebServer.
+         // ResourceHandler example:
+         // http://cxf.547215.n5.nabble.com/serve-static-content-through-jetty-td5467064.html
+         // ResourceCollection example:
+         // http://stackoverflow.com/questions/2405038/multiple-webroot-folders-with-jetty
+         ArrayList<FileResource> resources = new ArrayList<FileResource>();
+         List<FileParameter> bases = attributeList(FileParameter.class);
+         for (FileParameter base : bases) {
+             try {
+                 URL baseURL = base.asURL();
+                 if (baseURL != null) {
+                     resources.add(new FileResource(base.asURL()));
+                 }
+             } catch(URISyntaxException e2){
+                 throw new IllegalActionException(this,
+                         "Resource base is not a valid URI: " + base.stringValue());
+             } catch(IOException e3){
+                 throw new IllegalActionException(this, 
+                         "Can't access resource base: " + base.stringValue());
+             };
+         }
+         resourceHandler.setBaseResource(
+                 new ResourceCollection(resources.toArray(new FileResource[resources.size()])));    
+
+         fileHandler.setHandler(resourceHandler);
+
+         //The server passes requests to handlers in the same order as this array
+         //Therefore, make sure resourceHandler so that any request for a file
+         //(e.g. an image file) is handled by the resourceHandler
+         _handlers = new HandlerList();
+         _handlers.setHandlers(new Handler[] {fileHandler, _actorContextHandler});
+         _server.setHandler(_handlers);
+     }   
+
      ///////////////////////////////////////////////////////////////////
      ////                         private variables                 ////
 
