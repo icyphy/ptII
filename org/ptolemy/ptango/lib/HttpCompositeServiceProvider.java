@@ -596,7 +596,7 @@ public class HttpCompositeServiceProvider extends TypedCompositeActor
             // The WebServer offers a resource handler to serve files
             // The HttpService uses this path for references to files in the
             // HTML code of the HttpResponse
-            _exportParameters.HTMLPathForFiles= WebServer.getHTMLPathForFiles();
+            //_exportParameters.HTMLPathForFiles= WebServer.getHTMLPathForFiles();
             
             // Map request parameters to input ports
             Iterator inputPorts = inputPortList().iterator();
