@@ -89,10 +89,20 @@ public class HttpCompositeServiceProvider extends TypedCompositeActor
         inputPage.setExpression("/pages/index.html");
         
         outputPage = new FileParameter(this, "outputPage");
-        outputPage.setExpression("/pages/output.html");   
+        outputPage.setExpression("/pages/output.html");
         
+        writeDirectory = new FileParameter(this, "writeDirectory");
     }
     
+    ///////////////////////////////////////////////////////////////////
+    ////                     parameters                            ////
+    
+    /** The directory in which to create any necessary files.
+     *  The {@link WebServer} for the model must specify this directory
+     *  as one of its resource bases if the generated files are to served.
+     */
+    public FileParameter writeDirectory;
+
     ///////////////////////////////////////////////////////////////////
     ////                     public methods                        ////
     
@@ -593,10 +603,21 @@ public class HttpCompositeServiceProvider extends TypedCompositeActor
             
             _exportParameters = new ExportParameters(directory);
             
-            // The WebServer offers a resource handler to serve files
-            // The HttpService uses this path for references to files in the
-            // HTML code of the HttpResponse
-            //_exportParameters.HTMLPathForFiles= WebServer.getHTMLPathForFiles();
+            // The WebServer offers a resource handler to serve files.
+            // It needs to include this directory as one of its resource bases
+            // in order to be able to serve the generated files.
+            
+            try {
+                File writeDirectoryValue = writeDirectory.asFile();
+                if (writeDirectoryValue != null) {
+                    _exportParameters.HTMLPathForFiles = writeDirectoryValue.getCanonicalPath();
+                }
+            } catch(IllegalActionException e){
+                _writeError(response, 
+                        HttpServletResponse.SC_BAD_REQUEST, 
+                        "Problem with writeDirectory: " 
+                        + writeDirectory.getExpression());                            
+            }
             
             // Map request parameters to input ports
             Iterator inputPorts = inputPortList().iterator();

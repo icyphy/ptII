@@ -51,7 +51,10 @@ import org.eclipse.jetty.util.resource.ResourceCollection;
 
 import ptolemy.actor.AbstractInitializableAttribute;
 import ptolemy.actor.CompositeActor;
+import ptolemy.data.IntToken;
 import ptolemy.data.expr.FileParameter;
+import ptolemy.data.expr.Parameter;
+import ptolemy.data.type.BaseType;
 import ptolemy.kernel.attributes.URIAttribute;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
@@ -94,12 +97,21 @@ public class WebServer extends AbstractInitializableAttribute {
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
         
+        port = new Parameter(this, "port");
+        port.setTypeEquals(BaseType.INT);
+        port.setExpression("8080");
+
         resourceBase = new FileParameter(this, "resourceBase");
         resourceBase.setExpression("$PTII/org/ptolemy/ptango/demo/files/");
     }
     
     ///////////////////////////////////////////////////////////////////
     ////                         parameters                        ////
+    
+    /** The port number to respond to. This is a integer that
+     *  defaults to 8080.
+     */
+    public Parameter port;
     
     /** The resource base, a directory or URL relative to which this
      *  web server should look for resources (like image files and
@@ -131,6 +143,8 @@ public class WebServer extends AbstractInitializableAttribute {
                 // Sadly, Jetty is undocumented.
                 _setResourceHandlers();
             }
+        } else if (attribute == port) {
+            _portNumber = ((IntToken)port.getToken()).intValue();
         } else {
             super.attributeChanged(attribute);
         }
@@ -287,10 +301,6 @@ public class WebServer extends AbstractInitializableAttribute {
      ///////////////////////////////////////////////////////////////////
      ////                         private variables                 ////
 
-     /** An enumeration indicating the location to store files 
-      */
-     public static enum DirectoryType {BASE, TEMP, PERMANENT};
-     
      /** A context handler which stores all of the servlets registered 
       *  by other actors.
       */

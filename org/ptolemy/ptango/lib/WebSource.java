@@ -28,9 +28,7 @@
 package org.ptolemy.ptango.lib;
 
 import ptolemy.actor.TypedIOPort;
-import ptolemy.actor.lib.Const;
 import ptolemy.actor.lib.SetVariable;
-import ptolemy.data.BooleanToken;
 import ptolemy.data.EventToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Variable;
@@ -39,7 +37,6 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.kernel.util.Settable;
 
 ///////////////////////////////////////////////////////////////////
 //// WebSource
