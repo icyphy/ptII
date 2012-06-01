@@ -887,7 +887,7 @@ public class Transition extends ComponentRelation {
         immediate.setTypeEquals(BaseType.BOOLEAN);
         immediate.setToken(BooleanToken.FALSE);
 
-        errorTransition = new Parameter(this, "errorTransiton");
+        errorTransition = new Parameter(this, "errorTransition");
         errorTransition.setTypeEquals(BaseType.BOOLEAN);
         errorTransition.setToken(BooleanToken.FALSE);
 
