@@ -39,7 +39,8 @@ import ptolemy.vergil.basic.export.web.WebExportParameters;
 ///////////////////////////////////////////////////////////////////
 //// ExportParameters
 /**
- * A data structure containing export parameters.
+ * A data structure containing parameters for exporting a
+ * Ptolemy model to a web page.
  * This data structure will typically be provided by an instance
  * of {@link WebExportParameters}, which is an
  * {@link Attribute} that can be stored in a model.
