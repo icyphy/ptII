@@ -772,6 +772,23 @@ ECLIPSE_EXCLUDING_SRC="ptolemy/actor/lib/reactable/"
 #ECLIPSE_CLASSPATHENTRY_LIBS='<classpathentry kind="lib" path="lib/diva.jar"/>'
 ECLIPSE_CLASSPATHENTRY_LIBS=''
 
+# Add any jar files in $HOME/.ptolemyII
+# FIXME: Eclipse should support Java 1.6 style * classpaths
+
+# The Cygwin value of $HOME is not understood by Java under Windows.
+if [ "$windows" = "yes" ]; then
+    tmpHOME="`cygpath --mixed $HOME`"
+else
+    tmpHOME="$HOME"
+fi
+for jar in $tmpHOME/.ptolemyII/*.jar 
+do
+	ECLIPSE_CLASSPATHENTRY_LIBS="$ECLIPSE_CLASSPATHENTRY_LIBS \
+	        <classpathentry kind=\"lib\" path=\"$jar\"/> "
+	# Ant understands * style classpaths, so no need to update Ant.	
+done
+
+
 # Paths to always exclude in Ant's build.xml
 ANT_ALWAYS_EXCLUDE='<exclude name="**/CVS/"/>
 <exclude name="**/adm/"/>
