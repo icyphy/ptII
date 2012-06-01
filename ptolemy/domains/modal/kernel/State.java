@@ -30,6 +30,7 @@ import java.io.IOException;
 import java.io.StringReader;
 import java.io.Writer;
 import java.net.URL;
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -43,6 +44,7 @@ import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.SingletonParameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.domains.modal.modal.ModalModel;
+import ptolemy.domains.ptera.kernel.SchedulingRelation;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.ComponentPort;
 import ptolemy.kernel.CompositeEntity;
@@ -495,7 +497,7 @@ public class State extends ComponentEntity implements ConfigurableEntity,
      *  @return The list of outgoing error transitions from
      *   this state.
      */
-    public List<Transition> errorTransitionList() {
+    public List errorTransitionList() {
         if (_transitionListVersion != workspace().getVersion()) {
             _updateTransitionLists();
         }
