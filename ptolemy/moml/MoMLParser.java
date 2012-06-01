@@ -5719,8 +5719,11 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                         // create a marker interface that Director and WebServer,
                         // at least, implement.
                         // if (property instanceof ptolemy.actor.Director) {
+                        if (className != null) {
+                            // className can be null, to replicate:
+                            // (cd $PTII/doc; make test)
                             _loadIconForClass(className, property);
-                        // }
+                        }
                         // Check that the result is an instance of Attribute.
                         if (!(property instanceof Attribute)) {
                             // NOTE: Need to get rid of the object.
