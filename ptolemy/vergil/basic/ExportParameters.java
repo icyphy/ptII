@@ -107,28 +107,30 @@ public class ExportParameters {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Get the directory into which JavaScript and
-     *  related files have been written,
-     *  or null if they are not being copied.
+    /** Get the composite entity that
+     *  is copying JavaScript and
+     *  related files; return null if they are not being copied.
      *  Note that this would ideally be protected, as it is used
      *  only by ExportHTMLAction, but to avoid package dependencies,
      *  we have to make it public.
-     *  @return The directory into which JavaScript and related files
-     *  have been copied, or null if they are not being copied.
+     *  @return The composite entity that is set to copy JavaScript and related files,
+     *  or null if they are not being copied.
      *  @see #setJSCopier(NamedObj)
      */
     public NamedObj getJSCopier() {
         return _jsCopier;
     }
 
-    /** Specify the directory into which JavaScript and
-     *  related files have been written,
-     *  or null if they are not being copied.
+    /** Specify the composite entity responsible for copying JavaScript and
+     *  related files. Set to null if they are not being copied.
+     *  This will normally be the same as the model for which these
+     *  parameters apply, its container, or a container above that
+     *  in the hierarchy.
      *  Note that this would ideally be protected, as it is used
      *  only by ExportHTMLAction, but to avoid package dependencies,
      *  we have to make it public.
-     *  @param copier The directory into which JavaScript and related files
-     *  have been copied, or null if they are not being copied.
+     *  @param copier The composite entity responsible for
+     *   copying JavaScript and related files.
      *  @see #getJSCopier()
      */
     public void setJSCopier(NamedObj copier) {

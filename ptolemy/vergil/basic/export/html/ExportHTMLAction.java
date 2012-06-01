@@ -58,9 +58,7 @@ import ptolemy.actor.gui.EditParametersDialog;
 import ptolemy.actor.gui.Effigy;
 import ptolemy.actor.gui.PtolemyFrame;
 import ptolemy.actor.gui.Tableau;
-import ptolemy.domains.modal.kernel.FSMActor;
 import ptolemy.domains.modal.kernel.State;
-import ptolemy.domains.modal.modal.ModalModel;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.util.Attribute;
@@ -79,7 +77,6 @@ import ptolemy.vergil.basic.ExportParameters;
 import ptolemy.vergil.basic.HTMLExportable;
 import ptolemy.vergil.basic.export.web.DefaultIconLink;
 import ptolemy.vergil.basic.export.web.DefaultIconScript;
-import ptolemy.vergil.basic.export.web.Title;
 import ptolemy.vergil.basic.export.web.WebExportParameters;
 import ptolemy.vergil.basic.export.web.WebExportable;
 import ptolemy.vergil.basic.export.web.WebExporter;
@@ -619,7 +616,7 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable, 
 	    String ssiRoot = "http://ptolemy.org/";
 
 	    // Reference required script files.
-	    // If the model contains an instanceof CopyJavaScriptFiles, then
+	    // If the model contains an instance of CopyJavaScriptFiles, then
 	    // the required files will have been copied into a directory called
 	    // "javascript" in the top-level directory of the export.
 	    // Otherwise, we want to reference these files at http://ptolemy.org/.
@@ -627,7 +624,7 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable, 
 	    // at http://ptolemy.org/ whether the property is true or not.
 	    String jsLibrary = ssiRoot;
 	    if (!usePtWebsite) {
-	        // If the model or container above it in the hierarchy has
+	        // If the model or a container above it in the hierarchy has
 	        // copyJavaScriptFiles set to true, then set up the
 	        // references to refer to the copied files rather than the
 	        // website files.
@@ -1115,17 +1112,17 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable, 
         return result;
     }
     
-    /** If the specified model contains an instance of CopyJavaScriptFiles,
-     *  then return the specified path. Otherwise, any container above
-     *  the specified model in the hierarchy contains an instance of
-     *  CopyJavaScriptFiles, then return a path of the form "../../"
-     *  repeated as many times as necessary to get to the path of the
-     *  copied files. If there is no instance of CopyJavaScriptFiles,
-     *  then return null.
+    /** Construct a path the form "../../", for example, from the specified
+     *  model to the specified copier, where the specified copier is either
+     *  null or a any container above the specified model in the hierarchy.
+     *  If the specified copier is null or is not a container above the
+     *  specified model, then return null.
      *  @param model The model.
      *  @param path The path so far.
-     *  @param copier The object that has copied JavaScript and image
-     *   files, or null if they have not been copied.
+     *  @param copier The model responsible for the copying, which should be
+     *   null if no copying is being done, equal to model if the model is
+     *   responsible for copying, or a container of model if a container of model
+     *   is doing the copying.
      */
     private String _findCopiedLibrary(NamedObj model, String path, NamedObj copier) {
         if (model == copier) {
