@@ -1,0 +1,266 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="UCBPowerMonitoring" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.0.devel">
+    </property>
+    <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
+        <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[235.0, 1010.0]">
+        </property>
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 22, 1440, 831}, maximized=true}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1206, 721]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.9611288604899">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{750.5392637861611, 490.9381443298969}">
+    </property>
+    <property name="LocalPreferences" class="ptolemy.actor.gui.PtolemyPreferences">
+        <property name="backgroundColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,1.0,1.0,1.0}">
+            <display name="Background Color"/>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[530.0, 1005.0]">
+        </property>
+    </property>
+    <property name="_icon" class="ptolemy.vergil.icon.EditorIcon">
+    </property>
+    <property name="Image" class="ptolemy.vergil.kernel.attributes.ImageAttribute">
+        <property name="source" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/org/ptolemy/ptango/demo/UCBPower/ucb_large_map.gif">
+        </property>
+        <property name="scale" class="ptolemy.data.expr.Parameter" value="80">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{55.0, 125.0}">
+        </property>
+        <property name="_renderFirst" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+    </property>
+    <class name="SingleReaderClass" extends="ptolemy.actor.TypedCompositeActor">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[380.0, 1025.0]">
+        </property>
+        <property name="URI" class="ptolemy.data.expr.Parameter" value="">
+            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+                </property>
+            </property>
+            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+            </property>
+            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[-115.0, 165.0]">
+            </property>
+        </property>
+        <property name="size" class="ptolemy.data.expr.Parameter" value="60">
+            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+                </property>
+            </property>
+            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+            </property>
+            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[-115.0, 140.0]">
+            </property>
+        </property>
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={275, 220, 934, 634}, maximized=false}">
+        </property>
+        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 524]">
+        </property>
+        <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.3689421255271">
+        </property>
+        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{96.828125, 300.1367075892858}">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.EditorIcon">
+            <property name="ellipse" class="ptolemy.vergil.kernel.attributes.EllipseAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[0.0, 1.0]">
+                </property>
+                <property name="lineColor" class="ptolemy.actor.gui.ColorAttribute" value="iconColor">
+                </property>
+                <property name="width" class="ptolemy.data.expr.Parameter" value="size">
+                </property>
+                <property name="height" class="ptolemy.data.expr.Parameter" value="size">
+                </property>
+                <property name="centered" class="ptolemy.data.expr.Parameter" value="true">
+                </property>
+                <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="iconColor">
+                </property>
+            </property>
+        </property>
+        <property name="_hideName" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="Building" class="ptolemy.data.expr.StringParameter" value="">
+            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
+                </property>
+            </property>
+            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:red" y="20">-S-</text>
+      </svg>
+    </configure>
+            </property>
+            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[-115.0, 115.0]">
+            </property>
+        </property>
+        <property name="iconColor" class="ptolemy.data.expr.Parameter" value="{0.7643769650755, 0.0, 0.2356230349245, 0.25}">
+        </property>
+        <entity name="Const" class="ptolemy.actor.lib.Const">
+            <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="NONE">
+            </property>
+            <property name="value" class="ptolemy.data.expr.Parameter" value="URI">
+            </property>
+            <doc>Create a constant sequence.</doc>
+            <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+                </property>
+                <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+                </property>
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{45.0, 245.0}">
+            </property>
+        </entity>
+        <entity name="DiscreteClock" class="ptolemy.actor.lib.DiscreteClock">
+            <property name="period" class="ptolemy.actor.parameters.PortParameter" value="5.0">
+            </property>
+            <doc>Create periodic timed events.</doc>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{-105.0, 270.0}">
+            </property>
+        </entity>
+        <entity name="Const2" class="ptolemy.actor.lib.Const">
+            <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="NONE">
+            </property>
+            <property name="value" class="ptolemy.data.expr.Parameter" value="Building">
+            </property>
+            <doc>Create a constant sequence.</doc>
+            <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+                </property>
+                <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+                </property>
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{45.0, 295.0}">
+            </property>
+        </entity>
+        <entity name="SetVariable" class="ptolemy.actor.lib.SetVariable">
+            <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="iconColor">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="variableName">
+                </property>
+                <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
+                </property>
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{310.0, 265.0}">
+            </property>
+        </entity>
+        <entity name="VisualModelReference" class="ptolemy.vergil.actor.lib.VisualModelReference">
+            <property name="modelFileOrURL" class="ptolemy.actor.parameters.FilePortParameter" value="PowerMonitoringSeries.xml">
+            </property>
+            <property name="spawnSeparateModels" class="ptolemy.data.expr.Parameter" value="true">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{155.0, 265.0}">
+            </property>
+            <port name="URI" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+            </port>
+            <port name="Building" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+            </port>
+            <port name="iconColor" class="ptolemy.actor.TypedIOPort">
+                <property name="output"/>
+                <property name="_type" class="ptolemy.actor.TypeAttribute" value="arrayType(double,4)">
+                </property>
+            </port>
+        </entity>
+        <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+            <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
+            </property>
+            <vertex name="vertex1" value="{-25.0, 270.0}">
+            </vertex>
+            <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Const2.trigger&quot;,x=45.0,y=295.0}, tail={id=&quot;relation3.vertex1&quot;,x=-25.0,y=270.0}, points={-25.0,295.0} },{ head={id=&quot;Const.trigger&quot;,x=45.0,y=245.0}, tail={id=&quot;relation3.vertex1&quot;,x=-25.0,y=270.0}, points={-25.0,245.0} },{ head={id=&quot;DiscreteClock.output&quot;,x=-105.0,y=270.0}, tail={id=&quot;relation3.vertex1&quot;,x=-25.0,y=270.0}, points={} } }">
+            </property>
+        </relation>
+        <relation name="relation" class="ptolemy.actor.TypedIORelation">
+            <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Const.output&quot;,x=45.0,y=245.0}, tail={id=&quot;VisualModelReference.URI&quot;,x=155.0,y=265.0}, points={95.0,245.0,95.0,265.0} } }">
+            </property>
+        </relation>
+        <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+            <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;SetVariable.input&quot;,x=310.0,y=265.0}, tail={id=&quot;VisualModelReference.iconColor&quot;,x=155.0,y=265.0}, points={} } }">
+            </property>
+        </relation>
+        <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+            <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Const2.output&quot;,x=45.0,y=295.0}, tail={id=&quot;VisualModelReference.Building&quot;,x=155.0,y=265.0}, points={95.0,295.0,95.0,275.0} } }">
+            </property>
+        </relation>
+        <link port="Const.output" relation="relation"/>
+        <link port="Const.trigger" relation="relation3"/>
+        <link port="DiscreteClock.output" relation="relation3"/>
+        <link port="Const2.output" relation="relation4"/>
+        <link port="Const2.trigger" relation="relation3"/>
+        <link port="SetVariable.input" relation="relation2"/>
+        <link port="VisualModelReference.URI" relation="relation"/>
+        <link port="VisualModelReference.Building" relation="relation4"/>
+        <link port="VisualModelReference.iconColor" relation="relation2"/>
+    </class>
+    <entity name="InstanceOfSingleReaderClass" class="SingleReaderClass">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[680.0, 285.0]">
+        </property>
+        <property name="URI" class="ptolemy.data.expr.Parameter" value="&quot;http://new.openbms.org/backend/api/data/uuid/8737f287-14df-5ccd-82df-e66ca7374b63?limit=1&quot;">
+        </property>
+        <property name="size" class="ptolemy.data.expr.Parameter" value="30">
+        </property>
+        <property name="Building" class="ptolemy.data.expr.StringParameter" value="Cory">
+        </property>
+    </entity>
+    <entity name="InstanceOfSingleReaderClass2" class="SingleReaderClass">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[735.0, 330.0]">
+        </property>
+        <property name="URI" class="ptolemy.data.expr.Parameter" value="&quot;http://new.openbms.org/backend/api/data/uuid/888da9eb-5b39-5636-b495-94c1d1b57f35?limit=1&quot;">
+        </property>
+        <property name="size" class="ptolemy.data.expr.Parameter" value="30">
+        </property>
+        <property name="Building" class="ptolemy.data.expr.StringParameter" value="Donner">
+        </property>
+    </entity>
+    <entity name="InstanceOfSingleReaderClass3" class="SingleReaderClass">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[660.0, 485.0]">
+        </property>
+        <property name="URI" class="ptolemy.data.expr.Parameter" value="&quot;http://new.openbms.org/backend/api/data/uuid/18866fbe-53ff-5511-86c7-95d1cea0a061?limit=1&quot;">
+        </property>
+        <property name="size" class="ptolemy.data.expr.Parameter" value="30">
+        </property>
+        <property name="Building" class="ptolemy.data.expr.StringParameter" value="Birge">
+        </property>
+    </entity>
+    <entity name="InstanceOfSingleReaderClass4" class="SingleReaderClass">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[485.0, 625.0]">
+        </property>
+        <property name="URI" class="ptolemy.data.expr.Parameter" value="&quot;http://new.openbms.org/backend/api/data/uuid/e9783cd3-de8d-5237-95d8-427bada00f86?limit=1&quot;">
+        </property>
+        <property name="size" class="ptolemy.data.expr.Parameter" value="30">
+        </property>
+        <property name="Building" class="ptolemy.data.expr.StringParameter" value="Cesar Chavez">
+        </property>
+    </entity>
+</entity>
