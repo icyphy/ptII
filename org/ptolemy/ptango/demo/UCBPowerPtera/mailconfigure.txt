@@ -1,0 +1,1 @@
+[{"SMTPHostName": "smtp.gmail.com", "SMTPUserName": "yourusername", "password": "yourpassword", "SMTPPort": integer_port, "to":"alertingemail@nowhere.com"}]
