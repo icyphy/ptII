@@ -42,6 +42,7 @@ import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.parameters.FilePortParameter;
 import ptolemy.actor.parameters.ParameterPort;
 import ptolemy.actor.parameters.PortParameter;
+import ptolemy.data.BooleanToken;
 import ptolemy.data.LongToken;
 import ptolemy.data.StringToken;
 import ptolemy.data.Token;
@@ -227,6 +228,11 @@ public class ModelReference extends TypedAtomicActor implements
         postfireAction.setExpression("do nothing");
         postfireAction.addChoice("do nothing");
         postfireAction.addChoice("stop executing");
+
+        spawnSeparateModels = new Parameter(this, "spawnSeparateModels");
+        spawnSeparateModels.setTypeEquals(BaseType.BOOLEAN);
+        spawnSeparateModels.setExpression("false");
+        spawnSeparateModels.setPersistent(true);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -269,6 +275,9 @@ public class ModelReference extends TypedAtomicActor implements
      *  amount of time, and then stop it.
      */
     public StringParameter postfireAction;
+
+    /** The option to spawn separate models of the same URL*/
+    public Parameter spawnSeparateModels;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -317,6 +326,14 @@ public class ModelReference extends TypedAtomicActor implements
 
                 try {
                     _model = parser.parse(null, url);
+                    
+                    //if we choose the option to spawn models of the same URL separately
+                    //then get rid of the spawned model
+                    if (((BooleanToken) spawnSeparateModels.getToken())
+                            .booleanValue()) {
+                        MoMLParser.purgeModelRecord(url);
+                    }
+
                 } catch (Exception ex) {
                     throw new IllegalActionException(this, ex,
                             "Failed to read model from: " + url);
