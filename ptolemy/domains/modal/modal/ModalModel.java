@@ -315,6 +315,35 @@ public class ModalModel extends TypedCompositeActor implements ChangeListener {
         }
         return newModel;
     }
+    
+    /** Get the attribute with the given name. The name may be compound,
+     *  with fields separated by periods, in which case the attribute
+     *  returned is contained by a (deeply) contained attribute, port,
+     *  relation, or entity.
+     *  If the name contains one or more periods, then it is assumed
+     *  to be the relative name of an attribute contained by one of
+     *  the contained attributes, ports, entities or relations.
+     *  This method is read-synchronized on the workspace.
+     *  @param name The name of the desired attribute.
+     *  @return The requested attribute if it is found, null otherwise.
+     */
+    public Attribute getAttribute(String name) {
+        try {
+            _workspace.getReadAccess();
+
+            // Check attributes and ports first.
+            Attribute result = super.getAttribute(name);
+
+            //delegate the attribute to the controller
+            if (result == null && _controller != null) {
+                result = _controller.getAttribute(name);
+            }
+
+            return result;
+        } finally {
+            _workspace.doneReading();
+        }
+    }
 
     /** Get representation of dependencies between input ports and
      *  output ports.
