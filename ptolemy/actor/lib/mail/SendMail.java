@@ -128,18 +128,6 @@ public class SendMail extends TypedAtomicActor {
         new SingletonParameter(from.getPort(), "_showName")
                 .setToken(BooleanToken.TRUE);
 
-        password = new PortParameter(this, "password");
-        password.setStringMode(true);
-        password.setExpression("");
-        new SingletonParameter(password.getPort(), "_showName")
-                .setToken(BooleanToken.TRUE);
-
-        SMTPPort = new PortParameter(this, "SMTPPort");
-        SMTPPort.setStringMode(true);
-        SMTPPort.setExpression("");
-        new SingletonParameter(SMTPPort.getPort(), "_showName")
-                .setToken(BooleanToken.TRUE);
-
         replyTo = new PortParameter(this, "replyTo");
         replyTo.setStringMode(true);
         replyTo.setExpression("");
@@ -160,21 +148,39 @@ public class SendMail extends TypedAtomicActor {
 
         attach = new FileParameter(this, "attach");
 
-        SMTPHostName = new StringParameter(this, "SMTPHostName");
+        SMTPHostName = new PortParameter(this, "SMTPHostName");
+        SMTPHostName.setStringMode(true);
         SMTPHostName.setExpression("smtp.myserver.com");
+        new SingletonParameter(SMTPHostName.getPort(), "_showName")
+                .setToken(BooleanToken.TRUE);
 
-        SMTPUserName = new StringParameter(this, "SMTPUserName");
+        SMTPUserName = new PortParameter(this, "SMTPUserName");
+        SMTPUserName.setStringMode(true);
         SMTPUserName.setExpression("myusername");
+        new SingletonParameter(SMTPUserName.getPort(), "_showName")
+                .setToken(BooleanToken.TRUE);
+
+        password = new PortParameter(this, "password");
+        password.setStringMode(true);
+        password.setExpression("");
+        new SingletonParameter(password.getPort(), "_showName")
+                .setToken(BooleanToken.TRUE);
+
+        SMTPPort = new PortParameter(this, "SMTPPort");
+        SMTPPort.setStringMode(true);
+        SMTPPort.setExpression("");
+        new SingletonParameter(SMTPPort.getPort(), "_showName")
+                .setToken(BooleanToken.TRUE);
+
+        SSL = new Parameter(this, "enableSSL");
+        SSL.setTypeEquals(BaseType.BOOLEAN);
+        SSL.setExpression("false");
+        SSL.setPersistent(true);
 
         reallySendMail = new Parameter(this, "reallySendMail");
         reallySendMail.setTypeEquals(BaseType.BOOLEAN);
         reallySendMail.setExpression("false");
         reallySendMail.setPersistent(true);
-
-        SSL = new Parameter(this, "SSL");
-        SSL.setTypeEquals(BaseType.BOOLEAN);
-        SSL.setExpression("false");
-        SSL.setPersistent(true);
 
         output = new TypedIOPort(this, "output", false, true);
         output.setTypeEquals(BaseType.STRING);
@@ -221,13 +227,13 @@ public class SendMail extends TypedAtomicActor {
     public Parameter reallySendMail;
 
     /** Host name for the send mail server. */
-    public StringParameter SMTPHostName;
-    
+    public PortParameter SMTPHostName;
+
     /** Outgoing SMTP mail port. */
     public PortParameter SMTPPort;
 
     /** User name for the send mail server. */
-    public StringParameter SMTPUserName;
+    public PortParameter SMTPUserName;
 
     /** Enable SSL protocol.*/
     public Parameter SSL;
@@ -267,7 +273,6 @@ public class SendMail extends TypedAtomicActor {
         super.preinitialize();
         _props = new Properties();
         _props.put("mail.transport.protocol", "smtp");
-        _props.put("mail.smtp.host", SMTPHostName.stringValue());
         _props.put("mail.smtp.auth", "true");
     }
 
@@ -282,8 +287,12 @@ public class SendMail extends TypedAtomicActor {
         message.update();
         subject.update();
 
-        
         //configure SMTP server
+
+        SMTPHostName.update();
+        _props.put("mail.smtp.host",
+                ((StringToken) SMTPHostName.getToken()).stringValue());
+
         SMTPPort.update();
         String SMTPPortValue = ((StringToken) SMTPPort.getToken())
                 .stringValue();
@@ -312,6 +321,12 @@ public class SendMail extends TypedAtomicActor {
             _props.put("mail.smtp.starttls.enable", "true");
         }
 
+        // Make sure the user name is valid, since parse errors will
+        // be ignored in the authenticator below.
+        //SMTPUserName.stringValue();
+        SMTPUserName.update();
+        ((StringToken) SMTPUserName.getToken()).stringValue();
+
         password.update();
 
         String passwordValue = ((StringToken) password.getToken())
@@ -319,10 +334,6 @@ public class SendMail extends TypedAtomicActor {
         if (passwordValue != "") {
             _password = passwordValue.toCharArray();
         }
-
-        // Make sure the user name is valid, since parse errors will
-        // be ignored in the authenticator below.
-        SMTPUserName.stringValue();
 
         // First construct the string to send to the output.
         StringBuffer result = new StringBuffer();
@@ -479,7 +490,8 @@ public class SendMail extends TypedAtomicActor {
         public PasswordAuthentication getPasswordAuthentication() {
             String username;
             try {
-                username = SMTPUserName.stringValue();
+                username = ((StringToken) SMTPUserName.getToken())
+                        .stringValue();
             } catch (IllegalActionException e) {
                 // This should not occur, since bwfore constructing this
                 // class, the user name was checked.
