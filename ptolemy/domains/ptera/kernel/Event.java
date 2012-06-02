@@ -520,8 +520,13 @@ public class Event extends State implements Initializable {
         PteraDirector director = controller.director;
 
         List<SchedulingRelation> relations = new LinkedList<SchedulingRelation>();
-        relations.addAll(preemptiveTransitionList());
-        relations.addAll(nonpreemptiveTransitionList());
+        if(director.getModelException() == null) {
+            relations.addAll(preemptiveTransitionList());
+            relations.addAll(nonpreemptiveTransitionList());
+        } else {
+            relations.addAll(errorTransitionList());
+        }
+       
 
         // Compute the scheduled times and priorities.
         final boolean lifo = ((BooleanToken) director.LIFO.getToken())

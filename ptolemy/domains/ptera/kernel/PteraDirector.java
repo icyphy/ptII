@@ -47,6 +47,7 @@ import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Director;
 import ptolemy.actor.IOPort;
+import ptolemy.actor.InvariantViolationException;
 import ptolemy.actor.TypedActor;
 import ptolemy.actor.util.Time;
 import ptolemy.data.BooleanToken;
@@ -536,6 +537,10 @@ public class PteraDirector extends Director implements ValueListener {
             }
         }
         return super.getModelTime();
+    }
+    
+    public IllegalActionException getModelException() {
+        return _refinementException;
     }
 
     /** Initialize the model controlled by this director. The initialize()
@@ -1082,9 +1087,17 @@ public class PteraDirector extends Director implements ValueListener {
                         if (!event._isActiveRefinement(refinement)) {
                             continue;
                         }
-                        _initializeAndFireRefinement(refinement,
-                                timedEvent.reset);
-                        scheduled = true;
+                        
+                        try {
+                            _refinementException = null;
+                            _initializeAndFireRefinement(refinement,
+                                    timedEvent.reset);
+                            scheduled = true;
+                        } catch (IllegalActionException ex) {   //FIXME: Dai
+                            _refinementException = ex;
+                        }
+                        
+                        
                     }
                 }
             }
@@ -1138,6 +1151,7 @@ public class PteraDirector extends Director implements ValueListener {
 
             actor.fire();
             boolean postfire = actor.postfire();
+            
             boolean ending = false;
             if (postfire && actor instanceof PteraController) {
                 PteraDirector director = (PteraDirector) ((PteraController) actor)
@@ -1349,4 +1363,7 @@ public class PteraDirector extends Director implements ValueListener {
 
     /** The real time at which the execution started. */
     private long _realStartTime;
+    
+    private IllegalActionException _refinementException = null;
+    
 }
