@@ -267,7 +267,7 @@ test FSMActor-6.2 {test typeConstraints} {
     join $l "\n"
 } {(TypeConstant, boolean) <= (ptolemy.data.expr.Parameter {..fsm.stateDependentCausality} false, boolean)
 (TypeConstant, boolean) <= (ptolemy.data.expr.Parameter {..fsm.t0.defaultTransition} false, boolean)
-(TypeConstant, boolean) <= (ptolemy.data.expr.Parameter {..fsm.t0.errorTransiton} false, boolean)
+(TypeConstant, boolean) <= (ptolemy.data.expr.Parameter {..fsm.t0.errorTransition} false, boolean)
 (TypeConstant, boolean) <= (ptolemy.data.expr.Parameter {..fsm.t0.immediate} false, boolean)
 (TypeConstant, boolean) <= (ptolemy.data.expr.Parameter {..fsm.t0.nondeterministic} false, boolean)
 (TypeConstant, boolean) <= (ptolemy.data.expr.Parameter {..fsm.t0.preemptive} false, boolean)

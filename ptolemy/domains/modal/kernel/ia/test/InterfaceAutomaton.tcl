@@ -245,7 +245,7 @@ test InterfaceAutomaton-8.1 {test generating moml} {
         </property>
         <property name="immediate" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="errorTransiton" class="ptolemy.data.expr.Parameter" value="false">
+        <property name="errorTransition" class="ptolemy.data.expr.Parameter" value="false">
         </property>
         <property name="defaultTransition" class="ptolemy.data.expr.Parameter" value="false">
         </property>
