@@ -567,6 +567,8 @@ public class HttpCompositeServiceProvider extends TypedCompositeActor
                 fileName = "/" + fileName;
             }
             
+            // FIXME: The following throws a null pointer exception if the input
+            // file is not found.
             BufferedReader reader = 
                 new BufferedReader(new InputStreamReader(getServletContext()
                     .getResourceAsStream(fileName))); 
