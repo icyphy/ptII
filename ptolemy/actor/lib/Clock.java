@@ -272,37 +272,34 @@ public class Clock extends TimedSource {
                                 + "Period given: " + periodValue);
             }
             // Schedule the next firing if we are running.
-            if (getManager() != null) {
-                Manager.State state = getManager().getState();
-                if (state == Manager.ITERATING || state == Manager.PAUSED) {
-                    // If this model has been dormant (e.g. in a ModalModel)
-                    // then it needs to catch up.
-                    _catchUp();
-                    // The _tentativeNextOutputTime may already
-                    // be in the future beyond the point where we want it
-                    // with the new period. Seems kind of tricky to get the
-                    // right value. Only if the _phase is zero is this an
-                    // issue, since in that case, the cycleStartTime has
-                    // been updated to the start of the new cycle, which
-                    // is too far in the future.
-                    if (_phase == 0 && _firstOutputProduced) {
-                        Time potentialNextOutputTime = _tentativeCycleStartTime
-                                .subtract(_previousPeriod).add(periodValue);
-                        if (potentialNextOutputTime.compareTo(getDirector()
-                                .getModelTime()) >= 0) {
-                            _tentativeNextOutputTime = potentialNextOutputTime;
-                            _tentativeCycleStartTime = potentialNextOutputTime;
-                            // If this occurs outside fire(), e.g. in a modal
-                            // model state transition, we also need to set the _cycleStartTime
-                            // and _nextOutputTime.
-                            if (!_tentative) {
-                                _nextOutputTime = _tentativeNextOutputTime;
-                                _cycleStartTime = _tentativeCycleStartTime;
-                            }
+            if (_initialized) {
+                // If this model has been dormant (e.g. in a ModalModel)
+                // then it needs to catch up.
+                _catchUp();
+                // The _tentativeNextOutputTime may already
+                // be in the future beyond the point where we want it
+                // with the new period. Seems kind of tricky to get the
+                // right value. Only if the _phase is zero is this an
+                // issue, since in that case, the cycleStartTime has
+                // been updated to the start of the new cycle, which
+                // is too far in the future.
+                if (_phase == 0 && _firstOutputProduced) {
+                    Time potentialNextOutputTime = _tentativeCycleStartTime
+                            .subtract(_previousPeriod).add(periodValue);
+                    if (potentialNextOutputTime.compareTo(getDirector()
+                            .getModelTime()) >= 0) {
+                        _tentativeNextOutputTime = potentialNextOutputTime;
+                        _tentativeCycleStartTime = potentialNextOutputTime;
+                        // If this occurs outside fire(), e.g. in a modal
+                        // model state transition, we also need to set the _cycleStartTime
+                        // and _nextOutputTime.
+                        if (!_tentative) {
+                            _nextOutputTime = _tentativeNextOutputTime;
+                            _cycleStartTime = _tentativeCycleStartTime;
                         }
                     }
-                    _fireAt(_tentativeNextOutputTime);
                 }
+                _fireAt(_tentativeNextOutputTime);
             }
             _previousPeriod = periodValue;
         } else {
@@ -439,6 +436,8 @@ public class Clock extends TimedSource {
             _debug("Requesting firing at time " + _nextOutputTime);
         }
         _fireAt(_nextOutputTime);
+        
+        _initialized = true;
     }
 
     /** Update the state of the actor and schedule the next firing,
@@ -484,6 +483,16 @@ public class Clock extends TimedSource {
         // for the trigger input.
         return true;
     }
+    
+    /** Override the base class to indicate that the actor has not
+     *  been initialized.
+     *  @exception IllegalActionException If the superclass throws it.
+     */
+    @Override
+    public void wrapup() throws IllegalActionException {
+        super.wrapup();
+        _initialized = false;
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
@@ -499,6 +508,10 @@ public class Clock extends TimedSource {
      */
     protected void _catchUp() throws IllegalActionException {
         Time currentTime = getDirector().getModelTime();
+        if (_tentativeNextOutputTime == null) {
+            // Initialization hasn't happened yet. No catch up to do.
+            return;
+        }
         if (_tentativeNextOutputTime.compareTo(currentTime) >= 0) {
             return;
         }
@@ -650,6 +663,9 @@ public class Clock extends TimedSource {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
+    
+    /** True if the actor has been initialized. */
+    private transient boolean _initialized;
 
     /** The previous value of the period. */
     private transient double _previousPeriod;
