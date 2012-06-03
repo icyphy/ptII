@@ -783,9 +783,12 @@ else
 fi
 for jar in $tmpHOME/.ptolemyII/*.jar 
 do
+    if test -f "$jar"; then
+        # Avoid adding .ptolemyII/*.jar to .classpath
 	ECLIPSE_CLASSPATHENTRY_LIBS="$ECLIPSE_CLASSPATHENTRY_LIBS \
 	        <classpathentry kind=\"lib\" path=\"$jar\"/> "
 	# Ant understands * style classpaths, so no need to update Ant.	
+    fi
 done
 
 
