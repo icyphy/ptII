@@ -21,7 +21,7 @@
     <entity name="TimeDelay" class="ptolemy.actor.lib.TimeDelay">
         <property name="delay" class="ptolemy.actor.parameters.PortParameter" value="2.0">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[279.0, 131.5]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[275.0, 130.0]">
         </property>
     </entity>
     <entity name="SingleEvent" class="ptolemy.actor.lib.SingleEvent">
@@ -37,25 +37,18 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[125.0, 130.0]">
         </property>
     </entity>
-    <entity name="TimedPlotter" class="ptolemy.actor.lib.gui.TimedPlotter">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={27, 420, 702, 344}, maximized=false}">
+    <entity name="CurrentTime" class="ptolemy.actor.lib.CurrentTime">
+        <doc>Output the current time.</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{380.0, 130.0}">
         </property>
-        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[702, 300]">
+    </entity>
+    <entity name="NonStrictTest" class="ptolemy.actor.lib.NonStrictTest">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{2.0, 3.0, 4.0, 5.0, 5.1, 6.0, 6.1, 7.1, 8.1, 9.1}">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[414.0, 131.5]">
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>
-        <configure>
-<?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
-"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
-<plot>
-<title>TimedPlotter</title>
-<xLabel></xLabel>
-<yLabel></yLabel>
-<xRange min="0.1" max="9.1"/>
-<yRange min="1.0" max="1.0"/>
-<default connected="no" stems="yes"/>
-</plot>?>
-        </configure>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{540, 140}">
+        </property>
     </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
     </relation>
@@ -63,10 +56,14 @@
     </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
     </relation>
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+    </relation>
     <link port="TimeDelay.input" relation="relation2"/>
     <link port="TimeDelay.output" relation="relation3"/>
     <link port="TimeDelay.delay" relation="relation"/>
     <link port="SingleEvent.output" relation="relation"/>
     <link port="DiscreteClock.output" relation="relation2"/>
-    <link port="TimedPlotter.input" relation="relation3"/>
+    <link port="CurrentTime.output" relation="relation4"/>
+    <link port="CurrentTime.trigger" relation="relation3"/>
+    <link port="NonStrictTest.input" relation="relation4"/>
 </entity>
