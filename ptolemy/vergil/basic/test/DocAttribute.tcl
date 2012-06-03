@@ -150,7 +150,7 @@ test DocAttribute-4.3 {refreshParametersAndPorts} {
     # Uses 4.2 above
     $parameter1_4_1 setContainer [java::null]
     $port1_4_1 setContainer [java::null]
-    $portParameter1_4_1 {setContainer ptolemy.kernel.Entity} [java::null]
+    $portParameter1_4_1 {setContainer ptolemy.kernel.util.NamedObj} [java::null]
     set result1 [list \
 		     [$docAttribute4_1 getParameterDoc {myParameter1_4_1}] \
 		     [$docAttribute4_1 getParameterDoc {myPortParameter1_4_1}] \
