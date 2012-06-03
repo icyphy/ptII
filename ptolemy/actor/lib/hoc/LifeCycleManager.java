@@ -358,15 +358,21 @@ public class LifeCycleManager extends TypedCompositeActor {
         while (ports.hasNext()) {
             IOPort port = (IOPort) ports.next();
 
-            // Do not
             if (port instanceof ParameterPort) {
                 PortParameter parameter = ((ParameterPort) port).getParameter();
 
+                parameter.update();
+                // Have to make sure we set the persistent value
+                // of the parameter, not just the current value, otherwise
+                // it will be reset when the model is initialized.
+                parameter.setExpression(parameter.getToken().toString());
+                
                 if (_debugging) {
-                    _debug("** Updating PortParameter: " + port.getName());
+                    _debug("** Updated PortParameter: " + port.getName()
+                            + " to value "
+                            + parameter.getToken());
                 }
 
-                parameter.update();
                 continue;
             }
 
