@@ -114,7 +114,8 @@ public class LocalClock extends AbstractSettableAttribute implements ValueListen
         _drift = 1.0; 
     }
     
-    
+    ///////////////////////////////////////////////////////////////////
+    ////                         parameters                        ////
     
     /** The time precision used by this director. All time values are
      *  rounded to the nearest multiple of this number. This is a double
@@ -471,9 +472,6 @@ public class LocalClock extends AbstractSettableAttribute implements ValueListen
      */
     private Time _lastCommitLocalTime;
     
-    /** Name of the clock. */
-    private String _name;
-        
     /** The environment time minus the local time at the the point
      *  at which a commit occurred.
      *  By default, the offset is zero.
