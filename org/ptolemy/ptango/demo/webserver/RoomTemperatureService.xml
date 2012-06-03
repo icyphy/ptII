@@ -87,17 +87,17 @@
         </property>
     </property>
     <property name="WebServer" class="org.ptolemy.ptango.lib.WebServer">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[140.0, -5.0]">
+        <property name="resourceBase" class="ptolemy.data.expr.FileParameter" value="$PTII/org/ptolemy/ptango/demo/webserver/pages">
         </property>
-        <property name="resourceBase2" class="ptolemy.data.expr.FileParameter" value="$PTII/org/ptolemy/ptango/demo/webserver/pages">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[140.0, -5.0]">
         </property>
     </property>
     <entity name="HttpCompositeServiceProvider" class="org.ptolemy.ptango.lib.HttpCompositeServiceProvider">
-        <property name="inputPage" class="ptolemy.data.expr.FileParameter" value="/pages/roominput.html">
+        <property name="inputPage" class="ptolemy.data.expr.FileParameter" value="/roominput.html">
         </property>
-        <property name="outputPage" class="ptolemy.data.expr.FileParameter" value="/pages/roomoutput.html">
+        <property name="outputPage" class="ptolemy.data.expr.FileParameter" value="/roomoutput.html">
         </property>
-        <property name="writeDirectory" class="ptolemy.data.expr.FileParameter" value="$PTII/org/ptolemy/ptango/demo/files/">
+        <property name="writeDirectory" class="ptolemy.data.expr.FileParameter" value="$PTII/org/ptolemy/ptango/demo/webserver/pages">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[190.0, 120.0]">
         </property>
