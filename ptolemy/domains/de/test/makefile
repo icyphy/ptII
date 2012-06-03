@@ -41,7 +41,9 @@ ME =		ptolemy/domains/de/test
 ROOT =		../../../..
 
 # auto/fsm_de_test.xml uses fsms, which require diva
-CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(DIVA_JAR)
+# OpenQueuingNetwork.xml uses actor.lib.colt.ColtExponential
+# PTCOLT_JARS is set by configure in $PTII/mk/ptII.mk
+CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(DIVA_JAR)$(CLASSPATHSEPARATOR)$(PTCOLT_JARS)
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
