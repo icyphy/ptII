@@ -214,6 +214,9 @@ public class DiscreteClock extends TimedSource {
      *  the clock starts as if just initialized. The clock will not
      *  start until such an event is provided, unless the port is
      *  left unconnected, in which case the actor starts immediately.
+     *  Note that when the clock starts, the period will be set to
+     *  its initial value. If an input period arrives before a
+     *  start input, then that arrived value will be ignored.
      */
     public TypedIOPort start;
 
