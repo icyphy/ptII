@@ -739,6 +739,8 @@ test BackwardCompatibility-13.2 {ModelReference modelFileOrURL parameter change 
     <entity name="ModelReference" class="ptolemy.actor.lib.hoc.ModelReference">
         <property name="modelFileOrURL" class="ptolemy.actor.parameters.FilePortParameter" value="$PTII/ptolemy/actor/lib/test/auto/Ramp1.xml">
         </property>
+        <property name="spawnSeparateModels" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
     </entity>
     <entity name="TestRamp" class="ptolemy.moml.filter.test.TestRamp">
     </entity>
@@ -783,6 +785,8 @@ test BackwardCompatibility-13.3 {The input directive also calls setContext() whi
     </property>
     <entity name="ModelReference" class="ptolemy.actor.lib.hoc.ModelReference">
         <property name="modelFileOrURL" class="ptolemy.actor.parameters.FilePortParameter" value="$PTII/ptolemy/actor/lib/test/auto/Ramp1.xml">
+        </property>
+        <property name="spawnSeparateModels" class="ptolemy.data.expr.Parameter" value="false">
         </property>
     </entity>
 </entity>
