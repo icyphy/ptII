@@ -17,9 +17,9 @@
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1206, 720]">
         </property>
-        <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.2874340375152">
+        <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.2576269047006">
         </property>
-        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{662.3735107421876, 208.3740234375}">
+        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{673.4744750976563, 285.25341796875}">
         </property>
         <property name="URI" class="ptolemy.data.expr.StringParameter" value="">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -40,7 +40,7 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="[200.0, 55.0]">
             </property>
         </property>
-        <property name="Building" class="ptolemy.data.expr.StringParameter" value="">
+        <property name="building" class="ptolemy.data.expr.StringParameter" value="">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -154,6 +154,50 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="[710.0, 5.0]">
             </property>
         </property>
+        <property name="mailConfigureFile" class="ptolemy.data.expr.StringParameter" value="">
+            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
+                </property>
+            </property>
+            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:red" y="20">-S-</text>
+      </svg>
+    </configure>
+            </property>
+            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[200.0, 15.0]">
+            </property>
+        </property>
+        <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+            <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This Ptera model serves as a sub workflow model for reading power consumptions from a URI for&#10;a building. The initial TemperatureReader process reads power comsumptions from the URI. If there&#10;is an IO reading exception, the ExceptionHandler process is activated, otherwise, The power &#10;consumption is then stored in an array of recent readings by the Shift state. The Shift process &#10;also computes the avarage of recent power consumptions. If the avarage is higher than some certain&#10;power consumption threshhold, the process Count is activated that counts the number of times&#10;that average power consumptions higher are higher than the threshhold. If the number of times&#10;that average power consumptions are higher than the threshhold exceeds a certain value, the &#10;EmailAlert process is activated that sends emails to registered email addresses configured using the&#10;file pointed by mailConfigureFile.&#10;&#10;Author: Dai Bui">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[195.0, 375.0]">
+            </property>
+        </property>
+        <property name="powerAlterThreshhold" class="ptolemy.data.expr.Parameter" value="500">
+            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+                </property>
+            </property>
+            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+            </property>
+            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[200.0, 115.0]">
+            </property>
+        </property>
         <entity name="TemperatureReader" class="ptolemy.domains.ptera.kernel.Event">
             <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="TemperatureReader">
             </property>
@@ -182,7 +226,7 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="[690.0, 225.0]">
             </property>
         </entity>
-        <entity name="Sendmail" class="ptolemy.domains.ptera.kernel.Event">
+        <entity name="EmailAlert" class="ptolemy.domains.ptera.kernel.Event">
             <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="Display2">
             </property>
             <property name="isFinalEvent" class="ptolemy.data.expr.Parameter" value="false">
@@ -288,7 +332,7 @@
             </property>
         </relation>
         <relation name="relation5" class="ptolemy.domains.ptera.kernel.SchedulingRelation">
-            <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="averagePower &gt; 500">
+            <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="averagePower &gt; powerAlterThreshhold">
                 <display name="condition"/>
             </property>
             <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="-0.059256947952723515">
@@ -311,7 +355,7 @@
         <link port="TemperatureReader.outgoingPort" relation="relation"/>
         <link port="TemperatureReader.outgoingPort" relation="relation6"/>
         <link port="ChangeIconColor.incomingPort" relation="relation2"/>
-        <link port="Sendmail.incomingPort" relation="relation4"/>
+        <link port="EmailAlert.incomingPort" relation="relation4"/>
         <link port="Display.incomingPort" relation="relation3"/>
         <link port="Exception Handler.incomingPort" relation="relation"/>
         <link port="Count.incomingPort" relation="relation5"/>
@@ -405,13 +449,13 @@
         <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
             <property name="iterations" class="ptolemy.data.expr.Parameter" value="1">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="{105, 65}">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[170.0, 225.0]">
             </property>
         </property>
         <entity name="JSONToToken" class="ptolemy.actor.lib.conversions.json.JSONToToken">
             <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="false">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="{245.0, 315.0}">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{235.0, 315.0}">
             </property>
             <property name="_expertMode" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
@@ -422,33 +466,20 @@
             </port>
         </entity>
         <entity name="FileReader" class="ptolemy.actor.lib.io.FileReader">
-            <property name="fileOrURL" class="ptolemy.data.expr.FileParameter" value="">
+            <property name="fileOrURL" class="ptolemy.data.expr.FileParameter" value="$URI">
             </property>
             <doc>Read an entire file and output as a string</doc>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="{155.0, 310.0}">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{155.0, 315.0}">
             </property>
         </entity>
         <entity name="ArrayToSequence" class="ptolemy.domains.sdf.lib.ArrayToSequence">
             <property name="enforceArrayLength" class="ptolemy.data.expr.Parameter" value="false">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="{370.0, 315.0}">
-            </property>
-        </entity>
-        <entity name="Const" class="ptolemy.actor.lib.Const">
-            <property name="value" class="ptolemy.data.expr.Parameter" value="URI">
-            </property>
-            <doc>Create a constant sequence.</doc>
-            <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
-                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
-                </property>
-                <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
-                </property>
-            </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="{60.0, 320.0}">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{360.0, 315.0}">
             </property>
         </entity>
         <entity name="RecordDisassembler" class="ptolemy.actor.lib.RecordDisassembler">
-            <property name="_location" class="ptolemy.kernel.util.Location" value="{480.0, 295.0}">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{460.0, 295.0}">
             </property>
             <port name="Readings" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
@@ -464,13 +495,13 @@
         <entity name="ArrayElement" class="ptolemy.actor.lib.ArrayElement">
             <property name="index" class="ptolemy.actor.parameters.PortParameter" value="0">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="{655.0, 315.0}">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[595.0, 315.0]">
             </property>
         </entity>
         <entity name="ArrayElement2" class="ptolemy.actor.lib.ArrayElement">
             <property name="index" class="ptolemy.actor.parameters.PortParameter" value="1">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="{775.0, 325.0}">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[705.0, 325.0]">
             </property>
         </entity>
         <entity name="SetVariable" class="ptolemy.actor.lib.SetVariable">
@@ -484,44 +515,26 @@
                 <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
                 </property>
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="{880.0, 325.0}">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[810.0, 325.0]">
             </property>
         </entity>
         <relation name="relation" class="ptolemy.actor.TypedIORelation">
-            <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;JSONToToken.input&quot;,x=245.0,y=315.0}, tail={id=&quot;FileReader.output&quot;,x=155.0,y=310.0}, points={200.0,315.0,200.0,310.0} } }">
-            </property>
         </relation>
         <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-            <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;JSONToToken.output&quot;,x=245.0,y=315.0}, tail={id=&quot;ArrayToSequence.input&quot;,x=370.0,y=315.0}, points={} } }">
-            </property>
-        </relation>
-        <relation name="relation5" class="ptolemy.actor.TypedIORelation">
-            <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;FileReader.fileOrURL&quot;,x=155.0,y=310.0}, tail={id=&quot;Const.output&quot;,x=60.0,y=320.0}, points={} } }">
-            </property>
         </relation>
         <relation name="relation7" class="ptolemy.actor.TypedIORelation">
-            <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;ArrayToSequence.output&quot;,x=370.0,y=315.0}, tail={id=&quot;RecordDisassembler.input&quot;,x=480.0,y=295.0}, points={450.0,315.0,450.0,315.0} } }">
-            </property>
         </relation>
         <relation name="relation6" class="ptolemy.actor.TypedIORelation">
-            <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;RecordDisassembler.Readings&quot;,x=480.0,y=295.0}, tail={id=&quot;ArrayElement.input&quot;,x=655.0,y=315.0}, points={} } }">
-            </property>
         </relation>
         <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-            <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;ArrayElement2.output&quot;,x=775.0,y=325.0}, tail={id=&quot;SetVariable.input&quot;,x=880.0,y=325.0}, points={} } }">
-            </property>
         </relation>
         <relation name="relation4" class="ptolemy.actor.TypedIORelation">
-            <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;ArrayElement.output&quot;,x=655.0,y=315.0}, tail={id=&quot;ArrayElement2.input&quot;,x=775.0,y=325.0}, points={715.0,315.0,715.0,315.0} } }">
-            </property>
         </relation>
         <link port="JSONToToken.input" relation="relation"/>
         <link port="JSONToToken.output" relation="relation2"/>
         <link port="FileReader.output" relation="relation"/>
-        <link port="FileReader.fileOrURL" relation="relation5"/>
         <link port="ArrayToSequence.input" relation="relation2"/>
         <link port="ArrayToSequence.output" relation="relation7"/>
-        <link port="Const.output" relation="relation5"/>
         <link port="RecordDisassembler.input" relation="relation7"/>
         <link port="RecordDisassembler.Readings" relation="relation6"/>
         <link port="ArrayElement.input" relation="relation6"/>
@@ -579,7 +592,7 @@
             </port>
         </entity>
         <entity name="Const2" class="ptolemy.actor.lib.Const">
-            <property name="value" class="ptolemy.data.expr.Parameter" value="Building">
+            <property name="value" class="ptolemy.data.expr.Parameter" value="building">
             </property>
             <doc>Create a constant sequence.</doc>
             <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
@@ -592,7 +605,7 @@
             </property>
         </entity>
         <entity name="FileReader" class="ptolemy.actor.lib.io.FileReader">
-            <property name="fileOrURL" class="ptolemy.data.expr.FileParameter" value="mailconfigure.txt">
+            <property name="fileOrURL" class="ptolemy.data.expr.FileParameter" value="$mailConfigureFile">
             </property>
             <doc>Read an entire file and output as a string</doc>
             <property name="_location" class="ptolemy.kernel.util.Location" value="{310.0, 160.0}">
@@ -772,7 +785,7 @@
             </port>
         </entity>
         <entity name="Const3" class="ptolemy.actor.lib.Const">
-            <property name="value" class="ptolemy.data.expr.Parameter" value="Building">
+            <property name="value" class="ptolemy.data.expr.Parameter" value="building">
             </property>
             <doc>Create a constant sequence.</doc>
             <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
@@ -807,19 +820,19 @@
             </property>
             <property name="allowDisconnectedGraphs" class="ptolemy.data.expr.Parameter" value="true">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="{320.0, 85.0}">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[475.0, 150.0]">
             </property>
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={201, 247, 913, 588}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={217, 220, 934, 634}, maximized=false}">
         </property>
-        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 478]">
+        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 524]">
         </property>
-        <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+        <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0544650002354">
         </property>
-        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{350.0, 239.0}">
+        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{743.078125, 370.3617633928571}">
         </property>
         <entity name="Const" class="ptolemy.actor.lib.Const">
-            <property name="value" class="ptolemy.data.expr.Parameter" value="Building">
+            <property name="value" class="ptolemy.data.expr.Parameter" value="building">
             </property>
             <doc>Create a constant sequence.</doc>
             <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
@@ -828,7 +841,7 @@
                 <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
                 </property>
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="{50.0, 270.0}">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[475.0, 215.0]">
             </property>
         </entity>
         <entity name="SendMail" class="ptolemy.actor.lib.mail.SendMail">
@@ -840,13 +853,13 @@
             </property>
             <property name="subject" class="ptolemy.actor.parameters.PortParameter" value="Exception happens">
             </property>
-            <property name="enableSSL" class="ptolemy.data.expr.Parameter" value="false">
+            <property name="enableSSL" class="ptolemy.data.expr.Parameter" value="true">
             </property>
             <property name="reallySendMail" class="ptolemy.data.expr.Parameter" value="true">
             </property>
             <property name="SSL" class="ptolemy.data.expr.Parameter" value="false">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="{545.0, 240.0}">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{1035.0, 240.0}">
             </property>
             <property name="DocAttribute" class="ptolemy.vergil.basic.DocAttribute">
             </property>
@@ -862,24 +875,116 @@
                 <property name="displayHeight" class="ptolemy.data.expr.Parameter" value="10">
                 </property>
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="{280.0, 270.0}">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[715.0, 215.0]">
             </property>
             <port name="building" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
             </port>
         </entity>
-        <relation name="relation" class="ptolemy.actor.TypedIORelation">
-            <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Const.output&quot;,x=50.0,y=270.0}, tail={id=&quot;Expression.building&quot;,x=280.0,y=270.0}, points={} } }">
+        <entity name="FileReader" class="ptolemy.actor.lib.io.FileReader">
+            <property name="fileOrURL" class="ptolemy.data.expr.FileParameter" value="$mailConfigureFile">
             </property>
+            <doc>Read an entire file and output as a string</doc>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[470.0, 280.0]">
+            </property>
+        </entity>
+        <entity name="JSONToToken" class="ptolemy.actor.lib.conversions.json.JSONToToken">
+            <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="false">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[545.0, 280.0]">
+            </property>
+            <property name="_expertMode" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+            <port name="output" class="ptolemy.actor.TypedIOPort">
+                <property name="output"/>
+                <property name="_type" class="ptolemy.actor.TypeAttribute" value="arrayType({SMTPHostName = string, SMTPUserName = string, password = string, SMTPPort = int, to = string})">
+                </property>
+            </port>
+        </entity>
+        <entity name="ArrayToSequence" class="ptolemy.domains.sdf.lib.ArrayToSequence">
+            <property name="enforceArrayLength" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[670.0, 280.0]">
+            </property>
+        </entity>
+        <entity name="RecordDisassembler" class="ptolemy.actor.lib.RecordDisassembler">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[753.1640625, 259.5703125]">
+            </property>
+            <port name="SMTPHostName" class="ptolemy.actor.TypedIOPort">
+                <property name="output"/>
+                <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                </property>
+            </port>
+            <port name="SMTPUserName" class="ptolemy.actor.TypedIOPort">
+                <property name="output"/>
+                <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                </property>
+            </port>
+            <port name="password" class="ptolemy.actor.TypedIOPort">
+                <property name="output"/>
+                <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                </property>
+            </port>
+            <port name="SMTPPort" class="ptolemy.actor.TypedIOPort">
+                <property name="output"/>
+                <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                </property>
+            </port>
+            <port name="to" class="ptolemy.actor.TypedIOPort">
+                <property name="output"/>
+                <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                </property>
+            </port>
+        </entity>
+        <relation name="relation" class="ptolemy.actor.TypedIORelation">
         </relation>
         <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-            <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;SendMail.message&quot;,x=545.0,y=240.0}, tail={id=&quot;Expression.output&quot;,x=280.0,y=270.0}, points={} } }">
+        </relation>
+        <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+            <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;JSONToToken.output&quot;,x=545.0,y=280.0}, tail={id=&quot;ArrayToSequence.input&quot;,x=670.0,y=280.0}, points={} } }">
             </property>
         </relation>
+        <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation7" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation9" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation11" class="ptolemy.actor.TypedIORelation">
+            <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+            </property>
+            <vertex name="vertex1" value="[895.0, 190.0]">
+            </vertex>
+            <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;SendMail.from&quot;,x=1035.0,y=240.0}, tail={id=&quot;relation11.vertex1&quot;,x=895.0,y=190.0}, points={895.0,210.0} },{ head={id=&quot;SendMail.to&quot;,x=1035.0,y=240.0}, tail={id=&quot;relation11.vertex1&quot;,x=895.0,y=190.0}, points={} } }">
+            </property>
+        </relation>
+        <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation8" class="ptolemy.actor.TypedIORelation">
+        </relation>
         <link port="Const.output" relation="relation"/>
+        <link port="SendMail.to" relation="relation11"/>
+        <link port="SendMail.from" relation="relation11"/>
         <link port="SendMail.message" relation="relation2"/>
+        <link port="SendMail.SMTPHostName" relation="relation6"/>
+        <link port="SendMail.SMTPUserName" relation="relation7"/>
+        <link port="SendMail.password" relation="relation8"/>
+        <link port="SendMail.SMTPPort" relation="relation9"/>
         <link port="Expression.output" relation="relation2"/>
         <link port="Expression.building" relation="relation"/>
+        <link port="FileReader.output" relation="relation4"/>
+        <link port="JSONToToken.input" relation="relation4"/>
+        <link port="JSONToToken.output" relation="relation3"/>
+        <link port="ArrayToSequence.input" relation="relation3"/>
+        <link port="ArrayToSequence.output" relation="relation5"/>
+        <link port="RecordDisassembler.input" relation="relation5"/>
+        <link port="RecordDisassembler.SMTPHostName" relation="relation6"/>
+        <link port="RecordDisassembler.SMTPUserName" relation="relation7"/>
+        <link port="RecordDisassembler.password" relation="relation8"/>
+        <link port="RecordDisassembler.SMTPPort" relation="relation9"/>
+        <link port="RecordDisassembler.to" relation="relation11"/>
     </entity>
     <entity name="Display3" class="ptolemy.domains.modal.modal.Refinement">
         <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
