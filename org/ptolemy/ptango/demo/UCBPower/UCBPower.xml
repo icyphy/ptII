@@ -11,13 +11,13 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[585.0, 1010.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={204, 396, 1085, 716}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={108, 0, 1085, 760}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[857, 600]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[857, 644]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.8">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{485.1494252873564, 319.4022988505748}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{557.1016042780749, 415.0695187165775}">
     </property>
     <property name="Title" class="ptolemy.vergil.basic.export.web.Title" value="UC Berkeley Power Consumption">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[40.0, 60.0]">
@@ -45,16 +45,6 @@
         <property name="endText" class="ptolemy.data.expr.StringParameter" value="&lt;p id=&quot;afterImage&quot;&gt;&lt;/p&gt;">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[170.0, 995.0]">
-        </property>
-    </property>
-    <property name="Image" class="ptolemy.vergil.kernel.attributes.ImageAttribute">
-        <property name="source" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/org/ptolemy/ptango/demo/UCBPower/ucb_large_map.gif">
-        </property>
-        <property name="scale" class="ptolemy.data.expr.Parameter" value="80">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{45.0, 115.0}">
-        </property>
-        <property name="_renderFirst" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
     </property>
     <property name="useOnlineData" class="ptolemy.data.expr.Parameter" value="false">
@@ -88,6 +78,16 @@
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="TODO list:&#10;Need to create new DoubleReader class and add other buildings.&#10;Need to fix sleep actor to have global delay">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{665.0, 1000.0}">
+        </property>
+    </property>
+    <property name="Image" class="ptolemy.vergil.kernel.attributes.ImageAttribute">
+        <property name="source" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/org/ptolemy/ptango/demo/UCBPower/ucb_medium_map.png">
+        </property>
+        <property name="scale" class="ptolemy.data.expr.Parameter" value="100">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{45.0, 115.0}">
+        </property>
+        <property name="_renderFirst" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
     </property>
     <class name="SingleReaderClass" extends="ptolemy.actor.TypedCompositeActor">
@@ -559,14 +559,16 @@ Want to delay all color changes at the same time</text></svg></configure>
         <link port="IterateOverArray.Readings" relation="relation5"/>
     </class>
     <entity name="InstanceOfCompositeActor2" class="SingleReaderClass">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{670.0, 275.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[370.0, 345.0]">
         </property>
-        <property name="size" class="ptolemy.data.expr.Parameter" value="30">
+        <property name="size" class="ptolemy.data.expr.Parameter" value="100">
         </property>
         <property name="URI" class="ptolemy.data.expr.Parameter" value="&quot;http://new.openbms.org/backend/api/data/uuid/8737f287-14df-5ccd-82df-e66ca7374b63?start=1337140800000&amp;end=1337227200000&quot;">
         </property>
         <property name="file" class="ptolemy.data.expr.FileParameter" value="data/CoryHallMay16toMay17.txt">
         </property>
+        <property name="squareFootage" class="ptolemy.data.expr.Parameter" value="206054">
+        </property>
         <property name="IconLink" class="ptolemy.vergil.basic.export.web.IconLink" value="InstanceOfCompositeActor4/SequencePlotter.gif">
             <property name="displayText" class="ptolemy.data.expr.StringParameter" value="Link to plot">
             </property>
@@ -575,18 +577,18 @@ Want to delay all color changes at the same time</text></svg></configure>
             <property name="_location" class="ptolemy.kernel.util.Location" value="{515, 320}">
             </property>
         </property>
-        <property name="squareFootage" class="ptolemy.data.expr.Parameter" value="206054">
-        </property>
     </entity>
     <entity name="InstanceOfCompositeActor" class="SingleReaderClass">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{725.0, 325.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[460.0, 240.0]">
         </property>
-        <property name="size" class="ptolemy.data.expr.Parameter" value="30">
+        <property name="size" class="ptolemy.data.expr.Parameter" value="100">
         </property>
         <property name="URI" class="ptolemy.data.expr.Parameter" value="&quot;http://new.openbms.org/backend/api/data/uuid/888da9eb-5b39-5636-b495-94c1d1b57f35?start=1337140800000&amp;end=1337227200000&quot;">
         </property>
         <property name="file" class="ptolemy.data.expr.FileParameter" value="data/DonnerHallMay16toMay17.txt">
         </property>
+        <property name="squareFootage" class="ptolemy.data.expr.Parameter" value="53234">
+        </property>
         <property name="IconLink" class="ptolemy.vergil.basic.export.web.IconLink" value="InstanceOfCompositeActor4/SequencePlotter.gif">
             <property name="displayText" class="ptolemy.data.expr.StringParameter" value="Link to plot">
             </property>
@@ -595,18 +597,18 @@ Want to delay all color changes at the same time</text></svg></configure>
             <property name="_location" class="ptolemy.kernel.util.Location" value="{515, 320}">
             </property>
         </property>
-        <property name="squareFootage" class="ptolemy.data.expr.Parameter" value="53234">
-        </property>
     </entity>
     <entity name="InstanceOfCompositeActor4" class="SingleReaderClass">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{650.0, 475.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[845.0, 385.0]">
         </property>
-        <property name="size" class="ptolemy.data.expr.Parameter" value="30">
+        <property name="size" class="ptolemy.data.expr.Parameter" value="100">
         </property>
         <property name="URI" class="ptolemy.data.expr.Parameter" value="&quot;http://new.openbms.org/backend/api/data/uuid/18866fbe-53ff-5511-86c7-95d1cea0a061?start=1337140800000&amp;end=1337227200000&quot;">
         </property>
         <property name="file" class="ptolemy.data.expr.FileParameter" value="data/BirgeHallMay16toMay17.txt">
         </property>
+        <property name="squareFootage" class="ptolemy.data.expr.Parameter" value="94175">
+        </property>
         <property name="IconLink" class="ptolemy.vergil.basic.export.web.IconLink" value="InstanceOfCompositeActor4/SequencePlotter.gif">
             <property name="displayText" class="ptolemy.data.expr.StringParameter" value="Link to plot">
             </property>
@@ -614,8 +616,6 @@ Want to delay all color changes at the same time</text></svg></configure>
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="{515, 320}">
             </property>
-        </property>
-        <property name="squareFootage" class="ptolemy.data.expr.Parameter" value="94175">
         </property>
     </entity>
 </entity>
