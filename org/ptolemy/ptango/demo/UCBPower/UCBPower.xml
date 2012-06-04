@@ -559,7 +559,7 @@ Want to delay all color changes at the same time</text></svg></configure>
         <link port="IterateOverArray.Readings" relation="relation5"/>
     </class>
     <entity name="InstanceOfCompositeActor2" class="SingleReaderClass">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[370.0, 345.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[425.0, 375.0]">
         </property>
         <property name="size" class="ptolemy.data.expr.Parameter" value="100">
         </property>
@@ -579,7 +579,7 @@ Want to delay all color changes at the same time</text></svg></configure>
         </property>
     </entity>
     <entity name="InstanceOfCompositeActor" class="SingleReaderClass">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[460.0, 240.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[520.0, 260.0]">
         </property>
         <property name="size" class="ptolemy.data.expr.Parameter" value="100">
         </property>
@@ -599,7 +599,7 @@ Want to delay all color changes at the same time</text></svg></configure>
         </property>
     </entity>
     <entity name="InstanceOfCompositeActor4" class="SingleReaderClass">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[845.0, 385.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[975.0, 425.0]">
         </property>
         <property name="size" class="ptolemy.data.expr.Parameter" value="100">
         </property>
