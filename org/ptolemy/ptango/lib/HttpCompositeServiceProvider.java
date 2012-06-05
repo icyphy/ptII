@@ -2,7 +2,6 @@ package org.ptolemy.ptango.lib;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.URI;
 import java.util.HashMap;
@@ -11,7 +10,6 @@ import java.util.LinkedList;
 import java.util.List;
 
 import javax.servlet.AsyncContext;
-import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -315,90 +313,71 @@ public class HttpCompositeServiceProvider extends TypedCompositeActor
                 response.setStatus(HttpServletResponse.SC_OK);
                 PrintWriter writer = response.getWriter();      
                 
-                String fileName = outputPage.getExpression().toString();
-                if (fileName.isEmpty()) {
-                    // Assume /output.html
-                    fileName = "/output.html";
-                }
-                
-                // TODO:  Move to attributeChanged() method?
-                if (fileName.charAt(0) != '/') {
-                    fileName = "/" + fileName;
-                }
-                
-                 if (_servletContext != null) {               
-   
-                    BufferedReader reader = 
-                      new BufferedReader(
-                      new InputStreamReader(_servletContext
-                           .getResourceAsStream(fileName)));                         
-                    
-                    String line;
-                    
-                    // TODO:  This finds all the output variables line by line
-                    // Would be nice to insert variables as a group and use
-                    // e.g. Javascript to print the values in the correct spots
-                    // But, couldn't get Javascript to work as part of
-                    // an HttpResponse - worked OK loading page from file
-                    // FIXME:  All of this assumes nice line spacing in the 
-                    // source file...
-                    String key;
-                    Iterator keys;
+                BufferedReader reader = outputPage.openForReading();
+
+                // TODO:  This finds all the output variables line by line
+                // Would be nice to insert variables as a group and use
+                // e.g. Javascript to print the values in the correct spots
+                // But, couldn't get Javascript to work as part of
+                // an HttpResponse - worked OK loading page from file
+                // FIXME:  All of this assumes nice line spacing in the 
+                // source file...
+                String key;
+                Iterator keys;
+
+                String line;
+                while((line = reader.readLine()) != null) {
                         
-                    while((line = reader.readLine()) != null) {
-                        
-                        // Insert elements from WebExportables into <head>
-                        // Assumes file contains <head> </head>
-                        if (line.contains("</head>")) {
-                            _printHTML(writer, "head");
-                        } 
-                        
-                        
-                        // Insert elements from WebExportables before </body>
-                        if (line.contains("</body>")) {
-                            _printHTML(writer, "end");
-                        }                       
-                        
-                        // Insert Javascript for variables 
-                        if (!resultsMap.keySet().isEmpty()) {
-                            keys = resultsMap.keySet().iterator();
-                            while(keys.hasNext()) {
-                                key = (String) keys.next();
-                                if (line.contains("<div id=\"" + key + "\">")) {
-                                    line = "<div id=\"" + key + "\">" + 
+                    // Insert elements from WebExportables into <head>
+                    // Assumes file contains <head> </head>
+                    if (line.contains("</head>")) {
+                        _printHTML(writer, "head");
+                    } 
+
+
+                    // Insert elements from WebExportables before </body>
+                    if (line.contains("</body>")) {
+                        _printHTML(writer, "end");
+                    }                       
+
+                    // Insert Javascript for variables 
+                    if (!resultsMap.keySet().isEmpty()) {
+                        keys = resultsMap.keySet().iterator();
+                        while(keys.hasNext()) {
+                            key = (String) keys.next();
+                            if (line.contains("<div id=\"" + key + "\">")) {
+                                line = "<div id=\"" + key + "\">" + 
                                         (String) resultsMap.get(key) + "</div>";
-                                    resultsMap.remove(key);
-                                    break;
-                                } 
+                                resultsMap.remove(key);
+                                break;
+                            } 
+                        }
+                    }
+
+                    writer.println(line);
+
+                    // Insert elements from WebExportables into <body>
+                    if (line.contains("<body>")) {
+                        _printHTML(writer, "start");
+                    } 
+
+                    // Insert elements from WebExportables by matching id
+
+                    if (!_contents.keySet().isEmpty()) {
+                        keys = _contents.keySet().iterator();
+                        while(keys.hasNext()) {
+                            // FIXME:  What to do about start, head, end?
+                            key = (String) keys.next();
+                            if (line.contains("id=\"" + key + "\"")) {
+                                _printHTML(writer, key);
                             }
                         }
-                        
-                        writer.println(line);
-                        
-                        // Insert elements from WebExportables into <body>
-                        if (line.contains("<body>")) {
-                            _printHTML(writer, "start");
-                        } 
-                        
-                        // Insert elements from WebExportables by matching id
-                        
-                        if (!_contents.keySet().isEmpty()) {
-                            keys = _contents.keySet().iterator();
-                            while(keys.hasNext()) {
-                                // FIXME:  What to do about start, head, end?
-                                key = (String) keys.next();
-                                if (line.contains("id=\"" + key + "\"")) {
-                                    _printHTML(writer, key);
-                                }
-                            }
-                        }
-                        
-                        }
-                           
-                    reader.close();
-                    writer.flush();
                     }
                 }
+                           
+                reader.close();
+                writer.flush();
+            }
                 
             // Mark the AsyncContext as complete to show we are done processing
             // this HttpRequest.  Set it to null so prefire() will return false
@@ -407,8 +386,9 @@ public class HttpCompositeServiceProvider extends TypedCompositeActor
             _asyncContext.complete();
             _asyncContext = null;
             
-        } catch(IOException e){throw new IllegalActionException(this,"Problem" +
-        		"writing the response page.");
+        } catch(IOException e) {
+            throw new IllegalActionException(this, e,
+                    "Problem writing the response page.");
         }
     }
     
@@ -535,7 +515,8 @@ public class HttpCompositeServiceProvider extends TypedCompositeActor
      */
     private class HttpServiceServlet extends HttpServlet
     {
-        public HttpServiceServlet(){}
+        public HttpServiceServlet() {
+        }
 
         protected void doGet(HttpServletRequest request, 
                 HttpServletResponse response) 
@@ -553,32 +534,18 @@ public class HttpCompositeServiceProvider extends TypedCompositeActor
             
             response.setContentType("text/html");
             response.setStatus(HttpServletResponse.SC_OK);
-            PrintWriter writer = response.getWriter();                
+            PrintWriter writer = response.getWriter();
             
-            
-            String fileName = inputPage.getExpression().toString();
-            if (fileName.isEmpty()) {
-                // Assume /index.html
-                fileName = "/index.html";
+            try {
+                BufferedReader reader = inputPage.openForReading();
+                String line;
+                while((line = reader.readLine()) != null) {
+                    writer.println(line);
+                }
+                reader.close();
+            } catch (IllegalActionException e) {
+                throw new ServletException("File not found: " + inputPage.getExpression());
             }
-            
-            // TODO:  Move to attributeChanged() method?
-            if (fileName.charAt(0) != '/') {
-                fileName = "/" + fileName;
-            }
-            
-            // FIXME: The following throws a null pointer exception if the input
-            // file is not found.
-            BufferedReader reader = 
-                new BufferedReader(new InputStreamReader(getServletContext()
-                    .getResourceAsStream(fileName))); 
-            
-            String line;
-            while((line = reader.readLine()) != null) {
-                writer.println(line);
-            }
-
-            reader.close();
             writer.flush();
         }
         
@@ -691,7 +658,6 @@ public class HttpCompositeServiceProvider extends TypedCompositeActor
             // Store the servlet context so the fire() method can use it
             try {
                 _asyncContext = request.startAsync();   
-                _servletContext = getServletContext();
                 // Only need this if no input ports?  If no WebSources?
                 //if (inputPortList().isEmpty()) {
                     getDirector()
@@ -722,11 +688,6 @@ public class HttpCompositeServiceProvider extends TypedCompositeActor
     /** Options for exporting HTML. */
     private ExportParameters _exportParameters;
     
-    /** A copy of the servlet context, which is set in the doPost() method of
-     *  HttpServiceServlet and used in the fire() method of the parent to 
-     *  read the output page file. 
-     */
-    private ServletContext _servletContext;
     
     /** The URI for the relative path from the "path" parameter.  
      *  A URI is used here to make sure the "path" parameter conforms to

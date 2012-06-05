@@ -18,7 +18,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, -30.0]">
         </property>
     </property>
-    <property name="TDay" class="ptolemy.data.expr.Parameter" value="22.0">
+    <property name="TDay" class="ptolemy.data.expr.Parameter" value="40.0">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -37,7 +37,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[210.0, 40.0]">
         </property>
     </property>
-    <property name="TNight" class="ptolemy.data.expr.Parameter" value="18.0">
+    <property name="TNight" class="ptolemy.data.expr.Parameter" value="60.0">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -87,19 +87,23 @@
         </property>
     </property>
     <property name="WebServer" class="org.ptolemy.ptango.lib.WebServer">
-        <property name="resourceBase" class="ptolemy.data.expr.FileParameter" value="$PTII/org/ptolemy/ptango/demo/webserver/pages">
+        <property name="resourceBase" class="ptolemy.data.expr.FileParameter" value="$PTII/org/ptolemy/ptango/demo/">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[140.0, -5.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{140.0, -5.0}">
+        </property>
+        <property name="tempDirectory" class="ptolemy.data.expr.FileParameter" value="$TMPDIR">
         </property>
     </property>
     <entity name="HttpCompositeServiceProvider" class="org.ptolemy.ptango.lib.HttpCompositeServiceProvider">
-        <property name="inputPage" class="ptolemy.data.expr.FileParameter" value="/roominput.html">
+        <property name="path" class="ptolemy.data.expr.StringParameter" value="/room/*">
         </property>
-        <property name="outputPage" class="ptolemy.data.expr.FileParameter" value="/roomoutput.html">
+        <property name="inputPage" class="ptolemy.data.expr.FileParameter" value="pages/roominput.html">
         </property>
-        <property name="writeDirectory" class="ptolemy.data.expr.FileParameter" value="$PTII/org/ptolemy/ptango/demo/webserver/pages">
+        <property name="outputPage" class="ptolemy.data.expr.FileParameter" value="pages/roomoutput.html">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[190.0, 120.0]">
+        <property name="writeDirectory" class="ptolemy.data.expr.FileParameter" value="$TMPDIR">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{190.0, 120.0}">
         </property>
         <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
             <property name="iterations" class="ptolemy.data.expr.Parameter" value="10">
@@ -362,7 +366,7 @@ on the colored rectangle shows how the variable "TRoom" is used to assign the co
                     </property>
                 </property>
             </property>
-            <property name="TRoom" class="ptolemy.data.expr.Parameter" value="17.3809524094175">
+            <property name="TRoom" class="ptolemy.data.expr.Parameter" value="24.9999983430071">
                 <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
                 </property>
                 <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -863,8 +867,8 @@ on the colored rectangle shows how the variable "TRoom" is used to assign the co
 "http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
 <plot>
 <title>SequencePlotter</title>
-<xRange min="1.7976931348623157E308" max="-1.7976931348623157E308"/>
-<yRange min="1.7976931348623157E308" max="-1.7976931348623157E308"/>
+<xRange min="0.0" max="117.03360000000097"/>
+<yRange min="0.0" max="60.0"/>
 </plot>?>
             </configure>
         </entity>

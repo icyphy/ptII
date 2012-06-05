@@ -212,9 +212,9 @@ public class WebServer extends AbstractInitializableAttribute {
             Object object = objects.next(); 
             if (object instanceof HttpService) {   
                 HttpService service = (HttpService) object;
+                String path = service.getRelativePath().getPath();
                 _actorContextHandler
-                    .addServlet(new ServletHolder(service.getServlet()), 
-                            service.getRelativePath().getPath());
+                    .addServlet(new ServletHolder(service.getServlet()), path);
             }
         }
         
@@ -251,8 +251,17 @@ public class WebServer extends AbstractInitializableAttribute {
          // Create a resource handler to serve files such as images, audio, ...
          // See also http://restlet-discuss.1400322.n2.nabble.com/Jetty-Webapp-td7313234.html
          ContextHandler fileHandler = new ContextHandler();
-         // FIXME: The following is inappropriate and doesn't seem to do anything anyway.
+         // FIXME: This is incredibly confusing.  If we don't set this, then a get
+         // request at the root (http://localhost:8080/) will be handled by the
+         // fileHandler and not by any servlet.  If we do set it, then any
+         // resource bases added below are ignored and files at those locations
+         // are not found (!!!!). Can't win...
+         // I think what is going on is that the handler is looking in
+         // the directories listed below with the path given here appended.
+         // So if we omit this path, then any get will be handled by the file
+         // handlers, and not by the servlets ?  I'm mystified.
          // fileHandler.setContextPath("/files");
+         fileHandler.setContextPath("/");
          
          ResourceHandler resourceHandler = new ResourceHandler();
          resourceHandler.setDirectoriesListed(true);
