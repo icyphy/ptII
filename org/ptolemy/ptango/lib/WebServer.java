@@ -54,6 +54,7 @@ import ptolemy.actor.CompositeActor;
 import ptolemy.data.IntToken;
 import ptolemy.data.expr.FileParameter;
 import ptolemy.data.expr.Parameter;
+import ptolemy.data.expr.StringParameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.attributes.URIAttribute;
 import ptolemy.kernel.util.Attribute;
@@ -100,28 +101,102 @@ public class WebServer extends AbstractInitializableAttribute {
         port = new Parameter(this, "port");
         port.setTypeEquals(BaseType.INT);
         port.setExpression("8080");
-
-        resourceBase = new FileParameter(this, "resourceBase");
-        resourceBase.setExpression("$PTII/org/ptolemy/ptango/demo/files/");
+        
+        applicationPath = new StringParameter(this, "applicationPath");
+        applicationPath.setExpression("/");
+        
+        resourcePath = new StringParameter(this, "resourcePath");
+        resourcePath.setExpression("/files");
+        
+        // Set up a parameter to specify the location for reading and writing 
+        // resources (files).  This parameter defaults to the directory that
+        // the current model is located in.
+        
+        // The Jetty web server supports searching multiple directories/URLs for 
+        // resources (files) to return as part of an HttpResponse.  However, if 
+        // there are two different files with the same names in different 
+        // directories, it is not clear which file will be served.  Right now, 
+        // the directories are searched in alphabetical order by parameter name.
+        // WebServer itself currently only contains a reader 
+        // (the resourceHandler in setResourceHandlers()
+        // Other actors (e.g. HttpCompositeServiceActor) are writers, and 
+        // will look for a WebServer in the model to determine the directory 
+        // to write to
+        resourceLocation = new FileParameter(this, "resourceLocation");
+        URI modelURI = URIAttribute.getModelURI(this);
+        // Get the directory excluding the model's name
+        // FIXME:  Better way to do this?
+        String path = modelURI.getPath().toString();
+        int slash = path.lastIndexOf("/");
+        if (slash != -1) {
+            path = path.substring(0, slash);
+        }
+        resourceLocation.setExpression(path);
     }
     
     ///////////////////////////////////////////////////////////////////
     ////                         parameters                        ////
+    
+    /** The URL prefix to map this application to.  Defaults to "/"
+     *  which will cause the model to receive all URLs.  Individual 
+     *  servlets will be mapped to URLs relative to this context path.
+     *  
+     * Other choices are possible.  For example, for web applications, it's
+     * common to host several applications on the same server.  It's typical
+     * to have each application use setContextPath("/appName") here, 
+     * (e.g. setContextPath("/myCalendarApp"), setContextPath("/tetris")
+     * Each application can contain multiple servlets, which are registered
+     * to URLs relative to this path, e.g.:
+     * /myCalendarApp/view, /myCalendarApp/print, /tetris/view
+     * That way the separate applications have a separate URL namespace and 
+     * don't interfere with each other.  A web server often offers some 
+     * default content at the root / then.  E.g. Tomcat provides the Tomcat
+     * manager screen to load/unload web applications.
+     */ 
+    public StringParameter applicationPath;
     
     /** The port number to respond to. This is a integer that
      *  defaults to 8080.
      */
     public Parameter port;
     
-    /** The resource base, a directory or URL relative to which this
-     *  web server should look for resources (like image files and
-     *  the like). This defaults to
-     *  $PTII/org/ptolemy/ptango/demo/files/.
+    /** The URL prefix which web services (e.g. an HTML page) will use to 
+     *  refer to resources (files).  Used by the ResourceHandler. Of the form:
+     *  protocol://hostname:portname/applicationPath/resourcePath/filename.ext
+     *  e.g.
+     *  http://localhost:8080/myAppName/files/PtolemyIcon.gif
+     *  for an applicationPath of "/myAppName" and a resourcePath of "/files"
+     *  or
+     *  http://localhost:8080/files/PtolemyIcon.gif 
+     *  for an applicationPath of "/" and a resourcePath of "/files"
+     *  
+     *  The ResourceHandler will look in resourceLocation for this file.
+     *  Note that ResourceHandler supports subdirectories, for example
+     *  http://localhost:8080/myAppName/files/img/PtolemyIcon.gif 
+     *  and a resourceLocation of $PTII/org/ptolemy/ptango/demo
+     *  will tell the ResourceHandler to get the file at 
+     *  $PTII/org/ptolemy/ptango/demo/img/PtolemyIcon.gif
+     *  
+     *  The ResourceHandler can support multiple resourceLocations, in 
+     *  which case they will be searched in some order (what order?)
+     *  for the file
+     * 
+     *  The resourcePath should be something other than "/", because then
+     *  all incoming requests will be passed to the ResourceHandler 
+     *  (assuming the ResourceHandler is passed in first in the list of handlers
+     *  to the server.setHandler() method, which it needs to be, 
+     *  see _setHandlers() 
+     */
+    public StringParameter resourcePath;
+    
+    /** The directory or URL where the web server should look for resources 
+     * (like image files and the like). This defaults to the current model's
+     *  directory.
      *  You can add additional resource bases by adding additional
      *  parameters of type ptolemy.data.expr.FileParameter to
      *  this WebServer (select Configure in the context menu).
      */
-    public FileParameter resourceBase;
+    public FileParameter resourceLocation;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -134,14 +209,39 @@ public class WebServer extends AbstractInitializableAttribute {
      *  @exception IllegalActionException If the change is not acceptable
      *   to this container (not thrown in this base class).
      */
+    // FIXME:  Add checks for changes to applicationPath and resourcePath
+    // Make sure resourcePath is not / and that the user did not specify 
+    // overlapping URLs (e.g. /files for both the applicationPath and 
+    // the resourcePath, or common prefixes like /files and /files/images)
+    
     public void attributeChanged(Attribute attribute) throws IllegalActionException {
         if (attribute instanceof FileParameter) {
             // Resource handlers are being changed. If the
             // server is running, reset the resource handler.
             if (_server != null && _server.isRunning()) {
-                // FIXME: Does this need to be synchronized on the server?
-                // Sadly, Jetty is undocumented.
-                _setResourceHandlers();
+                // FIXME:  Test this.  I think calling _setHandler() on the 
+                // server, as _setResourceHandlers() does, will throw an 
+                // exception if the server is running.  Therefore the server 
+                // needs to be stopped and restarted.  Test to see if it 
+                // restarts properly.
+               try { 
+                       _server.stop();
+                       // FIXME: Does this need to be synchronized on the server?
+                       // Sadly, Jetty is undocumented.
+                       _createResourceHandler();
+                       _server.start();
+               } catch(Exception e){
+                   try {
+                       _server.stop();
+                   } catch(Exception e2){
+                       throw new IllegalActionException(this, 
+                       "Can't update resource handlers of the WebServer.");
+                   }
+                   throw new IllegalActionException(this, 
+                       "Can't update resource handlers of the WebServer.  " +
+                       "Stopping the server.");
+               };
+
             }
         } else if (attribute == port) {
             _portNumber = ((IntToken)port.getToken()).intValue();
@@ -158,8 +258,6 @@ public class WebServer extends AbstractInitializableAttribute {
      */
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         WebServer newObject = (WebServer) super.clone(workspace);
-        newObject._actorContextHandler = null;
-        newObject._handlers = null;
         newObject._server = null;
         newObject._serverThread = null;
         return newObject;
@@ -195,32 +293,23 @@ public class WebServer extends AbstractInitializableAttribute {
             _server.setConnectors(new Connector[] {connector});
         }
         
-        // Create a new handler to hold servlets from the actors
-        _actorContextHandler = 
-                new ServletContextHandler(ServletContextHandler.SESSIONS);
-        _actorContextHandler.setContextPath("/");   
+        // Create a handler to map incoming requests to servlets registered by
+        // other actors in this model (for example, HttpActor)
+        ContextHandler servletHandler = _createServletHandler();
         
-        // Set the resource base to the path of the model that contains this WebServer.
-        URI modelURI = URIAttribute.getModelURI(this);
-        // FIXME: The following doesn't work! Doesn't find files relative to model.
-        _actorContextHandler.setResourceBase(modelURI.toString());
-        
-        // Collect servlets from all model objects implementing HttpService       
-        NamedObj topLevel = toplevel();      
-        Iterator objects = topLevel.containedObjectsIterator();
-        while(objects.hasNext()) { 
-            Object object = objects.next(); 
-            if (object instanceof HttpService) {   
-                HttpService service = (HttpService) object;
-                String path = service.getRelativePath().getPath();
-                _actorContextHandler
-                    .addServlet(new ServletHolder(service.getServlet()), path);
-            }
-        }
-        
-        // Create a resource handler to serve files such as images, audio, etc.,
+        // Create a handler to serve files such as images, audio, etc.,
         // from parameters of type FileParameter contained by this WebServer.
-        _setResourceHandlers();
+        ContextHandler fileHandler = _createResourceHandler();
+        
+        // Assign the newly created handlers to the server 
+        // The server passes requests to handlers in the same order as the array
+        // in setHandlers()
+        // Therefore, make sure fileHandler is first so that any request for a
+        // file (e.g. an image file) is handled by the fileHandler
+        // FIXME:  Reference for this?  I read it somewhere on the internet...
+        HandlerList handlers = new HandlerList();
+        handlers.setHandlers(new Handler[] {fileHandler, servletHandler});
+        _server.setHandler(handlers);
         
         //Start the server in a new thread with our handlers
         _serverThread = new Thread(new RunnableServer());
@@ -244,32 +333,35 @@ public class WebServer extends AbstractInitializableAttribute {
       *  that is set up in initialize().  Note that this method is called
       *  in initialize() and may be called again during execution to change
       *  the resource handler.
+      *  
+      *  @return A ContextHandler containing the created ResourceHandler
       *  @throws IllegalActionException If a FileParameter is found that is
       *   not a valid URI or references a resource that cannot be found.
       */
-     protected void _setResourceHandlers() throws IllegalActionException {
+     protected ContextHandler _createResourceHandler() 
+         throws IllegalActionException {
          // Create a resource handler to serve files such as images, audio, ...
          // See also http://restlet-discuss.1400322.n2.nabble.com/Jetty-Webapp-td7313234.html
          ContextHandler fileHandler = new ContextHandler();
-         // FIXME: This is incredibly confusing.  If we don't set this, then a get
-         // request at the root (http://localhost:8080/) will be handled by the
-         // fileHandler and not by any servlet.  If we do set it, then any
-         // resource bases added below are ignored and files at those locations
-         // are not found (!!!!). Can't win...
-         // I think what is going on is that the handler is looking in
-         // the directories listed below with the path given here appended.
-         // So if we omit this path, then any get will be handled by the file
-         // handlers, and not by the servlets ?  I'm mystified.
-         // fileHandler.setContextPath("/files");
-         fileHandler.setContextPath("/");
+         
+         // Set the path which other web applications (e.g. an HTML page) would
+         // use to request resources (files)
+         // Please see comments for resourcePath parameter and example
+         // $PTII/org/ptolemy/ptango/demo/WebServerDE/WebServerDE.xml
+         fileHandler.setContextPath(resourcePath.getExpression());       
          
          ResourceHandler resourceHandler = new ResourceHandler();
+         // FIXME:  Should this be false?  How to prevent listing contents
+         // of hard drive??
          resourceHandler.setDirectoriesListed(true);
-         // Sadly, Jetty is completely undocumented, but it appears that
-         // setResourceBase() is just like setBaseResource() except that it
-         // takes a string. So I think the setBaseResource() below will override
-         // the next line.
-         resourceHandler.setResourceBase(".");
+
+         // Think this is not needed since we create a ContextHandler 
+         // fileHandler, set up our resourceHandler, then call 
+         // fileHandler.setHandler(resourceHandler)
+         // I think this is only needed if we directly add resourceHandler to 
+         // the server's handler list, since resourceHandler does not have
+         // a setContextPath() method
+         //resourceHandler.setResourceBase(".");
 
          // Specify directories or URLs in which to look for resources.
          // These are given by all instances of FileParameter in this
@@ -298,30 +390,43 @@ public class WebServer extends AbstractInitializableAttribute {
                  new ResourceCollection(resources.toArray(new FileResource[resources.size()])));    
 
          fileHandler.setHandler(resourceHandler);
-
-         //The server passes requests to handlers in the same order as this array
-         //Therefore, make sure resourceHandler so that any request for a file
-         //(e.g. an image file) is handled by the resourceHandler
-         _handlers = new HandlerList();
-         _handlers.setHandlers(new Handler[] {fileHandler, _actorContextHandler});
-         _server.setHandler(_handlers);
+         return fileHandler;
      }   
-
+     
+     /** Create a ContextHandler to find and store all of the servlets
+      *  registered by other actors (e.g. HttpCompositeActor).
+      *  
+      *  @return A ContextHandler containing servlets from the WebServer's
+      *  containing model
+      */
+     
+     protected ContextHandler _createServletHandler() {
+         
+         // Create a new handler to hold servlets from the actors
+         ServletContextHandler servletHandler = 
+                 new ServletContextHandler(ServletContextHandler.SESSIONS);
+         
+         servletHandler.setContextPath(applicationPath.getExpression());          
+         
+         // Collect servlets from all model objects implementing HttpService   
+         // FIXME:  Check for overlapping URLs
+         NamedObj topLevel = toplevel();      
+         Iterator objects = topLevel.containedObjectsIterator();
+         while(objects.hasNext()) { 
+             Object object = objects.next(); 
+             if (object instanceof HttpService) {   
+                 HttpService service = (HttpService) object;
+                 String path = service.getRelativePath().getPath();
+                 servletHandler
+                     .addServlet(new ServletHolder(service.getServlet()), path);
+             }
+         }
+         
+         return servletHandler; 
+     }
+     
      ///////////////////////////////////////////////////////////////////
      ////                         private variables                 ////
-
-     /** A context handler which stores all of the servlets registered 
-      *  by other actors.
-      */
-     private ServletContextHandler _actorContextHandler;
-     
-     /** A list of handlers for web requests.  It is possible to have different
-      *  handlers for different content.  For example, the WebServer actor has
-      *  a ResourceHandler to serve files such as images, and a 
-      *  ServletContextHandler to serve content from servlets in the Ptolemy
-      *  model.  
-      */
-     private HandlerList _handlers;
      
      /** The maximum idle time for a connection.
       */

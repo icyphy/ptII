@@ -4,13 +4,13 @@
 <entity name="WebServerDE" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.0.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 22, 1225, 880}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={330, 146, 1229, 854}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[991, 770]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1001, 738]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.3866768696793">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.9345716248096">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{364.3291015624997, 281.1734378941725}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{542.539477888548, 398.9583013803681}">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model launches a web server and provides a service&#10;available at http://localhost:8080/ptolemnizer.&#10;Run the model and navigate to that location&#10;(or click on this comment).">
@@ -46,11 +46,11 @@
         </property>
     </property>
     <property name="WebServer" class="org.ptolemy.ptango.lib.WebServer">
-        <property name="resourceBase" class="ptolemy.data.expr.FileParameter" value="$PTII/org/ptolemy/ptango/demo/WebServerDE/img">
+        <property name="resourceLocation" class="ptolemy.data.expr.FileParameter" value="$PTII/org/ptolemy/ptango/demo/WebServerDE">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[685.0, 50.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[675.0, 55.0]">
         </property>
-        <property name="resourceBase2" class="ptolemy.data.expr.FileParameter" value="$PTII/org/ptolemy/ptango/demo/files">
+        <property name="resourceLocation2" class="ptolemy.data.expr.FileParameter" value="$PTII/org/ptolemy/ptango/demo/files">
         </property>
     </property>
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -78,9 +78,9 @@
         </property>
         <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.0,0.0,1.0}">
         </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="NOTE: the &quot;img&quot; elements refer a files&#10;with a path relative to the resourceBase&#10;parameters of the WebServer.&#10;You can add as many FileParameters&#10;as you like to the WebServer, and the&#10;specified files or URLs will be used&#10;to find resources referenced in web&#10;pages served.">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="NOTE: the &quot;img&quot; elements refer a files&#10;with a path relative to the resourceLocation&#10;parameters of the WebServer.  &#10;&#10;The first resourceLocation is by default&#10;the directory that the current model is in.&#10;&#10;The syntax &#10;&lt;img src=&quot;/files/img/Icon.gif&quot; /&gt; &#10;is a GET request to the web server.  &#10;First the web server determines which handler &#10;is mapped to URLs with the prefix /files&#10;in this case, it is a ResourceHandler created&#10;in WebServer.  (The prefix for the ResourceHandler&#10;is specified in WebServer's resourcePath parameter).  &#10;A ResourceHandler is a Jetty class that knows how &#10;to return files as part of an HttpResponse.&#10;&#10;Next, the ResourceHandler looks for a file /img/Icon.gif &#10;relative to the resourceLocation - here, the&#10;resourceLocation is the directory that this model is in, &#10;$PTII/org/ptolemy/ptango/demo/WebServerDE&#10;so the file is&#10;$PTII/org/ptolemy/ptango/demo/WebServerDE/img/Icon.gif&#10;&#10;Note that the resourcePath prefix does NOT have to &#10;be part of the resourceLocation's path anywhere.  &#10;In this example there is no /files in&#10;$PTII/org/ptolemy/ptango/demo/WebServerDE/img/Icon.gif&#10; &#10;You can add as many FileParameters&#10;as you like to the WebServer, and these&#10;directories or URLs will be searched for &#10;files.&#10;&#10;For example, StringConst2 uses a file&#10;that is stored in the WebServer's &#10;resourceLocation2, so &#10;&lt;img src=&quot;/files/PtolemyIISmallIcon.gif&quot; /&gt;&#10;maps to&#10;$PTII/org/ptolemy/ptango/demo/files/PtolemyIISmallIcon.gif&#10;&#10;&#10;">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[475.0, 335.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[555.0, 270.0]">
         </property>
     </property>
     <entity name="HttpActor" class="org.ptolemy.ptango.lib.HttpActor">
@@ -150,7 +150,7 @@
         </port>
     </entity>
     <entity name="StringConst" class="ptolemy.actor.lib.StringConst">
-        <property name="value" class="ptolemy.data.expr.Parameter" value="&lt;img src=&quot;Icon.gif&quot;/&gt;&lt;h1&gt;Ptolemnized Text&lt;/h1&gt;">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="&lt;img src=&quot;/files/img/Icon.gif&quot;/&gt;&lt;h1&gt;Ptolemnized Text&lt;/h1&gt;">
         </property>
         <doc>Create a constant sequence with a string value.</doc>
         <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
@@ -169,7 +169,7 @@
         </property>
     </entity>
     <entity name="StringConst2" class="ptolemy.actor.lib.StringConst">
-        <property name="value" class="ptolemy.data.expr.Parameter" value="&lt;p&gt;&lt;img src=&quot;PtolemyIISmallIcon.gif&quot;/&gt;">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="&lt;p&gt;&lt;img src=&quot;/files/PtolemyIISmallIcon.gif&quot;/&gt;">
         </property>
         <doc>Create a constant sequence with a string value.</doc>
         <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
