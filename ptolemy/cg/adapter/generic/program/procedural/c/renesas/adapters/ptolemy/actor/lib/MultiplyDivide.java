@@ -60,17 +60,17 @@ public class MultiplyDivide
         CodeStream codeStream = _templateParser.getCodeStream();
         codeStream.clear();
         List<String> args = new ArrayList<String>();
-        String computeResults = "";
+        StringBuffer computeResults = new StringBuffer();
         
         for (int i = 0; i < ((ptolemy.actor.lib.MultiplyDivide)_component).multiply.getWidth(); i++) {
-            computeResults += "if ($hasToken(multiply#" + i + ")) {\n" +
-                    "    result = result * $get(multiply#" + i + ");\n}"; 
+            computeResults.append("if ($hasToken(multiply#" + i + ")) {\n" +
+                    "    result = result * $get(multiply#" + i + ");\n}"); 
         }
         for (int i = 0; i < ((ptolemy.actor.lib.MultiplyDivide)_component).divide.getWidth(); i++) {
-            computeResults += "if ($hasToken(divide#" + i + ")) {\n" +
-            "    result = result / $get(divide#" + i + ");\n}"; 
+            computeResults.append("if ($hasToken(divide#" + i + ")) {\n" +
+                    "    result = result / $get(divide#" + i + ");\n}"); 
         }
-        args.add(computeResults);
+        args.add(computeResults.toString());
         
         codeStream.appendCodeBlock("fireBlock", args);
         return processCode(codeStream.toString());

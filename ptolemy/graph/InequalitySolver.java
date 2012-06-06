@@ -506,10 +506,10 @@ public class InequalitySolver {
             if (prevNS == null) {
                 prevNS = _NS;
             } else if (_NS.size() > 0 && prevNS.size() == _NS.size() && prevNS.containsAll(_NS) && loopCnt > _DEPTH_LIMIT) {
-                String errorMessage = "";
+                StringBuffer errorMessage = new StringBuffer();
                 for (Object o : _NS) {
                     Integer i = (Integer) o; 
-                    errorMessage += " (" + ((Info)_Ilist.get(i))._ineq.getGreaterTerm() + ", " + ((Info)_Ilist.get(i))._ineq.getLesserTerm() + ") ";
+                    errorMessage.append(" (" + ((Info)_Ilist.get(i))._ineq.getGreaterTerm() + ", " + ((Info)_Ilist.get(i))._ineq.getLesserTerm() + ") ");
                 }
                 throw new IllegalActionException("Cannot not resolve types: " + errorMessage);
             }
