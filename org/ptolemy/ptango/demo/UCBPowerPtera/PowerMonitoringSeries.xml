@@ -154,7 +154,7 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="[710.0, 5.0]">
             </property>
         </property>
-        <property name="mailConfigureFile" class="ptolemy.data.expr.StringParameter" value="">
+        <property name="mailConfigurationFile" class="ptolemy.data.expr.StringParameter" value="">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -174,9 +174,9 @@
             </property>
         </property>
         <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-            <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This Ptera model serves as a sub workflow model for reading power consumptions from a URI for&#10;a building. The initial TemperatureReader process reads power comsumptions from the URI. If there&#10;is an IO reading exception, the ExceptionHandler process is activated, otherwise, The power &#10;consumption is then stored in an array of recent readings by the Shift state. The Shift process &#10;also computes the avarage of recent power consumptions. If the avarage is higher than some certain&#10;power consumption threshhold, the process Count is activated that counts the number of times&#10;that average power consumptions higher are higher than the threshhold. If the number of times&#10;that average power consumptions are higher than the threshhold exceeds a certain value, the &#10;EmailAlert process is activated that sends emails to registered email addresses configured using the&#10;file pointed by mailConfigureFile.&#10;&#10;Author: Dai Bui">
+            <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This Ptera model serves as a sub workflow model for reading power consumptions from a URI for a building.&#10;From the initial state, we could configure to either transit into the ReadOnlineData process that reads power &#10;comsumptions from the URI, or ReadOfflineData process that reads from a file. If there is an IO reading &#10;exception, the ExceptionHandler process is activated, otherwise, the power consumption is then stored in an &#10;array of recent readings by the Shift state. The Shift process also computes the avarage of recent power &#10;consumptions. If the moving avarage is higher than some certain power consumption threshold, the process &#10;Count is activated that counts the number of times that average power consumptions higher are higher than &#10;the threshold. If the number of times that average power consumptions are higher than the threshold exceeds &#10;a certain value, the EmailAlert process is activated that sends emails to registered email addresses configured &#10;using the file pointed by mailConfigurationFile.&#10;&#10;Author: Dai Bui">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[195.0, 375.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{195.0, 375.0}">
             </property>
         </property>
         <property name="powerAlertThreshhold" class="ptolemy.data.expr.Parameter" value="500">
@@ -427,9 +427,6 @@
             </property>
         </relation>
         <relation name="relation9" class="ptolemy.domains.ptera.kernel.SchedulingRelation">
-            <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute">
-                <display name="condition"/>
-            </property>
             <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="-0.21562406997801728">
             </property>
             <property name="gamma" class="ptolemy.data.expr.Parameter" value="0.3702053086309419">
@@ -596,7 +593,7 @@
             </property>
         </entity>
         <entity name="FileReader" class="ptolemy.actor.lib.io.FileReader">
-            <property name="fileOrURL" class="ptolemy.data.expr.FileParameter" value="$mailConfigureFile">
+            <property name="fileOrURL" class="ptolemy.data.expr.FileParameter" value="$mailConfigurationFile">
             </property>
             <doc>Read an entire file and output as a string</doc>
             <property name="_location" class="ptolemy.kernel.util.Location" value="{310.0, 160.0}">
@@ -873,7 +870,7 @@
             </port>
         </entity>
         <entity name="FileReader" class="ptolemy.actor.lib.io.FileReader">
-            <property name="fileOrURL" class="ptolemy.data.expr.FileParameter" value="$mailConfigureFile">
+            <property name="fileOrURL" class="ptolemy.data.expr.FileParameter" value="$mailConfigurationFile">
             </property>
             <doc>Read an entire file and output as a string</doc>
             <property name="_location" class="ptolemy.kernel.util.Location" value="{470.0, 225.0}">

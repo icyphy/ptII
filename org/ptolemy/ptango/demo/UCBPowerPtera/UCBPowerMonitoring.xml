@@ -16,7 +16,7 @@
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.7689030883919">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{892.7338123769605, 572.3420936910853}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{892.7338123769605, 572.3420936910851}">
     </property>
     <property name="LocalPreferences" class="ptolemy.actor.gui.PtolemyPreferences">
         <property name="backgroundColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,1.0,1.0,1.0}">
@@ -27,7 +27,7 @@
     </property>
     <property name="_icon" class="ptolemy.vergil.icon.EditorIcon">
     </property>
-    <property name="mailConfigureFile" class="ptolemy.data.expr.StringParameter" value="mailconfigure.txt">
+    <property name="mailConfigurationFile" class="ptolemy.data.expr.StringParameter" value="mailconfigure.txt">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -66,7 +66,7 @@
         </property>
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model periodically reads power consumptions in kW of various UC Berkeley buildings from URLs. &#10;This model computes average recent power consumptions of each building and sends alterts to &#10;registered emails. Parameter monitoringPeriod determines intervals between readings in seconds.&#10;The mailConfigureFile parameter points to the file that configures the email alerting service.&#10;&#10;This model demonstrates how to use the Ptera to describe an internet service workflow. It also uses&#10;the model reference mechanism to spawn separate reading workflows for buildings.&#10;&#10;Author: Dai Bui">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model periodically reads power consumptions in kW of various UC Berkeley buildings from respective &#10;URLs. This model computes average recent power consumptions of each building and sends alterts to &#10;registered emails. Parameter monitoringPeriod determines intervals between readings in seconds.&#10;The mailConfigurationFile parameter points to the file that configures the email alerting service.&#10;&#10;This model demonstrates how to use the Ptera to describe an internet service workflow. It also uses&#10;the model reference mechanism to spawn separate reading workflows for buildings.&#10;&#10;Author: Dai Bui">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[55.0, 925.0]">
         </property>
@@ -151,7 +151,7 @@
         </property>
         <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.1000343760743">
         </property>
-        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{159.3281250000002, 361.7759375}">
+        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{159.3281250000003, 361.7759375}">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.EditorIcon">
             <property name="ellipse" class="ptolemy.vergil.kernel.attributes.EllipseAttribute">
@@ -289,7 +289,7 @@
                 <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 </property>
             </port>
-            <port name="mailConfigureFile" class="ptolemy.actor.TypedIOPort">
+            <port name="mailConfigurationFile" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
                 <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 </property>
@@ -308,7 +308,7 @@
         <entity name="Const3" class="ptolemy.actor.lib.Const">
             <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="NONE">
             </property>
-            <property name="value" class="ptolemy.data.expr.Parameter" value="mailConfigureFile">
+            <property name="value" class="ptolemy.data.expr.Parameter" value="mailConfigurationFile">
             </property>
             <doc>Create a constant sequence.</doc>
             <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
@@ -391,7 +391,7 @@
         <link port="VisualModelReference.URI" relation="relation"/>
         <link port="VisualModelReference.building" relation="relation4"/>
         <link port="VisualModelReference.iconColor" relation="relation2"/>
-        <link port="VisualModelReference.mailConfigureFile" relation="relation5"/>
+        <link port="VisualModelReference.mailConfigurationFile" relation="relation5"/>
         <link port="VisualModelReference.useOnlineData" relation="relation6"/>
         <link port="VisualModelReference.file" relation="relation7"/>
         <link port="Const3.output" relation="relation5"/>
