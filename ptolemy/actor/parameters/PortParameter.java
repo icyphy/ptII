@@ -174,6 +174,11 @@ public class PortParameter extends Parameter implements Initializable {
             NameDuplicationException {
         this(container, name);
         setToken(token);
+        if (token != null) {
+            _persistentExpression = token.toString();
+        } else {
+            _persistentExpression = "";
+        }
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -249,6 +254,17 @@ public class PortParameter extends Parameter implements Initializable {
         // that port is cloned and the container of both is set.
         newObject._port = null;
         return newObject;
+    }
+    
+    /** Get the persistent expression.
+     *  @return The expression used by this variable.
+     *  @see #setExpression(String)
+     */
+    public String getExpression() {
+        if (_persistentExpression == null) {
+            return "";
+        }
+        return _persistentExpression;
     }
 
     /** Return the associated port.  Normally, there always is one,
@@ -382,7 +398,7 @@ public class PortParameter extends Parameter implements Initializable {
             _debug("setCurrentValue: " + token);
         }
 
-        _setTokenAndNotify(token);
+        super.setToken(token);
         setUnknown(false);
     }
 
@@ -410,6 +426,16 @@ public class PortParameter extends Parameter implements Initializable {
                 _port._settingName = false;
             }
         }
+    }
+    
+    /** Override the base class to record the persistent expression.
+     *  @param expr The expression for this variable.
+     *  @see #getExpression()
+     */
+    @Override
+    public void setExpression(String expression) {
+        _persistentExpression = expression;
+        super.setExpression(expression);
     }
 
     /** Set or change the name, and propagate the name change to the
@@ -450,6 +476,24 @@ public class PortParameter extends Parameter implements Initializable {
         }
     }
 
+    /** Override the base class to record the persistent expression
+     *  to be the string representation of the specified token.
+     *  @param token The new persistent value.
+     *  @exception IllegalActionException If the token type is not
+     *   compatible with specified constraints, or if you are attempting
+     *   to set to null a variable that has value dependents, or if the
+     *   container rejects the change.
+     */
+    @Override
+    public void setToken(Token newValue) throws IllegalActionException {
+        if (newValue != null) {
+            _persistentExpression = newValue.toString();
+        } else {
+            _persistentExpression = "";
+        }
+        super.setToken(newValue);
+    }
+
     /** Check to see whether a token has arrived at the
      *  associated port, and if so, update the current value of
      *  parameter with that token.  If there is no associated port,
@@ -463,6 +507,9 @@ public class PortParameter extends Parameter implements Initializable {
         if ((port != null) && (port.isOutsideConnected()) && port.hasToken(0)) {
             Token token = port.get(0);
             setCurrentValue(token);
+            // Have to validate so that containers of dependent
+            // variables get attributeChanged() called.
+            validate();
 
             if (_debugging) {
                 _debug("Updated parameter value to: " + token);
@@ -524,7 +571,10 @@ public class PortParameter extends Parameter implements Initializable {
     /** List of objects whose (pre)initialize() and wrapup() methods should be
      *  slaved to these.
      */
-    private transient List<Initializable> _initializables;       
+    private transient List<Initializable> _initializables;
+    
+    /** The persistent expression. */
+    private String _persistentExpression;
 
     /** Indicator that we are in the midst of setting the name. */
     private boolean _settingName = false;
