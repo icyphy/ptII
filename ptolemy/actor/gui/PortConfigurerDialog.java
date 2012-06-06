@@ -1135,7 +1135,9 @@ public class PortConfigurerDialog extends PtolemyDialog implements
         public Component getTableCellRendererComponent(JTable table,
                 Object value, boolean isSelected, boolean hasFocus, int row,
                 int col) {
-            if (value == Boolean.TRUE) {
+            // FindBugs: Use equals, not == and avoid RC: Suspicious
+            // reference comparison of Boolean values.
+            if (value.equals(Boolean.TRUE)) {
                 setSelected(true);
             } else {
                 setSelected(false);
