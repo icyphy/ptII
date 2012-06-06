@@ -156,7 +156,7 @@ public class ImportFMUAction extends AbstractAction {
                 // read the file or if the modification time has changed.
                 //fmuFileName = fmuFile.asFile().getCanonicalPath();
                 fmuFileName = _lastLocation;
-                if (fmuFileName == _fmuFileName) {
+                if (fmuFileName.equals(_fmuFileName)) {
                     return;
                 }
                 _fmuFileName = fmuFileName;
