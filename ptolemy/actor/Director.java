@@ -156,6 +156,9 @@ public class Director extends Attribute implements Executable {
     ///////////////////////////////////////////////////////////////////
     ////                         public parameters                 ////
 
+    /** The clock that keeps track of current time of the model. */
+    public LocalClock localClock;
+
     /** The local time of model when this director is initialized.
      *  By default, this is blank, which
      *  indicates that the start time is the current time of the enclosing
@@ -215,7 +218,7 @@ public class Director extends Attribute implements Executable {
             } else {
                 _startTime = new Time(this, startTimeValue.doubleValue());
             }
-            _localClock.resetLocalTime(getModelStartTime());
+            localClock.resetLocalTime(getModelStartTime());
         } else if (attribute == stopTime) {
             DoubleToken stopTimeValue = (DoubleToken) stopTime.getToken();
             if (stopTimeValue != null) {
@@ -223,55 +226,7 @@ public class Director extends Attribute implements Executable {
             } else {
                 _stopTime = null;
             }
-        } else if (_localClock != null && attribute == _localClock.clockDrift) {
-            double drift;
-            drift = ((DoubleToken) _localClock.clockDrift.getToken())
-                    .doubleValue();
-            if (drift != _localClock.getClockDrift()) {
-                _localClock.setClockDrift(drift);
-            }
-        } else if (_localClock != null
-                && attribute == _localClock.globalTimeResolution) {
-            // This is extremely frequently used, so cache the value.
-            // Prevent this from changing during a run!
-            double newResolution = ((DoubleToken) _localClock.globalTimeResolution
-                    .getToken()).doubleValue();
-
-            // FindBugs reports this comparison as a problem, but it
-            // is not an issue because we usually don't calculate
-            // _timeResolution, we set it.
-            if (newResolution != _localClock.getTimeResolution()) {
-                NamedObj container = getContainer();
-
-                if (container instanceof Actor) {
-                    Manager manager = ((Actor) container).getManager();
-
-                    if (manager != null) {
-                        Manager.State state = manager.getState();
-
-                        if ((state != Manager.IDLE)
-                                && (state != Manager.PREINITIALIZING)) {
-                            throw new IllegalActionException(this,
-                                    "Cannot change timePrecision during a run.");
-                        }
-                    }
-                }
-
-                if (newResolution <= ExtendedMath.DOUBLE_PRECISION_SMALLEST_NORMALIZED_POSITIVE_DOUBLE) {
-                    throw new IllegalActionException(
-                            this,
-                            "Invalid timeResolution: "
-                                    + newResolution
-                                    + "\n The value must be "
-                                    + "greater than the smallest, normalized, "
-                                    + "positive, double value with a double "
-                                    + "precision: "
-                                    + ExtendedMath.DOUBLE_PRECISION_SMALLEST_NORMALIZED_POSITIVE_DOUBLE);
-                }
-
-                _localClock.setTimeResolution(newResolution);
-            }
-        }
+        } 
 
         super.attributeChanged(attribute);
     }
@@ -288,8 +243,6 @@ public class Director extends Attribute implements Executable {
         newObject._actorsFinishedExecution = null;
         newObject._initializables = null;
         newObject._zeroTime = new Time(newObject);
-        newObject._localClock = (LocalClock) _localClock.clone(workspace,
-                newObject);
         return newObject;
     }
 
@@ -567,7 +520,7 @@ public class Director extends Attribute implements Executable {
                             + time + " with microstep " + microstep);
                 }
                 // Translate the local time into an environment time.
-                Time environmentTime = _localClock
+                Time environmentTime = localClock
                         .getEnvironmentTimeForLocalTime(time);
                 Time result = director.fireAt(container, environmentTime,
                         microstep);
@@ -582,10 +535,10 @@ public class Director extends Attribute implements Executable {
                                     + result + ".");
                 }
                 // Translate the response from the environment into a local time.
-                return _localClock.getLocalTimeForEnvironmentTime(result);
+                return localClock.getLocalTimeForEnvironmentTime(result);
             }
         }
-        return _localClock.getLocalTime();
+        return localClock.getLocalTime();
     }
 
     /** Return a causality interface for the composite actor that
@@ -630,7 +583,7 @@ public class Director extends Attribute implements Executable {
                 }
             }
         }
-        return _localClock.getLocalTime();
+        return localClock.getLocalTime();
     }
 
     /** Return the error tolerance, if any, of this director.
@@ -745,7 +698,7 @@ public class Director extends Attribute implements Executable {
      *  @see #setModelTime(Time)
      */
     public Time getModelTime() {
-        return _localClock.getLocalTime();
+        return localClock.getLocalTime();
     }
 
     /** Return the next time of interest in the model being executed by
@@ -810,7 +763,7 @@ public class Director extends Attribute implements Executable {
      */
     public final double getTimeResolution() {
         // This method is final for performance reason.
-        return _localClock.getTimeResolution();
+        return localClock.getTimeResolution();
     }
 
     /** Return true if this director assumes and exports
@@ -874,8 +827,8 @@ public class Director extends Attribute implements Executable {
         // Reset the flag that causes postfire() to return false.
         _finishRequested = false;
 
-        _localClock.resetLocalTime(getModelStartTime());
-        _localClock.start();
+        localClock.resetLocalTime(getModelStartTime());
+        localClock.start();
 
         // Initialize the contained actors.
         Nameable container = getContainer();
@@ -1086,7 +1039,7 @@ public class Director extends Attribute implements Executable {
             _debug("Director: Called prefire().");
         }
 
-        setModelTime(_localClock.getLocalTimeForCurrentEnvironmentTime());
+        setModelTime(localClock.getLocalTimeForCurrentEnvironmentTime());
 
         if (_debugging) {
             _debug("-- Setting current time to " + getModelTime());
@@ -1127,10 +1080,10 @@ public class Director extends Attribute implements Executable {
                 // Can't happen.
                 e.printStackTrace();
             }
-            _localClock.globalTimeResolution.setToken("" + timeResolutionDouble);
+            localClock.globalTimeResolution.setToken("" + timeResolutionDouble);
         }
         _zeroTime = new Time(this, 0.0);
-        _localClock.initialize();
+        localClock.initialize();
 
         // First invoke initializable methods.
         if (_initializables != null) {
@@ -1149,8 +1102,8 @@ public class Director extends Attribute implements Executable {
         // access current time, set the start time. This is required
         // for instance in DDF.
         // The following will be repeated in initialize(). 
-        _localClock.resetLocalTime(getModelStartTime());
-        _localClock.start();
+        localClock.resetLocalTime(getModelStartTime());
+        localClock.start();
 
         // preinitialize protected variables.
         _stopRequested = false;
@@ -1249,7 +1202,7 @@ public class Director extends Attribute implements Executable {
      *  @exception IllegalActionException If the fireAt() request throws it.
      */
     public void resume() throws IllegalActionException {
-        _localClock.start();
+        localClock.start();
     }
 
     /** Specify the container.  If the specified container is an instance
@@ -1351,7 +1304,7 @@ public class Director extends Attribute implements Executable {
      *  @see #getModelTime()
      */
     public void setModelTime(Time newTime) throws IllegalActionException {
-        _localClock.setLocalTime(newTime);
+        localClock.setLocalTime(newTime);
     }
 
     /** Set time resolution.
@@ -1359,7 +1312,7 @@ public class Director extends Attribute implements Executable {
      *  @see #getTimeResolution()
      */
     public void setTimeResolution(double timeResolution) {
-        _localClock.setTimeResolution(timeResolution);
+        localClock.setTimeResolution(timeResolution);
     }
 
     /** Request that the director cease execution altogether.
@@ -1455,7 +1408,7 @@ public class Director extends Attribute implements Executable {
      *  @exception IllegalActionException If the suspend cannot be completed.
      */
     public void suspend() {
-        _localClock.stop();
+        localClock.stop();
     }
 
     /** Terminate any currently executing model with extreme prejudice.
@@ -1764,9 +1717,6 @@ public class Director extends Attribute implements Executable {
      */
     protected transient List<Initializable> _initializables;
 
-    /** The clock that keeps track of current time of the model. */
-    protected LocalClock _localClock;
-
     /** Indicator that a stop has been requested by a call to stop(). */
     protected boolean _stopRequested = false;
 
@@ -1802,8 +1752,7 @@ public class Director extends Attribute implements Executable {
      */
     private void _initializeParameters() throws IllegalActionException,
             NameDuplicationException {
-        _localClock = new LocalClock(this, "LocalClock");
-        _localClock.setVisibility(Settable.NOT_EDITABLE);
+        localClock = new LocalClock(this, "localClock");
 
         startTime = new Parameter(this, "startTime");
         startTime.setTypeEquals(BaseType.DOUBLE);

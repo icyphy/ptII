@@ -368,11 +368,11 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
                             + time + " with microstep " + microstep);
                 }
                 // Translate the local time into an environment time.
-                Time environmentTime = _localClock.getEnvironmentTimeForLocalTime(time);
+                Time environmentTime = localClock.getEnvironmentTimeForLocalTime(time);
                 Time result = director.fireAt(container, environmentTime, microstep);
                 
                 // Translate the response from the environment into a local time.
-                return _localClock.getLocalTimeForEnvironmentTime(result);
+                return localClock.getLocalTimeForEnvironmentTime(result);
             }
             
         } 
@@ -460,7 +460,7 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
                 return getModelTime();
             }
             // The result returned below needs to be adjusted by the current offset.
-            Time result = _localClock.getLocalTimeForEnvironmentTime(super.getModelNextIterationTime());
+            Time result = localClock.getLocalTimeForEnvironmentTime(super.getModelNextIterationTime());
             return result;
         } catch (IllegalActionException e) {
             // Any exception here should have shown up before now.

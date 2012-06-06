@@ -66,7 +66,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="{-127.5, -112.5}">
         </property>
         <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
-            <property name="LocalClock" class="ptolemy.actor.LocalClock">
+            <property name="localClock" class="ptolemy.actor.LocalClock">
                 <property name="clockRate" class="ptolemy.data.expr.Parameter" value="clockDrift">
                 </property>
             </property>
@@ -107,7 +107,7 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="[-50.0, -350.0]">
             </property>
             <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
-                <property name="LocalClock" class="ptolemy.actor.LocalClock">
+                <property name="localClock" class="ptolemy.actor.LocalClock">
                     <property name="clockRate" class="ptolemy.data.expr.Parameter" value="innerClockDrift">
                     </property>
                 </property>

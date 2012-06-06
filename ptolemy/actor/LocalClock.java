@@ -27,11 +27,10 @@
 package ptolemy.actor;
 
 import java.util.Collection;
-import java.util.LinkedList;
-import java.util.List;
 
 import ptolemy.actor.parameters.SharedParameter;
 import ptolemy.actor.util.Time;
+import ptolemy.data.DoubleToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.util.AbstractSettableAttribute;
@@ -39,9 +38,9 @@ import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
-import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.ValueListener;
 import ptolemy.kernel.util.Workspace;
+import ptolemy.math.ExtendedMath;
 
 /** A clock that keeps track of model time at a level of the model hierarchy
  *  and relates it to the time of the enclosing model, if there is one. The time
@@ -60,6 +59,12 @@ import ptolemy.kernel.util.Workspace;
  *  {@link #start()} and {@link #stop()} </p>
  *
  *  <p>
+ *  This class implements the AbstractSettableAttribute interface because
+ *  we want the localClock to be shown as a parameter in the editor
+ *  dialogue of a director. A better implementation would be to derive
+ *  LocalClock from Attribute and make changes to vergil such that
+ *  Attributes are displayed in the dialogue, however, for the moment, 
+ *  the required changes are too complex. 
  *  The value of the clock is exposed as an attribute that, by default, 
  *  is non editable. The clock drift is a contained attribute that can 
  *  be modified. </p>
@@ -81,7 +86,7 @@ import ptolemy.kernel.util.Workspace;
  * @Pt.ProposedRating yellow (eal)
  * @Pt.AcceptedRating red (eal)
  */
-public class LocalClock extends AbstractSettableAttribute implements ValueListener {
+public class LocalClock extends AbstractSettableAttribute {
 
     /** Construct an attribute with the given name contained by the specified
      *  entity. The container argument must not be null, or a
@@ -99,15 +104,13 @@ public class LocalClock extends AbstractSettableAttribute implements ValueListen
     public LocalClock(NamedObj container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        _director = (Director) container;
         globalTimeResolution = new SharedParameter(this, "globalTimeResolution",
-                Director.class, "1E-10");
-        globalTimeResolution.addValueListener(this);
+                null, "1E-10");
         
         clockDrift = new Parameter(this, "clockRate");
         clockDrift.setExpression("1.0");
         clockDrift.setTypeEquals(BaseType.DOUBLE);
-        clockDrift.addValueListener(this);
+        
         
         // Make sure getCurrentTime() never returns null.
         _localTime = Time.NEGATIVE_INFINITY; 
@@ -136,32 +139,85 @@ public class LocalClock extends AbstractSettableAttribute implements ValueListen
     ///////////////////////////////////////////////////////////////////
     ////                         public method                     ////
     
-    /** Add a listener to be notified when the value of this variable changes.
-     *  @param listener The listener to add.
-     *  @see #removeValueListener(ValueListener)
+    /** This method has to be implemented for the AbstractSettableAttribute
+     *  interface. This interface is only needed for the LocalClock to
+     *  show up in the configuration dialogue of the container (the director).
+     *  The method will not be used for this class so the implementation 
+     *  is empty.
+     *  @param listener The listener to be added.
      */
     public void addValueListener(ValueListener listener) {
-        if (_valueListeners == null) {
-            _valueListeners = new LinkedList();
-        }
-
-        if (!_valueListeners.contains(listener)) {
-            _valueListeners.add(listener);
-        }
+        // nothing to do.
     }
     
-    /** Clone the object into the specified workspace for the specified
-     *  director. 
-     *  @param workspace The workspace for the cloned object.
-     *  @param director The director for the cloned object.
-     *  @return The cloned object.
-     *  @exception CloneNotSupportedException Thrown by super class.
+    /** Delegate the call to the director, which handles changes
+     *  to the parameters of the clock.
+     *  @param attribute The attribute that changed.
+     *  @throws IllegalActionException If the director throws it. 
      */
-    public Object clone(Workspace workspace, Director director) throws CloneNotSupportedException { 
+    @Override
+    public void attributeChanged(Attribute attribute)
+            throws IllegalActionException { 
+        if (attribute == clockDrift) {
+            double drift;
+            drift = ((DoubleToken) clockDrift.getToken())
+                    .doubleValue();
+            if (drift != getClockDrift()) {
+                setClockDrift(drift);
+            }
+        } else if (attribute == globalTimeResolution) {
+            // This is extremely frequently used, so cache the value.
+            // Prevent this from changing during a run!
+            double newResolution = ((DoubleToken) globalTimeResolution
+                    .getToken()).doubleValue();
+
+            // FindBugs reports this comparison as a problem, but it
+            // is not an issue because we usually don't calculate
+            // _timeResolution, we set it.
+            if (newResolution != getTimeResolution()) {
+                NamedObj container = getContainer().getContainer();
+
+                if (container instanceof Actor) {
+                    Manager manager = ((Actor) container).getManager();
+
+                    if (manager != null) {
+                        Manager.State state = manager.getState();
+
+                        if ((state != Manager.IDLE)
+                                && (state != Manager.PREINITIALIZING)) {
+                            throw new IllegalActionException(this,
+                                    "Cannot change timePrecision during a run.");
+                        }
+                    }
+                }
+
+                if (newResolution <= ExtendedMath.DOUBLE_PRECISION_SMALLEST_NORMALIZED_POSITIVE_DOUBLE) {
+                    throw new IllegalActionException(
+                            this,
+                            "Invalid timeResolution: "
+                                    + newResolution
+                                    + "\n The value must be "
+                                    + "greater than the smallest, normalized, "
+                                    + "positive, double value with a double "
+                                    + "precision: "
+                                    + ExtendedMath.DOUBLE_PRECISION_SMALLEST_NORMALIZED_POSITIVE_DOUBLE);
+                }
+
+                setTimeResolution(newResolution);
+            }
+        }
+        super.attributeChanged(attribute);
+    }
+    
+    /** Clone the object into the specified workspace. 
+     *  @param workspace The workspace for the cloned object.
+     *  @return The cloned object.
+     *  @exception CloneNotSupportedException If thrown by super class.
+     */
+    public Object clone(Workspace workspace) throws CloneNotSupportedException { 
         LocalClock newObject = (LocalClock) super.clone(workspace);
-        newObject._director = director; 
         newObject._localTime = Time.NEGATIVE_INFINITY; 
-        newObject._offset = _director._zeroTime;
+        newObject._offset = ((Director)getContainer())._zeroTime;
         newObject._drift = 1.0;
         return newObject;
     }
@@ -174,25 +230,7 @@ public class LocalClock extends AbstractSettableAttribute implements ValueListen
         // FIXME: This returns a double, what does 1.0 mean?  0.0?
         return _drift;
     }  
-    
-    /** Return the display name.
-     *  @return The display name.
-     */
-    public String getDisplayName() {
-        return "LocalClock";
-    }
-    
-    /** Get the expression currently used by this settable. The expression
-     *  is either the current value of local time.
-     *  @return The current local time. 
-     */
-    public String getExpression() {
-        if (_localTime == null)
-            return "";
-        else
-            return _localTime.toString();
-    }
-    
+        
     /** Get the environment time that corresponds to the given local time.
      *  The given local time is required to be either equal to or
      *  greater than the committed time when this method is called.
@@ -214,10 +252,17 @@ public class LocalClock extends AbstractSettableAttribute implements ValueListen
         if (_drift != 1.0) {
             double environmentTimePassedSinceCommitDoubleValue = environmentTimePassedSinceCommit.getDoubleValue();
             environmentTimePassedSinceCommitDoubleValue =  environmentTimePassedSinceCommitDoubleValue / _drift;
-            environmentTimePassedSinceCommit = new Time(_director, environmentTimePassedSinceCommitDoubleValue);
+            environmentTimePassedSinceCommit = new Time(((Director)getContainer()), environmentTimePassedSinceCommitDoubleValue);
         }
         Time environmentTime = _lastCommitEnvironmentTime.add(environmentTimePassedSinceCommit); 
         return environmentTime;
+    }
+    
+    /** Return the local time. 
+     *  @return The local time as a string value.
+     */
+    public String getExpression() {
+        return String.valueOf(_localTime);
     }
     
     /** Get current local time. If it has never been set, then this will return
@@ -239,7 +284,7 @@ public class LocalClock extends AbstractSettableAttribute implements ValueListen
      *   corresponding to the last committed local time.
      */
     public Time getLocalTimeForCurrentEnvironmentTime() throws IllegalActionException {   
-        return getLocalTimeForEnvironmentTime(_director.getEnvironmentTime()); 
+        return getLocalTimeForEnvironmentTime(((Director)getContainer()).getEnvironmentTime()); 
     }
     
     /** Get the local time that corresponds to the given environment time.
@@ -267,23 +312,12 @@ public class LocalClock extends AbstractSettableAttribute implements ValueListen
         if (_drift != 1.0) {
             double localTimePassedSinceCommitDoubleValue = environmentTimePassedSinceCommit.getDoubleValue();
             localTimePassedSinceCommitDoubleValue = localTimePassedSinceCommitDoubleValue * _drift;
-            localTimePassedSinceCommit = new Time(_director, localTimePassedSinceCommitDoubleValue);
+            localTimePassedSinceCommit = new Time(((Director)getContainer()), localTimePassedSinceCommitDoubleValue);
         }
         Time localTime = _lastCommitEnvironmentTime.subtract(_offset).add(localTimePassedSinceCommit);  
         return localTime;
     }
-    
-    /** Return visibility of local clock. If visibility hasn't been
-     *  set it returns {@link Settable.NOT_EDITABLE}.
-     *  @see #setVisibility(Visibility)
-     */
-    public Visibility getVisibility() {
-        if (_visibility == null) {
-            return Settable.NOT_EDITABLE;
-        }
-        return _visibility;
-    }
-    
+        
     /** Get the time resolution of the model. The time resolution is
      *  the value of the <i>timeResolution</i> parameter. This is the
      *  smallest time unit for the model.
@@ -295,6 +329,14 @@ public class LocalClock extends AbstractSettableAttribute implements ValueListen
         return _timeResolution;
     }
     
+    /** The LocalClock is not editable, thus visibility is
+     *  always set to NOT_EDITABLE.
+     *  @return NOT_EDITABLE.
+     */
+    public Visibility getVisibility() {
+        return NOT_EDITABLE;
+    }
+    
     /** Initialize parameters that cannot be initialized in the 
      *  constructor. For instance, Time objects cannot be created
      *  in the constructor because the time resolution might not be 
@@ -303,19 +345,18 @@ public class LocalClock extends AbstractSettableAttribute implements ValueListen
      *  MOMLParser after the director is initialized.
      */
     public void initialize() {
-        _offset = _director._zeroTime; 
+        _offset = ((Director)getContainer())._zeroTime; 
     }
     
-    /** Remove a listener from the list of listeners that is
-     *  notified when the value of this variable changes.  If no such listener
-     *  exists, do nothing.
-     *  @param listener The listener to remove.
-     *  @see #addValueListener(ValueListener)
+    /** This method has to be implemented for the AbstractSettableAttribute
+     *  interface. This interface is only needed for the LocalClock to
+     *  show up in the configuration dialogue of the container (the director).
+     *  The method will not be used for this class so the implementation 
+     *  is empty.
+     *  @param listener The listener to be removed.
      */
     public void removeValueListener(ValueListener listener) {
-        if (_valueListeners != null) {
-            _valueListeners.remove(listener);
-        }
+        // nothing to do.
     }
     
     /** Set local time and commit.
@@ -341,7 +382,7 @@ public class LocalClock extends AbstractSettableAttribute implements ValueListen
     public void setClockDrift(double drift) throws IllegalActionException {  
         // FIXME: This returns a double, what does 1.0 mean?  0.0?
         if (drift <= 0.0) {
-            throw new IllegalActionException(_director,
+            throw new IllegalActionException(((Director)getContainer()),
                     "Illegal clock drift: "
                     + drift
                     + ". Clock drift is required to be positive.");
@@ -360,7 +401,7 @@ public class LocalClock extends AbstractSettableAttribute implements ValueListen
      */
     public void setLocalTime(Time time) throws IllegalActionException { 
         if (_lastCommitLocalTime != null && time.compareTo(_lastCommitLocalTime) < 0) {
-            throw new IllegalActionException(_director,
+            throw new IllegalActionException(((Director)getContainer()),
                     "Cannot set local time to "
                     + time
                     + ", which is earlier than the last committed current time "
@@ -369,21 +410,23 @@ public class LocalClock extends AbstractSettableAttribute implements ValueListen
         _localTime = time; 
     }
     
-    /** Set the visibility of this Settable. The argument should be one
-     *  of the public static instances in Settable.
-     *  @param visibility The visibility of this variable.
-     *  @see #getVisibility()
-     */
-    public void setVisibility(Visibility visibility) {
-        _visibility = visibility;
-    }
-    
     /** Set time resolution.
      *  @param timeResolution The new time resolution.
      *  @see #getTimeResolution()
      */
     public void setTimeResolution(double timeResolution) {
         _timeResolution = timeResolution;
+    }
+    
+    /** This method has to be implemented for the AbstractSettableAttribute
+     *  interface. This interface is only needed for the LocalClock to
+     *  show up in the configuration dialogue of the container (the director).
+     *  This method does not do anything because visibility is always
+     *  NOT_EDITABLE.
+     *  @param listener The new visibility.
+     */
+    public void setVisibility(Visibility visibility) {
+        // nothing to do, visibility is always false.
     }
    
         
@@ -406,27 +449,15 @@ public class LocalClock extends AbstractSettableAttribute implements ValueListen
         _commit();
     } 
     
-    /** Check the validity of the expression set in setExpression().
-     *  @return null, indicating that no settables are also validated.
-     *  @exception IllegalActionException not thrown in this class.
-     */
-    public Collection validate() throws IllegalActionException { 
-        // FIXME: is there anything that needs to be done here?
+    /** This method has to be implemented for the AbstractSettableAttribute
+     *  interface. This interface is only needed for the LocalClock to
+     *  show up in the configuration dialogue of the container (the director).
+     *  The value of the LocalClock does not need validation, thus this method 
+     *  does not do anything.
+     *  @return Null.
+     */  
+    public Collection validate() throws IllegalActionException {
         return null;
-    }
-    
-    /** React to the change in the clock drift parameter.
-     *  @param settable The object that has changed value.
-     *  @exception IllegalActionException If Token cannot be parsed or
-     *  time object cannot be created.
-     */
-    public void valueChanged(Settable settable) {
-        try {
-            _director.attributeChanged((Attribute) settable);
-        } catch (IllegalActionException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
     }
     
     ///////////////////////////////////////////////////////////////////
@@ -440,7 +471,7 @@ public class LocalClock extends AbstractSettableAttribute implements ValueListen
         }
         // skip if local time has never been set.
         if (_localTime != Time.NEGATIVE_INFINITY) {
-            Time environmentTime = _director.getEnvironmentTime();  
+            Time environmentTime = ((Director)getContainer()).getEnvironmentTime();  
             _offset = environmentTime.subtract(_localTime);  
             _lastCommitEnvironmentTime = environmentTime; 
             _lastCommitLocalTime = _localTime;
@@ -452,9 +483,6 @@ public class LocalClock extends AbstractSettableAttribute implements ValueListen
     
     /** The current time of this clock. */
     private Time _localTime;
-    
-    /** The associated director. */
-    private Director _director;
     
     /** The current clock drift.
      *  The drift is initialized to 1.0 which means that the
@@ -480,11 +508,5 @@ public class LocalClock extends AbstractSettableAttribute implements ValueListen
 
     /** Time resolution cache, with a reasonable default value. */
     private double _timeResolution = 1E-10;
-    
-    /** Listeners for changes in value. */
-    private List<ValueListener> _valueListeners;
-    
-    /** Visibility of local clock value. */
-    private Visibility _visibility;
 
 }

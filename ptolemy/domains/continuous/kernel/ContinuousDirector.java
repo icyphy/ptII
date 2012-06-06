@@ -516,7 +516,7 @@ public class ContinuousDirector extends FixedPointDirector implements
                     if (timeIncrement == 1.0) {
                         _isIntermediateStep = false;
                     }
-                    _localClock.setLocalTime(_iterationBeginTime.add(_currentStepSize
+                    localClock.setLocalTime(_iterationBeginTime.add(_currentStepSize
                             * timeIncrement));
                     _index = 0;
                     if (_debugging) {
@@ -960,7 +960,7 @@ public class ContinuousDirector extends FixedPointDirector implements
     public void rollBackToCommittedState() throws IllegalActionException {
         // Restore the local view of model time to
         // the start of the integration step.
-        _localClock.setLocalTime(_iterationBeginTime);
+        localClock.setLocalTime(_iterationBeginTime);
         _index = _iterationBeginIndex;
 
         if (_debugging) {
@@ -1731,7 +1731,7 @@ public class ContinuousDirector extends FixedPointDirector implements
         _currentStepSize = enclosingDirector._currentStepSize;
         // Do not use setCommittedTime on the following line because we
         // are probably speculatively executing into the future.
-        _localClock.setLocalTime(_localClock.getLocalTimeForCurrentEnvironmentTime());
+        localClock.setLocalTime(localClock.getLocalTimeForCurrentEnvironmentTime());
         
         if (_debugging) {
             _debug("-- Setting current time to " + currentTime
@@ -1739,7 +1739,7 @@ public class ContinuousDirector extends FixedPointDirector implements
                     + enclosingDirector.getModelTime());
         }
 
-        _iterationBeginTime = _localClock.getLocalTimeForEnvironmentTime(enclosingDirector._iterationBeginTime);
+        _iterationBeginTime = localClock.getLocalTimeForEnvironmentTime(enclosingDirector._iterationBeginTime);
 
         // FIXME: Probably shouldn't make the index match that of the environment!
         // There may have been suspensions happening. So what should the index be?
@@ -1796,7 +1796,7 @@ public class ContinuousDirector extends FixedPointDirector implements
         // Check the enclosing model time against the local model time.
         // Note that time has already been automatically adjusted with the
         // accumulated suspend time.
-        Time outTime = _localClock.getLocalTimeForCurrentEnvironmentTime(); 
+        Time outTime = localClock.getLocalTimeForCurrentEnvironmentTime(); 
                 executiveDirector.getModelTime();
         
         int localTimeExceedsOutsideTime = currentTime.compareTo(outTime);
@@ -1899,7 +1899,7 @@ public class ContinuousDirector extends FixedPointDirector implements
             // Adjust the step size to
             // make sure the time does not exceed the next iteration
             // time of the environment during this next integration step.
-            Time environmentNextIterationTime = _localClock.getLocalTimeForEnvironmentTime(executiveDirector
+            Time environmentNextIterationTime = localClock.getLocalTimeForEnvironmentTime(executiveDirector
                     .getModelNextIterationTime());
 
             Time localTargetTime = _iterationBeginTime.add(_currentStepSize);

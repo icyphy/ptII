@@ -6384,7 +6384,7 @@ Then delete this annotation.</text>
                     </property>
                 </property>
                 <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
-                    <property name="LocalClock" class="ptolemy.actor.LocalClock">
+                    <property name="localClock" class="ptolemy.actor.LocalClock">
                         <property name="clockRate" class="ptolemy.data.expr.Parameter" value="clockRate">
                         </property>
                     </property>
@@ -7592,7 +7592,7 @@ the connection patterns to the clockRate generation actors.</text></svg></config
                 </property>
             </property>
             <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
-                <property name="LocalClock" class="ptolemy.actor.LocalClock">
+                <property name="localClock" class="ptolemy.actor.LocalClock">
                     <property name="clockRate" class="ptolemy.data.expr.Parameter" value="clockRate">
                     </property>
                 </property>
@@ -8556,7 +8556,7 @@ the connection patterns to the clockRate generation actors.</text></svg></config
                 </property>
 
                 <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
-                    <property name="LocalClock" class="ptolemy.actor.LocalClock">
+                    <property name="localClock" class="ptolemy.actor.LocalClock">
                         <property name="clockRate" class="ptolemy.data.expr.Parameter" value="clockRate">
                         </property>
                     </property>
@@ -9762,7 +9762,7 @@ the connection patterns to the clockRate generation actors.</text></svg></config
                 </property>
             </property>
             <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
-                <property name="LocalClock" class="ptolemy.actor.LocalClock">
+                <property name="localClock" class="ptolemy.actor.LocalClock">
                     <property name="clockRate" class="ptolemy.data.expr.Parameter" value="clockRate">
                     </property>
                 </property>
@@ -10651,7 +10651,7 @@ the connection patterns to the clockRate generation actors.</text></svg></config
                     </property>
                 </property>
                 <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
-                    <property name="LocalClock" class="ptolemy.actor.LocalClock">
+                    <property name="localClock" class="ptolemy.actor.LocalClock">
                         <property name="clockRate" class="ptolemy.data.expr.Parameter" value="clockRate">
                         </property>
                     </property>
@@ -11858,7 +11858,7 @@ the connection patterns to the clockRate generation actors.</text></svg></config
                 </property>
             </property>
             <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
-                <property name="LocalClock" class="ptolemy.actor.LocalClock">
+                <property name="localClock" class="ptolemy.actor.LocalClock">
                     <property name="clockRate" class="ptolemy.data.expr.Parameter" value="clockRate">
                     </property>
                 </property>

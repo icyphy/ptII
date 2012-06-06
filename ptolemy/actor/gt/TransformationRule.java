@@ -582,8 +582,8 @@ public class TransformationRule extends MultiCompositeActor implements
          *  @exception IllegalActionException Not thrown in this class.
          */
         public void initialize() throws IllegalActionException {
-            _localClock.resetLocalTime(getModelStartTime());
-            _localClock.start();
+            localClock.resetLocalTime(getModelStartTime());
+            localClock.start();
         }
 
         /** Set stop requested to be false, initialize zero time variable
@@ -598,7 +598,7 @@ public class TransformationRule extends MultiCompositeActor implements
         public void preinitialize() throws IllegalActionException {
             _stopRequested = false;
             _zeroTime = new Time(this, 0.0);
-            _localClock.initialize();
+            localClock.initialize();
         }
 
         /** Do nothing.

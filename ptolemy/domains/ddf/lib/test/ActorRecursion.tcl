@@ -47,7 +47,7 @@ test ActorRecursion-1.1 {cover _exportMoML} {
     $actorRecursion exportMoML 
 } {<entity name="actorRecursion" class="ptolemy.actor.TypedCompositeActor">
     <property name="DDFDirector" class="ptolemy.domains.ddf.kernel.DDFDirector">
-        <property name="LocalClock" class="ptolemy.actor.LocalClock">
+        <property name="localClock" class="ptolemy.actor.LocalClock">
             <property name="globalTimeResolution" class="ptolemy.actor.parameters.SharedParameter" value="1E-10">
             </property>
             <property name="clockRate" class="ptolemy.data.expr.Parameter" value="1.0">

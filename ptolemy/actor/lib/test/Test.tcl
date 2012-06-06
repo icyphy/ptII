@@ -184,7 +184,7 @@ test Test-1.5 {Export} {
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.0.devel">
     </property>
     <property name="" class="ptolemy.domains.sdf.kernel.SDFDirector">
-        <property name="LocalClock" class="ptolemy.actor.LocalClock">
+        <property name="localClock" class="ptolemy.actor.LocalClock">
             <property name="globalTimeResolution" class="ptolemy.actor.parameters.SharedParameter" value="1E-10">
             </property>
             <property name="clockRate" class="ptolemy.data.expr.Parameter" value="1.0">

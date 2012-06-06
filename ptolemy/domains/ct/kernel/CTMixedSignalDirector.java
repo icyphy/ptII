@@ -448,7 +448,7 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector {
      *  method of an actor, or the schedule does not exist.
      */
     protected void _rollback() throws IllegalActionException {
-        _localClock.setLocalTime(_knownGoodTime);
+        localClock.setLocalTime(_knownGoodTime);
 
         CTSchedule schedule = (CTSchedule) getScheduler().getSchedule();
         Iterator actors = schedule.get(CTSchedule.STATEFUL_ACTORS)

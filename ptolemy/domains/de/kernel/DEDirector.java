@@ -706,7 +706,7 @@ public class DEDirector extends Director implements SuperdenseTimeDirector {
                 .getExecutiveDirector();
         if (executiveDirector != null) { 
             
-            Time aFutureTimeOfUpperLevel = _localClock.getLocalTimeForEnvironmentTime(
+            Time aFutureTimeOfUpperLevel = localClock.getLocalTimeForEnvironmentTime(
                     executiveDirector.getModelNextIterationTime());
 
             if (aFutureTime.compareTo(aFutureTimeOfUpperLevel) > 0) {

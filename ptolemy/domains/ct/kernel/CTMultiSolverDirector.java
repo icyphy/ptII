@@ -1538,7 +1538,7 @@ public class CTMultiSolverDirector extends CTDirector {
 
                 // Restore the model time to the beginning time of this
                 // iteration.
-                _localClock.setLocalTime(getIterationBeginTime());
+                localClock.setLocalTime(getIterationBeginTime());
 
                 // Restore the saved state of the stateful actors.
                 CTSchedule schedule = (CTSchedule) getScheduler().getSchedule();
@@ -1584,7 +1584,7 @@ public class CTMultiSolverDirector extends CTDirector {
             // If event generators are not satisfied with the current step
             // size, refine the step size to a smaller one.
             if (!_isOutputAccurate()) {
-                _localClock.setLocalTime(getIterationBeginTime());
+                localClock.setLocalTime(getIterationBeginTime());
                 setCurrentStepSize(_refinedStepWRTOutput());
 
                 // Restore the saved state of the stateful actors.

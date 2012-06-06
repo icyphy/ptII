@@ -477,7 +477,7 @@ public abstract class CTDirector extends StaticSchedulingDirector implements
      *  @return The local clock.
      */
     public LocalClock getLocalClock() {
-        return _localClock;
+        return localClock;
     }
     
     /** Return the maximum number of iterations in a fixed point
