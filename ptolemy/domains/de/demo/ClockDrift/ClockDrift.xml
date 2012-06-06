@@ -4,10 +4,24 @@
 <entity name="ClockDrift" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.0.devel">
     </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={16, 41, 992, 634}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[758, 524]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{-71.5332709418402, 81.105943467882}">
+    </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The local clock drift of the composite actor changes between 1 and 0.1&#10;The clock value is set to 50 at environment time 50">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-315.0, 170.0]">
+        </property>
+    </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="100.0">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-240.0, -35.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{-315.0, -95.0}">
         </property>
     </property>
     <property name="clockDrift" class="ptolemy.data.expr.Parameter" value="1.0">
@@ -26,32 +40,59 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-120.0, 120.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{-360.0, -60.0}">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={16, 41, 992, 634}, maximized=false}">
-    </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[758, 524]">
-    </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
-    </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{-71.5332709418402, 81.105943467882}">
-    </property>
-    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The local clock drift of the composite actor changes between 1 and 0.1&#10;The clock value is set to 50 at environment time 50">
+    <property name="clockValue" class="ptolemy.data.expr.Parameter" value="0">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-315.0, 170.0]">
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+            </property>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{-360.0, -45.0}">
         </property>
     </property>
+    <entity name="TimedPlotter" class="ptolemy.actor.lib.gui.TimedPlotter">
+        <property name="legend" class="ptolemy.kernel.util.StringAttribute" value="outside clock, inside clock1, inside clock2">
+        </property>
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={23, 351, 633, 406}, maximized=false}">
+        </property>
+        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[633, 362]">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[112.99991607666016, -7.327232360839844]">
+        </property>
+        <configure>
+<?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
+"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
+<plot>
+<title>TimedPlotter</title>
+<xLabel></xLabel>
+<yLabel></yLabel>
+<xRange min="0.0" max="100.0"/>
+<yRange min="0.0" max="100.0"/>
+<default marks="various"/>
+</plot>?>
+        </configure>
+    </entity>
     <entity name="CompositeActor" class="ptolemy.actor.TypedCompositeActor">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[20.0, -45.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{30.0, -35.0}">
         </property>
         <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
             <property name="localClock" class="ptolemy.actor.LocalClock">
                 <property name="clockRate" class="ptolemy.data.expr.Parameter" value="clockDrift">
                 </property>
             </property>
-            <property name="startTime" class="ptolemy.data.expr.Parameter" value="">
+            <property name="startTime" class="ptolemy.data.expr.Parameter" value="clockValue">
             </property>
             <property name="stopTime" class="ptolemy.data.expr.Parameter" value="Infinity">
             </property>
@@ -92,34 +133,12 @@
     </entity>
     <entity name="DiscreteClock" class="ptolemy.actor.lib.DiscreteClock">
         <doc>Create periodic timed events.</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-77.00008392333984, -7.327232360839844]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{-250.0, 35.0}">
         </property>
-    </entity>
-    <entity name="TimedPlotter" class="ptolemy.actor.lib.gui.TimedPlotter">
-        <property name="legend" class="ptolemy.kernel.util.StringAttribute" value="outside clock, inside clock1, inside clock2">
-        </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={23, 351, 633, 406}, maximized=false}">
-        </property>
-        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[633, 362]">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[112.99991607666016, -7.327232360839844]">
-        </property>
-        <configure>
-<?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
-"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
-<plot>
-<title>TimedPlotter</title>
-<xLabel></xLabel>
-<yLabel></yLabel>
-<xRange min="0.0" max="100.0"/>
-<yRange min="0.0" max="100.0"/>
-<default marks="various"/>
-</plot>?>
-        </configure>
     </entity>
     <entity name="CurrentTime" class="ptolemy.actor.lib.CurrentTime">
         <doc>Output the current time.</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[20.499916076660156, 25.172767639160156]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{30.499916076660156, 35.172767639160156}">
         </property>
     </entity>
     <entity name="DiscreteClock2" class="ptolemy.actor.lib.DiscreteClock">
@@ -130,7 +149,7 @@
         <property name="values" class="ptolemy.data.expr.Parameter" value="{1, 0.1}">
         </property>
         <doc>Create periodic timed events.</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-260.0, 90.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{-250.0, 135.0}">
         </property>
     </entity>
     <entity name="SetVariable" class="ptolemy.actor.lib.SetVariable">
@@ -142,18 +161,18 @@
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-120.0, 60.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{-110.0, 105.0}">
         </property>
     </entity>
     <entity name="CompositeActor2" class="ptolemy.actor.TypedCompositeActor">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[10.0, 100.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{20.0, 145.0}">
         </property>
         <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
             <property name="localClock" class="ptolemy.actor.LocalClock">
                 <property name="clockRate" class="ptolemy.data.expr.Parameter" value="clockRate">
                 </property>
             </property>
-            <property name="startTime" class="ptolemy.data.expr.Parameter" value="">
+            <property name="startTime" class="ptolemy.data.expr.Parameter" value="clockValueParameterPort">
             </property>
             <property name="stopTime" class="ptolemy.data.expr.Parameter" value="Infinity">
             </property>
@@ -193,11 +212,41 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="[-60.0, -490.0]">
             </property>
         </property>
+        <property name="clockValueParameterPort" class="ptolemy.actor.parameters.PortParameter" value="0.0">
+            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+            </property>
+            <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure>
+      <svg>
+	<polyline points="-15,-15, -3,-5, -16,5" style="stroke:black"></polyline>
+	<polygon points="-22,-1, -22,4, -10,-5, -22,-14, -22,-9, -30,-9, -30, -1" style="fill:lightGray"></polygon>
+      </svg>
+    </configure>
+            </property>
+            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:black" y="20">-P-</text>
+      </svg>
+    </configure>
+            </property>
+            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[-60.0, -515.0]">
+            </property>
+        </property>
         <port name="clockRate" class="ptolemy.actor.parameters.ParameterPort">
             <property name="input"/>
             <property name="_location" class="ptolemy.kernel.util.Location" value="{-80.0, -495.0}">
             </property>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+        </port>
+        <port name="clockValueParameterPort" class="ptolemy.actor.parameters.ParameterPort">
+            <property name="input"/>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{-80.0, -520.0}">
             </property>
         </port>
         <port name="port" class="ptolemy.actor.TypedIOPort">
@@ -226,35 +275,67 @@
         <link port="CurrentTime.output" relation="relation"/>
         <link port="CurrentTime.trigger" relation="relation2"/>
     </entity>
+    <entity name="DiscreteClock3" class="ptolemy.actor.lib.DiscreteClock">
+        <property name="period" class="ptolemy.actor.parameters.PortParameter" value="100.0">
+        </property>
+        <property name="offsets" class="ptolemy.data.expr.Parameter" value="{0.0, 50.0}">
+        </property>
+        <property name="values" class="ptolemy.data.expr.Parameter" value="{0, 50}">
+        </property>
+        <doc>Create periodic timed events.</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{-255.0, 230.0}">
+        </property>
+    </entity>
+    <entity name="SetVariable2" class="ptolemy.actor.lib.SetVariable">
+        <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="clockValue">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="variableName">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{-115.0, 200.0}">
+        </property>
+    </entity>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="vertex1" value="{-60.0, 35.0}">
+        </vertex>
+    </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
-        <vertex name="vertex1" value="[-32.000083923339844, -7.327232360839844]">
+        <vertex name="vertex1" value="{-165.0, 135.0}">
         </vertex>
     </relation>
-    <relation name="relation" class="ptolemy.actor.TypedIORelation">
-    </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-    </relation>
-    <relation name="relation6" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
-        <vertex name="vertex1" value="[-175.0, 90.0]">
+        <vertex name="vertex1" value="{-170.0, 230.0}">
         </vertex>
     </relation>
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <link port="CompositeActor.port" relation="relation2"/>
-    <link port="CompositeActor.port3" relation="relation3"/>
-    <link port="DiscreteClock.output" relation="relation2"/>
-    <link port="TimedPlotter.input" relation="relation"/>
-    <link port="TimedPlotter.input" relation="relation3"/>
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+    </relation>
     <link port="TimedPlotter.input" relation="relation5"/>
-    <link port="CurrentTime.output" relation="relation"/>
-    <link port="CurrentTime.trigger" relation="relation2"/>
-    <link port="DiscreteClock2.output" relation="relation6"/>
-    <link port="SetVariable.input" relation="relation6"/>
-    <link port="CompositeActor2.clockRate" relation="relation6"/>
-    <link port="CompositeActor2.port" relation="relation2"/>
-    <link port="CompositeActor2.port3" relation="relation5"/>
+    <link port="TimedPlotter.input" relation="relation4"/>
+    <link port="TimedPlotter.input" relation="relation6"/>
+    <link port="CompositeActor.port" relation="relation"/>
+    <link port="CompositeActor.port3" relation="relation4"/>
+    <link port="DiscreteClock.output" relation="relation"/>
+    <link port="CurrentTime.output" relation="relation5"/>
+    <link port="CurrentTime.trigger" relation="relation"/>
+    <link port="DiscreteClock2.output" relation="relation2"/>
+    <link port="SetVariable.input" relation="relation2"/>
+    <link port="CompositeActor2.clockRate" relation="relation2"/>
+    <link port="CompositeActor2.clockValueParameterPort" relation="relation3"/>
+    <link port="CompositeActor2.port" relation="relation"/>
+    <link port="CompositeActor2.port3" relation="relation6"/>
+    <link port="DiscreteClock3.output" relation="relation3"/>
+    <link port="SetVariable2.input" relation="relation3"/>
 </entity>
