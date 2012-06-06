@@ -490,6 +490,8 @@ public class FSMGraphController extends FSMViewerGraphController {
                 }
             } catch (Exception ex) {
                 // Ignore and use the default.
+                // Avoid a FindBugs warning about ignored exception.
+                moml = null;
             }
 
             if (moml == null) {

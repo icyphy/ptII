@@ -1972,6 +1972,8 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
             generatorPackageFile = new File(generatorPackageURI);
         } catch (Exception ex) {
             // Ignore, we can't find the directory.
+            // We return from here to quiet a FindBugs warning.
+            return;
         }
 
         if (generatorPackageFile == null) {

@@ -360,6 +360,8 @@ public class OntologyGraphController extends WithIconGraphController {
                 }
             } catch (Exception ex) {
                 // Ignore and use the default.
+                // Avoid a FindBugs warning about ignored exception.
+                moml = null;
             }
 
             if (moml == null) {
