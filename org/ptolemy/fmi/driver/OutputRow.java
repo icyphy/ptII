@@ -180,7 +180,7 @@ public class OutputRow {
         }
 
         // Terminate this row.
-        file.format("\n");
+        file.format("%n");
     }
 
     /** This class contains only static methods, so there is no public
