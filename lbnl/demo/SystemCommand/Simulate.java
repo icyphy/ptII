@@ -114,16 +114,24 @@ class Simulate {
         System.out.println("x2   = " + args[2]);
 
         // Write arguments to files
+        FileOutputStream fos = null;
         try {
-            FileOutputStream fos = new FileOutputStream("outputX1.txt");
+            fos = new FileOutputStream("outputX1.txt");
             new PrintStream(fos).println(args[1]);
             fos.close();
             fos = new FileOutputStream("outputX2.txt");
             new PrintStream(fos).println(args[2]);
-            fos.close();
         } catch (IOException e) {
             System.err.println("Unable to write to file");
             StringUtilities.exit(1);
+        } finally {
+            if (fos != null) {
+                try {
+                    fos.close();
+                } catch (IOException ex) {
+                    System.out.println("Failed to close output stream: " + ex);
+                }
+            }
         }
     }
 }

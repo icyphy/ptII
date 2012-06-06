@@ -162,19 +162,26 @@ public class FileUtilities {
      */
     public static void extractJarFile(String jarFileName, String directoryName)
             throws IOException {
-        JarFile jarFile = new JarFile(jarFileName);
-        Enumeration entries = jarFile.entries();
-        while (entries.hasMoreElements()) {
-            JarEntry jarEntry = (JarEntry) entries.nextElement();
-            File destinationFile = new File(directoryName, jarEntry.getName());
-            if (jarEntry.isDirectory()) {
-                if (!destinationFile.isDirectory() && !destinationFile.mkdirs()) {
-                    throw new IOException("Warning, failed to create "
-                            + "directory for \"" + destinationFile + "\".");
+        JarFile jarFile = null;
+        try {
+            jarFile = new JarFile(jarFileName);
+            Enumeration entries = jarFile.entries();
+            while (entries.hasMoreElements()) {
+                JarEntry jarEntry = (JarEntry) entries.nextElement();
+                File destinationFile = new File(directoryName, jarEntry.getName());
+                if (jarEntry.isDirectory()) {
+                    if (!destinationFile.isDirectory() && !destinationFile.mkdirs()) {
+                        throw new IOException("Warning, failed to create "
+                                + "directory for \"" + destinationFile + "\".");
+                    }
+                } else {
+                    _binaryCopyStream(jarFile.getInputStream(jarEntry),
+                            destinationFile);
                 }
-            } else {
-                _binaryCopyStream(jarFile.getInputStream(jarEntry),
-                        destinationFile);
+            }
+        } finally {
+            if (jarFile != null) {
+                jarFile.close();
             }
         }
     }
@@ -184,17 +191,20 @@ public class FileUtilities {
      *  @return true if the toplevel directory was deleted.
      */
     static public boolean deleteDirectory(File directory) {
+        boolean deletedAllFiles = true;
         if (directory.exists() ) {
             File[] files = directory.listFiles();
             for (int i = 0; i < files.length; i++) {
                 if (files[i].isDirectory()) {
                     deleteDirectory(files[i]);
                 } else {
-                    files[i].delete();
+                    if (!files[i].delete()) {
+                        deletedAllFiles = false;
+                    }
                 }
             }
         }
-        return(directory.delete());
+        return directory.delete() && deletedAllFiles;
     }
 
     /** Extract the contents of a jar file.

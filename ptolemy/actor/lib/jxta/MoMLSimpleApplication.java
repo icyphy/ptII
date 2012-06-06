@@ -171,17 +171,17 @@ public class MoMLSimpleApplication extends NamedObj implements ChangeListener {
             // FIXME: hardwired path
             String fileName = "c:/Cygwin/home/ellen_zh/ptII/ptolemy/actor/lib/jxta/model.xml";
             FileOutputStream file = null;
-
+            PrintStream out = null;
             try {
                 file = new FileOutputStream(fileName);
 
-                PrintStream out = new PrintStream(file);
+                out = new PrintStream(file);
                 out.println(buffer);
                 out.flush();
             } finally {
-                if (file != null) {
+                if (out != null) {
                     try {
-                        file.close();
+                        out.close();
                     } catch (Throwable throwable) {
                         System.out.println("Ignoring failure to close stream "
                                 + "on " + fileName);
