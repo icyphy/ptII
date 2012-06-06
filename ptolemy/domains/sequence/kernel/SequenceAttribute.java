@@ -110,31 +110,31 @@ public class SequenceAttribute extends Parameter implements Comparable {
     /** Implement compareTo method to compare sequence numbers
      *  Only the sequence numbers are compared (independent of any process name).
      *
-     *  Object may be a SequenceAttribute or a ProcessAttribute
-     *   @param obj The SequenceAttribute object.
+     *  Object may be a SequenceAttribute or a SequenceAttribute
+     *  @param object The SequenceAttribute object.
      *  @return 0 if the sequence numbers are the same.
      */
-    public int compareTo(Object obj) {
+    public int compareTo(Object object) {
 
         try {
-            int seq1 = this.getSequenceNumber();
-            int seq2 = 0;
+            int sequenceNumber1 = this.getSequenceNumber();
+            int sequenceNumber2 = 0;
 
-            // Check for either a SequenceAttribute or ProcessAttribute (which is a SequenceAttribute)
-            if (obj instanceof SequenceAttribute) {
-                // If the second object is a ProcessAttribute, use the correct getSequenceNumber()
+            // Check for either a SequenceAttribute or SequenceAttribute (which is a SequenceAttribute)
+            if (object instanceof SequenceAttribute) {
+                // If the second object is a SequenceAttribute, use the correct getSequenceNumber()
                 // FIXME:  Is this needed, or is it OK just to use (SequenceAttribute) x.getSequenceNumber()?
                 // FIXME:  This is bad coding style, because SequenceAtribute should not know about
-                // its subclass ProcessAttribute - refactor?
-                if (obj instanceof ProcessAttribute) {
-                    seq2 = ((ProcessAttribute) obj).getSequenceNumber();
+                // its subclass SequenceAttribute - refactor?
+                if (object instanceof SequenceAttribute) {
+                    sequenceNumber2 = ((SequenceAttribute) object).getSequenceNumber();
                 } else {
-                    seq2 = ((SequenceAttribute) obj).getSequenceNumber();
+                    sequenceNumber2 = ((SequenceAttribute) object).getSequenceNumber();
                 }
 
-                if (seq1 < seq2) {
+                if (sequenceNumber1 < sequenceNumber2) {
                     return -1;
-                } else if (seq1 > seq2) {
+                } else if (sequenceNumber1 > sequenceNumber2) {
                     return 1;
                 } else {
                     return 0;
@@ -150,17 +150,48 @@ public class SequenceAttribute extends Parameter implements Comparable {
                         + " instances of SequenceAttribute.");
     }
 
-    /*
-    public boolean equals(Object rightArg) {
-        if (rightArg != null && rightArg instanceof SequenceAttribute &&
-                compareTo(rightArg) == 0) {
-            return true;
-        } else {
-            return false;
+    /** Return true if this SequenceAttribute has the same sequence
+     *  number as the given SequenceAttribute.  
+     *  @param sequenceAttribute The SequenceAttribute object that this
+     *  SequenceAttribute object is compared to.
+     *  @return True if the two SequenceAttribute objects have the same 
+     *  sequence number, name and workspace
+     */
+    public boolean equals(Object sequenceAttribute) {
+        /* FindBugs says that SequenceAttribute "defined
+         * compareTo(Object) and uses Object.equals()"
+         * http://findbugs.sourceforge.net/bugDescriptions.html#EQ_COMPARETO_USE_OBJECT_EQUALS
+         * says: "This class defines a compareTo(...) method but
+         * inherits its equals() method from
+         * java.lang.Object. Generally, the value of compareTo should
+         * return zero if and only if equals returns true. If this is
+         * violated, weird and unpredictable failures will occur in
+         * classes such as PriorityQueue. In Java 5 the
+         * PriorityQueue.remove method uses the compareTo method,
+         * while in Java 6 it uses the equals method.
+         *
+         *  From the JavaDoc for the compareTo method in the
+         *  Comparable interface:
+         *
+         * It is strongly recommended, but not strictly required that
+         * (x.compareTo(y)==0) == (x.equals(y)). Generally speaking,
+         * any class that implements the Comparable interface and
+         * violates this condition should clearly indicate this
+         * fact. The recommended language is "Note: this class has a
+         * natural ordering that is inconsistent with equals." "
+         */
+        if (sequenceAttribute instanceof SequenceAttribute) {
+            SequenceAttribute attribute = (SequenceAttribute) sequenceAttribute;
+            if (compareTo(attribute) == 0
+                    && getName().equals(attribute.getName())
+                    && workspace().equals(attribute.workspace())) {
+                return true;
+            }
         }
+        return false;
     }
-    */
 
+    /** Construct an attribute with the given name contained by the specified
     /** Returns the sequence number as an int, or 0 if there is none.
      *
      * @return int sequence number
@@ -184,7 +215,7 @@ public class SequenceAttribute extends Parameter implements Comparable {
         return seqNumber;
     }
 
-    /** Implement validate method to validate the SequenceAttribute and ProcessAttributes .
+    /** Implement validate method to validate the SequenceAttribute and SequenceAttributes .
      *  @return The current list of value listeners, which are evaluated
      *   as a consequence of this call to validate().
      *  @exception IllegalActionException If thrown by the parent class.
@@ -211,7 +242,7 @@ public class SequenceAttribute extends Parameter implements Comparable {
                             + "'s Sequence Attribute will be ignored");
                     System.out.println(sbf);
                 }
-                if ((this.getClass() == ProcessAttribute.class)
+                if ((this.getClass() == SequenceAttribute.class)
                         && ((CompositeActor) container.getContainer())
                                 .getDirector().getClass() == SequenceDirector.class) {
                     sbf.append("Warning: " + container.getName()
@@ -258,5 +289,29 @@ public class SequenceAttribute extends Parameter implements Comparable {
             }
         }
         return result;
+    }
+
+    /** Return the hash code for this SequenceAttribute object.  If two
+     *  SequenceAttribute objects contain the same processName,
+     *  methodName and have the same sequence number, then they will
+     *  have the same hashCode.
+     *  @return The hash code for this TimedEvent object.
+     */
+    public int hashCode() {
+        int hashCode = 0;
+        try {
+            hashCode = getSequenceNumber();
+            String name = getFullName();
+            if (name != null) {
+                hashCode += name.hashCode();
+            }
+            Workspace workspace = workspace();
+            if (workspace != null) {
+                hashCode += workspace.hashCode();
+            }
+   } catch (IllegalActionException ex) {
+            return hashCode;
+        }
+        return hashCode;
     }
 }

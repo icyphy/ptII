@@ -38,12 +38,13 @@ import ptolemy.kernel.util.Workspace;
 ////ProcessAttribute
 
 /**
-ProcessAttribute is a subclass of Parameter with support for strings
+   ProcessAttribute is a subclass of Parameter with support for strings.
 
-   A ProcessAttribute is a tuple (string processName, int sequenceNumber, (optionally) string methodName)
+   <p>A ProcessAttribute is a tuple (string processName, int
+   sequenceNumber, (optionally) string methodName).</p>
 
-   The ProcessDirector collects the ProcessAttributes to determine the order
-   in which order the actors in the model are fired.
+   <p>The ProcessDirector collects the ProcessAttributes to determine the order
+   in which order the actors in the model are fired.</p>
 
  @author Elizabeth Latronico (Bosch)
  @version $Id$
@@ -59,7 +60,6 @@ public class ProcessAttribute extends SequenceAttribute {
      */
     public ProcessAttribute() {
         super();
-
     }
 
     /** Construct an attribute in the specified workspace with an empty
@@ -70,7 +70,6 @@ public class ProcessAttribute extends SequenceAttribute {
      */
     public ProcessAttribute(Workspace workspace) {
         super(workspace);
-
     }
 
     /** Construct an attribute with the given name contained by the specified
@@ -99,6 +98,9 @@ public class ProcessAttribute extends SequenceAttribute {
                 + "style=\"fill:white\"/>\n" + "</svg>\n");
     }
 
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
+
     // FIXME:  Do we want the sequence director to ignore the process name alltogether
     //   when executing a model?  If so, can't use this compareTo method.  Need to use
     // getSequenceNumber
@@ -115,24 +117,24 @@ public class ProcessAttribute extends SequenceAttribute {
      *
      *     This method assumes that the expression is well-formed (checked in validate())
      *
-     *   @param obj The SequenceAttribute or ProcessAttribute object.
+     *   @param object The SequenceAttribute or ProcessAttribute object.
      *   @return 0 if the sequence numbers are the same.
      */
-    public int compareTo(Object obj) {
+    public int compareTo(Object object) {
 
-        int seq1 = 0;
-        int seq2 = 0;
+        int sequenceNumber1 = 0;
+        int sequenceNumber2 = 0;
 
         try {
             // Check for either a SequenceAttribute or ProcessAttribute (which is a SequenceAttribute)
-            if (obj instanceof SequenceAttribute) {
+            if (object instanceof SequenceAttribute) {
 
                 // If the second object is a ProcessAttribute, compare the process names
-                if (obj instanceof ProcessAttribute) {
-                    String proc1 = this.getProcessName();
-                    String proc2 = ((ProcessAttribute) obj).getProcessName();
+                if (object instanceof ProcessAttribute) {
+                    String processName1 = this.getProcessName();
+                    String processName2 = ((ProcessAttribute) object).getProcessName();
 
-                    int procCompare = proc1.compareTo(proc2);
+                    int procCompare = processName1.compareTo(processName2);
 
                     // If not equal, return result
                     if (procCompare != 0) {
@@ -140,27 +142,25 @@ public class ProcessAttribute extends SequenceAttribute {
                     }
 
                     // If process names are the same, compare the sequence numbers
-                    seq1 = this.getSequenceNumber();
-                    seq2 = ((ProcessAttribute) obj).getSequenceNumber();
+                    sequenceNumber1 = this.getSequenceNumber();
+                    sequenceNumber2 = ((ProcessAttribute) object).getSequenceNumber();
 
-                    if (seq1 < seq2) {
+                    if (sequenceNumber1 < sequenceNumber2) {
                         return -1;
-                    } else if (seq1 > seq2) {
+                    } else if (sequenceNumber1 > sequenceNumber2) {
                         return 1;
                     } else {
                         return 0;
                     }
-                }
-
-                else {
+                } else {
                     // For process name and sequence number, just compare sequence numbers
                     // Need to call getSequenceNumber from SequenceAttribute
-                    seq1 = this.getSequenceNumber();
-                    seq2 = ((SequenceAttribute) obj).getSequenceNumber();
+                    sequenceNumber1 = this.getSequenceNumber();
+                    sequenceNumber2 = ((SequenceAttribute) object).getSequenceNumber();
 
-                    if (seq1 < seq2) {
+                    if (sequenceNumber1 < sequenceNumber2) {
                         return -1;
-                    } else if (seq1 > seq2) {
+                    } else if (sequenceNumber1 > sequenceNumber2) {
                         return 1;
                     } else {
                         return 0;
@@ -177,8 +177,52 @@ public class ProcessAttribute extends SequenceAttribute {
         return 0;
     }
 
-    ///////////////////////////////////////////////////////////////////
-    ////                         public methods                    ////
+    /** Return true if this ProcessAttribute has the same sequence
+     *  number as the given ProcessAttribute.  
+     *  @param processAttribute The ProcessAttribute object that this
+     *  ProcessAttribute object is compared to.
+     *  @return True if the two ProcessAttribute objects have the same 
+     *  sequence number, methodName and processName.
+     */
+    public boolean equals(Object processAttribute) {
+        /* FindBugs says that ProcessAttribute "defined
+         * compareTo(Object) and uses Object.equals()"
+         * http://findbugs.sourceforge.net/bugDescriptions.html#EQ_COMPARETO_USE_OBJECT_EQUALS
+         * says: "This class defines a compareTo(...) method but
+         * inherits its equals() method from
+         * java.lang.Object. Generally, the value of compareTo should
+         * return zero if and only if equals returns true. If this is
+         * violated, weird and unpredictable failures will occur in
+         * classes such as PriorityQueue. In Java 5 the
+         * PriorityQueue.remove method uses the compareTo method,
+         * while in Java 6 it uses the equals method.
+         *
+         *  From the JavaDoc for the compareTo method in the
+         *  Comparable interface:
+         *
+         * It is strongly recommended, but not strictly required that
+         * (x.compareTo(y)==0) == (x.equals(y)). Generally speaking,
+         * any class that implements the Comparable interface and
+         * violates this condition should clearly indicate this
+         * fact. The recommended language is "Note: this class has a
+         * natural ordering that is inconsistent with equals." "
+         */
+        if (processAttribute instanceof ProcessAttribute) {
+            ProcessAttribute attribute = (ProcessAttribute) processAttribute;
+            try {
+                if (compareTo(attribute) == 0
+                        && getMethodName().equals(attribute.getMethodName())
+                        && getProcessName().equals(attribute.getProcessName())
+                        && getName().equals(attribute.getName())
+                        && workspace().equals(attribute.workspace())) {
+                    return true;
+                }
+            } catch (IllegalActionException ex) {
+                return false;
+            }
+        }
+        return false;
+    }
 
     /** Return the method name to be called on the actor, or an empty
      *  string if there is none.
@@ -265,10 +309,37 @@ public class ProcessAttribute extends SequenceAttribute {
         return seqNumber;
     }
 
-    ///////////////////////////////////////////////////////////////////
-    ////                         protected methods                 ////
+    /** Return the hash code for this ProcessAttribute object.  If two
+     *  ProcessAttribute objects contain the same processName,
+     *  methodName and have the same sequence number, then they will
+     *  have the same hashCode.
+     *  @return The hash code for this TimedEvent object.
+     */
+    public int hashCode() {
+        int hashCode = 0;
+        try {
+            hashCode = getSequenceNumber();
 
-    ///////////////////////////////////////////////////////////////////
-    ////                         private variables                 ////
+            String processName = getProcessName();
+            if (processName != null) {
+                hashCode += processName.hashCode();
+            }
 
+            String methodName = getMethodName();
+            if (methodName != null) {
+                hashCode += methodName.hashCode();
+            }
+            String name = getFullName();
+            if (name != null) {
+                hashCode += name.hashCode();
+            }
+            Workspace workspace = workspace();
+            if (workspace != null) {
+                hashCode += workspace.hashCode();
+            }
+        } catch (IllegalActionException ex) {
+            return hashCode;
+        }
+        return hashCode;
+    }
 }

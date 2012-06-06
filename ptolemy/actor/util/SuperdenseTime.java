@@ -57,7 +57,7 @@ public class SuperdenseTime implements Comparable {
      */
     public SuperdenseTime(Time timeStamp, int index) {
         _index = index;
-        _timestamp = timeStamp;
+        _timeStamp = timeStamp;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -92,9 +92,10 @@ public class SuperdenseTime implements Comparable {
      *  @return -1, 0, or 1, depends on the order.
      */
     public final int compareTo(SuperdenseTime superdenseTime) {
-        if (_timestamp.compareTo(superdenseTime.timestamp()) > 0) {
+        // FIXME: This should be compareTo(Object)
+        if (_timeStamp.compareTo(superdenseTime.timestamp()) > 0) {
             return 1;
-        } else if (_timestamp.compareTo(superdenseTime.timestamp()) < 0) {
+        } else if (_timeStamp.compareTo(superdenseTime.timestamp()) < 0) {
             return -1;
         } else if (_index > superdenseTime.index()) {
             return 1;
@@ -103,6 +104,58 @@ public class SuperdenseTime implements Comparable {
         } else {
             return 0;
         }
+    }
+
+    /** Return true if this SuperdenseTime object has the same
+     *  timestamp and index as that of the given SuperdenseTime
+     *  object.
+     *  @param superdenseTimeThe SuperDenseTime object that this
+     *  SuperdenseTime object is compared to.
+     *  @return True if the two SuperDenseTime objects have the same
+     *  timestamp and index.
+     */
+    public boolean equals(Object superdenseTime) {
+        // Findbugs says:
+        // "Eq: Class defines compareTo(...) and uses Object.equals()
+        // (EQ_COMPARETO_USE_OBJECT_EQUALS)"
+
+        // "This class defines a compareTo(...) method but
+        // inherits its equals() method from
+        // java.lang.Object. Generally, the value of compareTo
+        // should return zero if and only if equals returns
+        // true. If this is violated, weird and unpredictable
+        // failures will occur in classes such as
+        // PriorityQueue. In Java 5 the PriorityQueue.remove
+        // method uses the compareTo method, while in Java 6 it
+        // uses the equals method.
+
+        // "From the JavaDoc for the compareTo method in the Comparable
+        // interface:"
+
+        // "It is strongly recommended, but not strictly required that
+        // (x.compareTo(y)==0) == (x.equals(y)). Generally speaking,
+        // any class that implements the Comparable interface and
+        // violates this condition should clearly indicate this
+        // fact. The recommended language is "Note: this class has a
+        // natural ordering that is inconsistent with equals." "
+
+        if (superdenseTime instanceof SuperdenseTime) {
+            return compareTo((SuperdenseTime)superdenseTime) == 0;
+        }
+        return false;
+    }
+
+    /** Return the hash code for the SuperdenseTime object. If two
+     *  SuperdenseTime objects contains the same timestamp and index,
+     *  then they have the same hashcode.
+     *  @return The hash code for this SuperdenseTime object.
+     */
+    public int hashCode() {
+        int hashCode = 0;
+        if (_timeStamp != null) {
+            hashCode = _timeStamp.hashCode();
+        }
+        return hashCode + _index;
     }
 
     /** Return the index.
@@ -116,14 +169,14 @@ public class SuperdenseTime implements Comparable {
      *  @return The timestamp.
      */
     public final Time timestamp() {
-        return _timestamp;
+        return _timeStamp;
     }
 
     /** Return a description of this superdense time object.
      *  @return A description of this superdense time object.
      */
     public final String toString() {
-        return "Superdense Time: time stamp = " + _timestamp + " and index = "
+        return "Superdense Time: time stamp = " + _timeStamp + " and index = "
                 + _index + ".";
     }
 
@@ -134,5 +187,5 @@ public class SuperdenseTime implements Comparable {
     private int _index;
 
     // The timestamp of this superdense time object.
-    private Time _timestamp;
+    private Time _timeStamp;
 }
