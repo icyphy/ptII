@@ -34,7 +34,7 @@ import ptolemy.graph.CPO;
  *  @Pt.ProposedRating Red (blickly)
  *  @Pt.AcceptedRating Red (blickly)
  */
-public class ConceptType extends StructuredType {
+public class ConceptType extends StructuredType implements Cloneable {
 
     /** The representative type for all ConceptTokens.
      */
