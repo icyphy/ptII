@@ -31,12 +31,15 @@ package ptolemy.actor.lib;
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.data.BooleanToken;
+import ptolemy.data.IntToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.Workspace;
 
 ///////////////////////////////////////////////////////////////////
@@ -45,8 +48,7 @@ import ptolemy.kernel.util.Workspace;
 /**
  Split an input stream onto two output ports depending on a
  boolean selector parameter.  The value of the <i>selector</i> parameter specifies the
- output port that should be written to in this and subsequent iterations. If no <i>selector</i>
- parameter value is provided, then the inputs are routed to the <i>falseOutput</i> port.
+ output port that should be written to in this and subsequent iterations.
  In each iteration, at most one token on each channel of the <i>input</i> port
  is read and sent to the corresponding channel of the
  <i>trueOutput</i> port or the <i>falseOutput</i> port, depending on the
@@ -59,10 +61,9 @@ import ptolemy.kernel.util.Workspace;
  The <i>input</i> port may receive Tokens of any type.
 
  <p>Note that the this actor may be used in Synchronous Dataflow (SDF)
- models, but only under certain circumstances. Specifically, downstream
- actors will be fired whether a token is sent to them or not.
- This will only work if the downstream actors specifically check to
- see whether input tokens are available.
+ models, but only under certain circumstances. It specifies an output
+ production rate of zero on the output port not used, so downstream
+ actors will not be fired.
 
  @author Charles Shelton
  @version $Id$
@@ -100,6 +101,18 @@ public class ConfigurationSwitch extends TypedAtomicActor {
         trueOutput.setWidthEquals(input, true);
         falseOutput.setWidthEquals(input, true);
 
+        // For the benefit of the DDF and SDF director, this actor sets
+        // consumption rate values.
+        trueOutput_tokenProductionRate = new Parameter(trueOutput,
+                "tokenProductionRate", _zero);
+        trueOutput_tokenProductionRate.setVisibility(Settable.NOT_EDITABLE);
+        trueOutput_tokenProductionRate.setTypeEquals(BaseType.INT);
+
+        falseOutput_tokenProductionRate = new Parameter(falseOutput,
+                "tokenProductionRate", _one);
+        falseOutput_tokenProductionRate.setVisibility(Settable.NOT_EDITABLE);
+        falseOutput_tokenProductionRate.setTypeEquals(BaseType.INT);
+
         /** Make the icon show T and F for trueOutput and falseOutput.
          */
         _attachText("_iconDescription", "<svg>\n"
@@ -134,8 +147,46 @@ public class ConfigurationSwitch extends TypedAtomicActor {
      */
     public TypedIOPort falseOutput;
 
+    /** This parameter provides token consumption rate for <i>trueOutput</i>.
+     *  The type is int and it defaults to zero.
+     */
+    public Parameter trueOutput_tokenProductionRate;
+
+    /** This parameter provides token consumption rate for <i>falseOutput</i>.
+     *  The type is int and it defaults to one.
+     */
+    public Parameter falseOutput_tokenProductionRate;
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+
+    /** React to a change in an attribute.  This method is called by
+     *  a contained attribute when its value changes.  In this base class,
+     *  the method does nothing.  In derived classes, this method may
+     *  throw an exception, indicating that the new attribute value
+     *  is invalid.  It is up to the caller to restore the attribute
+     *  to a valid value if an exception is thrown.
+     *  @param attribute The attribute that changed.
+     *  @exception IllegalActionException If the change is not acceptable
+     *   to this container (not thrown in this base class).
+     */
+    public void attributeChanged(Attribute attribute)
+            throws IllegalActionException {
+        if (attribute == selector) {
+            boolean previousSelector = _selector;
+            _selector = ((BooleanToken)selector.getToken()).booleanValue();
+            if (_selector != previousSelector) {
+                if (_selector) {
+                    trueOutput_tokenProductionRate.setToken(_one);
+                    falseOutput_tokenProductionRate.setToken(_zero);
+                } else {
+                    trueOutput_tokenProductionRate.setToken(_zero);
+                    falseOutput_tokenProductionRate.setToken(_one);
+                }
+                getDirector().invalidateSchedule();
+            }
+        }
+    }
 
     /** Clone this actor into the specified workspace. The new actor is
      *  <i>not</i> added to the directory of that workspace (you must do this
@@ -154,22 +205,6 @@ public class ConfigurationSwitch extends TypedAtomicActor {
         ConfigurationSwitch newObject = (ConfigurationSwitch) super
                 .clone(workspace);
 
-        // Set the selector parameter for the cloned actor to the parameter value
-        // of the original actor.
-        try {
-            if (selector != null) {
-                if (selector.getToken().equals(BooleanToken.TRUE)) {
-                    newObject.selector.setToken(BooleanToken.TRUE);
-                } else {
-                    newObject.selector.setToken(BooleanToken.FALSE);
-                }
-            }
-        } catch (IllegalActionException ex) {
-            throw new CloneNotSupportedException(
-                    "Problem with selector parameter "
-                            + "in clone method of ConfigurationSelect");
-        }
-
         newObject.trueOutput.setTypeAtLeast(newObject.input);
         newObject.falseOutput.setTypeAtLeast(newObject.input);
         newObject.trueOutput.setWidthEquals(newObject.input, true);
@@ -178,48 +213,40 @@ public class ConfigurationSwitch extends TypedAtomicActor {
         return newObject;
     }
 
-    /** Read a token from each input port.  If the token from the
-     *  <i>selector</i> input is true, then output the token consumed from the
+    /** Read a token from each input port.  If the
+     *  <i>selector</i> parameter is true, then output the token consumed from the
      *  <i>input</i> port on the <i>trueOutput</i> port,
      *  otherwise output the token on the <i>falseOutput</i> port.
-     *
      *  @exception IllegalActionException If there is no director.
      */
     public void fire() throws IllegalActionException {
         super.fire();
+        for (int i = 0; i < input.getWidth(); i++) {
+            if (input.hasToken(i)) {
+                Token token = input.get(i);
 
-        // Throw an exception if the selector parameter is null or not
-        // a boolean value. This should never happen.
-        if (selector == null || selector.getToken() == null
-                || !(selector.getToken() instanceof BooleanToken)) {
-            throw new IllegalActionException(
-                    this,
-                    "In ConfigurationSelect actor "
-                            + getName()
-                            + "the selector parameter must be set to a boolean value.");
-        } else {
-            for (int i = 0; i < input.getWidth(); i++) {
-                if (input.hasToken(i)) {
-                    Token token = input.get(i);
-
-                    if (((BooleanToken) selector.getToken()).booleanValue()) {
-                        if (i < trueOutput.getWidth()) {
-                            trueOutput.send(i, token);
-                        }
-                    } else {
-                        if (i < falseOutput.getWidth()) {
-                            falseOutput.send(i, token);
-                        }
+                if (_selector) {
+                    if (i < trueOutput.getWidth()) {
+                        trueOutput.send(i, token);
+                    }
+                } else {
+                    if (i < falseOutput.getWidth()) {
+                        falseOutput.send(i, token);
                     }
                 }
             }
         }
     }
 
-    /** Initialize this actor.
-     *  @exception IllegalActionException If the parent class throws it.
-     */
-    public void initialize() throws IllegalActionException {
-        super.initialize();
-    }
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
+
+    /** Cached value of selector. */
+    private boolean _selector = false;
+    
+    /** A final static IntToken with value 0. */
+    private final static IntToken _zero = new IntToken(0);
+
+    /** A final static IntToken with value 1. */
+    private final static IntToken _one = new IntToken(1);
 }
