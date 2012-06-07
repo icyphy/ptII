@@ -509,9 +509,9 @@ public class InequalitySolver {
                 StringBuffer errorMessage = new StringBuffer();
                 for (Object o : _NS) {
                     Integer i = (Integer) o; 
-                    errorMessage.append(" (" + ((Info)_Ilist.get(i))._ineq.getGreaterTerm() + ", " + ((Info)_Ilist.get(i))._ineq.getLesserTerm() + ") ");
+                    errorMessage.append(" (" + ((Info)_Ilist.get(i))._ineq.getGreaterTerm() + " >= " + ((Info)_Ilist.get(i))._ineq.getLesserTerm() + ") ");
                 }
-                throw new IllegalActionException("Cannot not resolve types: " + errorMessage);
+                throw new IllegalActionException("Cannot resolve types. Unsatisfied constraints: " + errorMessage);
             }
             loopCnt++;
         }
