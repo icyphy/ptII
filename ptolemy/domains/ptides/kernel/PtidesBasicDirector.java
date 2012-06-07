@@ -892,7 +892,7 @@ public class PtidesBasicDirector extends DEDirector {
             // the new time is equal to the current time, do nothing.
         }
         if (newTime.compareTo(Time.NEGATIVE_INFINITY) != 0) {
-            _localClock.setLocalTime(newTime);
+            localClock.setLocalTime(newTime);
         }
     }
 
@@ -3873,7 +3873,7 @@ public class PtidesBasicDirector extends DEDirector {
                         "Trying to update a clock that is neither "
                                 + "platform time clock or execution time clock.");
             }
-            double thisTimeResolution = _localClock.getTimeResolution();
+            double thisTimeResolution = localClock.getTimeResolution();
             if (Math.abs(_clockDrift - newClockDrift) > thisTimeResolution) {
                 // First update all the parameters in realTimeClock.
                 Time newOracleTime = _getOraclePhysicalTag().timestamp;

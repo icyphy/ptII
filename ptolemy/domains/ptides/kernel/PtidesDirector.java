@@ -118,7 +118,7 @@ public class PtidesDirector extends DEDirector {
      *  @throws IllegalActionException If device delay parameter cannot be computed.
      */
     public void addInputEvent(PtidesEvent event, double deviceDelay) throws IllegalActionException { 
-        Time inputReady = _localClock.getLocalTimeForCurrentEnvironmentTime().add(deviceDelay);
+        Time inputReady = localClock.getLocalTimeForCurrentEnvironmentTime().add(deviceDelay);
         List<PtidesEvent> list = _inputEventQueue.get(inputReady);
         if (list == null) {
             list = new ArrayList<PtidesEvent>();
@@ -288,9 +288,9 @@ public class PtidesDirector extends DEDirector {
      * @throws IllegalActionException 
      */
     public boolean prefire() throws IllegalActionException {
-        setModelTime(_localClock.getLocalTimeForCurrentEnvironmentTime());
+        setModelTime(localClock.getLocalTimeForCurrentEnvironmentTime());
         if (_debugging) {
-            _debug("...prefire @ " + _localClock.getLocalTime());
+            _debug("...prefire @ " + localClock.getLocalTime());
         }
         setIndex(1);
         _nextFireTime = null;
@@ -619,7 +619,7 @@ public class PtidesDirector extends DEDirector {
             if (ioPort instanceof ActuatorPort) {
                 deliveryTime = getModelTime();
             } else {
-                deliveryTime = _localClock.getLocalTime();
+                deliveryTime = localClock.getLocalTime();
             }
             
             List<PtidesEvent> list = _outputEventQueue.get(deliveryTime);
@@ -698,7 +698,7 @@ public class PtidesDirector extends DEDirector {
      */
     protected boolean _isSafeToProcess(PtidesEvent event) throws IllegalActionException {
         Time eventTimestamp = event.timeStamp();
-        Time currentPlatformTime = _localClock.getLocalTime();
+        Time currentPlatformTime = localClock.getLocalTime();
         IOPort port = event.ioPort();
         Double delayOffset = _getDoubleParameterValue(port, "delayOffset"); 
         if (currentPlatformTime.compareTo(eventTimestamp.subtract(delayOffset)) >= 0) {
