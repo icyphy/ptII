@@ -669,7 +669,10 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
      *  method, which flags them as needing to be evaluated. This might be
      *  called when something in the scope of this variable changes.
      */
-    public void invalidate() {
+    public synchronized void invalidate() {
+        // This method is synchronized to prevent concurrent modification
+        // of the _variablesDependentOn collection.
+        
         if (_currentExpression != null) {
             _needsEvaluation = true;
         }
@@ -2148,7 +2151,10 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
          *  @exception IllegalActionException If a value in the scope
          *  exists with the given name, but cannot be evaluated.
          */
-        public Variable getVariable(String name) throws IllegalActionException {
+        public synchronized Variable getVariable(String name) throws IllegalActionException {
+            // This method is synchronized to prevent concurrent modification
+            // of the _variablesDependentOn collection.
+
             if (_variablesDependentOn == null) {
                 _variablesDependentOn = new HashMap();
             } else {
