@@ -159,6 +159,9 @@ public class WindowPropertiesAttribute extends Parameter implements
             setToken("{bounds={" + bounds.x + ", " + bounds.y + ", "
                     + bounds.width + ", " + bounds.height + "}, maximized="
                     + maximized + "}");
+            // Not clear why the following is needed, but if it isn't there,
+            // then window properties may not be recorded.
+            propagateValue();
         } catch (IllegalActionException ex) {
             throw new InternalErrorException("Can't set propertes value! " + ex);
         }

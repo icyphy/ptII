@@ -140,6 +140,9 @@ public class SizeAttribute extends Parameter implements ComponentListener {
         try {
             Rectangle bounds = component.getBounds();
             setToken("[" + bounds.width + ", " + bounds.height + "]");
+            // Not clear why the following is needed, but if it isn't there,
+            // then window properties may not be recorded.
+            propagateValue();
         } catch (IllegalActionException ex) {
             throw new InternalErrorException("Can't set bounds value!");
         }
