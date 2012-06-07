@@ -231,9 +231,9 @@ test CompositeActor-7.1 {Test clone and description} {
         {ptolemy.actor.Director {.E3.E5.WORMDIR} attributes {
             {ptolemy.kernel.util.SingletonConfigurableAttribute {.E3.E5.WORMDIR._iconDescription} attributes {
             }}
-            {ptolemy.actor.LocalClock {.E3.E5.WORMDIR.LocalClock} attributes {
-                {ptolemy.actor.parameters.SharedParameter {.E3.E5.WORMDIR.LocalClock.globalTimeResolution} 1.0E-10}
-                {ptolemy.data.expr.Parameter {.E3.E5.WORMDIR.LocalClock.clockRate} 1.0}
+            {ptolemy.actor.LocalClock {.E3.E5.WORMDIR.localClock} attributes {
+                {ptolemy.actor.parameters.SharedParameter {.E3.E5.WORMDIR.localClock.globalTimeResolution} 1.0E-10}
+                {ptolemy.data.expr.Parameter {.E3.E5.WORMDIR.localClock.clockRate} 1.0}
             }}
             {ptolemy.data.expr.Parameter {.E3.E5.WORMDIR.startTime} value undefined}
             {ptolemy.data.expr.Parameter {.E3.E5.WORMDIR.stopTime} value undefined}
