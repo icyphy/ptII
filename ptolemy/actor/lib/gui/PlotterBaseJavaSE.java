@@ -132,8 +132,14 @@ public class PlotterBaseJavaSE implements PlotterBaseInterface {
         }
 
         try {
-            PlotEffigy plotEffigy = new PlotEffigy(containerEffigy,
-                    containerEffigy.uniqueName("plot"));
+            PlotEffigy plotEffigy;
+            // In PN models, there could be multiple of these running
+            // at the same time, in which case we may get a name collision.
+            // To prevent this, synchronize on the effigy.
+            synchronized(containerEffigy) {
+                plotEffigy = new PlotEffigy(containerEffigy,
+                        containerEffigy.uniqueName("plot"));
+            }
             // Specify that the associated plot is the one created here.
             plotEffigy.setPlot(_plotterBase.plot);
             // Specify that the associated Ptolemy model is this actor.

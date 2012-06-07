@@ -50,7 +50,6 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.Configurable;
 import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Nameable;
 import ptolemy.kernel.util.NamedObj;
@@ -193,7 +192,8 @@ public class PlotterBase extends TypedAtomicActor implements Configurable,
         newObject._implementation = null;
         try {
             newObject._getImplementation().initWindowAndSizeProperties();
-        } catch (KernelException e) {
+            newObject.configure(_base, _source, _text);
+        } catch (Exception e) {
             // This should not occur.
             throw new CloneNotSupportedException("Clone failed: " + e);
         }
@@ -592,6 +592,18 @@ public class PlotterBase extends TypedAtomicActor implements Configurable,
         }
     }
 
+    /** Override the base class to ensure that MoML is produced
+     *  if there is configuration information to export.
+     *  @param depth The depth.
+     *  @return True to export MoML.
+     */
+    protected boolean _isMoMLSuppressed(int depth) {
+        if (plot != null || _configureSources != null) {
+            return false;
+        }
+        return super._isMoMLSuppressed(depth);
+    }
+    
     /** Create a new plot. In this base class, it is an instance of Plot.
      *  In derived classes, it can be classes derived from Plot.
      *  @return A new plot object.
