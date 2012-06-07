@@ -35,6 +35,7 @@ import ptolemy.data.IntToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Settable;
@@ -75,7 +76,7 @@ import ptolemy.kernel.util.Workspace;
  it uses a parameter rather than a control port to determine which input
  to use.
 
- @author Charles Shelton
+ @author Charles Shelton and Edward A. Lee
  @version $Id$
  @since Ptolemy II 8.0
  @Pt.ProposedRating Green (cshelton)
@@ -103,6 +104,7 @@ public class ConfigurationSelect extends TypedAtomicActor {
         // Default selector value to false
         selector = new Parameter(this, "selector", new BooleanToken(false));
         selector.setTypeEquals(BaseType.BOOLEAN);
+        
         output = new TypedIOPort(this, "output", false, true);
         output.setTypeAtLeast(trueInput);
         output.setTypeAtLeast(falseInput);
@@ -110,15 +112,15 @@ public class ConfigurationSelect extends TypedAtomicActor {
         output.setWidthEquals(trueInput, true);
         output.setWidthEquals(falseInput, true);
 
-        // For the benefit of the DDF director, this actor sets
+        // For the benefit of the DDF and SDF director, this actor sets
         // consumption rate values.
         trueInput_tokenConsumptionRate = new Parameter(trueInput,
-                "tokenConsumptionRate");
+                "tokenConsumptionRate", _zero);
         trueInput_tokenConsumptionRate.setVisibility(Settable.NOT_EDITABLE);
         trueInput_tokenConsumptionRate.setTypeEquals(BaseType.INT);
 
         falseInput_tokenConsumptionRate = new Parameter(falseInput,
-                "tokenConsumptionRate");
+                "tokenConsumptionRate", _one);
         falseInput_tokenConsumptionRate.setVisibility(Settable.NOT_EDITABLE);
         falseInput_tokenConsumptionRate.setTypeEquals(BaseType.INT);
 
@@ -154,17 +156,45 @@ public class ConfigurationSelect extends TypedAtomicActor {
     public TypedIOPort output;
 
     /** This parameter provides token consumption rate for <i>trueInput</i>.
-     *  The type is int.
+     *  The type is int and it defaults to zero.
      */
     public Parameter trueInput_tokenConsumptionRate;
 
     /** This parameter provides token consumption rate for <i>falseInput</i>.
-     *  The type is int.
+     *  The type is int and it defaults to one.
      */
     public Parameter falseInput_tokenConsumptionRate;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+    
+    /** React to a change in an attribute.  This method is called by
+     *  a contained attribute when its value changes.  In this base class,
+     *  the method does nothing.  In derived classes, this method may
+     *  throw an exception, indicating that the new attribute value
+     *  is invalid.  It is up to the caller to restore the attribute
+     *  to a valid value if an exception is thrown.
+     *  @param attribute The attribute that changed.
+     *  @exception IllegalActionException If the change is not acceptable
+     *   to this container (not thrown in this base class).
+     */
+    public void attributeChanged(Attribute attribute)
+            throws IllegalActionException {
+        if (attribute == selector) {
+            boolean previousSelector = _selector;
+            _selector = ((BooleanToken)selector.getToken()).booleanValue();
+            if (_selector != previousSelector) {
+                if (_selector) {
+                    trueInput_tokenConsumptionRate.setToken(_one);
+                    falseInput_tokenConsumptionRate.setToken(_zero);
+                } else {
+                    trueInput_tokenConsumptionRate.setToken(_zero);
+                    falseInput_tokenConsumptionRate.setToken(_one);
+                }
+                getDirector().invalidateSchedule();
+            }
+        }
+    }
 
     /** Clone this actor into the specified workspace. The new actor is
      *  <i>not</i> added to the directory of that workspace (you must do this
@@ -182,23 +212,6 @@ public class ConfigurationSelect extends TypedAtomicActor {
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         ConfigurationSelect newObject = (ConfigurationSelect) super
                 .clone(workspace);
-
-        // Set the selector parameter for the cloned actor to the parameter value
-        // of the original actor.
-        try {
-            if (selector != null) {
-                if (selector.getToken().equals(BooleanToken.TRUE)) {
-                    newObject.selector.setToken(BooleanToken.TRUE);
-                } else {
-                    newObject.selector.setToken(BooleanToken.FALSE);
-                }
-            }
-        } catch (IllegalActionException ex) {
-            throw new CloneNotSupportedException(
-                    "Problem with selector parameter "
-                            + "in clone method of ConfigurationSelect");
-        }
-
         newObject.output.setTypeAtLeast(newObject.trueInput);
         newObject.output.setTypeAtLeast(newObject.falseInput);
         newObject.output.setWidthEquals(newObject.trueInput, true);
@@ -211,107 +224,43 @@ public class ConfigurationSelect extends TypedAtomicActor {
      *  <i>selector</i> parameter is true, then output the token consumed from the
      *  <i>trueInput</i> port, otherwise output the token from the
      *  <i>falseInput</i> port.
-     *
      *  @exception IllegalActionException If there is no director.
      */
     public void fire() throws IllegalActionException {
         super.fire();
-
-        // Throw an exception if the selector parameter is null or not
-        // a boolean value. This should never happen.
-        if (selector == null || selector.getToken() == null
-                || !(selector.getToken() instanceof BooleanToken)) {
-            throw new IllegalActionException(
-                    this,
-                    "In ConfigurationSelect actor "
-                            + getName()
-                            + "the selector parameter must be set to a boolean value.");
-        } else {
-            if (((BooleanToken) selector.getToken()).booleanValue()) {
-                for (int i = 0; i < trueInput.getWidth(); i++) {
-                    if (output.getWidth() > i) {
-                        output.send(i, trueInput.get(i));
-                    }
+        if (_selector) {
+            for (int i = 0; i < trueInput.getWidth(); i++) {
+                if (output.getWidth() > i) {
+                    output.send(i, trueInput.get(i));
                 }
-            } else {
-                for (int i = 0; i < falseInput.getWidth(); i++) {
-                    if (output.getWidth() > i) {
-                        output.send(i, falseInput.get(i));
-                    }
+            }
+        } else {
+            for (int i = 0; i < falseInput.getWidth(); i++) {
+                if (output.getWidth() > i) {
+                    output.send(i, falseInput.get(i));
                 }
             }
         }
     }
 
-    /** Initialize this actor so that the <i>falseInput</i> is read
-     *  from until a token arrives on the <i>selector</i> input.
-     *  @exception IllegalActionException If the parent class throws it.
-     */
-    public void initialize() throws IllegalActionException {
-        super.initialize();
-        trueInput_tokenConsumptionRate.setToken(_zero);
-        falseInput_tokenConsumptionRate.setToken(_zero);
-    }
-
-    /** Return true, unless stop() has been called, in which case,
-     *  return false.
-     *  @return True if execution can continue into the next iteration.
-     *  @exception IllegalActionException If the base class throws it.
-     */
-    public boolean postfire() throws IllegalActionException {
-
-        // Throw an exception if the selector parameter is null or not
-        // a boolean value. This should never happen.
-        if (selector == null || selector.getToken() == null
-                || !(selector.getToken() instanceof BooleanToken)) {
-            throw new IllegalActionException(
-                    this,
-                    "In ConfigurationSelect actor "
-                            + getName()
-                            + "the selector parameter must be set to a boolean value.");
-        } else {
-            if (((BooleanToken) selector.getToken()).booleanValue()) {
-                trueInput_tokenConsumptionRate.setToken(_one);
-                falseInput_tokenConsumptionRate.setToken(_zero);
-            } else {
-                trueInput_tokenConsumptionRate.setToken(_zero);
-                falseInput_tokenConsumptionRate.setToken(_one);
-            }
-        }
-        return super.postfire();
-    }
-
-    /** If the mode is to read a selector token, then return true
-     *  if the <i>selector</i> input has a token. Otherwise, return
-     *  true if every channel of the input port specified by the most
-     *  recently read selector input has a token.
+    /** Return false if there are not available tokens on the input
+     *  port chosen by the current value of the selector. Otherwise,
+     *  return true.
      *  @return False if there are not enough tokens to fire.
      *  @exception IllegalActionException If there is no director.
      */
     public boolean prefire() throws IllegalActionException {
         boolean result = super.prefire();
-
-        // Throw an exception if the selector parameter is null or not
-        // a boolean value. This should never happen.
-        if (selector == null || selector.getToken() == null
-                || !(selector.getToken() instanceof BooleanToken)) {
-            throw new IllegalActionException(
-                    this,
-                    "In ConfigurationSelect actor "
-                            + getName()
-                            + "the selector parameter must be set to a boolean value.");
-        } else {
-            if (((BooleanToken) selector.getToken()).booleanValue()) {
-                for (int i = 0; i < trueInput.getWidth(); i++) {
-                    if (!trueInput.hasToken(i)) {
-                        return false;
-                    }
+        if (_selector) {
+            for (int i = 0; i < trueInput.getWidth(); i++) {
+                if (!trueInput.hasToken(i)) {
+                    return false;
                 }
-            } else {
-                for (int i = 0; i < falseInput.getWidth(); i++) {
-                    if (!falseInput.hasToken(i)) {
-                        return false;
-                    }
+            }
+        } else {
+            for (int i = 0; i < falseInput.getWidth(); i++) {
+                if (!falseInput.hasToken(i)) {
+                    return false;
                 }
             }
         }
@@ -321,6 +270,9 @@ public class ConfigurationSelect extends TypedAtomicActor {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
+    /** Cached value of selector. */
+    private boolean _selector = false;
+    
     /** A final static IntToken with value 0. */
     private final static IntToken _zero = new IntToken(0);
 
