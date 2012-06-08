@@ -641,7 +641,7 @@ public class UnionType extends StructuredType implements Cloneable {
             } else if (type2 == null) {
                 types[i] = type1;
             } else {
-                types[i] = (Type) TypeLattice.lattice().greatestLowerBound(
+                types[i] = (Type) TypeLattice.lattice().leastUpperBound(
                         type1, type2);
             }
         }
