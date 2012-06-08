@@ -144,6 +144,16 @@ public class HttpServiceProvider extends TypedAtomicActor implements HttpService
         
     }
     
+    /** Specify the web server for this service. This will
+     *  be called by the {@link WebServer} attribute of a model,
+     *  if there is one, and will enable this service to access
+     *  information about the web server (such as
+     *  the resourcePath, resourceLocation, or temporaryFileLocation).
+     */
+    public void setWebServer(WebServer server) {
+        // Ignore. This actor doesn't need to know.
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
     
@@ -162,11 +172,7 @@ public class HttpServiceProvider extends TypedAtomicActor implements HttpService
     private class HelloServlet extends HttpServlet
     {
         private String greeting="Hello World";
-        
-        /** Construct a servlet with the default greeting.
-         */     
-        public HelloServlet(){}
-        
+                
         /** Construct a servlet with the specified greeting.
          * 
          * @param greeting The message to display on the returned web page

@@ -97,18 +97,22 @@ public class HttpCompositeServiceProvider extends TypedCompositeActor
         
         outputPage = new FileParameter(this, "outputPage");
         outputPage.setExpression("/pages/output.html");
-        
-        writeDirectory = new FileParameter(this, "writeDirectory");
     }
     
     ///////////////////////////////////////////////////////////////////
-    ////                     parameters                            ////
+    ////                     ports and parameters                  ////
     
-    /** The directory in which to create any necessary files.
-     *  The {@link WebServer} for the model must specify this directory
-     *  as one of its resource bases if the generated files are to served.
+    /** The file containing the HTML input form to display.
      */
-    public FileParameter writeDirectory;
+    public FileParameter inputPage;
+    
+    /** The file containing the HTML output page to display.
+     */
+    public FileParameter outputPage;
+    
+    /** The relative URL to map this servlet to. 
+     */
+    public StringParameter path; 
 
     ///////////////////////////////////////////////////////////////////
     ////                     public methods                        ////
@@ -148,6 +152,17 @@ public class HttpCompositeServiceProvider extends TypedCompositeActor
         contents.add(new StringBuffer(content));     
     }
     
+    /** Add an attribute and the value of that attribute
+     * Really want to be able to pass in an id instead of a NamedObj
+     * 
+     * e.g. exporter.defineAreaAttribute(object, eventTypeValue, stringValue(), true);
+     */
+    public boolean defineAreaAttribute(NamedObj object, String attribute,
+            String value, boolean overwrite) {
+        // TODO Auto-generated method stub
+        return false;
+    }
+
     /** Return the ExportParameters for the service which specify a directory
      * to write temporary files to.
      * 
@@ -431,21 +446,22 @@ public class HttpCompositeServiceProvider extends TypedCompositeActor
         
     }
     
-    ///////////////////////////////////////////////////////////////////
-    ////                     ports and parameters                  ////
-    
-    /** The file containing the HTML input form to display.
+    @Override
+    public void setTitle(String title, boolean showInHTML) {
+        // TODO Auto-generated method stub
+        
+    }
+        
+    /** Specify the web server for this service. This will
+     *  be called by the {@link WebServer} attribute of a model,
+     *  if there is one, and will enable this service to access
+     *  information about the web server (such as
+     *  the resourcePath, resourceLocation, or temporaryFileLocation).
      */
-    public FileParameter inputPage;
-    
-    /** The file containing the HTML output page to display.
-     */
-    public FileParameter outputPage;
-    
-    /** The relative URL to map this servlet to. 
-     */
-    public StringParameter path; 
-    
+    public void setWebServer(WebServer server) {
+        _server = server;
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                     private methods                      ////
    
@@ -579,9 +595,12 @@ public class HttpCompositeServiceProvider extends TypedCompositeActor
             // Open directory for writing temporary files
             File directory;
             try {
-                directory = writeDirectory.asFile();
+                if (_server == null) {
+                    throw new IOException("No WebServer running.");
+                }
+                directory = _server.temporaryFileLocation.asFile();
             } catch (IllegalActionException e1) {
-                throw new IOException("Failed to open writeDirectory.", e1);
+                throw new IOException("Failed to open server's temporaryFileLocation.", e1);
                 /* Alternative:
                 _writeError(response, 
                         HttpServletResponse.SC_BAD_REQUEST, 
@@ -595,10 +614,17 @@ public class HttpCompositeServiceProvider extends TypedCompositeActor
             // The WebServer offers a resource handler to serve files.
             // It needs to include this directory as one of its resource bases
             // in order to be able to serve the generated files.
-            // FIXME: Don't hardwire path here!!
             // This should be the resourcePath from the WebServer.
-            // How to get that?
-            _exportParameters.HTMLPathForFiles = "/files/";
+            _exportParameters.HTMLPathForFiles = "";
+            if (_server != null) {
+                try {
+                    _exportParameters.HTMLPathForFiles = _server.resourcePath.stringValue();
+                } catch(IllegalActionException e){
+                    _writeError(response, 
+                            HttpServletResponse.SC_BAD_REQUEST, 
+                            "Server provides an invalid resourcePath.");
+                }
+            }
 
             // Map request parameters to input ports
             Iterator inputPorts = inputPortList().iterator();
@@ -706,22 +732,7 @@ public class HttpCompositeServiceProvider extends TypedCompositeActor
      *  all of the URI naming conventions. 
      */
     private URI _URIpath;
-
-    /** Add an attribute and the value of that attribute
-     * Really want to be able to pass in an id instead of a NamedObj
-     * 
-     * e.g. exporter.defineAreaAttribute(object, eventTypeValue, stringValue(), true);
-     */
-    public boolean defineAreaAttribute(NamedObj object, String attribute,
-            String value, boolean overwrite) {
-        // TODO Auto-generated method stub
-        return false;
-    }
-
-    @Override
-    public void setTitle(String title, boolean showInHTML) {
-        // TODO Auto-generated method stub
-        
-    }
     
+    /** The WebServer for this service, set by {@link #setWebServer(WebServer)}. */
+    private WebServer _server;
 }

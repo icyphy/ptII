@@ -34,6 +34,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 
@@ -125,13 +126,15 @@ public class WebServer extends AbstractInitializableAttribute {
         resourceLocation = new FileParameter(this, "resourceLocation");
         URI modelURI = URIAttribute.getModelURI(this);
         // Get the directory excluding the model's name
-        // FIXME:  Better way to do this?
         String path = modelURI.getPath().toString();
         int slash = path.lastIndexOf("/");
         if (slash != -1) {
             path = path.substring(0, slash);
         }
         resourceLocation.setExpression(path);
+        
+        temporaryFileLocation = new FileParameter(this, "temporaryFileLocation");
+        temporaryFileLocation.setExpression("$TMPDIR");
     }
     
     ///////////////////////////////////////////////////////////////////
@@ -222,7 +225,7 @@ public class WebServer extends AbstractInitializableAttribute {
      */
     public StringParameter resourcePath;
     
-    /** A directory or URL where the web server should look for resources 
+    /** A directory or URL where the web server will look for resources 
      *  (like image files and the like).
      *  This defaults to the current model's directory.
      *  You can add additional resource bases by adding additional
@@ -234,6 +237,18 @@ public class WebServer extends AbstractInitializableAttribute {
      *  See the explanation of {@link #resourcePath}.
      */
     public FileParameter resourceLocation;
+    
+    /** A directory where the web server will look for resources 
+     *  (like image files and the like). This specifies an additional
+     *  resource location after {@link resourceLocation}, but the
+     *  directory specified here may be used by components implementing
+     *  {@link HttpService} as a place to write temporary files
+     *  that will be found by the web server.
+     *  This defaults to "$TMPDIR", a built-in variable
+     *  that specifies a temporary file location.
+     *  See the explanation of {@link #resourcePath}.
+     */
+    public FileParameter temporaryFileLocation;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -388,20 +403,20 @@ public class WebServer extends AbstractInitializableAttribute {
          // of any relative reference to a file such as an image.
          // Please see comments for resourcePath parameter and example
          // $PTII/org/ptolemy/ptango/demo/WebServerDE/WebServerDE.xml
-         fileHandler.setContextPath(resourcePath.getExpression());       
-         
-         ResourceHandler resourceHandler = new ResourceHandler();
-         // FIXME:  Should this be false?  How to prevent listing contents
-         // of hard drive??
-         resourceHandler.setDirectoriesListed(true);
-
+         // It is not clear why or whether both of these are needed.
+         fileHandler.setContextPath(resourcePath.stringValue());
          // Think this is not needed since we create a ContextHandler 
          // fileHandler, set up our resourceHandler, then call 
          // fileHandler.setHandler(resourceHandler)
          // I think this is only needed if we directly add resourceHandler to 
          // the server's handler list, since resourceHandler does not have
          // a setContextPath() method
-         //resourceHandler.setResourceBase(".");
+         fileHandler.setResourceBase(resourcePath.stringValue());
+         
+         ResourceHandler resourceHandler = new ResourceHandler();
+         // Do not support listing of directories in the local resource locations.
+         // FIXME: This should probably be a parameter of the server.
+         resourceHandler.setDirectoriesListed(false);
 
          // Specify directories or URLs in which to look for resources.
          // These are given by all instances of FileParameter in this
@@ -412,11 +427,18 @@ public class WebServer extends AbstractInitializableAttribute {
          // http://stackoverflow.com/questions/2405038/multiple-webroot-folders-with-jetty
          ArrayList<FileResource> resources = new ArrayList<FileResource>();
          List<FileParameter> bases = attributeList(FileParameter.class);
+         // To prevent duplicates, keep track of bases added.
+         HashSet<URL> seen = new HashSet<URL>();
          for (FileParameter base : bases) {
              try {
                  URL baseURL = base.asURL();
                  if (baseURL != null) {
-                     resources.add(new FileResource(base.asURL()));
+                     URL baseAsURL = base.asURL();
+                     if (seen.contains(baseAsURL)) {
+                         continue;
+                     }
+                     seen.add(baseAsURL);
+                     resources.add(new FileResource(baseAsURL));
                  }
              } catch(URISyntaxException e2){
                  throw new IllegalActionException(this,
@@ -456,12 +478,13 @@ public class WebServer extends AbstractInitializableAttribute {
              Object object = objects.next(); 
              if (object instanceof HttpService) {   
                  HttpService service = (HttpService) object;
-                 String path = service.getRelativePath().getPath();
-                 // FIXME: Tell the servletHandler that this is its WebServer,
+                 // Tell the HttpService that this is its WebServer,
                  // so that it can get, for example, critical information such
-                 // as resourcePath. See FIXME in HttpCompositeService, which
-                 // has the resourcePath hardwired in.
-                 // Alternatively, the resourcePath should be a SharedParameter.
+                 // as resourcePath.
+                 service.setWebServer(this);
+                 
+                 // Add the servlet to the handler with the required relative path.
+                 String path = service.getRelativePath().getPath();
                  servletHandler
                      .addServlet(new ServletHolder(service.getServlet()), path);
              }

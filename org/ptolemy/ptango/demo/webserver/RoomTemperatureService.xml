@@ -108,13 +108,11 @@
     <property name="WebServer" class="org.ptolemy.ptango.lib.WebServer">
         <property name="applicationPath" class="ptolemy.data.expr.StringParameter" value="/">
         </property>
-        <property name="resourceLocation" class="ptolemy.data.expr.FileParameter" value="/ptII/org/ptolemy/ptango/demo/webserver">
+        <property name="resourceLocation" class="ptolemy.data.expr.FileParameter" value="$PTII/org/ptolemy/ptango/demo/files">
         </property>
-        <property name="resourceBase" class="ptolemy.data.expr.FileParameter" value="$PTII/org/ptolemy/ptango/demo/files">
+        <property name="temporaryFileLocation" class="ptolemy.data.expr.FileParameter" value="$PTII/org/ptolemy/ptango/demo/files">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{140.0, -5.0}">
-        </property>
-        <property name="tempDirectory" class="ptolemy.data.expr.FileParameter" value="$TMPDIR">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[140.0, -15.0]">
         </property>
     </property>
     <entity name="HttpCompositeServiceProvider" class="org.ptolemy.ptango.lib.HttpCompositeServiceProvider">
@@ -123,8 +121,6 @@
         <property name="inputPage" class="ptolemy.data.expr.FileParameter" value="pages/roominput.html">
         </property>
         <property name="outputPage" class="ptolemy.data.expr.FileParameter" value="pages/roomoutput.html">
-        </property>
-        <property name="writeDirectory" class="ptolemy.data.expr.FileParameter" value="$PTII/org/ptolemy/ptango/demo/files">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{190.0, 120.0}">
         </property>
@@ -890,7 +886,7 @@ on the colored rectangle shows how the variable "TRoom" is used to assign the co
 "http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
 <plot>
 <title>SequencePlotter</title>
-<xRange min="0.0" max="133.06560000000113"/>
+<xRange min="0.0" max="126.65280000000106"/>
 <yRange min="0.0" max="37.0"/>
 </plot>?>
             </configure>

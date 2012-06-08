@@ -4,13 +4,13 @@
 <entity name="WebServerDE" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.0.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={330, 146, 1229, 854}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={330, 146, 1235, 848}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1001, 738]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.9345716248096">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{542.539477888548, 398.9583013803681}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{542.5394778885482, 398.9583013803681}">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model launches a web server and provides a service&#10;available at http://localhost:8080/ptolemnizer.&#10;Run the model and navigate to that location&#10;(or click on this comment).">
@@ -86,7 +86,7 @@
     <entity name="HttpActor" class="org.ptolemy.ptango.lib.HttpActor">
         <property name="path" class="ptolemy.data.expr.StringParameter" value="/ptolemnizer/*">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[60.0, 175.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[60.0, 180.0]">
         </property>
         <port name="getParameters" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>

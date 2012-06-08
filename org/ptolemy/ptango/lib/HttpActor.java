@@ -365,6 +365,16 @@ public class HttpActor extends TypedAtomicActor implements HttpService {
         _URIpath = path;
     }
     
+    /** Specify the web server for this service. This will
+     *  be called by the {@link WebServer} attribute of a model,
+     *  if there is one, and will enable this service to access
+     *  information about the web server (such as
+     *  the resourcePath, resourceLocation, or temporaryFileLocation).
+     */
+    public void setWebServer(WebServer server) {
+        // Ignore. This actor doesn't need to know.
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                     private variables                     ////
     

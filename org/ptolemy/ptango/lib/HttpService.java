@@ -47,7 +47,7 @@ import javax.servlet.http.HttpServlet;
  *  {@link http://www.osgi.org/javadoc/r4v42/org/osgi/service/http/HttpService.html}.
  *  
  *  @see WebServer
- *  @author Elizabeth Latronico
+ *  @author Elizabeth Latronico and Edward A. Lee
  *  @version $Id$
  *  @since Ptolemy II 9.0
  *  @Pt.ProposedRating Red (ltrnc)
@@ -74,8 +74,16 @@ public interface HttpService {
     public HttpServlet getServlet();
     
     /** Set the relative path that this HttpService is mapped to.
-     * 
-     * @param path The relative path that this HttpService is mapped to.
+     *  @param path The relative path that this HttpService is mapped to.
+     *  @see #getRelativePath()
      */
     public void setRelativePath(URI relativePath);
+    
+    /** Specify the web server for this service. This will
+     *  be called by the {@link WebServer} attribute of a model,
+     *  if there is one, and will enable the service to access
+     *  information about the web server (such as
+     *  the resourcePath, resourceLocation, or temporaryFileLocation).
+     */
+    public void setWebServer(WebServer server);
 }
