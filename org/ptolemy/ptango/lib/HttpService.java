@@ -35,13 +35,18 @@ import javax.servlet.http.HttpServlet;
 
 /** An interface for actors that handle HTTP requests.  The interface
  *  allows the relative path for the HTTP request to be set and obtained, 
- *  and provides a servlet to handle requests.
- *  
+ *  and provides a servlet to handle requests. If this interface is
+ *  implemented by an actor or attribute in a model that contains
+ *  an instance of {@link WebServer}, then requests to that server
+ *  that match the relative path set by the {@link #setRelativePath(URI)}
+ *  method of this interface will be delegated to that actor or attribute.
+ *  <p>
  *  Note that "HttpService" is also the name of an OSGi interface.  If OSGi is 
  *  incorporated in Ptolemy in the future, we might want to rename this 
- *  interface.
- *  http://www.osgi.org/javadoc/r4v42/org/osgi/service/http/HttpService.html
+ *  interface. See
+ *  {@link http://www.osgi.org/javadoc/r4v42/org/osgi/service/http/HttpService.html}.
  *  
+ *  @see WebServer
  *  @author Elizabeth Latronico
  *  @version $Id$
  *  @since Ptolemy II 9.0
@@ -55,16 +60,16 @@ public interface HttpService {
     ///////////////////////////////////////////////////////////////////
     ////                     public methods                        ////
     
-    /** Returns the relative path that this HttpService is mapped to. 
-     * 
+    /** Returns the relative path that this HttpService is mapped to,
+     *  which is the value set previously by a call to
+     *  {@link #setRelativePath(URI)}.
      *  @return The relative path that this HttpService is mapped to.
      */
     public URI getRelativePath();
     
     /** Returns an HttpServlet which is used to handle requests that
-     *  arrive at the given path.
-     * 
-     * @return An HttpServlet to handle requests. 
+     *  arrive at the given relative path.
+     *  @return An HttpServlet to handle requests. 
      */
     public HttpServlet getServlet();
     

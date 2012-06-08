@@ -137,18 +137,30 @@ public class WebServer extends AbstractInitializableAttribute {
     ///////////////////////////////////////////////////////////////////
     ////                         parameters                        ////
     
-    /** The URL prefix to map this application to.  Defaults to "/"
-     *  which will cause the model to receive all URLs.  Individual 
-     *  servlets will be mapped to URLs relative to this context path.
-     *  
-     * Other choices are possible.  For example, for web applications, it's
+    /** The URL prefix to map this application to.  This defaults to "/",
+     *  which will cause the model to receive all URLs directed to this
+     *  server. For example, if this WebServer is handling requests on
+     *  {@link #port} 8080 of localhost, then with value "/", this
+     *  WebServer will handle all requests to
+     *  <pre>
+     *  http://localhost:8080/
+     *  </pre>
+     *  Individual servlets (actors or attributes in a model that implement
+     *  {@link HttpService}) will be mapped to URLs relative to this context path.
+     *  For example, if the model contains a servlet with relative path "myService",
+     *  then this WebServer will delegate to it requests of the form
+     *  <pre>
+     *  http://localhost:8080/myService
+     *  </pre>
+     * <p>
+     * Other choices besides "/" are possible.  For example, for web applications, it's
      * common to host several applications on the same server.  It's typical
      * to have each application use setContextPath("/appName") here, 
      * (e.g. setContextPath("/myCalendarApp"), setContextPath("/tetris")
      * Each application can contain multiple servlets, which are registered
      * to URLs relative to this path, e.g.:
      * /myCalendarApp/view, /myCalendarApp/print, /tetris/view
-     * That way the separate applications have a separate URL namespace and 
+     * That way the separate applications have a separate URL namespaces and 
      * don't interfere with each other.  A web server often offers some 
      * default content at the root / then.  E.g. Tomcat provides the Tomcat
      * manager screen to load/unload web applications.
@@ -161,16 +173,37 @@ public class WebServer extends AbstractInitializableAttribute {
     public Parameter port;
     
     /** The URL prefix which web services (e.g. an HTML page) will use to 
-     *  refer to resources (files).  Used by the ResourceHandler. Of the form:
+     *  refer to resources (files, such as images).
+     *  Used by the ResourceHandler. For example,
+     *  a web page may refer to such a resource by an absolute URL
+     *  such as
+     *  <pre>
      *  protocol://hostname:portname/applicationPath/resourcePath/filename.ext
+     *  </pre>
      *  e.g.
+     *  <pre>
      *  http://localhost:8080/myAppName/files/PtolemyIcon.gif
-     *  for an applicationPath of "/myAppName" and a resourcePath of "/files"
+     *  </pre>
+     *  for an {@link #applicationPath} of "/myAppName" and a resourcePath of "/files"
      *  or
-     *  http://localhost:8080/files/PtolemyIcon.gif 
-     *  for an applicationPath of "/" and a resourcePath of "/files"
-     *  
-     *  The ResourceHandler will look in resourceLocation for this file.
+     *  <pre>
+     *  http://localhost:8080/files/PtolemyIcon.gif
+     *  </pre>
+     *  for an {@link #applicationPath} of "/" and a resourcePath of "/files".
+     *  The resource may also be referenced by the relative path
+     *  <pre>
+     *  /files/PtolemyIcon.gif
+     *  </pre>
+     *  from within the application (e.g., a web page served by URL
+     *  <pre>
+     *  protocol://hostname:portname/applicationPath/
+     *  </pre>
+     *  <p>
+     *  The ResourceHandler will look in resourceLocation for this file,
+     *  and if it does not find it there, will also look in any additional
+     *  resource locations that have been added to this web server
+     *  (see #resourceLocation).
+     *  </p>
      *  Note that ResourceHandler supports subdirectories, for example
      *  http://localhost:8080/myAppName/files/img/PtolemyIcon.gif 
      *  and a resourceLocation of $PTII/org/ptolemy/ptango/demo
@@ -189,12 +222,16 @@ public class WebServer extends AbstractInitializableAttribute {
      */
     public StringParameter resourcePath;
     
-    /** The directory or URL where the web server should look for resources 
-     * (like image files and the like). This defaults to the current model's
-     *  directory.
+    /** A directory or URL where the web server should look for resources 
+     *  (like image files and the like).
+     *  This defaults to the current model's directory.
      *  You can add additional resource bases by adding additional
      *  parameters of type ptolemy.data.expr.FileParameter to
      *  this WebServer (select Configure in the context menu).
+     *  <p>
+     *  To refer to resources in these locations, a web service
+     *  (such as an HTML page) uses the {@link #resourcePath}.
+     *  See the explanation of {@link #resourcePath}.
      */
     public FileParameter resourceLocation;
 
@@ -265,7 +302,7 @@ public class WebServer extends AbstractInitializableAttribute {
 
     /** Collect servlets from all model objects implementing HttpService 
      *  and start the web server in a new thread.
-     *  
+     *  <p>
      * In the current implementation, servlets must be registered before the
      * Jetty server starts.  Servlets are not allowed to be added to a running
      * ContextHandler.  Currently, the Jetty server is started once and runs 
@@ -275,10 +312,12 @@ public class WebServer extends AbstractInitializableAttribute {
      * to an outside observer, however, since some HttpRequests could fail 
      * if a servlet has not been loaded yet.
      * 
-     *  References:  
-     *  http://wiki.eclipse.org/Jetty/Tutorial/Embedding_Jetty
-     *  http://ptrthomas.wordpress.com/2009/01/24/how-to-start-and-stop-jetty-revisited/
-     *  http://draconianoverlord.com/2009/01/10/war-less-dev-with-jetty.html
+     *  References:
+     *  <ul>
+     *  <li> {@link http://wiki.eclipse.org/Jetty/Tutorial/Embedding_Jetty}
+     *  <li> {@link http://ptrthomas.wordpress.com/2009/01/24/how-to-start-and-stop-jetty-revisited/}
+     *  <li> {@link http://draconianoverlord.com/2009/01/10/war-less-dev-with-jetty.html}
+     *  </ul>
      *  @exception IllegalActionException Not thrown in this base class.
      */
     public void initialize() throws IllegalActionException {
@@ -345,7 +384,8 @@ public class WebServer extends AbstractInitializableAttribute {
          ContextHandler fileHandler = new ContextHandler();
          
          // Set the path which other web applications (e.g. an HTML page) would
-         // use to request resources (files)
+         // use to request resources (files). This path needs to be a prefix
+         // of any relative reference to a file such as an image.
          // Please see comments for resourcePath parameter and example
          // $PTII/org/ptolemy/ptango/demo/WebServerDE/WebServerDE.xml
          fileHandler.setContextPath(resourcePath.getExpression());       
@@ -417,6 +457,11 @@ public class WebServer extends AbstractInitializableAttribute {
              if (object instanceof HttpService) {   
                  HttpService service = (HttpService) object;
                  String path = service.getRelativePath().getPath();
+                 // FIXME: Tell the servletHandler that this is its WebServer,
+                 // so that it can get, for example, critical information such
+                 // as resourcePath. See FIXME in HttpCompositeService, which
+                 // has the resourcePath hardwired in.
+                 // Alternatively, the resourcePath should be a SharedParameter.
                  servletHandler
                      .addServlet(new ServletHolder(service.getServlet()), path);
              }

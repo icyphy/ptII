@@ -4,7 +4,7 @@
 <entity name="MultiplyService" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.0.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={78, 127, 1158, 750}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={78, 127, 1169, 744}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[935, 634]">
     </property>
@@ -15,7 +15,7 @@
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model illustrates how to gather input from a website, &#10;run a Ptolemy model, then produce an output website.&#10;&#10;Please run the model, then point your browser to:&#10;http://localhost:8080/multiply&#10;&#10;The HttpCompositeServiceProvider displays an HTML form &#10;upon receiving an HTTP get request, and maps the forms&#10;fields to its input ports and executes the model &#10;upon receiving an HTTP post request.&#10;&#10;There is still a bug somewhere regarding re-starting&#10;the model.  If you stop the model, then execute it &#10;again, for some reason the SDF director in &#10;HttpCompositeServiceProvider doesn't appear to do anything">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[275.0, 0.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{275.0, 0.0}">
         </property>
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
@@ -81,6 +81,8 @@
         </property>
     </property>
     <property name="WebServer" class="org.ptolemy.ptango.lib.WebServer">
+        <property name="resourceBase" class="ptolemy.data.expr.FileParameter" value="$PTII/org/ptolemy/ptango/demo/webserver/">
+        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[215.0, 50.0]">
         </property>
     </property>

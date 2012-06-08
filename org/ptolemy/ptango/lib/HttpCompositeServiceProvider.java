@@ -27,7 +27,6 @@ import ptolemy.kernel.Relation;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
-import ptolemy.util.StringUtilities;
 import ptolemy.vergil.basic.BasicGraphFrame;
 import ptolemy.vergil.basic.ExportParameters;
 import ptolemy.vergil.basic.export.web.WebExportable;
@@ -61,9 +60,18 @@ import ptolemy.vergil.basic.export.web.WebExporter;
 
  */
 
-/** An actor that handles an HttpRequest to the given path.  This actor creates
- *  a servlet, registers this servlet with the WebServer during preinitialize(),
- *  and displays its content at the specified path when a request is received.
+/** An actor that handles an HttpRequest to the given path. This actor
+ *  provides a web service at the specified <i>path</i> (e.g.,
+ *  http://localhost:8080/<i>path</i>). When it receives a get
+ *  request on this path, it responds by posting the specified
+ *  <i>inputPage</i>. The default <i>inputPage</i> contains a
+ *  form that results in a post request to the same <i>path</i>.
+ *  Upon receiving a <i>post</i> request, this actor does
+ *  something I don't understand (FIXME) to retrieve from
+ *  the post posted values and set them in any connected
+ *  WebSource actors. It then requests that that director fire
+ *  it. Upon firing, it creates a web page using the WebExportable
+ *  mechanism and returns it.
  *  
  *  @author ltrnc
  *  @version $Id$
@@ -74,7 +82,8 @@ import ptolemy.vergil.basic.export.web.WebExporter;
  */
 
 public class HttpCompositeServiceProvider extends TypedCompositeActor 
-        implements HttpService, WebExporter{
+        implements HttpService, WebExporter {
+        
     public HttpCompositeServiceProvider(CompositeEntity container, String name)
     throws IllegalActionException, NameDuplicationException {
         super(container, name);
@@ -568,26 +577,29 @@ public class HttpCompositeServiceProvider extends TypedCompositeActor
                 throws ServletException, IOException
         {        
             // Open directory for writing temporary files
-            File directory = new File(StringUtilities.getProperty("java.io.tmpdir"));
+            File directory;
+            try {
+                directory = writeDirectory.asFile();
+            } catch (IllegalActionException e1) {
+                throw new IOException("Failed to open writeDirectory.", e1);
+                /* Alternative:
+                _writeError(response, 
+                        HttpServletResponse.SC_BAD_REQUEST, 
+                        "Problem with writeDirectory: " 
+                        + writeDirectory.getExpression());                            
+                 */
+            }
             
             _exportParameters = new ExportParameters(directory);
             
             // The WebServer offers a resource handler to serve files.
             // It needs to include this directory as one of its resource bases
             // in order to be able to serve the generated files.
-            
-            try {
-                File writeDirectoryValue = writeDirectory.asFile();
-                if (writeDirectoryValue != null) {
-                    _exportParameters.HTMLPathForFiles = writeDirectoryValue.getCanonicalPath();
-                }
-            } catch(IllegalActionException e){
-                _writeError(response, 
-                        HttpServletResponse.SC_BAD_REQUEST, 
-                        "Problem with writeDirectory: " 
-                        + writeDirectory.getExpression());                            
-            }
-            
+            // FIXME: Don't hardwire path here!!
+            // This should be the resourcePath from the WebServer.
+            // How to get that?
+            _exportParameters.HTMLPathForFiles = "/files/";
+
             // Map request parameters to input ports
             Iterator inputPorts = inputPortList().iterator();
             while (inputPorts.hasNext()) {

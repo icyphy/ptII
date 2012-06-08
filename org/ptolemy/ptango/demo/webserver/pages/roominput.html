@@ -58,20 +58,18 @@
 
 	<div data-role="content">
 		Please enter the desired daytime and nighttime temperatures, in Celsius:
-		<!--  The form action does nothing, since we want to submit the form
-		  using ajax instead, using an onclick method for the submit button -->
-		<!--  <form action="javascript:void(0);" method="post" > -->
-		<form action="./simulate" method="post" > 
+		<!--  The following does a post to the /room service provider when submitted -->
+		<form action="./room" method="post" > 
 		
 			<div data-role="fieldcontain">
 				<label for="TDay">Daytime: </label>
-				<input type="text" name="TDay" id="TDay" value="" placeholder="Desired daytime temperature"/>			
+				<input type="text" name="TDay" id="TDay" value="22" placeholder="Desired daytime temperature"/>			
 				<label for="TNight">Nighttime:</label>
-				<input type="text" name="TNight" id="TNight" value="" placeholder="Desired nighttime temperature"/>	
+				<input type="text" name="TNight" id="TNight" value="15" placeholder="Desired nighttime temperature"/>	
 			</div>
 		
 			<div> Click the button and Ptolemy will graph the room temperature! <br />
-				<button type="submit" id="calculateButton"> Calculate </button>
+				<button type="submit" id="graphButton"> Graph </button>
 			</div>
 		</form>
 	</div>
