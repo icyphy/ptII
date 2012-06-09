@@ -172,10 +172,10 @@ public class SendMail extends TypedAtomicActor {
         new SingletonParameter(SMTPPort.getPort(), "_showName")
                 .setToken(BooleanToken.TRUE);
 
-        SSL = new Parameter(this, "enableSSL");
-        SSL.setTypeEquals(BaseType.BOOLEAN);
-        SSL.setExpression("false");
-        SSL.setPersistent(true);
+        enableSSL = new Parameter(this, "enableSSL");
+        enableSSL.setTypeEquals(BaseType.BOOLEAN);
+        enableSSL.setExpression("false");
+        enableSSL.setPersistent(true);
 
         reallySendMail = new Parameter(this, "reallySendMail");
         reallySendMail.setTypeEquals(BaseType.BOOLEAN);
@@ -235,8 +235,8 @@ public class SendMail extends TypedAtomicActor {
     /** User name for the send mail server. */
     public PortParameter SMTPUserName;
 
-    /** Enable SSL protocol.*/
-    public Parameter SSL;
+    /** Enable the Secure Sockets Layer (SSL) protocol.*/
+    public Parameter enableSSL;
 
     /** The subject line. This defaults to an empty string. */
     public PortParameter subject;
@@ -302,7 +302,7 @@ public class SendMail extends TypedAtomicActor {
             _props.remove("mail.smtp.port");
         }
 
-        if (((BooleanToken) SSL.getToken()).booleanValue()) {
+        if (((BooleanToken) enableSSL.getToken()).booleanValue()) {
             if (SMTPPortValue != "") {
                 _props.put("mail.smtp.socketFactory.port", SMTPPortValue);
             } else {
