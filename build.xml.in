@@ -65,6 +65,9 @@
 
   <!-- Ant paths. Alphabetize, please -->
   <path id="ptII.classpath">
+    <pathelement location="${env.HOME}/.ptolemyII" />
+    <!-- Java 1.6 and later: * in the classpath matches *.jar files -->
+    <pathelement location="${env.HOME}/.ptolemyII/*" />
     <pathelement location="${basedir}" />
     @ANT_CLASSPATH@
   </path>
