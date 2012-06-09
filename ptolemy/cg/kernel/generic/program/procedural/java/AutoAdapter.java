@@ -2763,10 +2763,20 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
                         while (entities.hasNext()) {
                             NamedObj namedObj = (NamedObj)entities.next();
                             if (_isAutoAdaptered(namedObj)) {
-                                if (verbosityLevel > 14) {
-                                    System.out.println("_isReadingRemoteParameters: " + namedObj.getFullName() + " is autoadaptered, returning false");
+                                if (namedObj.getClass().getName().endsWith("SigmoidalActivation")) {
+                                    if (verbosityLevel > 14) {
+                                        System.out.println("_isReadingRemoteParameters: "
+                                                + namedObj.getClass().getName() + " " 
+                                                + namedObj.getFullName() + " is autoadaptered, NOT returning false");
+                                    }
+                                } else {
+                                    if (verbosityLevel > 14) {
+                                        System.out.println("_isReadingRemoteParameters: " 
+                                                + namedObj.getClass().getName() + " "
+                                                + namedObj.getFullName() + " is autoadaptered, returning false");
+                                    }
+                                    return false;
                                 }
-                                return false;
                             }
                         }
                     } 
