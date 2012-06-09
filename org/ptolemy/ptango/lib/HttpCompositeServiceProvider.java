@@ -64,16 +64,18 @@ import ptolemy.vergil.basic.export.web.WebExporter;
  *  provides a web service at the specified <i>path</i> (e.g.,
  *  http://localhost:8080/<i>path</i>). When it receives a get
  *  request on this path, it responds by posting the specified
- *  <i>inputPage</i>. The default <i>inputPage</i> contains a
+ *  <i>inputPage</i>. This may contain, for example, a
  *  form that results in a post request to the same <i>path</i>.
- *  Upon receiving a <i>post</i> request, this actor does
- *  something I don't understand (FIXME) to retrieve from
- *  the post posted values and set them in any connected
- *  WebSource actors. It then requests that that director fire
- *  it. Upon firing, it creates a web page using the WebExportable
- *  mechanism and returns it.
+ *  Upon receiving a <i>post</i> request, this actor retrieves
+ *  parameters from the post posted values and set them in any connected
+ *  {@link #WebSource} actors. It then requests that that director fire
+ *  it. Upon firing, it fires its contents, and then
+ *  creates a web page using the WebExportable
+ *  mechanism and returns it. It includes in the response page
+ *  any data values that, upon firing the contents, were deposited
+ *  in an {@link WebSink} actor.
  *  
- *  @author ltrnc
+ *  @author Beth Latronico
  *  @version $Id$
  *  @since Ptolemy II 9.0
  *  @Pt.ProposedRating Red (ltrnc)
