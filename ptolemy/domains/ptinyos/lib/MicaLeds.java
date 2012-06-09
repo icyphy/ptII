@@ -38,8 +38,10 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.Location;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.Workspace;
 import ptolemy.vergil.icon.EditorIcon;
 import ptolemy.vergil.kernel.attributes.RectangleAttribute;
+
 
 ///////////////////////////////////////////////////////////////////
 //// MicaLeds
@@ -75,13 +77,13 @@ public class MicaLeds extends TypedAtomicActor {
         super(container, name);
 
         // Create the node icon.
-        EditorIcon node_icon = new EditorIcon(this, "_icon");
+        EditorIcon nodeIcon = new EditorIcon(this, "_icon");
 
         // The icon of this actor has 3 LEDs: red, yellow, and green.
         // For each LED, create the corresponding parameter and
         // graphical icon.  Then initialize the LED to the off setting.
         red = new Parameter(this, "red");
-        _ledRed = new RectangleAttribute(node_icon, "_ledRed");
+        _ledRed = new RectangleAttribute(nodeIcon, "_ledRed");
 
         Location ledRedLoc = new Location(_ledRed, "_location");
         double[] ledRedLocVal = { -20.0, 0.0 };
@@ -92,7 +94,7 @@ public class MicaLeds extends TypedAtomicActor {
         _redOff();
 
         green = new Parameter(this, "green");
-        _ledGreen = new RectangleAttribute(node_icon, "_ledGreen");
+        _ledGreen = new RectangleAttribute(nodeIcon, "_ledGreen");
 
         Location ledGreenLoc = new Location(_ledGreen, "_location");
         double[] ledGreenLocVal = { 0.0, 0.0 };
@@ -103,7 +105,7 @@ public class MicaLeds extends TypedAtomicActor {
         _greenOff();
 
         yellow = new Parameter(this, "yellow");
-        _ledYellow = new RectangleAttribute(node_icon, "_ledYellow");
+        _ledYellow = new RectangleAttribute(nodeIcon, "_ledYellow");
 
         Location ledYellowLoc = new Location(_ledYellow, "_location");
         double[] ledYellowLocVal = { 20.0, 0.0 };
@@ -154,6 +156,22 @@ public class MicaLeds extends TypedAtomicActor {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+
+
+    /** Clone the actor into the specified workspace.
+     *  @return A new actor.
+     *  @exception CloneNotSupportedException If a derived class contains
+     *   an attribute that cannot be cloned.
+     */
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        MicaLeds newObject = (MicaLeds) super.clone(workspace);
+
+        EditorIcon nodeIcon = (EditorIcon)newObject.getAttribute("_icon");
+        newObject._ledGreen = (RectangleAttribute)nodeIcon.getAttribute("_ledGreen");
+        newObject._ledRed = (RectangleAttribute)nodeIcon.getAttribute("_ledRed");
+        newObject._ledYellow = (RectangleAttribute)nodeIcon.getAttribute("_ledYellow");
+        return newObject;
+    }
 
     /** For each LED port, if it is connected and has a token, read
      *  the token.  If the token is true, turn the LED on, otherwise
