@@ -4,7 +4,7 @@
 <entity name="RoomTemperatureService" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.0.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={354, 380, 958, 634}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={2, 25, 958, 634}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[724, 524]">
     </property>
@@ -865,7 +865,7 @@ on the colored rectangle shows how the variable "TRoom" is used to assign the co
             </property>
             <property name="legend" class="ptolemy.kernel.util.StringAttribute" value="Desired Temp, Room Temp, Heater">
             </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={865, 158, 500, 344}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={744, 306, 500, 344}, maximized=false}">
             </property>
             <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
             </property>
@@ -886,7 +886,7 @@ on the colored rectangle shows how the variable "TRoom" is used to assign the co
 "http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
 <plot>
 <title>SequencePlotter</title>
-<xRange min="0.0" max="126.65280000000106"/>
+<xRange min="0.0" max="78.55680000000062"/>
 <yRange min="0.0" max="37.0"/>
 </plot>?>
             </configure>
