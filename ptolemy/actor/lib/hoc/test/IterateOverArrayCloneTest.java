@@ -85,11 +85,17 @@ public class IterateOverArrayCloneTest {
         Workspace clonedOuterIterateOverArrayWorkspace = clonedOuterIterateOverArray.workspace();
         System.out.println("The workspace of the outer class of the clone is " + clonedOuterIterateOverArrayWorkspace.getName());
 
+        if (outerIterateOverArray.equals(clonedOuterIterateOverArray)) {
+            System.err.println("Error! the outer IterateOverArray objects are equal?");
+         } else {
+            System.err.println("Passed! the outer IterateOverArray objects are not equal!");
+        }
+
         if (outerIterateOverArrayWorkspace.equals(clonedOuterIterateOverArrayWorkspace)) {
             System.err.println("Error! the workspaces are equal?");
             System.exit(1);
         } else {
-            System.err.println("Passed! the workspaces are not equal?");
+            System.err.println("Passed! the workspaces are not equal!");
         }
 
     }

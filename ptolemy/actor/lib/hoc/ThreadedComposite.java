@@ -234,7 +234,11 @@ public class ThreadedComposite extends MirrorComposite {
         // so we expose these only as parameters.
         super(container, name, false);
         setClassName("ptolemy.actor.lib.hoc.ThreadedComposite");
-        new ThreadedDirector(this, "ThreadedDirector");
+
+        // Create the ThreadedDirector in the proper workspace.
+        ThreadedDirector threadedDirector = this.new ThreadedDirector(workspace());
+        threadedDirector.setContainer(this);
+        threadedDirector.setName(uniqueName("ThreadedDirector"));
 
         // Hidden parameter defining "UNDEFINED".
         Parameter UNDEFINED = new Parameter(this, "UNDEFINED");
@@ -310,6 +314,21 @@ public class ThreadedComposite extends MirrorComposite {
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         ThreadedComposite newObject = (ThreadedComposite) super
                 .clone(workspace);
+        try {
+            // Remove the old inner ThreadedDirector that is in the wrong workspace.
+            List iterateDirectors = newObject.attributeList(ThreadedDirector.class);
+            ThreadedDirector oldThreadedDirector = (ThreadedDirector) iterateDirectors.get(0);
+            String threadedDirectorName = oldThreadedDirector.getName();
+            oldThreadedDirector.setContainer(null);
+
+            // Create a new ThreadedDirector that is in the right workspace.
+            ThreadedDirector iterateDirector = newObject.new ThreadedDirector(workspace);
+            iterateDirector.setContainer(newObject);
+            iterateDirector.setName(threadedDirectorName);
+        } catch (Throwable throwable) {
+            new CloneNotSupportedException("Could not clone: " + throwable);
+        }
+
         newObject._causalityInterface = null;
         newObject._realStartTime = 0L;
         return newObject;
@@ -504,6 +523,26 @@ public class ThreadedComposite extends MirrorComposite {
         public ThreadedDirector(CompositeEntity container, String name)
                 throws IllegalActionException, NameDuplicationException {
             super(container, name);
+            setPersistent(false);
+        }
+
+        /** Construct a new instance of the director for ThreadedComposite.
+         *  The director is created in the specified workspace with
+         *  no container and an empty string as a name. You can then change
+         *  the name with setName(). If the workspace argument is null, then
+         *  use the default workspace.  You should set the local director or
+         *  executive director before attempting to send data to the actor
+         *  or to execute it. Add the actor to the workspace directory.
+         *  Increment the version number of the workspace.
+         *  @param workspace The workspace that will list the actor.
+         *  @exception IllegalActionException If the container is incompatible
+         *   with this actor.
+         *  @exception NameDuplicationException If the name coincides with
+         *   an actor already in the container.
+         */
+        public ThreadedDirector(Workspace workspace) throws IllegalActionException,
+                NameDuplicationException {
+            super(workspace);
             setPersistent(false);
         }
 

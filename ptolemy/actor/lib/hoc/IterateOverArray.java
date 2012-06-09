@@ -232,7 +232,18 @@ public class IterateOverArray extends MirrorComposite {
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         IterateOverArray result = (IterateOverArray) super.clone(workspace);
         try {
-            result.new IterateDirector(result, uniqueName("IterateDirector"));
+            // Remove the old inner IterateDirector that is in the wrong workspace.
+            List iterateDirectors = result.attributeList(IterateDirector.class);
+            IterateDirector oldIterateDirector = (IterateDirector) iterateDirectors.get(0);
+            String iterateDirectorName = oldIterateDirector.getName();
+            oldIterateDirector.setContainer(null);
+
+
+
+            // Create a new IterateDirector that is in the right workspace.
+            IterateDirector iterateDirector = result.new IterateDirector(workspace);
+            iterateDirector.setContainer(result);
+            iterateDirector.setName(iterateDirectorName);
         } catch (Throwable throwable) {
             new CloneNotSupportedException("Could not clone: " + throwable);
         }
@@ -451,7 +462,11 @@ public class IterateOverArray extends MirrorComposite {
     private void _init() throws IllegalActionException,
             NameDuplicationException {
         setClassName("ptolemy.actor.lib.hoc.IterateOverArray");
-        new IterateDirector(this, uniqueName("IterateDirector"));
+
+        // Create the IterateDirector in the proper workspace.
+        IterateDirector iterateDirector = this.new IterateDirector(workspace());
+        iterateDirector.setContainer(this);
+        iterateDirector.setName(uniqueName("IterateDirector"));
 
         _iterationCount = new Variable(this, "iterationCount", new IntToken(0));
         _iterationCount.setTypeEquals(BaseType.INT);
@@ -515,15 +530,22 @@ public class IterateOverArray extends MirrorComposite {
      *  will return false, requesting a halt to execution of the model.
      */
     private class IterateDirector extends Director {
-        /** Create a new instance of the director for IterateOverArray.
-         *  @param container The container for the director.
-         *  @param name The name of the director.
-         *  @exception IllegalActionException Not thrown in this base class.
-         *  @exception NameDuplicationException Not thrown in this base class.
+        /** Construct an IterateDirector in the specified workspace with
+         *  no container and an empty string as a name. You can then change
+         *  the name with setName(). If the workspace argument is null, then
+         *  use the default workspace.  You should set the local director or
+         *  executive director before attempting to send data to the actor
+         *  or to execute it. Add the actor to the workspace directory.
+         *  Increment the version number of the workspace.
+         *  @param workspace The workspace that will list the actor.
+         *  @exception IllegalActionException If the container is incompatible
+         *   with this actor.
+         *  @exception NameDuplicationException If the name coincides with
+         *   an actor already in the container.
          */
-        public IterateDirector(CompositeEntity container, String name)
-                throws IllegalActionException, NameDuplicationException {
-            super(container, name);
+        public IterateDirector(Workspace workspace) throws IllegalActionException,
+                NameDuplicationException {
+            super(workspace);
             setPersistent(false);
         }
 
