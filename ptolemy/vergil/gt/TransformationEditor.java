@@ -340,8 +340,9 @@ public class TransformationEditor extends GTFrame implements ActionListener,
                 clipboard.setContents(new StringSelection(header + data), this);
             } catch (Exception e) {
                 // Ignore. Do not add the header.
+                // Avoid a FindBugs warning about ignored exception.
+                return;
             }
-
         }
     }
 
