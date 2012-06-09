@@ -70,6 +70,54 @@ public class TimedEvent implements Comparable<TimedEvent> {
         return "timeStamp: " + timeStamp + ", contents: " + contents;
     }
 
+    /** Return true if this TimedEvent object has the same
+     *  timeStamp and eventObject  as the given TimedEvent object.
+     *  @param timedEvent The TimedEvent object that this
+     *  TimedEvent object is compared to.
+     *  @return True if the two TimedEvent objects have the same time
+     *  stamp and event object.
+     */
+    public boolean equals(Object timedEvent) {
+        // See http://www.technofundo.com/tech/java/equalhash.html
+
+        /* FindBugs says that TimedEvent "defined
+         * compareTo(Object) and uses Object.equals()"
+         * http://findbugs.sourceforge.net/bugDescriptions.html#EQ_COMPARETO_USE_OBJECT_EQUALS
+         * says: "This class defines a compareTo(...) method but
+         * inherits its equals() method from
+         * java.lang.Object. Generally, the value of compareTo should
+         * return zero if and only if equals returns true. If this is
+         * violated, weird and unpredictable failures will occur in
+         * classes such as PriorityQueue. In Java 5 the
+         * PriorityQueue.remove method uses the compareTo method,
+         * while in Java 6 it uses the equals method.
+         *
+         *  From the JavaDoc for the compareTo method in the
+         *  Comparable interface:
+         *
+         * It is strongly recommended, but not strictly required that
+         * (x.compareTo(y)==0) == (x.equals(y)). Generally speaking,
+         * any class that implements the Comparable interface and
+         * violates this condition should clearly indicate this
+         * fact. The recommended language is "Note: this class has a
+         * natural ordering that is inconsistent with equals." "
+         */
+        if (timedEvent == this) {
+            return true;
+        }
+        if ((timedEvent == null)
+                || (timedEvent.getClass() != getClass())) {
+            return false;
+        } else {
+            TimedEvent event = (TimedEvent) timedEvent;
+            if (compareTo(event) == 0
+                    && contents.equals(event.contents)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     /** Compare two TimedEvents by comparing their timestamps.
      *  @param timedEvent The event to compare against.
      *  @return The integer -1, 0, or 1 if this is less than, equal to, or
@@ -77,6 +125,22 @@ public class TimedEvent implements Comparable<TimedEvent> {
      */
     public int compareTo(TimedEvent timedEvent) {
         return timeStamp.compareTo(timedEvent.timeStamp);
+    }
+
+    /** Return the hash code for the TimedEvent object. If two
+     *  TimedEvent objects contains the same timestamp,
+     *  and event object, then they will have the same hashCode.
+     *  @return The hash code for this TimedEvent object.
+     */
+    public int hashCode() {
+        int hashCode = 21;
+        if (timeStamp != null) {
+            hashCode = 31 * hashCode + timeStamp.hashCode();
+        }
+        if (contents != null) {
+            hashCode = 31 * hashCode + contents.hashCode();
+        }
+        return hashCode;
     }
 
     ///////////////////////////////////////////////////////////////////

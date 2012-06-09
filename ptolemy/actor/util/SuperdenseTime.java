@@ -115,6 +115,8 @@ public class SuperdenseTime implements Comparable {
      *  timestamp and index.
      */
     public boolean equals(Object superdenseTime) {
+        // See http://www.technofundo.com/tech/java/equalhash.html
+
         // Findbugs says:
         // "Eq: Class defines compareTo(...) and uses Object.equals()
         // (EQ_COMPARETO_USE_OBJECT_EQUALS)"
@@ -138,11 +140,15 @@ public class SuperdenseTime implements Comparable {
         // violates this condition should clearly indicate this
         // fact. The recommended language is "Note: this class has a
         // natural ordering that is inconsistent with equals." "
-
-        if (superdenseTime instanceof SuperdenseTime) {
+        if (superdenseTime == this) {
+            return true;
+        }
+        if ((superdenseTime == null)
+                || (superdenseTime.getClass() != getClass())) {
+            return false;
+        } else {
             return compareTo((SuperdenseTime)superdenseTime) == 0;
         }
-        return false;
     }
 
     /** Return the hash code for the SuperdenseTime object. If two
@@ -151,11 +157,12 @@ public class SuperdenseTime implements Comparable {
      *  @return The hash code for this SuperdenseTime object.
      */
     public int hashCode() {
-        int hashCode = 0;
+        // See http://www.technofundo.com/tech/java/equalhash.html
+        int hashCode = 31;
         if (_timeStamp != null) {
-            hashCode = _timeStamp.hashCode();
+            hashCode = 31 * hashCode + _timeStamp.hashCode();
         }
-        return hashCode + _index;
+        return 31 * hashCode + _index;
     }
 
     /** Return the index.

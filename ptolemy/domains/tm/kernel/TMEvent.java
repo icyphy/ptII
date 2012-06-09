@@ -164,6 +164,8 @@ public class TMEvent implements Comparable {
      *  sequence number, name and workspace
      */
     public boolean equals(Object tmEvent) {
+        // See http://www.technofundo.com/tech/java/equalhash.html
+
         /* FindBugs says that TMEvent "defined
          * compareTo(Object) and uses Object.equals()"
          * http://findbugs.sourceforge.net/bugDescriptions.html#EQ_COMPARETO_USE_OBJECT_EQUALS
@@ -186,7 +188,13 @@ public class TMEvent implements Comparable {
          * fact. The recommended language is "Note: this class has a
          * natural ordering that is inconsistent with equals." "
          */
-        if (tmEvent instanceof TMEvent) {
+        if (tmEvent == this) {
+            return true;
+        }
+        if ((tmEvent == null)
+                || (tmEvent.getClass() != getClass())) {
+            return false;
+        } else {
             TMEvent event = (TMEvent) tmEvent;
             if (compareTo(event) == 0
                     && (receiver() != null && receiver().equals(event.receiver()))
@@ -205,14 +213,17 @@ public class TMEvent implements Comparable {
      *  @return The hash code for this TimedEvent object.
      */
     public int hashCode() {
-        int hashCode = 0;
+        // See http://www.technofundo.com/tech/java/equalhash.html
+        int hashCode = 27;
         if (_receiver != null) {
-            hashCode += _receiver.hashCode();
+            hashCode = 31 * hashCode + _receiver.hashCode();
         }
         if (_token != null) {
-            hashCode += _token.hashCode();
+            hashCode = 31 * hashCode + _token.hashCode();
         }
-        return hashCode + _priority + Double.valueOf(_processingTime).hashCode();
+        hashCode = 31 * hashCode + _priority;
+        hashCode = 31 * hashCode + Double.valueOf(_processingTime).hashCode();
+        return hashCode;
     }
 
     /** Return true if the processing of this event has started.

@@ -126,8 +126,8 @@ public class SequenceAttribute extends Parameter implements Comparable {
                 // FIXME:  Is this needed, or is it OK just to use (SequenceAttribute) x.getSequenceNumber()?
                 // FIXME:  This is bad coding style, because SequenceAtribute should not know about
                 // its subclass SequenceAttribute - refactor?
-                if (object instanceof SequenceAttribute) {
-                    sequenceNumber2 = ((SequenceAttribute) object).getSequenceNumber();
+                if (object instanceof ProcessAttribute) {
+                    sequenceNumber2 = ((ProcessAttribute) object).getSequenceNumber();
                 } else {
                     sequenceNumber2 = ((SequenceAttribute) object).getSequenceNumber();
                 }
@@ -158,6 +158,8 @@ public class SequenceAttribute extends Parameter implements Comparable {
      *  sequence number, name and workspace
      */
     public boolean equals(Object sequenceAttribute) {
+        // See http://www.technofundo.com/tech/java/equalhash.html
+
         /* FindBugs says that SequenceAttribute "defined
          * compareTo(Object) and uses Object.equals()"
          * http://findbugs.sourceforge.net/bugDescriptions.html#EQ_COMPARETO_USE_OBJECT_EQUALS
@@ -180,10 +182,16 @@ public class SequenceAttribute extends Parameter implements Comparable {
          * fact. The recommended language is "Note: this class has a
          * natural ordering that is inconsistent with equals." "
          */
-        if (sequenceAttribute instanceof SequenceAttribute) {
+        if (sequenceAttribute == this) {
+            return true;
+        }
+        if ((sequenceAttribute == null)
+                || (sequenceAttribute.getClass() != getClass())) {
+            return false;
+        } else {
             SequenceAttribute attribute = (SequenceAttribute) sequenceAttribute;
             if (compareTo(attribute) == 0
-                    && getName().equals(attribute.getName())
+                    && getFullName().equals(attribute.getFullName())
                     && workspace().equals(attribute.workspace())) {
                 return true;
             }
@@ -202,7 +210,10 @@ public class SequenceAttribute extends Parameter implements Comparable {
         int seqNumber = 0;
 
         // Return the attribute token value as an integer
-        seqNumber = ((IntToken) getToken()).intValue();
+        IntToken token = (IntToken) getToken();
+        if (token != null) {
+            seqNumber = token.intValue();
+        }
 
         // Check to make sure sequence number is positive or zero.
         if (seqNumber < 0) {
@@ -215,7 +226,7 @@ public class SequenceAttribute extends Parameter implements Comparable {
         return seqNumber;
     }
 
-    /** Implement validate method to validate the SequenceAttribute and SequenceAttributes .
+    /** Implement validate method to validate the SequenceAttribute and ProcessAttributes.
      *  @return The current list of value listeners, which are evaluated
      *   as a consequence of this call to validate().
      *  @exception IllegalActionException If thrown by the parent class.
@@ -242,7 +253,7 @@ public class SequenceAttribute extends Parameter implements Comparable {
                             + "'s Sequence Attribute will be ignored");
                     System.out.println(sbf);
                 }
-                if ((this.getClass() == SequenceAttribute.class)
+                if ((this.getClass() == ProcessAttribute.class)
                         && ((CompositeActor) container.getContainer())
                                 .getDirector().getClass() == SequenceDirector.class) {
                     sbf.append("Warning: " + container.getName()
@@ -298,16 +309,18 @@ public class SequenceAttribute extends Parameter implements Comparable {
      *  @return The hash code for this TimedEvent object.
      */
     public int hashCode() {
-        int hashCode = 0;
+        // See http://www.technofundo.com/tech/java/equalhash.html
+        int hashCode = 32;
         try {
-            hashCode = getSequenceNumber();
-            String name = getFullName();
+            hashCode = 31 * hashCode + getSequenceNumber();
+            // Don't call getFullName(), it calls hashCode()!
+            String name = getName();
             if (name != null) {
-                hashCode += name.hashCode();
+                hashCode = 31 * hashCode + name.hashCode();
             }
             Workspace workspace = workspace();
             if (workspace != null) {
-                hashCode += workspace.hashCode();
+                hashCode = 31 * hashCode + workspace.hashCode();
             }
    } catch (IllegalActionException ex) {
             return hashCode;

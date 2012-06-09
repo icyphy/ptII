@@ -185,6 +185,8 @@ public class ProcessAttribute extends SequenceAttribute {
      *  sequence number, methodName and processName.
      */
     public boolean equals(Object processAttribute) {
+        // See http://www.technofundo.com/tech/java/equalhash.html
+
         /* FindBugs says that ProcessAttribute "defined
          * compareTo(Object) and uses Object.equals()"
          * http://findbugs.sourceforge.net/bugDescriptions.html#EQ_COMPARETO_USE_OBJECT_EQUALS
@@ -207,13 +209,19 @@ public class ProcessAttribute extends SequenceAttribute {
          * fact. The recommended language is "Note: this class has a
          * natural ordering that is inconsistent with equals." "
          */
-        if (processAttribute instanceof ProcessAttribute) {
+        if (processAttribute == this) {
+            return true;
+        }
+        if ((processAttribute == null)
+                || (processAttribute.getClass() != getClass())) {
+            return false;
+        } else {
             ProcessAttribute attribute = (ProcessAttribute) processAttribute;
             try {
                 if (compareTo(attribute) == 0
                         && getMethodName().equals(attribute.getMethodName())
                         && getProcessName().equals(attribute.getProcessName())
-                        && getName().equals(attribute.getName())
+                        && getFullName().equals(attribute.getFullName())
                         && workspace().equals(attribute.workspace())) {
                     return true;
                 }
@@ -235,7 +243,8 @@ public class ProcessAttribute extends SequenceAttribute {
         String methodName = "";
 
         ArrayToken processArrayToken = (ArrayToken) getToken();
-        if (processArrayToken.length() > 2) {
+        if (processArrayToken != null
+                && processArrayToken.length() > 2) {
             methodName = ((StringToken) processArrayToken.getElement(2))
                     .stringValue();
         }
@@ -254,13 +263,15 @@ public class ProcessAttribute extends SequenceAttribute {
 
         ArrayToken processArrayToken = (ArrayToken) getToken();
 
-        if (processArrayToken.length() > 0) {
+        if (processArrayToken != null && processArrayToken.length() > 0) {
             StringToken processNameToken = (StringToken) (processArrayToken)
                     .getElement(0);
             processName = processNameToken.stringValue();
         } else {
-            throw new IllegalActionException(this, "ProcessAttribute "
-                    + getName() + " has no process name.");
+            if (processArrayToken != null) {
+                throw new IllegalActionException(this, "ProcessAttribute "
+                        + getName() + " has no process name.");
+            }
         }
 
         return processName;
@@ -278,7 +289,7 @@ public class ProcessAttribute extends SequenceAttribute {
 
         ArrayToken processArrayToken = (ArrayToken) getToken();
 
-        if (processArrayToken.length() > 1) {
+        if (processArrayToken != null && processArrayToken.length() > 1) {
             StringToken sequenceNumToken = (StringToken) (processArrayToken)
                     .getElement(1);
             try {
@@ -302,8 +313,14 @@ public class ProcessAttribute extends SequenceAttribute {
                         + " be a positive integer.");
             }
         } else {
-            throw new IllegalActionException(this, "ProcessAttribute "
-                    + getName() + " has no sequence number.");
+            if (processArrayToken != null) {
+                // During construction, processArrayToken might be null.
+                // Attribute.setContainer() removes the Attribute from
+                // the workspace, which calls LinkedList.remove(), which
+                // calls ProcessAttribute.equals().
+                throw new IllegalActionException(this, "ProcessAttribute "
+                        + getName() + " has no sequence number.");
+            }
         }
 
         return seqNumber;
@@ -316,26 +333,28 @@ public class ProcessAttribute extends SequenceAttribute {
      *  @return The hash code for this TimedEvent object.
      */
     public int hashCode() {
-        int hashCode = 0;
+        // See http://www.technofundo.com/tech/java/equalhash.html
+        int hashCode = 7;
         try {
-            hashCode = getSequenceNumber();
+            hashCode = 31 * hashCode + getSequenceNumber();
 
             String processName = getProcessName();
             if (processName != null) {
-                hashCode += processName.hashCode();
+                hashCode = 31 * hashCode + processName.hashCode();
             }
 
             String methodName = getMethodName();
             if (methodName != null) {
-                hashCode += methodName.hashCode();
+                hashCode = 31 * hashCode + methodName.hashCode();
             }
-            String name = getFullName();
+            // Don't call getFullName(), it calls hashCode()!
+            String name = getName();
             if (name != null) {
-                hashCode += name.hashCode();
+                hashCode = 31 * hashCode + name.hashCode();
             }
             Workspace workspace = workspace();
             if (workspace != null) {
-                hashCode += workspace.hashCode();
+                hashCode = 31 * hashCode + workspace.hashCode();
             }
         } catch (IllegalActionException ex) {
             return hashCode;
