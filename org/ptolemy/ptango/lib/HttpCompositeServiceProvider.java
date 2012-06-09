@@ -93,24 +93,37 @@ public class HttpCompositeServiceProvider extends TypedCompositeActor
         setRelativePath(path.getExpression().toString());
         
         inputPage = new FileParameter(this, "inputPage");
-        inputPage.setExpression("/pages/index.html");
+        inputPage.setExpression("pages/index.html");
         
         outputPage = new FileParameter(this, "outputPage");
-        outputPage.setExpression("/pages/output.html");
+        outputPage.setExpression("pages/output.html");
     }
     
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
     
     /** The file containing the HTML input form to display.
+     *  This is a reference to a file on the local disk.
+     *  This can be relative to the location of the model containing
+     *  this actor or absolute. The default is "pages/index.html".
+     *  @see FileParameter
      */
     public FileParameter inputPage;
     
     /** The file containing the HTML output page to display.
+     *  This is a reference to a file on the local disk.
+     *  This can be relative to the location of the model containing
+     *  this actor or absolute. The default is "pages/output.html".
+     *  @see FileParameter
      */
     public FileParameter outputPage;
     
-    /** The relative URL to map this servlet to. 
+    /** The relative URL to map this servlet to.
+     *  URLs of the form "http://hostname/<i>applicationPath</i>/<i>path</i>
+     *  will be delegated to this actor, where <i>applicationPath</i>
+     *  is a parameter of the {@link WebServer}.  This defaults
+     *  to "/*", which means that all requests to the application
+     *  will be handled by this actor.
      */
     public StringParameter path; 
 
