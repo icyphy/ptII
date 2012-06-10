@@ -276,7 +276,10 @@ public class ModelReference extends TypedAtomicActor implements
      */
     public StringParameter postfireAction;
 
-    /** The option to spawn separate models of the same URL*/
+    /** If true, then on each firing, create a new instance of
+     *  the model given by <i>modelFileOrURL</i>. If false
+     *  (the default), then re-use the same model.
+     */
     public Parameter spawnSeparateModels;
 
     ///////////////////////////////////////////////////////////////////
@@ -327,8 +330,8 @@ public class ModelReference extends TypedAtomicActor implements
                 try {
                     _model = parser.parse(null, url);
                     
-                    //if we choose the option to spawn models of the same URL separately
-                    //then get rid of the spawned model
+                    // If we choose the option to spawn models of the same URL separately
+                    // then get rid of the spawned model.
                     if (((BooleanToken) spawnSeparateModels.getToken())
                             .booleanValue()) {
                         MoMLParser.purgeModelRecord(url);
