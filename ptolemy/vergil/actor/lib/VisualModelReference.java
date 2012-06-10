@@ -312,19 +312,21 @@ public class VisualModelReference extends ModelReference {
                                     _exception = e;
                                 }
 
-                                _tableau.show();
+                                if (_tableau != null) {
+                                    _tableau.show();
+                                    
+                                    JFrame frame = _tableau.getFrame();
 
-                                JFrame frame = _tableau.getFrame();
-
-                                if (frame != null) {
-                                    if (_openOnFiringValue == _OPEN_IN_VERGIL_FULL_SCREEN) {
-                                        if (frame instanceof ExtendedGraphFrame) {
-                                            ((ExtendedGraphFrame) frame)
-                                                    .fullScreen();
+                                    if (frame != null) {
+                                        if (_openOnFiringValue == _OPEN_IN_VERGIL_FULL_SCREEN) {
+                                            if (frame instanceof ExtendedGraphFrame) {
+                                                ((ExtendedGraphFrame) frame)
+                                                        .fullScreen();
+                                            }
                                         }
-                                    }
 
-                                    frame.toFront();
+                                        frame.toFront();
+                                    }
                                 }
                             }
                         };
