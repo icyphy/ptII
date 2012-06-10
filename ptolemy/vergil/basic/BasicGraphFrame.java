@@ -91,13 +91,11 @@ import javax.swing.JTextField;
 import javax.swing.JToolBar;
 import javax.swing.JTree;
 import javax.swing.KeyStroke;
-import javax.swing.filechooser.FileFilter;
-import javax.swing.tree.TreePath;
-import javax.swing.tree.DefaultMutableTreeNode;
-import javax.swing.tree.DefaultTreeCellRenderer;
-import javax.swing.tree.TreeSelectionModel;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
+import javax.swing.filechooser.FileFilter;
+import javax.swing.tree.DefaultTreeCellRenderer;
+import javax.swing.tree.TreePath;
 
 import ptolemy.actor.DesignPatternGetMoMLAction;
 import ptolemy.actor.IOPort;
@@ -158,8 +156,8 @@ import ptolemy.vergil.icon.DesignPatternIcon;
 import ptolemy.vergil.kernel.AttributeNodeModel;
 import ptolemy.vergil.toolbox.MenuItemFactory;
 import ptolemy.vergil.toolbox.MoveAction;
-import ptolemy.vergil.tree.EntityTreeModel;
 import ptolemy.vergil.tree.CompositeTreeModel;
+import ptolemy.vergil.tree.EntityTreeModel;
 import ptolemy.vergil.tree.PTree;
 import ptolemy.vergil.tree.PTreeMenuCreator;
 import ptolemy.vergil.tree.PtolemyTreeCellRenderer;
@@ -3652,7 +3650,6 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
             // Returns the last path element of the selection.
             // This method is useful only when the selection model allows a single selection.
             Object lastSelectedPathComponent = _treeView.getLastSelectedPathComponent();
-            TreePath anchorPath = _treeView.getAnchorSelectionPath();
             if (lastSelectedPathComponent instanceof NamedObj) {
                 try {
                     getConfiguration().openInstance((NamedObj)lastSelectedPathComponent);
