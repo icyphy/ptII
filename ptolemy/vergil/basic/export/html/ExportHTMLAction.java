@@ -211,6 +211,83 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable, 
         contents.add(content);
     }
 
+    /** If parameters.copyJavaScriptFiles is true and the Java
+     *  property ptolemy.ptII.exportHTML.usePtWebsite is false,
+     *  then copy the required JavaScript files into the target directory
+     *  given in the parameters argument.
+     *  @param graphFrame The frame being exported.
+     *  @param parameters The export parameters.
+     *  @return False if something went wrong and the user requested
+     *   canceling the export. True otherwise.
+     */
+    public static boolean copyJavaScriptFilesIfNeeded(
+            final BasicGraphFrame graphFrame, final ExportParameters parameters) {
+        // First, if appropriate, copy needed files.
+        boolean usePtWebsite = Boolean.valueOf(StringUtilities.getProperty("ptolemy.ptII.exportHTML.usePtWebsite"));
+        usePtWebsite = usePtWebsite || parameters.usePtWebsite;
+        if (parameters.copyJavaScriptFiles && !usePtWebsite) {
+            // Copy Javascript source files into destination directory,
+            // if they are available. The files are under an MIT license,
+            // which is compatible with the Ptolemy license.
+            // For jquery, we could use a CDS (content delivery service) instead
+            // of copying the file.
+            String jsDirectoryName = "$CLASSPATH/ptolemy/vergil/basic/export/html/javascript/";
+            File jsDirectory = FileUtilities.nameToFile(jsDirectoryName, null);
+            // We assume that if the directory exists, then the files exist.
+            if (jsDirectory.isDirectory()) {
+                // Copy files into the "javascript" directory.
+                File jsTargetDirectory = new File(parameters.directoryToExportTo, "javascript");
+                if (jsTargetDirectory.exists() && !jsTargetDirectory.isDirectory()) {
+                    File jsBackupDirectory = new File(parameters.directoryToExportTo, "javascript.bak");
+                    if (!jsTargetDirectory.renameTo(jsBackupDirectory)) {
+                        // It is ok to ignore this.
+                        System.out.println("Failed to rename \"" + jsTargetDirectory 
+                                + "\" to \"" + jsBackupDirectory + "\"");
+                    }
+                }
+                if (!jsTargetDirectory.exists() && !jsTargetDirectory.mkdir()) {
+                    try {
+                        MessageHandler.warning(
+                                "Warning: Cannot find required JavaScript, CSS, and image files"
+                                + " for lightbox effect implemented by the fancybox"
+                                + " package. Perhaps your Ptolemy II"
+                                + " installation does not include them."
+                                + " Will use the files on ptolemy.org.");
+                    } catch (CancelException e) {
+                        // Cancel the action.
+                        return false;
+                    }
+                    parameters.copyJavaScriptFiles = false;
+                } else {
+                    // Copy css, JavaScript, and image files.
+                    for (String filename : FILENAMES) {
+                        try {
+                            URL lightboxFile = FileUtilities
+                                    .nameToURL(
+                                            jsDirectoryName + filename,
+                                            null, null);
+                            FileUtilities.binaryCopyURLToFile(lightboxFile, new File(
+                                    jsTargetDirectory, filename));
+                        } catch (IOException e) {
+                            try {
+                                MessageHandler.warning(
+                                        "Warning: failed to copy required files."
+                                        + " Use the files on ptolemy.org? "
+                                        + e.getMessage());
+                            } catch (CancelException e1) {
+                                // Cancel the action.
+                                return false;
+                            }
+                            parameters.copyJavaScriptFiles = false;
+                        }
+                    }
+                    parameters.setJSCopier(graphFrame.getModel());
+                }
+            }
+        }
+        return true;
+    }
+
     /** Define an attribute to be included in the HTML area element
      *  corresponding to the region of the image map covered by
      *  the specified object. For example, if an <i>attribute</i> "href"
@@ -321,146 +398,15 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable, 
                 }
             }
             // We now have a directory and permission to write to it.
-            // First, if appropriate, copy needed files.
-            boolean usePtWebsite = Boolean.valueOf(StringUtilities.getProperty("ptolemy.ptII.exportHTML.usePtWebsite"));
-            usePtWebsite = usePtWebsite || parameters.usePtWebsite;
-            if (parameters.copyJavaScriptFiles && !usePtWebsite) {
-                // Copy Javascript source files into destination directory,
-                // if they are available. The files are under an MIT license,
-                // which is compatible with the Ptolemy license.
-                // For jquery, we could use a CDS (content delivery service) instead
-                // of copying the file.
-                String jsDirectoryName = "$CLASSPATH/ptolemy/vergil/basic/export/html/javascript/";
-                File jsDirectory = FileUtilities.nameToFile(jsDirectoryName, null);
-                // We assume that if the directory exists, then the files exist.
-                if (jsDirectory.isDirectory()) {
-                    // Copy files into the "javascript" directory.
-                    File jsTargetDirectory = new File(parameters.directoryToExportTo, "javascript");
-                    if (jsTargetDirectory.exists() && !jsTargetDirectory.isDirectory()) {
-                        File jsBackupDirectory = new File(parameters.directoryToExportTo, "javascript.bak");
-                        if (!jsTargetDirectory.renameTo(jsBackupDirectory)) {
-                            // It is ok to ignore this.
-                            System.out.println("Failed to rename \"" + jsTargetDirectory 
-                                    + "\" to \"" + jsBackupDirectory + "\"");
-                        }
-                    }
-                    if (!jsTargetDirectory.exists() && !jsTargetDirectory.mkdir()) {
-                        MessageHandler
-                        .message("Warning: Cannot find required JavaScript, CSS, and image files"
-                                + " for lightbox effect implemented by the fancybox"
-                                + " package. Perhaps your Ptolemy II"
-                                + " installation does not include them.");
-                    } else {
-                        // Copy css, JavaScript, and image files.
-                        for (String filename : FILENAMES) {
-                            try {
-                                URL lightboxFile = FileUtilities
-                                        .nameToURL(
-                                                jsDirectoryName + filename,
-                                                null, null);
-                                FileUtilities.binaryCopyURLToFile(lightboxFile, new File(
-                                        jsTargetDirectory, filename));
-                            } catch (IOException e) {
-                                try {
-                                    MessageHandler.warning(
-                                            "Warning: failed to copy required files: " + e.getMessage());
-                                } catch (CancelException e1) {
-                                    return;
-                                }
-                            }
-                        }
-                        parameters.setJSCopier(graphFrame.getModel());
-                    }
-                }
+            if (!copyJavaScriptFilesIfNeeded(graphFrame, parameters)) {
+                // Canceled the export.
+                return;
             }
 
-            final Set<Tableau> tableauxToClose = new HashSet<Tableau>();
-            // Open submodels, if appropriate.
-            if (parameters.openCompositesBeforeExport) {
-                NamedObj model = graphFrame.getModel();
-                Effigy masterEffigy = Configuration.findEffigy(graphFrame.getModel());
-                if (model instanceof CompositeEntity) {
-                    // graphFrame.getModel() might return a
-                    // PteraController, which is not a CompositeActor.
-                    List<Entity> entities = ((CompositeEntity)model).entityList();
-                    for (Entity entity : entities) {
-                        _openEntity(entity, tableauxToClose, masterEffigy, graphFrame);
-                    }
-                }
-            }
-            // Running the model has to occur in a new thread, or the whole
-            // process could hang (if the model doesn't return). So finish in a new thread.
-            // That thread will, in turn, have to again invoke the swing event thread
-            // to close any tableaux that were opened above.
-            // It does not wait for the close to complete before finishing itself.
-            Runnable exportAction = new Runnable() {
-                public void run() {
-                    try {
-                        // graphFrame.getModel() might return a
-                        // PteraController, which is not a CompositeActor.
-                        NamedObj model = graphFrame.getModel();
-
-                        // If parameters are set to run the model, then do that.
-                        if (parameters.runBeforeExport && model instanceof CompositeActor) {
-                            // Run the model.
-                            Manager manager = ((CompositeActor)model).getManager();
-                            if (manager == null) {
-                                manager = new Manager(((CompositeActor)model).workspace(),
-                                        "MyManager");
-                                ((CompositeActor)model).setManager(manager);
-                            }
-                            manager.execute();
-                        }
-                    } catch (Exception ex) {
-                        MessageHandler.error("Model execution failed.", ex);
-                        throw new RuntimeException(ex);
-                    } finally {
-                        // The rest of the export has to occur in the
-                        // swing event thread. We do this whether the
-                        // run succeeded or not.
-                        Runnable finishExport = new Runnable() {
-                            public void run() {
-                                try {
-                                    // -------- Finally, actually export to web.
-                                    graphFrame.writeHTML(parameters);
-
-                                    // Finally, if requested, show the exported page.
-                                    if (parameters.showInBrowser) {
-                                        Configuration configuration = graphFrame.getConfiguration();
-                                        try {
-                                            URL indexURL = new URL(indexFile.toURI().toURL().toString() + "#in_browser");
-                                            configuration.openModel(indexURL, indexURL, indexURL.toExternalForm(),
-                                                    BrowserEffigy.staticFactory);
-                                        } catch (Throwable throwable) {
-                                            MessageHandler.error("Failed to open \"" + indexFile + "\".", throwable);
-                                            throw new RuntimeException(throwable);
-                                        }
-                                    }
-                                } catch (Exception ex) {
-                                    MessageHandler.error("Unable to export to web.", ex);
-                                    throw new RuntimeException(ex);
-                                } finally {
-                                    // Export is finally finished.
-                                    _exportInProgress = false;
-                                    synchronized(ExportHTMLAction.class) {
-                                        ExportHTMLAction.class.notifyAll();
-                                    }
-                                    for (Tableau tableau : tableauxToClose) {
-                                        tableau.close();
-                                    }                                
-                                }
-
-                            }
-                        };
-                        SwingUtilities.invokeLater(finishExport);
-                    }
-                }
-            };
-            // Invoke the new thread. First make sure the flag is set
-            // to indicate that an export is in progress.
-            _exportInProgress = true;
-            Thread result = new Thread(exportAction);
-            result.start();
+            // Using a null here causes the write to occur to an index.html file.
+            final PrintWriter writer = null;
+            
+            openRunAndWriteHTML(graphFrame, parameters, indexFile, writer, false);
         } catch (Exception ex) {
             MessageHandler.error("Unable to export to web.", ex);
             throw new RuntimeException(ex);
@@ -481,6 +427,129 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable, 
      */
     public PtolemyFrame getFrame() {
         return _basicGraphFrame;
+    }
+    
+    /** Depending on the export parameters (see {@link ExportParameters}),
+     *  open submodels, run the model, and export HTML.
+     *  @param graphFrame The frame being exported.
+     *  @param parameters The export parameters.
+     *  @param indexFile If you wish to show the exported page in a browser,
+     *   then this parameter must specify the file to which the write occurs
+     *   and parameters.showInBrowser must be true. Otherwise, this parameter
+     *   should be null.
+     *  @param writer The writer to write to, or null to write to the default
+     *   index.html file.
+     *  @param waitForCompletion If true, then do not return until the export
+     *   is complete. In this case, everything is run in the calling thread,
+     *   which is required to be the Swing event thread.
+     *  @return The thread that is to complete the work.
+     *  @throws IllegalActionException If something goes wrong.
+     */
+    public static void openRunAndWriteHTML(
+            final BasicGraphFrame graphFrame,
+            final ExportParameters parameters,
+            final File indexFile,
+            final Writer writer,
+            final boolean waitForCompletion)
+                    throws IllegalActionException {
+        if (graphFrame == null) {
+            throw new IllegalActionException("Cannot export without a graphFrame.");
+        }
+        // Open submodels, if appropriate.
+        final Set<Tableau> tableauxToClose = new HashSet<Tableau>();
+        if (parameters.openCompositesBeforeExport) {
+            NamedObj model = graphFrame.getModel();
+            Effigy masterEffigy = Configuration.findEffigy(graphFrame.getModel());
+            if (model instanceof CompositeEntity) {
+                // graphFrame.getModel() might return a
+                // PteraController, which is not a CompositeActor.
+                List<Entity> entities = ((CompositeEntity)model).entityList();
+                for (Entity entity : entities) {
+                    _openEntity(entity, tableauxToClose, masterEffigy, graphFrame);
+                }
+            }
+        }
+        // Running the model has to occur in a new thread, or the whole
+        // process could hang (if the model doesn't return). So finish in a new thread.
+        // That thread will, in turn, have to again invoke the swing event thread
+        // to close any tableaux that were opened above.
+        // It does not wait for the close to complete before finishing itself.
+        Runnable exportAction = new Runnable() {
+            public void run() {
+                try {
+                    // graphFrame.getModel() might return a
+                    // PteraController, which is not a CompositeActor.
+                    NamedObj model = graphFrame.getModel();
+
+                    // If parameters are set to run the model, then do that.
+                    if (parameters.runBeforeExport && model instanceof CompositeActor) {
+                        // Run the model.
+                        Manager manager = ((CompositeActor)model).getManager();
+                        if (manager == null) {
+                            manager = new Manager(((CompositeActor)model).workspace(),
+                                    "MyManager");
+                            ((CompositeActor)model).setManager(manager);
+                        }
+                        manager.execute();
+                    }
+                } catch (Exception ex) {
+                    MessageHandler.error("Model execution failed.", ex);
+                    throw new RuntimeException(ex);
+                } finally {
+                    // The rest of the export has to occur in the
+                    // swing event thread. We do this whether the
+                    // run succeeded or not.
+                    Runnable finishExport = new Runnable() {
+                        public void run() {
+                            try {
+                                // -------- Finally, actually export to web.
+                                graphFrame.writeHTML(parameters, writer);
+
+                                // Finally, if requested, show the exported page.
+                                if (parameters.showInBrowser && indexFile != null) {
+                                    Configuration configuration = graphFrame.getConfiguration();
+                                    try {
+                                        URL indexURL = new URL(indexFile.toURI().toURL().toString() + "#in_browser");
+                                        configuration.openModel(indexURL, indexURL, indexURL.toExternalForm(),
+                                                BrowserEffigy.staticFactory);
+                                    } catch (Throwable throwable) {
+                                        MessageHandler.error("Failed to open \"" + indexFile + "\".", throwable);
+                                        throw new RuntimeException(throwable);
+                                    }
+                                }
+                            } catch (Exception ex) {
+                                MessageHandler.error("Unable to export to web.", ex);
+                                throw new RuntimeException(ex);
+                            } finally {
+                                // Export is finally finished.
+                                _exportInProgress = false;
+                                synchronized(ExportHTMLAction.class) {
+                                    ExportHTMLAction.class.notifyAll();
+                                }
+                                for (Tableau tableau : tableauxToClose) {
+                                    tableau.close();
+                                }                                
+                            }
+
+                        }
+                    };
+                    if (waitForCompletion) {
+                        finishExport.run();
+                    } else {
+                        SwingUtilities.invokeLater(finishExport);
+                    }
+                }
+            }
+        };
+        // Invoke the new thread. First make sure the flag is set
+        // to indicate that an export is in progress.
+        _exportInProgress = true;
+        if (waitForCompletion) {
+            exportAction.run();
+        } else {
+            Thread result = new Thread(exportAction);
+            result.start();
+        }
     }
 
     /** Set the title to be used for the page being exported.
@@ -525,11 +594,14 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable, 
      *  </p>
      *
      *  @param parameters The parameters that control the export.
+     *  @param writer The writer to use the write the HTML. If this is null,
+     *   then create an index.html file in the
+     *   directory given by the directoryToExportTo field of the parameters.
      *  @exception IOException If unable to write associated files.
      *  @exception PrinterException If unable to write associated files.
      *  @throws IllegalActionException If reading parameters fails.
      */
-    public void writeHTML(ExportParameters parameters)
+    public void writeHTML(ExportParameters parameters, Writer writer)
             throws PrinterException, IOException, IllegalActionException {
         // Invoke with -Dptolemy.ptII.usePtWebsite=true to get Server
         // Side Includes (SSI).  FIXME: this is a bit of a hack, we should
@@ -537,11 +609,11 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable, 
         boolean usePtWebsite = Boolean.valueOf(StringUtilities.getProperty("ptolemy.ptII.exportHTML.usePtWebsite"));
         usePtWebsite = usePtWebsite || parameters.usePtWebsite;
 
-        File indexFile = new File(parameters.directoryToExportTo, "index.html");
+        File indexFile = null;
+        PrintWriter printWriter = null;
 
         // The following try...finally block ensures that the index and toc files
         // get closed even if an exception occurs. It also resets _parameters.
-        PrintWriter index = null;
         try {
             _parameters = parameters;
 
@@ -600,17 +672,22 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable, 
             }
 
             // Next, create an HTML file.
-	    Writer indexWriter = new FileWriter(indexFile);
-	    index = new PrintWriter(indexWriter);
+            if (writer == null) {
+                indexFile = new File(parameters.directoryToExportTo, "index.html");
+                Writer indexWriter = new FileWriter(indexFile);
+                printWriter = new PrintWriter(indexWriter);
+            } else {
+                printWriter = new PrintWriter(writer);
+            }
 
 	    // Generate a header that will pass the HTML validator at
 	    // http://validator.w3.org/
 	    // We use println so as to get the correct eol character for
 	    // the local platform.
-	    index.println("<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">");
-	    index.println("<html xmlns=\"http://www.w3.org/1999/xhtml\" xml:lang=\"en-US\" lang=\"en-US\">");
-	    index.println("<head>");
-	    index.println("<meta http-equiv=\"Content-Type\" content=\"text/html; charset=iso-8859-1\"/>");
+	    printWriter.println("<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">");
+	    printWriter.println("<html xmlns=\"http://www.w3.org/1999/xhtml\" xml:lang=\"en-US\" lang=\"en-US\">");
+	    printWriter.println("<head>");
+	    printWriter.println("<meta http-equiv=\"Content-Type\" content=\"text/html; charset=iso-8859-1\"/>");
 
 	    // Define the path to the SSI files on the ptolemy site.
 	    String ssiRoot = "http://ptolemy.org/";
@@ -637,27 +714,27 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable, 
 	        }
 	    }
 
-            index.println("<link rel=\"stylesheet\" type=\"text/css\" href=\"" + jsLibrary + "javascript/" + FILENAMES[2] + "\" media=\"screen\"/>");
+            printWriter.println("<link rel=\"stylesheet\" type=\"text/css\" href=\"" + jsLibrary + "javascript/" + FILENAMES[2] + "\" media=\"screen\"/>");
 
 	    if (usePtWebsite) {
 	        // FIXME: this absolute path is not very safe.  The
 	        // problem is that we don't know where $PTII is located on
 	        // the website.
-	        index.println("<link href=\""
+	        printWriter.println("<link href=\""
 	                + ssiRoot
 	                + "ptolemyII/ptIIlatest/ptII/doc/default.css\" rel=\"stylesheet\" type=\"text/css\"/>");
 	    }
 
 	    // Title needed for the HTML validator.
-	    index.println("<title>" + _title + "</title>");
+	    printWriter.println("<title>" + _title + "</title>");
 
             // NOTE: Due to a bug somewhere (browser, Javascript, etc.), can't end this with />. Have to use </script>.
-	    index.println("<script type=\"text/javascript\" src=\"" + jsLibrary + "javascript/" + FILENAMES[0] + "\"></script>");
-            index.println("<script type=\"text/javascript\" src=\"" + jsLibrary + "javascript/" + FILENAMES[1] + "\"></script>");
+	    printWriter.println("<script type=\"text/javascript\" src=\"" + jsLibrary + "javascript/" + FILENAMES[0] + "\"></script>");
+            printWriter.println("<script type=\"text/javascript\" src=\"" + jsLibrary + "javascript/" + FILENAMES[1] + "\"></script>");
 
             // FILENAMES[2] is a stylesheet <link, so it goes in the head, see above.
 
-            index.println("<script type=\"text/javascript\" src=\"" + jsLibrary + "javascript/" + FILENAMES[3] + "\"></script>");
+            printWriter.println("<script type=\"text/javascript\" src=\"" + jsLibrary + "javascript/" + FILENAMES[3] + "\"></script>");
             // Could alternatively use a CDS (Content Delivery Service) for the JavaScript library for jquery.
             // index.println("<script type=\"text/javascript\" src=\"http://ajax.googleapis.com/ajax/libs/jquery/1.4/jquery.min.js\"></script>");
 
@@ -666,43 +743,43 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable, 
 
 	    // Write the main part of the HTML file.
             // 
-            _printHTML(index, "head");
+            _printHTML(printWriter, "head");
 
             //------ <head>...</head> above here
 	    if (usePtWebsite) {
 	        // Reference the server-side includes.
                 // toppremenu.htm includes </head>...<body>
-	        index.println("<!--#include virtual=\"/ssi/toppremenu.htm\" -->");
-	        index.println("<!--#include virtual=\"toc.htm\" -->");
-	        index.println("<!--#include virtual=\"/ssi/toppostmenu.htm\" -->");
+	        printWriter.println("<!--#include virtual=\"/ssi/toppremenu.htm\" -->");
+	        printWriter.println("<!--#include virtual=\"toc.htm\" -->");
+	        printWriter.println("<!--#include virtual=\"/ssi/toppostmenu.htm\" -->");
 	    } else {
                 // The Ptolemy website headers include the closing </head> and <body tag>
-                index.println("</head><body>");
+                printWriter.println("</head><body>");
             }
 
-            _printHTML(index, "start");
+            _printHTML(printWriter, "start");
 
 	    boolean linkToJNLP = Boolean.valueOf(StringUtilities.getProperty("ptolemy.ptII.exportHTML.linkToJNLP"));
             if (linkToJNLP && model.getContainer() == null) {
-                index.println("Below is a browsable image of the model. "
+                printWriter.println("Below is a browsable image of the model. "
                         + "For an executable version, go to the "
                         + "<a href=\"../" + _sanitizedModelName + ".jnlp\">WebStart version</a>.");
             }
 	    // Put the image in.
-	    index.println("<img src=\"" + _sanitizedModelName
+	    printWriter.println("<img src=\"" + _sanitizedModelName
 	            + ".gif\" usemap=\"#iconmap\" "
                     // The HTML Validator at http://validator.w3.org/check wants an alt tag
                     + "alt=\"" + _sanitizedModelName + "model\"/>");
-	    index.println(map);
-            _printHTML(index, "end");
+	    printWriter.println(map);
+            _printHTML(printWriter, "end");
             
 	    if (!usePtWebsite) {
-	        index.println("</body>");
-	        index.println("</html>");
+	        printWriter.println("</body>");
+	        printWriter.println("</html>");
 	    } else {
-	        index.println("<!-- /body -->");
-	        index.println("<!-- /html -->");
-	        index.println("<!--#include virtual=\"/ssi/bottom.htm\" -->");
+	        printWriter.println("<!-- /body -->");
+	        printWriter.println("<!-- /html -->");
+	        printWriter.println("<!--#include virtual=\"/ssi/bottom.htm\" -->");
 
                 // Start the top of the toc.htm file.
 	        addContent("toc.htm", false, "<div id=\"menu\">");
@@ -738,21 +815,21 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable, 
                     // whether the following overwrites a pre-existing file,
                     // but it does seem to do that, so I assume that's what it does.
                     Writer fileWriter = new FileWriter(new File(parameters.directoryToExportTo, key));
-                    PrintWriter printWriter = new PrintWriter(fileWriter);
+                    PrintWriter otherWriter = new PrintWriter(fileWriter);
                     List<String> contents = _contents.get(key);
                     for (String line : contents) {
-                        printWriter.println(line);                        
+                        otherWriter.println(line);                        
                     }
-                    printWriter.close();
+                    otherWriter.close();
                 }
             }
 	} finally {
 	    _parameters = null;
 	    _removeDefaultContent();
-	    if (index != null) {
-		index.close(); // Without this, the output file may be empty
+	    if (printWriter != null) {
+	        printWriter.close(); // Without this, the output file may be empty
 	    }
-            if (usePtWebsite) {
+            if (usePtWebsite && indexFile != null) {
                 if (!indexFile.setExecutable(true, false /*ownerOnly*/)) {
                     System.err.println("Could not make " + indexFile
                             + "executable.");
@@ -1148,7 +1225,7 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable, 
      */
     private static void _openComposite(CompositeEntity entity,
             Set<Tableau> tableauxToClose, Effigy masterEffigy, BasicGraphFrame graphFrame)
-           throws IllegalActionException, NameDuplicationException {
+           throws IllegalActionException {
         
         Configuration configuration = graphFrame.getConfiguration();
         Effigy effigy = configuration.getEffigy(entity);
@@ -1162,8 +1239,14 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable, 
             }
         } else {
             // No pre-existing effigy.
-            Tableau tableau = configuration.openModel(entity);
-            tableauxToClose.add(tableau);
+            Tableau tableau;
+            try {
+                tableau = configuration.openModel(entity);
+                tableauxToClose.add(tableau);
+            } catch (NameDuplicationException e) {
+                // This should not occur.
+                throw new InternalErrorException(e);
+            }
         }
         List<Entity> entities = (entity).entityList();
         for (Entity inside : entities) {
@@ -1181,7 +1264,7 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable, 
      */
     private static void _openEntity(
             Entity entity, Set<Tableau> tableauxToClose, Effigy masterEffigy, BasicGraphFrame graphFrame)
-            throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException {
         if (entity instanceof CompositeEntity) {
             _openComposite((CompositeEntity) entity, tableauxToClose, masterEffigy, graphFrame);
         } else if (entity instanceof State) {

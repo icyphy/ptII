@@ -643,7 +643,6 @@ public class ExportModel {
         boolean openResults = false;
         boolean openComposites = false;
         String outputFileOrDirectory = null;
-        boolean outputDirectoryIsNextArgument = false;
         boolean run = false;
         boolean save = false;
         boolean whiteBackground = false;

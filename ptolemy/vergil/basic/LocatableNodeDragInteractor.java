@@ -239,6 +239,7 @@ public class LocatableNodeDragInteractor extends NodeDragInteractor {
                     newRelativeTo = dropTarget.getName();
                     newRelativeToElementName = dropTarget.getElementName();
                     // Change the location class!
+                    // FIXME: This doesn't work with object-oriented classes!!!
                     locationClazz = RelativeLocation.class.getName();
                     // Now the location value is relative, so take a fixed offset.
                     newLocation = new double[] {

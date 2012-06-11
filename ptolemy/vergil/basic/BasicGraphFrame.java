@@ -1350,15 +1350,18 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
      *  current view using the {@link #writeImage(OutputStream, String)}
      *  method.
      *  @param parameters The parameters that control the export.
+     *  @param writer The writer to use the write the HTML. If this is null,
+     *   then create an index.html file in the
+     *   directory given by the directoryToExportTo field of the parameters.
      *  @exception IOException If unable to write associated files, or if the
      *   current configuration does not support it.
      *  @exception PrinterException If unable to write associated files.
      *  @exception IllegalActionException If something goes wrong accessing the model.
      */
-    public void writeHTML(ExportParameters parameters)
+    public void writeHTML(ExportParameters parameters, Writer writer)
             throws PrinterException, IOException, IllegalActionException {
         if (_exportHTMLAction != null) {
-            ((HTMLExportable) _exportHTMLAction).writeHTML(parameters);
+            ((HTMLExportable) _exportHTMLAction).writeHTML(parameters, writer);
         } else {
             throw new IOException("Export to Web not supported.");
         }
@@ -1811,9 +1814,9 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
                 // We do not want to abort at this point because the worst
                 // case is that we will have no Export to Web in the menu.
                 // That is better than preventing the user from opening a model.
-                // System.err
-                //    .println("Warning: Tried to create the Export to Web menu item, but failed: "
-                //            + throwable);
+                System.err
+                    .println("Warning: Tried to create the Export to Web menu item, but failed: "
+                           + throwable);
             }
         }
 

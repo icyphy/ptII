@@ -433,12 +433,17 @@ public class VisualModelReference extends ModelReference {
     }
 
     ///////////////////////////////////////////////////////////////////
+    ////                       protected variables                 ////
+
+    /** Tableau that has been created (if any). */
+    protected Tableau _tableau;
+
+    ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
+
     // Possible values for openOnFiring.
     private static int _DO_NOT_OPEN = 0;
-
     private static int _OPEN_IN_VERGIL = 1;
-
     private static int _OPEN_IN_VERGIL_FULL_SCREEN = 2;
 
     /** The value of the openOnFiring parameter. */
@@ -454,9 +459,6 @@ public class VisualModelReference extends ModelReference {
 
     /** Store exception thrown in event thread. */
     private Exception _exception = null;
-
-    /** Tableau that has been created (if any). */
-    private Tableau _tableau;
 
     /** Effigy that has been created (if any). */
     private PtolemyEffigy _effigy;

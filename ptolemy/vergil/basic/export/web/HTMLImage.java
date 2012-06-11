@@ -46,22 +46,19 @@ import ptolemy.gui.ImageExportable;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
-import ptolemy.util.StringUtilities;
-import ptolemy.vergil.basic.BasicGraphFrame;
 import ptolemy.vergil.basic.ExportParameters;
-import ptolemy.vergil.basic.HTMLExportable;
 
 
 ///////////////////////////////////////////////////////////////////
 //// HTMLImage
 /**
- * Attribute for inserting an image into a web page.  Drag its icon onto an
- * actor that produces a BasicGraphFrame(for example, 
+ * Attribute for inserting an image into a web page.  Drag this attribute onto an
+ * actor that produces a BasicGraphFrame (for example, 
  * ptolemy.actor.lib.gui.XYPlotter) and specify the caption for this image.
  *
  * By default, this image will be placed at the end of the HTML page, 
  * but you can change the position by setting the
- * <i>textPosition</i> parameter. You can also separately control what
+ * <i>imagePosition</i> parameter. You can also separately control what
  * text is displayed in the model, or make the attribute disappear altogether
  * in the model (for this, just set <i>displayText</i> to an empty string).
  * 
@@ -77,7 +74,6 @@ import ptolemy.vergil.basic.HTMLExportable;
  * @Pt.ProposedRating Red (ltrnc)
  * @Pt.AcceptedRating Red (ltrnc)
  */
-
 public class HTMLImage extends WebContent {
 
     /** Create an instance of this parameter.
@@ -89,24 +85,24 @@ public class HTMLImage extends WebContent {
     public HTMLImage(NamedObj container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        textPosition = new HTMLTextPosition(this, "textPosition");
+        imagePosition = new HTMLTextPosition(this, "imagePosition");
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         parameters                        ////
 
-    /** Parameter specifying the position into which to export HTML text.
-     * The parameter offers the following possibilities:
+    /** Parameter specifying the position into which to export the image.
+     *  The parameter offers the following possibilities:
      *  <ul>
-     *  <li><b>end</b>: Put the text at the end of the HTML file.
-     *  <li><b>header</b>: Put the text in the header section.
-     *  <li><b>start</b>: Put the text at the start of the body section.
-     *  <li><i>anything_else</i>: Put the text in a separate HTML file
+     *  <li><b>end</b>: Put the image at the end of the HTML file.
+     *  <li><b>header</b>: Put the image in the header section.
+     *  <li><b>start</b>: Put the image at the start of the body section.
+     *  <li><i>anything_else</i>: Put the image in a separate HTML file
      *   named <i>anything_else</i>.
      *  </ul>
      *  The default is "start".
      */
-    public HTMLTextPosition textPosition;
+    public HTMLTextPosition imagePosition;
     
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -200,14 +196,22 @@ public class HTMLImage extends WebContent {
                 // For example, an HttpService uses a URL as a path since the 
                 // WebServer has a resource handler to serve files
                 // ExportToHTML will use a directory since the files are
-                // stored locally and located relative to the main web page 
+                // stored locally and located relative to the main web page
+                String path = exporter.getExportParameters().HTMLPathForFiles;
+                if (path == null) {
+                    path ="/";
+                } else {
+                    if (!path.equals("") && !path.endsWith("/")) {
+                        path = path + "/";
+                    }
+                }
                 
                 String content = "<table> <caption align=\"bottom\">" 
                     + this.displayText.getExpression()
                     + "</caption> <tr> <td> <img src=\"" 
-                    + exporter.getExportParameters().HTMLPathForFiles 
-                    + "/" + name + ".gif\"> </td></tr></table>";
-                exporter.addContent(textPosition.stringValue(), true, content);
+                    + path
+                    + name + ".gif\"> </td></tr></table>";
+                exporter.addContent(imagePosition.stringValue(), true, content);
             }
         }
     }

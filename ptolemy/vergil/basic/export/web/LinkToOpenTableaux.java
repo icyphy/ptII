@@ -139,8 +139,36 @@ public class LinkToOpenTableaux extends DefaultIconLink {
         Effigy myEffigy = (Effigy) myTableau.getContainer();
         List<PtolemyEffigy> effigies = myEffigy.entityList(PtolemyEffigy.class);
         for (PtolemyEffigy effigy : effigies) {
+            // The following will, for example, associate a plotter with effigy
+            // for the open plot.
             openEffigies.put(effigy.getModel(), effigy);
         }
+        // In order to ensure that all open windows have hyperlinks
+        // to them, fix up the openEffies data structure so that if
+        // the container of a plotter (for example) is not associated
+        // with an open effigy, then we attempt to associate it with
+        // the container instead, or the container's container, until
+        // we get to the top level.
+        Map<NamedObj, PtolemyEffigy> containerAssociations = new HashMap<NamedObj, PtolemyEffigy>();
+        if (openEffigies.size() > 0) {
+            for (NamedObj component : openEffigies.keySet()) {
+                NamedObj container = component.getContainer();
+                while (container != null) {
+                    if (openEffigies.get(container) != null) {
+                        // The container of a plotter (say) has
+                        // an open effigy, so there will be a link
+                        // to the plot.
+                        continue;
+                    }
+                    // The container of the plotter (say) does
+                    // not have an open effigy.  Associate this
+                    // container and then try the container's container.
+                    containerAssociations.put(container, openEffigies.get(component));
+                    container = container.getContainer();
+                }
+            }
+        }
+        openEffigies.putAll(containerAssociations);
 
         PtolemyEffigy effigy = openEffigies.get(object);
         // The hierarchy of effigies does not always follow the model hierarchy
@@ -286,7 +314,8 @@ public class LinkToOpenTableaux extends DefaultIconLink {
                             + subDirectory);
                 }
                 ExportParameters newParameters = new ExportParameters(subDirectory, parameters);
-                ((HTMLExportable) frame).writeHTML(newParameters);
+                // The null argument causes the write to occur to an index.html file.
+                ((HTMLExportable) frame).writeHTML(newParameters, null);
                 exporter.defineAreaAttribute(sourceObject, "href", name + "/index.html", true);
                 // Add to table of contents file if we are using the Ptolemy website infrastructure.
                 boolean usePtWebsite = Boolean.valueOf(StringUtilities.getProperty("ptolemy.ptII.exportHTML.usePtWebsite"));

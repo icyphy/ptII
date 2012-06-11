@@ -166,7 +166,7 @@ public class ExportParameters {
      *  <img src="/files/imagename.gif"> </img>
      *  
      *  even though the image is stored in $PTT/org/ptolemy/ptango/temp, since
-     *  the resource handler is mapped to http://hostname:port/servicename/files
+     *  the resource handler is mapped to http://hostname:port/servicename/files.
      */
     public String HTMLPathForFiles;
     
