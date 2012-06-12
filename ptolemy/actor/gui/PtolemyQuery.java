@@ -419,7 +419,7 @@ public class PtolemyQuery extends Query implements QueryListener,
                 area.setRows(Math.min(5, area.getLineCount()));
                 area.setFocusTraversalKeys(KeyboardFocusManager.FORWARD_TRAVERSAL_KEYS, null);
                 area.setFocusTraversalKeys(KeyboardFocusManager.BACKWARD_TRAVERSAL_KEYS, null);
-
+                
                 area.addKeyListener(new KeyAdapter() {
                     public void keyPressed(KeyEvent e) {
                         int code = e.getKeyCode();
@@ -428,7 +428,8 @@ public class PtolemyQuery extends Query implements QueryListener,
                         } else if (code == KeyEvent.VK_ENTER && e.isShiftDown()) {
                             area.append("\n");
                             e.consume();
-                        }
+                        } 
+                        revalidate();
                     }
                 });
 //                addLine(attribute.getName(), attribute.getDisplayName(),
