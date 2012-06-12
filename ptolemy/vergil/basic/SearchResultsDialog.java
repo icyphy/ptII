@@ -40,6 +40,9 @@ import java.util.Iterator;
 import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import java.util.regex.PatternSyntaxException;
 
 import javax.swing.JButton;
 import javax.swing.JPanel;
@@ -280,7 +283,7 @@ public class SearchResultsDialog extends PtolemyDialog
     /** Report a message to either the status bar or message handler.
      *  @param message The message.   
      */   
-    public void _report(String message) {
+    protected void _report(String message) {
         if (_owner instanceof Top) {
             ((Top)_owner).report(message);
         } else {
@@ -301,7 +304,13 @@ public class SearchResultsDialog extends PtolemyDialog
         boolean includeNames = _query.getBooleanValue("names");
         boolean recursiveSearch = _query.getBooleanValue("recursive");
         boolean caseSensitive = _query.getBooleanValue("case");
-        Set<NamedObj>results = _find(_target, findText, includeValues, includeNames, recursiveSearch, caseSensitive);
+        Pattern pattern = null;
+        try {
+            pattern = Pattern.compile(findText, caseSensitive ? 0 : Pattern.CASE_INSENSITIVE);
+        } catch(PatternSyntaxException ex) {
+            _report("Problem with " + findText + " as a regular expression: " + ex);
+        }
+        Set<NamedObj>results = _find(_target, findText, includeValues, includeNames, recursiveSearch, caseSensitive, pattern);
         _resultsTableModel.setContents(results);
         if (results.size() == 0) {
             MessageHandler.message("No matches");
@@ -324,11 +333,13 @@ public class SearchResultsDialog extends PtolemyDialog
      *  @param includeNames True to include names of objects.
      *  @param recursive True to search within objects immediately contained.
      *  @param caseSensitive True to match the case.
+     *  @param pattern The text compiled as a pattern, or null if the text could
+     *  not be compiled as a pattern.
      *  @return The list of objects in the model that match the specified search.
      */
     protected Set<NamedObj> _find(
             NamedObj container, String text, boolean includeValues,
-            boolean includeNames, boolean recursive, boolean caseSensitive) {
+            boolean includeNames, boolean recursive, boolean caseSensitive, Pattern pattern) {
         if (!caseSensitive) {
             text = text.toLowerCase();
         }
@@ -341,8 +352,15 @@ public class SearchResultsDialog extends PtolemyDialog
                 if (!caseSensitive) {
                     name = name.toLowerCase();
                 }
-                if (name.contains(text)) {
-                    result.add(object);
+                if (pattern != null) {
+                    Matcher matcher = pattern.matcher(name);
+                    if (name.contains(text) || matcher.matches()) {
+                        result.add(object);
+                    }
+                } else {
+                    if (name.contains(text)) {
+                        result.add(object);
+                    }
                 }
             }
             if (includeValues && object instanceof Settable) {
@@ -352,13 +370,20 @@ public class SearchResultsDialog extends PtolemyDialog
                     if (!caseSensitive) {
                         value = value.toLowerCase();
                     }
-                    if (value.contains(text)) {
-                        result.add(object);
+                    if (pattern != null) {
+                        Matcher matcher = pattern.matcher(value);
+                        if (value.contains(text) || matcher.matches()) {
+                            result.add(object);
+                        }
+                    } else {
+                        if (value.contains(text)) {
+                            result.add(object);
+                        }
                     }
                 }
             }
             if (recursive) {
-                result.addAll(_find(object, text, includeValues, includeNames, recursive, caseSensitive));
+                result.addAll(_find(object, text, includeValues, includeNames, recursive, caseSensitive, pattern));
             }
         }
         return result;
