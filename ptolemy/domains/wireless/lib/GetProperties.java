@@ -185,7 +185,7 @@ public class GetProperties extends TypedAtomicActor {
                     // Only set up the type constraint if the type of the
                     // of the properties field is known.
                     if (channelProperties.getType() != BaseType.UNKNOWN) {
-                        output.setTypeSameAs(channelProperties);
+                        output.setTypeAtLeast(channelProperties);
                     }
                 } else {
                     throw new IllegalActionException(this,
