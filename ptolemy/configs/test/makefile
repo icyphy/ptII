@@ -95,8 +95,8 @@ $(MODELS_TXT): ../doc/completeDemos.htm
 KERNEL_TESTDEFS = $(ROOT)/util/testsuite/testDefs.tcl
 
 # These tests consume quite a bit of memory, so we increase the maximum
-# stack size to 1000Mb
-JAVAFLAGS = -Xmx1000m
+# stack size to 4000Mb
+JAVAFLAGS = -Xmx4000m
 
 
 # These tests do not require a graphics terminal, but do use Jacl and Java

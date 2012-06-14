@@ -43,7 +43,7 @@ if {[string compare test [info procs test]] == 1} then {
 
     # Filter out graphical classes while inside MoMLParser
     # See ptII/util/testsuite/removeGraphicalClasses.tcl
-    removeGraphicalClasses $parser
+    #removeGraphicalClasses $parser
 
     set loader [[$parser getClass] getClassLoader]
 

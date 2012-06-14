@@ -220,8 +220,8 @@ foreach i $configs {
     
     # The configuration has a removeGraphicalClasses parameter that
     # defaults to false so we set it to true.
-    set removeGraphicalClasses [java::field [java::cast ptolemy.actor.gui.Configuration $configuration] removeGraphicalClasses]
-    $removeGraphicalClasses setExpression "true"
+    #set removeGraphicalClasses [java::field [java::cast ptolemy.actor.gui.Configuration $configuration] removeGraphicalClasses]
+    #$removeGraphicalClasses setExpression "true"
 
 
     test "$i-1.1" "Test to see if $i contains any bad XML" {
@@ -234,7 +234,7 @@ foreach i $configs {
 	# then the name that is returned should be the same as the name
 	# of the field.
 	puts "-------> Before clone"
-	set cloneConfiguration [java::cast ptolemy.kernel.CompositeEntity [$configuration clone]]
+ 	set cloneConfiguration [java::cast ptolemy.kernel.CompositeEntity [$configuration clone [java::new ptolemy.kernel.util.Workspace {clonedWorkspace}]]]
 	puts "-------> after clone"
 	set entityList [$configuration allAtomicEntityList]
 	set results {}
@@ -312,6 +312,7 @@ foreach i $configs {
     test "$i-3.1" "Test to see if $i contains any actors whose type constraints don't clone" {
 	    set results [[java::cast ptolemy.actor.gui.Configuration $configuration] check]
 	    # FIXME: Need to call this twice to find problems with RecordAssembler.
+	    puts "---- Second call to Configuration.check"
 	    set results2 [[java::cast ptolemy.actor.gui.Configuration $configuration] check]
    	    # Don't call return as the last line of a test proc, since return
 	    # throws an exception.
