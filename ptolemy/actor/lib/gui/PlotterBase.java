@@ -188,11 +188,32 @@ public class PlotterBase extends TypedAtomicActor implements Configurable,
      */
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         PlotterBase newObject = (PlotterBase) super.clone(workspace);
-        newObject.plot = null;
+
+
+        newObject._configureBases = null;
+        newObject._configureSources = null;
+        newObject._configureTexts = null;
         newObject._implementation = null;
+        newObject.plot = null;
         try {
-            newObject._getImplementation().initWindowAndSizeProperties();
-            newObject.configure(_base, _source, _text);
+            if (_base != null) {
+                newObject._base = new URL(_base.toString());
+            }
+            newObject.configure(newObject._base, _source, _text);
+
+            // See _getImplementation():
+	    if (PtolemyInjector.getInjector() == null) {
+		System.err.println("Warning: main() did not call "
+			       + "ActorModuleInitializer.initializeInjector(), "
+			       + "so PlotterBase.clone() is calling it for you.");
+		ActorModuleInitializer.initializeInjector();
+	    }
+            newObject._implementation = PtolemyInjector.getInjector().getInstance(
+                    PlotterBaseInterface.class);
+            newObject._implementation.init(newObject);
+
+            newObject._implementation.initWindowAndSizeProperties();
+
         } catch (Exception e) {
             // This should not occur.
             throw new CloneNotSupportedException("Clone failed: " + e);
@@ -229,25 +250,28 @@ public class PlotterBase extends TypedAtomicActor implements Configurable,
                 _configureSource = source;
             }
 
-            if ((text != null) && !text.equals("")) {
-                // NOTE: Regrettably, the XML parser we are using cannot
-                // deal with having a single processing instruction at the
-                // outer level.  Thus, we have to strip it.
+            // Avoid trying to parse whitespace only text.
+            if (text != null) {
                 String trimmed = text.trim();
+                if ((trimmed != null) && !trimmed.equals("")) {
+                    // NOTE: Regrettably, the XML parser we are using cannot
+                    // deal with having a single processing instruction at the
+                    // outer level.  Thus, we have to strip it.
 
-                if (trimmed.startsWith("<?") && trimmed.endsWith("?>")) {
-                    trimmed = trimmed.substring(2, trimmed.length() - 2).trim();
+                    if (trimmed.startsWith("<?") && trimmed.endsWith("?>")) {
+                        trimmed = trimmed.substring(2, trimmed.length() - 2).trim();
 
-                    if (trimmed.startsWith("plotml")) {
-                        trimmed = trimmed.substring(6).trim();
+                        if (trimmed.startsWith("plotml")) {
+                            trimmed = trimmed.substring(6).trim();
+                            parser.parse(base, trimmed);
+                        }
+
+                        // If it's not a plotml processing instruction, ignore.
+                    } else {
+                        // Data is not enclosed in a processing instruction.
+                        // Must have been given in a CDATA section.
                         parser.parse(base, trimmed);
                     }
-
-                    // If it's not a plotml processing instruction, ignore.
-                } else {
-                    // Data is not enclosed in a processing instruction.
-                    // Must have been given in a CDATA section.
-                    parser.parse(base, text);
                 }
             }
         } else {
@@ -570,10 +594,10 @@ public class PlotterBase extends TypedAtomicActor implements Configurable,
                 URL base = bases.next();
                 String source = sources.next();
                 String text = texts.next();
-
                 try {
                     configure(base, source, text);
                 } catch (Exception ex) {
+                    System.out.println("Failed to parse? base: \"" + base + "\": source:\"" + source + "text:\"" + text + "\"");
                     getManager().notifyListenersOfException(ex);
                 }
             }
