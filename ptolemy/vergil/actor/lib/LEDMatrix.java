@@ -36,9 +36,11 @@ import ptolemy.data.IntToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.Location;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.Workspace;
 import ptolemy.vergil.icon.EditorIcon;
 import ptolemy.vergil.kernel.attributes.RectangleAttribute;
 
@@ -122,6 +124,33 @@ public class LEDMatrix extends TypedAtomicActor {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+
+    /** Clone this actor into the specified workspace.
+     *  Override the base class to ensure that private variables are
+     *  reset.
+     *  @param workspace The workspace for the cloned object.
+     *  @return A new instance of VisualModelReference.
+     *  @exception CloneNotSupportedException If a derived class contains
+     *   an attribute that cannot be cloned.
+     */
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        LEDMatrix newActor = (LEDMatrix) super.clone(workspace);
+        try {
+            int columnsValue = ((IntToken) newActor.columns.getToken()).intValue();
+            int rowsValue = ((IntToken) newActor.rows.getToken()).intValue();
+            newActor._leds = new RectangleAttribute[rowsValue][columnsValue];
+            Attribute attribute = newActor.getAttribute("_icon");
+            if (attribute != null) {
+                attribute.setContainer(null);
+            }
+            newActor._ledArray_icon = new EditorIcon(newActor, "_icon");
+        } catch (Throwable ex) {
+            throw new CloneNotSupportedException(getFullName()
+                    + ": Failed to get rows or columns: "
+                    + ex);
+        }
+        return newActor;
+    }
 
     /** If the argument is <i>rows</i> or <i>columns</i>, then update
      *  the size of the array.
