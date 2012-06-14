@@ -10,7 +10,7 @@
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.9345716248096">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{542.5394778885492, 398.9583013803681}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{542.5394778885493, 398.9583013803681}">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model launches a web server and provides a service&#10;available at http://localhost:8080/UCBPower.&#10;Run the model and navigate to that location&#10;(or double click on this comment).">
@@ -50,7 +50,7 @@
         </property>
         <property name="resourceLocation" class="ptolemy.data.expr.FileParameter" value="$PTII/org/ptolemy/ptango/demo/UCBPower">
         </property>
-        <property name="temporaryFileLocation" class="ptolemy.data.expr.FileParameter" value="$PTII/org/ptolemy/ptango/demo/UCBPower">
+        <property name="temporaryFileLocation" class="ptolemy.data.expr.FileParameter" value="$TMPDIR">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{675.0, 55.0}">
         </property>
@@ -84,7 +84,7 @@
         </property>
         <property name="spawnSeparateModels" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="directoryToExportTo" class="ptolemy.data.expr.FileParameter" value="$PTII/org/ptolemy/ptango/demo/UCBPower">
+        <property name="directoryToExportTo" class="ptolemy.data.expr.FileParameter" value="$TMPDIR">
         </property>
         <property name="openCompositesBeforeExport" class="ptolemy.data.expr.Parameter" value="false">
         </property>
