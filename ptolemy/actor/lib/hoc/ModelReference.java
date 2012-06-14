@@ -60,6 +60,7 @@ import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.Workspace;
 import ptolemy.moml.MoMLParser;
+import ptolemy.util.MessageHandler;
 
 ///////////////////////////////////////////////////////////////////
 //// ModelReference
@@ -345,6 +346,7 @@ public class ModelReference extends TypedAtomicActor implements
                 // Create a manager, if appropriate.
                 if (_model instanceof CompositeActor) {
                     _manager = new Manager(_model.workspace(), "Manager");
+                    System.out.println("ModelReference: Creating a manager");
                     ((CompositeActor) _model).setManager(_manager);
 
                     if (_debugging) {
@@ -421,6 +423,9 @@ public class ModelReference extends TypedAtomicActor implements
         // manager.removeExecutionListener(this);
         manager.removeDebugListener(this);
         notifyAll();
+        // Need to report the error, otherwise if PlotterBase fails to parse
+        // plotml, then the error will not be displayed.
+        MessageHandler.error("Execution failed.", throwable);
     }
 
     /** React to the fact that execution is finished by unregistering
@@ -548,9 +553,11 @@ public class ModelReference extends TypedAtomicActor implements
                     _debug("** Executing referenced model in the calling thread.");
                 }
 
+                _manager.addExecutionListener(this);
+
                 try {
                     _manager.execute();
-                } catch (KernelException ex) {
+                } catch (Throwable ex) {
                     throw new IllegalActionException(this, ex,
                             "Execution failed.");
                 }
