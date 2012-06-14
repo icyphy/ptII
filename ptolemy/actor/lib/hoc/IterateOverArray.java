@@ -222,7 +222,8 @@ public class IterateOverArray extends MirrorComposite {
     ////                         public methods                    ////
 
     /** Clone the object into the specified workspace. This overrides
-     *  the base class to set the association with iterationCount.
+     *  the base class to instantiate a new IterateDirector and to set
+     *  the association with iterationCount.
      *  @param workspace The workspace for the new object.
      *  @return A new NamedObj.
      *  @exception CloneNotSupportedException If any of the attributes
@@ -232,13 +233,16 @@ public class IterateOverArray extends MirrorComposite {
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         IterateOverArray result = (IterateOverArray) super.clone(workspace);
         try {
-            // Remove the old inner IterateDirector that is in the wrong workspace.
-            List iterateDirectors = result.attributeList(IterateDirector.class);
-            IterateDirector oldIterateDirector = (IterateDirector) iterateDirectors.get(0);
-            String iterateDirectorName = oldIterateDirector.getName();
-            oldIterateDirector.setContainer(null);
-
-
+            // Remove the old inner IterateDirector(s) that is(are) in the wrong workspace.
+            String iterateDirectorName = null;
+            Iterator iterateDirectors = result.attributeList(IterateDirector.class).iterator();
+            while (iterateDirectors.hasNext()) {
+                IterateDirector oldIterateDirector = (IterateDirector)iterateDirectors.next();
+                if (iterateDirectorName == null) {
+                    iterateDirectorName = oldIterateDirector.getName();                
+                }
+                oldIterateDirector.setContainer(null);
+            }
 
             // Create a new IterateDirector that is in the right workspace.
             IterateDirector iterateDirector = result.new IterateDirector(workspace);

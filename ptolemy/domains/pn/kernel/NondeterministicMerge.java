@@ -28,6 +28,7 @@
 package ptolemy.domains.pn.kernel;
 
 import java.io.Writer;
+import java.util.Iterator;
 import java.util.List;
 
 import ptolemy.actor.Actor;
@@ -191,6 +192,43 @@ public class NondeterministicMerge extends TypedCompositeActor {
     }
 
     ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
+
+    /** Clone the object into the specified workspace. This overrides
+     *  the base class to set instantiate a new MergeDirector,
+     *  @param workspace The workspace for the new object.
+     *  @return A new NamedObj.
+     *  @exception CloneNotSupportedException If any of the attributes
+     *   cannot be cloned.
+     *  @see #exportMoML(Writer, int, String)
+     */
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        NondeterministicMerge result = (NondeterministicMerge) super.clone(workspace);
+        try {
+            // Remove the old inner MergeDirector(s) that is(are) in the wrong workspace.
+            String mergeDirectorName = null;
+            Iterator mergeDirectors = result.attributeList(MergeDirector.class).iterator();
+            while (mergeDirectors.hasNext()) {
+                MergeDirector oldMergeDirector = (MergeDirector)mergeDirectors.next();
+                if (mergeDirectorName == null) {
+                    mergeDirectorName = oldMergeDirector.getName();                
+                }
+                oldMergeDirector.setContainer(null);
+            }
+
+            // Create a new MergeDirector that is in the right workspace.
+            MergeDirector mergeDirector = result.new MergeDirector(workspace);
+            mergeDirector.setContainer(result);
+            if (mergeDirectorName != null) {
+                mergeDirector.setName(mergeDirectorName);
+            }
+        } catch (Throwable throwable) {
+            new CloneNotSupportedException("Could not clone: " + throwable);
+        }
+        return result;
+    }
+
+    ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
     /** Construct a NondeterministicMerge. */
@@ -216,7 +254,9 @@ public class NondeterministicMerge extends TypedCompositeActor {
                 + "<polygon points=\"-10,20 10,10 10,-10, -10,-20\" "
                 + "style=\"fill:red\"/>\n" + "</svg>\n");
 
-        /*PNDirector director = */new MergeDirector(this, "director");
+        PNDirector director = new MergeDirector(workspace());
+        director.setContainer(this);
+        director.setName("director");
     }
 
     /** Create the contained actors to handle the inputs.
@@ -350,9 +390,23 @@ public class NondeterministicMerge extends TypedCompositeActor {
     /** Variant of the PNDirector for the NondeterministicMerge actor.
      */
     private class MergeDirector extends PNDirector {
-        public MergeDirector(CompositeEntity container, String name)
-                throws IllegalActionException, NameDuplicationException {
-            super(container, name);
+        /** Construct an MergeDirector in the specified workspace with
+         *  no container and an empty string as a name. You can then change
+         *  the name with setName(). If the workspace argument is null, then
+         *  use the default workspace.  You should set the local director or
+         *  executive director before attempting to send data to the actor
+         *  or to execute it. Add the actor to the workspace directory.
+         *  Increment the version number of the workspace.
+         *  @param workspace The workspace that will list the actor.
+         *  @exception IllegalActionException If the container is incompatible
+         *   with this actor.
+         *  @exception NameDuplicationException If the name coincides with
+         *   an actor already in the container.
+         */
+        public MergeDirector(Workspace workspace) throws IllegalActionException,
+                NameDuplicationException {
+            super(workspace);
+            setPersistent(false);
         }
 
         /** Queue an initialization request with the manager.

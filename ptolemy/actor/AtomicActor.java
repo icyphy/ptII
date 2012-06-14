@@ -167,8 +167,11 @@ public class AtomicActor extends ComponentEntity implements Actor,
         AtomicActor newObject = (AtomicActor) super.clone(workspace);
 
         // Reset to force reinitialization of cache.
+        newObject._initializables = null;
         newObject._inputPortsVersion = -1;
         newObject._outputPortsVersion = -1;
+        newObject._cachedInputPorts = null;
+        newObject._cachedOutputPorts = null;
         newObject._causalityInterface = null;
         newObject._causalityInterfaceDirector = null;
         newObject._receiversVersion = -1L;

@@ -55,6 +55,7 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Settable;
+import ptolemy.kernel.util.Workspace;
 import ptolemy.util.MessageHandler;
 
 ///////////////////////////////////////////////////////////////////
@@ -209,6 +210,38 @@ public class RealTimeComposite extends MirrorComposite {
         } else {
             super.attributeChanged(attribute);
         }
+    }
+
+    /** Clone the object into the specified workspace. This overrides
+     *  the base class to instantiate a new RealTimeDirector.
+     *  @param workspace The workspace for the new object.
+     *  @return A new NamedObj.
+     *  @exception CloneNotSupportedException If any of the attributes
+     *   cannot be cloned.
+     *  @see #exportMoML(Writer, int, String)
+     */
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        RealTimeComposite result = (RealTimeComposite) super.clone(workspace);
+        try {
+            // Remove the old inner RealTimeDirector(s) that is(are) in the wrong workspace.
+            String realTimeDirectorName = null;
+            Iterator realTimeDirectors = result.attributeList(RealTimeDirector.class).iterator();
+            while (realTimeDirectors.hasNext()) {
+                RealTimeDirector oldRealTimeDirector = (RealTimeDirector)realTimeDirectors.next();
+                if (realTimeDirectorName == null) {
+                    realTimeDirectorName = oldRealTimeDirector.getName();                
+                }
+                oldRealTimeDirector.setContainer(null);
+            }
+
+            // Create a new RealTimeDirector that is in the right workspace.
+            RealTimeDirector realTimeDirector = result.new RealTimeDirector(workspace);
+            realTimeDirector.setContainer(result);
+            realTimeDirector.setName(realTimeDirectorName);
+        } catch (Throwable throwable) {
+            new CloneNotSupportedException("Could not clone: " + throwable);
+        }
+        return result;
     }
 
     /** Invoke iterations on the contained actor of the
@@ -494,6 +527,25 @@ public class RealTimeComposite extends MirrorComposite {
         public RealTimeDirector(CompositeEntity container, String name)
                 throws IllegalActionException, NameDuplicationException {
             super(container, name);
+            setPersistent(false);
+        }
+
+        /** Construct a RealTimeDirector in the specified workspace with
+         *  no container and an empty string as a name. You can then change
+         *  the name with setName(). If the workspace argument is null, then
+         *  use the default workspace.  You should set the local director or
+         *  executive director before attempting to send data to the actor
+         *  or to execute it. Add the actor to the workspace directory.
+         *  Increment the version number of the workspace.
+         *  @param workspace The workspace that will list the actor.
+         *  @exception IllegalActionException If the container is incompatible
+         *   with this actor.
+         *  @exception NameDuplicationException If the name coincides with
+         *   an actor already in the container.
+         */
+        public RealTimeDirector(Workspace workspace) throws IllegalActionException,
+                NameDuplicationException {
+            super(workspace);
             setPersistent(false);
         }
 
