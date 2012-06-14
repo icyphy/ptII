@@ -125,6 +125,8 @@ public class ConfigurableAttribute extends Attribute implements Configurable,
         ConfigurableAttribute newObject = (ConfigurableAttribute) super
                 .clone(workspace);
 
+        newObject._base = null;
+
         // The clone has new value listeners.
         newObject._valueListeners = null;
 

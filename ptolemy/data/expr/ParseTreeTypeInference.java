@@ -133,7 +133,7 @@ public class ParseTreeTypeInference extends AbstractParseTreeVisitor {
     public void visitFunctionApplicationNode(ASTPtFunctionApplicationNode node)
             throws IllegalActionException {
         int argCount = node.jjtGetNumChildren() - 1;
-        String functionName = node.getFunctionName();
+        final String functionName = node.getFunctionName();
 
         // Get the child types.
         Type[] childTypes = new Type[argCount];
@@ -362,7 +362,7 @@ public class ParseTreeTypeInference extends AbstractParseTreeVisitor {
         }
 
         throw new IllegalActionException("No matching function "
-                + node.getFunctionName() + "( " + buffer + " ).");
+                + functionName + "( " + buffer + " ).");
     }
 
     /** Set the type of the given node to be a function type whose

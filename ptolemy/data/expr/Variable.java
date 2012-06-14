@@ -330,6 +330,8 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
         // _noTokenYet and _initialToken are preserved in clone
         newObject._parserScope = null;
 
+        newObject._parseTreeEvaluator = null;
+
         // Very subtle bug from missing this.
         // This bug only showed up when using MoML classes (e.g.
         // SmoothedPeriodogram actors, which are composite actors

@@ -70,6 +70,7 @@ import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
+import ptolemy.kernel.util.Workspace;
 import ptolemy.moml.MoMLChangeRequest;
 import ptolemy.moml.MoMLParser;
 import ptolemy.moml.filter.BackwardCompatibility;
@@ -554,6 +555,28 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
                 "CodeGenerator: All phases above consumed: ");
 
         return _executeCommands();
+    }
+
+
+    /** Clone the object into the specified workspace. The new object is
+     *  <i>not</i> added to the directory of that workspace (you must do this
+     *  yourself if you want it there).
+     *  @param workspace The workspace for the cloned object.
+     *  @exception CloneNotSupportedException Not thrown in this base class
+     *  @return The new Attribute.
+     */
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        CodeGenerator newObject = (CodeGenerator) super.clone(workspace);
+        newObject._helperStore = null;
+        newObject._includes = null;
+        newObject._libraries = null;
+        newObject._model = null;
+        newObject._modifiedVariables = null;
+        newObject._newTypesUsed = null;
+        newObject._tokenFuncUsed = null;
+        newObject._typeFuncUsed = null;
+
+        return newObject;
     }
 
     /** Add an include command line argument the compile command.
@@ -2358,7 +2381,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
     /**
      * A static list of all macros supported by the code generator.
      */
-    protected List<String> _macros = new ArrayList<String>(
+    protected static List<String> _macros = new ArrayList<String>(
             Arrays.asList(new String[] { "ref", "val", "size", "type",
                     "targetType", "cgType", "tokenFunc", "typeFunc",
                     "actorSymbol", "actorClass", "new" }));

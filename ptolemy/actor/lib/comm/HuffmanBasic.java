@@ -120,6 +120,8 @@ public class HuffmanBasic extends Transformer {
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         HuffmanBasic newObject = (HuffmanBasic) super.clone(workspace);
         newObject.alphabet.setTypeAtLeast(ArrayType.ARRAY_BOTTOM);
+
+        newObject._pmf = null;
         return newObject;
     }
 

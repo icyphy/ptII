@@ -41,6 +41,7 @@ import ptolemy.actor.TypedAtomicActor;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.Workspace;
 
 ///////////////////////////////////////////////////////////////////
 //// AbstractPlaceableActor
@@ -84,6 +85,27 @@ public abstract class AbstractPlaceableActor extends TypedAtomicActor implements
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+
+    /** Clone the actor.
+     *  @param workspace The workspace in which to place the cloned variable.
+     *  @exception CloneNotSupportedException Not thrown in this base class.
+     *  @see java.lang.Object#clone()
+     *  @return The cloned variable.
+     */
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        AbstractPlaceableActor newObject = (AbstractPlaceableActor) super.clone(workspace);
+        try {
+            newObject._windowProperties = (WindowPropertiesAttribute)newObject.getAttribute("_windowProperties");
+            newObject._windowProperties.setPersistent(true);
+
+            newObject._paneSize = (SizeAttribute)newObject.getAttribute("_paneSize");
+            newObject._paneSize.setPersistent(true);
+
+        } catch (Throwable throwable) {
+            throw new CloneNotSupportedException(getFullName() + ": Failed to clone: " + throwable);
+        }
+        return newObject;
+    }
 
     /** Specify the container into which this object should be placed.
      *  Obviously, this method needs to be called before the object
