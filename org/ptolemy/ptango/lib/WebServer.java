@@ -355,6 +355,11 @@ public class WebServer extends AbstractInitializableAttribute {
         // from parameters of type FileParameter contained by this WebServer.
         ContextHandler fileHandler = _createResourceHandler();
         
+        // Enable aliases so that we can use $TMPDIR under Mac OS X
+        // because $TMPDIR is in /var, which is a symbolic link.
+        // FIXME: this opens up a series of security holes.
+        fileHandler.setAliases(true);
+
         // Assign the newly created handlers to the server 
         // The server passes requests to handlers in the same order as the array
         // in setHandlers()
