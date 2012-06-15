@@ -173,6 +173,19 @@ public class Parameter extends Variable {
         _choices.add(choice);
     }
 
+    /** Clone the object into the specified workspace.
+     *  @param workspace The workspace for the new object.
+     *  @return A new NamedObj.
+     *  @exception CloneNotSupportedException If any of the attributes
+     *   cannot be cloned.
+     */
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        Parameter newObject = (Parameter) super.clone(workspace);
+        newObject._choices = null;
+
+        return newObject;
+    }
+
     /** Write a MoML description of this object, unless this object is
      *  not persistent. MoML is an XML modeling markup language.
      *  In this class, the object is identified by the "property"

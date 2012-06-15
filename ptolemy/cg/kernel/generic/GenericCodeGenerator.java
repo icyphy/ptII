@@ -273,6 +273,19 @@ public abstract class GenericCodeGenerator extends Attribute implements
         }
     }
 
+    /** Clone the object into the specified workspace.
+     *  @param workspace The workspace for the new object.
+     *  @return A new NamedObj.
+     *  @exception CloneNotSupportedException If any of the attributes
+     *   cannot be cloned.
+     */
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        GenericCodeGenerator newObject = (GenericCodeGenerator) super.clone(workspace);
+        newObject._adapterStore = null;
+        newObject._generatorPackageListParser = null;
+
+        return newObject;
+    }
     /** Return a formatted comment containing the
      *  specified string.  In this base class, the empty
      *  string is returned.

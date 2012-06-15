@@ -120,6 +120,54 @@ abstract public class AbstractCalInterpreter extends TypedAtomicActor {
         super(container, name);
     }
 
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
+
+    /** Clone the object into the specified workspace.
+     *  @param workspace The workspace for the new object.
+     *  @return A new NamedObj.
+     *  @exception CloneNotSupportedException If any of the attributes
+     *   cannot be cloned.
+     */
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        AbstractCalInterpreter newObject = (AbstractCalInterpreter) super.clone(workspace);
+        newObject._actor = null;
+        newObject._ddi = null;
+        newObject._env = null;
+            
+        return newObject;
+    }
+
+    /** Fire the actor.
+     *  @exception IllegalActionException If thrown by the parent or by the
+     *  fire() meethod of the domain-dependent interpreter.
+     */
+    public void fire() throws IllegalActionException {
+        super.fire();
+        _ddi.fire();
+    }
+
+    /**
+     * Initialize the actor, clearing its input channels.
+     *
+     * @exception IllegalActionException If the superclass throws it.
+     */
+    public void initialize() throws IllegalActionException {
+        super.initialize();
+        _ddi.initialize();
+    }
+
+    /**
+     * Commit the last state changes.
+     *
+     * @return Returns whatever <tt>super.postfire()</tt> returns.
+     * @exception IllegalActionException If the superclass throws it.
+     */
+    public boolean postfire() throws IllegalActionException {
+        super.postfire();
+        return _ddi.postfire();
+    }
+
     /**
      * Populate the initial actor environment. This is done by binding
      * the parameters to the user-supplied values and then evaluating
@@ -162,16 +210,6 @@ abstract public class AbstractCalInterpreter extends TypedAtomicActor {
         _ddi.setupActor();
     }
 
-    /**
-     * Initialize the actor, clearing its input channels.
-     *
-     * @exception IllegalActionException If the superclass throws it.
-     */
-    public void initialize() throws IllegalActionException {
-        super.initialize();
-        _ddi.initialize();
-    }
-
     /** Prefire the actor.
      *  @return true If the actor can be fired.
      *  @exception IllegalActionException If thrown by the parent or by the
@@ -180,26 +218,6 @@ abstract public class AbstractCalInterpreter extends TypedAtomicActor {
     public boolean prefire() throws IllegalActionException {
         super.prefire();
         return _ddi.prefire();
-    }
-
-    /** Fire the actor.
-     *  @exception IllegalActionException If thrown by the parent or by the
-     *  fire() meethod of the domain-dependent interpreter.
-     */
-    public void fire() throws IllegalActionException {
-        super.fire();
-        _ddi.fire();
-    }
-
-    /**
-     * Commit the last state changes.
-     *
-     * @return Returns whatever <tt>super.postfire()</tt> returns.
-     * @exception IllegalActionException If the superclass throws it.
-     */
-    public boolean postfire() throws IllegalActionException {
-        super.postfire();
-        return _ddi.postfire();
     }
 
     ///////////////////////////////////////////////////////////////////

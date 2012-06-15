@@ -129,6 +129,18 @@ public class StringAttribute extends AbstractSettableAttribute {
         }
     }
 
+    /** Clone the object into the specified workspace.
+     *  @param workspace The workspace for the new object.
+     *  @return A new NamedObj.
+     *  @exception CloneNotSupportedException If any of the attributes
+     *   cannot be cloned.
+     */
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        StringAttribute newObject = (StringAttribute) super.clone(workspace);
+        newObject._valueListeners = null;
+        return newObject;
+    }
+
     /** Write a MoML description of this object, unless it is non-persistent.
      *  MoML is an XML modeling markup language.
      *  In this class, the object is identified by the "property"

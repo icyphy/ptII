@@ -42,6 +42,7 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.InvalidStateException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.Workspace;
 
 ///////////////////////////////////////////////////////////////////
 //// CTBaseIntegrator
@@ -185,6 +186,19 @@ public class CTBaseIntegrator extends TypedAtomicActor implements TimedActor,
      */
     public void clearHistory() {
         _history.clear();
+    }
+
+    /** Clone the object into the specified workspace.
+     *  @param workspace The workspace for the new object.
+     *  @return A new NamedObj.
+     *  @exception CloneNotSupportedException If any of the attributes
+     *   cannot be cloned.
+     *  @see #exportMoML(Writer, int, String)
+     */
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        CTBaseIntegrator newObject = (CTBaseIntegrator) super.clone(workspace);
+        newObject._history = new History(newObject);
+        return newObject;
     }
 
     /** Emit the tentative output, which is the current state of the

@@ -41,6 +41,7 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
+import ptolemy.kernel.util.Workspace;
 
 ///////////////////////////////////////////////////////////////////
 ////ProceduralCodeGenerator
@@ -157,6 +158,23 @@ public class ProceduralCodeGenerator extends ProgramCodeGenerator {
         if (!_libraries.contains(libraryCommand)) {
             _libraries.add(libraryCommand);
         }
+    }
+
+    /** Clone the object into the specified workspace.
+     *  @param workspace The workspace for the new object.
+     *  @return A new NamedObj.
+     *  @exception CloneNotSupportedException If any of the attributes
+     *   cannot be cloned.
+     */
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        ProceduralCodeGenerator newObject = (ProceduralCodeGenerator) super.clone(workspace);
+        newObject._includes = null;
+        newObject._libraries = null;
+        newObject._model = null;
+        newObject._modifiedVariables = null;
+        newObject._newTypesUsed = null;
+
+        return newObject;
     }
 
     /** Add called functions to the set of overloaded functions for

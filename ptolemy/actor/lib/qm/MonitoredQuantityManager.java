@@ -91,6 +91,18 @@ public abstract class MonitoredQuantityManager extends TypedAtomicActor
         _listeners = new ArrayList();
     }
 
+    /** Clone the object into the specified workspace.
+     *  @param workspace The workspace for the new object.
+     *  @return A new NamedObj.
+     *  @exception CloneNotSupportedException If any of the attributes
+     *   cannot be cloned.
+     */
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        MonitoredQuantityManager newObject = (MonitoredQuantityManager) super.clone(workspace);
+        newObject._listeners = null;
+        return newObject;
+    }
+
     /** Create an intermediate receiver that wraps a given receiver.
      *  @param receiver The receiver that is being wrapped.
      *  @return A new intermediate receiver.

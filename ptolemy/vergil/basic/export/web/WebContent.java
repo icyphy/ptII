@@ -39,6 +39,7 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.SingletonAttribute;
+import ptolemy.kernel.util.Workspace;
 import ptolemy.vergil.icon.TextIcon;
 import ptolemy.vergil.toolbox.VisibleParameterEditorFactory;
 
@@ -113,6 +114,25 @@ public abstract class WebContent extends StringParameter implements WebExportabl
     
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+
+    /** Clone the object into the specified workspace.
+     *  @param workspace The workspace for the new object.
+     *  @return A new NamedObj.
+     *  @exception CloneNotSupportedException If any of the attributes
+     *   cannot be cloned.
+     */
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        WebContent newObject = (WebContent) super.clone(workspace);
+        try {
+            newObject.getAttribute("_icon", TextIcon.class).setContainer(null);
+            newObject._icon = new TextIcon(newObject, "_icon");
+            newObject._icon.setTextColor(Color.RED);
+            newObject._icon.setIconText("H");
+        } catch (Throwable throwable) {
+            throw new CloneNotSupportedException(getFullName() + ": Failed to clone: " + throwable);
+        }
+        return newObject;
+    }
 
     /** Override the base class to update the icon.
      *  @param attribute The attribute that changed.
