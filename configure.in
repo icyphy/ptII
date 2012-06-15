@@ -4649,6 +4649,8 @@ PTSPACEDOMAIN_PACKAGES=
 MYSQL_JAR=
 
 # Oracle Java Database jar (ojdbc5.jar or ojdbc6.jar)
+# ojdbc5.jar and ojdbc6.jar are not shipped because of restrictive licenses
+# http://bugzilla.ecoinformatics.org/show_bug.cgi?id=5565
 ORACLE_OJDBC_JAR=
 
 # PTSPACEDOMAIN_JAR is the name of the jar file that includes the space
@@ -4679,7 +4681,7 @@ else
     if test "$JAVA1_6_OR_LATER" != "yes"; then
         OJDBC_TARGET_JAR=ojdbc5.jar
     fi
-    AC_MSG_CHECKING([for ojdbc.jar, used by the database actors])
+    AC_MSG_CHECKING([for ojdbc.jar])
     AC_ARG_WITH(ojdbc, [  --with-ojdbc=/path/to/ojdbcN.jar  path to ojdbc.jar
                           defaults to \$PTII/ptolemy/actor/lib/database/ojdbc6.jar or ojdbc5.jar $OJDBC_TARGET_JAR],
 	    ORACLE_OJDBC_JAR=$withval,
@@ -4687,6 +4689,9 @@ else
 
     if test -f "$ORACLE_OJDBC_JAR"; then
 	PT_MSG_RESULT([$ORACLE_OJDBC_JAR])
+    else
+	AC_MSG_WARN([$OJDBC_TARGET_JAR not found,
+    but only necessary to use database actors with Oracle.])
     fi
 
     if test -f "$MYSQL_JAR" -o -f "$ORACLE_OJDBC_JAR"; then
