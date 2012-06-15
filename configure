@@ -11376,6 +11376,8 @@ PTSPACEDOMAIN_PACKAGES=
 MYSQL_JAR=
 
 # Oracle Java Database jar (ojdbc5.jar or ojdbc6.jar)
+# ojdbc5.jar and ojdbc6.jar are not shipped because of restrictive licenses
+# http://bugzilla.ecoinformatics.org/show_bug.cgi?id=5565
 ORACLE_OJDBC_JAR=
 
 # PTSPACEDOMAIN_JAR is the name of the jar file that includes the space
@@ -11415,8 +11417,8 @@ $as_echo "$MYSQL_JAR" >&6; }; fi
     if test "$JAVA1_6_OR_LATER" != "yes"; then
         OJDBC_TARGET_JAR=ojdbc5.jar
     fi
-    { $as_echo "$as_me:${as_lineno-$LINENO}: checking for ojdbc.jar, used by the database actors" >&5
-$as_echo_n "checking for ojdbc.jar, used by the database actors... " >&6; }
+    { $as_echo "$as_me:${as_lineno-$LINENO}: checking for ojdbc.jar" >&5
+$as_echo_n "checking for ojdbc.jar... " >&6; }
 
 # Check whether --with-ojdbc was given.
 if test "${with_ojdbc+set}" = set; then :
@@ -11430,6 +11432,11 @@ fi
 	if test "${PTVERBOSE:-none}" = "none"; then { $as_echo "$as_me:${as_lineno-$LINENO}: result: ok" >&5
 $as_echo "ok" >&6; }; else { $as_echo "$as_me:${as_lineno-$LINENO}: result: $ORACLE_OJDBC_JAR" >&5
 $as_echo "$ORACLE_OJDBC_JAR" >&6; }; fi
+    else
+	{ $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: $OJDBC_TARGET_JAR not found,
+    but only necessary to use database actors with Oracle." >&5
+$as_echo "$as_me: WARNING: $OJDBC_TARGET_JAR not found,
+    but only necessary to use database actors with Oracle." >&2;}
     fi
 
     if test -f "$MYSQL_JAR" -o -f "$ORACLE_OJDBC_JAR"; then
