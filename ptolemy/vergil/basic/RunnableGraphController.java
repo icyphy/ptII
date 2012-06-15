@@ -144,7 +144,17 @@ public abstract class RunnableGraphController extends WithIconGraphController
      *  @param manager The manager calling this method.
      */
     public synchronized void executionFinished(Manager manager) {
-        getFrame().report("execution finished.");
+        // Display the amount of time and memory used.
+        // See http://bugzilla.ecoinformatics.org/show_bug.cgi?id=5571
+        // There is similar code in ptolemy/actor/gui/ModelFrame.java
+        String statusMessage = manager.getStatusMessage();
+        if (!statusMessage.isEmpty()) {
+            statusMessage = ": " + statusMessage;
+        } else {
+            statusMessage = ".";
+        }
+        getFrame().report("execution finished"
+                          + statusMessage);
     }
 
     /** Report that a manager state has changed.
@@ -168,7 +178,22 @@ public abstract class RunnableGraphController extends WithIconGraphController
                 manager.requestChange(request);
             }
 
-            getFrame().report(manager.getState().getDescription());
+            // There is similar code in ptolemy/actor/gui/ModelFrame.java
+            String statusMessage = manager.getStatusMessage();
+            if (statusMessage == _previousStatusMessage) {
+                _previousStatusMessage = statusMessage;
+                statusMessage = "";
+            } else {
+                _previousStatusMessage = statusMessage;
+            }
+
+            if (!statusMessage.isEmpty()) {
+                statusMessage = ": " + statusMessage;
+            } else {
+                statusMessage = ".";
+            }
+            getFrame().report(manager.getState().getDescription()
+                              + statusMessage);
             _previousState = newState;
 
             if (newState == Manager.INITIALIZING
@@ -258,6 +283,10 @@ public abstract class RunnableGraphController extends WithIconGraphController
     /** The previous state of the manager, to avoid reporting
      *  it if it hasn't changed. */
     private Manager.State _previousState;
+
+    /** The Manager status message from the previous state.
+     */   
+    private String _previousStatusMessage = "";
 
     /** Action for running the model. */
     private Action _runModelAction = new RunModelAction(

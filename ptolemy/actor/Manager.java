@@ -339,8 +339,9 @@ public class Manager extends NamedObj implements Runnable {
             try {
                 initialize();
                 if (System.currentTimeMillis() - startTime > minimumStatisticsTime) {
+                    setStatusMessage(timeAndMemory(startTime));
                     System.out.println("Manager.initialize() finished: "
-                            + timeAndMemory(startTime));
+                            + getStatusMessage());
                 }
 
                 // Call iterate() until finish() is called or postfire()
@@ -413,6 +414,13 @@ public class Manager extends NamedObj implements Runnable {
                     _setState(IDLE);
                 }
 
+                // Wrapup may throw an exception, so put the following
+                // statement inside the finally block.
+                if (_printTimeAndMemory) {
+                    setStatusMessage(timeAndMemory(startTime));
+                    System.out.println(getStatusMessage());
+                }
+
                 if (completedSuccessfully && initialThrowable == null) {
                     // The Exit.tcl test needs this because otherwise
                     // we throw an exception in wrapup(), but
@@ -422,12 +430,6 @@ public class Manager extends NamedObj implements Runnable {
                     // of the exception.
 
                     _notifyListenersOfSuccessfulCompletion();
-                }
-
-                // Wrapup may throw an exception, so put the following
-                // statement inside the finally block.
-                if (_printTimeAndMemory) {
-                    System.out.println(timeAndMemory(startTime));
                 }
 
                 // Handle throwable with exception handlers,
@@ -586,6 +588,16 @@ public class Manager extends NamedObj implements Runnable {
         return _state;
     }
 
+    /** Return any messages, such as the amount of time consumed.
+     *  This method is called to update the status bar, so the
+     *  output should be short.
+     *  @return the message
+     *  @see #setStatusMessage(String)
+     */
+    public String getStatusMessage() {
+        return _statusMessage;
+    }
+
     /** Get the execution identifier object for a throwable.
      *
      * <p> An execution identifier is an object given to the Manager
@@ -640,8 +652,9 @@ public class Manager extends NamedObj implements Runnable {
             long startTime = (new Date()).getTime();
             preinitializeAndResolveTypes();
             if (System.currentTimeMillis() - startTime > minimumStatisticsTime) {
+                setStatusMessage(timeAndMemory(startTime));
                 System.out.println("preinitialize() finished: "
-                        + timeAndMemory(startTime));
+                        + getStatusMessage());
             }
 
             _setState(INITIALIZING);
@@ -724,9 +737,10 @@ public class Manager extends NamedObj implements Runnable {
                  */
             }
             if (System.currentTimeMillis() - startTime > minimumStatisticsTime) {
+                setStatusMessage(timeAndMemory(startTime));
                 System.out
                         .println("Manager.iterate(): preinitialize() finished: "
-                                + timeAndMemory(startTime));
+                                + getStatusMessage());
             }
 
             if (!_typesResolved) {
@@ -1178,6 +1192,16 @@ public class Manager extends NamedObj implements Runnable {
         _executionIdentifier = executionIdentifier;
     }
 
+    /** Set the status message, such as the amount of time consumed.
+     *  This method is called to update the status bar, so the
+     *  output should be short.
+     *  @return the message
+     *  @see #getStatusMessage()
+     */
+    public void setStatusMessage(String message) {
+        _statusMessage = message;
+    }
+
     /** Return a short description of the throwable.
      *  @param throwable The throwable
      *  @return If the throwable is an Exception, return "Exception",
@@ -1563,6 +1587,9 @@ public class Manager extends NamedObj implements Runnable {
 
     // The state of the execution.
     private volatile State _state = IDLE;
+
+    // A short status message.
+    private String _statusMessage = "";
 
     // If startRun() is used, then this points to the thread that was
     // created.

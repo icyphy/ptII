@@ -134,7 +134,17 @@ public class ModelFrame extends PtolemyFrame implements ExecutionListener {
      *  @param manager The manager calling this method.
      */
     public void executionFinished(Manager manager) {
-        report("execution finished.");
+        // Display the amount of time and memory used.
+        // See http://bugzilla.ecoinformatics.org/show_bug.cgi?id=5571
+        // There is similar code in ptolemy/vergil/basic/RunnableGraphController.java
+        String statusMessage = manager.getStatusMessage();
+        if (!statusMessage.isEmpty()) {
+            statusMessage = ": " + statusMessage;
+        } else {
+            statusMessage = ".";
+        }
+        report("execution finished"
+                + statusMessage);
     }
 
     /** Report that a manager state has changed.
@@ -145,7 +155,23 @@ public class ModelFrame extends PtolemyFrame implements ExecutionListener {
         Manager.State newState = manager.getState();
 
         if (newState != _previousState) {
-            report(manager.getState().getDescription());
+            // There is similar code in ptolemy/vergil/basic/RunnableGraphController.java
+            String statusMessage = manager.getStatusMessage();
+            if (statusMessage == _previousStatusMessage) {
+                _previousStatusMessage = statusMessage;
+                statusMessage = "";
+            } else {
+                _previousStatusMessage = statusMessage;
+            }
+
+            if (!statusMessage.isEmpty()) {
+                statusMessage = ": " + statusMessage;
+            } else {
+                statusMessage = ".";
+            }
+            report(manager.getState().getDescription()
+                    + statusMessage);
+
             _previousState = newState;
         }
     }
@@ -272,7 +298,12 @@ public class ModelFrame extends PtolemyFrame implements ExecutionListener {
     // The pane in which the model data is displayed.
     private ModelPane _pane;
 
-    // The previous state of the manager, to avoid reporting it if it hasn't
-    // changed.
+    /** The previous state of the manager, to avoid reporting it if it hasn't
+     * changed.
+     */
     private Manager.State _previousState;
+
+    /** The Manager status message from the previous state.
+     */   
+    private String _previousStatusMessage = "";
 }
