@@ -459,44 +459,7 @@ public class ActorEditorGraphController extends ActorViewerGraphController {
 
         if (_alternateActorInstanceClassName == null) {
             // Default to the normal ActorInstanceController.
-            _entityController = new ActorInstanceController(this);
-            
-            // Set up a listener to lay out the ports when graph changes.
-            // NOTE: It is imperative that there be no more than one such
-            // listener!  If there is more than one instance, the
-            // ports will be laid out more than once. This manifests itself
-            // as a bug where port names are rendered twice, and for some
-            // inexplicable reason, are rendered in two different places!
-            // The filter for the layout algorithm of the ports within this
-            // entity. This returns true only if the candidate object is
-            // an instance of Locatable and the semantic object associated
-            // with it is an instance of Entity.
-            Filter portFilter = new Filter() {
-                public boolean accept(Object candidate) {
-                    GraphModel model = getGraphModel();
-                    Object semanticObject = model.getSemanticObject(candidate);
-
-                    // For some strange reason, this used to avoid doing
-                    // layout for class definitions, with the following clause:
-                    //  && !((Entity) semanticObject).isClassDefinition()
-                    if (candidate instanceof Locatable
-                            && semanticObject instanceof Entity) {
-                        return true;
-                    } else {
-                        return false;
-                    }
-                }
-            };
-
-            // Anytime we add a port to an entity, we want to layout all the
-            // ports within that entity.
-            GlobalLayout layout = new EntityLayout();
-            addGraphViewListener(new IncrementalLayoutListener(
-                    new IncrLayoutAdapter(layout) {
-                        public void nodeDrawn(Object node) {
-                            layout(node);
-                        }
-                    }, portFilter));
+            _entityController = new ActorInstanceController(this);            
         } else {
             try {
                 // Try to load the alternate class.
@@ -519,6 +482,44 @@ public class ActorEditorGraphController extends ActorViewerGraphController {
                 e.printStackTrace();
             }
         }
+        
+        // Set up a listener to lay out the ports when graph changes.
+        // NOTE: It is imperative that there be no more than one such
+        // listener!  If there is more than one instance, the
+        // ports will be laid out more than once. This manifests itself
+        // as a bug where port names are rendered twice, and for some
+        // inexplicable reason, are rendered in two different places!
+        // The filter for the layout algorithm of the ports within this
+        // entity. This returns true only if the candidate object is
+        // an instance of Locatable and the semantic object associated
+        // with it is an instance of Entity.
+        Filter portFilter = new Filter() {
+            public boolean accept(Object candidate) {
+                GraphModel model = getGraphModel();
+                Object semanticObject = model.getSemanticObject(candidate);
+
+                // For some strange reason, this used to avoid doing
+                // layout for class definitions, with the following clause:
+                //  && !((Entity) semanticObject).isClassDefinition()
+                if (candidate instanceof Locatable
+                        && semanticObject instanceof Entity) {
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+        };
+
+        // Anytime we add a port to an entity, we want to layout all the
+        // ports within that entity.
+        GlobalLayout layout = new EntityLayout();
+        addGraphViewListener(new IncrementalLayoutListener(
+                new IncrLayoutAdapter(layout) {
+                    public void nodeDrawn(Object node) {
+                        layout(node);
+                    }
+                }, portFilter));
+
         _entityPortController = new IOPortController(this,
                 AttributeController.FULL);
         _portController = new ExternalIOPortController(this,
