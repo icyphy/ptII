@@ -145,9 +145,6 @@ public class GenerateCopyrights {
         _addIfPresent(copyrightsMap, "ptolemy.actor.lib.database.DatabaseManager",
                 "com.mysql.jdbc.Driver",
                 "ptolemy/actor/lib/database/mysql-copyright.htm");
-        _addIfPresent(copyrightsMap, "ptolemy.actor.lib.database.DatabaseManager",
-                "oracle.jdbc.OracleDriver",
-                "ptolemy/actor/lib/database/ojdbc-copyright.htm");
         _addIfPresent(copyrightsMap, "ptolemy.actor.lib.excel.Excel",
                 "ptolemy/actor/lib/excel/jxl-copyright.htm");
         _addIfPresent(copyrightsMap, "ptolemy.actor.lib.io.comm.SerialComm",
@@ -426,7 +423,7 @@ public class GenerateCopyrights {
             String applicationClassName, String libraryClassName,
             String copyrightPath) {
         // If actor.lib.database.DatabaseManager is present, then
-        // we look for MySQL and Oracle JDBC packages.
+        // we look for MySQL JDBC packages.
         try {
             Class.forName(applicationClassName);
             _addIfPresent(copyrightsMap, libraryClassName, copyrightPath);
