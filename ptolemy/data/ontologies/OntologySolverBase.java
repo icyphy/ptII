@@ -51,6 +51,7 @@ import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
+import ptolemy.kernel.util.Workspace;
 import ptolemy.moml.MoMLModelAttribute;
 
 ///////////////////////////////////////////////////////////////////
@@ -145,8 +146,22 @@ public abstract class OntologySolverBase extends MoMLModelAttribute {
         _resolvedProperties.remove(object);
     }
 
+    /** Clone the object into the specified workspace.
+     *  @param workspace The workspace for the new object.
+     *  @return A new NamedObj.
+     *  @exception CloneNotSupportedException If any of the attributes
+     *   cannot be cloned.
+     */
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        OntologySolverBase newObject = (OntologySolverBase) super.clone(workspace);
+        newObject._ontologySolverUtilities = null;
+        newObject.reset();
+        return newObject;
+    }
+
+
     /**
-     * Return the list of all PropertyAdaptes associated with this
+     * Return the list of all PropertyAdapters associated with this
      * ontology solver.
      *
      * @return The list of PropertyAdapters.
@@ -400,7 +415,9 @@ public abstract class OntologySolverBase extends MoMLModelAttribute {
         _nonSettables = new HashSet<Object>();
         _adapterStore = new HashMap<Object, OntologyAdapter>();
         _resetParser();
-        getOntologySolverUtilities().resetAll();
+        if (_ontologySolverUtilities != null) {
+            _ontologySolverUtilities.resetAll();
+        }
     }
 
     /**

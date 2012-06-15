@@ -241,6 +241,7 @@ public class Director extends Attribute implements Executable {
         Director newObject = (Director) super.clone(workspace);
         newObject._actorsFinishedExecution = null;
         newObject._initializables = null;
+        newObject._startTime = null;
         newObject._stopTime = null;
         newObject._zeroTime = new Time(newObject);
         return newObject;

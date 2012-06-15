@@ -283,6 +283,8 @@ public abstract class GenericCodeGenerator extends Attribute implements
         GenericCodeGenerator newObject = (GenericCodeGenerator) super.clone(workspace);
         newObject._adapterStore = null;
         newObject._generatorPackageListParser = null;
+        newObject._model = null;
+
 
         return newObject;
     }

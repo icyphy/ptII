@@ -231,6 +231,18 @@ public class CTMultiSolverDirector extends CTDirector {
         return true;
     }
 
+    /** Clone the object into the specified workspace.
+     *  @param workspace The workspace for the new object.
+     *  @return A new NamedObj.
+     *  @exception CloneNotSupportedException If any of the attributes
+     *   cannot be cloned.
+     */
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        CTMultiSolverDirector newObject = (CTMultiSolverDirector) super.clone(workspace);
+        newObject._normalSolver = null;
+        return newObject;
+    }
+
     /** Establish the initial states for discrete phase of execution. This
      *  method should be called if the initial states are not available. For
      *  example, the first iteration of the simulation, or the first execution

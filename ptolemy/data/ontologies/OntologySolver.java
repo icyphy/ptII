@@ -33,10 +33,11 @@ import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
+import ptolemy.kernel.util.Workspace;
 import ptolemy.util.StringUtilities;
 
 ///////////////////////////////////////////////////////////////////
-////OntologySolver
+//// OntologySolver
 
 /** An extended base abstract class for an ontology solver.
  *
@@ -104,6 +105,19 @@ public abstract class OntologySolver extends OntologySolverBase implements
         }
         checkErrors();
     }
+
+    /** Clone the object into the specified workspace.
+     *  @param workspace The workspace for the new object.
+     *  @return A new NamedObj.
+     *  @exception CloneNotSupportedException If any of the attributes
+     *   cannot be cloned.
+     */
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        OntologySolver newObject = (OntologySolver) super.clone(workspace);
+        newObject._momlHandler = null;
+        return newObject;
+    }
+
 
     /** Construct and configure the contained model with the specified source and
      *  text. This parses the specified MoML text. Also set the container solver

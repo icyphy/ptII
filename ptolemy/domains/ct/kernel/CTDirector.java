@@ -345,6 +345,9 @@ public abstract class CTDirector extends StaticSchedulingDirector implements
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         CTDirector newObject = (CTDirector) super.clone(workspace);
         newObject._breakpoints = new TotallyOrderedSet(new GeneralComparator());
+        newObject._currentSolver = null;
+        newObject._prefiredActors = new HashSet();
+
         return newObject;
     }
 

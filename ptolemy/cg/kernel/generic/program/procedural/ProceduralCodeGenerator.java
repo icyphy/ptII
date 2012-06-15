@@ -170,9 +170,10 @@ public class ProceduralCodeGenerator extends ProgramCodeGenerator {
         ProceduralCodeGenerator newObject = (ProceduralCodeGenerator) super.clone(workspace);
         newObject._includes = null;
         newObject._libraries = null;
-        newObject._model = null;
         newObject._modifiedVariables = null;
         newObject._newTypesUsed = null;
+        newObject._tokenFuncUsed = null;
+        newObject._typeFuncUsed = null;
 
         return newObject;
     }
