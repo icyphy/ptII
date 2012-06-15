@@ -45,8 +45,13 @@ import diva.canvas.toolbox.LabelFigure;
 /**
  An icon that displays the value of an attribute of the container in a box
  that resizes according to the width of the attribute value.
- The attribute is assumed to be an instance of Settable, and its name
- is given by the parameter <i>attributeName</i>.
+
+ <p>If the value is long, then the value is truncated and ends with "...".
+ See {@see ptolemy.util.StringUtilities.truncateString(String, int, int)}.
+ This is done so as to avoid Consts with overly long icons.</p>
+
+ <p>The attribute is assumed to be an instance of Settable, and its name
+ is given by the parameter <i>attributeName</i>.</p>
 
  @author Edward A. Lee
  @version $Id$
@@ -55,6 +60,9 @@ import diva.canvas.toolbox.LabelFigure;
  @Pt.AcceptedRating Red (johnr)
  */
 public class BoxedValueIcon extends AttributeValueIcon {
+    // See http://bugzilla.ecoinformatics.org/show_bug.cgi?id=5607
+    // for problems with long Consts.
+
     /** Create a new icon with the given name in the given container.
      *  The container is required to implement Settable, or an exception
      *  will be thrown.
@@ -106,13 +114,5 @@ public class BoxedValueIcon extends AttributeValueIcon {
         }
 
         return new BasicRectangle(0, 0, width, height, boxColor.asColor(), 1);
-    }
-
-    /** Override the base class _displayString() method to return the full
-     *  string value of the attribute without truncating it.
-     *  @return The full string value of the attribute to be displayed.
-     */
-    protected String _displayString() {
-        return _attributeValueString();
     }
 }
