@@ -53,9 +53,9 @@
         </property>
         <property name="message" class="ptolemy.actor.parameters.PortParameter" value="">
         </property>
-        <property name="SMTPHostName" class="ptolemy.data.expr.StringParameter" value="gateway.nowhere.org">
+        <property name="SMTPHostName" class="ptolemy.actor.parameters.PortParameter" value="gateway.nowhere.org">
         </property>
-        <property name="SMTPUserName" class="ptolemy.data.expr.StringParameter" value="nobody">
+        <property name="SMTPUserName" class="ptolemy.actor.parameters.PortParameter" value="nobody">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[500.0, 307.5]">
         </property>
