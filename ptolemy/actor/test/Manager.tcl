@@ -315,8 +315,8 @@ initializing
 executing number 1
 wrapping up
 idle
-Completed execution with 2 iterations
 xxx ms
+Completed execution with 2 iterations
 } idle}
 
 ######################################################################
@@ -359,8 +359,8 @@ initializing
 executing number 1
 wrapping up
 idle
-Completed execution with 2 iterations
 xxx ms
+Completed execution with 2 iterations
 Execution error.
 ptolemy.actor.NoRoomException: This exception is testing the execution listener
 }}
