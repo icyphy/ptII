@@ -160,27 +160,32 @@ public class FunctionType extends StructuredType implements Cloneable {
      *  this object.
      */
     public boolean equals(Object object) {
-        if (!(object instanceof FunctionType)) {
-            return false;
+        // See http://www.technofundo.com/tech/java/equalhash.html
+        if (object == this) {
+            return true;
         }
-
-        FunctionType functionType = (FunctionType) object;
-
-        if (getArgCount() != functionType.getArgCount()) {
+        if ((object == null)
+                    || (object.getClass() != getClass())) {
             return false;
-        }
+        } else {
+            FunctionType functionType = (FunctionType) object;
 
-        for (int i = 0; i < getArgCount(); i++) {
-            Type myType = this.getArgType(i);
-            Type argType = functionType.getArgType(i);
-
-            if (!myType.equals(argType)) {
+            if (getArgCount() != functionType.getArgCount()) {
                 return false;
             }
-        }
 
-        if (!getReturnType().equals(functionType.getReturnType())) {
-            return false;
+            for (int i = 0; i < getArgCount(); i++) {
+                Type myType = this.getArgType(i);
+                Type argType = functionType.getArgType(i);
+
+                if (!myType.equals(argType)) {
+                    return false;
+                }
+            }
+
+            if (!getReturnType().equals(functionType.getReturnType())) {
+                return false;
+            }
         }
 
         return true;
@@ -236,9 +241,18 @@ public class FunctionType extends StructuredType implements Cloneable {
     }
 
     /** Return a hash code value for this object.
+     *  @return The hash code value for this object.   
      */
     public int hashCode() {
-        return _returnTypeTerm.hashCode() + 1;
+        // See http://www.technofundo.com/tech/java/equalhash.html
+        int hashCode = 7;
+        if (_returnTypeTerm != null) {
+            hashCode = 31 * hashCode + _returnTypeTerm.hashCode();
+        }
+        for (int i = 0; i < getArgCount(); i++) {
+            hashCode = 31 * hashCode + getArgType(i).hashCode();
+        }
+        return hashCode;
     }
 
     /** Set the elements that have declared type BaseType.UNKNOWN (the leaf
@@ -647,6 +661,30 @@ public class FunctionType extends StructuredType implements Cloneable {
         ///////////////////////////////////////////////////////////////
         ////                   public inner methods                ////
 
+        /** Determine if the argument represents the same FieldTypeTerm as
+         *  this object.  Two field type terms are equal if they have the same
+         *  resolved type.
+         *  @param object Another object.
+         *  @return True if the argument represents the same FieldTypeTerm as
+         *  this object.
+         */
+        public boolean equals(Object object) {
+            // See http://www.technofundo.com/tech/java/equalhash.html
+            if (object == this) {
+                return true;
+            }
+            if ((object == null)
+                    || (object.getClass() != getClass())) {
+                return false;
+            } else {
+                FieldTypeTerm fieldTypeTerm = (FieldTypeTerm) object;
+                if (fieldTypeTerm.getValue().equals(getValue())) {
+                    return true;
+                }
+            }
+            return false;
+        }
+
         /** Return this FunctionType.
          *  @return a FunctionType.
          */
@@ -675,6 +713,20 @@ public class FunctionType extends StructuredType implements Cloneable {
             return (new InequalityTerm[0]);
         }
 
+        /** Return a hash code value for this object.
+         *  @return The hash code value for this object.   
+         */
+        public int hashCode() {
+            // See http://www.technofundo.com/tech/java/equalhash.html
+            // This class needed equals() and hashCode() to solve a memory
+            // leak.  See
+            // http://bugzilla.ecoinformatics.org/show_bug.cgi?id=5576
+            int hashCode = 9;
+            if (_resolvedType != null) {
+                hashCode = 31 * hashCode + _resolvedType.hashCode();
+            }
+            return hashCode;
+        }
         /** Reset the variable part of the element type to the specified
          *  type.
          *  @param e A Type.
