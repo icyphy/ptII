@@ -46,6 +46,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.Hashtable;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.TreeMap;
 import java.util.Vector;
@@ -77,11 +78,13 @@ import ptolemy.actor.TypedActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.Token;
+import ptolemy.data.type.TypeLattice;
 import ptolemy.data.expr.ASTPtRootNode;
 import ptolemy.data.expr.Constants;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.ParseTreeEvaluator;
 import ptolemy.data.expr.PtParser;
+import ptolemy.graph.DirectedAcyclicGraph;
 import ptolemy.gui.PtGUIUtilities;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.Port;
@@ -1783,20 +1786,32 @@ public class PortConfigurerDialog extends PtolemyDialog implements
     private JComboBox _createPortTypeComboBox() {
         JComboBox jComboBox = _createComboBox();
 
-        // Add the types from data.expr.Constants
-        TreeMap typeMap = Constants.types();
-        Iterator types = typeMap.keySet().iterator();
+//         // Add the types from data.expr.Constants
+//         TreeMap typeMap = Constants.types();
+//         Iterator types = typeMap.keySet().iterator();
 
-        while (types.hasNext()) {
-            String type = (String) (types.next());
-            jComboBox.addItem(type);
+//         while (types.hasNext()) {
+//             String type = (String) (types.next());
+//             jComboBox.addItem(type);
+//         }
+
+        // Get the types from the TypeLattice.
+        // http://bugzilla.ecoinformatics.org/show_bug.cgi?id=5627
+        Object [] types = ((DirectedAcyclicGraph)TypeLattice.basicLattice()).topologicalSort();
+        List<String> typeList = new LinkedList<String>();
+        for (int i = 0; i < types.length; i++) {
+            typeList.add(types[i].toString());
         }
+        // Add some common types
+        typeList.add("arrayType(int)");
+        typeList.add("arrayType(int,5)");
+        typeList.add("{x=double, y=double}");
 
-        // Add these items last so they are at the bottom.
-        jComboBox.addItem("arrayType(int)");
-        jComboBox.addItem("arrayType(int,5)");
-        jComboBox.addItem("[double]");
-        jComboBox.addItem("{x=double, y=double}");
+        Collections.sort(typeList);
+
+        for (String typeName : typeList) {
+            jComboBox.addItem(typeName);
+        }
         return jComboBox;
     }
 
