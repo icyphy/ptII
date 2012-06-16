@@ -1089,7 +1089,7 @@ public class CachedMethod {
                 null, type);
 
         // System.out.println("findMethod:" + key);
-        CachedMethod method = (CachedMethod) _cachedMethods.get(key);
+        CachedMethod method = _cachedMethods.get(key);
         return method;
     }
 
@@ -1121,7 +1121,7 @@ public class CachedMethod {
     // The static table containing cached methods.  Note that a
     // synchronized hashtable is used to provide safe access to the
     // table of methods from multiple threads.
-    private static Hashtable _cachedMethods = new Hashtable();
+    private static Hashtable<CachedMethod, CachedMethod> _cachedMethods = new Hashtable<CachedMethod, CachedMethod>();
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
