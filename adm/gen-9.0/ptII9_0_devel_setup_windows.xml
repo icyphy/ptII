@@ -501,8 +501,6 @@ The Ptiny pack is required.
                   targetdir="$INSTALL_PATH/ptolemy/actor/lib/database"/>
             <file src="../../jar_dist/ptolemy/domains/space/space.jar"
                   targetdir="$INSTALL_PATH/ptolemy/domains/space"/>
-            <file src="../../jar_dist/ptolemy/actor/lib/database/ojdbc6.jar"
-                  targetdir="$INSTALL_PATH/ptolemy/actor/lib/database"/>
             <file src="../../jar_dist/ptolemy/actor/lib/database/mysql-connector-java-5.1.6-bin.jar"
                   targetdir="$INSTALL_PATH/ptolemy/actor/lib/database"/>
             <file src="../../jar_dist/com/jgoodies/jgoodies.jar"
