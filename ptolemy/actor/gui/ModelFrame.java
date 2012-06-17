@@ -157,7 +157,7 @@ public class ModelFrame extends PtolemyFrame implements ExecutionListener {
         if (newState != _previousState) {
             // There is similar code in ptolemy/vergil/basic/RunnableGraphController.java
             String statusMessage = manager.getStatusMessage();
-            if (statusMessage == _previousStatusMessage) {
+            if (statusMessage.equals(_previousStatusMessage)) {
                 _previousStatusMessage = statusMessage;
                 statusMessage = "";
             } else {

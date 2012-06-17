@@ -180,7 +180,7 @@ public abstract class RunnableGraphController extends WithIconGraphController
 
             // There is similar code in ptolemy/actor/gui/ModelFrame.java
             String statusMessage = manager.getStatusMessage();
-            if (statusMessage == _previousStatusMessage) {
+            if (statusMessage.equals(_previousStatusMessage)) {
                 _previousStatusMessage = statusMessage;
                 statusMessage = "";
             } else {
