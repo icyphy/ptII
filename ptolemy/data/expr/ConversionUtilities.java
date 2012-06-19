@@ -266,7 +266,7 @@ public class ConversionUtilities {
                 return type;
             } else if (ptolemy.data.RecordToken.class
                     .isAssignableFrom(tokenClass)) {
-                Type type = new RecordType(new String[0], new Type[0]);
+                Type type = RecordType.EMPTY_RECORD;
                 return type;
             } else if (ptolemy.data.Token.class.isAssignableFrom(tokenClass)) {
                 Type type = BaseType.forClassName(tokenClass.getName());
