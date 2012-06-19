@@ -47,7 +47,6 @@ import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Director;
 import ptolemy.actor.IOPort;
-import ptolemy.actor.InvariantViolationException;
 import ptolemy.actor.TypedActor;
 import ptolemy.actor.util.Time;
 import ptolemy.data.BooleanToken;

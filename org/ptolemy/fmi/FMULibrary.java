@@ -28,15 +28,11 @@
 
 package org.ptolemy.fmi;
 
-import com.sun.jna.Callback;
-import com.sun.jna.Library;
-import com.sun.jna.Memory;
-import com.sun.jna.Pointer;
-
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.StringTokenizer;
+
+import com.sun.jna.Memory;
+import com.sun.jna.Pointer;
 
 /**
  * An interface that is used by Java Native Access (JNA) to handle callbacks.

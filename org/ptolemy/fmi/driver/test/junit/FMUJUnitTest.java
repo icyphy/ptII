@@ -28,19 +28,18 @@
 
 package org.ptolemy.fmi.driver.test.junit;
 
+import static org.junit.Assert.assertArrayEquals;
+
 import java.io.BufferedReader;
 import java.io.DataInputStream;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.InputStreamReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 
+import org.junit.Assert;
 import org.ptolemy.fmi.driver.FMUCoSimulation;
 import org.ptolemy.fmi.driver.FMUModelExchange;
-
-
-import static org.junit.Assert.assertArrayEquals;
-import org.junit.Assert;
 
 ///////////////////////////////////////////////////////////////////
 //// FMUUnitTest

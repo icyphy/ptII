@@ -56,6 +56,7 @@ import ptolemy.kernel.util.NamedObj;
 import ptolemy.util.StringUtilities;
 import ptolemy.vergil.basic.ExportParameters;
 import ptolemy.vergil.basic.HTMLExportable;
+import ptolemy.vergil.basic.export.html.ExportHTMLAction;
 
 
 ///////////////////////////////////////////////////////////////////

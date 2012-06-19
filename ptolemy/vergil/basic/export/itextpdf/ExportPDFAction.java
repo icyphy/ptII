@@ -47,11 +47,10 @@ import ptolemy.actor.gui.BrowserEffigy;
 import ptolemy.actor.gui.Configuration;
 import ptolemy.gui.ExtensionFilenameFilter;
 import ptolemy.gui.JFileChooserBugFix;
-import ptolemy.gui.PtGUIUtilities;
 import ptolemy.gui.PtFileChooser;
+import ptolemy.gui.PtGUIUtilities;
 import ptolemy.gui.Top;
 import ptolemy.util.MessageHandler;
-import ptolemy.util.StringUtilities;
 import ptolemy.vergil.basic.BasicGraphFrame;
 
 import com.itextpdf.text.Document;

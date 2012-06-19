@@ -4,13 +4,10 @@
 package ptolemy.domains.coroutine.kernel;
 
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
-import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Director;
 import ptolemy.actor.Executable;
@@ -19,16 +16,13 @@ import ptolemy.actor.Receiver;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.sched.FixedPointReceiver;
 import ptolemy.data.ArrayToken;
-import ptolemy.data.Token;
 import ptolemy.data.StringToken;
-import ptolemy.data.RecordToken;
+import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
 import ptolemy.domains.coroutine.kernel.ControlEntryToken.EntryLocation;
 import ptolemy.domains.coroutine.kernel.ControlExitToken.ExitLocation;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.Entity;
-import ptolemy.kernel.Port;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Nameable;

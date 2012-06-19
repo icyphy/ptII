@@ -27,9 +27,6 @@
  */
 package ptolemy.domains.ptides.lib;
 
-import java.util.HashSet;
-import java.util.Set;
-
 import ptolemy.actor.Director;
 import ptolemy.actor.NoTokenException;
 import ptolemy.actor.TypedAtomicActor;
@@ -38,7 +35,6 @@ import ptolemy.data.DoubleToken;
 import ptolemy.data.type.BaseType;
 import ptolemy.domains.ptides.kernel.PtidesBasicDirector;
 import ptolemy.domains.ptides.kernel.Tag;
-import ptolemy.graph.Inequality;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;

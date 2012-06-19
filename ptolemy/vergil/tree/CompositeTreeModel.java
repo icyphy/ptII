@@ -27,25 +27,8 @@
  */
 package ptolemy.vergil.tree;
 
-import java.lang.ref.WeakReference;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
-
-import javax.swing.SwingUtilities;
-import javax.swing.event.TreeModelEvent;
-import javax.swing.event.TreeModelListener;
-import javax.swing.tree.TreeModel;
-import javax.swing.tree.TreePath;
-
 import ptolemy.actor.CompositeActor;
 import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.util.ChangeListener;
-import ptolemy.kernel.util.ChangeRequest;
-import ptolemy.kernel.util.NamedObj;
-import ptolemy.kernel.Entity;
 
 ///////////////////////////////////////////////////////////////////
 //// CompositeTreeModel

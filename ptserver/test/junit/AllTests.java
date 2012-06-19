@@ -37,11 +37,9 @@ import org.junit.BeforeClass;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 
+import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.util.FileUtilities;
 import ptolemy.util.StreamExec;
-import ptolemy.kernel.util.IllegalActionException;
-
-import ptserver.control.PtolemyServer;
 //////////////////////////////////////////////////////////////////////////
 //// AllTests
 /**

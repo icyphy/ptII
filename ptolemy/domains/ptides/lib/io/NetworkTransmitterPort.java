@@ -44,7 +44,6 @@ import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.StringParameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.data.type.TypeLattice;
-import ptolemy.domains.ptides.kernel.PtidesBasicDirector;
 import ptolemy.domains.ptides.kernel.PtidesDirector;
 import ptolemy.graph.CPO;
 import ptolemy.kernel.CompositeEntity;

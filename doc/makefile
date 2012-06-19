@@ -1283,8 +1283,8 @@ ojdcheck.htm:
 #
 
 # Location of the FindBugs sources
-FINDBUGS=../vendors/findbugs-1.3.8
-#FINDBUGS=../vendors/findbugs-2.0.0
+#FINDBUGS=../vendors/findbugs-1.3.8
+FINDBUGS=../vendors/findbugs-2.0.1-rc2
 
 findbugs: findbugs.htm findbugsOut.xml
 
@@ -1313,11 +1313,11 @@ ptII.fbp:
 
 
 # Use this with FindBugs-1.8.3
-FINDBUGS_ARGS = -maxHeap 2000 -experimental -effort:max -textui -include findbugs-include.xml -exclude findbugs-exclude.xml -project ptII.fb
+#FINDBUGS_ARGS = -maxHeap 2000 -experimental -effort:max -textui -include findbugs-include.xml -exclude findbugs-exclude.xml -project ptII.fb
 
 # Use this with FindBugs-2.0.0
 # -effort:max was causing us to run out of memory
-#FINDBUGS_ARGS = -maxHeap 2000 -textui -include findbugs-include.xml -exclude findbugs-exclude.xml -project ptII.fbp
+FINDBUGS_ARGS = -maxHeap 2000 -textui -include findbugs-include.xml -exclude findbugs-exclude.xml -project ptII.fbp
 
 findbugs.htm:  ptII.fb ptII.fbp findbugs-exclude.xml makefile
 	@if [ -f "$(FINDBUGS)/bin/findbugs" ]; then \

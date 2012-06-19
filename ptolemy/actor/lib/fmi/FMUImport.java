@@ -29,21 +29,15 @@ package ptolemy.actor.lib.fmi;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.StringTokenizer;
 
 import org.ptolemy.fmi.FMICallbackFunctions;
 import org.ptolemy.fmi.FMILibrary;
-import org.ptolemy.fmi.FMULog;
 import org.ptolemy.fmi.FMIModelDescription;
 import org.ptolemy.fmi.FMIScalarVariable;
 import org.ptolemy.fmi.FMIScalarVariable.Alias;
 import org.ptolemy.fmi.FMIScalarVariable.Causality;
 import org.ptolemy.fmi.FMUFile;
 import org.ptolemy.fmi.FMULibrary;
-import org.ptolemy.fmi.NativeSizeT;
 import org.ptolemy.fmi.type.FMIBooleanType;
 import org.ptolemy.fmi.type.FMIIntegerType;
 import org.ptolemy.fmi.type.FMIRealType;
@@ -69,7 +63,6 @@ import ptolemy.util.MessageHandler;
 import ptolemy.util.StringUtilities;
 
 import com.sun.jna.Function;
-import com.sun.jna.Memory;
 import com.sun.jna.Pointer;
 
 ///////////////////////////////////////////////////////////////////

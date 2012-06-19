@@ -29,17 +29,18 @@ ENHANCEMENTS, OR MODIFICATIONS.
  */
 package ptolemy.domains.ptides.lib.qm;
 
-import ptolemy.data.RecordToken;
-import ptolemy.actor.Director;
 import ptolemy.actor.Actor;
+import ptolemy.actor.Director;
 import ptolemy.actor.IntermediateReceiver;
 import ptolemy.actor.QuantityManager;
 import ptolemy.actor.Receiver;
+import ptolemy.actor.lib.qm.BasicSwitch;
 import ptolemy.actor.lib.qm.QuantityManagerListener.EventType;
 import ptolemy.actor.util.Time;
 import ptolemy.actor.util.TimedEvent;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.IntToken;
+import ptolemy.data.RecordToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
@@ -47,7 +48,6 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.actor.lib.qm.BasicSwitch;
 
 /**
  * A {@link QuantityManager} actor that applies packet-size and priority 

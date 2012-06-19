@@ -28,17 +28,10 @@
  */
 package org.ptolemy.fmi.driver;
 
-import java.util.HashSet;
-import java.util.Set;
-
 import org.ptolemy.fmi.FMILibrary;
-import org.ptolemy.fmi.FMULog;
-import org.ptolemy.fmi.NativeSizeT;
 
 import com.sun.jna.Function;
-import com.sun.jna.Memory;
 import com.sun.jna.NativeLibrary;
-import com.sun.jna.Pointer;
 
 
 ///////////////////////////////////////////////////////////////////

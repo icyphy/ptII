@@ -27,10 +27,7 @@
  */
 package ptolemy.cg.kernel.generic.program.procedural.java.test;
 
-import ptolemy.actor.TypedAtomicActor;
-import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.lib.Transformer;
-import ptolemy.actor.parameters.PortParameter;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.ScalarToken;
 import ptolemy.data.Token;

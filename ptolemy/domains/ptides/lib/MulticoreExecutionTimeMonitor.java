@@ -36,8 +36,8 @@ import java.util.List;
 import java.util.Map;
 
 import ptolemy.actor.Actor;
-import ptolemy.actor.TypedCompositeActor;
 import ptolemy.actor.Director;
+import ptolemy.actor.TypedCompositeActor;
 import ptolemy.actor.lib.gui.Plotter;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.IntToken;
@@ -45,7 +45,6 @@ import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.SingletonParameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.domains.ptides.kernel.PtidesBasicDirector;
-import ptolemy.domains.ptides.kernel.PtidesEvent;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;

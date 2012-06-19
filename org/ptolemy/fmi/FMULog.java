@@ -28,15 +28,10 @@
 
 package org.ptolemy.fmi;
 
-import com.sun.jna.Callback;
-import com.sun.jna.Library;
-import com.sun.jna.Memory;
-import com.sun.jna.Pointer;
-
 import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Set;
 import java.util.StringTokenizer;
+
+import com.sun.jna.Pointer;
 
 /**
  * A Functional Mock-up Interface (FMI) log method implementation.

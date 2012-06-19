@@ -27,8 +27,8 @@
  */
 package ptolemy.actor.lib.io;
 
-import ptolemy.data.expr.Variable;
 import ptolemy.data.BooleanToken;
+import ptolemy.data.expr.Variable;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;

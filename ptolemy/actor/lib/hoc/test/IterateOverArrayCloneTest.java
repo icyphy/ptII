@@ -30,7 +30,6 @@ import java.util.List;
 
 import ptolemy.actor.TypedCompositeActor;
 import ptolemy.actor.lib.hoc.IterateOverArray;
-
 import ptolemy.kernel.util.Workspace;
 /**
  * Test for clone(Workspace) of IterateOverArray.
