@@ -240,16 +240,7 @@ public class Expression extends TypedAtomicActor {
         newObject._previousPath = null;
         return newObject;
     }
-
-    /** Must specify port types using moml (TypeAttribute) - the default
-     *  TypedAtomicActor type constraints do not apply in this case, since the
-     *  input type may be totally unrelated to the output type and cannot be
-     *  inferred; return an empty list. */
-    public Set<Inequality> typeConstraints() {
-        Set<Inequality> result = new HashSet<Inequality>();
-        return result;
-    }
-
+    
     /** Open a matlab engine.
      *  @exception IllegalActionException If matlab engine not found.
      */
@@ -471,6 +462,19 @@ public class Expression extends TypedAtomicActor {
         engine = null;
     }
 
+    ///////////////////////////////////////////////////////////////////
+    ////                     protected methods                     ////    
+    
+    /** Default type constraints do not apply in this case, since the input 
+     *  type may be totally unrelated to the output type and cannot be 
+     *  inferred; return null.
+     *  @return null 
+     */
+    @Override
+    protected Set<Inequality> _defaultTypeConstraints() {
+        return null;
+    }    
+    
     private transient Engine matlabEngine = null;
 
     long[] engine = null;
