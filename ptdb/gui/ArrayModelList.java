@@ -48,7 +48,7 @@ import javax.swing.AbstractListModel;
  * @Pt.AcceptedRating red (wenjiaow)
  *
  */
-public class ArrayModelList extends AbstractListModel<String> {
+public class ArrayModelList extends AbstractListModel {
 
     /**
      * Construct the ArrayModelList through the passed ArrayList object.
