@@ -48,20 +48,19 @@ import ptolemy.kernel.util.InternalErrorException;
  to a union with particular fields, create an instance of this
  class and call setTypeEquals() with that instance as an argument.
  <p>
- Note that an union type with more fields is a supertype of a union
- type with a subset of the fields.  For example, {|x = double, y = int}
- is a supertype of {|x = double}. When an union of type
- {|x = double} is converted to one of type {|x = double, y = int},
- an extra field is added, but a value with the lower type will not
- have the type of this extra field.
-
+ The depth subtyping is similar to that of <code>RecordTypes. However,
+ the width subtyping for <code>UnionType</code> is opposite compared to 
+ <code>RecordType</code> i.e., a <code>UnionType</code> with more fields 
+ is a supertype of a <code>UnionType</code> with a subset of the fields.  
+ For example, {|x = double, y = int} is a supertype of {|x = double}.
+ 
  @author Yuhong Xiong, Elaine Cheong and Steve Neuendorffer
  @version $Id$
  @since Ptolemy II 5.2
  @Pt.ProposedRating Red (yuhongx)
  @Pt.AcceptedRating Red (cxh)
  */
-public class UnionType extends StructuredType implements Cloneable {
+public class UnionType extends AssociativeType implements Cloneable {
     /** Construct a new UnionType with the specified labels and types.
      *  To leave the types of some fields undeclared, use BaseType.UNKNOWN.
      *  The labels and the types are specified in two arrays. These two

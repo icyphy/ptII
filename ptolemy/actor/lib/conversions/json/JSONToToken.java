@@ -30,6 +30,7 @@ package ptolemy.actor.lib.conversions.json;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.Set;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -46,6 +47,7 @@ import ptolemy.data.RecordToken;
 import ptolemy.data.StringToken;
 import ptolemy.data.Token;
 import ptolemy.data.type.BaseType;
+import ptolemy.graph.Inequality;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -64,7 +66,7 @@ actor should deal with such an event.
 Please see this page for a description of the JSON format: 
 http://www.json.org/
 
-@author  Marten Lohstroh
+@author  Marten Lohstroh, Contributor: BethBeth Latronico
 @version $Id: JSONToToken.java $
 @since Ptolemy II 9.0
 @Pt.ProposedRating Red (marten)
@@ -135,11 +137,10 @@ public class JSONToToken extends Converter {
     /**
      * Do not establish the usual default type constraints.
      */
-    // @Override FIXME: enable this code when bidirectional type inference becomes available
-    // protected Inequality _defaultTypeConstraint(TypedIOPort input,
-    //     TypedIOPort output) {
-    //     return null;
-    // }    
+     @Override
+     protected Set<Inequality> _defaultTypeConstraints() {
+         return null;
+     }
 
     ///////////////////////////////////////////////////////////////////
     ////                      private methods                      ////

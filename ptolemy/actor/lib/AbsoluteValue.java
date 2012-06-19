@@ -27,14 +27,11 @@
  */
 package ptolemy.actor.lib;
 
-import java.util.Set;
-
 import ptolemy.actor.TypedIOPort;
 import ptolemy.data.ScalarToken;
 import ptolemy.data.type.BaseType;
 import ptolemy.data.type.MonotonicFunction;
 import ptolemy.data.type.Type;
-import ptolemy.graph.Inequality;
 import ptolemy.graph.InequalityTerm;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
@@ -100,16 +97,6 @@ public class AbsoluteValue extends Transformer {
             ScalarToken in = (ScalarToken) input.get(0);
             output.send(0, in.absolute());
         }
-    }
-
-    /** Return the following type constraints: If the input type is Complex,
-     *  the output type is no less than Double, otherwise, the output type
-     *  is no less than the input; The output type is no greater than Scalar.
-     *  @return A list of inequalities.
-     */
-    public Set<Inequality> typeConstraints() {
-        // type constraints are stored in the output port.
-        return output.typeConstraints();
     }
 
     ///////////////////////////////////////////////////////////////////

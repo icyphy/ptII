@@ -27,6 +27,7 @@
  */
 package ptolemy.actor.lib;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
@@ -35,41 +36,58 @@ import ptolemy.actor.Director;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
+import ptolemy.actor.util.ConstructAssociativeType;
+import ptolemy.actor.util.ExtractFieldType;
 import ptolemy.data.RecordToken;
 import ptolemy.data.Token;
 import ptolemy.data.type.BaseType;
-import ptolemy.data.type.MonotonicFunction;
 import ptolemy.data.type.RecordType;
 import ptolemy.data.type.Type;
+import ptolemy.data.type.TypeConstant;
 import ptolemy.graph.Inequality;
-import ptolemy.graph.InequalityTerm;
 import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.Port;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
 ///////////////////////////////////////////////////////////////////
 //// RecordDisassembler
 
-/**
+/** 
  On each firing, read one RecordToken from the input port and send out
  the fields of the RecordToken to multiple output ports.
  The labels for the RecordToken must match the names of the output ports.
- If the received token contains more fields than the output
- ports, the extra fields are ignored.
+ This is achieved using three type constraints: 
+ <ul>
+ <li><tt>input >= {x = typeOf(outputPortX), y = typeOf(outputPortY), ..}
+ </tt>, which requires the types of the fields in the input record to be 
+ compatible with the types of the corresponding output ports.
+ </li>
+ <li><tt>input <= {x = GENERAL, y = GENERAL, ..}</tt>, which requires the 
+ input record to contain a corresponding field for each output port.
+ </li>
+ <li><tt>each output >= the type of the corresponding field inside the input
+ record</tt>, which is similar to the usual default constraints, however 
+ this constraint establishes a dependency between fields inside the input 
+ record and the outputs of this actor, instead of just between its inputs 
+ and outputs.
+ </li>
+ </ul>
+  
+ If the received Token contains more fields than the output ports, the extra 
+ fields are ignored.
+  
  To use this class, instantiate it, and then add output ports (instances
  of TypedIOPort).  This actor is polymorphic. The type constraint is that
  the type of each output port is no less than the type of the corresponding
  record field.
 
- @author Yuhong Xiong, Steve Neuendorffer
+ @author Yuhong Xiong, Steve Neuendorffer, Edward A. Lee, Marten Lohstroh
  @version $Id$
  @since Ptolemy II 1.0
  @Pt.ProposedRating Yellow (yuhong)
  @Pt.AcceptedRating Yellow (cxh)
  @see RecordAssembler
- @see ArrayElement
- */
+*/
 public class RecordDisassembler extends TypedAtomicActor {
     /** Construct a RecordDisassembler with the given container and name.
      *  @param container The container.
@@ -93,7 +111,7 @@ public class RecordDisassembler extends TypedAtomicActor {
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 
-    /** The input port. Its type is constrained to be a RecordType. */
+    /** The input port. */
     public TypedIOPort input;
 
     ///////////////////////////////////////////////////////////////////
@@ -114,7 +132,7 @@ public class RecordDisassembler extends TypedAtomicActor {
 
         if (input.hasToken(0)) {
             RecordToken record = (RecordToken) input.get(0);
-            Iterator labels = record.labelSet().iterator();
+            Iterator<?> labels = record.labelSet().iterator();
 
             while (labels.hasNext()) {
                 String label = (String) labels.next();
@@ -131,123 +149,68 @@ public class RecordDisassembler extends TypedAtomicActor {
         }
     }
 
-    /** Return the type constraints of this actor. The type constraint is
-     *  that the type of the output ports is no less than the type of the
-     *  fields of the output RecordToken.
-     *  @return a list of Inequality.
+    ///////////////////////////////////////////////////////////////////
+    ////                     protected methods                     ////
+
+    /** Set up and returns three type constraints.
+     *  <ul>
+     *  <li><tt>input >= {x = typeOf(outputPortX), y = typeOf(outputPortY), ..}
+     *  </tt>, which requires the types of the fields in the input record to be 
+     *  compatible with the types of the corresponding output ports.
+     *  </li>
+     *  <li><tt>input <= {x = GENERAL, y = GENERAL, ..}</tt>, which requires 
+     *  the input record to contain a corresponding field for each output port.
+     *  </li>
+     *  <li><tt>each output >= the type of the corresponding field inside the 
+     *  input record</tt>, which is similar to the usual default constraints, 
+     *  however this constraint establishes a dependency between fields inside 
+     *  the input record and the outputs of this actor, instead of just between
+     *  its inputs and outputs.
+     *  </li>
+     *  </ul>
+     *  @return A set of Inequality instances
+     *  @see ConstructCompositeTypeTerm
+     *  @see ExtractFieldType
      */
-    public Set<Inequality> typeConstraints() {
-        Object[] portArray = outputPortList().toArray();
-        int size = portArray.length;
-        String[] labels = new String[size];
-        Type[] types = new Type[size];
+    @Override
+    protected Set<Inequality> _customTypeConstraints() {
+        Set<Inequality> result = new HashSet<Inequality>();
+        ArrayList<String> labels = new ArrayList<String>();
+        ArrayList<Type> types = new ArrayList<Type>();
 
-        // form the declared type for the output port
-        for (int i = 0; i < size; i++) {
-            labels[i] = ((Port) portArray[i]).getName();
-            types[i] = BaseType.GENERAL;
+        // constrain the fields in the input record to be greater than or 
+        // equal to the declared or resolved types of the output ports:
+        // input >= {x = typeOf(outputPortX), y = typeOf(outputPortY), ..}
+        result.add(new Inequality(new ConstructAssociativeType(outputPortList(),
+                RecordType.class), input.getTypeTerm()));
+
+        for (TypedIOPort output : outputPortList()) {
+            labels.add(output.getName());
+            types.add(BaseType.GENERAL);
+
+            // constrain each output to be >= the type of the corresponding 
+            // field inside the input record
+            result.add(new Inequality(new ExtractFieldType(input,
+                    output.getName()), output.getTypeTerm()));
         }
+        // constrain the input record to have the required fields:
+        // input <= {x = GENERAL, y = GENERAL}
+        result.add(new Inequality(input.getTypeTerm(), new TypeConstant(
+                new RecordType(labels.toArray(new String[0]), types
+                        .toArray(new Type[0])))));
 
-        RecordType declaredType = new RecordType(labels, types);
-
-        input.setTypeAtMost(declaredType);
-
-        // set the constraints between record fields and output ports
-        Set<Inequality> constraints = new HashSet<Inequality>();
-
-        // since the input port has a clone of the above RecordType, need to
-        // get the type from the input port.
-        //   RecordType inputTypes = (RecordType)input.getType();
-        Iterator outputPorts = outputPortList().iterator();
-
-        while (outputPorts.hasNext()) {
-            TypedIOPort outputPort = (TypedIOPort) outputPorts.next();
-            String label = outputPort.getName();
-            Inequality inequality = new Inequality(new PortFunction(label),
-                    outputPort.getTypeTerm());
-            constraints.add(inequality);
-        }
-
-        return constraints;
+        // NOTE: refrain from using port.setTypeAtMost() or 
+        // port.setTypeAtLeast(), because after removing an output port, the 
+        // constraint referring to this removed port will remain to exist in 
+        // the input port, which will result in type errors.
+        return result;
     }
 
-    ///////////////////////////////////////////////////////////////////
-    ////                         inner classes                     ////
-    // This class implements a monotonic function of the type of a
-    // port and a parameter.
-    // The function value is determined by:
-    // f(input.getType(), name) =
-    //     UNKNOWN,                  if input.getType() = UNKNOWN
-    //     input.getType()[name] if input.getType() instanceof RecordToken.
-    //
-    private class PortFunction extends MonotonicFunction {
-        private PortFunction(String name) {
-            _name = name;
-        }
-
-        ///////////////////////////////////////////////////////////////
-        ////                       public inner methods            ////
-
-        /** Return the current value of this monotonic function.
-         *  Specifically, this is a function of one variable, the type
-         *  variable for the input port. If the input port type is
-         *  unknown, return unknown.
-         *  @return A Type.
-         */
-        public Object getValue() throws IllegalActionException {
-            if (input.getType() == BaseType.UNKNOWN) {
-                return BaseType.UNKNOWN;
-            } else if (input.getType() instanceof RecordType) {
-                RecordType type = (RecordType) input.getType();
-                Type fieldType = type.get(_name);
-
-                if (fieldType == null) {
-                    return BaseType.UNKNOWN;
-                } else {
-                    return fieldType;
-                }
-            } else {
-                throw new IllegalActionException(RecordDisassembler.this,
-                        "Invalid type for input port");
-            }
-        }
-
-        /** Return an additional string describing the current value
-         *  of this function.
-         */
-        public String getVerboseString() {
-            if (input.getType() instanceof RecordType) {
-                RecordType type = (RecordType) input.getType();
-                Type fieldType = type.get(_name);
-
-                if (fieldType == null) {
-                    return "Input Record doesn't have field named " + _name;
-                }
-            }
-
-            return null;
-        }
-
-        /** Return the type variable in this inequality term. If the
-         *  type of the input port is not declared, return a one
-         *  element array containing the inequality term representing
-         *  the type of the port; otherwise, return an empty array.
-         *  @return An array of InequalityTerm.
-         */
-        public InequalityTerm[] getVariables() {
-            InequalityTerm portTerm = input.getTypeTerm();
-
-            if (portTerm.isSettable()) {
-                InequalityTerm[] variable = new InequalityTerm[1];
-                variable[0] = portTerm;
-                return variable;
-            }
-
-            return (new InequalityTerm[0]);
-        }
-
-        ///////////////////////////////////////////////////////////////
-        ////                       private inner variable          ////
-        private String _name;
+    /** Do not establish the usual default type constraints. 
+     *  @return null
+     */
+    @Override
+    protected Set<Inequality> _defaultTypeConstraints() {
+        return null;
     }
 }

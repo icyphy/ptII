@@ -28,22 +28,21 @@
 package ptolemy.domains.de.lib;
 
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.Set;
 
 import ptolemy.actor.IOPort;
 import ptolemy.actor.TypedIOPort;
+import ptolemy.actor.util.ConstructAssociativeType;
+import ptolemy.actor.util.ExtractFieldType;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.Token;
 import ptolemy.data.UnionToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
-import ptolemy.data.type.Type;
 import ptolemy.data.type.UnionType;
 import ptolemy.domains.de.kernel.DEActor;
 import ptolemy.graph.Inequality;
 import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.Port;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
@@ -54,9 +53,31 @@ import ptolemy.kernel.util.NameDuplicationException;
  A timed merge actor for the DE domain. Its operation is similar to
  the Merge actor but the output type is the union of the inputs.
  The labels for the output UnionToken are the names of the input
- ports. To use this actor, instantiate it, and then add input ports
- (instances of TypedIOPort).
+ ports. This is achieved using two type constraints:
+ 
+ <ul>
+ <li><tt>output >= {| x = typeOf(inputPortX), y = typeOf(inputPortY), .. |}
+ </tt>, which requires the types of the input ports to be compatible
+ with the corresponding types in the output union.
+ </li>
+ <li><tt>each input <= the type of the corresponding field inside the 
+ output union</tt>, which is similar to the usual default constraints, 
+ however this constraint establishes a dependency between the inputs of
+ this actor and the fields inside the output union, instead of just 
+ between its inputs and outputs.
+ </li>
+ </ul>
+ 
+ Note that the output union is required to contain a corresponding
+ field for every input. However, due to the subtyping relation of union 
+ tokens that is opposite to the subtyping of record tokens, the type constraint
+ that the output port of this actor must be greater than or equal to the GLB 
+ of the types of its receivers (implied by the connections), is always 
+ satisfied.
+ 
  <p>
+ To use this actor, instantiate it, and then add input ports
+ (instances of TypedIOPort).
  There is a boolean parameter <i>discardEvents</i> associated
  with this actor, which decides how to handle simultaneously
  available inputs.  Each time this actor fires, it reads the first
@@ -66,14 +87,15 @@ import ptolemy.kernel.util.NameDuplicationException;
  ports. Otherwise, this actor requests refirings at the current
  time until no more events are left in the ports. By default,
  the discardEvents parameter is false.
-
- @author Edward A. Lee, Haiyang Zheng, Yuhong Xiong
+ </p>
+ @author Edward A. Lee, Haiyang Zheng, Yuhong Xiong, Marten Lohstroh
  @version $Id$
  @since Ptolemy II 5.2
  @Pt.ProposedRating Red (yuhongx)
  @Pt.AcceptedRating Red (yuhongx)
  */
-public class UnionMerge extends DEActor {
+public class UnionMerge extends DEActor { // FIXME: why is this actor in the DE package?
+
     /** Construct an actor in the specified container with the specified
      *  name.
      *  @param container The container.
@@ -177,43 +199,56 @@ public class UnionMerge extends DEActor {
         }
     }
 
-    /** Return the type constraints of this actor. The type constraint is
-     *  that the output type is the union of the types of input ports.
-     *  @return a list of Inequality.
+    ///////////////////////////////////////////////////////////////////
+    ////                     protected methods                     ////
+    
+    /** Set up and return two type constraints.
+     *  <ul>
+     *  <li><tt>output >= {x = typeOf(inputPortX), y = typeOf(inputPortY), ..}
+     *  </tt>, which requires the types of the input ports to be compatible
+     *  with the corresponding types in the output union.
+     *  </li>
+     *  <li><tt>each input <= the type of the corresponding field inside the 
+     *  output union</tt>, which is similar to the usual default constraints, 
+     *  however this constraint establishes a dependency between the inputs of
+     *  this actor and the fields inside the output union, instead of just 
+     *  between its inputs and outputs.
+     *  </li>
+     *  </ul>
+     *  @return A set of type constraints
+     *  @see ConstructCompositeTypeTerm
+     *  @see ExtractFieldType
      */
-    public Set<Inequality> typeConstraints() {
-        Object[] portArray = inputPortList().toArray();
-        int size = portArray.length;
-        String[] labels = new String[size];
-        Type[] types = new Type[size];
+    @Override
+    protected Set<Inequality> _customTypeConstraints() {
+        Set<Inequality> result = new HashSet<Inequality>();
 
-        // form the declared type for the output port
-        for (int i = 0; i < size; i++) {
-            labels[i] = ((Port) portArray[i]).getName();
-            types[i] = BaseType.UNKNOWN;
+        // constrain the fields in the output union to be greater than or 
+        // equal to the declared or resolved types of the input ports:
+        // output >= {x = typeOf(outputPortX), y = typeOf(outputPortY), ..|}
+        result.add(new Inequality(new ConstructAssociativeType(inputPortList(),
+                UnionType.class), output.getTypeTerm()));
+
+        for (TypedIOPort input : inputPortList()) {
+            // constrain the type of every input to be >= the resolved type
+            // of the corresponding field in the output union
+            result.add(new Inequality(new ExtractFieldType(output, input
+                    .getName()), input.getTypeTerm()));
         }
 
-        UnionType declaredType = new UnionType(labels, types);
+        // NOTE: refrain from using port.setTypeAtMost() or 
+        // port.setTypeAtLeast(), because after removing an output port, the 
+        // constraint referring to this removed port will remain to exist in 
+        // the input port, which will result in type errors.
 
-        output.setTypeEquals(declaredType);
-
-        // set the constraints between union fields and input ports
-        Set<Inequality> constraints = new HashSet<Inequality>();
-
-        // since the output port has a clone of the above UnionType, need to
-        // get the type from the output port.
-        UnionType outputType = (UnionType) output.getType();
-
-        Iterator inputPorts = inputPortList().iterator();
-
-        while (inputPorts.hasNext()) {
-            TypedIOPort inputPort = (TypedIOPort) inputPorts.next();
-            String label = inputPort.getName();
-            Inequality inequality = new Inequality(inputPort.getTypeTerm(),
-                    outputType.getTypeTerm(label));
-            constraints.add(inequality);
-        }
-
-        return constraints;
+        return result;
     }
+
+    /** Do not establish the usual default type constraints.
+     *  @return null 
+     */
+    protected Set<Inequality> _defaultTypeConstraints() {
+        return null;
+    }
+
 }

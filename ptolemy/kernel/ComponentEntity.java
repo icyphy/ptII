@@ -64,7 +64,7 @@ import ptolemy.kernel.util.Workspace;
  @Pt.ProposedRating Green (eal)
  @Pt.AcceptedRating Green (cxh)
  */
-public class ComponentEntity extends Entity {
+public class ComponentEntity<T extends ComponentPort> extends Entity<T> {
     /** Construct an entity in the default workspace with an empty string
      *  The object is added to the workspace directory.
      *  as its name. Increment the version number of the workspace.

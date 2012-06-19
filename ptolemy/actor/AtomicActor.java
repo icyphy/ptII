@@ -65,7 +65,7 @@ import ptolemy.kernel.util.Workspace;
  @see ptolemy.actor.CompositeActor
  @see ptolemy.actor.IOPort
  */
-public class AtomicActor extends ComponentEntity implements Actor,
+public class AtomicActor<T extends IOPort> extends ComponentEntity<T> implements Actor,
         FiringsRecordable {
     /** Construct an actor in the default workspace with an empty string
      *  as its name. Increment the version number of the workspace.
@@ -133,7 +133,7 @@ public class AtomicActor extends ComponentEntity implements Actor,
         // threads from each creating a new _actorFiringListeners list.
         synchronized (this) {
             if (_actorFiringListeners == null) {
-                _actorFiringListeners = new LinkedList();
+                _actorFiringListeners = new LinkedList<ActorFiringListener>();
             }
         }
 
@@ -164,7 +164,7 @@ public class AtomicActor extends ComponentEntity implements Actor,
      *  @return A new ComponentEntity.
      */
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        AtomicActor newObject = (AtomicActor) super.clone(workspace);
+        AtomicActor<T> newObject = (AtomicActor<T>) super.clone(workspace);
 
         // Reset to force reinitialization of cache.
         newObject._initializables = null;
@@ -369,17 +369,17 @@ public class AtomicActor extends ComponentEntity implements Actor,
      *  This method is read-synchronized on the workspace.
      *  @return A list of input IOPort objects.
      */
-    public List inputPortList() {
+    public List<T> inputPortList() {
         if (_inputPortsVersion != _workspace.getVersion()) {
             try {
                 _workspace.getReadAccess();
 
                 // Update the cache.
-                List inputPorts = new LinkedList();
-                Iterator ports = portList().iterator();
+                List<T> inputPorts = new LinkedList<T>();
+                Iterator<T> ports = portList().iterator();
 
                 while (ports.hasNext()) {
-                    IOPort p = (IOPort) ports.next();
+                    T p = ports.next();
 
                     if (p.isInput()) {
                         inputPorts.add(p);
@@ -388,7 +388,7 @@ public class AtomicActor extends ComponentEntity implements Actor,
 
                 // Create an arrayList, since the cache will not be
                 // modified.  This reduces memory usage.
-                _cachedInputPorts = new ArrayList(inputPorts);
+                _cachedInputPorts = new ArrayList<T>(inputPorts);
                 _inputPortsVersion = _workspace.getVersion();
             } finally {
                 _workspace.doneReading();
@@ -558,16 +558,16 @@ public class AtomicActor extends ComponentEntity implements Actor,
      *  This method is read-synchronized on the workspace.
      *  @return A list of output IOPort objects.
      */
-    public List outputPortList() {
+    public List<T> outputPortList() {
         if (_outputPortsVersion != _workspace.getVersion()) {
             try {
                 _workspace.getReadAccess();
 
-                List outputPorts = new LinkedList();
-                Iterator ports = portList().iterator();
+                List<T> outputPorts = new LinkedList<T>();
+                Iterator<T> ports = portList().iterator();
 
                 while (ports.hasNext()) {
-                    IOPort p = (IOPort) ports.next();
+                    T p = ports.next();
 
                     if (p.isOutput()) {
                         outputPorts.add(p);
@@ -576,7 +576,7 @@ public class AtomicActor extends ComponentEntity implements Actor,
 
                 // Create an arrayList, since the cache will not be
                 // modified.  This reduces memory usage.
-                _cachedOutputPorts = new ArrayList(outputPorts);
+                _cachedOutputPorts = new ArrayList<T>(outputPorts);
                 _outputPortsVersion = _workspace.getVersion();
             } finally {
                 _workspace.doneReading();
@@ -853,7 +853,7 @@ public class AtomicActor extends ComponentEntity implements Actor,
      */
     protected final void _actorFiring(FiringEvent event) {
         if (_notifyingActorFiring) {
-            Iterator listeners = _actorFiringListeners.iterator();
+            Iterator<ActorFiringListener> listeners = _actorFiringListeners.iterator();
 
             while (listeners.hasNext()) {
                 ((ActorFiringListener) listeners.next()).firingEvent(event);
@@ -934,7 +934,7 @@ public class AtomicActor extends ComponentEntity implements Actor,
      *  NOTE: Because of the way we synchronize on this object, it should
      *  never be reset to null after the first list is created.
      */
-    protected LinkedList _actorFiringListeners = null;
+    protected LinkedList<ActorFiringListener> _actorFiringListeners = null;
 
     /** List of objects whose (pre)initialize() and wrapup() methods
      *  should be slaved to these.
@@ -952,11 +952,11 @@ public class AtomicActor extends ComponentEntity implements Actor,
     // Cached lists of input and output ports.
     private transient long _inputPortsVersion = -1;
 
-    private transient List _cachedInputPorts;
+    private transient List<T> _cachedInputPorts;
 
     private transient long _outputPortsVersion = -1;
 
-    private transient List _cachedOutputPorts;
+    private transient List<T> _cachedOutputPorts;
 
     /** The causality interface, if it has been created. */
     private CausalityInterface _causalityInterface;

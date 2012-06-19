@@ -90,7 +90,7 @@ public class BusDisassembler extends TypedAtomicActor {
     public void fire() throws IllegalActionException {
         super.fire();
         int inputWidth = input.getWidth();
-        Iterator outputPorts = outputPortList().iterator();
+        Iterator<TypedIOPort> outputPorts = outputPortList().iterator();
         TypedIOPort outputPort = (TypedIOPort) (outputPorts.hasNext() ? outputPorts
                 .next() : null);
         int outputWidth = (outputPort != null) ? outputPort.getWidth() : 0;

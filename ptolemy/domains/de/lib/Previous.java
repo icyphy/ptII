@@ -135,7 +135,7 @@ public class Previous extends DETransformer {
      *  @return a list of Inequality objects.
      *  @see ptolemy.graph.Inequality
      */
-    public Set<Inequality> typeConstraints() {
+/*    public Set<Inequality> typeConstraints() {
         Set<Inequality> typeConstraints = super.typeConstraints();
 
         try {
@@ -157,7 +157,32 @@ public class Previous extends DETransformer {
 
         return typeConstraints;
     }
+*/
+    
+    /**
+     * Adds to the set of inequalities returned by the overridden method 
+     * a constraint that requires the initial value to be less than or
+     * equal to the type of the output.
+     */
+    @Override
+    public Set<Inequality> _containedTypeConstraints() {
+        Set<Inequality> result = super._containedTypeConstraints();
+        try {
+            // type of initialValue <= type of output
+            if (initialValue.getToken() != null) {
+                result.add(new Inequality(initialValue.getTypeTerm(),
+                        output.getTypeTerm()));
+            }
+        } catch (IllegalActionException ex) {
+            // Errors in the initialValue parameter should already
+            // have been caught in getAttribute() method of the base
+            // class.
+            throw new InternalErrorException("Bad initialValue value!");
+        }
 
+        return result;
+    }
+    
     /** Reset the state variables.
      *  @exception IllegalActionException If the base class throws it.
      */

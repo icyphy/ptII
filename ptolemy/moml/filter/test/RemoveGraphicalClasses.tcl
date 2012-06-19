@@ -112,7 +112,9 @@ test RemoveGraphicalClasses-1.1 {This annotation already has a _hideName} {
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="RemoveGraphicalClassesHide" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="2.1-devel-2">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.0.devel">
+    </property>
+    <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
     </property>
     <property name="annotation1" class="ptolemy.kernel.util.Attribute">
         <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
@@ -151,7 +153,9 @@ test RemoveGraphicalClasses-1.2 {filterAttributeValue} {
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="MoMLFilter" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="7.2.devel">
+    <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
+    </property>
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.0.devel">
     </property>
     <property name="annotation1" class="ptolemy.kernel.util.Attribute">
         <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
@@ -182,6 +186,8 @@ RemoveGraphicalClasses.</text></svg></configure>
         </property>
     </property>
     <entity name="Const" class="ptolemy.actor.lib.Const">
+        <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
+        </property>
         <property name="value" class="ptolemy.data.expr.Parameter" value="PI/2">
         </property>
         <doc>Create a constant sequence</doc>
@@ -189,12 +195,16 @@ RemoveGraphicalClasses.</text></svg></configure>
         </property>
     </entity>
     <entity name="TrigFunction" class="ptolemy.actor.lib.TrigFunction">
+        <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
+        </property>
         <property name="function" class="ptolemy.data.expr.StringParameter" value="sin">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="235.0, 165.0">
         </property>
     </entity>
     <entity name="Test" class="ptolemy.actor.lib.Test">
+        <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
+        </property>
         <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{1.0,1.0,1.0,1.0,1.0}">
         </property>
         <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-9">
@@ -348,15 +358,21 @@ test RemoveGraphicalClasses-2.1 {Filter a Display} {
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="DisplayTest" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="7.2.devel">
+    <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
+    </property>
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.0.devel">
     </property>
     <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
         <property name="iterations" class="ptolemy.data.expr.Parameter" value="5">
         </property>
     </property>
     <entity name="Ramp" class="ptolemy.actor.lib.Ramp">
+        <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
+        </property>
     </entity>
     <entity name="Display" class="ptolemy.actor.lib.Discard">
+        <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
+        </property>
         <property name="rowsDisplayed" class="ptolemy.data.expr.Parameter" value="7">
         </property>
         <property name="columnsDisplayed" class="ptolemy.data.expr.Parameter" value="10">
@@ -569,7 +585,9 @@ test RemoveGraphicalClasses-2.2 {Filter a SequencePlotter} {
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="RemovePlots" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="7.1.devel">
+    <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
+    </property>
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.0.devel">
     </property>
     <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
         <property name="iterations" class="ptolemy.data.expr.Parameter" value="100">
@@ -582,35 +600,51 @@ test RemoveGraphicalClasses-2.2 {Filter a SequencePlotter} {
     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
     </property>
     <entity name="Ramp" class="ptolemy.actor.lib.Ramp">
+        <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
+        </property>
         <doc>Create a sequence of tokens with increasing value</doc>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{115, 200}">
         </property>
     </entity>
     <entity name="Distributor" class="ptolemy.actor.lib.Distributor">
+        <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
+        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[255.0, 200.0]">
         </property>
     </entity>
     <entity name="RealTimePlotter" class="ptolemy.actor.lib.Discard">
+        <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
+        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[500.0, 65.0]">
         </property>
     </entity>
     <entity name="ArrayPlotter" class="ptolemy.actor.lib.Discard">
+        <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
+        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[505.0, 355.0]">
         </property>
     </entity>
     <entity name="SequencePlotter" class="ptolemy.actor.lib.Discard">
+        <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
+        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[505.0, 210.0]">
         </property>
     </entity>
     <entity name="HistogramPlotter" class="ptolemy.actor.lib.Discard">
+        <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
+        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{505.0, 130.0}">
         </property>
     </entity>
     <entity name="BarGraph" class="ptolemy.actor.lib.Discard">
+        <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
+        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[505.0, 290.0]">
         </property>
     </entity>
     <entity name="SequenceToArray" class="ptolemy.domains.sdf.lib.SequenceToArray">
+        <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
+        </property>
         <property name="arrayLength" class="ptolemy.actor.parameters.PortParameter" value="2">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[350.0, 270.0]">
@@ -676,7 +710,9 @@ test RemoveGraphicalClasses-1.6 {main} {
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="MoMLFilter" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="7.2.devel">
+    <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
+    </property>
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.0.devel">
     </property>
     <property name="annotation1" class="ptolemy.kernel.util.Attribute">
         <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
@@ -707,6 +743,8 @@ RemoveGraphicalClasses.</text></svg></configure>
         </property>
     </property>
     <entity name="Const" class="ptolemy.actor.lib.Const">
+        <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
+        </property>
         <property name="value" class="ptolemy.data.expr.Parameter" value="PI/2">
         </property>
         <doc>Create a constant sequence</doc>
@@ -714,12 +752,16 @@ RemoveGraphicalClasses.</text></svg></configure>
         </property>
     </entity>
     <entity name="TrigFunction" class="ptolemy.actor.lib.TrigFunction">
+        <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
+        </property>
         <property name="function" class="ptolemy.data.expr.StringParameter" value="sin">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="235.0, 165.0">
         </property>
     </entity>
     <entity name="Test" class="ptolemy.actor.lib.Test">
+        <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
+        </property>
         <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{1.0,1.0,1.0,1.0,1.0}">
         </property>
         <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-9">

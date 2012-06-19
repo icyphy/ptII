@@ -386,12 +386,17 @@ public class IterateOverArray extends MirrorComposite {
      *  @param destinationPortList The destination port list.
      *  @return A list of instances of Inequality.
      */
-    protected List _typeConstraintsFromTo(TypedIOPort sourcePort,
-            List destinationPortList) {
-        List result = new LinkedList();
-
+    @Override
+    protected List _destinationTypeConstraints(TypedIOPort sourcePort) {
+        Iterator<IOPort> destinationPorts;
+        List<Inequality> result = new LinkedList<Inequality>();
         boolean srcUndeclared = sourcePort.getTypeTerm().isSettable();
-        Iterator destinationPorts = destinationPortList.iterator();
+        
+        if (sourcePort.isInput()) {
+            destinationPorts = sourcePort.insideSinkPortList().iterator();
+        } else {
+            destinationPorts = sourcePort.sinkPortList().iterator();
+        }
 
         while (destinationPorts.hasNext()) {
             TypedIOPort destinationPort = (TypedIOPort) destinationPorts.next();

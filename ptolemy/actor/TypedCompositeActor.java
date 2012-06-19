@@ -34,8 +34,12 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
+import ptolemy.actor.parameters.SharedParameter;
+import ptolemy.actor.util.GLBFunction;
+import ptolemy.data.BooleanToken;
 import ptolemy.data.expr.ScopeExtender;
 import ptolemy.data.expr.Variable;
+import ptolemy.data.type.BaseType;
 import ptolemy.data.type.Type;
 import ptolemy.data.type.TypeLattice;
 import ptolemy.data.type.Typeable;
@@ -53,11 +57,11 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.InvalidStateException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.Workspace;
 
 ///////////////////////////////////////////////////////////////////
 //// TypedCompositeActor
-
 /**
  <p>A TypedCompositeActor is an aggregation of typed actors.</p>
  <p>
@@ -81,7 +85,7 @@ import ptolemy.kernel.util.Workspace;
  constrain the container by overriding _checkContainer().
  </p>
 
- @author Yuhong Xiong
+ @author Yuhong Xiong, Marten Lohstroh
  @version $Id$
  @since Ptolemy II 0.2
  @Pt.ProposedRating Green (yuhong)
@@ -111,6 +115,10 @@ public class TypedCompositeActor extends CompositeActor implements TypedActor {
         // derived class Java definition. Thus, we force the class name
         // here to be TypedCompositeActor.
         setClassName("ptolemy.actor.TypedCompositeActor");
+        // Instantiate the bidirectionalTypeInference parameter, set its
+        // type to boolean, set its default value to true and only show
+        // the parameter in expert mode.
+        _init();
     }
 
     /** Construct a TypedCompositeActor in the specified workspace with
@@ -134,6 +142,10 @@ public class TypedCompositeActor extends CompositeActor implements TypedActor {
         // derived class Java definition. Thus, we force the class name
         // here to be TypedCompositeActor.
         setClassName("ptolemy.actor.TypedCompositeActor");
+        // Instantiate the bidirectionalTypeInference parameter, set its
+        // type to boolean, set its default value to true and only show
+        // the parameter in expert mode.
+        _init();
     }
 
     /** Construct a TypedCompositeActor with a name and a container.
@@ -165,7 +177,17 @@ public class TypedCompositeActor extends CompositeActor implements TypedActor {
         // derived class Java definition. Thus, we force the class name
         // here to be TypedCompositeActor.
         setClassName("ptolemy.actor.TypedCompositeActor");
+        // Instantiate the bidirectionalTypeInference parameter, set its
+        // type to boolean, set its default value to true and only show
+        // the parameter in expert mode.
+        _init();
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         parameters                        ////
+
+    /** Indicates whether bidirectional type inference is enabled. */
+    public SharedParameter bidirectionalTypeInference;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -257,11 +279,11 @@ public class TypedCompositeActor extends CompositeActor implements TypedActor {
         }
 
         try {
-            List conflicts = new LinkedList();
-            List unacceptable = new LinkedList();
+            List<Inequality> conflicts = new LinkedList<Inequality>();
+            List<Inequality> unacceptable = new LinkedList<Inequality>();
 
             // Check declared types across all connections.
-            List typeConflicts = topLevel._checkDeclaredTypes();
+            List<Inequality> typeConflicts = topLevel._checkDeclaredTypes();
             conflicts.addAll(typeConflicts);
 
             // Collect and solve type constraints.
@@ -270,16 +292,16 @@ public class TypedCompositeActor extends CompositeActor implements TypedActor {
             // NOTE: To view all type constraints, uncomment these.
 
             /*
-             Iterator constraintsIterator = constraintList.iterator();
-             while (constraintsIterator.hasNext()) {
-             System.out.println(constraintsIterator.next().toString());
-             }
-             */
+            Iterator constraintsIterator = constraintList.iterator();
+            while (constraintsIterator.hasNext()) {
+                System.out.println(constraintsIterator.next().toString());
+            }
+            */
 
             if (constraintList.size() > 0) {
                 CPO cpo = TypeLattice.lattice();
                 InequalitySolver solver = new InequalitySolver(cpo);
-                Iterator constraints = constraintList.iterator();
+                Iterator<Inequality> constraints = constraintList.iterator();
 
                 solver.addInequalities(constraints);
 
@@ -296,10 +318,10 @@ public class TypedCompositeActor extends CompositeActor implements TypedActor {
                 // are resolved to unacceptable types, such as
                 // BaseType.UNKNOWN, add the inequalities to the list of type
                 // conflicts.
-                Iterator inequalities = constraintList.iterator();
+                Iterator<Inequality> inequalities = constraintList.iterator();
 
                 while (inequalities.hasNext()) {
-                    Inequality inequality = (Inequality) inequalities.next();
+                    Inequality inequality = inequalities.next();
 
                     if (!inequality.isSatisfied(TypeLattice.lattice())) {
                         conflicts.add(inequality);
@@ -381,13 +403,15 @@ public class TypedCompositeActor extends CompositeActor implements TypedActor {
      *  @see ptolemy.graph.Inequality
      */
     public Set<Inequality> typeConstraints() throws IllegalActionException {
+        // FIXME: cache type constraints
         try {
             workspace().getReadAccess();
 
             Set<Inequality> result = new HashSet<Inequality>();
 
             if (isOpaque()) {
-                Iterator entities = deepEntityList().iterator();
+                Iterator<ComponentEntity> entities = deepEntityList()
+                        .iterator();
 
                 while (entities.hasNext()) {
                     // Collect type constraints from contained actors.
@@ -395,25 +419,21 @@ public class TypedCompositeActor extends CompositeActor implements TypedActor {
 
                     // Collect constraints on all the ports in the contained
                     // actor to the ports that the actor can send data to.
-                    Iterator ports = actor.outputPortList().iterator();
+                    Iterator<IOPort> ports = actor.outputPortList().iterator();
 
                     while (ports.hasNext()) {
-                        TypedIOPort sourcePort = (TypedIOPort) ports.next();
-                        List destinationPorts = sourcePort.sinkPortList();
-                        result.addAll(_typeConstraintsFromTo(sourcePort,
-                                destinationPorts));
+                        result.addAll(_destinationTypeConstraints((TypedIOPort) ports
+                                .next()));
                     }
                 }
 
                 // Also need to check connection from the input ports on
                 // this composite actor to input ports of contained actors.
-                Iterator boundaryPorts = inputPortList().iterator();
+                Iterator<IOPort> boundaryPorts = inputPortList().iterator();
 
                 while (boundaryPorts.hasNext()) {
                     TypedIOPort sourcePort = (TypedIOPort) boundaryPorts.next();
-                    List destinationPorts = sourcePort.insideSinkPortList();
-                    result.addAll(_typeConstraintsFromTo(sourcePort,
-                            destinationPorts));
+                    result.addAll(_destinationTypeConstraints(sourcePort));
                 }
             }
 
@@ -614,16 +634,26 @@ public class TypedCompositeActor extends CompositeActor implements TypedActor {
     /** Return the type constraints on all connections starting from the
      *  specified source port to all the ports in a group of destination
      *  ports.
-     *  @param sourcePort The source port.
-     *  @param destinationPortList The destination port list.
+     *  @param source The source port.
      *  @return A list of instances of Inequality.
      */
-    protected List _typeConstraintsFromTo(TypedIOPort sourcePort,
-            List destinationPortList) {
-        List result = new LinkedList();
+    protected List<Inequality> _destinationTypeConstraints(TypedIOPort source) {
+        Iterator<IOPort> destinationPorts;
+        List<Inequality> result = new LinkedList<Inequality>();
 
-        boolean srcUndeclared = sourcePort.getTypeTerm().isSettable();
-        Iterator destinationPorts = destinationPortList.iterator();
+        boolean srcUndeclared = source.getTypeTerm().isSettable();
+
+        // NOTE: Do not only check whether the port is an input,
+        // because it can be an input and an output.
+        if (source.isInput() && source.isOutput()) {
+            List<IOPort> sinks = source.sinkPortList();
+            sinks.addAll(source.insideSinkPortList());
+            destinationPorts = sinks.iterator();
+        } else if (source.isInput()) {
+            destinationPorts = source.insideSinkPortList().iterator();
+        } else {
+            destinationPorts = source.sinkPortList().iterator();
+        }
 
         while (destinationPorts.hasNext()) {
             TypedIOPort destinationPort = (TypedIOPort) destinationPorts.next();
@@ -632,9 +662,27 @@ public class TypedCompositeActor extends CompositeActor implements TypedActor {
             if (srcUndeclared || destUndeclared) {
                 // At least one of the source/destination ports does
                 // not have declared type, form type constraint.
-                Inequality ineq = new Inequality(sourcePort.getTypeTerm(),
+                Inequality ineq = new Inequality(source.getTypeTerm(),
                         destinationPort.getTypeTerm());
                 result.add(ineq);
+            }
+
+            // 1) only setup type constraint if source has no type declared
+            if (srcUndeclared) {
+                // 2) only setup type constraint if bidirectional type 
+                // inference is enabled
+                try {
+                    if (((BooleanToken) (bidirectionalTypeInference.getToken()))
+                            .booleanValue()) {
+                        result.add(new Inequality(new GLBFunction(
+                                source), source.getTypeTerm()));
+                    }
+                } catch (IllegalActionException e) {
+                    // this should not happen
+                    throw new InternalErrorException(this, e,
+                            "Unable to read value from shared "
+                                    + "parameter bidirectionalTypeInference.");
+                }
             }
         }
 
@@ -642,7 +690,30 @@ public class TypedCompositeActor extends CompositeActor implements TypedActor {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         private methods                   ////
+    ////                      private methods                      ////
+
+    /**
+     * 
+     */
+    private void _init() {
+
+        _cachedTypeConstraints = new HashSet<Inequality>();
+        _typeConstraintsVersion = -1;
+        try {
+            bidirectionalTypeInference = new SharedParameter(this,
+                    "bidirectionalTypeInference", ComponentEntity.class);
+            bidirectionalTypeInference.setTypeEquals(BaseType.BOOLEAN);
+            bidirectionalTypeInference.setExpression("true");
+            bidirectionalTypeInference.setPersistent(true);
+            bidirectionalTypeInference.setVisibility(Settable.EXPERT);
+        } catch (Exception e) {
+            // this should not happen
+            throw new InternalErrorException(this, e, "Unable to create or "
+                    + "set shared parameter bidirectionalTypeInference.");
+        }
+
+    }
+
     // If this composite actor is opaque, perform static type checking.
     // Specifically, this method scans all the connections within this
     // composite between opaque TypedIOPorts, if the ports on both ends
@@ -660,7 +731,8 @@ public class TypedCompositeActor extends CompositeActor implements TypedActor {
     // TypedCompositeActors, the _checkDeclaredType() methods of the contained
     // TypedCompositeActors are called to check types further down the
     // hierarchy.
-    private List _checkDeclaredTypes() throws IllegalActionException {
+    private List<Inequality> _checkDeclaredTypes()
+            throws IllegalActionException {
         if (!isOpaque()) {
             throw new IllegalActionException(this,
                     "Cannot check types on a non-opaque actor.");
@@ -722,4 +794,17 @@ public class TypedCompositeActor extends CompositeActor implements TypedActor {
 
         return result;
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                     private variables                     ////
+
+    /** Cached set of type constraints. */
+    private Set<Inequality> _cachedTypeConstraints;
+
+    /** Version number when the cache was last updated. */
+    private long _typeConstraintsVersion;
+
+    /** Whether or not the resolved types are still valid */
+    private boolean _typesValid;
+
 }

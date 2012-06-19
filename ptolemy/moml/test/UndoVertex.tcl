@@ -105,8 +105,16 @@ test UndoVertex-1.1a {Test a new vertex addition} {
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="top" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.0.devel">
+    </property>
+    <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
+    </property>
     <entity name="level" class="ptolemy.actor.TypedCompositeActor">
+        <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
+        </property>
         <entity name="a" class="ptolemy.actor.TypedCompositeActor">
+            <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
+            </property>
             <relation name="r1" class="ptolemy.actor.TypedIORelation">
                 <vertex name="vv" value="22, 33">
                 </vertex>
@@ -135,8 +143,16 @@ test UndoVertex-1.1b {Test a new vertex addition} {
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="top" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.0.devel">
+    </property>
+    <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
+    </property>
     <entity name="level" class="ptolemy.actor.TypedCompositeActor">
+        <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
+        </property>
         <entity name="a" class="ptolemy.actor.TypedCompositeActor">
+            <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
+            </property>
             <relation name="r1" class="ptolemy.actor.TypedIORelation">
                 <vertex name="vv" value="22, 33">
                 </vertex>
@@ -182,8 +198,16 @@ test UndoVertex-1.2a {Test setting the value of a previous vertex
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="top" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.0.devel">
+    </property>
+    <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
+    </property>
     <entity name="level" class="ptolemy.actor.TypedCompositeActor">
+        <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
+        </property>
         <entity name="a" class="ptolemy.actor.TypedCompositeActor">
+            <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
+            </property>
             <relation name="r1" class="ptolemy.actor.TypedIORelation">
                 <vertex name="vv" value="22, 33">
                 </vertex>
@@ -211,8 +235,16 @@ test UndoVertex-1.2b {Test setting the value of a previous vertex
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="top" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.0.devel">
+    </property>
+    <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
+    </property>
     <entity name="level" class="ptolemy.actor.TypedCompositeActor">
+        <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
+        </property>
         <entity name="a" class="ptolemy.actor.TypedCompositeActor">
+            <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
+            </property>
             <relation name="r1" class="ptolemy.actor.TypedIORelation">
                 <vertex name="vv" value="22, 33">
                 </vertex>
@@ -248,8 +280,16 @@ test UndoVertex-1.3a {Test modifying the value of a previous vertex} {
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="top" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.0.devel">
+    </property>
+    <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
+    </property>
     <entity name="level" class="ptolemy.actor.TypedCompositeActor">
+        <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
+        </property>
         <entity name="a" class="ptolemy.actor.TypedCompositeActor">
+            <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
+            </property>
             <relation name="r1" class="ptolemy.actor.TypedIORelation">
                 <vertex name="vv" value="55, 66">
                 </vertex>
@@ -276,8 +316,16 @@ test UndoVertex-1.3b {Test modifying the value of a previous vertex} {
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="top" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.0.devel">
+    </property>
+    <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
+    </property>
     <entity name="level" class="ptolemy.actor.TypedCompositeActor">
+        <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
+        </property>
         <entity name="a" class="ptolemy.actor.TypedCompositeActor">
+            <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
+            </property>
             <relation name="r1" class="ptolemy.actor.TypedIORelation">
                 <vertex name="vv" value="22, 33">
                 </vertex>

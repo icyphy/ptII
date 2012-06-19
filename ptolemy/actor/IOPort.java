@@ -3250,7 +3250,7 @@ public class IOPort extends ComponentPort {
      *  @see #getRemoteReceivers()
      *  @return A list of IOPort objects.
      */
-    public List sinkPortList() {
+    public List<IOPort> sinkPortList() {
         // FIXME: Why Doesn't this just get the containers of the
         // receivers returned by getRemoteReceivers()?
         try {
@@ -3297,7 +3297,7 @@ public class IOPort extends ComponentPort {
      *  outside that share the same channel.
      *  @return A list of IOPort objects, or an empty list if there are none.
      */
-    public List sourcePortList() {
+    public List<IOPort> sourcePortList() {
         try {
             _workspace.getReadAccess();
             if (_sourcePortListVersion != _workspace.getVersion()) {

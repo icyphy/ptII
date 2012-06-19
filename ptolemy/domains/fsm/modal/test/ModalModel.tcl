@@ -76,7 +76,13 @@ test ModalModel-1.1 {Create a ModalModel} {
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="test2" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.0.devel">
+    </property>
+    <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
+    </property>
     <entity name="modal model" class="ptolemy.domains.fsm.modal.ModalModel">
+        <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
+        </property>
     </entity>
 </entity>
 }
@@ -227,10 +233,16 @@ test ModalModel-1.6 {Create a refinement in the modal model} {
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="test2" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="3.1-devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.0.devel">
+    </property>
+    <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
     </property>
     <entity name="modal model" class="ptolemy.domains.fsm.modal.ModalModel">
+        <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
+        </property>
         <entity name="refinement" class="ptolemy.domains.fsm.modal.Refinement">
+            <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
+            </property>
         </entity>
     </entity>
 </entity>

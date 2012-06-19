@@ -1227,8 +1227,7 @@ public class PtidesBasicDirector extends DEDirector {
             if (port instanceof NetworkTransmitterPort) {
                 _networkOutputPorts.add(port);
             } 
-            for (TypedIOPort sourcePort : (List<TypedIOPort>) port.
-                    sourcePortList()) {
+            for (IOPort sourcePort : port.sourcePortList()) {
                 if (sourcePort.getContainer() instanceof NetworkTransmitter) {
                     _networkOutputPorts.add(sourcePort);
                 } 

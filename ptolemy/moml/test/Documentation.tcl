@@ -49,6 +49,10 @@ set classheader {<?xml version="1.0" standalone="no"?>
 
 set moml_3_1 "$classheader
 <class name=\"top\" extends=\"ptolemy.actor.TypedCompositeActor\">
+    <property name=\"_createdBy\" class=\"ptolemy.kernel.attributes.VersionAttribute\" value=\"9.0.devel\">
+    </property>
+    <property name=\"bidirectionalTypeInference\" class=\"ptolemy.actor.parameters.SharedParameter\" value=\"true\">
+    </property>
     <doc>aaa doc</doc>
     <doc name=\"bar\">bar doc</doc>
     <property name=\"xxx\" class=\"ptolemy.kernel.util.Attribute\">

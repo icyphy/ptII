@@ -105,12 +105,20 @@ test UndoProperty-1.1a {Test undoing a new property addition} {
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="top" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.0.devel">
+    </property>
+    <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
+    </property>
     <entity name="level" class="ptolemy.actor.TypedCompositeActor">
+        <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
+        </property>
         <property name="test" class="ptolemy.data.expr.Parameter" value="2">
         </property>
         <property name="second" class="ptolemy.data.expr.Parameter" value="2">
         </property>
         <entity name="a" class="ptolemy.actor.TypedCompositeActor">
+            <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
+            </property>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
             </port>
@@ -134,10 +142,18 @@ test UndoProperty-1.1b {Test undoing a new property addition} {
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="top" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.0.devel">
+    </property>
+    <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
+    </property>
     <entity name="level" class="ptolemy.actor.TypedCompositeActor">
+        <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
+        </property>
         <property name="test" class="ptolemy.data.expr.Parameter" value="2">
         </property>
         <entity name="a" class="ptolemy.actor.TypedCompositeActor">
+            <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
+            </property>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
             </port>
@@ -169,10 +185,18 @@ test UndoProperty-1.2a {Test undoing a property value change} {
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="top" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.0.devel">
+    </property>
+    <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
+    </property>
     <entity name="level" class="ptolemy.actor.TypedCompositeActor">
+        <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
+        </property>
         <property name="test" class="ptolemy.data.expr.Parameter" value="3">
         </property>
         <entity name="a" class="ptolemy.actor.TypedCompositeActor">
+            <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
+            </property>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
             </port>
@@ -196,10 +220,18 @@ test UndoProperty-1.2b {Test undoing a property value change} {
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="top" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.0.devel">
+    </property>
+    <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
+    </property>
     <entity name="level" class="ptolemy.actor.TypedCompositeActor">
+        <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
+        </property>
         <property name="test" class="ptolemy.data.expr.Parameter" value="2">
         </property>
         <entity name="a" class="ptolemy.actor.TypedCompositeActor">
+            <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
+            </property>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
             </port>
@@ -232,10 +264,18 @@ test UndoProperty-1.3a {Test undoing a change to a ports "input" value} {
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="top" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.0.devel">
+    </property>
+    <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
+    </property>
     <entity name="level" class="ptolemy.actor.TypedCompositeActor">
+        <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
+        </property>
         <property name="test" class="ptolemy.data.expr.Parameter" value="2">
         </property>
         <entity name="a" class="ptolemy.actor.TypedCompositeActor">
+            <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
+            </property>
             <port name="input" class="ptolemy.actor.TypedIOPort">
             </port>
         </entity>
@@ -258,10 +298,18 @@ test UndoProperty-1.3b {Test undoing a change to a ports "input" value} {
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="top" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.0.devel">
+    </property>
+    <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
+    </property>
     <entity name="level" class="ptolemy.actor.TypedCompositeActor">
+        <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
+        </property>
         <property name="test" class="ptolemy.data.expr.Parameter" value="2">
         </property>
         <entity name="a" class="ptolemy.actor.TypedCompositeActor">
+            <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
+            </property>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
             </port>
@@ -294,10 +342,18 @@ test UndoProperty-1.4a {Test undoing a change to a ports "output" value} {
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="top" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.0.devel">
+    </property>
+    <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
+    </property>
     <entity name="level" class="ptolemy.actor.TypedCompositeActor">
+        <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
+        </property>
         <property name="test" class="ptolemy.data.expr.Parameter" value="2">
         </property>
         <entity name="a" class="ptolemy.actor.TypedCompositeActor">
+            <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
+            </property>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
                 <property name="output"/>
@@ -322,10 +378,18 @@ test UndoProperty-1.4b {Test undoing a change to a ports "output" value} {
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="top" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.0.devel">
+    </property>
+    <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
+    </property>
     <entity name="level" class="ptolemy.actor.TypedCompositeActor">
+        <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
+        </property>
         <property name="test" class="ptolemy.data.expr.Parameter" value="2">
         </property>
         <entity name="a" class="ptolemy.actor.TypedCompositeActor">
+            <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
+            </property>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
             </port>
@@ -358,10 +422,18 @@ test UndoProperty-1.5a {Test undoing a change to a ports "multiport" value} {
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="top" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.0.devel">
+    </property>
+    <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
+    </property>
     <entity name="level" class="ptolemy.actor.TypedCompositeActor">
+        <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
+        </property>
         <property name="test" class="ptolemy.data.expr.Parameter" value="2">
         </property>
         <entity name="a" class="ptolemy.actor.TypedCompositeActor">
+            <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
+            </property>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
                 <property name="multiport"/>
@@ -386,10 +458,18 @@ test UndoProperty-1.5b {Test undoing a change to a ports "multiport" value} {
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="top" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.0.devel">
+    </property>
+    <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
+    </property>
     <entity name="level" class="ptolemy.actor.TypedCompositeActor">
+        <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
+        </property>
         <property name="test" class="ptolemy.data.expr.Parameter" value="2">
         </property>
         <entity name="a" class="ptolemy.actor.TypedCompositeActor">
+            <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
+            </property>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
             </port>
@@ -442,9 +522,13 @@ test UndoProperty-2.1a {Test undoing a property value change} {
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="top" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="3.1-devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.0.devel">
+    </property>
+    <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
     </property>
     <entity name="level" class="ptolemy.actor.TypedCompositeActor">
+        <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
+        </property>
         <property name="test" class="ptolemy.data.expr.Parameter" value="3">
         </property>
     </entity>
@@ -465,9 +549,13 @@ test UndoProperty-2.1b {Test undoing a property value change } {
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="top" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="3.1-devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.0.devel">
+    </property>
+    <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
     </property>
     <entity name="level" class="ptolemy.actor.TypedCompositeActor">
+        <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
+        </property>
         <property name="test" class="ptolemy.data.expr.Parameter" value="&quot;foo&quot;">
         </property>
     </entity>
@@ -485,9 +573,13 @@ test UndoProperty-2.1c {Test redoing a property value change } {
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="top" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="3.1-devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.0.devel">
+    </property>
+    <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
     </property>
     <entity name="level" class="ptolemy.actor.TypedCompositeActor">
+        <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
+        </property>
         <property name="test" class="ptolemy.data.expr.Parameter" value="3">
         </property>
     </entity>

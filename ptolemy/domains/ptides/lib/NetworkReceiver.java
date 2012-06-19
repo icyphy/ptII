@@ -29,24 +29,21 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 package ptolemy.domains.ptides.lib;
 
-import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 import ptolemy.actor.Director;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.TypedIOPort;
+import ptolemy.actor.util.ExtractFieldType;
 import ptolemy.actor.util.Time;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.RecordToken;
 import ptolemy.data.type.BaseType;
-import ptolemy.data.type.MonotonicFunction;
 import ptolemy.data.type.RecordType;
 import ptolemy.data.type.Type;
 import ptolemy.domains.ptides.kernel.PtidesBasicDirector;
 import ptolemy.graph.Inequality;
-import ptolemy.graph.InequalityTerm;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -98,6 +95,13 @@ public class NetworkReceiver extends InputDevice {
         super(container, name);
         input = new TypedIOPort(this, "input", true, false);
         output = new TypedIOPort(this, "output", false, true);
+
+        // set type constraints
+        String[] labels = { timestamp, microstep, payload };
+        Type[] types = { BaseType.DOUBLE, BaseType.INT, BaseType.GENERAL };
+        RecordType type = new RecordType(labels, types);
+        input.setTypeAtMost(type);
+        output.setTypeAtLeast(new ExtractFieldType(input, payload));
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -186,8 +190,8 @@ public class NetworkReceiver extends InputDevice {
         super.preinitialize();
 
         boolean flag = false;
-        for (IOPort input : (List<IOPort>) inputPortList()) {
-            for (IOPort sourcePort : (List<IOPort>) input.sourcePortList()) {
+        for (TypedIOPort input : inputPortList()) {
+            for (IOPort sourcePort : input.sourcePortList()) {
                 if (sourcePort.getContainer() == getContainer()) {
                     flag = true;
                 }
@@ -202,62 +206,14 @@ public class NetworkReceiver extends InputDevice {
         }
     }
 
-    /** Return the type constraints of this actor. The type constraint is
-     *  that the input RecordToken has two fields, a "timestamp" of type
-     *  double and a "tokenValue" of type same as the output type.
-     *  @return a list of Inequality.
-     */
-    public Set<Inequality> typeConstraints() {
-        String[] labels = { timestamp, microstep, payload };
-        Type[] types = { BaseType.DOUBLE, BaseType.INT, BaseType.GENERAL };
-        RecordType type = new RecordType(labels, types);
-        input.setTypeAtMost(type);
-
-        HashSet typeConstraints = new HashSet<Inequality>();
-        Inequality inequality = new Inequality(new PortFunction(),
-                output.getTypeTerm());
-        typeConstraints.add(inequality);
-        return typeConstraints;
-    }
-
     ///////////////////////////////////////////////////////////////////
-    ////                         inner classes                     ////
+    ////                     protected methods                     ////
 
-    // This is fashioned after RecordDisassembler.
-    // See that class for an explanation (such as it is).
-    private class PortFunction extends MonotonicFunction {
-        public Object getValue() throws IllegalActionException {
-            if (input.getType() == BaseType.UNKNOWN) {
-                return BaseType.UNKNOWN;
-            } else if (input.getType() instanceof RecordType) {
-                RecordType type = (RecordType) input.getType();
-                Type fieldType = type.get(payload);
-                if (fieldType == null) {
-                    return BaseType.UNKNOWN;
-                } else {
-                    return fieldType;
-                }
-            } else {
-                throw new IllegalActionException(NetworkReceiver.this,
-                        "Invalid type for input port");
-            }
-        }
-
-        /** Return the type variable in this inequality term. If the
-         *  type of the input port is not declared, return an one
-         *  element array containing the inequality term representing
-         *  the type of the port; otherwise, return an empty array.
-         *  @return An array of InequalityTerm.
-         */
-        public InequalityTerm[] getVariables() {
-            InequalityTerm portTerm = input.getTypeTerm();
-            if (portTerm.isSettable()) {
-                InequalityTerm[] variable = new InequalityTerm[1];
-                variable[0] = portTerm;
-                return variable;
-            }
-
-            return (new InequalityTerm[0]);
-        }
+    /** Do not establish the usual default type constraints. 
+     *  @return null
+     */
+    @Override
+    protected Set<Inequality> _defaultTypeConstraints() {
+        return null;
     }
 }

@@ -28,8 +28,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 package ptolemy.domains.ptides.lib;
 
-import java.util.List;
-
 import ptolemy.actor.IOPort;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.data.DoubleToken;
@@ -132,8 +130,8 @@ public class ActuatorSetup extends OutputDevice {
         if ((parameter != null)
                 && (((DoubleToken) parameter.getToken()).doubleValue() != 0.0)) {
             boolean flag = false;
-            for (IOPort output : (List<IOPort>) outputPortList()) {
-                for (IOPort sinkPort : (List<IOPort>) output.sinkPortList()) {
+            for (TypedIOPort output : outputPortList()) {
+                for (IOPort sinkPort : output.sinkPortList()) {
                     if (sinkPort.getContainer() == getContainer()) {
                         flag = true;
                         break;

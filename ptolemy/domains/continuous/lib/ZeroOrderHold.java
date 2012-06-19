@@ -27,6 +27,7 @@
  */
 package ptolemy.domains.continuous.lib;
 
+import java.util.HashSet;
 import java.util.Set;
 
 import ptolemy.actor.lib.Transformer;
@@ -152,35 +153,33 @@ public class ZeroOrderHold extends Transformer {
         return super.postfire();
     }
 
-    /** Override the method in the base class so that the type
-     *  constraint for the <i>defaultValue</i> parameter will be set
-     *  if it contains a value.
-     *  @return a list of Inequality objects.
-     *  @see ptolemy.graph.Inequality
+    ///////////////////////////////////////////////////////////////////
+    ////                     protected methods                     ////
+    
+    /**
+     * Return a constraint that requires the type of the <i>defaultValue</i> 
+     * parameter to be less than or equal to the type of the <i>output</i> 
+     * port.
      */
-    public Set<Inequality> typeConstraints() {
-        Set<Inequality> typeConstraints = super.typeConstraints();
-
+    @Override
+    protected Set<Inequality> _customTypeConstraints() {
+        Set<Inequality> result = new HashSet<Inequality>();
         try {
+            // type of initialValue <= type of output
             if (defaultValue.getToken() != null) {
-                Inequality ineq = new Inequality(defaultValue.getTypeTerm(),
-                        output.getTypeTerm());
-                typeConstraints.add(ineq);
+                result.add(new Inequality(defaultValue.getTypeTerm(),
+                        output.getTypeTerm()));
             }
-
-            Inequality ineq2 = new Inequality(input.getTypeTerm(),
-                    output.getTypeTerm());
-            typeConstraints.add(ineq2);
         } catch (IllegalActionException ex) {
-            // Errors in the initialValue parameter should
-            // already have been caught in getAttribute() method
-            // of the base class.
+            // Errors in the defaultValue parameter should already
+            // have been caught in getAttribute() method of the base
+            // class.
             throw new InternalErrorException("Bad defaultValue!\n" + ex);
         }
 
-        return typeConstraints;
+        return result;
     }
-
+    
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 

@@ -46,6 +46,8 @@ test ActorRecursion-1.1 {cover _exportMoML} {
 	$e0 actorRecursion]
     $actorRecursion exportMoML 
 } {<entity name="actorRecursion" class="ptolemy.actor.TypedCompositeActor">
+    <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
+    </property>
     <property name="DDFDirector" class="ptolemy.domains.ddf.kernel.DDFDirector">
         <property name="localClock" class="ptolemy.actor.LocalClock">
             <property name="globalTimeResolution" class="ptolemy.actor.parameters.SharedParameter" value="1E-10">
@@ -83,6 +85,8 @@ test ActorRecursion-1.2 {cover _exportMoML in a model} {
     set actorRecursion [$topLevel getEntity Prime_Number_Filter.ActorRecursion]
     $actorRecursion exportMoML 
 } {<entity name="ActorRecursion" class="ptolemy.domains.ddf.lib.ActorRecursion">
+    <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
+    </property>
     <property name="recursionActor" class="ptolemy.data.expr.StringParameter" value="Prime_Number_Filter">
     </property>
     <property name="_location" class="ptolemy.kernel.util.Location" value="[430.0, 225.0]">

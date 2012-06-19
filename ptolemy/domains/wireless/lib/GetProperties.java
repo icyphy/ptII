@@ -28,6 +28,7 @@
 package ptolemy.domains.wireless.lib;
 
 import java.util.Iterator;
+import java.util.Set;
 
 import ptolemy.actor.IOPort;
 import ptolemy.actor.TypedAtomicActor;
@@ -37,6 +38,7 @@ import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.domains.wireless.kernel.AtomicWirelessChannel;
 import ptolemy.domains.wireless.kernel.WirelessIOPort;
+import ptolemy.graph.Inequality;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.util.IllegalActionException;
@@ -156,7 +158,7 @@ public class GetProperties extends TypedAtomicActor {
     public void preinitialize() throws IllegalActionException {
         super.preinitialize();
 
-        // Disable default type inference.
+        // reset the output type to unknown
         output.setTypeEquals(BaseType.UNKNOWN);
 
         Iterator connectedPorts = trigger.sourcePortList().iterator();
@@ -200,5 +202,18 @@ public class GetProperties extends TypedAtomicActor {
         throw new IllegalActionException(this,
                 "Could not find a port to get the type of the "
                         + "properties from.");
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                      protected methods                    ////    
+    
+    
+    /**
+     * Do not establish the usual default type constraints.
+     * @return null
+     */
+    @Override
+    protected Set<Inequality> _defaultTypeConstraints() {
+        return null;
     }
 }

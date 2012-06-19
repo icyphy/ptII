@@ -30,9 +30,6 @@
  */
 package ptolemy.domains.wireless.lib.tinyOS;
 
-import java.util.HashSet;
-import java.util.Set;
-
 import ptolemy.actor.Director;
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.util.Time;
@@ -96,14 +93,6 @@ public class VirtualTinyOS extends TypedAtomicActor {
     //public TypedIOPort timer;
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-    /** Must specify port types using moml (TypeAttribute) - the default
-     *  TypedAtomicActor type constraints do not apply in this case, since the
-     *  input type may be totally unrelated to the output type and cannot be
-     *  inferred; return an empty list. */
-    public Set<Inequality> typeConstraints() {
-        Set<Inequality> result = new HashSet<Inequality>();
-        return result;
-    }
 
     /** Initialize the iteration count to 1.
      *  @exception IllegalActionException If the parent class throws it.
@@ -208,6 +197,19 @@ public class VirtualTinyOS extends TypedAtomicActor {
         }
     }
 
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected methods                 ////    
+    
+    /** Must specify port types using moml (TypeAttribute) - the default
+     *  TypedAtomicActor type constraints do not apply in this case, since the
+     *  input type may be totally unrelated to the output type and cannot be
+     *  inferred. 
+     *  @return null
+     */
+    public Inequality _defaultConstraints() {
+        return null;
+    }
+    
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
     private native int signalTimerEvent();

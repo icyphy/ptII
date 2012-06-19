@@ -27,6 +27,9 @@
  */
 package ptolemy.domains.sdf.lib;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import ptolemy.data.ArrayToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.Token;
@@ -35,6 +38,7 @@ import ptolemy.data.type.ArrayType;
 import ptolemy.data.type.BaseType;
 import ptolemy.data.type.MonotonicFunction;
 import ptolemy.data.type.Type;
+import ptolemy.graph.Inequality;
 import ptolemy.graph.InequalityTerm;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
@@ -137,8 +141,6 @@ public class FIR extends SDFTransformer {
         input_tokenConsumptionRate.setExpression("decimation");
         output_tokenProductionRate.setExpression("interpolation");
 
-        // Set type constraints.
-        _initTypeConstraints();
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -227,7 +229,6 @@ public class FIR extends SDFTransformer {
 
         // Set the type constraints.
         newObject.taps.setTypeAtLeast(ArrayType.ARRAY_BOTTOM);
-        newObject._initTypeConstraints();
         newObject._taps = null;
 
         return newObject;
@@ -334,6 +335,19 @@ public class FIR extends SDFTransformer {
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
+    
+    /** Set the output to be >= the monotonic function of the input port type.
+     *  @return A set of type constraints
+     *  @see OutputTypeFunction
+     */
+    @Override
+    protected Set<Inequality> _customTypeConstraints() {
+        Set<Inequality> result = new HashSet<Inequality>();
+        result.add(new Inequality(new OutputTypeFunction(), output
+                .getTypeTerm()));
+        return result;
+    }
+
     /** Initialize the taps.
      *  @exception IllegalActionException If we can't get the token from
      *  the parameter taps.
@@ -347,11 +361,6 @@ public class FIR extends SDFTransformer {
         _zero = _taps[0].zero();
 
         _reinitializeNeeded = true;
-    }
-
-    /** Initialize the type constraints for this actor. */
-    protected void _initTypeConstraints() {
-        output.setTypeAtLeast(new OutputTypeFunction());
     }
 
     /** Reinitialize local variables in response to changes in attributes.

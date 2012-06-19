@@ -266,7 +266,7 @@ public class MostRecent extends Transformer {
      *  @return a list of Inequality objects.
      *  @see ptolemy.graph.Inequality
      */
-    public Set<Inequality> typeConstraints() {
+/*    public Set<Inequality> typeConstraints() {
         Set<Inequality> typeConstraints = super.typeConstraints();
 
         try {
@@ -277,6 +277,7 @@ public class MostRecent extends Transformer {
                 typeConstraints.add(ineq);
                 ineq = new Inequality(input.getTypeTerm(),
                         initialValue.getTypeTerm());
+
                 typeConstraints.add(ineq);
             }
         } catch (IllegalActionException ex) {
@@ -287,6 +288,32 @@ public class MostRecent extends Transformer {
         }
 
         return typeConstraints;
+    }
+*/
+    /**
+     * Adds two inequalities to the set returned by the overridden method that
+     * together constrain the input to be equal to the type of the initial 
+     * value.
+     */
+    @Override
+    public Set<Inequality> _containedTypeConstraints() {
+        Set<Inequality> result = super._containedTypeConstraints();
+        try {
+            // Set type of initialValue to be equal to input type
+            if (initialValue.getToken() != null) {
+                result.add(new Inequality(initialValue.getTypeTerm(), input
+                        .getTypeTerm()));
+                result.add(new Inequality(input.getTypeTerm(), initialValue
+                        .getTypeTerm()));
+            }
+        } catch (IllegalActionException ex) {
+            // Errors in the initialValue parameter should already
+            // have been caught in getAttribute() method of the base
+            // class.
+            throw new InternalErrorException("Bad initialValue value!");
+        }
+
+        return result;
     }
 
     ///////////////////////////////////////////////////////////////////

@@ -48,7 +48,7 @@ import ptolemy.kernel.util.Nameable;
  @see ptolemy.actor.CompositeActor
  @see ptolemy.actor.AtomicActor
  */
-public interface Actor extends Executable, Nameable {
+public interface Actor extends Executable, Nameable { // FIXME: parameterize Actor<T extends IOPort>
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 

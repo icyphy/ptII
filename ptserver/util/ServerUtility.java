@@ -336,7 +336,7 @@ public class ServerUtility {
                 }
 
                 // Proxy entity port target ports are invalid/not in the model
-                for (Port port : (List<Port>) proxy.portList()) {
+                for (Port port : proxy.portList()) {
                     Attribute targetPort = port.getAttribute("targetPortName");
                     if (targetPort == null || !model.deepContains(targetPort)) {
                         validation.addPortWithNoOrInvalidTarget(port);

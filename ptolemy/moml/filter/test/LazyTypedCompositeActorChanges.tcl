@@ -89,19 +89,27 @@ test LazyTypedCompositeActorChanges-1.1 {Two levels of hierarchy} {
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="LazyTypedCompositeActorChangesTest" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="7.1.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.0.devel">
+    </property>
+    <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
     </property>
     <entity name="MyComposite" class="ptolemy.actor.LazyTypedCompositeActor">
+        <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
+        </property>
         <property name="Foo" class="ptolemy.data.expr.Parameter" value="0">
         </property>
         <configure>
             <group>
                 <entity name="MyInnerComposite" class="ptolemy.actor.LazyTypedCompositeActor">
+                    <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
+                    </property>
                     <property name="Bar" class="ptolemy.data.expr.Parameter" value="0">
                     </property>
                     <configure>
                         <group>
                             <entity name="Const" class="ptolemy.actor.lib.Const">
+                                <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
+                                </property>
                             </entity>
                         </group>
                     </configure>

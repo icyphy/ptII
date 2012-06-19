@@ -66,7 +66,7 @@ test parseMoML-1.0 {call UtilitiyFunctions.parseMoML() directly} {
     #set result [$tree evaluateParseTree]
     set result [java::call ptolemy.data.expr.UtilityFunctions parseMoML $moml_1]
     list [$result toString]
-} {{parseMoML("    <entity name=\"top\" class=\"ptolemy.actor.TypedCompositeActor\">\n        <doc>xxx</doc>\n    </entity>\n")}}
+} {{parseMoML("    <entity name=\"top\" class=\"ptolemy.actor.TypedCompositeActor\">\n        <property name=\"bidirectionalTypeInference\" class=\"ptolemy.actor.parameters.SharedParameter\" value=\"true\">\n        </property>\n        <doc>xxx</doc>\n    </entity>\n")}}
 
 ######################################################################
 ####
@@ -78,7 +78,7 @@ test parseMoML-2.0 {create a  parse tree} {
     set tree [$parser generateParseTree {parseMoML("    <entity name=\"top\" class=\"ptolemy.actor.TypedCompositeActor\">\n        <doc>xxx</doc>\n    </entity>\n")} ]
     set result [$tree evaluateParseTree]
     list [$result toString]
-} {{parseMoML("    <entity name=\"top\" class=\"ptolemy.actor.TypedCompositeActor\">\n        <doc>xxx</doc>\n    </entity>\n")}}
+} {{parseMoML("    <entity name=\"top\" class=\"ptolemy.actor.TypedCompositeActor\">\n        <property name=\"bidirectionalTypeInference\" class=\"ptolemy.actor.parameters.SharedParameter\" value=\"true\">\n        </property>\n        <doc>xxx</doc>\n    </entity>\n")}}
 
 
 ######################################################################
@@ -110,9 +110,13 @@ test parseMoML-3.0 {parse a file that has Const that calls parseMoML} {
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="parseMoMLConst" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
+    <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
+    </property>
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.0.devel">
     </property>
     <entity name="Const" class="ptolemy.actor.lib.Const">
+        <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
+        </property>
         <property name="value" class="ptolemy.data.expr.Parameter" value="parseMoML(&quot;&lt;entity name=\&quot;foo\&quot; class=\&quot;ptolemy.actor.TypedCompositeActor\&quot;/&gt;&quot;)">
         </property>
     </entity>

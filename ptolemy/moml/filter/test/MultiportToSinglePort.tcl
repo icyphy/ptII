@@ -105,9 +105,13 @@ test MultiportToSinglePort-1.1 {output port should not be a multi port} {
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="autocorrelationMoML" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="3.1-devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.0.devel">
+    </property>
+    <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
     </property>
     <entity name="Symmetric" class="ptolemy.domains.sdf.lib.Autocorrelation">
+        <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
+        </property>
         <property name="numberOfInputs" class="ptolemy.data.expr.Parameter" value="10">
         </property>
         <property name="numberOfLags" class="ptolemy.data.expr.Parameter" value="3">

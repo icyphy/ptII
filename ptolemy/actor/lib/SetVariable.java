@@ -28,6 +28,7 @@
 package ptolemy.actor.lib;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -260,9 +261,9 @@ public class SetVariable extends TypedAtomicActor implements ChangeListener,
                     _attribute = new Variable(getContainer(), variableNameValue);
                 } catch (IllegalActionException ex) {
                     throw new IllegalActionException(this, ex,
-                            "Failed to create Variable \""
-                            + variableNameValue + "\" in "
-                            + getContainer().getFullName() + ".");
+                            "Failed to create Variable \"" + variableNameValue
+                                    + "\" in " + getContainer().getFullName()
+                                    + ".");
                 } catch (NameDuplicationException ex) {
                     throw new InternalErrorException(ex);
                 } finally {
@@ -359,19 +360,20 @@ public class SetVariable extends TypedAtomicActor implements ChangeListener,
         _setFailed = false;
     }
 
-    /** Override the base class so that if there is a specified
-     *  variable to modify, an inequality is included to ensure
-     *  that the output type is greater than or equal to the
-     *  type of that variable. Strictly speaking, this is necessary
-     *  only if the <i>delay</i> parameter is set to true, because
-     *  in that case, on the first firing, this actor will produce
-     *  a token whose value is whatever the initial value of the
-     *  parameter is.
-     *  @return A set of type constraints.
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected methods                 ////    
+
+    /**
+     * Return a constraint requiring that if there is a specified variable to
+     * modify, the type of that variable is less than or equal to the type
+     * of the output port.
+     * @return A set of type constraints.
      */
-    public Set<Inequality> typeConstraints() {
-        Set<Inequality> result = super.typeConstraints();
+    @Override
+    protected Set<Inequality> _customTypeConstraints() {
+        Set<Inequality> result = new HashSet<Inequality>();
         try {
+            // type of variable <= type of output
             Attribute attribute = getModifiedVariable();
             if (attribute instanceof Variable) {
                 result.add(new Inequality(((Variable) attribute).getTypeTerm(),
@@ -380,6 +382,7 @@ public class SetVariable extends TypedAtomicActor implements ChangeListener,
         } catch (IllegalActionException e) {
             // The variable cannot be found. Ignore it.
         }
+
         return result;
     }
 

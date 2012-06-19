@@ -69,6 +69,7 @@ public class InstantaneousDialogGenerator extends TypedAtomicActor {
         indexOutput = new TypedIOPort(this, "indexOutput", false, true);
         dataOutput = new TypedIOPort(this, "dataOutput", false, true);
         indexOutput.setTypeEquals(BaseType.INT);
+        dataOutput.setTypeAtLeast(dataInput);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -144,6 +145,7 @@ public class InstantaneousDialogGenerator extends TypedAtomicActor {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    // The index number to output on the indexOutput port.
+    
+    /** The index number to output on the indexOutput port. */
     private int _index;
 }

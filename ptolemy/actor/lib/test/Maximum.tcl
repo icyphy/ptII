@@ -94,7 +94,9 @@ test Maximum-2.2 {check types} {
     list [[$pulseOut getType] toString] [[$constOut getType] toString] \
 	[[$maximumIn getType] toString] [[$maximumOut getType] toString] \
 	[[$recIn getType] toString]
-} {int double double double double}
+# NOTE: first element would be int if bidirectional type inference were 
+# disabled
+} {double double double double double}
 
 ######################################################################
 #### Test integer input
@@ -132,7 +134,9 @@ test Maximum-2.6 {check types} {
     list [[$pulseOut getType] toString] [[$constOut getType] toString] \
 	[[$maximumIn getType] toString] [[$maximumOut getType] toString] \
 	[[$recIn getType] toString]
-} {long int long long long}
+# NOTE: second element would be int if bidirectional type inference were 
+# disabled
+} {long long long long long}
 
 ######################################################################
 #### Test complex input
@@ -151,4 +155,6 @@ test Maximum-2.8 {check types} {
     list [[$pulseOut getType] toString] [[$constOut getType] toString] \
 	[[$maximumIn getType] toString] [[$maximumOut getType] toString] \
 	[[$recIn getType] toString]
-} {complex int complex complex complex}
+# NOTE: second element would be int if bidirectional type inference were 
+# disabled
+} {complex complex complex complex complex}

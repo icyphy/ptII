@@ -122,7 +122,7 @@ public class SharedParameter extends Parameter implements Initializable {
      *  @exception NameDuplicationException If the name coincides with
      *   a parameter already in the container.
      */
-    public SharedParameter(NamedObj container, String name, Class containerClass)
+    public SharedParameter(NamedObj container, String name, Class<?> containerClass)
             throws IllegalActionException, NameDuplicationException {
         this(container, name, containerClass, "");
     }
@@ -146,7 +146,7 @@ public class SharedParameter extends Parameter implements Initializable {
      *   a parameter already in the container.
      */
     public SharedParameter(NamedObj container, String name,
-            Class containerClass, String defaultValue)
+            Class<?> containerClass, String defaultValue)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
@@ -679,7 +679,7 @@ public class SharedParameter extends Parameter implements Initializable {
     private boolean _constructionFinished = false;
 
     /** The container class. */
-    private Class _containerClass;
+    private Class<?> _containerClass;
 
     /** True if we are delaying validation.
      *  FIXME: This variable is only present for testing and development.

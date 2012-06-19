@@ -29,12 +29,9 @@ ENHANCEMENTS, OR MODIFICATIONS.
 */
 package ptolemy.domains.ptides.lib.qm;
 
-import java.io.IOException;
-import java.util.HashSet;
-import java.util.List;
 import java.util.ArrayList;
+import java.util.List;
 
-import ptolemy.domains.ptides.lib.OutputDevice;
 import ptolemy.actor.Director;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.TypedIOPort;
@@ -45,9 +42,8 @@ import ptolemy.data.RecordToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
-import ptolemy.data.type.RecordType;
-import ptolemy.data.type.Type;
 import ptolemy.domains.ptides.kernel.PtidesBasicDirector;
+import ptolemy.domains.ptides.lib.OutputDevice;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
@@ -310,8 +306,8 @@ public class TCPPacketTransmitter extends OutputDevice {
         super.preinitialize();
 
         boolean flag = false;
-        for (IOPort output : (List<IOPort>) outputPortList()) {
-            for (IOPort sinkPort : (List<IOPort>) output.sinkPortList()) {
+        for (TypedIOPort output : outputPortList()) {
+            for (IOPort sinkPort : output.sinkPortList()) {
                 if (sinkPort.getContainer() == getContainer()) {
                     flag = true;
                     break;

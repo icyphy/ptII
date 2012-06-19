@@ -29,8 +29,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 package ptolemy.domains.ptides.lib;
 
-import java.util.List;
-
 import ptolemy.actor.IOPort;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.data.DoubleToken;
@@ -133,8 +131,8 @@ public class SensorHandler extends InputDevice {
         if ((parameter != null)
                 && (((DoubleToken) parameter.getToken()).doubleValue() != 0.0)) {
             boolean flag = false;
-            for (IOPort input : (List<IOPort>) inputPortList()) {
-                for (IOPort sourcePort : (List<IOPort>) input.sourcePortList()) {
+            for (TypedIOPort input : inputPortList()) {
+                for (IOPort sourcePort : input.sourcePortList()) {
                     if (sourcePort.getContainer() == getContainer()) {
                         flag = true;
                     }

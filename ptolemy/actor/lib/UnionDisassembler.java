@@ -28,23 +28,19 @@
 package ptolemy.actor.lib;
 
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.Set;
 
 import ptolemy.actor.Director;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
+import ptolemy.actor.util.ConstructAssociativeType;
+import ptolemy.actor.util.ExtractFieldType;
 import ptolemy.data.Token;
 import ptolemy.data.UnionToken;
-import ptolemy.data.type.BaseType;
-import ptolemy.data.type.MonotonicFunction;
-import ptolemy.data.type.Type;
 import ptolemy.data.type.UnionType;
 import ptolemy.graph.Inequality;
-import ptolemy.graph.InequalityTerm;
 import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.Port;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
@@ -54,17 +50,35 @@ import ptolemy.kernel.util.NameDuplicationException;
 /**
  On each firing, read one UnionToken from the input port and send out
  the value to the output port that matches the label name of the
- input token. This actor is polymorphic. The type
- constraint is that the type of each output port is no less than the
- type of the corresponding union field.
+ input token. This actor is polymorphic. The labels for the UnionToken must
+ match the names of the output ports.
+ 
+ This is achieved using three type constraints: 
+ <ul>
+ <li><tt>input >= {|x = typeOf(outputPortX), y = typeOf(outputPortY), ..|}</tt>,
+ which requires the types of the fields in the input union to be compatible 
+ with the corresponding output ports. This constraint is set in the 
+ constructor of this class.
+ </li>
+ <li><tt>each output >= the type of the corresponding field inside the input
+ union</tt>, which is similar to the usual default constraints, however this
+ constraint establishes a dependency between fields inside the input union
+ and the outputs, instead of just between inputs and outputs.
+ </li>
+ </ul>
+ Note that the constraint <tt>input <= {|x = GENERAL, y = GENERAL, ..|}
+ </tt>, which is used in <code>RecordDisassembler</code> to force the input
+ to  contain a corresponding field for each output port, is useless for
+ <code>UnionDisassembler</code>. This is due to the inverse width subtyping
+ of <code>UnionToken</code>.
 
- @author Yang Zhao
+ @author Yang Zhao, Marten Lohstroh
  @version $Id$
  @since Ptolemy II 5.2
- @Pt.ProposedRating Red (ellen_zh)
+ @Pt.ProposedRating Yellow (marten)
  @Pt.AcceptedRating Red (cxh)
- @see RecordAssembler
- @see ArrayElement
+ @see RecordDisassembler
+ @see UnionType
  */
 public class UnionDisassembler extends TypedAtomicActor {
     /** Construct a UnionDisassembler with the given container and name.
@@ -89,13 +103,13 @@ public class UnionDisassembler extends TypedAtomicActor {
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 
-    /** The input port. Its type is constrained to be a UnionType. */
+    /** The input port. */
     public TypedIOPort input;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Read one RecordToken from the input port and send its fields
+    /** Read one UnionToken from the input port and send its fields
      *  to the output ports.
      *  If the input does not have a token, suspend firing and return.
      *  @exception IllegalActionException If there is no director.
@@ -120,120 +134,63 @@ public class UnionDisassembler extends TypedAtomicActor {
         }
     }
 
-    /** Return the type constraints of this actor. The type constraint is
-     *  that the type of the output ports is no less than the type of the
-     *  corresponding field of the input union token.
-     *  @return a list of Inequality.
+    ///////////////////////////////////////////////////////////////////
+    ////                     protected methods                     ////
+
+    /** Set up and returns two type constraints.
+     *  <ul>
+     *  <li><tt>input >= {|x = typeOf(outputPortX), y = typeOf(outputPortY)
+     *  , ..|}</tt>, which requires the types of the fields in the input union
+     *  to be compatible with the types of the corresponding output ports.
+     *  </li>
+     *  <li><tt>each output >= the type of the corresponding field inside the 
+     *  input union</tt>, which is similar to the usual default constraints, 
+     *  however this constraint establishes a dependency between fields inside 
+     *  the input union and the outputs of this actor, instead of just between
+     *  its inputs and outputs.
+     *  </li>
+     *  </ul></li>
+     *  Note that the constraint <tt>input <= {|x = GENERAL, y = GENERAL, ..|}
+     *  </tt>, which is used in RecordDisassembler to force the input to 
+     *  contain a corresponding field for each output port, is useless for
+     *  UnionDisassembler. This is due to the inverse width subtyping of 
+     *  <code>UnionToken</code>.
+
+     *  @return A set of Inequality instances
+     *  @see ConstructCompositeTypeTerm
+     *  @see ExtractFieldType
      */
-    public Set<Inequality> typeConstraints() {
-        Object[] portArray = outputPortList().toArray();
-        int size = portArray.length;
-        String[] labels = new String[size];
-        Type[] types = new Type[size];
+    @Override
+    protected Set<Inequality> _customTypeConstraints() {
+        Set<Inequality> result = new HashSet<Inequality>();
 
-        // form the declared type for the output port
-        for (int i = 0; i < size; i++) {
-            labels[i] = ((Port) portArray[i]).getName();
-            types[i] = BaseType.GENERAL;
+        // constrain the fields in the input union to be greater than or 
+        // equal to the declared or resolved types of the output ports:
+        // input >= {| x = typeOf(outputPortX), y = typeOf(outputPortY), ..|}
+        result.add(new Inequality(new ConstructAssociativeType(outputPortList(),
+                UnionType.class), input.getTypeTerm()));
+
+        for (TypedIOPort output : outputPortList()) {
+            // constrain each output to be >= the type of the corresponding 
+            // field inside the input union
+            result.add(new Inequality(new ExtractFieldType(input,
+                    output.getName()), output.getTypeTerm()));
         }
 
-        UnionType declaredType = new UnionType(labels, types);
+        // NOTE: refrain from using port.setTypeAtMost() or 
+        // port.setTypeAtLeast(), because after removing an output port, the 
+        // constraint referring to this removed port will remain to exist in 
+        // the input port, which will result in type errors.
 
-        //FIXME: is this what we want?
-        input.setTypeAtMost(declaredType);
+        return result;
 
-        // set the constraints between union fields and output ports
-        Set<Inequality> constraints = new HashSet<Inequality>();
-
-        // since the input port has a clone of the above UnionType, need to
-        // get the type from the input port.
-        Iterator outputPorts = outputPortList().iterator();
-
-        while (outputPorts.hasNext()) {
-            TypedIOPort outputPort = (TypedIOPort) outputPorts.next();
-            String label = outputPort.getName();
-            Inequality inequality = new Inequality(new PortFunction(label),
-                    outputPort.getTypeTerm());
-            constraints.add(inequality);
-        }
-
-        return constraints;
     }
 
-    ///////////////////////////////////////////////////////////////////
-    ////                         inner classes                     ////
-    // This class implements a monotonic function of the type of a
-    // port and a parameter.
-    // The function value is determined by:
-    // f(input.getType(), name) =
-    //     UNKNOWN,                  if input.getType() = UNKNOWN
-    //     input.getType()[name] if input.getType() instanceof RecordToken.
-    //
-    private class PortFunction extends MonotonicFunction {
-        private PortFunction(String name) {
-            _name = name;
-        }
-
-        ///////////////////////////////////////////////////////////////
-        ////                       public inner methods            ////
-
-        /** Return the function result.
-         *  @return A Type.
-         */
-        public Object getValue() throws IllegalActionException {
-            if (input.getType() == BaseType.UNKNOWN) {
-                return BaseType.UNKNOWN;
-            } else if (input.getType() instanceof UnionType) {
-                UnionType type = (UnionType) input.getType();
-                Type fieldType = type.get(_name);
-
-                if (fieldType == null) {
-                    return BaseType.UNKNOWN;
-                } else {
-                    return fieldType;
-                }
-            } else {
-                throw new IllegalActionException(UnionDisassembler.this,
-                        "Invalid type for input port");
-            }
-        }
-
-        /** Return an additional string describing the current value
-         *  of this function.
-         */
-        public String getVerboseString() {
-            if (input.getType() instanceof UnionType) {
-                UnionType type = (UnionType) input.getType();
-                Type fieldType = type.get(_name);
-
-                if (fieldType == null) {
-                    return "Input Union doesn't have field named " + _name;
-                }
-            }
-
-            return null;
-        }
-
-        /** Return the type variable in this inequality term. If the
-         *  type of the input port is not declared, return an one
-         *  element array containing the inequality term representing
-         *  the type of the port; otherwise, return an empty array.
-         *  @return An array of InequalityTerm.
-         */
-        public InequalityTerm[] getVariables() {
-            InequalityTerm portTerm = input.getTypeTerm();
-
-            if (portTerm.isSettable()) {
-                InequalityTerm[] variable = new InequalityTerm[1];
-                variable[0] = portTerm;
-                return variable;
-            }
-
-            return (new InequalityTerm[0]);
-        }
-
-        ///////////////////////////////////////////////////////////////
-        ////                       private inner variable          ////
-        private String _name;
+    /** Do not establish the usual default type constraints. 
+     *  @return null
+     */
+    @Override
+    protected Set<Inequality> _defaultTypeConstraints() {
+        return null;
     }
 }

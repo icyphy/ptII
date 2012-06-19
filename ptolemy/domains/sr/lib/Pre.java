@@ -27,6 +27,7 @@
  */
 package ptolemy.domains.sr.lib;
 
+import java.util.HashSet;
 import java.util.Set;
 
 import ptolemy.actor.lib.Transformer;
@@ -136,20 +137,20 @@ public class Pre extends Transformer {
         removeDependency(input, output);
     }
 
-    /** Override the method in the base class so that the type
-     *  constraint for the <i>initialValue</i> parameter will be set
-     *  if it contains a value.
-     *  @return A list of Inequality objects.
-     *  @see ptolemy.graph.Inequality
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected methods                 ////    
+    
+    /** Return a constraint that requires the initial value to be less than or
+     *  equal to the type of the output.
      */
-    public Set<Inequality> typeConstraints() {
-        Set<Inequality> typeConstraints = super.typeConstraints();
-
+    @Override
+    protected Set<Inequality> _customTypeConstraints() {
+        Set<Inequality> result = new HashSet<Inequality>();
         try {
+            // type of initialValue <= type of output
             if (initialValue.getToken() != null) {
-                Inequality ineq = new Inequality(initialValue.getTypeTerm(),
-                        output.getTypeTerm());
-                typeConstraints.add(ineq);
+                result.add(new Inequality(initialValue.getTypeTerm(),
+                        output.getTypeTerm()));
             }
         } catch (IllegalActionException ex) {
             // Errors in the initialValue parameter should already
@@ -158,12 +159,13 @@ public class Pre extends Transformer {
             throw new InternalErrorException("Bad initialValue value!");
         }
 
-        return typeConstraints;
+        return result;
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    // The most recent token received on the current iteration to be
-    // output on the next iteration.
+    
+    /** The most recent token received on the current iteration to be
+        output on the next iteration. */
     private Token _currentToken;
 }

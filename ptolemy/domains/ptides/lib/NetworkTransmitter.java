@@ -30,7 +30,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 package ptolemy.domains.ptides.lib;
 
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 import ptolemy.actor.Director;
@@ -93,6 +92,12 @@ public class NetworkTransmitter extends OutputDevice {
         super(container, name);
         input = new TypedIOPort(this, "input", true, false);
         output = new TypedIOPort(this, "output", false, true);
+
+        // set type constraints
+        String[] labels = { timestamp, microstep, payload };
+        Type[] types = { BaseType.DOUBLE, BaseType.INT, BaseType.UNKNOWN };
+        RecordType type = new RecordType(labels, types);
+        output.setTypeEquals(type);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -165,8 +170,8 @@ public class NetworkTransmitter extends OutputDevice {
         super.preinitialize();
 
         boolean flag = false;
-        for (IOPort output : (List<IOPort>) outputPortList()) {
-            for (IOPort sinkPort : (List<IOPort>) output.sinkPortList()) {
+        for (TypedIOPort output : outputPortList()) {
+            for (IOPort sinkPort : output.sinkPortList()) {
                 if (sinkPort.getContainer() == getContainer()) {
                     flag = true;
                     break;
@@ -182,25 +187,29 @@ public class NetworkTransmitter extends OutputDevice {
         }
     }
 
-    /** Return the type constraints of this actor. The type constraint is
-     *  that the output RecordToken has two fields, a "timestamp" of type
-     *  double and a "payload" of type same as the input type.
-     *  @return a list of Inequality.
+    ///////////////////////////////////////////////////////////////////
+    ////                     protected methods                     ////    
+
+    /**
+     * Adds to the set of inequalities returned by the overridden method 
+     * a constraint that requires the input to be less than or
+     * equal to the type of the payload field in the output record.
      */
-    public Set<Inequality> typeConstraints() {
-        String[] labels = { timestamp, microstep, payload };
-        Type[] types = { BaseType.DOUBLE, BaseType.INT, BaseType.UNKNOWN };
-        RecordType type = new RecordType(labels, types);
-        output.setTypeEquals(type);
+    @Override
+    protected Set<Inequality> _customTypeConstraints() {
+        Set<Inequality> result = new HashSet<Inequality>();
+        result.add(new Inequality(input.getTypeTerm(), ((RecordType) output
+                .getType()).getTypeTerm(payload)));
 
-        // since the output port has a clone of the above RecordType, need to
-        // get the type from the output port.
-        RecordType outputType = (RecordType) output.getType();
-
-        HashSet typeConstraints = new HashSet<Inequality>();
-        Inequality inequality = new Inequality(input.getTypeTerm(),
-                outputType.getTypeTerm(payload));
-        typeConstraints.add(inequality);
-        return typeConstraints;
+        return result;
     }
+
+    /** Do not establish the usual default type constraints. 
+     *  @return null
+     */
+    @Override
+    protected Set<Inequality> _defaultTypeConstraints() {
+        return null;
+    }
+
 }

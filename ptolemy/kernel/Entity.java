@@ -84,7 +84,7 @@ import ptolemy.kernel.util.Workspace;
  @see ptolemy.kernel.Port
  @see ptolemy.kernel.Relation
  */
-public class Entity extends InstantiableNamedObj {
+public class Entity<T extends Port> extends InstantiableNamedObj {
     /** Construct an entity in the default workspace with an empty string
      *  as its name.
      *  The object is added to the workspace directory.
@@ -157,10 +157,10 @@ public class Entity extends InstantiableNamedObj {
             workspace().getReadAccess();
 
             Entity newEntity = (Entity) super.clone(workspace);
-            newEntity._portList = new NamedList(newEntity);
+            newEntity._portList = new NamedList(newEntity); // FIXME: parameterize NamedList?
 
             // Clone the ports.
-            Iterator ports = portList().iterator();
+            Iterator<T> ports = portList().iterator();
 
             while (ports.hasNext()) {
                 Port port = (Port) ports.next();
@@ -179,7 +179,7 @@ public class Entity extends InstantiableNamedObj {
                 }
             }
 
-            Class myClass = getClass();
+            Class<?> myClass = getClass();
             Field[] fields = myClass.getFields();
 
             for (int i = 0; i < fields.length; i++) {
@@ -227,7 +227,7 @@ public class Entity extends InstantiableNamedObj {
      *  This method is read-synchronized on the workspace.
      *  @return An unmodifiable list of Port objects.
      */
-    public List connectedPortList() {
+    public List<T> connectedPortList() {
         try {
             _workspace.getReadAccess();
 
@@ -237,9 +237,9 @@ public class Entity extends InstantiableNamedObj {
             // The linked list is cached for efficiency.
             if (_workspace.getVersion() != _connectedPortsVersion) {
                 // Cache is not valid, so update it.
-                _connectedPorts = new LinkedList();
+                _connectedPorts = new LinkedList<T>();
 
-                Iterator ports = _portList.elementList().iterator();
+                Iterator<T> ports = _portList.elementList().iterator();
 
                 while (ports.hasNext()) {
                     Port port = (Port) ports.next();
@@ -423,7 +423,7 @@ public class Entity extends InstantiableNamedObj {
      *  This method is read-synchronized on the workspace.
      *  @return An unmodifiable list of Port objects.
      */
-    public List portList() {
+    public List<T> portList() {
         try {
             _workspace.getReadAccess();
             return _portList.elementList();
@@ -682,7 +682,7 @@ public class Entity extends InstantiableNamedObj {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
     // Cached list of connected ports.
-    private transient LinkedList _connectedPorts;
+    private transient LinkedList<T> _connectedPorts;
 
     private transient long _connectedPortsVersion = -1;
 

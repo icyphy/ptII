@@ -27,9 +27,6 @@
  */
 package ptolemy.domains.ptides.lib;
 
-import java.util.HashSet;
-import java.util.Set;
-
 import ptolemy.actor.Director;
 import ptolemy.actor.NoTokenException;
 import ptolemy.actor.TypedAtomicActor;
@@ -38,7 +35,6 @@ import ptolemy.data.DoubleToken;
 import ptolemy.data.type.BaseType;
 import ptolemy.domains.ptides.kernel.PtidesBasicDirector;
 import ptolemy.domains.ptides.kernel.Tag;
-import ptolemy.graph.Inequality;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -76,6 +72,11 @@ public class RealisticSlaveClock extends TypedAtomicActor {
         super(container, name);
         input = new TypedIOPort(this, "input", true, false);
         output = new TypedIOPort(this, "output", false, true);
+
+        // set type constraints
+        input.setTypeEquals(BaseType.DOUBLE);
+        output.setTypeEquals(BaseType.DOUBLE);
+
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -134,19 +135,5 @@ public class RealisticSlaveClock extends TypedAtomicActor {
                     + "work under a Ptides director.");
         }
     }
-
-    /** Return the type constraints of this actor. The type constraint is
-     *  that the input is a DoubleToken.
-     *  @return a list of Inequality.
-     */
-    public Set<Inequality> typeConstraints() {
-        input.setTypeEquals(BaseType.DOUBLE);
-        output.setTypeEquals(BaseType.DOUBLE);
-
-        HashSet typeConstraints = new HashSet<Inequality>();
-        Inequality inequality = new Inequality(output.getTypeTerm(),
-                output.getTypeTerm());
-        typeConstraints.add(inequality);
-        return typeConstraints;
-    }
+    
 }

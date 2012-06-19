@@ -32,30 +32,23 @@ ENHANCEMENTS, OR MODIFICATIONS.
 package ptolemy.domains.ptides.lib.io;
 
 import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.LinkedList;
 import java.util.List;
 
 import ptolemy.actor.CompositeActor;
-import ptolemy.actor.IOPort;
 import ptolemy.actor.NoRoomException;
 import ptolemy.actor.Receiver;
-import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.util.Time;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.RecordToken;
 import ptolemy.data.Token;
-import ptolemy.data.expr.Parameter;  
+import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
-import ptolemy.data.type.RecordType;
-import ptolemy.data.type.Type; 
+import ptolemy.data.type.Type;
 import ptolemy.domains.ptides.kernel.PtidesDirector;
 import ptolemy.domains.ptides.kernel.PtidesEvent;
-import ptolemy.graph.Inequality;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 
 /**
@@ -187,76 +180,8 @@ public class NetworkReceiverPort extends PtidesPort {
         }
     }
     
-    /** Return the type constraints on all connections starting from the
-     *  specified source port to all the ports in a group of destination
-     *  ports. This overrides the base class to ensure that if the source
-     *  port or the destination port is a port of this composite, then
-     *  the port is forced to be an array type and the proper constraint
-     *  on the element type of the array is made. If the source port
-     *  has no possible sources of data, then no type constraints are
-     *  added for it.
-     *  @param sourcePort The source port.
-     *  @param destinationPortList The destination port list.
-     *  @return A list of instances of Inequality.
-     */
-    protected List _typeConstraintsFromTo(TypedIOPort sourcePort,
-            List destinationPortList) {
-        List result = new LinkedList();
-
-        boolean srcUndeclared = sourcePort.getTypeTerm().isSettable();
-        Iterator destinationPorts = destinationPortList.iterator();
-
-        while (destinationPorts.hasNext()) {
-            TypedIOPort destinationPort = (TypedIOPort) destinationPorts.next();
-            boolean destUndeclared = destinationPort.getTypeTerm().isSettable();
-
-            if (srcUndeclared || destUndeclared) {
-                // At least one of the source/destination ports does
-                // not have declared type, form type constraint.
-                if ((sourcePort.getContainer() == this)
-                        && (destinationPort.getContainer() == this)) {
-                    // Both ports belong to this, so their type must be equal.
-                    // Represent this with two inequalities.
-                    Inequality ineq1 = new Inequality(sourcePort.getTypeTerm(),
-                            destinationPort.getTypeTerm());
-                    result.add(ineq1);
-
-                    Inequality ineq2 = new Inequality(
-                            destinationPort.getTypeTerm(),
-                            sourcePort.getTypeTerm());
-                    result.add(ineq2);
-                } else if (sourcePort.getContainer().equals(this)) {
-                    if (sourcePort.sourcePortList().size() == 0) {
-                        // Skip this port. It is not connected on the outside.
-                        continue;
-                    }
-
-                    // Require the source port to be an array.
-                    Inequality arrayInequality = new Inequality(
-                            RecordType.EMPTY_RECORD.getTypeTerm(payload), sourcePort.getTypeTerm());
-                    result.add(arrayInequality);
-
-                    Inequality ineq = new Inequality(
-                            RecordType.EMPTY_RECORD.getTypeTerm(payload),
-                            destinationPort.getTypeTerm());
-                    result.add(ineq);
-                } else if (destinationPort.getContainer().equals(this)) {
-                    Inequality ineq = new Inequality(
-                            RecordType.EMPTY_RECORD.getTypeTerm(payload),
-                            destinationPort.getTypeTerm());
-                    result.add(ineq);
-                }
-            }
-        }
-
-        return result;
-    }
-    
-    
     ///////////////////////////////////////////////////////////////////
-    ////                         private variables                 ////
-
-
+    ////                      private variables                    ////
 
     /** Label of the timestamp that is transmitted within the RecordToken.
      */

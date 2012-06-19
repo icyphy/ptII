@@ -33,27 +33,36 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
+import ptolemy.actor.parameters.SharedParameter;
 import ptolemy.actor.util.Time;
+import ptolemy.data.type.BaseType;
 import ptolemy.data.type.Typeable;
 import ptolemy.graph.Inequality;
+import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Port;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.Workspace;
 
 ///////////////////////////////////////////////////////////////////
 //// TypedAtomicActor
 
 /**
- A TypedAtomicActor is an AtomicActor whose ports and parameters have types.
+ A TypedAtomicActor is an AtomicActor whose ports and parameters have types. 
  <p>
- The typeConstraints() method returns the type constraints among
- the contained ports and parameters.  This base class provides a default
- implementation of this method, which should be suitable for most of the
- derived classes.
+ The final method typeConstraints() returns the type constraints among the 
+ contained ports and parameters. It gathers these constraints by invoking 
+ three different protected methods (listed in order of execution):
+ <ul>
+   <li> _defaultTypeConstraints() </li>
+   <li> _customTypeConstraints() </li>
+   <li> _containedTypeConstraints()</li>
+ </ul>
+ </p>
  <p>
  Derived classes may constrain the container by overriding
  _checkContainer(). The Ports of TypedAtomicActors are constrained to be
@@ -62,8 +71,8 @@ import ptolemy.kernel.util.Workspace;
  appropriate subclass, and the protected method _addPort() to throw an
  exception if its argument is a port that is not of the appropriate
  subclass.
-
- @author Yuhong Xiong
+ </p>
+ @author Yuhong Xiong, Marten Lohstroh
  @version $Id$
  @since Ptolemy II 0.2
  @Pt.ProposedRating Green (cxh)
@@ -72,7 +81,8 @@ import ptolemy.kernel.util.Workspace;
  @see ptolemy.actor.TypedCompositeActor
  @see ptolemy.actor.TypedIOPort
  */
-public class TypedAtomicActor extends AtomicActor implements TypedActor {
+public class TypedAtomicActor extends AtomicActor<TypedIOPort> implements
+        TypedActor {
     // All the constructors are wrappers of the super class constructors.
 
     /** Construct an actor in the default workspace with an empty string
@@ -81,6 +91,7 @@ public class TypedAtomicActor extends AtomicActor implements TypedActor {
      */
     public TypedAtomicActor() {
         super();
+        _init();
     }
 
     /** Construct an actor in the specified workspace with an empty
@@ -92,6 +103,7 @@ public class TypedAtomicActor extends AtomicActor implements TypedActor {
      */
     public TypedAtomicActor(Workspace workspace) {
         super(workspace);
+        _init();
     }
 
     /** Create a new actor in the specified container with the specified
@@ -109,10 +121,17 @@ public class TypedAtomicActor extends AtomicActor implements TypedActor {
     public TypedAtomicActor(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
+        _init();
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         public methods                    ////
+    ////                         parameters                        ////
+
+    /** Indicates whether bidirectional type inference is enabled. */
+    public SharedParameter bidirectionalTypeInference;
+
+    ///////////////////////////////////////////////////////////////////
+    ////                       public methods                      ////
 
     /** React to a change in the type of an attribute.  This method is
      *  called by a contained attribute when its type changes.
@@ -133,6 +152,7 @@ public class TypedAtomicActor extends AtomicActor implements TypedActor {
         if (director != null) {
             director.invalidateResolvedTypes();
         }
+        _typesValid = false; // TODO: check implementations down type hierarchy
     }
 
     /** clone() is not supported, call clone(Workspace workspace)
@@ -148,6 +168,23 @@ public class TypedAtomicActor extends AtomicActor implements TypedActor {
                 + "Sometimes actors are mistakenly written to have a "
                 + "clone() method instead of a "
                 + "clone(Workspace workspace) method.");
+    }
+
+    /** Clone the actor into the specified workspace.
+     *  @param workspace The workspace for the new object.
+     *  @return A new actor.
+     *  @exception CloneNotSupportedException If a derived class contains
+     *   an attribute that cannot be cloned.
+     */
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        TypedAtomicActor newObject = (TypedAtomicActor) super.clone(workspace);
+
+        // When the user calls typeConstraints(), the _typeConstraints object
+        // will be updated.
+        newObject._cachedTypeConstraints = new HashSet<Inequality>();
+        newObject._typeConstraintsVersion = -1;
+        newObject.bidirectionalTypeInference = bidirectionalTypeInference;
+        return newObject;
     }
 
     /** Create a new TypedIOPort with the specified name.
@@ -175,76 +212,59 @@ public class TypedAtomicActor extends AtomicActor implements TypedActor {
     }
 
     /** Return the type constraints of this actor.
-     *  The constraints have the form of a list of inequalities.
-     *  In this base class, if an input port and an output port do not have
-     *  their types declared, and they do not have any constraints stored in
-     *  them, a constraint is set up that requires the type of the input
-     *  to be less than or equal to the type of the output.
-     *  In addition, this method also collects type constraints from the
-     *  contained Typeables (ports, variables, and parameters).
+     *  The constraints have the form of a list of inequalities that are 
+     *  gathered by calling a set of protected non-final methods that can be 
+     *  overridden for customization.
+     *  
+     *  First, <code>_defaultTypeConstraints()</code> is called. Its purpose is
+     *  to setup type constraints between inputs and outputs that have no types
+     *  declared. It ensures that outputs are greater than or equal to inputs,
+     *  meaning that lossless conversion is possible on the tokens that pass
+     *  through the actor. 
+     *  Second, <code>_customTypeConstraints()</code> is called. This method is
+     *  defined as an empty stub in the base class, that is to be overridden by 
+     *  subclasses that require a specific set of constraints to be setup.
+     *  Finally, <code>_containedTypeConstraints()</code> is called to collect
+     *  all type constraints that are stored in the contained Typeables.
+     *  
+     *  Note that all constraints are cached and only recomputed if necessary.
      *  This method is read-synchronized on the workspace.
      *  @return A list of instances of Inequality.
      *  @see ptolemy.graph.Inequality
      */
-    public Set<Inequality> typeConstraints() {
+    public final Set<Inequality> typeConstraints() {
+        // do not update if the cached constraints are still valid
+        // FIXME: temporarily disabled due to failing test
+        // if (_typesValid && _typeConstraintsVersion == workspace().getVersion()) {
+        //    return _cachedTypeConstraints;
+        // }
+        // clear the cached typed constraints
+        _cachedTypeConstraints.clear();
+
         try {
             _workspace.getReadAccess();
 
-            Set<Inequality> result = new HashSet<Inequality>();
-            Iterator inPorts = inputPortList().iterator();
+            Set<Inequality> cts = null;
 
-            while (inPorts.hasNext()) {
-                TypedIOPort inPort = (TypedIOPort) inPorts.next();
-                boolean isUndeclared = inPort.getTypeTerm().isSettable();
-
-                if (isUndeclared) {
-                    // inPort has undeclared type.
-                    Iterator outPorts = outputPortList().iterator();
-
-                    while (outPorts.hasNext()) {
-                        TypedIOPort outPort = (TypedIOPort) outPorts.next();
-
-                        isUndeclared = outPort.getTypeTerm().isSettable();
-
-                        if (isUndeclared && (inPort != outPort)) {
-                            // output also undeclared, not bidirectional port,
-                            // check if there is any type constraints stored
-                            // in ports.
-                            Set<Inequality> inPortConstraints = inPort
-                                    .typeConstraints();
-                            Set<Inequality> outPortConstraints = outPort
-                                    .typeConstraints();
-
-                            if (inPortConstraints.isEmpty()
-                                    && outPortConstraints.isEmpty()) {
-                                // ports not constrained, use default
-                                // constraint
-                                Inequality inequality = new Inequality(
-                                        inPort.getTypeTerm(),
-                                        outPort.getTypeTerm());
-                                result.add(inequality);
-                            }
-                        }
-                    }
-                }
+            // setup default constraints
+            if ((cts = _defaultTypeConstraints()) != null) {
+                _cachedTypeConstraints.addAll(cts);
             }
-
+            
+            // setup custom constraints
+            if ((cts = _customTypeConstraints()) != null) {
+                _cachedTypeConstraints.addAll(cts);
+            }
+            
             // collect constraints from contained Typeables
-            Iterator ports = portList().iterator();
+            if ((cts = _containedTypeConstraints()) != null)
+                _cachedTypeConstraints.addAll(cts);
 
-            while (ports.hasNext()) {
-                Typeable port = (Typeable) ports.next();
-                result.addAll(port.typeConstraints());
-            }
+            // validate cached type constraints
+            _typeConstraintsVersion = _workspace.getVersion();
+            _typesValid = true;
 
-            Iterator typeables = attributeList(Typeable.class).iterator();
-
-            while (typeables.hasNext()) {
-                Typeable typeable = (Typeable) typeables.next();
-                result.addAll(typeable.typeConstraints());
-            }
-
-            return result;
+            return _cachedTypeConstraints;
         } finally {
             _workspace.doneReading();
         }
@@ -259,14 +279,14 @@ public class TypedAtomicActor extends AtomicActor implements TypedActor {
      *  @see ptolemy.graph.Inequality
      *  @deprecated Use typeConstraints().
      */
-    public List typeConstraintList() {
-        LinkedList result = new LinkedList();
+    public List<Inequality> typeConstraintList() {
+        LinkedList<Inequality> result = new LinkedList<Inequality>();
         result.addAll(typeConstraints());
         return result;
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         protected methods                 ////
+    ////                      protected methods                    ////
 
     /** Override the base class to throw an exception if the added port
      *  is not an instance of TypedIOPort.  This method should not be used
@@ -283,7 +303,9 @@ public class TypedAtomicActor extends AtomicActor implements TypedActor {
      *   of TypedIOPort, or the port has no name.
      *  @exception NameDuplicationException If the port name coincides with
      *   the name of another port already in the actor.
+     *  
      */
+    // FIXME: use Generics instead, NamedList will need to become parameterized
     protected void _addPort(Port port) throws IllegalActionException,
             NameDuplicationException {
         // In the future, this method can be changed to allow IOPort to be
@@ -298,6 +320,69 @@ public class TypedAtomicActor extends AtomicActor implements TypedActor {
         super._addPort(port);
     }
 
+    /**
+     * Collect all type constraints from contained Typeables (ports, 
+     * variables, and parameters).
+     * @return A set of type constraints
+     */
+    protected Set<Inequality> _containedTypeConstraints() {
+        Set<Inequality> result = new HashSet<Inequality>();
+        Iterator<TypedIOPort> ports = portList().iterator();
+        while (ports.hasNext()) {
+            result.addAll(ports.next().typeConstraints());
+        }
+
+        Iterator<Typeable> typeables = attributeList(Typeable.class).iterator();
+
+        while (typeables.hasNext()) {
+            result.addAll(typeables.next().typeConstraints());
+        }
+        return result;
+    }
+
+    /**
+     * Return the default type constraints which require undeclared inputs to be
+     * of type greater than or equal to the type of every output port.
+     * 
+     * 
+     * Override this method to eliminate the default type constraints, or to
+     * specify different ones.
+     *  
+     * @return A set of type constraints
+     */
+    protected Set<Inequality> _defaultTypeConstraints() {
+        Set<Inequality> result = new HashSet<Inequality>();
+        
+        for (TypedIOPort input : inputPortList()) {
+            for (TypedIOPort output : outputPortList()) {
+                Set<Inequality> inPortConstraints = input.typeConstraints();
+                Set<Inequality> outPortConstraints = output.typeConstraints();
+
+                // 1) no default constraint if input port is output port, or 
+                //    if one of both ports have a declared type
+                if (input == output || !input.getTypeTerm().isSettable()
+                        || !output.getTypeTerm().isSettable()) {
+                    continue;
+                }
+                // 2) only set default constraint of none are set already
+                if (inPortConstraints.isEmpty() && outPortConstraints.isEmpty()) {
+                    result.add(new Inequality(input.getTypeTerm(),
+                            output.getTypeTerm()));
+                }
+            }
+        }
+        return result;
+    }
+
+    /**
+     * Empty stub to be used for setting up custom type constraints for 
+     * subclasses of this actor.
+     * @return null
+     */
+    protected Set<Inequality> _customTypeConstraints() {
+        return null;
+    }    
+    
     /** Request a firing of this actor at the specified time
      *  and throw an exception if the director does not agree to
      *  do it at the requested time. This is a convenience method
@@ -335,4 +420,42 @@ public class TypedAtomicActor extends AtomicActor implements TypedActor {
         // the time resolution.
         _fireAt(new Time(getDirector(), time));
     }
+
+    /**
+     * Initialize the variables that keep track of the validity of the cached 
+     * type constraints and add the shared parameter 
+     * <code>bidirectionalTypeInference</code> which is enabled by default.
+     */
+    private void _init() {
+
+        _cachedTypeConstraints = new HashSet<Inequality>();
+        _typeConstraintsVersion = -1;
+        _typesValid = false;
+        try {
+            bidirectionalTypeInference = new SharedParameter(this,
+                    "bidirectionalTypeInference", ComponentEntity.class);
+            bidirectionalTypeInference.setTypeEquals(BaseType.BOOLEAN);
+            bidirectionalTypeInference.setExpression("true");
+            bidirectionalTypeInference.setPersistent(true);
+            bidirectionalTypeInference.setVisibility(Settable.EXPERT);
+        } catch (Exception e) {
+            // this should not happen
+            throw new InternalErrorException(this, e, "Unable to create or "
+                    + "set shared parameter bidirectionalTypeInference.");
+        }
+
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                     private variables                     ////
+
+    /** Cached set of type constraints. */
+    private Set<Inequality> _cachedTypeConstraints;
+
+    /** Version number when the cache was last updated. */
+    private long _typeConstraintsVersion;
+
+    /** Whether or not the resolved types are still valid */
+    private boolean _typesValid;
+
 }

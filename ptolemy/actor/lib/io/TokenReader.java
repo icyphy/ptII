@@ -26,10 +26,8 @@
  */
 package ptolemy.actor.lib.io;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Set;
 
-import ptolemy.actor.TypedIOPort;
 import ptolemy.data.Token;
 import ptolemy.data.expr.ASTPtRootNode;
 import ptolemy.data.expr.Parameter;
@@ -37,11 +35,7 @@ import ptolemy.data.expr.ParseTreeEvaluator;
 import ptolemy.data.expr.PtParser;
 import ptolemy.data.expr.StringParameter;
 import ptolemy.data.type.BaseType;
-import ptolemy.data.type.MonotonicFunction;
-import ptolemy.data.type.Type;
-import ptolemy.data.type.TypeLattice;
-import ptolemy.graph.CPO;
-import ptolemy.graph.InequalityTerm;
+import ptolemy.graph.Inequality;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -61,11 +55,10 @@ import ptolemy.kernel.util.NameDuplicationException;
  TODO: describe automatic port constraint setting 
  FIXME: More here. Particularly, document output type handling.
 
- @author Edward A. Lee
- @author Marten Lohstroh
+ @author Edward A. Lee, Marten Lohstroh
  @version $Id$
  @since Ptolemy II 9.0
- @Pt.ProposedRating Yellow (eal)
+ @Pt.ProposedRating Red (eal)
  @Pt.AcceptedRating Red (reviewmoderator)
  */
 public class TokenReader extends FileReader {
@@ -84,6 +77,8 @@ public class TokenReader extends FileReader {
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
         outputType = new Parameter(this, "outputType");
+        // must reset the output type to unknown (base class sets it to string)
+        output.setTypeEquals(BaseType.UNKNOWN);
         
         errorHandlingStrategy = new StringParameter(this, "errorHandlingStrategy");
         errorHandlingStrategy.addChoice("Throw Exception");
@@ -126,8 +121,8 @@ public class TokenReader extends FileReader {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** FIXME.
-     *  @exception IllegalActionException FIXME.
+    /** Not implemented entirely yet. FIXME
+     *  @exception IllegalActionException
      */
     public void fire() throws IllegalActionException {
         try {
@@ -140,40 +135,17 @@ public class TokenReader extends FileReader {
         }
     }
     
-    /** Set the type according to the value of the outputType parameter.
-     * 
-     */
-    public void preinitialize() throws IllegalActionException {
-        super.preinitialize();
-        Token outputTypeValue = outputType.getToken();
-        if (outputTypeValue != null) {
-            // An output type has been specified.
-            // Force the output to this type.
-            output.setTypeEquals(outputTypeValue.getType());
-        } else {
-            // Declare constraints that the output type must
-            // be greater than or equal to the types of all the
-            // destination ports.
-            // 
-            // FIXME: The base class sets the output type
-            // to String. That may need to change. It seems that just
-            // removing the string declaration in the base class doesn't
-            // work because then default constraints result in the output
-            // being greater than or equal to the trigger input, which is
-            // boolean.            
-            if (_outputTypeConstraintsFunction == null) {
-                _outputTypeConstraintsFunction = new GLBFunction();
-            }
-            output.setTypeAtLeast(_outputTypeConstraintsFunction);
-            
-            // Next, need to add constraints for destination ports that have
-            // fixed types.
-        }
-    }
-    
     ///////////////////////////////////////////////////////////////////
     ////                      protected methods                    ////
 
+    /** Do not establish the usual default type constraints. 
+     *  @return null
+     */
+    @Override
+    protected Set<Inequality> _defaultTypeConstraints() {
+        return null;
+    }
+    
     /** FIXME: Send the specified string to the output.
      *  @param fileContents The contents of the file or URL that was read.
      *  @throws IllegalActionException If sending the data fails.
@@ -209,90 +181,11 @@ public class TokenReader extends FileReader {
     
     ///////////////////////////////////////////////////////////////////
     ////                         private members                   ////
-    
-    /** Monotonic function used for setting output type constraints. */
-    private GLBFunction _outputTypeConstraintsFunction;
-    
+  
     /** The parser to use. */
     private PtParser _parser = null;
 
     /** The parse tree evaluator to use. */
     private ParseTreeEvaluator _parseTreeEvaluator = null;
     
-    ///////////////////////////////////////////////////////////////////
-    ////                         inner classes                     ////
-    
-    /** This class implements a monotonic function that returns the
-     *  greatest lower bound (GLB) of its arguments. The arguments
-     *  will be port type variables for all destination ports that this
-     *  actor sends data to. We will use this function to define a
-     *  type constraint asserting that the type of the output is
-     *  greater than or equal to the GLB of the destinations.
-     *  <p>
-     *  NOTE: It may seem counterintuitive that the constraint is
-     *  "greater than or equal to" rather than "less than or equal to."
-     *  But the latter constraint is already implied by the connections,
-     *  since the output port type is required to be less than or equal
-     *  to each destination port type.  The combination of these
-     *  constraints has the effect of setting the type of the output
-     *  equal to the GLB of the types of the destination ports.
-     *  This resolved type is, in fact, the most general type that
-     *  satisfies the contraints of all the downstream ports.
-     */
-    private class GLBFunction extends MonotonicFunction {
-
-        ///////////////////////////////////////////////////////////////
-        ////                       public inner methods            ////
-        
-        /** Return the current value of this monotonic function.
-         *  @return A Type.
-         */
-        public Object getValue() throws IllegalActionException {
-            InequalityTerm[] variables = getVariables();
-            Object[] types = new Type[variables.length + _cachedTypes.length];
-            for (int i = 0; i < variables.length; i++) {
-                types[i] = variables[i].getValue();
-            }
-            for (int i = 0; i < _cachedTypes.length; i++) {
-                types[variables.length + i] = _cachedTypes[i];
-            }
-            // If there are no destination outputs at all, then set
-            // the output type to general.
-            if (types.length == 0) {
-                return BaseType.GENERAL;
-            }
-            CPO lattice = TypeLattice.lattice();
-            return lattice.greatestLowerBound(types);
-        }
-
-        /** Return the type variables for this function, which are
-         *  the type variables for all the destination ports.
-         *  @return An array of InequalityTerm.
-         */
-        public InequalityTerm[] getVariables() {
-            if (workspace().getVersion() == _cachedTermsWorkspaceVersion) {
-                return _cachedTerms;
-            }
-            ArrayList<InequalityTerm> portTypeTermList = new ArrayList<InequalityTerm>();
-            ArrayList<Type> portTypeList = new ArrayList<Type>();
-            List<TypedIOPort> destinations = output.sinkPortList();
-            
-            for (TypedIOPort destination : destinations) {
-                InequalityTerm destinationTypeTerm = destination.getTypeTerm();
-                if (destinationTypeTerm.isSettable()) {
-                    portTypeTermList.add(destinationTypeTerm);
-                } else {
-                    portTypeList.add(destination.getType());
-                }
-            }
-            _cachedTerms = portTypeTermList.toArray(new InequalityTerm[0]);
-            _cachedTypes = portTypeList.toArray(new Type[0]);
-            _cachedTermsWorkspaceVersion = workspace().getVersion();
-            return _cachedTerms;
-        }
-        
-        private Type[] _cachedTypes;
-        private InequalityTerm[] _cachedTerms;
-        private long _cachedTermsWorkspaceVersion = -1;
-    }
-}
+ }

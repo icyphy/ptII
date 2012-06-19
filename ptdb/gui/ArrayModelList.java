@@ -48,7 +48,7 @@ import javax.swing.AbstractListModel;
  * @Pt.AcceptedRating red (wenjiaow)
  *
  */
-public class ArrayModelList extends AbstractListModel {
+public class ArrayModelList extends AbstractListModel<String> {
 
     /**
      * Construct the ArrayModelList through the passed ArrayList object.
@@ -89,7 +89,7 @@ public class ArrayModelList extends AbstractListModel {
      * @param i The index of item to be gotten.
      * @return The item at the given index.
      */
-    public Object getElementAt(int i) {
+    public String getElementAt(int i) {
         return _items.get(i);
     }
 
@@ -108,7 +108,7 @@ public class ArrayModelList extends AbstractListModel {
      * @param item The item to be removed from the list.
      */
     public void removeItem(String item) {
-        for (Iterator iterator = _items.iterator(); iterator.hasNext();) {
+        for (Iterator<String> iterator = _items.iterator(); iterator.hasNext();) {
             String existingItem = (String) iterator.next();
             if (existingItem.equals(item)) {
                 int index = _items.indexOf(item);

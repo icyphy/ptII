@@ -183,13 +183,16 @@ public class ArrayToSequence extends SDFTransformer {
         }
     }
 
-    /** Return the type constraint that the type of the output port is no
-     *  less than the type of the elements of the input array.
-     *  @return A list of inequalities.
+    ///////////////////////////////////////////////////////////////////
+    ////                     protected methods                     ////
+    
+    /**
+     * Do not establish the usual default type constraints. Instead, the type 
+     * of the output port is constrained to be no less than the type of the 
+     * elements of the input array (set in the constructor of this class).
      */
-    public Set<Inequality> typeConstraints() {
-        // Override the base class implementation to not use the default
-        // constraints.
-        return output.typeConstraints();
+    @Override
+    protected Set<Inequality> _defaultTypeConstraints() {
+        return null;
     }
 }

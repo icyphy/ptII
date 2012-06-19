@@ -93,7 +93,9 @@ test LazyTypedCompositeActor-12.1 {deepConnectedIn(out)Ports} {
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="E0" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="7.1.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.0.devel">
+    </property>
+    <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
     </property>
     <property name="" class="ptolemy.actor.Director">
         <property name="localClock" class="ptolemy.actor.LocalClock">
@@ -108,11 +110,15 @@ test LazyTypedCompositeActor-12.1 {deepConnectedIn(out)Ports} {
         </property>
     </property>
     <entity name="E1" class="ptolemy.actor.TypedCompositeActor">
+        <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
+        </property>
         <port name="P1" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
         </port>
     </entity>
     <entity name="E2" class="ptolemy.actor.LazyTypedCompositeActor">
+        <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
+        </property>
         <port name="P2" class="ptolemy.actor.TypedIOPort">
         </port>
         <port name="P4" class="ptolemy.actor.TypedIOPort">
@@ -120,6 +126,8 @@ test LazyTypedCompositeActor-12.1 {deepConnectedIn(out)Ports} {
         <configure>
             <group>
                 <entity name="E3" class="ptolemy.actor.LazyTypedCompositeActor">
+                    <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
+                    </property>
                     <port name="P3" class="ptolemy.actor.TypedIOPort">
                         <property name="output"/>
                     </port>
@@ -139,6 +147,8 @@ test LazyTypedCompositeActor-12.1 {deepConnectedIn(out)Ports} {
         </configure>
     </entity>
     <entity name="E4" class="ptolemy.actor.TypedAtomicActor">
+        <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
+        </property>
         <port name="P5" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
         </port>
@@ -167,6 +177,8 @@ test LazyTypedCompositeActor-12.1 {deepConnectedIn(out)Ports} {
 <!DOCTYPE class PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <class name="" extends="ptolemy.actor.TypedCompositeActor">
+    <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
+    </property>
     <configure>
         <group>
         </group>

@@ -36,7 +36,6 @@ import java.util.Map;
 import java.util.Set;
 
 import ptolemy.actor.Director;
-import ptolemy.actor.IOPort;
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.data.RecordToken;
@@ -70,7 +69,7 @@ import ptolemy.kernel.util.Workspace;
  name/type: value/double and id/int, then the output record will have type
  {item: string, value: double, id: int}
 
- @author Michael Shilman, Steve Neuendorffer
+ @author Michael Shilman, Steve Neuendorffer, Marten Lohstroh
  @version $Id$
  @since Ptolemy II 1.0
  @Pt.ProposedRating Red (yuhong)
@@ -119,7 +118,7 @@ public class RecordUpdater extends TypedAtomicActor {
      */
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         RecordUpdater newObject = (RecordUpdater) super.clone(workspace);
-        newObject.output.setTypeAtLeast(newObject.new FunctionTerm());
+        newObject.output.setTypeAtLeast(newObject.new MinimalOutputTerm());
         return newObject;
     }
 
@@ -186,41 +185,36 @@ public class RecordUpdater extends TypedAtomicActor {
      *  @see ptolemy.actor.IOPort#hasToken(int)
      */
     public boolean prefire() throws IllegalActionException {
-        Iterator ports = inputPortList().iterator();
-
-        while (ports.hasNext()) {
-            IOPort port = (IOPort) ports.next();
-
+        for (TypedIOPort port : inputPortList()) {
             if (!port.hasToken(0)) {
                 return false;
             }
         }
-
         return true;
     }
-
+   
+    ///////////////////////////////////////////////////////////////////
+    ////                     protected methods                     ////
+    
+    
     /** Return the type constraints of this actor. The type constraint is
      *  that the type of the output port is no less than the type of the
      *  input port, and contains additional fields for each input port.
-     *  @return a list of Inequality.
+     *  @return a list of type constraints
      */
-    public Set<Inequality> typeConstraints() {
-        String[] labels = new String[0];
-        Type[] types = new Type[0];
-
-        RecordType declaredType = new RecordType(labels, types);
-        input.setTypeAtMost(declaredType);
-
-        // Set the constraints between record fields and output ports
-        Set<Inequality> constraints = new HashSet<Inequality>();
-
-        // Since the input port has a clone of the above RecordType, need to
-        // get the type from the input port.
-        Inequality inequality = new Inequality(new FunctionTerm(),
-                output.getTypeTerm());
-        constraints.add(inequality);
-
-        return constraints;
+    @Override
+    protected Set<Inequality> _customTypeConstraints() {
+        Set<Inequality> result = new HashSet<Inequality>();
+        result.add(new Inequality(new MinimalOutputTerm(), output.getTypeTerm()));
+        return result;
+    }
+    
+    /** Do not establish the usual default type constraints.
+     *  @return null 
+     */
+    @Override
+    protected Set<Inequality> _defaultTypeConstraints() {
+        return null;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -237,61 +231,64 @@ public class RecordUpdater extends TypedAtomicActor {
     // is bottom if the type of the port with name "input" is bottom. If
     // the type of this port is not bottom (it must be a record), the value
     // of the function is computed as described above.
-    private class FunctionTerm extends MonotonicFunction {
+    private class MinimalOutputTerm extends MonotonicFunction {
         ///////////////////////////////////////////////////////////////
         ////                       public inner methods            ////
 
         /** Return the function result.
          *  @return A Type.
          */
-        public Object getValue() {
-            Type inputType = input.getType();
+        public Object getValue() throws IllegalActionException {
 
-            if (!(inputType instanceof RecordType)) {
+            String label;
+            RecordType inputType;
+            Iterator<String> labels;
+
+            Map<String, Type> fields = new HashMap<String, Type>();
+
+            // FIXME
+            if (!(input.getType() instanceof RecordType)) {
                 return BaseType.UNKNOWN;
             }
 
-            RecordType recordType = (RecordType) inputType;
-            Map outputMap = new HashMap();
-            Set recordLabels = recordType.labelSet();
-            Iterator iterator = recordLabels.iterator();
+            inputType = (RecordType) input.getType();
 
-            while (iterator.hasNext()) {
-                String label = (String) iterator.next();
-                Type type = recordType.get(label);
-                outputMap.put(label, type);
+            // fetch the types for each label found in the 
+            // RecordType on the main input
+            for (labels = inputType.labelSet().iterator(); labels.hasNext();) {
+                label = labels.next();
+                fields.put(label, inputType.get(label));
             }
 
-            List inputPorts = inputPortList();
-            iterator = inputPorts.iterator();
+            List<TypedIOPort> inputPorts = inputPortList();
 
-            while (iterator.hasNext()) {
-                TypedIOPort port = (TypedIOPort) iterator.next();
-
+            // fetch the type for each of the additional input ports
+            for (TypedIOPort port : inputPorts) {
                 if (port != input) {
-                    outputMap.put(port.getName(), port.getType());
+                    label = port.getName();
+                    if (fields.containsKey(label)) {
+                        // only update type if compatible
+                        if (port.getType().isCompatible(fields.get(label))) {
+                            fields.put(label, port.getType());
+                        }
+                    }
+                    else {
+                        fields.put(label, port.getType());
+                    }
                 }
             }
 
             // Construct the RecordType
-            Object[] labelsObj = outputMap.keySet().toArray();
-            String[] labels = new String[labelsObj.length];
-            Type[] types = new Type[labelsObj.length];
-
-            for (int i = 0; i < labels.length; i++) {
-                labels[i] = (String) labelsObj[i];
-                types[i] = (Type) outputMap.get(labels[i]);
-            }
-
-            return new RecordType(labels, types);
+            return new RecordType(fields.keySet().toArray(new String[0]),
+                    fields.values().toArray(new Type[0]));
         }
 
         /** Return all the InequalityTerms for all input ports in an array.
          *  @return An array of InequalityTerm.
          */
         public InequalityTerm[] getVariables() {
-            Iterator inputPorts = inputPortList().iterator();
-            LinkedList result = new LinkedList();
+            Iterator<TypedIOPort> inputPorts = inputPortList().iterator();
+            LinkedList<InequalityTerm> result = new LinkedList<InequalityTerm>();
             while (inputPorts.hasNext()) {
                 TypedIOPort port = (TypedIOPort) inputPorts.next();
                 InequalityTerm term = port.getTypeTerm();
@@ -299,14 +296,7 @@ public class RecordUpdater extends TypedAtomicActor {
                     result.add(term);
                 }
             }
-            InequalityTerm[] variables = new InequalityTerm[result.size()];
-            Iterator results = result.iterator();
-            int i = 0;
-            while (results.hasNext()) {
-                variables[i] = (InequalityTerm) results.next();
-                i++;
-            }
-            return variables;
+            return result.toArray(new InequalityTerm[0]);
         }
     }
 }

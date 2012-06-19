@@ -27,7 +27,6 @@
  */
 package ptolemy.domains.ptides.lib;
 
-import java.util.HashSet;
 import java.util.Set;
 
 import ptolemy.actor.Director;
@@ -77,6 +76,7 @@ public class MasterClock extends TypedAtomicActor {
         super(container, name);
         output = new TypedIOPort(this, "output", false, true);
         trigger = new TypedIOPort(this, "trigger", true, false);
+        output.setTypeEquals(BaseType.DOUBLE);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -122,17 +122,16 @@ public class MasterClock extends TypedAtomicActor {
         }
     }
 
-    /** Return the type constraints of this actor. The type constraint is
-     *  that the output must be a DoubleToken.
-     *  @return a list of Inequality.
+    ///////////////////////////////////////////////////////////////////
+    ////                     protected methods                     ////
+    
+    /**
+     * Do not establish the usual default type constraints. Instead, the type 
+     * of the output port is constrained to be double (set in the constructor
+     * of this class).
      */
-    public Set<Inequality> typeConstraints() {
-        output.setTypeEquals(BaseType.DOUBLE);
-
-        HashSet typeConstraints = new HashSet<Inequality>();
-        Inequality inequality = new Inequality(output.getTypeTerm(),
-                output.getTypeTerm());
-        typeConstraints.add(inequality);
-        return typeConstraints;
+    @Override
+    protected Set<Inequality> _defaultTypeConstraints() {
+        return null;
     }
 }

@@ -33,6 +33,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ptolemy.actor.IOPort;
+import ptolemy.actor.TypedIOPort;
 import ptolemy.data.FloatToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
@@ -122,8 +123,8 @@ public class PthalesGenericActor extends PthalesAtomicActor {
     public void fire() throws IllegalActionException {
 
         // Variables
-        List<IOPort> portsIn = null;
-        List<IOPort> portsOut = null;
+        List<TypedIOPort> portsIn = null;
+        List<TypedIOPort> portsOut = null;
         int portNumber;
 
         // Input ports

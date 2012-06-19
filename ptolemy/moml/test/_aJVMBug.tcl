@@ -68,9 +68,13 @@ test  aJVMBug-1.0 {Test for a jvm bug} {
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="parseMoMLConst" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
+    <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
+    </property>
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.0.devel">
     </property>
     <entity name="Const" class="ptolemy.actor.lib.Const">
+        <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
+        </property>
         <property name="value" class="ptolemy.data.expr.Parameter" value="parseMoML(&quot;&lt;entity name=\&quot;foo\&quot; class=\&quot;ptolemy.actor.TypedCompositeActor\&quot;/&gt;&quot;)">
         </property>
     </entity>

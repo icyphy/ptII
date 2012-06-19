@@ -76,7 +76,7 @@ test ConstVariableModelAnalysis-1.1 {Test simple model} {
 	[lsort [listToNames [$analysis getNotConstVariables $e0]]] \
 	[lsort [listToNames [$analysis getConstVariables $ramp]]] \
 	[lsort [listToNames [$analysis getNotConstVariables $ramp]]]
-} {{} {} {NONE firingCountLimit init step} {}}
+} {bidirectionalTypeInference {} {NONE bidirectionalTypeInference firingCountLimit init step} {}}
 
 
 test ConstVariableModelAnalysis-1.2 {Test hierarchical dependance} {
@@ -94,7 +94,7 @@ test ConstVariableModelAnalysis-1.2 {Test hierarchical dependance} {
 	[lsort [listToNames [$analysis getNotConstVariables $e0]]] \
 	[lsort [listToNames [$analysis getConstVariables $ramp]]] \
 	[lsort [listToNames [$analysis getNotConstVariables $ramp]]]
-} {p0 {} {NONE firingCountLimit init step} {}}
+} {{bidirectionalTypeInference p0} {} {NONE bidirectionalTypeInference firingCountLimit init step} {}}
 
 test ConstVariableModelAnalysis-1.3 {Test flat dependance} {
     set e0 [java::new ptolemy.actor.TypedCompositeActor]
@@ -113,7 +113,7 @@ test ConstVariableModelAnalysis-1.3 {Test flat dependance} {
 	[lsort [listToNames [$analysis getNotConstVariables $e0]]] \
 	[lsort [listToNames [$analysis getConstVariables $ramp]]] \
 	[lsort [listToNames [$analysis getNotConstVariables $ramp]]]
-} {{p0 p1} {} {NONE firingCountLimit init step} {}}
+} {{bidirectionalTypeInference p0 p1} {} {NONE bidirectionalTypeInference firingCountLimit init step} {}}
 
 
 test ConstVariableModelAnalysis-1.4 {Test unbound variables} {
@@ -136,7 +136,7 @@ test ConstVariableModelAnalysis-1.4 {Test unbound variables} {
 	[lsort [listToNames [$analysis getNotConstVariables $e0]]] \
 	[lsort [listToNames [$analysis getConstVariables $ramp]]] \
 	[lsort [listToNames [$analysis getNotConstVariables $ramp]]]
-} {{} {a p0 p1} {NONE firingCountLimit} {init step}}
+} {bidirectionalTypeInference {a p0 p1} {NONE bidirectionalTypeInference firingCountLimit} {init step}}
 
 
 test ConstVariableModelAnalysis-1.5 {Test expressions of unbound variables} {
@@ -159,7 +159,7 @@ test ConstVariableModelAnalysis-1.5 {Test expressions of unbound variables} {
 	[lsort [listToNames [$analysis getNotConstVariables $e0]]] \
 	[lsort [listToNames [$analysis getConstVariables $ramp]]] \
 	[lsort [listToNames [$analysis getNotConstVariables $ramp]]]
-} {{} {a p0 p1} {NONE firingCountLimit} {init step}}
+} {bidirectionalTypeInference {a p0 p1} {NONE bidirectionalTypeInference firingCountLimit} {init step}}
 
 test ConstVariableModelAnalysis-1.6 {Test a model that is not correct (circular dependancy)} {
     set e0 [java::new ptolemy.actor.TypedCompositeActor]
@@ -179,7 +179,7 @@ test ConstVariableModelAnalysis-1.6 {Test a model that is not correct (circular 
     set analysis [java::new ptolemy.actor.util.ConstVariableModelAnalysis $e0 $varSet]
     list [lsort [listToNames [$analysis getConstVariables $e0]]] \
 	[lsort [listToNames [$analysis getConstVariables $ramp]]]
-} {{p0 p1} {NONE firingCountLimit step}}
+} {{bidirectionalTypeInference p0 p1} {NONE bidirectionalTypeInference firingCountLimit step}}
 
 test ConstVariableModelAnalysis-1.7 {Test unbound variables} {
     set e0 [java::new ptolemy.actor.TypedCompositeActor]
@@ -201,7 +201,7 @@ test ConstVariableModelAnalysis-1.7 {Test unbound variables} {
 	[lsort [listToNames [$analysis getNotConstVariables $e0]]] \
 	[lsort [listToNames [$analysis getConstVariables $ramp]]] \
 	[lsort [listToNames [$analysis getNotConstVariables $ramp]]]
-} {{p0 p1} a {NONE firingCountLimit init step} {}}
+} {{bidirectionalTypeInference p0 p1} a {NONE bidirectionalTypeInference firingCountLimit init step} {}}
 
 test ConstVariableModelAnalysis-1.8 {test scoping} {
     set e0 [java::new ptolemy.actor.TypedCompositeActor]
@@ -223,7 +223,7 @@ test ConstVariableModelAnalysis-1.8 {test scoping} {
 	[lsort [listToNames [$analysis getNotConstVariables $e0]]] \
 	[lsort [listToNames [$analysis getConstVariables $ramp]]] \
 	[lsort [listToNames [$analysis getNotConstVariables $ramp]]]
-} {step {a init} {NONE firingCountLimit} {init step}}
+} {{bidirectionalTypeInference step} {a init} {NONE bidirectionalTypeInference firingCountLimit} {init step}}
 
 test ConstVariableModelAnalysis-1.9 {test scoping} {
     set e0 [java::new ptolemy.actor.TypedCompositeActor]
@@ -245,7 +245,7 @@ test ConstVariableModelAnalysis-1.9 {test scoping} {
 	[lsort [listToNames [$analysis getNotConstVariables $e0]]] \
 	[lsort [listToNames [$analysis getConstVariables $ramp]]] \
 	[lsort [listToNames [$analysis getNotConstVariables $ramp]]]
-} {init {a step} {NONE firingCountLimit init} step}
+} {{bidirectionalTypeInference init} {a step} {NONE bidirectionalTypeInference firingCountLimit init} step}
 
 test ConstVariableModelAnalysis-3.1 {test port parameters} {
     set e0 [java::new ptolemy.actor.TypedCompositeActor]
@@ -317,7 +317,7 @@ test ConstVariableModelAnalysis-3.2 {test port parameters} {
 	[lsort [listToNames [$analysis getNotConstVariables $repeat]]] \
 	[lsort [listToNames [$analysis getConstVariables [$repeat getPort input]]]] \
 	     [lsort [listToNames [$analysis getNotConstVariables [$repeat getPort input]]]]
-} {inport {} {NONE firingCountLimit init step} {} {blockSize numberOfTimes} {} tokenConsumptionRate {}}
+} {{bidirectionalTypeInference inport} {} {NONE bidirectionalTypeInference firingCountLimit init step} {} {bidirectionalTypeInference blockSize numberOfTimes} {} tokenConsumptionRate {}}
 
 # Test change context
 test ConstVariableModelAnalysis-3.3 {test port parameters} {
