@@ -31,6 +31,8 @@ package ptolemy.data;
 import ptolemy.data.type.BaseType;
 import ptolemy.data.type.ObjectType;
 import ptolemy.data.type.Type;
+import ptolemy.data.type.TypeLattice;
+import ptolemy.graph.CPO;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 
@@ -186,6 +188,60 @@ public class ObjectToken extends Token {
         }
     }
 
+    /** Test that the value of this token is close to the first argument,
+     *  where "close" means that the distance between them is less than
+     *  or equal to the second argument.  This method only makes sense
+     *  for tokens where the distance between them is reasonably
+     *  represented as a double. If the argument token is not of
+     *  the same type as this token, then either this token or the
+     *  argument will be converted, if possible, to the type of the other.
+     *  <p>
+     *  Subclasses should not
+     *  generally override this method, but override the protected
+     *  _isCloseTo() method to ensure that type conversion is performed
+     *  consistently.
+     *  @param token The token to test closeness of this token with.
+     *  @param epsilon The value that we use to determine whether two
+     *   tokens are close.  Ignored in this class.
+     *  @return A boolean token that contains the value true if the
+     *   value and units of this token are close to those of the
+     *   argument token.
+     *  @exception IllegalActionException If the argument token and
+     *   this token are of incomparable types, or the operation does
+     *   not make sense for the given types.
+     */
+    public final BooleanToken isCloseTo(Token token, double epsilon)
+            throws IllegalActionException {
+        // FIXME: This is copied from AbstractConvertibleToken.
+
+        // Note that if we had absolute(), subtraction() and islessThan()
+        // we could perhaps define this method for all tokens.
+        int typeInfo = TypeLattice.compare(getType(), token);
+
+        if (typeInfo == CPO.SAME) {
+            return _isCloseTo(token, epsilon);
+        } else if (typeInfo == CPO.HIGHER) {
+            AbstractConvertibleToken convertedArgument = (AbstractConvertibleToken) getType()
+                    .convert(token);
+
+            try {
+                BooleanToken result = _isCloseTo(convertedArgument, epsilon);
+                return result;
+            } catch (IllegalActionException ex) {
+                // If the type-specific operation fails, then create a
+                // better error message that has the types of the
+                // arguments that were passed in.
+                throw new IllegalActionException(null, ex, notSupportedMessage(
+                        "isCloseTo", this, token));
+            }
+        } else if (typeInfo == CPO.LOWER) {
+            return token.isCloseTo(this, epsilon);
+        } else {
+            throw new IllegalActionException(notSupportedIncomparableMessage(
+                    "isCloseTo", this, token));
+        }
+    }
+
     /** Compare this ObjectToken to the given argument, and return true if the
      *  values contained in the two are the same Java object.
      *
@@ -236,6 +292,39 @@ public class ObjectToken extends Token {
 
     /** A new empty ObjectToken. */
     public static final ObjectToken NULL = new ObjectToken();
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected methods                 ////
+
+    /** Test for closeness of the values of this Token and the argument
+     *  Token.  It is assumed that the type of the argument is
+     *  an ObjectToken.
+     *  @param rightArgument The token to add to this token.
+     *  @param epsilon The value that we use to determine whether two
+     *  tokens are close.  This parameter is ignored by this class.
+     *  @return A BooleanToken containing the result.
+     *  @exception IllegalActionException If this method is not
+     *  supported by the derived class.
+     */
+    protected BooleanToken _isCloseTo(Token rightArgument, double epsilon)
+            throws IllegalActionException {
+        return _isEqualTo(rightArgument);
+    }
+
+    /** Test for equality of the values of this Token and the argument
+     *  Token.  It is assumed that the type of the argument is
+     *  ObjectToken.
+     *  @param rightArgument The token to add to this token.
+     *  @return A BooleanToken containing the result.
+     *  @exception IllegalActionException If this method is not
+     *  supported by the derived class.
+     */
+    protected BooleanToken _isEqualTo(Token rightArgument)
+            throws IllegalActionException {
+        ObjectToken convertedArgument = (ObjectToken) rightArgument;
+        return BooleanToken.getInstance(toString().compareTo(
+                convertedArgument.toString()) == 0);
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
