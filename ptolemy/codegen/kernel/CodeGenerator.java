@@ -48,9 +48,11 @@ import java.util.StringTokenizer;
 
 import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
+import ptolemy.actor.TypedCompositeActor;
 import ptolemy.actor.Manager;
 import ptolemy.actor.gui.MoMLApplication;
 import ptolemy.actor.lib.jni.PointerToken;
+import ptolemy.actor.parameters.SharedParameter;
 import ptolemy.codegen.actor.Director;
 import ptolemy.codegen.gui.CodeGeneratorGUIFactory;
 import ptolemy.data.BooleanToken;
@@ -780,14 +782,19 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
             Actor container = ((Actor) getContainer());
             Manager manager = container.getManager();
 
+            TypedCompositeActor toplevel = (TypedCompositeActor) ((NamedObj) container)
+                .toplevel();
+
             if (manager == null) {
-                CompositeActor toplevel = (CompositeActor) ((NamedObj) container)
-                        .toplevel();
                 manager = new Manager(toplevel.workspace(), "Manager");
                 toplevel.setManager(manager);
             }
 
             try {
+                // Disable the bidirectional type inference.
+                SharedParameter bidirectionalTypeInference = (SharedParameter)toplevel.getAttribute("bidirectionalTypeInference", SharedParameter.class);
+                bidirectionalTypeInference.setExpression("false");
+
                 manager.preinitializeAndResolveTypes();
                 returnValue = _generateCode(code);
             } finally {
