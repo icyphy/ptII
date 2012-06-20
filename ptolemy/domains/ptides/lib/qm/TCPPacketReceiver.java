@@ -40,7 +40,6 @@ import java.util.Set;
 import ptolemy.actor.Director;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.TypedIOPort;
-import ptolemy.actor.lib.ConstructCompositeTypeTerm;
 import ptolemy.actor.util.ConstructAssociativeType;
 import ptolemy.actor.util.ExtractFieldType;
 import ptolemy.actor.util.Time;
