@@ -613,56 +613,67 @@ public class Port extends NamedObj {
                 return;
             }
 
-            _container = entity;
+            _notifyHierarchyListenersBeforeChange();
+            
+            try {
+                _container = entity;
 
-            // Do this first, because it may throw an exception.
-            if (entity != null) {
-                try {
-                    entity._addPort(this);
-                } catch (IllegalActionException ex) {
-                    _container = previousContainer;
-                    throw ex;
-                } catch (NameDuplicationException ex) {
-                    _container = previousContainer;
-                    throw ex;
-                }
-
-                if (previousContainer == null) {
-                    _workspace.remove(this);
-                }
-
-                // We have successfully set a new container for this
-                // object. Mark it modified to ensure MoML export.
-                // FIXME: Inappropriate?
-                // setOverrideDepth(0);
-            }
-
-            if (previousContainer != null) {
-                previousContainer._removePort(this);
-            }
-
-            if (entity == null) {
-                unlinkAll();
-            } else {
-                // Transfer any queued change requests to the
-                // new container.  There could be queued change
-                // requests if this component is deferring change
-                // requests.
-                if (_changeRequests != null) {
-                    Iterator requests = _changeRequests.iterator();
-
-                    while (requests.hasNext()) {
-                        ChangeRequest request = (ChangeRequest) requests.next();
-                        entity.requestChange(request);
+                // Do this first, because it may throw an exception.
+                if (entity != null) {
+                    try {
+                        entity._addPort(this);
+                    } catch (IllegalActionException ex) {
+                        _container = previousContainer;
+                        throw ex;
+                    } catch (NameDuplicationException ex) {
+                        _container = previousContainer;
+                        throw ex;
                     }
 
-                    _changeRequests = null;
-                }
-            }
+                    if (previousContainer == null) {
+                        _workspace.remove(this);
+                    }
 
-            // Validate all deeply contained settables, since
-            // they may no longer be valid in the new context.
-            validateSettables();
+                    // We have successfully set a new container for this
+                    // object. Mark it modified to ensure MoML export.
+                    // FIXME: Inappropriate?
+                    // setOverrideDepth(0);
+                }
+
+                if (previousContainer != null) {
+                    previousContainer._removePort(this);
+                }
+
+                if (entity == null) {
+                    unlinkAll();
+                } else {
+                    // Transfer any queued change requests to the
+                    // new container.  There could be queued change
+                    // requests if this component is deferring change
+                    // requests.
+                    if (_changeRequests != null) {
+                        Iterator requests = _changeRequests.iterator();
+
+                        while (requests.hasNext()) {
+                            ChangeRequest request = (ChangeRequest) requests.next();
+                            entity.requestChange(request);
+                        }
+
+                        _changeRequests = null;
+                    }
+                }
+
+                // Validate all deeply contained settables, since
+                // they may no longer be valid in the new context.
+                validateSettables();
+            } finally {
+                // Since we definitely notified the listeners
+                // before the change, we must definitely notify
+                // them after the change, even if the change caused
+                // some exceptions. Note that this too may trigger
+                // exceptions.
+                _notifyHierarchyListenersAfterChange();
+            }
         } finally {
             _workspace.doneWriting();
         }

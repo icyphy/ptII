@@ -322,6 +322,27 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
         }
     }
 
+    /** Add a hierarchy listener. If the listener is already
+     *  added, do nothing. This will cause the object to also
+     *  be added as a hierarchy listener in the container of
+     *  this object, if there is one, and in its container,
+     *  up to the top of the hierarchy.
+     *  @param listener The listener to add.
+     *  @see #removeHierarchyListener(HierarchyListener)
+     */
+    public void addHierarchyListener(HierarchyListener listener) {
+        if (_hierarchyListeners == null) {
+            _hierarchyListeners = new HashSet<HierarchyListener>();
+        }
+        _hierarchyListeners.add(listener);
+        
+        // Add to the container.
+        NamedObj container = getContainer();
+        if (container != null) {
+            container.addHierarchyListener(listener);
+        }
+    }
+
     /** React to a change in an attribute.  This method is called by
      *  a contained attribute when its value changes.  In this base class,
      *  the method does nothing.  In derived classes, this method may
@@ -447,6 +468,8 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
             _workspace.getReadAccess();
 
             NamedObj newObject = (NamedObj) super.clone();
+            
+            newObject._hierarchyListeners = null;
 
             newObject._changeLock = new SerializableObject();
 
@@ -1740,6 +1763,26 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
         }
     }
 
+    /** Remove a hierarchy listener. If the listener is already
+     *  removed, do nothing. This will cause the object to also
+     *  be removed as a hierarchy listener in the container of
+     *  this object, if there is one, and in its container,
+     *  up to the top of the hierarchy.
+     *  @param listener The listener to remove.
+     *  @see #addHierarchyListener(HierarchyListener)
+     */
+    public void removeHierarchyListener(HierarchyListener listener) {
+        if (_hierarchyListeners != null) {
+            _hierarchyListeners.remove(listener);
+        
+            // Remove from the container.
+            NamedObj container = getContainer();
+            if (container != null) {
+                container.removeHierarchyListener(listener);
+            }
+        }
+    }
+
     /** Request that the given change be executed.   In this base class,
      *  delegate the change request to the container, if there is one.
      *  If there is no container, then execute the request immediately,
@@ -2687,6 +2730,56 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
             }
         }
     }
+    
+    /** If any hierarchy listeners are registered, notify them
+     *  that a change has occurred in the hierarchy.
+     *  @throws IllegalActionException If the change to the
+     *   hierarchy is not acceptable to the listener.
+     *  @see #addHierarchyListener(HierarchyListener)
+     *  @see HierarchyListener
+     */
+    protected void _notifyHierarchyListenersAfterChange() throws IllegalActionException {
+        if (_hierarchyListeners != null) {
+            // The hierarchy has changed. Add all hierarchy listeners
+            // up the new hierarchy. This should be done before notification
+            // because notification may result in exceptions.
+            NamedObj container = getContainer();
+            if (container != null) {
+                for (HierarchyListener listener : _hierarchyListeners) {
+                    container.addHierarchyListener(listener);
+                }
+            }
+
+            for (HierarchyListener listener : _hierarchyListeners) {
+                listener.hierarchyChanged();
+            }
+        }
+    }
+
+    /** If any hierarchy listeners are registered, notify them
+     *  that a change is about to occur in the hierarchy.
+     *  @throws IllegalActionException If changing the
+     *   hierarchy is not acceptable to the listener.
+     *  @see #addHierarchyListener(HierarchyListener)
+     *  @see HierarchyListener
+     */
+    protected void _notifyHierarchyListenersBeforeChange() throws IllegalActionException {
+        if (_hierarchyListeners != null) {
+            for (HierarchyListener listener : _hierarchyListeners) {
+                listener.hierarchyWillChange();
+            }
+            // If changing the hierarchy is acceptable to all listeners,
+            // then we get to here. At this point, we should remove all
+            // listeners from containers above us in the hierarchy, to
+            // re-add them after the change in the hierarchy is complete.
+            NamedObj container = getContainer();
+            if (container != null) {
+                for (HierarchyListener listener : _hierarchyListeners) {
+                    container.removeHierarchyListener(listener);
+                }
+            }
+        }
+    }
 
     /** Propagate existence of this object to the
      *  specified object. The specified object is required
@@ -3259,6 +3352,9 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
 
     // Version of the workspace when cache last updated.
     private long _fullNameVersion = -1;
+    
+    /** List of hierarchy listeners, if any. */
+    private Set<HierarchyListener> _hierarchyListeners;
 
     // The model error handler, if there is one.
     private ModelErrorHandler _modelErrorHandler = null;

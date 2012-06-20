@@ -504,6 +504,8 @@ public class ComponentEntity<T extends ComponentPort> extends Entity<T> {
             return;
         }
 
+        _notifyHierarchyListenersBeforeChange();
+        
         try {
             _workspace.getWriteAccess();
             _checkContainer(container);
@@ -578,7 +580,16 @@ public class ComponentEntity<T extends ComponentPort> extends Entity<T> {
                 validateSettables();
             }
         } finally {
-            _workspace.doneWriting();
+            try {
+                // Since we definitely notified the listeners
+                // before the change, we must definitely notify
+                // them after the change, even if the change caused
+                // some exceptions. Note that this too may trigger
+                // exceptions.
+                _notifyHierarchyListenersAfterChange();
+            } finally {
+                _workspace.doneWriting();                
+            }
         }
     }
 

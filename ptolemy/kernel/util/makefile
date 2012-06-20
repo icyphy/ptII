@@ -68,6 +68,7 @@ JSRCS = \
 	DropTargetHandler.java \
 	ExceptionHandler.java \
 	Flowable.java \
+	HierarchyListener.java \
 	IllegalActionException.java \
 	Instantiable.java \
 	InternalErrorException.java \
