@@ -2,6 +2,8 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="DOPCenter" class="ptolemy.domains.space.Region">
+    <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
+    </property>
     <property name="Image" class="ptolemy.vergil.kernel.attributes.ImageAttribute">
         <property name="source" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/ptolemy/domains/space/demo/DOPCenter/DOPCenter.gif">
         </property>
@@ -10,9 +12,9 @@
         <property name="_renderFirst" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
     </property>
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.0.1_20101021">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.0.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={356, 22, 1272, 844}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 0, 1276, 815}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1059, 734]">
     </property>
@@ -53,16 +55,20 @@
         </property>
     </property>
     <entity name="DatabaseManager" class="ptolemy.actor.lib.database.DatabaseManager">
+        <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
+        </property>
         <property name="database" class="ptolemy.data.expr.StringParameter" value="jdbc:mysql://newton.eecs.berkeley.edu:3306/space">
         </property>
-        <property name="userName" class="ptolemy.data.expr.StringParameter" value="spacecadet">
-        </property>
         <property name="passwordFile" class="ptolemy.data.expr.FileParameter" value="$HOME/.spacecadet">
+        </property>
+        <property name="userName" class="ptolemy.data.expr.StringParameter" value="spacecadet">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[865.0, 65.0]">
         </property>
     </entity>
     <entity name="Room" class="ptolemy.domains.space.Room">
+        <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
+        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[705.0, 300.0]">
         </property>
         <property name="_hideName" class="ptolemy.data.expr.SingletonParameter">
@@ -94,7 +100,9 @@
         </port>
     </entity>
     <entity name="Occupants" class="ptolemy.domains.space.Occupants">
-        <property name="records" class="ptolemy.data.expr.Parameter" value="{{bldg = &quot;Cory      &quot;, classcd = &quot;staff&quot;, departure = &quot;2011-02-20&quot;, deskno = &quot;1&quot;, email = &quot;stavros@eecs.berkeley.edu&quot;, fnames = &quot;Stavros&quot;, lname = &quot;Tripakis&quot;, occupancy = &quot;2009-02-20&quot;, room = &quot;545Q&quot;, spaceid = &quot;1826&quot;, spacenotes = &quot;Visiting Research Scientist, started Feb. 2009&quot;, sponsorlname = &quot;Lee&quot;}, {bldg = &quot;Cory      &quot;, classcd = &quot;visitor&quot;, departure = &quot;&quot;, deskno = &quot;2&quot;, email = &quot;john_eidson@agilent.com&quot;, fnames = &quot;John&quot;, lname = &quot;Eidson&quot;, occupancy = &quot;2009-01-07&quot;, room = &quot;545Q&quot;, spaceid = &quot;1827&quot;, spacenotes = &quot;VIF with Agilent&quot;, sponsorlname = &quot;Lee&quot;}, {bldg = &quot;Cory      &quot;, classcd = &quot;undergrad&quot;, departure = &quot;2012-08-10&quot;, deskno = &quot;3&quot;, email = &quot;gwansooki@berkeley.edu&quot;, fnames = &quot;Gwan&quot;, lname = &quot;Kim&quot;, occupancy = &quot;2012-05-15&quot;, room = &quot;545Q&quot;, spaceid = &quot;1828&quot;, spacenotes = &quot;Editing video for Edward's class&quot;, sponsorlname = &quot;Lee&quot;}, {bldg = &quot;Cory      &quot;, classcd = &quot;visitor&quot;, departure = &quot;&quot;, deskno = &quot;4&quot;, email = &quot;hugo.andrade@ni.com&quot;, fnames = &quot;Hugo&quot;, lname = &quot;Andrade&quot;, occupancy = &quot;2007-08-20&quot;, room = &quot;545Q&quot;, spaceid = &quot;1830&quot;, spacenotes = &quot;VIF for CHESS&quot;, sponsorlname = &quot;CHESS&quot;}, {bldg = &quot;Cory      &quot;, classcd = &quot;faculty&quot;, departure = &quot;&quot;, deskno = &quot;5&quot;, email = &quot;eal@eecs.berkeley.edu&quot;, fnames = &quot;Edward A.&quot;, lname = &quot;Lee&quot;, occupancy = &quot;2008-08-15&quot;, room = &quot;545Q&quot;, spaceid = &quot;2296&quot;, spacenotes = &quot;faculty&quot;, sponsorlname = &quot;Lee&quot;}, {bldg = &quot;Cory      &quot;, classcd = &quot;staff&quot;, departure = &quot;&quot;, deskno = &quot;6&quot;, email = &quot;cxh@eecs&quot;, fnames = &quot;Christopher&quot;, lname = &quot;Brooks&quot;, occupancy = &quot;&quot;, room = &quot;545Q&quot;, spaceid = &quot;2292&quot;, spacenotes = &quot;&quot;, sponsorlname = &quot;Lee&quot;}, {bldg = &quot;Cory      &quot;, classcd = &quot;visitor&quot;, departure = &quot;2012-12-24&quot;, deskno = &quot;7&quot;, email = &quot;Aviral.Shrivastava@asu.edu&quot;, fnames = &quot;Aviral&quot;, lname = &quot;Shrivastava&quot;, occupancy = &quot;2012-07-01&quot;, room = &quot;545Q&quot;, spaceid = &quot;3005&quot;, spacenotes = &quot;Vistor to PRET Project&quot;, sponsorlname = &quot;Lee&quot;}}">
+        <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
+        </property>
+        <property name="records" class="ptolemy.data.expr.Parameter" value="{{bldg = &quot;Cory      &quot;, classcd = &quot;staff&quot;, departure = &quot;2011-02-20&quot;, deskno = &quot;1&quot;, email = &quot;stavros@eecs.berkeley.edu&quot;, fnames = &quot;Stavros&quot;, lname = &quot;Tripakis&quot;, occupancy = &quot;2009-02-20&quot;, room = &quot;545Q&quot;, spaceid = &quot;1826&quot;, spacenotes = &quot;Visiting Research Scientist, started Feb. 2009&quot;, sponsorlname = &quot;Lee&quot;}, {bldg = &quot;Cory      &quot;, classcd = &quot;visitor&quot;, departure = &quot;&quot;, deskno = &quot;2&quot;, email = &quot;john_eidson@agilent.com&quot;, fnames = &quot;John&quot;, lname = &quot;Eidson&quot;, occupancy = &quot;2009-01-07&quot;, room = &quot;545Q&quot;, spaceid = &quot;1827&quot;, spacenotes = &quot;VIF with Agilent&quot;, sponsorlname = &quot;Lee&quot;}, {bldg = &quot;Cory      &quot;, classcd = &quot;visitor&quot;, departure = &quot;2012-12-24&quot;, deskno = &quot;3&quot;, email = &quot;Aviral.Shrivastava@asu.edu&quot;, fnames = &quot;Aviral&quot;, lname = &quot;Shrivastava&quot;, occupancy = &quot;2012-07-01&quot;, room = &quot;545Q&quot;, spaceid = &quot;1828&quot;, spacenotes = &quot;Vistor to PRET Project&quot;, sponsorlname = &quot;Lee&quot;}, {bldg = &quot;Cory      &quot;, classcd = &quot;visitor&quot;, departure = &quot;&quot;, deskno = &quot;4&quot;, email = &quot;hugo.andrade@ni.com&quot;, fnames = &quot;Hugo&quot;, lname = &quot;Andrade&quot;, occupancy = &quot;2007-08-20&quot;, room = &quot;545Q&quot;, spaceid = &quot;1830&quot;, spacenotes = &quot;VIF for CHESS&quot;, sponsorlname = &quot;CHESS&quot;}, {bldg = &quot;Cory      &quot;, classcd = &quot;faculty&quot;, departure = &quot;&quot;, deskno = &quot;5&quot;, email = &quot;eal@eecs.berkeley.edu&quot;, fnames = &quot;Edward A.&quot;, lname = &quot;Lee&quot;, occupancy = &quot;2008-08-15&quot;, room = &quot;545Q&quot;, spaceid = &quot;2296&quot;, spacenotes = &quot;faculty&quot;, sponsorlname = &quot;Lee&quot;}, {bldg = &quot;Cory      &quot;, classcd = &quot;staff&quot;, departure = &quot;&quot;, deskno = &quot;6&quot;, email = &quot;cxh@eecs&quot;, fnames = &quot;Christopher&quot;, lname = &quot;Brooks&quot;, occupancy = &quot;&quot;, room = &quot;545Q&quot;, spaceid = &quot;2292&quot;, spacenotes = &quot;&quot;, sponsorlname = &quot;Lee&quot;}}">
         </property>
         <property name="iconColumns" class="ptolemy.data.expr.Parameter" value="display">
         </property>
@@ -113,6 +121,8 @@
         </port>
     </entity>
     <entity name="Room2" class="ptolemy.domains.space.Room">
+        <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
+        </property>
         <property name="room" class="ptolemy.data.expr.StringParameter" value="545P">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[655.0, 290.0]">
@@ -144,6 +154,8 @@
         </port>
     </entity>
     <entity name="Occupants2" class="ptolemy.domains.space.Occupants">
+        <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
+        </property>
         <property name="records" class="ptolemy.data.expr.Parameter" value="{{bldg = &quot;Cory      &quot;, classcd = &quot;&quot;, departure = &quot;&quot;, deskno = &quot;1&quot;, email = &quot;&quot;, fnames = &quot;&quot;, lname = &quot;&quot;, occupancy = &quot;&quot;, room = &quot;545P&quot;, spaceid = &quot;1822&quot;, spacenotes = &quot;&quot;, sponsorlname = &quot;&quot;}, {bldg = &quot;Cory      &quot;, classcd = &quot;grad&quot;, departure = &quot;&quot;, deskno = &quot;2&quot;, email = &quot;&quot;, fnames = &quot;Liangpeng&quot;, lname = &quot;Guo&quot;, occupancy = &quot;2008-08-20&quot;, room = &quot;545P&quot;, spaceid = &quot;1823&quot;, spacenotes = &quot;Fall 08 admit, floating area GSR originally, working on Metro II as of Sept. 08&quot;, sponsorlname = &quot;Sangiovanni-Vincentelli&quot;}, {bldg = &quot;Cory      &quot;, classcd = &quot;grad&quot;, departure = &quot;&quot;, deskno = &quot;3&quot;, email = &quot;jbfinn@berkeley.edu&quot;, fnames = &quot;John Butler&quot;, lname = &quot;Finn&quot;, occupancy = &quot;2010-09-01&quot;, room = &quot;545P&quot;, spaceid = &quot;1824&quot;, spacenotes = &quot;First year grad&quot;, sponsorlname = &quot;Sangiovanni-Vincentelli&quot;}, {bldg = &quot;Cory      &quot;, classcd = &quot;grad&quot;, departure = &quot;&quot;, deskno = &quot;4&quot;, email = &quot;cwlin@eecs.berkeley.edu&quot;, fnames = &quot;Chung-Wei&quot;, lname = &quot;Lin&quot;, occupancy = &quot;2009-08-25&quot;, room = &quot;545P&quot;, spaceid = &quot;1825&quot;, spacenotes = &quot;2009 fall admit. Gold. Started w/ Alberto Fall 2010&quot;, sponsorlname = &quot;Sangiovanni-Vincentelli&quot;}}">
         </property>
         <property name="iconColumns" class="ptolemy.data.expr.Parameter" value="display">
@@ -163,6 +175,8 @@
         </port>
     </entity>
     <entity name="Room3" class="ptolemy.domains.space.Room">
+        <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
+        </property>
         <property name="room" class="ptolemy.data.expr.StringParameter" value="545N">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[610.0, 285.0]">
@@ -194,7 +208,9 @@
         </port>
     </entity>
     <entity name="Occupants3" class="ptolemy.domains.space.Occupants">
-        <property name="records" class="ptolemy.data.expr.Parameter" value="{{bldg = &quot;Cory      &quot;, classcd = &quot;&quot;, departure = &quot;&quot;, deskno = &quot;1&quot;, email = &quot;blickly@berkeley.edu&quot;, fnames = &quot;Ben&quot;, lname = &quot;Lickly&quot;, occupancy = &quot;&quot;, room = &quot;545N&quot;, spaceid = &quot;1818&quot;, spacenotes = &quot;Fall 07 admit.&quot;, sponsorlname = &quot;Lee&quot;}, {bldg = &quot;Cory      &quot;, classcd = &quot;visitor&quot;, departure = &quot;2012-12-24&quot;, deskno = &quot;2&quot;, email = &quot;ykim122@asu.edu&quot;, fnames = &quot;Yooseong&quot;, lname = &quot;Kim&quot;, occupancy = &quot;2012-07-01&quot;, room = &quot;545N&quot;, spaceid = &quot;1819&quot;, spacenotes = &quot;Visitor for PRET&quot;, sponsorlname = &quot;Lee&quot;}, {bldg = &quot;Cory      &quot;, classcd = &quot;visitor&quot;, departure = &quot;2013-01-01&quot;, deskno = &quot;3&quot;, email = &quot;david.broman@liu.se&quot;, fnames = &quot;David&quot;, lname = &quot;Broman&quot;, occupancy = &quot;2012-01-01&quot;, room = &quot;545N&quot;, spaceid = &quot;1820&quot;, spacenotes = &quot;Visiting scholar from Linkoping&quot;, sponsorlname = &quot;Lee&quot;}, {bldg = &quot;Cory      &quot;, classcd = &quot;grad&quot;, departure = &quot;&quot;, deskno = &quot;4&quot;, email = &quot;mzimmer88@gmail.com&quot;, fnames = &quot;Mike&quot;, lname = &quot;Zimmer&quot;, occupancy = &quot;2010-08-10&quot;, room = &quot;545N&quot;, spaceid = &quot;1821&quot;, spacenotes = &quot;Fall, 2010 Incoming Grad&quot;, sponsorlname = &quot;Lee&quot;}}">
+        <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
+        </property>
+        <property name="records" class="ptolemy.data.expr.Parameter" value="{{bldg = &quot;Cory      &quot;, classcd = &quot;&quot;, departure = &quot;&quot;, deskno = &quot;1&quot;, email = &quot;blickly@berkeley.edu&quot;, fnames = &quot;Ben&quot;, lname = &quot;Lickly&quot;, occupancy = &quot;&quot;, room = &quot;545N&quot;, spaceid = &quot;1818&quot;, spacenotes = &quot;Fall 07 admit.&quot;, sponsorlname = &quot;Lee&quot;}, {bldg = &quot;Cory      &quot;, classcd = &quot;grad&quot;, departure = &quot;&quot;, deskno = &quot;2&quot;, email = &quot;HeXXiiiZ &lt;hexxiiiz@gmail.com&gt;&quot;, fnames = &quot;Chris&quot;, lname = &quot;Shaver&quot;, occupancy = &quot;2010-07-01&quot;, room = &quot;545N&quot;, spaceid = &quot;1819&quot;, spacenotes = &quot;Edward Lee's Grad Student, away during the summer, 2012&quot;, sponsorlname = &quot;Lee&quot;}, {bldg = &quot;Cory      &quot;, classcd = &quot;visitor&quot;, departure = &quot;2013-01-01&quot;, deskno = &quot;3&quot;, email = &quot;david.broman@liu.se&quot;, fnames = &quot;David&quot;, lname = &quot;Broman&quot;, occupancy = &quot;2012-01-01&quot;, room = &quot;545N&quot;, spaceid = &quot;1820&quot;, spacenotes = &quot;Visiting scholar from Linkoping&quot;, sponsorlname = &quot;Lee&quot;}, {bldg = &quot;Cory      &quot;, classcd = &quot;grad&quot;, departure = &quot;&quot;, deskno = &quot;4&quot;, email = &quot;mzimmer88@gmail.com&quot;, fnames = &quot;Mike&quot;, lname = &quot;Zimmer&quot;, occupancy = &quot;2010-08-10&quot;, room = &quot;545N&quot;, spaceid = &quot;1821&quot;, spacenotes = &quot;Fall, 2010 Incoming Grad&quot;, sponsorlname = &quot;Lee&quot;}}">
         </property>
         <property name="iconColumns" class="ptolemy.data.expr.Parameter" value="display">
         </property>
@@ -213,6 +229,8 @@
         </port>
     </entity>
     <entity name="Room4" class="ptolemy.domains.space.Room">
+        <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
+        </property>
         <property name="room" class="ptolemy.data.expr.StringParameter" value="545M">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[565.0, 275.0]">
@@ -241,7 +259,9 @@
         </property>
     </entity>
     <entity name="Occupants4" class="ptolemy.domains.space.Occupants">
-        <property name="records" class="ptolemy.data.expr.Parameter" value="{{bldg = &quot;Cory      &quot;, classcd = &quot;postdoc&quot;, departure = &quot;2012-10-31&quot;, deskno = &quot;1&quot;, email = &quot;patricia.derler@googlemail.com&quot;, fnames = &quot;Patricia&quot;, lname = &quot;Derler&quot;, occupancy = &quot;2010-11-01&quot;, room = &quot;545M&quot;, spaceid = &quot;1814&quot;, spacenotes = &quot;Postdoc starting Nov. 1, 2010&quot;, sponsorlname = &quot;Lee&quot;}, {bldg = &quot;Cory      &quot;, classcd = &quot;visitor&quot;, departure = &quot;2012-12-24&quot;, deskno = &quot;2&quot;, email = &quot;jcai19@asu.edu&quot;, fnames = &quot;Jian&quot;, lname = &quot;Cai&quot;, occupancy = &quot;2012-07-01&quot;, room = &quot;545M&quot;, spaceid = &quot;1815&quot;, spacenotes = &quot;Visitor to PRET Project&quot;, sponsorlname = &quot;Lee&quot;}, {bldg = &quot;Cory      &quot;, classcd = &quot;grad&quot;, departure = &quot;&quot;, deskno = &quot;3&quot;, email = &quot;ch.stergiou@gmail.com&quot;, fnames = &quot;Christos&quot;, lname = &quot;Stergiou&quot;, occupancy = &quot;2011-01-01&quot;, room = &quot;545M&quot;, spaceid = &quot;1816&quot;, spacenotes = &quot;3d year grad student from Sen, switching 1/11&quot;, sponsorlname = &quot;Lee&quot;}, {bldg = &quot;Cory      &quot;, classcd = &quot;grad&quot;, departure = &quot;&quot;, deskno = &quot;4&quot;, email = &quot;daib@eecs.berkeley.edu&quot;, fnames = &quot;Dai&quot;, lname = &quot;Bui&quot;, occupancy = &quot;2008-08-20&quot;, room = &quot;545M&quot;, spaceid = &quot;1817&quot;, spacenotes = &quot;Fall 07 admit&quot;, sponsorlname = &quot;Lee&quot;}}">
+        <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
+        </property>
+        <property name="records" class="ptolemy.data.expr.Parameter" value="{{bldg = &quot;Cory      &quot;, classcd = &quot;postdoc&quot;, departure = &quot;2012-10-31&quot;, deskno = &quot;1&quot;, email = &quot;patricia.derler@googlemail.com&quot;, fnames = &quot;Patricia&quot;, lname = &quot;Derler&quot;, occupancy = &quot;2010-11-01&quot;, room = &quot;545M&quot;, spaceid = &quot;1814&quot;, spacenotes = &quot;Postdoc starting Nov. 1, 2010&quot;, sponsorlname = &quot;Lee&quot;}, {bldg = &quot;Cory      &quot;, classcd = &quot;&quot;, departure = &quot;&quot;, deskno = &quot;2&quot;, email = &quot;&quot;, fnames = &quot;&quot;, lname = &quot;&quot;, occupancy = &quot;&quot;, room = &quot;545M&quot;, spaceid = &quot;1815&quot;, spacenotes = &quot;&quot;, sponsorlname = &quot;&quot;}, {bldg = &quot;Cory      &quot;, classcd = &quot;grad&quot;, departure = &quot;&quot;, deskno = &quot;3&quot;, email = &quot;ch.stergiou@gmail.com&quot;, fnames = &quot;Christos&quot;, lname = &quot;Stergiou&quot;, occupancy = &quot;2011-01-01&quot;, room = &quot;545M&quot;, spaceid = &quot;1816&quot;, spacenotes = &quot;3d year grad student from Sen, switching 1/11&quot;, sponsorlname = &quot;Lee&quot;}, {bldg = &quot;Cory      &quot;, classcd = &quot;grad&quot;, departure = &quot;&quot;, deskno = &quot;4&quot;, email = &quot;daib@eecs.berkeley.edu&quot;, fnames = &quot;Dai&quot;, lname = &quot;Bui&quot;, occupancy = &quot;2008-08-20&quot;, room = &quot;545M&quot;, spaceid = &quot;1817&quot;, spacenotes = &quot;Fall 07 admit&quot;, sponsorlname = &quot;Lee&quot;}}">
         </property>
         <property name="iconColumns" class="ptolemy.data.expr.Parameter" value="display">
         </property>
@@ -255,6 +275,8 @@
         </property>
     </entity>
     <entity name="Room5" class="ptolemy.domains.space.Room">
+        <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
+        </property>
         <property name="room" class="ptolemy.data.expr.StringParameter" value="545J">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[440.0, 260.0]">
@@ -281,6 +303,8 @@
         </property>
     </entity>
     <entity name="Occupants5" class="ptolemy.domains.space.Occupants">
+        <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
+        </property>
         <property name="records" class="ptolemy.data.expr.Parameter" value="{{bldg = &quot;Cory      &quot;, classcd = &quot;grad&quot;, departure = &quot;&quot;, deskno = &quot;1&quot;, email = &quot;a.s.neogy@gmail.com&quot;, fnames = &quot;Arkosnato&quot;, lname = &quot;Neogy&quot;, occupancy = &quot;2011-06-20&quot;, room = &quot;545J&quot;, spaceid = &quot;1797&quot;, spacenotes = &quot;Fall 2011 admit. New grad student&quot;, sponsorlname = &quot;Roychowdhury&quot;}, {bldg = &quot;Cory      &quot;, classcd = &quot;grad&quot;, departure = &quot;&quot;, deskno = &quot;2&quot;, email = &quot;ariemeir@berkeley.edu&quot;, fnames = &quot;Arie&quot;, lname = &quot;Meir&quot;, occupancy = &quot;2011-08-01&quot;, room = &quot;545J&quot;, spaceid = &quot;1798&quot;, spacenotes = &quot;Fall 2010 grad - Roychowdhury group&quot;, sponsorlname = &quot;Roychowdhury&quot;}, {bldg = &quot;Cory      &quot;, classcd = &quot;other&quot;, departure = &quot;&quot;, deskno = &quot;3&quot;, email = &quot;serenasmiley@sbcglobal.net&quot;, fnames = &quot;Serena&quot;, lname = &quot;Smiley&quot;, occupancy = &quot;2010-08-25&quot;, room = &quot;545J&quot;, spaceid = &quot;3001&quot;, spacenotes = &quot;UG student doing a project&quot;, sponsorlname = &quot;Roychowdhury&quot;}, {bldg = &quot;Cory      &quot;, classcd = &quot;grad&quot;, departure = &quot;&quot;, deskno = &quot;4&quot;, email = &quot;&quot;, fnames = &quot;Aadithya&quot;, lname = &quot;Karthik&quot;, occupancy = &quot;2009-08-20&quot;, room = &quot;545J&quot;, spaceid = &quot;1800&quot;, spacenotes = &quot;Fall 2009 admit. Roychowdhury GSR.&quot;, sponsorlname = &quot;Roychowdhury&quot;}}">
         </property>
         <property name="iconColumns" class="ptolemy.data.expr.Parameter" value="display">
@@ -295,6 +319,8 @@
         </property>
     </entity>
     <entity name="Room6" class="ptolemy.domains.space.Room">
+        <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
+        </property>
         <property name="room" class="ptolemy.data.expr.StringParameter" value="545K">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[500.0, 270.0]">
@@ -321,6 +347,8 @@
         </property>
     </entity>
     <entity name="Occupants6" class="ptolemy.domains.space.Occupants">
+        <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
+        </property>
         <property name="records" class="ptolemy.data.expr.Parameter" value="{{bldg = &quot;Cory      &quot;, classcd = &quot;&quot;, departure = &quot;&quot;, deskno = &quot;1&quot;, email = &quot;liuisaac@berkeley.edu&quot;, fnames = &quot;Isaac&quot;, lname = &quot;Liu&quot;, occupancy = &quot;&quot;, room = &quot;545K&quot;, spaceid = &quot;1803&quot;, spacenotes = &quot;Fall 07 admit.&quot;, sponsorlname = &quot;Lee&quot;}, {bldg = &quot;Cory      &quot;, classcd = &quot;grad&quot;, departure = &quot;&quot;, deskno = &quot;2&quot;, email = &quot;ematsi@eecs.berkeley.edu&quot;, fnames = &quot;Eleftherios&quot;, lname = &quot;Matsikoudis&quot;, occupancy = &quot;&quot;, room = &quot;545K&quot;, spaceid = &quot;1804&quot;, spacenotes = &quot;Fall 02 admit (?) Postdoc&quot;, sponsorlname = &quot;Lee&quot;}, {bldg = &quot;Cory      &quot;, classcd = &quot;visitor&quot;, departure = &quot;2013-08-31&quot;, deskno = &quot;3&quot;, email = &quot;Tomi.Raty@vtt.fi&quot;, fnames = &quot;Tomi&quot;, lname = &quot;Rati&quot;, occupancy = &quot;2011-09-01&quot;, room = &quot;545K&quot;, spaceid = &quot;1805&quot;, spacenotes = &quot;CHESS VIF&quot;, sponsorlname = &quot;Lee&quot;}, {bldg = &quot;Cory      &quot;, classcd = &quot;grad&quot;, departure = &quot;&quot;, deskno = &quot;4&quot;, email = &quot;&quot;, fnames = &quot;Ilge&quot;, lname = &quot;Akkaya&quot;, occupancy = &quot;2010-08-25&quot;, room = &quot;545K&quot;, spaceid = &quot;1806&quot;, spacenotes = &quot;First year student Fall 2010&quot;, sponsorlname = &quot;Lee&quot;}}">
         </property>
         <property name="iconColumns" class="ptolemy.data.expr.Parameter" value="display">
@@ -335,6 +363,8 @@
         </property>
     </entity>
     <entity name="Room7" class="ptolemy.domains.space.Room">
+        <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
+        </property>
         <property name="room" class="ptolemy.data.expr.StringParameter" value="545F">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[320.0, 245.0]">
@@ -361,6 +391,8 @@
         </property>
     </entity>
     <entity name="Occupants7" class="ptolemy.domains.space.Occupants">
+        <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
+        </property>
         <property name="records" class="ptolemy.data.expr.Parameter" value="{{bldg = &quot;Cory      &quot;, classcd = &quot;&quot;, departure = &quot;&quot;, deskno = &quot;1&quot;, email = &quot;sayak@eecs.berkeley.edu&quot;, fnames = &quot;Sayak&quot;, lname = &quot;Ray&quot;, occupancy = &quot;&quot;, room = &quot;545F&quot;, spaceid = &quot;2053&quot;, spacenotes = &quot;Confirmed 7/09. 2007 admit grad student&quot;, sponsorlname = &quot;Brayton&quot;}, {bldg = &quot;Cory      &quot;, classcd = &quot;other&quot;, departure = &quot;&quot;, deskno = &quot;2&quot;, email = &quot;alanmi@eecs.berkeley.edu&quot;, fnames = &quot;Alan&quot;, lname = &quot;Mishchenko&quot;, occupancy = &quot;2010-12-10&quot;, room = &quot;545F&quot;, spaceid = &quot;2987&quot;, spacenotes = &quot;Sharing with Niklas Een because of 4th floor renovation&quot;, sponsorlname = &quot;Brayton&quot;}, {bldg = &quot;Cory      &quot;, classcd = &quot;grad&quot;, departure = &quot;&quot;, deskno = &quot;3&quot;, email = &quot;&quot;, fnames = &quot;Mehdi&quot;, lname = &quot;Massoudiam&quot;, occupancy = &quot;2008-08-20&quot;, room = &quot;545F&quot;, spaceid = &quot;1785&quot;, spacenotes = &quot;Fall 08 admit&quot;, sponsorlname = &quot;Sangiovanni-Vincentelli&quot;}, {bldg = &quot;Cory      &quot;, classcd = &quot;grad&quot;, departure = &quot;&quot;, deskno = &quot;4&quot;, email = &quot;sterin@eecs.berkeley.edu&quot;, fnames = &quot;Baruch&quot;, lname = &quot;Sterin&quot;, occupancy = &quot;2008-10-01&quot;, room = &quot;545F&quot;, spaceid = &quot;1788&quot;, spacenotes = &quot;Fall 08 admit, started as floating 545W&quot;, sponsorlname = &quot;Brayton&quot;}}">
         </property>
         <property name="iconColumns" class="ptolemy.data.expr.Parameter" value="display">
@@ -375,6 +407,8 @@
         </property>
     </entity>
     <entity name="Room8" class="ptolemy.domains.space.Room">
+        <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
+        </property>
         <property name="room" class="ptolemy.data.expr.StringParameter" value="545H">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[380.0, 255.0]">
@@ -401,6 +435,8 @@
         </property>
     </entity>
     <entity name="Occupants8" class="ptolemy.domains.space.Occupants">
+        <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
+        </property>
         <property name="records" class="ptolemy.data.expr.Parameter" value="{{bldg = &quot;Cory      &quot;, classcd = &quot;visitor&quot;, departure = &quot;2012-07-31&quot;, deskno = &quot;1&quot;, email = &quot;nikunjbjj@gmail.com&quot;, fnames = &quot;Nikunj&quot;, lname = &quot;Bajaj &quot;, occupancy = &quot;2012-05-07&quot;, room = &quot;545H&quot;, spaceid = &quot;3004&quot;, spacenotes = &quot;visiting student from IIT Kharagpur, India. He will be working with us here for 10 weeks&quot;, sponsorlname = &quot;Sangiovanni-Vincentelli&quot;}, {bldg = &quot;Cory      &quot;, classcd = &quot;postdoc&quot;, departure = &quot;2011-02-01&quot;, deskno = &quot;2&quot;, email = &quot;mozumdar@eecs.berkeley.edu&quot;, fnames = &quot;Mohammad&quot;, lname = &quot;Mozumdar&quot;, occupancy = &quot;2010-02-01&quot;, room = &quot;545H&quot;, spaceid = &quot;1793&quot;, spacenotes = &quot;Postdoc with Alberto&quot;, sponsorlname = &quot;Sangiovanni-Vincentelli&quot;}, {bldg = &quot;Cory      &quot;, classcd = &quot;grad&quot;, departure = &quot;&quot;, deskno = &quot;3&quot;, email = &quot;&quot;, fnames = &quot;Pierluigi&quot;, lname = &quot;Nuzzo&quot;, occupancy = &quot;2008-08-20&quot;, room = &quot;545H&quot;, spaceid = &quot;1794&quot;, spacenotes = &quot;Fall 08 admit&quot;, sponsorlname = &quot;Sangiovanni-Vincentelli&quot;}, {bldg = &quot;Cory      &quot;, classcd = &quot;grad&quot;, departure = &quot;&quot;, deskno = &quot;4&quot;, email = &quot;&quot;, fnames = &quot;Alberto&quot;, lname = &quot;Puggelli&quot;, occupancy = &quot;2009-08-20&quot;, room = &quot;545H&quot;, spaceid = &quot;1795&quot;, spacenotes = &quot;Fall 2009 admit&quot;, sponsorlname = &quot;Sangiovanni-Vincentelli&quot;}}">
         </property>
         <property name="iconColumns" class="ptolemy.data.expr.Parameter" value="display">
@@ -415,6 +451,8 @@
         </property>
     </entity>
     <entity name="Room9" class="ptolemy.domains.space.Room">
+        <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
+        </property>
         <property name="room" class="ptolemy.data.expr.StringParameter" value="545D">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[205.0, 230.0]">
@@ -441,6 +479,8 @@
         </property>
     </entity>
     <entity name="Room10" class="ptolemy.domains.space.Room">
+        <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
+        </property>
         <property name="room" class="ptolemy.data.expr.StringParameter" value="545E">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[265.0, 240.0]">
@@ -467,6 +507,8 @@
         </property>
     </entity>
     <entity name="Occupants10" class="ptolemy.domains.space.Occupants">
+        <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
+        </property>
         <property name="records" class="ptolemy.data.expr.Parameter" value="{{bldg = &quot;Cory      &quot;, classcd = &quot;faculty&quot;, departure = &quot;&quot;, deskno = &quot;0&quot;, email = &quot;jr@eecs.berkeley.edu&quot;, fnames = &quot;Jaijeet&quot;, lname = &quot;Roychowdhury&quot;, occupancy = &quot;&quot;, room = &quot;545E&quot;, spaceid = &quot;1784&quot;, spacenotes = &quot;Faculty office&quot;, sponsorlname = &quot;Roychowdhury&quot;}}">
         </property>
         <property name="iconColumns" class="ptolemy.data.expr.Parameter" value="display">
@@ -481,7 +523,9 @@
         </property>
     </entity>
     <entity name="Occupants11" class="ptolemy.domains.space.Occupants">
-        <property name="records" class="ptolemy.data.expr.Parameter" value="{{bldg = &quot;Cory      &quot;, classcd = &quot;undergrad&quot;, departure = &quot;&quot;, deskno = &quot;1&quot;, email = &quot;elise.xu@berkeley.edu, heyuanli@berkeley.edu&quot;, fnames = &quot;Eric He&quot;, lname = &quot;Elise Hu&quot;, occupancy = &quot;2011-10-19&quot;, room = &quot;545W&quot;, spaceid = &quot;1847&quot;, spacenotes = &quot;Overflow from 550.&quot;, sponsorlname = &quot;Spanos&quot;}, {bldg = &quot;Cory      &quot;, classcd = &quot;postdoc&quot;, departure = &quot;&quot;, deskno = &quot;2&quot;, email = &quot;aflynn@eecs.berkeley.edu&quot;, fnames = &quot;anita&quot;, lname = &quot;flynn&quot;, occupancy = &quot;2011-01-06&quot;, room = &quot;545W&quot;, spaceid = &quot;1848&quot;, spacenotes = &quot;&quot;, sponsorlname = &quot;Lustig&quot;}, {bldg = &quot;Cory      &quot;, classcd = &quot;grad&quot;, departure = &quot;&quot;, deskno = &quot;3&quot;, email = &quot;&quot;, fnames = &quot;Patrick&quot;, lname = &quot;Virtue&quot;, occupancy = &quot;2011-01-01&quot;, room = &quot;545W&quot;, spaceid = &quot;1849&quot;, spacenotes = &quot;First year grad in Fall 2010. Confirmed 1/11&quot;, sponsorlname = &quot;Lustig&quot;}, {bldg = &quot;Cory      &quot;, classcd = &quot;grad&quot;, departure = &quot;&quot;, deskno = &quot;4&quot;, email = &quot;&quot;, fnames = &quot;Jiang&quot;, lname = &quot;Long&quot;, occupancy = &quot;2008-08-20&quot;, room = &quot;545W&quot;, spaceid = &quot;2986&quot;, spacenotes = &quot;Fall 08 admit. Confirmed 1/11.&quot;, sponsorlname = &quot;Brayton&quot;}, {bldg = &quot;Cory      &quot;, classcd = &quot;visitor&quot;, departure = &quot;&quot;, deskno = &quot;5&quot;, email = &quot;mizarrouk@gmail.com&quot;, fnames = &quot;Michal&quot;, lname = &quot;Zarrouk&quot;, occupancy = &quot;2012-03-22&quot;, room = &quot;545W&quot;, spaceid = &quot;1851&quot;, spacenotes = &quot;&quot;, sponsorlname = &quot;Lustig&quot;}, {bldg = &quot;Cory      &quot;, classcd = &quot;grad&quot;, departure = &quot;&quot;, deskno = &quot;6&quot;, email = &quot;&quot;, fnames = &quot;Mert&quot;, lname = &quot;Pilanci&quot;, occupancy = &quot;2011-01-01&quot;, room = &quot;545W&quot;, spaceid = &quot;1852&quot;, spacenotes = &quot;First year grad in Fall 2010, confirmed 1/11&quot;, sponsorlname = &quot;El Ghaoui&quot;}, {bldg = &quot;Cory      &quot;, classcd = &quot;grad&quot;, departure = &quot;&quot;, deskno = &quot;7&quot;, email = &quot;HeXXiiiZ &lt;hexxiiiz@gmail.com&gt;&quot;, fnames = &quot;Chris&quot;, lname = &quot;Shaver&quot;, occupancy = &quot;2010-07-01&quot;, room = &quot;545W&quot;, spaceid = &quot;1853&quot;, spacenotes = &quot;New grad student, July 1, 2010&quot;, sponsorlname = &quot;Lee&quot;}, {bldg = &quot;Cory      &quot;, classcd = &quot;&quot;, departure = &quot;&quot;, deskno = &quot;8&quot;, email = &quot;&quot;, fnames = &quot;&quot;, lname = &quot;&quot;, occupancy = &quot;&quot;, room = &quot;545W&quot;, spaceid = &quot;1854&quot;, spacenotes = &quot;&quot;, sponsorlname = &quot;&quot;}, {bldg = &quot;Cory      &quot;, classcd = &quot;&quot;, departure = &quot;&quot;, deskno = &quot;9&quot;, email = &quot;twelp@berkeley.edu&quot;, fnames = &quot;Tobias&quot;, lname = &quot;Welp&quot;, occupancy = &quot;&quot;, room = &quot;545W&quot;, spaceid = &quot;1855&quot;, spacenotes = &quot;Fall 07 admit&quot;, sponsorlname = &quot;Kuehlmann&quot;}, {bldg = &quot;Cory      &quot;, classcd = &quot;&quot;, departure = &quot;&quot;, deskno = &quot;10&quot;, email = &quot;&quot;, fnames = &quot;&quot;, lname = &quot;&quot;, occupancy = &quot;&quot;, room = &quot;545W&quot;, spaceid = &quot;1856&quot;, spacenotes = &quot;&quot;, sponsorlname = &quot;&quot;}, {bldg = &quot;Cory      &quot;, classcd = &quot;&quot;, departure = &quot;&quot;, deskno = &quot;11&quot;, email = &quot;&quot;, fnames = &quot;&quot;, lname = &quot;&quot;, occupancy = &quot;&quot;, room = &quot;545W&quot;, spaceid = &quot;1857&quot;, spacenotes = &quot;&quot;, sponsorlname = &quot;&quot;}, {bldg = &quot;Cory      &quot;, classcd = &quot;&quot;, departure = &quot;&quot;, deskno = &quot;12&quot;, email = &quot;yangyang@eecs.berkeley.edu&quot;, fnames = &quot;Yang&quot;, lname = &quot;Yang&quot;, occupancy = &quot;&quot;, room = &quot;545W&quot;, spaceid = &quot;1858&quot;, spacenotes = &quot;Confirmed 1/11&quot;, sponsorlname = &quot;Sangiovanni-Vincentelli&quot;}, {bldg = &quot;Cory      &quot;, classcd = &quot;&quot;, departure = &quot;&quot;, deskno = &quot;13&quot;, email = &quot;sanav@berkeley.edu&quot;, fnames = &quot;Sana&quot;, lname = &quot;Vaziri&quot;, occupancy = &quot;2012-03-11&quot;, room = &quot;545W&quot;, spaceid = &quot;2294&quot;, spacenotes = &quot;&quot;, sponsorlname = &quot;Lustig&quot;}, {bldg = &quot;Cory      &quot;, classcd = &quot;postdoc&quot;, departure = &quot;&quot;, deskno = &quot;14&quot;, email = &quot;muecker@gwdg.de&quot;, fnames = &quot;Martin&quot;, lname = &quot;Uecker&quot;, occupancy = &quot;2011-11-17&quot;, room = &quot;545W&quot;, spaceid = &quot;1860&quot;, spacenotes = &quot;&quot;, sponsorlname = &quot;Lustig&quot;}, {bldg = &quot;Cory      &quot;, classcd = &quot;undergrad&quot;, departure = &quot;&quot;, deskno = &quot;15&quot;, email = &quot;&quot;, fnames = &quot;Frank&quot;, lname = &quot;Ong&quot;, occupancy = &quot;2012-03-11&quot;, room = &quot;545W&quot;, spaceid = &quot;1864&quot;, spacenotes = &quot;Senior in Miki's group&quot;, sponsorlname = &quot;Lustig&quot;}, {bldg = &quot;Cory      &quot;, classcd = &quot;grad&quot;, departure = &quot;2012-05-20&quot;, deskno = &quot;16&quot;, email = &quot;jiangwenwen1231@gmail.com&quot;, fnames = &quot;Wenwen&quot;, lname = &quot;Jiang&quot;, occupancy = &quot;2012-03-12&quot;, room = &quot;545W&quot;, spaceid = &quot;1861&quot;, spacenotes = &quot;&quot;, sponsorlname = &quot;Lustig&quot;}}">
+        <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
+        </property>
+        <property name="records" class="ptolemy.data.expr.Parameter" value="{{bldg = &quot;Cory      &quot;, classcd = &quot;undergrad&quot;, departure = &quot;&quot;, deskno = &quot;1&quot;, email = &quot;elise.xu@berkeley.edu, heyuanli@berkeley.edu&quot;, fnames = &quot;Eric He&quot;, lname = &quot;Elise Hu&quot;, occupancy = &quot;2011-10-19&quot;, room = &quot;545W&quot;, spaceid = &quot;1847&quot;, spacenotes = &quot;Overflow from 550.&quot;, sponsorlname = &quot;Spanos&quot;}, {bldg = &quot;Cory      &quot;, classcd = &quot;postdoc&quot;, departure = &quot;&quot;, deskno = &quot;2&quot;, email = &quot;aflynn@eecs.berkeley.edu&quot;, fnames = &quot;anita&quot;, lname = &quot;flynn&quot;, occupancy = &quot;2011-01-06&quot;, room = &quot;545W&quot;, spaceid = &quot;1848&quot;, spacenotes = &quot;&quot;, sponsorlname = &quot;Lustig&quot;}, {bldg = &quot;Cory      &quot;, classcd = &quot;grad&quot;, departure = &quot;&quot;, deskno = &quot;3&quot;, email = &quot;&quot;, fnames = &quot;Patrick&quot;, lname = &quot;Virtue&quot;, occupancy = &quot;2011-01-01&quot;, room = &quot;545W&quot;, spaceid = &quot;1849&quot;, spacenotes = &quot;First year grad in Fall 2010. Confirmed 1/11&quot;, sponsorlname = &quot;Lustig&quot;}, {bldg = &quot;Cory      &quot;, classcd = &quot;grad&quot;, departure = &quot;&quot;, deskno = &quot;4&quot;, email = &quot;&quot;, fnames = &quot;Jiang&quot;, lname = &quot;Long&quot;, occupancy = &quot;2008-08-20&quot;, room = &quot;545W&quot;, spaceid = &quot;2986&quot;, spacenotes = &quot;Fall 08 admit. Confirmed 1/11.&quot;, sponsorlname = &quot;Brayton&quot;}, {bldg = &quot;Cory      &quot;, classcd = &quot;visitor&quot;, departure = &quot;&quot;, deskno = &quot;5&quot;, email = &quot;mizarrouk@gmail.com&quot;, fnames = &quot;Michal&quot;, lname = &quot;Zarrouk&quot;, occupancy = &quot;2012-03-22&quot;, room = &quot;545W&quot;, spaceid = &quot;1851&quot;, spacenotes = &quot;&quot;, sponsorlname = &quot;Lustig&quot;}, {bldg = &quot;Cory      &quot;, classcd = &quot;grad&quot;, departure = &quot;&quot;, deskno = &quot;6&quot;, email = &quot;&quot;, fnames = &quot;Mert&quot;, lname = &quot;Pilanci&quot;, occupancy = &quot;2011-01-01&quot;, room = &quot;545W&quot;, spaceid = &quot;1852&quot;, spacenotes = &quot;First year grad in Fall 2010, confirmed 1/11&quot;, sponsorlname = &quot;El Ghaoui&quot;}, {bldg = &quot;Cory      &quot;, classcd = &quot;&quot;, departure = &quot;&quot;, deskno = &quot;7&quot;, email = &quot;&quot;, fnames = &quot;&quot;, lname = &quot;&quot;, occupancy = &quot;&quot;, room = &quot;545W&quot;, spaceid = &quot;1853&quot;, spacenotes = &quot;&quot;, sponsorlname = &quot;&quot;}, {bldg = &quot;Cory      &quot;, classcd = &quot;&quot;, departure = &quot;&quot;, deskno = &quot;8&quot;, email = &quot;&quot;, fnames = &quot;&quot;, lname = &quot;&quot;, occupancy = &quot;&quot;, room = &quot;545W&quot;, spaceid = &quot;1854&quot;, spacenotes = &quot;&quot;, sponsorlname = &quot;&quot;}, {bldg = &quot;Cory      &quot;, classcd = &quot;&quot;, departure = &quot;&quot;, deskno = &quot;9&quot;, email = &quot;twelp@berkeley.edu&quot;, fnames = &quot;Tobias&quot;, lname = &quot;Welp&quot;, occupancy = &quot;&quot;, room = &quot;545W&quot;, spaceid = &quot;1855&quot;, spacenotes = &quot;Fall 07 admit&quot;, sponsorlname = &quot;Kuehlmann&quot;}, {bldg = &quot;Cory      &quot;, classcd = &quot;&quot;, departure = &quot;&quot;, deskno = &quot;10&quot;, email = &quot;&quot;, fnames = &quot;&quot;, lname = &quot;&quot;, occupancy = &quot;&quot;, room = &quot;545W&quot;, spaceid = &quot;1856&quot;, spacenotes = &quot;&quot;, sponsorlname = &quot;&quot;}, {bldg = &quot;Cory      &quot;, classcd = &quot;&quot;, departure = &quot;&quot;, deskno = &quot;11&quot;, email = &quot;&quot;, fnames = &quot;&quot;, lname = &quot;&quot;, occupancy = &quot;&quot;, room = &quot;545W&quot;, spaceid = &quot;1857&quot;, spacenotes = &quot;&quot;, sponsorlname = &quot;&quot;}, {bldg = &quot;Cory      &quot;, classcd = &quot;&quot;, departure = &quot;&quot;, deskno = &quot;12&quot;, email = &quot;yangyang@eecs.berkeley.edu&quot;, fnames = &quot;Yang&quot;, lname = &quot;Yang&quot;, occupancy = &quot;&quot;, room = &quot;545W&quot;, spaceid = &quot;1858&quot;, spacenotes = &quot;Confirmed 1/11&quot;, sponsorlname = &quot;Sangiovanni-Vincentelli&quot;}, {bldg = &quot;Cory      &quot;, classcd = &quot;&quot;, departure = &quot;&quot;, deskno = &quot;13&quot;, email = &quot;sanav@berkeley.edu&quot;, fnames = &quot;Sana&quot;, lname = &quot;Vaziri&quot;, occupancy = &quot;2012-03-11&quot;, room = &quot;545W&quot;, spaceid = &quot;2294&quot;, spacenotes = &quot;&quot;, sponsorlname = &quot;Lustig&quot;}, {bldg = &quot;Cory      &quot;, classcd = &quot;postdoc&quot;, departure = &quot;&quot;, deskno = &quot;14&quot;, email = &quot;muecker@gwdg.de&quot;, fnames = &quot;Martin&quot;, lname = &quot;Uecker&quot;, occupancy = &quot;2011-11-17&quot;, room = &quot;545W&quot;, spaceid = &quot;1860&quot;, spacenotes = &quot;&quot;, sponsorlname = &quot;Lustig&quot;}, {bldg = &quot;Cory      &quot;, classcd = &quot;undergrad&quot;, departure = &quot;&quot;, deskno = &quot;15&quot;, email = &quot;&quot;, fnames = &quot;Frank&quot;, lname = &quot;Ong&quot;, occupancy = &quot;2012-03-11&quot;, room = &quot;545W&quot;, spaceid = &quot;1864&quot;, spacenotes = &quot;Senior in Miki's group&quot;, sponsorlname = &quot;Lustig&quot;}, {bldg = &quot;Cory      &quot;, classcd = &quot;grad&quot;, departure = &quot;2012-05-20&quot;, deskno = &quot;16&quot;, email = &quot;jiangwenwen1231@gmail.com&quot;, fnames = &quot;Wenwen&quot;, lname = &quot;Jiang&quot;, occupancy = &quot;2012-03-12&quot;, room = &quot;545W&quot;, spaceid = &quot;1861&quot;, spacenotes = &quot;&quot;, sponsorlname = &quot;Lustig&quot;}}">
         </property>
         <property name="iconColumns" class="ptolemy.data.expr.Parameter" value="display">
         </property>
@@ -501,6 +545,8 @@
         </property>
     </entity>
     <entity name="Room11" class="ptolemy.domains.space.Room">
+        <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
+        </property>
         <property name="room" class="ptolemy.data.expr.StringParameter" value="545W">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[395.0, 450.0]">
@@ -529,6 +575,8 @@
         </property>
     </entity>
     <entity name="Room12" class="ptolemy.domains.space.Room">
+        <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
+        </property>
         <property name="room" class="ptolemy.data.expr.StringParameter" value="545T">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[660.0, 455.0]">
@@ -557,6 +605,8 @@
         </property>
     </entity>
     <entity name="Occupants12" class="ptolemy.domains.space.Occupants">
+        <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
+        </property>
         <property name="records" class="ptolemy.data.expr.Parameter" value="{{bldg = &quot;Cory      &quot;, classcd = &quot;other&quot;, departure = &quot;&quot;, deskno = &quot;1&quot;, email = &quot;mlustig@EECS.Berkeley.EDU&quot;, fnames = &quot;Miki&quot;, lname = &quot;Lab Machine&quot;, occupancy = &quot;2011-06-30&quot;, room = &quot;545T&quot;, spaceid = &quot;1841&quot;, spacenotes = &quot;Miki's lab machine&quot;, sponsorlname = &quot;Lustiglab&quot;}, {bldg = &quot;Cory      &quot;, classcd = &quot;&quot;, departure = &quot;&quot;, deskno = &quot;2&quot;, email = &quot;&quot;, fnames = &quot;&quot;, lname = &quot;&quot;, occupancy = &quot;&quot;, room = &quot;545T&quot;, spaceid = &quot;1843&quot;, spacenotes = &quot;&quot;, sponsorlname = &quot;&quot;}, {bldg = &quot;Cory      &quot;, classcd = &quot;&quot;, departure = &quot;&quot;, deskno = &quot;3&quot;, email = &quot;&quot;, fnames = &quot;&quot;, lname = &quot;&quot;, occupancy = &quot;&quot;, room = &quot;545T&quot;, spaceid = &quot;3000&quot;, spacenotes = &quot;&quot;, sponsorlname = &quot;&quot;}, {bldg = &quot;Cory      &quot;, classcd = &quot;&quot;, departure = &quot;&quot;, deskno = &quot;4&quot;, email = &quot;&quot;, fnames = &quot;Pister/Boser&quot;, lname = &quot;Students1&quot;, occupancy = &quot;2011-10-05&quot;, room = &quot;545T&quot;, spaceid = &quot;1844&quot;, spacenotes = &quot;Pister/Boser 5 MS students&quot;, sponsorlname = &quot;Pister&quot;}}">
         </property>
         <property name="iconColumns" class="ptolemy.data.expr.Parameter" value="display">
@@ -573,6 +623,8 @@
         </property>
     </entity>
     <entity name="Room13" class="ptolemy.domains.space.Room">
+        <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
+        </property>
         <property name="room" class="ptolemy.data.expr.StringParameter" value="545S">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[700.0, 460.0]">
@@ -601,6 +653,8 @@
         </property>
     </entity>
     <entity name="Occupants13" class="ptolemy.domains.space.Occupants">
+        <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
+        </property>
         <property name="records" class="ptolemy.data.expr.Parameter" value="{{bldg = &quot;Cory      &quot;, classcd = &quot;grad&quot;, departure = &quot;&quot;, deskno = &quot;1&quot;, email = &quot;&quot;, fnames = &quot;Jonathan Prakash&quot;, lname = &quot;Kotker&quot;, occupancy = &quot;2010-06-15&quot;, room = &quot;545S&quot;, spaceid = &quot;1832&quot;, spacenotes = &quot;&quot;, sponsorlname = &quot;Seshia&quot;}, {bldg = &quot;Cory      &quot;, classcd = &quot;undergrad&quot;, departure = &quot;2012-08-24&quot;, deskno = &quot;2&quot;, email = &quot;chenxu1991@berkeley.edu&quot;, fnames = &quot;Xu&quot;, lname = &quot;Chen&quot;, occupancy = &quot;2012-06-01&quot;, room = &quot;545S&quot;, spaceid = &quot;1833&quot;, spacenotes = &quot;&quot;, sponsorlname = &quot;Seshia&quot;}, {bldg = &quot;Cory      &quot;, classcd = &quot;grad&quot;, departure = &quot;&quot;, deskno = &quot;3&quot;, email = &quot;dsadigh@berkeley.edu&quot;, fnames = &quot;Dorsa&quot;, lname = &quot;Sadigh&quot;, occupancy = &quot;2012-06-01&quot;, room = &quot;545S&quot;, spaceid = &quot;2234&quot;, spacenotes = &quot;&quot;, sponsorlname = &quot;Seshia&quot;}, {bldg = &quot;Cory      &quot;, classcd = &quot;grad&quot;, departure = &quot;&quot;, deskno = &quot;4&quot;, email = &quot;garvitjuniwal@gmail.com&quot;, fnames = &quot;Garvit&quot;, lname = &quot;Juniwal&quot;, occupancy = &quot;2012-06-25&quot;, room = &quot;545S&quot;, spaceid = &quot;1835&quot;, spacenotes = &quot;1st year grad&quot;, sponsorlname = &quot;Seshia&quot;}, {bldg = &quot;Cory      &quot;, classcd = &quot;&quot;, departure = &quot;&quot;, deskno = &quot;5&quot;, email = &quot;wenchao@berkeley.edu&quot;, fnames = &quot;Wenchao&quot;, lname = &quot;Li&quot;, occupancy = &quot;&quot;, room = &quot;545S&quot;, spaceid = &quot;1837&quot;, spacenotes = &quot;&quot;, sponsorlname = &quot;Seshia&quot;}, {bldg = &quot;Cory      &quot;, classcd = &quot;visitor&quot;, departure = &quot;2012-08-31&quot;, deskno = &quot;6&quot;, email = &quot;orna@cs.huji.ac.il&quot;, fnames = &quot;Orna&quot;, lname = &quot;Kupferman&quot;, occupancy = &quot;2012-07-01&quot;, room = &quot;545S&quot;, spaceid = &quot;1838&quot;, spacenotes = &quot;&quot;, sponsorlname = &quot;Seshia&quot;}, {bldg = &quot;Cory      &quot;, classcd = &quot;grad&quot;, departure = &quot;&quot;, deskno = &quot;7&quot;, email = &quot;sinharo@gmail.com&quot;, fnames = &quot;Rohit&quot;, lname = &quot;Sinha&quot;, occupancy = &quot;2011-08-15&quot;, room = &quot;545S&quot;, spaceid = &quot;1839&quot;, spacenotes = &quot;&quot;, sponsorlname = &quot;Seshia&quot;}, {bldg = &quot;Cory      &quot;, classcd = &quot;grad&quot;, departure = &quot;&quot;, deskno = &quot;8&quot;, email = &quot;zach.wasson@berkeley.edu&quot;, fnames = &quot;Zach&quot;, lname = &quot;Wasson&quot;, occupancy = &quot;2011-08-15&quot;, room = &quot;545S&quot;, spaceid = &quot;1840&quot;, spacenotes = &quot;&quot;, sponsorlname = &quot;Seshia&quot;}, {bldg = &quot;Cory      &quot;, classcd = &quot;postdoc&quot;, departure = &quot;&quot;, deskno = &quot;9&quot;, email = &quot;donze@imag.fr&quot;, fnames = &quot;Alex&quot;, lname = &quot;Donze&quot;, occupancy = &quot;2012-03-01&quot;, room = &quot;545S&quot;, spaceid = &quot;2291&quot;, spacenotes = &quot;&quot;, sponsorlname = &quot;Seshia&quot;}}">
         </property>
         <property name="iconColumns" class="ptolemy.data.expr.Parameter" value="display">
@@ -621,7 +675,9 @@
         </property>
     </entity>
     <entity name="Occupants14" class="ptolemy.domains.space.Occupants">
-        <property name="records" class="ptolemy.data.expr.Parameter" value="{{bldg = &quot;Cory      &quot;, classcd = &quot;&quot;, departure = &quot;&quot;, deskno = &quot;1&quot;, email = &quot;&quot;, fnames = &quot;&quot;, lname = &quot;&quot;, occupancy = &quot;&quot;, room = &quot;545L&quot;, spaceid = &quot;2025&quot;, spacenotes = &quot;&quot;, sponsorlname = &quot;&quot;}, {bldg = &quot;Cory      &quot;, classcd = &quot;grad&quot;, departure = &quot;&quot;, deskno = &quot;2&quot;, email = &quot;atownley@eecs.berkeley.edu&quot;, fnames = &quot;Andrew&quot;, lname = &quot;Townley &quot;, occupancy = &quot;2011-09-07&quot;, room = &quot;545L&quot;, spaceid = &quot;1808&quot;, spacenotes = &quot;Incoming Grad Student, Fall, 2011&quot;, sponsorlname = &quot;EECS&quot;}, {bldg = &quot;Cory      &quot;, classcd = &quot;&quot;, departure = &quot;&quot;, deskno = &quot;3&quot;, email = &quot;&quot;, fnames = &quot;&quot;, lname = &quot;&quot;, occupancy = &quot;&quot;, room = &quot;545L&quot;, spaceid = &quot;1809&quot;, spacenotes = &quot;&quot;, sponsorlname = &quot;&quot;}, {bldg = &quot;Cory      &quot;, classcd = &quot;grad&quot;, departure = &quot;&quot;, deskno = &quot;4&quot;, email = &quot;andrewsn@EECS.Berkeley.EDU&quot;, fnames = &quot;Andrew&quot;, lname = &quot;Nelson &quot;, occupancy = &quot;2011-09-07&quot;, room = &quot;545L&quot;, spaceid = &quot;1810&quot;, spacenotes = &quot;Incoming Grad Student, Fall, 2011&quot;, sponsorlname = &quot;EECS&quot;}, {bldg = &quot;Cory      &quot;, classcd = &quot;visitor&quot;, departure = &quot;2012-12-31&quot;, deskno = &quot;5&quot;, email = &quot;marten@stdio.nl&quot;, fnames = &quot;Marten&quot;, lname = &quot;Lohstroh&quot;, occupancy = &quot;2012-03-25&quot;, room = &quot;545L&quot;, spaceid = &quot;2295&quot;, spacenotes = &quot;Visitor for nine months.&quot;, sponsorlname = &quot;Lee&quot;}, {bldg = &quot;Cory      &quot;, classcd = &quot;&quot;, departure = &quot;&quot;, deskno = &quot;6&quot;, email = &quot;&quot;, fnames = &quot;&quot;, lname = &quot;&quot;, occupancy = &quot;&quot;, room = &quot;545L&quot;, spaceid = &quot;1812&quot;, spacenotes = &quot;&quot;, sponsorlname = &quot;&quot;}}">
+        <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
+        </property>
+        <property name="records" class="ptolemy.data.expr.Parameter" value="{{bldg = &quot;Cory      &quot;, classcd = &quot;&quot;, departure = &quot;&quot;, deskno = &quot;1&quot;, email = &quot;&quot;, fnames = &quot;&quot;, lname = &quot;&quot;, occupancy = &quot;&quot;, room = &quot;545L&quot;, spaceid = &quot;2025&quot;, spacenotes = &quot;&quot;, sponsorlname = &quot;&quot;}, {bldg = &quot;Cory      &quot;, classcd = &quot;grad&quot;, departure = &quot;&quot;, deskno = &quot;2&quot;, email = &quot;atownley@eecs.berkeley.edu&quot;, fnames = &quot;Andrew&quot;, lname = &quot;Townley &quot;, occupancy = &quot;2011-09-07&quot;, room = &quot;545L&quot;, spaceid = &quot;1808&quot;, spacenotes = &quot;Incoming Grad Student, Fall, 2011&quot;, sponsorlname = &quot;EECS&quot;}, {bldg = &quot;Cory      &quot;, classcd = &quot;visitor&quot;, departure = &quot;2012-12-24&quot;, deskno = &quot;3&quot;, email = &quot;ykim122@asu.edu&quot;, fnames = &quot;Yooseong&quot;, lname = &quot;Kim&quot;, occupancy = &quot;2012-07-01&quot;, room = &quot;545L&quot;, spaceid = &quot;1809&quot;, spacenotes = &quot;Visitor for PRET&quot;, sponsorlname = &quot;Lee&quot;}, {bldg = &quot;Cory      &quot;, classcd = &quot;grad&quot;, departure = &quot;&quot;, deskno = &quot;4&quot;, email = &quot;andrewsn@EECS.Berkeley.EDU&quot;, fnames = &quot;Andrew&quot;, lname = &quot;Nelson &quot;, occupancy = &quot;2011-09-07&quot;, room = &quot;545L&quot;, spaceid = &quot;1810&quot;, spacenotes = &quot;Incoming Grad Student, Fall, 2011&quot;, sponsorlname = &quot;EECS&quot;}, {bldg = &quot;Cory      &quot;, classcd = &quot;visitor&quot;, departure = &quot;2012-12-31&quot;, deskno = &quot;5&quot;, email = &quot;marten@stdio.nl&quot;, fnames = &quot;Marten&quot;, lname = &quot;Lohstroh&quot;, occupancy = &quot;2012-03-25&quot;, room = &quot;545L&quot;, spaceid = &quot;2295&quot;, spacenotes = &quot;Visitor for nine months.&quot;, sponsorlname = &quot;Lee&quot;}, {bldg = &quot;Cory      &quot;, classcd = &quot;visitor&quot;, departure = &quot;2012-12-24&quot;, deskno = &quot;6&quot;, email = &quot;jcai19@asu.edu&quot;, fnames = &quot;Jian&quot;, lname = &quot;Cai&quot;, occupancy = &quot;2012-07-01&quot;, room = &quot;545L&quot;, spaceid = &quot;1812&quot;, spacenotes = &quot;Visitor to PRET Project&quot;, sponsorlname = &quot;Lee&quot;}}">
         </property>
         <property name="iconColumns" class="ptolemy.data.expr.Parameter" value="display">
         </property>
@@ -646,6 +702,8 @@
         </port>
     </entity>
     <entity name="Room14" class="ptolemy.domains.space.Room">
+        <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
+        </property>
         <property name="room" class="ptolemy.data.expr.StringParameter" value="545L">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[505.0, 375.0]">
@@ -674,6 +732,8 @@
         </property>
     </entity>
     <entity name="Room15" class="ptolemy.domains.space.Room">
+        <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
+        </property>
         <property name="room" class="ptolemy.data.expr.StringParameter" value="545B">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[270.0, 340.0]">
@@ -705,6 +765,8 @@
         </port>
     </entity>
     <entity name="Occupants15" class="ptolemy.domains.space.Occupants">
+        <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
+        </property>
         <property name="records" class="ptolemy.data.expr.Parameter" value="{{bldg = &quot;Cory      &quot;, classcd = &quot;Staff&quot;, departure = &quot;&quot;, deskno = &quot;1&quot;, email = &quot;leont@erso.berkeley.edu &quot;, fnames = &quot;Leon&quot;, lname = &quot;Tsao&quot;, occupancy = &quot;&quot;, room = &quot;545B&quot;, spaceid = &quot;2988&quot;, spacenotes = &quot;ERSO Reimbursements&quot;, sponsorlname = &quot;ERSO&quot;}, {bldg = &quot;Cory      &quot;, classcd = &quot;staff&quot;, departure = &quot;&quot;, deskno = &quot;2&quot;, email = &quot;jcarchid@ERSO.berkeley.edu&quot;, fnames = &quot;Joy&quot;, lname = &quot;Carchidi&quot;, occupancy = &quot;2010-11-01&quot;, room = &quot;545B&quot;, spaceid = &quot;2989&quot;, spacenotes = &quot;ERSO purchasing&quot;, sponsorlname = &quot;ERSO&quot;}}">
         </property>
         <property name="iconColumns" class="ptolemy.data.expr.Parameter" value="display">
@@ -724,6 +786,8 @@
         </port>
     </entity>
     <entity name="DatabaseQuery" class="ptolemy.actor.lib.database.DatabaseQuery">
+        <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
+        </property>
         <property name="query" class="ptolemy.actor.parameters.PortParameter" value="select distinct sponsorlname, count(sponsorlname) from v_spaces where trim(room) like '545_' group by sponsorlname">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[-110.0, 190.0]">
@@ -731,7 +795,9 @@
     </entity>
     <entity name="ArrayOfRecordsRecorder2" class="ptolemy.actor.lib.database.ArrayOfRecordsRecorder">
         <display name="Sponsor Key"/>
-        <property name="records" class="ptolemy.data.expr.Parameter" value="{{count_sponsorlname_ = &quot;0&quot;, sponsorlname = &quot;&quot;}, {count_sponsorlname_ = &quot;7&quot;, sponsorlname = &quot;&quot;}, {count_sponsorlname_ = &quot;4&quot;, sponsorlname = &quot;Brayton&quot;}, {count_sponsorlname_ = &quot;1&quot;, sponsorlname = &quot;CHESS&quot;}, {count_sponsorlname_ = &quot;2&quot;, sponsorlname = &quot;EECS&quot;}, {count_sponsorlname_ = &quot;1&quot;, sponsorlname = &quot;El Ghaoui&quot;}, {count_sponsorlname_ = &quot;4&quot;, sponsorlname = &quot;ERSO&quot;}, {count_sponsorlname_ = &quot;1&quot;, sponsorlname = &quot;Kuehlmann&quot;}, {count_sponsorlname_ = &quot;20&quot;, sponsorlname = &quot;Lee&quot;}, {count_sponsorlname_ = &quot;7&quot;, sponsorlname = &quot;Lustig&quot;}, {count_sponsorlname_ = &quot;1&quot;, sponsorlname = &quot;Lustiglab&quot;}, {count_sponsorlname_ = &quot;1&quot;, sponsorlname = &quot;Pister&quot;}, {count_sponsorlname_ = &quot;5&quot;, sponsorlname = &quot;Roychowdhury&quot;}, {count_sponsorlname_ = &quot;9&quot;, sponsorlname = &quot;Sangiovanni-Vincentelli&quot;}, {count_sponsorlname_ = &quot;9&quot;, sponsorlname = &quot;Seshia&quot;}, {count_sponsorlname_ = &quot;1&quot;, sponsorlname = &quot;Spanos&quot;}}">
+        <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
+        </property>
+        <property name="records" class="ptolemy.data.expr.Parameter" value="{{count_sponsorlname_ = &quot;0&quot;, sponsorlname = &quot;&quot;}, {count_sponsorlname_ = &quot;7&quot;, sponsorlname = &quot;&quot;}, {count_sponsorlname_ = &quot;4&quot;, sponsorlname = &quot;Brayton&quot;}, {count_sponsorlname_ = &quot;1&quot;, sponsorlname = &quot;CHESS&quot;}, {count_sponsorlname_ = &quot;2&quot;, sponsorlname = &quot;EECS&quot;}, {count_sponsorlname_ = &quot;1&quot;, sponsorlname = &quot;El Ghaoui&quot;}, {count_sponsorlname_ = &quot;4&quot;, sponsorlname = &quot;ERSO&quot;}, {count_sponsorlname_ = &quot;1&quot;, sponsorlname = &quot;Kuehlmann&quot;}, {count_sponsorlname_ = &quot;19&quot;, sponsorlname = &quot;Lee&quot;}, {count_sponsorlname_ = &quot;7&quot;, sponsorlname = &quot;Lustig&quot;}, {count_sponsorlname_ = &quot;1&quot;, sponsorlname = &quot;Lustiglab&quot;}, {count_sponsorlname_ = &quot;1&quot;, sponsorlname = &quot;Pister&quot;}, {count_sponsorlname_ = &quot;5&quot;, sponsorlname = &quot;Roychowdhury&quot;}, {count_sponsorlname_ = &quot;9&quot;, sponsorlname = &quot;Sangiovanni-Vincentelli&quot;}, {count_sponsorlname_ = &quot;9&quot;, sponsorlname = &quot;Seshia&quot;}, {count_sponsorlname_ = &quot;1&quot;, sponsorlname = &quot;Spanos&quot;}}">
         </property>
         <property name="columns" class="ptolemy.data.expr.Parameter" value="ALL">
         </property>
@@ -750,6 +816,8 @@
         </port>
     </entity>
     <entity name="Occupants9" class="ptolemy.domains.space.Occupants">
+        <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
+        </property>
         <property name="records" class="ptolemy.data.expr.Parameter" value="{{bldg = &quot;Cory      &quot;, classcd = &quot;&quot;, departure = &quot;&quot;, deskno = &quot;1&quot;, email = &quot;&quot;, fnames = &quot;&quot;, lname = &quot;&quot;, occupancy = &quot;&quot;, room = &quot;545D&quot;, spaceid = &quot;2990&quot;, spacenotes = &quot;&quot;, sponsorlname = &quot;&quot;}, {bldg = &quot;Cory      &quot;, classcd = &quot;staff&quot;, departure = &quot;&quot;, deskno = &quot;2&quot;, email = &quot;maryc@erso.berkeley.edu&quot;, fnames = &quot;Mary&quot;, lname = &quot;Courtney&quot;, occupancy = &quot;2010-11-01&quot;, room = &quot;545D&quot;, spaceid = &quot;2997&quot;, spacenotes = &quot;ERSO purchasing&quot;, sponsorlname = &quot;ERSO&quot;}, {bldg = &quot;Cory      &quot;, classcd = &quot;staff&quot;, departure = &quot;&quot;, deskno = &quot;3&quot;, email = &quot;alicew@erso.berkeley.edu&quot;, fnames = &quot;Alice&quot;, lname = &quot;Wong&quot;, occupancy = &quot;2010-11-01&quot;, room = &quot;545D&quot;, spaceid = &quot;2992&quot;, spacenotes = &quot;ERSO purchasing&quot;, sponsorlname = &quot;ERSO&quot;}}">
         </property>
         <property name="iconColumns" class="ptolemy.data.expr.Parameter" value="display">
