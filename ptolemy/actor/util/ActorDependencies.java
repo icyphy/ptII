@@ -61,8 +61,11 @@ public class ActorDependencies {
         // public methods.
     }
 
-    /** Return a Set of dependent (upstream) atomic actors that are connected to the
-     *  target.  Opaque composite actors are searched.   
+    /** Return a Set of dependent (downstream) atomic actors that are connected to the
+     *  target.  Opaque composite actors are searched. For output ports of the
+     *  specified actor, these are downstream actors that are connected on the outside.
+     *  For input ports of the specified actor, these are downstream actors connected
+     *  on the inside. 
      *  @param actor the Actor to be searched.
      *  @return A Set of dependent atomic actors.
      *  @exception KernelException If there is a problem with the receivers.
@@ -73,9 +76,12 @@ public class ActorDependencies {
         return ActorDependencies.dependents(actor, AtomicActor.class);
     }
 
-    /** Return a Set of dependent (upstream) actors of a particular
+    /** Return a Set of dependent (downstream) actors of a particular
      *  class that are connected to the target.  Opaque composite
-     *  actors are searched.
+     *  actors are searched. For output ports of the
+     *  specified actor, these are downstream actors that are connected on the outside.
+     *  For input ports of the specified actor, these are downstream actors connected
+     *  on the inside.
      *  @param actor the Actor to be searched.
      *  @param filter The class of prerequisite actors to be returned.
      *  @return A Set of dependent atomic actors
@@ -95,45 +101,43 @@ public class ActorDependencies {
         // of the filter type to the result.  Opaque Composites are
         // handled specially.
 
-        // FIXME: this seems really wrong - overly complex?
         Iterator outputs = actor.outputPortList().iterator();
         while (outputs.hasNext()) {
             IOPort output = (IOPort)outputs.next();
             results.addAll(_dependents(output, filter));
-
-//             Iterator ports = output.sinkPortList().iterator();
-//             while (ports.hasNext()) {
-//                 IOPort port = (IOPort) ports.next();
-//                 NamedObj container = port.getContainer();
-//                 if (filter.isInstance(container)) {
-//                     results.add((AtomicActor) container);
-//                 } else {
-//                     results.addAll(_dependents(port, filter));
-//                     // Handle ports in TypedComposites?
-//                     Receiver[][] receivers = port.getRemoteReceivers();
-//                     if (receivers != null) {
-//                         for (int i = 0; i < receivers.length; i++) {
-//                             if (receivers[i] != null) {
-//                                 for (int j = 0; j < receivers[i].length; j++) {
-//                                     if (receivers[i][j] != null) {
-//                                         IOPort remotePort = receivers[i][j]
-//                                             .getContainer();
-//                                         if (remotePort != null) {
-//                                             results.addAll(_dependents(remotePort, filter));
-//                                             //System.out.println("AtomicActor.subscribers0: " + results);
-//                                         }
-//                                     }
-//                                 }
-//                             }
-//                         }
-//                     }
-//                }
         }
         //System.out.println("ActorDependencies.dependents: END " + actor.getFullName() + " " + results);
         return results;
     }
+    
+    /** Return a Set of dependent (downstream) actors of a particular
+     *  class that are connected to the target.  Opaque composite
+     *  actors are searched. For output ports of the
+     *  specified actor, these are downstream actors that are connected on the outside.
+     *  For input ports of the specified actor, these are downstream actors connected
+     *  on the inside.
+     *  @param actor the Actor to be searched.
+     *  @param filter The class of prerequisite actors to be returned.
+     *  @return A Set of dependent atomic actors
+     *  @exception KernelException If there is a problem with the receivers.
+     *  the top level or if preinitialize() fails.
+     */
+    public static Set<AtomicActor> dependents(IOPort port, Class filter)
+            throws KernelException {
+        //System.out.println("ActorDependencies.dependents: START" + actor.getFullName());
+        Set<AtomicActor> results = new HashSet<AtomicActor>();
 
-    /** Return a Set of AtomicActors that are connected to this AtomicActor.
+        // preinitialize() creates connections between Publishers and
+        // Subscribers.
+        Manager.preinitializeThenWrapup((Actor)port.getContainer());
+
+        results.addAll(_dependents(port, filter));
+
+        //System.out.println("ActorDependencies.dependents: END " + actor.getFullName() + " " + results);
+        return results;
+    }
+
+    /** Return a Set of AtomicActors that are connected upstream to this AtomicActor.
      *  @param actor the Actor to be searched.
      *  @return A Set of AtomicActors that are connected to this AtomicActor.
      *  @exception Kernelxception If thrown when a Manager is added to
@@ -144,7 +148,12 @@ public class ActorDependencies {
         return ActorDependencies.prerequisites(actor, AtomicActor.class);
     }
 
-    /** Return a Set of AtomicActors that are connected to this AtomicActor.
+    /** Return a Set of actors that match the specified filter
+     *  that are connected upstream to the specified actor.
+     *  If an upstream actor does not match the filter, then look
+     *  through it to other actors connected further upstream.
+     *  Upstream actors include any that can send data to the
+     *  specified actor.
      *  @param actor the Actor to be searched.
      *  @param filter The class of prerequisite actors to be returned.
      *  @return A Set of AtomicActors that are connected to this AtomicActor.
@@ -208,32 +217,35 @@ public class ActorDependencies {
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
-
-    /** Return the set of all actors of a filter type connected upstream
-     *  to a port.   
+    /** If the container of the specified port matches the specified filter, then return it;
+     *  otherwise, return the set of all actors that match the
+     *  filter type connected downstream to the specified port.
+     *  If this is output port, these are downstream
+     *  ports connected on the outside. If this is an input port, then these
+     *  are downstream ports connected on the inside.
      *  This method traverses opaque composites.   
-     *  @param remotePort The port to be checked   
+     *  @param port The port to be checked   
      *  @param filter The class of dependent actors to be returned.
      *  @return The Set of all AtomicActors connected to the port.
      */
-    private static Set<AtomicActor> _dependents(IOPort remotePort, Class filter) 
-    throws IllegalActionException {
+    private static Set<AtomicActor> _dependents(IOPort port, Class filter) 
+            throws IllegalActionException {
         //System.out.println("ActorDependencies._dependents: START" + remotePort.getFullName());
         Set<AtomicActor> results = new HashSet<AtomicActor>();
-        NamedObj container = remotePort.getContainer();
+        NamedObj container = port.getContainer();
         if (filter.isInstance(container)) {
             results.add((AtomicActor) container);
         } else {
             Receiver[][] receivers = null;
-            if (remotePort.isOutput() && remotePort.isInput()) {
-                throw new InternalError("Can't handle port that is both input nor output: " + remotePort);
+            if (port.isOutput() && port.isInput()) {
+                throw new InternalError("Can't handle port that is both input nor output: " + port);
             }
-            if (remotePort.isOutput()) {
-                receivers = remotePort.getRemoteReceivers();
-            } else if (remotePort.isInput()) {
-                receivers = remotePort.deepGetReceivers();
+            if (port.isOutput()) {
+                receivers = port.getRemoteReceivers();
+            } else if (port.isInput()) {
+                receivers = port.deepGetReceivers();
             } else {
-                throw new InternalError("Can't handle port that is neither input nor output: " + remotePort);
+                throw new InternalError("Can't handle port that is neither input nor output: " + port);
             }
             if (receivers != null) {
                 for (int i = 0; i < receivers.length; i++) {
@@ -251,143 +263,34 @@ public class ActorDependencies {
                     }
                 }
             }
-
-//             // Handle cases where the AtomicActor is deep inside opaque actors.
-//             Iterator insidePorts = remotePort.sinkPortList().iterator();
-//             while (insidePorts.hasNext()) {
-//                 IOPort insidePort = (IOPort)insidePorts.next();
-//                 container = insidePort.getContainer();
-//                 if (filter.isInstance(container)) {
-//                     results.add((AtomicActor) container);
-//                 }
-//                 Iterator sourcePorts = insidePort.sinkPortList().iterator();
-//                 while (sourcePorts.hasNext()) {
-//                     IOPort sourcePort = (IOPort)sourcePorts.next();
-//                     container = sourcePort.getContainer();
-//                     if (container instanceof AtomicActor) {
-//                         results.add((AtomicActor) container);
-//                     } else {
-//                         results.addAll(_dependents(sourcePort, filter));
-//                     }
-//                 }
-//                     // Handle ports in TypedComposites?
-//                     Receiver[][] receivers = insidePort.getRemoteReceivers();
-//                     if (receivers != null) {
-//                         for (int i = 0; i < receivers.length; i++) {
-//                             if (receivers[i] != null) {
-//                                 for (int j = 0; j < receivers[i].length; j++) {
-//                                     if (receivers[i][j] != null) {
-//                                         IOPort remotePort2 = receivers[i][j]
-//                                             .getContainer();
-//                                         if (remotePort2 != null) {
-//                                             results.addAll(_dependents(remotePort2, filter));
-//                                             //System.out.println("AtomicActor.subscribers0: " + results);
-//                                         }
-//                                     }
-//                                 }
-//                             }
-//                         }
-//                     }
-//             }
-
-//             // Handle cases where the AtomicActor is deep inside opaque actors.
-//             for( IOPort insidePort : remotePort.insideSourcePortList()) {
-//                 container = insidePort.getContainer();
-//                 if (filter.isInstance(container)) {
-//                     results.add((AtomicActor) container);
-//                 } 
-// //                 Iterator sourcePorts = insidePort.deepConnectedInPortList().iterator();
-// //                 while (sourcePorts.hasNext()) {
-// //                     IOPort sourcePort = (IOPort)sourcePorts.next();
-// //                     container = sourcePort.getContainer();
-// //                     if (filter.isInstance(container)) {
-// //                         results.add((AtomicActor) container);
-// //                     } else {
-// //                         results.addAll(_dependents(sourcePort, filter));
-// //                     }
-// //                 }
-
-//                     // Handle ports in TypedComposites?
-//                     Receiver[][] receivers = insidePort.getRemoteReceivers();
-//                     if (receivers != null) {
-//                         for (int i = 0; i < receivers.length; i++) {
-//                             if (receivers[i] != null) {
-//                                 for (int j = 0; j < receivers[i].length; j++) {
-//                                     if (receivers[i][j] != null) {
-//                                         IOPort remotePort2 = receivers[i][j]
-//                                             .getContainer();
-//                                         if (remotePort2 != null) {
-//                                             results.addAll(_dependents(remotePort2, filter));
-//                                             //System.out.println("AtomicActor.subscribers0: " + results);
-//                                         }
-//                                     }
-//                                 }
-//                             }
-//                         }
-//                     }
-//             }
-
-
         }
         //System.out.println("ActorDependencies._dependents: END" + remotePort.getFullName() + " " + results);
         return results;
     }
 
-    /** Return the set of all actors of a filter type connected downstream
-     *  to a port.   
-     *  This method traverses opaque composites.   
-     *  @param remotePort The port to be checked   
+    /** If the container of the specified port matches the specified filter,
+     *  then return that container; otherwise,
+     *  return the set of all actors that match the filter type connected upstream
+     *  to the port. If the port is an output, then these are actors
+     *  connected on the inside. If it is an input, then these are actors
+     *  connected on the outside. If an upstream port is not an instance
+     *  of the specified filter, then traverse it, looking for ports
+     *  that are further upstream of it.
+     *  This method traverses opaque composites. 
+     *  @param port The port to be checked   
      *  @param filter The class of prerequisite actors to be returned.
      *  @return The Set of all AtomicActors connected to the port.
      */
-    private static Set<AtomicActor> _prerequisites(IOPort remotePort, Class filter) 
+    private static Set<AtomicActor> _prerequisites(IOPort port, Class filter) 
             throws IllegalActionException {
         //System.out.println("ActorDependencies._prerequisites: START " + remotePort.getFullName());
         Set<AtomicActor> results = new HashSet<AtomicActor>();
-        NamedObj container = remotePort.getContainer();
+        NamedObj container = port.getContainer();
         if (filter.isInstance(container)) {
             results.add((AtomicActor) container);
         } else {
-            Receiver[][] receivers = null;
-            //System.out.println("ActorDependencies._prerequisites: 10 " + remotePort.isInput() + " " + remotePort.isOutput() + " " + remotePort.isOpaque());
-            if (remotePort.isOutput() && remotePort.isInput()) {
-                throw new InternalError("Can't handle port that is both input nor output: " + remotePort);
-            }
-            if (remotePort.isOutput()) {
-                // isOutput: getRemoteReceivers()
-                // isOutput && isOpaque: getInsideReceivers()
-                if (remotePort.isOpaque()) {
-                    receivers = remotePort.getInsideReceivers();
-                } else {
-                    receivers = remotePort.getRemoteReceivers();
-                }
-            } else if (remotePort.isInput()) {
-                // isInput: getReceivers()
-                // isInput: deepGetReceivers()
-                receivers = remotePort.deepGetReceivers();
-            } else {
-                throw new InternalError("Can't handle port that is neither input nor output: " + remotePort);
-            }
-//             System.out.println("ActorDependencies._prerequisites: 20 receivers: " + receivers + " " + (receivers != null ? receivers.length : "null") );
-//             if (receivers != null) {
-//                 for (int i = 0; i < receivers.length; i++) {
-//                     if (receivers[i] != null) {
-//                         for (int j = 0; j < receivers[i].length; j++) {
-//                             if (receivers[i][j] != null) {
-//                                 IOPort remotePort2 = receivers[i][j]
-//                                     .getContainer();
-//                                 if (remotePort2 != null /*&& remotePort2 != remotePort*/) {
-//                                     System.out.println("ActorDependencies._prerequisites: remotePort2: " + remotePort2.getFullName());
-//                                     results.addAll(_prerequisites(remotePort2, filter));
-//                                 }
-//                             }
-//                         }
-//                     }
-//                 }
-//             }
-
-            // Handle cases where the AtomicActor is deep inside opaque actors.
-            for( IOPort insidePort : remotePort.insideSourcePortList()) {
+            // Handle inside connections of an output port.
+            for( IOPort insidePort : port.insideSourcePortList()) {
                 Iterator sourcePorts = insidePort.insideSourcePortList().iterator();
                 while (sourcePorts.hasNext()) {
                     IOPort sourcePort = (IOPort)sourcePorts.next();
@@ -400,8 +303,8 @@ public class ActorDependencies {
                 }
             }
 
-            // Handle cases where the AtomicActor is deep inside opaque actors.
-            Iterator remoteSourcePorts = remotePort.sourcePortList().iterator();
+            // Handle outside connections.
+            Iterator remoteSourcePorts = port.sourcePortList().iterator();
             while (remoteSourcePorts.hasNext()) {
                 IOPort remoteSourcePort = (IOPort)remoteSourcePorts.next();
                 container = remoteSourcePort.getContainer();
