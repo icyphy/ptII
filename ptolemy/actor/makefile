@@ -99,6 +99,7 @@ JSRCS = \
 	Manager.java \
 	NoRoomException.java \
 	NoTokenException.java \
+	PublisherPort.java \
 	QuantityManager.java \
 	QuasiTransparentDirector.java \
 	QueueReceiver.java \
@@ -106,6 +107,7 @@ JSRCS = \
 	RelationWidthInference.java \
 	StateReceiver.java \
 	StreamExecutionListener.java \
+	SubscriberPort.java \
 	SuperdenseTimeDirector.java \
 	TimedActor.java \
 	TokenGotEvent.java \
