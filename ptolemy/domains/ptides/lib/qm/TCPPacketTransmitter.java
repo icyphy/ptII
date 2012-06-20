@@ -30,20 +30,27 @@ ENHANCEMENTS, OR MODIFICATIONS.
 package ptolemy.domains.ptides.lib.qm;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import ptolemy.actor.Director;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.TypedIOPort;
+import ptolemy.actor.lib.ConstructCompositeTypeTerm;
 import ptolemy.actor.parameters.PortParameter;
+import ptolemy.actor.util.ConstructAssociativeType;
+import ptolemy.actor.util.ExtractFieldType;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.RecordToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
+import ptolemy.data.type.RecordType;
 import ptolemy.domains.ptides.kernel.PtidesBasicDirector;
 import ptolemy.domains.ptides.lib.OutputDevice;
+import ptolemy.graph.Inequality;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
@@ -306,8 +313,8 @@ public class TCPPacketTransmitter extends OutputDevice {
         super.preinitialize();
 
         boolean flag = false;
-        for (TypedIOPort output : outputPortList()) {
-            for (IOPort sinkPort : output.sinkPortList()) {
+        for (TypedIOPort output : (List<TypedIOPort>) outputPortList()) {
+            for (IOPort sinkPort : (List<IOPort>)output.sinkPortList()) {
                 if (sinkPort.getContainer() == getContainer()) {
                     flag = true;
                     break;
@@ -349,6 +356,38 @@ public class TCPPacketTransmitter extends OutputDevice {
             _tokenValues.clear();
         }
         
+    }
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                     protected methods                     ////    
+    
+    /** Set up and return two type constraints.
+     *  <ul>
+     *  <li><tt>output >= {x = typeOf(inputPortX), y = typeOf(inputPortY), ..}
+     *  </tt>, which requires the types of the input ports to be compatible
+     *  with the corresponding types in the output record.
+     *  </li>
+     *  <li><tt>each input <= the type of the corresponding field inside the 
+     *  output record</tt>, which is similar to the usual default constraints, 
+     *  however this constraint establishes a dependency between the inputs of
+     *  this actor and the fields inside the output record, instead of just 
+     *  between its inputs and outputs.
+     *  </li>
+     *  </ul>
+     *  Note that the output record is not required to contain a corresponding
+     *  field for every input, as downstream actors might require fewer fields
+     *  in the record they accept for input.
+     *  @return A set of type constraints
+     *  @see ConstructCompositeTypeTerm
+     *  @see ExtractFieldType
+     */
+   
+    /** Do not establish the usual default type constraints.
+     *  @return null 
+     */
+    @Override
+    protected Set<Inequality> _defaultTypeConstraints() {
+        return null;
     }
     
 /*TCP Frame Field Labels */

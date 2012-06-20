@@ -30,13 +30,18 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 package ptolemy.domains.ptides.lib.qm;
 
+
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Set;
 
 import ptolemy.actor.Director;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.TypedIOPort;
+import ptolemy.actor.lib.ConstructCompositeTypeTerm;
+import ptolemy.actor.util.ConstructAssociativeType;
 import ptolemy.actor.util.ExtractFieldType;
 import ptolemy.actor.util.Time;
 import ptolemy.data.DoubleToken;
@@ -45,6 +50,7 @@ import ptolemy.data.RecordToken;
 import ptolemy.data.type.BaseType;
 import ptolemy.data.type.RecordType;
 import ptolemy.data.type.Type;
+import ptolemy.data.type.TypeConstant;
 import ptolemy.domains.ptides.kernel.PtidesBasicDirector;
 import ptolemy.domains.ptides.lib.InputDevice;
 import ptolemy.graph.Inequality;
@@ -80,6 +86,7 @@ public class TCPPacketReceiver extends InputDevice {
         input = new TypedIOPort(this, "input", true, false);
         output = new TypedIOPort(this, "output", false, true);
         input.setTypeEquals(BaseType.RECORD);
+        
         //output.setTypeEquals(BaseType.DOUBLE);
     }
 
@@ -168,8 +175,8 @@ public class TCPPacketReceiver extends InputDevice {
         super.preinitialize();
 
         boolean flag = false;
-        for (TypedIOPort input : inputPortList()) {
-            for (IOPort sourcePort : input.sourcePortList()) {
+        for (TypedIOPort input : (List<TypedIOPort>) inputPortList()) {
+            for (IOPort sourcePort : (List<IOPort>) input.sourcePortList()) {
                 if (sourcePort.getContainer() == getContainer()) {
                     flag = true;
                 }
@@ -183,29 +190,21 @@ public class TCPPacketReceiver extends InputDevice {
                             + "(a port with the parameter networkPort).");
         }
     }
-
+    
+    
     ///////////////////////////////////////////////////////////////////
     ////                     protected methods                     ////
-
-    /** Return the custom type constraints of this actor. The input RecordToken 
-     *  has two fields, a "TCPlabel" of type double and a "tokens" of type Token[].
-     *  @return a list of type constraints
-     */
+   
+    
+    /** Do not establish the usual default type constraints. 
+    *  @return null
+    */
     @Override
-    protected Set<Inequality> _customTypeConstraints() {
-        // FIXME: This method has been refactored with preserved semantics,
-        // however, the method does not implement what the Javadoc describes
-        String[] labels = { TCPlabel, tokens };
-        Type[] types = { BaseType.RECORD, BaseType.RECORD };
-        RecordType type = new RecordType(labels, types);
-        input.setTypeAtMost(type);
-
-        HashSet<Inequality> typeConstraints = new HashSet<Inequality>();
-        Inequality inequality = new Inequality(new ExtractFieldType(input,
-                payload), output.getTypeTerm());
-        typeConstraints.add(inequality);
-        return typeConstraints;
+    protected Set<Inequality> _defaultTypeConstraints() {
+        return null;
     }
+    
+    
 
     ///////////////////////////////////////////////////////////////////
     ////                     private variable                      ////
