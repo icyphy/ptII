@@ -514,18 +514,7 @@ public class ThreadedComposite extends MirrorComposite {
      *  will return false, requesting a halt to execution of the model.
      */
     private class ThreadedDirector extends Director {
-        /** Create a new instance of the director for ThreadedComposite.
-         *  @param container The container for the director.
-         *  @param name The name of the director.
-         *  @exception IllegalActionException Not thrown in this base class.
-         *  @exception NameDuplicationException Not thrown in this base class.
-         */
-        public ThreadedDirector(CompositeEntity container, String name)
-                throws IllegalActionException, NameDuplicationException {
-            super(container, name);
-            setPersistent(false);
-        }
-
+        
         /** Construct a new instance of the director for ThreadedComposite.
          *  The director is created in the specified workspace with
          *  no container and an empty string as a name. You can then change

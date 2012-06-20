@@ -400,7 +400,7 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
         // Use the full class name so that we don't have to import the
         // actor.  If we import the actor, then we cannot have model
         // names with the same name as the actor.
-        String actorClassName = component.getClass().getName();
+        //String actorClassName = component.getClass().getName();
 
         //String containmentCode = _generateContainmentCode(component);
 
@@ -1698,8 +1698,8 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
                 }
                 readingRemoteParameters = false;
             } else {
-                String remoteActorSymbol = getCodeGenerator().generateVariableName(
-                        remoteActor) + "_actor";
+                //String remoteActorSymbol = getCodeGenerator().generateVariableName(
+                //        remoteActor) + "_actor";
                 //String remoteActorContainerSymbol = getCodeGenerator().generateVariableName((((NamedObj) remoteActor).getContainer()));
                 NamedObj remoteActorContainer = ((NamedObj)remoteActor).getContainer();
                 String remoteActorContainerSymbol = _generatePtTypedCompositeActorName(remoteActorContainer,

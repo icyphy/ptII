@@ -105,7 +105,7 @@ public class ReadParametersAcrossLink extends TypedAtomicActor {
     public void fire() throws IllegalActionException {
         super.fire();
         double sum = 0.0;
-        int i = 0;
+        //int i = 0;
         //System.out.println(getFullName() + ".fire() start");
         for (PopulationGroup group : _groups) {
             sum += group.performCalculation();

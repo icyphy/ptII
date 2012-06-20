@@ -1999,10 +1999,6 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
             return;
         }
 
-        if (generatorPackageFile == null) {
-            return;
-        }
-
         File targetDirectory = new File(generatorPackageFile, "targets");
         if (targetDirectory.exists()) {
             String[] targets = targetDirectory.list(new TargetFilter());

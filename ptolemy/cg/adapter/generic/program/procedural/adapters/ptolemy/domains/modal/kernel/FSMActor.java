@@ -218,7 +218,7 @@ public class FSMActor extends NamedProgramCodeGeneratorAdapter {
 
                     PtParser parser = new PtParser();
 
-                    int index = guard.indexOf("==");
+                    //int index = guard.indexOf("==");
                     ASTPtRootNode guardParseTree = parser
                             .generateParseTree(guard);
 

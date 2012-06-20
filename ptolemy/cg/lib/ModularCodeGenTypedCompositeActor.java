@@ -274,12 +274,7 @@ public class ModularCodeGenTypedCompositeActor extends LazyTypedCompositeActor {
 
         if (!_USE_PROFILE || profile == null) {
             populate();
-        } else {
-            throw new InternalErrorException(this, null,
-                    "This should not be happening." + " _USE_PROFILE was "
-                            + _USE_PROFILE + " and profile was " + profile
-                            + "?");
-        }
+        } 
         return super.portList();
     }
 

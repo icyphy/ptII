@@ -112,7 +112,7 @@ public class TCPPacketReceiver extends InputDevice {
 
             RecordToken fullTCPFrame = (RecordToken) input.get(0);
 
-            RecordToken TCPHeader = (RecordToken) fullTCPFrame.get(TCPlabel);
+            //RecordToken TCPHeader = (RecordToken) fullTCPFrame.get(TCPlabel);
 
             RecordToken dataContent = (RecordToken) fullTCPFrame.get(tokens);
 
@@ -213,19 +213,19 @@ public class TCPPacketReceiver extends InputDevice {
     //*************** TCP  FIELDS ***************//
     /** label of the source port Field -- 16 bits.
      */
-    private static final String sourcePort = "sourcePort";
+    //private static final String sourcePort = "sourcePort";
 
     /** label of the destination port Field -- 16 bits.
      */
-    private static final String destinationPort = "destinationPort";
+    //private static final String destinationPort = "destinationPort";
 
     /** label of the sequenceNumber  Field -- 32 bits.
      */
-    private static final String sequenceNumber = "sequenceNumber";
+    //private static final String sequenceNumber = "sequenceNumber";
 
     /** label of the acknowledgementNumber  Field -- 32 bits.
      */
-    private static final String acknowledgementNumber = "ackNumber";
+    //private static final String acknowledgementNumber = "ackNumber";
 
     /** label of the OFFSET/Control Bits - 16 bits in total. Decomposed as;
      * Data Offset  (4 bits)
@@ -234,24 +234,24 @@ public class TCPPacketReceiver extends InputDevice {
      * Control Bits ( 6 bits)
      */
 
-    private static final String offsetControlBits = "offsetControlBits";
+    //private static final String offsetControlBits = "offsetControlBits";
 
     /** label of the window size  Field -- 16 bits.
      */
-    private static final String windowSize = "windowSize";
+    //private static final String windowSize = "windowSize";
 
     /** label of the checksum   Field -- 16 bits.
      */
-    private static final String checksum = "checksum";
+    //private static final String checksum = "checksum";
 
     /** label of the Urgent Pointer   Field -- 16 bits.
      */
-    private static final String urgentPointer = "urgentPointer";
+    //private static final String urgentPointer = "urgentPointer";
 
     /** defining the options field but not including to the RecordToken as of now
      *  8 bytes --
      */
-    private static final String options = "options";
+    //private static final String options = "options";
 
     /** label of the timestamp that is transmitted within the RecordToken.
      */
@@ -267,7 +267,7 @@ public class TCPPacketReceiver extends InputDevice {
 
     private static final String TCPlabel = "TCPlabel";
 
-    private static final int max_packet_length = 5;
+    //private static final int max_packet_length = 5;
 
     // data tokens
     private static final String tokens = "tokens";

@@ -217,8 +217,8 @@ public class FMIScalarVariable {
      */
     public double getDouble(Pointer fmiComponent) {
         double result;
-        IntBuffer valueReferenceIntBuffer = IntBuffer.allocate(1).put(0,
-                (int) valueReference);
+        //IntBuffer valueReferenceIntBuffer = IntBuffer.allocate(1).put(0,
+        //        (int) valueReference);
         if (type instanceof FMIIntegerType) {
             IntBuffer valueBuffer = IntBuffer.allocate(1);
             _getValue(fmiComponent, valueBuffer, FMIIntegerType.class);
