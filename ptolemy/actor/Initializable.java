@@ -49,7 +49,7 @@ public interface Initializable {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Add the specified object to the list of objects whose
+    /** Add the specified object to the set of objects whose
      *  preinitialize(), initialize(), and wrapup()
      *  methods should be invoked upon invocation of the corresponding
      *  methods of this object.
@@ -79,7 +79,7 @@ public interface Initializable {
      */
     public void preinitialize() throws IllegalActionException;
 
-    /** Remove the specified object from the list of objects whose
+    /** Remove the specified object from the set of objects whose
      *  preinitialize(), initialize(), and wrapup()
      *  methods should be invoked upon invocation of the corresponding
      *  methods of this object. If the specified object is not

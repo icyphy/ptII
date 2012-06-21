@@ -29,8 +29,10 @@ package ptolemy.actor;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 
 import ptolemy.actor.util.BooleanDependency;
 import ptolemy.actor.util.CausalityInterface;
@@ -106,7 +108,7 @@ public class AtomicActor<T extends IOPort> extends ComponentEntity<T> implements
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Add the specified object to the list of objects whose
+    /** Add the specified object to the set of objects whose
      *  preinitialize(), initialize(), and wrapup()
      *  methods should be invoked upon invocation of the corresponding
      *  methods of this object.
@@ -116,7 +118,7 @@ public class AtomicActor<T extends IOPort> extends ComponentEntity<T> implements
      */
     public void addInitializable(Initializable initializable) {
         if (_initializables == null) {
-            _initializables = new LinkedList<Initializable>();
+            _initializables = new LinkedHashSet<Initializable>();
         }
         _initializables.add(initializable);
     }
@@ -939,7 +941,7 @@ public class AtomicActor<T extends IOPort> extends ComponentEntity<T> implements
     /** List of objects whose (pre)initialize() and wrapup() methods
      *  should be slaved to these.
      */
-    protected transient List<Initializable> _initializables;
+    protected transient Set<Initializable> _initializables;
 
     /** Flag that is true if there are actor firing listeners. */
     protected boolean _notifyingActorFiring = false;

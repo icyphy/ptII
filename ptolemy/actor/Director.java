@@ -29,8 +29,7 @@ package ptolemy.actor;
 
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.LinkedHashSet;
 import java.util.Set;
 
 import ptolemy.actor.util.BooleanDependency;
@@ -184,7 +183,7 @@ public class Director extends Attribute implements Executable {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Add the specified object to the list of objects whose
+    /** Add the specified object to the set of objects whose
      *  preinitialize(), initialize(), and wrapup()
      *  methods should be invoked upon invocation of the corresponding
      *  methods of this object.
@@ -194,7 +193,7 @@ public class Director extends Attribute implements Executable {
      */
     public void addInitializable(Initializable initializable) {
         if (_initializables == null) {
-            _initializables = new LinkedList<Initializable>();
+            _initializables = new LinkedHashSet<Initializable>();
         }
         _initializables.add(initializable);
     }
@@ -1713,10 +1712,10 @@ public class Director extends Attribute implements Executable {
     /** Indicator that finish() has been called. */
     protected boolean _finishRequested;
 
-    /** List of objects whose (pre)initialize() and wrapup() methods
+    /** Set of objects whose (pre)initialize() and wrapup() methods
      *  should be slaved to these.
      */
-    protected transient List<Initializable> _initializables;
+    protected transient Set<Initializable> _initializables;
 
     /** Indicator that a stop has been requested by a call to stop(). */
     protected boolean _stopRequested = false;

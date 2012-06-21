@@ -37,6 +37,7 @@ package ptolemy.actor;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -212,7 +213,7 @@ public class CompositeActor extends CompositeEntity implements Actor,
         }
     }
 
-    /** Add the specified object to the list of objects whose
+    /** Add the specified object to the set of objects whose
      *  preinitialize(), intialize(), and wrapup()
      *  methods should be invoked upon invocation of the corresponding
      *  methods of this object.
@@ -220,14 +221,15 @@ public class CompositeActor extends CompositeEntity implements Actor,
      *  @see #removeInitializable(Initializable)
      *  @see #addPiggyback(Executable)
      */
+    @Override
     public void addInitializable(Initializable initializable) {
         if (_initializables == null) {
-            _initializables = new LinkedList<Initializable>();
+            _initializables = new LinkedHashSet<Initializable>();
         }
         _initializables.add(initializable);
     }
 
-    /** Add the specified object to the list of objects whose action
+    /** Add the specified object to the set of objects whose action
      *  methods should be invoked upon invocation of the corresponding
      *  actions methods of this object. These methods will be invoked
      *  before the corresponding methods of this object.
@@ -237,7 +239,7 @@ public class CompositeActor extends CompositeEntity implements Actor,
      */
     public void addPiggyback(Executable piggyback) {
         if (_piggybacks == null) {
-            _piggybacks = new LinkedList<Executable>();
+            _piggybacks = new LinkedHashSet<Executable>();
         }
         _piggybacks.add(piggyback);
     }
@@ -264,14 +266,14 @@ public class CompositeActor extends CompositeEntity implements Actor,
         // Some local variables are written to by constructors of contained
         // actors. Those variables need to be set to null _before_ cloning
         // so that the new instance gets its own version.
-        List<Initializable> oldInitializables = _initializables;
+        Set<Initializable> oldInitializables = _initializables;
         _initializables = null;
         Map<String, List<IOPort>> oldPublishedPorts = _publishedPorts;
         _publishedPorts = null;
         Map<String, IORelation> oldPublisherRelations = _publisherRelations;
         Director oldDirector = _director;
         _director = null;
-        List<Executable> oldPiggybacks = _piggybacks;
+        Set<Executable> oldPiggybacks = _piggybacks;
         _piggybacks = null;
 
         CompositeActor newObject = (CompositeActor) super.clone(workspace);
@@ -1788,8 +1790,10 @@ public class CompositeActor extends CompositeEntity implements Actor,
     public void registerPublisherPort(String name, IOPort port, boolean global)
             throws NameDuplicationException, IllegalActionException {
         NamedObj container = getContainer();
-        // FIXME: The following strategy is fragile in that if
+        // NOTE: The following strategy is fragile in that if
         // a director is added or removed later, then things will break.
+        // Hence, HierarchyListeners need to be notified when
+        // directors are added or removed.
         if (!isOpaque() && container instanceof CompositeActor
                 && !((CompositeActor) container).isClassDefinition()) {
             // Published ports are not propagated if this actor
@@ -2774,7 +2778,7 @@ public class CompositeActor extends CompositeEntity implements Actor,
     /** List of objects whose (pre)initialize() and wrapup() methods
      *  should be slaved to these.
      */
-    protected transient List<Initializable> _initializables;
+    protected transient Set<Initializable> _initializables;
 
     /** Flag that is true if there are actor firing listeners. */
     protected boolean _notifyingActorFiring = false;
@@ -2822,7 +2826,7 @@ public class CompositeActor extends CompositeEntity implements Actor,
     private Director _causalityInterfaceDirector;
 
     /** List piggybacked objects. */
-    private transient List<Executable> _piggybacks;
+    private transient Set<Executable> _piggybacks;
 
     /** Record of the workspace version the last time receivers were created. */
     private long _receiversVersion = -1;
