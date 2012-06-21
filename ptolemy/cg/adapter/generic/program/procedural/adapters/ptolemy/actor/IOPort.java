@@ -294,8 +294,15 @@ public class IOPort extends NamedProgramCodeGeneratorAdapter implements
             code.append(_eol + "{" + _eol);
             TypedIOPort port = (TypedIOPort) getComponent();
             Type type = port.getType();
+            if (dataToken.toString().equals("object(null)")) {
+                // This model needs to convert object(null) to object.
+                // $PTII/bin/ptcg -language java $PTII/ptolemy/cg/adapter/generic/program/procedural/java/adapters/ptolemy/domains/sdf/lib/test/auto/SampleDelayObjectNull.xml
+                System.out.println("Warning: cg IOPort hack, found object(null), converting to null");
+                dataToken = "null";
+            }
             code.append(targetType(type) + " temporary = " + dataToken + ";"
                     + _eol);
+
             boolean debug = ((IntToken) getCodeGenerator().verbosity.getToken())
                     .intValue() > 9;
             for (int i = 0; i < remoteReceivers[channelIndex].length; i++) {

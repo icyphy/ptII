@@ -814,9 +814,15 @@ public class JavaParseTreeCodeGenerator extends AbstractParseTreeVisitor
 
             String label = value.toString();
             if (label.startsWith("object(")) {
+
                 // If this is an ObjectToken, we only wants the label.
                 //_fireCode.append(label.substring(7, label.length() - 1));
-                _childCode = label.substring(7, label.length() - 1);
+
+                _childCode = label.substring(7, label.length() - 1).trim();
+                //if (_childCode.equals("object(null)")) {
+                //    _childCode = "null";
+                //}
+
             } else {
                 // FIXME: handle the rest of the constants from data.expr.Constants
                 if (label.equals("Infinity")) {
