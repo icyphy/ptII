@@ -80,6 +80,7 @@ public class JavaTemplateParser extends ProceduralTemplateParser {
      */
     public String getFunctionInvocation(String functionString, boolean isStatic)
             throws IllegalActionException {
+        //System.out.println("JTP.getFunctionInvocation: " + functionString + " " + isStatic);
         // Record the referenced type function in the infoTable.
         super.getFunctionInvocation(functionString, isStatic);
 
@@ -127,7 +128,7 @@ public class JavaTemplateParser extends ProceduralTemplateParser {
         if (underbar != -1) {
             String type = typeOrToken.substring(underbar + 1,
                     typeOrToken.length());
-            if (_getCodeGenerator().isPrimitive(type) || type.equals("Complex")) {
+            if (_getCodeGenerator().isPrimitive(type) || type.equals("Complex") || type.equals("Object")) {
                 addNewTypesUsed(type);
             }
         }

@@ -15,6 +15,9 @@ $actorSymbol(state) = $typeFunc(TYPE_Array::convert($get(input), $elementType));
 $put(output, (String)($tokenFunc($actorSymbol(state)::toString()).payload));
 /**/
 
-/*** FireBlock($type) ***/
-$put(output, $typetoString($get(input)));
+/*** FireBlock($type1) ***/
+Token foo = $new(Object(null));
+$put(output, $$type1toString($get(input)));
+//$put(output, (String)($tokenFunc($get(input)::toString()).payload));
+
 /**/

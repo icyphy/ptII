@@ -64,6 +64,7 @@ OTHER_FILES_TO_BE_JARED = \
 	Integer.j \
 	Long.j \
 	Matrix.j \
+	Object.j \
 	Pointer.j \
 	String.j \
 	UnsignedByte.j

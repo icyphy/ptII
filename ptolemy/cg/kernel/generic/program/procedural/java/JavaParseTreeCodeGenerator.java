@@ -1824,6 +1824,7 @@ public class JavaParseTreeCodeGenerator extends AbstractParseTreeVisitor
                                                 : ptType == BaseType.UNSIGNED_BYTE ? "UnsignedByte"
                                                         //: ptType == PointerToken.POINTER ? "Pointer"
                                                         : ptType == BaseType.COMPLEX ? "Complex"
+                                                        : ptType == BaseType.OBJECT ? "Object"
                                                                 : null;
 
         if (result == null) {
@@ -1882,7 +1883,7 @@ public class JavaParseTreeCodeGenerator extends AbstractParseTreeVisitor
     /** A static list of the primitive types supported by the code generator. */
     private static final List _primitiveTypes = Arrays.asList(new String[] {
             "Integer", "Double", "String", "Long", "Boolean", "UnsignedByte",
-            "Pointer", "Complex" });
+            "Pointer", "Complex", "Object" });
 
     /** Temporary storage for the result of evaluating a child node.
      *  This is protected so that derived classes can access it.

@@ -116,7 +116,7 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
         // JavaCodeGenerator uses Integer, and CCodeGenerator uses Int
         _primitiveTypes = Arrays.asList(new String[] { "Integer", "Double",
                 "String", "Long", "Boolean", "UnsignedByte",
-                /*"Complex",*/"Pointer" });
+                /*"Complex",*/"Pointer", "Object" });
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -140,6 +140,7 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
                                                 : type == BaseType.UNSIGNED_BYTE ? "UnsignedByte"
                                                         : type == PointerToken.POINTER ? "Pointer"
                                                                 : type == BaseType.COMPLEX ? "Complex"
+                                                                : type == BaseType.OBJECT ? "Object"
                                                                         : null;
 
         if (result == null) {
@@ -183,6 +184,7 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
                                                 : type == BaseType.UNSIGNED_BYTE ? "unsigned byte"
                                                         : type == PointerToken.POINTER ? "Pointer"
                                                                 : type == BaseType.COMPLEX ? "Complex"
+                                                                : type == BaseType.OBJECT ? "Object"
                                                                         : null;
 
         if (result == null) {
@@ -239,6 +241,8 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
             typeReturn = 8;
         } else if (type.equals("Complex")) {
             typeReturn = 9;
+        } else if (type.equals("Object")) {
+            typeReturn = 10;
         } else {
             throw new IllegalActionException("Unsupported type: " + type);
         }
@@ -287,6 +291,9 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
         case 9:
             returnType = BaseType.COMPLEX;
             break;
+        case 10:
+            returnType = BaseType.OBJECT;
+            break;
         default:
             throw new IllegalActionException("Unsuported type");
         }
@@ -310,6 +317,7 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
                                 : type == BaseType.UNSIGNED_BYTE ? 6
                                         : type == PointerToken.POINTER ? 7
                                                 : type == BaseType.COMPLEX ? 9
+                                                : type == BaseType.OBJECT ? 10
                                                         : -10;
 
         if (result == -10) {
@@ -551,8 +559,9 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
                 code.append("//\t{");
                 for (int j = 0; j < functions.length; j++) {
                     if (functions[j].equals("isCloseTo")
-                            && (types[i].equals("Boolean") || types[i]
-                                    .equals("String"))) {
+                            && (types[i].equals("Boolean")
+                                    || types[i].equals("String")
+                                    || types[i].equals("Object"))) {
                         // Boolean_isCloseTo and String_isCloseTo
                         // are the same as their corresponding *_equals
                         code.append(types[i] + "_equals");
@@ -802,7 +811,6 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
         code.append(sharedStream.toString());
 
         HashSet<String> functions = _getReferencedFunctions();
-
         HashSet<String> types = _getReferencedTypes(functions);
 
         String[] typesArray = new String[types.size()];
@@ -863,10 +871,7 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
                 if (_generateInSubdirectory) {
                     declareBlock.insert(0, generatePackageStatement());
                 }
-                String typeName = typesArray[i];
-                if (typeName.equals("Complex")) {
-                    typeName = "ComplexCG";
-                }
+                String typeName = _typeNameCG(typesArray[i]);
                 _writeCodeFileName(declareBlock, typeName + ".java", false,
                         true);
             }
@@ -985,8 +990,9 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
                     // Boolean_isCloseTo and String_isCloseTo map to
                     // Boolean_equals and String_equals.
                     if (functionsArray[j].equals("isCloseTo")
-                            && (typesArray[i].equals("Boolean") || typesArray[i]
-                                    .equals("String"))) {
+                            && (typesArray[i].equals("Boolean")
+                                    || typesArray[i].equals("String")
+                                    || typesArray[i].equals("Object"))) {
 
                         if (!functions.contains("equals")) {
                             //typeStreams[i].appendCodeBlock(typesArray[i]
@@ -1624,6 +1630,7 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
             _typeDeclarations = new StringBuffer("import " + topPackageName
                     + "Token;" + _eol);
             HashSet<String> functions = _getReferencedFunctions();
+
             HashSet<String> types = _getReferencedTypes(functions);
             String[] typesArray = new String[types.size()];
             types.toArray(typesArray);
@@ -1634,10 +1641,7 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
                 CodeStream codeStream = new CodeStream(typesTemplate, this);
                 try {
                     if (codeStream.getCodeBlock("declareBlock").length() > 0) {
-                        String typeName = typesArray[i];
-                        if (typeName.equals("Complex")) {
-                            typeName = "ComplexCG";
-                        }
+                        String typeName = _typeNameCG(typesArray[i]);
                         _typeDeclarations.append("import " + topPackageName
                                 + typeName + ";" + _eol);
                     }
@@ -1813,6 +1817,7 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
         _overloadedFunctions.parse(typeDir + "Double.j");
         _overloadedFunctions.parse(typeDir + "Integer.j");
         _overloadedFunctions.parse(typeDir + "Matrix.j");
+        _overloadedFunctions.parse(typeDir + "Object.j");
         _overloadedFunctions.parse(typeDir + "String.j");
 
         //        String directorFunctionDir = cCodegenPath + "parameterized/directorFunctions/";
@@ -2458,10 +2463,7 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
                         if (importLine.endsWith(".Token;")) {
                             sawTokenImport = true;
                         }
-                        String typeName = typesArray[i];
-                        if (typeName.equals("Complex")) {
-                            typeName = "ComplexCG";
-                        }
+                        String typeName = _typeNameCG(typesArray[i]);
                         if (importLine.endsWith(typeName + ";")) {
                             try {
                                 // Reset the loop of types to the
@@ -2600,9 +2602,7 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
                     declareTypeOrTokenBlock.insert(0, "package "
                             + directoryName + ";" + _eol);
                     String typeName = typesAndTokenArray[i].toString();
-                    if (typeName.equals("Complex")) {
-                        typeName = "ComplexCG";
-                    }
+                    typeName = _typeNameCG(typeName);
                     _writeCodeFileName(declareTypeOrTokenBlock,
                             codeDirectoryFile.toString() + "/" + directoryName
                                     + "/" + typeName + ".java", false, true);
@@ -2737,6 +2737,21 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
             return "xtrue";
         }
         return word;
+    }
+
+    /** Return the base name of the file that defines methods for the type 
+     *  
+     *  @param typeName The name of the type to be checked.
+     *  @return If the typeName is Complex or Object, then return ComplexCG or ObjectCG,
+     *  otherwise, return the typeName;
+     */   
+    private static String _typeNameCG(String typeName) {
+        if (typeName.equals("Complex")) {
+            typeName =  "ComplexCG";
+        } else if (typeName.equals("Object")) {
+            typeName = "ObjectCG";
+        }
+        return typeName;
     }
 
     ///////////////////////////////////////////////////////////////////

@@ -282,6 +282,7 @@ public class ProgramCodeGenerator extends GenericCodeGenerator {
                                                 : ptType == BaseType.UNSIGNED_BYTE ? "UnsignedByte"
                                                         : ptType == PointerToken.POINTER ? "Pointer"
                                                                 : ptType == BaseType.COMPLEX ? "Complex"
+                                                                : ptType == BaseType.OBJECT ? "Object"
                                                                         : null;
 
         if (result == null) {
@@ -954,6 +955,7 @@ public class ProgramCodeGenerator extends GenericCodeGenerator {
                         .equals("Boolean") ? BaseType.BOOLEAN : cgType
                         .equals("Double") ? BaseType.DOUBLE : cgType
                         .equals("Complex") ? BaseType.COMPLEX : cgType
+                        .equals("Object") ? BaseType.OBJECT : cgType
                         .equals("Pointer") ? PointerToken.POINTER : null;
 
         if (cgType.endsWith("Array")) {
@@ -967,8 +969,7 @@ public class ProgramCodeGenerator extends GenericCodeGenerator {
                             : elementType.equals("Double") ? BaseType.DOUBLE_MATRIX
                                     : elementType.equals("Boolean") ? BaseType.BOOLEAN_MATRIX
                                             : elementType.equals("Fix") ? BaseType.FIX_MATRIX
-                                                    : elementType
-                                                            .equals("Long") ? BaseType.LONG_MATRIX
+                                                    : elementType.equals("Long") ? BaseType.LONG_MATRIX
                                                             : null;
 
         }

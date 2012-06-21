@@ -292,6 +292,7 @@ public class TemplateParser {
         String result = sourceRef;
 
         if (!sinkType.equals(sourceType)) {
+            //System.out.println("TemplateParser: " + sinkType + " " + sourceType);
             if (_codeGenerator.isPrimitive(sinkType)) {
                 result = _codeGenerator.codeGenType(sourceType) + "to"
                         + _codeGenerator.codeGenType(sinkType) + "(" + result
@@ -1022,7 +1023,7 @@ public class TemplateParser {
         if (underbar != -1) {
             String type = typeOrToken.substring(underbar + 1,
                     typeOrToken.length());
-            if (_getCodeGenerator().isPrimitive(type) || type.equals("Complex") || type.equals("Matrix")) {
+            if (_getCodeGenerator().isPrimitive(type) || type.equals("Complex") || type.equals("Matrix") || type.equals("Object")){
                 addNewTypesUsed(type);
             }
         }
