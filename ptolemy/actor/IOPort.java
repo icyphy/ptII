@@ -243,8 +243,8 @@ public class IOPort extends ComponentPort {
         }
     }
 
-    /** If a quantity manager is added, removed or modified update the list of
-     *  quantity managers.
+    /** If a quantity manager is added, removed or modified, invalidate the list of
+     *  quantity managers which is read again in the preinitialize phase.
      *  @param attribute The attribute that changed.
      *  @exception IllegalActionException Thrown if the new color attribute cannot
      *      be created.
@@ -257,9 +257,7 @@ public class IOPort extends ComponentPort {
 
             if (parameterToken != null) {
                 if (parameterToken instanceof ObjectToken) {
-                    // FIXME: Why is quantityManagerObject not read?
-                    /* Object quantityManagerObject =*/((ObjectToken) parameterToken)
-                            .getValue();
+                    // invalidate list of quantity managers.
                     _qmListValid = false;
                 }
             }
