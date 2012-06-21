@@ -320,6 +320,9 @@ public class ParseTreeTypeInference extends AbstractParseTreeVisitor {
                         throw new IllegalActionException(
                                 "Unable to load class " + className);
                     }
+                } else if (token == null) {
+                    _setType(node, new ObjectType(Object.class));
+                    return;
                 }
             }
         }
