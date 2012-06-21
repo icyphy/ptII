@@ -31,6 +31,7 @@ import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.Token;
+import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
@@ -55,8 +56,10 @@ import ptolemy.kernel.util.StringAttribute;
  <p> This actor is different from the BooleanSelect actor, which consumes
  one token from the control input and another token from either the
  trueInput or the falseInput in each firing.</p>
+ <p> The actor can also implement non-strict behavior if the <i>isStrict</i>
+ parameter is unset: see comments before parameter declaration below.</p> 
 
- @author Steve Neuendorffer
+ @author Steve Neuendorffer, Stavros Tripakis (added behavior for nonstrictness)
  @version $Id$
  @since Ptolemy II 2.0
  @Pt.ProposedRating Green (neuendor)
@@ -85,6 +88,10 @@ public class BooleanMultiplexor extends TypedAtomicActor {
         output.setTypeAtLeast(falseInput);
         
         new StringAttribute(select, "_cardinal").setExpression("SOUTH");
+        
+        isStrict = new Parameter(this, "isStrict");
+        isStrict.setExpression("true");
+        isStrict.setTypeEquals(BaseType.BOOLEAN);        
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -108,33 +115,57 @@ public class BooleanMultiplexor extends TypedAtomicActor {
      */
     public TypedIOPort output;
 
+    /** Parameter of type boolean: by default set to true.
+     * If false, then actor is non-strict: it can produce an output even
+     * when the value of the non-selected data port is unknown.
+     * This helps resolve feedback loops in the SR domain, e.g.,
+     * see Malik's example under FIXME: add path to model.
+     * The value of the <i>select</i> port needs however to be known.
+     */
+    public Parameter isStrict;
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Consume a token from each input port.  If the token from the
+    /** Strict case:
+     *  Consume a token from each input port.  If the token from the
      *  <i>select</i> input is true, then output the token consumed from the
      *  <i>trueInput</i> port, otherwise output the token from the
      *  <i>falseInput</i> port.
      *  This method will throw a NoTokenException if any
      *  input channel does not have a token.
      *
+     *  Non-strict case: FIXME
+     *  
      *  @exception IllegalActionException If there is no director.
      */
     public void fire() throws IllegalActionException {
         super.fire();
         boolean control = ((BooleanToken) select.get(0)).booleanValue();
-        Token trueToken = trueInput.get(0);
-        Token falseToken = falseInput.get(0);
+        boolean strict = ((BooleanToken) isStrict.getToken()).booleanValue();
 
-        if (control) {
-            output.send(0, trueToken);
-        } else {
-            output.send(0, falseToken);
+        if (strict) {
+            Token trueToken = trueInput.get(0);
+            Token falseToken = falseInput.get(0);
+
+            if (control) {
+                output.send(0, trueToken);
+            } else {
+                output.send(0, falseToken);
+            }
+        }
+        else {
+            if (control)
+                output.send(0, trueInput.get(0));
+            else
+                output.send(0, falseInput.get(0));
         }
     }
 
-    /** Return false if any input channel does not have a token.
+    /** Strict case:
+     *  Return false if any input channel does not have a token.
      *  Otherwise, return whatever the superclass returns.
+     *  Non-strict case: FIXME
      *  @return False if there are not enough tokens to fire or the prefire
      *  method of the super class returns false.
      *  @exception IllegalActionException If there is no director.
@@ -144,14 +175,59 @@ public class BooleanMultiplexor extends TypedAtomicActor {
             return false;
         }
 
-        if (!trueInput.hasToken(0)) {
-            return false;
-        }
+        boolean strict = ((BooleanToken) isStrict.getToken()).booleanValue();
+        
+        if (strict) {
+            if (!trueInput.hasToken(0)) {
+                return false;
+            }
 
-        if (!falseInput.hasToken(0)) {
-            return false;
+            if (!falseInput.hasToken(0)) {
+                return false;
+            }
+            
+            return super.prefire();
         }
-
-        return super.prefire();
+        else /* non-strict */ {
+            boolean control = ((BooleanToken) select.get(0)).booleanValue();
+            if (!super.prefire())
+                return false;
+            else if (control) {
+                if (!trueInput.isKnown())
+                    return false;
+                return trueInput.hasToken(0);
+            }
+            else {
+                if (!falseInput.isKnown())
+                    return false;
+                return falseInput.hasToken(0);
+            }
+        }
     }
+    
+    /** Return true iff isStrict parameter is set.
+     *      
+     */
+    public boolean isStrict() {
+        boolean result = true;
+        try {
+            result = (((BooleanToken) isStrict.getToken()).booleanValue());
+        } catch (IllegalActionException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        return result;
+    }
+
+    /** Override the base class to declare that the <i>output</i>
+     *  does not depend on the <i>input</i> in a firing.
+     *  @exception IllegalActionException If the superclass throws it.
+     *  
+     *  FIXME: How should the dependency/causality analysis be modified in the non-strict case?
+    public void preinitialize() throws IllegalActionException {
+        super.preinitialize();
+        removeDependency(input, output);
+    }
+     */
+
 }
