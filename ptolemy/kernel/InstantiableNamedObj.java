@@ -471,9 +471,15 @@ public class InstantiableNamedObj extends NamedObj implements Instantiable {
                                 + " there are subclasses and/or instances.");
             }
 
-            _isClassDefinition = isClass;
+            if (_isClassDefinition != isClass) {
+                // Changing the class status is a hierarchy event that
+                // contained objects need to be notified of.
+                _notifyHierarchyListenersBeforeChange();
+                _isClassDefinition = isClass;
+            }
         } finally {
             workspace().doneWriting();
+            _notifyHierarchyListenersAfterChange();
         }
     }
 

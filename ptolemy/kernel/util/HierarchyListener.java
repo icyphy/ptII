@@ -35,16 +35,21 @@ package ptolemy.kernel.util;
  Interface for objects that need to be notified of hierarchy changes above them.
  Objects that implement this listener register with their container
  and will be notified when certain significant events above them in the hierarchy
- occur. In particular, if the container of any object above changes, then
+ occur. In particular:
+ <ul>
+ <li> if the container of any object above changes;
+ <li> if any object changes from an instance to a class or vice versa; or
+ <li> if any object changes from opaque to transparent or vice versa
+      (acquires or loses a Director).
+ </ul>
+ In each case,
  two methods will be called on the object implementing this interface:
  first, {@link #hierarchyWillChange} is called, notifying the object that
  the hierarchy is about to change; then {@link #hierarchyChanged} is called,
  notifying the object that the hierarchy has changed.
- <p>
- In the actor package, this mechanism is augmented to do notification
- if any object above this in the hierarchy changes from opaque to
- transparent or vice versa.
-
+ The notified object can prevent changes by throwing an exception when
+ the first method is called.
+ 
  @author Edward A. Lee
  @version $Id$
  @since Ptolemy II 1.0
