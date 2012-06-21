@@ -187,8 +187,7 @@ public class BooleanMultiplexor extends TypedAtomicActor {
             }
             
             return super.prefire();
-        }
-        else /* non-strict */ {
+        } else /* non-strict */ {
             boolean control = ((BooleanToken) select.get(0)).booleanValue();
             if (!super.prefire())
                 return false;
@@ -205,15 +204,19 @@ public class BooleanMultiplexor extends TypedAtomicActor {
         }
     }
     
-    /** Return true iff isStrict parameter is set.
-     *      
+    /** Return true if this BooleanMultiplexor is strict, meaning all inputs must
+     *  be known before iteration. 
+     *
+     *  @return True if this BooleanMultiplexor is strict, meaning all inputs must
+     *   be known before iteration.
+     *  FIXME: IllegalActionException Thrown if parameter specifying whether
+     *  actor is strict cannot be read.
      */
     public boolean isStrict() {
         boolean result = true;
         try {
             result = (((BooleanToken) isStrict.getToken()).booleanValue());
-        } catch (IllegalActionException e) {
-            // TODO Auto-generated catch block
+        } catch (IllegalActionException e) { 
             e.printStackTrace();
         }
         return result;
