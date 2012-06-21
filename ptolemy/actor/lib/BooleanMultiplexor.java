@@ -135,7 +135,11 @@ public class BooleanMultiplexor extends TypedAtomicActor {
      *  This method will throw a NoTokenException if any
      *  input channel does not have a token.
      *
-     *  Non-strict case: FIXME
+     *  Non-strict case: 
+     *  Consume a token from the <i>select</i> input. If the token is true,
+     *  then consume a token from the <i>trueInput</i> port and forward it
+     *  to the output, otherwise, consume a token from the <i>falseInput</i>
+     *  port and forward it to the output.
      *  
      *  @exception IllegalActionException If there is no director.
      */
@@ -165,7 +169,8 @@ public class BooleanMultiplexor extends TypedAtomicActor {
     /** Strict case:
      *  Return false if any input channel does not have a token.
      *  Otherwise, return whatever the superclass returns.
-     *  Non-strict case: FIXME
+     *  Non-strict case: 
+     *  
      *  @return False if there are not enough tokens to fire or the prefire
      *  method of the super class returns false.
      *  @exception IllegalActionException If there is no director.
@@ -188,10 +193,10 @@ public class BooleanMultiplexor extends TypedAtomicActor {
             
             return super.prefire();
         } else /* non-strict */ {
-            boolean control = ((BooleanToken) select.get(0)).booleanValue();
             if (!super.prefire())
                 return false;
-            else if (control) {
+            boolean control = ((BooleanToken) select.get(0)).booleanValue();
+            if (control) {
                 if (!trueInput.isKnown())
                     return false;
                 return trueInput.hasToken(0);
@@ -226,7 +231,8 @@ public class BooleanMultiplexor extends TypedAtomicActor {
      *  does not depend on the <i>input</i> in a firing.
      *  @exception IllegalActionException If the superclass throws it.
      *  
-     *  FIXME: How should the dependency/causality analysis be modified in the non-strict case?
+     *  FIXME: should the dependency/causality analysis be modified 
+     *  in the non-strict case and how?
     public void preinitialize() throws IllegalActionException {
         super.preinitialize();
         removeDependency(input, output);
