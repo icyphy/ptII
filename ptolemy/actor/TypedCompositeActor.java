@@ -186,7 +186,13 @@ public class TypedCompositeActor extends CompositeActor implements TypedActor {
     ///////////////////////////////////////////////////////////////////
     ////                         parameters                        ////
 
-    /** Indicates whether bidirectional type inference is enabled. */
+    /** Indicates whether bidirectional type inference is enabled.
+     *  This parameter is a expert parameter, to change its value in
+     *  Vergil, edit the parameters of an actor, select Preferences
+     *  and then Expert mode.  This parameter is shared with other
+     *  instances of ComponentEntity.
+     *  The default value is true.   
+     */
     public SharedParameter bidirectionalTypeInference;
 
     ///////////////////////////////////////////////////////////////////
@@ -704,7 +710,10 @@ public class TypedCompositeActor extends CompositeActor implements TypedActor {
                     "bidirectionalTypeInference", ComponentEntity.class);
             bidirectionalTypeInference.setTypeEquals(BaseType.BOOLEAN);
             bidirectionalTypeInference.setExpression("true");
-            bidirectionalTypeInference.setPersistent(true);
+            // Mark bidirectionalTypeInference as implied so that it does
+            // get exported in the MoML by default.
+            //bidirectionalTypeInference.setPersistent(true);
+            //bidirectionalTypeInference.setDerivedLevel(1);
             bidirectionalTypeInference.setVisibility(Settable.EXPERT);
         } catch (Exception e) {
             // this should not happen
