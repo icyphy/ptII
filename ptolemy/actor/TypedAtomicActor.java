@@ -189,8 +189,15 @@ public class TypedAtomicActor extends AtomicActor<TypedIOPort> implements
         // will be updated.
         newObject._cachedTypeConstraints = new HashSet<Inequality>();
         newObject._typeConstraintsVersion = -1;
-        newObject.bidirectionalTypeInference = bidirectionalTypeInference;
-        return newObject;
+        try {
+            newObject.bidirectionalTypeInference = (SharedParameter)newObject.getAttribute("bidirectionalTypeInference",
+                    SharedParameter.class);
+        } catch (Throwable throwable) {
+            throw new CloneNotSupportedException("Failed to get "
+                    + "bidirectionalTypeInference attribute: "
+                    + throwable);
+        }
+            return newObject;
     }
 
     /** Create a new TypedIOPort with the specified name.

@@ -193,6 +193,7 @@ public class SharedParameter extends Parameter implements Initializable {
         SharedParameter newObject = (SharedParameter) super.clone(workspace);
         SharedParameterRegistry registry = _getSharedParameterRegistry(workspace);
         registry.register(newObject);
+        newObject._sharedParameterSet = null;
         return newObject;
     }
 
