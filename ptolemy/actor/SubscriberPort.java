@@ -43,6 +43,7 @@ import ptolemy.data.type.BaseType;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.util.Attribute;
+import ptolemy.kernel.util.HierarchyListener;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -61,7 +62,8 @@ import ptolemy.kernel.util.NamedObj;
  @Pt.ProposedRating Yellow (eal)
  @Pt.AcceptedRating Red (eal)
  */
-public class SubscriberPort extends TypedIOPort implements Initializable {
+public class SubscriberPort extends TypedIOPort 
+        implements HierarchyListener, Initializable {
 
     /** Construct an IOPort with a containing actor and a name
      *  that is neither an input nor an output.  The specified container
@@ -87,10 +89,7 @@ public class SubscriberPort extends TypedIOPort implements Initializable {
         setOutput(false);
         setInput(true);
         // FIXME: Should disable making changes to the above.
-        
-        // FIXME: If the container of this port is set to null, have to handle as in the
-        // Publisher actor.
-        
+                
         // FIXME: if you also wire something to this port, then the
         // port will be required to be a multiport, and it will not be
         // clear which channel goes where!
@@ -164,6 +163,45 @@ public class SubscriberPort extends TypedIOPort implements Initializable {
         }
     }
     
+    /** Notify this object that the containment hierarchy above it has
+     *  changed. This method does nothing because instead we use
+     *  {@link #preinitialize()} to handle re-establishing the connections.
+     *  @exception IllegalActionException If the change is not
+     *   acceptable.
+     */
+    public void hierarchyChanged() throws IllegalActionException {
+        // Make sure we are registered as to be initialized
+        // with the container.
+        NamedObj container = getContainer();
+        if (container instanceof Initializable) {
+            ((Initializable)container).addInitializable(this);
+        }
+    }
+
+    /** Notify this object that the containment hierarchy above it will be
+     *  changed, which results in 
+     *  @exception IllegalActionException If unlinking to a published port fails.
+     */
+    public void hierarchyWillChange() throws IllegalActionException {
+        if (channel != null) {
+            String channelValue = channel.stringValue();
+            NamedObj immediateContainer = getContainer();
+            if (immediateContainer != null) {
+                NamedObj container = immediateContainer.getContainer();
+                if (container instanceof CompositeActor) {
+                    ((CompositeActor) container).unlinkToPublishedPort(
+                            channelValue, this);
+                }
+            }
+        }
+        // Unregister to be initialized with the container.
+        // We will be re-registered when hierarchyChanged() is called.
+        NamedObj container = getContainer();
+        if (container instanceof Initializable) {
+            ((Initializable)container).removeInitializable(this);
+        }
+    }
+    
     /** Do nothing. */
     @Override
     public void initialize() throws IllegalActionException {
@@ -185,8 +223,11 @@ public class SubscriberPort extends TypedIOPort implements Initializable {
     public void removeInitializable(Initializable initializable) {
     }
 
-    /** Override the base class to register as an Initializable
-     *  so that preinitialize() is invoked.
+    /** Override the base class to register as an 
+     *  {@link Initializable}
+     *  so that preinitialize() is invoked, and as a
+     *  {@link HierarchyListener}, so that we are notified of
+     *  changes in the hiearchy above.
      *  @param container The proposed container.
      *  @exception IllegalActionException If the action would result in a
      *   recursive containment structure, or if
@@ -202,11 +243,17 @@ public class SubscriberPort extends TypedIOPort implements Initializable {
             if (previousContainer instanceof Initializable) {
                 ((Initializable)previousContainer).removeInitializable(this);
             }
+            if (previousContainer != null) {
+                previousContainer.removeHierarchyListener(this);
+            }
             if (container instanceof Initializable) {
                 ((Initializable)container).addInitializable(this);
             }
         }
         super.setContainer(container);
+        if (container != null) {
+            container.addHierarchyListener(this);
+        }
     }
 
     /** Do nothing. */

@@ -44,9 +44,12 @@ import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.StringParameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.ComponentEntity;
+import ptolemy.kernel.Entity;
 import ptolemy.kernel.InstantiableNamedObj;
 import ptolemy.kernel.util.Attribute;
+import ptolemy.kernel.util.HierarchyListener;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
@@ -64,7 +67,7 @@ import ptolemy.kernel.util.NamedObj;
  @Pt.ProposedRating Yellow (eal)
  @Pt.AcceptedRating Red (eal)
  */
-public class PublisherPort extends TypedIOPort {
+public class PublisherPort extends TypedIOPort implements HierarchyListener {
 
     /** Construct an IOPort with a containing actor and a name
      *  that is neither an input nor an output.  The specified container
@@ -94,10 +97,7 @@ public class PublisherPort extends TypedIOPort {
         setOutput(true);
         setInput(false);
         // FIXME: Should disable making changes to the above.
-        
-        // FIXME: If the container of this port is set to null, have to handle as in the
-        // Publisher actor.
-        
+                
         // FIXME: if you also wire something to this port, then the
         // port will be required to be a multiport, and it will not be
         // clear which channel goes where!
@@ -171,6 +171,9 @@ public class PublisherPort extends TypedIOPort {
             NamedObj immediateContainer = getContainer();
             if (immediateContainer != null) {
                 NamedObj container = immediateContainer.getContainer();
+                // NOTE: During cloning, the container reports that it is in a class definition!
+                // Hence, this PublisherPort has to do the registering when clone is
+                // set to no longer be a class definition.
                 if (container instanceof InstantiableNamedObj
                         && !((InstantiableNamedObj)container).isWithinClassDefinition()) {
                     String newValue = channel.stringValue();
@@ -185,7 +188,7 @@ public class PublisherPort extends TypedIOPort {
                                     if (_global && !globalValue) {
                                         // Changing from global to non-global.
                                         ((CompositeActor) container)
-                                        .unregisterPublisherPort(_channel,
+                                                .unregisterPublisherPort(_channel,
                                                 this, true);
                                     }
                                 }
@@ -193,7 +196,7 @@ public class PublisherPort extends TypedIOPort {
                                 if (attribute == channel
                                         && (!(_channel == null || _channel.trim()
                                         .equals("")))) {
-                                    // Setting 
+                                    // Changing the channel from a previous channel name. 
                                     if (((BooleanToken) propagateNameChanges
                                             .getToken()).booleanValue()) {
                                         try {
@@ -206,16 +209,14 @@ public class PublisherPort extends TypedIOPort {
                                         }
                                     }
                                 }
-                                ((CompositeActor) container).registerPublisherPort(
-                                        newValue, this, globalValue);
 
                                 if (attribute == channel
-                                        && (!(_channel == null || _channel.trim()
-                                        .equals("")))) {
+                                        && (!(_channel == null || _channel.trim().equals("")))) {
                                     ((CompositeActor) container)
-                                    .unregisterPublisherPort(_channel,
-                                            this, _global);
+                                            .unregisterPublisherPort(_channel, this, _global);
                                 }
+                                ((CompositeActor) container).registerPublisherPort(
+                                        newValue, this, globalValue);
 
                             } catch (NameDuplicationException e) {
                                 throw new IllegalActionException(this, e,
@@ -229,6 +230,78 @@ public class PublisherPort extends TypedIOPort {
             }
         } else {
             super.attributeChanged(attribute);
+        }
+    }
+    
+    /** Notify this object that the containment hierarchy above it has
+     *  changed. This method does nothing because instead we use
+     *  {@link #preinitialize()} to handle re-establishing the connections.
+     *  @exception IllegalActionException If the change is not
+     *   acceptable.
+     */
+    public void hierarchyChanged() throws IllegalActionException {
+        // NOTE: It is not OK to access the cached variable _channel
+        // here instead of the channel parameter because the parameter
+        // may not have been validating (during instantiation of
+        // actor-oriented classes).
+        String channelValue = channel.stringValue();
+        if (channelValue != null && !channelValue.equals("")) {
+            NamedObj immediateContainer = getContainer();
+            if (immediateContainer != null) {
+                NamedObj container = immediateContainer.getContainer();
+                if (container instanceof CompositeActor) {
+                    try {
+                        ((CompositeActor) container).registerPublisherPort(
+                                channelValue, this, _global);
+                    } catch (NameDuplicationException e) {
+                        throw new InternalErrorException(e);
+                    }
+                }
+            }
+        }
+    }
+
+    /** Notify this object that the containment hierarchy above it will be
+     *  changed, which results in 
+     *  @exception IllegalActionException If unlinking to a published port fails.
+     */
+    public void hierarchyWillChange() throws IllegalActionException {
+        if (channel != null) {
+            String channelValue = channel.stringValue();
+            NamedObj immediateContainer = getContainer();
+            if (immediateContainer != null) {
+                NamedObj container = immediateContainer.getContainer();
+                if (container instanceof CompositeActor) {
+                    try {
+                        ((CompositeActor) container).unregisterPublisherPort(
+                                channelValue, this, _global);
+                    } catch (NameDuplicationException e) {
+                        throw new InternalErrorException(e);
+                    }
+                }
+            }
+        }
+    }
+
+    /** Override the base class to register as a {@link HierarchyListener}
+     *  so that we are notified of changes in the hierarchy above.
+     *  @param container The proposed container.
+     *  @exception IllegalActionException If the action would result in a
+     *   recursive containment structure, or if
+     *   this entity and container are not in the same workspace.
+     *  @exception NameDuplicationException If the container already has
+     *   an entity with the name of this entity.
+     */
+    @Override
+    public void setContainer(Entity container)
+            throws IllegalActionException, NameDuplicationException {
+        NamedObj previousContainer = super.getContainer();
+        if (previousContainer != container && previousContainer != null) {
+            previousContainer.removeHierarchyListener(this);
+        }
+        super.setContainer(container);
+        if (container != null) {
+            container.addHierarchyListener(this);
         }
     }
     
