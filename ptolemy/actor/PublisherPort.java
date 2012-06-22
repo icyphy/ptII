@@ -23,16 +23,6 @@
 
  PT_COPYRIGHT_VERSION_2
  COPYRIGHTENDKEY
-
- Review vectorized methods.
- Review broadcast/get/send/hasRoom/hasToken.
- Review setInput/setOutput/setMultiport.
- Review isKnown/broadcastClear/sendClear.
- createReceivers creates inside receivers based solely on insideWidth, and
- outsideReceivers based solely on outside width.
- connectionsChanged: no longer validates the attributes of this port.  This is
- now done in Manager.initialize().
- Review sendInside, getInside, getWidthInside, transferInputs/Outputs, etc.
  */
 package ptolemy.actor;
 
@@ -59,7 +49,42 @@ import ptolemy.kernel.util.NamedObj;
 
 /**
  This is a specialized output port that publishes data sent through it on
- the specified named channel.
+ the specified named channel.  The tokens are
+ "tunneled" to any instance of {@link SubscriberPort} that names the same channel.
+ If {@link #global} is false (the default), then this publisher
+ will only send to instances of SubscriberPort that are under the
+ control of the same director. That is, it can
+ be at a different level of the hierarchy, or in an entirely different
+ composite actor, as long as the relevant composite actors are
+ transparent (have no director). If {@link #global} is true,
+ then the subscriber may be anywhere in the model, as long as its
+ <i>global</i> parameter is also true.
+ <p>
+ It is an error to have two instances of PublisherPort using the same
+ channel under the control of the same director. When you create a
+ new PublisherPort, by default, it has no channel name. You have to
+ specify a channel name to use it.
+ <p>
+ <b>How it works:</b>
+ When the channel name
+ is specified, typically during model construction, this actor
+ causes a relation to be created in the least opaque composite
+ actor above it in the hierarchy and links to that relation.
+ In addition, if {@link #global} is set to true, it causes
+ a port to be created in that composite, and also links that
+ port to the relation on the inside.  The relation is recorded by the opaque
+ composite.  When a SubscriberPort is preinitialized that refers
+ to the same channel, that SubscriberPort finds the relation (by
+ finding the least opaque composite actor above it) and links
+ to the relation. Some of these links are "liberal links" in that
+ they cross levels of the hierarchy.
+ <p>
+ Since publishers are linked to subscribers,
+ any data dependencies that the director might assume on a regular
+ "wired" connection will also be assumed across publisher-subscriber
+ pairs. Similarly, type constraints will propagate across
+ publisher-subscriber pairs. That is, the type of the subscriber
+ output will match the type of the publisher input.
 
  @author Edward A. Lee
  @version $Id$
@@ -69,10 +94,7 @@ import ptolemy.kernel.util.NamedObj;
  */
 public class PublisherPort extends TypedIOPort implements HierarchyListener {
 
-    /** Construct an IOPort with a containing actor and a name
-     *  that is neither an input nor an output.  The specified container
-     *  must implement the Actor interface, or an exception will be thrown.
-     *
+    /** Construct publisher port with the specified name and container.
      *  @param container The container actor.
      *  @param name The name of the port.
      *  @exception IllegalActionException If the port is not of an acceptable
@@ -96,7 +118,6 @@ public class PublisherPort extends TypedIOPort implements HierarchyListener {
         
         setOutput(true);
         setInput(false);
-        // FIXME: Should disable making changes to the above.
                 
         // FIXME: if you also wire something to this port, then the
         // port will be required to be a multiport, and it will not be
@@ -305,6 +326,32 @@ public class PublisherPort extends TypedIOPort implements HierarchyListener {
         }
     }
     
+    /** Override the base class to refuse to accept setting to be an input.
+     *  @param isInput Required to be false.
+     *  @exception IllegalActionException If the argument is true.
+     */
+    @Override
+    public void setInput(boolean isInput) throws IllegalActionException {
+        if (isInput) {
+            throw new IllegalActionException(this,
+                    "PublisherPort cannot be an input port.");
+        }
+        super.setInput(false);
+    }
+    
+    /** Override the base class to require the port to be an output.
+     *  @param isOutput Required to be true.
+     *  @exception IllegalActionException If the argument is false.
+     */
+    @Override
+    public void setOutput(boolean isOutput) throws IllegalActionException {
+        if (!isOutput) {
+            throw new IllegalActionException(this,
+                    "PublisherPort is required to be an output port.");
+        }
+        super.setOutput(true);
+    }
+
     /** Return a Set of SubscriberPort that are connected to this Publisher.
      *  @return A Set of Subscribers that are connected to this Publisher
      *  @exception KernelException If thrown when a Manager is added to

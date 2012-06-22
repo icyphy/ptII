@@ -23,25 +23,19 @@
 
  PT_COPYRIGHT_VERSION_2
  COPYRIGHTENDKEY
-
- Review vectorized methods.
- Review broadcast/get/send/hasRoom/hasToken.
- Review setInput/setOutput/setMultiport.
- Review isKnown/broadcastClear/sendClear.
- createReceivers creates inside receivers based solely on insideWidth, and
- outsideReceivers based solely on outside width.
- connectionsChanged: no longer validates the attributes of this port.  This is
- now done in Manager.initialize().
- Review sendInside, getInside, getWidthInside, transferInputs/Outputs, etc.
  */
 package ptolemy.actor;
+
+import java.util.List;
 
 import ptolemy.data.BooleanToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.StringParameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.ComponentEntity;
+import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Entity;
+import ptolemy.kernel.Port;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.HierarchyListener;
 import ptolemy.kernel.util.IllegalActionException;
@@ -53,8 +47,30 @@ import ptolemy.kernel.util.NamedObj;
 //// SubscriberPort
 
 /**
- This is a specialized output port that publishes data sent through it on
- the specified named channel.
+ This is a specialized input port that subscribes to data sent
+ to it on the specified named channel.
+ The tokens are "tunneled" from an instance of
+ {@link PublisherPort} that names the same channel.
+ If {@link #global} is false (the default), then this subscriber
+ will only see instances of PublisherPort that are under the
+ control of the same director. That is, it can
+ be at a different level of the hierarchy, or in an entirely different
+ composite actor, as long as the relevant composite actors are
+ transparent (have no director). If {@link #global} is true,
+ then the publisher may be anywhere in the model, as long as its
+ <i>global</i> parameter is also true.
+ <p>
+ Any number of instances of SubscriberPort can subscribe to the same
+ channel.
+ <p>
+ This actor actually has a hidden input port that is connected
+ to the publisher via hidden "liberal links" (links that are
+ allowed to cross levels of the hierarchy).  Consequently,
+ any data dependencies that the director might assume on a regular
+ "wired" connection will also be assumed across Publisher-Subscriber
+ pairs.  Similarly, type constraints will propagate across
+ Publisher-Subscriber pairs. That is, the type of the Subscriber
+ output will match the type of the Publisher input.
 
  @author Edward A. Lee
  @version $Id$
@@ -65,10 +81,8 @@ import ptolemy.kernel.util.NamedObj;
 public class SubscriberPort extends TypedIOPort 
         implements HierarchyListener, Initializable {
 
-    /** Construct an IOPort with a containing actor and a name
-     *  that is neither an input nor an output.  The specified container
-     *  must implement the Actor interface, or an exception will be thrown.
-     *
+    /** Construct a subscriber port with a containing actor and a name.
+     *  This is always an input port.
      *  @param container The container actor.
      *  @param name The name of the port.
      *  @exception IllegalActionException If the port is not of an acceptable
@@ -88,7 +102,6 @@ public class SubscriberPort extends TypedIOPort
         
         setOutput(false);
         setInput(true);
-        // FIXME: Should disable making changes to the above.
                 
         // FIXME: if you also wire something to this port, then the
         // port will be required to be a multiport, and it will not be
@@ -103,7 +116,7 @@ public class SubscriberPort extends TypedIOPort
      *  If this is set to true, then a subscriber anywhere in the model that
      *  references the same channel by name will see values published by
      *  this port. If this is set to false (the default), then only
-     *  those subscribers that are fired by the same director will see
+     *  those subscribers that are controlled by the same director will see
      *  values published on this channel.
      */
     public Parameter global;
@@ -256,6 +269,32 @@ public class SubscriberPort extends TypedIOPort
         }
     }
 
+    /** Override the base class to only accept setting to be an input.
+     *  @param isInput True to make the port an input.
+     *  @exception IllegalActionException If the argument is false.
+     */
+    @Override
+    public void setInput(boolean isInput) throws IllegalActionException {
+        if (!isInput) {
+            throw new IllegalActionException(this,
+                    "SubscriberPort is required to be an input port.");
+        }
+        super.setInput(true);
+    }
+    
+    /** Override the base class to refuse to make the port an output.
+     *  @param isOutput Required to be false.
+     *  @exception IllegalActionException If the argument is true.
+     */
+    @Override
+    public void setOutput(boolean isOutput) throws IllegalActionException {
+        if (isOutput) {
+            throw new IllegalActionException(this,
+                    "SubscriberPort cannot be an output port.");
+        }
+        super.setOutput(false);
+    }
+    
     /** Do nothing. */
     @Override
     public void wrapup() throws IllegalActionException {
@@ -289,9 +328,63 @@ public class SubscriberPort extends TypedIOPort
                     ((CompositeActor) container).linkToPublishedPort(_channel,
                             this, _global);
                 } catch (Exception e) {
-                    throw new IllegalActionException(this, e,
-                            "Can't link SubscriberPort with PublisherPort, channel was \""
-                                    + channel.stringValue() + "\"");
+                    if (e instanceof IllegalActionException) {
+                        // If we have a LazyTypedCompositeActor that
+                        // contains the PublisherPort, then populate() the
+                        // model, expanding the LazyTypedCompositeActors
+                        // and retry the link.  This is computationally
+                        // expensive.
+                        // See $PTII/ptolemy/actor/lib/test/auto/LazyPubSub2.xml
+                        // The following causes everything to expand.
+                        _updatePublisherPorts((CompositeEntity)toplevel());
+                        /*
+                        NamedObj toplevel = toplevel();
+                        ((TypedCompositeActor) toplevel).allAtomicEntityList();
+                        toplevel.validateSettables();
+                        try {
+                            ((CompositeActor) container).linkToPublishedPort(
+                                    _channel, this, _global);
+                        } catch (NameDuplicationException e1) {
+                            throw new IllegalActionException(this, e,
+                                    "Can't link SubscriberPort with PublisherPort, channel was \""
+                                            + channel.stringValue() + "\"");
+                        }
+                        */
+                    } else {
+                        throw new IllegalActionException(this, e,
+                                "Can't link SubscriberPort with PublisherPort, channel was \""
+                                        + channel.stringValue() + "\"");
+                    }
+                }
+            }
+        }
+    }
+    
+    /** Traverse the model, starting at the specified object
+     *  and examining objects below it in the hierarchy, to find
+     *  all instances of PublisherPort and make sure that they have
+     *  registered their port. This method defeats lazy composites
+     *  and is expensive to execute.
+     *  @param root The root of the tree to search.
+     *  @throws IllegalActionException If the port rejects its channel.
+     */
+    protected void _updatePublisherPorts(CompositeEntity root) throws IllegalActionException {
+        List<Port> ports = root.portList();
+        for (Port port : ports) {
+            if (port instanceof PublisherPort) {
+                port.attributeChanged(((PublisherPort)port).channel);
+            }
+        }
+        List<Entity> entities = root.entityList();
+        for (Entity entity : entities) {
+            if (entity instanceof CompositeEntity) {
+                _updatePublisherPorts((CompositeEntity)entity);
+            } else {
+                List<Port> entityPorts = entity.portList();
+                for (Port port : entityPorts) {
+                    if (port instanceof PublisherPort) {
+                        port.attributeChanged(((PublisherPort)port).channel);
+                    }
                 }
             }
         }

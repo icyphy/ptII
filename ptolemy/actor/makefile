@@ -108,6 +108,7 @@ JSRCS = \
 	StateReceiver.java \
 	StreamExecutionListener.java \
 	SubscriberPort.java \
+	SubscriptionAggregatorPort.java \
 	SuperdenseTimeDirector.java \
 	TimedActor.java \
 	TokenGotEvent.java \
