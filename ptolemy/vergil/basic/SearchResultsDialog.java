@@ -33,6 +33,7 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.geom.Point2D;
 import java.net.URL;
 import java.util.Comparator;
 import java.util.HashSet;
@@ -60,6 +61,7 @@ import ptolemy.actor.gui.ColorAttribute;
 import ptolemy.actor.gui.Configuration;
 import ptolemy.actor.gui.DialogTableau;
 import ptolemy.actor.gui.PtolemyDialog;
+import ptolemy.actor.gui.Tableau;
 import ptolemy.gui.Query;
 import ptolemy.gui.QueryListener;
 import ptolemy.gui.Top;
@@ -67,6 +69,7 @@ import ptolemy.kernel.Entity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.ChangeRequest;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.Location;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
@@ -273,7 +276,23 @@ public class SearchResultsDialog extends PtolemyDialog
         }
         if (container != null) {
             try {
-                _configuration.openInstance(container);
+                _report("Opening " + container.getFullName());
+                Tableau tableau = _configuration.openInstance(container);
+
+                // Try to zoom and center on the target.
+                Location locationAttribute = (Location)target.getAttribute("_location", Location.class);
+                if (locationAttribute != null) {
+                    Frame frame = tableau.getFrame();
+                    if (frame instanceof BasicGraphFrame) {
+                        BasicGraphFrame basicGraphFrame = (BasicGraphFrame)frame;
+                        double [] locationArray = locationAttribute.getLocation();
+                        Point2D locationPoint2D = new Point2D.Double(locationArray[0], locationArray[1]);
+                        System.out.println("SearchResultsDialog: location: " + locationPoint2D);
+                        basicGraphFrame.zoom(1.0);
+                        basicGraphFrame.setCenter(locationPoint2D);
+                    }
+                }
+                _report("Opened " + container.getFullName());
             } catch (Throwable throwable) {
                 MessageHandler.error("Failed to open container", throwable);
             }
