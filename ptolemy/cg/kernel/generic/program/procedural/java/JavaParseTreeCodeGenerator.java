@@ -1824,7 +1824,9 @@ public class JavaParseTreeCodeGenerator extends AbstractParseTreeVisitor
                                                 : ptType == BaseType.UNSIGNED_BYTE ? "UnsignedByte"
                                                         //: ptType == PointerToken.POINTER ? "Pointer"
                                                         : ptType == BaseType.COMPLEX ? "Complex"
-                                                        : ptType == BaseType.OBJECT ? "Object"
+            // FIXME: Why do we have to use equals with BaseType.OBJECT
+            : ptType.equals(BaseType.OBJECT) ? "Object"
+            //: ptType == BaseType.OBJECT ? "Object"
                                                                 : null;
 
         if (result == null) {

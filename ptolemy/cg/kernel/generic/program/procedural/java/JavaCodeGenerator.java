@@ -140,7 +140,9 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
             : type == BaseType.UNSIGNED_BYTE ? "UnsignedByte"
             : type == PointerToken.POINTER ? "Pointer"
             : type == BaseType.COMPLEX ? "Complex"
-            : type == BaseType.OBJECT ? "Object"
+            // FIXME: Why do we have to use equals with BaseType.OBJECT?
+            : type.equals(BaseType.OBJECT) ? "Object"
+            //: type == BaseType.OBJECT ? "Object"
             : null;
 
         if (result == null) {
@@ -170,7 +172,7 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
 //                         + " System.identityHashCode(BaseType.OBJECT) " + System.identityHashCode(BaseType.OBJECT));
 //             }
             System.out
-                    .println("Cannot resolve codegen type from Ptolemy type: "
+                    .println("JavaCodeGenerator.codeGenType(): Cannot resolve codegen type from Ptolemy type: "
                             + type);
         }
         if (result == null) {
@@ -201,7 +203,9 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
                                                 : type == BaseType.UNSIGNED_BYTE ? "unsigned byte"
                                                         : type == PointerToken.POINTER ? "Pointer"
                                                                 : type == BaseType.COMPLEX ? "Complex"
-                                                                    : type == BaseType.OBJECT ? "Object"
+            // FIXME: Why do we have to use equals with Object
+            : type.equals(BaseType.OBJECT) ? "Object"
+            //: type == BaseType.OBJECT ? "Object"
                                                                         : null;
 
         if (result == null) {
@@ -214,7 +218,7 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
         }
         if (result == null || result.length() == 0) {
             System.out
-                    .println("Cannot resolve codegen type from Ptolemy type: "
+                    .println("JavaCodeGenerator.codeGenType2: Cannot resolve codegen type from Ptolemy type: "
                             + type);
         }
         if (result == null) {
@@ -334,7 +338,9 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
                                 : type == BaseType.UNSIGNED_BYTE ? 6
                                         : type == PointerToken.POINTER ? 7
                                                 : type == BaseType.COMPLEX ? 9
-                                                : type == BaseType.OBJECT ? 10
+            // FIXME: Why do we have to use equals with BaseType.OBJECT?
+            : type.equals(BaseType.OBJECT) ? 10
+            //: type == BaseType.OBJECT ? 10
                                                         : -10;
 
         if (result == -10) {
@@ -1741,8 +1747,10 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
                                 : ptType == BaseType.BOOLEAN ? "boolean"
                                         : ptType == BaseType.LONG ? "long"
                                                 : ptType == BaseType.UNSIGNED_BYTE ? "byte"
-            : ptType == BaseType.OBJECT ? "Object"            
-            //: ptType.equals(BaseType.OBJECT) ? "Object"
+            // FIXME: Why do we have to use equals with BaseType.OBJECT?
+            : ptType.equals(BaseType.OBJECT) ? "Object"
+            //: ptType == BaseType.OBJECT ? "Object"            
+
                                                         //: ptType == PointerToken.POINTER ? "void*"
                                                         : "Token";
     }

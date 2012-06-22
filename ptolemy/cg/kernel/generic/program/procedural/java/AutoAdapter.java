@@ -667,6 +667,19 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
         }
                         
 
+        Iterator parameters = ((TypedCompositeActor)getComponent().toplevel()).attributeList(Parameter.class).iterator();
+        while (parameters.hasNext()) {
+            Parameter parameter = (Parameter)parameters.next();
+            if (!_skipVariable(parameter.getName())) {
+                String parameterClassName = parameter.getClass().getName();
+                variableCode.append("{" + _eol
+                        + parameterClassName + " parameter = new " + parameterClassName
+                        + "(_toplevel, \"" + parameter.getName() + "\");" + _eol
+                        + "parameter.setExpression(\"" + parameter.getExpression().replace("\"", "\\\"") + "\");"
+                        + "}" +_eol);
+            }
+        }
+
         Set<String> sharedCode = super.getSharedCode();
         sharedCode
             .add("static TypedCompositeActor _toplevel = null;"
@@ -1231,13 +1244,10 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
             Variable variable = (Variable) variables.next();
             String variableName = StringUtilities.sanitizeName(
                     variable.getName()).replaceAll("\\$", "Dollar");
-            if (variableName.charAt(0) == '_') {
-                if (variableName.equals("_windowProperties")
-                        || variableName.startsWith("_vergil")) {
-                    // No need to create _windowProperties,  _vergilSize,
-                    // _vergilZoomFactor, or _vergilCenter variables.
-                    continue;
-                }
+            if (_skipVariable(variableName)) {
+                // No need to create _windowProperties,  _vergilSize,
+                // _vergilZoomFactor, or _vergilCenter variables.
+                continue;
             }
             String variableClassName = variable.getClass().getName();
             String variableClassShortName = variableClassName.substring(variableClassName.lastIndexOf(".") + 1);
@@ -1262,13 +1272,8 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
             Location location = (Location) locations.next();
             String locationName = StringUtilities.sanitizeName(
                     location.getName()).replaceAll("\\$", "Dollar");
-            if (locationName.charAt(0) == '_') {
-                if (locationName.equals("_windowProperties")
-                        || locationName.startsWith("_vergil")) {
-                    // No need to create _windowProperties,  _vergilSize,
-                    // _vergilZoomFactor, or _vergilCenter locations.
-                    continue;
-                }
+            if (_skipVariable(locationName)) {
+                continue;
             }
             String locationClassName = location.getClass().getName();
             String locationClassShortName = locationClassName.substring(locationClassName.lastIndexOf(".") + 1);
@@ -2822,9 +2827,7 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
                         int count = parameters.size();
                         for (Parameter parameter : parameters) {
                             String name = parameter.getName();
-                            if (name.equals("bidirectionalTypeInference")) {
-                                count--;
-                            } else if (name.startsWith("_")) {
+                            if (_skipVariable(name)) {
                                 count--;
                             }
                         }
@@ -2888,6 +2891,19 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
         parameterValue = parameterValue.replaceAll("\"", "\\\\\"");
 
         return parameterValue;
+    }
+
+    /** Return true if the variable should be skipped.
+     *  @param The variable name.   
+     *  @return true if the variable should be skipped.   
+     */
+    private boolean _skipVariable(String variableName) {
+        if (variableName.equals("_windowProperties")
+                || variableName.startsWith("_vergil")
+                || variableName.equals("bidirectionalTypeInference")) {
+            return true;
+        }
+        return false;
     }
 
     /**
