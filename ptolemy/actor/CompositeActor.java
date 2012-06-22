@@ -2696,23 +2696,38 @@ public class CompositeActor extends CompositeEntity implements Actor,
             throws IllegalActionException, NameDuplicationException {
         Director oldDirector = getDirector();
 
-        if (oldDirector != null) {
-            oldDirector.invalidateSchedule();
-            oldDirector.invalidateResolvedTypes();
-        }
+        if (director != oldDirector) {
+            if (oldDirector != null) {
+                oldDirector.invalidateSchedule();
+                oldDirector.invalidateResolvedTypes();
+            }
+            // If we are changing from opaque to transparent or
+            // vice versa, then we need to notify of a hierarchy change.
+            if (director == null || oldDirector == null) {
+                _notifyHierarchyListenersBeforeChange();
+            }
 
-        _director = director;
+            _director = director;
 
-        if (director != null) {
-            director.invalidateSchedule();
-            director.invalidateResolvedTypes();
-        } else {
-            // When deleting, the executive director also needs to be
-            // notified that its schedule must be recomputed.
-            Director executiveDirector = getExecutiveDirector();
+            try {
+                if (director != null) {
+                    director.invalidateSchedule();
+                    director.invalidateResolvedTypes();
+                } else {
+                    // When deleting, the executive director also needs to be
+                    // notified that its schedule must be recomputed.
+                    Director executiveDirector = getExecutiveDirector();
 
-            if (executiveDirector != null) {
-                executiveDirector.invalidateSchedule();
+                    if (executiveDirector != null) {
+                        executiveDirector.invalidateSchedule();
+                    }
+                }
+            } finally {
+                // If we are changing from opaque to transparent or
+                // vice versa, then we need to notify of a hierarchy change.
+                if (director == null || oldDirector == null) {
+                    _notifyHierarchyListenersBeforeChange();
+                }
             }
         }
     }
