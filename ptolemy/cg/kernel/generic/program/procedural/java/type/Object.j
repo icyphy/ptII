@@ -118,7 +118,11 @@ static String ObjecttoString(Token thisToken) {
 static Token Object_toString(Token thisToken, Token... tokens) {
     Token result = null;
 #ifdef PTCG_TYPE_Object
-    result = String_new(((ObjectCG)thisToken.payload).object.toString());
+    if (thisToken == null) {
+        result = String_new("object(null)");
+    } else {
+        result = String_new(((ObjectCG)thisToken.payload).object.toString());
+    }
 #endif
     return result;
 }
