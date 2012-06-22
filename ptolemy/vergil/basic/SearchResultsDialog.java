@@ -287,7 +287,6 @@ public class SearchResultsDialog extends PtolemyDialog
                         BasicGraphFrame basicGraphFrame = (BasicGraphFrame)frame;
                         double [] locationArray = locationAttribute.getLocation();
                         Point2D locationPoint2D = new Point2D.Double(locationArray[0], locationArray[1]);
-                        System.out.println("SearchResultsDialog: location: " + locationPoint2D);
                         basicGraphFrame.zoom(1.0);
                         basicGraphFrame.setCenter(locationPoint2D);
                     }
