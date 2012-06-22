@@ -191,12 +191,15 @@ public class TemplateParser {
             String refType) throws IllegalActionException {
 
         if (castType == null || refType == null || castType.equals(refType)) {
+            if (expression.equals("object(null)")) {
+                // ObjectType/ObjectToken
+                return "null";
+            }
             return expression;
         }
 
         expression = "$convert_" + refType + "_" + castType + "(" + expression
                 + ")";
-
         return processCode(expression);
     }
 
@@ -557,7 +560,6 @@ public class TemplateParser {
                     String elementCode = processCode(parseTreeCodeGenerator
                             .generateFireCode());
                     /////////////////////////////////////////////////////
-
                     return generateTypeConvertMethod(elementCode, castType,
                             _getCodeGenerator().codeGenType(element.getType()));
                 }

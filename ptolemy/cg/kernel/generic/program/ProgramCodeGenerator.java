@@ -1047,6 +1047,7 @@ public class ProgramCodeGenerator extends GenericCodeGenerator {
                                 : ptType == BaseType.BOOLEAN ? "boolean"
                                         : ptType == BaseType.LONG ? "long long "
                                                 : ptType == BaseType.UNSIGNED_BYTE ? "unsigned char"
+                                                      : ptType == BaseType.OBJECT ? "Object"
                                                         : ptType == PointerToken.POINTER ? "void*"
                                                                 : "Token";
     }

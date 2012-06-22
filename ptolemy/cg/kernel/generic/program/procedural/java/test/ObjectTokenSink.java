@@ -82,9 +82,12 @@ public class ObjectTokenSink extends Sink {
                             + ", expected 42.0");
                 }
             } else {
-                throw new IllegalActionException("Input was a "
-                        + token + ", which is a " + token.getClass() 
-                        + ".  A Double was expected.");
+                // Ignore null ObjectTokens
+                if (token.getValue() != null) {
+                    throw new IllegalActionException("Input was a "
+                            + token + ", which is a " + token.getClass() 
+                            + ".  A Double was expected.");
+                }
             }
         }
     }

@@ -55,6 +55,7 @@ import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.Variable;
 import ptolemy.data.type.ArrayType;
 import ptolemy.data.type.BaseType;
+import ptolemy.data.type.ObjectType;
 import ptolemy.data.type.Type;
 import ptolemy.kernel.ComponentPort;
 import ptolemy.kernel.Entity;
@@ -841,7 +842,7 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
 
                             // If we have a custom actor A that is
                             // connected to a composite that contains a
-                            // custom actor B, but A and B are conected by
+                            // custom actor B, but A and B are connected by
                             // a non-custom actor, then we need to
                             // transfer the token by hand.  For example:
                             // B--> AddSubtract --> A
@@ -854,13 +855,47 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
                             //String remoteActorContainerSymbol = getCodeGenerator().generateVariableName(remoteActorContainer);
                             String remoteActorContainerSymbol = _generatePtTypedCompositeActorName(remoteActorContainer,
                                     remoteActorContainer.getName());
+//                             String unescapedActorPortName = TemplateParser
+//                                 .unescapePortName(actorPortName);
+//                             String portOrParameter = "(TypedIOPort)$actorSymbol(actor).getPort(\""
+//                                 + unescapedActorPortName.replace("\\", "\\\\")
+//                                 .replace("$", "\\uu0024");
+                            String outputPortName = "c0PortA";
+
                             code.append("{" + _eol
                                     + "TypedCompositeActor c0 = (TypedCompositeActor) " + remoteActorContainerSymbol + ";" + _eol
                                     + "TypedIOPort c0PortA = (TypedIOPort)c0.getPort(\"c0PortA\");" + _eol
                                     + "TypedIOPort c0PortB = (TypedIOPort)c0.getPort(\"c0PortB\");" + _eol
+                                    + "if ( c0PortA == null) {" + _eol
+                                    + "c0PortA = new TypedIOPort(c0, \"c0PortA\", false, true);" + _eol
+                                    + "} else {" + _eol
+                                    + "c0PortA.setMultiport(true);" + _eol
+                                    + "}" + _eol
+                                    + "if ( c0PortB == null) {" + _eol
+                                    + "c0PortB = new TypedIOPort(c0, \"c0PortB\", true, false);" + _eol
+                                    // If c0PortB does not exist, then connect it.
+                                    + "c0.connect(c0PortB, c0PortA);" + _eol
+                                    + "} else {" + _eol
+                                    + "c0PortB.setMultiport(true);" + _eol
+                                    + "}" + _eol
                                     + "c0PortA.setTypeEquals(" + _typeToBaseType(inputPort.getType()) + ");" + _eol
+                                    
+//                                     + "if (!c0PortA.isDeeplyConnected(" + portOrParameter + ")) {" + _eol
+//                                     + "    $containerSymbol().connect(" + outputPortName + ","
+//                                     + portOrParameter + ");" + _eol
+//                                     + "}" + _eol
+//                                     // Connect c0PortB if necessary.  See.
+//                                     // $PTII/bin/ptcg -language java $PTII/ptolemy/cg/kernel/generic/program/procedural/java/test/auto/ReadPMultiport7.xml
+//                                     // $PTII/bin/ptcg -language java $PTII/ptolemy/cg/kernel/generic/program/procedural/java/test/auto/ReadPMultiport.xml
+//                                     + "if (!c0PortB.isDeeplyConnected(" + escapedCodegenPortNameSymbol + ")) {" + _eol
+//                                     + "    $containerSymbol().connect("
+//                                     + escapedCodegenPortNameSymbol + ", c0PortB);" + _eol
+//                                     + "}" + _eol
+
+
+
                                     + "c0PortA.send(0, c0PortB.get(0));" + _eol
-                                    + "}" + _eol);
+                                        + "}" + _eol);
                         }
                     }
 
@@ -1480,7 +1515,7 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
                 + codegenPortNameSymbol
                 + ".getInside(0"
                 + ")))."
-                + type.toString().toLowerCase() + "Value());" + _eol
+                + _valueMethodName(type) + ");" + _eol
                 + "double real = complex.real;" + _eol
                 + "double imag = complex.imag;" + _eol
                 + "$actorSymbol(" + portData + ")"
@@ -1502,8 +1537,7 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
                 + ")"
                 + "(" + codegenPortNameSymbol + ".getInside(0"
                 + ")))."
-                + type.toString().toLowerCase()
-                + "Value();"
+                + _valueMethodName(type) + ";"
                 + _eol
                 + _generateGetInside(actorPortName, codegenPortName, type,
                         channel) + _eol + "}" + _eol;
@@ -2784,11 +2818,23 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
                     List<Parameter> parameters = remoteContainer
                         .attributeList(Parameter.class);
                     if (parameters.size() > 0) {
-                        // We have parameters in the container, so return true.
-                        if (verbosityLevel > 14) {
-                            System.out.println("_isReadingRemoteParameters: " + remoteContainer.getFullName() + " return True");
+                        // Check for common parameters.
+                        int count = parameters.size();
+                        for (Parameter parameter : parameters) {
+                            String name = parameter.getName();
+                            if (name.equals("bidirectionalTypeInference")) {
+                                count--;
+                            } else if (name.startsWith("_")) {
+                                count--;
+                            }
                         }
-                        return true;
+                        if (count != 0) {
+                            // We have parameters in the container, so return true.
+                            if (verbosityLevel > 14) {
+                                System.out.println("_isReadingRemoteParameters: " + remoteContainer.getFullName() + " return True, parameters: " + parameters);
+                            }
+                            return true;
+                        }
                     }
                 }
                 if (remoteContainer.getContainer() == getComponent().getContainer()) {
@@ -2855,8 +2901,21 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
             return "new ArrayType("
                 + _typeToBaseType(((ArrayType) type)
                         .getDeclaredElementType()) + ")";
+        } else if (type instanceof ObjectType) {
+            return "BaseType.OBJECT";
         }
         return "BaseType." + type.toString().toUpperCase();
+    }
+
+    /** Return the name of the xxxValue() method, such as doubleValue().
+     *  @return the name of the xxxValue() method
+     */
+    private String _valueMethodName(Type type) {
+        String typeName = type.toString().toLowerCase();
+        if (typeName.equals("object(null)")) {
+            typeName = "get";
+        }
+        return typeName + "Value()";
     }
 
     ///////////////////////////////////////////////////////////////////

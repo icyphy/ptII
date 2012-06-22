@@ -134,14 +134,14 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
         //String ptolemyType = super.codeGenType(type);
         String result = type == BaseType.INT ? "Int"
                 : type == BaseType.LONG ? "Long"
-                        : type == BaseType.STRING ? "String"
-                                : type == BaseType.DOUBLE ? "Double"
-                                        : type == BaseType.BOOLEAN ? "Boolean"
-                                                : type == BaseType.UNSIGNED_BYTE ? "UnsignedByte"
-                                                        : type == PointerToken.POINTER ? "Pointer"
-                                                                : type == BaseType.COMPLEX ? "Complex"
-                                                                : type == BaseType.OBJECT ? "Object"
-                                                                        : null;
+            : type == BaseType.STRING ? "String"
+            : type == BaseType.DOUBLE ? "Double"
+            : type == BaseType.BOOLEAN ? "Boolean"
+            : type == BaseType.UNSIGNED_BYTE ? "UnsignedByte"
+            : type == PointerToken.POINTER ? "Pointer"
+            : type == BaseType.COMPLEX ? "Complex"
+            : type == BaseType.OBJECT ? "Object"
+            : null;
 
         if (result == null) {
             if (type instanceof ArrayType) {
@@ -152,6 +152,23 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
             }
         }
         if (result == null || result.length() == 0) {
+//             if (type instanceof ptolemy.data.type.ObjectType) {
+//                 System.out.println("ObjectType: " + type + " " + BaseType.OBJECT);
+//                 ptolemy.data.type.ObjectType objectType = (ptolemy.data.type.ObjectType)type;
+//                 Class clazz = objectType.getTokenClass();
+//                 System.out.println("ObjectType class: " + (clazz == null ? "null!" : clazz.getName()));
+//                 Class clazz2 = BaseType.OBJECT.getTokenClass();
+//                 System.out.println("BaseType.ObjectType class: " + (clazz2 == null ? "null!" : clazz2.getName()));
+//                 boolean flag = (clazz == clazz2);
+//                 System.out.println("clazz == clazz2: " + flag);
+//                 flag = (type == BaseType.OBJECT);
+//                 System.out.println("type == BaseType.OBJECT: " + flag);
+//                 flag = (type.equals(BaseType.OBJECT));
+//                 System.out.println("type.equals(BaseType.OBJECT): " + flag);
+//                 System.out.println("type.hashCode(): " + type.hashCode() + " BaseType.OBJECT.hashCode(): " + BaseType.OBJECT.hashCode());
+//                 System.out.println("System.identityHashCode(type): " + System.identityHashCode(type)
+//                         + " System.identityHashCode(BaseType.OBJECT) " + System.identityHashCode(BaseType.OBJECT));
+//             }
             System.out
                     .println("Cannot resolve codegen type from Ptolemy type: "
                             + type);
@@ -184,7 +201,7 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
                                                 : type == BaseType.UNSIGNED_BYTE ? "unsigned byte"
                                                         : type == PointerToken.POINTER ? "Pointer"
                                                                 : type == BaseType.COMPLEX ? "Complex"
-                                                                : type == BaseType.OBJECT ? "Object"
+                                                                    : type == BaseType.OBJECT ? "Object"
                                                                         : null;
 
         if (result == null) {
@@ -1724,6 +1741,8 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
                                 : ptType == BaseType.BOOLEAN ? "boolean"
                                         : ptType == BaseType.LONG ? "long"
                                                 : ptType == BaseType.UNSIGNED_BYTE ? "byte"
+            : ptType == BaseType.OBJECT ? "Object"            
+            //: ptType.equals(BaseType.OBJECT) ? "Object"
                                                         //: ptType == PointerToken.POINTER ? "void*"
                                                         : "Token";
     }
