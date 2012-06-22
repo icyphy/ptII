@@ -16,8 +16,5 @@ $put(output, (String)($tokenFunc($actorSymbol(state)::toString()).payload));
 /**/
 
 /*** FireBlock($type1) ***/
-Token foo = $new(Object(null));
-$put(output, $$type1toString($get(input)));
-//$put(output, (String)($tokenFunc($get(input)::toString()).payload));
-
+$put(output, (String)$typeFunc($type(input)::toString($get(input))).payload);
 /**/
