@@ -349,8 +349,11 @@ public class ObjectType implements Cloneable, Type {
     public static final ObjectType BOTTOM = new ObjectType(BottomClass.class);
 
     /** The top element among all ObjectTypes.
+     *  The value of this variable is == to the   
+     *  {@link ptolemy.data.type.BaseType#OBJECT} so that 
+     *  code generation can use "xxx == BaseType.OBJECT".
      */
-    public static final ObjectType TOP = new ObjectType();
+    public static final ObjectType TOP = BaseType.OBJECT;
 
     /**
      An artificial Java class that serves as the bottom element.
