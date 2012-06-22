@@ -49,6 +49,8 @@ JSRCS = \
 	ActorWithPortNameProblem.java \
 	ActorWithPrivateParameter.java \
 	CustomAdder.java \
+	ObjectTokenSink.java \
+	ObjectTokenSource.java \
 	PortParameterActor.java \
 	ReadParametersAcrossLink.java \
 	ReadParametersInContainer.java \
