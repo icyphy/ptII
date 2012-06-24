@@ -181,9 +181,32 @@ public class TextEffigy extends Effigy {
                         // reflects the location of the file.
                         in = jarURL;
                     } catch (Throwable throwable) {
-                        // Looking for the file as a resource did not work,
-                        // so we rethrow the original exception.
-                        throw ex;
+                        try {
+                            // Hmm.  Might be Eclipse, where sadly the 
+                            // .class files are often in a separate directory
+                            // than the .java files.  So, we look at the CLASSPATH
+                            // and for each element that names a directory, traverse
+                            // the parents directories and look for adjacent directories
+                            // that contain a "src" directory.  For example if
+                            // the classpath contains "kepler/ptolemy/target/classes/",
+                            // then we will find kepler/ptolemy/src and return it 
+                            // as a URL.  See also Configuration.createPrimaryTableau()
+
+                            URL sourceURL = ptolemy.util.ClassUtilities
+                                .sourceResource(in.toString());
+                            reader = new BufferedReader(new InputStreamReader(
+                                            sourceURL.openStream()));
+
+                            // We were able to open the URL, so update the
+                            // original URL so that the title bar accurately
+                            // reflects the location of the file.
+                            in = sourceURL;
+
+                        } catch (Throwable throwable2) {
+                            // Looking for the file as a resource did not work,
+                            // so we rethrow the original exception.
+                            throw ex;
+                        }
                     }
                 }
 

@@ -177,6 +177,67 @@ public class ClassUtilities {
         }
     }
 
+    /** Lookup a URL in the classpath, but search up the classpath
+     *  for directories named src.
+     *  This method is useful for IDEs such as Eclipse where
+     *  the default is to place .class files in a separate directory
+     *  from the .java files.
+     *
+     *  <p>Before calling this method, call ClassLoader.getResource()
+     *  because ClassLoader.getResource() is presumably faster.</p>
+     *
+     *  @param sourceURLString The string containing the URL.
+     *  @return The resource, if any.  If the spec string does not
+     *  contain <code>!/</code>, then return null.
+     *  @exception IOException If this method cannot convert the specification
+     *  to a URL.
+     *  @see java.net.JarURLConnection
+     */
+    public static URL sourceResource(String sourceURLString)
+            throws IOException {
+        // FIXME: Maybe only allow relative paths?
+
+        // Hmm.  Might be Eclipse, where sadly the 
+        // .class files are often in a separate directory
+        // than the .java files.  So, we look at the CLASSPATH
+        // and for each element that names a directory, traverse
+        // the parents directories and look for adjacent directories
+        // that contain a "src" directory.  For example if
+        // the classpath contains "kepler/ptolemy/target/classes/",
+        // then we will find kepler/ptolemy/src and return it 
+        // as a URL.
+
+        // First time through, search each element of the CLASSPATH that names
+        // a directory
+        if (_sourceDirectories == null) {
+            String classPath[] = StringUtilities.getProperty("java.class.path").split(StringUtilities.getProperty("path.separator"));
+            _sourceDirectories = new LinkedList<File>();
+            for ( int i = 0; i < classPath.length; i++) {
+                File directory = new File(classPath[i]);
+                if (directory.isDirectory()) {
+                    // We have a potential winner.
+                    while (directory != null) {
+                        File sourceDirectory = new File(directory, "src");
+                        if (sourceDirectory.isDirectory()) {
+                            _sourceDirectories.add(sourceDirectory);
+                            break;
+                        }
+                        directory = directory.getParentFile();
+                    }
+                }
+            }
+        }
+        
+        // Search _sourceDirectories for sourceURLString
+        for (File sourceDirectory : _sourceDirectories) {
+            File sourceFile = new File(sourceDirectory, sourceURLString);
+            if (sourceFile.exists()) {
+                return sourceFile.getCanonicalFile().toURI().toURL();
+            }
+        }
+        return null;
+    }
+
     /** Given a dot separated classname, return the jar file or directory
      *  where the class can be found.
      *  @param necessaryClass  The dot separated class name, for example
@@ -230,4 +291,9 @@ public class ClassUtilities {
 
         return null;
     }
+
+    /** A list of directories that end with "src" that are found in
+     *  in the paths of individual elements in the classpath.
+     */
+    private static List<File>_sourceDirectories = null;
 }

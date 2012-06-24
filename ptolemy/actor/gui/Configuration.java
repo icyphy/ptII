@@ -65,6 +65,7 @@ import ptolemy.moml.MoMLFilter;
 import ptolemy.moml.MoMLParser;
 import ptolemy.moml.filter.RemoveClasses;
 import ptolemy.moml.filter.RemoveGraphicalClasses;
+import ptolemy.util.ClassUtilities;
 import ptolemy.util.MessageHandler;
 import ptolemy.util.StringUtilities;
 
@@ -647,7 +648,6 @@ public class Configuration extends CompositeEntity implements
         // Otherwise, use the first factory encountered in the
         // configuration that agrees to represent this effigy.
         TableauFactory factory = null;
-
         if (effigy instanceof PtolemyEffigy) {
             NamedObj model = ((PtolemyEffigy) effigy).getModel();
 
@@ -662,7 +662,7 @@ public class Configuration extends CompositeEntity implements
 
                     try {
                         Tableau tableau = factory.createTableau(effigy);
-
+                        
                         if (tableau != null) {
                             // The first tableau is a master if the container
                             // of the containing effigy is the model directory.
@@ -690,7 +690,7 @@ public class Configuration extends CompositeEntity implements
         // Defer to the configuration.
         // Create a tableau if there is a tableau factory.
         factory = (TableauFactory) getAttribute("tableauFactory");
-
+        
         if (factory != null) {
             // If this fails, we do not want the effigy to linger
             try {
@@ -777,6 +777,14 @@ public class Configuration extends CompositeEntity implements
                     try {
                         URL toRead = getClass().getClassLoader().getResource(
                                 filename);
+
+                        // If filename was not found in the classpath, then search
+                        // each element in the classpath for a directory named
+                        // src and then search for filename.  This is needed
+                        // by Eclipse for Kepler.  See also TextEffigy.newTextEffigy()
+                        if (toRead == null) {
+                            toRead = ClassUtilities.sourceResource(filename);
+                        }
 
                         if (toRead != null) {
                             return openModel(null, toRead,
