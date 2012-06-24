@@ -516,7 +516,7 @@ public class SearchResultsDialog extends PtolemyDialog
         public void setValue(Object value) {
             String fullName = ((NamedObj)value).getFullName();
             // Strip the name of the model name and the leading and trailing period.
-            String strippedName = fullName.substring(_target.getName().length() + 2);
+            String strippedName = fullName.substring(_target.toplevel().getName().length() + 2);
             setText(strippedName);
         }
     }
