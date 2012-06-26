@@ -1,33 +1,35 @@
 /* A MoMLChangeRequest that offsets any objects that are created.
 
- Copyright (c) 2007-2010 The Regents of the University of California.
- All rights reserved.
- Permission is hereby granted, without written agreement and without
- license or royalty fees, to use, copy, modify, and distribute this
- software and its documentation for any purpose, provided that the above
- copyright notice and the following two paragraphs appear in all copies
- of this software.
+   Copyright (c) 2007-2010 The Regents of the University of California.
+   All rights reserved.
+   Permission is hereby granted, without written agreement and without
+   license or royalty fees, to use, copy, modify, and distribute this
+   software and its documentation for any purpose, provided that the above
+   copyright notice and the following two paragraphs appear in all copies
+   of this software.
 
- IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
- FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
- ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
- THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
- SUCH DAMAGE.
+   IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+   FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+   ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+   THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+   SUCH DAMAGE.
 
- THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
- INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
- MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
- PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
- CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
- ENHANCEMENTS, OR MODIFICATIONS.
+   THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+   INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+   MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+   PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+   CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+   ENHANCEMENTS, OR MODIFICATIONS.
 
- PT_COPYRIGHT_VERSION_2
- COPYRIGHTENDKEY
- 2
- */
+   PT_COPYRIGHT_VERSION_2
+   COPYRIGHTENDKEY
+   2
+*/
 package ptolemy.vergil.basic;
 
 import java.util.Iterator;
+import java.awt.MouseInfo;
+import java.awt.Point;
 
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.Locatable;
@@ -38,16 +40,22 @@ import ptolemy.util.MessageHandler;
 
 ///////////////////////////////////////////////////////////////////
 //// OffsetMoMLChangeRequest
-/** A mutation request specified in MoML that offsets any objects
- *  that are created in the toplevel.
- *  This class is used by the paste action in Vergil so that the
- *  pasted icon does not overlap the original icon.
+/**
+ A mutation request specified in MoML that offsets any objects
+ that are created in the toplevel.
+ 
+ <p>This class is used by the paste action in Vergil so that the
+ pasted icon does not overlap the original icon.
+ If a BasicGraphFrame can be found, then the position of the mouse
+ is used to determine the offsite.  Otherwise, a small offset is 
+ used.</p>
+
  @author  Christopher Brooks, based on code from BasicGraphFrame by Edward A. Lee
  @version $Id$
  @since Ptolemy II 6.1
  @Pt.ProposedRating Red (cxh)
  @Pt.AcceptedRating Red (cxh)
- */
+*/
 public class OffsetMoMLChangeRequest extends MoMLChangeRequest {
 
     /** Construct a mutation request to be executed in the specified
@@ -68,6 +76,7 @@ public class OffsetMoMLChangeRequest extends MoMLChangeRequest {
     public OffsetMoMLChangeRequest(Object originator, NamedObj context,
             String request) {
         super(originator, context, request);
+        _context = context;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -75,23 +84,66 @@ public class OffsetMoMLChangeRequest extends MoMLChangeRequest {
 
     /** Offset the locations of top level objects that are created
      *  by the change request.
-     *
+     *  If a BasicGraphFrame can be found, then the position of the mouse
+     *  is used to determine the offsite.  Otherwise, a small offset is 
+     *  used.
      *  @param parser The parser
      */
     protected void _postParse(MoMLParser parser) {
+        // Find the upper-most, left-most location.  Note that
+        // this is the center of the component.
+        double [] minimumLocation = new double[] { Double.MAX_VALUE, Double.MAX_VALUE };
         Iterator topObjects = parser.topObjectsCreated().iterator();
+        while (topObjects.hasNext()) {
+            NamedObj topObject = (NamedObj) topObjects.next();
+            Iterator locations = topObject.attributeList(Locatable.class)
+                .iterator();
+            while (locations.hasNext()) {
+                Locatable location = (Locatable) locations.next();
+                double[] locationValue = location.getLocation();
+                for (int i = 0; i < locationValue.length && i < minimumLocation.length; i++) {
+                    if (locationValue[i] < minimumLocation[i]) {
+                        minimumLocation[i] = locationValue[i];
+                    }
+                }
+            }
+        }
+
+        double xOffset = _PASTE_OFFSET;
+        double yOffset = _PASTE_OFFSET;
+
+        // If there is a basic graph frame, then get the mouse location.
+        BasicGraphFrame basicGraphFrame = BasicGraphFrame.getBasicGraphFrame(_context);
+        if (basicGraphFrame != null) {
+            Point componentLocation = basicGraphFrame.getJGraph().getGraphPane().getCanvas().getLocationOnScreen();
+            // Get the mouse location.  We don't use a MouseMotionListener here because we
+            // need the mouse location only when we paste.
+            Point mouseLocation = MouseInfo.getPointerInfo().getLocation();
+
+            xOffset = mouseLocation.x - componentLocation.x - minimumLocation[0];
+            yOffset = mouseLocation.y - componentLocation.y - minimumLocation[1];
+        }
+
+        // Update the locations.
+        topObjects = parser.topObjectsCreated().iterator();
         while (topObjects.hasNext()) {
             NamedObj topObject = (NamedObj) topObjects.next();
             try {
                 Iterator locations = topObject.attributeList(Locatable.class)
-                        .iterator();
+                    .iterator();
                 while (locations.hasNext()) {
                     Locatable location = (Locatable) locations.next();
                     double[] locationValue = location.getLocation();
                     for (int i = 0; i < locationValue.length; i++) {
-                        locationValue[i] += _PASTE_OFFSET;
+                        if (i == 0) {
+                            locationValue[i] += xOffset;
+                        } else if (i == 1) {
+                            locationValue[i] += yOffset;
+                        } else {
+                            locationValue[i] += _PASTE_OFFSET;
+                        }
+                        location.setLocation(locationValue);
                     }
-                    location.setLocation(locationValue);
                 }
             } catch (IllegalActionException e) {
                 MessageHandler.error("Change failed", e);
@@ -102,7 +154,7 @@ public class OffsetMoMLChangeRequest extends MoMLChangeRequest {
 
     /** Clear the list of top objects.
      *  @param parser The parser
-     */
+      */
     protected void _preParse(MoMLParser parser) {
         super._preParse(parser);
         parser.clearTopObjectsList();
@@ -110,7 +162,13 @@ public class OffsetMoMLChangeRequest extends MoMLChangeRequest {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
+
+
+    /** The context in which to execute the moml. */
+    private NamedObj _context;
+
     /** Offset used when pasting objects. */
     private static int _PASTE_OFFSET = 10;
+
 
 }
