@@ -55,9 +55,12 @@ import java.io.IOException;
 import java.lang.reflect.Field;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 
 import javax.print.PrintService;
 import javax.print.attribute.HashPrintRequestAttributeSet;
@@ -276,7 +279,10 @@ public abstract class Top extends JFrame {
 
         // Deal with help menu action listeners
         /*int c =*/MemoryCleaner.removeActionListeners(_historyMenu);
-        //System.out.println("_historyMenu: "+c);
+        //System.out.println("_historyMenu: "+c);        
+        if(_historyMenu != null) {
+            _historyMenus.remove(_historyMenu);
+        }
         _historyMenuListener = null;
 
         // Don't call removeWindowListeners here because Tableau.setFrame()
@@ -1128,21 +1134,63 @@ public abstract class Top extends JFrame {
                     }
                 }
             }
+            // If we found it, add to set of history menus
+            if(_historyMenu != null) {
+                _historyMenus.add(_historyMenu);
+            }
         }
+        
+        //System.out.println("number of history menus: " + _historyMenus.size());
+        
+        // Update the history menu in each Top
+        for(JMenu historyMenu : _historyMenus) {
+            //System.out.println("updating menu " + historyMenu);
 
-        /*int c =*/MemoryCleaner.removeActionListeners(_historyMenu);
-        //System.out.println("_historyMenu: "+c);
-
-        if (_historyMenu != null) {
-            _historyMenu.removeAll();
-
+            /*int c =*/MemoryCleaner.removeActionListeners(historyMenu);
+            //System.out.println("_historyMenu: "+c);
+    
+            historyMenu.removeAll();
+    
             for (int i = 0; i < historyList.size(); i++) {
                 String recentFileString = (String) historyList.get(i);
                 JMenuItem item = new JMenuItem(recentFileString);
                 item.addActionListener(_historyMenuListener);
-                _historyMenu.add(item);
+                historyMenu.add(item);
             }
         }
+    }
+
+    /** Add the name of the last file open or set the name
+     * to the first position if already in the list
+     * @param file name of the file to add
+     * @param delete If true, remove from the history list, otherwise the file
+     * is added to the beginning.
+     */
+    protected void _updateHistory(String file, boolean delete) throws IOException {
+        List<String> historyList = _readHistory();
+
+        // Remove if already present (then added to first position)
+        for (int i = 0; i < historyList.size(); i++) {
+            if (historyList.get(i).equals(file)) {
+                historyList.remove(i);
+            }
+        }
+
+        // Remove if depth > limit
+        if (historyList.size() >= _historyDepth) {
+            historyList.remove(historyList.size() - 1);
+        }
+
+        // Add to fist position
+        if (!delete) {
+            historyList.add(0, file);
+        }
+
+        // Serialize history
+        _writeHistory(historyList);
+
+        // Update submenu
+        _populateHistory(historyList);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -1699,37 +1747,6 @@ public abstract class Top extends JFrame {
         }
     }
 
-    /** Add the name of the last file open or set the name
-     * to the first position if already in the list
-     * @param file name of the file to add
-     */
-    private void _updateHistory(String file, boolean delete) throws IOException {
-        List<String> historyList = _readHistory();
-
-        // Remove if already present (then added to first position)
-        for (int i = 0; i < historyList.size(); i++) {
-            if (historyList.get(i).equals(file)) {
-                historyList.remove(i);
-            }
-        }
-
-        // Remove if depth > limit
-        if (historyList.size() >= _historyDepth) {
-            historyList.remove(historyList.size() - 1);
-        }
-
-        // Add to fist position
-        if (!delete) {
-            historyList.add(0, file);
-        }
-
-        // Serialize history
-        _writeHistory(historyList);
-
-        // Update submenu
-        _populateHistory(historyList);
-    }
-
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
 
@@ -1973,6 +1990,10 @@ public abstract class Top extends JFrame {
 
     /** A reference to the history menu. */
     private JMenu _historyMenu;
+    
+    /** A collection of references to the history menu in all open Top windows. */
+    private static Set<JMenu> _historyMenus = Collections
+            .synchronizedSet(new HashSet<JMenu>());
 
     /** The background color of the status bar */
     private Color _statusBarBackground;
