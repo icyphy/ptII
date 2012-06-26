@@ -101,7 +101,9 @@ public class ActorGraphTableau extends Tableau {
             throw new IllegalActionException(this,
                     "Cannot graphically edit a model "
                             + "that is not a CompositeEntity. Model is a "
-                            + model);
+                            + model
+                            + ", which is a " 
+                            + model.getClass().getName());
         }
 
         CompositeEntity entity = (CompositeEntity) model;

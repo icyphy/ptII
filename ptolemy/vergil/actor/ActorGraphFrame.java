@@ -93,8 +93,8 @@ import diva.gui.GUIUtilities;
  * @Pt.ProposedRating Red (neuendor)
  * @Pt.AcceptedRating Red (johnr)
  */
-public class ActorGraphFrame extends ExtendedGraphFrame implements
-        ActionListener {
+public class ActorGraphFrame extends ExtendedGraphFrame
+	/*implements ActionListener*/ {
     /**
      * Construct a frame associated with the specified Ptolemy II model. After
      * constructing this, it is necessary to call setVisible(true) to make the
@@ -132,20 +132,24 @@ public class ActorGraphFrame extends ExtendedGraphFrame implements
         _initActorGraphFrame();
     }
 
-    /**
-     * React to the actions specific to this actor graph frame.
-     *
-     * @param e The action event.
-     */
-    public void actionPerformed(ActionEvent e) {
-        JMenuItem target = (JMenuItem) e.getSource();
-        String actionCommand = target.getActionCommand();
-        if (actionCommand.equals("Import Design Pattern")) {
-            importDesignPattern();
-        } else if (actionCommand.equals("Export Design Pattern")) {
-            exportDesignPattern();
-        }
-    }
+//    /**
+//     * React to the actions specific to this actor graph frame.
+//     *
+//     * @param e The action event.
+//     */
+//    public void actionPerformed(ActionEvent e) {
+//        JMenuItem target = (JMenuItem) e.getSource();
+//        String actionCommand = target.getActionCommand();
+//        if (actionCommand.equals(_IMPORT_DESIGN_PATTERN_LABEL)) {
+//            importDesignPattern();
+//        } else if (actionCommand.equals(_EXPORT_DESIGN_PATTERN_LABEL)) {
+//            exportDesignPattern();
+//        } else if (actionCommand.equals(_IMPORT_LIBRARY_LABEL)) {
+//        	_importLibraryAction.actionPerformed(e);
+//        } else if (actionCommand.equals(_EXPORT_LIBRARY_LABEL)) {
+//        	_saveInLibraryAction.actionPerformed(e);
+//        }
+//    }
 
     /** Dispose of this frame.
      *     Override this dispose() method to unattach any listeners that may keep
@@ -169,7 +173,9 @@ public class ActorGraphFrame extends ExtendedGraphFrame implements
                 _rightComponent.unregisterKeyboardAction(ks);
             }
         }
+        _exportDesignPatternAction = null;
         _saveInLibraryAction = null;
+        _importDesignPatternAction = null;
         _importLibraryAction = null;
         _instantiateAttributeAction = null;
         _instantiateEntityAction = null;
@@ -277,8 +283,8 @@ public class ActorGraphFrame extends ExtendedGraphFrame implements
         // Only include the various actions if there is an actor library
         // The ptinyViewer configuration uses this.
         if (getConfiguration().getEntity("actor library") != null) {
-            _saveInLibraryAction = new SaveInLibraryAction();
-            _importLibraryAction = new ImportLibraryAction();
+            //_saveInLibraryAction = new SaveInLibraryAction();
+            //_importLibraryAction = new ImportLibraryAction();
             _instantiateAttributeAction = new InstantiateAttributeAction(
                     this, "ptolemy.vergil.kernel.attributes.EllipseAttribute");
             _instantiateEntityAction = new InstantiateEntityAction(this,
@@ -302,9 +308,7 @@ public class ActorGraphFrame extends ExtendedGraphFrame implements
         // The ptinyViewer configuration uses this.
         if (getConfiguration().getEntity("actor library") != null) {
             GUIUtilities.addHotKey(_getRightComponent(), _saveInLibraryAction);
-            GUIUtilities.addMenuItem(_graphMenu, _saveInLibraryAction);
             GUIUtilities.addHotKey(_getRightComponent(), _importLibraryAction);
-            GUIUtilities.addMenuItem(_graphMenu, _importLibraryAction);
             GUIUtilities.addMenuItem(_graphMenu, _instantiateAttributeAction);
             GUIUtilities.addHotKey(_getRightComponent(),
                     _instantiateAttributeAction);
@@ -384,30 +388,49 @@ public class ActorGraphFrame extends ExtendedGraphFrame implements
      * @return The items in the File menu.
      */
     protected JMenuItem[] _createFileMenuItems() {
+        // NOTE: Cannot use getConfiguration() because the configuration is
+        // not set when this method is called when instantiating Top. Hence, we assume that there
+        // is only one configuration, or that if there are multiple configurations
+        // in this execution, that the first one will determine whether PDF
+        // export is provided.
+        Configuration configuration = (Configuration) Configuration
+            .configurations().get(0);
         JMenuItem[] fileMenuItems = super._createFileMenuItems();
-        int i = 0;
+        //int i = 0;
         for (JMenuItem item : fileMenuItems) {
-            i++;
+            //i++;
             // Only include the various actions if there is an actor library
             // The ptinyViewer configuration uses this.
-            Configuration configuration = getConfiguration();
-            if ((configuration != null && configuration
-                    .getEntity("actor library") != null)
-                    && item.getActionCommand().equals("Save As")) {
-                // Add a SaveAsDesignPattern here.
-                JMenuItem importItem = new JMenuItem("Import Design Pattern",
-                        KeyEvent.VK_D);
-                JMenuItem exportItem = new JMenuItem("Export Design Pattern",
-                        KeyEvent.VK_D);
-                JMenuItem[] newItems = new JMenuItem[fileMenuItems.length + 4];
-                System.arraycopy(fileMenuItems, 0, newItems, 0, i);
-                newItems[i + 1] = importItem;
-                importItem.addActionListener(this);
-                newItems[i + 2] = exportItem;
-                exportItem.addActionListener(this);
-                System.arraycopy(fileMenuItems, i, newItems, i + 4,
-                        fileMenuItems.length - i);
-                return newItems;
+            if (configuration != null 
+            		&& configuration.getEntity("actor library") != null 
+                    	&& item != null) {
+            		if (item.getActionCommand().equals("Import")) {
+            			_importDesignPatternAction = new ImportDesignPatternAction();
+            			JMenuItem importItem = new JMenuItem(_importDesignPatternAction);
+            			item.add(importItem);
+            			_importLibraryAction = new ImportLibraryAction();
+            			JMenuItem importLibraryItem = new JMenuItem(_importLibraryAction);
+            			item.add(importLibraryItem);
+            		} else if (item.getActionCommand().equals("Export")) {
+            			_exportDesignPatternAction = new ExportDesignPatternAction();
+            			JMenuItem exportItem = new JMenuItem(_exportDesignPatternAction);
+            			item.add(exportItem);
+            			_saveInLibraryAction = new SaveInLibraryAction();
+            			JMenuItem exportLibraryItem = new JMenuItem(_saveInLibraryAction); 
+              			item.add(exportLibraryItem);
+            		}
+            	  // The code above inserts menus items in the the File->Export and
+            	  // File -> Import menu items.
+                  // Here's how to insert a menu item into the File main menu.
+//                JMenuItem[] newItems = new JMenuItem[fileMenuItems.length + 4];
+//                System.arraycopy(fileMenuItems, 0, newItems, 0, i);
+//                newItems[i + 1] = importItem;
+//                importItem.addActionListener(this);
+//                newItems[i + 2] = exportItem;
+//                exportItem.addActionListener(this);
+//                System.arraycopy(fileMenuItems, i, newItems, i + 4,
+//                        fileMenuItems.length - i);
+//                return newItems;
             }
         }
         return fileMenuItems;
@@ -443,9 +466,15 @@ public class ActorGraphFrame extends ExtendedGraphFrame implements
 
     /** The action for creating a level of hierarchy. */
     protected Action _createHierarchyAction;
+    
+    /** The action for exporting a design pattern. */
+    protected Action _exportDesignPatternAction;
 
     /** The action for saving the current model in a library. */
     protected Action _saveInLibraryAction;
+    
+    /** The action for importing a design pattern. */
+    protected Action _importDesignPatternAction;
 
     /** The action for importing a library of components. */
     protected Action _importLibraryAction;
@@ -789,6 +818,51 @@ public class ActorGraphFrame extends ExtendedGraphFrame implements
             createHierarchy();
         }
     }
+    
+    ///////////////////////////////////////////////////////////////////
+    //// ExportDesignPatternAction
+
+    /** An action to export a design pattern.
+     */
+    private class ExportDesignPatternAction extends AbstractAction {
+    	/** Create a new action to export a design pattern. */
+    	public ExportDesignPatternAction() {
+    		super(_EXPORT_DESIGN_PATTERN_LABEL);
+    		putValue("tooltip", "Export a design pattern into the Palette");
+    		putValue(GUIUtilities.MNEMONIC_KEY, Integer.valueOf(KeyEvent.VK_D));
+    	}
+
+    	/**
+    	 * Export a design pattern by first opening a file chooser dialog and then
+    	 * exporting the specified library.
+    	 */
+    	public void actionPerformed(ActionEvent e) {
+    		exportDesignPattern();
+    	}
+    }
+
+    
+    ///////////////////////////////////////////////////////////////////
+    //// ImportDesignPatternAction
+
+    /** An action to import a design pattern.
+     */
+    private class ImportDesignPatternAction extends AbstractAction {
+    	/** Create a new action to import a design pattern. */
+    	public ImportDesignPatternAction() {
+    		super(_IMPORT_DESIGN_PATTERN_LABEL);
+    		putValue("tooltip", "Import a design pattern into the Palette");
+    		putValue(GUIUtilities.MNEMONIC_KEY, Integer.valueOf(KeyEvent.VK_D));
+    	}
+
+    	/**
+    	 * Import a design pattern by first opening a file chooser dialog and then
+    	 * importing the specified design pattern.
+    	 */
+    	public void actionPerformed(ActionEvent e) {
+    		importDesignPattern();
+    	}
+    }
 
     ///////////////////////////////////////////////////////////////////
     //// ImportLibraryAction
@@ -936,4 +1010,13 @@ public class ActorGraphFrame extends ExtendedGraphFrame implements
             }
         }
     }
+    
+    ///////////////////////////////////////////////////////////////////
+    ///                    private variables                       ////
+    
+    private final static String _EXPORT_DESIGN_PATTERN_LABEL = "Export Design Pattern";
+    private final static String _EXPORT_LIBRARY_LABEL = "Export Library";
+    private final static String _IMPORT_DESIGN_PATTERN_LABEL = "Import Design Pattern";
+    private final static String _IMPORT_LIBRARY_LABEL = "Import Library";
+
 }

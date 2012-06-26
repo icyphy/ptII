@@ -79,8 +79,7 @@ import diva.gui.GUIUtilities;
  * @Pt.AcceptedRating red (lholsing)
  */
 
-public class ActorGraphDBFrame extends ActorGraphFrame implements
-        ActionListener {
+public class ActorGraphDBFrame extends ActorGraphFrame {
 
     /** Name of the parameter that prevents changes to database. */
     public static final String DB_NO_EDIT_ATTR = "DBNoEdit";
