@@ -1072,6 +1072,7 @@ public class TableauFrame extends Top {
         } else {
             try {
                 _writeFile(file);
+                _updateHistory(file.getAbsolutePath(), false);
                 setModified(false);
                 return true;
             } catch (IOException ex) {
@@ -1252,6 +1253,7 @@ public class TableauFrame extends Top {
             // Only set the directory if the user optionally confirmed the overwrite.
             _directory = directory;
             _writeFile(file);
+            _updateHistory(file.getAbsolutePath(), false);
 
             // The original file will still be open, and has not
             // been saved, so we do not change its modified status.
