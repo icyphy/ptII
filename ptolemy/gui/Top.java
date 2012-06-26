@@ -1943,7 +1943,7 @@ public abstract class Top extends JFrame {
 
                 _read(file.toURI().toURL());
                 _updateHistory(actionCommand, false);
-                setDirectory(file);
+                setDirectory(file.getParentFile());
                 // Impossible to read History
             } catch (Exception ex) {
                 MessageHandler
