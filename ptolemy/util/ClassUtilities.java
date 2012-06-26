@@ -209,28 +209,31 @@ public class ClassUtilities {
 
         // First time through, search each element of the CLASSPATH that names
         // a directory
-        if (_sourceDirectories == null) {
-            String classPath[] = StringUtilities.getProperty("java.class.path").split(StringUtilities.getProperty("path.separator"));
-            _sourceDirectories = new LinkedList<File>();
-            for ( int i = 0; i < classPath.length; i++) {
-                File directory = new File(classPath[i]);
-                if (directory.isDirectory()) {
-                    // We have a potential winner.
-                    while (directory != null) {
-                        File sourceDirectory = new File(directory, "src");
-                        if (sourceDirectory.isDirectory()) {
-                            _sourceDirectories.add(sourceDirectory);
-                            break;
-                        }
-                        directory = directory.getParentFile();
-                    }
-                }
-            }
-        }
+    	if (_sourceDirectories == null) {
+    		List<File> sourceDirectories = new LinkedList<File>();
+    		String classPath[] = StringUtilities.getProperty("java.class.path").split(StringUtilities.getProperty("path.separator"));
+    		for ( int i = 0; i < classPath.length; i++) {
+    			File directory = new File(classPath[i]);
+    			if (directory.isDirectory()) {
+    				// We have a potential winner.
+    				while (directory != null) {
+    					File sourceDirectory = new File(directory, "src");
+    					if (sourceDirectory.isDirectory()) {
+    						sourceDirectories.add(sourceDirectory);
+    						break;
+    					}
+    					directory = directory.getParentFile();
+    				}
+    			}
+    		}
+    		// Avoid FindBugs: LI: Incorrect lazy initialization and update of static field.
+    		_sourceDirectories = sourceDirectories;                
+    	}
         
         // Search _sourceDirectories for sourceURLString
         for (File sourceDirectory : _sourceDirectories) {
             File sourceFile = new File(sourceDirectory, sourceURLString);
+            System.out.println("ClassUtilities.sourceResource(): + sourceFile");
             if (sourceFile.exists()) {
                 return sourceFile.getCanonicalFile().toURI().toURL();
             }
