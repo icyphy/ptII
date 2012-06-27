@@ -316,12 +316,14 @@ public class ActorConstraintsDefinitionAdapter extends LatticeOntologyAdapter {
             String constraintDir = null;
             String RHSString = null;
             if (dirAndRHSStrings == null) {
-                throw new IllegalActionException(
-                        actorElement,
-                        "Cannot set a constraint for the actor "
-                                + getComponent()
-                                + ". Unrecognized direction in the constraint string: "
-                                + constraintString);
+                // If no direction specification is present, do the right thing
+                // based on the fixed point type.
+                if (getSolver().isLeastFixedPoint()) {
+                    constraintDir = ">=";
+                } else {
+                    constraintDir = "<=";
+                }
+                RHSString = constraintString;
             } else {
                 constraintDir = dirAndRHSStrings.get(0);
                 RHSString = dirAndRHSStrings.get(1);
