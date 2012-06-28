@@ -310,24 +310,6 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable, 
         return false;
     }
     
-    /*
-    public boolean defineAreaAttribute(
-            NamedObj object, String attribute, String value, boolean overwrite) {
-        HashMap<String,String> areaTable = _areaAttributes.get(object);
-        if (areaTable == null) {  
-            // No previously defined table. Add one.
-            areaTable = new HashMap<String,String>();
-            _areaAttributes.put(object, areaTable);
-        }
-        if (overwrite || areaTable.get(attribute) == null) {
-            areaTable.put(attribute, _escapeString(value));
-            return true;
-        } else {
-            return false;
-        }
-    }
-    */
-    
     /** Add HTML content at the specified position.
      *  The position is expected to be one of "head", "start", "end",
      *  or anything else. In the latter case, the value
