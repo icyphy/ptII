@@ -1948,30 +1948,49 @@ public abstract class Top extends JFrame {
 
     /** Listener for history menu commands. */
     class HistoryMenuListener implements ActionListener {
-        public void actionPerformed(ActionEvent e) {
+        public void actionPerformed(ActionEvent event) {
             // Make this the default context for modal messages.
             UndeferredGraphicalMessageHandler.setContext(Top.this);
 
-            JMenuItem target = (JMenuItem) e.getSource();
-            String actionCommand = target.getActionCommand();
+            JMenuItem target = (JMenuItem) event.getSource();
+            String path = target.getActionCommand();
 
-            File file = new File(actionCommand);
-            try {
+            File file = new File(path);
 
-                _read(file.toURI().toURL());
-                _updateHistory(actionCommand, false);
-                setDirectory(file.getParentFile());
-                // Impossible to read History
-            } catch (Exception ex) {
-                MessageHandler
-                        .error("Impossible to read history. Please check that file exists and is not in use !",
-                                ex);
+            // See if the file is still there.
+            if (!file.exists()) {
+                MessageHandler.error("File no longer exists.");
                 try {
-                    _updateHistory(actionCommand, true);
+                    _updateHistory(path, true);
                 } catch (IOException ex2) {
                     // Ignore
                 }
+                return;
             }
+
+            // Try to read the file.
+            try {
+                _read(file.toURI().toURL());
+            } catch (Exception e) {
+                MessageHandler.error("Error reading " + file.getAbsolutePath(),
+                        e);
+                try {
+                    _updateHistory(path, true);
+                } catch (IOException ex2) {
+                    // Ignore
+                }
+                return;
+            }
+
+            // Try to move the file to the top of the history menu.
+            try {
+                _updateHistory(path, false);
+            } catch (IOException e) {
+                MessageHandler.error("Error updating history file.", e);
+                return;
+            }
+
+            setDirectory(file.getParentFile());
         }
     }
 
