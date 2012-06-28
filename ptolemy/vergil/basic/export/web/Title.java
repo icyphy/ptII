@@ -42,7 +42,6 @@ import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.SingletonParameter;
 import ptolemy.data.expr.StringParameter;
 import ptolemy.data.type.BaseType;
-import ptolemy.kernel.Entity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.ConfigurableAttribute;
 import ptolemy.kernel.util.IllegalActionException;
@@ -268,6 +267,22 @@ public class Title extends StringParameter implements WebExportable {
         result._icon = (TextIcon) result.getAttribute("_icon");
         return result;
     }
+    
+    /** A title is of type text/html
+     * 
+     * @return The string text/html
+     */
+    public String getMimeType() {
+        return "text/html";
+    }
+    
+    /** Return true, since new title content should overwrite old title content.
+     * 
+     * @return True, since new title content should overwrite old title content.
+     */
+    public boolean isOverwriteable() {
+        return true;
+    }
 
     /** Move this object to the first position in the list
      *  of attributes of the container. This overrides the base
@@ -327,40 +342,59 @@ public class Title extends StringParameter implements WebExportable {
         return super.moveToLast();
     }
     
-    /** Provide content to the specified web exporter to be
-     *  included in a web page for the container of this object.
-     *  This may include, for example, HTML or header
-     *  content, including for example JavaScript definitions that
-     *  may be needed by the area attributes.
-     *  @throws IllegalActionException If evaluating the string value fails.
+    /** Return a title for the model.  The title can be returned as an attribute
+     *  or an element, but not a document.
+     * 
+     * @return A HashMap of the top level object to its title, with the name
+     * "title", represented as an attribute or an element.
      */
-    public void provideContent(WebExporter exporter) throws IllegalActionException {
-        exporter.setTitle(stringValue(),
-                ((BooleanToken)showTitleInHTML.getToken()).booleanValue());
+    public void provideContent(WebExporter exporter) 
+        throws IllegalActionException{
+        // Provide a WebElement containing the title.  Title does not 
+        // provide any WebAttributes.
+        //_provideElements(exporter);   
+        _provideAttributes(exporter);
     }
 
-    /** Provide content to the specified web exporter to be
-     *  included in a web page for the container of
-     *  the container of this object. For example, if this
-     *  object is contained by an {@link Entity}, then 
-     *  this method provides content for a web page for the container
-     *  of the entity.
-     *  This may include, for example, attributes for
-     *  the area element for the portion of the image
-     *  map corresponding to the container of this object.
-     *  But it can also include any arbitrary HTML or header
-     *  content, including for example JavaScript definitions that
-     *  may be needed by the area attributes.
+
+    /** Provide a title for this object to the specified web exporter.
+     *
+     *  @param exporter The WebExporter to add content to
      *  @throws IllegalActionException If something is wrong with the
-     *   specification of outside content.
+     *   specification of the content.
      */
-    public void provideOutsideContent(WebExporter exporter) throws IllegalActionException {
-        NamedObj container = getContainer();
-        if (container != null) {
-            // The last argument forces an overwrite of previously defined title.
-            exporter.defineAreaAttribute(container, "title", stringValue(), true);
-        }
+    protected void _provideAttributes(WebExporter exporter) 
+        throws IllegalActionException {
+        
+        // Create a WebAttribute for title and add to exporter.  
+        // Content should only be added once (onceOnly -> true).
+        WebAttribute webAttribute = WebAttribute.
+            createWebAttribute(getContainer(), "titleWebAttribute", "title");
+        webAttribute.setExpression(stringValue());
+        exporter.defineAttribute(webAttribute, true);
     }
+    
+    /** Provide the <title> </title> element to the specified web exporter.  
+     *  This element should be included in the <head> section. 
+     * 
+     *  @param exporter The WebExporter to add content to
+     *  @throws IllegalActionException If something is wrong with the
+     *   specification of the content.
+     */
+    
+    /*
+    protected void _provideElements(WebExporter exporter) 
+        throws IllegalActionException {
+        
+        // Create a WebElement for title and add to exporter.  
+        // Content should only be added once (onceOnly -> true).
+        WebElement webElement = WebElement.
+            createWebElement(getContainer(), "titleWebElement", "title");
+        webElement.setParent(WebElement.HEAD);
+        webElement.setExpression(stringValue());
+        exporter.defineElement(webElement, true);
+    }
+    */
     
     /** Override the base class to set the text to be displayed
      *  in the icon.

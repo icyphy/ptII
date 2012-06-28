@@ -99,17 +99,22 @@ public class DefaultIconScript extends IconScript {
      *  default), "Attributes", or "All".
      */
     public StringParameter include;
-
+  
     ///////////////////////////////////////////////////////////////////
-    ////                         public methods                    ////
-
+    ////                       protected methods                   ////
+    
     /** Provide content to the specified web exporter to be
      *  included in a web page for the container of this object.
-     *  This class provides default outside content for each object
+     *  This class provides default content for each object
      *  as specified by <i>include</i> and <i>instancesOf</i>.
+     *  
+     *  @param exporter The web exporter to add content to
      *  @throws IllegalActionException If a subclass throws it.
      */
-    public void provideContent(WebExporter exporter) throws IllegalActionException {
+    protected void _provideAttributes(WebExporter exporter) 
+        throws IllegalActionException {
+        WebAttribute webAttribute;
+        
         boolean entities = false, attributes = false;
         String includeValue = include.stringValue().toLowerCase();
         if (includeValue.equals("all")) {
@@ -136,7 +141,21 @@ public class DefaultIconScript extends IconScript {
                 }
             }
             for (NamedObj object : objects) {
-                _provideOutsideContent(exporter, object);
+                if (object != null) {
+                    // TODO:  Enable multiple eventTypes
+                    String eventTypeValue = eventType.stringValue();
+                    if (!eventTypeValue.trim().equals("")) {
+                        // Create WebAttribute for event and add to exporter.  
+                        // Content should only be added once (onceOnly -> true).
+                        webAttribute = WebAttribute.
+                            createWebAttribute(getContainer(), eventTypeValue 
+                                    + "WebAttribute", eventTypeValue);
+                        webAttribute.setExpression(stringValue());
+                        exporter.defineAttribute(webAttribute, true); 
+                        
+                        _provideDefaultAttributes(object, exporter);
+                                           }
+                }
             }
         }
         if (attributes) {
@@ -152,60 +171,38 @@ public class DefaultIconScript extends IconScript {
                 }
             }
             for (NamedObj object : objects) {
-                _provideOutsideContent(exporter, object);
+                // Do not generate events for WebAttributes and WebElements
+                if (object != null && !(object instanceof WebAttribute) &&
+                        !(object instanceof WebElement)) {
+                    // TODO:  Enable multiple eventTypes
+                    String eventTypeValue = eventType.stringValue();
+                    if (!eventTypeValue.trim().equals("")) {
+                        // Create WebAttribute for event and add to exporter.  
+                        // Content should only be added once (onceOnly -> true).
+                        webAttribute = WebAttribute.
+                            createWebAttribute(getContainer(), eventTypeValue 
+                                    + "WebAttribute", eventTypeValue);
+                        webAttribute.setExpression(stringValue());
+                        exporter.defineAttribute(webAttribute, true); 
+                        
+                        _provideDefaultAttributes(object, exporter);
+                  }
+                }
             }
-        }
+        } 
     }
     
-    /** Override the base class to not provide any outside content.
-     *  @throws IllegalActionException If a subclass throws it.
+    /** Return attributes for default events, e.g. onmouseover().  If an 
+     *  attribute is already defined for this event, do nothing.  
+     *  Returns null in this class.  Derived classes should override.
+     *  
+     * @param exporter The WebExporter to add content to 
+     * @param object  The NamedObj to generate default events for
+     * @throws IllegalActionException If there is a problem creating the content
+     * or if there is a name duplication with the created attributes
      */
-    public void provideOutsideContent(WebExporter exporter) throws IllegalActionException {
+    protected void _provideDefaultAttributes(NamedObj object, 
+                WebExporter exporter) throws IllegalActionException{
     }
     
-    ///////////////////////////////////////////////////////////////////
-    ////                       protected methods                   ////
-
-    /** Provide content to the specified web exporter and object to be
-     *  included in a web page.
-     *  This class provides an area attribute, and also
-     *  the value of <i>script</i>, <i>startText</i>,
-     *  and <i>endText</i>, if any has been provided.
-     *  If the <i>eventType</i> parameter is "default", then
-     *  remove all previously defined defaults and use the global
-     *  defaults.
-     *  These value get inserted into the container's container's
-     *  corresponding HTML sections, where the <i>script</i>
-     *  is inserted inside a JavaScript HTML element.
-     *  @param exporter The exporter.
-     *  @param object The object.
-     *  @throws IllegalActionException If evaluating the value
-     *   of this parameter fails.
-     */
-    protected void _provideOutsideContent(WebExporter exporter, NamedObj object)
-            throws IllegalActionException {
-        if (object != null) {
-            String eventTypeValue = eventType.stringValue();
-            if (!eventTypeValue.trim().equals("")) {
-                // Last argument specifies to overwrite any previous value defined.
-                exporter.defineAreaAttribute(object, eventTypeValue, stringValue(), true);
-            }
-        }
-        String scriptValue = script.stringValue();
-        if (!scriptValue.trim().equals("")) {
-            exporter.addContent("head", true, "<script type=\"text/javascript\">\n"
-                    + scriptValue
-                    + "\n</script>\n");
-        }
-        
-        String startTextValue = startText.stringValue();
-        if (!startTextValue.trim().equals("")) {
-            exporter.addContent("start", true, startTextValue);
-        }
-
-        String endTextValue = endText.stringValue();
-        if (!endTextValue.trim().equals("")) {
-            exporter.addContent("end", true, endTextValue);
-        }
-    }
 }

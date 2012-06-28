@@ -91,17 +91,20 @@ public class DefaultIconLink extends IconLink {
      *  default), "Attributes", or "All".
      */
     public StringParameter include;
-
+    
     ///////////////////////////////////////////////////////////////////
-    ////                         public methods                    ////
+    ////                       protected methods                   ////
 
-    /** Provide content to the specified web exporter to be
-     *  included in a web page for the container of this object.
-     *  This class provides default link for each object
-     *  as specified by <i>include</i> and <i>instancesOf</i>.
-     *  @throws IllegalActionException If a subclass throws it.
+    /** Override the base class to define an href attribute to associate with
+     *  the area of the image map corresponding to its container.
+     *  
+     *  @param exporter  The web exporter to write content to
+     *  @throws IllegalActionException If evaluating the value
+     *   of this parameter fails.
      */
-    public void provideContent(WebExporter exporter) throws IllegalActionException {
+    protected void _provideAttributes(WebExporter exporter) 
+        throws IllegalActionException{
+        
         boolean entities = false, attributes = false;
         String includeValue = include.stringValue().toLowerCase();
         if (includeValue.equals("all")) {
@@ -128,7 +131,7 @@ public class DefaultIconLink extends IconLink {
                 }
             }
             for (NamedObj object : objects) {
-                _provideOutsideContent(exporter, object);
+                _provideEachAttribute(exporter, object);
             }
         }
         if (attributes) {
@@ -144,43 +147,60 @@ public class DefaultIconLink extends IconLink {
                 }
             }
             for (NamedObj object : objects) {
-                _provideOutsideContent(exporter, object);
+                _provideEachAttribute(exporter, object);
             }
         }
     }
     
-    /** Override the base class to not provide any outside content.
-     *  @throws IllegalActionException If a subclass throws it.
-     */
-    public void provideOutsideContent(WebExporter exporter) throws IllegalActionException {
-    }
-    
-    ///////////////////////////////////////////////////////////////////
-    ////                       protected methods                   ////
-
     /** Provide content to the specified web exporter to be
      *  included in a web page for the container of this object.
      *  This class defines an href attribute to associate with
-     *  the area of the image map corresonding to its container.
+     *  the area of the image map corresponding to its container.
+     *  
      *  @param exporter The exporter.
      *  @param object The object.
+     *  @return HashMap of <name, value>
      *  @throws IllegalActionException If evaluating the value
      *   of this parameter fails.
      */
-    protected void _provideOutsideContent(WebExporter exporter, NamedObj object)
+    protected void _provideEachAttribute(WebExporter exporter, NamedObj object)
             throws IllegalActionException {
+        
+        WebAttribute webAttribute;
+        
         if (object != null) {
             // Last argument specifies to overwrite any previous value defined.
             if (!stringValue().trim().equals("")) {
-                exporter.defineAreaAttribute(object, "href", stringValue(), true);
+                
+                // Create link attribute and add to exporter.  
+                // Content should only be added once (onceOnly -> true).
+                webAttribute = 
+                    WebAttribute.createWebAttribute(getContainer(), 
+                            "hrefWebAttribute", "href");
+                webAttribute.setExpression(stringValue());
+                exporter.defineAttribute(webAttribute, true);
+   
                 String targetValue = linkTarget.stringValue();
                 if (!targetValue.trim().equals("")) {
                     if (targetValue.equals("_lightbox")) {
                         // Strangely, the class has to be "iframe".
                         // I don't understand why it can't be "lightbox".
-                        exporter.defineAreaAttribute(object, "class", "iframe", true);
+                        
+                        // Create class attribute and add to exporter.  
+                        // Content should only be added once (onceOnly -> true).
+                        webAttribute = WebAttribute
+                             .createWebAttribute(getContainer(), 
+                                     "classWebAttribute", "class");
+                        webAttribute.setExpression("iframe");
+                        exporter.defineAttribute(webAttribute, true);
                     } else {
-                        exporter.defineAreaAttribute(object, "target", targetValue, true);
+                        // Create target attribute and add to exporter.  
+                        // Content should only be added once (onceOnly -> true).
+                        webAttribute = WebAttribute.
+                            createWebAttribute(getContainer(), 
+                                    "targetWebAttribute", "target");
+                        webAttribute.setExpression(targetValue);
+                        exporter.defineAttribute(webAttribute, true);
                     }
                 }
             }

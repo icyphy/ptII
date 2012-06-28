@@ -111,21 +111,59 @@ public class DefaultTitle extends WebContent implements WebExportable {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Provide content to the specified web exporter to be
-     *  included in a web page for the container of this object.
-     *  This class provides a default title for the web page
-     *  and for each object
-     *  as specified by <i>include</i> and <i>instancesOf</i>.
-     *  @throws IllegalActionException If a subclass throws it.
+    /** A title is of type text/html
+     * 
+     * @return The string text/html
      */
-    public void provideContent(WebExporter exporter) throws IllegalActionException {
+    public String getMimeType() {
+        return "text/html";
+    }
+
+    /** Return true, since new title content should overwrite old title content.
+     * 
+     * @return True, since new title content should overwrite old title content.
+     */
+    public boolean isOverwriteable() {
+        return true;
+    }
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                       protected methods                   ////
+
+    /** Provide content to the specified web exporter to be
+     *  included in a web page. This class provides a default title for the 
+     *  web page and for each object
+     *  as specified by <i>include</i> and <i>instancesOf</i>.
+     *  
+     *  @return A HashMap of all objects to their titles, with the name "title", 
+     *  represented as attributes.  
+     *  @throws IllegalActionException If something is wrong with the web
+     *  content or the object already has an attribute with the same name as the
+     *  the created WebAttribute
+     */
+    
+    protected void _provideAttributes(WebExporter exporter) 
+        throws IllegalActionException {
+  
+        WebAttribute webAttribute;
         
+        // Set the title for the model object.
         String titleValue = stringValue();
         if (titleValue == null || titleValue.equals("")) {
             // Use the model name as the default title.
-            titleValue = getContainer().getName();
+            titleValue = toplevel().getName();
         }
-        exporter.setTitle(titleValue, ((BooleanToken)showTitleInHTML.getToken()).booleanValue());
+        
+        // FIXME:  Refactor so we don't need this method
+        exporter.setTitle(titleValue, 
+                ((BooleanToken)showTitleInHTML.getToken()).booleanValue());
+        
+        // Create a WebAttribute for title and add to exporter.  
+        // Content should only be added once (onceOnly -> true).
+        webAttribute = WebAttribute.createWebAttribute(getContainer(), 
+                "titleWebAttribute", "title");
+        webAttribute.setExpression(titleValue);
+        exporter.defineAttribute(webAttribute, true);      
         
         boolean entities = false, attributes = false;
         String includeValue = include.stringValue().toLowerCase();
@@ -153,7 +191,13 @@ public class DefaultTitle extends WebContent implements WebExportable {
                 }
             }
             for (NamedObj object : objects) {
-                _provideOutsideContent(exporter, object);
+                // Create a WebAttribute for each object's title and add to 
+                // exporter.   Content should only be added once 
+                // (onceOnly -> true).
+                webAttribute = WebAttribute.createWebAttribute(object, 
+                        "titleWebAttribute", "title");
+                webAttribute.setExpression(object.getName());
+                exporter.defineAttribute(webAttribute, true); 
             }
         }
         if (attributes) {
@@ -162,45 +206,23 @@ public class DefaultTitle extends WebContent implements WebExportable {
             } else {
                 try {
                     Class restrict = Class.forName(instances);
-                    objects = ((CompositeEntity)container).attributeList(restrict);
+                    objects = ((CompositeEntity)container)
+                        .attributeList(restrict);
                 } catch (ClassNotFoundException e) {
                     throw new IllegalActionException(this,
                             "No such class: " + instances);
                 }
             }
             for (NamedObj object : objects) {
-                _provideOutsideContent(exporter, object);
+                // Create a WebAttribute for each object's title and add to 
+                // exporter.   Content should only be added once 
+                // (onceOnly -> true).
+                webAttribute = WebAttribute.createWebAttribute(object, 
+                        "titleWebAttribute", "title");
+                webAttribute.setExpression(object.getName());
+                exporter.defineAttribute(webAttribute, true);
             }
         }
     }
     
-    /** Override the base class to not provide a title area attribute that is
-     *  the name of the component.
-     *  @throws IllegalActionException If a subclass throws it.
-     */
-    public void provideOutsideContent(WebExporter exporter) throws IllegalActionException {
-        String titleValue = stringValue();
-        if (titleValue == null || titleValue.equals("")) {
-            // Use the model name as the default title.
-            titleValue = getContainer().getName();
-        }
-        exporter.defineAreaAttribute(getContainer(), "title", titleValue, true);
-    }
-    
-    ///////////////////////////////////////////////////////////////////
-    ////                       protected methods                   ////
-
-    /** Provide a title area attribute to the specified web exporter to be
-     *  included in a web page for the container of this object.
-     *  @param exporter The exporter.
-     *  @param object The object.
-     *  @throws IllegalActionException If evaluating the value
-     *   of this parameter fails.
-     */
-    protected void _provideOutsideContent(WebExporter exporter, NamedObj object)
-            throws IllegalActionException {
-        if (object != null) {
-            exporter.defineAreaAttribute(object, "title", object.getName(), true);
-        }
-    }
 }

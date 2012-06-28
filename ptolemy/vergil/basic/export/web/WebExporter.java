@@ -29,7 +29,6 @@
 package ptolemy.vergil.basic.export.web;
 
 import ptolemy.actor.gui.PtolemyFrame;
-import ptolemy.kernel.util.NamedObj;
 import ptolemy.vergil.basic.ExportParameters;
 
 
@@ -39,7 +38,7 @@ import ptolemy.vergil.basic.ExportParameters;
  * Interface for an object that provides a web exporting service
  * for a Ptolemy II model.
  *
- * @author Edward A. Lee
+ * @author Edward A. Lee, Elizabeth Latronico
  * @version $Id$
  * @since Ptolemy II 8.1
  * @Pt.ProposedRating Red (cxh)
@@ -49,39 +48,33 @@ public interface WebExporter {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-
-    /** Add HTML content at the specified position.
+    
+    /** Add the given web content as a new attribute.
+     *  If <i>onceOnly</i> is true, then if identical content has
+     *  already been added, then it is not added again.
+     *  @param webAttribute The WebAttribute containing the content to add.
+     *  @param overwrite If true, overwrite any previously defined value for
+     *   the specified attribute. If false, then do nothing if there is already
+     *   an attribute with the specified name.
+     *  @param content The content to add.
+     *  @return True if the specified attribute and value was defined (i.e.,
+     *   if there was a previous value, it was overwritten).
+     */
+    public boolean defineAttribute(WebAttribute webAttribute, 
+            boolean overwrite);
+    
+    /** Add the given web content as a new element to the specified position.
      *  The position is expected to be one of "head", "start", or "end",
      *  where anything else is interpreted as equivalent to "end".
      *  If <i>onceOnly</i> is true, then if identical content has
      *  already been added to the specified position, then it is not
      *  added again.
-     *  @param position The position for the content.
+     *  @param webElement The WebElement containing the content to add and the
+     *  position.
      *  @param onceOnly True to prevent duplicate content.
-     *  @param content The content to add.
      */
-    public void addContent(String position, boolean onceOnly, String content);
+    public void defineElement(WebElement webElement, boolean onceOnly);
     
-    /** Define an attribute to be included in the HTML area element
-     *  corresponding to the region of the image map covered by
-     *  the specified object. For example, if an <i>attribute</i> "href"
-     *  is added, where the <i>value</i> is a URI, then the
-     *  area in the image map for the specified object will include
-     *  a hyperlink to the specified URI. If the specified object
-     *  already has a value for the specified attribute, then
-     *  the previous value is replaced by the new one.
-     *  @param object The object for which area elements are being added.
-     *  @param attribute The attribute to add to the area element.
-     *  @param value The value of the attribute.
-     *  @param overwrite If true, overwrite any previously defined value for
-     *   the specified attribute. If false, then do nothing if there is already
-     *   an attribute with the specified name.
-     *  @return True if the specified attribute and value was defined (i.e.,
-     *   if there was a previous value, it was overwritten).
-     */
-    public boolean defineAreaAttribute(
-            NamedObj object, String attribute, String value, boolean overwrite);
-
     /** During invocation an export, return
      *  the parameters of the export. If not currently doing an export, return null.
      *  @return The directory being written to.

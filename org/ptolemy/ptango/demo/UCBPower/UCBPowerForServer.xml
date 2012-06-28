@@ -11,13 +11,13 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[585.0, 1010.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={108, 22, 1286, 824}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 0, 1280, 812}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1052, 714]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1052, 696]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.870297029703">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.6891089108911">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{648.3913538111493, 474.2047781569966}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{807.3045977011494, 569.0}">
     </property>
     <property name="Title" class="ptolemy.vergil.basic.export.web.Title" value="UC Berkeley Power Consumption">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[40.0, 60.0]">
@@ -47,7 +47,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[170.0, 995.0]">
         </property>
     </property>
-    <property name="useOnlineData" class="ptolemy.data.expr.Parameter" value="true">
+    <property name="useOnlineData" class="ptolemy.data.expr.Parameter" value="false">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -353,7 +353,7 @@
             <link port="ConfigurationSwitch.falseOutput" relation="relation"/>
         </entity>
         <entity name="JSONToToken" class="ptolemy.actor.lib.conversions.json.JSONToToken">
-            <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="false">
+            <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[355.0, 170.0]">
             </property>
@@ -671,7 +671,7 @@ icon color.</text></svg></configure>
         <link port="RecordDisassembler.Readings" relation="relation5"/>
         <link port="IterateOverArray.Readings" relation="relation5"/>
     </class>
-    <entity name="InstanceOfCompositeActor2" class="SingleReaderClass">
+    <entity name="Cory Hall" class="SingleReaderClass">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[425.0, 375.0]">
         </property>
         <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={31, 254, 1152, 634}, maximized=false}">
@@ -701,6 +701,12 @@ icon color.</text></svg></configure>
                     <configure>
                     </configure>
                     <configure>
+
+                    </configure>
+                    <configure>
+
+                    </configure>
+                    <configure>
 <?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
 "http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
 <plot>
@@ -715,7 +721,7 @@ icon color.</text></svg></configure>
             </entity>
         </entity>
     </entity>
-    <entity name="InstanceOfCompositeActor" class="SingleReaderClass">
+    <entity name="Donner Lab" class="SingleReaderClass">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[520.0, 265.0]">
         </property>
         <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={59, 300, 1152, 634}, maximized=false}">
@@ -745,6 +751,12 @@ icon color.</text></svg></configure>
                     <configure>
                     </configure>
                     <configure>
+
+                    </configure>
+                    <configure>
+
+                    </configure>
+                    <configure>
 <?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
 "http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
 <plot>
@@ -759,7 +771,7 @@ icon color.</text></svg></configure>
             </entity>
         </entity>
     </entity>
-    <entity name="InstanceOfCompositeActor4" class="SingleReaderClass">
+    <entity name="Birge Hall" class="SingleReaderClass">
         <property name="_location" class="ptolemy.kernel.util.Location" value="{975.0, 425.0}">
         </property>
         <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={31, 254, 1152, 634}, maximized=false}">
@@ -787,6 +799,12 @@ icon color.</text></svg></configure>
                     <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[523, 204]">
                     </property>
                     <configure>
+                    </configure>
+                    <configure>
+
+                    </configure>
+                    <configure>
+
                     </configure>
                     <configure>
 <?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"

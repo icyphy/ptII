@@ -74,8 +74,7 @@ public class HTMLText extends WebContent {
      *  <li><b>end</b>: Put the text at the end of the HTML file.
      *  <li><b>header</b>: Put the text in the header section.
      *  <li><b>start</b>: Put the text at the start of the body section.
-     *  <li><i>anything_else</i>: Put the text in a separate HTML file
-     *   named <i>anything_else</i>.
+     *  <li><i>anything_else</i>: Put the text in a div of this name.
      *  </ul>
      *  The default is "start".
      */
@@ -84,24 +83,37 @@ public class HTMLText extends WebContent {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
     
-    /** Provide content to the specified web exporter to be
-     *  included in a web page for the container of this object.
-     *  This may include, for example, HTML or header
-     *  content, including for example JavaScript definitions that
-     *  may be needed by the area attributes.
-     *  @throws IllegalActionException If parameters cannot be evaluated.
+    /** HTMLText is of type text/html
+     * 
+     * @return The string text/html
      */
-    public void provideContent(WebExporter exporter) throws IllegalActionException {
-        String content = stringValue();
-        String position = textPosition.stringValue();
-        exporter.addContent(position, false, content);
+    public String getMimeType() {
+        return "text/html";
     }
 
-    /** Provide content to the specified web exporter to be
-     *  included in a web page for the container of this object.
-     *  This class does not provide any such content.
+    /** Return true, since new content should overwrite old
+     * 
+     * @return true, since new content should overwrite old
      */
-    public void provideOutsideContent(WebExporter exporter) {
-        // This class does not provide outside content.
+    public boolean isOverwriteable() {
+        return true;
     }
+    
+    /** Generate a <div> element holding the text content.
+     * 
+     *  @param exporter The WebExporter to add content to
+     *  @throws IllegalActionException If something is wrong generating the
+     *  web content
+     */
+    protected void _provideElements(WebExporter exporter) 
+        throws IllegalActionException{ 
+        WebElement webElement = WebElement.createWebElement(getContainer(), 
+                getName() + "WebElement", getName() + "WebElement");
+        webElement.setExpression("<div>" + stringValue() + "</div>");
+        webElement.setParent(textPosition.stringValue());
+        
+        // Add text content.  Text should only be added once (onceOnly -> true).
+        exporter.defineElement(webElement, true);
+        
+    }  
 }

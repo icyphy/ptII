@@ -77,6 +77,8 @@ import ptolemy.vergil.basic.ExportParameters;
 import ptolemy.vergil.basic.HTMLExportable;
 import ptolemy.vergil.basic.export.web.DefaultIconLink;
 import ptolemy.vergil.basic.export.web.DefaultIconScript;
+import ptolemy.vergil.basic.export.web.WebAttribute;
+import ptolemy.vergil.basic.export.web.WebElement;
 import ptolemy.vergil.basic.export.web.WebExportParameters;
 import ptolemy.vergil.basic.export.web.WebExportable;
 import ptolemy.vergil.basic.export.web.WebExporter;
@@ -181,35 +183,7 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable, 
         } catch (KernelException ex) {
             MessageHandler.error("Unable to export HTML.", ex);
         }
-    }
-
-    /** Add HTML content at the specified position.
-     *  The position is expected to be one of "head", "start", "end",
-     *  or anything else. In the latter case, the value
-     *  of the position attribute is a filename
-     *  into which the content is written.
-     *  If <i>onceOnly</i> is true, then if identical content has
-     *  already been added to the specified position, then it is not
-     *  added again.
-     *  @param position The position for the content.
-     *  @param onceOnly True to prevent duplicate content.
-     *  @param content The content to add.
-     */
-    public void addContent(String position, boolean onceOnly, String content) {
-        // FIXME: This should be a list of StringBuffers, not Strings.
-        List<String> contents = _contents.get(position);
-        if (contents == null) {
-            contents = new LinkedList<String>();
-            _contents.put(position, contents);
-        }
-        if (onceOnly) {
-            // Check to see whether contents are already present.
-            if (contents.contains(content)) {
-                return;
-            }
-        }
-        contents.add(content);
-    }
+    }   
 
     /** If parameters.copyJavaScriptFiles is true and the Java
      *  property ptolemy.ptII.exportHTML.usePtWebsite is false,
@@ -315,10 +289,32 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable, 
      *  @return True if the specified attribute and value was defined (i.e.,
      *   if there was a previous value, it was overwritten).
      */
+    
+    public boolean defineAttribute(WebAttribute webAttribute, 
+            boolean overwrite) {
+        if (webAttribute.getContainer() != null) { 
+            NamedObj object = webAttribute.getContainer();
+                HashMap<String,String> areaTable = 
+                _areaAttributes.get(object);
+            if (areaTable == null) {  
+                // No previously defined table. Add one.
+                areaTable = new HashMap<String,String>();
+                _areaAttributes.put(object, areaTable);
+            }
+            if (overwrite || areaTable.get(webAttribute.getWebName()) == null) {
+                areaTable.put(webAttribute.getWebName(),
+                       _escapeString(webAttribute.getExpression()));
+                return true;
+            } 
+        }
+        return false;
+    }
+    
+    /*
     public boolean defineAreaAttribute(
             NamedObj object, String attribute, String value, boolean overwrite) {
         HashMap<String,String> areaTable = _areaAttributes.get(object);
-        if (areaTable == null) {
+        if (areaTable == null) {  
             // No previously defined table. Add one.
             areaTable = new HashMap<String,String>();
             _areaAttributes.put(object, areaTable);
@@ -329,6 +325,35 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable, 
         } else {
             return false;
         }
+    }
+    */
+    
+    /** Add HTML content at the specified position.
+     *  The position is expected to be one of "head", "start", "end",
+     *  or anything else. In the latter case, the value
+     *  of the position attribute is a filename
+     *  into which the content is written.
+     *  If <i>onceOnly</i> is true, then if identical content has
+     *  already been added to the specified position, then it is not
+     *  added again.
+     *  @param position The position for the content.
+     *  @param onceOnly True to prevent duplicate content.
+     *  @param content The content to add.
+     */
+    public void defineElement(WebElement webElement, boolean onceOnly) {
+
+        List<StringBuffer> contents = _contents.get(webElement.getParent());
+        if (contents == null) {
+            contents = new LinkedList<StringBuffer>();
+            _contents.put(webElement.getParent(), contents);
+        }
+        if (onceOnly) {
+            // Check to see whether contents are already present.
+            if (contents.contains(webElement.getExpression())) {
+                return;
+            }
+        }
+        contents.add(new StringBuffer(webElement.getExpression()));     
     }
     
     /** Export an HTML page and associated subpages for the specified
@@ -556,10 +581,14 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable, 
      *  @param title The title.
      *  @param showInHTML True to produce an HTML title prior to the model image.
      */
+    // FIXME:  Replaced- a WebExportable will add the title, if any.  If it does not
+    // add a title, then there will be no title.
+  
     public void setTitle(String title, boolean showInHTML) {
         _title = StringUtilities.escapeForXML(title);
         _showTitleInHTML = showInHTML;
     }
+    
     
     /** Wait for the current invocation of {@link #exportToWeb(BasicGraphFrame, ExportParameters)}
      *  to complete. If there is not one in progress, return immediately.
@@ -631,10 +660,10 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable, 
             }
             // Initialize the data structures into which content is collected.
             _areaAttributes = new HashMap<NamedObj,HashMap<String,String>>();
-            _contents = new HashMap<String,List<String>>();
-            _end = new LinkedList<String>();
-            _head = new LinkedList<String>();
-            _start = new LinkedList<String>();
+            _contents = new HashMap<String,List<StringBuffer>>();
+            _end = new LinkedList<StringBuffer>();
+            _head = new LinkedList<StringBuffer>();
+            _start = new LinkedList<StringBuffer>();
             _contents.put("head", _head);
             _contents.put("start", _start);
             _contents.put("end", _end);
@@ -646,34 +675,39 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable, 
 
             // Next, collect the web content specified by the instances
             // of WebExportable contained by the model.
-            List<WebExportable> exportables = model.attributeList(WebExportable.class);
+            List<WebExportable> exportables = 
+                model.attributeList(WebExportable.class);
+            
+            // Plus, collect the web content specified by the contained
+            // objects of the model.
+            Iterator<NamedObj> contentsIterator = 
+                    model.containedObjectsIterator();
+            while (contentsIterator.hasNext()) {
+                NamedObj containedObject = contentsIterator.next();
+                exportables.addAll(containedObject
+                        .attributeList(WebExportable.class));
+            }
+            
+            // Then, iterate through the list of exportables and extract 
+            // content from each.
+            // Use the class of exportable to determine whether to insert 
+            // content as an attribute or a seperate element
             for (WebExportable exportable : exportables) {
-                exportable.provideContent(this);
+                exportable.provideContent(this);               
             }
             
             // If a title has been specified and set to show, then
             // add it to the start HTML section at the beginning.
             if (_showTitleInHTML) {
-                _start.add(0, "<h1>");
-                _start.add(1, _title);
-                _start.add(2, "</h1>\n");
-            }
-
-            // Next, collect the web content specified by the contained
-            // objects of the model.
-            // This looks for outside web content for each object.
-            Iterator<NamedObj> contentsIterator = model.containedObjectsIterator();
-            while (contentsIterator.hasNext()) {
-                NamedObj containedObject = contentsIterator.next();
-                exportables = containedObject.attributeList(WebExportable.class);
-                for (WebExportable exportable : exportables) {
-                    exportable.provideOutsideContent(this);
-                }
+                _start.add(0, new StringBuffer("<h1>"));
+                _start.add(1, new StringBuffer(_title));
+                _start.add(2, new StringBuffer("</h1>\n"));
             }
 
             // Next, create an HTML file.
             if (writer == null) {
-                indexFile = new File(parameters.directoryToExportTo, "index.html");
+                indexFile = 
+                    new File(parameters.directoryToExportTo, "index.html");
                 Writer indexWriter = new FileWriter(indexFile);
                 printWriter = new PrintWriter(indexWriter);
             } else {
@@ -782,26 +816,26 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable, 
 	        printWriter.println("<!--#include virtual=\"/ssi/bottom.htm\" -->");
 
                 // Start the top of the toc.htm file.
-	        addContent("toc.htm", false, "<div id=\"menu\">");
-	        addContent("toc.htm", false, "<ul>");
-	        addContent("toc.htm", false, "<li><a href=\"/index.htm\">Ptolemy Home</a></li>");
-	        addContent("toc.htm", false, "</ul>");
-	        addContent("toc.htm", false, "");
-	        addContent("toc.htm", false, "<ul>");
-	        addContent("toc.htm", false, " <li><a href=\"../index.html\">Up</a></li>");
-	        addContent("toc.htm", false, "</ul>");
-	        addContent("toc.htm", false, "<ul>");
+	        _addContent("toc.htm", false, "<div id=\"menu\">");
+	        _addContent("toc.htm", false, "<ul>");
+	        _addContent("toc.htm", false, "<li><a href=\"/index.htm\">Ptolemy Home</a></li>");
+	        _addContent("toc.htm", false, "</ul>");
+	        _addContent("toc.htm", false, "");
+	        _addContent("toc.htm", false, "<ul>");
+	        _addContent("toc.htm", false, " <li><a href=\"../index.html\">Up</a></li>");
+	        _addContent("toc.htm", false, "</ul>");
+	        _addContent("toc.htm", false, "<ul>");
 
                 // Get the toc contents and stuff it into toc.htm.
-                List<String> contents = _contents.get("tocContents");
+                List<StringBuffer> contents = _contents.get("tocContents");
                 if (contents != null) {
-                    for (String line : contents) {
-                        addContent("toc.htm", false, line);
+                    for (StringBuffer line : contents) {
+                        _addContent("toc.htm", false, line.toString());
                     }
                 }
 
-	        addContent("toc.htm", false, "</ul>");
-	        addContent("toc.htm", false, "</div><!-- /#menu -->");
+	        _addContent("toc.htm", false, "</ul>");
+	        _addContent("toc.htm", false, "</div><!-- /#menu -->");
 	    }
 	    
             // If _contents contains any entry other than head, start, or end,
@@ -816,8 +850,8 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable, 
                     // but it does seem to do that, so I assume that's what it does.
                     Writer fileWriter = new FileWriter(new File(parameters.directoryToExportTo, key));
                     PrintWriter otherWriter = new PrintWriter(fileWriter);
-                    List<String> contents = _contents.get(key);
-                    for (String line : contents) {
+                    List<StringBuffer> contents = _contents.get(key);
+                    for (StringBuffer line : contents) {
                         otherWriter.println(line);                        
                     }
                     otherWriter.close();
@@ -1088,6 +1122,35 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable, 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
+    /** Add HTML content at the specified position.  This content is not 
+     *  associated with any NamedObj.
+     *  The position is expected to be one of "head", "start", "end",
+     *  or anything else. In the latter case, the value
+     *  of the position attribute is a filename
+     *  into which the content is written.
+     *  If <i>onceOnly</i> is true, then if identical content has
+     *  already been added to the specified position, then it is not
+     *  added again.
+     *  @param position The position for the content.
+     *  @param onceOnly True to prevent duplicate content.
+     *  @param content The content to add.
+     */
+    
+    private void _addContent(String position, boolean onceOnly, String content) {
+        List<StringBuffer> contents = _contents.get(position);
+        if (contents == null) {
+            contents = new LinkedList<StringBuffer>();
+            _contents.put(position, contents);
+        }
+        if (onceOnly) {
+            // Check to see whether contents are already present.
+            if (contents.contains(content)) {
+                return;
+            }
+        }
+        contents.add(new StringBuffer(content));
+    }
+    
     /** Add to the specified result list the bounds of the icon
      *  for the specified object.
      *  @param result The list to add to.
@@ -1285,8 +1348,8 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable, 
      *  @param position The position.
      */
     private void _printHTML(PrintWriter writer, String position) {
-        List<String> contents = _contents.get(position);
-        for (String content : contents) {
+        List<StringBuffer> contents = _contents.get(position);
+        for (StringBuffer content : contents) {
             writer.println(content);
         }
     }
@@ -1298,16 +1361,16 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable, 
     private HashMap<NamedObj,HashMap<String,String>> _areaAttributes;
 
     /** Content added by position. */
-    private HashMap<String,List<String>> _contents;
+    private HashMap<String,List<StringBuffer>> _contents;
     
     /** Content of the end section. */
-    private LinkedList<String> _end;
+    private LinkedList<StringBuffer> _end;
 
     /** Indicator that an export is in progress. */
     private static boolean _exportInProgress = false;
 
     /** Content of the head section. */
-    private LinkedList<String> _head;
+    private LinkedList<StringBuffer> _head;
     
     /** Padding around figures for bounding box. */
     private static double _PADDING = 4.0;
@@ -1319,7 +1382,7 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable, 
     private boolean _showTitleInHTML = false;
     
     /** Content of the start section. */
-    private LinkedList<String> _start;
+    private LinkedList<StringBuffer> _start;
     
     /** The sanitized modelName */
     private String _sanitizedModelName;
@@ -1362,5 +1425,4 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable, 
                     + ") to (" + bottomRightX + ", " + bottomRightY + ")");
         }
     }
-
 }

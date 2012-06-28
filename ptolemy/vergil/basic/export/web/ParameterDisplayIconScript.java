@@ -28,6 +28,7 @@
 
 package ptolemy.vergil.basic.export.web;
 
+import java.util.HashMap;
 import java.util.List;
 
 import ptolemy.kernel.util.IllegalActionException;
@@ -75,6 +76,16 @@ public class ParameterDisplayIconScript extends DefaultIconScript {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    /** Override base class since content here should only be added if
+     * it does not exist already
+     * 
+     * @return False, since default content should only be added if no content
+     * already exists
+     */
+    public boolean isOverwriteable() {
+        return false;
+    }  
+    
     /** Get an HTML table describing the parameters of the object.
      *  @param object The Ptolemy object to return a table for.
      *  @return An HTML table displaying the parameter values for the
@@ -130,7 +141,110 @@ public class ParameterDisplayIconScript extends DefaultIconScript {
         }
         return table.toString();
     }
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected methods                 ////
 
+    /** Override the base class to provide the parameter table
+     *  for the specified object.
+     *  Provide default content to the specified web exporter to be
+     *  included in a web page for the container of this object for
+     *  objects that do not override onmouseover.
+     *  This class provides an area attribute of type
+     *  "onmouseover" that displays the parameter values
+     *  of the object and one of type "onmouseout" that
+     *  clears that display.  
+     *  
+     *  @param exporter The exporter to which to provide the content.
+     *  @param object The object which provides the content.
+     *  @throws IllegalActionException If there is a problem creating the content
+     * or if there is a name duplication with the created attributes
+     */
+    
+    protected void _provideDefaultAttributes(NamedObj object, 
+            WebExporter exporter) throws IllegalActionException {
+    
+        WebAttribute webAttribute;
+        
+        String command = "writeText('<h2>"
+            + object.getName()
+            + "</h2>"
+            + getParameterTable(object)
+            + "')";
+        
+        String clear = "writeText('Mouse over the icons to see their " +
+                    "parameters.  Click on composites and plotters to " +
+                    "reveal their contents (if provided).')";
+        
+        // Create WebAttribute for onmouseover event and add to exporter.  
+        // Content should only be added once (onceOnly -> true).
+        webAttribute = WebAttribute
+            .createWebAttribute(object, "onmouseoverWebAttribute", 
+                    "onmouseover");
+        webAttribute.setExpression(command);
+        exporter.defineAttribute(webAttribute, true);
+        
+        // Create WebAttribute for onmouseout event and add to exporter.  
+        // Content should only be added once (onceOnly -> true).
+        webAttribute = WebAttribute
+            .createWebAttribute(object, "onmouseoutWebAttribute",
+                    "onmouseout");
+        webAttribute.setExpression(clear);
+        exporter.defineAttribute(webAttribute, true);
+    }
+    
+    /** Provide default content to the specified web exporter to be
+     *  included in a web page for the container of this object for
+     *  objects that do not override onmouseover.
+     *  This class provides an HTML table containing parameter names and values,
+     *  plus a placeholder <div> tag which the script writes information in upon 
+     *  onmouseover().  
+     *  
+     *  @param exporter The exporter to which to provide the content.
+     *  @param object The object which provides the content.
+     *  @throws IllegalActionException If evaluating the value
+     *   of this parameter fails.
+     */
+    protected void _provideElements(WebExporter exporter) 
+        throws IllegalActionException {
+        WebElement webElement;
+        
+        // Add content from IconScript (DefaultIconScript does not override
+        // _provideElements)
+        super._provideElements(exporter);
+        
+        // Define the JavaScript command writeText.  Script with this name 
+        // should only be included once (onceOnly -> true)
+        webElement = WebElement.createWebElement(getContainer(), 
+                "writeTextScriptWebElement", "writeTextScript");
+        webElement.setParent(WebElement.HEAD);
+        webElement.setExpression("<script type=\"text/javascript\">\n"
+                + "function writeText(text) {\n"
+                + "   document.getElementById(\"afterImage\").innerHTML = text;\n"
+                + "};\n"
+                + "</script>");
+        exporter.defineElement(webElement, true);
+        
+        // Put a destination paragraph in the end section of the HTML.
+        webElement = WebElement.createWebElement(getContainer(), 
+                "afterImageWebElement", "afterImage");
+        webElement.setParent(WebElement.END);
+        webElement.setExpression( "<div id=\"afterImage\">\n"
+                    + "  <script type=\"text/javascript\">\n"
+                    + "     writeText('Mouse over the icons to see their parameters. "
+                    + "Click on composites and plotters to reveal their contents (if provided).');\n"
+                    + "  </script>\n"
+                    + "  <noscript>\n"
+                    + "     Your browser does not support JavaScript so moving the mouse\n"
+                    + "     over the actors will not display their parameters. To enable\n"
+                    + "     JavaScript, consult the security preferences of your browser.\n"
+                    + "     <br/>See <a href=\"http://support.microsoft.com/gp/howtoscript\"><code>http://support.microsoft.com/gp/howtoscript</code></a> for details.\n"
+                    + "  </noscript>\n"
+                    + "</div>");
+        exporter.defineElement(webElement, true);
+        }
+    
+    
     /** Provide default content to the specified web exporter to be
      *  included in a web page for the container of this object for
      *  objects that do not override onmouseover.
@@ -143,46 +257,12 @@ public class ParameterDisplayIconScript extends DefaultIconScript {
      *  @throws IllegalActionException If evaluating the value
      *   of this parameter fails.
      */
-    public static void provideDefaultOutsideContent(WebExporter exporter, NamedObj object) throws IllegalActionException {
-        if (object == null) {
-            // Nothing to do.
-            return;
-        }
-        String command = "writeText('<h2>"
-                + object.getName()
-                + "</h2>"
-                + getParameterTable(object)
-                + "')";
-        // Last argument specifies to not overwrite any previous definition.
-        if (exporter.defineAreaAttribute(object, "onmouseover", command, false)) {
-            // Proceed only if the attribute was actually defined.
-            String clear = "writeText('Mouse over the icons to see their parameters. " +
-                    "Click on composites and plotters to reveal their contents (if provided).')";
-            exporter.defineAreaAttribute(object, "onmouseout", clear, false);
+    // FIXME:  How to do this, from old comments?
+    //*  If the <i>eventType</i> parameter is "default", then
+    //*  remove all previously defined defaults and use the global
+    //*  defaults.
+    //public static void provideDefaultOutsideContent(WebExporter exporter, NamedObj object) throws IllegalActionException {
 
-            // Define the JavaScript command writeText.
-            exporter.addContent("head", true, "<script type=\"text/javascript\">\n"
-                    + "function writeText(text) {\n"
-                    + "   document.getElementById(\"afterImage\").innerHTML = text;\n"
-                    + "};\n"
-                    + "</script>");
-
-            // Put a destination paragraph in the end section of the HTML.
-            exporter.addContent("end", true, 
-                    "<div id=\"afterImage\">\n"
-                    + "  <script type=\"text/javascript\">\n"
-                    + "     writeText('Mouse over the icons to see their parameters. "
-                    + "Click on composites and plotters to reveal their contents (if provided).');\n"
-                    + "  </script>\n"
-                    + "  <noscript>\n"
-                    + "     Your browser does not support JavaScript so moving the mouse\n"
-                    + "     over the actors will not display their parameters. To enable\n"
-                    + "     JavaScript, consult the security preferences of your browser.\n"
-                    + "     <br/>See <a href=\"http://support.microsoft.com/gp/howtoscript\"><code>http://support.microsoft.com/gp/howtoscript</code></a> for details.\n"
-                    + "  </noscript>\n"
-                    + "</div>");
-        }
-    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
@@ -202,15 +282,7 @@ public class ParameterDisplayIconScript extends DefaultIconScript {
      *  @throws IllegalActionException If evaluating the value
      *   of this parameter fails.
      */
-    protected void _provideOutsideContent(WebExporter exporter, NamedObj object)
-            throws IllegalActionException {
+    //protected void _provideOutsideContent(WebExporter exporter, NamedObj object)
+    //        throws IllegalActionException {
         
-        // Delegate to a static method so that the capability is available
-        // for other classes to access.
-        provideDefaultOutsideContent(exporter, object);
-        
-        // DO NOT CALL THE SUPERCLASS. That would overwrite
-        // what we just did.
-        // super._provideOutsideContent(exporter, object);
-    }
 }

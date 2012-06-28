@@ -28,7 +28,6 @@
 
 package ptolemy.vergil.basic.export.web;
 
-import ptolemy.kernel.Entity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.Nameable;
 
@@ -38,7 +37,7 @@ import ptolemy.kernel.util.Nameable;
 /**
  * Interface for parameters that provide web export content.
  *
- * @author Edward A. Lee
+ * @author Edward A. Lee, Elizabeth Latronico
  * @version $Id$
  * @since Ptolemy II 8.1
  * @Pt.ProposedRating Red (cxh)
@@ -49,32 +48,35 @@ public interface WebExportable extends Nameable {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Provide content to the specified web exporter to be
-     *  included in a web page for the container of this object.
-     *  This may include, for example, HTML or header
-     *  content, including for example JavaScript definitions that
-     *  may be needed by the area attributes.
-     *  @param exporter The web exporter to be used.
-     *  @exception IllegalActionException If something is wrong with the
-     *   specification of outside content.
+    /** Return the Mime type of the content (for example, text/html).  
+     * The Mime type is used by browsers to determine how to render the content.
+     * The Mime type is set using HttpResponse's setContentType() method.
+     * Please see the list of Mime types here, in the Media type and subtype(s)
+     * field of the table:
+     * http://reference.sitepoint.com/html/mime-types-full
      */
-    public void provideContent(WebExporter exporter) throws IllegalActionException;
-
-    /** Provide content to the specified web exporter to be
-     *  included in a web page for the container of
-     *  the container of this object. For example, if this
-     *  object is contained by an {@link Entity}, then 
-     *  this method provides content for a web page for the container
-     *  of the entity.
-     *  This may include, for example, attributes for
-     *  the area element for the portion of the image
-     *  map corresponding to the container of this object.
-     *  But it can also include any arbitrary HTML or header
-     *  content, including for example JavaScript definitions that
-     *  may be needed by the area attributes.
-     *  @param exporter The exporter that is provided content.
-     *  @throws IllegalActionException If something is wrong with the
-     *   specification of outside content.
+    public String getMimeType();
+    
+    /** Returns true if the content in the WebExporter for this object should
+     *  be overwritten; false if the original content should be kept.
+     *  Note that all objects from the WebExportable are treated in a uniform
+     *  manner.  For example, it's not possible to overwrite some objects'
+     *  values but keep other objects' values from the same WebExportable.
+     * 
+     * @return True if the content in the WebExporter for this object should
+     *  be overwritten; false if the original content should be kept
      */
-    public void provideOutsideContent(WebExporter exporter) throws IllegalActionException;
+    public boolean isOverwriteable();
+    
+    /** Provide content to the specified web exporter.
+     *  This may include, for example, HTML pages and fragments, Javascript 
+     *  function definitions and calls, CSS styling, and more. Throw an 
+     *  IllegalActionException if something is wrong with the web content.
+     * 
+     *  @param exporter The web exporter to be used
+     *  @exception IllegalActionException If something is wrong with the web
+     *  content.
+     */
+    public void provideContent(WebExporter exporter) throws 
+        IllegalActionException;
 }

@@ -29,6 +29,8 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.vergil.basic.BasicGraphFrame;
 import ptolemy.vergil.basic.ExportParameters;
+import ptolemy.vergil.basic.export.web.WebAttribute;
+import ptolemy.vergil.basic.export.web.WebElement;
 import ptolemy.vergil.basic.export.web.WebExportable;
 import ptolemy.vergil.basic.export.web.WebExporter;
 
@@ -493,8 +495,8 @@ public class HttpCompositeServiceProvider extends TypedCompositeActor
             // TODO:  Need to figure out how to handle provideContent() vs. 
             // provideOutsideContent() (vs. provide a whole page?)  
             
-            //((WebExportable) container).provideOutsideContent(this);
-            ((WebExportable) container).provideContent(this);
+            ((WebExportable) container)
+                .provideContent(this);
             
         } else {
             Iterator objects = container.containedObjectsIterator();
@@ -750,4 +752,16 @@ public class HttpCompositeServiceProvider extends TypedCompositeActor
     
     /** The WebServer for this service, set by {@link #setWebServer(WebServer)}. */
     private WebServer _server;
+
+    @Override
+    public boolean defineAttribute(WebAttribute webAttribute, boolean overwrite) {
+        // TODO Auto-generated method stub
+        return false;
+    }
+
+    @Override
+    public void defineElement(WebElement webElement, boolean onceOnly) {
+        // TODO Auto-generated method stub
+        
+    }
 }

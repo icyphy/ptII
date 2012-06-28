@@ -29,6 +29,7 @@
 package ptolemy.vergil.basic.export.web;
 
 import java.awt.Color;
+import java.net.URI;
 
 import ptolemy.actor.gui.style.TextStyle;
 import ptolemy.data.expr.Parameter;
@@ -58,7 +59,8 @@ import ptolemy.vergil.toolbox.VisibleParameterEditorFactory;
  * @Pt.ProposedRating Red (cxh)
  * @Pt.AcceptedRating Red (cxh)
  */
-public abstract class WebContent extends StringParameter implements WebExportable {
+public abstract class WebContent extends StringParameter 
+    implements WebExportable {
 
     /** Create an instance of this parameter.
      *  @param container The container.
@@ -115,6 +117,19 @@ public abstract class WebContent extends StringParameter implements WebExportabl
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    /** Override the base class to update the icon.
+     *  @param attribute The attribute that changed.
+     *  @exception IllegalActionException If thrown while setting the
+     *  icon text or by the superclass.
+     */
+    public void attributeChanged(Attribute attribute) throws IllegalActionException {
+        if (attribute == displayText) {
+            _icon.setText(displayText.stringValue());
+        } else {
+            super.attributeChanged(attribute);
+        }
+    }
+    
     /** Clone the object into the specified workspace.
      *  @param workspace The workspace for the new object.
      *  @return A new NamedObj.
@@ -133,19 +148,80 @@ public abstract class WebContent extends StringParameter implements WebExportabl
         }
         return newObject;
     }
-
-    /** Override the base class to update the icon.
-     *  @param attribute The attribute that changed.
-     *  @exception IllegalActionException If thrown while setting the
-     *  icon text or by the superclass.
+    
+    // Placeholders - delete later
+    /** Save text as a document and return URI
+     *  
+     *  @return URI corresponding to saved text document
      */
-    public void attributeChanged(Attribute attribute) throws IllegalActionException {
-        if (attribute == displayText) {
-            _icon.setText(displayText.stringValue());
-        } else {
-            super.attributeChanged(attribute);
-        }
+    // TODO:  Implement saving text as a document
+    public URI getReference() {
+        return null;
     }
+
+    /** Return true, since text can be saved as a text document.
+     * 
+     * @return true, since text can be saved as a text document.
+     */
+    public boolean hasReference() {
+        return true;
+    }
+    
+    /** Provide content to the specified web exporter.
+     *  This may include, for example, HTML pages and fragments, Javascript 
+     *  function definitions and calls, CSS styling, and more. Throw an 
+     *  IllegalActionException if something is wrong with the web content.
+     * 
+     *  Calls two methods, _provideAttributes() for generating content that 
+     *  would be an attribute of an element and _provideElements() for 
+     *  generating standalone elements.  Note that attributes may refer to 
+     *  other elements; therefore, the provideContent() method always calls both 
+     *  _provideAttributes() and _provideElements().  For example, a HTML
+     *  attribute for a Javascript method call:
+     *  onclick="runMethod()"
+     *  requires that a 
+     *  <script> function runMethod() { } </script> element be defined.
+     *  Subclasses should override _provideAttributes() and _provideElements().   
+     *  
+     *  @param exporter The web exporter to be used
+     *  @exception IllegalActionException If something is wrong with the web
+     *  content.
+     */
+    public void provideContent(WebExporter exporter) throws 
+        IllegalActionException {
+        _provideAttributes(exporter);
+        _provideElements(exporter);
+    }
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                       protected methods                   ////
+    
+    /** Generate attribute web content.  Should call WebExporter's 
+     * defineAttribute() method.  Subclasses should override. Please also see
+     * {@link ptolemy.vergil.basic.export.web.WebAttribute}
+     * 
+     * @throws IllegalActionException If there is a problem creating the web
+     * content.
+     */
+    protected void _provideAttributes(WebExporter exporter)
+        throws IllegalActionException {
+        
+    }
+    
+    /** Generate element web content.  Should call WebExporter's 
+     * defineElement() method.  Subclasses should override. Please also see
+     * {@link ptolemy.vergil.basic.export.web.WebElement}
+     * 
+     * @throws IllegalActionException If there is a problem creating the web
+     * content.
+     */
+    protected void _provideElements(WebExporter exporter) 
+        throws IllegalActionException {
+        
+    }
+    
+    // Add createResource() method here that returns a URI?  Not every class
+    // would need this.
     
     ///////////////////////////////////////////////////////////////////
     ////                       protected variables                 ////

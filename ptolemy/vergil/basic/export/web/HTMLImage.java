@@ -102,26 +102,51 @@ public class HTMLImage extends WebContent {
      *  </ul>
      *  The default is "start".
      */
+    // FIXME:  This implementation should be improved.  Should the location be
+    // the responsibility of the WebContent class, or the WebExporter?  I think
+    // the WebExporter.
     public HTMLTextPosition imagePosition;
     
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
     
-    /** Provide content to the specified web exporter to be
-     *  included in a web page for the container of this object.
-     *  This may include, for example, HTML or header
-     *  content, including for example JavaScript definitions that
-     *  may be needed by the area attributes.
-     *  @throws IllegalActionException If parameters cannot be evaluated.
+    /** Return image plus the appropriate file extension, e.g. image/gif
+     * 
+     * @return image plus the appropriate file extension, e.g. image/gif
      */
-    public void provideContent(WebExporter exporter) 
+    // FIXME: Implement other file extensions (do we use any?)
+    // How to determine which file extension should be used?  If file has not 
+    // been created yet?
+    public String getMimeType() {
+        return "image/gif";
+    }
+
+    /** Return true, since old images should be overwritten with new
+     * 
+     * @return True, since old images should be overwritten with new
+     */
+    public boolean isOverwriteable() {
+        return true;
+    }
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected methods                 ////
+   
+     /** Generate the image file and a <table> element holding an <img> element
+      *  and a caption for the image. 
+     *  
+     *  @param exporter The WebExporter to add content to
+     *  @throws IllegalActionException If something is wrong generating the 
+     *  image file or generating the additional web content 
+     */
+    public void _provideElements(WebExporter exporter)
         throws IllegalActionException {
         
         // Copied from LinkToOpenTableau
         // Create a table of effigies associated with any
         // open submodel or plot.
-        Map<NamedObj, PtolemyEffigy> openEffigies = new HashMap<NamedObj, PtolemyEffigy>();
-        //BasicGraphFrame.getBasicGraphFrame(model[0]);        
+        Map<NamedObj, PtolemyEffigy> openEffigies = new HashMap<NamedObj, 
+            PtolemyEffigy>();      
         Tableau myTableau = exporter.getFrame().getTableau();
         Effigy myEffigy = (Effigy) myTableau.getContainer();
         List<PtolemyEffigy> effigies = myEffigy.entityList(PtolemyEffigy.class);
@@ -135,8 +160,8 @@ public class HTMLImage extends WebContent {
         
         // The hierarchy of effigies does not always follow the model hierarchy
         // (e.g., a PlotEffigy will be contained by the top-level effigy for the
-        // model for some reason), so if the effigy is null, we search nonetheless
-        // for an effigy.
+        // model for some reason), so if the effigy is null, we search 
+        // nonetheless for an effigy.
         if (effigy == null) {
             Effigy candidate = Configuration.findEffigy(getContainer());
             if (candidate instanceof PtolemyEffigy) {
@@ -148,31 +173,23 @@ public class HTMLImage extends WebContent {
             if (effigy != null) {
                 // _linkTo() recursively calls writeHTML();
                 _linkTo(exporter, effigy, getContainer(), getContainer(), 
-                        exporter.getExportParameters());
+                    exporter.getExportParameters());
             }
         } catch (Throwable throwable) {
             throw new IllegalActionException(this, throwable,
             "Failed to generate HTMLImage. ");
-        }            
-    }
-
-    /** Provide content to the specified web exporter to be
-     *  included in a web page for the container of this object.
-     *  This class does not provide any such content.
-     */
-    public void provideOutsideContent(WebExporter exporter) 
-        throws IllegalActionException {
-        provideContent(exporter);
-        
+        }   
     }
     
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                    ////
     
-    private void _linkTo(WebExporter exporter, PtolemyEffigy effigy, 
-            NamedObj sourceObject, NamedObj destinationObject, ExportParameters parameters)
+    private void _linkTo(WebExporter exporter, 
+            PtolemyEffigy effigy, NamedObj sourceObject, 
+            NamedObj destinationObject, ExportParameters parameters)
             throws IOException, PrinterException, IllegalActionException {
         File gifFile;
+        WebElement webElement;
         // Look for any open tableaux for the object.
         List<Tableau> tableaux = effigy.entityList(Tableau.class);
         // If there are multiple tableaux open, use only the first one.
@@ -211,7 +228,14 @@ public class HTMLImage extends WebContent {
                     + "</caption> <tr> <td> <img src=\"" 
                     + path
                     + name + ".gif\"> </td></tr></table>";
-                exporter.addContent(imagePosition.stringValue(), true, content);
+                
+                webElement = WebElement.createWebElement(getContainer(), 
+                      getName() + "WebElement", getName() + "WebElement");
+                webElement.setExpression(content);
+                webElement.setParent(imagePosition.stringValue());
+                
+                //Add image. Image should only be added once (onceOnly -> true).
+                exporter.defineElement(webElement, true);             
             }
         }
     }

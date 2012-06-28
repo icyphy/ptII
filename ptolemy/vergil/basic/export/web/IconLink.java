@@ -107,39 +107,75 @@ public class IconLink extends WebContent implements WebExportable {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Provide content to the specified web exporter to be
-     *  included in a web page for the container of this object.
-     *  This class provides only outside content, so this method
-     *  does nothing.
-     *  @param exporter The exporter.
-     *  @throws IllegalActionException If a subclass throws it.
+    /** A link is of type text/html
+     * 
+     * @return The string text/html
      */
-    public void provideContent(WebExporter exporter) throws IllegalActionException {
-        // This class does not provide content.
+    public String getMimeType() {
+        return "text/html";
     }
 
+    /** Return true, since new content should overwrite old
+     * 
+     * @return True, since new content should overwrite old
+     */
+    public boolean isOverwriteable() {
+        return true;
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected methods                ////
+    
     /** Provide content to the specified web exporter to be
      *  included in a web page for the container of this object.
      *  This class defines an href attribute to associate with
-     *  the area of the image map corresonding to its container.
+     *  the area of the image map corresponding to its container.
+     *  
+     *  @param exporter  The web exporter to write content to
      *  @throws IllegalActionException If evaluating the value
-     *   of this parameter fails.
+     *   of this parameter fails, or creating a web attribute fails.
      */
-    public void provideOutsideContent(WebExporter exporter) throws IllegalActionException {
+    protected void _provideAttributes(WebExporter exporter) 
+        throws IllegalActionException{
+        
+        WebAttribute webAttribute;
+        
         NamedObj container = getContainer();
         if (container != null) {
             // Last argument specifies to overwrite any previous value defined.
             if (!stringValue().trim().equals("")) {
-                exporter.defineAreaAttribute(container, "href", stringValue(), true);
-                String targetValue = linkTarget.stringValue();
-                if (!targetValue.trim().equals("")) {
-                    if (targetValue.equals("_lightbox")) {
-                        // Strangely, the class has to be "iframe".
-                        // I don't understand why it can't be "lightbox".
-                        exporter.defineAreaAttribute(container, "class", "iframe", true);
-                    } else {
-                        exporter.defineAreaAttribute(container, "target", targetValue, true);
-                    }
+
+                // Create link attribute and add to exporter.  
+                // Content should only be added once (onceOnly -> true).
+                webAttribute = 
+                    WebAttribute.createWebAttribute(getContainer(), 
+                            "hrefWebAttribute", "href");
+                webAttribute.setExpression(stringValue());
+                exporter.defineAttribute(webAttribute, true);
+            }
+            
+            String targetValue = linkTarget.stringValue();
+            if (!targetValue.trim().equals("")) {
+                if (targetValue.equals("_lightbox")) {
+                    // Strangely, the class has to be "iframe".
+                    // I don't understand why it can't be "lightbox".
+
+                    // Create class attribute and add to exporter.  
+                    // Content should only be added once (onceOnly -> true).
+                    webAttribute = 
+                       WebAttribute.createWebAttribute(getContainer(), 
+                               "classWebAttribute", "class");
+                    webAttribute.setExpression("iframe");
+                    exporter.defineAttribute(webAttribute, true);
+                } else {
+
+                    // Create target attribute and add to exporter.  
+                    // Content should only be added once (onceOnly -> true).
+                    webAttribute = 
+                      WebAttribute.createWebAttribute(getContainer(), 
+                              "targetWebAttribute", "target");
+                    webAttribute.setExpression(targetValue);
+                    exporter.defineAttribute(webAttribute, true);
                 }
             }
         }
