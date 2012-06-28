@@ -2778,20 +2778,24 @@ PTII_DEFAULT=$PTII
 
 case "`uname -s`" in
 CYGWIN_ME-*)
+	windows=yes
 	# Windows ME is not a real os, and it does not have CMD.
 	# So, we punt
 	PTII_DIR=$PTII
 	;;
 CYGWIN_98-*)
+	windows=yes
 	# Windows 98 is not a real os, and it does not have CMD.
 	# So, we punt
 	PTII_DIR=$PTII
 	;;
 CYGWIN*)
+	windows=yes
 	# We use cmd /c chdir here to get rid of /cygwin/c
 	PTII_DIR=`(cd "$PTII"; cmd /c chdir) | tr -d '\r' | sed 's@\\\@/@g'`
 	;;
 *)
+	windows=no
 	PTII_DIR=$PTII
 	;;
 esac
