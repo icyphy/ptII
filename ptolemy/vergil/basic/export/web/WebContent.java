@@ -149,24 +149,6 @@ public abstract class WebContent extends StringParameter
         return newObject;
     }
     
-    // Placeholders - delete later
-    /** Save text as a document and return URI
-     *  
-     *  @return URI corresponding to saved text document
-     */
-    // TODO:  Implement saving text as a document
-    public URI getReference() {
-        return null;
-    }
-
-    /** Return true, since text can be saved as a text document.
-     * 
-     * @return true, since text can be saved as a text document.
-     */
-    public boolean hasReference() {
-        return true;
-    }
-    
     /** Provide content to the specified web exporter.
      *  This may include, for example, HTML pages and fragments, Javascript 
      *  function definitions and calls, CSS styling, and more. Throw an 

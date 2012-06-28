@@ -30,9 +30,9 @@
 package ptolemy.vergil.basic.export.web;
 
 import ptolemy.actor.gui.style.TextStyle;
-import ptolemy.data.BooleanToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.StringParameter;
+import ptolemy.data.type.BaseType;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
@@ -44,7 +44,7 @@ import ptolemy.kernel.util.NamedObj;
  * A parameter for associating a script (such as Javascript) with an object in
  * a model.  
  *
- * @author Edward A. Lee, Beth Latronico
+ * @author Edward A. Lee, Elizabeth Latronico
  * @version $Id$
  * @since Ptolemy II 8.1
  * @Pt.ProposedRating Red (cxh)
@@ -71,12 +71,23 @@ public abstract class Script extends WebContent implements WebExportable {
         TextStyle style = new TextStyle(script, "style");
         style.height.setExpression("5");
         
-        useEvaluatedScript = new Parameter(this, "useEvaluatedScript");
-        useEvaluatedScript.setToken(new BooleanToken(true));        
+        evaluateScript = new Parameter(this, "evaluateScript");
+        evaluateScript.setTypeEquals(BaseType.BOOLEAN);
+        evaluateScript.setExpression("true");        
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         parameters                        ////
+    
+    /** Parameter indicating whether the script text's expression should be
+     *  evaluated or not.  Ptolemy interprets the dollar sign to indicate that
+     *  the value of a parameter should be inserted; for example, $pi and 
+     *  a variable pi=3.14 would evaluate to 3.14.  However, many scripting 
+     *  languages such as jQuery use a dollar sign as part of the script itself
+     *  (to refer to jQuery variables).  In this case, we want to insert the
+     *  exact plain text into the web page, not the evaluated text.
+     */
+    public Parameter evaluateScript;
     
     /** Event type to respond to by executing the command given by
      *  the value of this Script parameter.
@@ -116,16 +127,6 @@ function writeText(text) {
      * string 'hello world' when the UI action <i>eventType</i> occurs.
      */
     public StringParameter script;
-     
-    /** Parameter indicating whether the script text's expression should be
-     *  evaluated or not.  Ptolemy interprets the dollar sign to indicate that
-     *  the value of a parameter should be inserted; for example, $pi and 
-     *  a variable pi=3.14 would evaluate to 3.14.  However, many scripting 
-     *  languages such as jQuery use a dollar sign as part of the script itself
-     *  (to refer to jQuery variables).  In this case, we want to insert the
-     *  exact plain text into the web page, not the evaluated text.
-     */
-    public Parameter useEvaluatedScript;
     
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////

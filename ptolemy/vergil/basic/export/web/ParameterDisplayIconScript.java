@@ -28,7 +28,6 @@
 
 package ptolemy.vergil.basic.export.web;
 
-import java.util.HashMap;
 import java.util.List;
 
 import ptolemy.kernel.util.IllegalActionException;
@@ -205,6 +204,10 @@ public class ParameterDisplayIconScript extends DefaultIconScript {
      *  @throws IllegalActionException If evaluating the value
      *   of this parameter fails.
      */
+    // FIXME:  How to do this, from old comments?
+    //*  If the <i>eventType</i> parameter is "default", then
+    //*  remove all previously defined defaults and use the global
+    //*  defaults.
     protected void _provideElements(WebExporter exporter) 
         throws IllegalActionException {
         WebElement webElement;
@@ -243,46 +246,4 @@ public class ParameterDisplayIconScript extends DefaultIconScript {
                     + "</div>");
         exporter.defineElement(webElement, true);
         }
-    
-    
-    /** Provide default content to the specified web exporter to be
-     *  included in a web page for the container of this object for
-     *  objects that do not override onmouseover.
-     *  This class provides an area attribute of type
-     *  "onmouseover" that displays the parameter values
-     *  of the object and one of type "onmouseout" that
-     *  clears that display.
-     *  @param exporter The exporter to which to provide the content.
-     *  @param object The object which provides the content.
-     *  @throws IllegalActionException If evaluating the value
-     *   of this parameter fails.
-     */
-    // FIXME:  How to do this, from old comments?
-    //*  If the <i>eventType</i> parameter is "default", then
-    //*  remove all previously defined defaults and use the global
-    //*  defaults.
-    //public static void provideDefaultOutsideContent(WebExporter exporter, NamedObj object) throws IllegalActionException {
-
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         protected methods                 ////
-
-    /** Override the base class to provide the parameter table
-     *  for the specified object.
-     *  This class provides an area attribute for the onmouseover
-     *  and onmouseout actions, and also
-     *  the value of <i>script</i>, <i>startText</i>,
-     *  and <i>endText</i>, if any has been provided.
-     *  If the <i>eventType</i> parameter is "default", then
-     *  remove all previously defined defaults and use the global
-     *  defaults.
-     *  These value get inserted into the container's container's
-     *  corresponding HTML sections, where the <i>script</i>
-     *  is inserted inside a JavaScript HTML element.
-     *  @throws IllegalActionException If evaluating the value
-     *   of this parameter fails.
-     */
-    //protected void _provideOutsideContent(WebExporter exporter, NamedObj object)
-    //        throws IllegalActionException {
-        
 }

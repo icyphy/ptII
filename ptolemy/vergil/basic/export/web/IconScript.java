@@ -29,6 +29,7 @@
 package ptolemy.vergil.basic.export.web;
 
 import ptolemy.actor.gui.style.TextStyle;
+import ptolemy.data.BooleanToken;
 import ptolemy.data.expr.StringParameter;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -120,8 +121,17 @@ public class IconScript extends Script implements WebExportable {
         // 4) <divs> that the script will change the content of -> target <div>
         
         WebElement webElement;
+        String scriptValue;
         
-        String scriptValue = script.stringValue();
+        // Check whether the user wants to insert the evaluated expression
+        // or the exact text for the script 
+        if (evaluateScript.getToken()
+                .isEqualTo(BooleanToken.TRUE).booleanValue()) {
+            scriptValue = script.stringValue();
+        } else {
+            scriptValue = script.getExpression();
+        }
+        
         if (!scriptValue.trim().equals("")) {
             // Create WebElement for script and add to exporter.  
             // Content should only be added once (onceOnly -> true).
