@@ -415,7 +415,7 @@ public class Display extends TypedAtomicActor implements PortablePlaceable {
      *  the effigy.
      */
     protected void _openWindow() throws IllegalActionException {
-        _implementation.openWindow();
+        _getImplementation().openWindow();
     }
 
     ///////////////////////////////////////////////////////////////////
