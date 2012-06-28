@@ -3990,6 +3990,12 @@ fi
 for jar in $tmpHOME/.ptolemyII/*.jar
 do
     if test -f "$jar"; then
+
+        if  "$windows" = "yes" ; then
+	   // Avoid /cygdrive/c in .classpath
+	   jar=`cygpath --mixed "$jar"`
+	fi
+
         # Avoid adding .ptolemyII/*.jar to .classpath
 	ECLIPSE_CLASSPATHENTRY_LIBS="$ECLIPSE_CLASSPATHENTRY_LIBS \
 	        <classpathentry kind=\"lib\" path=\"$jar\"/> "
