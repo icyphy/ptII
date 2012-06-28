@@ -166,6 +166,10 @@ public class LinkToOpenTableaux extends DefaultIconLink {
                         // The container of a plotter (say) has
                         // an open effigy, so there will be a link
                         // to the plot.
+                        // Exporting
+                        // ptolemy/data/ontologies/demo/CarTracking/CarTracking.xml
+                        // was hanging in a tight loop here.
+                        container = container.getContainer();
                         continue;
                     }
                     // The container of the plotter (say) does
