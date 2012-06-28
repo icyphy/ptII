@@ -2778,24 +2778,24 @@ PTII_DEFAULT=$PTII
 
 case "`uname -s`" in
 CYGWIN_ME-*)
-	windows=yes
+	windows="yes"
 	# Windows ME is not a real os, and it does not have CMD.
 	# So, we punt
 	PTII_DIR=$PTII
 	;;
 CYGWIN_98-*)
-	windows=yes
+	windows="yes"
 	# Windows 98 is not a real os, and it does not have CMD.
 	# So, we punt
 	PTII_DIR=$PTII
 	;;
 CYGWIN*)
-	windows=yes
+	windows="yes"
 	# We use cmd /c chdir here to get rid of /cygwin/c
 	PTII_DIR=`(cd "$PTII"; cmd /c chdir) | tr -d '\r' | sed 's@\\\@/@g'`
 	;;
 *)
-	windows=no
+	windows="no"
 	PTII_DIR=$PTII
 	;;
 esac
@@ -3986,7 +3986,7 @@ ECLIPSE_CLASSPATHENTRY_LIBS=''
 # FIXME: Eclipse should support Java 1.6 style * classpaths
 
 # The Cygwin value of $HOME is not understood by Java under Windows.
-if  "$windows" = "yes" ; then
+if test  "$windows" = "yes"; then
     tmpHOME="`cygpath --mixed $HOME`"
 else
     tmpHOME="$HOME"
@@ -3995,7 +3995,7 @@ for jar in $tmpHOME/.ptolemyII/*.jar
 do
     if test -f "$jar"; then
 
-        if  "$windows" = "yes" ; then
+        if test "$windows" = "yes" ; then
 	   // Avoid /cygdrive/c in .classpath
 	   jar=`cygpath --mixed "$jar"`
 	fi
@@ -4006,7 +4006,6 @@ do
 	# Ant understands * style classpaths, so no need to update Ant.
     fi
 done
-
 
 # Paths to always exclude in Ant's build.xml
 ANT_ALWAYS_EXCLUDE='<exclude name="**/CVS/"/>
