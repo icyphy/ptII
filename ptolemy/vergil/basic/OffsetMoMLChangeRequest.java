@@ -27,16 +27,35 @@
 */
 package ptolemy.vergil.basic;
 
+import java.util.HashSet;
 import java.util.Iterator;
+import java.util.Set;
+import java.awt.EventQueue;
 import java.awt.MouseInfo;
 import java.awt.Point;
+import javax.swing.SwingUtilities;
 
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.Locatable;
+import ptolemy.kernel.util.Location;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.moml.MoMLChangeRequest;
 import ptolemy.moml.MoMLParser;
 import ptolemy.util.MessageHandler;
+
+import ptolemy.vergil.unit.BasicEdgeHighlighter;
+
+import diva.canvas.Figure;
+import diva.canvas.interactor.BasicSelectionRenderer;
+import diva.canvas.interactor.Interactor;
+import diva.canvas.interactor.SelectionEvent;
+import diva.canvas.interactor.SelectionInteractor;
+import diva.canvas.interactor.SelectionListener;
+import diva.canvas.interactor.SelectionModel;
+import diva.canvas.interactor.SelectionRenderer;
+import diva.graph.GraphController;
+import diva.graph.GraphUtilities;
+
 
 ///////////////////////////////////////////////////////////////////
 //// OffsetMoMLChangeRequest
@@ -49,6 +68,9 @@ import ptolemy.util.MessageHandler;
  If a BasicGraphFrame can be found, then the position of the mouse
  is used to determine the offsite.  Otherwise, a small offset is 
  used.</p>
+
+ <p>The pasted objects are selected so that the can be moved as a
+ group.</p>
 
  @author  Christopher Brooks, based on code from BasicGraphFrame by Edward A. Lee
  @version $Id$
@@ -112,9 +134,15 @@ public class OffsetMoMLChangeRequest extends MoMLChangeRequest {
         double xOffset = _PASTE_OFFSET;
         double yOffset = _PASTE_OFFSET;
 
+        GraphController controller = null;
+        SelectionModel selectionModel = null;
+
         // If there is a basic graph frame, then get the mouse location.
         BasicGraphFrame basicGraphFrame = BasicGraphFrame.getBasicGraphFrame(_context);
         if (basicGraphFrame != null) {
+            controller = basicGraphFrame.getJGraph().getGraphPane().getGraphController();
+            selectionModel = controller.getSelectionModel();
+
             Point componentLocation = basicGraphFrame.getJGraph().getGraphPane().getCanvas().getLocationOnScreen();
             // Get the mouse location.  We don't use a MouseMotionListener here because we
             // need the mouse location only when we paste.
@@ -124,11 +152,19 @@ public class OffsetMoMLChangeRequest extends MoMLChangeRequest {
             yOffset = mouseLocation.y - componentLocation.y - minimumLocation[1];
         }
 
+        NamedObj container = null;
+        final Set _topObjects = new HashSet<NamedObj>();
+            
         // Update the locations.
         topObjects = parser.topObjectsCreated().iterator();
         while (topObjects.hasNext()) {
             NamedObj topObject = (NamedObj) topObjects.next();
+            _topObjects.add(topObject);
+            if (container == null) {
+                container = topObject.getContainer();
+            }
             try {
+                // Update the location of each top object.
                 Iterator locations = topObject.attributeList(Locatable.class)
                     .iterator();
                 while (locations.hasNext()) {
@@ -149,6 +185,41 @@ public class OffsetMoMLChangeRequest extends MoMLChangeRequest {
                 MessageHandler.error("Change failed", e);
             }
         }
+
+        if (controller != null) { 
+            // Select the pasted objects so that they can be dragged.
+            // http://bugzilla.ecoinformatics.org/show_bug.cgi?id=3003
+
+            final GraphController controllerFinal = controller;
+            final NamedObj containerFinal = container;
+            Runnable doHelloWorld = new Runnable() {
+                    public void run() {
+                        Interactor interactor = controllerFinal.getEdgeController(new Object())
+                            .getEdgeInteractor();
+                        SelectionInteractor selectionInteractor = (SelectionInteractor) interactor;
+                        SelectionRenderer defaultSelectionRenderer = selectionInteractor.getSelectionRenderer();
+                        SelectionModel selectionModel = controllerFinal.getSelectionModel();
+                        selectionModel.clearSelection();
+                        AbstractBasicGraphModel graphModel = (AbstractBasicGraphModel) controllerFinal.getGraphModel();
+            
+                        Iterator nodes = graphModel.nodes(containerFinal);
+                        while (nodes.hasNext()) {
+                            Location node = (Location) nodes.next();
+                            NamedObj entity = (NamedObj) graphModel.getSemanticObject(node);
+                            if (_topObjects.contains(entity)) {
+                                // If we don't do this in an invokeLater, then the
+                                // canvas will not be updated so the controller will
+                                // not have the figures and this will be null.
+                                Figure figure = controllerFinal.getFigure(node);
+                                selectionModel.addSelection(figure);
+                            }
+                        }
+                    }
+                };
+
+            SwingUtilities.invokeLater(doHelloWorld);
+        }
+
         parser.clearTopObjectsList();
     }
 
