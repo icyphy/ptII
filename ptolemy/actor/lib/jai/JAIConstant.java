@@ -46,6 +46,7 @@ import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.StringAttribute;
+import ptolemy.kernel.util.Workspace;
 
 ///////////////////////////////////////////////////////////////////
 //// JAIConstant
@@ -74,8 +75,11 @@ public class JAIConstant extends Source {
         output.setTypeEquals(BaseType.OBJECT);
         width = new Parameter(this, "width", new IntToken(0));
         height = new Parameter(this, "height", new IntToken(0));
+
+        IntToken[] defaultValues = { IntToken.ZERO };
+
         bandValues = new Parameter(this, "bandValues", new ArrayToken(
-                BaseType.INT, _defaultValues));
+                BaseType.INT, defaultValues));
         _values = ((ArrayToken) bandValues.getToken()).arrayValue();
 
         dataFormat = new StringAttribute(this, "dataFormat");
@@ -140,6 +144,18 @@ public class JAIConstant extends Source {
         }
     }
 
+    /** Clone the actor into the specified workspace.
+     *  @param workspace The workspace for the new attribute
+     *  @return A new director.
+     *  @exception CloneNotSupportedException If a derived class contains
+     *  an attribute that cannot be cloned.
+     */
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        JAIConstant newObject = (JAIConstant) super.clone(workspace);
+        newObject._values = null;
+        return newObject;
+    }
+
     public void fire() throws IllegalActionException {
         super.fire();
 
@@ -202,10 +218,6 @@ public class JAIConstant extends Source {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    private IntToken _zero = new IntToken(0);
-
-    private IntToken[] _defaultValues = { _zero };
-
     //private Double[] _bandValues;
 
     private int _height;

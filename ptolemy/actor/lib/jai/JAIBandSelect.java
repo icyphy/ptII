@@ -43,6 +43,7 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.Workspace;
 
 ///////////////////////////////////////////////////////////////////
 //// JAIBandSelect
@@ -73,8 +74,12 @@ public class JAIBandSelect extends Transformer {
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
+        // An initial array that simply copies a three banded image. */
+        IntToken[] initialArray = { new IntToken(0), new IntToken(1),
+            new IntToken(2) };
+
         bandIndices = new Parameter(this, "bandIndices", new ArrayToken(
-                BaseType.INT, _initialArray));
+                BaseType.INT, initialArray));
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -105,6 +110,18 @@ public class JAIBandSelect extends Transformer {
         }
     }
 
+    /** Clone the actor into the specified workspace.
+     *  @param workspace The workspace for the new attribute
+     *  @return A new director.
+     *  @exception CloneNotSupportedException If a derived class contains
+     *  an attribute that cannot be cloned.
+     */
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        JAIBandSelect newObject = (JAIBandSelect) super.clone(workspace);
+        newObject._indiceArray = null;
+        return newObject;
+    }
+
     /** Fire this actor.
      *  @exception IllegalActionException If a contained method throws it,
      *   or if a token is received that contains a null image.
@@ -128,8 +145,4 @@ public class JAIBandSelect extends Transformer {
 
     /** The value of the indice array */
     private int[] _indiceArray;
-
-    /** An initial array that simply copies a three banded image. */
-    private IntToken[] _initialArray = { new IntToken(0), new IntToken(1),
-            new IntToken(2) };
 }

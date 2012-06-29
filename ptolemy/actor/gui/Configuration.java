@@ -784,6 +784,7 @@ public class Configuration extends CompositeEntity implements
                         // by Eclipse for Kepler.  See also TextEffigy.newTextEffigy()
                         if (toRead == null) {
                             toRead = ClassUtilities.sourceResource(filename);
+                            System.out.println("Configuration: sourceResource " + filename + " " + toRead);
                         }
 
                         if (toRead != null) {
@@ -1247,6 +1248,7 @@ public class Configuration extends CompositeEntity implements
         if (!fieldType.isPrimitive()
                 && field.get(namedObj) != null
                 && !Modifier.isStatic(field.getModifiers())
+                && !Modifier.isStatic(fieldType.getModifiers()) //matlab.Engine.ConversionParameters.
                 /*&& !fieldType.isArray()*/
                 // Skip fields introduced by javascope
                 && !fieldType.toString().equals(

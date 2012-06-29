@@ -47,6 +47,7 @@ import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.StringAttribute;
+import ptolemy.kernel.util.Workspace;
 
 ///////////////////////////////////////////////////////////////////
 //// JAIBorder
@@ -98,8 +99,11 @@ public class JAIBorder extends Transformer {
         borderType.setExpression("Zero");
         _borderType = _BORDER_ZERO;
 
+        // An initial array that simply copies a three banded image.
+        DoubleToken[] initialArray = { new DoubleToken(0) };
+
         constants = new Parameter(this, "constants", new ArrayToken(
-                BaseType.DOUBLE, _initialArray));
+                        BaseType.DOUBLE, initialArray));
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -178,6 +182,18 @@ public class JAIBorder extends Transformer {
         }
     }
 
+    /** Clone the actor into the specified workspace.
+     *  @param workspace The workspace for the new attribute
+     *  @return A new director.
+     *  @exception CloneNotSupportedException If a derived class contains
+     *  an attribute that cannot be cloned.
+     */
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        JAIBorder newObject = (JAIBorder) super.clone(workspace);
+        newObject._constantValues = null;
+        return newObject;
+    }
+
     /** Fire this actor.
      *  @exception IllegalActionException If a contained method throws it,
      *   or if a token is received that contains a null image.
@@ -236,9 +252,6 @@ public class JAIBorder extends Transformer {
 
     /** The type of border to use. */
     private int _borderType;
-
-    /** An initial array that simply copies a three banded image. */
-    private DoubleToken[] _initialArray = { new DoubleToken(0) };
 
     /** The amount to pad on the four sides. */
     private int _bottomPadding;

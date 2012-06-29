@@ -38,6 +38,7 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.Workspace;
 
 ///////////////////////////////////////////////////////////////////
 //// JAIConvolve
@@ -67,8 +68,12 @@ public class JAIConvolve extends Transformer {
         input.setTypeEquals(BaseType.OBJECT);
         output.setTypeEquals(BaseType.OBJECT);
 
+        // A filter that does nothing to an image when convolved with it.
+        double[][] initialMatrix = { { 0.0F, 0.0F, 0.0F },
+            { 0.0F, 1.0F, 0.0F }, { 0.0F, 0.0F, 0.0F } };
+
         filter = new Parameter(this, "filter", new DoubleMatrixToken(
-                _initialMatrix));
+                initialMatrix));
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -109,6 +114,18 @@ public class JAIConvolve extends Transformer {
         }
     }
 
+    /** Clone the actor into the specified workspace.
+     *  @param workspace The workspace for the new attribute
+     *  @return A new director.
+     *  @exception CloneNotSupportedException If a derived class contains
+     *  an attribute that cannot be cloned.
+     */
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        JAIConvolve newObject = (JAIConvolve) super.clone(workspace);
+        newObject._filter = null;
+        return newObject;
+    }
+
     /** Fire this actor.
      *  Output the filtered image.
      *  @exception IllegalActionException If a contained method throws
@@ -128,8 +145,4 @@ public class JAIConvolve extends Transformer {
 
     /** The filter to convolve the image with */
     private KernelJAI _filter;
-
-    /** A filter that does nothing to an image when convolved with it. */
-    private double[][] _initialMatrix = { { 0.0F, 0.0F, 0.0F },
-            { 0.0F, 1.0F, 0.0F }, { 0.0F, 0.0F, 0.0F } };
 }

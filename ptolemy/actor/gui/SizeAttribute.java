@@ -42,6 +42,7 @@ import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
+import ptolemy.kernel.util.Workspace;
 
 ///////////////////////////////////////////////////////////////////
 //// SizeAttribute
@@ -96,6 +97,20 @@ public class SizeAttribute extends Parameter implements ComponentListener {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+
+    /** Clone the attribute into the specified workspace. This calls the
+     *  base class and then sets the attribute public members to refer
+     *  to the attributes of the new attribute.
+     *  @param workspace The workspace for the new attribute
+     *  @return A new director.
+     *  @exception CloneNotSupportedException If a derived class contains
+     *  an attribute that cannot be cloned.
+     */
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        SizeAttribute newObject = (SizeAttribute) super.clone(workspace);
+        newObject._listeningTo = null;
+        return newObject;
+    }
 
     /** Do nothing. This method is
      *  invoked when the component has been made invisible.
@@ -213,4 +228,7 @@ public class SizeAttribute extends Parameter implements ComponentListener {
 
     /** The component we are listening to. */
     private Component _listeningTo;
+    // FIXME: should the above we a weak reference like what we have
+    // for WindowPropertiesAttribute?
+
 }
