@@ -231,10 +231,11 @@ public class Expression extends TypedAtomicActor {
         newObject._addPathCommand = null;
         newObject._iterationCount = 1;
         try {
-            newObject._iteration.setToken(new IntToken(_iterationCount));
-        } catch (IllegalActionException ex) {
+            newObject._iteration.setContainer(null);
+            newObject._iteration = new Variable(this, "iteration", new IntToken(1));
+        } catch (Throwable throwable) {
             throw new CloneNotSupportedException("Failed to set _iteration "
-                    + "to 1");
+                    + "to 1: " + throwable);
         }
         newObject._previousPath = null;
         return newObject;

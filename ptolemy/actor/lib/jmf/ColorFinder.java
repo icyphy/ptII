@@ -40,6 +40,7 @@ import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.Workspace;
 
 ///////////////////////////////////////////////////////////////////
 //// ColorFinder
@@ -117,6 +118,24 @@ public class ColorFinder extends TypedAtomicActor {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+
+    /** Clone the actor into the specified workspace.
+     *  @param workspace The workspace for the new attribute
+     *  @return A new director.
+     *  @exception CloneNotSupportedException If a derived class contains
+     *  an attribute that cannot be cloned.
+     */
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        ColorFinder newObject = (ColorFinder) super.clone(workspace);
+        newObject.YArray = new byte[newObject._frameWidth * newObject._frameHeight];
+        newObject.UArray = new byte[(newObject._frameWidth / 2 * newObject._frameHeight) / 2];
+        newObject.VArray = new byte[(newObject._frameWidth / 2 * newObject._frameHeight) / 2];
+        newObject._yClass = new int[newObject._histSize];
+        newObject._uClass = new int[newObject._histSize];
+        newObject._vClass = new int[newObject._histSize];
+
+        return newObject;
+    }
 
     /** Fire this actor.
      *  Output the X and Y coordinates if it finds the color in the

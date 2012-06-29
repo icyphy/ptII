@@ -90,6 +90,7 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.StringAttribute;
+import ptolemy.kernel.util.Workspace;
 
 ///////////////////////////////////////////////////////////////////
 //// VideoCamera
@@ -148,6 +149,19 @@ public class VideoCamera extends Source implements ControllerListener {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+
+    /** Clone the actor into the specified workspace.
+     *  @param workspace The workspace for the new attribute
+     *  @return A new director.
+     *  @exception CloneNotSupportedException If a derived class contains
+     *  an attribute that cannot be cloned.
+     */
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        VideoCamera newObject = (VideoCamera) super.clone(workspace);
+        newObject._frameBuffer = new Buffer();
+        newObject._waitSync = new Object();
+        return newObject;
+    }
 
     /**
      * Controller Listener.

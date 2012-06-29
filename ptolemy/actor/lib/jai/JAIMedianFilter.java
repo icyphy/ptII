@@ -43,6 +43,7 @@ import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.StringAttribute;
+import ptolemy.kernel.util.Workspace;
 
 ///////////////////////////////////////////////////////////////////
 //// JAIMedianFilter
@@ -140,6 +141,18 @@ public class JAIMedianFilter extends Transformer {
         } else {
             super.attributeChanged(attribute);
         }
+    }
+
+    /** Clone the actor into the specified workspace.
+     *  @param workspace The workspace for the new attribute
+     *  @return A new director.
+     *  @exception CloneNotSupportedException If a derived class contains
+     *  an attribute that cannot be cloned.
+     */
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        JAIMedianFilter newObject = (JAIMedianFilter) super.clone(workspace);
+        newObject._shape = null;
+        return newObject;
     }
 
     /** Fire this actor.

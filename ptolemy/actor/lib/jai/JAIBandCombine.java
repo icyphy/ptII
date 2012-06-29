@@ -40,6 +40,7 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.Workspace;
 
 ///////////////////////////////////////////////////////////////////
 //// JAIBandCombine
@@ -78,8 +79,12 @@ public class JAIBandCombine extends Transformer {
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
+        // The initial value of the transformation matrix.
+        double[][] initialMatrix = { { 1.0D, 0.0D, 0.0D, 0.0D },
+            { 0.0D, 1.0D, 0.0D, 0.0D }, { 0.0D, 0.0D, 1.0D, 0.0D } };
+
         matrix = new Parameter(this, "matrix", new DoubleMatrixToken(
-                _initialMatrix));
+                initialMatrix));
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -105,6 +110,18 @@ public class JAIBandCombine extends Transformer {
         } else {
             super.attributeChanged(attribute);
         }
+    }
+
+    /** Clone the actor into the specified workspace.
+     *  @param workspace The workspace for the new attribute
+     *  @return A new director.
+     *  @exception CloneNotSupportedException If a derived class contains
+     *  an attribute that cannot be cloned.
+     */
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        JAIBandCombine newObject = (JAIBandCombine) super.clone(workspace);
+        newObject._matrixValue = null;
+        return newObject;
     }
 
     /** Fire this actor.
@@ -136,10 +153,6 @@ public class JAIBandCombine extends Transformer {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
-    /** The initial value of the transformation matrix.  */
-    private double[][] _initialMatrix = { { 1.0D, 0.0D, 0.0D, 0.0D },
-            { 0.0D, 1.0D, 0.0D, 0.0D }, { 0.0D, 0.0D, 1.0D, 0.0D } };
 
     /** The value of the transformation matrix */
     private double[][] _matrixValue;

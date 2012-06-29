@@ -39,6 +39,7 @@ import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.StringAttribute;
+import ptolemy.kernel.util.Workspace;
 
 ///////////////////////////////////////////////////////////////////
 //// JAIEdgeDetection
@@ -79,11 +80,14 @@ public class JAIEdgeDetection extends Transformer {
         secondMask.setExpression("Sobel Vertical");
         _secondMask = _SOBEL_VERTICAL;
 
+        double[][] initialMatrix = { { 0.0F, 0.0F, 0.0F },
+            { 0.0F, 0.707F, 0.0F }, { 0.0F, 0.0F, 0.0F } };
+
         userSpecifiedFirstMask = new Parameter(this, "userSpecifiedFirstMask",
-                new DoubleMatrixToken(_initialMatrix));
+                new DoubleMatrixToken(initialMatrix));
         userSpecifiedSecondMask = new Parameter(this,
                 "userSpecifiedSecondMask",
-                new DoubleMatrixToken(_initialMatrix));
+                new DoubleMatrixToken(initialMatrix));
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -164,6 +168,19 @@ public class JAIEdgeDetection extends Transformer {
         } else {
             super.attributeChanged(attribute);
         }
+    }
+
+    /** Clone the actor into the specified workspace.
+     *  @param workspace The workspace for the new attribute
+     *  @return A new director.
+     *  @exception CloneNotSupportedException If a derived class contains
+     *  an attribute that cannot be cloned.
+     */
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        JAIEdgeDetection newObject = (JAIEdgeDetection) super.clone(workspace);
+        newObject._firstMaskData = null;
+        newObject._secondMaskData = null;
+        return newObject;
     }
 
     /** Fire this actor.
@@ -319,9 +336,6 @@ public class JAIEdgeDetection extends Transformer {
     private int _firstMask;
 
     private int _secondMask;
-
-    private double[][] _initialMatrix = { { 0.0F, 0.0F, 0.0F },
-            { 0.0F, 0.707F, 0.0F }, { 0.0F, 0.0F, 0.0F } };
 
     /** Prespecified masks that the user may use */
     private static final float[] _sobelHorizontalFilter = { 1.0F, 0.0F, -1.0F,

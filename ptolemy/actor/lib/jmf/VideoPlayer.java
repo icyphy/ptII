@@ -128,7 +128,9 @@ public class VideoPlayer extends Sink implements ControllerListener {
                     "Exception thrown by media framework on " + input);
         }
 
-        _player.setMediaTime(_startTime);
+        // Start time for the video clip.
+        Time startTime = new Time(0.0);
+        _player.setMediaTime(startTime);
 
         _frame = new JFrame();
         _container = _frame.getContentPane();
@@ -154,7 +156,4 @@ public class VideoPlayer extends Sink implements ControllerListener {
 
     /** The player. */
     private Player _player;
-
-    /** Start time for the video clip. */
-    private Time _startTime = new Time(0.0);
 }

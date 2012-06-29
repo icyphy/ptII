@@ -48,6 +48,7 @@ import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.StringAttribute;
+import ptolemy.kernel.util.Workspace;
 
 ///////////////////////////////////////////////////////////////////
 //// JAIAffineTransform
@@ -88,8 +89,11 @@ public class JAIAffineTransform extends Transformer {
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
+        double[][] initialMatrix = { { 1.0F, 0.0F, 0.0F },
+            { 0.0F, 1.0F, 0.0F } };
+
         affineMatrix = new Parameter(this, "affineMatrix",
-                new DoubleMatrixToken(_initialMatrix));
+                new DoubleMatrixToken(initialMatrix));
 
         interpolationType = new StringAttribute(this, "interpolationType");
         interpolationType.setExpression("bilinear");
@@ -123,6 +127,19 @@ public class JAIAffineTransform extends Transformer {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+
+    /** Clone the actor into the specified workspace.
+     *  @param workspace The workspace for the new attribute
+     *  @return A new director.
+     *  @exception CloneNotSupportedException If a derived class contains
+     *  an attribute that cannot be cloned.
+     */
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        JAIAffineTransform newObject = (JAIAffineTransform) super.clone(workspace);
+        newObject._affineTransform = null;
+        newObject._matrixValue = null;
+        return newObject;
+    }
 
     /** Override the base class and set the factors.
      *  @param attribute The attribute that changed.
@@ -208,9 +225,6 @@ public class JAIAffineTransform extends Transformer {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
     private AffineTransform _affineTransform;
-
-    private double[][] _initialMatrix = { { 1.0F, 0.0F, 0.0F },
-            { 0.0F, 1.0F, 0.0F } };
 
     private Interpolation _interpolation;
 

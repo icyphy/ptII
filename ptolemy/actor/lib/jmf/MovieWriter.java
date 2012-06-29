@@ -74,6 +74,7 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.StringAttribute;
+import ptolemy.kernel.util.Workspace;
 import ptolemy.util.MessageHandler;
 
 //FIXME: This actor only works properly when a model containing this actor
@@ -191,6 +192,21 @@ public class MovieWriter extends Sink implements ControllerListener,
         } else {
             super.attributeChanged(attribute);
         }
+    }
+
+    /** Clone the actor into the specified workspace.
+     *  @param workspace The workspace for the new attribute
+     *  @return A new director.
+     *  @exception CloneNotSupportedException If a derived class contains
+     *  an attribute that cannot be cloned.
+     */
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        MovieWriter newObject = (MovieWriter) super.clone(workspace);
+        newObject._file = null;
+        newObject._imageSourceStream = new ImageSourceStream[1];
+        newObject._waitFileSync = new Object();
+        newObject._waitSync = new Object();
+        return newObject;
     }
 
     /** The controller listener.  This method controls the

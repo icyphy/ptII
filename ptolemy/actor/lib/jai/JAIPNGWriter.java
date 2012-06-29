@@ -39,6 +39,7 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.Workspace;
 
 import com.sun.media.jai.codec.PNGEncodeParam;
 
@@ -94,8 +95,11 @@ public class JAIPNGWriter extends JAIWriter {
         setBackground.setTypeEquals(BaseType.BOOLEAN);
         setBackground.setToken(BooleanToken.FALSE);
 
+        IntToken[] initialArray = { new IntToken(0), new IntToken(0),
+            new IntToken(0) };
+
         background = new Parameter(this, "background", new ArrayToken(
-                BaseType.INT, _initialArray));
+                BaseType.INT, initialArray));
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -170,6 +174,18 @@ public class JAIPNGWriter extends JAIWriter {
         } else {
             super.attributeChanged(attribute);
         }
+    }
+
+    /** Clone the actor into the specified workspace.
+     *  @param workspace The workspace for the new attribute
+     *  @return A new director.
+     *  @exception CloneNotSupportedException If a derived class contains
+     *  an attribute that cannot be cloned.
+     */
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        JAIPNGWriter newObject = (JAIPNGWriter) super.clone(workspace);
+        newObject._valueArray = null;
+        return newObject;
     }
 
     /** Read an input JAIImageToken and write it to the file.
@@ -257,9 +273,6 @@ public class JAIPNGWriter extends JAIWriter {
     private double _gamma;
 
     private boolean _setBackground;
-
-    private IntToken[] _initialArray = { new IntToken(0), new IntToken(0),
-            new IntToken(0) };
 
     private int[] _valueArray;
 }

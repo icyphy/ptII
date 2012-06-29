@@ -56,6 +56,7 @@ import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.Workspace;
 
 ///////////////////////////////////////////////////////////////////
 //// MovieReader
@@ -153,6 +154,19 @@ public class MovieReader extends Source implements ControllerListener {
         } else {
             super.attributeChanged(attribute);
         }
+    }
+
+    /** Clone the actor into the specified workspace.
+     *  @param workspace The workspace for the new attribute
+     *  @return A new director.
+     *  @exception CloneNotSupportedException If a derived class contains
+     *  an attribute that cannot be cloned.
+     */
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        MovieReader newObject = (MovieReader) super.clone(workspace);
+        newObject._dataSource = null;
+        newObject._waitSync = new Object();
+        return newObject;
     }
 
     /** The controller listener.  This method controls the

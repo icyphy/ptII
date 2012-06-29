@@ -197,7 +197,10 @@ public class PlaySound extends TypedAtomicActor implements ControllerListener {
 
         if (playSound) {
             // Specify that play should start at the beginning of the audio.
-            _player.setMediaTime(_startTime);
+            // Start time for an audio clip.
+            Time startTime = new Time(0.0);
+
+            _player.setMediaTime(startTime);
 
             _player.start();
 
@@ -247,7 +250,4 @@ public class PlaySound extends TypedAtomicActor implements ControllerListener {
 
     /** The player. */
     private Player _player;
-
-    /** Start time for an audio clip. */
-    private Time _startTime = new Time(0.0);
 }

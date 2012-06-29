@@ -43,6 +43,7 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.Workspace;
 
 import com.sun.media.jai.codec.FileCacheSeekableStream;
 import com.sun.media.jai.codec.SeekableStream;
@@ -108,6 +109,18 @@ public class JAIImageReader extends Source {
         } else {
             super.attributeChanged(attribute);
         }
+    }
+
+    /** Clone the actor into the specified workspace.
+     *  @param workspace The workspace for the new attribute
+     *  @return A new director.
+     *  @exception CloneNotSupportedException If a derived class contains
+     *  an attribute that cannot be cloned.
+     */
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        JAIImageReader newObject = (JAIImageReader) super.clone(workspace);
+        newObject._fileURL = null;
+        return newObject;
     }
 
     /** Output a JAIImageToken containing the image.

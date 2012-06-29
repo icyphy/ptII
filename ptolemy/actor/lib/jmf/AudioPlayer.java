@@ -117,6 +117,9 @@ public class AudioPlayer extends Sink implements ControllerListener {
                     "Exception thrown by media framework: " + ex.toString());
         }
 
+        /** Start time for the audio clip. */
+        Time _startTime = new Time(0.0);
+
         _player.setMediaTime(_startTime);
 
         _frame = new JFrame();
@@ -141,7 +144,4 @@ public class AudioPlayer extends Sink implements ControllerListener {
 
     /** The player. */
     private Player _player;
-
-    /** Start time for the audio clip. */
-    private Time _startTime = new Time(0.0);
 }
