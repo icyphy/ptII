@@ -31,7 +31,9 @@ import java.awt.Color;
 import java.awt.Frame;
 import java.awt.event.ActionEvent;
 import java.net.URL;
+import java.util.HashSet;
 import java.util.Iterator;
+import java.util.Set;
 import java.util.Vector;
 
 import javax.swing.AbstractListModel;
@@ -132,13 +134,16 @@ public class UnitSolverDialog extends PtolemyDialog implements
             _relations = _getSelectedRelations();
 
             if (_entities.isEmpty() && _relations.isEmpty()) {
-                _entities = new Vector(_model.entityList(ComponentEntity.class));
-                _relations = new Vector(_model.relationList());
+                _entities = new HashSet<ComponentEntity>(_model.entityList(ComponentEntity.class));
+                _relations = new HashSet<Relation>(_model.relationList());
             }
         } else {
-            _entities = new Vector();
-            _entities.add(getTarget());
-            _relations = new Vector();
+            _entities = new HashSet<ComponentEntity>();
+            Entity targetEntity = getTarget();
+            if (targetEntity instanceof ComponentEntity) {
+                _entities.add((ComponentEntity)targetEntity);
+            }
+            _relations = new HashSet<Relation>();
         }
 
         _selectionModel.clearSelection();
@@ -206,8 +211,9 @@ public class UnitSolverDialog extends PtolemyDialog implements
         //String command = aEvent.getActionCommand();
         if (aEvent.getSource() == _runMinimalSpanSolverButton) {
             try {
-                _uConstraints = new UnitConstraints(_model, _entities,
-                        _relations);
+                // FIXME: UnitContstraint ctor should take args other than Vectors.
+                _uConstraints = new UnitConstraints(_model, new Vector(_entities),
+                        new Vector(_relations));
                 _solutions = _uConstraints.minimalSpanSolutions();
             } catch (IllegalActionException e) {
                 MessageHandler.error("Minimal Span Solver failed: ", e);
@@ -220,8 +226,8 @@ public class UnitSolverDialog extends PtolemyDialog implements
             _solutionsList.clearSelection();
 
             try {
-                _uConstraints = new UnitConstraints(_model, _entities,
-                        _relations);
+                _uConstraints = new UnitConstraints(_model, new Vector(_entities),
+                        new Vector(_relations));
 
                 Solution solution = _uConstraints.completeSolution();
                 _fullSolutionResult.setText(solution.getShortStateDesc());
@@ -397,12 +403,12 @@ public class UnitSolverDialog extends PtolemyDialog implements
         return retv;
     }
 
-    /** Create a Vector of selected odes in a Tableau. This method really
+    /** Create a Vector of selected nodes in a Tableau. This method really
      *  belongs elsewhere and will be moved there at some point.
      *  @return Vector of selected Nodes.
      */
-    private Vector _getSelectedNodes() {
-        Vector nodes = new Vector();
+    private Set<ComponentEntity> _getSelectedNodes() {
+        Set<ComponentEntity> nodes = new HashSet<ComponentEntity>();
 
         if (_tableau.getFrame() instanceof BasicGraphFrame) {
             Object[] selection = _selectionModel.getSelectionAsArray();
@@ -414,7 +420,7 @@ public class UnitSolverDialog extends PtolemyDialog implements
                             .getSemanticObject(userObject);
 
                     if (actual instanceof ComponentEntity) {
-                        nodes.add(actual);
+                        nodes.add((ComponentEntity)actual);
                     }
                 }
             }
@@ -427,8 +433,8 @@ public class UnitSolverDialog extends PtolemyDialog implements
      *  belongs elsewhere and will be moved there at some point.
      *  @return Vector of selected Relations.
      */
-    private Vector _getSelectedRelations() {
-        Vector relations = new Vector();
+    private Set<Relation> _getSelectedRelations() {
+        Set<Relation> relations = new HashSet<Relation>();
 
         if (_tableau.getFrame() instanceof BasicGraphFrame) {
             Object[] selection = _selectionModel.getSelectionAsArray();
@@ -441,7 +447,7 @@ public class UnitSolverDialog extends PtolemyDialog implements
 
                     if ((actual instanceof Relation)
                             && (!relations.contains(actual))) {
-                        relations.add(actual);
+                        relations.add((Relation)actual);
                     }
                 }
             }
@@ -454,18 +460,19 @@ public class UnitSolverDialog extends PtolemyDialog implements
      *
      */
     private void _setSelectedComponents() {
-        Vector entities = _getSelectedNodes();
-        Vector relations = _getSelectedRelations();
-        _entities = new Vector();
-        _relations = new Vector();
+        // FIXME: Why don't we just set _entities and _relations here?
+        Set<ComponentEntity> entities = _getSelectedNodes();
+        Set<Relation> relations = _getSelectedRelations();
+        _entities = new HashSet<ComponentEntity>(entities);
+        _relations = new HashSet<Relation>(relations);
 
-        for (int i = 0; i < entities.size(); i++) {
-            _entities.add(entities.elementAt(i));
-        }
+//         for (int i = 0; i < entities.size(); i++) {
+//             _entities.add(entities.elementAt(i));
+//         }
 
-        for (int i = 0; i < relations.size(); i++) {
-            _relations.add(relations.elementAt(i));
-        }
+//         for (int i = 0; i < relations.size(); i++) {
+//             _relations.add(relations.elementAt(i));
+//         }
 
         _setToSelectedButton.setEnabled(false);
     }
@@ -509,7 +516,7 @@ public class UnitSolverDialog extends PtolemyDialog implements
 
     SelectionRenderer _defaultSelectionRenderer = null;
 
-    Vector _entities = null;
+    Set<ComponentEntity> _entities = null;
 
     JLabel _fullSolutionResult = new JLabel("Not Run");
 
@@ -523,7 +530,7 @@ public class UnitSolverDialog extends PtolemyDialog implements
 
     AbstractBasicGraphModel _graphModel = null;
 
-    Vector _relations = null;
+    Set<Relation> _relations = null;
 
     SelectionInteractor _selectionInteractor = null;
 
