@@ -1417,20 +1417,25 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
      *  @param factor The magnification factor (relative to 1.0).
      */
     public void zoom(double factor) {
-        JCanvas canvas = getJGraph().getGraphPane().getCanvas();
-        AffineTransform current = canvas.getCanvasPane().getTransformContext()
+        try {
+            _zoomFlag = true;
+            JCanvas canvas = getJGraph().getGraphPane().getCanvas();
+            AffineTransform current = canvas.getCanvasPane().getTransformContext()
                 .getTransform();
 
-        // Save the center, so we remember what we were looking at.
-        Point2D center = getCenter();
-        current.scale(factor, factor);
-        canvas.getCanvasPane().setTransform(current);
+            // Save the center, so we remember what we were looking at.
+            Point2D center = getCenter();
+            current.scale(factor, factor);
+            canvas.getCanvasPane().setTransform(current);
 
-        // Reset the center.
-        setCenter(center);
+            // Reset the center.
+            setCenter(center);
 
-        if (_graphPanner != null) {
-            _graphPanner.repaint();
+            if (_graphPanner != null) {
+                _graphPanner.repaint();
+            }
+        } finally {
+            _zoomFlag = false;
         }
     }
 
@@ -2916,6 +2921,19 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
     /** The instance of JGraph for this editor. */
     protected JGraph _jgraph;
 
+    /** The action for automatically laying out the graph.
+     *  This can be either an advanced layout or the simple Ptolemy layout,
+     *  depending on whether the better one is available. 
+     */
+    protected Action _layoutAction;
+
+    /** The action for opening the layout configuration dialog.
+     *  This reference can be {@code null}, since the dialog is only supported
+     *  if advanced layout is available. In this case the action should not
+     *  be shown in menus.
+     */
+    protected Action _layoutConfigDialogAction;
+
     /** The library display widget. */
     protected JTree _library;
 
@@ -2979,18 +2997,9 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
     /** Action for zoom reset. */
     protected Action _zoomResetAction = new ZoomResetAction("Zoom Reset");
 
-    /** The action for automatically laying out the graph.
-     *  This can be either an advanced layout or the simple Ptolemy layout,
-     *  depending on whether the better one is available. 
-     */
-    protected Action _layoutAction;
-
-    /** The action for opening the layout configuration dialog.
-     *  This reference can be {@code null}, since the dialog is only supported
-     *  if advanced layout is available. In this case the action should not
-     *  be shown in menus.
-     */
-    protected Action _layoutConfigDialogAction;
+    /** True if we are inside zoom().  Used by derived classes with scrollbars.
+     */   
+    protected boolean _zoomFlag = false;
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
