@@ -234,7 +234,6 @@ public class KeplerDocumentationAttribute extends Attribute implements
                 }
             }
         }
-
     }
 
     /** Write a MoML description of this object with the specified
@@ -615,9 +614,140 @@ public class KeplerDocumentationAttribute extends Attribute implements
     public void updateContent() throws InternalErrorException {
         //do nothing
     }
+    
+    /** Update the documentation fields of this object from another
+     * KeplerDocumentationAttribute. A documentation field in
+     * this object is updated if it is empty and the corresponding field
+     * in the given object is not empty. However, if a field does not
+     * exist in this object, but is present in the given object, the
+     * field is *not* created in this object.
+     * 
+     * @param oldDoc
+     *            The KeplerDocumentationAttribute from which to copy
+     *            attributes.
+     * @param printWhenReplacing
+     *            If true, print when the values are overwritten.
+     * 
+     * @throws Exception
+     *             if there is an error updating the fields.
+     */
+    public void updateFromExisting(KeplerDocumentationAttribute oldDoc,
+            boolean printWhenReplacing) throws Exception {
+
+        if (oldDoc != null && oldDoc.attributeList() != null) {
+            Iterator<?> attributes = oldDoc.attributeList().iterator();
+            while (attributes.hasNext()) {
+                ConfigurableAttribute attribute = (ConfigurableAttribute) attributes
+                        .next();
+                String attributeName = attribute.getName();
+                boolean replaced = false;
+                if (attributeName.equals("description")) {
+                    String oldDescription = attribute.getConfigureText();
+                    if (_isEmpty(_description) && !_isEmpty(oldDescription)) {
+                        _description = oldDescription;
+                        replaced = true;
+                    }
+                } else if (attributeName.equals("author")) {
+                    String oldAuthor = attribute.getConfigureText();
+                    if (_isEmpty(_author) && !_isEmpty(oldAuthor)) {
+                        _author = oldAuthor;
+                        replaced = true;
+                    }
+                } else if (attributeName.equals("version")) {
+                    String oldVersion = attribute.getConfigureText();
+                    if (_isEmpty(_version) && !_isEmpty(oldVersion)) {
+                        _version = oldVersion;
+                        replaced = true;
+                    }
+                } else if (attributeName.equals("userLevelDocumentation")) {
+                    String oldUserLevelDocumentation = attribute
+                            .getConfigureText();
+                    if (_isEmpty(_userLevelDocumentation)
+                            && !_isEmpty(oldUserLevelDocumentation)) {
+                        _userLevelDocumentation = oldUserLevelDocumentation;
+                        replaced = true;
+                    }
+                } else if (attributeName.indexOf("port:") != -1) { // add to the
+                                                                   // port hash
+                    String portName = attributeName.substring(
+                            attributeName.indexOf(":") + 1,
+                            attributeName.length());
+                    String portDescription = attribute.getConfigureText();
+                    if (portName != null) {
+                        if (portDescription == null) {
+                            portDescription = "";
+                        }
+                        String newPortDoc = (String) _portHash.get(portName);
+                        if (newPortDoc != null && _isEmpty(newPortDoc)
+                                && !_isEmpty(portDescription)) {
+                            // Attribute clonedAttribute = (Attribute)
+                            // attribute.clone();
+                            _portHash.put(portName, portDescription);
+                            replaced = true;
+                        }
+                    }
+
+                } else if (attributeName.indexOf("prop:") != -1) { // add to the
+                                                                   // prop hash
+                    String propertyName = attributeName.substring(
+                            attributeName.indexOf(":") + 1,
+                            attributeName.length());
+                    String propertyDescription = attribute.getConfigureText();
+                    if (propertyName != null) {
+                        if (propertyDescription == null) {
+                            propertyDescription = "";
+                        }
+                        String newPropDoc = (String) _propertyHash.get(propertyName);
+                        if (newPropDoc != null && _isEmpty(newPropDoc)
+                                && !_isEmpty(propertyDescription)) {
+                            _propertyHash
+                                    .put(propertyName, propertyDescription);
+                            replaced = true;
+                        }
+                    }
+                }
+
+                if (replaced) {
+
+                    if (printWhenReplacing) {
+                        System.out.println("WARNING: using old docs for " + attributeName + " since the new ones appear empty.");
+                    }
+                    // Update the attribute too, creating one if it does not exist.
+                    ConfigurableAttribute myAttribute = (ConfigurableAttribute) getAttribute(attributeName);
+                    if (myAttribute == null) {
+                        myAttribute = new ConfigurableAttribute(this,
+                                attributeName);
+                    }
+                    myAttribute.configure(attribute.getBase(),
+                            attribute.getConfigureSource(),
+                            attribute.getConfigureText());
+                }
+            }
+        }
+    }
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
+
+    /** A utility method to determine if a field's string is empty.
+     * @return Returns true if the field is null or the content appears to be
+     *         empty.
+     */
+    private static boolean _isEmpty(String string) {
+
+        if (string == null) {
+            return true;
+        }
+        String trimmed = string.trim();
+        if (trimmed.isEmpty() || trimmed.equalsIgnoreCase("null")) {
+            return true;
+        }
+
+        return false;
+    }
 
     ///////////////////////////////////////////////////////////////////
-    ///////////                    Private Members                ////////
+    ////                         private fields                    ////
 
     //members for Configurable
     private String source;
