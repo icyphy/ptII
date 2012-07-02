@@ -85,8 +85,6 @@ test KeplerDocumentationAttribute-3.1 {setUserLevelDocumentation} {
 <entity name="myMoML" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.0.devel">
     </property>
-    <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
-    </property>
 <property name="myKDA" class="ptolemy.vergil.basic.KeplerDocumentationAttribute">
 <property name="description" class="ptolemy.kernel.util.ConfigurableAttribute"><configure>null</configure></property>
 <property name="author" class="ptolemy.kernel.util.ConfigurableAttribute"><configure>null</configure></property>
