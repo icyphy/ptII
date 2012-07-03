@@ -36,10 +36,8 @@
  */
 package ptolemy.actor;
 
-import java.util.Iterator;
 import java.util.regex.Pattern;
 
-import ptolemy.actor.lib.Publisher;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.StringParameter;
@@ -355,21 +353,7 @@ public class SubscriptionAggregatorPort extends SubscriberPort {
                         // expensive.
                         // See $PTII/ptolemy/actor/lib/test/auto/LazyPubSub.xml
                         _updatePublisherPorts((CompositeEntity)toplevel());
-                        
-                        // FIXME: This needs to be looking for PublisherPort,
-                        // not Publisher.  And not just in atomic actors!
-                        // Fix this, then fix the corresponding version in SubscriberPort.
-                        /*
-                        Iterator namedObjs = ((TypedCompositeActor) toplevel())
-                                .allAtomicEntityList().iterator();
-                        while (namedObjs.hasNext()) {
-                            NamedObj namedObj = (NamedObj) namedObjs.next();
-                            if (namedObj instanceof Publisher) {
-                                Publisher publisher = (Publisher) namedObj;
-                                publisher.attributeChanged(publisher.channel);
-                            }
-                        }
-                        */
+                        // Now try again.
                         ((CompositeActor) container).linkToPublishedPort(
                                 _channelPattern, this, _global);
                     }

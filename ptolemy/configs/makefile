@@ -118,6 +118,7 @@ OTHER_FILES_TO_BE_JARED = \
 	utilityNameParameter.xml \
 	utilityParameter.xml \
 	utilityParameters.xml \
+	utilityPorts.xml \
 	utilityPortParameter.xml \
 	utilityPriority.xml \
 	utilityPteraModalModel.xml \

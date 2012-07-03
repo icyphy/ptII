@@ -30,7 +30,7 @@ package ptolemy.actor.lib;
 import java.util.Set;
 
 import ptolemy.actor.AtomicActor;
-import ptolemy.actor.CompositeActor;
+import ptolemy.actor.SubscriberPort;
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.util.ActorDependencies;
@@ -40,11 +40,9 @@ import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.StringParameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Workspace;
 
 ///////////////////////////////////////////////////////////////////
@@ -52,11 +50,15 @@ import ptolemy.kernel.util.Workspace;
 
 /**
  This actor subscribes to tokens on a named channel. The tokens are
- "tunneled" from an instance of Publisher that names the same channel
- and that is under the control of the same director. That is, it can
+ "tunneled" from an instance of Publisher that names the same channel.
+ If {@link #global} is false (the default), then this subscriber
+ will only see instances of Publisher that are under the
+ control of the same director. That is, it can
  be at a different level of the hierarchy, or in an entirely different
  composite actor, as long as the relevant composite actors are
- transparent (have no director).
+ transparent (have no director). If {@link #global} is true,
+ then the publisher may be anywhere in the model, as long as its
+ <i>global</i> parameter is also true.
  <p>
  Any number of instances of Subscriber can subscribe to the same
  channel.
@@ -94,8 +96,13 @@ public class Subscriber extends TypedAtomicActor {
         channel = new StringParameter(this, "channel");
         channel.setExpression("channel1");
 
-        input = new TypedIOPort(this, "input", true, false);
+        _createInputPort();
         input.setMultiport(true);
+        // Refer the parameters of the input port to those of
+        // this actor.
+        input.channel.setExpression("$channel");
+        input.global.setExpression("global");
+        
         output = new TypedIOPort(this, "output", false, true);
         output.setMultiport(true);
 
@@ -129,13 +136,17 @@ public class Subscriber extends TypedAtomicActor {
      */
     public Parameter global;
 
-    /** The input port.  This base class imposes no type constraints except
+    /** The input port.  This port is hidden and should not be
+     *  directly used. This base class imposes no type constraints except
      *  that the type of the input cannot be greater than the type of the
      *  output.
      */
-    public TypedIOPort input;
+    public SubscriberPort input;
 
-    /** The output port. By default, the type of this output is constrained
+    /** The output port. This is a multiport. If the corresponding
+     *  publisher has multiple input signals, then those multiple signals
+     *  will appear on this output port.
+     *  By default, the type of this output is constrained
      *  to be at least that of the input. This port is hidden by default
      *  and the actor handles creating connections to it.
      */
@@ -144,66 +155,7 @@ public class Subscriber extends TypedAtomicActor {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** If the attribute is the channel, increment the workspace version
-     *  to force cached receiver lists to be updated, and invalidate
-     *  the schedule and resolved types of the director, if there is one.
-     *  @param attribute The attribute that changed.
-     *  @exception IllegalActionException If the change is not acceptable
-     *   to this container.
-     */
-    public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
-        if (attribute == channel) {
-            String newValue = channel.stringValue();
-            if (!newValue.equals(_channel)) {
-                NamedObj container = getContainer();
-                if (container instanceof CompositeActor
-                        && !(_channel == null || _channel.trim().equals(""))) {
-                    ((CompositeActor) container).unlinkToPublishedPort(
-                            _channel, input, _global);
-                }
-                _channel = newValue;
-                /* NOTE: We used to call _updateLinks(), as shown below,
-                 * but now we defer that to preinitialize().  This
-                 * improves the opening time of models considerably.
-                // If we are within a class definition, then we should
-                // not create any links.  The links should only exist
-                // within instances. Otherwise, we could end up creating
-                // a link between a class definition and an instance.
-                if (!isWithinClassDefinition()) {
-                    Nameable container = getContainer();
-                    if ((container instanceof TypedCompositeActor)) {
-                        // NOTE: There used to be some logic here to call
-                        // _updateLinks() only if the manager indicates we
-                        // are running, and otherwise to set _updatedLinks
-                        // to false. This is no longer necessary as
-                        // the attributeChanged() method is called at
-                        // appropriate times, and tests show it is called
-                        // exactly once per publisher. Moreover, it really
-                        // isn't correct to defer this, as _updateLinks()
-                        // handles connectivity information. If we want to,
-                        // for example, highlight dependents before a model
-                        // has been run, this has to be done here.
-                        _updateLinks();
-                    }
-                }
-                */
-            }
-        } else if (attribute == global) {
-            _global = ((BooleanToken) global.getToken()).booleanValue();
-            if (!_global && getContainer() instanceof CompositeActor) {
-                // The vergil and config tests were failing because
-                // moml.EntityLibrary sometimes contains Subscribers.
-                ((CompositeActor) getContainer()).unlinkToPublishedPort(
-                        _channel, input, false);
-            }
-        } else {
-            super.attributeChanged(attribute);
-        }
-    }
-
-    /** Clone the actor into the specified workspace. This calls the
-     *  base class and then set the filename public member.
+    /** Clone the actor into the specified workspace.
      *  @param workspace The workspace for the new object.
      *  @return A new actor.
      *  @exception CloneNotSupportedException If a derived class contains
@@ -211,13 +163,6 @@ public class Subscriber extends TypedAtomicActor {
      */
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         Subscriber newObject = (Subscriber) super.clone(workspace);
-        try {
-            newObject._channel = _channel;
-        } catch (Throwable throwable) {
-            CloneNotSupportedException exception = new CloneNotSupportedException();
-            exception.initCause(throwable);
-            throw exception;
-        }
 
         // We only have constraints from the publisher on the subscriber
         // and the output of the subscriber and not the other way around
@@ -261,105 +206,20 @@ public class Subscriber extends TypedAtomicActor {
             throws KernelException {
         return ActorDependencies.prerequisites(this, Publisher.class);
     }
-
-    /** Override the base class to ensure that there is a publisher.
-     *  @exception IllegalActionException If there is no matching
-     *   publisher.
-     */
-    public void preinitialize() throws IllegalActionException {
-        // We have two cases:
-        // 1) _updateLinks is false.
-        // If this was created by instantiating a container class,
-        // then the links would not have been updated when setContainer()
-        // was called, so we must do it now.
-        //
-        // 2) input.getWidth() is 0
-
-        // If we are converting back and forth from class to instance,
-        // then there is a chance that we have not called
-        // _updateLinks() recently.  See Publisher-1.6 in
-        // test/Publisher.tcl. A better fix might be toclear
-        // _updateLinks when the relation to the input port was deleted by
-        // CompositeEntity.setClassDefinition().    This would probably
-        // require creating a custom port class that would notice the deletion
-        // Another idea is to
-        // compare the workspace version number against the version
-        // number when we set _updatedLinks.  However, this could
-        // result in poor performance.
-
-        if (_channel == null) {
-            throw new IllegalActionException(this, "The channel name was null?");
-        }
-        _updateLinks();
-
-        // Call super.preinitialize() after updating links so that
-        // we have connections made before possibly inferring widths.
-        super.preinitialize();
-    }
-
-    /** If the new container is null, delete the named channel.
-     *  @param container The proposed container.
-     *  @exception IllegalActionException If the action would result in a
-     *   recursive containment structure, or if
-     *   this entity and container are not in the same workspace.
-     *  @exception NameDuplicationException If the container already has
-     *   an entity with the name of this entity.
-     */
-    public void setContainer(CompositeEntity container)
-            throws IllegalActionException, NameDuplicationException {
-
-        if (container == null
-                && !(_channel == null || _channel.trim().equals(""))) {
-            NamedObj previousContainer = getContainer();
-            if (previousContainer instanceof CompositeActor) {
-                ((CompositeActor) previousContainer).unlinkToPublishedPort(
-                        _channel, input);
-            }
-        }
-
-        super.setContainer(container);
-    }
-
+    
     ///////////////////////////////////////////////////////////////////
-    ////                         protected methods                 ////
+    ////                      protected methods                    ////
 
-    /** Update the connection to the publisher, if there is one.
-     *  Note that this method is computationally intensive for large
-     *  models as it traverses the model by searching
-     *  up the hierarchy for the nearest opaque container
-     *  or the top level and then traverses the contained entities.
-     *  Thus, avoid calling this method except when the model
-     *  is running.
-     *  @exception IllegalActionException If creating the link
-     *   triggers an exception.
+    /** Create an input port. This is a protected method so that
+     *  subclasses can create different input ports. This is called
+     *  in the constructor, so subclasses cannot reliably access
+     *  local variables.
+     *  @throws IllegalActionException If creating the input port fails.
+     *  @throws NameDuplicationException If there is already a port named "input".
      */
-    protected void _updateLinks() throws IllegalActionException {
-        // If the channel has not been set, then there is nothing
-        // to do.  This is probably the first setContainer() call,
-        // before the object is fully constructed.
-        if (_channel == null) {
-            return;
-        }
-        NamedObj container = getContainer();
-        if (container instanceof CompositeActor) {
-            try {
-                ((CompositeActor) container).linkToPublishedPort(_channel,
-                        input, _global);
-            } catch (Exception e) {
-                throw new IllegalActionException(this, e,
-                        "Can't link Subscriber with Publisher, channel was \""
-                                + channel.stringValue() + "\"");
-            }
-        }
+    protected void _createInputPort() throws IllegalActionException,
+            NameDuplicationException {
+        input = new SubscriberPort(this, "input");
     }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         protected variables               ////
-
-    /** Cached channel name. */
-    protected String _channel;
-
-    /** Cached global parameter. */
-    protected boolean _global;
 }
 

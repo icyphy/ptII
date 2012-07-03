@@ -53,6 +53,7 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
+import ptolemy.moml.EntityLibrary;
 
 ///////////////////////////////////////////////////////////////////
 //// TypedIOPort
@@ -718,15 +719,17 @@ public class TypedIOPort extends IOPort implements Typeable {
 
     /** Override the base class to ensure that the proposed container
      *  implements the TypedActor interface (the base class ensures that
-     *  the container implements the Actor interface) or null.
-     *
+     *  the container implements the Actor interface), is null, or is
+     *  an EntityLibrary.
      *  @param container The proposed container.
      *  @exception IllegalActionException If the proposed container is not a
      *   TypedActor, or if the base class throws it.
      */
     protected void _checkContainer(Entity container)
             throws IllegalActionException {
-        if (!(container instanceof TypedActor) && (container != null)) {
+        if (!(container instanceof TypedActor)
+                && !(container instanceof EntityLibrary)
+                && (container != null)) {
             throw new IllegalActionException(container, this,
                     "TypedIOPort can only be contained by objects "
                             + "implementing the TypedActor interface.");

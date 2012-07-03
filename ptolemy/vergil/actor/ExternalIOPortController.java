@@ -40,6 +40,8 @@ import javax.swing.SwingConstants;
 
 import ptolemy.actor.CustomRenderedPort;
 import ptolemy.actor.IOPort;
+import ptolemy.actor.PublisherPort;
+import ptolemy.actor.SubscriberPort;
 import ptolemy.actor.parameters.ParameterPort;
 import ptolemy.data.type.Typeable;
 import ptolemy.kernel.Port;
@@ -335,6 +337,7 @@ public class ExternalIOPortController extends AttributeController {
     /** Render the external ports of a graph as a 5-sided tab thingy.
      *  Multiports are rendered hollow,
      *  while single ports are rendered filled.
+     *  Publisher and subscriber ports are rendered specially.
      */
     public class PortRenderer implements NodeRenderer {
         /** Render a port.  If the argument implements Locatable,
@@ -383,6 +386,9 @@ public class ExternalIOPortController extends AttributeController {
                             // FIXME: are Multiport ParameterPorts possible?
                             // FIXME: Should this be lightGrey?
                             fill = Color.darkGray;
+                        } else if (ioport instanceof PublisherPort
+                                || ioport instanceof SubscriberPort) {
+                            fill = Color.CYAN;
                         } else {
                             fill = Color.white;
                         }
@@ -435,6 +441,9 @@ public class ExternalIOPortController extends AttributeController {
                             // in diva, so we assign a special color.
                             // FIXME: what about multiports para
                             fill = Color.lightGray;
+                        } else if (ioport instanceof PublisherPort
+                                || ioport instanceof SubscriberPort) {
+                            fill = Color.CYAN;
                         } else {
                             fill = Color.black;
                         }

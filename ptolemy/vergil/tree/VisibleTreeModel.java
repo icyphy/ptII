@@ -52,7 +52,7 @@ import ptolemy.vergil.icon.EditorIcon;
  A tree model for the Vergil library panel.  This is a tree model that
  shows all entities and some ports, relations, and attributes.  The ports,
  relations, and attributes that it shows are those that
- contains an attribute of class EditorIcon, or that contain an
+ contain an attribute of class EditorIcon, or that contain an
  attribute named "_iconDescription" or "_smallIconDescription".
  A composite entity that contains an attribute with name "_libraryMarker"
  is treated as a sublibrary. A composite entity without such an attribute

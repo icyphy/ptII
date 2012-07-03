@@ -268,7 +268,7 @@ public class CompositeActor extends CompositeEntity implements Actor,
         // so that the new instance gets its own version.
         Set<Initializable> oldInitializables = _initializables;
         _initializables = null;
-        Map<String, List<IOPort>> oldPublishedPorts = _publishedPorts;
+        Map<String, Set<IOPort>> oldPublishedPorts = _publishedPorts;
         _publishedPorts = null;
         Map<String, IORelation> oldPublisherRelations = _publisherRelations;
         Director oldDirector = _director;
@@ -667,7 +667,7 @@ public class CompositeActor extends CompositeEntity implements Actor,
                         "Can't find the publisher for \"" + name + "\".");
             }
 
-            List<IOPort> publishedPorts = _publishedPorts.get(name);
+            Set<IOPort> publishedPorts = _publishedPorts.get(name);
             if (publishedPorts == null || publishedPorts.size() == 0) {
                 throw new IllegalActionException(this,
                         "Can't find the publisher for \"" + name + "\".");
@@ -677,8 +677,8 @@ public class CompositeActor extends CompositeEntity implements Actor,
                                 + "\".");
             }
 
-            IOPort publishedPort = publishedPorts.get(0);
-            return publishedPort;
+            Iterator<IOPort> iterator = publishedPorts.iterator();
+            return iterator.next();
         }
     }
 
@@ -970,7 +970,7 @@ public class CompositeActor extends CompositeEntity implements Actor,
      */
     public boolean isPublishedPort(IOPort port) {
         if (_publishedPorts != null) {
-            for (List<IOPort> ports : _publishedPorts.values()) {
+            for (Set<IOPort> ports : _publishedPorts.values()) {
                 if (ports.contains(port)) {
                     return true;
                 }
@@ -1157,7 +1157,6 @@ public class CompositeActor extends CompositeEntity implements Actor,
                     director.invalidateSchedule();
                     director.invalidateResolvedTypes();
                 }
-
             }
         }
     }
@@ -1777,6 +1776,9 @@ public class CompositeActor extends CompositeEntity implements Actor,
      *  typically happens before the model is preinitialized,
      *  for example when opening the model. The subscribers
      *  will look for publishers during the preinitialization phase.
+     *  This call is ignored if this composite is a class definition
+     *  or is within a class definition.
+     *  
      *  @param name The name is being used in the matching process
      *          to match publisher and subscriber.
      *  @param port The published port.
@@ -1790,23 +1792,25 @@ public class CompositeActor extends CompositeEntity implements Actor,
     public void registerPublisherPort(String name, IOPort port, boolean global)
             throws NameDuplicationException, IllegalActionException {
         NamedObj container = getContainer();
+        if (isClassDefinition()) {
+            return;
+        }
         // NOTE: The following strategy is fragile in that if
         // a director is added or removed later, then things will break.
         // Hence, HierarchyListeners need to be notified when
         // directors are added or removed.
-        if (!isOpaque() && container instanceof CompositeActor
-                && !((CompositeActor) container).isClassDefinition()) {
+        if (!isOpaque() && container instanceof CompositeActor) {
             // Published ports are not propagated if this actor
             // is opaque.
             ((CompositeActor) container).registerPublisherPort(name, port,
                     global);
         } else {
             if (_publishedPorts == null) {
-                _publishedPorts = new HashMap<String, List<IOPort>>();
+                _publishedPorts = new HashMap<String, Set<IOPort>>();
             }
-            List<IOPort> portList = _publishedPorts.get(name);
+            Set<IOPort> portList = _publishedPorts.get(name);
             if (portList == null) {
-                portList = new LinkedList<IOPort>();
+                portList = new LinkedHashSet<IOPort>();
                 _publishedPorts.put(name, portList);
             }
 
@@ -1853,7 +1857,6 @@ public class CompositeActor extends CompositeEntity implements Actor,
                             publisherPort, global);
                 }
             }
-
         }
     }
 
@@ -2459,7 +2462,7 @@ public class CompositeActor extends CompositeEntity implements Actor,
                     publisherPort);
         } else {
             if (_publishedPorts != null) {
-                List<IOPort> ports = _publishedPorts.get(name);
+                Set<IOPort> ports = _publishedPorts.get(name);
                 // if (ports == null) {
                 //     // If we are changing the name of a Publisher channel in an
                 //     // opaque, then ports might be null.
@@ -2799,7 +2802,7 @@ public class CompositeActor extends CompositeEntity implements Actor,
     protected boolean _notifyingActorFiring = false;
 
     /** Keep track of all published ports accessible in this container.*/
-    protected Map<String, List<IOPort>> _publishedPorts;
+    protected Map<String, Set<IOPort>> _publishedPorts;
 
     /** Keep track of all published ports accessible in this container.*/
     protected Map<String, List<IOPort>> _subscribedPorts;

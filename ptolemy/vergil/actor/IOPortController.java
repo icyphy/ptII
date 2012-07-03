@@ -27,10 +27,12 @@
 package ptolemy.vergil.actor;
 
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Shape;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Line2D;
+import java.awt.geom.Path2D;
 import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 import java.util.List;
@@ -38,6 +40,8 @@ import java.util.List;
 import javax.swing.SwingConstants;
 
 import ptolemy.actor.IOPort;
+import ptolemy.actor.PublisherPort;
+import ptolemy.actor.SubscriberPort;
 import ptolemy.actor.gui.ColorAttribute;
 import ptolemy.actor.gui.PtolemyPreferences;
 import ptolemy.actor.lib.qm.CompositeQuantityManager;
@@ -64,6 +68,7 @@ import diva.canvas.connector.PerimeterSite;
 import diva.canvas.connector.TerminalFigure;
 import diva.canvas.interactor.CompositeInteractor;
 import diva.canvas.toolbox.BasicFigure;
+import diva.canvas.toolbox.LabelFigure;
 import diva.graph.GraphController;
 import diva.graph.NodeRenderer;
 import diva.util.java2d.Polygon2D;
@@ -317,13 +322,24 @@ public class IOPortController extends AttributeController {
     }
 
     ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
+
+    /** Color for publish and subscribe labels. */
+    private static Color _pubSubLabelColor = new Color(0.0f, 0.4f, 0.4f, 1.0f);
+    
+    /** Font for port labels. */
+    private static Font _pubSubLabelFont = new Font("SansSerif", Font.PLAIN, 10);
+
+    ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
 
     List<MonitoredQuantityManager> _qmList;
 
     /**
      * Render the ports of components as triangles. Multiports are rendered
-     * hollow, while single ports are rendered filled.
+     * hollow, while single ports are rendered filled in black. ParameterPort
+     * is filled in grey. PublisherPort and SubscriberPort are filled with
+     * cyan.
      */
     public class EntityPortRenderer implements NodeRenderer {
 
@@ -410,15 +426,19 @@ public class IOPortController extends AttributeController {
                     shape = new Ellipse2D.Double(-size, -size, doubleSize, doubleSize);
                 }
             }
+            boolean isPubSubPort = port instanceof PublisherPort || port instanceof SubscriberPort;
             Color fill;
             if (port instanceof ParameterPort) {
                 fill = Color.lightGray;
+            } else if (isPubSubPort) {
+                fill = Color.CYAN;
             } else if (port instanceof IOPort && ((IOPort) port).isMultiport()) {
                 fill = Color.white;
             } else {
                 fill = Color.black;
             }
 
+            // Handle quantity managers.
             try {
                 if (port instanceof IOPort) {
 
@@ -641,6 +661,67 @@ public class IOPortController extends AttributeController {
                         compositeFigure.add(lineFigure);
                         figure = compositeFigure;
                     }
+                }
+                if (port instanceof PublisherPort) {
+                    CompositeFigure compositeFigure = new CompositeFigure(figure);
+                    Path2D path = new Path2D.Double();
+                    path.moveTo(0.5*size, -size);
+                    path.lineTo(2.5*size, 0);
+                    path.lineTo(0.5*size, size);
+                    
+                    path.moveTo(2*size, -size);
+                    path.lineTo(4*size, 0);
+                    path.lineTo(2*size, size);
+
+                    Figure pathFigure = new BasicFigure(path);
+                    compositeFigure.add(pathFigure);
+                    
+                    String channel = "???";
+                    try {
+                        channel = ((PublisherPort)port).channel.stringValue();
+                    } catch (IllegalActionException e) {
+                        // Ignore and display question marks.
+                        e.printStackTrace();
+                    }
+                    // The anchor argument below is (sadly) ignored.
+                    Figure label = new LabelFigure(
+                            channel, _pubSubLabelFont, 0.0, SwingConstants.SOUTH_EAST, _pubSubLabelColor);
+                    double labelHeight = label.getBounds().getHeight();
+                    label.translate(5*size, 0.5 * labelHeight);
+                    compositeFigure.add(label);
+                    
+                    figure = compositeFigure;
+                } else if (port instanceof SubscriberPort) {
+                    CompositeFigure compositeFigure = new CompositeFigure(figure);
+                    Path2D path = new Path2D.Double();
+                    path.moveTo(-2*size, -size);
+                    path.lineTo(-2*size, size);
+                    
+                    path.moveTo(-3*size, -size);
+                    path.lineTo(-3*size, size);
+
+                    path.moveTo(-4*size, -size);
+                    path.lineTo(-4*size, size);
+
+                    Figure pathFigure = new BasicFigure(path);
+                    compositeFigure.add(pathFigure);
+                    
+                    String channel = "???";
+                    try {
+                        channel = ((SubscriberPort)port).channel.stringValue();
+                    } catch (IllegalActionException e) {
+                        // Ignore and display question marks.
+                        e.printStackTrace();
+                    }
+                    // The anchor argument below is (sadly) ignored.
+                    Figure label = new LabelFigure(
+                            channel, _pubSubLabelFont, 0.0, SwingConstants.SOUTH_EAST, _pubSubLabelColor);
+                    double labelHeight = label.getBounds().getHeight();
+                    double labelWidth = label.getBounds().getWidth();
+                    label.translate(-labelWidth - 5 * size, 0.5 * labelHeight);
+                    compositeFigure.add(label);
+                    
+                    figure = compositeFigure;
                 }
                 figure = _decoratePortFigure(n, figure);
                 // Wrap the figure in a TerminalFigure to set the direction that

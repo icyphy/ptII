@@ -102,10 +102,12 @@ public class SubscriberPort extends TypedIOPort
         
         setOutput(false);
         setInput(true);
-                
-        // FIXME: if you also wire something to this port, then the
-        // port will be required to be a multiport, and it will not be
-        // clear which channel goes where!
+        
+        // In order for this to show up in the vergil library, it has to have
+        // an icon description.
+        _attachText("_smallIconDescription", "<svg>\n"
+                + "<polygon points=\"0,4 0,9 12,0 0,-9 0,-4 -8,-4 -8,4\" "
+                + "style=\"fill:cyan\"/>\n" + "</svg>\n");
     }
     
     ///////////////////////////////////////////////////////////////////
@@ -160,17 +162,24 @@ public class SubscriberPort extends TypedIOPort
                 }
             }
         } else if (attribute == global) {
-            _global = ((BooleanToken) global.getToken()).booleanValue();
-            NamedObj immediateContainer = getContainer();
-            if (immediateContainer != null) {
-                NamedObj container = immediateContainer.getContainer();
-                if (!_global && container instanceof CompositeActor) {
-                    // The vergil and config tests were failing because
-                    // moml.EntityLibrary sometimes contains Subscribers.
-                    ((CompositeActor) container).unlinkToPublishedPort(
-                            _channel, this, false);
+            boolean newValue = ((BooleanToken) global.getToken())
+                    .booleanValue();
+            if (newValue == false && _global == true) {
+                NamedObj immediateContainer = getContainer();
+                if (immediateContainer != null) {
+                    NamedObj container = immediateContainer.getContainer();
+                    if (container instanceof CompositeActor
+                            && !(_channel == null || _channel.trim().equals(""))) {
+                        ((CompositeActor) container).unlinkToPublishedPort(
+                                _channel, this, _global);
+                    }
                 }
             }
+            _global = newValue;
+            // Do not call SubscriptionAggregator.attributeChanged()
+            // because it will remove the published port name by _channel.
+            // If _channel is set to a real name (not a regex pattern),
+            // Then chaos ensues.  See test 3.0 in SubscriptionAggregator.tcl
         } else {
             super.attributeChanged(attribute);
         }
@@ -185,9 +194,9 @@ public class SubscriberPort extends TypedIOPort
     public void hierarchyChanged() throws IllegalActionException {
         // Make sure we are registered as to be initialized
         // with the container.
-        NamedObj container = getContainer();
-        if (container instanceof Initializable) {
-            ((Initializable)container).addInitializable(this);
+        Initializable container = _getInitializableContainer();
+        if (container != null) {
+            container.addInitializable(this);
         }
     }
 
@@ -207,11 +216,11 @@ public class SubscriberPort extends TypedIOPort
                 }
             }
         }
-        // Unregister to be initialized with the container.
+        // Unregister to be initialized with the initializable container.
         // We will be re-registered when hierarchyChanged() is called.
-        NamedObj container = getContainer();
-        if (container instanceof Initializable) {
-            ((Initializable)container).removeInitializable(this);
+        Initializable container = _getInitializableContainer();
+        if (container != null) {
+            container.removeInitializable(this);
         }
     }
     
@@ -251,21 +260,25 @@ public class SubscriberPort extends TypedIOPort
     @Override
     public void setContainer(Entity container)
             throws IllegalActionException, NameDuplicationException {
-        NamedObj previousContainer = super.getContainer();
-        if (previousContainer != container) {
-            if (previousContainer instanceof Initializable) {
-                ((Initializable)previousContainer).removeInitializable(this);
+        Initializable previousInitializableContainer = _getInitializableContainer();
+        NamedObj previousContainer = getContainer();
+        super.setContainer(container);
+        Initializable newInitializableContainer = _getInitializableContainer();
+        if (previousInitializableContainer != newInitializableContainer) {
+            if (previousInitializableContainer != null) {
+                previousInitializableContainer.removeInitializable(this);
             }
+            if (newInitializableContainer != null) {
+                newInitializableContainer.addInitializable(this);
+            }
+        }
+        if (previousContainer != container) {
             if (previousContainer != null) {
                 previousContainer.removeHierarchyListener(this);
             }
-            if (container instanceof Initializable) {
-                ((Initializable)container).addInitializable(this);
+            if (container != null) {
+                container.addHierarchyListener(this);
             }
-        }
-        super.setContainer(container);
-        if (container != null) {
-            container.addHierarchyListener(this);
         }
     }
 
@@ -325,36 +338,24 @@ public class SubscriberPort extends TypedIOPort
             NamedObj container = immediateContainer.getContainer();
             if (container instanceof CompositeActor) {
                 try {
-                    ((CompositeActor) container).linkToPublishedPort(_channel,
-                            this, _global);
-                } catch (Exception e) {
-                    if (e instanceof IllegalActionException) {
+                    try {
+                        ((CompositeActor) container).linkToPublishedPort(
+                                _channel, this, _global);
+                    } catch (IllegalActionException ex) {
                         // If we have a LazyTypedCompositeActor that
-                        // contains the PublisherPort, then populate() the
+                        // contains the Publisher, then populate() the
                         // model, expanding the LazyTypedCompositeActors
                         // and retry the link.  This is computationally
                         // expensive.
-                        // See $PTII/ptolemy/actor/lib/test/auto/LazyPubSub2.xml
-                        // The following causes everything to expand.
+                        // See $PTII/ptolemy/actor/lib/test/auto/LazyPubSub.xml
                         _updatePublisherPorts((CompositeEntity)toplevel());
-                        /*
-                        NamedObj toplevel = toplevel();
-                        ((TypedCompositeActor) toplevel).allAtomicEntityList();
-                        toplevel.validateSettables();
-                        try {
-                            ((CompositeActor) container).linkToPublishedPort(
-                                    _channel, this, _global);
-                        } catch (NameDuplicationException e1) {
-                            throw new IllegalActionException(this, e,
-                                    "Can't link SubscriberPort with PublisherPort, channel was \""
-                                            + channel.stringValue() + "\"");
-                        }
-                        */
-                    } else {
-                        throw new IllegalActionException(this, e,
-                                "Can't link SubscriberPort with PublisherPort, channel was \""
-                                        + channel.stringValue() + "\"");
+                        // Now try again.
+                        ((CompositeActor) container).linkToPublishedPort(
+                                _channel, this, _global);
                     }
+                } catch (NameDuplicationException e) {
+                    throw new IllegalActionException(this, e,
+                            "Can't link SubscriptionAggregatorPort with a PublisherPort.");
                 }
             }
         }
@@ -368,28 +369,47 @@ public class SubscriberPort extends TypedIOPort
      *  @param root The root of the tree to search.
      *  @throws IllegalActionException If the port rejects its channel.
      */
-    protected void _updatePublisherPorts(CompositeEntity root) throws IllegalActionException {
+    protected void _updatePublisherPorts(Entity root) throws IllegalActionException {
         List<Port> ports = root.portList();
         for (Port port : ports) {
             if (port instanceof PublisherPort) {
                 port.attributeChanged(((PublisherPort)port).channel);
             }
         }
-        List<Entity> entities = root.entityList();
-        for (Entity entity : entities) {
-            if (entity instanceof CompositeEntity) {
-                _updatePublisherPorts((CompositeEntity)entity);
-            } else {
-                List<Port> entityPorts = entity.portList();
-                for (Port port : entityPorts) {
-                    if (port instanceof PublisherPort) {
-                        port.attributeChanged(((PublisherPort)port).channel);
-                    }
-                }
+        if (root instanceof CompositeEntity) {
+            List<Entity> entities = ((CompositeEntity)root).entityList();
+            for (Entity entity : entities) {
+                _updatePublisherPorts(entity);
             }
         }
     }
 
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected methods                 ////
+
+    /** Return the first Initializable encountered above this
+     *  in the hierarchy that will be initialized (i.e., it is either
+     *  an atomic actor or an opaque composite actor).
+     *  @return The first Initializable above this in the hierarchy,
+     *   or null if there is none.
+     */
+    protected Initializable _getInitializableContainer() {
+        NamedObj container = getContainer();
+        while (container != null) {
+            if (container instanceof Initializable) {
+                if (container instanceof CompositeActor) {
+                    if (((CompositeActor)container).isOpaque()) {
+                        return (Initializable)container;
+                    }
+                } else {
+                    return (Initializable)container;
+                }
+            }
+            container = container.getContainer();
+        }
+        return null;
+    }
+    
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
 

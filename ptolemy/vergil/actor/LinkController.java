@@ -31,6 +31,8 @@ import java.awt.Color;
 import java.util.Iterator;
 import java.util.List;
 
+import ptolemy.actor.PublisherPort;
+import ptolemy.actor.SubscriberPort;
 import ptolemy.actor.gui.ColorAttribute;
 import ptolemy.actor.gui.Configuration;
 import ptolemy.actor.gui.PtolemyPreferences;
@@ -310,8 +312,10 @@ public class LinkController extends BasicEdgeController {
          */
         public boolean acceptHead(Connector c, Figure f) {
             Object object = f.getUserObject();
+            
+            boolean isPubSubPort = object instanceof PublisherPort || object instanceof SubscriberPort;
 
-            if (object instanceof Port
+            if ((object instanceof Port && !isPubSubPort)
                     || object instanceof Vertex
                     || (object instanceof Link && c != f)
                     || (object instanceof Locatable && ((Locatable) object)
@@ -342,7 +346,9 @@ public class LinkController extends BasicEdgeController {
         public boolean acceptTail(Connector c, Figure f) {
             Object object = f.getUserObject();
 
-            if (object instanceof Port
+            boolean isPubSubPort = object instanceof PublisherPort || object instanceof SubscriberPort;
+
+            if ((object instanceof Port  && !isPubSubPort)
                     || object instanceof Vertex
                     || (object instanceof Link && c != f)
                     || (object instanceof Locatable && ((Locatable) object)

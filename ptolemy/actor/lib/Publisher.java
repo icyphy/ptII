@@ -30,7 +30,7 @@ package ptolemy.actor.lib;
 import java.util.Set;
 
 import ptolemy.actor.AtomicActor;
-import ptolemy.actor.CompositeActor;
+import ptolemy.actor.PublisherPort;
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.util.ActorDependencies;
@@ -41,20 +41,22 @@ import ptolemy.data.expr.SingletonParameter;
 import ptolemy.data.expr.StringParameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Workspace;
 
 /**
  This actor publishes input tokens on a named channel. The tokens are
- "tunneled" to any instance of Subscriber that names the same channel
- and that is under the control of the same director. That is, it can
+ "tunneled" to any instance of {@link Subscriber} that names the same channel.
+ If {@link #global} is false (the default), then this publisher
+ will only send to instances of Subscriber that are under the
+ control of the same director. That is, it can
  be at a different level of the hierarchy, or in an entirely different
  composite actor, as long as the relevant composite actors are
- transparent (have no director).
+ transparent (have no director). If {@link #global} is true,
+ then the subscriber may be anywhere in the model, as long as its
+ <i>global</i> parameter is also true.
  <p>
  It is an error to have two instances of Publisher using the same
  channel under the control of the same director. When you create a
@@ -66,9 +68,9 @@ import ptolemy.kernel.util.Workspace;
  is specified, typically during model construction, this actor
  causes a relation to be created in the least opaque composite
  actor above it in the hierarchy and links to that relation.
- In addition, if <i>export</i> is set to non-zero, it causes
+ In addition, if {@link #global} is set to true, it causes
  a port to be created in that composite, and also links that
- port to the relation.  The relation is recorded by the opaque
+ port to the relation on the inside.  The relation is recorded by the opaque
  composite.  When a Subscriber is preinitialized that refers
  to the same channel, that Subscriber finds the relation (by
  finding the least opaque composite actor above it) and links
@@ -106,8 +108,13 @@ public class Publisher extends TypedAtomicActor {
 
         input = new TypedIOPort(this, "input", true, false);
         input.setMultiport(true);
-        output = new TypedIOPort(this, "output", false, true);
+        output = new PublisherPort(this, "output");
         output.setMultiport(true);
+        // Refer the parameters of the output port to those of
+        // this actor.
+        output.channel.setExpression("$channel");
+        output.global.setExpression("global");
+        output.propagateNameChanges.setExpression("propagateNameChanges");
 
         // We only have constraints from the publisher on the subscriber
         // and the output of the subscriber and not the other way around
@@ -149,17 +156,20 @@ public class Publisher extends TypedAtomicActor {
      */
     public Parameter global;
 
-    /** The input port.  This base class imposes no type constraints except
+    /** The input port.  This is a multiport, allowing multiple
+     *  signals to be be transmitted through the publisher channel.
+     *  This base class imposes no type constraints except
      *  that the type of the input cannot be greater than the type of the
      *  output.
      */
     public TypedIOPort input;
 
-    /** The output port. By default, the type of this output is constrained
+    /** The output port. This port is hidden and should not be
+     *  directly used. By default, the type of this output is constrained
      *  to be at least that of the input. This port is hidden by default
      *  and the actor handles creating connections to it.
      */
-    public TypedIOPort output;
+    public PublisherPort output;
 
     /** If true, then propagate channel name changes to any
      *  Subscribers.  The default value is a BooleanToken with the
@@ -190,81 +200,7 @@ public class Publisher extends TypedAtomicActor {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** If the attribute is the channel, increment the workspace version
-     *  to force cached receiver lists to be updated, and invalidate
-     *  the schedule and resolved types of the director, if there is one.
-     *  @param attribute The attribute that changed.
-     *  @exception IllegalActionException If the change is not acceptable
-     *   to this container.
-     */
-    public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
-        if (attribute == channel || attribute == global) {
-            // We only get the value if we are not in a class definition.
-            // The reason is that some of the Actor Oriented Classes
-            // that use Publishers do not have the parameter defined
-            // in the definition.  See
-            // ptolemy/actor/lib/test/auto/PublisherClassNoParameter.xml
-            if (!isWithinClassDefinition()) {
-                String newValue = channel.stringValue();
-                boolean globalValue = ((BooleanToken) global.getToken())
-                        .booleanValue();
-                if (!newValue.equals(_channel) || globalValue != _global) {
-                    NamedObj container = getContainer();
-                    if (container instanceof CompositeActor) {
-                        // The vergil and config tests were failing because
-                        // moml.EntityLibrary sometimes contains Subscribers.
-                        try {
-                            if (attribute == global) {
-                                if (_global && !globalValue) {
-                                    ((CompositeActor) container)
-                                            .unregisterPublisherPort(_channel,
-                                                    output, true);
-                                }
-                            }
-
-                            if (attribute == channel
-                                    && (!(_channel == null || _channel.trim()
-                                            .equals("")))) {
-                                if (((BooleanToken) propagateNameChanges
-                                        .getToken()).booleanValue()) {
-                                    try {
-                                        _updateChannelNameOfConnectedSubscribers(
-                                                _channel, newValue);
-                                    } catch (KernelException ex) {
-                                        throw new IllegalActionException(this, ex,
-                                                "Failed to set channel to "
-                                                + newValue);
-                                    }
-                                }
-                            }
-                            ((CompositeActor) container).registerPublisherPort(
-                                    newValue, output, globalValue);
-
-                            if (attribute == channel
-                                    && (!(_channel == null || _channel.trim()
-                                            .equals("")))) {
-                                ((CompositeActor) container)
-                                        .unregisterPublisherPort(_channel,
-                                                output, _global);
-                            }
-
-                        } catch (NameDuplicationException e) {
-                            throw new IllegalActionException(this, e,
-                                    "Can't add published port.");
-                        }
-                    }
-                    _channel = newValue;
-                    _global = globalValue;
-                }
-            }
-        } else {
-            super.attributeChanged(attribute);
-        }
-    }
-
-    /** Clone the actor into the specified workspace. This calls the
-     *  base class and then set the filename public member.
+    /** Clone the actor into the specified workspace.
      *  @param workspace The workspace for the new object.
      *  @return A new actor.
      *  @exception CloneNotSupportedException If a derived class contains
@@ -272,14 +208,6 @@ public class Publisher extends TypedAtomicActor {
      */
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         Publisher newObject = (Publisher) super.clone(workspace);
-        try {
-            newObject._channel = _channel;
-            newObject._global = _global;
-        } catch (Throwable throwable) {
-            CloneNotSupportedException exception = new CloneNotSupportedException();
-            exception.initCause(throwable);
-            throw exception;
-        }
 
         // We only have constraints from the publisher on the subscriber
         // and the output of the subscriber and not the other way around
@@ -288,16 +216,6 @@ public class Publisher extends TypedAtomicActor {
 
         return newObject;
     }
-
-    /** Return a Set of Subscribers that are connected to this Publisher.
-     *  @return A Set of Subscribers that are connected to this Publisher
-     *  @exception KernelException If thrown when a Manager is added to
-     *  the top level or if preinitialize() fails.
-     */
-    public Set<AtomicActor> subscribers()
-            throws KernelException {
-        return ActorDependencies.dependents(this, Subscriber.class);
-    }   
 
     /** Read at most one input token from each
      *  input channel and send it to the subscribers,
@@ -321,7 +239,8 @@ public class Publisher extends TypedAtomicActor {
      *   been specified.
      */
     public void preinitialize() throws IllegalActionException {
-        if (_channel == null || _channel.trim().equals("")) {
+        String channelValue = channel.stringValue();
+        if (channelValue == null || channelValue.trim().equals("")) {
             throw new IllegalActionException(this,
                     "No channel name has been specified.");
         }
@@ -331,61 +250,13 @@ public class Publisher extends TypedAtomicActor {
         super.preinitialize();
     }
 
-    /** If the new container is null, delete the named channel.
-     *  @param container The proposed container.
-     *  @exception IllegalActionException If the action would result in a
-     *   recursive containment structure, or if
-     *   this entity and container are not in the same workspace.
-     *  @exception NameDuplicationException If the container already has
-     *   an entity with the name of this entity.
-     */
-    public void setContainer(CompositeEntity container)
-            throws IllegalActionException, NameDuplicationException {
-
-        if (container == null
-                && !(_channel == null || _channel.trim().equals(""))) {
-            NamedObj previousContainer = getContainer();
-            if (previousContainer instanceof CompositeActor) {
-                ((CompositeActor) previousContainer).unregisterPublisherPort(
-                        _channel, output);
-            }
-        }
-
-        super.setContainer(container);
-    }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         protected variables               ////
-
-    /** Cached channel name. */
-    protected String _channel;
-
-    /** Cached variable indicating whether publishing is global. */
-    protected boolean _global;
-
-    /** Update the channel name of any connected Subscribers.
-     *  Note that the channel name of connected Subscription Aggregators
-     *  are not updated.
-     *  @param previousChannelName The previous name of the channel.
-     *  @param newChannelName The new name of the channel.
+    /** Return a Set of Subscribers that are connected to this Publisher.
+     *  @return A Set of Subscribers that are connected to this Publisher
      *  @exception KernelException If thrown when a Manager is added to
-     *  the top level, or when the channel name of a Subscriber is changed.
+     *  the top level or if preinitialize() fails.
      */
-    private void _updateChannelNameOfConnectedSubscribers(
-            String previousChannelName, String newChannelName)
+    public Set<AtomicActor> subscribers()
             throws KernelException {
-
-        // We use subscribers() here so that we get any subscribers in
-        // Opaque TypedCompositeActors.
-        for (AtomicActor atomicActor : subscribers()) {
-            Subscriber subscriber = (Subscriber)atomicActor;
-            if (subscriber.channel.getExpression().equals(
-                            previousChannelName)) {
-                // Avoid updating SubscriptionAggregators that have regular
-                // expressions that are different than the Publisher channel name.
-                subscriber.channel.setExpression(newChannelName);
-                subscriber.attributeChanged(subscriber.channel);
-            }
-        }
-    }
+        return ActorDependencies.dependents(this, Subscriber.class);
+    }   
 }

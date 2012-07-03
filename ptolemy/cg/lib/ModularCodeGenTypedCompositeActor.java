@@ -35,9 +35,11 @@ import java.net.URLClassLoader;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.IOPort;
@@ -717,11 +719,11 @@ public class ModularCodeGenTypedCompositeActor extends LazyTypedCompositeActor {
                 }
                 _publisherRelations.put(name, relation);
                 if (_publishedPorts == null) {
-                    _publishedPorts = new HashMap<String, List<IOPort>>();
+                    _publishedPorts = new HashMap<String, Set<IOPort>>();
                 }
-                List<IOPort> portList = _publishedPorts.get(name);
+                Set<IOPort> portList = _publishedPorts.get(name);
                 if (portList == null) {
-                    portList = new LinkedList<IOPort>();
+                    portList = new LinkedHashSet<IOPort>();
                     _publishedPorts.put(name, portList);
                 }
                 portList.add(stubPort);

@@ -118,10 +118,12 @@ public class PublisherPort extends TypedIOPort implements HierarchyListener {
         
         setOutput(true);
         setInput(false);
-                
-        // FIXME: if you also wire something to this port, then the
-        // port will be required to be a multiport, and it will not be
-        // clear which channel goes where!
+        
+        // In order for this to show up in the vergil library, it has to have
+        // an icon description.
+        _attachText("_smallIconDescription", "<svg>\n"
+                + "<polygon points=\"-8,9 -2,4 12,4 12,-4 -2,-4 -8,-9\" "
+                + "style=\"fill:cyan\"/>\n" + "</svg>\n");
     }
     
     ///////////////////////////////////////////////////////////////////
@@ -274,6 +276,14 @@ public class PublisherPort extends TypedIOPort implements HierarchyListener {
                     try {
                         ((CompositeActor) container).registerPublisherPort(
                                 channelValue, this, _global);
+                        // Need to make sure to record the channel name
+                        // so that it gets unregistered if it later changes.
+                        // In particular, _channel may be null if attributeChanged()
+                        // has not been called.
+                        // NOTE: Should we check for some value of _channel other
+                        // than null?  There shouldn't be any that doesn't match
+                        // the channelValue.
+                        _channel = channelValue;
                     } catch (NameDuplicationException e) {
                         throw new InternalErrorException(e);
                     }

@@ -43,6 +43,8 @@ import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.JToolBar;
 
+import ptolemy.actor.PublisherPort;
+import ptolemy.actor.SubscriberPort;
 import ptolemy.actor.gui.Configuration;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.StringParameter;
@@ -630,6 +632,11 @@ public class ActorEditorGraphController extends ActorViewerGraphController {
         public void mousePressed(LayerEvent event) {
             Figure source = event.getFigureSource();
             NamedObj sourceObject = (NamedObj) source.getUserObject();
+
+            if (sourceObject instanceof PublisherPort || sourceObject instanceof SubscriberPort) {
+                // MessageHandler.error("Cannot connect directly to publish and subscribe ports.");
+                return;
+            }
 
             // Create the new edge.
             Link link = new Link();

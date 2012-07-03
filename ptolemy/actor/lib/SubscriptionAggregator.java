@@ -27,20 +27,12 @@
  */
 package ptolemy.actor.lib;
 
-import java.util.Iterator;
-import java.util.regex.Pattern;
-
-import ptolemy.actor.CompositeActor;
-import ptolemy.actor.TypedCompositeActor;
-import ptolemy.data.BooleanToken;
+import ptolemy.actor.SubscriptionAggregatorPort;
 import ptolemy.data.Token;
 import ptolemy.data.expr.StringParameter;
 import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.kernel.util.NamedObj;
-import ptolemy.kernel.util.Workspace;
 
 ///////////////////////////////////////////////////////////////////
 //// SubscriptionAggregator
@@ -58,9 +50,9 @@ import ptolemy.kernel.util.Workspace;
  Thus, this class is usually slower than the superclass.  One thing
  to watch out for is using <code>.</code> instead of <code>\.</code>
  and <code>*</code> instead of <code>.+</code>.
- For example, <code>channel.foo.*</code> might be faster as
- <code>channel\.foo.+</code>.
-
+ For example, <code>channel.foo.*</code> does not mean the same thing as
+ <code>channel\.foo.+</code>. The latter requires a dot between channel and
+ foo, where the former does not.
 
  @author Edward A. Lee, Raymond A. Cardillo, contributor: Christopher Brooks, Bert Rodiers
  @version $Id$
@@ -69,6 +61,9 @@ import ptolemy.kernel.util.Workspace;
  @Pt.AcceptedRating Red (cxh)
  */
 public class SubscriptionAggregator extends Subscriber {
+    
+    // NOTE: This cannot extend Subscriber because it needs
+    // a different kind of input port.
 
     /** Construct a subscriber with the specified container and name.
      *  @param container The container actor.
@@ -81,13 +76,15 @@ public class SubscriptionAggregator extends Subscriber {
     public SubscriptionAggregator(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-
-        output.setMultiport(false);
-
+        
         operation = new StringParameter(this, "operation");
         operation.addChoice("add");
         operation.addChoice("multiply");
         operation.setExpression("add");
+        
+        // Set the operation attribute of the input port to inherit
+        // the value of the operation parameter of this actor.
+        ((SubscriptionAggregatorPort)input).operation.setExpression("$operation");
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -105,183 +102,40 @@ public class SubscriptionAggregator extends Subscriber {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Override the base class to record the operation choice.
-     *  @param attribute The attribute that changed.
-     *  @exception IllegalActionException If the change is not acceptable
-     *   to this container.
-     */
-    public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
-        if (attribute == operation) {
-            String newValue = operation.stringValue();
-            if (newValue.equals("add")) {
-                _addOperation = true;
-            } else {
-                _addOperation = false;
-            }
-        } else if (attribute == channel) {
-            String newValue = channel.stringValue();
-            if (!newValue.equals(_channel)) {
-                NamedObj container = getContainer();
-                if (container instanceof CompositeActor
-                        && !(_channel == null || _channel.trim().equals(""))) {
-                    ((CompositeActor) container).unlinkToPublishedPort(
-                            _channelPattern, input, _global);
-                }
-                _channel = newValue;
-                // Don't call super here because super.attributeChanged() tries to unlink _channel
-                // as a non-regular expression string, which seems wrong.
-                super.attributeChanged(attribute);
-                _channelPattern = Pattern.compile(_channel);
-            }
-        } else if (attribute == global) {
-            boolean newValue = ((BooleanToken) global.getToken())
-                    .booleanValue();
-            if (newValue == false && _global == true) {
-                NamedObj container = getContainer();
-                if (container instanceof CompositeActor
-                        && !(_channel == null || _channel.trim().equals(""))) {
-                    ((CompositeActor) container).unlinkToPublishedPort(
-                            _channelPattern, input, _global);
-                }
-            }
-            _global = newValue;
-            // Do not call SubscriptionAggregator.attributeChanged()
-            // because it will remove the published port name by _channel.
-            // If _channel is set to a real name (not a regex pattern),
-            // Then chaos ensues.  See test 3.0 in SubscriptionAggregator.tcl
-        } else {
-            super.attributeChanged(attribute);
-        }
-    }
-
-    /** Clone the actor into the specified workspace.
-     *  @param workspace The workspace for the new object.
-     *  @return A new actor.
-     *  @exception CloneNotSupportedException If a derived class contains
-     *   an attribute that cannot be cloned.
-     */
-    public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        SubscriptionAggregator newObject = (SubscriptionAggregator) super
-                .clone(workspace);
-        newObject._channel = _channel;
-        return newObject;
-    }
-
     /** Read at most one input token from each input
-     *  channel, add all the tokens, and send the result
-     *  to the output.
+     *  channel, aggregate them, and send the result to the output.
      *  @exception IllegalActionException If there is no director, or
      *   if there is no input connection.
      */
     public void fire() throws IllegalActionException {
+        // Do not call super.fire() here because that does the wrong thing.
         if (_debugging) {
             _debug("Called fire()");
         }
-
         int width = input.getWidth();
         if (width == 0) {
             throw new IllegalActionException(this,
-                    "SubscriptionAggregator has no matching Publisher, "
-                            + "channel was \"" + channel.getExpression()
-                            + "\".");
+                    "SubscriptionAggregator could not find a matching Publisher "
+                            + "with channel \"" + channel.stringValue() + "\"");
+
         }
-        Token result = null;
-        for (int i = 0; i < width; i++) {
-            if (input.hasToken(i)) {
-                Token token = input.get(i);
-                if (result == null) {
-                    result = token;
-                } else {
-                    if (_addOperation) {
-                        result = result.add(token);
-                    } else {
-                        result = result.multiply(token);
-                    }
-                }
-            }
+        if (input.hasToken(0)) {
+            // This will do the aggregation.
+            Token token = input.get(0);
+            output.send(0, token);
         }
-        output.send(0, result);
     }
-
-    /** If the new container is null, delete the named channel.
-     *  @param container The proposed container.
-     *  @exception IllegalActionException If the action would result in a
-     *   recursive containment structure, or if
-     *   this entity and container are not in the same workspace.
-     *  @exception NameDuplicationException If the container already has
-     *   an entity with the name of this entity.
-     */
-    public void setContainer(CompositeEntity container)
-            throws IllegalActionException, NameDuplicationException {
-
-        if (container == null
-                && !(_channel == null || _channel.trim().equals(""))) {
-            NamedObj previousContainer = getContainer();
-            if (previousContainer instanceof CompositeActor) {
-                ((CompositeActor) previousContainer).unlinkToPublishedPort(
-                        _channelPattern, input);
-            }
-        }
-
-        super.setContainer(container);
-    }
-
+    
     ///////////////////////////////////////////////////////////////////
-    ////                         protected methods                 ////
+    ////                      protected methods                    ////
 
-    /** Update the connection to the publishers, if there are any.
-     *  @exception IllegalActionException If creating the link
-     *   triggers an exception.
+    /** Create an input port. This overrides the base class to create
+     *  a SubscriptionAggregatorPort.
+     *  @throws IllegalActionException If creating the input port fails.
+     *  @throws NameDuplicationException If there is already a port named "input".
      */
-    protected void _updateLinks() throws IllegalActionException {
-        // If the channel has not been set, then there is nothing
-        // to do.  This is probably the first setContainer() call,
-        // before the object is fully constructed.
-        if (_channel == null) {
-            return;
-        }
-
-        NamedObj container = getContainer();
-        if (container instanceof CompositeActor) {
-            try {
-                try {
-                    ((CompositeActor) container).linkToPublishedPort(
-                            _channelPattern, input, _global);
-                } catch (IllegalActionException ex) {
-                    // If we have a LazyTypedCompositeActor that
-                    // contains the Publisher, then populate() the
-                    // model, expanding the LazyTypedCompositeActors
-                    // and retry the link.  This is computationally
-                    // expensive.
-                    // See $PTII/ptolemy/actor/lib/test/auto/LazyPubSub.xml
-                    Iterator namedObjs = ((TypedCompositeActor) toplevel())
-                            .allAtomicEntityList().iterator();
-                    while (namedObjs.hasNext()) {
-                        NamedObj namedObj = (NamedObj) namedObjs.next();
-                        if (namedObj instanceof Publisher) {
-                            Publisher publisher = (Publisher) namedObj;
-                            publisher.attributeChanged(publisher.channel);
-                        }
-                    }
-
-                    ((CompositeActor) container).linkToPublishedPort(
-                            _channelPattern, input, _global);
-                }
-            } catch (NameDuplicationException e) {
-                throw new IllegalActionException(this, e,
-                        "Can't link SubscriptionAggregator with Publisher.");
-            }
-        }
+    protected void _createInputPort() throws IllegalActionException,
+            NameDuplicationException {
+        input = new SubscriptionAggregatorPort(this, "input");
     }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         private variables                 ////
-
-    /** Indicator that the operation is "add" rather than "multiply". */
-    private boolean _addOperation = true;
-
-    /** Regex Pattern for _channelName. */
-    private Pattern _channelPattern;
-
 }
