@@ -27,8 +27,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 */
 
-
-
 package ptolemy.domains.ptides.lib.io;
 
 import ptolemy.actor.CustomRenderedPort;

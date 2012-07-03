@@ -108,7 +108,7 @@ public class ActuatorPort extends PtidesPort {
     public Parameter valueCorrection;
     
     /** Driver parameter. FIXME: Whats the default? Path to file? */
-    public Parameter driver;
+    public Parameter driver; 
 
     
 }

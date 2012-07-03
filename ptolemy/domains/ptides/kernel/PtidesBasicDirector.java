@@ -1059,7 +1059,6 @@ public class PtidesBasicDirector extends DEDirector {
                         // error bound.
                         start += getAssumedSynchronizationErrorBound();
                     } else {
-                    	// FIXME: Eclipse says this is dead code.
                         start = getAssumedSynchronizationErrorBound();
                     }
                 } else {

@@ -34,18 +34,10 @@ package ptolemy.domains.ptides.lib.io;
 import java.util.ArrayList;
 import java.util.List;
 
-import ptolemy.actor.CompositeActor;
-import ptolemy.actor.NoRoomException;
 import ptolemy.data.DoubleToken;
-import ptolemy.data.IntToken;
-import ptolemy.data.RecordToken;
-import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.StringParameter;
 import ptolemy.data.type.BaseType;
-import ptolemy.data.type.TypeLattice;
-import ptolemy.domains.ptides.kernel.PtidesDirector;
-import ptolemy.graph.CPO;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -116,61 +108,5 @@ public class NetworkTransmitterPort extends PtidesPort {
     
     /** Admission control function parameter that defaults to the double value 0.0. */
     public Parameter admissionControlFunction;
- 
-    /** Send new Recordtoken with timestamp, microstep and the original token
-     *  as the payload to actors outside Ptides platforms.
-     *  @param channelIndex Cannel to send token to.
-     *  @param token RecordToken that is sent.
-     *  @throws IllegalActionException If RecordToken cannot be created.
-     *  @throws NoRoomException If Token cannot be sent.
-     */
-    public void send(int channelIndex, Token token)
-            throws IllegalActionException, NoRoomException { 
-        PtidesDirector director = (PtidesDirector) ((CompositeActor)getContainer()).getDirector();
-        
-        String[] labels = new String[] { timestamp, microstep, payload };
-        Token[] values = new Token[] {
-                new DoubleToken(director.getModelTime()
-                        .getDoubleValue()),
-                new IntToken(director.getMicrostep()), token };
-        RecordToken record = new RecordToken(labels, values); 
-        try {
-            super.send(channelIndex, record);
-        } catch (IllegalActionException ex) {
-            throw new IllegalActionException(this, ex.getMessage());
-        }
-    }
-    
-    
-    /** Override Type checking to compare type of payload with resolvedType. 
-     *  FIXME: Is this right?
-     *  @param token Token to be type-checked.
-     */
-    protected void _checkType(Token token) throws IllegalActionException {
-        int compare = TypeLattice.compare((((RecordToken)token).get(payload)).getType(), _resolvedType);
-
-        if ((compare == CPO.HIGHER) || (compare == CPO.INCOMPARABLE)) {
-            throw new IllegalActionException(this,
-                    "Run-time type checking failed. Token " + token
-                            + " with type " + token.getType()
-                            + " is incompatible with port type: "
-                            + _resolvedType.toString());
-        }  
-    }
-    
-    ///////////////////////////////////////////////////////////////////
-    ////                         private variables                 ////
-
-    /** Label of the timestamp that is transmitted within the RecordToken.
-     */
-    private static final String timestamp = "timestamp";
-
-    /** Label of the microstep that is transmitted within the RecordToken.
-     */
-    private static final String microstep = "microstep";
-
-    /** Label of the payload that is transmitted within the RecordToken.
-     */
-    private static final String payload = "payload";
     
 }

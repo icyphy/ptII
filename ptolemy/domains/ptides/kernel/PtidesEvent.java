@@ -133,6 +133,36 @@ public class PtidesEvent extends DEEvent {
         _isPureEvent = false;
     }
 
+    /** Construct a trigger event with the specified destination IO port,
+     *  timestamp, microstep, and depth.
+     *  This constructor should be used if the event is a trigger event
+     *  (a non-pure event that is destined to a port).
+     *  To construct trigger event, neither _token nor _receiver should be null.
+     *  @param ioPort The destination IO port.
+     *  @param channel The channel the event is destined to.
+     *  @param timeStamp The time when the event occurs.
+     *  @param microstep The phase of execution within a fixed time.
+     *  @param depth The topological depth of the destination IO Port.
+     *  @param token The token associated with the event. This field should
+     *          not be null.
+     *  @param receiver The Receiver the event is destined to. This field
+     *          should not be null.
+     *  @param deadline Time when the event has to be processed.
+     *  @exception IllegalActionException If the actor has a priority parameter,
+     *  but its value cannot be obtained, which should be an integer.
+     */
+    public PtidesEvent(IOPort ioPort, int channel, Time timeStamp,
+            int microstep, int depth, Token token, Receiver receiver, Time deadline) 
+            throws IllegalActionException {
+        super(ioPort, timeStamp, microstep, depth);
+        assert (token != null && receiver != null);
+        _channel = channel;
+        _token = token;
+        _receiver = receiver;
+        _isPureEvent = false;
+        _absoluteDeadline = deadline;
+    }
+
     /** Return the absolute deadline of this event if the event is a
      *  pure event.
      *  A pure event is one that does not contained a token (value) that
@@ -142,11 +172,11 @@ public class PtidesEvent extends DEEvent {
      *          or the event is a pure event and absoluteDeadline is null.
      */
     public final Time absoluteDeadline() {
-        if (!isPureEvent()) {
-            throw new InternalErrorException("This event is not a pure event, "
-                    + "in which case the absolute deadline should be obtained "
-                    + "from the destination port of the event.");
-        }
+//        if (!isPureEvent()) {
+//            throw new InternalErrorException("This event is not a pure event, "
+//                    + "in which case the absolute deadline should be obtained "
+//                    + "from the destination port of the event.");
+//        }
         return _absoluteDeadline;
     }
 

@@ -118,5 +118,10 @@ public class SensorPort extends PtidesPort {
     /** Driver parameter. FIXME: Whats the default? Path to file? */
     public Parameter driver;
     
+    /** FIXME: additional parameters:
+     * - sporadic behavior/ minimum interarrival time
+     * - enforce sporadic behavior
+     */
+    
     
 }

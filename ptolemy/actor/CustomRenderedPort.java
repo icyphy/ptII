@@ -31,6 +31,7 @@ package ptolemy.actor;
 
 import java.util.List;
 
+import ptolemy.actor.lib.hoc.MirrorPort;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -45,7 +46,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  *  @Pt.ProposedRating Red (derler)
  *  @Pt.AcceptedRating
  */
-public abstract class CustomRenderedPort extends TypedIOPort {
+public abstract class CustomRenderedPort extends MirrorPort {
 
     /** Create a new CustomRenderedPort with a given container and a name.
      * @param container The container of the port. 

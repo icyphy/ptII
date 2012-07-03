@@ -34,8 +34,10 @@ package ptolemy.domains.ptides.kernel;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Queue;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -149,26 +151,54 @@ public class PtidesDirector extends DEDirector {
         List<PtidesEvent> list = _inputEventQueue.get(getModelTime());
         if (list != null) {
             for (PtidesEvent event : list) {
-                _currentLogicalTime = event.timeStamp();
+                //_currentLogicalTime = event.timeStamp();
                 event.receiver().put(event.token()); 
-                _currentLogicalTime = null;
+                //_currentLogicalTime = null;
             }
             _inputEventQueue.remove(getModelTime());
         }
         
         super.fire();
         
-        // Transfer all outputs that are ready.
+        // Transfer all outputs to the ports that are ready.
         list = _outputEventQueue.get(getModelTime());
         if (list != null) {
             for (PtidesEvent event : list) { 
                 _currentLogicalTime = event.timeStamp();
-                event.ioPort().send(0, event.token());
+                if (event.ioPort() instanceof PtidesPort) {
+                    double deviceDelay = _getDoubleParameterValue(event.ioPort(), "deviceDelay");
+                    
+                    Queue<PtidesEvent> ptidesOutputPortList = _ptidesOutputPortEventQueue.get(event.ioPort());
+                    if (ptidesOutputPortList == null) {
+                        ptidesOutputPortList = new LinkedList<PtidesEvent>();
+                    }
+                    // modify deadline of event such that it will be output after deviceDelay
+                    PtidesEvent newEvent = new PtidesEvent(event.ioPort(), event.channel(), 
+                            event.timeStamp(), event.microstep(), event.depth(), 
+                            event.token(), event.receiver(), localClock.getLocalTime().add(deviceDelay));
+                    
+                    ptidesOutputPortList.add(newEvent);
+                    
+                    _ptidesOutputPortEventQueue.put((PtidesPort) event.ioPort(), ptidesOutputPortList);
+                }
                 _currentLogicalTime = null;
             }
             _outputEventQueue.remove(getModelTime());
         }
         
+        // Transfer all outputs from ports to the outside
+        for (PtidesPort port : _ptidesOutputPortEventQueue.keySet()) {
+            Queue<PtidesEvent> ptidesOutputPortList = _ptidesOutputPortEventQueue.get(port);
+            if (ptidesOutputPortList != null && ptidesOutputPortList.size() > 0) {
+                PtidesEvent event = ptidesOutputPortList.peek();
+                if (event.absoluteDeadline().equals(localClock.getLocalTime())) {
+                    _currentLogicalTime = event.absoluteDeadline();
+                    event.ioPort().send(0, event.token());
+                    _currentLogicalTime = null;
+                    ptidesOutputPortList.poll();
+                }
+            }
+        }
     }
     
     /** Return the local time or, (i) if an actor is executing or (ii) an input
@@ -197,12 +227,11 @@ public class PtidesDirector extends DEDirector {
         if (actor == this.getContainer()) {
             fireContainerAt(time);
             return time;
-        }
-        if (actor instanceof Source) {
-            fireContainerAt(time);
         } 
-        _refireActor = actor;
-        _refireTime = time;
+        _pureEvents.add(new PtidesEvent(actor, null, time, 0, 0, _zeroTime));
+        if (_isInitializing) {
+            
+        }
         return time;
     }
    
@@ -215,10 +244,7 @@ public class PtidesDirector extends DEDirector {
     public void initialize() throws IllegalActionException  {     
         super.initialize(); 
         _calculateSuperdenseDependenices();
-        _calculateDelayOffsets();
-        
-        _inputEventQueue = new HashMap<Time, List<PtidesEvent>>();
-        _outputEventQueue = new HashMap<Time, List<PtidesEvent>>();
+        _calculateDelayOffsets();        
     }
     
    
@@ -267,17 +293,28 @@ public class PtidesDirector extends DEDirector {
             TreeSet<Time> set = new TreeSet<Time>(deliveryTimes);
             _setNextFireTime(set.first()); 
         }
+        // ... or from ptides output port queue
+        for (PtidesPort port : _ptidesOutputPortEventQueue.keySet()) {
+            Queue<PtidesEvent> ptidesOutputPortList = _ptidesOutputPortEventQueue.get(port);
+            if (ptidesOutputPortList != null && ptidesOutputPortList.size() > 0) {
+                PtidesEvent event = ptidesOutputPortList.peek();
+                _setNextFireTime(event.absoluteDeadline());
+            }
+        }
         // ... or could also have already been set in safeToProcess().
         
         // If not null, request refiring.
         if(_nextFireTime != null) {
             if(_debugging) {
-                _debug("Fire " + this.getName() + " next at " + _nextFireTime.toString());
+                _debug("--> fire " + this.getName() + " next at " + _nextFireTime.toString());
             }
             fireContainerAt(_nextFireTime, 1);
+        } else {
+            if(_debugging) {
+                _debug("--> no next fire time");
+            }
         }
         
-
         return result;
     }
     
@@ -303,6 +340,12 @@ public class PtidesDirector extends DEDirector {
     public void preinitialize() throws IllegalActionException { 
         super.preinitialize();
         _eventQueue = new PtidesListEventQueue();
+        _inputEventQueue = new HashMap<Time, List<PtidesEvent>>();
+        _outputEventQueue = new HashMap<Time, List<PtidesEvent>>();
+        _ptidesOutputPortEventQueue = new HashMap<PtidesPort, Queue<PtidesEvent>>();
+        _nextFireTime = Time.POSITIVE_INFINITY;
+        _pureEvents = new LinkedList<PtidesEvent>();
+        _currentLogicalTime = _zeroTime;
     }
     
     ///////////////////////////////////////////////////////////////////
@@ -617,7 +660,7 @@ public class PtidesDirector extends DEDirector {
             // FIXME: add deviceDelay
             Time deliveryTime;
             if (ioPort instanceof ActuatorPort) {
-                deliveryTime = getModelTime();
+                deliveryTime = getModelTime().subtract(_getDoubleParameterValue(ioPort, "deviceDelayBound"));
             } else {
                 deliveryTime = localClock.getLocalTime();
             }
@@ -649,9 +692,9 @@ public class PtidesDirector extends DEDirector {
      *  @exception IllegalActionException If the token of the deviceDelay
      *  parameter cannot be evaluated.
      */
-    protected static Double _getDoubleParameterValue(IOPort port, String parameterName)
+    protected static Double _getDoubleParameterValue(NamedObj object, String parameterName)
             throws IllegalActionException {
-        Parameter parameter = (Parameter) ((NamedObj) port)
+        Parameter parameter = (Parameter) object
                 .getAttribute(parameterName);
         if (parameter != null) {
             return Double.valueOf(((DoubleToken) parameter.getToken())
@@ -659,7 +702,7 @@ public class PtidesDirector extends DEDirector {
         }
         return null;
     } 
-    
+   
     /** Return the actor to fire in this iteration, or null if no actor should
      * be fired. Since _checkForNextEvent() always
      * returns true, this method will keep being called until it returns null.  
@@ -667,12 +710,13 @@ public class PtidesDirector extends DEDirector {
      */
     protected Actor _getNextActorToFire() throws IllegalActionException {
         Actor nextActorToFire = null;
-        if (_refireActor != null) {
-            // FIXME: Can an actor ever call more than one fireAt in firing?
-            _currentLogicalTime = _refireTime;
-            nextActorToFire = _refireActor;
-            _refireActor = null; 
-            _refireTime = null; 
+        if (_pureEvents != null && _pureEvents.size() > 0) {
+            PtidesEvent event = _pureEvents.peek();
+            if (_isSafeToProcess(event)) {
+                _currentLogicalTime = event.timeStamp();
+                nextActorToFire = event.actor();
+            }
+            _pureEvents.poll();
         } else if (_eventQueue.size() > 0) {
             PtidesEvent nextEvent = (PtidesEvent) _eventQueue.get();
             if (nextEvent != null && _isSafeToProcess(nextEvent)) { 
@@ -683,7 +727,7 @@ public class PtidesDirector extends DEDirector {
         }
         if (nextActorToFire != null) {
             if (_debugging) {
-                _debug("-> next actor to fire = " + nextActorToFire);
+                _debug("-> next actor to fire = " + nextActorToFire + " @ " + _currentLogicalTime);
             } 
             return nextActorToFire; 
         }
@@ -697,13 +741,21 @@ public class PtidesDirector extends DEDirector {
      * @throws IllegalActionException
      */
     protected boolean _isSafeToProcess(PtidesEvent event) throws IllegalActionException {
-        Time eventTimestamp = event.timeStamp();
-        Time currentPlatformTime = localClock.getLocalTime();
+        Time eventTimestamp = event.timeStamp(); 
         IOPort port = event.ioPort();
-        Double delayOffset = _getDoubleParameterValue(port, "delayOffset"); 
-        if (currentPlatformTime.compareTo(eventTimestamp.subtract(delayOffset)) >= 0) {
+        Double delayOffset;
+        if (port != null) {
+            delayOffset = _getDoubleParameterValue(port, "delayOffset"); 
+        } else {
+            delayOffset = _getDoubleParameterValue((NamedObj) event.actor(), "delayOffset");
+            if (delayOffset == null) {
+                delayOffset = new Double(0.0);
+            }
+        }
+        if (localClock.getLocalTime().compareTo(eventTimestamp.subtract(delayOffset)) >= 0) {
             return true;
         }
+        
         _setNextFireTime(eventTimestamp.subtract(delayOffset));
         return false;
     }
@@ -894,10 +946,10 @@ public class PtidesDirector extends DEDirector {
     
     private HashMap<Time, List<PtidesEvent>> _outputEventQueue;
     
+    private HashMap<PtidesPort, Queue<PtidesEvent>> _ptidesOutputPortEventQueue;
+    
     private Time _currentLogicalTime; 
     
-    private Actor _refireActor;
-    
-    private Time _refireTime;
+    private Queue<PtidesEvent> _pureEvents;
     
 }

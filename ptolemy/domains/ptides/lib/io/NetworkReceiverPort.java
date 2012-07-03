@@ -34,19 +34,9 @@ package ptolemy.domains.ptides.lib.io;
 import java.util.ArrayList;
 import java.util.List;
 
-import ptolemy.actor.CompositeActor;
-import ptolemy.actor.NoRoomException;
-import ptolemy.actor.Receiver;
-import ptolemy.actor.util.Time;
-import ptolemy.data.DoubleToken;
-import ptolemy.data.IntToken;
-import ptolemy.data.RecordToken;
-import ptolemy.data.Token;
+import ptolemy.data.DoubleToken; 
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
-import ptolemy.data.type.Type;
-import ptolemy.domains.ptides.kernel.PtidesDirector;
-import ptolemy.domains.ptides.kernel.PtidesEvent;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -119,80 +109,5 @@ public class NetworkReceiverPort extends PtidesPort {
     
     /** Source platform delay bound parameter that defaults to the double value 0.0. */
     public Parameter sourcePlatformDelayBound; 
-    
-     
-    /** Send Token inside. Tokens received on this port are recordTokens. Only the
-     *  payload of the RecordToken should be sent inside. 
-     *  @param channelIndex Channel token is sent to.
-     *  @param token Token to be sent.
-     *  @throws IllegalActionException If received token is not a record token 
-     *  with the fields timestamp, microstep and payload.
-     */
-    public void sendInside(int channelIndex, Token token)
-            throws IllegalActionException, NoRoomException {
-        PtidesDirector director = (PtidesDirector) ((CompositeActor)getContainer()).getDirector();
-
-        if (!(token instanceof RecordToken) || ((RecordToken)token).labelSet().size() != 3) {
-            throw new IllegalActionException(this, 
-                    "The input token is not a RecordToken or " +
-                    "does not have a size not equal to 3: "
-                            + "Here we assume the Record is of types: timestamp"
-                            + " + microstep + token");
-        }
-        
-        RecordToken record = (RecordToken) token;
-
-        Time recordTimeStamp = new Time(director,
-                ((DoubleToken) (record.get(timestamp))).doubleValue());
-
-        int recordMicrostep = ((IntToken) (record.get(microstep)))
-                .intValue(); 
-        
-        
-
-        Receiver[][] farReceivers = deepGetReceivers(); 
-        for (int i = 0; i < farReceivers[channelIndex].length; i++) { 
-            director.addInputEvent(new PtidesEvent(this, channelIndex, recordTimeStamp, 
-                    recordMicrostep, -1, (Token) record.get(payload), farReceivers[channelIndex][i]), 
-                    ((DoubleToken)deviceDelay.getToken()).doubleValue());
-                    
-        } 
-    }
-    
-    /** Override conversion such that only payload of recordtoken is
-     *  converted. 
-     *  FIXME: Is this enough?.
-     *  @param token Token to be converted.
-     *  @throws IllegalActionException If payload token cannot be converted.
-     */
-    public Token convert(Token token) throws IllegalActionException { 
-        Type type = getType();
-        if (type.equals((((RecordToken)token).get(payload)).getType())) {
-            return token;
-        } else {
-            Token newToken = type.convert(((RecordToken)token).get(payload));
-            String[] labels = new String[] { timestamp, microstep, payload };
-            Token[] values = new Token[] {
-                    (((RecordToken)token).get(timestamp)),
-                    (((RecordToken)token).get(microstep)), newToken };
-            RecordToken record = new RecordToken(labels, values); 
-            return record;
-        }
-    }
-    
-    ///////////////////////////////////////////////////////////////////
-    ////                      private variables                    ////
-
-    /** Label of the timestamp that is transmitted within the RecordToken.
-     */
-    private static final String timestamp = "timestamp";
-
-    /** Label of the microstep that is transmitted within the RecordToken.
-     */
-    private static final String microstep = "microstep";
-
-    /** Label of the payload that's transmitted within the RecordToken.
-     */
-    private static final String payload = "payload";
     
 }
