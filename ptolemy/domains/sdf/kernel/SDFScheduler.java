@@ -1707,20 +1707,17 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
         if (unscheduledActorList.size() > 0) {
             StringBuffer message = new StringBuffer(
                     "Actors remain that cannot be scheduled!\n"
-                            + "\nNote that there are many reasons why a graph cannot be "
-                            + "scheduled:\n"
+                            + "\nThere are several possible reasons:\n"
                             + "* SDF Graphs with feedback loops should have an actor "
-                            + "with a delay in the loop, such as a SampleDelay."
+                            + "with a delay in the loop, such as a SampleDelay.\n"
                             + "* The SDF director has an \"allowDisconnectedGraphs\""
                             + "parameter, which, when true, permits disconnected "
                             + "SDF graphs.\n"
                             + "* The token consumption rate and production rates might "
-                            + "be mismatched.  Usually, actors produce one token or consume "
+                            + "be mismatched.\nUsually, actors produce one token or consume "
                             + "one token on a port.  To produce or consume multiple tokens "
                             + "per firing, add a \"tokenConsumptionRate\" or "
-                            + "\"tokenConsumptionRate\" parameter to the appropriate port.\n"
-                            + "For details, see the SDF chapter in Volume Three of the Ptolemy II "
-                            + "design doc at http://ptolemy.eecs.berkeley.edu/ptolemyII/designdoc.htm\n"
+                            + "\"tokenProductionRate\" parameter to the appropriate port.\n"
                             + "Unscheduled actors:\n");
 
             // Only display the first 100 connected or disconnected actors.
