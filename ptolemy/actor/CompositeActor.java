@@ -2707,15 +2707,21 @@ public class CompositeActor extends CompositeEntity implements Actor,
                 oldDirector.invalidateSchedule();
                 oldDirector.invalidateResolvedTypes();
             }
+        }
+        // Do not use getDirector() to get the old director because
+        // that will look up the hierarchy if there is no director.
+        if (director != _director) {
             // If we are changing from opaque to transparent or
             // vice versa, then we need to notify of a hierarchy change.
             if (director == null || oldDirector == null) {
                 _notifyHierarchyListenersBeforeChange();
             }
+        }
+        Director previousLocalDirector = _director;
+        try {
+            if (director != oldDirector) {
+                _director = director;
 
-            _director = director;
-
-            try {
                 if (director != null) {
                     director.invalidateSchedule();
                     director.invalidateResolvedTypes();
@@ -2728,12 +2734,12 @@ public class CompositeActor extends CompositeEntity implements Actor,
                         executiveDirector.invalidateSchedule();
                     }
                 }
-            } finally {
-                // If we are changing from opaque to transparent or
-                // vice versa, then we need to notify of a hierarchy change.
-                if (director == null || oldDirector == null) {
-                    _notifyHierarchyListenersBeforeChange();
-                }
+            }
+        } finally {
+            // If we are changing from opaque to transparent or
+            // vice versa, then we need to notify of a hierarchy change.
+            if (director == null || previousLocalDirector == null) {
+                _notifyHierarchyListenersAfterChange();
             }
         }
     }
