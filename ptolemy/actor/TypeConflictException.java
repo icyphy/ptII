@@ -83,8 +83,9 @@ public class TypeConflictException extends KernelException {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Return a list of Inequality instances where type conflicts occurred.
-     *  @return A List of Inequality instances where type conflicts occurred.
+    /** Return a list of Inequality or InequalityTerm
+     *  instances where type conflicts occurred.
+     *  @return A List of instances where type conflicts occurred.
      */
     public List inequalityList() {
         return _inequalities;
