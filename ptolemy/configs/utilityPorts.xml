@@ -1,0 +1,16 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="Ports" class="ptolemy.moml.EntityLibrary">
+  <configure>
+    <?moml
+      <group>
+  <doc>Parameters</doc>
+<input source="ptolemy/configs/utilityPortParameter.xml"/>
+<port name="PublisherPort" class="ptolemy.actor.PublisherPort"/>
+<port name="SubscriberPort" class="ptolemy.actor.SubscriberPort"/>
+<port name="SubscriptionAggregatorPort" class="ptolemy.actor.SubscriptionAggregatorPort"/>
+      </group>
+    ?>
+  </configure>
+</entity>
