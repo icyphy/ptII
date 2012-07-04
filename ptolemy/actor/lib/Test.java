@@ -90,7 +90,8 @@ import ptolemy.kernel.util.NameDuplicationException;
  it reaches the end of the <i>correctValues</i> array, at which point
  it outputs <i>true</i>.  This can be fed, for example, to an instance
  of the Stop actor to stop the test upon successfully matching the
- test data.</p>
+ test data. In training mode, the output is always false.
+ </p>
 
  @see NonStrictTest
  @author Edward A. Lee, Christopher Hylands, Jim Armstrong
@@ -190,7 +191,7 @@ public class Test extends NonStrictTest {
                 }
                 _trainingTokens.add(arrayList);
             }
-
+            output.broadcast(BooleanToken.FALSE);
             return;
         }
 
@@ -210,9 +211,7 @@ public class Test extends NonStrictTest {
             }
 
             // Indicate that the test has passed if the output is connected.
-            if (output.numberOfSinks() > 0) {
-                output.send(0, new BooleanToken(true));
-            }
+            output.broadcast(BooleanToken.TRUE);
             return;
         }
 
@@ -303,10 +302,10 @@ public class Test extends NonStrictTest {
             if (_numberOfInputTokensSeen >= ((ArrayToken) (correctValues.getToken()))
                     .length()) {
                 // Seen all expected inputs.
-                output.send(0, new BooleanToken(true));
+                output.send(0, BooleanToken.TRUE);
             } else {
                 // More inputs expected.
-                output.send(0, new BooleanToken(false));
+                output.send(0, BooleanToken.FALSE);
             }
         }
     }
