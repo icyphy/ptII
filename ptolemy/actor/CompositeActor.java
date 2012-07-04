@@ -799,27 +799,6 @@ public class CompositeActor extends CompositeEntity implements Actor,
         try {
             _workspace.getReadAccess();
 
-            // First invoke initializable methods.
-            if (_initializables != null) {
-                for (Initializable initializable : _initializables) {
-                    initializable.initialize();
-                }
-            }
-
-            // Next invoke piggybacked methods.
-            if (_piggybacks != null) {
-                // Invoke the initialize() method of each piggyback.
-                for (Executable piggyback : _piggybacks) {
-                    piggyback.initialize();
-                }
-            }
-            if (_derivedPiggybacks != null) {
-                // Invoke the initialize() method of each piggyback.
-                for (Executable piggyback : _derivedPiggybacks) {
-                    piggyback.initialize();
-                }
-            }
-
             if (!isOpaque()) {
                 throw new IllegalActionException(this,
                         "Cannot initialize a non-opaque actor.");
@@ -875,6 +854,30 @@ public class CompositeActor extends CompositeEntity implements Actor,
                     }
                 }
             }
+            
+            // Next invoke initializable methods.
+            // This should be done _after_ clearing the receivers above
+            // because an initializable or piggyback may produce outputs.
+            if (_initializables != null) {
+                for (Initializable initializable : _initializables) {
+                    initializable.initialize();
+                }
+            }
+
+            // Next invoke piggybacked methods.
+            if (_piggybacks != null) {
+                // Invoke the initialize() method of each piggyback.
+                for (Executable piggyback : _piggybacks) {
+                    piggyback.initialize();
+                }
+            }
+            if (_derivedPiggybacks != null) {
+                // Invoke the initialize() method of each piggyback.
+                for (Executable piggyback : _derivedPiggybacks) {
+                    piggyback.initialize();
+                }
+            }
+
 
             // Note that this is assured of firing the local director,
             // not the executive director, because this is opaque.
