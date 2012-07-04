@@ -29,17 +29,12 @@ package ptolemy.actor;
 import java.util.List;
 
 import ptolemy.data.BooleanToken;
-import ptolemy.data.expr.Parameter;
-import ptolemy.data.expr.StringParameter;
-import ptolemy.data.type.BaseType;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.Port;
 import ptolemy.kernel.util.Attribute;
-import ptolemy.kernel.util.HierarchyListener;
 import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 
@@ -78,8 +73,7 @@ import ptolemy.kernel.util.NamedObj;
  @Pt.ProposedRating Yellow (eal)
  @Pt.AcceptedRating Red (eal)
  */
-public class SubscriberPort extends TypedIOPort 
-        implements HierarchyListener, Initializable {
+public class SubscriberPort extends PubSubPort {
 
     /** Construct a subscriber port with a containing actor and a name.
      *  This is always an input port.
@@ -94,11 +88,6 @@ public class SubscriberPort extends TypedIOPort
     public SubscriberPort(ComponentEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        channel = new StringParameter(this, "channel");
-        
-        global = new Parameter(this, "global");
-        global.setTypeEquals(BaseType.BOOLEAN);
-        global.setExpression("false");
         
         setOutput(false);
         setInput(true);
@@ -111,32 +100,7 @@ public class SubscriberPort extends TypedIOPort
     }
     
     ///////////////////////////////////////////////////////////////////
-    ////                         parameters                        ////
-
-    /** Specification of whether the published data is global.
-     *  This is ignored if {@link #channel} is empty.
-     *  If this is set to true, then a subscriber anywhere in the model that
-     *  references the same channel by name will see values published by
-     *  this port. If this is set to false (the default), then only
-     *  those subscribers that are controlled by the same director will see
-     *  values published on this channel.
-     */
-    public Parameter global;
-
-    /** If set, then this port is used to communicate over a named
-     *  publish and subscribe channel, rather than over manually
-     *  established connections.
-     */
-    public StringParameter channel;
-
-    ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-
-    /** Throw an exception. Add initializables to the container. */
-    @Override
-    public void addInitializable(Initializable initializable) {
-        throw new InternalErrorException("Cannot add Initializables to SubscriberPort.");
-    }
 
     /** If a publish and subscribe channel is set, then set up the connections.
      *  If a quantity manager is added, removed or modified update the list of
@@ -185,25 +149,11 @@ public class SubscriberPort extends TypedIOPort
         }
     }
     
-    /** Notify this object that the containment hierarchy above it has
-     *  changed. This method does nothing because instead we use
-     *  {@link #preinitialize()} to handle re-establishing the connections.
-     *  @exception IllegalActionException If the change is not
-     *   acceptable.
-     */
-    public void hierarchyChanged() throws IllegalActionException {
-        // Make sure we are registered as to be initialized
-        // with the container.
-        Initializable container = _getInitializableContainer();
-        if (container != null) {
-            container.addInitializable(this);
-        }
-    }
-
     /** Notify this object that the containment hierarchy above it will be
      *  changed, which results in 
      *  @exception IllegalActionException If unlinking to a published port fails.
      */
+    @Override
     public void hierarchyWillChange() throws IllegalActionException {
         if (channel != null) {
             String channelValue = channel.stringValue();
@@ -216,70 +166,19 @@ public class SubscriberPort extends TypedIOPort
                 }
             }
         }
-        // Unregister to be initialized with the initializable container.
-        // We will be re-registered when hierarchyChanged() is called.
-        Initializable container = _getInitializableContainer();
-        if (container != null) {
-            container.removeInitializable(this);
-        }
+        super.hierarchyWillChange();
     }
     
-    /** Do nothing. */
-    @Override
-    public void initialize() throws IllegalActionException {
-    }
-
     /** Override the base class to ensure that there is a publisher.
      *  @exception IllegalActionException If there is no matching
      *   publisher.
      */
+    @Override
     public void preinitialize() throws IllegalActionException {
         if (_channel == null) {
             throw new IllegalActionException(this, "No channel specified.");
         }
         _updateLinks();
-    }
-
-    /** Do nothing. */
-    @Override
-    public void removeInitializable(Initializable initializable) {
-    }
-
-    /** Override the base class to register as an 
-     *  {@link Initializable}
-     *  so that preinitialize() is invoked, and as a
-     *  {@link HierarchyListener}, so that we are notified of
-     *  changes in the hiearchy above.
-     *  @param container The proposed container.
-     *  @exception IllegalActionException If the action would result in a
-     *   recursive containment structure, or if
-     *   this entity and container are not in the same workspace.
-     *  @exception NameDuplicationException If the container already has
-     *   an entity with the name of this entity.
-     */
-    @Override
-    public void setContainer(Entity container)
-            throws IllegalActionException, NameDuplicationException {
-        Initializable previousInitializableContainer = _getInitializableContainer();
-        NamedObj previousContainer = getContainer();
-        super.setContainer(container);
-        Initializable newInitializableContainer = _getInitializableContainer();
-        if (previousInitializableContainer != newInitializableContainer) {
-            if (previousInitializableContainer != null) {
-                previousInitializableContainer.removeInitializable(this);
-            }
-            if (newInitializableContainer != null) {
-                newInitializableContainer.addInitializable(this);
-            }
-        }
-        if (previousContainer != container) {
-            if (previousContainer != null) {
-                previousContainer.removeHierarchyListener(this);
-            }
-            if (container != null) {
-                container.addHierarchyListener(this);
-            }
-        }
     }
 
     /** Override the base class to only accept setting to be an input.
@@ -308,11 +207,6 @@ public class SubscriberPort extends TypedIOPort
         super.setOutput(false);
     }
     
-    /** Do nothing. */
-    @Override
-    public void wrapup() throws IllegalActionException {
-    }
-
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
@@ -383,39 +277,4 @@ public class SubscriberPort extends TypedIOPort
             }
         }
     }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         protected methods                 ////
-
-    /** Return the first Initializable encountered above this
-     *  in the hierarchy that will be initialized (i.e., it is either
-     *  an atomic actor or an opaque composite actor).
-     *  @return The first Initializable above this in the hierarchy,
-     *   or null if there is none.
-     */
-    protected Initializable _getInitializableContainer() {
-        NamedObj container = getContainer();
-        while (container != null) {
-            if (container instanceof Initializable) {
-                if (container instanceof CompositeActor) {
-                    if (((CompositeActor)container).isOpaque()) {
-                        return (Initializable)container;
-                    }
-                } else {
-                    return (Initializable)container;
-                }
-            }
-            container = container.getContainer();
-        }
-        return null;
-    }
-    
-    ///////////////////////////////////////////////////////////////////
-    ////                         protected variables               ////
-
-    /** Cached channel name, for publish and subscribe. */
-    protected String _channel;
-
-    /** Cached variable indicating whether publishing or subscribing is global. */
-    protected boolean _global;
 }

@@ -100,6 +100,7 @@ JSRCS = \
 	NoRoomException.java \
 	NoTokenException.java \
 	PublisherPort.java \
+	PubSubPort.java \
 	QuantityManager.java \
 	QuasiTransparentDirector.java \
 	QueueReceiver.java \

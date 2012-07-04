@@ -26,23 +26,34 @@
  */
 package ptolemy.actor;
 
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
+import ptolemy.actor.util.DFUtilities;
+import ptolemy.data.ArrayToken;
 import ptolemy.data.BooleanToken;
+import ptolemy.data.IntToken;
+import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
-import ptolemy.data.expr.StringParameter;
+import ptolemy.data.expr.Variable;
+import ptolemy.data.type.ArrayType;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.ComponentEntity;
-import ptolemy.kernel.Entity;
 import ptolemy.kernel.InstantiableNamedObj;
 import ptolemy.kernel.util.Attribute;
-import ptolemy.kernel.util.HierarchyListener;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.Nameable;
 import ptolemy.kernel.util.NamedObj;
+import ptolemy.kernel.util.Settable;
+import ptolemy.kernel.util.Workspace;
 
 ///////////////////////////////////////////////////////////////////
 //// PublisherPort
@@ -92,7 +103,7 @@ import ptolemy.kernel.util.NamedObj;
  @Pt.ProposedRating Yellow (eal)
  @Pt.AcceptedRating Red (eal)
  */
-public class PublisherPort extends TypedIOPort implements HierarchyListener {
+public class PublisherPort extends PubSubPort {
 
     /** Construct publisher port with the specified name and container.
      *  @param container The container actor.
@@ -106,11 +117,6 @@ public class PublisherPort extends TypedIOPort implements HierarchyListener {
     public PublisherPort(ComponentEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        channel = new StringParameter(this, "channel");
-        
-        global = new Parameter(this, "global");
-        global.setTypeEquals(BaseType.BOOLEAN);
-        global.setExpression("false");
         
         propagateNameChanges = new Parameter(this, "propagateNameChanges");
         propagateNameChanges.setExpression("false");
@@ -118,6 +124,23 @@ public class PublisherPort extends TypedIOPort implements HierarchyListener {
         
         setOutput(true);
         setInput(false);
+        
+        initialOutputs = new Parameter(this, "initialOutputs") {
+            /** Override the base class to to allow the type to be unknown.
+             *  @return True if the current type is acceptable.
+             */
+            public boolean isTypeAcceptable() {
+                return super.isTypeAcceptable()
+                        || getType().equals(BaseType.UNKNOWN);
+            }
+        };
+        setTypeAtLeast(ArrayType.elementType(initialOutputs));
+
+        output_tokenInitProduction = new Parameter(this, "tokenInitProduction");
+        output_tokenInitProduction.setExpression("0");
+        output_tokenInitProduction.setVisibility(Settable.NOT_EDITABLE);
+        output_tokenInitProduction.setTypeEquals(BaseType.INT);
+        output_tokenInitProduction.setPersistent(false);
         
         // In order for this to show up in the vergil library, it has to have
         // an icon description.
@@ -129,21 +152,15 @@ public class PublisherPort extends TypedIOPort implements HierarchyListener {
     ///////////////////////////////////////////////////////////////////
     ////                         parameters                        ////
 
-    /** Specification of whether the published data is global.
-     *  This is ignored if {@link #channel} is empty.
-     *  If this is set to true, then a subscriber anywhere in the model that
-     *  references the same channel by name will see values published by
-     *  this port. If this is set to false (the default), then only
-     *  those subscribers that are fired by the same director will see
-     *  values published on this channel.
+    /** The values that will be produced in the initialize method.
+     *  By default, this is empty, indicating that no initial outputs
+     *  are produced. If you wish for this port to produce initial
+     *  outputs, then give this parameter an array value specifying
+     *  the sequence of initial outputs.
+     *  Changes to this parameter after initialize() has been invoked
+     *  are ignored until the next execution of the model.
      */
-    public Parameter global;
-
-    /** If set, then this port is used to communicate over a named
-     *  publish and subscribe channel, rather than over manually
-     *  established connections.
-     */
-    public StringParameter channel;
+    public Parameter initialOutputs;
 
     /** If true, then propagate channel name changes to any
      *  Subscribers.  The default value is a BooleanToken with the
@@ -170,9 +187,24 @@ public class PublisherPort extends TypedIOPort implements HierarchyListener {
      *  will be updated.</p>
      */
     public Parameter propagateNameChanges;
+    
+    /** The rate parameter for the output port that declares the
+     *  initial production. This is not editable by default (visible
+     *  only in expert mode), as it gets set to the length
+     *  of {@link #initialOutputs} automatically.
+     */
+    public Parameter output_tokenInitProduction;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+
+    /** Throw an exception.
+     * Adding initializables to the container is not supported.
+     */
+    @Override
+    public void addInitializable(Initializable initializable) {
+        throw new InternalErrorException("Cannot add Initializables to SubscriberPort.");
+    }
 
     /** If a publish and subscribe channel is set, then set up the connections.
      *  If a quantity manager is added, removed or modified update the list of
@@ -256,12 +288,34 @@ public class PublisherPort extends TypedIOPort implements HierarchyListener {
         }
     }
     
+    /** Clone the actor into the specified workspace. This calls the
+     *  base class and then resets the type constraints.
+     *  @param workspace The workspace for the new object.
+     *  @return A new actor.
+     *  @exception CloneNotSupportedException If a derived class contains
+     *   an attribute that cannot be cloned.
+     */
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        PublisherPort newObject = (PublisherPort) (super.clone(workspace));
+
+        // set the type constraints
+        try {
+            newObject.setTypeAtLeast(ArrayType
+                    .elementType(newObject.initialOutputs));
+        } catch (IllegalActionException e) {
+            throw new InternalErrorException(e);
+        }
+
+        return newObject;
+    }
+    
     /** Notify this object that the containment hierarchy above it has
      *  changed. This method does nothing because instead we use
      *  {@link #preinitialize()} to handle re-establishing the connections.
      *  @exception IllegalActionException If the change is not
      *   acceptable.
      */
+    @Override
     public void hierarchyChanged() throws IllegalActionException {
         // NOTE: It is not OK to access the cached variable _channel
         // here instead of the channel parameter because the parameter
@@ -290,6 +344,26 @@ public class PublisherPort extends TypedIOPort implements HierarchyListener {
                 }
             }
         }
+        
+        // If we have previously set the tokenInitProduction variable
+        // of some inside port, restore it now to its original value.
+        if (_tokenInitProductionSet != null) {
+            for (IOPort port : _tokenInitProductionSet.keySet()) {
+                String previousValue = _tokenInitProductionSet.get(port);
+                Variable variable = DFUtilities.getRateVariable(port, "tokenInitProduction");
+                if (previousValue == null) {
+                    try {
+                        variable.setContainer(null);
+                    } catch (NameDuplicationException e) {
+                        // Should not occur.
+                        throw new InternalErrorException(e);
+                    }
+                } else {
+                    variable.setExpression(previousValue);
+                }
+            }
+        }
+        super.hierarchyChanged();
     }
 
     /** Notify this object that the containment hierarchy above it will be
@@ -312,27 +386,63 @@ public class PublisherPort extends TypedIOPort implements HierarchyListener {
                 }
             }
         }
+        super.hierarchyWillChange();
     }
 
-    /** Override the base class to register as a {@link HierarchyListener}
-     *  so that we are notified of changes in the hierarchy above.
-     *  @param container The proposed container.
-     *  @exception IllegalActionException If the action would result in a
-     *   recursive containment structure, or if
-     *   this entity and container are not in the same workspace.
-     *  @exception NameDuplicationException If the container already has
-     *   an entity with the name of this entity.
+    /** If {@link #initialOutputs} has been set, then produce the
+     *  outputs specified by its array value.
      */
     @Override
-    public void setContainer(Entity container)
-            throws IllegalActionException, NameDuplicationException {
-        NamedObj previousContainer = super.getContainer();
-        if (previousContainer != container && previousContainer != null) {
-            previousContainer.removeHierarchyListener(this);
+    public void initialize() throws IllegalActionException {
+        Token initialOutputsValue = initialOutputs.getToken();
+        // Since this port may be in a transparent composite,
+        // send initial tokens from the inside source ports.
+        List<IOPort> sources = _insideSourcePortList();
+        if (initialOutputsValue instanceof ArrayToken) {
+            for (Token token : ((ArrayToken) initialOutputsValue).arrayValue()) {
+                for (IOPort source : sources) {
+                    source.broadcast(token);
+                }
+            }
         }
-        super.setContainer(container);
-        if (container != null) {
-            container.addHierarchyListener(this);
+    }
+    
+    /** For the benefit of the SDF scheduler, set the
+     *  tokenInitProduction parameter.  If the container
+     *  of this port is transparent composite actor, then
+     *  set the tokenInitProduction parameter of the port
+     *  that will be actually used to produce the initial tokens.
+     */
+    public void preinitialize() throws IllegalActionException {
+        Token initialOutputsValue = initialOutputs.getToken();
+        if (initialOutputsValue == null) {
+            output_tokenInitProduction.setToken(IntToken.ZERO);
+        } else {
+            if (!(initialOutputsValue instanceof ArrayToken)) {
+                throw new IllegalActionException(this,
+                        "initialOutputs value is required to be an array.");
+            }
+            if (_tokenInitProductionSet == null) {
+                _tokenInitProductionSet = new HashMap<IOPort,String>();
+            }
+            int length = ((ArrayToken)initialOutputsValue).length();
+            NamedObj container = getContainer();
+            if (container instanceof CompositeActor
+                    && !((CompositeActor)container).isOpaque()) {
+                List<IOPort> sources = _insideSourcePortList();
+                for (IOPort source : sources) {
+                    Variable previousVariable = DFUtilities.getRateVariable(source, "tokenInitProduction");
+                    if (previousVariable == null) {
+                        _tokenInitProductionSet.put(source, null);
+                    } else {
+                        String previousValue = previousVariable.getExpression();
+                        _tokenInitProductionSet.put(source, previousValue);
+                    }
+                    DFUtilities.setOrCreate(source, "tokenInitProduction", length);
+                }
+            } else {
+                output_tokenInitProduction.setToken(new IntToken(length));
+            }
         }
     }
     
@@ -374,15 +484,6 @@ public class PublisherPort extends TypedIOPort implements HierarchyListener {
         Manager.preinitializeThenWrapup((Actor)getContainer());
         return _dependents(this);
     }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         protected variables               ////
-
-    /** Cached channel name, for publish and subscribe. */
-    protected String _channel;
-
-    /** Cached variable indicating whether publishing or subscribing is global. */
-    protected boolean _global;
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
@@ -431,6 +532,47 @@ public class PublisherPort extends TypedIOPort implements HierarchyListener {
         }
         return results;
     }
+    
+    /** Return a list of the ports that can send data through this port
+     *  from the inside.  This includes both output ports and opaque
+     *  input ports that are connected on the inside to this port.
+     *  These are the ports that will send data through this one from the inside.
+     *  Unlike the public method {@link #insideSourcePortList()}, this method
+     *  does not require this port to be an opaque port.
+     *  @return A list of IOPort objects.
+     */
+    private List<IOPort> _insideSourcePortList() {
+        try {
+            _workspace.getReadAccess();
+            Nameable container = getContainer();
+
+            if (!(container instanceof CompositeActor)) {
+                // Return an empty list, since this port cannot receive data
+                // from the inside.
+                return new LinkedList<IOPort>();
+            }
+
+            Director dir = ((CompositeActor) container).getDirector();
+            int depthOfDirector = dir.depthInHierarchy();
+            LinkedList<IOPort> result = new LinkedList<IOPort>();
+            Iterator<?> ports = deepInsidePortList().iterator();
+
+            while (ports.hasNext()) {
+                IOPort port = (IOPort) ports.next();
+                int depth = port.getContainer().depthInHierarchy();
+
+                if (port.isInput() && (depth < depthOfDirector)) {
+                    result.addLast(port);
+                } else if (port.isOutput() && (depth >= depthOfDirector)) {
+                    result.addLast(port);
+                }
+            }
+
+            return result;
+        } finally {
+            _workspace.doneReading();
+        }
+    }
 
     /** Update the channel name of any connected SubscriberPorts.
      *  Note that the channel name of connected SubscriptionAggregatorPorts
@@ -455,4 +597,13 @@ public class PublisherPort extends TypedIOPort implements HierarchyListener {
             }
         }
     }
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
+
+    /** Set of ports whose tokenInitProduction variable has been set
+     *  in preinitialize to something other than 0. This is needed so
+     *  that these variables can be unset if the hierarchy changes.
+     */
+    Map<IOPort,String> _tokenInitProductionSet;
 }
