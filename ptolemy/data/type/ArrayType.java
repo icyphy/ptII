@@ -1098,6 +1098,19 @@ public class ArrayType extends StructuredType implements Cloneable,
         public boolean isValueAcceptable() {
             InequalityTerm term = _getElementTypeTerm();
             if (term == null) {
+                // Array has no element type.
+                // If the type of the associated typable is
+                // unknown and if this is acceptable, then it
+                // is OK for the element types to be unknown.
+                try {
+                    Type arrayType = _typeable.getType();
+                    if (BaseType.UNKNOWN.equals(arrayType)
+                            && _typeable.isTypeAcceptable()) {
+                        return true;
+                    }
+                } catch (IllegalActionException e) {
+                    // Ignore and return false.
+                }
                 return false;
             } else {
                 return term.isValueAcceptable();
