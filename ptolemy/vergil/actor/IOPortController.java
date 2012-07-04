@@ -40,6 +40,7 @@ import java.util.List;
 import javax.swing.SwingConstants;
 
 import ptolemy.actor.IOPort;
+import ptolemy.actor.PubSubPort;
 import ptolemy.actor.PublisherPort;
 import ptolemy.actor.SubscriberPort;
 import ptolemy.actor.gui.ColorAttribute;
@@ -426,7 +427,7 @@ public class IOPortController extends AttributeController {
                     shape = new Ellipse2D.Double(-size, -size, doubleSize, doubleSize);
                 }
             }
-            boolean isPubSubPort = port instanceof PublisherPort || port instanceof SubscriberPort;
+            boolean isPubSubPort = port instanceof PubSubPort;
             Color fill;
             if (port instanceof ParameterPort) {
                 fill = Color.lightGray;
