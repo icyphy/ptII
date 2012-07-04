@@ -112,8 +112,14 @@ public abstract class RunnableGraphController extends WithIconGraphController
                 Iterator<?> inequalities = ((TypeConflictException) throwable)
                         .inequalityList().iterator();
                 while (inequalities.hasNext()) {
-                    Inequality inequality = (Inequality) inequalities.next();
-                    if (inequality != null) {
+                    Object item = inequalities.next();
+                    if (item instanceof InequalityTerm) {
+                        Object object = ((InequalityTerm)item).getAssociatedObject();
+                        if (object instanceof Nameable) {
+                            highlightError((Nameable) object);
+                        }
+                    } else if (item instanceof Inequality) {
+                        Inequality inequality = (Inequality) inequalities.next();
                         InequalityTerm term = inequality.getGreaterTerm();
                         if (term != null) {
                             Object object = term.getAssociatedObject();
