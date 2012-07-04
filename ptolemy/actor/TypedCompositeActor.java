@@ -286,7 +286,7 @@ public class TypedCompositeActor extends CompositeActor implements TypedActor {
 
         try {
             List<Inequality> conflicts = new LinkedList<Inequality>();
-            List<Inequality> unacceptable = new LinkedList<Inequality>();
+            List<InequalityTerm> unacceptable = new LinkedList<InequalityTerm>();
 
             // Check declared types across all connections.
             List<Inequality> typeConflicts = topLevel._checkDeclaredTypes();
@@ -344,7 +344,7 @@ public class TypedCompositeActor extends CompositeActor implements TypedActor {
                             InequalityTerm variable = lesserVariables[i];
 
                             if (!variable.isValueAcceptable()) {
-                                unacceptable.add(inequality);
+                                unacceptable.add(variable);
                                 added = true;
                                 break;
                             }
@@ -355,7 +355,7 @@ public class TypedCompositeActor extends CompositeActor implements TypedActor {
                                 InequalityTerm variable = greaterVariables[i];
 
                                 if (!variable.isValueAcceptable()) {
-                                    unacceptable.add(inequality);
+                                    unacceptable.add(variable);
                                     break;
                                 }
                             }
@@ -373,7 +373,7 @@ public class TypedCompositeActor extends CompositeActor implements TypedActor {
                 throw new TypeConflictException(unacceptable,
                         "Types resolved to unacceptable types in "
                                 + topLevel.getFullName()
-                                + " due to the following inequalities:");
+                                + " due to the following objects:");
             }
         } catch (IllegalActionException ex) {
             // This should not happen. The exception means that
@@ -698,13 +698,9 @@ public class TypedCompositeActor extends CompositeActor implements TypedActor {
     ///////////////////////////////////////////////////////////////////
     ////                      private methods                      ////
 
-    /**
-     * 
+    /** Initialize bidirectionalTypeInference.
      */
     private void _init() {
-
-        _cachedTypeConstraints = new HashSet<Inequality>();
-        _typeConstraintsVersion = -1;
         try {
             bidirectionalTypeInference = new SharedParameter(this,
                     "bidirectionalTypeInference", ComponentEntity.class);
@@ -720,7 +716,6 @@ public class TypedCompositeActor extends CompositeActor implements TypedActor {
             throw new InternalErrorException(this, e, "Unable to create or "
                     + "set shared parameter bidirectionalTypeInference.");
         }
-
     }
 
     // If this composite actor is opaque, perform static type checking.
@@ -803,17 +798,4 @@ public class TypedCompositeActor extends CompositeActor implements TypedActor {
 
         return result;
     }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                     private variables                     ////
-
-    /** Cached set of type constraints. */
-    private Set<Inequality> _cachedTypeConstraints;
-
-    /** Version number when the cache was last updated. */
-    private long _typeConstraintsVersion;
-
-    /** Whether or not the resolved types are still valid */
-    private boolean _typesValid;
-
 }
