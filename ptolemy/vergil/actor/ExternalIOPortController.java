@@ -40,6 +40,7 @@ import javax.swing.SwingConstants;
 
 import ptolemy.actor.CustomRenderedPort;
 import ptolemy.actor.IOPort;
+import ptolemy.actor.PubSubPort;
 import ptolemy.actor.PublisherPort;
 import ptolemy.actor.SubscriberPort;
 import ptolemy.actor.parameters.ParameterPort;
@@ -584,21 +585,8 @@ public class ExternalIOPortController extends AttributeController {
                         if (numberOfLinks > 1) {
                             // The diagonal is necessary.
                             // Line depends on the orientation.
-                            double startX;
-
-                            // The diagonal is necessary.
-                            // Line depends on the orientation.
-                            double startY;
-
-                            // The diagonal is necessary.
-                            // Line depends on the orientation.
-                            double endX;
-
-                            // The diagonal is necessary.
-                            // Line depends on the orientation.
-                            double endY;
-                            Rectangle2D bounds = figure.getShape()
-                                    .getBounds2D();
+                            double startX, startY, endX, endY;
+                            Rectangle2D bounds = figure.getShape().getBounds2D();
                             double x = bounds.getX();
                             double y = bounds.getY();
                             double width = bounds.getWidth();
@@ -643,6 +631,8 @@ public class ExternalIOPortController extends AttributeController {
                         }
                     }
 
+                    _createPubSubLabels((IOPort)ioPort, (CompositeFigure)figure);
+                    
                     figure = new PortTerminal(ioPort, figure, normal, true);
                 } else {
                     Site tsite = new PerimeterSite(figure, 0);
@@ -657,7 +647,7 @@ public class ExternalIOPortController extends AttributeController {
                         }
                     };
                 }
-
+                
                 // Have to do this as well or awt will not render a tooltip.
                 figure.setToolTipText(port.getName());
             } else {
@@ -674,6 +664,51 @@ public class ExternalIOPortController extends AttributeController {
             return figure;
         }
     }
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
+
+    /** Create a label showing the channel and initial values
+     *  for PubSubPort. If the port argument is not an instance
+     *  of PubSubPort, then do nothing.
+     *  @param port The port.
+     *  @param figure The composite figure to add the label to.
+     */
+    private void _createPubSubLabels(IOPort port, CompositeFigure figure) {
+        if (!(port instanceof PubSubPort)) {
+            return;
+        }
+        try {
+            String channel = "Channel: " + ((PubSubPort)port).channel.stringValue();
+            // The anchor argument below is (sadly) ignored.
+            Figure label = new LabelFigure(
+                    channel, _labelFont, 0.0, SwingConstants.SOUTH_EAST, _pubSubLabelColor);
+            double labelHeight = label.getBounds().getHeight();
+            Rectangle2D bounds = figure.getShape().getBounds2D();
+            label.translate(-8.0, bounds.getMaxY() + labelHeight + 4);
+            figure.add(label);
+            
+            if (port instanceof PublisherPort) {
+                String initialOutputs = ((PublisherPort)port).initialOutputs.getExpression();
+                if (!(initialOutputs.trim().equals(""))) {
+                    initialOutputs = "Initial outputs: " + initialOutputs;
+                    label = new LabelFigure(
+                            initialOutputs, _labelFont, 0.0, SwingConstants.SOUTH_EAST, _pubSubLabelColor);
+                    label.translate(-8.0, bounds.getMaxY() + 2 * labelHeight + 8);
+                    figure.add(label);
+                }
+            }
+        } catch (Exception e) {
+            // Ignore and display question marks.
+            e.printStackTrace();
+        }
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private members                   ////
+
+    /** Color for publish and subscribe labels. */
+    private static Color _pubSubLabelColor = new Color(0.0f, 0.4f, 0.4f, 1.0f);
 
     // The following maps are to keep track of the ports that already needed
     // to be located (since they had location 0,0).
