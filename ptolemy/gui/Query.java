@@ -1676,6 +1676,7 @@ public class Query extends JPanel {
         // support gridded layout.
         _constraints.gridwidth = 1;
         _constraints.insets = _leftPadding;
+        _constraints.weightx = 0;
         _grid.setConstraints(label, _constraints);
         _entryPanel.add(label);
 
@@ -1686,7 +1687,7 @@ public class Query extends JPanel {
         } else {
             _constraints.gridwidth = GridBagConstraints.REMAINDER;
         }
-
+        _constraints.weightx = 1;
         _grid.setConstraints(widget, _constraints);
         _entryPanel.add(widget);
 
