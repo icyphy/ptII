@@ -49,8 +49,8 @@ JSRCS =
 OTHER_FILES_TO_BE_JARED = \
 	$(JSRCS) \
 	Counter-prelim.xml \
-	CounterMachine-does-not-halt.xml \
-	CounterMachine-halts.xml
+	CounterMachine.xml \
+	CounterMachine-with-exception.xml
 
 EXTRA_SRCS = \
 	$(OTHER_FILES_TO_BE_JARED) \

@@ -1,8 +1,8 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="CounterMachine-halts" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
+<entity name="CounterMachine-with-exception" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.0.devel">
     </property>
     <property name="PN Director" class="ptolemy.domains.pn.kernel.PNDirector">
         <property name="maximumQueueCapacity" class="ptolemy.data.expr.Parameter" value="64">
@@ -10,26 +10,26 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[0.0, -20.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 0, 1408, 988}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 0, 1292, 812}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1193, 855]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1072, 705]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.8">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{502.0033143939394, 372.2679924242425}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{441.5033143939394, 297.2679924242425}">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="textSize" class="ptolemy.data.expr.Parameter" value="14">
         </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Modeling counter machines in data flow -- Part 2&#10;-------------------------------------------------------------&#10;&#10;The next step is how to represent the program that a counter&#10;machine runs. Here we consider a machine with a two counters,&#10;C1 and C2. A program for such a machine consists of a sequence&#10;of program locations, each with an associated command.&#10;There are 3 types of commands, where C is either C1 or C2,&#10;and L is a program location:&#10;&#10;C++ (increment C by 1); &#10;C-- (decrement C by 1); &#10;if C=0 then goto L1 else goto L2;&#10;&#10;For example, a valid program is:&#10;L0: C1++;&#10;L1: C1--;&#10;L2: if C1=0 then goto L0 else goto L3;&#10;&#10;Initially both counters are zero. Thus, the above program does not&#10;terminate. On the other hand, the program below terminates:&#10;L0: C1++;&#10;L1: C1++;&#10;L2: if C1=0 then goto L0 else goto L3;&#10;&#10;The command at L2 jumps to location L3 but no command is specified&#10;there, so the machine halts.&#10;&#10;We encode locations as integers, 0, 1, 2, etc. We encode the&#10;commands as integers in {1,2,3,-1,-2,-3), where 1,2,3 are ++,&#10;-- and =0 for C1, and -1,-2,-3 are ++, -- and =0 for C2.&#10;">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Modeling counter machines in data flow -- Part 2&#10;-------------------------------------------------------------&#10;&#10;[First look at Counter-prelim.xml]&#10;&#10;The next step is how to represent the program that a counter&#10;machine runs. Here we consider a machine with a two counters,&#10;C1 and C2. A program for such a machine consists of a sequence&#10;of program locations, each with an associated command.&#10;There are 3 types of commands, where C is either C1 or C2,&#10;and L is a program location:&#10;&#10;C++ (increment C by 1); &#10;C-- (decrement C by 1); &#10;if C=0 then goto L1 else goto L2;&#10;&#10;For example, a valid program is:&#10;L0: C1++;&#10;L1: C1--;&#10;L2: if C1=0 then goto L0 else goto L3;&#10;&#10;Initially both counters are zero. Thus, the above program does not&#10;terminate. On the other hand, the program below terminates:&#10;L0: C1++;&#10;L1: C1++;&#10;L2: if C1=0 then goto L0 else goto L3;&#10;&#10;The command at L2 jumps to location L3 but no command is specified&#10;there, so the machine halts.&#10;&#10;We encode locations as integers, 0, 1, 2, etc. We encode the&#10;commands as integers in {1,2,3,-1,-2,-3), where 1,2,3 are ++,&#10;-- and =0 for C1, and -1,-2,-3 are ++, -- and =0 for C2.&#10;">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-55.0, 15.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-55.0, 10.0]">
         </property>
     </property>
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.6,0.0,1.0}">
         </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="When the program halts you get an exception because constants&#10;keep firing and they fill up the queues. This is (considered) normal.">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="In this model program halting is captured with an exception.&#10;When the program halts you get an exception because constants&#10;keep firing and they fill up the queues. This is (considered) normal.">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[635.0, 530.0]">
         </property>
@@ -988,7 +988,7 @@
         <link port="Discard.input" relation="relation8"/>
     </class>
     <entity name="Display" class="ptolemy.actor.lib.gui.Display">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={861, 14, 505, 417}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={775, 14, 505, 394}, maximized=false}">
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[497, 346]">
         </property>
@@ -1208,13 +1208,13 @@
                 </property>
             </property>
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 0, 1400, 980}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 0, 1292, 812}, maximized=false}">
         </property>
-        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1185, 847]">
+        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1072, 705]">
         </property>
-        <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+        <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.8">
         </property>
-        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{592.5000000000001, 423.5}">
+        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{559.6568928627512, 430.4891621191897}">
         </property>
         <property name="Annotation4" class="ptolemy.vergil.kernel.attributes.TextAttribute">
             <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,0.0,0.0,1.0}">
@@ -1780,7 +1780,7 @@
         <link port="Discard4.input" relation="relation37"/>
     </entity>
     <entity name="Display2" class="ptolemy.actor.lib.gui.Display">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={357, 14, 505, 417}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={357, 14, 505, 394}, maximized=false}">
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[497, 346]">
         </property>
@@ -1954,7 +1954,7 @@
         <link port="InstanceOfWordLevelSelect2.falseInput" relation="relation17"/>
     </entity>
     <entity name="Display3" class="ptolemy.actor.lib.gui.Display">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={152, 431, 505, 417}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={152, 383, 505, 394}, maximized=false}">
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[497, 346]">
         </property>
@@ -1964,7 +1964,7 @@
         </property>
     </entity>
     <entity name="Display4" class="ptolemy.actor.lib.gui.Display">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={801, 372, 505, 417}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={775, 372, 505, 394}, maximized=false}">
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[497, 346]">
         </property>
