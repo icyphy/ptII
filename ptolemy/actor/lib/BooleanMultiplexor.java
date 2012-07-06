@@ -31,7 +31,6 @@ import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.Token;
-import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
@@ -42,24 +41,47 @@ import ptolemy.kernel.util.StringAttribute;
 //// BooleanMultiplexor
 
 /**
- <p>A type polymorphic multiplexor with boolean valued select.</p>
- <p>If any input port has no token, the prefire method returns false and
- the fire method is not called. Tokens are only consumed in the fire method,
- where exactly one token is consumed from each input port, and one
- of the tokens from either <i>trueInput</i> or <i>falseInput</i> is sent
- to the output.  The token sent to the output
- is determined by the <i>select</i> input, which must be a boolean value.
+ A multiplexor with a boolean-valued select control signal.
+ This actor conditionally routes input values from the
+ {@link #trueInput} and {@link #falseInput} ports to the
+ output port, depending on the value of the {@link #select} input.
+ <p>
+ Upon firing, this actor reads the value at the {@link #select} input,
+ if there is one, and records its value (true or false).
+ If it has a recorded select value (from this firing or a previous
+ one), then it then reads at most one token from both the
+ {@link #trueInput} and the {@link #falseInput}, chooses one
+ of those tokens depending on the recorded select value,
+ and produces that tokwn on the output.
  Because tokens are immutable, the same Token
  is sent to the output, rather than a copy.
- The <i>trueInput</i> and <i>falseInput</i> port may receive Tokens of
- any type.</p>
- <p> This actor is different from the BooleanSelect actor, which consumes
- one token from the control input and another token from either the
- trueInput or the falseInput in each firing.</p>
- <p> The actor can also implement non-strict behavior if the <i>isStrict</i>
- parameter is unset: see comments before parameter declaration below.</p> 
+ <p>
+ This actor is non strict. Specifically, if either
+ {@link #trueInput} or {@link #falseInput} is unknown, it may
+ nonetheless be able to produce an output. Hence, this actor can
+ be used in domains with fixed-point semantics, such as SR and Continuous.
+ <p>
+ In dataflow domains (SDF, DDF, and PN), normally all inputs will be
+ known and present when the actor firings. It consumes all inputs
+ and produces one output token. Thus, the actor behaves like an SDF
+ actor, producing and consuming a single token on all ports.
+ <p>
+ In DE, the actor will only consume those inputs that are available.
+ It does not even require a new {@link #select} input on each firing.
+ A value provided at the {@link #select} input will persist
+ and will be used in subsequent firings until a new value is provided.
+ If no value has ever been provided, then this actor will produce no output.
+ <p>
+ This actor is different from the {@link BooleanSelect} actor, which consumes
+ one token from the control input in one firing, and
+ then in the next firing consumes a token from either the
+ trueInput or the falseInput, depending on the value of the control input.
+ It is also different from the {@link Select} actor, which consumes
+ one input from the control input and, in the same firing, one token
+ from the input channel given by the value of the control input.
+ </p>
 
- @author Steve Neuendorffer, Stavros Tripakis (added behavior for nonstrictness)
+ @author Steve Neuendorffer, Stavros Tripakis, Edward A. Lee
  @version $Id$
  @since Ptolemy II 2.0
  @Pt.ProposedRating Green (neuendor)
@@ -88,10 +110,6 @@ public class BooleanMultiplexor extends TypedAtomicActor {
         output.setTypeAtLeast(falseInput);
         
         new StringAttribute(select, "_cardinal").setExpression("SOUTH");
-        
-        isStrict = new Parameter(this, "isStrict");
-        isStrict.setExpression("true");
-        isStrict.setTypeEquals(BaseType.BOOLEAN);        
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -106,7 +124,7 @@ public class BooleanMultiplexor extends TypedAtomicActor {
     public TypedIOPort falseInput;
 
     /** Input that selects one of the other input ports.  The type is
-     *  BooleanToken.
+     *  boolean.
      */
     public TypedIOPort select;
 
@@ -115,128 +133,84 @@ public class BooleanMultiplexor extends TypedAtomicActor {
      */
     public TypedIOPort output;
 
-    /** Parameter of type boolean: by default set to true.
-     * If false, then actor is non-strict: it can produce an output even
-     * when the value of the non-selected data port is unknown.
-     * This helps resolve feedback loops in the SR domain, e.g.,
-     * see Malik's example under FIXME: add path to model.
-     * The value of the <i>select</i> port needs however to be known.
-     */
-    public Parameter isStrict;
-
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Strict case:
-     *  Consume a token from each input port.  If the token from the
-     *  <i>select</i> input is true, then output the token consumed from the
+    /** Read all inputs that are known, and if the <i>select</i> input
+     *  is true, then output the token consumed from the
      *  <i>trueInput</i> port, otherwise output the token from the
      *  <i>falseInput</i> port.
-     *  This method will throw a NoTokenException if any
-     *  input channel does not have a token.
-     *
-     *  Non-strict case: 
-     *  Consume a token from the <i>select</i> input. If the token is true,
-     *  then consume a token from the <i>trueInput</i> port and forward it
-     *  to the output, otherwise, consume a token from the <i>falseInput</i>
-     *  port and forward it to the output.
-     *  
+     *  If the required input is unknown, then the output will
+     *  remain unknown.
      *  @exception IllegalActionException If there is no director.
      */
     public void fire() throws IllegalActionException {
         super.fire();
-        boolean control = ((BooleanToken) select.get(0)).booleanValue();
-        boolean strict = ((BooleanToken) isStrict.getToken()).booleanValue();
-
-        if (strict) {
-            Token trueToken = trueInput.get(0);
-            Token falseToken = falseInput.get(0);
-
-            if (control) {
-                output.send(0, trueToken);
-            } else {
-                output.send(0, falseToken);
+        // Be sure to not use _selectValue if the select input
+        // is not known. That would be non-monotonic.
+        if (select.isKnown(0)) {
+            if (select.hasToken(0)) {
+                _selectValue = (BooleanToken) select.get(0);
             }
-        }
-        else {
-            if (control)
-                output.send(0, trueInput.get(0));
-            else
-                output.send(0, falseInput.get(0));
+            // Be sure to read all inputs that are present, even
+            // if they aren't required in order to produce output.
+            // Tokens need to be consumed in dataflow and DE domains.
+            if (trueInput.isKnown(0)) {
+                Token trueToken = null;
+                if (trueInput.hasToken(0)) {
+                    trueToken = trueInput.get(0);
+                }
+                if (_selectValue != null && _selectValue.booleanValue()) {
+                    // Note that if the input is known to be absent,
+                    // then the following sends null. Dataflow receivers
+                    // interpret this as sending nothing (nothing is queued).
+                    // Fixed-point receivers (SR and Continuous) interpret
+                    // this an assertion that the output is absent.
+                    output.send(0, trueToken);
+                }
+            }
+            if (falseInput.isKnown(0)) {
+                Token falseToken = null;
+                if (falseInput.hasToken(0)) {
+                    falseToken = falseInput.get(0);
+                }
+                if (_selectValue != null && !_selectValue.booleanValue()) {
+                    // Note that if the input is known to be absent,
+                    // then the following sends null. Dataflow receivers
+                    // interpret this as sending nothing (nothing is queued).
+                    // Fixed-point receivers (SR and Continuous) interpret
+                    // this an assertion that the output is absent.
+                    output.send(0, falseToken);
+                }
+            }
+            // If no select value has been seen, then we can
+            // assert that the output is empty. Note that this is only
+            // safe if the select input is known.
+            if (_selectValue == null) {
+                output.send(0, null);
+            }
         }
     }
 
-    /** Strict case:
-     *  Return false if any input channel does not have a token.
-     *  Otherwise, return whatever the superclass returns.
-     *  Non-strict case: 
-     *  
-     *  @return False if there are not enough tokens to fire or the prefire
-     *  method of the super class returns false.
-     *  @exception IllegalActionException If there is no director.
+    /** Initialize this actor to the state where no select
+     *  input has been read.
+     *  @exception IllegalActionException If the superclass throws it.
      */
-    public boolean prefire() throws IllegalActionException {
-        if (!select.hasToken(0)) {
-            return false;
-        }
-
-        boolean strict = ((BooleanToken) isStrict.getToken()).booleanValue();
-        
-        if (strict) {
-            if (!trueInput.hasToken(0)) {
-                return false;
-            }
-
-            if (!falseInput.hasToken(0)) {
-                return false;
-            }
-            
-            return super.prefire();
-        } else /* non-strict */ {
-            if (!super.prefire())
-                return false;
-            boolean control = ((BooleanToken) select.get(0)).booleanValue();
-            if (control) {
-                if (!trueInput.isKnown())
-                    return false;
-                return trueInput.hasToken(0);
-            }
-            else {
-                if (!falseInput.isKnown())
-                    return false;
-                return falseInput.hasToken(0);
-            }
-        }
+    public void initialize() throws IllegalActionException {
+        super.initialize();
+        _selectValue = null;
     }
-    
-    /** Return true if this BooleanMultiplexor is strict, meaning all inputs must
-     *  be known before iteration. 
-     *
-     *  @return True if this BooleanMultiplexor is strict, meaning all inputs must
-     *   be known before iteration.
-     *  FIXME: IllegalActionException Thrown if parameter specifying whether
-     *  actor is strict cannot be read.
+
+    /** Return false. 
+     *  @return False.
      */
     public boolean isStrict() {
-        boolean result = true;
-        try {
-            result = (((BooleanToken) isStrict.getToken()).booleanValue());
-        } catch (IllegalActionException e) { 
-            e.printStackTrace();
-        }
-        return result;
+        return false;
     }
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                         private fields                    ////
 
-    /** Override the base class to declare that the <i>output</i>
-     *  does not depend on the <i>input</i> in a firing.
-     *  @exception IllegalActionException If the superclass throws it.
-     *  
-     *  FIXME: should the dependency/causality analysis be modified 
-     *  in the non-strict case and how?
-    public void preinitialize() throws IllegalActionException {
-        super.preinitialize();
-        removeDependency(input, output);
-    }
-     */
-
+    /** Most recently read select input. */
+    private BooleanToken _selectValue;
 }
