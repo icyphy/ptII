@@ -40,6 +40,7 @@ import ptolemy.data.BooleanToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
+import ptolemy.data.expr.StringParameter;
 import ptolemy.data.expr.Variable;
 import ptolemy.data.type.ArrayType;
 import ptolemy.data.type.BaseType;
@@ -586,15 +587,44 @@ public class PublisherPort extends PubSubPort {
             String previousChannelName, String newChannelName)
             throws KernelException {
 
-        // We use subscribers() here so that we get any subscribers in
-        // Opaque TypedCompositeActors.
-        for (SubscriberPort port : subscribers()) {
-            if (port.channel.getExpression().equals(previousChannelName)) {
-                // Avoid updating SubscriptionAggregators that have regular
-                // expressions that are different than the Publisher channel name.
-                port.channel.setExpression(newChannelName);
-                port.attributeChanged(port.channel);
+        // This will end up calling attributeChanged() (in order to
+        // defeat lazy composites), and we want to prevent a recursive
+        // call here.
+        if (_inUpdateCall) {
+            return;
+        }
+        _inUpdateCall = true;
+        try {
+            // We use subscribers() here so that we get any subscribers in
+            // Opaque TypedCompositeActors.
+            for (SubscriberPort port : subscribers()) {
+                if (port.channel.stringValue().equals(previousChannelName)) {
+                    // Avoid updating SubscriptionAggregators that have regular
+                    // expressions that are different than the Publisher channel name.
+                   
+                    // Handle the case where the channel name is an expression
+                    // that evaluates to the value of the enclosing Publisher actor's
+                    // channel parameter. In that case, we want to change the value
+                    // the channel in the Publisher actor, rather than here.
+                    if (port.channel.getExpression().equals("$channel")) {
+                        NamedObj container = port.getContainer();
+                        Attribute containerChannel = container.getAttribute("channel");
+                        if (containerChannel instanceof StringParameter) {
+                            ((StringParameter)containerChannel).setExpression(newChannelName);
+                            container.attributeChanged(containerChannel);
+                            port.attributeChanged(port.channel);
+                        } else {
+                            port.channel.setExpression(newChannelName);
+                            port.attributeChanged(port.channel);
+                        }
+                    } else {
+                        port.channel.setExpression(newChannelName);
+                        port.attributeChanged(port.channel);
+                    }
+                }
             }
+        } finally {
+            _inUpdateCall = false;
         }
     }
     
@@ -605,5 +635,8 @@ public class PublisherPort extends PubSubPort {
      *  in preinitialize to something other than 0. This is needed so
      *  that these variables can be unset if the hierarchy changes.
      */
-    Map<IOPort,String> _tokenInitProductionSet;
+    private Map<IOPort,String> _tokenInitProductionSet;
+    
+    /** Flag to prevent recursive call of subcribers() method. */
+    private boolean _inUpdateCall = false;
 }
