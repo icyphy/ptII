@@ -119,7 +119,7 @@ public abstract class RunnableGraphController extends WithIconGraphController
                             highlightError((Nameable) object);
                         }
                     } else if (item instanceof Inequality) {
-                        Inequality inequality = (Inequality) inequalities.next();
+                        Inequality inequality = (Inequality) item;
                         InequalityTerm term = inequality.getGreaterTerm();
                         if (term != null) {
                             Object object = term.getAssociatedObject();
