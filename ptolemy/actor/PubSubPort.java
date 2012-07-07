@@ -100,7 +100,7 @@ public abstract class PubSubPort extends TypedIOPort
     @Override
     public void addInitializable(Initializable initializable) {
         throw new InternalErrorException(
-                "Cannot add Initializables to publisher and subsrcriber ports.");
+                "Cannot add Initializables to publisher and subscriber ports.");
     }
     
     /** Notify this object that the containment hierarchy above it has
