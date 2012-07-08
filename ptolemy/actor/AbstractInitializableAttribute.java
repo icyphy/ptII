@@ -32,6 +32,7 @@ import java.util.LinkedHashSet;
 import java.util.Set;
 
 import ptolemy.kernel.util.Attribute;
+import ptolemy.kernel.util.HierarchyListener;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
@@ -49,7 +50,8 @@ import ptolemy.kernel.util.Workspace;
  *  @Pt.ProposedRating Yellow (eal )
  *  @Pt.AcceptedRating Red (eal)
  */
-public abstract class AbstractInitializableAttribute extends Attribute implements Initializable {
+public abstract class AbstractInitializableAttribute extends Attribute
+        implements HierarchyListener, Initializable {
     
     /** Construct an instance of the attribute.
      *  @param container The container.
@@ -57,7 +59,7 @@ public abstract class AbstractInitializableAttribute extends Attribute implement
      *  @throws IllegalActionException If the superclass throws it.
      *  @throws NameDuplicationException If the superclass throws it.
      */
-    public AbstractInitializableAttribute(CompositeActor container, String name)
+    public AbstractInitializableAttribute(NamedObj container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
@@ -91,16 +93,56 @@ public abstract class AbstractInitializableAttribute extends Attribute implement
         return newObject;
     }
     
-    /** Do nothing.
+    /** Notify this object that the containment hierarchy above it has
+     *  changed. This method does nothing because instead we use
+     *  {@link #preinitialize()} to handle re-establishing the connections.
+     *  @exception IllegalActionException If the change is not
+     *   acceptable.
+     */
+    public void hierarchyChanged() throws IllegalActionException {
+        // Make sure we are registered as to be initialized
+        // with the container.
+        Initializable container = _getInitializableContainer();
+        if (container != null) {
+            container.addInitializable(this);
+        }
+    }
+
+    /** Notify this object that the containment hierarchy above it will be
+     *  changed, which results in 
+     *  @exception IllegalActionException If unlinking to a published port fails.
+     */
+    public void hierarchyWillChange() throws IllegalActionException {
+        // Unregister to be initialized with the initializable container.
+        // We will be re-registered when hierarchyChanged() is called.
+        Initializable container = _getInitializableContainer();
+        if (container != null) {
+            container.removeInitializable(this);
+        }
+    }
+    
+    /** Invoke initialize() on registered initializables.
      *  @exception IllegalActionException If thrown by a subclass.
      */
     public void initialize() throws IllegalActionException {
+        // Invoke initializable methods.
+        if (_initializables != null) {
+            for (Initializable initializable : _initializables) {
+                initializable.initialize();
+            }
+        }
     }
 
-    /** Do nothing.
+    /** Invoke preinitialize() on registered initializables.
      *  @exception IllegalActionException If thrown by a subclass.
      */
     public void preinitialize() throws IllegalActionException {
+        // Invoke initializable methods.
+        if (_initializables != null) {
+            for (Initializable initializable : _initializables) {
+                initializable.preinitialize();
+            }
+        }
     }
 
     /** Remove the specified object from the list of objects whose
@@ -120,36 +162,81 @@ public abstract class AbstractInitializableAttribute extends Attribute implement
         }
     }
 
-    /** Set the new container of this parameter. This method overrides
-     *  the base class to remove this object from the list of initializables
-     *  of the previous container, if any, and to add it to the list of
-     *  initializables in the new container.
-     *  @param container The new container.
-     *  @exception IllegalActionException If the container will not accept
-     *   the attribute, or this variable and the container
-     *   are not in the same workspace, or the proposed container would
-     *   result in recursive containment.
+    /** Override the base class to register as an 
+     *  {@link Initializable}
+     *  so that preinitialize() is invoked, and as a
+     *  {@link HierarchyListener}, so that we are notified of
+     *  changes in the hiearchy above.
+     *  @param container The proposed container.
+     *  @exception IllegalActionException If the action would result in a
+     *   recursive containment structure, or if
+     *   this entity and container are not in the same workspace.
      *  @exception NameDuplicationException If the container already has
-     *   an attribute with the name of this variable.
+     *   an entity with the name of this entity.
      */
+    @Override
     public void setContainer(NamedObj container)
             throws IllegalActionException, NameDuplicationException {
-        NamedObj oldContainer = getContainer();
-        if (oldContainer instanceof Initializable) {
-            ((Initializable) oldContainer).removeInitializable(this);
-        }
+        Initializable previousInitializableContainer = _getInitializableContainer();
+        NamedObj previousContainer = getContainer();
         super.setContainer(container);
-        if (container instanceof Initializable) {
-            ((Initializable) container).addInitializable(this);
+        Initializable newInitializableContainer = _getInitializableContainer();
+        if (previousInitializableContainer != newInitializableContainer) {
+            if (previousInitializableContainer != null) {
+                previousInitializableContainer.removeInitializable(this);
+            }
+            if (newInitializableContainer != null) {
+                newInitializableContainer.addInitializable(this);
+            }
+        }
+        if (previousContainer != container) {
+            if (previousContainer != null) {
+                previousContainer.removeHierarchyListener(this);
+            }
+            if (container != null) {
+                container.addHierarchyListener(this);
+            }
         }
     }
 
-    /** Do nothing.
+    /** Invoke wrapup() on registered initializables.
      *  @exception IllegalActionException If thrown by a subclass.
      */
      public void wrapup() throws IllegalActionException {
+         // Invoke initializable methods.
+         if (_initializables != null) {
+             for (Initializable initializable : _initializables) {
+                 initializable.wrapup();
+             }
+         }
      }
      
+     ///////////////////////////////////////////////////////////////////
+     ////                         protected methods                 ////
+
+     /** Return the first Initializable encountered above this
+      *  in the hierarchy that will be initialized (i.e., it is either
+      *  an atomic actor or an opaque composite actor).
+      *  @return The first Initializable above this in the hierarchy,
+      *   or null if there is none.
+      */
+     protected Initializable _getInitializableContainer() {
+         NamedObj container = getContainer();
+         while (container != null) {
+             if (container instanceof Initializable) {
+                 if (container instanceof CompositeActor) {
+                     if (((CompositeActor)container).isOpaque()) {
+                         return (Initializable)container;
+                     }
+                 } else {
+                     return (Initializable)container;
+                 }
+             }
+             container = container.getContainer();
+         }
+         return null;
+     }
+
      ///////////////////////////////////////////////////////////////////
      ////                         private variables                 ////
      
