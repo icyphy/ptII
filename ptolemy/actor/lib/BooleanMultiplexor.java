@@ -49,10 +49,10 @@ import ptolemy.kernel.util.StringAttribute;
  Upon firing, this actor reads the value at the {@link #select} input,
  if there is one, and records its value (true or false).
  If it has a recorded select value (from this firing or a previous
- one), then it then reads at most one token from both the
+ one), then it reads at most one token from both the
  {@link #trueInput} and the {@link #falseInput}, chooses one
  of those tokens depending on the recorded select value,
- and produces that tokwn on the output.
+ and produces that token on the output.
  Because tokens are immutable, the same Token
  is sent to the output, rather than a copy.
  <p>
@@ -62,7 +62,7 @@ import ptolemy.kernel.util.StringAttribute;
  be used in domains with fixed-point semantics, such as SR and Continuous.
  <p>
  In dataflow domains (SDF, DDF, and PN), normally all inputs will be
- known and present when the actor firings. It consumes all inputs
+ known and present when the actor fires. It consumes all inputs
  and produces one output token. Thus, the actor behaves like an SDF
  actor, producing and consuming a single token on all ports.
  <p>
@@ -165,7 +165,7 @@ public class BooleanMultiplexor extends TypedAtomicActor {
                     // then the following sends null. Dataflow receivers
                     // interpret this as sending nothing (nothing is queued).
                     // Fixed-point receivers (SR and Continuous) interpret
-                    // this an assertion that the output is absent.
+                    // this as an assertion that the output is absent.
                     output.send(0, trueToken);
                 }
             }
@@ -179,7 +179,7 @@ public class BooleanMultiplexor extends TypedAtomicActor {
                     // then the following sends null. Dataflow receivers
                     // interpret this as sending nothing (nothing is queued).
                     // Fixed-point receivers (SR and Continuous) interpret
-                    // this an assertion that the output is absent.
+                    // this as an assertion that the output is absent.
                     output.send(0, falseToken);
                 }
             }
