@@ -84,8 +84,8 @@ test SubscriptionAggregator-2.0 {Null channel, no Publisher} {
             [java::field [java::cast ptolemy.actor.lib.Sink $rec] input]]] setWidth 1
     catch {[$e0 getManager] execute} errMsg
     list $errMsg
-} {{ptolemy.kernel.util.IllegalActionException: The channel name was null?
-  in .top.subagg}}
+} {{ptolemy.kernel.util.IllegalActionException: No channel specified.
+  in .top.subagg.input}}
 
 test SubscriptionAggregator-2.1 {No Publisher} {
     # Uses 2.0 above
@@ -94,8 +94,8 @@ test SubscriptionAggregator-2.1 {No Publisher} {
     $subAgg attributeChanged $channel
     catch {[$e0 getManager] execute} errMsg
     list $errMsg
-} {{ptolemy.kernel.util.IllegalActionException: No Publishers were found adjacent to or below .top.subagg
-  in .top.subagg}}
+} {{ptolemy.kernel.util.IllegalActionException: No channel specified.
+  in .top.subagg.input}}
 
 test SubscriptionAggregator-2.2 {Test no publisher} {
     set workspace [java::new ptolemy.kernel.util.Workspace "pubWS22"]
@@ -145,7 +145,7 @@ test SubscriptionAggregator-3.0 {Debugging messages} {
 	[java::field [java::cast ptolemy.actor.lib.Subscriber $subAgg] \
 	     output] \
 	[java::field [java::cast ptolemy.actor.lib.Sink $rec] input]]] setWidth 1
-    #puts [$e3 exportMoML]
+    puts [$e3 exportMoML]
     set stream [java::new java.io.ByteArrayOutputStream]
     set printStream [java::new \
             {java.io.PrintStream java.io.OutputStream} $stream]
