@@ -11,7 +11,7 @@
 			<entity name="Test" class="ptolemy.actor.lib.Test"/>
 			<property name="TesterDirector" class="ptolemy.domains.tester.kernel.TesterDirector"/>
 			<entity name="TestActorPortDepth" class="ptolemy.domains.de.lib.TestActorPortDepth"/>
-			<entity name="TestExceptionHandler" class="ptolemy.actor.lib.TestExceptionHandler"/>
+			<property name="TestExceptionAttribute" class="ptolemy.actor.lib.TestExceptionAttribute"/>
 			<entity name="TypeTest" class="ptolemy.actor.lib.TypeTest"/>
       </group>
     ?>

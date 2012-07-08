@@ -34,7 +34,6 @@ package ptolemy.actor;
 import java.lang.ref.WeakReference;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.ListIterator;
@@ -441,28 +440,24 @@ public class Manager extends NamedObj implements Runnable {
                                 "The container of the manager was null. "
                                         + "Try calling composite.setManager().");
                     }
-                    List<?> exceptionHandlersList = _container
-                            .entityList(ExceptionHandler.class);
-                    Iterator<?> exceptionHandlers = exceptionHandlersList
-                            .iterator();
-                    if (exceptionHandlersList.size() > 0) {
-                        boolean exceptionHandled = false;
+                    // Look for attributes and entities that implement ExceptionHandler.
+                    List<ExceptionHandler> exceptionHandlersList = _container
+                            .attributeList(ExceptionHandler.class);
+                    exceptionHandlersList.addAll(_container.entityList(ExceptionHandler.class));
+                    boolean exceptionHandled = false;
+                    for (ExceptionHandler exceptionHandler : exceptionHandlersList ) {
                         // Note that we allow multiple exception handlers
                         // to handle the same exception. So we iterate all
                         // of the exception handlers, at least until one
                         // those throws an exception.
-                        while (exceptionHandlers.hasNext()) {
-                            ExceptionHandler exceptionHandler = (ExceptionHandler) exceptionHandlers
-                                    .next();
-                            if (exceptionHandler.handleException(_container,
-                                    initialThrowable)) {
-                                exceptionHandled = true;
-                            }
+                        if (exceptionHandler.handleException(_container,
+                                initialThrowable)) {
+                            exceptionHandled = true;
                         }
-                        if (exceptionHandled) {
-                            initialThrowable = null;
-                            _notifyListenersOfSuccessfulCompletion();
-                        }
+                    }
+                    if (exceptionHandled) {
+                        initialThrowable = null;
+                        _notifyListenersOfSuccessfulCompletion();
                     }
                 }
 

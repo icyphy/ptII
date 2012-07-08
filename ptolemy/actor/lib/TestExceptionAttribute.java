@@ -27,9 +27,11 @@
  */
 package ptolemy.actor.lib;
 
-import ptolemy.actor.TypedAtomicActor;
+import ptolemy.actor.AbstractInitializableAttribute;
 import ptolemy.actor.parameters.SharedParameter;
 import ptolemy.data.BooleanToken;
+import ptolemy.data.IntToken;
+import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.StringParameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
@@ -40,7 +42,7 @@ import ptolemy.kernel.util.NamedObj;
 import ptolemy.util.StringUtilities;
 
 ///////////////////////////////////////////////////////////////////
-//// TestExceptionHandler
+//// TestExceptionAttribute
 
 /**
  This actor tests for exceptions that are expected to occur when
@@ -54,15 +56,14 @@ import ptolemy.util.StringUtilities;
  Also, if a test runs to completion without throwing an exception, this actor
  throws an exception in its wrapup() method. An exception is expected.
 
- @author Haiyang Zheng
- @deprecated Use {@link TestExceptionAttribute} instead.
+ @author Edward A. Lee
  @version $Id$
  @since Ptolemy II 5.2
  @Pt.ProposedRating Yellow (hyzheng)
  @Pt.AcceptedRating Yellow (hyzheng)
  */
-public class TestExceptionHandler extends TypedAtomicActor implements
-        ExceptionHandler {
+public class TestExceptionAttribute extends AbstractInitializableAttribute
+        implements ExceptionHandler {
 
     /** Create a new actor in the specified container with the specified
      *  name.  The name must be unique within the container or an exception
@@ -76,20 +77,44 @@ public class TestExceptionHandler extends TypedAtomicActor implements
      *  @exception NameDuplicationException If the name coincides with
      *   an entity already in the container.
      */
-    public TestExceptionHandler(CompositeEntity container, String name)
+    public TestExceptionAttribute(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
         correctExceptionMessage = new StringParameter(this,
                 "correctExceptionMessage");
         correctExceptionMessage.setExpression("");
+        
+        matchPrefixOfLength = new Parameter(this, "matchPrefixOfLength");
+        matchPrefixOfLength.setExpression("0");
+        matchPrefixOfLength.setTypeEquals(BaseType.INT);
+
         trainingMode = new SharedParameter(this, "trainingMode", getClass(),
                 "false");
         trainingMode.setTypeEquals(BaseType.BOOLEAN);
         _invoked = false;
+        
+        // In order for this to show up in the vergil library, it has to have
+        // an icon description.
+        _attachText("_iconDescription", "<svg>\n"
+                + "<polygon points=\"0,0 22,-8 12,-28 32,-18 40,-40 48,-18 68,-28 58,-8 80,0 58,8 68,28 48,18 40,40 32,18 12,28 22,8 0,0\" "
+                + "style=\"fill:pink;stroke:red\"/>\n"
+                + "<text x=\"35\" y=\"10\" style=\"font-size:30;fill:red\">!</text>\n"
+                + "</svg>\n");
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                          parameters                       ////
+    
+    /** The correct exception message to be compared against. */
+    public StringParameter correctExceptionMessage;
+
+    /** If greater than zero, then check that the first <i>n</i>
+     *  characters of the exception message match, where <i>n</i>
+     *  is the value of this parameter. Otherwise, if this is zero
+     *  or negative, then check all the characters. This is an
+     *  integer that defaults to zero.
+     */
+    public Parameter matchPrefixOfLength;
 
     /** If true, then collect the exception message and set the
      *  correctExceptionMessage parameter with the content of the
@@ -100,12 +125,9 @@ public class TestExceptionHandler extends TypedAtomicActor implements
      */
     public SharedParameter trainingMode;
 
-    /** The correct exception message to be compared against. */
-    public StringParameter correctExceptionMessage;
-
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-    
+
     /** Initialize. */
     public void initialize() throws IllegalActionException {
         super.initialize();
@@ -132,12 +154,31 @@ public class TestExceptionHandler extends TypedAtomicActor implements
             correctExceptionMessage.setExpression(exception.getMessage());
             correctExceptionMessage.setPersistent(true);
         } else {
-            if (!exception.getMessage().equals(
-                    correctExceptionMessage.stringValue())) {
-                throw new IllegalActionException(this, exception, "Expected:\n"
-                        + correctExceptionMessage.stringValue()
-                        + "\nBut got:\n"
-                        + exception.getMessage());
+            String correct = correctExceptionMessage.stringValue();
+            if (correct.length() == 0) {
+                throw new IllegalActionException(this, exception,
+                        "No training message to check against. Perhaps you need to set training mode?");
+            }
+            int prefixLength = ((IntToken)matchPrefixOfLength.getToken()).intValue();
+            if (prefixLength <= 0) {
+                if (!exception.getMessage().equals(
+                        correctExceptionMessage.stringValue())) {
+                    throw new IllegalActionException(this, exception, "Expected:\n"
+                            + correctExceptionMessage.stringValue()
+                            + "\nBut got:\n"
+                            + exception.getMessage());
+                }
+            } else {
+                if (correct.length() < prefixLength) {
+                    prefixLength = correct.length();
+                }
+                String prefix = correctExceptionMessage.stringValue().substring(0, prefixLength);
+                if (!exception.getMessage().startsWith(prefix)) {
+                    throw new IllegalActionException(this, exception, "Expected a message starting with:\n"
+                            + prefix
+                            + "\nBut got:\n"
+                            + exception.getMessage());
+                }
             }
         }
         return true;

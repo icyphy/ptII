@@ -244,6 +244,7 @@ JSRCS = \
 	Switch.java \
 	Synchronizer.java \
 	Test.java \
+	TestExceptionAttribute.java \
 	TestExceptionHandler.java \
 	ThrowException.java \
 	ThrowModelError.java \
