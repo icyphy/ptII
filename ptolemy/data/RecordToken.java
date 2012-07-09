@@ -244,7 +244,7 @@ public class RecordToken extends AbstractNotConvertibleToken {
     /** Return the labels of this token as a Set.
      *  @return A Set containing labels.
      */
-    public Set labelSet() {
+    public Set<String> labelSet() {
         return _fields.keySet();
     }
 
