@@ -25,6 +25,9 @@ package ptolemy.vergil.ontologies;
 
 import javax.swing.Icon;
 
+import ptolemy.data.DoubleToken;
+import ptolemy.data.expr.Parameter;
+import ptolemy.data.type.BaseType;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
@@ -60,7 +63,19 @@ public class MultipleConceptIcon extends ConceptIcon {
     public MultipleConceptIcon(NamedObj container, String name)
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
+        
+        translation = new Parameter(this, "translation");
+        translation.setTypeEquals(BaseType.DOUBLE);
+        translation.setExpression("10.0");
     }
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                         parameters                        ////
+
+    /** The amount of translation to apply to the background figure.
+     *  This is a double that defaults to 10.0.
+     */
+    public Parameter translation;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -72,7 +87,14 @@ public class MultipleConceptIcon extends ConceptIcon {
     public Figure createBackgroundFigure() {
         CompositeFigure composite = new CompositeFigure();
         Figure background = super.createBackgroundFigure();
-        background.translate(10.0, 10.0);
+        double translationValue = 10.0;
+        try {
+            translationValue = ((DoubleToken)translation.getToken()).doubleValue();
+        } catch (IllegalActionException e) {
+            // Ignore and use default value.
+            e.printStackTrace();
+        }
+        background.translate(translationValue, translationValue);
         composite.add(background);
         composite.add(super.createBackgroundFigure());
         return composite;
@@ -107,7 +129,14 @@ public class MultipleConceptIcon extends ConceptIcon {
      */
     protected LabelFigure _getLabel(CompositeFigure background, String name) {
         LabelFigure result = super._getLabel(background, name);
-        result.translate(-5.0, -5.0);
+        double translationValue = 10.0;
+        try {
+            translationValue = ((DoubleToken)translation.getToken()).doubleValue();
+        } catch (IllegalActionException e) {
+            // Ignore and use default value.
+            e.printStackTrace();
+        }
+        result.translate(-0.5*translationValue, -0.5*translationValue);
         return result;
     }
 }
