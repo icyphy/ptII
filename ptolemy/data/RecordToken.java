@@ -762,5 +762,5 @@ public class RecordToken extends AbstractNotConvertibleToken {
      *  type token.
      *  Subclasses can use alternative Map implementations (for ordering).
      */
-    protected Map _fields = null;
+    protected Map<String, Token> _fields = null;
 }
