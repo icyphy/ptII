@@ -1040,12 +1040,13 @@ public class Manager extends NamedObj implements Runnable {
         if ((listener == null) || (_executionListeners == null)) {
             return;
         }
-
+        List<WeakReference<ExecutionListener>> toRemove = new LinkedList<WeakReference<ExecutionListener>>();
         for (WeakReference<ExecutionListener> reference : _executionListeners) {
             if (reference.get() == listener) {
-                _executionListeners.remove(reference);
+                toRemove.add(reference);
             }
         }
+        _executionListeners.removeAll(toRemove);
     }
 
     /** Queue an initialization request.
