@@ -53,6 +53,7 @@ JSRCS = \
 	MonitorImage.java \
 	MonitorReceiverAttribute.java \
 	MonitorReceiverContents.java \
+	ShowTypes.java \
 	VisualModelReference.java
 
 OTHER_FILES_TO_BE_JARED = \

@@ -12,6 +12,8 @@
                           class="ptolemy.vergil.basic.DependencyHighlighter"/>
                 <property name="MonitorReceiverContents"
                           class="ptolemy.vergil.actor.lib.MonitorReceiverContents"/>
+                <property name="ShowTypes"
+                          class="ptolemy.vergil.actor.lib.ShowTypes"/>
             </group>
         ?>
     </configure>
