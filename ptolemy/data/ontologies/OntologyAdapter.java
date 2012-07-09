@@ -522,12 +522,12 @@ public abstract class OntologyAdapter {
      */
     private List<OntologyAnnotationAttribute> _getAnnotationAttributes()
             throws IllegalActionException {
-        List result = new LinkedList();
+        List<OntologyAnnotationAttribute> result = new LinkedList<OntologyAnnotationAttribute>();
         if (_component instanceof NamedObj) {
 
             for (Object attribute : ((NamedObj) _component).attributeList()) {
 
-                if (OntologyAnnotationAttribute.class.isInstance(attribute)) {
+                if (attribute instanceof OntologyAnnotationAttribute) {
                     String ontologySolverName = ((OntologyAnnotationAttribute) attribute)
                             .getOntologySolverIdentifier();
 
@@ -535,7 +535,7 @@ public abstract class OntologyAdapter {
                     // AnnotationAttribute matches the name of the ontology
                     // solver.
                     if (_solver.getName().equals(ontologySolverName)) {
-                        result.add(attribute);
+                        result.add((OntologyAnnotationAttribute)attribute);
                     }
                 }
             }
