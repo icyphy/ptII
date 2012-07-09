@@ -256,6 +256,7 @@ public class Manager extends NamedObj implements Runnable {
     }
 
     /** Add a listener to be notified when the model execution changes state.
+     *  If the specified listener is already a listener, do nothing.
      *  @param listener The listener.
      *  @see #removeExecutionListener(ExecutionListener)
      */
@@ -1042,7 +1043,7 @@ public class Manager extends NamedObj implements Runnable {
 
         for (WeakReference<ExecutionListener> reference : _executionListeners) {
             if (reference.get() == listener) {
-                _executionListeners.remove(listener);
+                _executionListeners.remove(reference);
             }
         }
     }
