@@ -98,6 +98,7 @@ public class UnitsConverter extends Transformer {
 
         scaleOnLeft = new Parameter(this, "scaleOnLeft");
         scaleOnLeft.setExpression("true");
+        scaleOnLeft.setVisibility(Settable.EXPERT);
 
         conversionLabel = new StringAttribute(this, "conversionLabel");
         conversionLabel.setVisibility(Settable.NONE);
