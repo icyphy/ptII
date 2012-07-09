@@ -27,6 +27,7 @@
  */
 package ptolemy.actor.gui;
 
+import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Window;
 import java.util.HashMap;
@@ -85,8 +86,8 @@ public class Configurer extends JPanel implements CloseListener {
      *  @param object The object to configure.
      */
     public Configurer(final NamedObj object) {
-        setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-
+        //setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+        setLayout(new BorderLayout());
         _object = object;
 
         // Record the original values so a restore can happen later.
@@ -125,7 +126,7 @@ public class Configurer extends JPanel implements CloseListener {
             // and likely lead to deadlock.  Hence, instead, we use
             // the static method of EditorPaneFactory.
             Component pane = EditorPaneFactory.createEditorPane(object);
-            add(pane);
+            add(pane, BorderLayout.CENTER);
 
             // Inherit the background color from the container.
             pane.setBackground(null);
