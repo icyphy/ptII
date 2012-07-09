@@ -66,10 +66,10 @@ actor should deal with such an event.
 Please see this page for a description of the JSON format: 
 http://www.json.org/
 
-@author  Marten Lohstroh, Contributor: BethBeth Latronico
+@author  Marten Lohstroh, Contributor: Beth Latronico
 @version $Id: JSONToToken.java $
 @since Ptolemy II 9.0
-@Pt.ProposedRating Red (marten)
+@Pt.ProposedRating Yellow (marten)
 @Pt.AcceptedRating Red (chx)
 */
 public class JSONToToken extends Converter {
@@ -119,7 +119,7 @@ public class JSONToToken extends Converter {
      * @return A Token that represents the JSON-formatted input string
      * @exception IllegalActionException If the given input string cannot be parsed.
      */
-    public Token parseJSON(String input) throws IllegalActionException {
+    protected Token parseJSON(String input) throws IllegalActionException {
         try {
             if (input.charAt(0) == '{') {
                 return _scanJSONObject(new JSONObject(input));
@@ -147,12 +147,12 @@ public class JSONToToken extends Converter {
 
     /** Map an given value to the appropriate Token class and return the 
      *  new Token.  
-     * @param value An Object representing some value
-     * @return A Token representing the given value
-     * @exception JSONException If a non-existent value is requested from the
-     * given object or array.
-     * @exception IllegalActionException Upon failing to instantiate a new 
-     * Token.
+     *  @param value An Object representing some value
+     *  @return A Token representing the given value
+     *  @exception JSONException If a non-existent value is requested from the
+     *  given object or array.
+     *  @exception IllegalActionException Upon failing to instantiate a new 
+     *  Token.
      */
     private Token _mapValueToToken(Object value) throws IllegalActionException,
             JSONException {
@@ -165,21 +165,28 @@ public class JSONToToken extends Converter {
             return _scanJSONObject((JSONObject) value);
         else {
             Token t;
-            if (value instanceof Boolean)
+            if (value instanceof Boolean) {
                 t = new BooleanToken((Boolean) value);
-            else if (value instanceof Integer)
+            }
+            else if (value instanceof Integer) {
                 t = new IntToken((Integer) value);
-            else if (value instanceof Long)
+            }
+            else if (value instanceof Long) {
                 t = new LongToken((Long) value);
-            else if (value instanceof Double)
+            }
+            else if (value instanceof Double) {
                 t = new DoubleToken((Double) value);
-            else if (value instanceof String)
+            }
+            else if (value instanceof String) {
                 t = new StringToken((String) value);
-            else if (value.equals(JSONObject.NULL))
+            }
+            else if (value.equals(JSONObject.NULL)) {
                 t = new ObjectToken(null);
-            else
+            }
+            else {
                 throw new IllegalActionException("Unable to map value of "
                         + value.getClass().toString() + " to token.");
+            }
             return t;
 
         }
@@ -189,13 +196,13 @@ public class JSONToToken extends Converter {
     /** Iterate over the elements inside a JSONArray and put them inside a 
      *  new ArrayToken. Apply recursion for JSONObjects and JSONArrays.
      * 
-     * @param object A JSONArray
-     * @return An ArrayToken containing fields and values that correspond
-     * with those found in the given array
-     * @exception JSONException If a non-existent value is requested from the
-     * given array.
-     * @exception IllegalActionException Upon failing to instantiate a new 
-     * ArrayToken.
+     *  @param object A JSONArray
+     *  @return An ArrayToken containing the values that corresponding to those
+     *  found in the given array
+     *  @exception JSONException If a non-existent value is requested from the
+     *  given array.
+     *  @exception IllegalActionException Upon failing to instantiate a new 
+     *  ArrayToken.
      */
     private ArrayToken _scanJSONArray(JSONArray array) throws JSONException,
             IllegalActionException {

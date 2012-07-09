@@ -48,7 +48,8 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 
 # Keep this list alphabetized.
 JSRCS = \
-	JSONToToken.java
+	JSONToToken.java \
+	TokenToJSON.java
 
 OTHER_FILES_TO_BE_JARED = \
 	json.xml

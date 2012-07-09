@@ -9,6 +9,9 @@
 	 <entity name="JSONToToken"
 		 class="ptolemy.actor.lib.conversions.json.JSONToToken">
 	 </entity>
+	 <entity name="TokenToJSON"
+		 class="ptolemy.actor.lib.conversions.json.TokenToJSON">
+	 </entity>
        </group>
        ?>
   </configure>
