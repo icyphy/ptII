@@ -87,8 +87,6 @@ test AddEditorFactory-1.1 {A model with a Parameter and no _editorParameter} {
 <entity name="AddEditorFactoryTest" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.0.devel">
     </property>
-    <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
-    </property>
     <property name="MyParameter" class="ptolemy.data.expr.Parameter" value="42">
     </property>
 </entity>
@@ -112,8 +110,6 @@ test AddEditorFactory-2.1 {A model with a Parameter and different _editorFactory
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="AddEditorFactoryTest2_1" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.0.devel">
-    </property>
-    <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
     </property>
     <property name="MyParameter" class="ptolemy.data.expr.Parameter" value="42">
         <property name="_editorFactory" class="ptolemy.data.expr.Parameter" value="2">
