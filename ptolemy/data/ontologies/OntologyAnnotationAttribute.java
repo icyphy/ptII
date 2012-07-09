@@ -1,5 +1,5 @@
 /*
- * An annotation attribute that specifies ontology constraints in the model.
+ * An annotation specifying a single ontology constraints in a model.
  *
  * Below is the copyright agreement for the Ptolemy II system.
  *
@@ -24,16 +24,21 @@
  */
 package ptolemy.data.ontologies;
 
+import java.util.List;
+
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.StringAttribute;
 
 /**
- * An annotation attribute that specifies ontology constraints in the model. The
- * name of the attribute is prefixed by the ontology's name.
+ * An annotation specifying a single ontology constraints in a model.
+ * 
+ * The name of the ontology is specified as a StringAttribute, but it
+ * will also fall back to a name-convention based method for backward
+ * compatibility.
  *
- * @author Man-Kit Leung
+ * @author Ben Lickly, Man-Kit Leung
  * @version $Id$
  * @since Ptolemy II 8.0
  * @Pt.ProposedRating Red (mankit)
@@ -41,38 +46,91 @@ import ptolemy.kernel.util.StringAttribute;
  */
 public class OntologyAnnotationAttribute extends StringAttribute {
 
-    /**
-     * Construct an OntologyAnnotationAttribute with the specified name, and container.
-     *
-     * @param container Container
-     * @param name The given name for the attribute.
-     * @exception IllegalActionException If the attribute is not of an
-     * acceptable class for the container, or if the name contains a period.
-     * @exception NameDuplicationException If the name coincides with an
-     * attribute already in the container.
+    /** Construct an OntologyAnnotationAttribute with the specified name
+     *  and container.
+     *  If a reasonable default exists, initialize the ontology solver name,
+     *  as well. 
+     *  @param container Container
+     *  @param name The given name for the attribute.
+     *  @exception IllegalActionException If the attribute is not of an
+     *   acceptable class for the container, or if the name contains a period.
+     *  @exception NameDuplicationException If the name coincides with an
+     *   attribute already in the container.
      */
     public OntologyAnnotationAttribute(NamedObj container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-    }
+        ontologySolverName = new StringAttribute(this, "ontologySolverName");
+        _initializeSolverName();
+    }    
 
-    /**
-     * Returns the name of the ontology solver for which this annotation
-     * attribute is a constraint.
+    ///////////////////////////////////////////////////////////////////
+    ////                     ports and parameters                  ////
+
+    /** Name of the OntologySolver to which this annotation belongs.
+     */
+    public StringAttribute ontologySolverName;
+
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
+
+    /** Return the name of the ontology solver for which this annotation
+     *  attribute is a constraint.
      *
-     * @return A String representing the name of the referred ontology.
-     * @exception IllegalActionException If a valid ontology identifier cannot be
-     * found in the attribute name.
+     *  First try to look in the {@link #ontologySolverName} attribute, and
+     *  then fall back to the naming convention based on the annotation name.
+     *
+     *  @return A String representing the name of the referred ontology solver.
+     *  @exception IllegalActionException If an OntologySolver name cannot
+     *   be determined.
      */
     public String getOntologySolverIdentifier() throws IllegalActionException {
+        String solverName = ontologySolverName.getExpression();
+        if (solverName != null && !solverName.isEmpty()) {
+            return solverName;
+        }
+        solverName = _getIdentifierFromNamingConvention();
+        if (solverName != null && !solverName.isEmpty()) {
+            return solverName;
+        }
+        throw new IllegalActionException(this,
+                "Cannot determine " + OntologySolver.class.getName());
+    }
+
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
+
+    /** If there is only one OntologySolver in the model, initialize the
+     *  annotation to refer to that solver.
+     *  @throws IllegalActionException If the {@link #ontologySolverName}
+     *   attribute cannot be modified.
+     */
+    private void _initializeSolverName() throws IllegalActionException {
+        String solverName = "";
+        List<OntologySolver> solvers = toplevel().attributeList(OntologySolver.class);
+        if (solvers != null && solvers.size() == 1) {
+            solverName = solvers.get(0).getDisplayName();
+        }
+        ontologySolverName.setExpression(solverName);
+    }
+    
+
+    /** Return the OntologySolver using the naming-convention method.
+     *  @return A String representing the name of the referred ontology solver.
+     */
+    private String _getIdentifierFromNamingConvention() {
         String[] tokens = getName().split("::");
 
         if (tokens.length == 2) {
             return tokens[0];
         }
-
-        throw new IllegalActionException(
-                "Invalid ontology annotation attribute name: " + getName()
-                        + ". (should have form ONTOLOGY_SOLVER_NAME::LABEL)");
+        
+        return null;
+//        throw new IllegalActionException(
+//                "Invalid ontology annotation attribute name: " + getName()
+//                        + ". (should have form ONTOLOGY_SOLVER_NAME::LABEL)");
     }
+
 }
