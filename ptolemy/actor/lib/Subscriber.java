@@ -98,10 +98,6 @@ public class Subscriber extends TypedAtomicActor {
 
         _createInputPort();
         input.setMultiport(true);
-        // Refer the parameters of the input port to those of
-        // this actor.
-        input.channel.setExpression("$channel");
-        input.global.setExpression("global");
         
         output = new TypedIOPort(this, "output", false, true);
         output.setMultiport(true);
@@ -116,6 +112,11 @@ public class Subscriber extends TypedAtomicActor {
         global = new Parameter(this, "global");
         global.setExpression("false");
         global.setTypeEquals(BaseType.BOOLEAN);
+        
+        // Refer the parameters of the input port to those of
+        // this actor.
+        input.channel.setExpression("$channel");
+        input.global.setExpression("global");
     }
 
     ///////////////////////////////////////////////////////////////////

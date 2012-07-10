@@ -41,7 +41,6 @@ import ptolemy.data.expr.SingletonParameter;
 import ptolemy.data.expr.StringParameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -111,13 +110,7 @@ public class Publisher extends TypedAtomicActor {
         input.setMultiport(true);
         
         output = new PublisherPort(this, "output");
-        output.setMultiport(true);
-        // Refer the parameters of the output port to those of
-        // this actor.
-        output.channel.setExpression("$channel");
-        output.global.setExpression("global");
-        output.propagateNameChanges.setExpression("propagateNameChanges");
-        
+        output.setMultiport(true);        
         output.setTypeAtLeast(input);
         
         // We only have constraints from the publisher on the subscriber
@@ -138,6 +131,11 @@ public class Publisher extends TypedAtomicActor {
         propagateNameChanges.setExpression("false");
         propagateNameChanges.setTypeEquals(BaseType.BOOLEAN);
 
+        // Refer the parameters of the output port to those of
+        // this actor.
+        output.channel.setExpression("$channel");
+        output.global.setExpression("global");
+        output.propagateNameChanges.setExpression("propagateNameChanges");
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -204,23 +202,6 @@ public class Publisher extends TypedAtomicActor {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** When an attribute is changed, make sure that the output port
-     *  is notified.
-     *  @param attribute The attribute that changed.
-     *  @exception IllegalActionException Thrown if the new color attribute cannot
-     *      be created.
-     */
-    public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
-        if (attribute == channel) {
-            output.channel.validate();
-        } else if (attribute == global) {
-            output.global.validate();
-        } else {
-            super.attributeChanged(attribute);
-        }
-    }
-    
     /** Clone the actor into the specified workspace.
      *  @param workspace The workspace for the new object.
      *  @return A new actor.
