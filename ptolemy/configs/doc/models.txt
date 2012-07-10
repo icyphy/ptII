@@ -311,6 +311,7 @@ $CLASSPATH/ptolemy/domains/modal/demo/SystemLevelType/UNKNOWN.xml
 $CLASSPATH/ptolemy/domains/petrinet/demo/PetriNetDiningPhilosophers/PetriNetDiningPhilosophers.xml
 $CLASSPATH/ptolemy/domains/petrinet/demo/PetriNetSimple/PetriNetSimple.xml
 $CLASSPATH/ptolemy/domains/pn/demo/BrockAckerman/BrockAckerman.xml
+$CLASSPATH/ptolemy/domains/pn/demo/CounterMachine/CounterMachine.xml
 $CLASSPATH/ptolemy/domains/pn/demo/NondeterministicMerge/NondeterministicMerge.xml
 $CLASSPATH/ptolemy/domains/pn/demo/NondeterministicMergeWithFeedback/NondeterministicMergeWithFeedback.xml
 $CLASSPATH/ptolemy/domains/pn/demo/OrderedMerge/OrderedMerge.xml
