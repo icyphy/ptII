@@ -98,7 +98,7 @@ public class JSONToToken extends Converter {
      */
     public void fire() throws IllegalActionException {
         super.fire();
-        output.send(0, parseJSON(((StringToken) (input.get(0))).stringValue()));
+        output.send(0, _parseJSON(((StringToken) (input.get(0))).stringValue()));
     }
 
     /** Return false if the input port has no token, otherwise return
@@ -112,25 +112,6 @@ public class JSONToToken extends Converter {
         return super.prefire();
     }
 
-    /**
-     * Parse the input string by instantiating a new JSONObject, then translate
-     * the JSONObject to a Token and return it.
-     * @param input An input string that contains JSON-formatted data
-     * @return A Token that represents the JSON-formatted input string
-     * @exception IllegalActionException If the given input string cannot be parsed.
-     */
-    protected Token parseJSON(String input) throws IllegalActionException {
-        try {
-            if (input.charAt(0) == '{') {
-                return _scanJSONObject(new JSONObject(input));
-            } else {
-                return _scanJSONArray(new JSONArray(input));
-            }
-        } catch (JSONException e) {
-            throw new IllegalActionException("Unable to parse JSON data.");
-        }
-    }
-
     ///////////////////////////////////////////////////////////////////
     ////                      protected methods                    ////
 
@@ -141,6 +122,26 @@ public class JSONToToken extends Converter {
      protected Set<Inequality> _defaultTypeConstraints() {
          return null;
      }
+
+    /**
+     * Parse the input string by instantiating a new JSONObject, then translate
+     * the JSONObject to a Token and return it.
+     * @param input An input string that contains JSON-formatted data
+     * @return A Token that represents the JSON-formatted input string
+     * @exception IllegalActionException If the given input string cannot be parsed.
+     */
+    protected Token _parseJSON(String input) throws IllegalActionException {
+        try {
+            if (input.charAt(0) == '{') {
+                return _scanJSONObject(new JSONObject(input));
+            } else {
+                return _scanJSONArray(new JSONArray(input));
+            }
+        } catch (JSONException e) {
+            throw new IllegalActionException(this, e, "Unable to parse JSON data: "
+                                             + input);
+        }
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                      private methods                      ////
