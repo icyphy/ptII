@@ -122,8 +122,8 @@ public class SubscriberPort extends PubSubPort {
                         ((CompositeActor) container).unlinkToPublishedPort(
                                 _channel, this, _global);
                     }
-                    _channel = newValue;
                 }
+                _channel = newValue;
             }
         } else if (attribute == global) {
             boolean newValue = ((BooleanToken) global.getToken())
