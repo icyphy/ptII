@@ -240,6 +240,12 @@ public class FixedPointDirector extends StaticSchedulingDirector implements
                     if (_isReadyToFire(actor)) {
                         _fireActor(actor);
                         _actorsFired.add(actor);
+                    } else {
+                        if (_debugging) {
+                            if (!_actorsFinishedFiring.contains(actor) && actor.isStrict()) {
+                                _debug("Strict actor has uknown inputs: " + actor.getFullName());
+                            }
+                        }
                     }
                 } else {
                     // The postfire() method of this actor returned false in
@@ -468,10 +474,16 @@ public class FixedPointDirector extends StaticSchedulingDirector implements
         }
         */
 
-        Iterator actors = _actorsFired.iterator();
-        while (actors.hasNext() && !_stopRequested) {
-            Actor actor = (Actor) actors.next();
-            if (!_areAllInputsKnown(actor)) {
+        // The following used to inexplicably iterate only over
+        // _actorsFired. Now we iterate over all actors in the order
+        // of the schedule.
+        Schedule schedule = getScheduler().getSchedule();
+        Iterator firingIterator = schedule.firingIterator();
+        while (firingIterator.hasNext() && !_stopRequested) {
+            Actor actor = ((Firing) firingIterator.next()).getActor();
+            // Check for remaining unknown inputs.
+            // Don't care about actors that have previously returned false from postfire().
+            if (!_areAllInputsKnown(actor) && !_actorsFinishedExecution.contains(actor)) {
                 // Construct a list of the unknown inputs.
                 StringBuffer unknownInputs = new StringBuffer();
                 Iterator inputPorts = actor.inputPortList().iterator();
@@ -490,7 +502,7 @@ public class FixedPointDirector extends StaticSchedulingDirector implements
                         "Unknown inputs remain. Possible causality loop:\n"
                                 + unknownInputs);
             }
-            if (!_actorsFinishedExecution.contains(actor)) {
+            if (_actorsFired.contains(actor)) {
                 if (!_postfireActor(actor)) {
                     // postfire() returned false, so prevent the actor
                     // from iterating again.
