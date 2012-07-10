@@ -42,11 +42,13 @@ import java.util.Set;
 import java.util.TreeSet;
 
 import ptolemy.actor.Actor;
+import ptolemy.actor.CompositeActor;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.Receiver;
 import ptolemy.actor.TypedCompositeActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.lib.Source;
+import ptolemy.actor.lib.TimeDelay;
 import ptolemy.actor.parameters.ParameterPort;
 import ptolemy.actor.parameters.SharedParameter;
 import ptolemy.actor.util.CausalityInterface;
@@ -120,6 +122,7 @@ public class PtidesDirector extends DEDirector {
      *  @throws IllegalActionException If device delay parameter cannot be computed.
      */
     public void addInputEvent(PtidesEvent event, double deviceDelay) throws IllegalActionException { 
+        // FIXME distinguish between sensorinput and network input!!
         Time inputReady = localClock.getLocalTimeForCurrentEnvironmentTime().add(deviceDelay);
         List<PtidesEvent> list = _inputEventQueue.get(inputReady);
         if (list == null) {
@@ -400,6 +403,13 @@ public class PtidesDirector extends DEDirector {
             }
             _setDelayOffset(port, delayOffset - ((DoubleToken) clockSynchronizationErrorBound
                     .getToken()).doubleValue());
+        }
+        
+        // Calculate delayOffset to each actor
+        for (Object entity : ((CompositeActor)getContainer()).entityList()) {
+            if (entity instanceof TimeDelay) {
+                _setDelayOffset((NamedObj) entity, ((DoubleToken) ((TimeDelay)entity).minimumDelay.getToken()).doubleValue());
+            }
         }
     }
 
@@ -810,19 +820,19 @@ public class PtidesDirector extends DEDirector {
      * @param delayOffset Delay offset for safe-to-process analysis.
      * @exception IllegalActionException If cannot set parameter.
      */
-    protected void _setDelayOffset(TypedIOPort port, Double delayOffset) 
+    protected void _setDelayOffset(NamedObj namedObj, Double delayOffset) 
             throws IllegalActionException {
         
         // FIXME: change method to _setDoubleParameterValue?
         DoubleToken token = new DoubleToken(delayOffset);    
-        Parameter parameter = (Parameter)port.getAttribute("delayOffset");
+        Parameter parameter = (Parameter)namedObj.getAttribute("delayOffset");
         if(parameter == null) {
             try {
-                parameter = new Parameter(port, "delayOffset", token);
+                parameter = new Parameter(namedObj, "delayOffset", token);
             } catch (NameDuplicationException e) {
-                throw new IllegalActionException(port,
+                throw new IllegalActionException(namedObj,
                         "delayOffset parameter already exists at " +
-                        port.getFullName() + ".");
+                        namedObj.getFullName() + ".");
             }
         } else {
             parameter.setToken(token);

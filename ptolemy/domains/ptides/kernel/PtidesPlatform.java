@@ -52,6 +52,7 @@ import ptolemy.data.DoubleToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.RecordToken;
 import ptolemy.data.Token;
+import ptolemy.data.type.ArrayType;
 import ptolemy.data.type.BaseType;
 import ptolemy.data.type.RecordType;
 import ptolemy.data.type.Type;
@@ -232,21 +233,25 @@ public class PtidesPlatform extends MirrorComposite {
                     // If the source port belongs to me, then we want to
                     // compare its array element type to the type of the
                     // destination.
-                    if ((sourcePort.getContainer() == this)
+                    if ((sourcePort.getContainer() == this &&
+                            _isAssociatedWithNetworkReceiver(sourcePort))
                             && (destinationPort.getContainer() != this)) {
                         // The source port belongs to me, but not the
                         // destination.
-
-                        Type srcElementType = srcDeclared;
-                        compare = TypeLattice.compare(srcElementType,
+ 
+                        Type srcPayloadType = ((RecordType) srcDeclared).get("payload"); 
+                        compare = TypeLattice.compare(srcPayloadType,
                                 destinationDeclared);
                     } else if ((sourcePort.getContainer() != this)
-                            && (destinationPort.getContainer() == this)) {
+                            && (destinationPort.getContainer() == this &&
+                                    _isAssociatedWithNetworkTransmitter(destinationPort))) {
                         // The destination port belongs to me, but not
                         // the source.
-                        Type destinationElementType = destinationDeclared;
+                        
+                        Type destinationPayloadType = ((RecordType) destinationDeclared).get("payload");
+                        
                         compare = TypeLattice.compare(srcDeclared,
-                                destinationElementType);
+                                destinationPayloadType);
                     } else {
                         compare = TypeLattice.compare(srcDeclared,
                                 destinationDeclared);
@@ -278,12 +283,16 @@ public class PtidesPlatform extends MirrorComposite {
      *  @param destinationPortList The destination port list.
      *  @return A list of instances of Inequality.
      */
-    protected List _typeConstraintsFromTo(TypedIOPort sourcePort,
-            List destinationPortList) {
-        List result = new LinkedList();
-
+    protected List _destinationTypeConstraints(TypedIOPort sourcePort) {   
+        Iterator<IOPort> destinationPorts;
+        List<Inequality> result = new LinkedList<Inequality>();
         boolean srcUndeclared = sourcePort.getTypeTerm().isSettable();
-        Iterator destinationPorts = destinationPortList.iterator();
+        
+        if (sourcePort.isInput()) {
+            destinationPorts = sourcePort.insideSinkPortList().iterator();
+        } else {
+            destinationPorts = sourcePort.sinkPortList().iterator();
+        }
 
         while (destinationPorts.hasNext()) {
             TypedIOPort destinationPort = (TypedIOPort) destinationPorts.next();
@@ -316,11 +325,8 @@ public class PtidesPlatform extends MirrorComposite {
                                 destinationPort.getTypeTerm());
                         result.add(ineq);
                     } else if (destinationPort instanceof NetworkReceiverPort) {
-                        String[] labels = { "timestamp", "microstep", "payload" };
-                        Type[] types = { BaseType.DOUBLE, BaseType.INT,
-                                BaseType.UNKNOWN };
-                        RecordType type = new RecordType(labels, types);
-                        sourcePort.setTypeEquals(type);
+                        
+                        sourcePort.setTypeEquals(new PtidesNetworkType());
                         RecordType sourcePortType = (RecordType) sourcePort
                                 .getType();
                         Inequality ineq = new Inequality(
@@ -337,11 +343,8 @@ public class PtidesPlatform extends MirrorComposite {
                         ineq = new Inequality(sourcePort.getTypeTerm(),
                                 destinationPort.getTypeTerm());
                     } else if (sourcePort instanceof NetworkTransmitterPort) {
-                        String[] labels = { "timestamp", "microstep", "payload" };
-                        Type[] types = { BaseType.DOUBLE, BaseType.INT,
-                                BaseType.UNKNOWN };
-                        RecordType type = new RecordType(labels, types);
-                        destinationPort.setTypeEquals(type);
+                        
+                        destinationPort.setTypeEquals(new PtidesNetworkType());
                         RecordType outputType = (RecordType) destinationPort
                                 .getType();
 
@@ -370,9 +373,58 @@ public class PtidesPlatform extends MirrorComposite {
         platformDirector.setContainer(this);
         platformDirector.setName(uniqueName("PtidesPlatformDirector"));
     }
+    
+    /** Check if given MirrorPort is associated with a NetworkReceiverPort.
+     *  @param port The MirrorPort.
+     *  @return True if is associated with a NetworkReceiverPort.
+     */
+    private boolean _isAssociatedWithNetworkReceiver(Port port) {
+        return ((MirrorPort) port).getAssociatedPort() instanceof NetworkReceiverPort;
+    }
+    
+    /** Check if given MirrorPort is associated with a NetworkTransmitterPort.
+     *  @param port The MirrorPort.
+     *  @return True if is associated with a NetworkTransmitterPort.
+     */
+    private boolean _isAssociatedWithNetworkTransmitter(Port port) {
+        return ((MirrorPort) port).getAssociatedPort() instanceof NetworkTransmitterPort;
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
+    
+    /** The Ptides type that is sent over the network. This is a RecordType
+     *  containing timestamp, microstep and payload.
+     */
+    public static class PtidesNetworkType extends RecordType {
+
+        /** Create a new default PtidesNetworkType.
+         */
+        public PtidesNetworkType() {
+            super(LABELS, TYPES);
+        }
+         
+        /** The types of the RecordType fields. */
+        public static Type[] TYPES = { BaseType.DOUBLE, BaseType.INT,
+                BaseType.UNKNOWN }; 
+        
+        /** The labels of the RecordType fields. */
+        public static String[] LABELS = new String[] { "timestamp",
+            "microstep", "payload" };
+        
+        /** Label of the timestamp that is transmitted within the RecordToken.
+         */
+        private static final String timestamp = "timestamp";
+
+        /** Label of the microstep that is transmitted within the RecordToken.
+         */
+        private static final String microstep = "microstep";
+
+        /** Label of the payload that is transmitted within the RecordToken.
+         */
+        private static final String payload = "payload";
+       
+    }
 
     ///////////////////////////////////////////////////////////////////
     //// PtidesComposite
@@ -550,7 +602,7 @@ public class PtidesPlatform extends MirrorComposite {
                                         + port.getName());
                             }
 
-                            if (((MirrorPort) port).getAssociatedPort() instanceof NetworkReceiverPort) {
+                            if (_isAssociatedWithNetworkReceiver(port)) {
                                 NetworkReceiverPort networkReceiverPort = (NetworkReceiverPort) ((MirrorPort) port)
                                         .getAssociatedPort();
                                 PtidesDirector director = (PtidesDirector) _getEmbeddedPtidesDirector();
@@ -568,11 +620,11 @@ public class PtidesPlatform extends MirrorComposite {
                                 RecordToken record = (RecordToken) t;
 
                                 Time recordTimeStamp = new Time(director,
-                                        ((DoubleToken) (record.get(timestamp)))
+                                        ((DoubleToken) (record.get(PtidesNetworkType.timestamp)))
                                                 .doubleValue());
 
                                 int recordMicrostep = ((IntToken) (record
-                                        .get(microstep))).intValue();
+                                        .get(PtidesNetworkType.microstep))).intValue();
 
                                 Receiver[][] farReceivers = networkReceiverPort
                                         .deepGetReceivers();
@@ -584,7 +636,7 @@ public class PtidesPlatform extends MirrorComposite {
                                                     recordTimeStamp,
                                                     recordMicrostep,
                                                     -1,
-                                                    (Token) record.get(payload),
+                                                    (Token) record.get(PtidesNetworkType.payload),
                                                     farReceivers[channelIndex][i]),
                                             ((DoubleToken) networkReceiverPort.deviceDelay
                                                     .getToken()).doubleValue());
@@ -624,19 +676,18 @@ public class PtidesPlatform extends MirrorComposite {
                     while (port.isKnownInside(i) && port.hasTokenInside(i)) {
                         Token t = port.getInside(i);
 
-                        if (((MirrorPort) port).getAssociatedPort() instanceof NetworkTransmitterPort) {
+                        if (_isAssociatedWithNetworkTransmitter(port)) {
 
                             PtidesDirector director = (PtidesDirector) ((CompositeActor) ((MirrorPort) port)
                                     .getAssociatedPort().getContainer())
                                     .getDirector();
 
-                            String[] labels = new String[] { timestamp,
-                                    microstep, payload };
+                            
                             Token[] values = new Token[] {
                                     new DoubleToken(director.getModelTime()
                                             .getDoubleValue()),
                                     new IntToken(director.getMicrostep()), t };
-                            RecordToken record = new RecordToken(labels, values);
+                            RecordToken record = new RecordToken(PtidesNetworkType.LABELS, values);
                             try {
                                 ((MirrorPort) port).send(i, record);
                             } catch (IllegalActionException ex) {
@@ -689,17 +740,6 @@ public class PtidesPlatform extends MirrorComposite {
         // Indicator that at least one actor returned false in postfire.
         private boolean _postfireReturns = true;
 
-        /** Label of the timestamp that is transmitted within the RecordToken.
-         */
-        private static final String timestamp = "timestamp";
-
-        /** Label of the microstep that is transmitted within the RecordToken.
-         */
-        private static final String microstep = "microstep";
-
-        /** Label of the payload that is transmitted within the RecordToken.
-         */
-        private static final String payload = "payload";
     }
 
     ///////////////////////////////////////////////////////////////////
