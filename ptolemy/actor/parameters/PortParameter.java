@@ -27,15 +27,11 @@
  */
 package ptolemy.actor.parameters;
 
-import java.util.LinkedList;
-import java.util.List;
-
 import ptolemy.actor.Initializable;
 import ptolemy.actor.TypedActor;
 import ptolemy.data.Token;
-import ptolemy.data.expr.Parameter;
+import ptolemy.data.expr.AbstractInitializableParameter;
 import ptolemy.kernel.ComponentEntity;
-import ptolemy.kernel.Entity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
@@ -127,7 +123,7 @@ import ptolemy.kernel.util.Workspace;
  @Pt.ProposedRating Green (eal)
  @Pt.AcceptedRating Yellow (neuendor)
  */
-public class PortParameter extends Parameter implements Initializable {
+public class PortParameter extends AbstractInitializableParameter implements Initializable {
     /** Construct a parameter with the given name contained by the specified
      *  entity. The container argument must not be null, or a
      *  NullPointerException will be thrown.  This parameter will create
@@ -183,20 +179,6 @@ public class PortParameter extends Parameter implements Initializable {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-
-    /** Add the specified object to the list of objects whose
-     *  preinitialize(), initialize(), and wrapup()
-     *  methods should be invoked upon invocation of the corresponding
-     *  methods of this object.
-     *  @param initializable The object whose methods should be invoked.
-     *  @see #removeInitializable(Initializable)
-     */
-    public void addInitializable(Initializable initializable) {
-        if (_initializables == null) {
-            _initializables = new LinkedList<Initializable>();
-        }
-        _initializables.add(initializable);
-    }
     
     /** React to a change in an attribute.  This method is called by
      *  a contained attribute when its value changes.  In this class,
@@ -249,7 +231,6 @@ public class PortParameter extends Parameter implements Initializable {
      */
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         PortParameter newObject = (PortParameter) super.clone(workspace);
-        newObject._initializables = null;
         // Cannot establish an association with the cloned port until
         // that port is cloned and the container of both is set.
         newObject._port = null;
@@ -281,96 +262,9 @@ public class PortParameter extends Parameter implements Initializable {
      *  @exception IllegalActionException If thrown by a subclass.
      */
     public void initialize() throws IllegalActionException {
+        super.initialize();
+        super.setExpression(_persistentExpression);
         validate();
-    }
-
-    /** Do nothing.
-     *  @exception IllegalActionException If thrown by a subclass.
-     */
-    public void preinitialize() throws IllegalActionException {
-    }
-
-    /** Remove the specified object from the list of objects whose
-     *  preinitialize(), initialize(), and wrapup()
-     *  methods should be invoked upon invocation of the corresponding
-     *  methods of this object. If the specified object is not
-     *  on the list, do nothing.
-     *  @param initializable The object whose methods should no longer be invoked.
-     *  @see #addInitializable(Initializable)
-     */
-    public void removeInitializable(Initializable initializable) {
-        if (_initializables != null) {
-            _initializables.remove(initializable);
-            if (_initializables.size() == 0) {
-                _initializables = null;
-            }
-        }
-    }
-     
-    /** Set the container of this parameter. If the container is different
-     *  from what it was before and there is an associated port, then
-     *  break the association.  If the new container has a port with the
-     *  same name as this parameter, then establish a new association.
-     *  That port must be an instance of ParameterPort, or no association
-     *  is created.
-     *  @see ParameterPort
-     *  @param entity The new container.
-     *  @exception IllegalActionException If the superclass throws it.
-     *  @exception NameDuplicationException If the superclass throws it.
-     */
-    @Override
-    public void setContainer(NamedObj entity) throws IllegalActionException,
-            NameDuplicationException {
-        Entity previousContainer = (Entity) getContainer();
-        if (previousContainer instanceof Initializable) {
-            ((Initializable) previousContainer).removeInitializable(this);
-        }
-        super.setContainer(entity);
-        if (entity instanceof Initializable) {
-            ((Initializable) entity).addInitializable(this);
-        }
-        /* NOTE: This method previously had type signature Entity, which
-         * means it didn't actually override the base class. It previously
-         * only had the following code, which was never executed.
-         * If the following code executes, many tests fail.
-         * Presumably, what this code is trying to do is handled
-         * by ParameterPort. EAL 6/2/12
-
-        if (!(entity instanceof Entity)) {
-            throw new IllegalActionException(this, "Container is required to be an Entity.");
-        }
-
-        // If there is an associated port, and the container has changed,
-        // break the association.
-        if ((_port != null) && (entity != previousContainer)) {
-            _port._parameter = null;
-            _port = null;
-        }
-
-        // Look for a port in the new container with the same name,
-        // and establish an association.
-        if (entity instanceof TypedActor) {
-            // Establish association with the port.
-            Port port = ((Entity)entity).getPort(getName());
-
-            if (port instanceof ParameterPort) {
-                _port = (ParameterPort) port;
-
-                // NOTE: Following check seems wrong.
-                // Why was it here? EAL 6/1/12.
-                // if (_port._parameter == null) {
-                    _port._parameter = this;
-                    _port.setTypeSameAs(this);
-                // }
-            }
-
-            // NOTE: Do not create an instance of the port.
-            // This is called when this object is cloned, and
-            // the port will be cloned too. If we create a new
-            // instance here, then we will get a name collision
-            // as part of the cloning.
-        }
-        */
     }
 
     /** Set the current value of this parameter and notify the container
@@ -517,32 +411,17 @@ public class PortParameter extends Parameter implements Initializable {
         }
     }
 
-    /** Do nothing.
-     *  @exception IllegalActionException If thrown by a subclass.
-     */
-     public void wrapup() throws IllegalActionException {
-     }
-
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
-    /** Propagate existence of this object to the
-     *  specified object. The specified object is required
-     *  to be an instance of the same class as the container
-     *  of this one, or an exception will be thrown. In this
-     *  base class, this object is cloned, and its name
-     *  is set to the same as this object.
-     *  Derived classes with a setContainer() method are
-     *  responsible for ensuring that this returned object
-     *  has its container set to the specified container.
-     *  This base class ensures that the returned object
-     *  is in the same workspace as the container.
+    /** Override the base class to also propagate the associated port.
      *  @param container Object to contain the new object.
      *  @exception IllegalActionException If the object
      *   cannot be cloned.
      *  @return A new object of the same class and name
      *   as this one.
      */
+    @Override
     protected NamedObj _propagateExistence(NamedObj container)
             throws IllegalActionException {
         NamedObj result = super._propagateExistence(container);
@@ -567,12 +446,7 @@ public class PortParameter extends Parameter implements Initializable {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    
-    /** List of objects whose (pre)initialize() and wrapup() methods should be
-     *  slaved to these.
-     */
-    private transient List<Initializable> _initializables;
-    
+        
     /** The persistent expression. */
     private String _persistentExpression;
 

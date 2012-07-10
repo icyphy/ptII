@@ -54,6 +54,7 @@ PTPACKAGE = 	expr
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS = \
+	AbstractInitializableParameter.java \
 	AbstractParseTreeVisitor.java \
 	ASTPtArrayConstructNode.java \
 	ASTPtAssignmentNode.java \
