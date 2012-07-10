@@ -128,7 +128,6 @@ test SubscriptionAggregator-3.0 {Debugging messages} {
     set publisher [java::new ptolemy.actor.lib.Publisher $e3 publisher]
     set channelP [getParameter $publisher channel]
     $channelP setExpression "channel42"
-    $publisher attributeChanged $channelP
 
     [java::cast ptolemy.actor.IORelation [$e3 connect \
 	[java::field [java::cast ptolemy.actor.lib.Source $const] \
@@ -138,24 +137,23 @@ test SubscriptionAggregator-3.0 {Debugging messages} {
     set subAgg [java::new ptolemy.actor.lib.SubscriptionAggregator $e3 subagg]
     set channelS [getParameter $subAgg channel]
     $channelS setExpression "channel42"
-    $subAgg attributeChanged $channelS
 
     set rec [java::new ptolemy.actor.lib.Recorder $e3 rec]
     [java::cast ptolemy.actor.IORelation [$e3 connect \
 	[java::field [java::cast ptolemy.actor.lib.Subscriber $subAgg] \
 	     output] \
 	[java::field [java::cast ptolemy.actor.lib.Sink $rec] input]]] setWidth 1
-    puts [$e3 exportMoML]
+    # puts [$e3 exportMoML]
     set stream [java::new java.io.ByteArrayOutputStream]
     set printStream [java::new \
             {java.io.PrintStream java.io.OutputStream} $stream]
     set listener [java::new ptolemy.kernel.util.StreamListener $printStream]
     $subAgg addDebugListener $listener
 
-    # FIXME: I'm not sure why it is necessary to call description here,
-    # but if we don't then we get an error.
-    #$subAgg description
-
+    # NOTE: The MoML parser does the following, and it is required
+    # of all models after instantiating everything.
+	$subAgg validateSettables
+	
     [$e3 getManager] execute
     $subAgg removeDebugListener $listener
     $printStream flush
@@ -164,8 +162,8 @@ test SubscriptionAggregator-3.0 {Debugging messages} {
 	        [$stream toString] "\n" output
     list $output \
 	[enumToTokenValues [$rec getRecord 0]]
-} {{Connections changed on port: input
-Called preinitialize()
+} {{Called preinitialize()
+Connections changed on port: input
 Connections changed on port: input
 Called stopFire()
 Added attribute firingsPerIteration to .top.subagg
