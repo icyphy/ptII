@@ -54,6 +54,7 @@ import javax.swing.text.html.StyleSheet;
 import ptolemy.gui.Top;
 import ptolemy.kernel.util.StringAttribute;
 import ptolemy.util.ClassUtilities;
+import ptolemy.util.FileUtilities;
 import ptolemy.util.MessageHandler;
 
 ///////////////////////////////////////////////////////////////////
@@ -84,6 +85,9 @@ import ptolemy.util.MessageHandler;
  </pre>
  will open the Ptolemy documentation for this class.  For details see
  {@link ptolemy.vergil.basic.GetDocumentationAction}.
+
+ <p>If the URL starts with <code>$CLASSPATH</code> then the classpath
+ is searched.</p>
 
  <p>This class supports printing and will save the text to a .html file.
  The url that is viewed can be changed by calling the <i>setPage</i> method.
@@ -285,14 +289,26 @@ public class HTMLViewer extends TableauFrame implements Printable,
                                     newURL.toExternalForm(),
                                     BrowserEffigy.staticFactory);
                         } else {
-                            // Note that openModel will call MessageHandler
-                            // if there are problems, so there is no point
-                            // putting a try/catch block here.
-                            // then if the newURL is not found, we could
-                            // try looking for the link relative to the
-                            // classpath.
-                            configuration.openModel(newURL, newURL,
-                                    newURL.toExternalForm());
+                            try { 
+                                configuration.openModel(newURL, newURL,
+                                        newURL.toExternalForm());
+                            } catch (IOException ex) {
+                                // Try searching in the classpath in case the event description
+                                // starts with $CLASSPATH.
+                                // See http://bugzilla.ecoinformatics.org/show_bug.cgi?id=5194
+                                URL eventURL = null;
+                                try {
+                                    eventURL = FileUtilities.nameToURL(event.getDescription(), null, null);
+                                    configuration.openModel(eventURL, eventURL,
+                                            eventURL.toExternalForm());
+                                } catch (Throwable throwable) {
+                                    IOException exception = new IOException(
+                                            "Failed to find " + newURL + ", also tried "
+                                            + eventURL);
+                                    exception.initCause(ex);
+                                    throw exception;
+                                }
+                            }
                         }
                     } else {
                         // If there is no configuration,
