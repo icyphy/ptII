@@ -222,13 +222,13 @@ public class JSONToToken extends Converter {
     /** Iterate over the elements inside a JSONObject and put them inside a 
      *  new RecordToken. Apply recursion for JSONObjects and JSONArrays.
      * 
-     * @param object A JSONObject
-     * @return A RecordToken containing fields and values that correspond
-     * with those found in the given object
-     * @exception JSONException If a non-existent value is requested from the
-     * given object.
-     * @exception IllegalActionException Upon failing to instantiate a new 
-     * RecordToken.
+     *  @param object A JSONObject
+     *  @return A RecordToken containing fields and values that correspond
+     *  with those found in the given object
+     *  @exception JSONException If a non-existent value is requested from the
+     *  given object.
+     *  @exception IllegalActionException Upon failing to instantiate a new 
+     *  RecordToken.
      */
     private RecordToken _scanJSONObject(JSONObject object)
             throws IllegalActionException, JSONException {
