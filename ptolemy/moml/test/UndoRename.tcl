@@ -104,18 +104,10 @@ test UndoRename-1.1a {Test renaming an entity is undoable} {
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="top" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.0.devel">
-    </property>
-    <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
-    </property>
     <entity name="newLevel" class="ptolemy.actor.TypedCompositeActor">
-        <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
-        </property>
         <property name="test" class="ptolemy.data.expr.Parameter" value="2">
         </property>
         <entity name="a" class="ptolemy.actor.TypedCompositeActor">
-            <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
-            </property>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
             </port>
@@ -141,18 +133,10 @@ test UndoRename-1.1b {Test renaming an entity is undoable} {
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="top" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.0.devel">
-    </property>
-    <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
-    </property>
     <entity name="level" class="ptolemy.actor.TypedCompositeActor">
-        <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
-        </property>
         <property name="test" class="ptolemy.data.expr.Parameter" value="2">
         </property>
         <entity name="a" class="ptolemy.actor.TypedCompositeActor">
-            <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
-            </property>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
             </port>
@@ -193,18 +177,10 @@ test UndoRename-1.2a {Test renaming a port is undoable} {
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="top" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.0.devel">
-    </property>
-    <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
-    </property>
     <entity name="level" class="ptolemy.actor.TypedCompositeActor">
-        <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
-        </property>
         <property name="test" class="ptolemy.data.expr.Parameter" value="2">
         </property>
         <entity name="a" class="ptolemy.actor.TypedCompositeActor">
-            <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
-            </property>
             <port name="newInput" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
             </port>
@@ -230,18 +206,10 @@ test UndoRename-1.2b {Test renaming a port is undoable} {
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="top" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.0.devel">
-    </property>
-    <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
-    </property>
     <entity name="level" class="ptolemy.actor.TypedCompositeActor">
-        <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
-        </property>
         <property name="test" class="ptolemy.data.expr.Parameter" value="2">
         </property>
         <entity name="a" class="ptolemy.actor.TypedCompositeActor">
-            <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
-            </property>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
             </port>
@@ -282,18 +250,10 @@ test UndoRename-1.3a {Test renaming a property is undoable} {
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="top" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.0.devel">
-    </property>
-    <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
-    </property>
     <entity name="level" class="ptolemy.actor.TypedCompositeActor">
-        <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
-        </property>
         <property name="newTest" class="ptolemy.data.expr.Parameter" value="2">
         </property>
         <entity name="a" class="ptolemy.actor.TypedCompositeActor">
-            <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
-            </property>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
             </port>
@@ -319,18 +279,10 @@ test UndoRename-1.3b {Test renaming a property is undoable} {
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="top" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.0.devel">
-    </property>
-    <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
-    </property>
     <entity name="level" class="ptolemy.actor.TypedCompositeActor">
-        <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
-        </property>
         <property name="test" class="ptolemy.data.expr.Parameter" value="2">
         </property>
         <entity name="a" class="ptolemy.actor.TypedCompositeActor">
-            <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
-            </property>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
             </port>
@@ -371,18 +323,10 @@ test UndoRename-1.4a {Test renaming a relation is undoable} {
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="top" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.0.devel">
-    </property>
-    <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
-    </property>
     <entity name="level" class="ptolemy.actor.TypedCompositeActor">
-        <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
-        </property>
         <property name="test" class="ptolemy.data.expr.Parameter" value="2">
         </property>
         <entity name="a" class="ptolemy.actor.TypedCompositeActor">
-            <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
-            </property>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
             </port>
@@ -408,18 +352,10 @@ test UndoRename-1.4b {Test renaming a relation is undoable} {
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="top" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.0.devel">
-    </property>
-    <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
-    </property>
     <entity name="level" class="ptolemy.actor.TypedCompositeActor">
-        <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
-        </property>
         <property name="test" class="ptolemy.data.expr.Parameter" value="2">
         </property>
         <entity name="a" class="ptolemy.actor.TypedCompositeActor">
-            <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
-            </property>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
             </port>
@@ -472,18 +408,10 @@ test UndoRename-1.5a {Test a relation rename is updated across MoML} {
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="top" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.0.devel">
-    </property>
-    <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
-    </property>
     <entity name="level" class="ptolemy.actor.TypedCompositeActor">
-        <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
-        </property>
         <property name="test" class="ptolemy.data.expr.Parameter" value="2">
         </property>
         <entity name="a" class="ptolemy.actor.TypedCompositeActor">
-            <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
-            </property>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
             </port>
@@ -510,18 +438,10 @@ test UndoRename-1.5b {Test a relation rename is updated across MoML} {
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="top" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.0.devel">
-    </property>
-    <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
-    </property>
     <entity name="level" class="ptolemy.actor.TypedCompositeActor">
-        <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
-        </property>
         <property name="test" class="ptolemy.data.expr.Parameter" value="2">
         </property>
         <entity name="a" class="ptolemy.actor.TypedCompositeActor">
-            <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
-            </property>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
             </port>
@@ -578,18 +498,12 @@ test UndoRename-1.6a {Test a vertex rename is updated across MoML} {
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="top" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.0.devel">
-    </property>
-    <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.0.beta">
     </property>
     <entity name="level" class="ptolemy.actor.TypedCompositeActor">
-        <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
-        </property>
         <property name="test" class="ptolemy.data.expr.Parameter" value="2">
         </property>
         <entity name="a" class="ptolemy.actor.TypedCompositeActor">
-            <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
-            </property>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
             </port>
@@ -619,18 +533,12 @@ test UndoRename-1.6b {Test a vertex rename is updated across MoML} {
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="top" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.0.devel">
-    </property>
-    <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.0.beta">
     </property>
     <entity name="level" class="ptolemy.actor.TypedCompositeActor">
-        <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
-        </property>
         <property name="test" class="ptolemy.data.expr.Parameter" value="2">
         </property>
         <entity name="a" class="ptolemy.actor.TypedCompositeActor">
-            <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
-            </property>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
             </port>

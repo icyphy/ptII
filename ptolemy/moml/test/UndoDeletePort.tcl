@@ -117,24 +117,14 @@ test UndoDeletePort-1.1 {Test deleting a port is undoable: without entity attrib
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="top" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.0.devel">
-    </property>
-    <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
-    </property>
     <entity name="level" class="ptolemy.actor.TypedCompositeActor">
-        <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
-        </property>
         <port name="upper" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="output"/>
         </port>
         <entity name="a" class="ptolemy.actor.TypedCompositeActor">
-            <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
-            </property>
         </entity>
         <entity name="b" class="ptolemy.actor.TypedCompositeActor">
-            <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
-            </property>
             <port name="output" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
             </port>
@@ -165,27 +155,17 @@ test UndoDeletePort-1.1b {Test deleting a port is undoable: without entity attri
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="top" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.0.devel">
-    </property>
-    <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
-    </property>
     <entity name="level" class="ptolemy.actor.TypedCompositeActor">
-        <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
-        </property>
         <port name="upper" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="output"/>
         </port>
         <entity name="a" class="ptolemy.actor.TypedCompositeActor">
-            <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
-            </property>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
             </port>
         </entity>
         <entity name="b" class="ptolemy.actor.TypedCompositeActor">
-            <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
-            </property>
             <port name="output" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
             </port>
@@ -224,24 +204,14 @@ test UndoDeletePort-1.2a {Test deleting a port is undoable: without entity attri
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="top" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.0.devel">
-    </property>
-    <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
-    </property>
     <entity name="level" class="ptolemy.actor.TypedCompositeActor">
-        <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
-        </property>
         <port name="upper" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="output"/>
         </port>
         <entity name="a" class="ptolemy.actor.TypedCompositeActor">
-            <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
-            </property>
         </entity>
         <entity name="b" class="ptolemy.actor.TypedCompositeActor">
-            <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
-            </property>
             <port name="output" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
             </port>
@@ -272,27 +242,17 @@ test UndoDeletePort-1.2b {Test deleting a port is undoable: without entity attri
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="top" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.0.devel">
-    </property>
-    <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
-    </property>
     <entity name="level" class="ptolemy.actor.TypedCompositeActor">
-        <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
-        </property>
         <port name="upper" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="output"/>
         </port>
         <entity name="a" class="ptolemy.actor.TypedCompositeActor">
-            <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
-            </property>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
             </port>
         </entity>
         <entity name="b" class="ptolemy.actor.TypedCompositeActor">
-            <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
-            </property>
             <port name="output" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
             </port>
@@ -337,24 +297,14 @@ test UndoDeletePort-1.3a {Test deleting a port is undoable: with entity attribut
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="top" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.0.devel">
-    </property>
-    <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
-    </property>
     <entity name="level" class="ptolemy.actor.TypedCompositeActor">
-        <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
-        </property>
         <port name="upper" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="output"/>
         </port>
         <entity name="a" class="ptolemy.actor.TypedCompositeActor">
-            <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
-            </property>
         </entity>
         <entity name="b" class="ptolemy.actor.TypedCompositeActor">
-            <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
-            </property>
             <port name="output" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
             </port>
@@ -385,27 +335,17 @@ test UndoDeletePort-1.3b {Test deleting a port is undoable: with entity attribut
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="top" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.0.devel">
-    </property>
-    <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
-    </property>
     <entity name="level" class="ptolemy.actor.TypedCompositeActor">
-        <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
-        </property>
         <port name="upper" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="output"/>
         </port>
         <entity name="a" class="ptolemy.actor.TypedCompositeActor">
-            <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
-            </property>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
             </port>
         </entity>
         <entity name="b" class="ptolemy.actor.TypedCompositeActor">
-            <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
-            </property>
             <port name="output" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
             </port>
@@ -450,24 +390,14 @@ test UndoDeletePort-1.4a {Test deleting a port is undoable: with entity attribut
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="top" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.0.devel">
-    </property>
-    <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
-    </property>
     <entity name="level" class="ptolemy.actor.TypedCompositeActor">
-        <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
-        </property>
         <port name="upper" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="output"/>
         </port>
         <entity name="a" class="ptolemy.actor.TypedCompositeActor">
-            <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
-            </property>
         </entity>
         <entity name="b" class="ptolemy.actor.TypedCompositeActor">
-            <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
-            </property>
             <port name="output" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
             </port>
@@ -498,27 +428,17 @@ test UndoDeletePort-1.4b {Test deleting a port is undoable: with entity attribut
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="top" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.0.devel">
-    </property>
-    <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
-    </property>
     <entity name="level" class="ptolemy.actor.TypedCompositeActor">
-        <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
-        </property>
         <port name="upper" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="output"/>
         </port>
         <entity name="a" class="ptolemy.actor.TypedCompositeActor">
-            <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
-            </property>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
             </port>
         </entity>
         <entity name="b" class="ptolemy.actor.TypedCompositeActor">
-            <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
-            </property>
             <port name="output" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
             </port>
@@ -564,23 +484,13 @@ test UndoDeletePort-1.5a {Test deleting a port is undoable: with entity
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="top" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.0.devel">
-    </property>
-    <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
-    </property>
     <entity name="level" class="ptolemy.actor.TypedCompositeActor">
-        <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
-        </property>
         <entity name="a" class="ptolemy.actor.TypedCompositeActor">
-            <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
-            </property>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
             </port>
         </entity>
         <entity name="b" class="ptolemy.actor.TypedCompositeActor">
-            <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
-            </property>
             <port name="output" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
             </port>
@@ -610,27 +520,17 @@ test UndoDeletePort-1.5b {Test deleting a port is undoable: with entity attribut
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="top" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.0.devel">
-    </property>
-    <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
-    </property>
     <entity name="level" class="ptolemy.actor.TypedCompositeActor">
-        <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
-        </property>
         <port name="upper" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="output"/>
         </port>
         <entity name="a" class="ptolemy.actor.TypedCompositeActor">
-            <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
-            </property>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
             </port>
         </entity>
         <entity name="b" class="ptolemy.actor.TypedCompositeActor">
-            <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
-            </property>
             <port name="output" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
             </port>

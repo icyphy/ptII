@@ -211,8 +211,6 @@ test UserActorLibrary-1.0 {Test saving test.xml in the User Actor Library} {
     <configure>
         <group>
             <entity name="test" class="ptolemy.actor.TypedCompositeActor">
-                <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
-                </property>
                 <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="2.1-devel-2">
                 </property>
                 <doc>This test has no placeable elements, but writes to standard out.</doc>
@@ -225,8 +223,6 @@ test UserActorLibrary-1.0 {Test saving test.xml in the User Actor Library} {
                     </property>
                 </property>
                 <entity name="ramp" class="ptolemy.actor.lib.Ramp">
-                    <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
-                    </property>
                     <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="0">
                     </property>
                     <property name="init" class="ptolemy.actor.parameters.PortParameter" value="0">
@@ -235,8 +231,6 @@ test UserActorLibrary-1.0 {Test saving test.xml in the User Actor Library} {
                     </property>
                 </entity>
                 <entity name="rec" class="ptolemy.actor.lib.Recorder">
-                    <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
-                    </property>
                     <property name="capacity" class="ptolemy.data.expr.Parameter" value="-1">
                     </property>
                 </entity>

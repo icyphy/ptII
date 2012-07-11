@@ -54,8 +54,6 @@ test FMUImport-1.1 {Test out importFMU} {
     regsub {value=".*/org/ptolemy/fmi/fmu/cs/bouncingBall.fmu"} $moml {value="$CLASSPATH/org/ptolemy/fmi/fmu/cs/bouncingBall.fmu"} moml2
     list $moml2
 } {{<entity name="bouncingBall" class="ptolemy.actor.lib.fmi.FMUImport">
-    <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
-    </property>
     <property name="fmuFile" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/org/ptolemy/fmi/fmu/cs/bouncingBall.fmu">
     </property>
     <property name="_location" class="ptolemy.kernel.util.Location" value="100.0, 100.0">

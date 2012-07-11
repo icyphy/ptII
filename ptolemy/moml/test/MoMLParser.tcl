@@ -152,10 +152,6 @@ test MoMLParser-1.1 {parse tolerated incorrect MoML} {
 #
 set moml_2 "$header
 <entity name=\"top\" class=\"ptolemy.actor.TypedCompositeActor\">
-    <property name=\"_createdBy\" class=\"ptolemy.kernel.attributes.VersionAttribute\" value=\"9.0.devel\">
-    </property>
-    <property name=\"bidirectionalTypeInference\" class=\"ptolemy.actor.parameters.SharedParameter\" value=\"true\">
-    </property>
     <doc>xxx</doc>
 </entity>
 "
@@ -184,8 +180,6 @@ test MoMLParser-1.2.1 {parse simple model with HTML markup in processing instruc
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="top" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="3.1-devel">
-    </property>
-    <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
     </property>
     <doc>&lt;?html &lt;H1&gt;HTML Markup&lt;/H1&gt;&lt;I&gt;italics&lt;/I&gt;.?&gt;</doc>
 </entity>
@@ -221,9 +215,7 @@ test MoMLParser-1.2.2 {parse simple model with HTML markup} {
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="top" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.0.devel">
-    </property>
-    <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="3.1-devel">
     </property>
     <doc>&lt;?html &lt;H1&gt;HTML Markup&lt;/H1&gt;&lt;I&gt;italics&lt;/I&gt;.?&gt;</doc>
 </entity>
@@ -259,9 +251,7 @@ test MoMLParser-1.2.3 {parse simple model with nested doc tag} {
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="top" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.0.devel">
-    </property>
-    <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="3.1-devel">
     </property>
     <doc>&lt;H1&gt;HTML &lt;doc name=&quot;foo&quot;&gt;Markup&lt;/doc&gt;&lt;/H1&gt;&lt;I&gt;italics&lt;/I&gt;.</doc>
 </entity>
@@ -283,10 +273,6 @@ test MoMLParser-1.2.3a {reparse doc tag that has been escaped} {
 #
 set moml_3 "$classheader
 <class name=\"top\" extends=\"ptolemy.actor.TypedCompositeActor\">
-    <property name=\"_createdBy\" class=\"ptolemy.kernel.attributes.VersionAttribute\" value=\"9.0.devel\">
-    </property>
-    <property name=\"bidirectionalTypeInference\" class=\"ptolemy.actor.parameters.SharedParameter\" value=\"true\">
-    </property>
     <doc>xxx</doc>
 </class>
 "
@@ -301,10 +287,6 @@ test MoMLParser-1.3 {parse simple class with doc only} {
 #
 set moml_3_1 "$classheader
 <class name=\"top\" extends=\"ptolemy.actor.TypedCompositeActor\">
-    <property name=\"_createdBy\" class=\"ptolemy.kernel.attributes.VersionAttribute\" value=\"9.0.devel\">
-    </property>
-    <property name=\"bidirectionalTypeInference\" class=\"ptolemy.actor.parameters.SharedParameter\" value=\"true\">
-    </property>
     <doc>xxx</doc>
     <doc name=\"foo\">yyy</doc>
 </class>
@@ -331,10 +313,6 @@ test MoMLParser-1.3.2 {parse class with a property with no class} {
 <!DOCTYPE class PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <class name="top" extends="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.0.devel">
-    </property>
-    <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
-    </property>
     <property name="xxx" class="ptolemy.kernel.util.Attribute">
     </property>
 </class>
@@ -389,8 +367,6 @@ test MoMLParser-1.3.4 {check overriding class definition} {
     set test [$toplevel getEntity top]
     $test exportMoML
 } {<entity name="top" class="ptolemy.actor.TypedCompositeActor">
-    <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
-    </property>
     <property name="xxx" class="ptolemy.kernel.util.Attribute">
     </property>
     <property name="yyy" class="ptolemy.kernel.util.Attribute">
@@ -418,8 +394,6 @@ test MoMLParser-1.3.5 {check multiple reference with absolute name} {
     set test [$toplevel getEntity top]
     $test exportMoML
 } {<entity name="top" class="ptolemy.actor.TypedCompositeActor">
-    <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
-    </property>
     <property name="xxx" class="ptolemy.kernel.util.Attribute">
     </property>
     <property name="yyy" class="ptolemy.kernel.util.Attribute">
@@ -452,8 +426,6 @@ test MoMLParser-1.3.6 {check multiple reference with absolute name} {
 ####
 #
 set moml_4 {    <class name="top" extends="ptolemy.actor.TypedCompositeActor">
-        <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
-        </property>
         <doc>xxx</doc>
     </class>
 }
@@ -478,13 +450,7 @@ set result {<?xml version="1.0" standalone="no"?>
 <!DOCTYPE class PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <class name="top" extends="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.0.devel">
-    </property>
-    <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
-    </property>
     <entity name="a" class="ptolemy.actor.lib.Ramp">
-        <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
-        </property>
     </entity>
 </class>
 }
@@ -500,13 +466,7 @@ test MoMLParser-1.5 {test with an actor} {
 #
 set moml "$classheader
 <class name=\"top\" extends=\"ptolemy.actor.TypedCompositeActor\">
-    <property name=\"_createdBy\" class=\"ptolemy.kernel.attributes.VersionAttribute\" value=\"9.0.devel\">
-    </property>
-    <property name=\"bidirectionalTypeInference\" class=\"ptolemy.actor.parameters.SharedParameter\" value=\"true\">
-    </property>
     <entity name=\"a\" class=\"ptolemy.actor.lib.Ramp\">
-        <property name=\"bidirectionalTypeInference\" class=\"ptolemy.actor.parameters.SharedParameter\" value=\"true\">
-        </property>
         <property name=\"init\" class=\"ptolemy.actor.parameters.PortParameter\" value=\"0\">
         </property>
     </entity>
@@ -570,13 +530,7 @@ set result {<?xml version="1.0" standalone="no"?>
 <!DOCTYPE class PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <class name="top" extends="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.0.devel">
-    </property>
-    <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
-    </property>
     <entity name="a" class="ptolemy.actor.lib.Ramp">
-        <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
-        </property>
         <property name="init" class="ptolemy.actor.parameters.PortParameter" value="1">
         </property>
     </entity>
@@ -620,20 +574,12 @@ test MoMLParser-1.10 {test with hierarchy} {
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="foo" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.0.devel">
-    </property>
-    <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
-    </property>
     <port name="C" class="ptolemy.actor.TypedIOPort">
     </port>
     <entity name="C1" class="ptolemy.actor.TypedCompositeActor">
-        <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
-        </property>
         <port name="A" class="ptolemy.actor.TypedIOPort">
         </port>
         <entity name="C2" class="ptolemy.actor.TypedCompositeActor">
-            <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
-            </property>
             <port name="B" class="ptolemy.actor.TypedIOPort">
             </port>
         </entity>
@@ -1587,10 +1533,6 @@ set result {<?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="top" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.0.devel">
-    </property>
-    <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
-    </property>
     <property name="a" class="ptolemy.data.expr.Parameter" value="&quot;x&quot;">
     </property>
 </entity>
@@ -1638,22 +1580,12 @@ test MoMLParser-1.22 {test with an actor} {
 #
 set moml "$classheader
 <class name=\"top\" extends=\"ptolemy.actor.TypedCompositeActor\">
-    <property name=\"bidirectionalTypeInference\" class=\"ptolemy.actor.parameters.SharedParameter\" value=\"true\">
-    </property>
-    <property name=\"_createdBy\" class=\"ptolemy.kernel.attributes.VersionAttribute\" value=\"9.0.devel\">
-    </property>
     <entity name=\"Sender\" class=\"ptolemy.actor.TypedCompositeActor\">
-        <property name=\"bidirectionalTypeInference\" class=\"ptolemy.actor.parameters.SharedParameter\" value=\"true\">
-        </property>
         <entity name=\"Connect\" class=\"ptolemy.actor.TypedCompositeActor\">
-            <property name=\"bidirectionalTypeInference\" class=\"ptolemy.actor.parameters.SharedParameter\" value=\"true\">
-            </property>
             <port name=\"expired\" class=\"ptolemy.actor.TypedIOPort\">
                 <property name=\"input\"/>
             </port>
             <entity name=\"Init\" class=\"ptolemy.actor.TypedAtomicActor\">
-                <property name=\"bidirectionalTypeInference\" class=\"ptolemy.actor.parameters.SharedParameter\" value=\"true\">
-                </property>
                 <port name=\"Outgoing\" class=\"ptolemy.actor.TypedIOPort\">
                 </port>
             </entity>
@@ -1712,13 +1644,7 @@ test MoMLParser-2.1 {Test incremental parsing: add entity} {
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="top" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.0.devel">
-    </property>
-    <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
-    </property>
     <entity name="inside" class="ptolemy.actor.TypedCompositeActor">
-        <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
-        </property>
     </entity>
 </entity>
 }
@@ -1737,13 +1663,7 @@ test MoMLParser-2.2 {Test incremental parsing: add entity deeper} {
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="top" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.0.devel">
-    </property>
-    <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
-    </property>
     <entity name="inside" class="ptolemy.actor.TypedCompositeActor">
-        <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
-        </property>
         <property name="prop" class="ptolemy.data.expr.Parameter">
         </property>
     </entity>
@@ -1764,13 +1684,7 @@ test MoMLParser-2.3 {Test incremental parsing: add port} {
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="top" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.0.devel">
-    </property>
-    <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
-    </property>
     <entity name="inside" class="ptolemy.actor.TypedCompositeActor">
-        <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
-        </property>
         <property name="prop" class="ptolemy.data.expr.Parameter">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
@@ -1798,21 +1712,13 @@ test MoMLParser-2.4 {Test incremental parsing: add another port, relation, and l
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="top" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.0.devel">
-    </property>
-    <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
-    </property>
     <entity name="inside" class="ptolemy.actor.TypedCompositeActor">
-        <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
-        </property>
         <property name="prop" class="ptolemy.data.expr.Parameter">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
         </port>
     </entity>
     <entity name="a" class="ptolemy.actor.TypedCompositeActor">
-        <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
-        </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
         </port>
     </entity>
@@ -1837,13 +1743,7 @@ test MoMLParser-2.5 {Test incremental parsing: remove an entity} {
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="top" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.0.devel">
-    </property>
-    <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
-    </property>
     <entity name="inside" class="ptolemy.actor.TypedCompositeActor">
-        <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
-        </property>
         <property name="prop" class="ptolemy.data.expr.Parameter">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
@@ -1868,13 +1768,7 @@ test MoMLParser-2.5.1 {Test incremental parsing: remove a link} {
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="top" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.0.devel">
-    </property>
-    <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
-    </property>
     <entity name="inside" class="ptolemy.actor.TypedCompositeActor">
-        <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
-        </property>
         <property name="prop" class="ptolemy.data.expr.Parameter">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
@@ -1915,13 +1809,7 @@ test MoMLParser-2.7 {Test incremental parsing: remove a relation} {
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="top" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.0.devel">
-    </property>
-    <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
-    </property>
     <entity name="inside" class="ptolemy.actor.TypedCompositeActor">
-        <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
-        </property>
         <property name="prop" class="ptolemy.data.expr.Parameter">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
@@ -1946,13 +1834,7 @@ test MoMLParser-2.8 {Test incremental parsing: remove a port} {
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="top" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.0.devel">
-    </property>
-    <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
-    </property>
     <entity name="inside" class="ptolemy.actor.TypedCompositeActor">
-        <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
-        </property>
         <property name="prop" class="ptolemy.data.expr.Parameter">
         </property>
     </entity>
@@ -1985,13 +1867,7 @@ test MoMLParser-2.8.1 {Test incremental parsing: remove a port using entity attr
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="top" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.0.devel">
-    </property>
-    <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
-    </property>
     <entity name="inside" class="ptolemy.actor.TypedCompositeActor">
-        <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
-        </property>
         <property name="prop" class="ptolemy.data.expr.Parameter">
         </property>
     </entity>
@@ -2294,21 +2170,11 @@ test MoMLParser-3.1 {Test bizarre containment} {
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="top" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.0.devel">
-    </property>
-    <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
-    </property>
     <entity name="a" class="ptolemy.actor.TypedCompositeActor">
-        <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
-        </property>
         <entity name="c" class="ptolemy.actor.TypedCompositeActor">
-            <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
-            </property>
         </entity>
     </entity>
     <entity name="b" class="ptolemy.actor.TypedCompositeActor">
-        <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
-        </property>
     </entity>
 </entity>
 }
@@ -2333,16 +2199,8 @@ test MoMLParser-3.2 {Test more bizarre containment} {
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="top" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.0.devel">
-    </property>
-    <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
-    </property>
     <entity name="a" class="ptolemy.actor.TypedCompositeActor">
-        <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
-        </property>
         <entity name="b" class="ptolemy.actor.TypedCompositeActor">
-            <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
-            </property>
         </entity>
     </entity>
 </entity>
@@ -2368,16 +2226,8 @@ test MoMLParser-3.3 {Test more bizarre containment} {
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="top" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.0.devel">
-    </property>
-    <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
-    </property>
     <entity name="a" class="ptolemy.actor.TypedCompositeActor">
-        <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
-        </property>
         <entity name="b" class="ptolemy.actor.TypedCompositeActor">
-            <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
-            </property>
         </entity>
     </entity>
 </entity>
@@ -2404,16 +2254,8 @@ test MoMLParser-3.4 {Test invalid containment} {
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="top" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.0.devel">
-    </property>
-    <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
-    </property>
     <entity name="a" class="ptolemy.actor.TypedCompositeActor">
-        <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
-        </property>
         <entity name="b" class="ptolemy.actor.TypedCompositeActor">
-            <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
-            </property>
         </entity>
     </entity>
 </entity>
@@ -2435,10 +2277,6 @@ test MoMLParser-4.1 {Test doc element addition} {
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="top" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.0.devel">
-    </property>
-    <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
-    </property>
     <doc name="foo">xxx</doc>
 </entity>
 }
@@ -2453,10 +2291,6 @@ test MoMLParser-4.2 {Test doc element modifications} {
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="top" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.0.devel">
-    </property>
-    <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
-    </property>
     <doc name="foo">yyy</doc>
 </entity>
 }
@@ -2471,10 +2305,6 @@ test MoMLParser-4.3 {Test doc element removal} {
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="top" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.0.devel">
-    </property>
-    <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
-    </property>
 </entity>
 }
 
@@ -2489,10 +2319,6 @@ test MoMLParser-4.4 {Test doc element removal with default name} {
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="top" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.0.devel">
-    </property>
-    <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
-    </property>
 </entity>
 }
 
@@ -2512,10 +2338,6 @@ test MoMLParser-5.1 {Test property deletion} {
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="top" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.0.devel">
-    </property>
-    <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
-    </property>
     <property name="foo" class="ptolemy.kernel.util.Attribute">
     </property>
 </entity>
@@ -2531,10 +2353,6 @@ test MoMLParser-5.2 {Test property deletion using absolute names} {
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="top" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.0.devel">
-    </property>
-    <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
-    </property>
 </entity>
 }
 
@@ -2552,10 +2370,6 @@ test MoMLParser-5.2.1 {Test property deletion} {
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="top" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.0.devel">
-    </property>
-    <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
-    </property>
 </entity>
 }
 
@@ -2578,9 +2392,7 @@ test MoMLParser-5.3.1 {Delete a PortParameter} {
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="top" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.0.devel">
-    </property>
-    <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="6.1.devel">
     </property>
     <property name="MyPortParameter" class="ptolemy.actor.parameters.PortParameter">
     </property>
@@ -2607,9 +2419,7 @@ test MoMLParser-5.3.2 {Test property deletion of a PortParameter - get both the 
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="top" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.0.devel">
-    </property>
-    <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="6.1.devel">
     </property>
 </entity>
 }
@@ -2626,9 +2436,7 @@ test MoMLParser-5.3.3 {Test property deletion of a PortParameter - get both the 
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="top" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.0.devel">
-    </property>
-    <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="6.1.devel">
     </property>
     <property name="MyPortParameter" class="ptolemy.actor.parameters.PortParameter">
     </property>
@@ -2655,9 +2463,7 @@ test MoMLParser-5.3.4 {Test property deletion of a ParameterPort - get both the 
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="top" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.0.devel">
-    </property>
-    <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="6.1.devel">
     </property>
 </entity>
 }
@@ -2674,9 +2480,7 @@ test MoMLParser-5.3.5 {Test undo of 5.3.4} {
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="top" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.0.devel">
-    </property>
-    <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="6.1.devel">
     </property>
     <property name="MyPortParameter" class="ptolemy.actor.parameters.PortParameter">
     </property>
@@ -3139,27 +2943,17 @@ test MoMLParser-10.1 {test vertex} {
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="top" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.0.devel">
-    </property>
-    <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
-    </property>
     <entity name="A" class="ptolemy.actor.TypedAtomicActor">
-        <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
-        </property>
         <port name="out" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
         </port>
     </entity>
     <entity name="B" class="ptolemy.actor.TypedAtomicActor">
-        <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
-        </property>
         <port name="in" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
         </port>
     </entity>
     <entity name="C" class="ptolemy.actor.TypedAtomicActor">
-        <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
-        </property>
         <port name="in" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
         </port>
@@ -3185,27 +2979,17 @@ test MoMLParser-10.2 {exportMoML and then parse it - a good test for SaveAs } {
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="top" class="ptolemy.actor.TypedCompositeActor">
-    <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
-    </property>
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.0.devel">
-    </property>
     <entity name="A" class="ptolemy.actor.TypedAtomicActor">
-        <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
-        </property>
         <port name="out" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
         </port>
     </entity>
     <entity name="B" class="ptolemy.actor.TypedAtomicActor">
-        <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
-        </property>
         <port name="in" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
         </port>
     </entity>
     <entity name="C" class="ptolemy.actor.TypedAtomicActor">
-        <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
-        </property>
         <port name="in" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
         </port>
@@ -3479,14 +3263,10 @@ test MoMLParser-13.4 {test with weird configure text containing escaped tags wit
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="top" class="ptolemy.kernel.CompositeEntity">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.0.devel">
-    </property>
     <class name="utilities" extends="ptolemy.moml.EntityLibrary">
         <configure>
             <group>
                 <entity name="actor" class="ptolemy.actor.TypedCompositeActor">
-                    <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
-                    </property>
                     <property name="ParamWithEscapedValue" class="ptolemy.data.expr.Parameter" value="&quot;hello&quot;">
                     </property>
                 </entity>
@@ -3669,22 +3449,14 @@ test MoMLParser-20.2 {Make sure the derived class doesn't export the added entit
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="top" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.0.devel">
-    </property>
-    <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="3.1-devel">
     </property>
     <class name="BaseClass" extends="ptolemy.actor.TypedCompositeActor">
-        <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
-        </property>
         <entity name="B" class="ptolemy.actor.TypedAtomicActor">
-            <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
-            </property>
         </entity>
     </class>
     <class name="DerivedClass" extends="BaseClass">
         <entity name="A" class="ptolemy.actor.TypedAtomicActor">
-            <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
-            </property>
         </entity>
     </class>
     <entity name="InstanceOfBaseClass" class="BaseClass">
@@ -3710,26 +3482,16 @@ test MoMLParser-20.2 {Test adding an entity in the subclass} {
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="top" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.0.devel">
-    </property>
-    <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="3.1-devel">
     </property>
     <class name="BaseClass" extends="ptolemy.actor.TypedCompositeActor">
-        <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
-        </property>
         <entity name="B" class="ptolemy.actor.TypedAtomicActor">
-            <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
-            </property>
         </entity>
     </class>
     <class name="DerivedClass" extends="BaseClass">
         <entity name="A" class="ptolemy.actor.TypedAtomicActor">
-            <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
-            </property>
         </entity>
         <entity name="C" class="ptolemy.actor.TypedAtomicActor">
-            <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
-            </property>
         </entity>
     </class>
     <entity name="InstanceOfBaseClass" class="BaseClass">
@@ -3753,26 +3515,16 @@ test MoMLParser-20.3 {Test adding an entity in the subclass that is already ther
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="top" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.0.devel">
-    </property>
-    <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="3.1-devel">
     </property>
     <class name="BaseClass" extends="ptolemy.actor.TypedCompositeActor">
-        <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
-        </property>
         <entity name="B" class="ptolemy.actor.TypedAtomicActor">
-            <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
-            </property>
         </entity>
     </class>
     <class name="DerivedClass" extends="BaseClass">
         <entity name="A" class="ptolemy.actor.TypedAtomicActor">
-            <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
-            </property>
         </entity>
         <entity name="C" class="ptolemy.actor.TypedAtomicActor">
-            <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
-            </property>
         </entity>
     </class>
     <entity name="InstanceOfBaseClass" class="BaseClass">
@@ -3903,16 +3655,10 @@ test MoMLParser-20.7 {Overriding an inner class.} {
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="top" class="ptolemy.actor.TypedCompositeActor">
-    <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
-    </property>
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.0.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="3.1-devel">
     </property>
     <class name="BaseClass" extends="ptolemy.actor.TypedCompositeActor">
-        <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
-        </property>
         <class name="B" extends="ptolemy.actor.TypedCompositeActor">
-            <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
-            </property>
         </class>
         <entity name="InstanceOfB" class="B">
         </entity>
@@ -3920,13 +3666,9 @@ test MoMLParser-20.7 {Overriding an inner class.} {
     <class name="DerivedClass" extends="BaseClass">
         <class name="B" extends="ptolemy.actor.TypedCompositeActor">
             <entity name="C" class="ptolemy.actor.TypedCompositeActor">
-                <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
-                </property>
             </entity>
         </class>
         <entity name="A" class="ptolemy.actor.TypedCompositeActor">
-            <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
-            </property>
         </entity>
     </class>
     <entity name="InstanceOfBaseClass" class="BaseClass">
@@ -3953,19 +3695,11 @@ test MoMLParser-20.8 {Test modification to the base inner class.} {
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="top" class="ptolemy.actor.TypedCompositeActor">
-    <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
-    </property>
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.0.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="3.1-devel">
     </property>
     <class name="BaseClass" extends="ptolemy.actor.TypedCompositeActor">
-        <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
-        </property>
         <class name="B" extends="ptolemy.actor.TypedCompositeActor">
-            <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
-            </property>
             <entity name="D" class="ptolemy.actor.TypedCompositeActor">
-                <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
-                </property>
             </entity>
         </class>
         <entity name="InstanceOfB" class="B">
@@ -3974,13 +3708,9 @@ test MoMLParser-20.8 {Test modification to the base inner class.} {
     <class name="DerivedClass" extends="BaseClass">
         <class name="B" extends="ptolemy.actor.TypedCompositeActor">
             <entity name="C" class="ptolemy.actor.TypedCompositeActor">
-                <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
-                </property>
             </entity>
         </class>
         <entity name="A" class="ptolemy.actor.TypedCompositeActor">
-            <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
-            </property>
         </entity>
     </class>
     <entity name="InstanceOfBaseClass" class="BaseClass">
@@ -4026,6 +3756,33 @@ test MoMLParser-21.1 {Order of heritage list.} {
     listToFullNames $derivedList
 } {.top.SubclassOfRamp .top.InstanceOfSubclassOfRamp .top.InstanceOfRamp}
 
+test MoMLParser-21.2 {Delete entity.} {
+    set change [java::new ptolemy.moml.MoMLChangeRequest $toplevel $toplevel {
+        <deleteEntity name="SubclassOfRamp"/>
+    }]
+    $change setUndoable true
+    
+    # NOTE: Request is filled immediately because the model is not running.
+    $toplevel requestChange $change
+    $toplevel exportMoML
+} {<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="top" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="7.2.devel">
+    </property>
+    <class name="Ramp" extends="ptolemy.actor.lib.Ramp">
+    </class>
+    <entity name="InstanceOfRamp" class="Ramp">
+    </entity>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
+    <link port="InstanceOfRamp.output" relation="relation"/>
+</entity>
+}
+
 test MoMLParser-21.3 {Undo delete entity.} {
     set undochange [java::new ptolemy.kernel.undo.UndoChangeRequest $toplevel $toplevel]
     $toplevel requestChange $undochange
@@ -4034,13 +3791,9 @@ test MoMLParser-21.3 {Undo delete entity.} {
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="top" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.0.devel">
-    </property>
-    <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="7.2.devel">
     </property>
     <class name="Ramp" extends="ptolemy.actor.lib.Ramp">
-        <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
-        </property>
     </class>
     <class name="SubclassOfRamp" extends="Ramp">
     </class>
@@ -4070,9 +3823,7 @@ test MoMLParser-21.4 {Delete base class.} {
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="top" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.0.devel">
-    </property>
-    <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="7.2.devel">
     </property>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="1">
@@ -4089,26 +3840,22 @@ test MoMLParser-21.5 {Undo delete base class.} {
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="top" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.0.devel">
-    </property>
-    <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="7.2.devel">
     </property>
     <class name="Ramp" extends="ptolemy.actor.lib.Ramp">
-        <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
-        </property>
     </class>
     <class name="SubclassOfRamp" extends="Ramp">
     </class>
-    <entity name="InstanceOfSubclassOfRamp" class="SubclassOfRamp">
-    </entity>
     <entity name="InstanceOfRamp" class="Ramp">
+    </entity>
+    <entity name="InstanceOfSubclassOfRamp" class="SubclassOfRamp">
     </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="1">
         </property>
     </relation>
-    <link port="InstanceOfSubclassOfRamp.trigger" relation="relation"/>
     <link port="InstanceOfRamp.output" relation="relation"/>
+    <link port="InstanceOfSubclassOfRamp.trigger" relation="relation"/>
 </entity>
 }
 
@@ -4164,13 +3911,9 @@ test MoMLParser-22.2 {Delete port.} {
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="top" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.0.devel">
-    </property>
-    <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="7.2.devel">
     </property>
     <class name="Ramp" extends="ptolemy.actor.TypedAtomicActor">
-        <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
-        </property>
         <port name="trigger" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
         </port>
@@ -4197,13 +3940,9 @@ test MoMLParser-22.3 {Undo delete port.} {
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="top" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.0.devel">
-    </property>
-    <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="7.2.devel">
     </property>
     <class name="Ramp" extends="ptolemy.actor.TypedAtomicActor">
-        <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
-        </property>
         <port name="trigger" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
         </port>
@@ -4637,19 +4376,11 @@ test MoMLParser-33.1 {Use the input statement} {
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="inputTestTop" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.0.devel">
-    </property>
-    <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
     </property>
     <entity name="a" class="ptolemy.actor.TypedCompositeActor">
-        <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
-        </property>
         <entity name="inputTestB" class="ptolemy.actor.TypedCompositeActor">
-            <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
-            </property>
             <entity name="B" class="ptolemy.actor.TypedCompositeActor">
-                <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
-                </property>
             </entity>
         </entity>
     </entity>
@@ -4911,9 +4642,7 @@ test MoMLParser-34.4 {Test parsing a FilePortParameter with have xml chars in th
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="" class="ptolemy.actor.TypedCompositeActor">
-    <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
-    </property>
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.0.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
     </property>
     <property name="id1&lt;=&gt;&amp;" class="ptolemy.actor.parameters.FilePortParameter" value="">
     </property>
@@ -4928,9 +4657,7 @@ test MoMLParser-34.4 {Test parsing a FilePortParameter with have xml chars in th
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.0.devel">
-    </property>
-    <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
     </property>
     <property name="id1&lt;=&gt;&amp;" class="ptolemy.actor.parameters.FilePortParameter" value="">
     </property>

@@ -183,7 +183,6 @@ test Test-1.5 {Export} {
 <entity name="top" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.0.devel">
     </property>
-    </property>
     <property name="" class="ptolemy.domains.sdf.kernel.SDFDirector">
         <property name="localClock" class="ptolemy.actor.LocalClock">
             <property name="globalTimeResolution" class="ptolemy.actor.parameters.SharedParameter" value="1E-10">
@@ -215,7 +214,6 @@ test Test-1.5 {Export} {
         </property>
     </property>
     <entity name="ramp" class="ptolemy.actor.lib.Ramp">
-        </property>
         <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="NONE">
         </property>
         <property name="NONE" class="ptolemy.data.expr.Parameter" value="0">
@@ -245,8 +243,6 @@ test Test-1.5 {Export} {
         </port>
     </entity>
     <entity name="test" class="ptolemy.actor.lib.Test">
-        <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
-        </property>
         <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0, 1, 2, 3, 4}">
         </property>
         <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-9">
