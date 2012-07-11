@@ -335,7 +335,7 @@ public class Configurer extends JPanel implements CloseListener {
      *  addDecoratedAttributes is true we will also return the
      *  decorated attributes.
      *  In case the passed NamedObj is the top level container, the
-     *  parameter onlyForwardTypeInference is added if not present.
+     *  parameter disableBackwardTypeInference is added if not present.
      *  @param object The named object for which to show the visible
      *          Settables
      *  @param addDecoratedAttributes A flag that specifies whether
@@ -348,14 +348,14 @@ public class Configurer extends JPanel implements CloseListener {
         Iterator<?> parameters = object.attributeList(Settable.class)
                 .iterator();
 
-        // Add parameter onlyForwardTypeInference to top level container
+        // Add parameter disableBackwardTypeInference to top level container
         if (object.equals(object.toplevel())) {
             try {
                 Parameter onlyForward = (Parameter) object.getAttribute(
-                        "onlyForwardTypeInference", Parameter.class);
+                        "disableBackwardTypeInference", Parameter.class);
                 if (onlyForward == null) {
                     onlyForward = new Parameter(object,
-                            "onlyForwardTypeInference");
+                            "disableBackwardTypeInference");
                     onlyForward.setExpression("false");
                     attributes.add((Settable) onlyForward);
                 }
