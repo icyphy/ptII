@@ -274,8 +274,6 @@
         <link port="PteraModalModel.data" relation="relation"/>
     </class>
     <entity name="JSONToToken" class="ptolemy.actor.lib.conversions.json.JSONToToken">
-        <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="false">
-        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[215.0, 1085.0]">
         </property>
         <property name="_expertMode" class="ptolemy.kernel.util.SingletonAttribute">

@@ -2,8 +2,6 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="LazyPubSub3" class="ptolemy.actor.TypedCompositeActor">
-    <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
-    </property>
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.0.devel">
     </property>
     <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
@@ -31,8 +29,6 @@
         </property>
     </property>
     <entity name="Test" class="ptolemy.actor.lib.Test">
-        <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
-        </property>
         <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{2, 2}">
         </property>
         <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
@@ -41,8 +37,6 @@
         </property>
     </entity>
     <entity name="SubscriptionAggregator2" class="ptolemy.actor.lib.SubscriptionAggregator">
-        <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
-        </property>
         <property name="channel" class="ptolemy.data.expr.StringParameter" value="another.*">
         </property>
         <property name="global" class="ptolemy.data.expr.Parameter" value="true">
@@ -60,8 +54,6 @@
         </property>
     </entity>
     <entity name="Test2" class="ptolemy.actor.lib.Test">
-        <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
-        </property>
         <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{2, 2}">
         </property>
         <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
@@ -70,8 +62,6 @@
         </property>
     </entity>
     <entity name="Const" class="ptolemy.actor.lib.Const">
-        <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
-        </property>
         <property name="value" class="ptolemy.data.expr.Parameter" value="2">
         </property>
         <doc>Create a constant sequence.</doc>
@@ -85,8 +75,6 @@
         </property>
     </entity>
     <entity name="Publisher" class="ptolemy.actor.lib.Publisher">
-        <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
-        </property>
         <property name="channel" class="ptolemy.data.expr.StringParameter" value="lazyChannel">
         </property>
         <property name="global" class="ptolemy.data.expr.Parameter" value="true">
@@ -104,13 +92,9 @@
         </property>
     </entity>
     <entity name="CompositeActor" class="ptolemy.actor.TypedCompositeActor">
-        <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
-        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{110, 105}">
         </property>
         <entity name="LazyTypedCompositeActor" class="ptolemy.actor.LazyTypedCompositeActor">
-            <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
-            </property>
             <property name="recompileHierarchy" class="ptolemy.data.expr.Parameter" value="false">
             </property>
             <property name="recompileThisLevel" class="ptolemy.data.expr.Parameter" value="false">
@@ -136,8 +120,6 @@
             <configure>
                 <group>
                     <entity name="SubscriptionAggregator" class="ptolemy.actor.lib.SubscriptionAggregator">
-                        <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
-                        </property>
                         <property name="channel" class="ptolemy.data.expr.StringParameter" value="lazyChan.*">
                         </property>
                         <property name="global" class="ptolemy.data.expr.Parameter" value="true">
@@ -155,8 +137,6 @@
                         </property>
                     </entity>
                     <entity name="Test" class="ptolemy.actor.lib.Test">
-                        <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
-                        </property>
                         <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{2, 2}">
                         </property>
                         <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
@@ -165,8 +145,6 @@
                         </property>
                     </entity>
                     <entity name="Const" class="ptolemy.actor.lib.Const">
-                        <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
-                        </property>
                         <property name="value" class="ptolemy.data.expr.Parameter" value="2">
                         </property>
                         <doc>Create a constant sequence.</doc>
@@ -180,8 +158,6 @@
                         </property>
                     </entity>
                     <entity name="Publisher" class="ptolemy.actor.lib.Publisher">
-                        <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
-                        </property>
                         <property name="channel" class="ptolemy.data.expr.StringParameter" value="anotherChannel">
                         </property>
                         <property name="global" class="ptolemy.data.expr.Parameter" value="true">
@@ -211,8 +187,6 @@
         </entity>
     </entity>
     <entity name="Subscriber" class="ptolemy.actor.lib.Subscriber">
-        <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
-        </property>
         <property name="channel" class="ptolemy.data.expr.StringParameter" value="anotherChannel">
         </property>
         <property name="global" class="ptolemy.data.expr.Parameter" value="true">

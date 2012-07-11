@@ -353,8 +353,6 @@
             <link port="ConfigurationSwitch.falseOutput" relation="relation"/>
         </entity>
         <entity name="JSONToToken" class="ptolemy.actor.lib.conversions.json.JSONToToken">
-            <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
-            </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[355.0, 170.0]">
             </property>
             <property name="_expertMode" class="ptolemy.kernel.util.SingletonAttribute">

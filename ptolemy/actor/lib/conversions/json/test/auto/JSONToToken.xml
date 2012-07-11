@@ -2,8 +2,6 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="JSONToToken" class="ptolemy.actor.TypedCompositeActor">
-    <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
-    </property>
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.0.devel">
     </property>
     <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
@@ -27,8 +25,6 @@
         </property>
     </property>
     <entity name="JSONToToken" class="ptolemy.actor.lib.conversions.json.JSONToToken">
-        <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
-        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{320.0, 265.0}">
         </property>
         <property name="_expertMode" class="ptolemy.kernel.util.SingletonAttribute">
@@ -40,8 +36,6 @@
         </port>
     </entity>
     <entity name="StringConst" class="ptolemy.actor.lib.StringConst">
-        <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
-        </property>
         <property name="value" class="ptolemy.data.expr.Parameter" value="{&#10;     &quot;firstName&quot;: &quot;John&quot;&#10;}">
         </property>
         <doc>Create a constant sequence with a string value.</doc>
@@ -57,8 +51,6 @@
         </property>
     </entity>
     <entity name="Test" class="ptolemy.actor.lib.Test">
-        <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
-        </property>
         <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{{firstName = &quot;John&quot;}}">
         </property>
         <property name="requireAllCorrectValues" class="ptolemy.actor.parameters.SharedParameter" value="true">

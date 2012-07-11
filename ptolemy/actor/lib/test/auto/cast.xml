@@ -50,8 +50,6 @@
         </property>
     </property>
     <entity name="Expression" class="ptolemy.actor.lib.Expression">
-        <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
-        </property>
         <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="cast(double, 1)">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">

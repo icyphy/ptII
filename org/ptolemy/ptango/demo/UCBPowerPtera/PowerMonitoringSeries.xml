@@ -600,8 +600,6 @@
             </property>
         </entity>
         <entity name="JSONToToken" class="ptolemy.actor.lib.conversions.json.JSONToToken">
-            <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="false">
-            </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="{390.0, 160.0}">
             </property>
             <property name="_expertMode" class="ptolemy.kernel.util.SingletonAttribute">
@@ -877,8 +875,6 @@
             </property>
         </entity>
         <entity name="JSONToToken" class="ptolemy.actor.lib.conversions.json.JSONToToken">
-            <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="false">
-            </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="{550.0, 225.0}">
             </property>
             <property name="_expertMode" class="ptolemy.kernel.util.SingletonAttribute">
@@ -1240,8 +1236,6 @@
         <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{424.0498046874999, 329.0003850446428}">
         </property>
         <entity name="JSONToToken" class="ptolemy.actor.lib.conversions.json.JSONToToken">
-            <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="false">
-            </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="{150.0, 120.0}">
             </property>
             <property name="_expertMode" class="ptolemy.kernel.util.SingletonAttribute">
@@ -1382,8 +1376,6 @@
             </property>
         </entity>
         <entity name="JSONToToken" class="ptolemy.actor.lib.conversions.json.JSONToToken">
-            <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="false">
-            </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="{105.0, 210.0}">
             </property>
             <property name="_expertMode" class="ptolemy.kernel.util.SingletonAttribute">

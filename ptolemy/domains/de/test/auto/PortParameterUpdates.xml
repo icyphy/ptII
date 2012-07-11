@@ -2,8 +2,6 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="PortParameterUpdates" class="ptolemy.actor.TypedCompositeActor">
-    <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
-    </property>
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.0.devel">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
@@ -27,15 +25,11 @@
         </property>
     </property>
     <entity name="DiscreteClock" class="ptolemy.actor.lib.DiscreteClock">
-        <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
-        </property>
         <doc>Create periodic timed events.</doc>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[-195.0, 165.0]">
         </property>
     </entity>
     <entity name="DiscreteClock2" class="ptolemy.actor.lib.DiscreteClock">
-        <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
-        </property>
         <property name="period" class="ptolemy.actor.parameters.PortParameter" value="10.0">
         </property>
         <property name="offsets" class="ptolemy.data.expr.Parameter" value="{0.0, 5.0}">
@@ -47,8 +41,6 @@
         </property>
     </entity>
     <entity name="CompositeActor2" class="ptolemy.actor.TypedCompositeActor">
-        <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
-        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[-25.0, 95.0]">
         </property>
         <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
@@ -120,8 +112,6 @@
             </property>
         </port>
         <entity name="CurrentTime" class="ptolemy.actor.lib.CurrentTime">
-            <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
-            </property>
             <doc>Output the current time.</doc>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[-15.0, -370.0]">
             </property>
@@ -136,8 +126,6 @@
         <link port="CurrentTime.trigger" relation="relation2"/>
     </entity>
     <entity name="NonStrictTest" class="ptolemy.actor.lib.NonStrictTest">
-        <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
-        </property>
         <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.0, 1.0, 2.0, 3.0, 4.0, 5.0, 5.1, 5.2, 5.3, 5.4, 5.5, 6.5, 7.5, 8.5, 9.5, 10.5, 10.6, 10.7, 10.8, 10.9, 11.0}">
         </property>
         <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.05E-8">
