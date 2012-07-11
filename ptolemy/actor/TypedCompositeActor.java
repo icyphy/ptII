@@ -34,12 +34,11 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
-import ptolemy.actor.parameters.SharedParameter;
 import ptolemy.actor.util.GLBFunction;
 import ptolemy.data.BooleanToken;
+import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.ScopeExtender;
 import ptolemy.data.expr.Variable;
-import ptolemy.data.type.BaseType;
 import ptolemy.data.type.Type;
 import ptolemy.data.type.TypeLattice;
 import ptolemy.data.type.Typeable;
@@ -57,7 +56,6 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.InvalidStateException;
 import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.Workspace;
 
 ///////////////////////////////////////////////////////////////////
@@ -115,10 +113,6 @@ public class TypedCompositeActor extends CompositeActor implements TypedActor {
         // derived class Java definition. Thus, we force the class name
         // here to be TypedCompositeActor.
         setClassName("ptolemy.actor.TypedCompositeActor");
-        // Instantiate the bidirectionalTypeInference parameter, set its
-        // type to boolean, set its default value to true and only show
-        // the parameter in expert mode.
-        _init();
     }
 
     /** Construct a TypedCompositeActor in the specified workspace with
@@ -142,10 +136,6 @@ public class TypedCompositeActor extends CompositeActor implements TypedActor {
         // derived class Java definition. Thus, we force the class name
         // here to be TypedCompositeActor.
         setClassName("ptolemy.actor.TypedCompositeActor");
-        // Instantiate the bidirectionalTypeInference parameter, set its
-        // type to boolean, set its default value to true and only show
-        // the parameter in expert mode.
-        _init();
     }
 
     /** Construct a TypedCompositeActor with a name and a container.
@@ -177,23 +167,7 @@ public class TypedCompositeActor extends CompositeActor implements TypedActor {
         // derived class Java definition. Thus, we force the class name
         // here to be TypedCompositeActor.
         setClassName("ptolemy.actor.TypedCompositeActor");
-        // Instantiate the bidirectionalTypeInference parameter, set its
-        // type to boolean, set its default value to true and only show
-        // the parameter in expert mode.
-        _init();
     }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         parameters                        ////
-
-    /** Indicates whether bidirectional type inference is enabled.
-     *  This parameter is a expert parameter, to change its value in
-     *  Vergil, edit the parameters of an actor, select Preferences
-     *  and then Expert mode.  This parameter is shared with other
-     *  instances of ComponentEntity.
-     *  The default value is true.   
-     */
-    public SharedParameter bidirectionalTypeInference;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -678,17 +652,21 @@ public class TypedCompositeActor extends CompositeActor implements TypedActor {
                 // 2) only setup type constraint if bidirectional type 
                 // inference is enabled
                 try {
-                    if (((BooleanToken) (bidirectionalTypeInference.getToken()))
-                            .booleanValue()) {
-                        result.add(new Inequality(new GLBFunction(
-                                source), source.getTypeTerm()));
+                    Parameter onlyForward = (Parameter) this.toplevel()
+                            .getAttribute("onlyForwardTypeInference",
+                                    Parameter.class);
+                    if (onlyForward != null
+                            && ((BooleanToken) onlyForward.getToken())
+                                    .booleanValue()) {
+                        continue; // skip the GLB constraint
                     }
                 } catch (IllegalActionException e) {
-                    // this should not happen
-                    throw new InternalErrorException(this, e,
-                            "Unable to read value from shared "
-                                    + "parameter bidirectionalTypeInference.");
+                    // This should not happen
+                    e.printStackTrace();
                 }
+                // default behavior, add GLB constraint
+                result.add(new Inequality(new GLBFunction(source), source
+                        .getTypeTerm()));
             }
         }
 
@@ -697,26 +675,6 @@ public class TypedCompositeActor extends CompositeActor implements TypedActor {
 
     ///////////////////////////////////////////////////////////////////
     ////                      private methods                      ////
-
-    /** Initialize bidirectionalTypeInference.
-     */
-    private void _init() {
-        try {
-            bidirectionalTypeInference = new SharedParameter(this,
-                    "bidirectionalTypeInference", ComponentEntity.class);
-            bidirectionalTypeInference.setTypeEquals(BaseType.BOOLEAN);
-            bidirectionalTypeInference.setExpression("true");
-            // Mark bidirectionalTypeInference as implied so that it does
-            // get exported in the MoML by default.
-            //bidirectionalTypeInference.setPersistent(true);
-            //bidirectionalTypeInference.setDerivedLevel(1);
-            bidirectionalTypeInference.setVisibility(Settable.EXPERT);
-        } catch (Exception e) {
-            // this should not happen
-            throw new InternalErrorException(this, e, "Unable to create or "
-                    + "set shared parameter bidirectionalTypeInference.");
-        }
-    }
 
     // If this composite actor is opaque, perform static type checking.
     // Specifically, this method scans all the connections within this

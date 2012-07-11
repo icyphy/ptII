@@ -33,19 +33,15 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
-import ptolemy.actor.parameters.SharedParameter;
 import ptolemy.actor.util.Time;
-import ptolemy.data.type.BaseType;
 import ptolemy.data.type.Typeable;
 import ptolemy.graph.Inequality;
-import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Port;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.Workspace;
 
 ///////////////////////////////////////////////////////////////////
@@ -125,18 +121,6 @@ public class TypedAtomicActor extends AtomicActor<TypedIOPort> implements
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         parameters                        ////
-
-    /** Indicates whether bidirectional type inference is enabled.
-     *  This parameter is a expert parameter, to change its value in
-     *  Vergil, edit the parameters of an actor, select Preferences
-     *  and then Expert mode.  This parameter is shared with other
-     *  instances of ComponentEntity.
-     *  The default value is true.   
-     */
-    public SharedParameter bidirectionalTypeInference;
-
-    ///////////////////////////////////////////////////////////////////
     ////                       public methods                      ////
 
     /** React to a change in the type of an attribute.  This method is
@@ -189,15 +173,8 @@ public class TypedAtomicActor extends AtomicActor<TypedIOPort> implements
         // will be updated.
         newObject._cachedTypeConstraints = new HashSet<Inequality>();
         newObject._typeConstraintsVersion = -1;
-        try {
-            newObject.bidirectionalTypeInference = (SharedParameter)newObject.getAttribute("bidirectionalTypeInference",
-                    SharedParameter.class);
-        } catch (Throwable throwable) {
-            throw new CloneNotSupportedException("Failed to get "
-                    + "bidirectionalTypeInference attribute: "
-                    + throwable);
-        }
-            return newObject;
+        
+        return newObject;
     }
 
     /** Create a new TypedIOPort with the specified name.
@@ -259,7 +236,7 @@ public class TypedAtomicActor extends AtomicActor<TypedIOPort> implements
 
             Set<Inequality> cts = null;
 
-            // setup default constraints
+            // setup default constraints // FIXME: do customTypeConstraints() first
             if ((cts = _defaultTypeConstraints()) != null) {
                 _cachedTypeConstraints.addAll(cts);
             }
@@ -444,21 +421,6 @@ public class TypedAtomicActor extends AtomicActor<TypedIOPort> implements
         _cachedTypeConstraints = new HashSet<Inequality>();
         _typeConstraintsVersion = -1;
         _typesValid = false;
-        try {
-            bidirectionalTypeInference = new SharedParameter(this,
-                    "bidirectionalTypeInference", ComponentEntity.class);
-            bidirectionalTypeInference.setTypeEquals(BaseType.BOOLEAN);
-            bidirectionalTypeInference.setExpression("true");
-            // Mark bidirectionalTypeInference as implied so that it does
-            // get exported in the MoML by default.
-            //bidirectionalTypeInference.setPersistent(true);
-            bidirectionalTypeInference.setDerivedLevel(1);
-            bidirectionalTypeInference.setVisibility(Settable.EXPERT);
-        } catch (Exception e) {
-            // this should not happen
-            throw new InternalErrorException(this, e, "Unable to create or "
-                    + "set shared parameter bidirectionalTypeInference.");
-        }
 
     }
 

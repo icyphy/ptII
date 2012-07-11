@@ -41,12 +41,19 @@ import javax.swing.BoxLayout;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
+import ptolemy.data.expr.Parameter;
+import ptolemy.data.expr.SingletonParameter;
+import ptolemy.data.type.BaseType;
 import ptolemy.gui.CloseListener;
 import ptolemy.kernel.DecoratedAttributesImplementation;
+import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.DecoratedAttributes;
 import ptolemy.kernel.util.Decorator;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
+import ptolemy.kernel.util.SingletonAttribute;
 import ptolemy.moml.MoMLChangeRequest;
 import ptolemy.util.StringUtilities;
 
@@ -96,7 +103,7 @@ public class Configurer extends JPanel implements CloseListener {
         for (Settable parameter : parameters) {
             _originalValues.put(parameter, parameter.getExpression());
         }
-
+        
         boolean foundOne = false;
         Iterator<?> editors = object.attributeList(EditorPaneFactory.class)
                 .iterator();
@@ -327,6 +334,8 @@ public class Configurer extends JPanel implements CloseListener {
     /** Return the visible Settables of NamedObj object. When
      *  addDecoratedAttributes is true we will also return the
      *  decorated attributes.
+     *  In case the passed NamedObj is the top level container, the
+     *  parameter onlyForwardTypeInference is added if not present.
      *  @param object The named object for which to show the visible
      *          Settables
      *  @param addDecoratedAttributes A flag that specifies whether
@@ -339,6 +348,28 @@ public class Configurer extends JPanel implements CloseListener {
         Iterator<?> parameters = object.attributeList(Settable.class)
                 .iterator();
 
+        // Add parameter onlyForwardTypeInference to top level container
+        if (object.equals(object.toplevel())) {
+            try {
+                Parameter onlyForward = (Parameter) object.getAttribute(
+                        "onlyForwardTypeInference", Parameter.class);
+                if (onlyForward == null) {
+                    onlyForward = new Parameter(object,
+                            "onlyForwardTypeInference");
+                    onlyForward.setExpression("false");
+                    attributes.add((Settable) onlyForward);
+                }
+                onlyForward.setTypeEquals(BaseType.BOOLEAN);
+
+            } catch (IllegalActionException e) {
+                // This should not happen
+                e.printStackTrace();
+            } catch (NameDuplicationException e) {
+                // This should not happen
+                e.printStackTrace();
+            }
+        }
+        
         while (parameters.hasNext()) {
             Settable parameter = (Settable) parameters.next();
 
@@ -381,4 +412,7 @@ public class Configurer extends JPanel implements CloseListener {
 
     // A record of the original values.
     private HashMap<Settable, String> _originalValues;
+    
+    /** */
+    private boolean _originalExpertMode = true;
 }
