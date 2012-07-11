@@ -369,9 +369,13 @@ public abstract class GenericCodeGenerator extends Attribute implements
 
             try {
                 // Disable the bidirectional type inference.
-                SharedParameter bidirectionalTypeInference = (SharedParameter)toplevel.getAttribute("bidirectionalTypeInference", SharedParameter.class);
-                bidirectionalTypeInference.setExpression("false");
-
+                Parameter onlyForward = (Parameter) this.toplevel().getAttribute("onlyForwardTypeInference", Parameter.class);
+                if (onlyForward == null) {
+                    onlyForward = new Parameter(this.toplevel(), "onlyForwardTypeInference");
+                }
+                onlyForward.setTypeEquals(BaseType.BOOLEAN);
+                onlyForward.setExpression("true");
+                
                 manager.preinitializeAndResolveTypes();
                 //System.out.println(((CompositeActor)container).toplevel().exportMoML());
                 //StringUtilities.exit(5);
