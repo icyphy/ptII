@@ -12,13 +12,13 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[-420.0, -95.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-8, -8, 1296, 1000}, maximized=true}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 27, 1602, 874}, maximized=true}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1068, 884]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1382, 748]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.2037445309706">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{-105.5649340452262, 19.1246074120603}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{24.8614113799183, -37.3657842370469}">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="textSize" class="ptolemy.data.expr.Parameter" value="14">
@@ -117,7 +117,7 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="{110, 35}">
             </property>
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={339, 99, 828, 614}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={339, 99, 820, 644}, maximized=false}">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
         </property>
@@ -155,7 +155,7 @@
         <entity name="TimedPlotter" class="ptolemy.actor.lib.gui.TimedPlotter">
             <property name="legend" class="ptolemy.kernel.util.StringAttribute" value=" , VarDelay1">
             </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={450, 92, 366, 541}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={450, 92, 352, 540}, maximized=false}">
             </property>
             <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[350, 482]">
             </property>
@@ -187,7 +187,7 @@
         <entity name="TimedPlotter2" class="ptolemy.actor.lib.gui.TimedPlotter">
             <property name="legend" class="ptolemy.kernel.util.StringAttribute" value=" , VarDelay2">
             </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={813, 93, 355, 543}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={813, 93, 341, 542}, maximized=false}">
             </property>
             <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[339, 484]">
             </property>
@@ -226,11 +226,6 @@
                 <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="{0.0}">
                 </property>
             </port>
-            <port name="output" class="ptolemy.actor.TypedIOPort">
-                <property name="output"/>
-                <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
-                </property>
-            </port>
         </entity>
         <entity name="TCPPacketReceiver2" class="ptolemy.domains.ptides.lib.qm.TCPPacketReceiver">
             <property name="_location" class="ptolemy.kernel.util.Location" value="[180.0, 260.0]">
@@ -238,11 +233,6 @@
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
                 <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="{0.0}">
-                </property>
-            </port>
-            <port name="output" class="ptolemy.actor.TypedIOPort">
-                <property name="output"/>
-                <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
                 </property>
             </port>
         </entity>
