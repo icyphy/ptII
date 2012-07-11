@@ -653,7 +653,7 @@ public class TypedCompositeActor extends CompositeActor implements TypedActor {
                 // inference is enabled
                 try {
                     Parameter onlyForward = (Parameter) this.toplevel()
-                            .getAttribute("onlyForwardTypeInference",
+                            .getAttribute("disableBackwardTypeInference",
                                     Parameter.class);
                     if (onlyForward != null
                             && ((BooleanToken) onlyForward.getToken())
