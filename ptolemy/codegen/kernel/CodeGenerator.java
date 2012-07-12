@@ -792,8 +792,12 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
 
             try {
                 // Disable the bidirectional type inference.
-                SharedParameter bidirectionalTypeInference = (SharedParameter)toplevel.getAttribute("bidirectionalTypeInference", SharedParameter.class);
-                bidirectionalTypeInference.setExpression("false");
+                Parameter onlyForward = (Parameter) this.toplevel().getAttribute("disableBackwardTypeInference", Parameter.class);
+                if (onlyForward == null) {
+                    onlyForward = new Parameter(this.toplevel(), "disableBackwardTypeInference");
+                }
+                onlyForward.setTypeEquals(BaseType.BOOLEAN);
+                onlyForward.setExpression("true");
 
                 manager.preinitializeAndResolveTypes();
                 returnValue = _generateCode(code);
