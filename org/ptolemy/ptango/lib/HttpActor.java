@@ -421,7 +421,7 @@ public class HttpActor extends TypedAtomicActor implements HttpService {
      *  the handling of the request, sending back the response
      *  that has been provided by the enclosing actor.
      *   
-     *  @see http://wiki.eclipse.org/Jetty/Tutorial/Embedding_Jetty
+     *  See <a href"http://wiki.eclipse.org/Jetty/Tutorial/Embedding_Jetty">http://wiki.eclipse.org/Jetty/Tutorial/Embedding_Jetty</a>
      */
     protected class ActorServlet extends HttpServlet {
         
