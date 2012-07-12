@@ -1284,7 +1284,7 @@ ojdcheck.htm:
 
 # Location of the FindBugs sources
 #FINDBUGS=../vendors/findbugs-1.3.8
-FINDBUGS=../vendors/findbugs-2.0.1-rc2
+FINDBUGS=../vendors/findbugs-2.0.1-rc4
 
 findbugs: findbugs.htm findbugsOut.xml
 
