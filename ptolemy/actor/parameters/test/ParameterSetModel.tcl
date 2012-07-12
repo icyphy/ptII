@@ -118,4 +118,4 @@ test ParameterSetModel-3.1 {get all the scoped variable names for the const acto
 			 ptolemy.data.expr.Variable ptolemy.kernel.util.NamedObj} \
 		    [java::null] $const] toArray]
     lsort [$names getrange]
-} {NONE a bidirectionalTypeInference checkForFileUpdates fileOrURL firingCountLimit firingsPerIteration initialDefaultContents value}
+} {NONE a checkForFileUpdates fileOrURL firingCountLimit firingsPerIteration initialDefaultContents value}

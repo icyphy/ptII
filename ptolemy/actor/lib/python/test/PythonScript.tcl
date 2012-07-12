@@ -109,7 +109,6 @@ class Main :
 } {Connections changed on port: input
 Connections changed on port: output
 Called preinitialize()
-set up reference to attribute "bidirectionalTypeInference" as "bidirectionalTypeInference"
 set up reference to attribute "jythonClassName" as "jythonClassName"
 set up reference to attribute "script" as "script"
 set up reference to attribute "_iconDescription" as "_iconDescription"
@@ -142,7 +141,6 @@ Called fire()
 Called postfire()
 Called wrapup()
 Called preinitialize()
-set up reference to attribute "bidirectionalTypeInference" as "bidirectionalTypeInference"
 set up reference to attribute "jythonClassName" as "jythonClassName"
 set up reference to attribute "script" as "script"
 set up reference to attribute "_iconDescription" as "_iconDescription"
@@ -196,7 +194,6 @@ class Main :
     [$e0 getManager] execute
     $recorder getMessages
 } {Called preinitialize()
-set up reference to attribute "bidirectionalTypeInference" as "bidirectionalTypeInference"
 set up reference to attribute "jythonClassName" as "jythonClassName"
 set up reference to attribute "script" as "script"
 set up reference to attribute "_iconDescription" as "_iconDescription"
@@ -239,7 +236,6 @@ class Main :
     [$e0 getManager] execute
     $recorder getMessages
 } {Called preinitialize()
-set up reference to attribute "bidirectionalTypeInference" as "bidirectionalTypeInference"
 set up reference to attribute "jythonClassName" as "jythonClassName"
 set up reference to attribute "script" as "script"
 set up reference to attribute "_iconDescription" as "_iconDescription"
@@ -282,7 +278,6 @@ class Main :
     [$e0 getManager] execute
     $recorder getMessages
 } {Called preinitialize()
-set up reference to attribute "bidirectionalTypeInference" as "bidirectionalTypeInference"
 set up reference to attribute "jythonClassName" as "jythonClassName"
 set up reference to attribute "script" as "script"
 set up reference to attribute "_iconDescription" as "_iconDescription"

@@ -917,14 +917,12 @@ test IOPort-10.7 {Construct a simple system, then call description} {
 } {ptolemy.actor.TypedCompositeActor {.} attributes {
     {ptolemy.kernel.util.SingletonConfigurableAttribute {.._iconDescription} attributes {
     }}
-    {ptolemy.actor.parameters.SharedParameter {..bidirectionalTypeInference} true}
 } ports {
 } classes {
 } entities {
     {ptolemy.actor.TypedAtomicActor {..source} attributes {
         {ptolemy.kernel.util.SingletonConfigurableAttribute {..source._iconDescription} attributes {
         }}
-        {ptolemy.actor.parameters.SharedParameter {..source.bidirectionalTypeInference} true}
     } ports {
         {ptolemy.actor.TypedIOPort {..source.output} attributes {
         } links {
@@ -942,7 +940,6 @@ test IOPort-10.7 {Construct a simple system, then call description} {
     {ptolemy.actor.TypedAtomicActor {..dest} attributes {
         {ptolemy.kernel.util.SingletonConfigurableAttribute {..dest._iconDescription} attributes {
         }}
-        {ptolemy.actor.parameters.SharedParameter {..dest.bidirectionalTypeInference} true}
     } ports {
         {ptolemy.actor.TypedIOPort {..dest.input} attributes {
         } links {

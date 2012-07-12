@@ -72,20 +72,14 @@ test UnionDisassembler-1.1 {Test getVerboseString} {
     list [list $results0] \
 	"\n" \
 	[list $results1]
-} {{{{(TypeConstant, boolean) <= (ptolemy.actor.parameters.SharedParameter {.UnionDisassemblerTest.UnionDisassembler.bidirectionalTypeInference} true, boolean)'}
-{'(ptolemy.actor.TypedIOPort {.UnionDisassemblerTest.UnionDisassembler.input}, unknown) <= (TypeConstant, {|car = general, cloth = general, money = general, record = general|})'}
-{'(ptolemy.actor.util.ConstructCompositeType, {|car = unknown, cloth = unknown, money = unknown, record = unknown|}) <= (ptolemy.actor.TypedIOPort {.UnionDisassemblerTest.UnionDisassembler.input}, unknown)'}
-{'(ptolemy.actor.util.ExtractFieldType, unknown) <= (ptolemy.actor.TypedIOPort {.UnionDisassemblerTest.UnionDisassembler.car}, unknown)'}
-{'(ptolemy.actor.util.ExtractFieldType, unknown) <= (ptolemy.actor.TypedIOPort {.UnionDisassemblerTest.UnionDisassembler.cloth}, unknown)'}
-{'(ptolemy.actor.util.ExtractFieldType, unknown) <= (ptolemy.actor.TypedIOPort {.UnionDisassemblerTest.UnionDisassembler.money}, unknown)'}
-{'(ptolemy.actor.util.ExtractFieldType, unknown) <= (ptolemy.actor.TypedIOPort {.UnionDisassemblerTest.UnionDisassembler.record}, unknown)}}} {
-} {{{(TypeConstant, boolean) <= (ptolemy.actor.parameters.SharedParameter {.UnionDisassemblerTest.UnionDisassembler.bidirectionalTypeInference} true, boolean)'}
-{'(ptolemy.actor.TypedIOPort {.UnionDisassemblerTest.UnionDisassembler.input}, {|car = int, cloth = int, money = string, record = {car = int, cloth = int, money = string}|}) <= (TypeConstant, {|car = general, cloth = general, money = general, record = general|})'}
-{'(ptolemy.actor.util.ConstructCompositeType, {|car = int, cloth = int, money = string, record = {car = int, cloth = int, money = string}|}) <= (ptolemy.actor.TypedIOPort {.UnionDisassemblerTest.UnionDisassembler.input}, {|car = int, cloth = int, money = string, record = {car = int, cloth = int, money = string}|})'}
-{'(ptolemy.actor.util.ExtractFieldType, int) <= (ptolemy.actor.TypedIOPort {.UnionDisassemblerTest.UnionDisassembler.car}, int)'}
-{'(ptolemy.actor.util.ExtractFieldType, int) <= (ptolemy.actor.TypedIOPort {.UnionDisassemblerTest.UnionDisassembler.cloth}, int)'}
-{'(ptolemy.actor.util.ExtractFieldType, string) <= (ptolemy.actor.TypedIOPort {.UnionDisassemblerTest.UnionDisassembler.money}, string)'}
-{'(ptolemy.actor.util.ExtractFieldType, {car = int, cloth = int, money = string}) <= (ptolemy.actor.TypedIOPort {.UnionDisassemblerTest.UnionDisassembler.record}, {car = int, cloth = int, money = string})}}}}
+} {{{{(ptolemy.actor.lib.UnionDisassembler$PortFunction, unknown) <= (ptolemy.actor.TypedIOPort {.UnionDisassemblerTest.UnionDisassembler.car}, unknown)'}
+{'(ptolemy.actor.lib.UnionDisassembler$PortFunction, unknown) <= (ptolemy.actor.TypedIOPort {.UnionDisassemblerTest.UnionDisassembler.cloth}, unknown)'}
+{'(ptolemy.actor.lib.UnionDisassembler$PortFunction, unknown) <= (ptolemy.actor.TypedIOPort {.UnionDisassemblerTest.UnionDisassembler.money}, unknown)'}
+{'(ptolemy.actor.lib.UnionDisassembler$PortFunction, unknown) <= (ptolemy.actor.TypedIOPort {.UnionDisassemblerTest.UnionDisassembler.record}, unknown)}}} {
+} {{{(ptolemy.actor.lib.UnionDisassembler$PortFunction, int) <= (ptolemy.actor.TypedIOPort {.UnionDisassemblerTest.UnionDisassembler.car}, int)'}
+{'(ptolemy.actor.lib.UnionDisassembler$PortFunction, int) <= (ptolemy.actor.TypedIOPort {.UnionDisassemblerTest.UnionDisassembler.cloth}, int)'}
+{'(ptolemy.actor.lib.UnionDisassembler$PortFunction, string) <= (ptolemy.actor.TypedIOPort {.UnionDisassemblerTest.UnionDisassembler.money}, string)'}
+{'(ptolemy.actor.lib.UnionDisassembler$PortFunction, {car = int, cloth = int, money = string}) <= (ptolemy.actor.TypedIOPort {.UnionDisassemblerTest.UnionDisassembler.record}, {car = int, cloth = int, money = string})}}}}
 
 # The list of filters is static, so we reset it
 java::call ptolemy.moml.MoMLParser setMoMLFilters [java::null]

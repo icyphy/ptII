@@ -413,8 +413,7 @@ public class TypedAtomicActor extends AtomicActor<TypedIOPort> implements
 
     /**
      * Initialize the variables that keep track of the validity of the cached 
-     * type constraints and add the shared parameter 
-     * <code>bidirectionalTypeInference</code> which is enabled by default.
+     * type constraints.
      */
     private void _init() {
 
