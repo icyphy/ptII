@@ -162,10 +162,11 @@ public class TokenToJSON extends Converter {
 
         // The value can be any of these types: 
         // Boolean, Number, String, or the JSONObject.NULL
-        if (token instanceof ArrayToken)
-            return _scanArrayToken((ArrayToken) token);
-        else if (token instanceof RecordToken)
+        if (token instanceof RecordToken)
             return _scanRecordToken((RecordToken) token);
+        else if (token instanceof ArrayToken)
+            return _scanArrayToken((ArrayToken) token);
+
         else {
             Object o;
             if (token instanceof BooleanToken) {
