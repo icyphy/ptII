@@ -1,10 +1,10 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <project>
   <actions/>
-  <description>Ptolemy II</description>
+  <description></description>
   <project-properties class="java.util.concurrent.ConcurrentHashMap">
     <entry>
-      <string>hudson-plugins-checkstyle-CheckStylePublisher</string>
+      <string>hudson-plugins-cobertura-CoberturaPublisher</string>
       <external-property>
         <propertyOverridden>false</propertyOverridden>
         <modified>false</modified>
@@ -18,82 +18,10 @@
       </boolean-property>
     </entry>
     <entry>
-      <string>hudson-plugins-cobertura-CoberturaPublisher</string>
-      <external-property>
-        <originalValue class="hudson.plugins.cobertura.CoberturaPublisher">
-          <coberturaReportFile>reports/coveragereport/coverage.xml</coberturaReportFile>
-          <onlyStable>false</onlyStable>
-          <healthyTarget>
-            <targets class="enum-map" enum-type="hudson.plugins.cobertura.targets.CoverageMetric">
-              <entry>
-                <hudson.plugins.cobertura.targets.CoverageMetric>CONDITIONAL</hudson.plugins.cobertura.targets.CoverageMetric>
-                <int>70</int>
-              </entry>
-              <entry>
-                <hudson.plugins.cobertura.targets.CoverageMetric>LINE</hudson.plugins.cobertura.targets.CoverageMetric>
-                <int>80</int>
-              </entry>
-              <entry>
-                <hudson.plugins.cobertura.targets.CoverageMetric>METHOD</hudson.plugins.cobertura.targets.CoverageMetric>
-                <int>80</int>
-              </entry>
-            </targets>
-          </healthyTarget>
-          <unhealthyTarget>
-            <targets class="enum-map" enum-type="hudson.plugins.cobertura.targets.CoverageMetric">
-              <entry>
-                <hudson.plugins.cobertura.targets.CoverageMetric>CONDITIONAL</hudson.plugins.cobertura.targets.CoverageMetric>
-                <int>0</int>
-              </entry>
-              <entry>
-                <hudson.plugins.cobertura.targets.CoverageMetric>LINE</hudson.plugins.cobertura.targets.CoverageMetric>
-                <int>0</int>
-              </entry>
-              <entry>
-                <hudson.plugins.cobertura.targets.CoverageMetric>METHOD</hudson.plugins.cobertura.targets.CoverageMetric>
-                <int>0</int>
-              </entry>
-            </targets>
-          </unhealthyTarget>
-          <failingTarget>
-            <targets class="enum-map" enum-type="hudson.plugins.cobertura.targets.CoverageMetric">
-              <entry>
-                <hudson.plugins.cobertura.targets.CoverageMetric>CONDITIONAL</hudson.plugins.cobertura.targets.CoverageMetric>
-                <int>0</int>
-              </entry>
-              <entry>
-                <hudson.plugins.cobertura.targets.CoverageMetric>LINE</hudson.plugins.cobertura.targets.CoverageMetric>
-                <int>0</int>
-              </entry>
-              <entry>
-                <hudson.plugins.cobertura.targets.CoverageMetric>METHOD</hudson.plugins.cobertura.targets.CoverageMetric>
-                <int>0</int>
-              </entry>
-            </targets>
-          </failingTarget>
-          <sourceEncoding>ASCII</sourceEncoding>
-        </originalValue>
-        <propertyOverridden>false</propertyOverridden>
-        <modified>false</modified>
-      </external-property>
-    </entry>
-    <entry>
       <string>org-hudsonci-plugins-snapshotmonitor-SnapshotTrigger</string>
       <trigger-property>
         <propertyOverridden>false</propertyOverridden>
       </trigger-property>
-    </entry>
-    <entry>
-      <string>logRotator</string>
-      <log-rotator-property>
-        <originalValue class="hudson.tasks.LogRotator">
-          <daysToKeep>-1</daysToKeep>
-          <numToKeep>30</numToKeep>
-          <artifactDaysToKeep>-1</artifactDaysToKeep>
-          <artifactNumToKeep>-1</artifactNumToKeep>
-        </originalValue>
-        <propertyOverridden>false</propertyOverridden>
-      </log-rotator-property>
     </entry>
     <entry>
       <string>org-hudsonci-plugins-snapshotmonitor-WatchedDependenciesProperty</string>
@@ -102,11 +30,10 @@
       </base-property>
     </entry>
     <entry>
-      <string>hudson-plugins-violations-ViolationsPublisher</string>
-      <external-property>
+      <string>logRotator</string>
+      <log-rotator-property>
         <propertyOverridden>false</propertyOverridden>
-        <modified>true</modified>
-      </external-property>
+      </log-rotator-property>
     </entry>
     <entry>
       <string>blockBuildWhenUpstreamBuilding</string>
@@ -122,14 +49,14 @@
       </integer-property>
     </entry>
     <entry>
-      <string>hudson-plugins-git-GitPublisher</string>
+      <string>org-hudsonci-maven-plugin-dependencymonitor-DependencyNotifier</string>
       <external-property>
         <propertyOverridden>false</propertyOverridden>
         <modified>false</modified>
       </external-property>
     </entry>
     <entry>
-      <string>org-hudsonci-maven-plugin-dependencymonitor-DependencyNotifier</string>
+      <string>hudson-plugins-git-GitPublisher</string>
       <external-property>
         <propertyOverridden>false</propertyOverridden>
         <modified>false</modified>
@@ -146,16 +73,13 @@
       <string>hudson-plugins-setenv-SetEnvBuildWrapper</string>
       <external-property>
         <originalValue class="hudson.plugins.setenv.SetEnvBuildWrapper">
-          <localVarText>DISPLAY=localhost:2.0
-PTII=${WORKSPACE}
+          <localVarText>PTII=${WORKSPACE}
 LD_LIBRARY_PATH=${WORKSPACE}/lbnl/lib/util:${WORKSPACE}/lib:/usr/local/matlab-r2008a/bin/glnxa64:${WORKSPACE}/vendors/misc/dbxml-2.5.16/install/lib:/usr/local/lib:${LD_LIBRARY_PATH}
 CLASSPATH=/usr/java/JMF-2.1.1e/lib/jmf.jar:/usr/java/jai-1_1_3/lib/jai_codec.jar:/usr/java/jai-1_1_3/lib/jai_core.jar:/usr/java/jai-1_1_3/lib/mlibwrapper_jai.jar:.
 PATH=/usr/local/bin:${PATH}:${WORKSPACE}/vendors/misc/dbxml-2.5.16/install/bin:/usr/local/sbin:/usr/local/bin
 TOSROOT=${WORKSPACE}/vendors/ptinyos/tinyos-1.x
 TOSDIR=${WORKSPACE}/vendors/ptinyos/tinyos-1.x/tos
-PTINYOS_MOMLROOT=${WORKSPACE}/vendors/ptinyos/moml
-
-</localVarText>
+PTINYOS_MOMLROOT=${WORKSPACE}/vendors/ptinyos/moml</localVarText>
         </originalValue>
         <propertyOverridden>false</propertyOverridden>
         <modified>true</modified>
@@ -165,7 +89,7 @@ PTINYOS_MOMLROOT=${WORKSPACE}/vendors/ptinyos/moml
       <string>hudson-tasks-Mailer</string>
       <external-property>
         <propertyOverridden>false</propertyOverridden>
-        <modified>true</modified>
+        <modified>false</modified>
       </external-property>
     </entry>
     <entry>
@@ -183,40 +107,10 @@ PTINYOS_MOMLROOT=${WORKSPACE}/vendors/ptinyos/moml
       </external-property>
     </entry>
     <entry>
-      <string>htmlpublisher-HtmlPublisher</string>
-      <external-property>
-        <originalValue class="htmlpublisher.HtmlPublisher">
-          <reportTargets>
-            <htmlpublisher.HtmlPublisherTarget>
-              <reportName>DocCheck</reportName>
-              <reportDir>reports/doccheck</reportDir>
-              <reportFiles>index.html</reportFiles>
-              <keepAll>false</keepAll>
-              <wrapperName>htmlpublisher-wrapper.html</wrapperName>
-            </htmlpublisher.HtmlPublisherTarget>
-            <htmlpublisher.HtmlPublisherTarget>
-              <reportName>OJDCheck</reportName>
-              <reportDir>reports/ojdcheck</reportDir>
-              <reportFiles>ojdcheck.htm</reportFiles>
-              <keepAll>false</keepAll>
-              <wrapperName>htmlpublisher-wrapper.html</wrapperName>
-            </htmlpublisher.HtmlPublisherTarget>
-          </reportTargets>
-        </originalValue>
-        <propertyOverridden>false</propertyOverridden>
-        <modified>false</modified>
-      </external-property>
-    </entry>
-    <entry>
       <string>hudson-tasks-junit-JUnitResultArchiver</string>
       <external-property>
-        <originalValue class="hudson.tasks.junit.JUnitResultArchiver">
-          <testResults>reports/junit/*.xml</testResults>
-          <keepLongStdio>false</keepLongStdio>
-          <testDataPublishers/>
-        </originalValue>
         <propertyOverridden>false</propertyOverridden>
-        <modified>false</modified>
+        <modified>true</modified>
       </external-property>
     </entry>
     <entry>
@@ -227,10 +121,14 @@ PTINYOS_MOMLROOT=${WORKSPACE}/vendors/ptinyos/moml
       </external-property>
     </entry>
     <entry>
-      <string>hudson-plugins-analysis-collector-AnalysisPublisher</string>
+      <string>hudson-tasks-JavadocArchiver</string>
       <external-property>
+        <originalValue class="hudson.tasks.JavadocArchiver">
+          <javadocDir>doc/codeDoc</javadocDir>
+          <keepAll>false</keepAll>
+        </originalValue>
         <propertyOverridden>false</propertyOverridden>
-        <modified>false</modified>
+        <modified>true</modified>
       </external-property>
     </entry>
     <entry>
@@ -239,100 +137,6 @@ PTINYOS_MOMLROOT=${WORKSPACE}/vendors/ptinyos/moml
         <originalValue class="hudson.util.CopyOnWriteList"/>
         <propertyOverridden>false</propertyOverridden>
       </copy-write-list-property>
-    </entry>
-    <entry>
-      <string>hudson-tasks-JavadocArchiver</string>
-      <external-property>
-        <originalValue class="hudson.tasks.JavadocArchiver">
-          <javadocDir>doc/codeDoc</javadocDir>
-          <keepAll>false</keepAll>
-        </originalValue>
-        <propertyOverridden>false</propertyOverridden>
-        <modified>false</modified>
-      </external-property>
-    </entry>
-    <entry>
-      <string>hudson-plugins-emailext-ExtendedEmailPublisher</string>
-      <external-property>
-        <originalValue class="hudson.plugins.emailext.ExtendedEmailPublisher">
-          <recipientList>ealtech@bennett.eecs.berkeley.edu</recipientList>
-          <configuredTriggers>
-            <hudson.plugins.emailext.plugins.trigger.UnstableTrigger>
-              <email>
-                <recipientList></recipientList>
-                <subject>$PROJECT_DEFAULT_SUBJECT</subject>
-                <body>$PROJECT_DEFAULT_CONTENT</body>
-                <sendToDevelopers>false</sendToDevelopers>
-                <includeCulprits>false</includeCulprits>
-                <sendToRecipientList>true</sendToRecipientList>
-              </email>
-            </hudson.plugins.emailext.plugins.trigger.UnstableTrigger>
-            <hudson.plugins.emailext.plugins.trigger.FailureTrigger>
-              <email>
-                <recipientList></recipientList>
-                <subject>$PROJECT_DEFAULT_SUBJECT</subject>
-                <body>$PROJECT_DEFAULT_CONTENT</body>
-                <sendToDevelopers>false</sendToDevelopers>
-                <includeCulprits>false</includeCulprits>
-                <sendToRecipientList>true</sendToRecipientList>
-              </email>
-            </hudson.plugins.emailext.plugins.trigger.FailureTrigger>
-            <hudson.plugins.emailext.plugins.trigger.StillFailingTrigger>
-              <email>
-                <recipientList></recipientList>
-                <subject>$PROJECT_DEFAULT_SUBJECT</subject>
-                <body>$PROJECT_DEFAULT_CONTENT</body>
-                <sendToDevelopers>false</sendToDevelopers>
-                <includeCulprits>false</includeCulprits>
-                <sendToRecipientList>true</sendToRecipientList>
-              </email>
-            </hudson.plugins.emailext.plugins.trigger.StillFailingTrigger>
-            <hudson.plugins.emailext.plugins.trigger.SuccessTrigger>
-              <email>
-                <recipientList></recipientList>
-                <subject>$PROJECT_DEFAULT_SUBJECT</subject>
-                <body>$PROJECT_DEFAULT_CONTENT</body>
-                <sendToDevelopers>false</sendToDevelopers>
-                <includeCulprits>false</includeCulprits>
-                <sendToRecipientList>true</sendToRecipientList>
-              </email>
-            </hudson.plugins.emailext.plugins.trigger.SuccessTrigger>
-            <hudson.plugins.emailext.plugins.trigger.FixedTrigger>
-              <email>
-                <recipientList></recipientList>
-                <subject>$PROJECT_DEFAULT_SUBJECT</subject>
-                <body>$PROJECT_DEFAULT_CONTENT</body>
-                <sendToDevelopers>false</sendToDevelopers>
-                <includeCulprits>false</includeCulprits>
-                <sendToRecipientList>true</sendToRecipientList>
-              </email>
-            </hudson.plugins.emailext.plugins.trigger.FixedTrigger>
-            <hudson.plugins.emailext.plugins.trigger.StillUnstableTrigger>
-              <email>
-                <recipientList></recipientList>
-                <subject>$PROJECT_DEFAULT_SUBJECT</subject>
-                <body>$PROJECT_DEFAULT_CONTENT</body>
-                <sendToDevelopers>false</sendToDevelopers>
-                <includeCulprits>false</includeCulprits>
-                <sendToRecipientList>true</sendToRecipientList>
-              </email>
-            </hudson.plugins.emailext.plugins.trigger.StillUnstableTrigger>
-          </configuredTriggers>
-          <contentType>text/html</contentType>
-          <defaultSubject>$DEFAULT_SUBJECT</defaultSubject>
-          <defaultContent>&lt;h2&gt;$PROJECT_NAME - Build # $BUILD_NUMBER - $BUILD_STATUS&lt;/h2&gt;
-
-&lt;p&gt;Check console output at &lt;a href=&quot;$BUILD_URL&quot;&gt;$BUILD_URL&lt;/a&gt; to view the results.&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&quot;http://sisyphus.eecs.berkeley.edu/hudson/job/ptII/lastCompletedBuild/testReport/&quot;Test Report&lt;/a&gt;.&lt;/p&gt;
-
-
-${JELLY_SCRIPT}
-</defaultContent>
-        </originalValue>
-        <propertyOverridden>false</propertyOverridden>
-        <modified>true</modified>
-      </external-property>
     </entry>
     <entry>
       <string>customWorkspace</string>
@@ -390,11 +194,13 @@ mvn -Dmaven.repo.local=/var/lib/hudson/jobs/ptII/workspace/.maven/repo install:i
             <config>
               <installationId>(Bundled)</installationId>
               <goals>compile</goals>
-              <privateRepository>true</privateRepository>
+              <privateRepository>false</privateRepository>
               <privateTmpdir>false</privateTmpdir>
               <pomFile>pom.xml</pomFile>
               <properties>
-                <entries/>
+                <entries>
+                  <entry name="maven.repo.local" value="/var/lib/hudson/jobs/ptII/workspace/.maven/repo"/>
+                </entries>
               </properties>
               <errors>false</errors>
               <verbosity>NORMAL</verbosity>
@@ -413,15 +219,11 @@ mvn -Dmaven.repo.local=/var/lib/hudson/jobs/ptII/workspace/.maven/repo install:i
             <command>export PTII=$WORKSPACE
 pwd
 ./configure
-Xvfb :2 -screen 0 1024x768x24 &amp;                                                                                            
+Xvfb :2 -screen 0 1024x768x24 &amp;
 export DISPLAY=localhost:2.0
 cp /var/lib/hudson/jobs/ptII/config.xml /var/lib/hudson/jobs/ptII/workspace/doc/hudsonConfig.xml
 svn commit -m &quot;Update from hudson build&quot; /var/lib/hudson/jobs/ptII/workspace/doc/hudsonConfig.xml</command>
           </hudson.tasks.Shell>
-          <hudson.tasks.Ant>
-            <targets>-debug -p</targets>
-            <antName>(Default)</antName>
-          </hudson.tasks.Ant>
           <hudson.tasks.Shell>
             <command># Ant does not compile lbnl C files yet
 export PTII=$WORKSPACE
@@ -429,29 +231,28 @@ export PTII=$WORKSPACE
           </hudson.tasks.Shell>
           <hudson.tasks.Ant>
             <targets>clean build</targets>
-            <antName>(Default)</antName>
+            <antName>ant1.8.2</antName>
             <properties>DISPLAY=localhost:2.0</properties>
           </hudson.tasks.Ant>
           <hudson.tasks.Ant>
             <targets>javadoc</targets>
-            <antName>(Default)</antName>
+            <antName>ant1.8.2</antName>
           </hudson.tasks.Ant>
           <hudson.tasks.Ant>
             <targets>jars</targets>
-            <antName>(Default)</antName>
-            <buildFile>jars.xml</buildFile>
+            <antName>ant1.8.2</antName>
           </hudson.tasks.Ant>
           <hudson.tasks.Ant>
             <targets>test.cobertura</targets>
-            <antName>(Default)</antName>
+            <antName>ant1.8.2</antName>
             <antOpts>-Dptolemy.ptII.doNotExit=true</antOpts>
           </hudson.tasks.Ant>
           <hudson.tasks.Ant>
             <targets>reports</targets>
-            <antName>(Default)</antName>
+            <antName>ant1.8.2</antName>
           </hudson.tasks.Ant>
           <hudson.tasks.Shell>
-            <command>$WORKSPACE/adm/bin/killXServer</command>
+            <command>$WORKSPACE/adm/bin/killXServe</command>
           </hudson.tasks.Shell>
           <hudson.tasks.Shell>
             <command>cd $PTII/adm/gen-9.0
@@ -474,18 +275,18 @@ make -k USER=hudson PTIIHOME=/var/lib/hudson/jobs/ptII/workspace PTIIADM=/var/li
       </base-property>
     </entry>
     <entry>
-      <string>hudson-tasks-ArtifactArchiver</string>
-      <external-property>
-        <propertyOverridden>false</propertyOverridden>
-        <modified>false</modified>
-      </external-property>
-    </entry>
-    <entry>
       <string>concurrentBuild</string>
       <boolean-property>
         <originalValue class="boolean">false</originalValue>
         <propertyOverridden>false</propertyOverridden>
       </boolean-property>
+    </entry>
+    <entry>
+      <string>hudson-tasks-ArtifactArchiver</string>
+      <external-property>
+        <propertyOverridden>false</propertyOverridden>
+        <modified>false</modified>
+      </external-property>
     </entry>
     <entry>
       <string>org-hudsonci-maven-plugin-dependencymonitor-DependencyTrigger</string>
@@ -516,48 +317,10 @@ make -k USER=hudson PTIIHOME=/var/lib/hudson/jobs/ptII/workspace PTIIADM=/var/li
       </scm-property>
     </entry>
     <entry>
-      <string>hudson-plugins-findbugs-FindBugsPublisher</string>
-      <external-property>
-        <originalValue class="hudson.plugins.findbugs.FindBugsPublisher">
-          <healthy></healthy>
-          <unHealthy></unHealthy>
-          <thresholdLimit>low</thresholdLimit>
-          <pluginName>[FINDBUGS] </pluginName>
-          <defaultEncoding></defaultEncoding>
-          <canRunOnFailed>false</canRunOnFailed>
-          <useDeltaValues>false</useDeltaValues>
-          <thresholds>
-            <unstableTotalAll></unstableTotalAll>
-            <unstableTotalHigh></unstableTotalHigh>
-            <unstableTotalNormal></unstableTotalNormal>
-            <unstableTotalLow></unstableTotalLow>
-            <unstableNewAll></unstableNewAll>
-            <unstableNewHigh></unstableNewHigh>
-            <unstableNewNormal></unstableNewNormal>
-            <unstableNewLow></unstableNewLow>
-            <failedTotalAll></failedTotalAll>
-            <failedTotalHigh></failedTotalHigh>
-            <failedTotalNormal></failedTotalNormal>
-            <failedTotalLow></failedTotalLow>
-            <failedNewAll></failedNewAll>
-            <failedNewHigh></failedNewHigh>
-            <failedNewNormal></failedNewNormal>
-            <failedNewLow></failedNewLow>
-          </thresholds>
-          <shouldDetectModules>false</shouldDetectModules>
-          <dontComputeNew>false</dontComputeNew>
-          <pattern>reports/ptII-findbugs.xml</pattern>
-          <isRankActivated>false</isRankActivated>
-        </originalValue>
-        <propertyOverridden>false</propertyOverridden>
-        <modified>false</modified>
-      </external-property>
-    </entry>
-    <entry>
       <string>hudson-triggers-TimerTrigger</string>
       <trigger-property>
         <originalValue class="hudson.triggers.TimerTrigger">
-          <spec>01 0 * * *</spec>
+          <spec>5 0 * * *</spec>
         </originalValue>
         <propertyOverridden>false</propertyOverridden>
       </trigger-property>
@@ -571,33 +334,19 @@ make -k USER=hudson PTIIHOME=/var/lib/hudson/jobs/ptII/workspace PTIIADM=/var/li
     </entry>
   </project-properties>
   <keepDependencies>false</keepDependencies>
-  <creationTime>1313460590838</creationTime>
+  <createdBy>cxh</createdBy>
+  <creationTime>1340923181338</creationTime>
   <properties/>
   <cascadingChildrenNames class="java.util.concurrent.CopyOnWriteArraySet"/>
   <cascading-job-properties class="java.util.concurrent.CopyOnWriteArraySet">
     <string>org-hudsonci-plugins-snapshotmonitor-WatchedDependenciesProperty</string>
   </cascading-job-properties>
-  <scm class="hudson.scm.SubversionSCM">
-    <locations>
-      <hudson.scm.SubversionSCM_-ModuleLocation>
-        <remote>https://source.eecs.berkeley.edu/svn/chess/ptII/trunk</remote>
-        <local>.</local>
-        <depthOption>infinity</depthOption>
-        <ignoreExternalsOption>false</ignoreExternalsOption>
-      </hudson.scm.SubversionSCM_-ModuleLocation>
-    </locations>
-    <excludedRegions></excludedRegions>
-    <includedRegions></includedRegions>
-    <excludedUsers></excludedUsers>
-    <excludedRevprop></excludedRevprop>
-    <excludedCommitMessages></excludedCommitMessages>
-    <workspaceUpdater class="hudson.scm.subversion.UpdateUpdater"/>
-  </scm>
-  <advancedAffinityChooser>false</advancedAffinityChooser>
-  <canRoam>true</canRoam>
+  <scm class="hudson.scm.NullSCM"/>
+  <canRoam>false</canRoam>
   <disabled>false</disabled>
   <blockBuildWhenDownstreamBuilding>false</blockBuildWhenDownstreamBuilding>
   <blockBuildWhenUpstreamBuilding>false</blockBuildWhenUpstreamBuilding>
   <concurrentBuild>false</concurrentBuild>
   <cleanWorkspaceRequired>false</cleanWorkspaceRequired>
+  <builders/>
 </project>
