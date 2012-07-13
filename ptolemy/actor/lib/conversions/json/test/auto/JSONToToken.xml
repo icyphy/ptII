@@ -7,36 +7,95 @@
     <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
         <property name="iterations" class="ptolemy.data.expr.Parameter" value="1">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{100, 65}">
+        <property name="allowDisconnectedGraphs" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[100.0, 65.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={373, 208, 934, 634}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={145, 0, 1282, 1025}, maximized=true}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 524]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1062, 899]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.64">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{350.0, 262.0}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{461.4710513565892, 621.6790213178294}">
+    </property>
+    <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Array of integers">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[50.0, 125.0]">
+        </property>
+    </property>
+    <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Array of arrays of integers">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[45.0, 215.0]">
+        </property>
+    </property>
+    <property name="Annotation4" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Record of arrays of arrays">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[45.0, 305.0]">
+        </property>
+    </property>
+    <property name="Annotation5" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Array of records of records">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[50.0, 415.0]">
+        </property>
+    </property>
+    <property name="Annotation6" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Five levels of nested records">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[50.0, 520.0]">
+        </property>
+    </property>
+    <property name="Annotation7" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Boolean">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[50.0, 620.0]">
+        </property>
+    </property>
+    <property name="Annotation8" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Integer">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[50.0, 715.0]">
+        </property>
+    </property>
+    <property name="Annotation9" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Long">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[50.0, 805.0]">
+        </property>
+    </property>
+    <property name="Annotation10" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Double">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[50.0, 895.0]">
+        </property>
+    </property>
+    <property name="Annotation11" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="String">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[50.0, 985.0]">
+        </property>
+    </property>
+    <property name="Annotation12" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Null">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[50.0, 1085.0]">
+        </property>
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Example JSON from http://en.wikipedia.org/wiki/JSON.&#10;The input port of the Test actor has its type set to&#10;{firstName=string}, which should not be necessary.">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.6,0.6,1.0}">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{105, 375}">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author: Marten Lohstroh">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[305.0, 1185.0]">
         </property>
     </property>
-    <entity name="JSONToToken" class="ptolemy.actor.lib.conversions.json.JSONToToken">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{320.0, 265.0}">
-        </property>
-        <property name="_expertMode" class="ptolemy.kernel.util.SingletonAttribute">
-        </property>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-            <property name="_type" class="ptolemy.actor.TypeAttribute" value="{firstName = string}">
-            </property>
-        </port>
-    </entity>
-    <entity name="StringConst" class="ptolemy.actor.lib.StringConst">
-        <property name="value" class="ptolemy.data.expr.Parameter" value="{&#10;     &quot;firstName&quot;: &quot;John&quot;&#10;}">
+    <entity name="StringConst2" class="ptolemy.actor.lib.StringConst">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="[0, 1, 2, 3, 4, 5, 6, 7, 8, 9]">
         </property>
         <doc>Create a constant sequence with a string value.</doc>
         <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
@@ -47,31 +106,381 @@
             <property name="displayHeight" class="ptolemy.data.expr.Parameter" value="10">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[150.0, 270.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[150.0, 180.0]">
+        </property>
+    </entity>
+    <entity name="StringConst3" class="ptolemy.actor.lib.StringConst">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="[[0,1], [2,3], [4,5], [6,7], [8,9]]">
+        </property>
+        <doc>Create a constant sequence with a string value.</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="80">
+            </property>
+            <property name="displayHeight" class="ptolemy.data.expr.Parameter" value="10">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[180.0, 270.0]">
+        </property>
+    </entity>
+    <entity name="StringConst4" class="ptolemy.actor.lib.StringConst">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="{&quot;a&quot; : [[true, true], [true, false]], &quot;b&quot; : [[false, false], [false, true]]}">
+        </property>
+        <doc>Create a constant sequence with a string value.</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="80">
+            </property>
+            <property name="displayHeight" class="ptolemy.data.expr.Parameter" value="10">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[260.0, 365.0]">
+        </property>
+    </entity>
+    <entity name="StringConst5" class="ptolemy.actor.lib.StringConst">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="[{&quot;a&quot; : {&quot;aa&quot; : 1, &quot;ab&quot; : 2}, &quot;b&quot; : false}, {&quot;a&quot; : {&quot;aa&quot; : 1, &quot;ab&quot; : 2}, &quot;b&quot; : true}]">
+        </property>
+        <doc>Create a constant sequence with a string value.</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="80">
+            </property>
+            <property name="displayHeight" class="ptolemy.data.expr.Parameter" value="10">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[290.0, 475.0]">
+        </property>
+    </entity>
+    <entity name="StringConst6" class="ptolemy.actor.lib.StringConst">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="{&quot;a&quot; : {&quot;aa&quot; : {&quot;aaa&quot; : {&quot;aaaa&quot; : {&quot;aaaaa&quot; : 1}}}}}">
+        </property>
+        <doc>Create a constant sequence with a string value.</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="80">
+            </property>
+            <property name="displayHeight" class="ptolemy.data.expr.Parameter" value="10">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[210.0, 575.0]">
+        </property>
+    </entity>
+    <entity name="StringConst7" class="ptolemy.actor.lib.StringConst">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="[true]">
+        </property>
+        <doc>Create a constant sequence with a string value.</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="80">
+            </property>
+            <property name="displayHeight" class="ptolemy.data.expr.Parameter" value="10">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[80.0, 680.0]">
+        </property>
+    </entity>
+    <entity name="StringConst8" class="ptolemy.actor.lib.StringConst">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="[16]">
+        </property>
+        <doc>Create a constant sequence with a string value.</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="80">
+            </property>
+            <property name="displayHeight" class="ptolemy.data.expr.Parameter" value="10">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[75.0, 770.0]">
+        </property>
+    </entity>
+    <entity name="StringConst9" class="ptolemy.actor.lib.StringConst">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="[10000000000000000]">
+        </property>
+        <doc>Create a constant sequence with a string value.</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="80">
+            </property>
+            <property name="displayHeight" class="ptolemy.data.expr.Parameter" value="10">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[140.0, 860.0]">
+        </property>
+    </entity>
+    <entity name="StringConst10" class="ptolemy.actor.lib.StringConst">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="[3.14159265]">
+        </property>
+        <doc>Create a constant sequence with a string value.</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="80">
+            </property>
+            <property name="displayHeight" class="ptolemy.data.expr.Parameter" value="10">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[105.0, 950.0]">
+        </property>
+    </entity>
+    <entity name="StringConst11" class="ptolemy.actor.lib.StringConst">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="[&quot;PtolemyPtolemyPtolemy&quot;]">
+        </property>
+        <doc>Create a constant sequence with a string value.</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="80">
+            </property>
+            <property name="displayHeight" class="ptolemy.data.expr.Parameter" value="10">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[145.0, 1045.0]">
+        </property>
+    </entity>
+    <entity name="StringConst12" class="ptolemy.actor.lib.StringConst">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="[null]">
+        </property>
+        <doc>Create a constant sequence with a string value.</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="80">
+            </property>
+            <property name="displayHeight" class="ptolemy.data.expr.Parameter" value="10">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[80.0, 1140.0]">
+        </property>
+    </entity>
+    <entity name="JSONToToken" class="ptolemy.actor.lib.conversions.json.JSONToToken">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[558.9165344238281, 180.00747680664062]">
+        </property>
+    </entity>
+    <entity name="JSONToToken2" class="ptolemy.actor.lib.conversions.json.JSONToToken">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[552.7702789306641, 269.99925231933594]">
+        </property>
+    </entity>
+    <entity name="JSONToToken3" class="ptolemy.actor.lib.conversions.json.JSONToToken">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[550.0, 365.0]">
+        </property>
+    </entity>
+    <entity name="Display3" class="ptolemy.actor.lib.gui.Display">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={2135, 57, 484, 220}, maximized=false}">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[482, 162]">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[680.0, 365.0]">
+        </property>
+    </entity>
+    <entity name="JSONToToken4" class="ptolemy.actor.lib.conversions.json.JSONToToken">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[565.0, 475.0]">
+        </property>
+    </entity>
+    <entity name="Display4" class="ptolemy.actor.lib.gui.Display">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={2211, 674, 484, 220}, maximized=false}">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[482, 162]">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[775.0, 495.0]">
+        </property>
+    </entity>
+    <entity name="JSONToToken5" class="ptolemy.actor.lib.conversions.json.JSONToToken">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[565.0, 570.0]">
+        </property>
+    </entity>
+    <entity name="Display5" class="ptolemy.actor.lib.gui.Display">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={2176, 614, 484, 220}, maximized=false}">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[482, 162]">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[735.0, 575.0]">
+        </property>
+    </entity>
+    <entity name="JSONToToken6" class="ptolemy.actor.lib.conversions.json.JSONToToken">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[560.0, 645.0]">
+        </property>
+    </entity>
+    <entity name="JSONToToken7" class="ptolemy.actor.lib.conversions.json.JSONToToken">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[605.0, 690.0]">
+        </property>
+    </entity>
+    <entity name="JSONToToken8" class="ptolemy.actor.lib.conversions.json.JSONToToken">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[595.0, 760.0]">
+        </property>
+    </entity>
+    <entity name="JSONToToken9" class="ptolemy.actor.lib.conversions.json.JSONToToken">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[585.0, 845.0]">
+        </property>
+    </entity>
+    <entity name="JSONToToken10" class="ptolemy.actor.lib.conversions.json.JSONToToken">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[580.0, 960.0]">
+        </property>
+    </entity>
+    <entity name="JSONToToken11" class="ptolemy.actor.lib.conversions.json.JSONToToken">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[450.0, 1105.0]">
+        </property>
+    </entity>
+    <entity name="Display6" class="ptolemy.actor.lib.gui.Display">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1755, 614, 484, 220}, maximized=false}">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[482, 162]">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[725.0, 690.0]">
+        </property>
+    </entity>
+    <entity name="Display7" class="ptolemy.actor.lib.gui.Display">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={2075, 661, 484, 220}, maximized=false}">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[482, 162]">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[730.0, 775.0]">
+        </property>
+    </entity>
+    <entity name="Display8" class="ptolemy.actor.lib.gui.Display">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={2176, 539, 484, 220}, maximized=false}">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[482, 162]">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[690.0, 880.0]">
+        </property>
+    </entity>
+    <entity name="Display9" class="ptolemy.actor.lib.gui.Display">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={2176, 539, 484, 220}, maximized=false}">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[482, 162]">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[835.0, 935.0]">
+        </property>
+    </entity>
+    <entity name="Display10" class="ptolemy.actor.lib.gui.Display">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={2176, 539, 484, 220}, maximized=false}">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[482, 162]">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[815.0, 1050.0]">
+        </property>
+    </entity>
+    <entity name="Display11" class="ptolemy.actor.lib.gui.Display">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={2176, 614, 484, 220}, maximized=false}">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[482, 162]">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[739.0625, 637.1875]">
         </property>
     </entity>
     <entity name="Test" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{{firstName = &quot;John&quot;}}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{}">
         </property>
         <property name="requireAllCorrectValues" class="ptolemy.actor.parameters.SharedParameter" value="true">
         </property>
-        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="true">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[490.0, 265.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[770.0, 170.0]">
         </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-            <property name="_type" class="ptolemy.actor.TypeAttribute" value="{firstName=string}">
-            </property>
-        </port>
+    </entity>
+    <entity name="Test2" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{}">
+        </property>
+        <property name="requireAllCorrectValues" class="ptolemy.actor.parameters.SharedParameter" value="true">
+        </property>
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[745.0, 265.0]">
+        </property>
     </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
     </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation7" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation8" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation9" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation10" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation11" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation12" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation13" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation14" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation15" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation16" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation20" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation17" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation18" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation19" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation21" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation22" class="ptolemy.actor.TypedIORelation">
+    </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
     </relation>
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="StringConst2.output" relation="relation"/>
+    <link port="StringConst3.output" relation="relation3"/>
+    <link port="StringConst4.output" relation="relation5"/>
+    <link port="StringConst5.output" relation="relation7"/>
+    <link port="StringConst6.output" relation="relation9"/>
+    <link port="StringConst7.output" relation="relation11"/>
+    <link port="StringConst8.output" relation="relation12"/>
+    <link port="StringConst9.output" relation="relation13"/>
+    <link port="StringConst10.output" relation="relation14"/>
+    <link port="StringConst11.output" relation="relation15"/>
+    <link port="StringConst12.output" relation="relation16"/>
     <link port="JSONToToken.input" relation="relation"/>
     <link port="JSONToToken.output" relation="relation2"/>
-    <link port="StringConst.output" relation="relation"/>
+    <link port="JSONToToken2.input" relation="relation3"/>
+    <link port="JSONToToken2.output" relation="relation4"/>
+    <link port="JSONToToken3.input" relation="relation5"/>
+    <link port="JSONToToken3.output" relation="relation6"/>
+    <link port="Display3.input" relation="relation6"/>
+    <link port="JSONToToken4.input" relation="relation7"/>
+    <link port="JSONToToken4.output" relation="relation8"/>
+    <link port="Display4.input" relation="relation8"/>
+    <link port="JSONToToken5.input" relation="relation9"/>
+    <link port="JSONToToken5.output" relation="relation10"/>
+    <link port="Display5.input" relation="relation10"/>
+    <link port="JSONToToken6.input" relation="relation11"/>
+    <link port="JSONToToken6.output" relation="relation22"/>
+    <link port="JSONToToken7.input" relation="relation12"/>
+    <link port="JSONToToken7.output" relation="relation20"/>
+    <link port="JSONToToken8.input" relation="relation13"/>
+    <link port="JSONToToken8.output" relation="relation17"/>
+    <link port="JSONToToken9.input" relation="relation14"/>
+    <link port="JSONToToken9.output" relation="relation18"/>
+    <link port="JSONToToken10.input" relation="relation15"/>
+    <link port="JSONToToken10.output" relation="relation19"/>
+    <link port="JSONToToken11.input" relation="relation16"/>
+    <link port="JSONToToken11.output" relation="relation21"/>
+    <link port="Display6.input" relation="relation20"/>
+    <link port="Display7.input" relation="relation17"/>
+    <link port="Display8.input" relation="relation18"/>
+    <link port="Display9.input" relation="relation19"/>
+    <link port="Display10.input" relation="relation21"/>
+    <link port="Display11.input" relation="relation22"/>
     <link port="Test.input" relation="relation2"/>
+    <link port="Test2.input" relation="relation4"/>
 </entity>

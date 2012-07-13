@@ -4,13 +4,13 @@
 <entity name="TokenToJSON" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.0.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 0, 1282, 1025}, maximized=true}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1279, 27, 1602, 874}, maximized=true}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1062, 899]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1382, 748]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.512">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{265.5869670542635, 75.805414244186}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{-69.3540933098592, 104.3501320422534}">
     </property>
     <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
         <property name="iterations" class="ptolemy.data.expr.Parameter" value="1">
@@ -33,9 +33,9 @@
         </property>
     </property>
     <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Array of records">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Record of arrays of arrays">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-565.0, -85.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-560.0, -85.0]">
         </property>
     </property>
     <property name="Annotation4" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -88,6 +88,14 @@
     </property>
     <property name="_layoutConfiguration" class="ptolemy.vergil.basic.layout.LayoutConfiguration">
     </property>
+    <property name="Annotation12" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.6,0.6,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author: Marten Lohstroh">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-270.0, 800.0]">
+        </property>
+    </property>
     <entity name="TokenToJSON" class="ptolemy.actor.lib.conversions.json.TokenToJSON">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[100.0, -210.0]">
         </property>
@@ -135,7 +143,7 @@
         </property>
     </entity>
     <entity name="StringConst3" class="ptolemy.actor.lib.StringConst">
-        <property name="value" class="ptolemy.data.expr.Parameter" value="{{a = true, b = false},  {a  = 'some string', b = 8}, {a = -1}}">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="{a = {{true, true}, {true, false}}, b = {{false, false}, {false, true}}}">
         </property>
         <doc>Create a constant sequence with a string value.</doc>
         <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
@@ -146,7 +154,7 @@
             <property name="displayHeight" class="ptolemy.data.expr.Parameter" value="10">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{-350.0, -25.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-325.0, -25.0]">
         </property>
     </entity>
     <entity name="ExpressionToToken2" class="ptolemy.actor.lib.conversions.ExpressionToToken">
@@ -185,7 +193,7 @@
         </property>
     </entity>
     <entity name="StringConst5" class="ptolemy.actor.lib.StringConst">
-        <property name="value" class="ptolemy.data.expr.Parameter" value="{a = {aa = {aaa = {aaa = {aaaa = {aaaaa = 1}}}}}}">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="{a = {aa = {aaa = {aaaa = {aaaaa = 1}}}}}">
         </property>
         <doc>Create a constant sequence with a string value.</doc>
         <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
@@ -196,7 +204,7 @@
             <property name="displayHeight" class="ptolemy.data.expr.Parameter" value="10">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-365.0, 190.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-395.0, 190.0]">
         </property>
     </entity>
     <entity name="ExpressionToToken5" class="ptolemy.actor.lib.conversions.ExpressionToToken">
@@ -318,10 +326,6 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[-50.0, 655.0]">
         </property>
     </entity>
-    <entity name="TokenToJSON11" class="ptolemy.actor.lib.conversions.json.TokenToJSON">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{100.0, 750.0}">
-        </property>
-    </entity>
     <entity name="StringConst11" class="ptolemy.actor.lib.StringConst">
         <property name="value" class="ptolemy.data.expr.Parameter" value="null">
         </property>
@@ -335,10 +339,6 @@
             </property>
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[-530.0, 750.0]">
-        </property>
-    </entity>
-    <entity name="ExpressionToToken11" class="ptolemy.actor.lib.conversions.ExpressionToToken">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-50.0, 750.0]">
         </property>
     </entity>
     <entity name="Test" class="ptolemy.actor.lib.Test">
@@ -362,7 +362,7 @@
         </property>
     </entity>
     <entity name="Test3" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{&quot;[{\&quot;b\&quot;:false,\&quot;a\&quot;:\&quot;true\&quot;},{\&quot;b\&quot;:8,\&quot;a\&quot;:\&quot;some string\&quot;},{\&quot;a\&quot;:\&quot;-1\&quot;}]&quot;}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{&quot;{\&quot;b\&quot;:[[false,false],[false,true]],\&quot;a\&quot;:[[true,true],[true,false]]}&quot;}">
         </property>
         <property name="requireAllCorrectValues" class="ptolemy.actor.parameters.SharedParameter" value="true">
         </property>
@@ -382,7 +382,7 @@
         </property>
     </entity>
     <entity name="Test5" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{&quot;{\&quot;a\&quot;:{\&quot;aa\&quot;:{\&quot;aaa\&quot;:{\&quot;aaa\&quot;:{\&quot;aaaa\&quot;:{\&quot;aaaaa\&quot;:1}}}}}}&quot;}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{&quot;{\&quot;a\&quot;:{\&quot;aa\&quot;:{\&quot;aaa\&quot;:{\&quot;aaaa\&quot;:{\&quot;aaaaa\&quot;:1}}}}}&quot;}">
         </property>
         <property name="requireAllCorrectValues" class="ptolemy.actor.parameters.SharedParameter" value="true">
         </property>
@@ -441,6 +441,10 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[235.0, 655.0]">
         </property>
     </entity>
+    <entity name="ExpressionToToken11" class="ptolemy.actor.lib.conversions.ExpressionToToken">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-50.0, 750.0]">
+        </property>
+    </entity>
     <entity name="Test11" class="ptolemy.actor.lib.Test">
         <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{&quot;[null]&quot;}">
         </property>
@@ -449,6 +453,10 @@
         <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[235.0, 750.0]">
+        </property>
+    </entity>
+    <entity name="TokenToJSON11" class="ptolemy.actor.lib.conversions.json.TokenToJSON">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{100.0, 750.0}">
         </property>
     </entity>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
@@ -491,10 +499,6 @@
     </relation>
     <relation name="relation30" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <relation name="relation32" class="ptolemy.actor.TypedIORelation">
-    </relation>
-    <relation name="relation33" class="ptolemy.actor.TypedIORelation">
-    </relation>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
@@ -515,7 +519,11 @@
     </relation>
     <relation name="relation28" class="ptolemy.actor.TypedIORelation">
     </relation>
+    <relation name="relation33" class="ptolemy.actor.TypedIORelation">
+    </relation>
     <relation name="relation31" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation32" class="ptolemy.actor.TypedIORelation">
     </relation>
     <link port="TokenToJSON.input" relation="relation2"/>
     <link port="TokenToJSON.output" relation="relation"/>
@@ -567,11 +575,7 @@
     <link port="StringConst10.output" relation="relation30"/>
     <link port="ExpressionToToken10.input" relation="relation30"/>
     <link port="ExpressionToToken10.output" relation="relation29"/>
-    <link port="TokenToJSON11.input" relation="relation32"/>
-    <link port="TokenToJSON11.output" relation="relation31"/>
     <link port="StringConst11.output" relation="relation33"/>
-    <link port="ExpressionToToken11.input" relation="relation33"/>
-    <link port="ExpressionToToken11.output" relation="relation32"/>
     <link port="Test.input" relation="relation"/>
     <link port="Test2.input" relation="relation4"/>
     <link port="Test3.input" relation="relation9"/>
@@ -582,5 +586,9 @@
     <link port="Test8.input" relation="relation22"/>
     <link port="Test9.input" relation="relation25"/>
     <link port="Test10.input" relation="relation28"/>
+    <link port="ExpressionToToken11.input" relation="relation33"/>
+    <link port="ExpressionToToken11.output" relation="relation32"/>
     <link port="Test11.input" relation="relation31"/>
+    <link port="TokenToJSON11.input" relation="relation32"/>
+    <link port="TokenToJSON11.output" relation="relation31"/>
 </entity>
