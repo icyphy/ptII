@@ -1669,6 +1669,25 @@ changequote([, ])dnl
              fi
         fi 
         if test -d "$ECLIPSE_DIR"; then
+            # Under RHEL 6.2, eclipse is in /usr/bin/eclipse
+            if test ! -f "$ECLIPSE_DIR/plugins"; then
+	        savedEclipseDir=$ECLIPSE_DIR
+	        ECLIPSE_DIR=no
+                eclipsedirs="/usr/local /usr/lib /usr/lib64"
+                for eclipsedir in $eclipsedirs
+                do
+                    if test -f "$eclipsedir/eclipse/plugins"; then
+                        ECLIPSE_DIR="$eclipsedir/eclipse"
+                        break
+                    fi
+                done
+		if test ! -d "$ECLIPSE_DIR"; then
+		    AC_MSG_WARN([Eclipse was found in $savedEclipseDir, but $savedEclipseDir/plugins was not found?"])
+                fi
+            fi
+        fi
+
+        if test -d "$ECLIPSE_DIR"; then
 	    PT_MSG_RESULT([$ECLIPSE_DIR])
 	    AC_MSG_CHECKING([for jars used by backtracking in $ECLIPSE_DIR])
 	    # jars="jdt.core osgi resources runtime" 
