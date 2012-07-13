@@ -58,7 +58,7 @@ type, the value of the Token is wrapped into an array of size one.
 
 Please see this page for a description of the JSON format: 
 http://www.json.org/
-
+@see JSONToToken.java
 @author  Marten Lohstroh
 @version $Id: TokenToJSON.java $
 @since Ptolemy II 9.0

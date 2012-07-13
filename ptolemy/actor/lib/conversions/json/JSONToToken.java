@@ -57,15 +57,27 @@ An actor that converts a string containing JSON-formatted data into a Token.
 Depending on the top level structure found in the JSON string, it produces 
 either a RecordToken or an ArrayToken on its output port. Nested structures
 in the JSON data will translate to correspondingly nested structures in the
-Token. 
-FIXME: A downstream actor may declare on its input a type constraint that 
-describes an array of a certain type. In JSON however, not all elements in
-an array need to be of identical type. It is still undetermined how this
-actor should deal with such an event.
+Token.
+<p>The JSONObject parser processes values as follows: 
+Delimited values are always parsed as a String. Values that are not delimited
+are tested in the order noted below. The first test that succeeds determines 
+the type.
+<ul>  
+  <li>'true' | 'false' => Boolean (case insensitive)</li>
+  <li>'null' => JSONObject.NULL (case insensitive)</li>
+  <li>'0x..' => Integer (hexadecimal)</li>
+  <li>x'.'y | exponent encoded => Double</li>
+  <li>x => Long, or Integer if value remains the same after conversion</li>
+</ul>
+If non of the above apply, the value is interpreted as a String.</p>
+<p>Note that JSON allows array elements to have different types, whereas the 
+<code>ArrayToken</code> does not. Conversion of such mixed array will result
+in an <code>ArrayToken</code> of which the types of all elements are cast to 
+the least upper bound of the entire collection.</p>
 
 Please see this page for a description of the JSON format: 
 http://www.json.org/
-
+@see TokenToJSON.java
 @author  Marten Lohstroh, Contributor: Beth Latronico
 @version $Id: JSONToToken.java $
 @since Ptolemy II 9.0
@@ -196,7 +208,9 @@ public class JSONToToken extends Converter {
 
     /** Iterate over the elements inside a JSONArray and put them inside a 
      *  new ArrayToken. Apply recursion for JSONObjects and JSONArrays.
-     * 
+     *  When a new ArrayToken is instantiated, all elements are converted to
+     *  the least upper bound of the types found in the JSONArray. If the 
+     *  conversion fails, an IllegalActionException is thrown.
      *  @param object A JSONArray
      *  @return An ArrayToken containing the values that corresponding to those
      *  found in the given array
