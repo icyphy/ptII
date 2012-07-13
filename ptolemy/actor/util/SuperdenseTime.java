@@ -109,7 +109,7 @@ public class SuperdenseTime implements Comparable {
     /** Return true if this SuperdenseTime object has the same
      *  timestamp and index as that of the given SuperdenseTime
      *  object.
-     *  @param superdenseTimeThe SuperDenseTime object that this
+     *  @param superdenseTime The SuperDenseTime object that this
      *  SuperdenseTime object is compared to.
      *  @return True if the two SuperDenseTime objects have the same
      *  timestamp and index.

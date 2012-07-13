@@ -171,12 +171,9 @@ public class IconScript extends Script implements WebExportable {
      *  attribute of an HTML tag, e.g. onclick="runFunction()" in
      *  <button onclick="runFunction()">
      *  
-     *  @return A HashMap of <container, <event type, method name>> 
-     *  A HashMap of objects to the Javascript events that should be
-     *  registered to these objects, e.g. onclick(), and the Javascript method
-     *  that event should run, e.g. runFunction()
-     *  @param exporter The web exporter to add content to
-     *  @throws IllegalActionException
+     *  @param exporter  The web exporter to which to write content.
+     *  @throws IllegalActionException If the eventType cannot be obtained,
+     *  the web attribute cannot be created or set.
      */
     // FIXME:  Support multiple events in the future.  E.g. onclick() and 
     // ontap() might call the same Javascript method.  

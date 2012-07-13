@@ -111,12 +111,12 @@ public class ActorDependencies {
     }
     
     /** Return a Set of dependent (downstream) actors of a particular
-     *  class that are connected to the target.  Opaque composite
-     *  actors are searched. For output ports of the
-     *  specified actor, these are downstream actors that are connected on the outside.
-     *  For input ports of the specified actor, these are downstream actors connected
-     *  on the inside.
-     *  @param actor the Actor to be searched.
+     *  class that are connected to a port.  Opaque composite
+     *  actors are searched. For output ports of the specified actor,
+     *  these are downstream actors that are connected on the outside.
+     *  For input ports of the specified actor, these are downstream
+     *  actors connected on the inside.
+     *  @param port The target port.
      *  @param filter The class of prerequisite actors to be returned.
      *  @return A Set of dependent atomic actors
      *  @exception KernelException If there is a problem with the receivers.

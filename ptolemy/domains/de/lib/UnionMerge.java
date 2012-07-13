@@ -216,7 +216,7 @@ public class UnionMerge extends DEActor { // FIXME: why is this actor in the DE 
      *  </li>
      *  </ul>
      *  @return A set of type constraints
-     *  @see ConstructCompositeTypeTerm
+     *  @see ConstructAssociativeType
      *  @see ExtractFieldType
      */
     @Override

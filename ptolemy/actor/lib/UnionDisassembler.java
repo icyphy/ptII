@@ -157,7 +157,7 @@ public class UnionDisassembler extends TypedAtomicActor {
      *  <code>UnionToken</code>.
 
      *  @return A set of Inequality instances
-     *  @see ConstructCompositeTypeTerm
+     *  @see ConstructAssociativeType
      *  @see ExtractFieldType
      */
     @Override

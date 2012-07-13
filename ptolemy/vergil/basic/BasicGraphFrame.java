@@ -1374,7 +1374,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
      *  that exports an image of a model.
      *  @param stream The output stream to write to.
      *  @param format The image format to generate.
-     *  @see #writeHTML(ExportParameters)
+     *  @see #writeHTML(ExportParameters, Writer)
      *  @exception IOException If writing to the stream fails.
      *  @exception PrinterException  If the specified format is not supported.
      */
@@ -1392,7 +1392,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
      *  @param stream The output stream to write to.
      *  @param format The image format to generate.
      *  @param background The background color, or null to use the current color.
-     *  @see #writeHTML(ExportParameters)
+     *  @see #writeHTML(ExportParameters, Writer)
      *  @exception IOException If writing to the stream fails.
      *  @exception PrinterException  If the specified format is not supported.
      */

@@ -98,7 +98,7 @@ public class DefaultIconLink extends IconLink {
     /** Override the base class to define an href attribute to associate with
      *  the area of the image map corresponding to its container.
      *  
-     *  @param exporter  The web exporter to write content to
+     *  @param exporter  The web exporter to which to write content.
      *  @throws IllegalActionException If evaluating the value
      *   of this parameter fails.
      */
@@ -159,7 +159,6 @@ public class DefaultIconLink extends IconLink {
      *  
      *  @param exporter The exporter.
      *  @param object The object.
-     *  @return HashMap of <name, value>
      *  @throws IllegalActionException If evaluating the value
      *   of this parameter fails.
      */

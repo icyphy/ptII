@@ -47,7 +47,7 @@ import diva.canvas.toolbox.LabelFigure;
  that resizes according to the width of the attribute value.
 
  <p>If the value is long, then the value is truncated and ends with "...".
- See {@see ptolemy.util.StringUtilities.truncateString(String, int, int)}.
+ See {@link ptolemy.util.StringUtilities#truncateString(String, int, int)}.
  This is done so as to avoid Consts with overly long icons.</p>
 
  <p>The attribute is assumed to be an instance of Settable, and its name

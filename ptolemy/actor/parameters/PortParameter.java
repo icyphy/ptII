@@ -323,7 +323,7 @@ public class PortParameter extends AbstractInitializableParameter implements Ini
     }
     
     /** Override the base class to record the persistent expression.
-     *  @param expr The expression for this variable.
+     *  @param expression The expression for this variable.
      *  @see #getExpression()
      */
     @Override
@@ -372,7 +372,7 @@ public class PortParameter extends AbstractInitializableParameter implements Ini
 
     /** Override the base class to record the persistent expression
      *  to be the string representation of the specified token.
-     *  @param token The new persistent value.
+     *  @param newValue The new persistent value.
      *  @exception IllegalActionException If the token type is not
      *   compatible with specified constraints, or if you are attempting
      *   to set to null a variable that has value dependents, or if the

@@ -56,7 +56,6 @@ public interface WebExporter {
      *  @param overwrite If true, overwrite any previously defined value for
      *   the specified attribute. If false, then do nothing if there is already
      *   an attribute with the specified name.
-     *  @param content The content to add.
      *  @return True if the specified attribute and value was defined (i.e.,
      *   if there was a previous value, it was overwritten).
      */

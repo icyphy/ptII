@@ -87,7 +87,7 @@ public class WebAttribute extends StringAttribute {
     /** Set the web name of this element; for example, "myElement" in 
      * <div name="myElement"> in HTML.
      * 
-     * @param The web name of this element; for example, "myElement" in 
+     * @param webName The web name of this element; for example, "myElement" in 
      * <div name="myElement"> in HTML.
      */
     public void setWebName(String webName) {

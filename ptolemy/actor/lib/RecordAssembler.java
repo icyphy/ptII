@@ -175,7 +175,7 @@ public class RecordAssembler extends TypedAtomicActor {
      *  field for every input, as downstream actors might require fewer fields
      *  in the record they accept for input.
      *  @return A set of type constraints
-     *  @see ConstructCompositeTypeTerm
+     *  @see ConstructAssociativeType
      *  @see ExtractFieldType
      */
     @Override

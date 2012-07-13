@@ -159,7 +159,6 @@ public class ParameterDisplayIconScript extends DefaultIconScript {
      *  @throws IllegalActionException If there is a problem creating the content
      * or if there is a name duplication with the created attributes
      */
-    
     protected void _provideDefaultAttributes(NamedObj object, 
             WebExporter exporter) throws IllegalActionException {
     
@@ -200,7 +199,6 @@ public class ParameterDisplayIconScript extends DefaultIconScript {
      *  onmouseover().  
      *  
      *  @param exporter The exporter to which to provide the content.
-     *  @param object The object which provides the content.
      *  @throws IllegalActionException If evaluating the value
      *   of this parameter fails.
      */

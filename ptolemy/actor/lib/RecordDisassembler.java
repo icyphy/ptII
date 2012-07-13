@@ -169,7 +169,7 @@ public class RecordDisassembler extends TypedAtomicActor {
      *  </li>
      *  </ul>
      *  @return A set of Inequality instances
-     *  @see ConstructCompositeTypeTerm
+     *  @see ConstructAssociativeType
      *  @see ExtractFieldType
      */
     @Override

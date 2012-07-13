@@ -148,7 +148,7 @@ public class WebElement extends StringAttribute {
     /** Set the web name of this element; for example, "myElement" in 
      * <div name="myElement"> in HTML.
      * 
-     * @param The web name of this element; for example, "myElement" in 
+     * @param webName The web name of this element; for example, "myElement" in 
      * <div name="myElement"> in HTML.
      */
     public void setWebName(String webName) {
@@ -198,7 +198,7 @@ public class WebElement extends StringAttribute {
      * For example, if we have the element name "result"
      * <div name="result"> </div> that we want as the parent:
      * <div name="result"> <div name="thisElement"> </div> </div>
-     * Please see {@link ptolemy.vergil.basic.export.web.HTMLPosition} for some
+     * Please see {@link ptolemy.vergil.basic.export.web.HTMLTextPosition} for some
      * more examples.  If there is no parent element, _position is set to 
      * the empty string.
      */

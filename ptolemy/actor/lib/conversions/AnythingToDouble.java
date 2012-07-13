@@ -44,7 +44,7 @@ import ptolemy.kernel.util.Workspace;
  from a generic actor to always output doubles.
 
  <p>If you want to convert a string to a double, see the
- {@link ptolemy.actor.lib.io.ExpressionToToken} actor.</p>
+ {@link ptolemy.actor.lib.conversions.ExpressionToToken} actor.</p>
 
  @author Adam Cataldo
  @Pt.ProposedRating Green (eal)

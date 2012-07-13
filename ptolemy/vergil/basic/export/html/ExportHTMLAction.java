@@ -275,14 +275,12 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable, 
      *  <p>
      *  This method is a callback method that may be performed
      *  by attributes of class
-     *  {@link ptolemy.vergil.basic.export.html.WebExportable}
+     *  {@link ptolemy.vergil.basic.export.web.WebExportable}
      *  when their
-     *  {@link ptolemy.vergil.basic.export.html.WebExportable#provideOutsideContent(WebExporter)}
+     *  {@link ptolemy.vergil.basic.export.web.WebExportable#provideOutsideContent(WebExporter)}
      *  method is called by this exporter.</p>
      *
-     *  @param object The object for which area elements are being added.
-     *  @param attribute The attribute to add to the area element.
-     *  @param value The value of the attribute.
+     *  @param webAttribute The attribute to be included.
      *  @param overwrite If true, overwrite any previously defined value for
      *   the specified attribute. If false, then do nothing if there is already
      *   an attribute with the specified name.
@@ -310,15 +308,11 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable, 
         return false;
     }
     
-    /** Add HTML content at the specified position.
-     *  The position is expected to be one of "head", "start", "end",
-     *  or anything else. In the latter case, the value
-     *  of the position attribute is a filename
-     *  into which the content is written.
+    /** Define an element.
      *  If <i>onceOnly</i> is true, then if identical content has
      *  already been added to the specified position, then it is not
      *  added again.
-     *  @param position The position for the content.
+     *  @param webElement The element.
      *  @param onceOnly True to prevent duplicate content.
      *  @param content The content to add.
      */
@@ -340,7 +334,7 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable, 
     
     /** Export an HTML page and associated subpages for the specified
      *  graph frame as given by the parameters. After setting everything
-     *  up, this method will delegate to the {@link BasicGraphFrame#writeHTML(ExportParameters)}
+     *  up, this method will delegate to the {@link BasicGraphFrame#writeHTML(ExportParameters, Writer)}
      *  method, which in turn will delegate back to an instance of this class, ExportHTMLAction.
      *  <p>
      *  This method should be invoked in the swing thread.
@@ -420,7 +414,7 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable, 
         }
     }
 
-    /** During invocation of {@link #writeHTML(ExportParameters)},
+    /** During invocation of {@link #writeHTML(ExportParameters, Writer)},
      *  return the parameters being used.
      *  @return The parameters of the current export, or null if there
      *   is not one in progress.
@@ -449,7 +443,6 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable, 
      *  @param waitForCompletion If true, then do not return until the export
      *   is complete. In this case, everything is run in the calling thread,
      *   which is required to be the Swing event thread.
-     *  @return The thread that is to complete the work.
      *  @throws IllegalActionException If something goes wrong.
      */
     public static void openRunAndWriteHTML(

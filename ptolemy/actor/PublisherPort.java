@@ -495,7 +495,6 @@ public class PublisherPort extends PubSubPort {
      *  of the specified port that subscribe to this publisher.
      *  This method traverses opaque composites.   
      *  @param port The port to be checked   
-     *  @param filter The class of dependent actors to be returned.
      *  @return The Set of all AtomicActors connected to the port.
      */
     private Set<SubscriberPort> _dependents(IOPort port) 

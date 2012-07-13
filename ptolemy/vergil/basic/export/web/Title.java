@@ -345,8 +345,9 @@ public class Title extends StringParameter implements WebExportable {
     /** Return a title for the model.  The title can be returned as an attribute
      *  or an element, but not a document.
      * 
-     * @return A HashMap of the top level object to its title, with the name
-     * "title", represented as an attribute or an element.
+     *  @param exporter  The web exporter to which to write content.
+     *  @exception IllegalActionExeption If there is a problem creating
+     *  the content or setting the attribute.
      */
     public void provideContent(WebExporter exporter) 
         throws IllegalActionException{

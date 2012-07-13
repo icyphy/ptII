@@ -135,13 +135,11 @@ public class DefaultTitle extends WebContent implements WebExportable {
      *  web page and for each object
      *  as specified by <i>include</i> and <i>instancesOf</i>.
      *  
-     *  @return A HashMap of all objects to their titles, with the name "title", 
-     *  represented as attributes.  
+     *  @param exporter  The web exporter to which to write content.
      *  @throws IllegalActionException If something is wrong with the web
      *  content or the object already has an attribute with the same name as the
      *  the created WebAttribute
      */
-    
     protected void _provideAttributes(WebExporter exporter) 
         throws IllegalActionException {
   
