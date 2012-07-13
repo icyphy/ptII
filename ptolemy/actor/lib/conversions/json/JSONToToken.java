@@ -68,7 +68,7 @@ the type.
   <li>'0x..' => Integer (hexadecimal)</li>
   <li>x'.'y | exponent encoded => Double</li>
   <li>x => Long, or Integer if value remains the same after conversion</li>
-</ul>
+</ul></p>
 If non of the above apply, the value is interpreted as a String.</p>
 <p>Note that JSON allows array elements to have different types, whereas the 
 <code>ArrayToken</code> does not. Conversion of such mixed array will result
