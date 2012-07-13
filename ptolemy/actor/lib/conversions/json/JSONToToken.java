@@ -75,9 +75,10 @@ If non of the above apply, the value is interpreted as a String.</p>
 in an <code>ArrayToken</code> of which the types of all elements are cast to 
 the least upper bound of the entire collection.</p>
 
-Please see this page for a description of the JSON format: 
-http://www.json.org/
-@see TokenToJSON.java
+<p><a href="http://www.json.org/">http://www.json.org/</a>
+- a description of the JSON format.</p>
+
+@see TokenToJSON
 @author  Marten Lohstroh, Contributor: Beth Latronico
 @version $Id: JSONToToken.java $
 @since Ptolemy II 9.0

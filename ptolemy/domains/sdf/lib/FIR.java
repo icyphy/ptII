@@ -338,7 +338,6 @@ public class FIR extends SDFTransformer {
     
     /** Set the output to be >= the monotonic function of the input port type.
      *  @return A set of type constraints
-     *  @see OutputTypeFunction
      */
     @Override
     protected Set<Inequality> _customTypeConstraints() {

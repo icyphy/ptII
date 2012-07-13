@@ -67,7 +67,7 @@ public class RecorderMessageHandler extends MessageHandler {
      *
      *  @param info The message.
      *  @param throwable The throwable.
-     *  @see CancelException
+     *  @see ptolemy.util.CancelException
      */
     protected void _error(String info, Throwable throwable) {
         //super._error(info, throwable);

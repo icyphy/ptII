@@ -372,8 +372,7 @@ public class LocalClock extends AbstractSettableAttribute {
         _commit();
     }
     
-    /** Set the new clock drift but do not commit. The commit
-     *  is done via {@link #commitClockDriftAndValue()}.
+    /** Set the new clock drift and commit it.
      *  @param drift New clock drift.  
      *  @exception IllegalActionException If the specified drift is
      *   non-positive.
@@ -423,7 +422,7 @@ public class LocalClock extends AbstractSettableAttribute {
      *  show up in the configuration dialogue of the container (the director).
      *  This method does not do anything because visibility is always
      *  NOT_EDITABLE.
-     *  @param listener The new visibility.
+     *  @param visibility The new visibility.
      */
     public void setVisibility(Visibility visibility) {
         // nothing to do, visibility is always false.

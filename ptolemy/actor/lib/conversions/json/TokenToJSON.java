@@ -56,9 +56,10 @@ data. Nested structures in ArrayToken or RecordToken translate into
 correspondingly nested JSON output. If the input Token is not a structured 
 type, the value of the Token is wrapped into an array of size one.
 
-Please see this page for a description of the JSON format: 
-http://www.json.org/
-@see JSONToToken.java
+<p><a href="http://www.json.org/">http://www.json.org/</a>
+- a description of the JSON format.</p>
+
+@see JSONToToken
 @author  Marten Lohstroh
 @version $Id: TokenToJSON.java $
 @since Ptolemy II 9.0

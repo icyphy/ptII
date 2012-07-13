@@ -277,7 +277,7 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable, 
      *  by attributes of class
      *  {@link ptolemy.vergil.basic.export.web.WebExportable}
      *  when their
-     *  {@link ptolemy.vergil.basic.export.web.WebExportable#provideOutsideContent(WebExporter)}
+     *  {@link ptolemy.vergil.basic.export.web.WebExportable#provideContent(WebExporter)}
      *  method is called by this exporter.</p>
      *
      *  @param webAttribute The attribute to be included.
@@ -287,7 +287,6 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable, 
      *  @return True if the specified attribute and value was defined (i.e.,
      *   if there was a previous value, it was overwritten).
      */
-    
     public boolean defineAttribute(WebAttribute webAttribute, 
             boolean overwrite) {
         if (webAttribute.getContainer() != null) { 
@@ -314,7 +313,6 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable, 
      *  added again.
      *  @param webElement The element.
      *  @param onceOnly True to prevent duplicate content.
-     *  @param content The content to add.
      */
     public void defineElement(WebElement webElement, boolean onceOnly) {
 

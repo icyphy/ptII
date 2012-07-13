@@ -606,8 +606,7 @@ public class PtidesDirector extends DEDirector {
      * SuperdenseDependency.OPLUS_IDENTITY.
      * @param source Source input port.
      * @param destination Destination input port.
-     * @param triggerOnly Only consider paths through trigger ports. 
-     * @return Superdense dependency.
+     * @return The Superdense dependency.
      */
     protected SuperdenseDependency _getSuperdenseDependencyPair(
             TypedIOPort source, TypedIOPort destination) {
@@ -696,11 +695,12 @@ public class PtidesDirector extends DEDirector {
      *  FIXME: specialized ports do contain the parameters, don't
      *  have to get the attribute with the string! For now leave it
      *  that way to support older models that do not use PtidesPorts.
-     *  @param port The port the deviceDelay is associated with.
-     *  @return the value of the deviceDelay parameter if the parameter is not
+     *  @param object The object that has the parameter.
+     *  @param parameterName The name of the parameter to be retrieved.
+     *  @return the value of the named parameter if the parameter is not
      *  null. Otherwise return null.
-     *  @exception IllegalActionException If the token of the deviceDelay
-     *  parameter cannot be evaluated.
+     *  @exception IllegalActionException If thrown while getting the value
+     *  of the parameter.
      */
     protected static Double _getDoubleParameterValue(NamedObj object, String parameterName)
             throws IllegalActionException {
@@ -746,9 +746,10 @@ public class PtidesDirector extends DEDirector {
     } 
     
     /** Check if event is safe to process.
-     * @param nextEvent
-     * @return
-     * @throws IllegalActionException
+     * @param event The event to be checked.
+     * @return true if the event is safe to process.
+     * @throws IllegalActionException If the delayOffset aparameter
+     * cannot be read.
      */
     protected boolean _isSafeToProcess(PtidesEvent event) throws IllegalActionException {
         Time eventTimestamp = event.timeStamp(); 
@@ -776,7 +777,6 @@ public class PtidesDirector extends DEDirector {
      * SuperdenseDependency.OPLUS_IDENTITY.
      * @param source Source input port.
      * @param destination Destination input port.
-     * @param triggerOnly Only consider paths through trigger ports.
      * @param dependency Superdense dependency.
      */
     protected void _putSuperdenseDependencyPair(TypedIOPort source, 

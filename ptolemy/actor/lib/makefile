@@ -386,6 +386,7 @@ OPTIONAL_FILES = \
 	'RecordDisassembler$$PortFunction.class' \
 	'RecordUpdater$$1.class' \
 	'RecordUpdater$$FunctionTerm.class' \
+	'RecordUpdater$$MinimalOutputTerm.class' \
 	'Scale$$1.class' \
 	'Scale$$PortParamFunction.class' \
 	'Scale$$PortParameterFunction.class' \

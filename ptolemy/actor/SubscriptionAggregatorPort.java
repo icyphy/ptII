@@ -53,11 +53,13 @@ import ptolemy.kernel.util.NamedObj;
 
 /**
  Aggregate data produced by multiple publishers.
- This is a generalization of the {@link #SubscriberPort} (the base class)
- where the channel name is interpreted as a regular expression.
- Data produced by all publishers that publish on a channel name
- that matches the regular expression are aggregated using the
- operation given by the {@link #operation} parameter.
+
+ <p>This is a generalization of the {@link
+ ptolemy.actor.SubscriberPort} (the base class) where the channel name
+ is interpreted as a regular expression.  Data produced by all
+ publishers that publish on a channel name that matches the regular
+ expression are aggregated using the operation given by the {@link
+ #operation} parameter.</p>
 
  <p>Note that the {@link ptolemy.actor.SubscriberPort#channel <i>channel</i>}
  parameter of the superclass is now a regular expression in this class.
