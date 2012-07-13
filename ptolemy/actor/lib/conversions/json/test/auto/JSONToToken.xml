@@ -12,13 +12,13 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[100.0, 65.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 0, 1282, 1025}, maximized=true}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 27, 1602, 874}, maximized=true}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1062, 899]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1382, 748]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.512">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{799.3406613372092, 523.5992005813953}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{803.8489583333333, 457.181191314554}">
     </property>
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Array of integers">
@@ -466,7 +466,7 @@
         </port>
     </entity>
     <entity name="Test11" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{{{object(null)}}}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{{{null}}}">
         </property>
         <property name="requireAllCorrectValues" class="ptolemy.actor.parameters.SharedParameter" value="true">
         </property>
