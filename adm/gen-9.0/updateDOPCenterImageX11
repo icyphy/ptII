@@ -5,11 +5,11 @@
 echo "Killing Xvfb"
 pkill Xvfb
 pkill -9 Xvfb
-rm -f /tmp/.X1-lock
+rm -f /tmp/.X7-lock
 
 echo "Starting Xvfb"
-Xvfb :1 -screen 0 1024x768x24 &
-export DISPLAY=localhost:1.0
+Xvfb :7 -screen 0 1024x768x24 &
+export DISPLAY=localhost:7.0
 
 echo "Loading DOPCenter model, running it and exporting"
 
