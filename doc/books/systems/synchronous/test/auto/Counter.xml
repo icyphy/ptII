@@ -1,16 +1,16 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="counter-2-bit-sr-with-nonstrictdelay" class="ptolemy.actor.TypedCompositeActor">
+<entity name="Counter" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.0.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={54, 89, 623, 442}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={54, 89, 623, 602}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[403, 335]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[403, 495]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{201.5, 167.5}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{201.5, 247.5}">
     </property>
     <property name="SR Director" class="ptolemy.domains.sr.kernel.SRDirector">
         <property name="iterations" class="ptolemy.data.expr.Parameter" value="10">
@@ -48,14 +48,6 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 295.0]">
         </property>
         <property name="_flipPortsHorizontal" class="ptolemy.data.expr.Parameter" value="true">
-        </property>
-    </entity>
-    <entity name="Display" class="ptolemy.actor.lib.gui.Display">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={473, 283, 334, 234}, maximized=false}">
-        </property>
-        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[326, 186]">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[350.0, 210.0]">
         </property>
     </entity>
     <entity name="Decoder" class="ptolemy.actor.TypedCompositeActor">
@@ -153,8 +145,14 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 240.0]">
         </property>
     </entity>
-    <relation name="relation" class="ptolemy.actor.TypedIORelation">
-    </relation>
+    <entity name="Test" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0, 1, 2, 3, 0, 1, 2, 3, 0, 1}">
+        </property>
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[344.875, 211.625]">
+        </property>
+    </entity>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
         <vertex name="vertex1" value="[140.0, 240.0]">
         </vertex>
@@ -167,12 +165,13 @@
     </relation>
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
     </relation>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+    </relation>
     <link port="LogicalNot.input" relation="relation3"/>
     <link port="LogicalNot.output" relation="relation5"/>
     <link port="LogicFunction.input" relation="relation3"/>
     <link port="LogicFunction.input" relation="relation2"/>
     <link port="LogicFunction.output" relation="relation4"/>
-    <link port="Display.input" relation="relation"/>
     <link port="Decoder.port" relation="relation3"/>
     <link port="Decoder.port2" relation="relation2"/>
     <link port="Decoder.port3" relation="relation"/>
@@ -180,4 +179,5 @@
     <link port="NonStrictDelay.output" relation="relation3"/>
     <link port="NonStrictDelay2.input" relation="relation4"/>
     <link port="NonStrictDelay2.output" relation="relation2"/>
+    <link port="Test.input" relation="relation"/>
 </entity>

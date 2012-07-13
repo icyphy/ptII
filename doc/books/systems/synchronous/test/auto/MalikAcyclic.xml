@@ -1,7 +1,7 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="malik-acyclic" class="ptolemy.actor.TypedCompositeActor">
+<entity name="MalikAcyclic" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.0.devel">
     </property>
     <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={180, 62, 889, 602}, maximized=false}">
@@ -39,14 +39,6 @@
         <property name="values" class="ptolemy.data.expr.Parameter" value="{true,true,false,true,false}">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[75.0, 260.0]">
-        </property>
-    </entity>
-    <entity name="Display" class="ptolemy.actor.lib.gui.Display">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={102, 261, 334, 234}, maximized=false}">
-        </property>
-        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[326, 186]">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[630.0, 160.0]">
         </property>
     </entity>
     <entity name="BooleanMultiplexor" class="ptolemy.actor.lib.BooleanMultiplexor">
@@ -101,13 +93,19 @@
             </property>
         </port>
     </entity>
+    <entity name="Test" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{1, 3, 6, 7, 10}">
+        </property>
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{625.0, 160.0}">
+        </property>
+    </entity>
     <relation name="relation8" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
         <vertex name="vertex1" value="[205.0, 160.0]">
         </vertex>
-    </relation>
-    <relation name="relation" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
     </relation>
@@ -119,11 +117,12 @@
     </relation>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
     </relation>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+    </relation>
     <link port="Scale.input" relation="relation8"/>
     <link port="Scale.output" relation="relation2"/>
     <link port="Ramp.output" relation="relation8"/>
     <link port="Sequence.output" relation="relation4"/>
-    <link port="Display.input" relation="relation"/>
     <link port="BooleanMultiplexor.trueInput" relation="relation7"/>
     <link port="BooleanMultiplexor.falseInput" relation="relation6"/>
     <link port="BooleanMultiplexor.select" relation="relation4"/>
@@ -134,4 +133,5 @@
     <link port="Scale2.output" relation="relation6"/>
     <link port="Expression2.output" relation="relation3"/>
     <link port="Expression2.p" relation="relation8"/>
+    <link port="Test.input" relation="relation"/>
 </entity>
