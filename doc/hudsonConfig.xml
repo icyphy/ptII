@@ -13,8 +13,61 @@
     <entry>
       <string>hudson-plugins-cobertura-CoberturaPublisher</string>
       <external-property>
+        <originalValue class="hudson.plugins.cobertura.CoberturaPublisher">
+          <coberturaReportFile>reports/coveragereport/coverage.xml</coberturaReportFile>
+          <onlyStable>false</onlyStable>
+          <healthyTarget>
+            <targets class="enum-map" enum-type="hudson.plugins.cobertura.targets.CoverageMetric">
+              <entry>
+                <hudson.plugins.cobertura.targets.CoverageMetric>CONDITIONAL</hudson.plugins.cobertura.targets.CoverageMetric>
+                <int>70</int>
+              </entry>
+              <entry>
+                <hudson.plugins.cobertura.targets.CoverageMetric>LINE</hudson.plugins.cobertura.targets.CoverageMetric>
+                <int>80</int>
+              </entry>
+              <entry>
+                <hudson.plugins.cobertura.targets.CoverageMetric>METHOD</hudson.plugins.cobertura.targets.CoverageMetric>
+                <int>80</int>
+              </entry>
+            </targets>
+          </healthyTarget>
+          <unhealthyTarget>
+            <targets class="enum-map" enum-type="hudson.plugins.cobertura.targets.CoverageMetric">
+              <entry>
+                <hudson.plugins.cobertura.targets.CoverageMetric>CONDITIONAL</hudson.plugins.cobertura.targets.CoverageMetric>
+                <int>0</int>
+              </entry>
+              <entry>
+                <hudson.plugins.cobertura.targets.CoverageMetric>LINE</hudson.plugins.cobertura.targets.CoverageMetric>
+                <int>0</int>
+              </entry>
+              <entry>
+                <hudson.plugins.cobertura.targets.CoverageMetric>METHOD</hudson.plugins.cobertura.targets.CoverageMetric>
+                <int>0</int>
+              </entry>
+            </targets>
+          </unhealthyTarget>
+          <failingTarget>
+            <targets class="enum-map" enum-type="hudson.plugins.cobertura.targets.CoverageMetric">
+              <entry>
+                <hudson.plugins.cobertura.targets.CoverageMetric>CONDITIONAL</hudson.plugins.cobertura.targets.CoverageMetric>
+                <int>0</int>
+              </entry>
+              <entry>
+                <hudson.plugins.cobertura.targets.CoverageMetric>LINE</hudson.plugins.cobertura.targets.CoverageMetric>
+                <int>0</int>
+              </entry>
+              <entry>
+                <hudson.plugins.cobertura.targets.CoverageMetric>METHOD</hudson.plugins.cobertura.targets.CoverageMetric>
+                <int>0</int>
+              </entry>
+            </targets>
+          </failingTarget>
+          <sourceEncoding>ASCII</sourceEncoding>
+        </originalValue>
         <propertyOverridden>false</propertyOverridden>
-        <modified>false</modified>
+        <modified>true</modified>
       </external-property>
     </entry>
     <entry>
@@ -88,8 +141,13 @@ PTINYOS_MOMLROOT=${WORKSPACE}/vendors/ptinyos/moml</localVarText>
     <entry>
       <string>hudson-tasks-Mailer</string>
       <external-property>
+        <originalValue class="hudson.tasks.Mailer">
+          <recipients>cxh@eecs.berkeley.edu</recipients>
+          <dontNotifyEveryUnstableBuild>false</dontNotifyEveryUnstableBuild>
+          <sendToIndividuals>false</sendToIndividuals>
+        </originalValue>
         <propertyOverridden>false</propertyOverridden>
-        <modified>false</modified>
+        <modified>true</modified>
       </external-property>
     </entry>
     <entry>
@@ -109,6 +167,11 @@ PTINYOS_MOMLROOT=${WORKSPACE}/vendors/ptinyos/moml</localVarText>
     <entry>
       <string>hudson-tasks-junit-JUnitResultArchiver</string>
       <external-property>
+        <originalValue class="hudson.tasks.junit.JUnitResultArchiver">
+          <testResults>reports/junit/*.xml</testResults>
+          <keepLongStdio>false</keepLongStdio>
+          <testDataPublishers/>
+        </originalValue>
         <propertyOverridden>false</propertyOverridden>
         <modified>true</modified>
       </external-property>
