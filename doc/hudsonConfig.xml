@@ -129,6 +129,7 @@
           <localVarText>PTII=${WORKSPACE}
 LD_LIBRARY_PATH=${WORKSPACE}/lbnl/lib/util:${WORKSPACE}/lib:/usr/local/matlab-r2008a/bin/glnxa64:${WORKSPACE}/vendors/misc/dbxml-2.5.16/install/lib:/usr/local/lib:${LD_LIBRARY_PATH}
 CLASSPATH=/usr/java/JMF-2.1.1e/lib/jmf.jar:/usr/java/jai-1_1_3/lib/jai_codec.jar:/usr/java/jai-1_1_3/lib/jai_core.jar:/usr/java/jai-1_1_3/lib/mlibwrapper_jai.jar:.
+DISPLAY=localhost:6.0
 PATH=/usr/local/bin:${PATH}:${WORKSPACE}/vendors/misc/dbxml-2.5.16/install/bin:/usr/local/sbin:/usr/local/bin
 TOSROOT=${WORKSPACE}/vendors/ptinyos/tinyos-1.x
 TOSDIR=${WORKSPACE}/vendors/ptinyos/tinyos-1.x/tos
@@ -142,7 +143,7 @@ PTINYOS_MOMLROOT=${WORKSPACE}/vendors/ptinyos/moml</localVarText>
       <string>hudson-tasks-Mailer</string>
       <external-property>
         <originalValue class="hudson.tasks.Mailer">
-          <recipients>cxh@eecs.berkeley.edu</recipients>
+          <recipients>ealtech@eecs.berkeley.edu</recipients>
           <dontNotifyEveryUnstableBuild>false</dontNotifyEveryUnstableBuild>
           <sendToIndividuals>false</sendToIndividuals>
         </originalValue>
@@ -207,16 +208,76 @@ PTINYOS_MOMLROOT=${WORKSPACE}/vendors/ptinyos/moml</localVarText>
         <originalValue class="hudson.plugins.emailext.ExtendedEmailPublisher">
           <recipientList>ealtech@bennett.eecs.berkeley.edu</recipientList>
           <configuredTriggers>
+            <hudson.plugins.emailext.plugins.trigger.UnstableTrigger>
+              <email>
+                <recipientList></recipientList>
+                <subject>$PROJECT_DEFAULT_SUBJECT</subject>
+                <body>$PROJECT_DEFAULT_CONTENT</body>
+                <sendToDevelopers>false</sendToDevelopers>
+                <includeCulprits>false</includeCulprits>
+                <sendToRecipientList>true</sendToRecipientList>
+              </email>
+            </hudson.plugins.emailext.plugins.trigger.UnstableTrigger>
             <hudson.plugins.emailext.plugins.trigger.FailureTrigger>
               <email>
                 <recipientList></recipientList>
                 <subject>$PROJECT_DEFAULT_SUBJECT</subject>
                 <body>$PROJECT_DEFAULT_CONTENT</body>
-                <sendToDevelopers>true</sendToDevelopers>
+                <sendToDevelopers>false</sendToDevelopers>
                 <includeCulprits>false</includeCulprits>
                 <sendToRecipientList>true</sendToRecipientList>
               </email>
             </hudson.plugins.emailext.plugins.trigger.FailureTrigger>
+            <hudson.plugins.emailext.plugins.trigger.StillFailingTrigger>
+              <email>
+                <recipientList></recipientList>
+                <subject>$PROJECT_DEFAULT_SUBJECT</subject>
+                <body>$PROJECT_DEFAULT_CONTENT</body>
+                <sendToDevelopers>false</sendToDevelopers>
+                <includeCulprits>false</includeCulprits>
+                <sendToRecipientList>true</sendToRecipientList>
+              </email>
+            </hudson.plugins.emailext.plugins.trigger.StillFailingTrigger>
+            <hudson.plugins.emailext.plugins.trigger.SuccessTrigger>
+              <email>
+                <recipientList></recipientList>
+                <subject>$PROJECT_DEFAULT_SUBJECT</subject>
+                <body>$PROJECT_DEFAULT_CONTENT</body>
+                <sendToDevelopers>false</sendToDevelopers>
+                <includeCulprits>false</includeCulprits>
+                <sendToRecipientList>true</sendToRecipientList>
+              </email>
+            </hudson.plugins.emailext.plugins.trigger.SuccessTrigger>
+            <hudson.plugins.emailext.plugins.trigger.FixedTrigger>
+              <email>
+                <recipientList></recipientList>
+                <subject>$PROJECT_DEFAULT_SUBJECT</subject>
+                <body>$PROJECT_DEFAULT_CONTENT</body>
+                <sendToDevelopers>false</sendToDevelopers>
+                <includeCulprits>false</includeCulprits>
+                <sendToRecipientList>true</sendToRecipientList>
+              </email>
+            </hudson.plugins.emailext.plugins.trigger.FixedTrigger>
+            <hudson.plugins.emailext.plugins.trigger.StillUnstableTrigger>
+              <email>
+                <recipientList></recipientList>
+                <subject>$PROJECT_DEFAULT_SUBJECT</subject>
+                <body>$PROJECT_DEFAULT_CONTENT</body>
+                <sendToDevelopers>false</sendToDevelopers>
+                <includeCulprits>false</includeCulprits>
+                <sendToRecipientList>true</sendToRecipientList>
+              </email>
+            </hudson.plugins.emailext.plugins.trigger.StillUnstableTrigger>
+            <hudson.plugins.emailext.plugins.trigger.PreBuildTrigger>
+              <email>
+                <recipientList></recipientList>
+                <subject>$PROJECT_DEFAULT_SUBJECT</subject>
+                <body>$PROJECT_DEFAULT_CONTENT</body>
+                <sendToDevelopers>false</sendToDevelopers>
+                <includeCulprits>false</includeCulprits>
+                <sendToRecipientList>false</sendToRecipientList>
+              </email>
+            </hudson.plugins.emailext.plugins.trigger.PreBuildTrigger>
           </configuredTriggers>
           <contentType>text/html</contentType>
           <defaultSubject>$DEFAULT_SUBJECT</defaultSubject>
@@ -264,7 +325,7 @@ ${JELLY_SCRIPT}
       <describable-list-property>
         <originalValue class="hudson.util.DescribableList">
           <hudson.tasks.Shell>
-            <command>#!/bin/sh -e
+            <command>#!/bin/sh -x
 export PTII=$WORKSPACE
 mvn -Dmaven.repo.local=/var/lib/hudson/jobs/ptII/workspace/.maven/repo install:install-file -DgroupId=PDFRenderer -DartifactId=PDFRenderer -Dversion=ptII -Dpackaging=jar -Dfile=$PTII/lib/PDFRenderer.jar
 mvn -Dmaven.repo.local=/var/lib/hudson/jobs/ptII/workspace/.maven/repo install:install-file -DgroupId=caltrop -DartifactId=ptCal -Dversion=ptII -Dpackaging=jar -Dfile=$PTII/lib/ptCal.jar
@@ -313,17 +374,17 @@ mvn -Dmaven.repo.local=/var/lib/hudson/jobs/ptII/workspace/.maven/repo install:i
             </config>
           </maven-builder>
           <hudson.tasks.Shell>
-            <command>#!/bin/sh -e
+            <command>#!/bin/sh -x
 export PTII=$WORKSPACE
 pwd
 ./configure
-Xvfb :2 -screen 0 1024x768x24 &amp;
-export DISPLAY=localhost:2.0
+Xvfb :6 -screen 0 1024x768x24 &amp;
+echo &quot;DISPLAY is set above with the other env variables&quot;
 cp /var/lib/hudson/jobs/ptII/config.xml /var/lib/hudson/jobs/ptII/workspace/doc/hudsonConfig.xml
 svn commit -m &quot;Update from hudson build&quot; /var/lib/hudson/jobs/ptII/workspace/doc/hudsonConfig.xml</command>
           </hudson.tasks.Shell>
           <hudson.tasks.Shell>
-            <command>#!/bin/sh -e
+            <command>#!/bin/sh -x
 # Ant does not compile lbnl C files yet
 export PTII=$WORKSPACE
 (cd $PTII/lbnl; make)</command>
@@ -351,11 +412,11 @@ export PTII=$WORKSPACE
             <antName>ant1.8.2</antName>
           </hudson.tasks.Ant>
           <hudson.tasks.Shell>
-            <command>#!/bin/sh -e
+            <command>#!/bin/sh -x
 $WORKSPACE/adm/bin/killXServer</command>
           </hudson.tasks.Shell>
           <hudson.tasks.Shell>
-            <command>#!/bin/sh -e
+            <command>#!/bin/sh -x
 cd $PTII/adm/gen-9.0
 make -k USER=hudson PTIIHOME=/var/lib/hudson/jobs/ptII/workspace PTIIADM=/var/lib/hudson/jobs/ptII/workspace/adm JAR=/usr/bin/jar hudson</command>
           </hudson.tasks.Shell>
