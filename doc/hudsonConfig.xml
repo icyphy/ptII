@@ -144,7 +144,7 @@ PTINYOS_MOMLROOT=${WORKSPACE}/vendors/ptinyos/moml</localVarText>
       <string>hudson-tasks-Mailer</string>
       <external-property>
         <originalValue class="hudson.tasks.Mailer">
-          <recipients>ealtech@eecs.berkeley.edu</recipients>
+          <recipients>cxh@eecs.berkeley.edu, marten@eecs.berkeley.edu</recipients>
           <dontNotifyEveryUnstableBuild>false</dontNotifyEveryUnstableBuild>
           <sendToIndividuals>false</sendToIndividuals>
         </originalValue>
@@ -207,7 +207,7 @@ PTINYOS_MOMLROOT=${WORKSPACE}/vendors/ptinyos/moml</localVarText>
       <string>hudson-plugins-emailext-ExtendedEmailPublisher</string>
       <external-property>
         <originalValue class="hudson.plugins.emailext.ExtendedEmailPublisher">
-          <recipientList>ealtech@bennett.eecs.berkeley.edu</recipientList>
+          <recipientList>ptexternal-devel@chess.eecs.berkeley.edu</recipientList>
           <configuredTriggers>
             <hudson.plugins.emailext.plugins.trigger.UnstableTrigger>
               <email>
