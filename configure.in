@@ -1676,7 +1676,7 @@ changequote([, ])dnl
                 eclipsedirs="/usr/local /usr/lib /usr/lib64"
                 for eclipsedir in $eclipsedirs
                 do
-                    if test -f "$eclipsedir/eclipse/plugins"; then
+                    if test -d "$eclipsedir/eclipse/plugins"; then
                         ECLIPSE_DIR="$eclipsedir/eclipse"
                         break
                     fi
@@ -1703,7 +1703,8 @@ changequote([, ])dnl
 	        else
                     $PT_ECHO $ECHO_N "$jar "
                 fi
-	        jarpath=`$FIND "$ECLIPSE_DIR/plugins" -name "*${jar}*.jar" | head -1`
+		# In more recent versions of eclipse, the jdt jars are in dropins/, the other jars are in plugins/
+	        jarpath=`$FIND "$ECLIPSE_DIR" -name "*${jar}*.jar" | head -1`
    	        if test -f "$jarpath"; then
                     # Keep track of the jars so we can use them while building
 		    # with make.
@@ -1732,6 +1733,8 @@ changequote([, ])dnl
 			# Darwin has problems with echo -n?
 			PT_ECHO="/bin/echo -n"
 			;;
+		Linux)	ECLIPSE_SWT_JAR=eclipse.swt.gtk.linux
+			;;
 		*)	ECLIPSE_SWT_JAR=eclipse.swt.win32.win32.x86_
 			PT_ECHO=echo
 			;; 
@@ -1747,7 +1750,8 @@ changequote([, ])dnl
 	            else
                         $PT_ECHO $ECHO_N "$jar "
                     fi
-	            jarpath=`$FIND "$ECLIPSE_DIR/plugins" -name "*${jar}*.jar" | head -1`
+		    # In more recent versions of eclipse, the jdt jars are in dropins/, the other jars are in plugins/
+	            jarpath=`$FIND "$ECLIPSE_DIR" -name "*${jar}*.jar" | head -1`
    	            if test -f "$jarpath"; then
 	                # Keep track of the jars so we can use them while
 		        # building with ant and make.
