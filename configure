@@ -4280,6 +4280,7 @@ fi
 
 
 if test -x "$ANT" -a -x "$MVN"; then
+
    cat > maven-ant-tasks-test.xml << EoF
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <project basedir="." default="build" name="ptII"
@@ -4291,7 +4292,13 @@ if test -x "$ANT" -a -x "$MVN"; then
   </target>
 </project>
 EoF
+
+   { $as_echo "$as_me:${as_lineno-$LINENO}: checking for maven ant task.  This could take a minute the first time configure is run." >&5
+$as_echo_n "checking for maven ant task.  This could take a minute the first time configure is run.... " >&6; }
    if "$ANT" -f maven-ant-tasks-test.xml help > /dev/null 2>&1 ; then
+      if test "${PTVERBOSE:-none}" = "none"; then { $as_echo "$as_me:${as_lineno-$LINENO}: result: ok" >&5
+$as_echo "ok" >&6; }; else { $as_echo "$as_me:${as_lineno-$LINENO}: result: ok" >&5
+$as_echo "ok" >&6; }; fi
       ANT_MAVEN_ARTIFACT='xmlns:artifact="antlib:org.apache.maven.artifact.ant"'
       { $as_echo "$as_me:${as_lineno-$LINENO}: checking for websensor in \$PTII/ptolemy/apps/websensor" >&5
 $as_echo_n "checking for websensor in \$PTII/ptolemy/apps/websensor... " >&6; }
@@ -6446,7 +6453,7 @@ fi
                 eclipsedirs="/usr/local /usr/lib /usr/lib64"
                 for eclipsedir in $eclipsedirs
                 do
-                    if test -f "$eclipsedir/eclipse/plugins"; then
+                    if test -d "$eclipsedir/eclipse/plugins"; then
                         ECLIPSE_DIR="$eclipsedir/eclipse"
                         break
                     fi
@@ -6477,7 +6484,8 @@ $as_echo_n "checking for jars used by backtracking in $ECLIPSE_DIR... " >&6; }
 	        else
                     $PT_ECHO $ECHO_N "$jar "
                 fi
-	        jarpath=`$FIND "$ECLIPSE_DIR/plugins" -name "*${jar}*.jar" | head -1`
+		# In more recent versions of eclipse, the jdt jars are in dropins/, the other jars are in plugins/
+	        jarpath=`$FIND "$ECLIPSE_DIR" -name "*${jar}*.jar" | head -1`
    	        if test -f "$jarpath"; then
                     # Keep track of the jars so we can use them while building
 		    # with make.
@@ -6509,6 +6517,8 @@ $as_echo "ok" >&6; }; fi
 			# Darwin has problems with echo -n?
 			PT_ECHO="/bin/echo -n"
 			;;
+		Linux)	ECLIPSE_SWT_JAR=eclipse.swt.gtk.linux
+			;;
 		*)	ECLIPSE_SWT_JAR=eclipse.swt.win32.win32.x86_
 			PT_ECHO=echo
 			;;
@@ -6525,7 +6535,8 @@ $as_echo_n "checking for Eclipse jars used with javadoc... " >&6; }
 	            else
                         $PT_ECHO $ECHO_N "$jar "
                     fi
-	            jarpath=`$FIND "$ECLIPSE_DIR/plugins" -name "*${jar}*.jar" | head -1`
+		    # In more recent versions of eclipse, the jdt jars are in dropins/, the other jars are in plugins/
+	            jarpath=`$FIND "$ECLIPSE_DIR" -name "*${jar}*.jar" | head -1`
    	            if test -f "$jarpath"; then
 	                # Keep track of the jars so we can use them while
 		        # building with ant and make.
