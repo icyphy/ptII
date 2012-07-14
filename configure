@@ -10991,7 +10991,8 @@ $as_echo_n "checking for PowerMock jars... " >&6; }
 	    else
                 $PT_ECHO $ECHO_N "$jar "
             fi
-	    jarpath=`$FIND "$POWERMOCK_DIR" -name "*${jar}*.jar" | head -1`
+	    # Do not use a leading * before ${jar}.  If we do, then we don't find the easymock jar file.
+	    jarpath=`$FIND "$POWERMOCK_DIR" -name "${jar}*.jar" | head -1`
    	    if test -f "$jarpath"; then
                 # Keep track of the jars so we can use them while building
 	        # with make.
