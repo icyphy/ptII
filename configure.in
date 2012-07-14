@@ -981,6 +981,7 @@ ANT_WEBSENSOR_SRC=''
 AC_PATH_PROG(ANT, ant)
 AC_PATH_PROG(MVN, mvn)
 if test -x "$ANT" -a -x "$MVN"; then
+
    cat > maven-ant-tasks-test.xml << EoF
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <project basedir="." default="build" name="ptII"
@@ -992,7 +993,10 @@ if test -x "$ANT" -a -x "$MVN"; then
   </target>
 </project>
 EoF
+
+   AC_MSG_CHECKING([for maven ant task.  This could take a minute the first time configure is run.])
    if "$ANT" -f maven-ant-tasks-test.xml help > /dev/null 2>&1 ; then
+      PT_MSG_RESULT([ok])
       ANT_MAVEN_ARTIFACT='xmlns:artifact="antlib:org.apache.maven.artifact.ant"'
       AC_MSG_CHECKING([for websensor in \$PTII/ptolemy/apps/websensor])
       if test -d "$PTII/ptolemy/apps/websensor" ; then
