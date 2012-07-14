@@ -346,6 +346,18 @@ rpm -ivh *.rpm
 
             in the directory where you saved the files.
 
+	    <p>If the rpm command fails with:
+	    <pre>
+error: Failed dependencies:
+        libstdc++.so.5 is needed by avarice-2.3.20041206cvs-1.i386
+        libstdc++.so.5(CXXABI_1.2) is needed by avarice-2.3.20041206cvs-1.i386
+        libstdc++.so.5(GLIBCPP_3.2) is needed by avarice-2.3.20041206cvs-1.i386
+            </pre>
+	    Then try:
+	    <pre>
+yum install compat-libstdc++-33.i686
+            </pre>
+
             <li>If you are running a Debian-based Linux (partially tested on Ubuntu 6.06 LTS - Dapper Drake), you can use the following instructions to install the required packages:
 
 <pre>
