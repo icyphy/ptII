@@ -79,7 +79,8 @@ import ptolemy.kernel.util.Workspace;
  *  parameters of type ptolemy.data.expr.FileParameter to
  *  this WebServer (select Configure in the context menu).
  *  
- *   @see http://wiki.eclipse.org/Jetty/Tutorial
+ *  <p><a href="http://wiki.eclipse.org/Jetty/Tutorial">http://wiki.eclipse.org/Jetty/Tutorial</a>
+ *  - The Jetty Tutorial</p> 
  *
  *   @author Elizabeth Latronico and Edward A. Lee
  *   @version $Id$
