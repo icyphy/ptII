@@ -280,7 +280,6 @@ public class PtidesPlatform extends MirrorComposite {
      *  has no possible sources of data, then no type constraints are
      *  added for it.
      *  @param sourcePort The source port.
-     *  @param destinationPortList The destination port list.
      *  @return A list of instances of Inequality.
      */
     protected List _destinationTypeConstraints(TypedIOPort sourcePort) {   

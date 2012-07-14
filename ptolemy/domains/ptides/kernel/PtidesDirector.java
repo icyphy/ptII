@@ -815,8 +815,8 @@ public class PtidesDirector extends DEDirector {
         return eventList;
     }
 
-    /** Set the value of the 'delayOffset' parameter for an input port.
-     * @param port Input port.
+    /** Set the value of the 'delayOffset' parameter for a NamedObj.
+     * @param namedObj The NamedObj to have the parameter set.
      * @param delayOffset Delay offset for safe-to-process analysis.
      * @exception IllegalActionException If cannot set parameter.
      */
