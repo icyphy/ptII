@@ -497,8 +497,10 @@ public class ConfigurationApplication implements ExecutionListener {
             throws Throwable {
         CompositeEntity model = openModelOrEntity(modelFileName);
         if (!(model instanceof TypedCompositeActor)) {
-            System.out.println("Failed to find a CompositeActor, found a "
-                    + model.getClass().getName()
+            System.out.println("While trying to open \""
+			       + modelFileName
+			       + "\", openModelOrEntity() returned a "
+			       + (model == null ? "null" : model.getClass().getName())
                     + ".  This can happen when opening a HTML or text file. ");
             return null;
         } else {
