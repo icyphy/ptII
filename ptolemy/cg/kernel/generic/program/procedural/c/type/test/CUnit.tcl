@@ -62,8 +62,10 @@ test CUnit-1.1 {Run the CUnit tests} {
 	set results [exec -stderrok make $makeArguments run]
     }
     # If this test fails, run "make run"
-    string range $results [string last {--Run Summary} $results] end 
-} {--Run Summary: Type      Total     Ran  Passed  Failed
-               suites        1       1     n/a       0
-               tests         1       1       1       0
-               asserts       1       1       1       0}
+    string range $results [string last {Run Summary} $results] [expr { [string last {Elapsed time} $results] - 1}]
+} {Run Summary:    Type  Total    Ran Passed Failed Inactive
+              suites      1      1    n/a      0        0
+               tests      1      1      1      0        0
+             asserts      1      1      1      0      n/a
+
+}
