@@ -35,6 +35,7 @@ import java.io.FilenameFilter;
 import java.io.IOException;
 import java.lang.reflect.Method;
 import java.util.Arrays;
+import java.util.Comparator;
 
 import junitparams.JUnitParamsRunner;
 import junitparams.Parameters;
@@ -173,13 +174,23 @@ public class TclTests {
 
         if (tclFiles.length > 0) {
             int i = 0;
-            // Sort the tcl files so that _Configuration.tcl is first
-            // in ptolemy/actor/gui/test
-            Arrays.sort(tclFiles);
             Object[][] data = new Object[tclFiles.length][1];
             for (String tclFile : tclFiles) {
                 data[i++][0] = new File(tclFile).getCanonicalPath();
             }
+            // Sort the tcl files so that _Configuration.tcl is first
+            // in ptolemy/actor/gui/test
+	    // File.list() returns files in a different order
+	    // on different platforms.  So much for write once, run everywhere.
+	    Arrays.sort(data, new Comparator<Object[]>() {
+		    @Override
+			public int compare(final Object[] entry1,
+					   final Object[] entry2) {
+			final String file1 = (String)entry1[0];
+			final String file2 = (String)entry2[0];
+			return file1.compareTo(file2);
+		    }
+		});
             return data;
         } else {
             return new Object[][] { { THERE_ARE_NO_TCL_TESTS } };
