@@ -30,7 +30,7 @@
 # 						COPYRIGHTENDKEY
 #######################################################################
 
-# This file is called _Configuration.tcl so that it runs first, before
+# This file is called AAAConfiguration.tcl so that it runs first, before
 # other classes start messing with the filters
 
 # Load up the test definitions.
