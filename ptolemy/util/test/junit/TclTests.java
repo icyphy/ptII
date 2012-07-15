@@ -235,15 +235,25 @@ public class TclTests {
 
                     // The Tcl errorInfo global variable will have information
                     // about what went wrong.
-                    Object errorInfoTclObject = _getVarMethod.invoke(_interp,
-                            new Object [] {
+                    Object errorInfoTclObject = null;
+		    try {
+			errorInfoTclObject = _getVarMethod.invoke(_interp,
+								  new Object [] {
                                 "errorInfo", (String) null, 1 /*TCL.GLOBAL_ONLY*/
                             });
-                    throw new Exception ("Evaluating the Tcl file \""
-                            + tclFile
-                            + "\"resulted in a TclException being thrown.\nThe Tcl "
-                            + "errorInfo global variable has the value:\n"
-                            + errorInfoTclObject);
+			throw new Exception ("Evaluating the Tcl file \""
+					     + tclFile
+					     + "\"resulted in a TclException being thrown.\nThe Tcl "
+					     + "errorInfo global variable has the value:\n"
+					     + errorInfoTclObject);
+		    } catch (Throwable throwable2) {
+			throwable2.printStackTrace();
+			throw new Exception ("Evaluating the Tcl file \""
+					     + tclFile
+					     + "\"resulted in a TclException being thrown.\n"
+					     + "The Tcl errorInfo variable could not be obtained.\n"
+					     + throwable2, throwable);
+		    }
                 }
             }
         }
