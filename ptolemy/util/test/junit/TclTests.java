@@ -34,6 +34,7 @@ import java.io.File;
 import java.io.FilenameFilter;
 import java.io.IOException;
 import java.lang.reflect.Method;
+import java.util.Arrays;
 
 import junitparams.JUnitParamsRunner;
 import junitparams.Parameters;
@@ -172,6 +173,9 @@ public class TclTests {
 
         if (tclFiles.length > 0) {
             int i = 0;
+            // Sort the tcl files so that _Configuration.tcl is first
+            // in ptolemy/actor/gui/test
+            Arrays.sort(tclFiles);
             Object[][] data = new Object[tclFiles.length][1];
             for (String tclFile : tclFiles) {
                 data[i++][0] = new File(tclFile).getCanonicalPath();
