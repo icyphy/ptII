@@ -142,7 +142,7 @@ public class TimeDelay extends Transformer {
 
         minimumDelay = new Parameter(this, "minimumDelay");
         minimumDelay.setTypeEquals(BaseType.DOUBLE);
-        minimumDelay.setExpression("0.0");
+        minimumDelay.setExpression("1.0");
 
         // Put the delay input on the bottom of the actor.
         StringAttribute controlCardinal = new StringAttribute(delay.getPort(), "_cardinal");
@@ -171,7 +171,7 @@ public class TimeDelay extends Transformer {
     public PortParameter delay;
     
     /** Minimum delay to impose if the <i>delay</i>
-     *  port is connected. This is a double that defaults to 0.0.
+     *  port is connected. This is a double that defaults to 1.0.
      */
     public Parameter minimumDelay;
 
