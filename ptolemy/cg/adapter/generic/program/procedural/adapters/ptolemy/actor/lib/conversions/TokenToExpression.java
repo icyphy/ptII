@@ -34,6 +34,7 @@ import ptolemy.cg.kernel.generic.program.CodeStream;
 import ptolemy.cg.kernel.generic.program.NamedProgramCodeGeneratorAdapter;
 import ptolemy.data.type.ArrayType;
 import ptolemy.data.type.BaseType;
+import ptolemy.data.type.ObjectType;
 import ptolemy.data.type.Type;
 import ptolemy.kernel.util.IllegalActionException;
 
@@ -75,7 +76,11 @@ public class TokenToExpression extends NamedProgramCodeGeneratorAdapter {
         if (getCodeGenerator().isPrimitive(inputType)) {
             ArrayList args = new ArrayList();
             args.add(getCodeGenerator().codeGenType(inputType));
-            codeStream.appendCodeBlock("FireBlock", args);
+            if (inputType instanceof ObjectType) {
+                codeStream.appendCodeBlock("ObjectFireBlock", args);
+            } else {
+                codeStream.appendCodeBlock("FireBlock", args);
+            }
         } else {
             if (inputType instanceof ArrayType) {
                 Type elementType = ((ArrayType) inputType).getElementType();

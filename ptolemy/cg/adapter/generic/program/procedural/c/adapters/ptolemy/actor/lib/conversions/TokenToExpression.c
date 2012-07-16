@@ -18,3 +18,8 @@ $put(output, ($tokenFunc($actorSymbol(state)::toString()).payload));
 /*** FireBlock($type) ***/
 $put(output, $typetoString($get(input)));
 /**/
+
+/*** ObjectFireBlock($type1) ***/
+$put(output, (String)$typeFunc($type(input)::toString($get(input))).payload);
+/**/
+
