@@ -2,15 +2,15 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="EightChannelFFT" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="6.1.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.0.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={176, 214, 815, 516}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={176, 214, 834, 634}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 524]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.923406413797">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{216.42578125, 165.8828125}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{216.42578125, 233.0255126953118}">
     </property>
     <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
         <property name="iterations" class="ptolemy.data.expr.Parameter" value="1">
@@ -39,6 +39,8 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[-90.0, 135.0]">
         </property>
+    </property>
+    <property name="disableBackwardTypeInference" class="ptolemy.data.expr.Parameter" value="true">
     </property>
     <entity name="Const" class="ptolemy.actor.lib.Const">
         <property name="value" class="ptolemy.data.expr.Parameter" value="1.0">
@@ -149,6 +151,8 @@
         </property>
         <configure>
             <ptalon file="ptolemy.actor.ptalon.demo.EightChannelFFT.FFT">
+                <ptalonParameter name="gain" value="ptolemy.actor.lib.Scale"/>
+                <ptalonParameter name="adder" value="ptolemy.actor.ptalon.lib.ComplexAddSubtract"/>
                 <ptalonExpressionParameter name="N" value="8"/>
             </ptalon>
         </configure>
