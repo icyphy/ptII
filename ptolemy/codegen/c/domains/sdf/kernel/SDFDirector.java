@@ -441,6 +441,7 @@ public class SDFDirector extends StaticSchedulingDirector {
                                 + rate + "];" + _eol);
 
                     } else {
+                        System.out.println("WARNING: codegen/c/domains/sdf/kernel/SDFDirector.java: Don't know how to deal with type: " + type);
                         // FIXME: need to deal with other types
                     }
                 }
