@@ -427,18 +427,7 @@ public class CompositeActor extends CompositeEntity implements Actor,
                         "Cannot fire a non-opaque actor.");
             }
 
-            // Need to read from port parameters
-            // first because in some domains (e.g. SDF)
-            // the behavior of the schedule might depend on rate variables
-            // set from ParameterPorts.
-            for (Iterator<?> inputPorts = inputPortList().iterator(); inputPorts
-                    .hasNext() && !_stopRequested;) {
-                IOPort p = (IOPort) inputPorts.next();
-
-                if (p instanceof ParameterPort) {
-                    ((ParameterPort) p).getParameter().update();
-                }
-            }
+            _transferPortParameterInputs();
 
             // Use the local director to transfer inputs from
             // everything that is not a port parameter.
@@ -2740,6 +2729,25 @@ public class CompositeActor extends CompositeEntity implements Actor,
             // vice versa, then we need to notify of a hierarchy change.
             if (director == null || previousLocalDirector == null) {
                 _notifyHierarchyListenersAfterChange();
+            }
+        }
+    }
+    
+    /** Read inputs from ParameterPorts and update.
+     *  @throws IllegalActionException If reading from parameter associated
+     *  with port fails. 
+     */
+    protected void _transferPortParameterInputs() throws IllegalActionException {
+     // Need to read from port parameters
+        // first because in some domains (e.g. SDF)
+        // the behavior of the schedule might depend on rate variables
+        // set from ParameterPorts.
+        for (Iterator<?> inputPorts = inputPortList().iterator(); inputPorts
+                .hasNext() && !_stopRequested;) {
+            IOPort p = (IOPort) inputPorts.next();
+
+            if (p instanceof ParameterPort) {
+                ((ParameterPort) p).getParameter().update();
             }
         }
     }
