@@ -42,6 +42,7 @@ import ptolemy.cg.kernel.generic.program.NamedProgramCodeGeneratorAdapter;
 import ptolemy.cg.kernel.generic.program.ProgramCodeGenerator;
 import ptolemy.cg.kernel.generic.program.ProgramCodeGeneratorAdapter;
 import ptolemy.cg.kernel.generic.program.TemplateParser;
+import ptolemy.cg.kernel.generic.program.procedural.java.AutoAdapter;
 import ptolemy.cg.kernel.generic.program.procedural.java.JavaCodeGenerator;
 import ptolemy.cg.lib.CompiledCompositeActor;
 import ptolemy.data.BooleanToken;
@@ -686,10 +687,19 @@ public class SDFDirector
             TypedIOPort port) throws IllegalActionException {
 
         StringBuffer code = new StringBuffer();
+        String portType = targetType(port.getType());
+        if (portType.equals("Object")
+                && ! (getCodeGenerator().getAdapter(port.getContainer()) instanceof AutoAdapter)
+                && ! AutoAdapter.isAutoAdapteredRemotePort(getCodeGenerator(), port)) {
+            // $PTII/bin/ptcg -language java $PTII/ptolemy/cg/kernel/generic/program/procedural/java/test/auto/ObjectToken1.xml
+            // $PTII/bin/ptcg -language java $PTII/ptolemy/cg/kernel/generic/program/procedural/java/test/auto/ObjectTokenTestSampleDelay.xml 
+            System.out.println("CG SDFDirector: changing to Object to Token");
+            portType = "Token";
+        }
         boolean variablesAsArrays = ((BooleanToken) getCodeGenerator().variablesAsArrays
                 .getToken()).booleanValue();
         if (!variablesAsArrays) {
-            code.append("public static " + targetType(port.getType()) + " ");
+            code.append("public static " + portType + " ");
         }
         code.append(generatePortName(port));
 
@@ -702,7 +712,7 @@ public class SDFDirector
                     code.append("[]");
                 }
             }
-            code.append(" = new " + targetType(port.getType()));
+            code.append(" = new " + portType );
         } else {
             if (bufferSize > 1) {
                 if (!variablesAsArrays) {

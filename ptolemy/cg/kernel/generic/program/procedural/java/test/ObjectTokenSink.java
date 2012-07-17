@@ -86,6 +86,7 @@ public class ObjectTokenSink extends Sink {
                 if (token.getValue() != null) {
                     throw new IllegalActionException("Input was a "
                             + token + ", which is a " + token.getClass() 
+                            + " with a value " + token.getValue() + ", which was not null"
                             + ".  A Double was expected.");
                 }
             }

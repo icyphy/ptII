@@ -573,7 +573,7 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
         }
 
         if (_checkingAutoAdapter) {
-            // If the static _isAutoAdaptered() method is called, then
+            // If the static isAutoAdaptered() method is called, then
             // we set _checkingAutoAdapter to true and call
             // GenericCodeGenerator.getAdapter(), which eventually
             // calls this method if the Object has no adapter.  This
@@ -801,6 +801,133 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
         return sharedCode;
     }
 
+    /** Return true if the argument would be generated using
+     *  an AutoAdapter.
+     *
+     *  <p>This is used to put two or more custom actors in to the
+     *  same container.</p>
+     *  @param namedObj The NamedObj to check.
+     *  @return True if the argument would be generated using
+     *  an auto adapter.
+     */
+    public boolean isAutoAdaptered(NamedObj namedObj) {
+        return AutoAdapter.isAutoAdaptered(getCodeGenerator(), namedObj);
+    }
+
+    /** Return true if the argument would be generated using
+     *  an AutoAdapter.
+     *
+     *  <p>This is used to put two or more custom actors in to the
+     *  same container.</p>
+     *  @param codeGenerator The codegenerator.
+     *  @param namedObj The NamedObj to check.
+     *  @return True if the argument would be generated using
+     *  an auto adapter.
+     */
+    public static boolean isAutoAdaptered(ProgramCodeGenerator codeGenerator, NamedObj namedObj) {
+        try {
+            _checkingAutoAdapter = true;
+            _wouldBeAutoAdapted = false;
+            try {
+                // The adapter might be cached.
+                Object adapter = codeGenerator.getAdapter(namedObj);
+                if (adapter instanceof AutoAdapter) {
+                    return true;
+                }
+            } catch (IllegalActionException ex) {
+                // getAdapter() will throw an exception if
+                // getAutoAdapter() is called and _checkingAutoAdapter
+                // is null.  So, we ignore this exception
+            }
+            if (_wouldBeAutoAdapted) {
+                return true;
+            }
+        } finally {
+            _checkingAutoAdapter = false;
+            _wouldBeAutoAdapted = false;
+        }
+
+        return false;
+    }
+
+    /** Return true if the port connects to a remote port that would
+     *  code generated using an AutoAdapter.
+     *
+     *  <p>This is used to put two or more custom actors in to the
+     *  same container.</p>
+     *  @param port The port to check.
+     *  @return True if the remote port would be generated using
+     *  an auto adapter.
+     *  @exception IllegalActionException If the CodeGenerator verbosity parameter
+     *  cannot be read.
+     */
+    public boolean isAutoAdapteredRemotePort(Port port) throws IllegalActionException {
+        return isAutoAdapteredRemotePort(getCodeGenerator(), port);
+    }
+
+    /** Return true if the port connects to a remote port that would
+     *  code generated using an AutoAdapter.
+     *
+     *  <p>This is used to put two or more custom actors in to the
+     *  same container.</p>
+     *  @param port The port to check.
+     *  @param codeGenerator The codegenerator.
+     *  @return True if the remote port would be generated using
+     *  an auto adapter.
+     *  @exception IllegalActionException If the CodeGenerator verbosity parameter
+     *  cannot be read.
+     */
+    public static boolean isAutoAdapteredRemotePort(ProgramCodeGenerator codeGenerator, Port port) throws IllegalActionException {
+        List linkedRelationList = port.linkedRelationList();
+        if (linkedRelationList.size() == 0) {
+            return false;
+        }
+        Relation relation = (Relation) linkedRelationList.get(0);
+        TypedIOPort remotePort = (TypedIOPort) relation.linkedPortList(port)
+            .get(0);
+        NamedObj remoteActor = remotePort.getContainer();
+        if (/*port.linkedRelationList().size() > 1
+              || */relation.linkedPortList(port).size() > 1) {
+            // FIXME: this might be superflous, since we loop through below.
+            boolean remoteIsAutoAdaptered = isAutoAdaptered(codeGenerator, remoteActor);
+            StringBuffer message = new StringBuffer(
+                    "Warning: custom actors "
+                    + "connected to more than one port the same level. Msg #2\n");
+            Iterator relations = port.linkedRelationList().iterator();
+            while (relations.hasNext()) {
+                Relation r = (Relation) relations.next();
+                message.append("Component: "
+                        + port.getContainer().getName() + ", port: " + port.getName()
+                        + ", relation: " + r + " is connected to:" + _eol);
+                int i = 0;
+                Iterator ports = r.linkedPortList(port).iterator();
+                while (ports.hasNext()) {
+                    Port p = (TypedIOPort) ports.next();
+                    i++;
+                    message.append("     " + i + " " + p.getFullName() + _eol);
+                    if (!isAutoAdaptered(codeGenerator, p.getContainer())) {
+                        // If one of the remote actors is not auto
+                        // adapatered, then mark this connection as
+                        // not being autoadaptered.  This is probably
+                        // a mistake, we should just handle this.
+                        // This test:
+                        // $PTII/bin/ptcg -language java $PTII/ptolemy/actor/lib/test/auto/UnaryMathFunction.xml
+                        // has a bunch of custom actors that share an input relation, but the input
+                        // is a non-autoadapter actor.  We would like to preserve the connectivity.
+                        message.append("       which is contained by an actor that is not an auto adapter.\n");
+                        remoteIsAutoAdaptered = false;
+                    }
+                }
+            }
+            int verbosityLevel = ((IntToken) codeGenerator.verbosity.getToken()).intValue();
+            if (verbosityLevel > 0) {
+                System.out.println("AutoAdapter: " + message);
+            }
+            return remoteIsAutoAdaptered;
+        }
+        return isAutoAdaptered(codeGenerator, remoteActor);
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
@@ -827,7 +954,7 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
             String name = inputPort.getName();
             Type type = inputPort.getType();
 
-            if (!_isAutoAdapteredRemotePort(inputPort)) {
+            if (!isAutoAdapteredRemotePort(inputPort)) {
                 if (!inputPort.isMultiport()
                         && inputPort.isOutsideConnected()
                         && ((inputPort instanceof ParameterPort) || inputPort
@@ -875,6 +1002,9 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
 //                                 .replace("$", "\\uu0024");
                             String outputPortName = "c0PortA";
 
+                            // If this code is a problem, it could be
+                            // because isReadingRemoteParameters is
+                            // falsely returning true.
                             code.append("{" + _eol
                                     + "TypedCompositeActor c0 = (TypedCompositeActor) " + remoteActorContainerSymbol + ";" + _eol
                                     + "TypedIOPort c0PortA = (TypedIOPort)c0.getPort(\"c0PortA\");" + _eol
@@ -939,7 +1069,7 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
             String name = outputPort.getName();
             Type type = outputPort.getType();
 
-            if (!_isAutoAdapteredRemotePort(outputPort)) {
+            if (!isAutoAdapteredRemotePort(outputPort)) {
                 // Get data from the actor.
                 if (!outputPort.isMultiport()) {
                     if (outputPort.isOutsideConnected()) {
@@ -1531,8 +1661,47 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
 
             // For non-multiports "". For multiports, ", 0", ", 1" etc.
             //+ (channel == 0 ? "" : ", " + channel)
-        } else {
+        } else if (type.equals(BaseType.OBJECT)) {
+            //_headerFiles.add("ptolemy.math.Complex;");
+//             return "$targetType("
+//                 + actorPortName
+//                 + ") $actorSymbol("
+//                 + portData
+//                 + ");"
+//                 + _eol
+//                 + "ObjectToken objectToken = (ObjectToken)((("
+//                 + type.getTokenClass().getName()
+//                 + ")"
+//                 + "("
+//                 + codegenPortNameSymbol
+//                 + ".getInside(0"
+//                 + ")))."
+//                 + _valueMethodName(type) + ");" + _eol
+//                 + "$actorSymbol(" + portData + ")"
+//                 + " = $typeFunc(TYPE_Object::new(objectToken.getValue()));"
+//                 + _eol
+//                 + _generateGetInside(actorPortName, codegenPortName, type,
+//                         channel);
+
             return "$targetType("
+                + actorPortName
+                + ") $actorSymbol("
+                + portData
+                + ");"
+                + _eol
+                + "ObjectToken objectToken = (ObjectToken)"
+                + codegenPortNameSymbol
+                + ".getInside(0);" + _eol
+                + "$actorSymbol(" + portData + ") = objectToken.getValue();"
+                + _eol
+                + _generateGetInside(actorPortName, codegenPortName, type,
+                        channel);
+
+            // For non-multiports "". For multiports, ", 0", ", 1" etc.
+            //+ (channel == 0 ? "" : ", " + channel)
+
+        } else {
+            return "// type: " + type + "\n$targetType("
                 + actorPortName
                 + ") $actorSymbol(" + portData + ");" + _eol
                 + "if (" + codegenPortNameSymbol + ".hasTokenInside(0)) {" + _eol
@@ -1818,7 +1987,7 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
         // other via backdoor methods, so we keep custom actors in the
         // same container.
 
-        // We don't call _isAutoAdapteredRemotePort() here because we
+        // We don't call isAutoAdapteredRemotePort() here because we
         // want to use these variables anyway.
         boolean remoteIsAutoAdaptered = false;
 
@@ -1843,7 +2012,7 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
                 boolean moreThanOneRelation = false;
                 String relationSymbol = "";
                 boolean hasAutoConnectorRelation = _hasAutoConnectorRelation(port);
-                if (_isAutoAdaptered(remoteActor)) {
+                if (isAutoAdaptered(remoteActor)) {
                     // The remote actor is a custom actor (aka AutoAdaptered)
                     remoteIsAutoAdaptered = true;
                     if (verbosityLevel > 2) {
@@ -1871,7 +2040,7 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
                             while (ports.hasNext()) {
                                 Port p = (TypedIOPort) ports.next();
                                 message.append("    " + p + _eol);
-                                if (!_isAutoAdaptered(p.getContainer())) {
+                                if (!isAutoAdaptered(p.getContainer())) {
                                     // If one of the remote actors is not auto
                                     // adapatered, then mark this connection as
                                     // not being autoadaptered.  This is probably
@@ -2622,103 +2791,6 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
         return false;
     }
 
-    /** Return true if the argument would be generated using
-     *  an AutoAdapter.
-     *
-     *  <p>This is used to put two or more custom actors in to the
-     *  same container.</p>
-     *  @param namedObj The NamedObj to check.
-     *  @return True if the argument would be generated using
-     *  an auto adapter.
-     */
-    private boolean _isAutoAdaptered(NamedObj namedObj) {
-        try {
-            _checkingAutoAdapter = true;
-            _wouldBeAutoAdapted = false;
-            try {
-                // The adapter might be cached.
-                Object adapter = getCodeGenerator().getAdapter(namedObj);
-                if (adapter instanceof AutoAdapter) {
-                    return true;
-                }
-            } catch (IllegalActionException ex) {
-                // getAdapter() will throw an exception if
-                // getAutoAdapter() is called and _checkingAutoAdapter
-                // is null.  So, we ignore this exception
-            }
-            if (_wouldBeAutoAdapted) {
-                return true;
-            }
-        } finally {
-            _checkingAutoAdapter = false;
-            _wouldBeAutoAdapted = false;
-        }
-
-        return false;
-    }
-
-    /** Return true if the port connects to a remote port that would
-     *  code generated using an AutoAdapter.
-     *
-     *  <p>This is used to put two or more custom actors in to the
-     *  same container.</p>
-     *  @param port The port to check.
-     *  @return True if the remote port would be generated using
-     *  an auto adapter.
-     *  @exception IllegalActionException If the CodeGenerator verbosity parameter
-     *  cannot be read.
-     */
-    private boolean _isAutoAdapteredRemotePort(Port port) throws IllegalActionException {
-        List linkedRelationList = port.linkedRelationList();
-        if (linkedRelationList.size() == 0) {
-            return false;
-        }
-        Relation relation = (Relation) linkedRelationList.get(0);
-        TypedIOPort remotePort = (TypedIOPort) relation.linkedPortList(port)
-            .get(0);
-        NamedObj remoteActor = remotePort.getContainer();
-        if (/*port.linkedRelationList().size() > 1
-              || */relation.linkedPortList(port).size() > 1) {
-            // FIXME: this might be superflous, since we loop through below.
-            boolean remoteIsAutoAdaptered = _isAutoAdaptered(remoteActor);
-            StringBuffer message = new StringBuffer(
-                    "Warning: custom actors "
-                    + "connected to more than one port the same level. Msg #2\n");
-            Iterator relations = port.linkedRelationList().iterator();
-            while (relations.hasNext()) {
-                Relation r = (Relation) relations.next();
-                message.append("Component: "
-                        + getComponent().getName() + ", port: " + port.getName()
-                        + ", relation: " + r + " is connected to:" + _eol);
-                int i = 0;
-                Iterator ports = r.linkedPortList(port).iterator();
-                while (ports.hasNext()) {
-                    Port p = (TypedIOPort) ports.next();
-                    i++;
-                    message.append("     " + i + " " + p.getFullName() + _eol);
-                    if (!_isAutoAdaptered(p.getContainer())) {
-                        // If one of the remote actors is not auto
-                        // adapatered, then mark this connection as
-                        // not being autoadaptered.  This is probably
-                        // a mistake, we should just handle this.
-                        // This test:
-                        // $PTII/bin/ptcg -language java $PTII/ptolemy/actor/lib/test/auto/UnaryMathFunction.xml
-                        // has a bunch of custom actors that share an input relation, but the input
-                        // is a non-autoadapter actor.  We would like to preserve the connectivity.
-                        message.append("       which is contained by an actor that is not an auto adapter.\n");
-                        remoteIsAutoAdaptered = false;
-                    }
-                }
-            }
-            int verbosityLevel = ((IntToken) getCodeGenerator().verbosity.getToken()).intValue();
-            if (verbosityLevel > 0) {
-                System.out.println("AutoAdapter: " + message);
-            }
-            return remoteIsAutoAdaptered;
-        }
-        return _isAutoAdaptered(remoteActor);
-    }
-
     /** Return true if the port is connected to a TypedCompositeActor that has Parameters.
      *  Only ports that are input multiports are checked.
      *  @param port The port.
@@ -2759,7 +2831,7 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
                     // created for us.  Thus, this method returns false
                     boolean foundAutoAdapteredUpstreamActor = false;
 
-                    if (!_isAutoAdaptered(remoteActor)) {
+                    if (!isAutoAdaptered(remoteActor)) {
                         // If the remote actor is not auto adaptered,
                         // but it is connected to an auto adaptered
                         // actor in the same container, then consider
@@ -2783,7 +2855,7 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
                                     System.out.println("_isReadingRemoteParameters: upstream actor: " + upstreamActor.getFullName());
                                 }
                                 if (upstreamActor.getContainer().equals(remoteActor.getContainer())
-                                        &&  _isAutoAdaptered(upstreamActor)) {
+                                        &&  isAutoAdaptered(upstreamActor)) {
                                     foundAutoAdapteredUpstreamActor = true;
                                     // We found one, so stop searching
                                     break done;
@@ -2801,7 +2873,7 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
                         Iterator entities = ((TypedCompositeActor)remoteContainer).allAtomicEntityList().iterator();
                         while (entities.hasNext()) {
                             NamedObj namedObj = (NamedObj)entities.next();
-                            if (_isAutoAdaptered(namedObj)) {
+                            if (isAutoAdaptered(namedObj)) {
                                 if (namedObj.getClass().getName().endsWith("SigmoidalActivation")) {
                                     if (verbosityLevel > 14) {
                                         System.out.println("_isReadingRemoteParameters: "
@@ -2899,7 +2971,8 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
      */
     private boolean _skipVariable(String variableName) {
         if (variableName.equals("_windowProperties")
-                || variableName.startsWith("_vergil")) {
+                || variableName.startsWith("_vergil")
+                || variableName.equals("disableBackwardTypeInference")) {
             return true;
         }
         return false;
@@ -2941,7 +3014,7 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
      */  
     private Map<String,String> _actorInstantiationMethods = new HashMap<String, String>();
 
-    /** If {@link #_isAutoAdaptered(NamedObj)} is called, then
+    /** If {@link #isAutoAdaptered(NamedObj)} is called, then
      *  {@link #getAutoAdapter(GenericCodeGenerator, Object)} sets
      *  checks this variable to determine whether to actually
      *  create the AutoAdapter.  When _isAutoAdapter() is called,
@@ -2974,7 +3047,7 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
      */
     private static NamedObj _toplevelTypesResolved = null;
 
-    /** If {@link #_isAutoAdaptered(NamedObj)} is called, then
+    /** If {@link #isAutoAdaptered(NamedObj)} is called, then
      *  {@link #getAutoAdapter(GenericCodeGenerator, Object)} sets
      *  this variable to true if the Object would use an AutoAdapter
      *  for code generation.  This is used to put two or more
