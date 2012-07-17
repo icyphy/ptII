@@ -30,6 +30,7 @@ package ptolemy.actor.lib;
 
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
+import ptolemy.actor.parameters.PortParameter;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.Token;
@@ -40,6 +41,7 @@ import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Settable;
+import ptolemy.kernel.util.StringAttribute;
 import ptolemy.kernel.util.Workspace;
 
 ///////////////////////////////////////////////////////////////////
@@ -89,8 +91,13 @@ public class ConfigurationSwitch extends TypedAtomicActor {
         input.setMultiport(true);
 
         // Default selector value to false
-        selector = new Parameter(this, "selector", new BooleanToken(false));
+        selector = new PortParameter(this, "selector", new BooleanToken(false));
         selector.setTypeEquals(BaseType.BOOLEAN);
+        
+        // Put the selector input on the bottom of the actor.
+        StringAttribute selectorCardinal = new StringAttribute(selector.getPort(),
+                "_cardinal");
+        selectorCardinal.setExpression("SOUTH");
 
         trueOutput = new TypedIOPort(this, "trueOutput", false, true);
         falseOutput = new TypedIOPort(this, "falseOutput", false, true);
@@ -126,10 +133,10 @@ public class ConfigurationSwitch extends TypedAtomicActor {
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 
-    /** Parameter that selects one of the two input ports.  The type is
+    /** PortParameter that selects one of the two input ports.  The type is
      *  BooleanToken that defaults to false.
      */
-    public Parameter selector;
+    public PortParameter selector;
 
     /** The input port.  The type can be anything. This is a multiport,
      *  and input tokens on all channels are routed to corresponding
