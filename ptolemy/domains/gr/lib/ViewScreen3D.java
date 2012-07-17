@@ -443,7 +443,10 @@ public class ViewScreen3D extends GRActor3D implements Placeable,
      */
     public void wrapup() throws IllegalActionException {
         super.wrapup();
-        _userTransformation.getTransform(_lastTransform);
+
+        if (_userTransformation != null) {
+            _userTransformation.getTransform(_lastTransform);
+        }
 
         if (_iterationSynchronized) {
             _canvas.stopRenderer();
