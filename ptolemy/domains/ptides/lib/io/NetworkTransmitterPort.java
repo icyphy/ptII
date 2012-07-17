@@ -32,9 +32,14 @@ ENHANCEMENTS, OR MODIFICATIONS.
 package ptolemy.domains.ptides.lib.io;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
+import ptolemy.actor.CompositeActor;
+import ptolemy.actor.NoRoomException;
+import ptolemy.actor.util.Time;
 import ptolemy.data.DoubleToken;
+import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.StringParameter;
 import ptolemy.data.type.BaseType;
@@ -97,6 +102,22 @@ public class NetworkTransmitterPort extends PtidesPort {
         return coordinates;
     }
     
+    @Override
+    public void send(int channelIndex, Token token)
+            throws IllegalActionException, NoRoomException {
+        Time timestamp = ((CompositeActor)getContainer()).getDirector().getModelTime();
+        if (_transmittedTokens == null) {
+            _transmittedTokens = new HashMap();
+            _transmittedTokenCnt = new HashMap();
+        }
+        if (_transmittedTokens.get(token) == null) {
+            _transmittedTokenCnt.put(token, 0);
+        }
+        _transmittedTokens.put(token, timestamp);
+        _transmittedTokenCnt.put(token, _transmittedTokenCnt.get(token).intValue() + 1);
+        super.send(channelIndex, token);
+    }
+    
     /** Device delay parameter that defaults to the double value 0.0. */
     public Parameter deviceDelay;
     
@@ -109,4 +130,17 @@ public class NetworkTransmitterPort extends PtidesPort {
     /** Admission control function parameter that defaults to the double value 0.0. */
     public Parameter admissionControlFunction;
     
+    
+    private HashMap<Token, Time> _transmittedTokens;
+    private HashMap<Token, Integer> _transmittedTokenCnt;
+
+    public Time getTimeStampForToken(Token t) {
+        Time time = _transmittedTokens.get(t);
+        _transmittedTokenCnt.put(t, _transmittedTokenCnt.get(t).intValue() - 1);
+        if (_transmittedTokenCnt.get(t).intValue() == 0) {
+            _transmittedTokens.remove(t);
+            _transmittedTokenCnt.remove(t);
+        }
+        return time;
+    }
 }

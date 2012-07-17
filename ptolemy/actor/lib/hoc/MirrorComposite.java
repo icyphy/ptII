@@ -126,6 +126,12 @@ public class MirrorComposite extends TypedCompositeActor implements
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+    
+    /** Return true if is currently adding and mirroring ports.
+     */
+    public boolean isInAddPort() {
+        return _inAddPort;
+    }
 
     /** Clone the object into the specified workspace. This overrides
      *  the base class to set up the associations in the mirror ports
@@ -181,6 +187,11 @@ public class MirrorComposite extends TypedCompositeActor implements
             // exception.
             throw new InternalErrorException(this, ex, null);
         }
+    }
+    
+    /** Specify if actor is currently adding and mirroring ports. */
+    public void setInAddPort(boolean inAddPort) {
+        _inAddPort = inAddPort;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -673,5 +684,21 @@ public class MirrorComposite extends TypedCompositeActor implements
 
             container.requestChange(request);
         }
+
+        /** Just add port to the portlist but do not mirror. 
+         *  @throws IllegalActionException Thrown by super class.
+         *  @throws NameDuplicationException Thrown by super class.
+         */
+        public void _justAddPort(Port port) throws IllegalActionException, NameDuplicationException {
+            super._addPort(port);
+        }
+    }
+
+    /** Just add port to the portlist but do not mirror. 
+     *  @throws IllegalActionException Thrown by super class.
+     *  @throws NameDuplicationException Thrown by super class.
+     */
+    public void _justAddPort(Port port) throws IllegalActionException, NameDuplicationException {
+        super._addPort(port);
     }
 }

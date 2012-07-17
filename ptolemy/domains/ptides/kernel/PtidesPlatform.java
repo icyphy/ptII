@@ -47,11 +47,20 @@ import ptolemy.actor.TypedCompositeActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.lib.hoc.MirrorComposite;
 import ptolemy.actor.lib.hoc.MirrorPort;
+import ptolemy.actor.parameters.ParameterMirrorPort;
+import ptolemy.actor.parameters.ParameterPort;
+import ptolemy.actor.parameters.PortParameter;
+import ptolemy.actor.util.BooleanDependency;
+import ptolemy.actor.util.CausalityInterface;
+import ptolemy.actor.util.CausalityInterfaceForComposites;
+import ptolemy.actor.util.Dependency;
+import ptolemy.actor.util.SuperdenseDependency;
 import ptolemy.actor.util.Time;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.RecordToken;
 import ptolemy.data.Token;
+import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.ArrayType;
 import ptolemy.data.type.BaseType;
 import ptolemy.data.type.RecordType;
@@ -64,11 +73,15 @@ import ptolemy.domains.ptides.lib.io.SensorPort;
 import ptolemy.graph.CPO;
 import ptolemy.graph.Inequality;
 import ptolemy.kernel.ComponentEntity;
+import ptolemy.kernel.ComponentRelation;
 import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.Entity;
 import ptolemy.kernel.Port;
+import ptolemy.kernel.util.ChangeRequest;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Workspace;
 
 /** This composite implements a Ptides platform,
@@ -167,7 +180,7 @@ public class PtidesPlatform extends MirrorComposite {
         }
         return result;
     }
-
+    
     /** Override the base class to return a specialized port.
      *  @param name The name of the port to create.
      *  @return A new instance of PtidesMirrorPort, an inner class.
@@ -192,9 +205,166 @@ public class PtidesPlatform extends MirrorComposite {
             throw new InternalErrorException(this, ex, null);
         }
     }
+    
+    /** Create a new ParameterMirrorPort.
+     *  @param name The name of the port to create.
+     *  @return A new instance of PtidesMirrorPort, an inner class.
+     *  @exception NameDuplicationException If the container already has a port
+     *  with this name.
+     */
+    public Port newParameterPort(String name) throws NameDuplicationException {
+        try {
+            PortParameter parameter = new PortParameter(this, name);
+            return parameter.getPort();
+        } catch (IllegalActionException ex) {
+            // This exception should not occur, so we throw a runtime
+            // exception.
+            throw new InternalErrorException(this, ex, null);
+        }
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
+    
+    /** Add a port to this actor. This overrides the base class to
+     *  mirror the new port in the contained actor, if there is one,
+     *  and to establish a connection to a port on the contained actor.
+     *  @param port The TypedIOPort to add to this actor.
+     *  @exception IllegalActionException If the port is not an instance
+     *   of IteratePort, or the port has no name.
+     *  @exception NameDuplicationException If the port name collides with a
+     *   name already in the actor.
+     */
+    protected void _addPort(Port port) throws IllegalActionException,
+            NameDuplicationException {
+        if ((port instanceof MirrorPort)) {
+            super._addPort(port);
+        } else if (port instanceof ParameterMirrorPort) {
+            super._justAddPort(port); 
+            
+            // Create and connect a matching inside port on contained entities.
+            // Do this as a change request to ensure that the action of
+            // creating the port passed in as an argument is complete by
+            // the time this executes.  Do not use MoML here because it
+            // isn't necessary to generate any undo code.  _removePort()
+            // takes care of the undo.
+            final ParameterMirrorPort castPort = (ParameterMirrorPort) port;
+
+            ChangeRequest request = new ChangeRequest(this,
+                    "Add a port on the inside") {
+                // Override this to indicate that the change is localized.
+                // This keeps the EntityTreeModel from closing open libraries
+                // when notified of this change.
+                public NamedObj getLocality() {
+                    return PtidesPlatform.this;
+                }
+
+                protected void _execute() throws Exception {
+                    // NOTE: We defer the construction of the MoML
+                    // change request to here because only at this
+                    // point can we be sure that the change request
+                    // that triggered this has completed.
+                    synchronized (this) {
+                        // Create and connect a matching inside port
+                        // on contained entities.
+                        // NOTE: We assume this propagates to derived
+                        // objects because _addPort is called when
+                        // MoML is parsed to add a port to
+                        // MirrorComposite. Even the MirrorCompositeContents
+                        // uses MoML to add this port, so this will
+                        // result in propagation.
+                        try {
+                            workspace().getWriteAccess();
+                            setInAddPort(true);
+
+                            String portName = castPort.getName();
+                            Iterator entities = entityList().iterator();
+
+                            if (entities.hasNext()) {
+                                Entity insideEntity = (Entity) entities.next();
+                                Port insidePort = insideEntity.getPort(portName);
+
+                                if (insidePort == null) {
+                                    insidePort = ((PtidesPlatformContents)insideEntity).newParameterPort(portName);
+                                    //((ParameterMirrorPort)insidePort).setParameter(((ParameterMirrorPort)castPort).getParameter());
+
+                                    if (insidePort instanceof IOPort) {
+                                        IOPort castInsidePort = (IOPort) insidePort;
+                                        castInsidePort.setInput(castPort.isInput());
+                                        castInsidePort.setOutput(castPort
+                                                .isOutput());
+                                        castInsidePort.setMultiport(castPort
+                                                .isMultiport());
+                                    }
+                                }
+
+                                if (insidePort instanceof ParameterMirrorPort) {
+                                    castPort.setAssociatedPort((ParameterMirrorPort) insidePort);
+                                }
+
+                                // Create a link only if it doesn't already exist.
+                                List connectedPorts = insidePort
+                                        .connectedPortList();
+
+                                if (!connectedPorts.contains(castPort)) {
+                                    // There is no connection. Create one.
+                                    ComponentRelation newRelation = newRelation(uniqueName("relation"));
+                                    insidePort.link(newRelation);
+                                    castPort.link(newRelation);
+                                }
+                            }
+                        } finally {
+                            workspace().doneWriting();
+                            setInAddPort(false);
+                        }
+                    }
+                }
+            };
+
+            requestChange(request);
+        } else {
+            throw new IllegalActionException(this,
+                    "MirrorComposite ports are required to be "
+                            + "instances of MirrorPort");
+        }
+
+        
+    }
+    
+    
+    /** Read inputs from ParameterPorts and update the paramter of the 
+     *  associatedPort.
+     *  @throws IllegalActionException If reading from parameter associated
+     *  with port fails. 
+     */
+    protected void _transferPortParameterInputs() throws IllegalActionException {
+     // Need to read from port parameters
+        // first because in some domains (e.g. SDF)
+        // the behavior of the schedule might depend on rate variables
+        // set from ParameterPorts.
+        for (Iterator<?> inputPorts = inputPortList().iterator(); inputPorts
+                .hasNext() && !_stopRequested;) {
+            IOPort p = (IOPort) inputPorts.next();
+
+            if (p instanceof ParameterMirrorPort) {
+                ParameterMirrorPort port = (ParameterMirrorPort) p;
+                ParameterMirrorPort associatedPort = port.getAssociatedPort(); 
+                PortParameter associatedParameter = associatedPort.getParameter();
+
+                if ((port != null) && (port.isOutsideConnected()) && port.hasToken(0)) {
+                    Token token = port.get(0);
+                    associatedParameter.setCurrentValue(token);
+                    // Have to validate so that containers of dependent
+                    // variables get attributeChanged() called.
+                    associatedParameter.validate();
+
+                    if (_debugging) {
+                        _debug("Updated parameter value to: " + token);
+                    }
+                }
+            } 
+        }
+    }
 
     /** Check types from a source port to a group of destination ports,
      *  assuming the source port is connected to all the ports in the
@@ -279,7 +449,7 @@ public class PtidesPlatform extends MirrorComposite {
      *  on the element type of the array is made. If the source port
      *  has no possible sources of data, then no type constraints are
      *  added for it.
-     *  @param sourcePort The source port.
+     *  @param sourcePort The source port. 
      *  @return A list of instances of Inequality.
      */
     protected List _destinationTypeConstraints(TypedIOPort sourcePort) {   
@@ -434,7 +604,7 @@ public class PtidesPlatform extends MirrorComposite {
      *  in the container.  That addition will result in appropriate
      *  connections being made.
      */
-    public static class PtidesComposite extends
+    public static class PtidesPlatformContents extends
             MirrorComposite.MirrorCompositeContents {
         // NOTE: This has to be a static class so that MoML can
         // instantiate it.
@@ -447,7 +617,7 @@ public class PtidesPlatform extends MirrorComposite {
          *  @exception NameDuplicationException If the name coincides with
          *   an actor already in the container.
          */
-        public PtidesComposite(CompositeEntity container, String name)
+        public PtidesPlatformContents(CompositeEntity container, String name)
                 throws IllegalActionException, NameDuplicationException {
             super(container, name);
         }
@@ -466,6 +636,71 @@ public class PtidesPlatform extends MirrorComposite {
                 // exception.
                 throw new InternalErrorException(this, ex, null);
             }
+        }
+        
+        public Port newParameterPort(String name) throws NameDuplicationException {
+            try {
+                PortParameter parameter = new PortParameter(this, name);
+                return parameter.getPort();
+            } catch (IllegalActionException ex) {
+                // This exception should not occur, so we throw a runtime
+                // exception.
+                throw new InternalErrorException(this, ex, null);
+            }
+        }
+        
+        @Override
+        protected void _addPort(final Port port) throws IllegalActionException,
+                NameDuplicationException {
+            if (port instanceof MirrorPort) {
+                super._addPort(port);
+            } else if (port instanceof ParameterMirrorPort) {
+                super._justAddPort(port);
+                
+                final MirrorComposite container = (MirrorComposite) getContainer();   
+
+                if (container.isInAddPort()) {
+                    return;
+                }
+
+                // Use a change request so we can be sure the port
+                // being added is fully constructed.
+                ChangeRequest request = new ChangeRequest(this,
+                        "Add mirror port to the container.") {
+                    // Override this to indicate that the change is localized.
+                    // This keeps the EntityTreeModel from closing open libraries
+                    // when notified of this change.
+                    public NamedObj getLocality() {
+                        return getContainer();
+                    }
+
+                    protected void _execute() throws Exception {
+                        try {
+                            workspace().getWriteAccess();
+
+                            // The port may already exist (if we are
+                            // inside a clone() call).
+                            ParameterMirrorPort newPort = (ParameterMirrorPort) container
+                                    .getPort(port.getName());
+
+                            if (newPort == null) {
+                                newPort = (ParameterMirrorPort) ((PtidesPlatform)container).newParameterPort(port
+                                        .getName());
+                                //((ParameterMirrorPort)newPort).setParameter(((ParameterMirrorPort)port).getParameter());
+                            } 
+                        } finally {
+                            workspace().doneWriting();
+                        }
+                    }
+                };
+                
+                container.requestChange(request);
+
+            } else {
+                throw new IllegalActionException(this,
+                        "Ports in MirrorComposite must be MirrorPort.");
+            }
+            
         }
     }
 
@@ -502,7 +737,7 @@ public class PtidesPlatform extends MirrorComposite {
          *  @exception IllegalActionException Thrown by embedded
          *  PtidesDirector.
          */
-        public void fire() throws IllegalActionException {
+        public void fire() throws IllegalActionException { 
             _getEmbeddedPtidesDirector().fire();
         }
 
@@ -546,6 +781,15 @@ public class PtidesPlatform extends MirrorComposite {
                 }
             }
             return localClock.getLocalTime();
+        }
+        
+        /** Invoke initialize of the embedded PtidesDirector.
+         *  @exception IllegalActionException Thrown by embedded
+         *  PtidesDirector.
+         */
+        public void initialize() throws IllegalActionException {
+            super.initialize();
+            //_getEmbeddedPtidesDirector().initialize();
         }
 
         /** Return a new instance of QueueReceiver.
@@ -627,18 +871,20 @@ public class PtidesPlatform extends MirrorComposite {
 
                                 Receiver[][] farReceivers = networkReceiverPort
                                         .deepGetReceivers();
-                                for (int i = 0; i < farReceivers[channelIndex].length; i++) {
-                                    director.addInputEvent(
-                                            new PtidesEvent(
-                                                    networkReceiverPort,
-                                                    channelIndex,
-                                                    recordTimeStamp,
-                                                    recordMicrostep,
-                                                    -1,
-                                                    (Token) record.get(PtidesNetworkType.payload),
-                                                    farReceivers[channelIndex][i]),
-                                            ((DoubleToken) networkReceiverPort.deviceDelay
-                                                    .getToken()).doubleValue());
+                                if (farReceivers.length > 0) {
+                                    for (int i = 0; i < farReceivers[channelIndex].length; i++) {
+                                        director.addInputEvent(
+                                                new PtidesEvent(
+                                                        networkReceiverPort,
+                                                        channelIndex,
+                                                        recordTimeStamp,
+                                                        recordMicrostep,
+                                                        -1,
+                                                        (Token) record.get(PtidesNetworkType.payload),
+                                                        farReceivers[channelIndex][i]),
+                                                ((DoubleToken) networkReceiverPort.deviceDelay
+                                                        .getToken()).doubleValue());
+                                    }
                                 }
                             } else {
                                 ((MirrorPort) port).getAssociatedPort()
@@ -680,11 +926,12 @@ public class PtidesPlatform extends MirrorComposite {
                             PtidesDirector director = (PtidesDirector) ((CompositeActor) ((MirrorPort) port)
                                     .getAssociatedPort().getContainer())
                                     .getDirector();
-
+                            
+                            Time timestamp = ((NetworkTransmitterPort)((MirrorPort) port)
+                                    .getAssociatedPort()).getTimeStampForToken(t);
                             
                             Token[] values = new Token[] {
-                                    new DoubleToken(director.getModelTime()
-                                            .getDoubleValue()),
+                                    new DoubleToken(timestamp.getDoubleValue()),
                                     new IntToken(director.getMicrostep()), t };
                             RecordToken record = new RecordToken(PtidesNetworkType.LABELS, values);
                             try {

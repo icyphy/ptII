@@ -154,9 +154,13 @@ public class PtidesDirector extends DEDirector {
         List<PtidesEvent> list = _inputEventQueue.get(getModelTime());
         if (list != null) {
             for (PtidesEvent event : list) {
-                //_currentLogicalTime = event.timeStamp();
-                event.receiver().put(event.token()); 
-                //_currentLogicalTime = null;
+                if (event.ioPort() != null && event.ioPort() instanceof NetworkReceiverPort) {
+                    _currentLogicalTime = event.timeStamp();
+                    event.receiver().put(event.token()); 
+                    _currentLogicalTime = null;
+                } else {
+                    event.receiver().put(event.token()); 
+                }
             }
             _inputEventQueue.remove(getModelTime());
         }
@@ -195,7 +199,7 @@ public class PtidesDirector extends DEDirector {
             if (ptidesOutputPortList != null && ptidesOutputPortList.size() > 0) {
                 PtidesEvent event = ptidesOutputPortList.peek();
                 if (event.absoluteDeadline().equals(localClock.getLocalTime())) {
-                    _currentLogicalTime = event.absoluteDeadline();
+                    _currentLogicalTime = event.timeStamp(); 
                     event.ioPort().send(0, event.token());
                     _currentLogicalTime = null;
                     ptidesOutputPortList.poll();
@@ -204,6 +208,7 @@ public class PtidesDirector extends DEDirector {
         }
     }
     
+
     /** Return the local time or, (i) if an actor is executing or (ii) an input
      *  token is read, (i) the timestamp of the event that caused the actor
      *  execution or (ii) the timestamp of the input event. 
@@ -232,6 +237,7 @@ public class PtidesDirector extends DEDirector {
             return time;
         } 
         _pureEvents.add(new PtidesEvent(actor, null, time, 0, 0, _zeroTime));
+        fireContainerAt(time);
         if (_isInitializing) {
             
         }
@@ -348,7 +354,7 @@ public class PtidesDirector extends DEDirector {
         _ptidesOutputPortEventQueue = new HashMap<PtidesPort, Queue<PtidesEvent>>();
         _nextFireTime = Time.POSITIVE_INFINITY;
         _pureEvents = new LinkedList<PtidesEvent>();
-        _currentLogicalTime = _zeroTime;
+        _currentLogicalTime = null;
     }
     
     ///////////////////////////////////////////////////////////////////
@@ -725,9 +731,10 @@ public class PtidesDirector extends DEDirector {
             if (_isSafeToProcess(event)) {
                 _currentLogicalTime = event.timeStamp();
                 nextActorToFire = event.actor();
+                _pureEvents.poll();
             }
-            _pureEvents.poll();
-        } else if (_eventQueue.size() > 0) {
+        } 
+        if (_eventQueue.size() > 0) {
             PtidesEvent nextEvent = (PtidesEvent) _eventQueue.get();
             if (nextEvent != null && _isSafeToProcess(nextEvent)) { 
                 _removeEventsFromQueue(nextEvent);
@@ -852,53 +859,6 @@ public class PtidesDirector extends DEDirector {
         }
     }
     
-    
-    /** Transfer any tokens at the input port to the _inputEventQueue.
-     *
-     *  @exception IllegalActionException If the port is not an opaque
-     *  input port.
-     *  @param port The port to transfer tokens from.
-     *  @return True if at least one data token is transferred.
-     */
-    protected boolean _transferInputs(IOPort port) throws IllegalActionException {
-        
-        boolean result = false; 
-        
-        if (!port.isInput() || !port.isOpaque()) {
-            throw new IllegalActionException(this, port,
-                    "Attempted to transferInputs on a port that "
-                            + "is not an opaque input port.");
-        }
-        
-        // FIXME: remove
-        result = super._transferInputs(port);
-        
-        // FIXME: Remove (all?) tokens from input port, create a PtidesEvent for each destination
-        // input port, and add to _inputEventQueue.
-
-        return result;
-    }
-
-    /** The fire() method handles transferring output tokens, so do nothing.
-     *  
-     *  @exception IllegalActionException If the port is not an opaque
-     *   output port.
-     *  @param port The port to transfer tokens from.
-     *  @return True if the port has an inside token that was successfully
-     *  transferred.  Otherwise return false (or throw an exception).
-     *
-     */
-    protected boolean _transferOutputs(IOPort port)
-            throws IllegalActionException {
-        if (!port.isOutput() || !port.isOpaque()) {
-            throw new IllegalActionException(this, port,
-                    "Attempted to transferOutputs on a port that "
-                            + "is not an opaque output port.");
-        }
-        boolean result = false;
-        
-        return result;
-    }
     
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////    

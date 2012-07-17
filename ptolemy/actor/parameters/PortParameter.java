@@ -29,6 +29,7 @@ package ptolemy.actor.parameters;
 
 import ptolemy.actor.Initializable;
 import ptolemy.actor.TypedActor;
+import ptolemy.actor.lib.hoc.MirrorComposite;
 import ptolemy.data.Token;
 import ptolemy.data.expr.AbstractInitializableParameter;
 import ptolemy.kernel.ComponentEntity;
@@ -138,12 +139,14 @@ public class PortParameter extends AbstractInitializableParameter implements Ini
     public PortParameter(NamedObj container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-
-        if (container instanceof TypedActor) {
-            // If we get to here, we know the container is a ComponentEntity,
-            // so the cast is safe.
+        // If we get to here, we know the container is a ComponentEntity,
+        // so the cast is safe.
+        if (container instanceof MirrorComposite.MirrorCompositeContents ||
+                container instanceof MirrorComposite) {
+            _port = new ParameterMirrorPort((ComponentEntity) container, name);
+        } else if (container instanceof TypedActor) {
             _port = new ParameterPort((ComponentEntity) container, name);
-        }
+        } 
     }
 
     /** Construct a Parameter with the given container, name, and Token.

@@ -266,7 +266,7 @@ public class MirrorPort extends TypedIOPort {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         public methods                    ////
+    ////                         private variables                 ////
 
     /** The associated port, if there is one. */
     private MirrorPort _associatedPort = null;
