@@ -383,7 +383,6 @@ public class TypedCompositeActor extends CompositeActor implements TypedActor {
      *  @see ptolemy.graph.Inequality
      */
     public Set<Inequality> typeConstraints() throws IllegalActionException {
-        // FIXME: cache type constraints
         try {
             workspace().getReadAccess();
 

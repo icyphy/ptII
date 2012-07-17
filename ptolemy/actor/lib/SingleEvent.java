@@ -109,24 +109,6 @@ public class SingleEvent extends TypedAtomicActor {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Allow type changes on the <i>value</i> parameter, and notify
-     *  the director that resolved types are invalid.
-     *  @param attribute The attribute whose type changed.
-     *  @exception IllegalActionException If the parent class throws it.
-     */
-    public void attributeTypeChanged(Attribute attribute)
-            throws IllegalActionException {
-        if (attribute == value) {
-            Director director = getDirector();
-
-            if (director != null) {
-                director.invalidateResolvedTypes();
-            }
-        } else {
-            super.attributeTypeChanged(attribute);
-        }
-    }
-
     /** Clone the actor into the specified workspace. This calls the
      *  base class and then links the type of the <i>value</i> parameter
      *  to the output.

@@ -54,8 +54,8 @@ import ptolemy.kernel.util.Workspace;
  contained ports and parameters. It gathers these constraints by invoking 
  three different protected methods (listed in order of execution):
  <ul>
-   <li> _defaultTypeConstraints() </li>
    <li> _customTypeConstraints() </li>
+   <li> _defaultTypeConstraints() </li>
    <li> _containedTypeConstraints()</li>
  </ul>
  </p>
@@ -142,7 +142,7 @@ public class TypedAtomicActor extends AtomicActor<TypedIOPort> implements
         if (director != null) {
             director.invalidateResolvedTypes();
         }
-        _typesValid = false; // TODO: check implementations down type hierarchy
+        _typesValid = false; // Set flag to invalidate cached type constraints
     }
 
     /** clone() is not supported, call clone(Workspace workspace)
@@ -206,14 +206,14 @@ public class TypedAtomicActor extends AtomicActor<TypedIOPort> implements
      *  gathered by calling a set of protected non-final methods that can be 
      *  overridden for customization.
      *  
-     *  First, <code>_defaultTypeConstraints()</code> is called. Its purpose is
+     *  First, <code>_customTypeConstraints()</code> is called. This method is
+     *  defined as an empty stub in the base class, that is to be overridden by 
+     *  subclasses that require a specific set of constraints to be setup.
+     *  Second, <code>_defaultTypeConstraints()</code> is called. Its purpose is
      *  to setup type constraints between inputs and outputs that have no types
      *  declared. It ensures that outputs are greater than or equal to inputs,
      *  meaning that lossless conversion is possible on the tokens that pass
      *  through the actor. 
-     *  Second, <code>_customTypeConstraints()</code> is called. This method is
-     *  defined as an empty stub in the base class, that is to be overridden by 
-     *  subclasses that require a specific set of constraints to be setup.
      *  Finally, <code>_containedTypeConstraints()</code> is called to collect
      *  all type constraints that are stored in the contained Typeables.
      *  
@@ -224,10 +224,9 @@ public class TypedAtomicActor extends AtomicActor<TypedIOPort> implements
      */
     public final Set<Inequality> typeConstraints() {
         // do not update if the cached constraints are still valid
-        // FIXME: temporarily disabled due to failing test
-        // if (_typesValid && _typeConstraintsVersion == workspace().getVersion()) {
-        //    return _cachedTypeConstraints;
-        // }
+        if (_typesValid && _typeConstraintsVersion == workspace().getVersion()) {
+          return _cachedTypeConstraints;
+        }
         // clear the cached typed constraints
         _cachedTypeConstraints.clear();
 
@@ -236,13 +235,13 @@ public class TypedAtomicActor extends AtomicActor<TypedIOPort> implements
 
             Set<Inequality> cts = null;
 
-            // setup default constraints // FIXME: do customTypeConstraints() first
-            if ((cts = _defaultTypeConstraints()) != null) {
+            // setup custom constraints
+            if ((cts = _customTypeConstraints()) != null) {
                 _cachedTypeConstraints.addAll(cts);
             }
             
-            // setup custom constraints
-            if ((cts = _customTypeConstraints()) != null) {
+            // setup default constraints
+            if ((cts = _defaultTypeConstraints()) != null) {
                 _cachedTypeConstraints.addAll(cts);
             }
             
@@ -274,7 +273,7 @@ public class TypedAtomicActor extends AtomicActor<TypedIOPort> implements
         result.addAll(typeConstraints());
         return result;
     }
-
+    
     ///////////////////////////////////////////////////////////////////
     ////                      protected methods                    ////
 
@@ -411,6 +410,15 @@ public class TypedAtomicActor extends AtomicActor<TypedIOPort> implements
         _fireAt(new Time(getDirector(), time));
     }
 
+    ///////////////////////////////////////////////////////////////////
+    ////                      protected variables                  ////
+
+    /** Whether or not the resolved types are still valid */
+    protected boolean _typesValid;
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                       private methods                     ////
+    
     /**
      * Initialize the variables that keep track of the validity of the cached 
      * type constraints.
@@ -422,7 +430,7 @@ public class TypedAtomicActor extends AtomicActor<TypedIOPort> implements
         _typesValid = false;
 
     }
-
+    
     ///////////////////////////////////////////////////////////////////
     ////                     private variables                     ////
 
@@ -431,8 +439,5 @@ public class TypedAtomicActor extends AtomicActor<TypedIOPort> implements
 
     /** Version number when the cache was last updated. */
     private long _typeConstraintsVersion;
-
-    /** Whether or not the resolved types are still valid */
-    private boolean _typesValid;
 
 }

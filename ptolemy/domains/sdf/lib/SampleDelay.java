@@ -104,6 +104,8 @@ public class SampleDelay extends SDFTransformer {
             throws IllegalActionException {
         if (attribute != initialOutputs) {
             super.attributeTypeChanged(attribute);
+        } else {
+            _typesValid = false; // Set flag to invalidate cached type constraints
         }
     }
 

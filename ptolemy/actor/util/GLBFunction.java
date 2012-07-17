@@ -78,6 +78,11 @@ public class GLBFunction extends MonotonicFunction {
         if (types.length == 0) {
             return BaseType.UNKNOWN;
         }
+        // If there is only one destination, the GLB is equal to the
+        // type of that port.
+        if (types.length == 1) {
+            return types[0];
+        }
 
         return TypeLattice.lattice().greatestLowerBound(types);
     }

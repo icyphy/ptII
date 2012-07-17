@@ -104,6 +104,8 @@ public class DelayLine extends SDFTransformer {
             throws IllegalActionException {
         if (attribute != initialValues) {
             super.attributeTypeChanged(attribute);
+        } else {
+            _typesValid = false; // Set flag to invalidate cached type constraints
         }
     }
 
