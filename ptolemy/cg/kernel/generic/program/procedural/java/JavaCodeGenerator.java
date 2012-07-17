@@ -1748,7 +1748,9 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
                                         : ptType == BaseType.LONG ? "long"
                                                 : ptType == BaseType.UNSIGNED_BYTE ? "byte"
             // FIXME: Why do we have to use equals with BaseType.OBJECT?
-            : ptType.equals(BaseType.OBJECT) ? "Object"
+            // Object and Complex types are not primitive types.
+            // $PTII/bin/ptcg -language java $PTII/ptolemy/cg/kernel/generic/program/procedural/java/test/auto/ObjectToken1.xml
+            //: ptType.equals(BaseType.OBJECT) ? "Object"
             //: ptType == BaseType.OBJECT ? "Object"            
 
                                                         //: ptType == PointerToken.POINTER ? "void*"
