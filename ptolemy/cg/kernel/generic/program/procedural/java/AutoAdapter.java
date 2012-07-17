@@ -1663,39 +1663,39 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
             //+ (channel == 0 ? "" : ", " + channel)
         } else if (type.equals(BaseType.OBJECT)) {
             //_headerFiles.add("ptolemy.math.Complex;");
-//             return "$targetType("
-//                 + actorPortName
-//                 + ") $actorSymbol("
-//                 + portData
-//                 + ");"
-//                 + _eol
-//                 + "ObjectToken objectToken = (ObjectToken)((("
-//                 + type.getTokenClass().getName()
-//                 + ")"
-//                 + "("
-//                 + codegenPortNameSymbol
-//                 + ".getInside(0"
-//                 + ")))."
-//                 + _valueMethodName(type) + ");" + _eol
-//                 + "$actorSymbol(" + portData + ")"
-//                 + " = $typeFunc(TYPE_Object::new(objectToken.getValue()));"
-//                 + _eol
-//                 + _generateGetInside(actorPortName, codegenPortName, type,
-//                         channel);
-
             return "$targetType("
                 + actorPortName
                 + ") $actorSymbol("
                 + portData
                 + ");"
                 + _eol
-                + "ObjectToken objectToken = (ObjectToken)"
+                + "Object object = (Object)((("
+                + type.getTokenClass().getName()
+                + ")"
+                + "("
                 + codegenPortNameSymbol
-                + ".getInside(0);" + _eol
-                + "$actorSymbol(" + portData + ") = objectToken.getValue();"
+                + ".getInside(0"
+                + ")))."
+                + _valueMethodName(type) + ");" + _eol
+                + "$actorSymbol(" + portData + ")"
+                + " = $typeFunc(TYPE_Object::new(object));"
                 + _eol
                 + _generateGetInside(actorPortName, codegenPortName, type,
                         channel);
+
+//             return "$targetType("
+//                 + actorPortName
+//                 + ") $actorSymbol("
+//                 + portData
+//                 + ");"
+//                 + _eol
+//                 + "ObjectToken objectToken = (ObjectToken)"
+//                 + codegenPortNameSymbol
+//                 + ".getInside(0);" + _eol
+//                 + "$actorSymbol(" + portData + ") = objectToken.getValue();"
+//                 + _eol
+//                 + _generateGetInside(actorPortName, codegenPortName, type,
+//                         channel);
 
             // For non-multiports "". For multiports, ", 0", ", 1" etc.
             //+ (channel == 0 ? "" : ", " + channel)
@@ -2567,6 +2567,26 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
                 // For non-multiports "". For multiports, #0, #1 etc.
                 + (channel == 0 ? "" : "#" + channel)
                 + ")).payload).imag))" + ");" + _eol;
+        } else if (type.equals(BaseType.OBJECT)) {
+            _headerFiles.add("ptolemy.data.ObjectToken;");
+            return
+                "{" + _eol
+                // Set the type.
+                + codegenPortNameSymbol + ".setTypeEquals("
+                + _typeToBaseType(type) + ");" + _eol
+                + "Token cgToken = $get(" + actorPortName + ")"
+                // For non-multiports "". For multiports, #0, #1 etc.
+                + (channel == 0 ? "" : "#" + channel) + ";" + _eol
+                + "ObjectToken objectToken = null;" + _eol
+                + "if (cgToken == null) {" + _eol
+                + "   objectToken = new ObjectToken(cgToken);" + _eol
+                + "} else {" + _eol
+                + "   objectToken = new ObjectToken(((ObjectCG)cgToken.payload).object);" + _eol
+                + "}" + _eol
+                // Send data to the actor.
+                + "    " + codegenPortNameSymbol
+                + ".sendInside(0, objectToken);" + _eol
+                + "}" + _eol;
         } else {
             return
                 // Set the type.

@@ -1750,7 +1750,7 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
             // FIXME: Why do we have to use equals with BaseType.OBJECT?
             // Object and Complex types are not primitive types.
             // $PTII/bin/ptcg -language java $PTII/ptolemy/cg/kernel/generic/program/procedural/java/test/auto/ObjectToken1.xml
-            : ptType.equals(BaseType.OBJECT) ? "Object"
+            //: ptType.equals(BaseType.OBJECT) ? "Object"
             //: ptType == BaseType.OBJECT ? "Object"            
 
                                                         //: ptType == PointerToken.POINTER ? "void*"
@@ -2639,13 +2639,13 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
                     // in the top level, instead, we should be writing our code
                     // into a subdirectory.
                     File topTokenFile = new File(codeDirectoryFile,
-                            typesAndTokenArray[i] + ".java");
+                            typeName + ".java");
                     if (!topTokenFile.delete()) {
                         throw new IllegalActionException("Failed to delete "
                                 + topTokenFile);
                     }
                     File topTokenClass = new File(codeDirectoryFile,
-                            typesAndTokenArray[i] + ".class");
+                            typeName + ".class");
                     if (!topTokenClass.delete()) {
                         System.out.println("Warning: Failed to delete "
                                 + topTokenClass);
