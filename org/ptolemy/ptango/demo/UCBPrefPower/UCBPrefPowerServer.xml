@@ -4,13 +4,13 @@
 <entity name="UCBPrefPowerServer" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.0.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={92, 27, 1274, 741}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={5, 87, 1274, 660}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1046, 625]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1046, 544]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.9345716248096">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{579.8233466569767, 350.9881904069767}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{579.8233466569767, 307.6528280603496}">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model launches a web server and provides a service&#10;available at http://localhost:8080/UCBPower.&#10;Run the model and navigate to that location&#10;(or double click on this comment).">
@@ -74,7 +74,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[900.0, 135.0]">
         </property>
     </property>
-    <property name="dateStart" class="ptolemy.data.expr.Parameter" value="&quot;1341892800000&quot;">
+    <property name="dateStart" class="ptolemy.data.expr.Parameter" value="&quot;1341201600000&quot;">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -93,7 +93,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="{900, 160}">
         </property>
     </property>
-    <property name="dateEnd" class="ptolemy.data.expr.Parameter" value="&quot;1341979200000&quot;">
+    <property name="dateEnd" class="ptolemy.data.expr.Parameter" value="&quot;1341288000000&quot;">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -110,6 +110,24 @@
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[900.0, 185.0]">
+        </property>
+    </property>
+    <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Added types on output ports &#10;of RecordDisassmbler&#10;Not sure why these are needed, &#10;since HTMLModelExporter2 declares&#10;types on all of its input ports?">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[180.0, 515.0]">
+        </property>
+    </property>
+    <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Added type on trigger input port&#10;of HTMLModelExporter2">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[770.0, 270.0]">
+        </property>
+    </property>
+    <property name="Annotation4" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Removed types on output ports of RecordDisassmbler2&#10;(previously: string)&#10;May need to add types back in if doing some string manipulation&#10;&#10;Right now, type system should resolve these to type general, &#10;since the Display actor's source code declares its input&#10;port to be of type general.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[445.0, 120.0]">
         </property>
     </property>
     <entity name="HttpActor" class="org.ptolemy.ptango.lib.HttpActor">
@@ -131,19 +149,9 @@
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="general">
             </property>
         </port>
-        <port name="cookies" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-            <property name="_type" class="ptolemy.actor.TypeAttribute" value="{firstname=string, lastname=string}">
-            </property>
-        </port>
         <port name="getParameters" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="general">
-            </property>
-        </port>
-        <port name="postParameters" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-            <property name="_type" class="ptolemy.actor.TypeAttribute" value="{dateStart=string, dateEnd=string, display=string, useOnlineData=string}">
             </property>
         </port>
     </entity>
@@ -212,20 +220,28 @@
             <property name="output"/>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="long">
+            </property>
         </port>
         <port name="dateEnd" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="long">
             </property>
         </port>
         <port name="display" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="string">
+            </property>
         </port>
         <port name="useOnlineData" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="boolean">
             </property>
         </port>
     </entity>
@@ -256,6 +272,8 @@
         <port name="trigger" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="general">
             </property>
         </port>
         <port name="dateStart" class="ptolemy.actor.TypedIOPort">
@@ -360,15 +378,11 @@
         </property>
         <port name="firstname" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="_type" class="ptolemy.actor.TypeAttribute" value="string">
-            </property>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
         </port>
         <port name="lastname" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="_type" class="ptolemy.actor.TypeAttribute" value="string">
-            </property>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
         </port>
@@ -378,7 +392,7 @@
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[326, 186]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{460, 190}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[405.0, 215.0]">
         </property>
     </entity>
     <entity name="Const" class="ptolemy.actor.lib.Const">

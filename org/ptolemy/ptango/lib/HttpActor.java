@@ -31,7 +31,6 @@ package org.ptolemy.ptango.lib;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.URI;
-import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -58,7 +57,6 @@ import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.StringParameter;
 import ptolemy.data.type.BaseType;
-import ptolemy.data.type.RecordType;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -120,26 +118,13 @@ public class HttpActor extends TypedAtomicActor implements HttpService {
         path = new StringParameter(this, "path");
         path.setExpression("/*");
         
+        // Ports
         response = new TypedIOPort(this, "response", true, false);
         response.setTypeEquals(BaseType.STRING);
         response.setMultiport(true);
         
         cookies = new TypedIOPort(this, "cookies", false, true);
-        // FIXME: The following requires the output to be a record.
-        // This won't work until new type system is checked in.
-        
-        cookies.setTypeAtMost(RecordType.EMPTY_RECORD);
-         
-        cookies.setTypeEquals(BaseType.STRING);
-         new Parameter(cookies, "_showName").setExpression("true");
-        
-        timeout = new Parameter(this, "timeout");
-        timeout.setExpression("10000L");
-        timeout.setTypeEquals(BaseType.LONG);
-        
-        cookiesCollection =new Parameter(this, "cookies");
-        setCookies =new TypedIOPort(this,"setCookies", true, false);
-        setCookies.setTypeAtMost(BaseType.GENERAL);
+        new Parameter(cookies, "_showName").setExpression("true");           
         
         getRequestURI = new TypedIOPort(this, "getRequestURI", false, true);
         getRequestURI.setTypeEquals(BaseType.STRING);
@@ -157,10 +142,21 @@ public class HttpActor extends TypedAtomicActor implements HttpService {
         postParameters = new TypedIOPort(this, "postParameters", false, true);
         new Parameter(postParameters, "_showName").setExpression("true");
         
-        _cookiesCollection =new LinkedList<RecordToken>();
+        setCookies =new TypedIOPort(this,"setCookies", true, false);   
+        new Parameter(setCookies, "_showName").setExpression("true");
         
+        // Parameters
+        timeout = new Parameter(this, "timeout");
+        timeout.setExpression("10000L");
+        timeout.setTypeEquals(BaseType.LONG);
+        
+        cookiesCollection =new Parameter(this, "cookies");
+
         pathCookies =new Parameter(this, "pathCookies");
         pathCookies.setExpression("false");
+        
+        // Internal variables
+        _cookiesCollectionList =new LinkedList<RecordToken>();
   }
     
     ///////////////////////////////////////////////////////////////////
@@ -290,7 +286,7 @@ public class HttpActor extends TypedAtomicActor implements HttpService {
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         HttpActor newObject = (HttpActor) super.clone(workspace);
         //newObject._cookies = null;
-        newObject._cookiesCollection =null;
+        newObject._cookiesCollectionList =null;
         newObject._initializeModelTime = null;
         newObject._initializeRealTime = 0L;
         newObject._parameters = null;
@@ -368,7 +364,7 @@ public class HttpActor extends TypedAtomicActor implements HttpService {
                /**
                 * ROXANA: send the values in the cookiesCollection parameters to the cookie output port     
                 */
-                for (RecordToken cookie: _cookiesCollection)
+                for (RecordToken cookie: _cookiesCollectionList)
                     cookies.send(0, cookie);
                 
                     
@@ -451,7 +447,7 @@ public class HttpActor extends TypedAtomicActor implements HttpService {
              * Create a new recordToken with the lables and values extracted in the above code.
              * @author: Roxana Gheorghiu
              */
-            _cookiesCollection.add(new RecordToken(labels, values));
+            _cookiesCollectionList.add(new RecordToken(labels, values));
         }
              
     }
@@ -505,7 +501,7 @@ public class HttpActor extends TypedAtomicActor implements HttpService {
     private URI _URIpath;
     
     /** All cookies from get and port request plus the ones in the Cookies provided as part of a get request. */
-    private List<RecordToken> _cookiesCollection;
+    private List<RecordToken> _cookiesCollectionList;
     
     
 
@@ -630,7 +626,7 @@ public class HttpActor extends TypedAtomicActor implements HttpService {
                     
                     if (pathCookies.getExpression().equals("true") && _parameters.length() >0)
                     {
-                        _cookiesCollection.add(_parameters);
+                        _cookiesCollectionList.add(_parameters);
                     }
                     
                 } catch (IllegalActionException e1) {
@@ -681,7 +677,7 @@ public class HttpActor extends TypedAtomicActor implements HttpService {
                  * @author Ghr1pi (Roxana Gheorghiu)
                  */
                 
-                for(RecordToken cookie:_cookiesCollection)
+                for(RecordToken cookie:_cookiesCollectionList)
                 {
                     Set<String> labels =cookie.labelSet();
                     String label="", value ="";
