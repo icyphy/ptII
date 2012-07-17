@@ -277,38 +277,6 @@ public class TypedAtomicActor extends AtomicActor<TypedIOPort> implements
     ///////////////////////////////////////////////////////////////////
     ////                      protected methods                    ////
 
-    /** Override the base class to throw an exception if the added port
-     *  is not an instance of TypedIOPort.  This method should not be used
-     *  directly.  Call the setContainer() method of the port instead.
-     *  This method does not set the container of the port to point to
-     *  this entity. It assumes that the port is in the same workspace
-     *  as this actor.
-     *  Derived classes may override this method to further constrain the
-     *  port to be a subclass of TypedIOPort. This method is <i>not</i>
-     *  synchronized on the workspace, so the caller should be.
-     *
-     *  @param port The port to add to this actor.
-     *  @exception IllegalActionException If the port is not an instance
-     *   of TypedIOPort, or the port has no name.
-     *  @exception NameDuplicationException If the port name coincides with
-     *   the name of another port already in the actor.
-     *  
-     */
-    // FIXME: use Generics instead, NamedList will need to become parameterized
-    protected void _addPort(Port port) throws IllegalActionException,
-            NameDuplicationException {
-        // In the future, this method can be changed to allow IOPort to be
-        // added. In that case, the type system just ignores instances of
-        // IOPort during type checking. Since there is no intended application
-        // for that change yet, constrain the port to be TypedIOPort for now.
-        if (!(port instanceof TypedIOPort)) {
-            throw new IllegalActionException(this, port,
-                    "Incompatible port class for this actor.");
-        }
-
-        super._addPort(port);
-    }
-
     /**
      * Collect all type constraints from contained Typeables (ports, 
      * variables, and parameters).

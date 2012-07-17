@@ -623,33 +623,6 @@ public class ComponentEntity<T extends ComponentPort> extends Entity<T> {
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
-    /** Add a port to this entity. This overrides the base class to
-     *  throw an exception if the added port is not an instance of
-     *  ComponentPort.  This method should not be used
-     *  directly.  Call the setContainer() method of the port instead.
-     *  This method does not set
-     *  the container of the port to point to this entity.
-     *  It assumes that the port is in the same workspace as this
-     *  entity, but does not check.  The caller should check.
-     *  Derived classes may override this method to further constrain to
-     *  a subclass of ComponentPort.
-     *  This method is <i>not</i> synchronized on the workspace, so the
-     *  caller should be.
-     *  @param port The port to add to this entity.
-     *  @exception IllegalActionException If the port class is not
-     *   acceptable to this entity, or the port has no name.
-     *  @exception NameDuplicationException If the port name collides with a
-     *   name already in the entity.
-     */
-    protected void _addPort(Port port) throws IllegalActionException,
-            NameDuplicationException {
-        if (!(port instanceof ComponentPort)) {
-            throw new IllegalActionException(this, port,
-                    "Incompatible port class for this entity.");
-        }
-
-        super._addPort(port);
-    }
 
     /** Adjust the deferrals in this object. This method should
      *  be called on any newly created object that is created by

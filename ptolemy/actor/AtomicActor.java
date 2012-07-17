@@ -874,32 +874,6 @@ public class AtomicActor<T extends IOPort> extends ComponentEntity<T> implements
         _actorFiring(new FiringEvent(null, this, type, multiplicity));
     }
 
-    /** Override the base class to throw an exception if the added port
-     *  is not an instance of IOPort.  This method should not be used
-     *  directly.  Call the setContainer() method of the port instead.
-     *  This method does not set the container of the port to point to
-     *  this entity. It assumes that the port is in the same workspace
-     *  as this entity, but does not check.  The caller should check.
-     *  Derived classes may override this method to further constrain to
-     *  a subclass of IOPort. This method is <i>not</i> synchronized on
-     *  the workspace, so the caller should be.
-     *
-     *  @param port The port to add to this entity.
-     *  @exception IllegalActionException If the port class is not
-     *   acceptable to this entity, or the port has no name.
-     *  @exception NameDuplicationException If the port name coincides with a
-     *   name already in the entity.
-     */
-    protected void _addPort(Port port) throws IllegalActionException,
-            NameDuplicationException {
-        if (!(port instanceof IOPort)) {
-            throw new IllegalActionException(this, port,
-                    "Incompatible port class for this entity.");
-        }
-
-        super._addPort(port);
-    }
-
     /** Set the dependency between the input and output port to
      *  represent a time delay with the specified value.
      *  Subclasses can call this method

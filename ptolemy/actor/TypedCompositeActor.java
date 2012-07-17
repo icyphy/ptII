@@ -570,16 +570,16 @@ public class TypedCompositeActor extends CompositeActor implements TypedActor {
      *  @return A list of instances of Inequality indicating the
      *   type constraints that are not satisfied.
      */
-    protected List _checkTypesFromTo(TypedIOPort sourcePort,
-            List destinationPortList) {
-        List result = new LinkedList();
+    protected List<Inequality> _checkTypesFromTo(TypedIOPort sourcePort,
+            List<TypedIOPort> destinationPortList) {
+        List<Inequality> result = new LinkedList<Inequality>();
 
         boolean isUndeclared = sourcePort.getTypeTerm().isSettable();
 
         if (!isUndeclared) {
             // sourcePort has a declared type.
             Type srcDeclared = sourcePort.getType();
-            Iterator destinationPorts = destinationPortList.iterator();
+            Iterator<TypedIOPort> destinationPorts = destinationPortList.iterator();
 
             while (destinationPorts.hasNext()) {
                 TypedIOPort destinationPort = (TypedIOPort) destinationPorts
@@ -699,7 +699,7 @@ public class TypedCompositeActor extends CompositeActor implements TypedActor {
                     "Cannot check types on a non-opaque actor.");
         }
 
-        List result = new LinkedList();
+        List<Inequality> result = new LinkedList<Inequality>();
 
         Iterator entities = deepEntityList().iterator();
 
@@ -714,7 +714,7 @@ public class TypedCompositeActor extends CompositeActor implements TypedActor {
 
             // Type check from all the ports on the contained actor.
             // to the ports that the actor can send data to.
-            Iterator ports = ((Entity) actor).portList().iterator();
+            Iterator<TypedIOPort> ports = ((Entity<TypedIOPort>) actor).portList().iterator();
 
             while (ports.hasNext()) {
                 TypedIOPort sourcePort = (TypedIOPort) ports.next();

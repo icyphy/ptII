@@ -540,7 +540,7 @@ public class Entity<T extends Port> extends InstantiableNamedObj {
      *  @exception NameDuplicationException If the port name collides with a
      *   name already in the entity.
      */
-    protected void _addPort(Port port) throws IllegalActionException,
+    protected void _addPort(T port) throws IllegalActionException,
             NameDuplicationException {
         _portList.append(port);
     }

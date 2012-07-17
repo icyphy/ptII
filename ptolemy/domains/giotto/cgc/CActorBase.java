@@ -164,17 +164,8 @@ public class CActorBase extends TypedAtomicActor {
      *  @exception NameDuplicationException If the port name coincides with
      *   the name of another port already in the actor.
      */
-    protected void _addPort(Port port) throws IllegalActionException,
+    protected void _addPort(CPort port) throws IllegalActionException,
             NameDuplicationException {
-        // In the future, this method can be changed to allow IOPort to be
-        // added. In that case, the type system just ignores instances of
-        // IOPort during type checking. Since there is no intended application
-        // for that change yet, constrain the port to be TypedIOPort for now.
-        if (!(port instanceof CPort)) {
-            throw new IllegalActionException(this, port,
-                    "Incompatible port class for this actor.");
-        }
-
         super._addPort(port);
     }
 
