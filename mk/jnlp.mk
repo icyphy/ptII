@@ -1918,8 +1918,11 @@ ant.footer:
 #
 # A solution is documented at the above link.
 # make KEYSTORE=/users/ptII/adm/certs/ptkeystore KEYALIAS=ptolemy STOREPASSWORD="-storepass xxx" KEYPASSWORD="-keypass xxx" sign_3d
-WEBSTART=$(HOME)/webstart
-JAVA3D = $(WEBSTART)/java3d
+#
+# Use $(ROOT) here instead of $(PTII) or $(HOME)
+# and avoid target pattern contains no `%'.
+WEBSTART=$(ROOT)/webstart
+JAVA3D=$(WEBSTART)/java3d
 sign_j3d: $(JAVA3D)
 	@set `find $(JAVA3D) -name "*.jar"`; \
 	for x do \
