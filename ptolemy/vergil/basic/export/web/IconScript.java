@@ -75,6 +75,10 @@ public class IconScript extends Script implements WebExportable {
         endText = new StringParameter(this, "endText");
         style = new TextStyle(endText, "style");
         style.height.setExpression("5");
+        
+        jQueryLibraries =new StringParameter(this, "jQueryLibraries");
+        style =new TextStyle(jQueryLibraries,"style");
+        style.height.setExpression("5");
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -89,6 +93,14 @@ public class IconScript extends Script implements WebExportable {
      *  web page. This text will be inserted exactly once.
      */
     public StringParameter startText;
+    
+    /** jQuery libraries to be included in the HEAD section of the html file
+     * The path to the libraries will be copyed in the same order as given
+     * @author Roxana Gheorghiu
+     * @date July 6, 2012
+     */
+    public StringParameter jQueryLibraries;
+    
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -121,8 +133,19 @@ public class IconScript extends Script implements WebExportable {
         // 4) <divs> that the script will change the content of -> target <div>
         
         WebElement webElement;
-        String scriptValue;
+        String jQueryImports =jQueryLibraries.stringValue();
+        if(!jQueryImports.trim().equals(""))
+        {
+            //Create WebElement for jQueryLibraries and add the exporter.
+            //content should only be added once(<onceOnly->true)
+            webElement =WebElement.createWebElement(getContainer(), "jQueryLibraries", "jQueryLibraries");
+            webElement.setParent(WebElement.HEAD);
+            webElement.setExpression(jQueryImports);
+            exporter.defineElement(webElement, true);
+        }
         
+        
+        String scriptValue;
         // Check whether the user wants to insert the evaluated expression
         // or the exact text for the script 
         if (evaluateScript.getToken()
@@ -143,6 +166,7 @@ public class IconScript extends Script implements WebExportable {
                     + "\n</script>\n");
             exporter.defineElement(webElement, true); 
         }
+        
         
         String startTextValue = startText.stringValue();
         if (!startTextValue.trim().equals("")) {
