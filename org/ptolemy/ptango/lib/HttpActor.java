@@ -31,10 +31,15 @@ package org.ptolemy.ptango.lib;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.URI;
+import java.util.Enumeration;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
 import javax.servlet.ServletException;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -53,6 +58,7 @@ import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.StringParameter;
 import ptolemy.data.type.BaseType;
+import ptolemy.data.type.RecordType;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -118,15 +124,22 @@ public class HttpActor extends TypedAtomicActor implements HttpService {
         response.setTypeEquals(BaseType.STRING);
         response.setMultiport(true);
         
-        // cookies = new TypedIOPort(this, "cookies", false, true);
+        cookies = new TypedIOPort(this, "cookies", false, true);
         // FIXME: The following requires the output to be a record.
         // This won't work until new type system is checked in.
-        // cookies.setTypeAtMost(RecordType.EMPTY_RECORD);
-        // new Parameter(cookies, "_showName").setExpression("true");
+        
+        cookies.setTypeAtMost(RecordType.EMPTY_RECORD);
+         
+        cookies.setTypeEquals(BaseType.STRING);
+         new Parameter(cookies, "_showName").setExpression("true");
         
         timeout = new Parameter(this, "timeout");
         timeout.setExpression("10000L");
         timeout.setTypeEquals(BaseType.LONG);
+        
+        cookiesCollection =new Parameter(this, "cookies");
+        setCookies =new TypedIOPort(this,"setCookies", true, false);
+        setCookies.setTypeAtMost(BaseType.GENERAL);
         
         getRequestURI = new TypedIOPort(this, "getRequestURI", false, true);
         getRequestURI.setTypeEquals(BaseType.STRING);
@@ -143,7 +156,12 @@ public class HttpActor extends TypedAtomicActor implements HttpService {
         // NOTE: The type will be inferred from how this output is used.
         postParameters = new TypedIOPort(this, "postParameters", false, true);
         new Parameter(postParameters, "_showName").setExpression("true");
-    }
+        
+        _cookiesCollection =new LinkedList<RecordToken>();
+        
+        pathCookies =new Parameter(this, "pathCookies");
+        pathCookies.setExpression("false");
+  }
     
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
@@ -154,7 +172,7 @@ public class HttpActor extends TypedAtomicActor implements HttpService {
      */
     // FIXME: Cookies have many other fields. Do we need to include them?
     // Leave out altogether for now.
-    // public TypedIOPort cookies;
+     public TypedIOPort cookies;
 
     /** The relative URL of HTTP requests that this actor handles.
      *  This is a string that defaults to "/*", meaning that all
@@ -214,6 +232,19 @@ public class HttpActor extends TypedAtomicActor implements HttpService {
      */
     public TypedIOPort response;
     
+    /**
+     * An input port on which to provide the possible attributes for cookies
+     * 
+     */
+    public TypedIOPort setCookies;
+    
+    /**
+     * A parameter to store the cookie values. 
+     */
+    public Parameter cookiesCollection;
+    
+    public Parameter pathCookies;
+    
     /** The time in milliseconds to wait after producing the details
      *  of a request on the output ports for a response to appear at
      *  the input ports. This is a long that defaults to 10,000.
@@ -258,7 +289,8 @@ public class HttpActor extends TypedAtomicActor implements HttpService {
      */
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         HttpActor newObject = (HttpActor) super.clone(workspace);
-        // newObject._cookies = null;
+        //newObject._cookies = null;
+        newObject._cookiesCollection =null;
         newObject._initializeModelTime = null;
         newObject._initializeRealTime = 0L;
         newObject._parameters = null;
@@ -306,13 +338,15 @@ public class HttpActor extends TypedAtomicActor implements HttpService {
         // thread, so we use this actor for mutual exclusion.
         synchronized(this) {
             super.fire();
+           
             for (int i = 0; i < response.getWidth(); i++) {
                 if (response.hasToken(i)) {
                     _response = ((StringToken)response.get(i)).stringValue();
                     if (_debugging) {
                         _debug("Received response on the input port: " + _response);
                     }
-                    // If there is a pending request, notify it.
+                    
+                  // If there is a pending request, notify it.
                     notifyAll();
                 }
             }
@@ -324,12 +358,24 @@ public class HttpActor extends TypedAtomicActor implements HttpService {
                 } else {
                     postRequestURI.send(0, new StringToken(_requestURI));     
                     postParameters.send(0, _parameters);
+                   
                 }
+               
+                
+                
                 _requestURI = null;
+                
+               /**
+                * ROXANA: send the values in the cookiesCollection parameters to the cookie output port     
+                */
+                for (RecordToken cookie: _cookiesCollection)
+                    cookies.send(0, cookie);
+                
+                    
                 /* FIXME: Omitting cookies for now.
                  * In any case, when we put this back in,
-                 * this work should be done in the servlet.
-                if (_cookies != null && _cookies.length > 0) {
+                 * this work should be done in the servlet.*/
+                /*if (_cookies != null && _cookies.length > 0) {
                     // Construct a record.
                     String[] labels = new String[_cookies.length];
                     Token[] values = new Token[_cookies.length];
@@ -338,9 +384,9 @@ public class HttpActor extends TypedAtomicActor implements HttpService {
                         values[i] = new StringToken(_cookies[i].getValue());
                     }
                     cookies.send(0, new RecordToken(labels, values));
-                }
-                */
-            }
+                }*/
+                
+             }
         }
     }
 
@@ -355,6 +401,59 @@ public class HttpActor extends TypedAtomicActor implements HttpService {
         _requestURI = null;
         _initializeModelTime = getDirector().getModelTime();
         _initializeRealTime = System.currentTimeMillis();
+        
+        /*
+         * get the values provided in the parameter.
+         * This is a list of pairs{name, value} like: { {name="roxana"}, {time="2:23"} }
+         * Extract all labels (before =) and all values (after =)
+         * @author: Roxana Gheorghiu
+         */
+        //System.out.println(cookiesCollection);
+        
+        
+        if (!cookiesCollection.getValueAsString().equals("null"))
+        {
+            String param =cookiesCollection.getValueAsString();
+            String temp =param;
+            int commaIndx =temp.indexOf(",");
+            int count=0;
+            while(commaIndx !=-1)
+            {
+                count++;
+                temp=temp.substring(commaIndx+1);
+                commaIndx =temp.indexOf(",");
+            }
+            
+            String labels[] =new String[count+1];
+            StringToken values[] =new StringToken[count+1];
+            
+            for(int indx =0; indx <count+1; indx++)
+            {
+                commaIndx =param.indexOf(",");
+                String cookie;
+                
+                if (commaIndx !=-1)
+                {
+                    cookie =param.substring(1,commaIndx);
+                    param =param.substring(param.indexOf(",")+1);
+                }
+                else cookie =param.substring(0, param.length()-1);
+                
+                cookie =(cookie.replace("{","")).replace("}","");
+                cookie =cookie.replace("\"","");
+                
+                labels[indx] =cookie.substring(0, cookie.indexOf("=")).trim();
+                values[indx] =new StringToken(cookie.substring(cookie.indexOf("=")+2));
+                //System.out.println("Value: "+values[indx].stringValue()+" Label: "+labels[indx]);
+                
+            }
+            /*
+             * Create a new recordToken with the lables and values extracted in the above code.
+             * @author: Roxana Gheorghiu
+             */
+            _cookiesCollection.add(new RecordToken(labels, values));
+        }
+             
     }
         
     /** Set the relative path that this HttpService is mapped to.
@@ -379,7 +478,7 @@ public class HttpActor extends TypedAtomicActor implements HttpService {
     ////                     private variables                     ////
     
     /** Cookies provided as part of a get request. */
-    // private Cookie[] _cookies;
+    private Cookie[] _cookies;
     
     /** The model time at which this actor was last initialized. */
     private Time _initializeModelTime;
@@ -404,6 +503,11 @@ public class HttpActor extends TypedAtomicActor implements HttpService {
      *  all of the URI naming conventions. 
      */
     private URI _URIpath;
+    
+    /** All cookies from get and port request plus the ones in the Cookies provided as part of a get request. */
+    private List<RecordToken> _cookiesCollection;
+    
+    
 
     ///////////////////////////////////////////////////////////////////
     ////                     inner classes                         ////    
@@ -472,7 +576,11 @@ public class HttpActor extends TypedAtomicActor implements HttpService {
             synchronized(HttpActor.this) {
                 _requestURI = request.getRequestURI();
                 _requestType = type;
-                // _cookies = request.getCookies();
+                _cookies = request.getCookies();
+                System.out.println("COOKIES: "+_cookies.length);
+                for(int i=0; i<_cookies.length; i++)
+                    System.out.println(_cookies[i].getValue());
+                    
                 if (_debugging) {
                     _debug("Received get request with URI: " + _requestURI);
                     _debug("Requesting firing at the current time.");
@@ -513,6 +621,17 @@ public class HttpActor extends TypedAtomicActor implements HttpService {
                 }
                 try {
                     _parameters = new RecordToken(fieldNames, fieldValues);
+                   /**
+                     * Parameters in the URL are considered cookies and inserted in the actor's cookiesCollection parameter IF pathCookies parameter is true
+                     * Default, pathParameter is false
+                     * @auth: Roxana Gheorghiu
+                     */
+                   
+                    
+                    if (pathCookies.getExpression().equals("true") && _parameters.length() >0)
+                    {
+                        _cookiesCollection.add(_parameters);
+                    }
                     
                 } catch (IllegalActionException e1) {
                     _writeError(response, HttpServletResponse.SC_BAD_REQUEST, e1.getMessage());
@@ -556,6 +675,31 @@ public class HttpActor extends TypedAtomicActor implements HttpService {
                         break;
                     }
                 }
+                 
+                /**
+                 * Use the values stored in the _cookiesCollection as cokies for any request
+                 * @author Ghr1pi (Roxana Gheorghiu)
+                 */
+                
+                for(RecordToken cookie:_cookiesCollection)
+                {
+                    Set<String> labels =cookie.labelSet();
+                    String label="", value ="";
+                    Iterator<String> it =labels.iterator();
+                    
+                    if (it.hasNext())
+                    {
+                        label =(String)it.next();
+                        value =String.valueOf(cookie.get(label));
+                        
+                        if (value.indexOf("\"")!=-1)
+                            value =value.replace("\"", "");
+                        
+                        response.addCookie(new Cookie(label, value));
+                    }
+                }
+                
+                
                 response.setContentType("text/html");
                 response.setStatus(HttpServletResponse.SC_OK);
                 if (timeoutOccurred) {
