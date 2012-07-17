@@ -35,7 +35,9 @@ import java.util.List;
 
 import ptolemy.actor.IOPort;
 import ptolemy.actor.TypedCompositeActor;
+import ptolemy.actor.parameters.ParameterMirrorPort;
 import ptolemy.actor.parameters.ParameterPort;
+import ptolemy.actor.parameters.PortParameter; 
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.ComponentPort;
 import ptolemy.kernel.ComponentRelation;
@@ -126,12 +128,7 @@ public class MirrorComposite extends TypedCompositeActor implements
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-    
-    /** Return true if is currently adding and mirroring ports.
-     */
-    public boolean isInAddPort() {
-        return _inAddPort;
-    }
+     
 
     /** Clone the object into the specified workspace. This overrides
      *  the base class to set up the associations in the mirror ports
@@ -189,10 +186,22 @@ public class MirrorComposite extends TypedCompositeActor implements
         }
     }
     
-    /** Specify if actor is currently adding and mirroring ports. */
-    public void setInAddPort(boolean inAddPort) {
-        _inAddPort = inAddPort;
-    }
+    /** Create a new ParameterMirrorPort.
+     *  @param name The name of the port to create.
+     *  @return A new instance of PtidesMirrorPort, an inner class.
+     *  @exception NameDuplicationException If the container already has a port
+     *  with this name.
+     */
+    public Port newParameterPort(String name) throws NameDuplicationException {
+        try {
+            PortParameter parameter = new PortParameter(this, name);
+            return parameter.getPort();
+        } catch (IllegalActionException ex) {
+            // This exception should not occur, so we throw a runtime
+            // exception.
+            throw new InternalErrorException(this, ex, null);
+        }
+    } 
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
@@ -337,20 +346,14 @@ public class MirrorComposite extends TypedCompositeActor implements
      */
     protected void _addPort(Port port) throws IllegalActionException,
             NameDuplicationException {
-        if (!(port instanceof MirrorPort)) {
+        
+        if (!(port instanceof MirrorPort || port instanceof ParameterMirrorPort)) {
             throw new IllegalActionException(this,
                     "MirrorComposite ports are required to be "
                             + "instances of MirrorPort");
-        }
-
+        } 
+        
         super._addPort(port);
-
-        // Findbugs: The if clause above requires that we have a
-        // MirrorPort if we are here, so there is no way that we can
-        // have a ParameterPort.
-        //if (!_mirrorParameterPorts && (port instanceof ParameterPort)) {
-        //    return;
-        //}
 
         // Create and connect a matching inside port on contained entities.
         // Do this as a change request to ensure that the action of
@@ -358,7 +361,7 @@ public class MirrorComposite extends TypedCompositeActor implements
         // the time this executes.  Do not use MoML here because it
         // isn't necessary to generate any undo code.  _removePort()
         // takes care of the undo.
-        final MirrorPort castPort = (MirrorPort) port;
+        final IOPort castPort = (IOPort) port;
 
         ChangeRequest request = new ChangeRequest(this,
                 "Add a port on the inside") {
@@ -395,7 +398,11 @@ public class MirrorComposite extends TypedCompositeActor implements
                             Port insidePort = insideEntity.getPort(portName);
 
                             if (insidePort == null) {
-                                insidePort = insideEntity.newPort(portName);
+                                if (castPort instanceof MirrorPort) {
+                                    insidePort = insideEntity.newPort(portName);
+                                } else { // ParameterMirrorPort
+                                    insidePort = ((MirrorComposite)insideEntity).newParameterPort(portName);
+                                }
 
                                 if (insidePort instanceof IOPort) {
                                     IOPort castInsidePort = (IOPort) insidePort;
@@ -408,7 +415,9 @@ public class MirrorComposite extends TypedCompositeActor implements
                             }
 
                             if (insidePort instanceof MirrorPort) {
-                                castPort.setAssociatedPort((MirrorPort) insidePort);
+                                ((MirrorPort)castPort).setAssociatedPort((MirrorPort) insidePort);
+                            } else { // ParameterMirrorPort
+                                ((ParameterMirrorPort)castPort).setAssociatedPort((ParameterMirrorPort) insidePort);
                             }
 
                             // Create a link only if it doesn't already exist.
@@ -633,7 +642,8 @@ public class MirrorComposite extends TypedCompositeActor implements
          */
         protected void _addPort(final Port port) throws IllegalActionException,
                 NameDuplicationException {
-            if (!(port instanceof MirrorPort)) {
+            
+            if (!(port instanceof MirrorPort || port instanceof ParameterMirrorPort)) {
                 throw new IllegalActionException(this,
                         "Ports in MirrorComposiMirrorCompositeContentsite must be MirrorPort.");
             }
@@ -660,21 +670,29 @@ public class MirrorComposite extends TypedCompositeActor implements
                 protected void _execute() throws Exception {
                     try {
                         workspace().getWriteAccess();
-
-                        // The port may already exist (if we are
-                        // inside a clone() call).
-                        MirrorPort newPort = (MirrorPort) container
+                        
+                        if (port instanceof ParameterMirrorPort) {
+                            ParameterMirrorPort newPort = (ParameterMirrorPort) container
+                            .getPort(port.getName());
+    
+                            if (newPort == null) {
+                                newPort = (ParameterMirrorPort) ((MirrorComposite)container).newParameterPort(port
+                                        .getName()); 
+                            }
+                        } else { // MirrorPort
+                            MirrorPort newPort = (MirrorPort) container
                                 .getPort(port.getName());
 
-                        if (newPort == null) {
-                            newPort = (MirrorPort) container.newPort(port
-                                    .getName());
-                        }
-
-                        if (port instanceof IOPort) {
-                            newPort.setInput(((IOPort) port).isInput());
-                            newPort.setOutput(((IOPort) port).isOutput());
-                            newPort.setMultiport(((IOPort) port).isMultiport());
+                            if (newPort == null) {
+                                newPort = (MirrorPort) container.newPort(port
+                                        .getName());
+                            }
+    
+                            if (port instanceof IOPort) {
+                                newPort.setInput(((IOPort) port).isInput());
+                                newPort.setOutput(((IOPort) port).isOutput());
+                                newPort.setMultiport(((IOPort) port).isMultiport());
+                            }
                         }
                     } finally {
                         workspace().doneWriting();
@@ -683,22 +701,6 @@ public class MirrorComposite extends TypedCompositeActor implements
             };
 
             container.requestChange(request);
-        }
-
-        /** Just add port to the portlist but do not mirror. 
-         *  @throws IllegalActionException Thrown by super class.
-         *  @throws NameDuplicationException Thrown by super class.
-         */
-        public void _justAddPort(Port port) throws IllegalActionException, NameDuplicationException {
-            super._addPort(port);
-        }
-    }
-
-    /** Just add port to the portlist but do not mirror. 
-     *  @throws IllegalActionException Thrown by super class.
-     *  @throws NameDuplicationException Thrown by super class.
-     */
-    public void _justAddPort(Port port) throws IllegalActionException, NameDuplicationException {
-        super._addPort(port);
-    }
+        } 
+    } 
 }
