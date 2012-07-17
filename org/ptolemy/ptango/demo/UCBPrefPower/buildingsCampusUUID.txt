@@ -1,0 +1,34 @@
+Barker  B-2 440 444 626803d9-05a7-55ca-8fca-e25ac38e3154 86091
+Bechtel Center 480 B-5 968 444 47dc5144-8428-519c-b96f-c8d8fdb8efa0 47954
+Bechtel Center 208 B-5 968 444 a810d10f-b82e-5d38-b460-65c624d45dd5 47954
+Birge Hall C-5 968 622 18866fbe-53ff-5511-86c7-95d1cea0a061 94175  
+Chavez Center 408 D-3 616 800 e9783cd3-de8d-5237-95d8-427bada00f86 105470	
+Chavez Center 208 D-3 616 800 723ff34f-c139-59ed-8dc4-879e0a27053c 105470 	
+Cory Hall B-5 968 444 8737f287-14df-5ccd-82df-e66ca7374b63 206054
+Donner Laboratory B-5 968 444 888da9eb-5b39-5636-b495-94c1d1b57f35 53234	
+East Asian Library C-4 792 622 1054f76a-3104-5843-aea9-b6db787d3df4 65860 	
+Evans Hall Mitsibishi Right FPE Left B-5 968 444 7c8eae7e-07a2-5444-9a99-b598356fe4ae 270413
+Evans Hall FPE Left B-5 968 444 3d06be44-4b42-5a7c-8a09-305c2d7894df 270413
+Evans Hall Mitsibishi Left B-5 968 444 d304186d-b464-5cd3-9bf0-2f422e3b9111 270413
+Evans Hall FPE Right B-5 968 444 4254642c-b916-51b3-b9e8-205a4550302a 270413
+Hildebrand Hall 408 C-5 968 622 fbcba13f-3751-5c1e-b103-e051142f84cc 128126	
+Hildebrand Hall 208 C-5 968 622 62278163-e3fa-5ea1-8f60-62b8d951896b 128126	
+Koshland 120 Right B-2 440 444 536485dc-f873-5e78-9887-ccd5dbafbe83 153700
+Koshland 120 Left B-2 440 444 b02cd255-79fd-5af6-ae35-13cd69f3862b 153700
+Koshland 408 Right B-2 440 444 f2d3030e-3140-5a35-acbe-8060b10af20d 153700
+Koshland 408 Left B-2 440 444 b64a2483-3848-5c78-aef6-29a28cda850f 153700
+Latimer Hall 208 C-5  968 622 dad5d95e-60d1-58f0-9561-6ae3f7afc8c3 182943	
+Latimer Hall 480 C-5  968 622 ce79615c-af95-51e6-aeeb-2037ba63dae7 182943	
+McCone B-4 792 444 af48e91d-ec2c-551f-9f5f-90adcddb966a 123612 
+Morgan Hall B-2 440 444 826228a6-1737-51c2-a16a-5d95206d368c 56637 		
+Mulford Hall B-2 440 444 43d75052-5ccb-50b9-b9f9-78e1c84cec79 93420
+Stephens Hall D-5 968 800 93140bf2-7574-5065-a647-7afd1144ee9a 58733
+Tan Hall 408 C-5 968 622 6de5050f-5edc-5897-aaff-812bb629c0dc 116121	
+Tan Hall 208 C-5 968 622 d853efad-f774-5fc9-9b2e-577ffac54159 116121	
+Tang Center E-2 440 978 5d617fa4-0268-5449-91bf-e5d974c705c4 75228
+Tolman Hall B-3 616 444 9fe28603-c7f1-5af0-8c2d-dcea13c73202 240884
+Warren Hall/Oxford Tract Data Center A-1 264 266 38f814c4-d4e1-5332-ae31-e0e81339a148 0
+Warren Hall/Oxford Tract Warren Main A-1 264 266 583b12cc-8c5e-5e00-b608-07bc3b6527cc 0
+Warren Hall/Oxford Tract Oxford Tract A-1 264 266 f58959ce-36c0-5339-85f3-79568cd10163 0
+Wheeler Hall C-4 792 622 f9e5a8d9-a462-5cce-bfdf-180444b3d39c 139436 		       
+

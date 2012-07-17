@@ -1,0 +1,42 @@
+#!/bin/sh
+# A simple script that reads in Berkeley Map Keys
+# and produced a guess at the X,Y coordinates
+
+# The input is a file where each line consist of 
+# a multiword building name and the last field
+# is a number-letter key like B-5.
+# For example:
+# Cory Hall B-5
+
+# If the last field is a number-letter key, then
+# the name of the building and the X,Y coordinates
+# are generated.
+
+# The X,Y coordinates are based on the width of the map
+# from http://berkeley.edu/map/maps/images/large_map.gif
+# The image is 1232 wide x 1067 high
+# The width has a key 1-7
+# Key Number is centered on N * 1232/7 - (1232/7*0.5)
+# The height is A-F
+# Key Letter is N * 1067/6 - (1067/6*0.5)
+
+awk ' BEGIN {
+   width = 1232
+   height = 1067
+   # Used to convert from alphabetical key height
+   letterMap["A"]=1 
+   letterMap["B"]=2
+   letterMap["C"]=3
+   letterMap["D"]=4
+   letterMap["E"]=5
+   letterMap["F"]=6
+}
+
+$NF ~ /-/ { 
+   nf = split($NF, f, "-")
+   letter=letterMap[f[1]] + 0.0
+   number=f[2]+0.0
+   x = int(number * (width/7.0) + (width/7.0*0.5))
+   y = int(letter * (height/6.0) + (height/6)*0.5)
+   print $0, x, y
+'} buildings.txt
