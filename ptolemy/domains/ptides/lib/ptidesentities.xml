@@ -7,14 +7,6 @@
       <group>
 <doc>Ptides actors</doc>
 
-
-
-
-<property name="PtidesDirector" class="ptolemy.domains.ptides.kernel.PtidesDirector">
-                <property name="_location" class="ptolemy.kernel.util.Location" value="{95.0, 65.0}">
-                </property>
-            </property>
-
 			<entity name="PtidesPlatform" class="ptolemy.domains.ptides.kernel.PtidesPlatform">
                 <property name="_configurer" class="ptolemy.actor.gui.InsideEntityEditorPaneFactory">
                 </property>
