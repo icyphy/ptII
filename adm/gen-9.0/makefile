@@ -2652,13 +2652,13 @@ test_setup: setup_jar setup setup_mac_app_tar
 	-pkill Xvfb
 	-pkill -9 Xvfb
 	# Ignore errors 
-	-ls -l /tmp/.X1-lock
-	-rm -rf /tmp/.X1-lock
-	Xvfb :1 -screen 0 1024x768x24 &
-	(cd test/installerTest; chmod a+x ./configure; export DISPLAY=localhost:1.0; echo "DISPLAY=$$DISPLAY"; PTII=`pwd` ./configure; PTII=`pwd` make -k PTII=`pwd` fast install tests)
+	-ls -l /tmp/.X8-lock
+	-rm -rf /tmp/.X8-lock
+	Xvfb :8 -screen 0 1024x768x24 &
+	(cd test/installerTest; chmod a+x ./configure; export DISPLAY=localhost:8.0; echo "DISPLAY=$$DISPLAY"; PTII=`pwd` ./configure; PTII=`pwd` make -k PTII=`pwd` fast install tests)
 	-pkill Xvfb
 	-pkill -9 Xvfb
-	rm -f /tmp/.X1-lock
+	rm -f /tmp/.X8-lock
 
 updateDOPCenterImage:
 	$(GENDIR)/updateDOPCenterImageX11
