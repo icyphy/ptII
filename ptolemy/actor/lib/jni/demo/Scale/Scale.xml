@@ -29,17 +29,29 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author: Gang Zhou">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{30.0, 300.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[30.0, 200.0]">
         </property>
     </property>
-    <property name="disableBackwardTypeInference" class="ptolemy.data.expr.Parameter" value="true">
+    <property name="disableBackwardTypeInference" class="ptolemy.data.expr.Parameter" value="false">
     </property>
     <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="textSize" class="ptolemy.data.expr.Parameter" value="11">
         </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model has backwards type inference disabled.&#10;To enable backwards type inference, right click on the background&#10;and unselect disableBackwardTypeInference.">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The type of the output port of the EmbeddedC actor&#10;has been set to &quot;int&quot;.&#10;This change is necessary because of backward&#10;type inference.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[205.0, 270.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[210.0, 150.0]">
+        </property>
+    </property>
+    <property name="ShowTypes" class="ptolemy.vergil.actor.lib.ShowTypes">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{90, 160}">
+        </property>
+    </property>
+    <property name="Annotation4" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="11">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The type of the output port of the EmbeddedC actor&#10;has been set to &quot;int&quot;.&#10;This change is necessary because of backward&#10;type inference.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{1010.0, 468.0}">
         </property>
     </property>
     <entity name="EmbeddedCActor" class="ptolemy.actor.lib.jni.EmbeddedCActor">
@@ -76,15 +88,42 @@
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="unknown">
+            </property>
         </port>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="int">
+            </property>
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="unknown">
+            </property>
         </port>
     </entity>
     <entity name="Ramp" class="ptolemy.actor.lib.Ramp">
         <doc>Create a sequence of tokens with increasing value</doc>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[80.0, 105.0]">
         </property>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="unknown">
+            </property>
+        </port>
+        <port name="trigger" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="unknown">
+            </property>
+        </port>
+        <port name="init" class="ptolemy.actor.parameters.ParameterPort">
+            <property name="input"/>
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="unknown">
+            </property>
+        </port>
+        <port name="step" class="ptolemy.actor.parameters.ParameterPort">
+            <property name="input"/>
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="unknown">
+            </property>
+        </port>
     </entity>
     <entity name="Display" class="ptolemy.actor.lib.gui.Display">
         <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={680, 413, 322, 226}, maximized=false}">
@@ -93,6 +132,12 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[435.0, 105.0]">
         </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="general">
+            </property>
+        </port>
     </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
     </relation>

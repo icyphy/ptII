@@ -10,7 +10,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="{90, 35}">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={32, 107, 834, 634}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={634, 96, 834, 634}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 524]">
     </property>
@@ -27,7 +27,7 @@
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model includes an actor whose behavior is given in Java code.&#10;It will multiple the incoming tokens with java.lang.Math.PI.&#10;If you select the EmbeddedJavaActor, click the right-mouse button&#10;and select Open Actor, you can inspect and change the code.&#10;The code is automatically recompiled when you run the model.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{125.0, 155.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[20.0, 190.0]">
         </property>
     </property>
     <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -35,10 +35,22 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author: Bert Rodiers">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{55.0, 280.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 295.0]">
         </property>
     </property>
-    <property name="disableBackwardTypeInference" class="ptolemy.data.expr.Parameter" value="true">
+    <property name="disableBackwardTypeInference" class="ptolemy.data.expr.Parameter" value="false">
+    </property>
+    <property name="Annotation4" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="11">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The type of the output port of the EmbeddedActor&#10;has been set to &quot;int&quot;.&#10;This change is necessary because of backward&#10;type inference.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[215.0, 130.0]">
+        </property>
+    </property>
+    <property name="ShowTypes" class="ptolemy.vergil.actor.lib.ShowTypes">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[120.0, 160.0]">
+        </property>
     </property>
     <entity name="EmbeddedActor" class="ptolemy.cg.lib.EmbeddedCodeActor">
         <property name="generatorPackage" class="ptolemy.data.expr.StringParameter" value="generic.program.procedural.java">
@@ -102,10 +114,6 @@
             </property>
             <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="false">
             </property>
-            <property name="startTime" class="ptolemy.data.expr.Parameter">
-            </property>
-            <property name="stopTime" class="ptolemy.data.expr.Parameter">
-            </property>
             <property name="Scheduler" class="ptolemy.domains.sdf.kernel.SDFScheduler">
                 <property name="constrainBufferSizes" class="ptolemy.data.expr.Parameter" value="constrainBufferSizes">
                 </property>
@@ -113,9 +121,15 @@
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="int">
+            </property>
         </port>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="int">
+            </property>
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="int">
+            </property>
         </port>
         <property name="SDF Director._ScaleJava_EmbeddedActor_CodeGenerator_AutoAdded" class="ptolemy.kernel.DecoratedAttributesImplementation">
             <property name="padBuffers" class="ptolemy.data.expr.Parameter" value="true">
@@ -130,6 +144,27 @@
         <doc>Create a sequence of tokens with increasing value</doc>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[80.0, 105.0]">
         </property>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="int">
+            </property>
+        </port>
+        <port name="trigger" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="unknown">
+            </property>
+        </port>
+        <port name="init" class="ptolemy.actor.parameters.ParameterPort">
+            <property name="input"/>
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="int">
+            </property>
+        </port>
+        <port name="step" class="ptolemy.actor.parameters.ParameterPort">
+            <property name="input"/>
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="int">
+            </property>
+        </port>
     </entity>
     <entity name="Display" class="ptolemy.actor.lib.gui.Display">
         <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={346, 268, 324, 228}, maximized=false}">
@@ -138,6 +173,12 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[460.0, 105.0]">
         </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="general">
+            </property>
+        </port>
     </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
     </relation>

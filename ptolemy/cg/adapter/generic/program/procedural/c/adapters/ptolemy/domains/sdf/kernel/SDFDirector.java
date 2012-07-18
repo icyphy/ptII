@@ -135,6 +135,16 @@ public class SDFDirector
             Type type = ((TypedIOPort) inputPort).getType();
             String portName = inputPort.getName();
 
+            String exceptionMessage = "Failed to generate code "
+                + "to transfer tokens to for input. "
+                + "The type of the \"" + portName
+                + "\" output port was " + type 
+                + ", which is not supported. "
+                + "Try setting the type of the \"" 
+                + portName
+                + "\" port by right clicking on the actor "
+                + "and selecting Customize -> Ports.";
+
             for (int i = 0; i < inputPort.getWidth(); i++) {
                 if (i < inputPort.getWidthInside()) {
 
@@ -179,6 +189,9 @@ public class SDFDirector
                                         targetCpp) + ";" + _eol);
                     } else {
                         // FIXME: need to deal with other types
+                        throw new IllegalActionException(inputPort, 
+                                exceptionMessage);
+
                     }
                     String portNameWithChannelNumber = portName;
                     if (inputPort.isMultiport()) {
@@ -219,6 +232,8 @@ public class SDFDirector
                                 + ";" + _eol);
                     } else {
                         // FIXME: need to deal with other types
+                        throw new IllegalActionException(inputPort, 
+                                exceptionMessage);
                     }
                 }
             }
@@ -301,6 +316,16 @@ public class SDFDirector
 
             Type type = ((TypedIOPort) outputPort).getType();
 
+            String exceptionMessage = "Failed to generate code "
+                + "to transfer tokens to fulfill the output rate."
+                + "The type of the \"" + outputPort.getName()
+                + "\" output port was " + type 
+                + ", which is not supported. "
+                + "Try setting the type of the \"" 
+                + outputPort.getName()
+                + "\" port by right clicking on the actor "
+                + "and selecting Customize -> Ports.";
+
             int numberOfChannels = outputPort.getWidthInside();
             code.append("jobjectArray " + tokensToThisPort + ";" + _eol);
 
@@ -356,8 +381,11 @@ public class SDFDirector
                                 targetCpp) + ";" + _eol);
             } else {
                 // FIXME: need to deal with other types
+                throw new IllegalActionException(outputPort, 
+                        exceptionMessage);
             }
 
+            System.out.println("cg SDFDirector: outputPort width: " + outputPort.getWidthInside());
             // Create an array to contain jni objects
             for (int i = 0; i < outputPort.getWidthInside(); i++) {
 
@@ -381,6 +409,8 @@ public class SDFDirector
 
                     } else {
                         // FIXME: need to deal with other types
+                        throw new IllegalActionException(outputPort, 
+                                exceptionMessage);
                     }
                 }
 
@@ -453,6 +483,8 @@ public class SDFDirector
                             + ";" + _eol);
                 } else {
                     // FIXME: need to deal with other types
+                    throw new IllegalActionException(outputPort, 
+                            exceptionMessage);
                 }
 
                 code.append(CCodegenUtilities.jniSetObjectArrayElement(

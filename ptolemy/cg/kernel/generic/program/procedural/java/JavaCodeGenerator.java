@@ -171,9 +171,13 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
 //                 System.out.println("System.identityHashCode(type): " + System.identityHashCode(type)
 //                         + " System.identityHashCode(BaseType.OBJECT) " + System.identityHashCode(BaseType.OBJECT));
 //             }
-            System.out
-                    .println("JavaCodeGenerator.codeGenType(): Cannot resolve codegen type from Ptolemy type: "
-                            + type);
+            if (type == BaseType.UNKNOWN) {
+                System.out.println("JavaCodeGenerator.codeGenType(): Cannot resolve codegen type from Ptolemy type: " + type
+                        + ". This can happen for unconnected ports.");
+            } else {
+                throw new InternalErrorException("JavaCodeGenerator.codeGenType(): Cannot resolve codegen type from Ptolemy type: " + type
+                        + ".  Maybe the type of a port needs to be set from the UI or backward type inference disabled?");
+            }
         }
         if (result == null) {
             return null;
@@ -353,7 +357,7 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
         }
 
         if (result == -10) {
-            throw new IllegalActionException("Unsuported type");
+            throw new IllegalActionException("Unsuported type: " + type );
         }
 
         return result;

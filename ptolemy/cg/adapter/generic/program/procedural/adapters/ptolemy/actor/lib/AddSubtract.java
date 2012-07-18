@@ -70,11 +70,20 @@ public class AddSubtract extends NamedProgramCodeGeneratorAdapter {
 
         ptolemy.actor.lib.AddSubtract actor = (ptolemy.actor.lib.AddSubtract) getComponent();
 
-        String outputType = getCodeGenerator().codeGenType(
-                actor.output.getType());
-        String plusType = getCodeGenerator().codeGenType(actor.plus.getType());
-        String minusType = getCodeGenerator()
+        String outputType = null;
+        String plusType = null;
+        String minusType = null;
+
+        try {
+            outputType = getCodeGenerator().codeGenType(
+                    actor.output.getType());
+            plusType = getCodeGenerator().codeGenType(actor.plus.getType());
+            minusType = getCodeGenerator()
                 .codeGenType(actor.minus.getType());
+        } catch (Throwable throwable) {
+            throw new IllegalActionException(actor, throwable,
+                    "Failed to get the type of a port, perhaps the type needs to be explicitly set from the UI?");
+        }
 
         ArrayList<String> args = new ArrayList<String>();
 

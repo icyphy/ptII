@@ -52,7 +52,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[270.0, 15.0]">
         </property>
     </property>
-    <property name="disableBackwardTypeInference" class="ptolemy.data.expr.Parameter" value="true">
+    <property name="disableBackwardTypeInference" class="ptolemy.data.expr.Parameter" value="false">
     </property>
     <entity name="A1" class="ptolemy.cg.lib.ModularCodeGenTypedCompositeActor">
         <property name="recompileHierarchy" class="ptolemy.data.expr.Parameter" value="false">
@@ -67,7 +67,7 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="[110.0, 65.0]">
             </property>
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 130, 813, 510}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 130, 834, 634}, maximized=false}">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
         </property>
@@ -89,10 +89,14 @@
             <property name="output"/>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[570.0, 95.0]">
             </property>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
+            </property>
         </port>
         <port name="port4" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[570.0, 270.0]">
+            </property>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
             </property>
         </port>
         <configure>
@@ -339,13 +343,13 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="{95.0, 50.0}">
             </property>
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 130, 815, 507}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 130, 834, 634}, maximized=false}">
         </property>
-        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 524]">
         </property>
         <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
         </property>
-        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
+        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 262.0}">
         </property>
         <port name="port" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -361,10 +365,14 @@
             <property name="output"/>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[570.0, 110.0]">
             </property>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
+            </property>
         </port>
         <port name="port4" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[555.0, 200.0]">
+            </property>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
             </property>
         </port>
         <configure>
