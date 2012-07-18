@@ -59,7 +59,7 @@ import ptolemy.kernel.util.Workspace;
 
 /**
  * A director for multidimensional dataflow.
- * This is based on Array-OL, as described by:
+ * <p>This is based on Array-OL, as described by:</p>
  * <ol>
  * <li>
  * Boulet, P. (2007). "Array-OL Revisited, Multidimensional Intensive
@@ -67,16 +67,24 @@ import ptolemy.kernel.util.Workspace;
  * INRIA, Orsay, France.
  * </ol>
  *
- * A more detailed documentation of the Pthales domain can be found in
- * a technical report currently under preparation and accessible at:
- * svn+ssh://source.eecs.berkeley.edu/chess/ealpapers/10/Pthales/TechReport
- * [FIXME: the tech. report should eventually be made public].
+ * <p>A more detailed documentation of the Pthales domain can be found in
+ * a technical report currently under preparation and accessible at:</p>
+ * <ol>
+ * <li>Remi Barrere, Eric Lenormand, Dai Bui, Edward A. Lee, Christopher Shaver and Stavros Tripakis,
+ * "An Introduction to the Pthales Domain of Ptolemy II,
+ * EECS Department,
+ * University of California, Berkeley,
+ * Technical Report No. UCB/EECS-2011-32,
+ * April 26, 2011.
+ * (<a href="http://www.eecs.berkeley.edu/Pubs/TechRpts/2011/EECS-2011-32.html">http://www.eecs.berkeley.edu/Pubs/TechRpts/2011/EECS-2011-32.html</a>)
+ * </li>
+ * </ol>
  *
- * The notation used here is intended to follow the spirit of
+ * <p>The notation used here is intended to follow the spirit of
  * SpearDE [FIXME: Reference?], from Thales, a software system
  * based on Array-OL. In this notation, unlike Boulet's,
  * dimensions are named, and patterns for reading and writing
- * arrays are given using those names.
+ * arrays are given using those names.</p>
  * <p>
  * [FIXME: the description that follows needs update, the contents and syntax of parameter specs have changed]
  * [FIXME: it seems mostly OK to me (Stavros): I made a mild pass. Please check]
@@ -90,7 +98,7 @@ import ptolemy.kernel.util.Workspace;
  * (a positive integer).
  * The stride defaults to 1 if not specified. Unless otherwise
  * stated, the parameters do not support strides.
- * Ports contain the following parameters:
+ * Ports contain the following parameters:</p>
  * <ol>
  *
  * <li> <i>size</i>: This is a parameter of each output port
@@ -99,13 +107,13 @@ import ptolemy.kernel.util.Workspace;
  * is optional, as the size of an output array can be deduced
  * from the other parameters. In addition, every input
  * port of a composite actor that contains a PthalesDirector
- * must also have such a parameter. [FIXME: true?]
+ * must also have such a parameter. [FIXME: true?]</li>
  *
  * <li> <i>base</i>: This mandatory parameter gives the base location
  * (origin) of the output or input array at which an actor begins
  * writing or reading at each iteration of this director.
  * All dimensions must be specified. The order in which they are
- * specified does not matter.
+ * specified does not matter.</li>
  *
  * <li> <i>pattern</i>: This is a parameter of each port that
  * specifies the shape of the portion of the array produced or consumed
@@ -145,12 +153,12 @@ import ptolemy.kernel.util.Workspace;
  * by one value that is not produced. Values that are not
  * produced default to zero (the value of zero depends on the
  * data type; for example, zero for strings is the empty string,
- * whereas zero for doubles is 0.0).
+ * whereas zero for doubles is 0.0).</li>
  *
  * <li> <i>tiling</i>: This parameter gives the increment of the
  * base location in each dimension for each successive firing
  * of the actor within an iteration. This is a property of an
- * output or an input port of an actor.
+ * output or an input port of an actor.</li>
  *
  * </ol>
  *
@@ -175,28 +183,28 @@ import ptolemy.kernel.util.Workspace;
  * of the array by the actor. Thus, each firing of the actor produces
  * or consumes only portions of the array and the complete processing
  * is done by assembling these portions together according to the
- * above parameters.
+ * above parameters.</li>
  * </ol>
  * <p>
  * In all cases, when indexes are incremented, they are incremented
  * in a toroidal fashion, wrapping around when they reach the size
  * of the array. Thus, it is always possible (though rarely useful)
- * for an array size to be 1 in every dimension. [FIXME?]
+ * for an array size to be 1 in every dimension. [FIXME?]</p>
  * <p>
  * NOTE: It should be possible to define a PtalesPort and
  * PtalesCompositeActor that contain the above parameters, as
- * a convenience. These could be put in a library.
+ * a convenience. These could be put in a library.</p>
  * <p>
  * NOTE: It should be possible to create a single interface
  * for this director so that when double clicked, it
  * brings up an interactive dialog that has the form of a Spear
  * table. It would have one row per port, plus a header row
- * to specify the iterations.
+ * to specify the iterations.</p>
  * <p>
  * FIXME: Need to export production and consumption data for
  * SDF, allowing these Pthales models to be nested within SDF
  * or within Pthales, which will also allow it to be nested
- * within modal models.
+ * within modal models.</p>
  *
  * @author Edward A. Lee, Eric Lenormand, Stavros Tripakis
  * @version $Id$
