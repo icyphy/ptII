@@ -417,7 +417,7 @@ public class Simulator extends SDFTransformer {
                         + getDirector().getModelTime().getDoubleValue()
                         + "."
                         + LS
-                        + "Simulation will continue withouth updated values from client program.";
+                        + "Simulation will continue without updated values from client program.";
             }
         } catch (java.net.SocketTimeoutException e) {
             String em = "SocketTimeoutException while reading from client in "
