@@ -717,9 +717,9 @@ public class IOPortController extends AttributeController {
                     try {
                         if (((InstantiableNamedObj)port.getContainer()).isWithinClassDefinition()) {
                             // If the port is in a class definition, do not expand it, it might contain $foo.$bar.
-                            channel = ((PublisherPort)port).channel.getExpression();
+                            channel = ((SubscriberPort)port).channel.getExpression();
                         } else {
-                            channel = ((PublisherPort)port).channel.stringValue();
+                            channel = ((SubscriberPort)port).channel.stringValue();
                         }
                     } catch (IllegalActionException e) {
                         // Ignore and display question marks.
