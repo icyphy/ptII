@@ -194,6 +194,10 @@
 
 	    <!--ptalon not shipped with 6.0 -->
             <!--input source="ptolemy/actor/ptalon/ptalon.xml"/-->
+
+		<!-- ptango - actors for web services -->
+			<input source="org/ptolemy/ptango/lib/ptango.xml"/>
+
         <!-- Ontologies library -->
             <input source="ptolemy/data/ontologies/ontologyAnalysisLibrary.xml"/>
 	    <!--ptp not shipped with 6.0 -->

@@ -1,0 +1,30 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="Ptango" class="ptolemy.moml.EntityLibrary">
+  <configure>
+    <?moml
+      <group>
+<doc>Ptango actors:  Actors for web services. </doc>
+
+<entity name="WebSink" class="org.ptolemy.ptango.lib.WebSink">
+<doc>Placeholder for output to a web page. </doc>
+   <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="20"/>
+   <property name="_icon" class="ptolemy.vergil.icon.UpdatedValueIcon">
+      <property name="attributeName" value="value"/>
+      <property name="displayWidth" value="displayWidth"/>
+   </property>
+</entity>
+<entity name="WebSource" class="org.ptolemy.ptango.lib.WebSource">
+<doc>Placeholder for input from a web page.</doc>
+   <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+      <property name="attributeName" value="value"/>
+      <property name="displayWidth" value="60"/>
+   </property>
+</entity>
+      </group>
+    ?>
+  </configure>
+</entity>
+
+
