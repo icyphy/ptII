@@ -54,6 +54,7 @@ import ptolemy.data.IntToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.Typeable;
+import ptolemy.kernel.InstantiableNamedObj;
 import ptolemy.kernel.Port;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -679,7 +680,12 @@ public class IOPortController extends AttributeController {
                     
                     String channel = "???";
                     try {
-                        channel = ((PublisherPort)port).channel.stringValue();
+                        if (((InstantiableNamedObj)port.getContainer()).isWithinClassDefinition()) {
+                            // If the port is in a class definition, do not expand it, it might contain $foo.$bar.
+                            channel = ((PublisherPort)port).channel.getExpression();
+                        } else {
+                            channel = ((PublisherPort)port).channel.stringValue();
+                        }
                     } catch (IllegalActionException e) {
                         // Ignore and display question marks.
                         e.printStackTrace();
@@ -709,7 +715,12 @@ public class IOPortController extends AttributeController {
                     
                     String channel = "???";
                     try {
-                        channel = ((SubscriberPort)port).channel.stringValue();
+                        if (((InstantiableNamedObj)port.getContainer()).isWithinClassDefinition()) {
+                            // If the port is in a class definition, do not expand it, it might contain $foo.$bar.
+                            channel = ((PublisherPort)port).channel.getExpression();
+                        } else {
+                            channel = ((PublisherPort)port).channel.stringValue();
+                        }
                     } catch (IllegalActionException e) {
                         // Ignore and display question marks.
                         e.printStackTrace();

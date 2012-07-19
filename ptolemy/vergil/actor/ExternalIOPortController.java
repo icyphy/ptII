@@ -45,6 +45,7 @@ import ptolemy.actor.PublisherPort;
 import ptolemy.actor.SubscriberPort;
 import ptolemy.actor.parameters.ParameterPort;
 import ptolemy.data.type.Typeable;
+import ptolemy.kernel.InstantiableNamedObj;
 import ptolemy.kernel.Port;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
@@ -679,7 +680,13 @@ public class ExternalIOPortController extends AttributeController {
             return;
         }
         try {
-            String channel = "Channel: " + ((PubSubPort)port).channel.stringValue();
+            String channel = null;
+            if (((InstantiableNamedObj)port.getContainer()).isWithinClassDefinition()) {
+                // If the port is in a class definition, do not expand it, it might contain $foo.$bar.
+                channel = "Channel: " + ((PubSubPort)port).channel.getExpression();
+            } else {
+                channel = "Channel: " + ((PubSubPort)port).channel.stringValue();
+            }
             // The anchor argument below is (sadly) ignored.
             Figure label = new LabelFigure(
                     channel, _labelFont, 0.0, SwingConstants.SOUTH_EAST, _pubSubLabelColor);
