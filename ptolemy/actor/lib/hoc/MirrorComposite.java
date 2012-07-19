@@ -150,11 +150,13 @@ public class MirrorComposite extends TypedCompositeActor implements
             Iterator ports = result.portList().iterator();
 
             while (ports.hasNext()) {
-                MirrorPort port = (MirrorPort) ports.next();
+                IOPort port = (IOPort) ports.next();
                 Port insidePort = insideEntity.getPort(port.getName());
 
                 if (insidePort instanceof MirrorPort) {
-                    port.setAssociatedPort((MirrorPort) insidePort);
+                    ((MirrorPort)port).setAssociatedPort((MirrorPort) insidePort);
+                } else if (insidePort instanceof ParameterMirrorPort) {
+                    ((ParameterMirrorPort)port).setAssociatedPort((ParameterMirrorPort) insidePort);
                 }
             }
         }
@@ -400,7 +402,7 @@ public class MirrorComposite extends TypedCompositeActor implements
                             if (insidePort == null) {
                                 if (castPort instanceof MirrorPort) {
                                     insidePort = insideEntity.newPort(portName);
-                                } else { // ParameterMirrorPort
+                                } else if (castPort instanceof ParameterMirrorPort) { // ParameterMirrorPort
                                     insidePort = ((MirrorComposite)insideEntity).newParameterPort(portName);
                                 }
 
@@ -416,7 +418,7 @@ public class MirrorComposite extends TypedCompositeActor implements
 
                             if (insidePort instanceof MirrorPort) {
                                 ((MirrorPort)castPort).setAssociatedPort((MirrorPort) insidePort);
-                            } else { // ParameterMirrorPort
+                            } else if (insidePort instanceof ParameterMirrorPort) { // ParameterMirrorPort
                                 ((ParameterMirrorPort)castPort).setAssociatedPort((ParameterMirrorPort) insidePort);
                             }
 
