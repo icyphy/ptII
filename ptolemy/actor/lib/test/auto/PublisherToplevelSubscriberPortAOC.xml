@@ -1,0 +1,83 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="PublisherToplevelSubscriberPortAOC" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.0.devel">
+    </property>
+    <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
+        <property name="iterations" class="ptolemy.data.expr.Parameter" value="5">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{135, 80}">
+        </property>
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={373, 208, 934, 634}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 524]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{350.0, 262.0}">
+    </property>
+    <class name="CompositeClassDefinition" extends="ptolemy.actor.TypedCompositeActor">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{390, 75}">
+        </property>
+        <port name="SubscriberPort" class="ptolemy.actor.SubscriberPort">
+            <property name="input"/>
+            <property name="channel" class="ptolemy.data.expr.StringParameter" value="channel">
+            </property>
+            <property name="global" class="ptolemy.data.expr.Parameter" value="true">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{215, 200}">
+            </property>
+        </port>
+        <entity name="Test" class="ptolemy.actor.lib.Test">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{380, 200}">
+            </property>
+        </entity>
+        <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <link port="SubscriberPort" relation="relation"/>
+        <link port="Test.input" relation="relation"/>
+    </class>
+    <entity name="Ramp" class="ptolemy.actor.lib.Ramp">
+        <doc>Create a sequence of tokens with increasing value</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{110, 210}">
+        </property>
+    </entity>
+    <entity name="InstanceOfCompositeClassDefinition" class="CompositeClassDefinition">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[455.0, 245.0]">
+        </property>
+        <port name="SubscriberPort" class="ptolemy.actor.SubscriberPort">
+            <property name="input"/>
+            <property name="global" class="ptolemy.data.expr.Parameter" value="true">
+            </property>
+        </port>
+        <entity name="Test" class="ptolemy.actor.lib.Test">
+            <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0, 1, 2, 3, 4}">
+            </property>
+            <property name="requireAllCorrectValues" class="ptolemy.actor.parameters.SharedParameter" value="true">
+            </property>
+            <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
+            </property>
+        </entity>
+    </entity>
+    <entity name="Publisher" class="ptolemy.actor.lib.Publisher">
+        <property name="channel" class="ptolemy.data.expr.StringParameter" value="channel">
+        </property>
+        <doc>Publish the input values to all matching Subscribers.</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="channel">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+            </property>
+            <property name="boxColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.85, 0.6, 0.58, 1.0}">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{245, 210}">
+        </property>
+    </entity>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="Ramp.output" relation="relation"/>
+    <link port="Publisher.input" relation="relation"/>
+</entity>

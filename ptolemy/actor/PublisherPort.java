@@ -230,12 +230,22 @@ public class PublisherPort extends PubSubPort {
                 // NOTE: During cloning, the container reports that it is in a class definition!
                 // Hence, this PublisherPort has to do the registering when clone is
                 // set to no longer be a class definition.
-                if (container instanceof InstantiableNamedObj
-                        && !((InstantiableNamedObj)container).isWithinClassDefinition()) {
+                if ((container instanceof InstantiableNamedObj
+                                && !((InstantiableNamedObj)container).isWithinClassDefinition())
+//                        || (container == null
+//                                && immediateContainer instanceof InstantiableNamedObj
+//                                && !((InstantiableNamedObj)immediateContainer).isWithinClassDefinition())
+                                ) {
                     String newValue = channel.stringValue();
                     boolean globalValue = ((BooleanToken) global.getToken())
                             .booleanValue();
                     if (!newValue.equals(_channel) || globalValue != _global) {
+//                        if (container == null
+//                                && immediateContainer instanceof InstantiableNamedObj
+//                                && !((InstantiableNamedObj)immediateContainer).isWithinClassDefinition()) {
+//                            // Port is in the toplevel.
+//                            container = immediateContainer;
+//                        }
                         if (container instanceof CompositeActor) {
                             // The vergil and config tests were failing because
                             // moml.EntityLibrary sometimes contains Subscribers.

@@ -29,9 +29,11 @@ package ptolemy.actor;
 import java.util.List;
 
 import ptolemy.data.BooleanToken;
+import ptolemy.data.expr.StringParameter;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Entity;
+import ptolemy.kernel.InstantiableNamedObj;
 import ptolemy.kernel.Port;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
@@ -178,6 +180,11 @@ public class SubscriberPort extends PubSubPort {
         if (_channel == null) {
             throw new IllegalActionException(this, "No channel specified.");
         }
+        if (((InstantiableNamedObj)getContainer()).isWithinClassDefinition()) {
+            // Don't preinitialize Class Definitions.
+            // See $PTII/ptolemy/actor/lib/test/auto/PublisherToplevelSubscriberPortAOC.xml 
+            return;
+        }
         _updateLinks();
     }
 
@@ -227,6 +234,7 @@ public class SubscriberPort extends PubSubPort {
         if (_channel == null) {
             return;
         }
+        
         NamedObj immediateContainer = getContainer();
         if (immediateContainer != null) {
             NamedObj container = immediateContainer.getContainer();
@@ -244,8 +252,13 @@ public class SubscriberPort extends PubSubPort {
                         // See $PTII/ptolemy/actor/lib/test/auto/LazyPubSub.xml
                         _updatePublisherPorts((CompositeEntity)toplevel());
                         // Now try again.
-                        ((CompositeActor) container).linkToPublishedPort(
-                                _channel, this, _global);
+                        try {
+                            ((CompositeActor) container).linkToPublishedPort(
+                                    _channel, this, _global);
+                        } catch (IllegalActionException ex2) {
+                            // Rethrow with the "this" so that Go To Actor works.
+                            throw new IllegalActionException(this, ex2, "Failed to update link.");
+                        }
                     }
                 } catch (NameDuplicationException e) {
                     throw new IllegalActionException(this, e,
@@ -267,7 +280,9 @@ public class SubscriberPort extends PubSubPort {
         List<Port> ports = root.portList();
         for (Port port : ports) {
             if (port instanceof PublisherPort) {
-                port.attributeChanged(((PublisherPort)port).channel);
+                //StringParameter channel = ((PublisherPort)port).channel;
+                //channel.validate();
+                port.attributeChanged(channel);
             }
         }
         if (root instanceof CompositeEntity) {

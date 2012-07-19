@@ -659,8 +659,12 @@ public class CompositeActor extends CompositeEntity implements Actor,
 
             Set<IOPort> publishedPorts = _publishedPorts.get(name);
             if (publishedPorts == null || publishedPorts.size() == 0) {
+                StringBuffer message = new StringBuffer();
+                for (String keyName : _publishedPorts.keySet()) {
+                    message.append(keyName + " ");
+                }
                 throw new IllegalActionException(this,
-                        "Can't find the publisher for \"" + name + "\".");
+                        "Can't find the publisher for \"" + name + "\"., names were: " + message);
             } else if (publishedPorts.size() > 1) {
                 // Check to see if any of the publishedPorts are within a ClassDefinition.
                 // FIXME: we should be able to do this before now, but when ports are being
@@ -671,7 +675,9 @@ public class CompositeActor extends CompositeEntity implements Actor,
                 Iterator ports = publishedPorts.iterator();
                 while (ports.hasNext()) {
                     IOPort port = (IOPort)ports.next();
-                    if (((InstantiableNamedObj)port.getContainer()).isWithinClassDefinition()) {
+                    InstantiableNamedObj actor = (InstantiableNamedObj)port.getContainer();
+                    if (actor != null
+                            && actor.isWithinClassDefinition()) {
                         ports.remove();
                     } else {
                         if (port instanceof PubSubPort) {
@@ -1824,7 +1830,6 @@ public class CompositeActor extends CompositeEntity implements Actor,
             Set<IOPort> portList = _publishedPorts.get(name);
             if (portList == null) {
                 portList = new LinkedHashSet<IOPort>();
-                //System.out.println("CompositeActor.registerPublisherPorts(): " + name + " " + port);
                 _publishedPorts.put(name, portList);
             }
 
