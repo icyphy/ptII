@@ -173,6 +173,7 @@ public class TypedAtomicActor extends AtomicActor<TypedIOPort> implements
         // will be updated.
         newObject._cachedTypeConstraints = new HashSet<Inequality>();
         newObject._typeConstraintsVersion = -1;
+        newObject._typesValid = false;
         
         return newObject;
     }
@@ -223,10 +224,11 @@ public class TypedAtomicActor extends AtomicActor<TypedIOPort> implements
      *  @see ptolemy.graph.Inequality
      */
     public final Set<Inequality> typeConstraints() {
+        // TODO: Rather disable type resolution completely if there where not topology or type changes
         // do not update if the cached constraints are still valid
-        if (_typesValid && _typeConstraintsVersion == workspace().getVersion()) {
-          return _cachedTypeConstraints;
-        }
+        //if (_typesValid && _typeConstraintsVersion == workspace().getVersion()) {
+        //  return _cachedTypeConstraints; 
+        //}
         // clear the cached typed constraints
         _cachedTypeConstraints.clear();
 
