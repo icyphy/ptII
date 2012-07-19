@@ -57,6 +57,7 @@ import ptolemy.kernel.ComponentPort;
 import ptolemy.kernel.ComponentRelation;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Entity;
+import ptolemy.kernel.InstantiableNamedObj;
 import ptolemy.kernel.Port;
 import ptolemy.kernel.util.ChangeRequest;
 import ptolemy.kernel.util.IllegalActionException;
@@ -661,9 +662,29 @@ public class CompositeActor extends CompositeEntity implements Actor,
                 throw new IllegalActionException(this,
                         "Can't find the publisher for \"" + name + "\".");
             } else if (publishedPorts.size() > 1) {
-                throw new NameDuplicationException(this,
-                        "We have multiple publishers with name \"" + name
-                                + "\".");
+                // Check to see if any of the publishedPorts are within a ClassDefinition.
+                // FIXME: we should be able to do this before now, but when ports are being
+                // registered, the container of the CompositeActor is often null, so we
+                // can't tell if a port is in a ClassDefinition.
+                // Test: $PTII/ptolemy/actor/lib/test/auto/PublisherPortSubscriberChannelVariablesAOC2.xml
+                StringBuffer message = new StringBuffer();
+                Iterator ports = publishedPorts.iterator();
+                while (ports.hasNext()) {
+                    IOPort port = (IOPort)ports.next();
+                    if (((InstantiableNamedObj)port.getContainer()).isWithinClassDefinition()) {
+                        ports.remove();
+                    } else {
+                        if (port instanceof PubSubPort) {
+                            PubSubPort pubSubPort = (PubSubPort)port;
+                            message.append(" port: " + pubSubPort + "name: " + pubSubPort.getName() + " channel: " + pubSubPort.channel + "\n");
+                        }
+                    }
+                } 
+                if (publishedPorts.size() != 1) {
+                 throw new NameDuplicationException(this,
+                         "We have " + publishedPorts.size() + " ports with the name \"" + name
+                        + "\", which is not equal to 1.\n" + message);
+                }
             }
 
             Iterator<IOPort> iterator = publishedPorts.iterator();
@@ -1784,7 +1805,7 @@ public class CompositeActor extends CompositeEntity implements Actor,
     public void registerPublisherPort(String name, IOPort port, boolean global)
             throws NameDuplicationException, IllegalActionException {
         NamedObj container = getContainer();
-        if (isClassDefinition()) {
+        if (isWithinClassDefinition()) {
             return;
         }
         // NOTE: The following strategy is fragile in that if
@@ -1803,6 +1824,7 @@ public class CompositeActor extends CompositeEntity implements Actor,
             Set<IOPort> portList = _publishedPorts.get(name);
             if (portList == null) {
                 portList = new LinkedHashSet<IOPort>();
+                //System.out.println("CompositeActor.registerPublisherPorts(): " + name + " " + port);
                 _publishedPorts.put(name, portList);
             }
 
@@ -1931,6 +1953,46 @@ public class CompositeActor extends CompositeEntity implements Actor,
             stopFire();
         }
     }
+    /** Specify whether this object is a class definition.
+     *  If the argument is true and this entity is not a class
+     *  definition, then the cache of published and subscribed ports
+     *  is cleared and the superclass called.
+     *  @param isClass True to make this object a class definition.
+     *  @exception IllegalActionException If the argument is true and
+     *   this entity contains ports with links.
+     */
+//     public void setClassDefinition(boolean isClass)
+//             throws IllegalActionException {
+//         if (isClass && !isClassDefinition()) {
+//             _publishedPorts = null;
+//             _subscribedPorts = null;
+//             _publisherRelations = null;
+//             NamedObj immediateContainer = getContainer();
+//             if (immediateContainer != null 
+//                     && immediateContainer instanceof CompositeActor) {
+//                 CompositeActor container = (CompositeActor)immediateContainer;
+//                 List<Port> portList = portList();
+//                 for (Port port: portList) {
+//                     if (port instanceof PublisherPort) {                      
+//                         PublisherPort publisherPort = (PublisherPort)port;
+//                         try {
+//                             container.unregisterPublisherPort(publisherPort.channel.stringValue(), publisherPort, ((BooleanToken) publisherPort.global.getToken())
+//                                 .booleanValue());
+//                         } catch (NameDuplicationException ex) {
+//                             throw new IllegalActionException(this, ex, "Could not unregister " + publisherPort);
+//                         }
+//                     }
+//                 }
+//             }
+//         } else if (!isClass && isClassDefinition()) {
+//             if (_publishedPorts != null
+//                     || _subscribedPorts != null
+//                     || _publisherRelations != null) {
+//                 System.out.println("FIXME: conversion from a class definition to an instance causes problems with Publishers and Subscribers.");
+//             }
+//         }
+//         super.setClassDefinition(isClass);
+//     }
 
     /** Override the base class to invalidate the schedule and
      *  resolved types of the director.
@@ -2191,7 +2253,7 @@ public class CompositeActor extends CompositeEntity implements Actor,
             throws IllegalActionException {
         NamedObj container = getContainer();
         if (!isOpaque() && container instanceof CompositeActor
-                && !((CompositeActor) container).isClassDefinition()) {
+                && !((CompositeActor) container).isWithinClassDefinition()) {
             // Published ports are not propagated if this actor
             // is opaque.
             ((CompositeActor) container).unlinkToPublishedPort(name,
@@ -2240,7 +2302,7 @@ public class CompositeActor extends CompositeEntity implements Actor,
             boolean global) throws IllegalActionException {
         NamedObj container = getContainer();
         if (!isOpaque() && container instanceof CompositeActor
-                && !((CompositeActor) container).isClassDefinition()) {
+                && !((CompositeActor) container).isWithinClassDefinition()) {
             // Published ports are not propagated if this actor
             // is opaque.
             ((CompositeActor) container).unlinkToPublishedPort(name,
@@ -2309,7 +2371,7 @@ public class CompositeActor extends CompositeEntity implements Actor,
             TypedIOPort subscriberPort) throws IllegalActionException {
         NamedObj container = getContainer();
         if (!isOpaque() && container instanceof CompositeActor
-                && !((CompositeActor) container).isClassDefinition()) {
+                && !((CompositeActor) container).isWithinClassDefinition()) {
             // Published ports are not propagated if this actor
             // is opaque.
             ((CompositeActor) container).unlinkToPublishedPort(pattern,
@@ -2353,7 +2415,7 @@ public class CompositeActor extends CompositeEntity implements Actor,
             throws IllegalActionException {
         NamedObj container = getContainer();
         if (!isOpaque() && container instanceof CompositeActor
-                && !((CompositeActor) container).isClassDefinition()) {
+                && !((CompositeActor) container).isWithinClassDefinition()) {
             // Published ports are not propagated if this actor
             // is opaque.
             ((CompositeActor) container).unlinkToPublishedPort(pattern,
@@ -2447,7 +2509,7 @@ public class CompositeActor extends CompositeEntity implements Actor,
             NameDuplicationException {
         NamedObj container = getContainer();
         if (!isOpaque() && container instanceof CompositeActor
-                && !((CompositeActor) container).isClassDefinition()) {
+                && !((CompositeActor) container).isWithinClassDefinition()) {
             // Published ports are not propagated if this actor
             // is opaque.
             ((CompositeActor) container).unregisterPublisherPort(name,

@@ -80,9 +80,9 @@
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="textSize" class="ptolemy.data.expr.Parameter" value="12">
         </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model uses a PublisherPort &#10;instead of a Publisher.&#10;&#10;It currently fails because more than one port is visible.">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model uses a PublisherPort &#10;instead of a Publisher.&#10;&#10;This test used to fail because CompositeActor._publishedPorts&#10;was being populated with ports contained within class definitions.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[260.0, 85.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 390.0]">
         </property>
     </property>
     <class name="MyTypedCompositeActor" extends="ptolemy.actor.TypedCompositeActor">

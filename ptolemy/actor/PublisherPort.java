@@ -636,6 +636,6 @@ public class PublisherPort extends PubSubPort {
      */
     private Map<IOPort,String> _tokenInitProductionSet;
     
-    /** Flag to prevent recursive call of subcribers() method. */
+    /** Flag to prevent recursive call of subscribers() method. */
     private boolean _inUpdateCall = false;
 }
