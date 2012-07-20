@@ -115,24 +115,16 @@
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="int">
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="unknown">
             </property>
         </port>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="int">
             </property>
-            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="int">
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="unknown">
             </property>
         </port>
-        <property name=".ScaleC.SDF Director._ScaleC_EmbeddedActor_CodeGenerator_AutoAdded" class="ptolemy.kernel.DecoratedAttributesImplementation">
-            <property name="padBuffers" class="ptolemy.data.expr.Parameter" value="true">
-            </property>
-            <property name="allowDynamicMultiportReference" class="ptolemy.data.expr.Parameter" value="false">
-            </property>
-            <property name="_decorator" class="ptolemy.kernel.util.StringAttribute" value="EmbeddedActor.CodeGenerator_AutoAdded">
-            </property>
-        </property>
         <property name="SDF Director._ScaleC_EmbeddedActor_CodeGenerator_AutoAdded" class="ptolemy.kernel.DecoratedAttributesImplementation">
             <property name="padBuffers" class="ptolemy.data.expr.Parameter" value="true">
             </property>
@@ -148,7 +140,7 @@
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="int">
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="unknown">
             </property>
         </port>
         <port name="trigger" class="ptolemy.actor.TypedIOPort">
@@ -159,12 +151,12 @@
         </port>
         <port name="init" class="ptolemy.actor.parameters.ParameterPort">
             <property name="input"/>
-            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="int">
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="unknown">
             </property>
         </port>
         <port name="step" class="ptolemy.actor.parameters.ParameterPort">
             <property name="input"/>
-            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="int">
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="unknown">
             </property>
         </port>
     </entity>
