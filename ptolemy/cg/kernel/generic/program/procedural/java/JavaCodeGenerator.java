@@ -171,13 +171,11 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
 //                 System.out.println("System.identityHashCode(type): " + System.identityHashCode(type)
 //                         + " System.identityHashCode(BaseType.OBJECT) " + System.identityHashCode(BaseType.OBJECT));
 //             }
-            if (type == BaseType.UNKNOWN) {
-                System.out.println("JavaCodeGenerator.codeGenType(): Cannot resolve codegen type from Ptolemy type: " + type
-                        + ". This can happen for unconnected ports.");
-            } else {
-                throw new InternalErrorException("JavaCodeGenerator.codeGenType(): Cannot resolve codegen type from Ptolemy type: " + type
-                        + ".  Maybe the type of a port needs to be set from the UI or backward type inference disabled?");
-            }
+            
+            // It is not an error to resolve to general.  See
+            // $PTII/bin/ptcg -language java $PTII/ptolemy/cg/kernel/generic/program/procedural/java/test/auto/Display.xml 
+            System.out.println("JavaCodeGenerator.codeGenType(): Cannot resolve codegen type from Ptolemy type: " + type
+                    + ".  Maybe the type of a port needs to be set from the UI or backward type inference disabled?");
         }
         if (result == null) {
             return null;
