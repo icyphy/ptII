@@ -29,7 +29,10 @@ package ptolemy.actor.lib.gui;
 import javax.swing.JTextField;
 
 import ptolemy.actor.injection.PortableContainer;
+import ptolemy.actor.lib.Sink;
 import ptolemy.data.Token;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.NameDuplicationException;
 
 //////////////////////////////////////////////////////////////////////////
 //// TextFieldContainerJavaSE
@@ -45,6 +48,13 @@ JavaSE implementation of the TextFieldContainerInterface.
 
 public class TextFieldContainerJavaSE implements TextFieldContainerInterface {
 
+	@Override
+	public void init(Sink sink) throws IllegalActionException,
+			NameDuplicationException {
+		// TODO Auto-generated method stub
+		
+	}
+	
     /** Place the visual representation of the actor into the specified container.
      *  @param container The container in which to place the object
      */

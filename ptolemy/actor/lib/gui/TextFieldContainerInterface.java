@@ -30,7 +30,10 @@
 package ptolemy.actor.lib.gui;
 
 import ptolemy.actor.injection.PortableContainer;
+import ptolemy.actor.lib.Sink;
 import ptolemy.data.Token;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.NameDuplicationException;
 
 ///////////////////////////////////////////////////////////////////
 //// TextFieldContainerInterface
@@ -46,6 +49,16 @@ import ptolemy.data.Token;
  * @Pt.AcceptedRating Red (ahuseyno)
  */
 public interface TextFieldContainerInterface {
+	
+    /** Initiate. 
+     * @param sink Object of the Sink actor.
+     * @exception IllegalActionException If the entity cannot be contained
+     * by the proposed container.
+     * @exception NameDuplicationException If the container already has an
+     * actor with this name.
+     */
+    public void init(Sink sink) throws IllegalActionException,
+            NameDuplicationException;
 
     /** Place the visual representation of the actor into the specified container.
      *  @param container The container in which to place the object

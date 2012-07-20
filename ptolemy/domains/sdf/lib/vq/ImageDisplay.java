@@ -1,6 +1,6 @@
 /* Display an Black and White image on the screen using the Picture class.
 
- @Copyright (c) 1998-2011 The Regents of the University of California.
+ @Copyright (c) 2012 The Regents of the University of California.
  All rights reserved.
 
  Permission is hereby granted, without written agreement and without
@@ -27,24 +27,13 @@
  */
 package ptolemy.domains.sdf.lib.vq;
 
-import java.awt.Container;
-import java.awt.Image;
-import java.awt.image.ColorModel;
-import java.awt.image.MemoryImageSource;
-import java.util.LinkedList;
-import java.util.List;
-
-import javax.swing.JFrame;
-
-import ptolemy.data.AWTImageToken;
-import ptolemy.data.IntMatrixToken;
-import ptolemy.data.Token;
+import ptolemy.actor.injection.ActorModuleInitializer;
+import ptolemy.actor.injection.PtolemyInjector;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.media.Picture;
 
 ///////////////////////////////////////////////////////////////////
 //// ImageDisplay
@@ -66,7 +55,7 @@ import ptolemy.media.Picture;
  Java Advanced Imaging package and create an actor like
  $PTII/ptolemy/actor/lib/jai/DoubleMatrixToJAI.java.
 
- @author Steve Neuendorffer, Christopher Brooks
+ @author Steve Neuendorffer, Christopher Brooks, Jianwu Wang
  @version $Id$
  @since Ptolemy II 0.2
  @Pt.ProposedRating Yellow (neuendor)
@@ -87,123 +76,52 @@ public class ImageDisplay extends ptolemy.actor.lib.image.ImageDisplay {
 
         input.setTypeEquals(BaseType.INT_MATRIX);
     }
-
+    
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
-
-    /** Convert an IntMatrixToken to a Packed RGB Image.
-     *  @param token An IntMatrixToken defining the black and white image.
-     *  @return A packed RGB array of integers
+    
+    
+    /** Get the right instance of the implementation depending upon the
+     *  of the dependency specified through dependency injection.
+     *  If the instance has not been created, then it is created.
+     *  If the instance already exists then return the same. 
+     *
+     *	<p>This code is used as part of the dependency injection needed for the
+     *  HandSimDroid project, see $PTII/ptserver.  This code uses dependency
+     *  inject to determine what implementation to use at runtime.
+     *  This method eventually reads ptolemy/actor/ActorModule.properties.
+     *  {@link ptolemy.actor.injection.ActorModuleInitializer#initializeInjector()}
+     *  should be called before this method is called.  If it is not
+     *  called, then a message is printed and initializeInjector() is called.</p>
+     *
+     *  @return the instance of the implementation.
      */
-    private int[] _convertBWImageToPackedRGBImage(IntMatrixToken token) {
-        int[][] frame = token.intMatrix();
-        int xSize = token.getColumnCount();
-        int ySize = token.getRowCount();
-
-        int[] RGBbuffer = new int[xSize * ySize];
-
-        // convert the B/W image to a packed RGB image.  This includes
-        // flipping the image upside down.  (When it is drawn, it gets
-        // drawn from bottom up).
-        int i;
-
-        // convert the B/W image to a packed RGB image.  This includes
-        // flipping the image upside down.  (When it is drawn, it gets
-        // drawn from bottom up).
-        int j;
-
-        // convert the B/W image to a packed RGB image.  This includes
-        // flipping the image upside down.  (When it is drawn, it gets
-        // drawn from bottom up).
-        int index = 0;
-
-        for (j = ySize - 1; j >= 0; j--) {
-            for (i = 0; i < xSize; i++, index++) {
-                RGBbuffer[index] = (255 << 24) | ((frame[j][i] & 255) << 16)
-                        | ((frame[j][i] & 255) << 8) | (frame[j][i] & 255);
-            }
-        }
-
-        return RGBbuffer;
-    }
-
-    /** Display the specified token. This must be called in the Swing
-     *  event thread.
-     *  @param in The token to display.
-     */
-    protected void _display(Token in) {
-        // FIXME: lots of code duplication with parent and
-        // with ptolemy/actor/lib/image/ImageTableau.java
-        // We could try to refactor this, but it would get tricky
-        int xSize = ((IntMatrixToken) in).getColumnCount();
-        int ySize = ((IntMatrixToken) in).getRowCount();
-
-        if (_frame != null) {
-            // We have a frame already, so just create an AWTImageToken
-            // and tell the effigy about it.
-            MemoryImageSource imageSource = new MemoryImageSource(xSize, ySize,
-                    ColorModel.getRGBdefault(),
-                    _convertBWImageToPackedRGBImage((IntMatrixToken) in), 0,
-                    xSize);
-            imageSource.setAnimated(true);
-
-            // Sadly, we can't easily create an image without some sort
-            // of graphical context here.  This is a huge shortcoming of
-            // awt.  Just because I'm operating on images, I should not
-            // need a frame.
-            Image image = _frame.getContentPane().createImage(imageSource);
-
-            AWTImageToken token = new AWTImageToken(image);
-            List tokens = new LinkedList();
-            tokens.add(token);
-
+    protected ImageDisplayInterface _getImplementation() {
+        if (_implementation == null) {
+	    if (PtolemyInjector.getInjector() == null) {
+		System.err.println("Warning: main() did not call "
+			       + "ActorModuleInitializer.initializeInjector(), "
+			       + "so ImageDisplay is calling it for you.");
+		ActorModuleInitializer.initializeInjector();
+	    }
+            _implementation = PtolemyInjector.getInjector().getInstance(
+            		ImageDisplayInterface.class);
             try {
-                _effigy.setTokens(tokens);
+                _implementation.init(this);
+            } catch (NameDuplicationException e) {
+                throw new InternalErrorException(this, e,
+                        "Failed to initialize implementation");
             } catch (IllegalActionException e) {
-                throw new InternalErrorException(e);
-            }
-        } else if (_picture != null) {
-            // If the size has changed, have to recreate the Picture object.
-            if ((_oldXSize != xSize) || (_oldYSize != ySize)) {
-                if (_debugging) {
-                    _debug("Image size has changed.");
-                }
-
-                _oldXSize = xSize;
-                _oldYSize = ySize;
-
-                Container container = _picture.getParent();
-
-                container.remove(_picture);
-
-                _picture = new Picture(xSize, ySize);
-
-                //_picture.setImage(image);
-                _picture.setImage(_convertBWImageToPackedRGBImage((IntMatrixToken) in));
-                _picture.setBackground(null);
-                container.add("Center", _picture);
-                container.validate();
-                container.invalidate();
-                container.repaint();
-                container.doLayout();
-
-                Container c = container.getParent();
-
-                while (c.getParent() != null) {
-                    c.invalidate();
-                    c.validate();
-                    c = c.getParent();
-
-                    if (c instanceof JFrame) {
-                        ((JFrame) c).pack();
-                    }
-                }
-            } else {
-                // The _frame is null, the size has not changed, set the image.
-                _picture.setImage(_convertBWImageToPackedRGBImage((IntMatrixToken) in));
-                _picture.displayImage();
-                _picture.repaint();
+                throw new InternalErrorException(this, e,
+                        "Failed to initialize implementation");
             }
         }
+        return _implementation;
     }
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
+    
+    // Implementation of the ImageDisplayInterface
+    private ImageDisplayInterface _implementation;
 }

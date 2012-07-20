@@ -36,6 +36,7 @@ import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 
 ///////////////////////////////////////////////////////////////////
@@ -162,6 +163,17 @@ public class MonitorValue extends Sink implements PortablePlaceable {
             _implementation = PtolemyInjector.getInjector().getInstance(
                     TextFieldContainerInterface.class);
         }
+        
+        try {
+            _implementation.init(this);
+        } catch (NameDuplicationException e) {
+            throw new InternalErrorException(this, e,
+                    "Failed to initialize implementation");
+        } catch (IllegalActionException e) {
+            throw new InternalErrorException(this, e,
+                    "Failed to initialize implementation");
+        }
+        
         return _implementation;
     }
 

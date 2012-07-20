@@ -49,6 +49,8 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 # Keep this list alphabetized.
 JSRCS = \
 	ImageDisplay.java \
+	ImageDisplayInterface.java \
+	ImageDisplayJavaSE.java \
 	ImageReader.java \
 	ImageRotate.java \
 	ImageTableau.java \
@@ -75,7 +77,11 @@ OPTIONAL_FILES = \
 	'ImageDisplay$$_PictureFrame.class' \
 	'ImageDisplay$$Factory.class' \
 	'ImageDisplay$$ImageWindow.class' \
-	'ImageTableau$$Factory.class'
+	'ImageTableau$$Factory.class' \
+	'ImageDisplayJavaSE$$1.class' \
+	'ImageDisplayJavaSE$$2.class' \
+	'ImageDisplayJavaSE$$ImageWindow.class' \
+	'ImageDisplayJavaSE$$WindowClosingAdapter.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 
