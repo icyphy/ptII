@@ -1,6 +1,6 @@
-# Makefile for the Ptolemy II papers
+# Makefile for the Ptolemy II Modular Semantics paper
 #
-# Version: $Id: makefile 62431 2011-11-17 23:37:41Z cxh $
+# Version: $Id$
 # Makefile Author: Christopher Brooks
 #
 # Copyright (c) 2011 The Regents of the University of California.
@@ -29,27 +29,30 @@
 # 						COPYRIGHTENDKEY
 ##########################################################################
 
-ME =		doc/papers
+ME =		doc/papers/y12/designContracts
 
 # Sub directories to run make in.
-# The 2011 starts with "y" so that it can be a legitimate package name.
-DIRS =		y11 y12
+# Don't include src directory, since we don't ship it with the release
+DIRS =		test
 
 # Root of Ptolemy II directory
-ROOT =		../..
+ROOT =		../../../..
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
-PTPACKAGE = 	papers
-PTCLASSJAR = $(PTPACKAGE).jar
+PTPACKAGE = 	designContracts
+PTCLASSJAR = 	$(PTPACKAGE).jar
 
-OTHER_FILES_TO_BE_JARED =
+EXAMPLE_MODELS = \
+	DCMotorTol.xml \
+	DCMotorTolWithDelayCompensation.xml \
+
+OTHER_FILES_TO_BE_JARED = $(EXAMPLE_MODELS) \
+	README.txt
 
 EXTRA_SRCS = $(OTHER_FILES_TO_BE_JARED)
-
-KRUFT =
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
@@ -59,8 +62,8 @@ MISC_FILES =	$(DIRS)
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES =
 
-all: suball
-install: all jars
+all: jclass
+install: jclass jars
 
 # We don't include common.mk since we don't use the compiler here
 include $(ROOT)/mk/ptno-compile.mk

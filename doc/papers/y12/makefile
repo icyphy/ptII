@@ -1,6 +1,6 @@
-# Makefile for the Ptolemy II papers
+# Makefile for the Ptolemy II 2011 papers
 #
-# Version: $Id: makefile 62431 2011-11-17 23:37:41Z cxh $
+# Version: $Id$
 # Makefile Author: Christopher Brooks
 #
 # Copyright (c) 2011 The Regents of the University of California.
@@ -29,21 +29,24 @@
 # 						COPYRIGHTENDKEY
 ##########################################################################
 
-ME =		doc/papers
+ME =		doc/papers/y12
 
 # Sub directories to run make in.
-# The 2011 starts with "y" so that it can be a legitimate package name.
-DIRS =		y11 y12
+DIRS =		designContracts
 
 # Root of Ptolemy II directory
-ROOT =		../..
+ROOT =		../../..
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
-PTPACKAGE = 	papers
-PTCLASSJAR = $(PTPACKAGE).jar
+PTPACKAGE = 	12
+PTCLASSJAR =
+
+# Include the .class files from these jars in PTCLASSALLJAR
+PTCLASSALLJARS = \
+	designContracts/designContracts.jar
 
 OTHER_FILES_TO_BE_JARED =
 
@@ -62,5 +65,17 @@ OPTIONAL_FILES =
 all: suball
 install: all jars
 
+jnlps:
+	@if [ "x$(DIRS)" != "x" ]; then \
+		set $(DIRS); \
+		for x do \
+		    if [ -w $$x ] ; then \
+			( cd $$x ; \
+			echo making all in $(ME)/$$x ; \
+			$(MAKE) $(MFLAGS) $(MAKEVARS) JNLP_MODEL_DIRECTORY=$(ME)/$$x jnlps ;\
+			) \
+		    fi ; \
+		done ; \
+	fi
 # We don't include common.mk since we don't use the compiler here
 include $(ROOT)/mk/ptno-compile.mk
