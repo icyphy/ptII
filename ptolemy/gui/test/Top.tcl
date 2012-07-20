@@ -48,3 +48,6 @@ test Top-1.1 {} {
     $testTop pack
     $testTop show
 } {}
+
+# Close the window
+$testTop dispose
