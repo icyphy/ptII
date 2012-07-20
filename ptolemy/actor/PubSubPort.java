@@ -31,6 +31,7 @@ import ptolemy.data.expr.StringParameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.Entity;
+import ptolemy.kernel.InstantiableNamedObj;
 import ptolemy.kernel.util.HierarchyListener;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
@@ -186,9 +187,18 @@ public abstract class PubSubPort extends TypedIOPort
     @Override
     public void wrapup() throws IllegalActionException {
     }
-
+    
     ///////////////////////////////////////////////////////////////////
-    ////                         protected methods                 ////
+    ////                         protected variables               ////
+
+    /** Cached channel name, for publish and subscribe. */
+    protected String _channel;
+
+    /** Cached variable indicating whether publishing or subscribing is global. */
+    protected boolean _global;
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                 ////
 
     /** Return the first Initializable encountered above this
      *  in the hierarchy that will be initialized (i.e., it is either
@@ -196,8 +206,13 @@ public abstract class PubSubPort extends TypedIOPort
      *  @return The first Initializable above this in the hierarchy,
      *   or null if there is none.
      */
-    protected Initializable _getInitializableContainer() {
+    private Initializable _getInitializableContainer() {
         NamedObj container = getContainer();
+        if (container instanceof InstantiableNamedObj) {
+            if (((InstantiableNamedObj)container).isWithinClassDefinition()) {
+                return null;
+            }
+        }
         while (container != null) {
             if (container instanceof Initializable) {
                 if (container instanceof CompositeActor) {
@@ -212,13 +227,4 @@ public abstract class PubSubPort extends TypedIOPort
         }
         return null;
     }
-    
-    ///////////////////////////////////////////////////////////////////
-    ////                         protected variables               ////
-
-    /** Cached channel name, for publish and subscribe. */
-    protected String _channel;
-
-    /** Cached variable indicating whether publishing or subscribing is global. */
-    protected boolean _global;
 }

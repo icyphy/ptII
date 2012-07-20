@@ -69,7 +69,7 @@ import ptolemy.kernel.util.NamedObj;
  Publisher-Subscriber pairs. That is, the type of the Subscriber
  output will match the type of the Publisher input.
 
- @author Edward A. Lee
+ @author Edward A. Lee, Contributor: Christopher Brooks
  @version $Id$
  @since Ptolemy II 9.0
  @Pt.ProposedRating Yellow (eal)
@@ -105,8 +105,6 @@ public class SubscriberPort extends PubSubPort {
     ////                         public methods                    ////
 
     /** If a publish and subscribe channel is set, then set up the connections.
-     *  If a quantity manager is added, removed or modified update the list of
-     *  quantity managers.
      *  @param attribute The attribute that changed.
      *  @exception IllegalActionException Thrown if the new color attribute cannot
      *      be created.
@@ -158,13 +156,22 @@ public class SubscriberPort extends PubSubPort {
     @Override
     public void hierarchyWillChange() throws IllegalActionException {
         if (channel != null) {
-            String channelValue = channel.stringValue();
-            NamedObj immediateContainer = getContainer();
-            if (immediateContainer != null) {
-                NamedObj container = immediateContainer.getContainer();
-                if (container instanceof CompositeActor) {
-                    ((CompositeActor) container).unlinkToPublishedPort(
-                            channelValue, this);
+            String channelValue = null;
+            try {
+                // The channel may refer to parameters via $
+                // but the parameters are not yet in scope.
+                channelValue = channel.stringValue();
+            } catch (Throwable throwable) {
+                channelValue = channel.getExpression();
+            }
+            if (channelValue != null) {
+                NamedObj immediateContainer = getContainer();
+                if (immediateContainer != null) {
+                    NamedObj container = immediateContainer.getContainer();
+                    if (container instanceof CompositeActor) {
+                        ((CompositeActor) container).unlinkToPublishedPort(
+                                channelValue, this);
+                    }
                 }
             }
         }
@@ -280,8 +287,9 @@ public class SubscriberPort extends PubSubPort {
         List<Port> ports = root.portList();
         for (Port port : ports) {
             if (port instanceof PublisherPort) {
-                //StringParameter channel = ((PublisherPort)port).channel;
-                //channel.validate();
+                // FIXME: Not sure if this is necessary
+                StringParameter channel = ((PublisherPort)port).channel;
+                channel.validate();
                 port.attributeChanged(channel);
             }
         }

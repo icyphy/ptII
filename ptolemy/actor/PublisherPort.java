@@ -204,12 +204,10 @@ public class PublisherPort extends PubSubPort {
      */
     @Override
     public void addInitializable(Initializable initializable) {
-        throw new InternalErrorException("Cannot add Initializables to SubscriberPort.");
+        throw new InternalErrorException("Cannot add Initializables to PublisherPort.");
     }
 
     /** If a publish and subscribe channel is set, then set up the connections.
-     *  If a quantity manager is added, removed or modified update the list of
-     *  quantity managers.
      *  @param attribute The attribute that changed.
      *  @exception IllegalActionException Thrown if the new color attribute cannot
      *      be created.
@@ -332,7 +330,14 @@ public class PublisherPort extends PubSubPort {
         // here instead of the channel parameter because the parameter
         // may not have been validating (during instantiation of
         // actor-oriented classes).
-        String channelValue = channel.stringValue();
+        String channelValue = null;
+        try {
+            // The channel may refer to parameters via $
+            // but the parameters are not yet in scope.
+            channelValue = channel.stringValue();
+        } catch (Throwable throwable) {
+            channelValue = channel.getExpression();
+        }
         if (channelValue != null && !channelValue.equals("")) {
             NamedObj immediateContainer = getContainer();
             if (immediateContainer != null) {
@@ -383,16 +388,25 @@ public class PublisherPort extends PubSubPort {
      */
     public void hierarchyWillChange() throws IllegalActionException {
         if (channel != null) {
-            String channelValue = channel.stringValue();
-            NamedObj immediateContainer = getContainer();
-            if (immediateContainer != null) {
-                NamedObj container = immediateContainer.getContainer();
-                if (container instanceof CompositeActor) {
-                    try {
-                        ((CompositeActor) container).unregisterPublisherPort(
-                                channelValue, this, _global);
-                    } catch (NameDuplicationException e) {
-                        throw new InternalErrorException(e);
+            String channelValue = null;
+            try {
+                // The channel may refer to parameters via $
+                // but the parameters are not yet in scope.
+                channelValue = channel.stringValue();
+            } catch (Throwable throwable) {
+                channelValue = channel.getExpression();
+            }
+            if (channelValue != null) {
+                NamedObj immediateContainer = getContainer();
+                if (immediateContainer != null) {
+                    NamedObj container = immediateContainer.getContainer();
+                    if (container instanceof CompositeActor) {
+                        try {
+                            ((CompositeActor) container).unregisterPublisherPort(
+                                    channelValue, this, _global);
+                        } catch (NameDuplicationException e) {
+                            throw new InternalErrorException(e);
+                        }
                     }
                 }
             }
@@ -405,6 +419,12 @@ public class PublisherPort extends PubSubPort {
      */
     @Override
     public void initialize() throws IllegalActionException {
+        if (((InstantiableNamedObj)getContainer()).isWithinClassDefinition()) {
+            // Don't initialize Class Definitions.
+            // See $PTII/ptolemy/actor/lib/test/auto/PublisherToplevelSubscriberPortAOC.xml 
+            return;
+        }
+ 
         Token initialOutputsValue = initialOutputs.getToken();
         // Since this port may be in a transparent composite,
         // send initial tokens from the inside source ports.
@@ -425,6 +445,16 @@ public class PublisherPort extends PubSubPort {
      *  that will be actually used to produce the initial tokens.
      */
     public void preinitialize() throws IllegalActionException {
+        if (((InstantiableNamedObj)getContainer()).isWithinClassDefinition()) {
+            // Don't preinitialize Class Definitions.
+            return;
+        }
+//        NamedObj actor = getContainer();
+//         if (actor != null 
+//                 && actor.getContainer() == null) {
+//             throw new IllegalActionException(this,
+//                     "PublisherPorts cannot be used at the top level, use a Publisher actor instead.");
+//         }
         Token initialOutputsValue = initialOutputs.getToken();
         if (initialOutputsValue == null) {
             output_tokenInitProduction.setToken(IntToken.ZERO);
@@ -557,9 +587,14 @@ public class PublisherPort extends PubSubPort {
             Nameable container = getContainer();
 
             if (!(container instanceof CompositeActor)) {
-                // Return an empty list, since this port cannot receive data
-                // from the inside.
-                return new LinkedList<IOPort>();
+                // We used to return an empty list here, but the container
+                // might be an AtomicActor.  For example, a Publisher
+                // contains a PublisherPort.
+                // Test: $PTII/bin/vergil $PTII/ptolemy/actor/lib/test/auto/PublisherSubscriber10InitialOutputs.xml
+                List<IOPort> ports = new LinkedList<IOPort>();
+                ports.add(this);
+                return ports;
+                
             }
 
             Director dir = ((CompositeActor) container).getDirector();
