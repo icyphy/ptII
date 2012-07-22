@@ -152,7 +152,7 @@ public class RecordDisassembler extends TypedAtomicActor {
     ///////////////////////////////////////////////////////////////////
     ////                     protected methods                     ////
 
-    /** Set up and returns three type constraints.
+    /** Set up and return three type constraints.
      *  <ul>
      *  <li><tt>input >= {x = typeOf(outputPortX), y = typeOf(outputPortY), ..}
      *  </tt>, which requires the types of the fields in the input record to be 

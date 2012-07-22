@@ -27,6 +27,9 @@
  */
 package ptolemy.actor.lib;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.data.BooleanToken;
@@ -34,6 +37,7 @@ import ptolemy.data.IntToken;
 import ptolemy.data.ScalarToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
+import ptolemy.graph.Inequality;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -106,7 +110,6 @@ public class OrderedMerge extends TypedAtomicActor {
         inputB_tokenConsumptionRate.setTypeEquals(BaseType.INT);
 
         output = new TypedIOPort(this, "output", false, true);
-        output.setTypeSameAs(inputA);
 
         selectedA = new TypedIOPort(this, "selectedA", false, true);
         selectedA.setTypeEquals(BaseType.BOOLEAN);
@@ -379,6 +382,18 @@ public class OrderedMerge extends TypedAtomicActor {
         return _nextPort;
     }
 
+    /**
+     * The output must be greater than or equal to each of both inputs.
+     * @return A set of type constraints
+     */
+    @Override
+    protected Set<Inequality> _defaultTypeConstraints() {
+        Set<Inequality> result = new HashSet<Inequality>();
+        result.add(new Inequality(inputA.getTypeTerm(), output.getTypeTerm()));
+        result.add(new Inequality(inputB.getTypeTerm(), output.getTypeTerm()));
+        return result;
+    }
+    
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
