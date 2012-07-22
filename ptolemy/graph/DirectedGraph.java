@@ -899,7 +899,14 @@ public class DirectedGraph extends Graph {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         private methods                   ////
+    ////                         protected variables               ////
+
+    // The graph analysis for computation of transitive closure.
+    protected TransitiveClosureAnalysis _transitiveClosureAnalysis;
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
+    
     // Return the list of input edges for a specified node.
     private ArrayList _inputEdgeList(Node node) {
         return (ArrayList) _inputEdgeMap.get(node);
@@ -936,9 +943,6 @@ public class DirectedGraph extends Graph {
 
     // The graph analysis for computation of acyclic property
     private CycleExistenceAnalysis _acyclicAnalysis;
-
-    // The graph analysis for computation of transitive closure
-    private TransitiveClosureAnalysis _transitiveClosureAnalysis;
 
     // The graph analysis for computation of sink nodes.
     private SinkNodeAnalysis _sinkNodeAnalysis;

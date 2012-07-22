@@ -747,13 +747,13 @@ public class DirectedAcyclicGraph extends DirectedGraph implements CPO {
     // compute transitive closure.  Throws GraphStateException if detects
     // cycles.  Find bottom and top elements.
     private void _validate() {
-        boolean[][] transitiveClosure = transitiveClosure();
-
         if (!((CachedStrategy) _transitiveClosureAnalysis.analyzer())
                 .obsolete() && isAcyclic()) {
-            _closure = transitiveClosure;
+            _closure = transitiveClosure();
             return;
         }
+
+        boolean[][] transitiveClosure = transitiveClosure();
 
         if (!isAcyclic()) {
             throw new GraphStateException(
@@ -823,9 +823,6 @@ public class DirectedAcyclicGraph extends DirectedGraph implements CPO {
     private boolean[][] _closure = null;
 
     private boolean[][] _tranClosureTranspose = null;
-
-    // The graph analysis for computation of the transitive closure.
-    private TransitiveClosureAnalysis _transitiveClosureAnalysis;
 
     private Object _bottom = null;
 
