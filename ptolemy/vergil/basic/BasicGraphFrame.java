@@ -2424,7 +2424,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
         try {
             new ToolBar(getTableau(), "toolbar", _toolbar, BorderLayout.NORTH);
         } catch (Exception e) {
-            throw new InternalErrorException("Unable to create tool bar.");
+            throw new InternalErrorException(getTableau(), e, "Unable to create tool bar.");
         }
 
         GUIUtilities.addToolBarButton(_toolbar, _saveAction);
