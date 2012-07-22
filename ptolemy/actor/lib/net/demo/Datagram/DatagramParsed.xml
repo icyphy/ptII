@@ -2,9 +2,9 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="DatagramParsed" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.0.beta">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.0.devel">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 524]">
     </property>
     <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[104, 127]">
     </property>
@@ -99,12 +99,16 @@ data type and structure (record, array) if any.</text></svg></configure>
         <property name="_location" class="ptolemy.kernel.util.Location" value="5.0, 325.0">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 129, 815, 509}}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 129, 834, 634}, maximized=false}">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 262.0}">
     </property>
     <entity name="Display" class="ptolemy.actor.lib.gui.Display">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={366, 273, 292, 222}}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={366, 273, 499, 208}, maximized=false}">
         </property>
-        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[499, 164]">
         </property>
         <property name="rowsDisplayed" class="ptolemy.data.expr.Parameter" value="10">
         </property>
@@ -116,7 +120,7 @@ data type and structure (record, array) if any.</text></svg></configure>
     <entity name="Ramp" class="ptolemy.actor.lib.Ramp">
         <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="0">
         </property>
-        <property name="init" class="ptolemy.data.expr.Parameter" value="{ 0, 0, 0, 0}">
+        <property name="init" class="ptolemy.actor.parameters.PortParameter" value="{ 0, 0, 0, 0}">
         </property>
         <property name="step" class="ptolemy.actor.parameters.PortParameter" value="{ 1, 5, 10, 25}">
         </property>
@@ -155,7 +159,7 @@ data type and structure (record, array) if any.</text></svg></configure>
         </property>
     </entity>
     <entity name="TokenToExpression" class="ptolemy.actor.lib.conversions.TokenToExpression">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="130.0, 125.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[125.0, 125.0]">
         </property>
     </entity>
     <entity name="StringToUnsignedByteArray" class="ptolemy.actor.lib.conversions.StringToUnsignedByteArray">
@@ -171,7 +175,7 @@ data type and structure (record, array) if any.</text></svg></configure>
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="_type" class="ptolemy.actor.TypeAttribute" value="{int}">
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="arrayType(int)">
             </property>
         </port>
     </entity>
