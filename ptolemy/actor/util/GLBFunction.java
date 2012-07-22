@@ -1,7 +1,9 @@
 package ptolemy.actor.util;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import ptolemy.actor.IOPort;
 import ptolemy.actor.TypedIOPort;
@@ -54,7 +56,6 @@ public class GLBFunction extends MonotonicFunction {
         _sourcePort = sourcePort;
 
         _updateArguments();
-
     }
     
     ///////////////////////////////////////////////////////////////
@@ -66,25 +67,24 @@ public class GLBFunction extends MonotonicFunction {
     public Object getValue() throws IllegalActionException {
         _updateArguments();
 
-        Object[] types = new Type[_cachedTerms.length + _cachedTypes.length];
+        Set<Type> types = new HashSet<Type>();
+        types.addAll(_cachedTypes);
         for (int i = 0; i < _cachedTerms.length; i++) {
-            types[i] = _cachedTerms[i].getValue();
-        }
-        for (int i = 0; i < _cachedTypes.length; i++) {
-            types[_cachedTerms.length + i] = _cachedTypes[i];
+            types.add((Type)_cachedTerms[i].getValue());
         }
         // If there are no destination outputs at all, then set
         // the output type to unknown.
-        if (types.length == 0) {
+        if (types.size() == 0) {
             return BaseType.UNKNOWN;
         }
         // If there is only one destination, the GLB is equal to the
         // type of that port.
-        if (types.length == 1) {
-            return types[0];
+        Object[] typesArray = types.toArray();
+        if (types.size() == 1) {
+            return typesArray[0];
         }
 
-        return TypeLattice.lattice().greatestLowerBound(types);
+        return TypeLattice.lattice().greatestLowerBound(typesArray);
     }
 
     /** Return the type variables for this function, which are
@@ -102,7 +102,7 @@ public class GLBFunction extends MonotonicFunction {
      */
     public Type[] getConstants() {
         _updateArguments();
-        return _cachedTypes;
+        return _cachedTypes.toArray(new Type[0]);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -119,12 +119,12 @@ public class GLBFunction extends MonotonicFunction {
             return;
         }
         ArrayList<InequalityTerm> portTypeTermList = new ArrayList<InequalityTerm>();
-        ArrayList<Type> portTypeList = new ArrayList<Type>();
-         if (_sourcePort.isOutput()){
-             destinations = _sourcePort.sinkPortList();
-         } else {
-             destinations = _sourcePort.insideSinkPortList();
-         }
+        _cachedTypes = new HashSet<Type>();
+        if (_sourcePort.isOutput()){
+            destinations = _sourcePort.sinkPortList();
+        } else {
+            destinations = _sourcePort.insideSinkPortList();
+        }
 
         for (IOPort destination : destinations) {
             InequalityTerm destinationTypeTerm = 
@@ -132,14 +132,12 @@ public class GLBFunction extends MonotonicFunction {
             if (destinationTypeTerm.isSettable()) {
                 portTypeTermList.add(destinationTypeTerm);
             } else {
-                portTypeList.add(((TypedIOPort)destination).getType());
+                _cachedTypes.add(((TypedIOPort)destination).getType());
             }
         }
         _cachedTerms = portTypeTermList.toArray(new InequalityTerm[0]);
-        _cachedTypes = portTypeList.toArray(new Type[0]);
         _cachedVariablesWorkspaceVersion = _sourcePort.getContainer()
                 .workspace().getVersion();
-
     }
 
 /*   @Override
@@ -154,7 +152,7 @@ public class GLBFunction extends MonotonicFunction {
     /**
      * The constant types found in destination ports.
      */
-    private Type[] _cachedTypes;
+    private Set<Type> _cachedTypes;
 
     /**
      * The types terms found in destination ports.
