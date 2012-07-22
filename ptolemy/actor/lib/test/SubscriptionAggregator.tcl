@@ -249,10 +249,11 @@ test SubscriptionAggregator-4.0 {7*9*11 SubscriptionAggregators} {
 		[java::field [java::cast ptolemy.actor.lib.Sink $rec] input]]] setWidth 1
     }
 
+    # puts [$e3 exportMoML]
+    $e3 validateSettables
     # Temporarily comment this out so that the test does not time out.
-    #[$e3 getManager] execute
+    [$e3 getManager] execute
 
-    #puts [$e3 exportMoML]
     # This hack is necessary because of problems with crnl under windows
     regsub -all [java::call System getProperty "line.separator"] \
 	        [$stream toString] "\n" output
