@@ -30,6 +30,7 @@ package ptolemy.actor.parameters;
 import ptolemy.actor.Initializable;
 import ptolemy.actor.TypedActor;
 import ptolemy.actor.lib.hoc.MirrorComposite;
+import ptolemy.data.StringToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.AbstractInitializableParameter;
 import ptolemy.kernel.ComponentEntity;
@@ -174,7 +175,11 @@ public class PortParameter extends AbstractInitializableParameter implements Ini
         this(container, name);
         setToken(token);
         if (token != null) {
-            _persistentExpression = token.toString();
+            if (isStringMode() && token instanceof StringToken) {
+                _persistentExpression = ((StringToken)token).stringValue();
+            } else {
+                _persistentExpression = token.toString();
+            }
         } else {
             _persistentExpression = "";
         }
@@ -384,7 +389,11 @@ public class PortParameter extends AbstractInitializableParameter implements Ini
     @Override
     public void setToken(Token newValue) throws IllegalActionException {
         if (newValue != null) {
-            _persistentExpression = newValue.toString();
+            if (isStringMode() && newValue instanceof StringToken) {
+                _persistentExpression = ((StringToken)newValue).stringValue();
+            } else {
+                _persistentExpression = newValue.toString();
+            }
         } else {
             _persistentExpression = "";
         }
