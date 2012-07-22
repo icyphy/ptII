@@ -81,6 +81,7 @@ import ptolemy.data.expr.ASTPtRootNode;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.ParseTreeEvaluator;
 import ptolemy.data.expr.PtParser;
+import ptolemy.data.type.BaseType;
 import ptolemy.data.type.TypeLattice;
 import ptolemy.graph.DirectedAcyclicGraph;
 import ptolemy.gui.PtGUIUtilities;
@@ -573,7 +574,14 @@ public class PortConfigurerDialog extends PtolemyDialog implements
 
                         String tableValue = (String) portInfo
                                 .get(ColumnNames.COL_TYPE);
-
+                        
+                        // FIXME: bypassing the MoML parser and setting the type
+                        // directly, in order to propagate the type change 
+                        // required when the input field is set to blank.
+                        // See bug #518 in Bugzilla
+                        if (tableValue.equals("")) {
+                            tiop.setTypeEquals(BaseType.UNKNOWN);
+                        }
                         if (((type == null) && (!tableValue.equals("")))
                                 || ((type != null) && (!tableValue.equals(type)))) {
                             havePortUpdate = true;
