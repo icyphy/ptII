@@ -18,6 +18,14 @@
     </property>
     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{350.0, 262.0}">
     </property>
+    <property name="TestExceptionAttribute" class="ptolemy.actor.lib.TestExceptionAttribute">
+        <property name="correctExceptionMessage" class="ptolemy.data.expr.StringParameter" value="PublisherPorts cannot be used at the top level, use a Publisher actor instead.&#10;  in .PublisherPortToplevelSubscriberPortAOC.PublisherPort">
+        </property>
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[530.0, 80.0]">
+        </property>
+    </property>
     <port name="PublisherPort" class="ptolemy.actor.PublisherPort">
         <property name="output"/>
         <property name="channel" class="ptolemy.data.expr.StringParameter" value="channel">
