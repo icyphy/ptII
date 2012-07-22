@@ -24,7 +24,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[35.0, 280.0]">
         </property>
     </property>
-    <entity name="CompositeActor" class="ptolemy.actor.TypedCompositeActor">
+    <entity name="A" class="ptolemy.actor.TypedCompositeActor">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[80.0, 110.0]">
         </property>
         <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={373, 208, 934, 634}, maximized=false}">
@@ -67,7 +67,7 @@
         <link port="Ramp.output" relation="relation"/>
         <link port="Ramp.step" relation="relation2"/>
     </entity>
-    <entity name="CompositeActor2" class="ptolemy.actor.TypedCompositeActor">
+    <entity name="B" class="ptolemy.actor.TypedCompositeActor">
         <property name="_location" class="ptolemy.kernel.util.Location" value="{80.0, 180.0}">
         </property>
         <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={373, 208, 934, 634}, maximized=false}">
