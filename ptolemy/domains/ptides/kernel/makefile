@@ -57,13 +57,17 @@ JSRCS = \
 	PtidesListEventQueue.java \
 	PtidesMulticoreDirector.java \
 	PtidesNoPhysicalTimeDirector.java \
+	PtidesPlatform.java \
 	PtidesPreemptiveEDFDirector.java \
 	PtidesPreemptiveUserEDFDirector.java \
 	PtidesReceiver.java \
 	PtidesTopLevelDirector.java \
 	Tag.java
 
-EXTRA_SRCS =	$(JSRCS)
+OTHER_FILES_TO_BE_JARED = \
+	PtidesPlatform.xml
+
+EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
@@ -77,16 +81,20 @@ OPTIONAL_FILES = \
 	'PtidesBasicDirector$$RealTimeClock.class' \
 	'PtidesBasicDirector$$RealTimeEvent.class' \
 	'PtidesBasicDirector$$Tag.class' \
-	'PtidesNoPhysicalTimeDirector$$DoubleTimedEvent.class' \
-	'PtidesNoPhysicalTimeDirector$$RealTimeEvent.class' \
-	'PtidesNoPhysicalTimeDirector$$Tag.class' \
-	'PtidesMulticoreDirector$$EDFComparator.class' \
-	'PtidesMulticoreDirector$$ProcessingPtidesEvents.class' \
 	'PtidesBasicDirector$$DoubleTimedEvent.class' \
 	'PtidesBasicDirector$$ExecutionTimedEvent.class' \
 	'PtidesBasicDirector$$PortDependency.class' \
 	'PtidesBasicReceiver$$Event.class' \
 	'PtidesBasicReceiver$$TagComparator.class' \
+	'PtidesMulticoreDirector$$EDFComparator.class' \
+	'PtidesMulticoreDirector$$ProcessingPtidesEvents.class' \
+	'PtidesNoPhysicalTimeDirector$$DoubleTimedEvent.class' \
+	'PtidesNoPhysicalTimeDirector$$RealTimeEvent.class' \
+	'PtidesNoPhysicalTimeDirector$$Tag.class' \
+	'PtidesPlatform$$PtidesMirrorPort.class' \
+	'PtidesPlatform$$PtidesNetworkType.class' \
+	'PtidesPlatform$$PtidesPlatformContents.class' \
+	'PtidesPlatform$$PtidesPlatformDirector.class' \
 	'PtidesReceiver$$Event.class' \
 	'PtidesReceiver$$TagComparator.class'
 
