@@ -165,7 +165,7 @@ public class PtidesPlatform extends MirrorComposite {
         try {
             // Remove the old inner PtidesPlatformDirector that is in the wrong workspace.
             List<PtidesPlatform> platformDirectors = result
-                    .attributeList(PtidesPlatform.class);
+                    .attributeList(PtidesPlatformDirector.class);
             PtidesPlatform oldplatformDirector = platformDirectors.get(0);
             String platformDirectorName = oldplatformDirector.getName();
             oldplatformDirector.setContainer(null);
