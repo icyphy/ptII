@@ -118,7 +118,6 @@ public class RecordUpdater extends TypedAtomicActor {
      */
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         RecordUpdater newObject = (RecordUpdater) super.clone(workspace);
-        newObject.output.setTypeAtLeast(newObject.new MinimalOutputTerm());
         return newObject;
     }
 
