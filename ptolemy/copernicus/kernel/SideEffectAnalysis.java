@@ -341,6 +341,12 @@ public class SideEffectAnalysis {
         }
 
         public boolean equals(Object o) {
+            if (o == this) {
+                return true;
+            }
+            if (o == null) {
+                return false;
+            }
             if (o instanceof EffectFlow) {
                 EffectFlow other = (EffectFlow) o;
 
@@ -359,6 +365,23 @@ public class SideEffectAnalysis {
             } else {
                 return false;
             }
+        }
+
+        /** Return the hash code for the EffectFlow object. If two
+         *  EffectFlow objects contains the same EffectSet then they
+         *  have the same hashcode.
+         *  @return The hash code for this EffectFlow object.
+         */
+        public int hashCode() {
+            // See http://www.technofundo.com/tech/java/equalhash.html
+            int hashCode = 31;
+            if (_effectSet != null) {
+                hashCode = 31 * hashCode + _effectSet.hashCode();
+            }
+            if (_hasEffects) {
+                hashCode = 31 * hashCode + 1;
+            }
+            return hashCode;
         }
 
         public void addSideEffect(SootField field) {

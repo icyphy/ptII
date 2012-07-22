@@ -556,6 +556,23 @@ public class CoroutineDirector extends Director implements Continuation {
             return true;
         }
 
+        /** Return the hash code for the InternalEntryLocation object. If two
+         *  InternalEntryLocation objects contains the same Continuation and 
+         *  ControlEntryToken then they have the same hashcode.
+         *  @return The hash code for this InternalEntryLocation object.
+         */
+        public int hashCode() {
+            // See http://www.technofundo.com/tech/java/equalhash.html
+            int hashCode = 31;
+            if (_continuation != null) {
+                hashCode = 31 * hashCode + _continuation.hashCode();
+            }
+            if (_entry != null) {
+                hashCode = 31 * hashCode + _entry.hashCode();
+            }
+            return hashCode;
+        }
+
         private Continuation _continuation;
         private ControlEntryToken _entry;
         private CoroutineDirector getOuterType() {
@@ -614,6 +631,22 @@ public class CoroutineDirector extends Director implements Continuation {
             return true;
         }
 
+        /** Return the hash code for the InternalExitLocation object. If two
+         *  InternalExitLocation objects contains the same Continuation and 
+         *  ExitLocation then they have the same hashcode.
+         *  @return The hash code for this InternalExitLocation object.
+         */
+        public int hashCode() {
+            // See http://www.technofundo.com/tech/java/equalhash.html
+            int hashCode = 31;
+            if (_continuation != null) {
+                hashCode = 31 * hashCode + _continuation.hashCode();
+            }
+            if (_location != null) {
+                hashCode = 31 * hashCode + _.hashCode();
+            }
+            return hashCode;
+        }
 
 
         private Continuation _continuation;

@@ -105,6 +105,10 @@ public class XMLToken extends Token {
      *  false.
      */
     public boolean equals(Object object) {
+        // See http://www.technofundo.com/tech/java/equalhash.html
+        if (object == this) {
+            return true;
+        }
         if (object == null) {
             return false;
         }
@@ -122,6 +126,20 @@ public class XMLToken extends Token {
         }
 
         return false;
+    }
+
+    /** Return the hash code for the XMLToken object. If two XMLToken
+     *  objects contains the same String then they have the same
+     *  hashcode.
+     *  @return The hash code for this XMLToken object.
+     */
+    public int hashCode() {
+        // See http://www.technofundo.com/tech/java/equalhash.html
+        int hashCode = 27;
+        if (_toString != null) {
+            hashCode = 31 * hashCode + _toString.hashCode();
+        }
+        return hashCode;
     }
 
     /** Test that the value of this token is close to the first argument,

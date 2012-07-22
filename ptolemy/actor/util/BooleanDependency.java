@@ -84,10 +84,16 @@ public class BooleanDependency implements Dependency {
      *  @return true if the values are equal
      */
     public boolean equals(Object object) {
-        if (object instanceof BooleanDependency) {
+        // See http://www.technofundo.com/tech/java/equalhash.html
+        if (object == this) {
+            return true;
+        }
+        if ((object == null)
+                || (object.getClass() != getClass())) {
+            return false;
+        } else {
             return (_value == ((BooleanDependency) object)._value);
         }
-        return false;
     }
 
     /** Return the same hashCode that that Java Boolean object would
