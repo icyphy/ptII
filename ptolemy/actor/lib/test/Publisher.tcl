@@ -244,11 +244,11 @@ test Publisher-2.1 {Instantiate twice a class that has a publisher} {
 } {{ptolemy.kernel.util.IllegalActionException: Can't link SubscriptionAggregatorPort with a PublisherPort.
   in .PublisherSubscriberInClass.Instance1OfCompositeActor.Subscriber.input
 Because:
-We have multiple publishers with name "channel1".
+We have 2 ports with the name "channel1", which is not equal to 1.
+ port: ptolemy.actor.PublisherPort {.PublisherSubscriberInClass.Instance1OfCompositeActor.Publisher.output}name: output channel: ptolemy.data.expr.StringParameter {.PublisherSubscriberInClass.Instance1OfCompositeActor.Publisher.output.channel} "channel1"
+ port: ptolemy.actor.PublisherPort {.PublisherSubscriberInClass.Instance2OfCompositeActor.Publisher.output}name: output channel: ptolemy.data.expr.StringParameter {.PublisherSubscriberInClass.Instance2OfCompositeActor.Publisher.output.channel} "channel1"
+
   in .PublisherSubscriberInClass}}
-
-
-
 
 ######################################################################
 ####
