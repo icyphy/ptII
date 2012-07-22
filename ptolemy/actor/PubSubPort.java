@@ -163,22 +163,29 @@ public abstract class PubSubPort extends TypedIOPort
             throws IllegalActionException, NameDuplicationException {
         Initializable previousInitializableContainer = _getInitializableContainer();
         NamedObj previousContainer = getContainer();
-        super.setContainer(container);
-        Initializable newInitializableContainer = _getInitializableContainer();
-        if (previousInitializableContainer != newInitializableContainer) {
-            if (previousInitializableContainer != null) {
-                previousInitializableContainer.removeInitializable(this);
-            }
-            if (newInitializableContainer != null) {
-                newInitializableContainer.addInitializable(this);
-            }
-        }
         if (previousContainer != container) {
-            if (previousContainer != null) {
-                previousContainer.removeHierarchyListener(this);
-            }
-            if (container != null) {
-                container.addHierarchyListener(this);
+            hierarchyWillChange();
+            try {
+                super.setContainer(container);
+                Initializable newInitializableContainer = _getInitializableContainer();
+                if (previousInitializableContainer != newInitializableContainer) {
+                    if (previousInitializableContainer != null) {
+                        previousInitializableContainer.removeInitializable(this);
+                    }
+                    if (newInitializableContainer != null) {
+                        newInitializableContainer.addInitializable(this);
+                    }
+                }
+                if (previousContainer != container) {
+                    if (previousContainer != null) {
+                        previousContainer.removeHierarchyListener(this);
+                    }
+                    if (container != null) {
+                        container.addHierarchyListener(this);
+                    }
+                }
+            } finally {
+                hierarchyChanged();
             }
         }
     }
