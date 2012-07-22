@@ -643,7 +643,7 @@ public class CoroutineDirector extends Director implements Continuation {
                 hashCode = 31 * hashCode + _continuation.hashCode();
             }
             if (_location != null) {
-                hashCode = 31 * hashCode + _.hashCode();
+                hashCode = 31 * hashCode + _location.hashCode();
             }
             return hashCode;
         }
