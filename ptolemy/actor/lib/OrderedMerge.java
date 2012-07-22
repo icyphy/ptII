@@ -168,7 +168,6 @@ public class OrderedMerge extends TypedAtomicActor {
         OrderedMerge newObject = (OrderedMerge) super.clone(workspace);
         newObject.inputA.setTypeAtMost(BaseType.SCALAR);
         newObject.inputB.setTypeSameAs(newObject.inputA);
-        newObject.output.setTypeSameAs(newObject.inputA);
         return newObject;
     }
 
@@ -383,14 +382,15 @@ public class OrderedMerge extends TypedAtomicActor {
     }
 
     /**
-     * The output must be greater than or equal to each of both inputs.
+     * The output must be greater than or equal to each of both inputs. Since 
+     * inputA is set to be the same as inputB, the output is simply set to be
+     * greater than or equal to inputA.
      * @return A set of type constraints
      */
     @Override
     protected Set<Inequality> _defaultTypeConstraints() {
         Set<Inequality> result = new HashSet<Inequality>();
         result.add(new Inequality(inputA.getTypeTerm(), output.getTypeTerm()));
-        result.add(new Inequality(inputB.getTypeTerm(), output.getTypeTerm()));
         return result;
     }
     
