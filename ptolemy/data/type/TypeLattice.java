@@ -166,30 +166,6 @@ public class TypeLattice {
      *  @return An integer.
      */
     public synchronized static int compare(Type type1, Type type2) {
-        if ((type1 == null) || (type2 == null)) {
-            throw new IllegalArgumentException(
-                    "TypeLattice.compare(Type, Type): "
-                            + "one or both of the argument types is null: "
-                            + " type1 = " + type1 + ", type2 = " + type2);
-        }
-        // System.out.println("compare " + type1 + " and " + type2 + " = " + _lattice.compare(type1, type2));
-
-        int i1 = type1.getTypeHash();
-        int i2 = type2.getTypeHash();
-
-        // Uncommment the false below to measure the impact of
-        // _lattice.compare() on ptolemy.data package performance... Run
-        // ptolemy/data/type/test/performance.xml before and after...(zk)
-        if ( /*false &&*/
-        (i1 != Type.HASH_INVALID) && (i2 != Type.HASH_INVALID)) {
-            if (_getCachedTypeComparisonResult(i1, i2) == Type.HASH_INVALID) {
-                _setCachedTypeComparisonResult(i1, i2,
-                        _lattice.compare(type1, type2));
-            }
-
-            return _getCachedTypeComparisonResult(i1, i2);
-        }
-
         return _lattice.compare(type1, type2);
     }
 
@@ -208,25 +184,6 @@ public class TypeLattice {
      */
     public synchronized static Type leastUpperBound(Type type1, Type type2) {
         return (Type) _lattice.leastUpperBound(type1, type2);
-    }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         private methods                   ////
-
-    /** Return the result for the types that have the given two
-     * indexes as hashes.
-     */
-    private static final int _getCachedTypeComparisonResult(int index1,
-            int index2) {
-        return _compareCache[index1][index2];
-    }
-
-    /** Set the result for the types that have the given two
-     *  indexes as hashes.
-     */
-    private static final void _setCachedTypeComparisonResult(int index1,
-            int index2, int value) {
-        _compareCache[index1][index2] = value;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -263,6 +220,22 @@ public class TypeLattice {
                                     + "Arguments are not instances of Type: "
                                     + " type1 = " + t1 + ", type2 = " + t2);
                 }
+                // System.out.println("compare " + type1 + " and " + type2 + " = " + _lattice.compare(type1, type2));
+
+                if (t1 == t2) {
+                    return SAME;
+                }
+                int i1 = ((Type)t1).getTypeHash();
+                int i2 = ((Type)t2).getTypeHash();
+
+                // Uncommment the false below to measure the impact of
+                // _lattice.compare() on ptolemy.data package performance... Run
+                // ptolemy/data/type/test/performance.xml before and after...(zk)
+                if ( /*false &&*/
+                (i1 != Type.HASH_INVALID) && (i2 != Type.HASH_INVALID)
+                        && _getCachedTypeComparisonResult(i1, i2) != Type.HASH_INVALID) {
+                    return _getCachedTypeComparisonResult(i1, i2);
+                }
 
                 Type ct1 = (Type) t1;
                 Type ct2 = (Type) t2;
@@ -270,8 +243,9 @@ public class TypeLattice {
                 Type t1Rep = _toRepresentative(ct1);
                 Type t2Rep = _toRepresentative(ct2);
 
+                int result = INCOMPARABLE;
                 if (t1Rep.equals(t2Rep) && t1Rep instanceof StructuredType) {
-                    return ((StructuredType) t1)._compare((StructuredType) t2);
+                    result = ((StructuredType) t1)._compare((StructuredType) t2);
                 } else if (t1Rep instanceof ArrayType
                         && !(t2Rep instanceof ArrayType)
                         && !t2.equals(BaseType.UNKNOWN)
@@ -283,18 +257,19 @@ public class TypeLattice {
                             && !t2.equals(BaseType.GENERAL)) {
                         // If we have a Const with {1,2,3} -> Display
                         // then we used to fail here.
-                        return INCOMPARABLE;
-                    }
-                    int elementComparison = compare(
-                            ((ArrayType) ct1).getElementType(), t2Rep);
-                    if (elementComparison == SAME
-                            || elementComparison == HIGHER) {
-                        return HIGHER;
+                        result = INCOMPARABLE;
                     } else {
-                        if (t2Rep == BaseType.GENERAL) {
-                            return LOWER;
+                        int elementComparison = compare(
+                                ((ArrayType) ct1).getElementType(), t2Rep);
+                        if (elementComparison == SAME
+                                || elementComparison == HIGHER) {
+                            result = HIGHER;
                         } else {
-                            return INCOMPARABLE;
+                            if (t2Rep == BaseType.GENERAL) {
+                                result = LOWER;
+                            } else {
+                                result = INCOMPARABLE;
+                            }
                         }
                     }
                 } else if (t2Rep instanceof ArrayType
@@ -306,18 +281,19 @@ public class TypeLattice {
                     ArrayType arrayType = (ArrayType) t2;
                     if (arrayType.hasKnownLength() && arrayType.length() != 1
                             && !t1.equals(BaseType.GENERAL)) {
-                        return INCOMPARABLE;
-                    }
-                    int elementComparison = compare(
-                            ((ArrayType) ct2).getElementType(), t1Rep);
-                    if (elementComparison == SAME
-                            || elementComparison == HIGHER) {
-                        return LOWER;
+                        result = INCOMPARABLE;
                     } else {
-                        if (t1Rep == BaseType.GENERAL) {
-                            return HIGHER;
+                        int elementComparison = compare(
+                                ((ArrayType) ct2).getElementType(), t1Rep);
+                        if (elementComparison == SAME
+                                || elementComparison == HIGHER) {
+                            result = LOWER;
                         } else {
-                            return INCOMPARABLE;
+                            if (t1Rep == BaseType.GENERAL) {
+                                result = HIGHER;
+                            } else {
+                                result = INCOMPARABLE;
+                            }
                         }
                     }
                 } else if (_basicLattice.containsNodeWeight(t1Rep)
@@ -325,23 +301,27 @@ public class TypeLattice {
                     // Both are neither the same structured type, nor an array
                     // and non-array pair, so their type relation is defined
                     // by the basic lattice.
-                    return _basicLattice.compare(t1Rep, t2Rep);
+                    result = _basicLattice.compare(t1Rep, t2Rep);
                 } else {
                     // Both arguments are not the same structured type, and
                     // at least one is user defined, so their relation is
                     // rather simple.
                     if (t1Rep.equals(t2Rep)) {
-                        return SAME;
+                        result = SAME;
                     } else if ((t1Rep == BaseType.UNKNOWN)
                             || (t2Rep == BaseType.GENERAL)) {
-                        return LOWER;
+                        result = LOWER;
                     } else if ((t2Rep == BaseType.UNKNOWN)
                             || (t1Rep == BaseType.GENERAL)) {
-                        return HIGHER;
+                        result = HIGHER;
                     } else {
-                        return INCOMPARABLE;
+                        result = INCOMPARABLE;
                     }
                 }
+                if ((i1 != Type.HASH_INVALID) && (i2 != Type.HASH_INVALID)) {
+                    _setCachedTypeComparisonResult(i1, i2, result);
+                }
+                return result;
             }
         }
 
@@ -904,6 +884,23 @@ public class TypeLattice {
 
         ///////////////////////////////////////////////////////////////
         ////                      private methods                  ////
+        
+        /** Return the result for the types that have the given two
+         * indexes as hashes.
+         */
+        private static final int _getCachedTypeComparisonResult(int index1,
+                int index2) {
+            return _compareCache[index1][index2];
+        }
+
+        /** Set the result for the types that have the given two
+         *  indexes as hashes.
+         */
+        private static final void _setCachedTypeComparisonResult(int index1,
+                int index2, int value) {
+            _compareCache[index1][index2] = value;
+        }
+
         // If the argument is a structured type, return its representative;
         // otherwise, return the argument. In the latter case, the argument
         // is either a base type or a user defined type that is not a
@@ -918,7 +915,23 @@ public class TypeLattice {
 
         ///////////////////////////////////////////////////////////////
         ////                     private variables                 ////
+        
         private DirectedAcyclicGraph _basicLattice;
+        
+        /** The result cache for parts of the type lattice. */
+        private static int[][] _compareCache;
+
+        static {
+            synchronized (TypeLattice.class) {
+                _compareCache = new int[Type.HASH_MAX + 1][Type.HASH_MAX + 1];
+
+                for (int i = 0; i <= Type.HASH_MAX; i++) {
+                    for (int j = 0; j <= Type.HASH_MAX; j++) {
+                        _compareCache[i][j] = Type.HASH_INVALID;
+                    }
+                }
+            }
+        }
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -926,19 +939,4 @@ public class TypeLattice {
 
     /** The infinite type lattice. */
     private static TheTypeLattice _lattice = new TheTypeLattice();
-
-    /** The result cache for parts of the type lattice. */
-    private static int[][] _compareCache;
-
-    static {
-        synchronized (TypeLattice.class) {
-            _compareCache = new int[Type.HASH_MAX + 1][Type.HASH_MAX + 1];
-
-            for (int i = 0; i <= Type.HASH_MAX; i++) {
-                for (int j = 0; j <= Type.HASH_MAX; j++) {
-                    _compareCache[i][j] = Type.HASH_INVALID;
-                }
-            }
-        }
-    }
 }
