@@ -319,8 +319,8 @@ public class PublisherPort extends PubSubPort {
     }
     
     /** Notify this object that the containment hierarchy above it has
-     *  changed. This method does nothing because instead we use
-     *  {@link #preinitialize()} to handle re-establishing the connections.
+     *  changed. This registers the port as a publisher with the
+     *  container of the container, if there is one.
      *  @exception IllegalActionException If the change is not
      *   acceptable.
      */
@@ -336,7 +336,8 @@ public class PublisherPort extends PubSubPort {
             // but the parameters are not yet in scope.
             channelValue = channel.stringValue();
         } catch (Throwable throwable) {
-            channelValue = channel.getExpression();
+            // Ignore this on the assumption that we will
+            // get another chance when the channel is set.
         }
         if (channelValue != null && !channelValue.equals("")) {
             NamedObj immediateContainer = getContainer();
@@ -449,12 +450,11 @@ public class PublisherPort extends PubSubPort {
             // Don't preinitialize Class Definitions.
             return;
         }
-//        NamedObj actor = getContainer();
-//         if (actor != null 
-//                 && actor.getContainer() == null) {
-//             throw new IllegalActionException(this,
-//                     "PublisherPorts cannot be used at the top level, use a Publisher actor instead.");
-//         }
+        NamedObj actor = getContainer();
+        if (actor != null && actor.getContainer() == null) {
+            throw new IllegalActionException(this,
+                    "PublisherPorts cannot be used at the top level, use a Publisher actor instead.");
+        }
         Token initialOutputsValue = initialOutputs.getToken();
         if (initialOutputsValue == null) {
             output_tokenInitProduction.setToken(IntToken.ZERO);
