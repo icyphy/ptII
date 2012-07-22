@@ -663,9 +663,6 @@ public class TypedCompositeActor extends CompositeActor implements TypedActor {
                     // This should not happen
                     e.printStackTrace();
                 }
-                if (destinationPort.equals(source)) {
-                    continue; // FIXME: refactor this
-                }
                 // default behavior, add GLB constraint
                 result.add(new Inequality(new GLBFunction(source), source
                         .getTypeTerm()));
