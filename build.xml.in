@@ -162,12 +162,12 @@
   </target>
 
   <target name="clean"
-	  description="Remove all the class files and the ${ptII.reports} director">
-    <delete quiet="true">
+	  description="Remove all the class files, the ${ptII.reports} directory and any codeDoc directories.">
+    <delete quiet="true" verbose="no" includeemptydirs="true">
       <fileset dir="${basedir}"
 	       includes="**/*.class" />
-      <fileset dir="${ptII.reports}" />
-      <fileset dir="doc/codeDoc" />
+      <fileset dir="${basedir}" includes="reports/**" defaultexcludes="false"/>
+      <fileset dir="${basedir}" includes="**/codeDoc/**" defaultexcludes="false"/>
     </delete>
   </target>
 
