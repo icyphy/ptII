@@ -137,7 +137,10 @@ public abstract class PubSubPort extends TypedIOPort
     public void initialize() throws IllegalActionException {
     }
 
-    /** Do nothing. */
+    /** Do nothing.  Subclasses should check to see if the port
+     *  is in the top level and throw an exception that suggests
+     *  using a Publisher or Subscriber.
+     */
     public void preinitialize() throws IllegalActionException {
     }
 

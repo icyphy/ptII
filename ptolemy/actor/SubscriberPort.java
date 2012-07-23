@@ -180,12 +180,18 @@ public class SubscriberPort extends PubSubPort {
     
     /** Override the base class to ensure that there is a publisher.
      *  @exception IllegalActionException If there is no matching
-     *   publisher.
+     *   publisher, if the channel is not specified or if the port
+     *   is in the top level.
      */
     @Override
     public void preinitialize() throws IllegalActionException {
         if (_channel == null) {
             throw new IllegalActionException(this, "No channel specified.");
+        }
+        NamedObj actor = getContainer();
+        if (actor != null && actor.getContainer() == null) {
+            throw new IllegalActionException(this,
+                    "SubscriberPorts cannot be used at the top level, use a Subscriber actor instead.");
         }
         if (((InstantiableNamedObj)getContainer()).isWithinClassDefinition()) {
             // Don't preinitialize Class Definitions.

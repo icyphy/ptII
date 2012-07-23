@@ -321,6 +321,20 @@ public class SubscriptionAggregatorPort extends SubscriberPort {
         return foundOne;
     }
 
+    /** Check that the port is not in the top level, then
+     *  call preinitialize() in the super class.   
+     *  @exception IllegalActionException If the port is in
+     *  the top level.
+     */
+    public void preinitialize() throws IllegalActionException {
+        NamedObj actor = getContainer();
+        if (actor != null && actor.getContainer() == null) {
+            throw new IllegalActionException(this,
+                    "SubscriptionAggregatorPorts cannot be used at the top level, use a SubscriptionAggregator actor instead.");
+        }
+        super.preinitialize();
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 

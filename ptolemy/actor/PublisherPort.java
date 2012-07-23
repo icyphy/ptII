@@ -444,6 +444,8 @@ public class PublisherPort extends PubSubPort {
      *  of this port is transparent composite actor, then
      *  set the tokenInitProduction parameter of the port
      *  that will be actually used to produce the initial tokens.
+     *  @exception IllegalActionException If the port is in
+     *  the top level.
      */
     public void preinitialize() throws IllegalActionException {
         if (((InstantiableNamedObj)getContainer()).isWithinClassDefinition()) {
