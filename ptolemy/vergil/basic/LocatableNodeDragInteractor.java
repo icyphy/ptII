@@ -246,7 +246,7 @@ public class LocatableNodeDragInteractor extends NodeDragInteractor {
                           RelativeLocation.INITIAL_OFFSET,
                           RelativeLocation.INITIAL_OFFSET };
                     changeRelativeTo = true;
-                } else if (oldRelativeTo.length() > 0 && newLocation != null) {
+                } else if (oldRelativeTo.length() > 0 /* && newLocation != null*/) {
                     // We have no drop target, so check the current distance to the
                     // relativeTo object. If it exceeds a threshold, break the reference.
                     double distance = Math.sqrt(newLocation[0] * newLocation[0]

@@ -1287,11 +1287,11 @@ public class OracleXMLDBConnection implements DBConnection {
 
         GetModelTask getModelTask = new GetModelTask(existingModelName);
         XmlDocument existingModelDocument = _getModelFromDB(getModelTask);
-        String existingModelContent;
+        String existingModelContent = null;
 
         try {
-            existingModelContent = existingModelDocument.getContentAsString();
-            if (existingModelDocument == null || existingModelContent == null) {
+            if (existingModelDocument == null
+                    || (existingModelContent = existingModelDocument.getContentAsString()) == null) { 
                 throw new DBModelNotFoundException(
                         "The existing model was not found in the database - "
                                 + existingModelName);
