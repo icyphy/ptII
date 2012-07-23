@@ -68,6 +68,7 @@ JSIMPLE_TESTS = \
 	MoMLChangeRequest.tcl \
 	MoMLCommandLineApplication.tcl \
 	MoMLParser.tcl \
+	MoMLParserNoPackage.tcl \
 	MoMLUndoEntry.tcl \
 	MoMLUndoChangeRequest.tcl \
 	MoMLVariableChecker.tcl \

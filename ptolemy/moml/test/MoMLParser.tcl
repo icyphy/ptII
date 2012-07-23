@@ -4210,32 +4210,6 @@ test MoMLParser-29.1 {The contents of the icon should not be in the exported Mom
 } {{}}
 
 
-test MoMLParser-30.1 {If an actor has no package, then we should be able to have two of them in a model} {
-    # Eclipse complains if we have a .java file that is not in a package
-    file copy -force NoPackageActor.java.in NoPackageActor.java
-    exec make NoPackageActor.class
-
-    $parser reset
-    # The list of filters is static, so we reset it in case there
-    # filters were already added.
-    java::call ptolemy.moml.MoMLParser setMoMLFilters [java::null]
-    java::call ptolemy.moml.MoMLParser addMoMLFilters \
-	    [java::call ptolemy.moml.filter.BackwardCompatibility allFilters]
-
-    java::call ptolemy.moml.MoMLParser addMoMLFilter [java::new \
-	    ptolemy.moml.filter.RemoveGraphicalClasses]
-    set toplevel [$parser parseFile "NoPackageActors.xml"]
-    set compositeEntity [java::cast ptolemy.kernel.CompositeEntity $toplevel]
-
-    # Remove the .java file so that Eclipse does not complain
-    file delete -force NoPackageActor.java
-
-    # Success is reading the file
-    list \
-	[[$compositeEntity getEntity {NoPackageActor}] getFullName] \
-	[[$compositeEntity getEntity {NoPackageActor2}] getFullName]
-} {.NoPackageActors.NoPackageActor .NoPackageActors.NoPackageActor2}
-
 test MoMLParser-31.1 {Make sure that the error message refers to the proper file} {
     $parser reset
     set file [java::new java.io.File NonexistantDirectorTest.xml] 
