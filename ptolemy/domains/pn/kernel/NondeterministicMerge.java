@@ -223,7 +223,7 @@ public class NondeterministicMerge extends TypedCompositeActor {
                 mergeDirector.setName(mergeDirectorName);
             }
         } catch (Throwable throwable) {
-            new CloneNotSupportedException("Could not clone: " + throwable);
+            throw new CloneNotSupportedException("Could not clone: " + throwable);
         }
         return result;
     }

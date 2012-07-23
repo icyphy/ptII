@@ -239,7 +239,7 @@ public class RealTimeComposite extends MirrorComposite {
             realTimeDirector.setContainer(result);
             realTimeDirector.setName(realTimeDirectorName);
         } catch (Throwable throwable) {
-            new CloneNotSupportedException("Could not clone: " + throwable);
+            throw new CloneNotSupportedException("Could not clone: " + throwable);
         }
         return result;
     }

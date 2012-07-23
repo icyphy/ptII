@@ -249,7 +249,7 @@ public class IterateOverArray extends MirrorComposite {
             iterateDirector.setContainer(result);
             iterateDirector.setName(iterateDirectorName);
         } catch (Throwable throwable) {
-            new CloneNotSupportedException("Could not clone: " + throwable);
+            throw new CloneNotSupportedException("Could not clone: " + throwable);
         }
         result._iterationCount = (Variable) result
                 .getAttribute("iterationCount");

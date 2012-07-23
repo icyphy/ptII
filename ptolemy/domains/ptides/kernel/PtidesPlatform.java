@@ -164,19 +164,23 @@ public class PtidesPlatform extends MirrorComposite {
         PtidesPlatform result = (PtidesPlatform) super.clone(workspace);
         try {
             // Remove the old inner PtidesPlatformDirector that is in the wrong workspace.
-            List<PtidesPlatformDirector> platformDirectors = result
-                    .attributeList(PtidesPlatformDirector.class);
-            PtidesPlatformDirector oldplatformDirector = platformDirectors.get(0);
-            String platformDirectorName = oldplatformDirector.getName();
-            oldplatformDirector.setContainer(null);
+            String ptidesPlatformDirectorName = null;
+            Iterator ptidesPlatformDirectors = result.attributeList(PtidesPlatformDirector.class).iterator();
+            while (ptidesPlatformDirectors.hasNext()) {
+                PtidesPlatformDirector oldPtidesPlatformDirector = (PtidesPlatformDirector)ptidesPlatformDirectors.next();
+                if (ptidesPlatformDirectorName == null) {
+                    ptidesPlatformDirectorName = oldPtidesPlatformDirector.getName();                
+                }
+                oldPtidesPlatformDirector.setContainer(null);
+            }
 
             // Create a new PtidesPlatformDirector that is in the right workspace.
             PtidesPlatformDirector platformDirector = result.new PtidesPlatformDirector(
                     workspace);
             platformDirector.setContainer(result);
-            platformDirector.setName(platformDirectorName);
+            platformDirector.setName(ptidesPlatformDirectorName);
         } catch (Throwable throwable) {
-            new CloneNotSupportedException("Could not clone: " + throwable);
+            throw new CloneNotSupportedException("Could not clone: " + throwable);
         }
         return result;
     }

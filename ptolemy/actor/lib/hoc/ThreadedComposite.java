@@ -326,7 +326,7 @@ public class ThreadedComposite extends MirrorComposite {
             iterateDirector.setContainer(newObject);
             iterateDirector.setName(threadedDirectorName);
         } catch (Throwable throwable) {
-            new CloneNotSupportedException("Could not clone: " + throwable);
+            throw new CloneNotSupportedException("Could not clone: " + throwable);
         }
 
         newObject._causalityInterface = null;
