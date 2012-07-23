@@ -1146,9 +1146,7 @@ public class SMVUtility {
                                     // exists.
                                     boolean isTrue = false;
                                     try {
-                                        // FIXME: FindBugs RV: Base use of return value from method,
-                                        // Method ignores return value.  What does this code do?
-                                        characterOfSubGuard[1].trim();
+                                        characterOfSubGuard[1] = characterOfSubGuard[1].trim();
                                     } catch (Exception ex) {
                                         isTrue = true;
                                     }
