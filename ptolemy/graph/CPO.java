@@ -28,6 +28,8 @@
  */
 package ptolemy.graph;
 
+import java.util.Set;
+
 ///////////////////////////////////////////////////////////////////
 //// CPO
 
@@ -48,7 +50,7 @@ package ptolemy.graph;
  @Pt.ProposedRating Green (yuhong)
  @Pt.AcceptedRating Green (kienhuis)
  */
-public interface CPO {
+public interface CPO<T extends Object> {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -91,7 +93,7 @@ public interface CPO {
      *  @exception IllegalArgumentException If at least one Object in the
      *   specified array is not an element of this CPO.
      */
-    public Object greatestElement(Object[] subset);
+    public Object greatestElement(Set<T> subset);
 
     /** Compute the greatest lower bound (GLB) of two elements.
      *  The GLB of two elements is the greatest element in the CPO
@@ -115,7 +117,7 @@ public interface CPO {
      *  @exception IllegalArgumentException If at least one Object
      *   in the specified array is not an element of this CPO.
      */
-    public Object greatestLowerBound(Object[] subset);
+    public T greatestLowerBound(Set<T> subset);
 
     /** Test if this CPO is a lattice.
      *  A lattice is a CPO where the LUB and GLB of any pair of elements
@@ -135,7 +137,7 @@ public interface CPO {
      *  @exception IllegalArgumentException If at least one Object in the
      *   specified array is not an element of this CPO.
      */
-    public Object leastElement(Object[] subset);
+    public Object leastElement(Set<T> subset);
 
     /** Compute the least upper bound (LUB) of two elements.
      *  The LUB of two elements is the least element in the CPO
@@ -159,8 +161,7 @@ public interface CPO {
      *  @exception IllegalArgumentException If at least one Object
      *   in the specified array is not an element of this CPO.
      */
-    public Object leastUpperBound(Object[] subset);
-
+    public T leastUpperBound(Set<T> subset);
     /** Return the top element of this CPO.
      *  The top element is the element in the CPO that is higher than
      *  all the other elements.

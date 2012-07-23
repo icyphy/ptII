@@ -347,20 +347,19 @@ public class TypedIOPort extends IOPort implements Typeable {
                 // is a transparent input port. Get all the ports connected
                 // on the inside through deepInsidePortList().
                 Iterator<?> ports = deepInsidePortList().iterator();
-                List<Type> portTypeList = new LinkedList<Type>();
+                Set<Type> portTypeSet = new HashSet<Type>();
 
                 while (ports.hasNext()) {
                     TypedIOPort port = (TypedIOPort) ports.next();
 
                     // Rule out case where this port itself is listed...
                     if ((port != this) && port.isInput()) {
-                        portTypeList.add(port.getType());
+                        portTypeSet.add(port.getType());
                     }
                 }
 
                 CPO lattice = TypeLattice.lattice();
-                Object[] portTypeArray = portTypeList.toArray();
-                result = (Type) lattice.greatestLowerBound(portTypeArray);
+                result = (Type) lattice.greatestLowerBound(portTypeSet);
             } else if (isOutput()) {
                 // is a transparent output port. Get all the ports connected
                 // on the inside through deepInsidePortList().
@@ -377,8 +376,7 @@ public class TypedIOPort extends IOPort implements Typeable {
                 }
 
                 CPO lattice = TypeLattice.lattice();
-                Object[] portTypeArray = portTypeList.toArray();
-                result = (Type) lattice.leastUpperBound(portTypeArray);
+                result = (Type) lattice.leastUpperBound(new HashSet<Type>(portTypeList));
             }
 
             return result;

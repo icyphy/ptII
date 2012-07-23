@@ -28,6 +28,7 @@ package ptolemy.data.expr;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -109,7 +110,8 @@ public class ParseTreeTypeInference extends AbstractParseTreeVisitor {
         Type[] childTypes = _inferAllChildren(node);
 
         _setType(node, new ArrayType((Type) TypeLattice.lattice()
-                .leastUpperBound(childTypes), childTypes.length));
+                .leastUpperBound(new HashSet<Type>(Arrays.asList(childTypes))),
+                childTypes.length));
     }
 
     /** Set the type of the given node to be the type that is the
@@ -122,7 +124,10 @@ public class ParseTreeTypeInference extends AbstractParseTreeVisitor {
         Type[] childTypes = _inferAllChildren(node);
 
         // FIXME: not consistent with expression evaluator.
-        _setType(node, (Type) TypeLattice.lattice().leastUpperBound(childTypes));
+        _setType(
+                node,
+                (Type) TypeLattice.lattice().leastUpperBound(
+                        new HashSet<Type>(Arrays.asList(childTypes))));
     }
 
     /** Set the type of the given node to be the return type of the
@@ -519,7 +524,7 @@ public class ParseTreeTypeInference extends AbstractParseTreeVisitor {
         Type[] childTypes = _inferAllChildren(node);
 
         Type elementType = (Type) TypeLattice.lattice().leastUpperBound(
-                childTypes);
+                new HashSet<Type>(Arrays.asList(childTypes)));
 
         Type matrixType = MatrixType.getMatrixTypeForElementType(elementType);
         _setType(node, matrixType);

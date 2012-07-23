@@ -23,6 +23,10 @@
  */
 package ptolemy.data.ontologies;
 
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Set;
+
 import ptolemy.graph.CPO;
 import ptolemy.graph.NonLatticeCounterExample;
 
@@ -51,7 +55,7 @@ import ptolemy.graph.NonLatticeCounterExample;
  *  @Pt.AcceptedRating Red (mankit)
  *  @see ptolemy.graph.CPO
  */
-public abstract class ConceptGraph implements CPO {
+public abstract class ConceptGraph implements CPO<Concept> {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -97,7 +101,7 @@ public abstract class ConceptGraph implements CPO {
      *  @exception IllegalArgumentException If at least one Object in the
      *   specified array is not an element of this concept graph.
      */
-    public Concept greatestElement(Object[] subset) {
+    public Concept greatestElement(Set<Concept> subset) {
         return _superlativeElement(subset, CPO.HIGHER);
     }
 
@@ -124,7 +128,7 @@ public abstract class ConceptGraph implements CPO {
      *    an element of this concept graph, or greatestLowerBound is not
      *    implemented.
      */
-    public Concept greatestLowerBound(Object[] subset) {
+    public Concept greatestLowerBound(Set<Concept> subset) {
         return _getBoundForConceptSubset(subset, BoundType.GREATESTLOWER);
     }
 
@@ -151,7 +155,7 @@ public abstract class ConceptGraph implements CPO {
      *  @exception IllegalArgumentException If at least one Object in the
      *   specified array is not an element of this concept graph.
      */
-    public Concept leastElement(Object[] subset) {
+    public Concept leastElement(Set<Concept> subset) {
         return _superlativeElement(subset, CPO.LOWER);
     }
 
@@ -181,7 +185,7 @@ public abstract class ConceptGraph implements CPO {
      *  @exception IllegalArgumentException If at least one Object in the
      *   specified array is not an element of this concept graph.
      */
-    public Concept leastUpperBound(Object[] subset) {
+    public Concept leastUpperBound(Set<Concept> subset) {
         return _getBoundForConceptSubset(subset, BoundType.LEASTUPPER);
     }
 
@@ -223,19 +227,19 @@ public abstract class ConceptGraph implements CPO {
      *   subset array is not a Concept or if the boundType is neither
      *   GREATESTLOWER or LEASTUPPER.
      */
-    private Concept _getBoundForConceptSubset(Object[] subset,
+    private Concept _getBoundForConceptSubset(Set<Concept> subset,
             BoundType boundType) {
-        Concept[] conceptSubset = _getConceptArrayFromObjectArray(subset);
-
-        if (conceptSubset != null && conceptSubset.length > 0) {
-            Concept bound = conceptSubset[0];
-            for (Concept concept : conceptSubset) {
+        
+        if (subset != null && subset.size() > 0) {
+            Iterator<Concept> itr = subset.iterator();
+            Concept bound = itr.next();
+            while (itr.hasNext()) {
                 switch (boundType) {
                 case GREATESTLOWER:
-                    bound = greatestLowerBound(bound, concept);
+                    bound = greatestLowerBound(bound, itr.next());
                     break;
                 case LEASTUPPER:
-                    bound = leastUpperBound(bound, concept);
+                    bound = leastUpperBound(bound, itr.next());
                     break;
                 default:
                     throw new IllegalArgumentException(
@@ -250,34 +254,6 @@ public abstract class ConceptGraph implements CPO {
         }
     }
 
-    /** Assuming the input array of objects is an array of concepts, return
-     *  a new concept array that contains all the elements of the input array.
-     *
-     *  @param elementArray The input array of objects.
-     *  @return An array of concepts that contains all the elements of the
-     *   input array.
-     *  @exception IllegalArgumentException Thrown if any of the objects in
-     *   the elementArray is not a Concept.
-     */
-    private Concept[] _getConceptArrayFromObjectArray(Object[] elementArray) {
-        if (elementArray == null) {
-            return null;
-        }
-
-        Concept[] conceptArray = new Concept[elementArray.length];
-        for (int i = 0; i < elementArray.length; i++) {
-            if (elementArray[i] instanceof Concept) {
-                conceptArray[i] = (Concept) elementArray[i];
-            } else {
-                throw new IllegalArgumentException("Array of element objects "
-                        + "are not all Concepts. Element " + i + "is "
-                        + elementArray[i] + " which is an instance " + "of "
-                        + elementArray[i].getClass() + ".");
-            }
-        }
-        return conceptArray;
-    }
-
     /** Return the concept from the given subset of concepts that is the
      *  least or greatest.
      *
@@ -287,12 +263,13 @@ public abstract class ConceptGraph implements CPO {
      *  @return The concept at the extremity, if it exists. Null, if no
      *    such concept exists.
      */
-    private Concept _superlativeElement(Object[] subset, int direction) {
-        Concept[] conceptSubset = _getConceptArrayFromObjectArray(subset);
-
-        if (conceptSubset != null && conceptSubset.length > 0) {
-            Concept superlative = conceptSubset[0];
-            for (Object concept : conceptSubset) {
+    private Concept _superlativeElement(Set<Concept> subset, int direction) {
+        
+        if (subset != null && subset.size() > 0) {
+            Iterator<Concept> itr = subset.iterator();
+            Concept superlative = itr.next();
+            while (itr.hasNext()) {
+                Concept concept = itr.next();
                 if (compare(concept, superlative) == CPO.INCOMPARABLE) {
                     return null;
                 } else if (compare(concept, superlative) == direction) {

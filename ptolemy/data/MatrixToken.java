@@ -255,7 +255,7 @@ public abstract class MatrixToken extends Token {
      */
     public static MatrixToken arrayToMatrix(Token[] tokens, int rows,
             int columns) throws IllegalActionException {
-        Object[] typeTerms = new Object[tokens.length];
+        Set<Type> typeTerms = new HashSet<Type>();
 
         // Find the first non-nil element and get its type
         Type baseType = BaseType.GENERAL;
@@ -270,9 +270,9 @@ public abstract class MatrixToken extends Token {
         // found.
         for (int i = 0; i < tokens.length; i++) {
             if (tokens[i].isNil()) {
-                typeTerms[i] = baseType;
+                typeTerms.add(baseType);
             } else {
-                typeTerms[i] = tokens[i].getType();
+                typeTerms.add(tokens[i].getType());
             }
         }
 

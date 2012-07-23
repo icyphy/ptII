@@ -32,6 +32,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.ListIterator;
+import java.util.Set;
 
 import ptolemy.graph.analysis.TransitiveClosureAnalysis;
 import ptolemy.graph.analysis.strategy.CachedStrategy;
@@ -75,7 +76,7 @@ import ptolemy.graph.analysis.strategy.CachedStrategy;
 // In another word, the computation of greatestLowerBound, downSet,
 // greatestElement is converted to their dual operation by reversing
 // the order relation in this CPO.
-public class DirectedAcyclicGraph extends DirectedGraph implements CPO {
+public class DirectedAcyclicGraph extends DirectedGraph implements CPO<Object> {
     /** Construct an empty DAG.
      */
     public DirectedAcyclicGraph() {
@@ -140,7 +141,7 @@ public class DirectedAcyclicGraph extends DirectedGraph implements CPO {
      *  @exception IllegalArgumentException If at least one Object in the
      *   specified array is not an element of this CPO.
      */
-    public Object greatestElement(Object[] subset) {
+    public Object greatestElement(Set<Object> subset) {
         _validateDual();
         return _leastElementShared(subset);
     }
@@ -169,7 +170,7 @@ public class DirectedAcyclicGraph extends DirectedGraph implements CPO {
      *  @exception IllegalArgumentException If at least one Object
      *   in the specified array is not an element of this CPO.
      */
-    public Object greatestLowerBound(Object[] subset) {
+    public Object greatestLowerBound(Set<Object> subset) {
         _validateDual();
         return _lubShared(subset);
     }
@@ -189,7 +190,7 @@ public class DirectedAcyclicGraph extends DirectedGraph implements CPO {
      *  @exception IllegalArgumentException If at least one Object in the
      *   specified array is not an element of this CPO.
      */
-    public Object leastElement(Object[] subset) {
+    public Object leastElement(Set<Object> subset) {
         _validate();
         return _leastElementShared(subset);
     }
@@ -218,7 +219,7 @@ public class DirectedAcyclicGraph extends DirectedGraph implements CPO {
      *  @exception IllegalArgumentException If at least one Object
      *   in the specified array is not an element of this CPO.
      */
-    public Object leastUpperBound(Object[] subset) {
+    public Object leastUpperBound(Set<Object> subset) {
         _validate();
         return _lubShared(subset);
     }
@@ -583,31 +584,36 @@ public class DirectedAcyclicGraph extends DirectedGraph implements CPO {
     }
 
     // compute the least element in a subset.
-    private Object _leastElementShared(Object[] subset) {
-        if (subset.length == 1) {
-            if (containsNodeWeight(subset[0])) {
-                return subset[0];
+    private Object _leastElementShared(Set<Object> subset) {
+        if (subset.size() == 1) {
+            Object obj = subset.iterator().next();
+            if (containsNodeWeight(obj)) {
+                return obj;
             } else {
                 throw new IllegalArgumentException("Object not in CPO.");
             }
-        } else if (subset.length == 2) {
-            int i1 = nodeLabel(subset[0]);
-            int i2 = nodeLabel(subset[1]);
+        } else if (subset.size() == 2) {
+            Iterator<Object> itr = subset.iterator();
+            Object o1 = itr.next();
+            Object o2 = itr.next();
+            int i1 = nodeLabel(o1);
+            int i2 = nodeLabel(o1);
 
             int result = _compareNodeId(i1, i2);
 
             if ((result == LOWER) || (result == SAME)) {
-                return subset[0];
+                return o1;
             } else if (result == HIGHER) {
-                return subset[1];
+                return o2;
             } else { // INCOMPARABLE
                 return null;
             }
         } else {
-            int[] ids = new int[subset.length];
-
-            for (int i = 0; i < subset.length; i++) {
-                ids[i] = nodeLabel(subset[i]);
+            int[] ids = new int[subset.size()];
+            int i = 0;
+            for (Object obj : subset) {
+                ids[i] = nodeLabel(obj);
+                i++;
             }
 
             return _leastElementNodeId(ids);
@@ -673,12 +679,13 @@ public class DirectedAcyclicGraph extends DirectedGraph implements CPO {
     // should work when subset.length = 0, in which case the top or bottom
     // of this CPO is returned, depending on whether the lub or the glb
     // is computed.
-    private Object _lubShared(Object[] subset) {
+    private Object _lubShared(Set<?> subset) {
         // convert all elements to their IDs
-        int[] subsetId = new int[subset.length];
-
-        for (int i = 0; i < subset.length; i++) {
-            subsetId[i] = nodeLabel(subset[i]);
+        int[] subsetId = new int[subset.size()];
+        int k = 0;
+        for (Object obj : subset) {
+            subsetId[k] = nodeLabel(obj);
+            k++;
         }
 
         // find all the upper bounds

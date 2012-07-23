@@ -30,6 +30,7 @@ package ptolemy.data.ontologies.lattice.unit;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 
@@ -736,8 +737,7 @@ public class DerivedUnitConcept extends UnitConcept {
                 throw new IllegalActionException("The ontology " + unitOntology
                         + " has a null concept graph.");
             }
-            return conceptGraph.leastUpperBound(allDimensionlessConcepts
-                    .toArray());
+            return conceptGraph.leastUpperBound(new HashSet<Concept>(allDimensionlessConcepts));
         }
     }
 
@@ -805,7 +805,7 @@ public class DerivedUnitConcept extends UnitConcept {
         } else {
             Ontology unitOntology = candidateUnits.get(0).getOntology();
             return unitOntology.getConceptGraph().leastUpperBound(
-                    candidateUnits.toArray());
+                    new HashSet<Concept>(candidateUnits));
         }
     }
 

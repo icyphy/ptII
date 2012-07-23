@@ -24,6 +24,7 @@
  */
 package ptolemy.data.ontologies;
 
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -198,7 +199,7 @@ public class ExpressionConceptFunctionParseTreeEvaluator extends
         if (node.getFunctionName().compareTo("lub") == 0) {
             CPO cpo = ((Ontology) argValues.get(0).getContainer())
                     .getConceptGraph();
-            Concept bound = (Concept) cpo.leastUpperBound(argValues.toArray());
+            Concept bound = (Concept) cpo.leastUpperBound(new HashSet<Concept>(argValues));
             _evaluatedChildToken = new ConceptToken(bound);
             return;
         }

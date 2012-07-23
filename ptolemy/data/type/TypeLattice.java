@@ -27,6 +27,9 @@
  */
 package ptolemy.data.type;
 
+import java.util.Iterator;
+import java.util.Set;
+
 import ptolemy.data.ActorToken;
 import ptolemy.data.Token;
 import ptolemy.graph.CPO;
@@ -189,7 +192,7 @@ public class TypeLattice {
     ///////////////////////////////////////////////////////////////////
     ////                         inner class                       ////
     // The infinite type lattice
-    private static class TheTypeLattice implements CPO {
+    private static class TheTypeLattice implements CPO<Object> {
         /** Return the bottom element of the type lattice, which is UNKNOWN.
          *  @return The Type object representing UNKNOWN.
          */
@@ -460,18 +463,19 @@ public class TypeLattice {
          *  @param subset an array of Types.
          *  @return an instance of Type.
          */
-        public Object greatestLowerBound(Object[] subset) {
+        public Object greatestLowerBound(Set<Object> subset) {
             synchronized (TypeLattice.class) {
-                if (subset.length == 0) {
+                if (subset.size() == 0) {
                     return BaseType.GENERAL;
                 }
 
-                Object glb = subset[0];
-
+                Iterator<?> itr = subset.iterator();
+                Object glb = itr.next();
+                
                 // start looping from index 0 so that subset[0] is checked for
                 // possible exception, in case the subset has only one element.
-                for (int i = 0; i < subset.length; i++) {
-                    glb = greatestLowerBound(glb, subset[i]);
+                while (itr.hasNext()) {
+                    glb = greatestLowerBound(glb, itr.next());
                 }
 
                 return glb;
@@ -488,17 +492,17 @@ public class TypeLattice {
          *  @param subset an array of Types.
          *  @return A Type or null.
          */
-        public Object greatestElement(Object[] subset) {
+        public Object greatestElement(Set<Object> subset) {
             synchronized (TypeLattice.class) {
                 // Compare each element with all of the other elements to search
                 // for the greatest one. This is a simple, brute force algorithm,
                 // but may be inefficient. A more efficient one is used in
                 // the graph package, but more complex.
-                for (int i = 0; i < subset.length; i++) {
+                for (Object o1: subset) {
                     boolean isGreatest = true;
 
-                    for (int j = 0; j < subset.length; j++) {
-                        int result = compare(subset[i], subset[j]);
+                    for (Object o2 : subset) {
+                        int result = compare(o1, o2);
 
                         if ((result == CPO.LOWER)
                                 || (result == CPO.INCOMPARABLE)) {
@@ -508,7 +512,7 @@ public class TypeLattice {
                     }
 
                     if (isGreatest == true) {
-                        return subset[i];
+                        return o1;
                     }
                 }
                 // Otherwise, the subset does not contain a greatest element.
@@ -533,17 +537,17 @@ public class TypeLattice {
          *  @param subset an array of Types.
          *  @return A Type or null.
          */
-        public Object leastElement(Object[] subset) {
+        public Object leastElement(Set<Object> subset) {
             synchronized (TypeLattice.class) {
                 // Compare each element with all of the other elements to search
                 // for the least one. This is a simple, brute force algorithm,
                 // but may be inefficient. A more efficient one is used in
                 // the graph package, but more complex.
-                for (int i = 0; i < subset.length; i++) {
+                for (Object o1 : subset) {
                     boolean isLeast = true;
 
-                    for (int j = 0; j < subset.length; j++) {
-                        int result = compare(subset[i], subset[j]);
+                    for (Object o2 : subset) {
+                        int result = compare(o1, o2);
 
                         if ((result == CPO.HIGHER)
                                 || (result == CPO.INCOMPARABLE)) {
@@ -553,7 +557,7 @@ public class TypeLattice {
                     }
 
                     if (isLeast == true) {
-                        return subset[i];
+                        return o1;
                     }
                 }
                 // Otherwise, the subset does not contain a least element.
@@ -699,18 +703,19 @@ public class TypeLattice {
          *  @param subset an array of Types.
          *  @return an instance of Type.
          */
-        public Object leastUpperBound(Object[] subset) {
+        public Object leastUpperBound(Set<Object> subset) {
             synchronized (TypeLattice.class) {
-                if (subset.length == 0) {
+                if (subset.size() == 0) {
                     return BaseType.UNKNOWN;
                 }
 
-                Object lub = subset[0];
+                Iterator<?> itr = subset.iterator();
+                Object lub = itr.next();
 
                 // start looping from index 0 so that subset[0] is checked for
                 // possible exception, in case the subset has only one element.
-                for (int i = 0; i < subset.length; i++) {
-                    lub = leastUpperBound(lub, subset[i]);
+                while (itr.hasNext()) {
+                    lub = leastUpperBound(lub, itr.next());
                 }
 
                 return lub;
