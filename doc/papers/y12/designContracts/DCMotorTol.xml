@@ -1,7 +1,7 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="tol" class="ptolemy.actor.TypedCompositeActor">
+<entity name="DCMotorTol" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.0.devel">
     </property>
     <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={114, 104, 841, 634}, maximized=false}">
@@ -97,7 +97,7 @@
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Model of a DC motor with the TOL contract.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-355.0, 275.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-355.0, 270.0]">
         </property>
     </property>
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -105,7 +105,7 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Authors: Patricia Derler, Martin Toerngren, Stavros Tripakis">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-355.0, 305.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-355.0, 300.0]">
         </property>
     </property>
     <entity name="Discrete Controller" class="ptolemy.actor.TypedCompositeActor">
