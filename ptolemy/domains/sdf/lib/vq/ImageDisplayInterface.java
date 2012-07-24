@@ -1,5 +1,6 @@
-/* 
- Interface encapsulating platform dependent code of the ImageDisplay from the 
+/*
+ Interface encapsulating platform dependent code of the
+ ptolemy.domains.sdf.lib.vq.ImageDisplay from the
  platform independent parts.
 
  @Copyright (c) 1998-2012 The Regents of the University of California.
@@ -33,14 +34,15 @@ package ptolemy.domains.sdf.lib.vq;
 //////////////////////////////////////////////////////////////////////////
 ////ImageDisplayInterface
 /**
-* Interface encapsulating platform dependent code of the ImageDisplay from the 
+* Interface encapsulating platform dependent code of the
+* ptolemy.domains.sdf.lib.vq.ImageDisplay from the
 * platform independent parts.
 * @author Jianwu Wang
-* @version $Id: ImageDisplayInterface.java 62159 2011-09-29 05:53:34Z cxh $ 
+* @version $Id$
 * @since Ptolemy II 8.1
-* @Pt.ProposedRating Red (cxh)
-* @Pt.AcceptedRating Red (cxh)
+* @Pt.ProposedRating
+* @Pt.AcceptedRating
 */
 public interface ImageDisplayInterface extends ptolemy.actor.lib.image.ImageDisplayInterface {
-	
+
 }

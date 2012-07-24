@@ -109,6 +109,14 @@ public class MonitorValue extends Sink implements PortablePlaceable {
         value.validate();
     }
 
+    /** Place the visual representation of the actor into the specified container.
+     *  @param container The container in which to place the object, or
+     *   null to specify that there is no current container.
+     */
+    public void place(PortableContainer container) {
+        _getImplementation().place(container);
+    }
+
     /** Read at most one token from the input and record its value.
      *  @exception IllegalActionException If there is no director.
      *  @return True.
@@ -127,23 +135,15 @@ public class MonitorValue extends Sink implements PortablePlaceable {
         return true;
     }
 
-    /** Place the visual representation of the actor into the specified container.
-     *  @param container The container in which to place the object, or
-     *   null to specify that there is no current container.
-     */
-    public void place(PortableContainer container) {
-        _getImplementation().place(container);
-    }
-
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
     /** Get the right instance of the implementation depending upon the
      *  of the dependency specified through dependency injection.
      *  If the instance has not been created, then it is created.
-     *  If the instance already exists then return the same. 
+     *  If the instance already exists then return the same.
      *
-     *	<p>This code is used as part of the dependency injection needed for the
+     *        <p>This code is used as part of the dependency injection needed for the
      *  HandSimDroid project, see $PTII/ptserver.  This code uses dependency
      *  inject to determine what implementation to use at runtime.
      *  This method eventually reads ptolemy/actor/ActorModule.properties.
@@ -154,16 +154,16 @@ public class MonitorValue extends Sink implements PortablePlaceable {
      */
     private TextFieldContainerInterface _getImplementation() {
         if (_implementation == null) {
-	    if (PtolemyInjector.getInjector() == null) {
-		System.err.println("Warning: main() did not call "
-			       + "ActorModuleInitializer.initializeInjector(), "
-			       + "so Monitor is calling it for you.");
-		ActorModuleInitializer.initializeInjector();
-	    }
+            if (PtolemyInjector.getInjector() == null) {
+                System.err.println("Warning: main() did not call "
+                               + "ActorModuleInitializer.initializeInjector(), "
+                               + "so Monitor is calling it for you.");
+                ActorModuleInitializer.initializeInjector();
+            }
             _implementation = PtolemyInjector.getInjector().getInstance(
                     TextFieldContainerInterface.class);
         }
-        
+
         try {
             _implementation.init(this);
         } catch (NameDuplicationException e) {
@@ -173,7 +173,7 @@ public class MonitorValue extends Sink implements PortablePlaceable {
             throw new InternalErrorException(this, e,
                     "Failed to initialize implementation");
         }
-        
+
         return _implementation;
     }
 
@@ -183,5 +183,5 @@ public class MonitorValue extends Sink implements PortablePlaceable {
 
     /** Implementation of the MonitorValueInterface. */
     private TextFieldContainerInterface _implementation;
-}   
+}
 

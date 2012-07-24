@@ -1,5 +1,5 @@
-/* 
- Interface encapsulating platform dependent code of the ImageDisplay from the 
+/*
+ Interface encapsulating platform dependent code of the ImageDisplay from the
  platform independent parts.
 
  @Copyright (c) 1998-2012 The Regents of the University of California.
@@ -39,21 +39,21 @@ import ptolemy.kernel.util.NameDuplicationException;
 //////////////////////////////////////////////////////////////////////////
 ////ImageDisplayInterface
 /**
-* Interface encapsulating platform dependent code of the ImageDisplay from the 
+* Interface encapsulating platform dependent code of the ImageDisplay from the
 * platform independent parts.
 * @author Jianwu Wang
-* @version $Id: ImageDisplayInterface.java 62159 2011-09-29 05:53:34Z cxh $ 
+* @version $Id$
 * @since Ptolemy II 8.1
-* @Pt.ProposedRating Red (ahuseyno)
-* @Pt.AcceptedRating Red (ahuseyno)
+* @Pt.ProposedRating
+* @Pt.AcceptedRating
 */
 public interface ImageDisplayInterface {
-	
+
     /**
-     * Free up memory when closing. 
+     * Free up memory when closing.
      */
     public void cleanUp();
-	
+
     /** Display the specified token.
      *  @param in The token to display
      */
@@ -64,7 +64,7 @@ public interface ImageDisplayInterface {
      *  @see #setBackground(Color)
      */
     public Color getBackground();
-    
+
     /**
      * Get the image's frame.
      * @return the image's frame.
@@ -78,7 +78,7 @@ public interface ImageDisplayInterface {
      * @see #setPicture(Object)
      */
     public Object getPicture();
-    
+
     /**
      * Get the platform dependent container that contains the image.
      * @return the platform dependent container.
@@ -91,8 +91,8 @@ public interface ImageDisplayInterface {
      * @return the image tableau.
      */
     public Object getTableau();
-	
-    /** initiate function. 
+
+    /** initiate function.
      * @param object of the ImageDisplay actor.
      * @exception IllegalActionException If the entity cannot be contained
      * by the proposed container.
@@ -101,33 +101,33 @@ public interface ImageDisplayInterface {
      */
     public void init(ImageDisplay imageDisplay) throws IllegalActionException,
             NameDuplicationException;
-    
+
     /**
-     * Initialize the effigy of the plotter.
+     * Initialize the effigy of the image.
      * @exception IllegalActionException If there is a problem initializing the effigy
      */
     public void initializeEffigy() throws IllegalActionException;
-    
+
     /**
      * Initialize window and size attributes.
-     * @exception IllegalActionException if there is a problem creating the attributes.
-     * @exception NameDuplicationException if there is a problem creating the attributes.
+     * @exception IllegalActionException If there is a problem creating the attributes.
+     * @exception NameDuplicationException If there is a problem creating the attributes.
      */
     public void initWindowAndSizeProperties() throws IllegalActionException,
             NameDuplicationException;
 
-    
+
     /** place container
      *  @param container The Container to be placed.
      */
     public void placeContainer(Container container);
-    
+
     /** Set the background.
      *  @param background The background color.
      *  @see #getBackground()
      */
     public void setBackground(Color background);
-    
+
     /**
      * Set the frame of the image.
      * @param frame The frame to set.
@@ -136,19 +136,19 @@ public interface ImageDisplayInterface {
     public void setFrame(Object frame);
 
     /**
-     * Set the platform dependent container of the image.
-     * The container can be AWT container or Android view.
-     * @param container the platform dependent container.
-     * @see #getPlatformContainer()
-     */
-    public void setPlatformContainer(Object container);
-    
-    /**
      * Set the platform dependent picture of the image.
      * The container can be AWT container or Android view.
      * @param container the platform dependent container.
      * @see #getPlatformContainer()
      */
     public void setPicture(Object picture);
+
+    /**
+     * Set the platform dependent container of the image.
+     * The container can be AWT container or Android view.
+     * @param container the platform dependent container.
+     * @see #getPlatformContainer()
+     */
+    public void setPlatformContainer(Object container);
 
 }

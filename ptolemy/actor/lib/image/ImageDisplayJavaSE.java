@@ -1,4 +1,4 @@
-/* An AWT and Swing implementation of the the ImageDisplayInterface 
+/* An AWT and Swing implementation of the the ImageDisplayInterface
  that displays a java.awt.Image.
 
  @Copyright (c) 1998-2012 The Regents of the University of California.
@@ -61,31 +61,33 @@ import ptolemy.media.Picture;
 
 /**
 <p>
-ImageDisplayJavaSE is the implementation of the ImageDisplayInterface that uses AWT and Swing 
+ImageDisplayJavaSE is the implementation of the ImageDisplayInterface that uses AWT and Swing
 classes.</p>
 
-@author James Yeh, Edward A. Lee, Jianwu Wang
-@version $Id: ImageDisplayJavaSE.java 62778 2012-01-12 04:21:43Z cxh $
+@author Jianwu Wang, Based on code by James Yeh, Edward A. Lee
+@version $Id$
 @since Ptolemy II 8.1
+@Pt.ProposedRating
+@Pt.AcceptedRating
 */
 
 public class ImageDisplayJavaSE extends AbstractPlaceableJavaSE implements
-		ImageDisplayInterface {
+                ImageDisplayInterface {
 
     ///////////////////////////////////////////////////////////////////
-    ////                         public methods                    ////	
+    ////                         public methods                    ////
     /**
-     * Free up memory when closing. 
+     * Free up memory when closing.
      */
     public void cleanUp() {
         _tableau = null;
     }
-	
+
     /** Display the specified token. This must be called in the Swing
      *  event thread.
      *  @param in The token to display
      */
-	public void display(final Token in) {
+    public void display(final Token in) {
         // Display probably to be done in the Swing event thread.
         Runnable doDisplay = new Runnable() {
             public void run() {
@@ -94,8 +96,8 @@ public class ImageDisplayJavaSE extends AbstractPlaceableJavaSE implements
         };
 
         SwingUtilities.invokeLater(doDisplay);
-    }	
-	
+    }
+
     /** Get the background.
      *  @return The background color.
      *  @see #setBackground(Color)
@@ -103,26 +105,43 @@ public class ImageDisplayJavaSE extends AbstractPlaceableJavaSE implements
     public Color getBackground() {
         return _container.getBackground();
     }
-    
-	public Object getFrame() {
-		return _frame;
-	}
 
-	public Object getPicture() {
-		return _picture;
-	}
-	
-	public Object getPlatformContainer() {
-		return _container;
-	}
+    /**
+     * Get the image's frame.
+     * @return the image's frame.
+     * @see #setFrame(Object)
+     */
+    public Object getFrame() {
+            return _frame;
+    }
 
-	@Override
-	public Object getTableau() {
-		// TODO Auto-generated method stub
-		return _tableau;
-	}
-	
-    /** initiate function. 
+    /**
+     * Get the platform dependent picture that contains the image.
+     * @return the platform dependent container.
+     * @see #setPicture(Object)
+     */
+    public Object getPicture() {
+            return _picture;
+    }
+
+    /**
+     * Get the platform dependent container that contains the image.
+     * @return the platform dependent container.
+     * @see #setPlatformContainer(Object)
+     */
+    public Object getPlatformContainer() {
+            return _container;
+    }
+
+    /**
+     * Get the image tableau.
+     * @return the image tableau.
+     */
+    public Object getTableau() {
+            return _tableau;
+    }
+
+    /** initiate function.
      * @param object of the ImageDisplay actor.
      * @exception IllegalActionException If the entity cannot be contained
      * by the proposed container.
@@ -135,8 +154,11 @@ public class ImageDisplayJavaSE extends AbstractPlaceableJavaSE implements
         super.init(imageDisplayActor);
     }
 
-	@Override
-	public void initializeEffigy() throws IllegalActionException {
+    /**
+     * Initialize the effigy of the image.
+     * @exception IllegalActionException If there is a problem initializing the effigy
+     */
+    public void initializeEffigy() throws IllegalActionException {
         // This has to be done in the Swing event thread.
         Runnable doDisplay = new Runnable() {
             public void run() {
@@ -144,9 +166,9 @@ public class ImageDisplayJavaSE extends AbstractPlaceableJavaSE implements
             }
         };
 
-        SwingUtilities.invokeLater(doDisplay);		
-	}
-	
+        SwingUtilities.invokeLater(doDisplay);
+    }
+
     /**
      * Initialize the effigy of the plotter.
      * @exception IllegalActionException If there is a problem initializing the effigy
@@ -154,7 +176,7 @@ public class ImageDisplayJavaSE extends AbstractPlaceableJavaSE implements
     public void initWindowAndSizeProperties() throws IllegalActionException,
             NameDuplicationException {
         _windowProperties = (WindowPropertiesAttribute)
-        		_display.getAttribute("_windowProperties", WindowPropertiesAttribute.class);
+                        _display.getAttribute("_windowProperties", WindowPropertiesAttribute.class);
         if (_windowProperties == null) {
             _windowProperties = new WindowPropertiesAttribute(_display, "_windowProperties");
             // Note that we have to force this to be persistent because
@@ -166,10 +188,10 @@ public class ImageDisplayJavaSE extends AbstractPlaceableJavaSE implements
             _windowProperties.setPersistent(true);
         }
         _pictureSize = (SizeAttribute)
-        		_display.getAttribute("_pictureSize", SizeAttribute.class);
+                        _display.getAttribute("_pictureSize", SizeAttribute.class);
         if (_pictureSize == null) {
-        	_pictureSize = new SizeAttribute(_display, "_pictureSize");
-        	_pictureSize.setPersistent(true);
+                _pictureSize = new SizeAttribute(_display, "_pictureSize");
+                _pictureSize.setPersistent(true);
         }
     }
 
@@ -220,17 +242,21 @@ public class ImageDisplayJavaSE extends AbstractPlaceableJavaSE implements
         // Place the pane in supplied container.
         _container.add(_picture, BorderLayout.CENTER);
     }
-    
+
     /** Set the background.
      *  @param background The background color.
      *  @see #getBackground()
      */
     public void setBackground(Color background) {
-    	_container.setBackground(background);
+            _container.setBackground(background);
     }
-    
-	@Override
-	public void setFrame(Object frame) {
+
+    /**
+     * Set the frame of the image.
+     * @param frame The frame to set.
+     * @see #getFrame()
+     */
+    public void setFrame(Object frame) {
         if (_frame != null) {
             _frame.removeWindowListener(_windowClosingAdapter);
         }
@@ -241,12 +267,12 @@ public class ImageDisplayJavaSE extends AbstractPlaceableJavaSE implements
         }
 
         _frame = (ImageWindow) frame;
-        
+
         _windowClosingAdapter = new WindowClosingAdapter();
         _frame.addWindowListener(_windowClosingAdapter);
-        
-        _windowProperties.setProperties(_frame);		
-	}
+
+        _windowProperties.setProperties(_frame);
+    }
 
     /**
      * Set the platform dependent picture of the image.
@@ -257,7 +283,7 @@ public class ImageDisplayJavaSE extends AbstractPlaceableJavaSE implements
     public void setPicture(Object picture) {
         _picture = (Picture) picture;
     }
-	
+
     /**
      * Set the platform dependent container of the image.
      * The container can be AWT container or Android view.
@@ -269,8 +295,34 @@ public class ImageDisplayJavaSE extends AbstractPlaceableJavaSE implements
     }
 
     ///////////////////////////////////////////////////////////////////
+    ////                         protected variables               ////
+    /** The container for the image display, set by calling place(). */
+    protected Container _container;
+
+    /** The effigy for the image data. */
+    protected TokenEffigy _effigy;
+
+    /** The frame, if one is used. */
+    protected ImageWindow _frame;
+
+    /** The picture panel. */
+    protected Picture _picture;
+
+    /** A reference to the listener for removal purposes. */
+    protected WindowClosingAdapter _windowClosingAdapter;
+
+    /** An attribute that contains the size and position of the window. */
+    protected WindowPropertiesAttribute _windowProperties;
+
+    /** The horizontal size of the previous image. */
+    protected int _oldXSize = 0;
+
+    /** The vertical size of the previous image. */
+    protected int _oldYSize = 0;
+
+    ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
-    
+
     /** Create or show the top-level window, unless there already is a
      *  container. This must be called in the Swing event thread.
      */
@@ -334,7 +386,7 @@ public class ImageDisplayJavaSE extends AbstractPlaceableJavaSE implements
             _frame.toFront();
         }
     }
-    
+
     /** Display the specified token. This must be called in the Swing
      *  event thread.
      *  @param in The token to display
@@ -396,41 +448,15 @@ public class ImageDisplayJavaSE extends AbstractPlaceableJavaSE implements
             }
         }
     }
-	
-    ///////////////////////////////////////////////////////////////////
-    ////                         protected variables               ////
-    /** The container for the image display, set by calling place(). */
-    protected Container _container;
-    
-    /** The effigy for the image data. */
-    protected TokenEffigy _effigy;
-    
-    /** The frame, if one is used. */
-    protected ImageWindow _frame;
-    
-    /** The picture panel. */
-    protected Picture _picture;
-    
-    /** A reference to the listener for removal purposes. */
-    protected WindowClosingAdapter _windowClosingAdapter;
-       
-    /** An attribute that contains the size and position of the window. */
-    protected WindowPropertiesAttribute _windowProperties;
-    
-    /** The horizontal size of the previous image. */
-    protected int _oldXSize = 0;
 
-    /** The vertical size of the previous image. */
-    protected int _oldYSize = 0;
-    
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
     /** Reference to the ImageDisplay actor */
     private ImageDisplay _display;
-    
+
     /** The tableau with the display, if any. */
     private ImageTableau _tableau;
-    
+
     /** A specification of the size of the picture if it's in its own window.
      */
     private SizeAttribute _pictureSize;
@@ -474,11 +500,11 @@ public class ImageDisplayJavaSE extends AbstractPlaceableJavaSE implements
             return true;
         }
     }
-    
+
     /** Listener for windowClosing action. */
     class WindowClosingAdapter extends WindowAdapter {
         public void windowClosing(WindowEvent e) {
-        	_display.cleanUp();
+                _display.cleanUp();
         }
     }
 }

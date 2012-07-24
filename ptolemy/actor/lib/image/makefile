@@ -50,8 +50,8 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 JSRCS = \
 	ImageDisplay.java \
 	ImageDisplayInterface.java \
-	ImageDisplayJavaSE.java \
-	ImageReader.java \
+        ImageDisplayJavaSE.java \
+        ImageReader.java \
 	ImageRotate.java \
 	ImageTableau.java \
 	ImageToString.java \
@@ -72,16 +72,12 @@ MISC_FILES =	$(DIRS)
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
 	$(PTCLASSJAR) \
-	'ImageDisplay$$1.class' \
-	'ImageDisplay$$2.class' \
-	'ImageDisplay$$_PictureFrame.class' \
-	'ImageDisplay$$Factory.class' \
-	'ImageDisplay$$ImageWindow.class' \
-	'ImageTableau$$Factory.class' \
 	'ImageDisplayJavaSE$$1.class' \
 	'ImageDisplayJavaSE$$2.class' \
+	'ImageDisplayJavaSE$$_PictureFrame.class' \
+	'ImageDisplayJavaSE$$Factory.class' \
 	'ImageDisplayJavaSE$$ImageWindow.class' \
-	'ImageDisplayJavaSE$$WindowClosingAdapter.class'
+	'ImageTableau$$Factory.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 

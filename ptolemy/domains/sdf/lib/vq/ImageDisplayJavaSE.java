@@ -1,7 +1,7 @@
-/* An AWT and Swing implementation of the the ImageDisplayInterface 
+/* An AWT and Swing implementation of the the ImageDisplayInterface
  that displays a Black and White image on the screen using the Picture class.
 
- @Copyright (c) 2012 The Regents of the University of California.
+ @Copyright (c) 1998-2012 The Regents of the University of California.
  All rights reserved.
 
  Permission is hereby granted, without written agreement and without
@@ -36,6 +36,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import javax.swing.JFrame;
+import javax.swing.SwingUtilities;
 
 import ptolemy.data.AWTImageToken;
 import ptolemy.data.IntMatrixToken;
@@ -49,19 +50,77 @@ import ptolemy.media.Picture;
 
 /**
 <p>
-ImageDisplayJavaSE is the implementation of the ImageDisplayInterface that uses AWT and Swing 
+ImageDisplayJavaSE is the implementation of the ImageDisplayInterface that uses AWT and Swing
 classes.</p>
 
-@author Jianwu Wang, Based on code by James Yeh, Edward A. Lee, 
-@version $Id: ImageDisplayJavaSE.java 62778 2012-01-12 04:21:43Z cxh $
+@author Jianwu Wang, Based on code by James Yeh, Edward A. Lee
+@version $Id$
 @since Ptolemy II 8.1
+@Pt.ProposedRating
+@Pt.AcceptedRating
 */
+
 public class ImageDisplayJavaSE extends
 		ptolemy.actor.lib.image.ImageDisplayJavaSE implements ptolemy.domains.sdf.lib.vq.ImageDisplayInterface {
 
     ///////////////////////////////////////////////////////////////////
-    ////                         public methods                    ////	
-    
+    ////                         public methods                    ////
+	
+    /** Display the specified token. This must be called in the Swing
+     *  event thread.
+     *  @param in The token to display
+     */
+    public void display(final Token in) {
+        // Display probably to be done in the Swing event thread.
+        Runnable doDisplay = new Runnable() {
+            public void run() {
+                _display(in);
+            }
+        };
+
+        SwingUtilities.invokeLater(doDisplay);
+    }
+	
+	
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
+
+    /** Convert an IntMatrixToken to a Packed RGB Image.
+     *  @param token An IntMatrixToken defining the black and white image.
+     *  @return A packed RGB array of integers
+     */
+    private int[] _convertBWImageToPackedRGBImage(IntMatrixToken token) {
+        int[][] frame = token.intMatrix();
+        int xSize = token.getColumnCount();
+        int ySize = token.getRowCount();
+
+        int[] RGBbuffer = new int[xSize * ySize];
+
+        // convert the B/W image to a packed RGB image.  This includes
+        // flipping the image upside down.  (When it is drawn, it gets
+        // drawn from bottom up).
+        int i;
+
+        // convert the B/W image to a packed RGB image.  This includes
+        // flipping the image upside down.  (When it is drawn, it gets
+        // drawn from bottom up).
+        int j;
+
+        // convert the B/W image to a packed RGB image.  This includes
+        // flipping the image upside down.  (When it is drawn, it gets
+        // drawn from bottom up).
+        int index = 0;
+
+        for (j = ySize - 1; j >= 0; j--) {
+            for (i = 0; i < xSize; i++, index++) {
+                RGBbuffer[index] = (255 << 24) | ((frame[j][i] & 255) << 16)
+                        | ((frame[j][i] & 255) << 8) | (frame[j][i] & 255);
+            }
+        }
+
+        return RGBbuffer;
+    }
+
     /** Display the specified token. This must be called in the Swing
      *  event thread.
      *  @param in The token to display.
@@ -136,45 +195,6 @@ public class ImageDisplayJavaSE extends
                 _picture.repaint();
             }
         }
-    }
-    
-    ///////////////////////////////////////////////////////////////////
-    ////                         private methods                   ////
-
-    /** Convert an IntMatrixToken to a Packed RGB Image.
-     *  @param token An IntMatrixToken defining the black and white image.
-     *  @return A packed RGB array of integers
-     */
-    private int[] _convertBWImageToPackedRGBImage(IntMatrixToken token) {
-        int[][] frame = token.intMatrix();
-        int xSize = token.getColumnCount();
-        int ySize = token.getRowCount();
-
-        int[] RGBbuffer = new int[xSize * ySize];
-
-        // convert the B/W image to a packed RGB image.  This includes
-        // flipping the image upside down.  (When it is drawn, it gets
-        // drawn from bottom up).
-        int i;
-
-        // convert the B/W image to a packed RGB image.  This includes
-        // flipping the image upside down.  (When it is drawn, it gets
-        // drawn from bottom up).
-        int j;
-
-        // convert the B/W image to a packed RGB image.  This includes
-        // flipping the image upside down.  (When it is drawn, it gets
-        // drawn from bottom up).
-        int index = 0;
-
-        for (j = ySize - 1; j >= 0; j--) {
-            for (i = 0; i < xSize; i++, index++) {
-                RGBbuffer[index] = (255 << 24) | ((frame[j][i] & 255) << 16)
-                        | ((frame[j][i] & 255) << 8) | (frame[j][i] & 255);
-            }
-        }
-
-        return RGBbuffer;
     }
 
 }

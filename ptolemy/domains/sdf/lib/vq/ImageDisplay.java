@@ -1,6 +1,6 @@
 /* Display an Black and White image on the screen using the Picture class.
 
- @Copyright (c) 2012 The Regents of the University of California.
+ @Copyright (c) 1998-2011 The Regents of the University of California.
  All rights reserved.
 
  Permission is hereby granted, without written agreement and without
@@ -55,7 +55,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  Java Advanced Imaging package and create an actor like
  $PTII/ptolemy/actor/lib/jai/DoubleMatrixToJAI.java.
 
- @author Steve Neuendorffer, Christopher Brooks, Jianwu Wang
+ @author Steve Neuendorffer, Christopher Brooks
  @version $Id$
  @since Ptolemy II 0.2
  @Pt.ProposedRating Yellow (neuendor)
@@ -76,17 +76,17 @@ public class ImageDisplay extends ptolemy.actor.lib.image.ImageDisplay {
 
         input.setTypeEquals(BaseType.INT_MATRIX);
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
-    
-    
+
+
     /** Get the right instance of the implementation depending upon the
      *  of the dependency specified through dependency injection.
      *  If the instance has not been created, then it is created.
-     *  If the instance already exists then return the same. 
+     *  If the instance already exists then return the same.
      *
-     *	<p>This code is used as part of the dependency injection needed for the
+     *        <p>This code is used as part of the dependency injection needed for the
      *  HandSimDroid project, see $PTII/ptserver.  This code uses dependency
      *  inject to determine what implementation to use at runtime.
      *  This method eventually reads ptolemy/actor/ActorModule.properties.
@@ -98,14 +98,14 @@ public class ImageDisplay extends ptolemy.actor.lib.image.ImageDisplay {
      */
     protected ImageDisplayInterface _getImplementation() {
         if (_implementation == null) {
-	    if (PtolemyInjector.getInjector() == null) {
-		System.err.println("Warning: main() did not call "
-			       + "ActorModuleInitializer.initializeInjector(), "
-			       + "so ImageDisplay is calling it for you.");
-		ActorModuleInitializer.initializeInjector();
-	    }
+            if (PtolemyInjector.getInjector() == null) {
+                System.err.println("Warning: main() did not call "
+                               + "ActorModuleInitializer.initializeInjector(), "
+                               + "so ImageDisplay is calling it for you.");
+                ActorModuleInitializer.initializeInjector();
+            }
             _implementation = PtolemyInjector.getInjector().getInstance(
-            		ImageDisplayInterface.class);
+                            ImageDisplayInterface.class);
             try {
                 _implementation.init(this);
             } catch (NameDuplicationException e) {
@@ -118,10 +118,10 @@ public class ImageDisplay extends ptolemy.actor.lib.image.ImageDisplay {
         }
         return _implementation;
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    
+
     // Implementation of the ImageDisplayInterface
     private ImageDisplayInterface _implementation;
 }

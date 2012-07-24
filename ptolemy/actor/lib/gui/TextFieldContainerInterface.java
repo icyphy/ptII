@@ -1,7 +1,7 @@
-/*  
+/*
  The instance of this class would be able to visualize the value of a token
  within a text field that is placed into a container.
- 
+
  Copyright (c) 2011 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
@@ -43,14 +43,14 @@ import ptolemy.kernel.util.NameDuplicationException;
  * within a text field that is placed into a container.  MonitorValue and Const are
  * two classes using it.
  * @author Ishwinder Singh
- * @version $Id$ 
+ * @version $Id$
  * @since Ptolemy II 8.1
  * @Pt.ProposedRating Red (ahuseyno)
  * @Pt.AcceptedRating Red (ahuseyno)
  */
 public interface TextFieldContainerInterface {
-	
-    /** Initiate. 
+
+    /** Initiate .
      * @param sink Object of the Sink actor.
      * @exception IllegalActionException If the entity cannot be contained
      * by the proposed container.

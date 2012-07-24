@@ -79,10 +79,10 @@ public class ImageDisplay extends Sink implements Placeable {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-    
+
     /** Free up memory when closing. */
     public void cleanUp() {
-    	_getImplementation().setFrame(null);
+            _getImplementation().setFrame(null);
         _getImplementation().cleanUp();
     }
 
@@ -99,23 +99,23 @@ public class ImageDisplay extends Sink implements Placeable {
 
         newObject._implementation = null;
         try {
-	        // See _getImplementation():
-		    if (PtolemyInjector.getInjector() == null) {
-			System.err.println("Warning: main() did not call "
-				       + "ActorModuleInitializer.initializeInjector(), "
-				       + "so ImageDisplayInterface.clone() is calling it for you.");
-			ActorModuleInitializer.initializeInjector();
-		    }
-		        newObject._implementation = PtolemyInjector.getInjector().getInstance(
-		        		ImageDisplayInterface.class);
-		        newObject._implementation.init(newObject);
-		        newObject._implementation.initWindowAndSizeProperties();
-	
-	    } catch (Exception e) {
-	        // This should not occur.
-	        throw new CloneNotSupportedException("Clone failed: " + e);
-	    }
-        
+                // See _getImplementation():
+                    if (PtolemyInjector.getInjector() == null) {
+                        System.err.println("Warning: main() did not call "
+                                       + "ActorModuleInitializer.initializeInjector(), "
+                                       + "so ImageDisplayInterface.clone() is calling it for you.");
+                        ActorModuleInitializer.initializeInjector();
+                    }
+                        newObject._implementation = PtolemyInjector.getInjector().getInstance(
+                                        ImageDisplayInterface.class);
+                        newObject._implementation.init(newObject);
+                        newObject._implementation.initWindowAndSizeProperties();
+
+            } catch (Exception e) {
+                // This should not occur.
+                throw new CloneNotSupportedException("Clone failed: " + e);
+            }
+
         return newObject;
     }
 
@@ -134,9 +134,7 @@ public class ImageDisplay extends Sink implements Placeable {
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
-        if ((_getImplementation().getFrame() == null) && ((_getImplementation().getPlatformContainer() == null))) {
-            _getImplementation().initializeEffigy();
-        }
+        _getImplementation().initializeEffigy();
     }
 
     /** Set the container that this actor should image display data in.  If place
@@ -166,19 +164,19 @@ public class ImageDisplay extends Sink implements Placeable {
      *  @see #getBackground()
      */
     public void setBackground(Color background) {
-    	_getImplementation().setBackground(background);
-    } 
+            _getImplementation().setBackground(background);
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
-    
-    
+
+
     /** Get the right instance of the implementation depending upon the
      *  of the dependency specified through dependency injection.
      *  If the instance has not been created, then it is created.
-     *  If the instance already exists then return the same. 
+     *  If the instance already exists then return the same.
      *
-     *	<p>This code is used as part of the dependency injection needed for the
+     *        <p>This code is used as part of the dependency injection needed for the
      *  HandSimDroid project, see $PTII/ptserver.  This code uses dependency
      *  inject to determine what implementation to use at runtime.
      *  This method eventually reads ptolemy/actor/ActorModule.properties.
@@ -190,14 +188,14 @@ public class ImageDisplay extends Sink implements Placeable {
      */
     protected ImageDisplayInterface _getImplementation() {
         if (_implementation == null) {
-	    if (PtolemyInjector.getInjector() == null) {
-		System.err.println("Warning: main() did not call "
-			       + "ActorModuleInitializer.initializeInjector(), "
-			       + "so ImageDisplay is calling it for you.");
-		ActorModuleInitializer.initializeInjector();
-	    }
+            if (PtolemyInjector.getInjector() == null) {
+                System.err.println("Warning: main() did not call "
+                               + "ActorModuleInitializer.initializeInjector(), "
+                               + "so ImageDisplay is calling it for you.");
+                ActorModuleInitializer.initializeInjector();
+            }
             _implementation = PtolemyInjector.getInjector().getInstance(
-            		ImageDisplayInterface.class);
+                            ImageDisplayInterface.class);
             try {
                 _implementation.init(this);
             } catch (NameDuplicationException e) {
@@ -213,7 +211,7 @@ public class ImageDisplay extends Sink implements Placeable {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    
+
     // Implementation of the ImageDisplayInterface
     private ImageDisplayInterface _implementation;
 
