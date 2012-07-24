@@ -51,7 +51,6 @@ import org.eclipse.jetty.util.resource.FileResource;
 import org.eclipse.jetty.util.resource.ResourceCollection;
 
 import ptolemy.actor.AbstractInitializableAttribute;
-import ptolemy.actor.CompositeActor;
 import ptolemy.data.IntToken;
 import ptolemy.data.expr.FileParameter;
 import ptolemy.data.expr.Parameter;
@@ -96,9 +95,15 @@ public class WebServer extends AbstractInitializableAttribute {
      * @throws IllegalActionException If the superclass throws it.
      * @throws NameDuplicationException If the superclass throws it.
      */
-    public WebServer(CompositeActor container, String name)
+    public WebServer(NamedObj container, String name)
+        throws IllegalActionException, NameDuplicationException {
+        super(container, name);
+    
+        /*
+    public WebServer(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
+        */
         
         port = new Parameter(this, "port");
         port.setTypeEquals(BaseType.INT);
@@ -127,10 +132,20 @@ public class WebServer extends AbstractInitializableAttribute {
         resourceLocation = new FileParameter(this, "resourceLocation");
         URI modelURI = URIAttribute.getModelURI(this);
         // Get the directory excluding the model's name
-        String path = modelURI.getPath().toString();
-        int slash = path.lastIndexOf("/");
-        if (slash != -1) {
-            path = path.substring(0, slash);
+        // This may be null for newly created models that have not been saved
+        // In that case, default to the temporary directory
+        // FIXME:  Register an attributeChanged event for when a model is saved
+        // to update this directory?
+        String path;
+        if (modelURI != null && modelURI.getPath() != null 
+                && !modelURI.getPath().isEmpty()) {
+            path = modelURI.getPath().toString();
+            int slash = path.lastIndexOf("/");
+            if (slash != -1) {
+                path = path.substring(0, slash);
+            }
+        } else {
+            path = "$TMPDIR";
         }
         resourceLocation.setExpression(path);
         

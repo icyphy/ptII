@@ -43,7 +43,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import ptolemy.actor.CompositeActor;
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.lib.MicrostepDelay;
@@ -57,6 +56,7 @@ import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.StringParameter;
 import ptolemy.data.type.BaseType;
+import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -111,7 +111,7 @@ public class HttpActor extends TypedAtomicActor implements HttpService {
      *  @throws IllegalActionException If the superclass throws it.
      *  @throws NameDuplicationException If the super
      */
-    public HttpActor(CompositeActor container, String name)
+    public HttpActor(CompositeEntity container, String name)
         throws IllegalActionException, NameDuplicationException {
         super(container, name);
         
