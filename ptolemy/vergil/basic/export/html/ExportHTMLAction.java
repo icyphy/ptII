@@ -821,12 +821,29 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable, 
             for (String key : _contents.keySet()) {
                 if (!key.equals("end") && !key.equals("head")
                         && !key.equals("start") && !key.equals("tocContents")) {
+                    if (key.equals("")) {
+                        // FIXME: I'm not sure why the key would be
+                        // empty but the command below requires it:
+                        
+                        // (cd $PTII/doc/papers/y12/designContracts; $PTII/bin/ptinvoke -Dptolemy.ptII.exportHTML.linkToJNLP=true -Dptolemy.ptII.exportHTML.usePtWebsite=true ptolemy.vergil.basic.export.ExportModel -run -whiteBackground -openComposites htm DCMotorTol.xml)
+
+                        System.out.println("Warning, key of tocContents was empty?");
+                        continue;
+                    }
                     // NOTE: A RESTful version of this would create a resource
                     // that could be addressed by a URL. For now, we just
                     // write to a file. Java documentation doesn't say
                     // whether the following overwrites a pre-existing file,
                     // but it does seem to do that, so I assume that's what it does.
-                    Writer fileWriter = new FileWriter(new File(parameters.directoryToExportTo, key));
+                    Writer fileWriter = null;
+                    try {
+                        fileWriter = new FileWriter(new File(parameters.directoryToExportTo, key));
+                    } catch (IOException ex) {
+                        throw new IllegalActionException(model, ex, "Could not open a FileWriter "
+                                + "in directory \"" + parameters.directoryToExportTo + "\" and file \""
+                                + key + "\".");
+
+                    }
                     PrintWriter otherWriter = new PrintWriter(fileWriter);
                     List<StringBuffer> contents = _contents.get(key);
                     for (StringBuffer line : contents) {
