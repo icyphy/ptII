@@ -837,7 +837,7 @@ public class PtolemyPlatform implements Platform {
 
         public Object createCharacter(char c) {
             try {
-                return new ObjectToken(new Character(c));
+                return new ObjectToken(Character.valueOf(c));
             } catch (IllegalActionException iae) {
                 throw new InterpreterException(
                         "Failed to create character value.");

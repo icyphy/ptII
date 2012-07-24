@@ -69,7 +69,7 @@ public class Discard extends JavaCodeGeneratorHelper {
         ptolemy.actor.lib.Discard actor = (ptolemy.actor.lib.Discard) getComponent();
 
         for (int i = 0; i < actor.input.getWidth(); i++) {
-            args.set(0, new Integer(i));
+            args.set(0, Integer.valueOf(i));
             code.append(_generateBlockCode("fireBlock", args));
         }
         return processCode(code.toString());

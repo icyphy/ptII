@@ -322,7 +322,7 @@ public class PthalesAtomicActor extends TypedAtomicActor {
                 int len = ((ArrayToken) token).length();
                 result = new Integer[len];
                 for (int i = 0; i < len; i++) {
-                    result[i] = new Integer(
+                    result[i] = Integer.valueOf(
                             ((IntToken) ((ArrayToken) token).getElement(i))
                                     .intValue());
                 }

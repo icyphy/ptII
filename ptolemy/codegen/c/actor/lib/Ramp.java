@@ -67,7 +67,7 @@ public class Ramp extends CCodeGeneratorHelper {
         ArrayList args = new ArrayList();
         args.add(new Integer(0));
         for (int i = 0; i < actor.trigger.getWidth(); i++) {
-            args.set(0, new Integer(i));
+            args.set(0, Integer.valueOf(i));
             code.append(_generateBlockCode("getTriggerTokens", args));
         }
 

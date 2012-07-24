@@ -51,7 +51,7 @@ public class MinimumDistanceCalculator extends Attribute {
         // a reference to the node itself.
         Map<Object, Integer> entityToIndex = new HashMap<Object, Integer>();
         for (int i = 0; i < entities.length; i++) {
-            entityToIndex.put(entities[i], new Integer(i));
+            entityToIndex.put(entities[i], Integer.valueOf(i));
         }
 
         // Set the start node as the current node and begin.

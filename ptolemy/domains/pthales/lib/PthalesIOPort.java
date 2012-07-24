@@ -78,7 +78,7 @@ public class PthalesIOPort {
     public static String BASE = "base";
 
     /** Fixed variable (for compatibility ?). */
-    public static Integer ONE = new Integer(1);
+    public static Integer ONE = Integer.valueOf(1);
 
     /** The name of the pattern parameter. */
     public static String PATTERN = "pattern";

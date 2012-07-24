@@ -348,7 +348,7 @@ public class TDLActionsGraph {
                     }
                 }
             } else {
-                inv = new Long(1);
+                inv = Long.valueOf(1);
             }
         }
         if (periodic) {
