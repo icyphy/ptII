@@ -1260,7 +1260,12 @@ jnlp_dist_1:
 		KEYALIAS="$(KEYALIAS2)" \
 		PTII_LOCALURL="$(DIST_URL)" jnlp_sign
 
+# Change this if your user name on the webserver is different than your username on the local machine.
+WEBSERVER_USER=$(USER)
+
+# We use a non-fully qualified domain name to avoid people accidentally hitting our webserver
 WEBSERVER=bennett
+
 jnlp_dist_update:
 	tar -cf - $(SIGNED_DIR) $(JNLPS) \
 		$(OTHER_FILES_TO_BE_DISTED) | \
@@ -1273,8 +1278,8 @@ jnlp_dist_nightly:
 # Used to update gr and codeDoc.jar
 DIST_JAR=/export/home/pt0/ptweb/ptolemyII/ptII9.0/$(PTVERSION)
 update_gr_codeDoc:
-	scp ptolemy/domains/gr/gr.jar $(WEBSERVER):$(DIST_JAR)/ptolemy/domains/gr
-	ssh $(WEBSERVER) "cd $(DIST_JAR)/doc; jar -xf ../../jnlp-$(PTVERSION)/signed/doc/codeDoc.jar"
+	scp ptolemy/domains/gr/gr.jar $(WEBSERVER_USER)@$(WEBSERVER):$(DIST_JAR)/ptolemy/domains/gr
+	ssh $(WEBSERVER_USER)@$(WEBSERVER) "cd $(DIST_JAR)/doc; jar -xf ../../jnlp-$(PTVERSION)/signed/doc/codeDoc.jar"
 
 APPLET_FILES_TO_BE_UPDATED = \
 	$(CODEGEN_DOMAIN_JARS) \
@@ -1287,16 +1292,16 @@ APPLET_FILES_TO_BE_UPDATED = \
 	ptolemy/gui/demo/*.class
 
 update_applet_files:
-	tar -cf - $(APPLET_FILES_TO_BE_UPDATED) | ssh $(WEBSERVER) "cd $(DIST_JAR); /usr/sfw/bin/gtar -xvf -"
-	ssh $(WEBSERVER) "cd $(DIST_JAR)/doc; jar -xf codeDoc.jar; mv doc/codeDoc .; rmdir doc"
+	tar -cf - $(APPLET_FILES_TO_BE_UPDATED) | ssh $(WEBSERVER_USER)@$(WEBSERVER) "cd $(DIST_JAR); /usr/sfw/bin/gtar -xvf -"
+	ssh $(WEBSERVER_USER)@$(WEBSERVER) "cd $(DIST_JAR)/doc; jar -xf codeDoc.jar; mv doc/codeDoc .; rmdir doc"
 
 #make KEYALIAS=ptolemy STOREPASSWORD="-storepass xxx" KEYPASSWORD="-keypass xxx" KEYSTORE=ptkeystore PTII_LOCALURL=http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII4.0/jnlp-4.0 jnlp_sign
 
 jnlp_dist_update_remote:
-	scp doc/webStartHelp.htm $(WEBSERVER):$(DIST_DIR)
+	scp doc/webStartHelp.htm $(WEBSERVER_USER)@$(WEBSERVER):$(DIST_DIR)
 	tar -cf - $(SIGNED_DIR) $(JNLPS) \
 		$(OTHER_FILES_TO_BE_DISTED) | \
-		ssh $(WEBSERVER) "cd $(DIST_DIR); tar -xpf -"
+		ssh $(WEBSERVER_USER)@$(WEBSERVER) "cd $(DIST_DIR); tar -xpf -"
 
 
 sign_jar_dist: 
@@ -1305,7 +1310,7 @@ sign_jar_dist:
 		"$(JARFILE)" "$(KEYALIAS2)"
 
 sign_jar_dist_update_remote: sign_jar_dist
-	scp $(JARFILE) $(WEBSERVER):$(DIST_DIR)/$(JARFILE)
+	scp $(JARFILE) $(WEBSERVER_USER)@$(WEBSERVER):$(DIST_DIR)/$(JARFILE)
 
 ################################################################
 ################################################################
@@ -1811,7 +1816,7 @@ $(HTML_MODEL):
 
 # Update the website, create links.
 update_html_model: html_model
-	(cd $(JNLP_MODEL_DIRECTORY); tar -cf - $(JNLP_MODEL)) | ssh $(WEBSERVER) "cd /export/home/pt0/ptweb/ptolemyII/ptII9.0/jnlp-ptides/$(JNLP_MODEL_DIRECTORY); rm -rf $(JNLP_MODEL); tar -xf -; cd $(JNLP_MODEL); ln -s $(JNLP_MODEL).htm index.htm; ln -s $(JNLP_MODEL).htm index.html"
+	(cd $(JNLP_MODEL_DIRECTORY); tar -cf - $(JNLP_MODEL)) | ssh $(WEBSERVER_USER)@$(WEBSERVER) "cd /export/home/pt0/ptweb/ptolemyII/ptII9.0/jnlp-ptides/$(JNLP_MODEL_DIRECTORY); rm -rf $(JNLP_MODEL); tar -xf -; cd $(JNLP_MODEL); ln -s $(JNLP_MODEL).htm index.htm; ln -s $(JNLP_MODEL).htm index.html"
 
 # We have two sets (!) of jar files: unsigned for applets and signed for JNLP Web Start
 #
@@ -1819,13 +1824,13 @@ update_html_model: html_model
 book_dist_applet_update: $(JNLP_FILE_FIXED)
 	APPLET_JARS=`grep jar $(JNLP_FILE_FIXED) | awk -F \" '{print $$2}' | grep -v signed_ | sed  's@signed/@@'`; \
 	tar -cf - $$APPLET_JARS | \
-		ssh $(WEBSERVER) "cd $(DIST_DIR); /usr/sfw/bin/gtar -xvpf -"
+		ssh $(WEBSERVER_USER)@$(WEBSERVER) "cd $(DIST_DIR); /usr/sfw/bin/gtar -xvpf -"
 
 # Set #2: Update jnlp jar files.  Usually don't need to run this as make ... jnlp_dist will do it.
 book_dist_jnlp_update: $(JNLP_FILE_FIXED)
 	JNLP_JARS=`grep jar $(JNLP_FILE_FIXED) | awk -F \" '{print $$2}' | grep -v signed_`; \
 	tar -cf - $$JNLP_JARS | \
-		ssh $(WEBSERVER) "cd $(DIST_DIR); /usr/sfw/bin/gtar -xvpf -"
+		ssh $(WEBSERVER_USER)@$(WEBSERVER) "cd $(DIST_DIR); /usr/sfw/bin/gtar -xvpf -"
 
 # Update the website.
 
@@ -1837,14 +1842,14 @@ JNLP_FILES_TO_BE_UPDATED =  $(JNLP_MODEL_FILE) $(JNLP_JAR) $(JNLP_FILE_FIXED) $(
 
 book_dist_update: $(JNLP_FILE_FIXED) $(HTML_MODEL)
 	pwd
-	tar -cf - $(JNLP_FILES_TO_BE_UPDATED) | ssh $(WEBSERVER) "cd $(DIST_DIR); /usr/sfw/bin/gtar -xpf -"
-	ssh $(WEBSERVER) "cd $(DIST_DIR); mv $(JNLP_FILE_FIXED) $(JNLP_FILE)"
-	ssh $(WEBSERVER) "chmod a+x $(DIST_DIR)/$(JNLP_HTM) $(DIST_DIR)/$(JNLP_VERGIL_HTM) $(DIST_DIR)/$(HTML_MODEL)/index.html"
+	tar -cf - $(JNLP_FILES_TO_BE_UPDATED) | ssh $(WEBSERVER_USER)@$(WEBSERVER) "cd $(DIST_DIR); /usr/sfw/bin/gtar -xpf -"
+	ssh $(WEBSERVER_USER)@$(WEBSERVER) "cd $(DIST_DIR); mv $(JNLP_FILE_FIXED) $(JNLP_FILE)"
+	ssh $(WEBSERVER_USER)@$(WEBSERVER) "chmod a+x $(DIST_DIR)/$(JNLP_HTM) $(DIST_DIR)/$(JNLP_VERGIL_HTM) $(DIST_DIR)/$(HTML_MODEL)/index.html"
 	# Replace link to applet with link to image.  Some files have a .htm file that link to the applet
-	ssh $(WEBSERVER) "cd $(DIST_DIR); sed -e 's@$(JNLP_MODEL)Vergil.htm@$(JNLP_MODEL)/index.html@' -e 's@>applet</a>@>HTML Version</a> - browsable only, not executable@' $(JNLP_HTM) > $(JNLP_HTM).tmp"
-	#-ssh $(WEBSERVER) "cd $(DIST_DIR); diff $(JNLP_HTM).tmp $(JNLP_HTM)"
-	ssh $(WEBSERVER) "cd $(DIST_DIR); mv $(JNLP_HTM).tmp $(JNLP_HTM)"
-	#ssh $(WEBSERVER) "chgrp -R ptolemy $(DIST_DIR)"
+	ssh $(WEBSERVER_USER)@$(WEBSERVER) "cd $(DIST_DIR); sed -e 's@$(JNLP_MODEL)Vergil.htm@$(JNLP_MODEL)/index.html@' -e 's@>applet</a>@>HTML Version</a> - browsable only, not executable@' $(JNLP_HTM) > $(JNLP_HTM).tmp"
+	#-ssh $(WEBSERVER_USER)@$(WEBSERVER) "cd $(DIST_DIR); diff $(JNLP_HTM).tmp $(JNLP_HTM)"
+	ssh $(WEBSERVER_USER)@$(WEBSERVER) "cd $(DIST_DIR); mv $(JNLP_HTM).tmp $(JNLP_HTM)"
+	#ssh $(WEBSERVER_USER)@$(WEBSERVER) "chgrp -R ptolemy $(DIST_DIR)"
 
 
 # Update the 9.0 tree.
@@ -1963,7 +1968,7 @@ $(JAI):
 	mkdir $(JAI)
 	mv download.java.net/media/jai/webstart/release/1.1.3 $(JAI)
 jai_update:
-	(cd $(JAI)/..; tar -cf - jai) | ssh bennett "cd ~ptII/ptweb/ptolemyII; tar -xf -"
+	(cd $(JAI)/..; tar -cf - jai) | ssh $(WEBSERVER_USER)@$(WEBSERVER) "cd ~ptII/ptweb/ptolemyII; tar -xf -"
 
 # make KEYSTORE=/users/ptII/adm/certs/ptkeystore KEYALIAS=ptolemy STOREPASSWORD="-storepass xxx" KEYPASSWORD="-keypass xxx" sign_jogl
 JOGL = $(WEBSTART)/jogl
@@ -1997,7 +2002,7 @@ $(JOGL)/jogl-natives-windows-i586.jar: $(JOGL)/jogl.jnlp
         done
 
 jogl_update:
-	(cd $(JOGL)/..; tar -cf - jogl) | ssh bennett "cd ~ptII/ptweb/ptolemyII; tar -xf -"
+	(cd $(JOGL)/..; tar -cf - jogl) | ssh $(WEBSERVER_USER)@$(WEBSERVER) "cd ~ptII/ptweb/ptolemyII; tar -xf -"
 
 
 # make KEYSTORE=/users/ptII/adm/certs/ptkeystore KEYALIAS=ptolemy STOREPASSWORD="-storepass xxx" KEYPASSWORD="-keypass xxx" sign_gluegen-rt
@@ -2032,5 +2037,5 @@ $(GLUEGEN_RT)/gluegen-rt-natives-windows-i586.jar: $(GLUEGEN_RT)/gluegen-rt.jnlp
         done
 
 gluegen-rt_update:
-	(cd $(GLUEGEN_RT)/..; tar -cf - gluegen-rt) | ssh bennett "cd ~ptII/ptweb/ptolemyII; tar -xf -"
+	(cd $(GLUEGEN_RT)/..; tar -cf - gluegen-rt) | ssh $(WEBSERVER_USER)@$(WEBSERVER) "cd ~ptII/ptweb/ptolemyII; tar -xf -"
 
