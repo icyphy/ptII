@@ -20,6 +20,8 @@
   <entity name="SingleTokenCommutator" class="ptolemy.actor.lib.SingleTokenCommutator"/>
   <entity name="Switch" class="ptolemy.actor.lib.Switch"/>
   <entity name="Synchronizer" class="ptolemy.actor.lib.Synchronizer"/>
+  <entity name="UnionDisassembler" class="ptolemy.actor.lib.UnionDisassembler"/>
+  <entity name="UnionMerge" class="ptolemy.actor.lib.UnionMerge"/>
   <entity name="VectorAssembler" class="ptolemy.actor.lib.VectorAssembler"/>
   <entity name="VectorDisassembler" class="ptolemy.actor.lib.VectorDisassembler"/>
       </group>

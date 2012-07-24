@@ -260,6 +260,7 @@ JSRCS = \
 	UnaryMathFunction.java \
 	Uniform.java \
 	UnionDisassembler.java \
+	UnionMerge.java \
 	URLReader.java \
 	URLDirectoryReader.java \
 	VariableClock.java \
