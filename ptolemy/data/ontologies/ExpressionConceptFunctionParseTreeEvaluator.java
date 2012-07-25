@@ -37,6 +37,7 @@ import ptolemy.data.expr.ASTPtMethodCallNode;
 import ptolemy.data.expr.ASTPtRootNode;
 import ptolemy.data.expr.ParseTreeEvaluator;
 import ptolemy.data.expr.ParserScope;
+import ptolemy.data.ontologies.lattice.ProductLatticeConcept;
 import ptolemy.graph.CPO;
 import ptolemy.kernel.util.IllegalActionException;
 
@@ -201,6 +202,11 @@ public class ExpressionConceptFunctionParseTreeEvaluator extends
                     .getConceptGraph();
             Concept bound = (Concept) cpo.leastUpperBound(new HashSet<Concept>(argValues));
             _evaluatedChildToken = new ConceptToken(bound);
+            return;
+        } else if (node.getFunctionName().compareTo("projectLeft") == 0) {
+            Concept c = argValues.get(0);
+            ProductLatticeConcept p = ((ProductLatticeConcept) c);
+            _evaluatedChildToken = new ConceptToken(p.getConceptTuple().get(0));
             return;
         }
 
