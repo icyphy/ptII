@@ -68,8 +68,6 @@
         </port>
         <port name="x" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="UnknownUnknown">
-            </property>
         </port>
     </entity>
     <entity name="ConstantExpression" class="ptolemy.actor.lib.Expression">
@@ -104,8 +102,6 @@
         </port>
         <port name="x" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="UnknownUnknown">
-            </property>
         </port>
     </entity>
     <entity name="MultiplicationConstraintExpression" class="ptolemy.actor.lib.Expression">
@@ -140,8 +136,6 @@
         </port>
         <port name="x" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="UnknownUnknown">
-            </property>
         </port>
     </entity>
 </entity>
