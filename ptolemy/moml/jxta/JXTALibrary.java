@@ -309,6 +309,12 @@ public class JXTALibrary extends EntityLibrary implements ChangeListener,
                     Class cls = classLoader.myDefineClass(null, buffer, 0,
                             length);
 
+                    if (cls == null) {
+                        System.out.println("Warning: cannot create the class for "
+                                + tag);
+                        return;
+                    }
+
                     try {
                         _saveClass(cls, buffer);
                     } catch (IOException ex) {
@@ -317,10 +323,8 @@ public class JXTALibrary extends EntityLibrary implements ChangeListener,
 
                     String clsName = "<Unknown>";
 
-                    if (cls != null) {
-                        clsName = cls.getName();
-                        System.out.println("created class object " + clsName);
-                    }
+                    clsName = cls.getName();
+                    System.out.println("created class object " + clsName);
 
                     classLoader.myResolveClass(cls);
 
@@ -379,7 +383,7 @@ public class JXTALibrary extends EntityLibrary implements ChangeListener,
                     } catch (Exception e) {
                     }
                 } catch (java.lang.NullPointerException e) {
-                    System.out.println("Warning: cannot creat the file.\n"
+                    System.out.println("Warning: cannot create the file.\n"
                             + e.getMessage());
                 } catch (java.io.IOException e) {
                     System.out.println("Warning: cannot creat/open the file.\n"

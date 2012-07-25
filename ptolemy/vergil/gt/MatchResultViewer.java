@@ -40,6 +40,7 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.geom.Rectangle2D;
 import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
@@ -612,7 +613,7 @@ public class MatchResultViewer extends GTFrame {
 
         _setTableauFactory(this, model);
 
-        List<MatchResult> results = null;
+        List<MatchResult> results = new LinkedList<MatchResult>();
         if (_rule != null) {
             Pattern pattern = _rule.getPattern();
             MatchResultRecorder recorder = new MatchResultRecorder();
@@ -1164,7 +1165,7 @@ public class MatchResultViewer extends GTFrame {
             request.setUndoable(true);
             request.execute();
 
-            List<MatchResult> results = null;
+            List<MatchResult> results = new LinkedList<MatchResult>();
             if (_rule != null) {
                 Pattern pattern = _rule.getPattern();
                 MatchResultRecorder recorder = new MatchResultRecorder();
