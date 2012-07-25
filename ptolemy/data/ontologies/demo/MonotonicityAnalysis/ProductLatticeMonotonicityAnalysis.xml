@@ -2,28 +2,28 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="ProductLatticeMonotonicityAnalysis" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.0.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={256, 22, 974, 851}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={256, 22, 993, 844}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[759, 734]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.1741925867711">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.3186473115215">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{118.0671198513418, 250.1475249916416}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{120.0944404069767, 212.4248546511628}">
     </property>
     <property name="TesterDirector" class="ptolemy.domains.tester.kernel.TesterDirector">
         <property name="trainingMode" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{350.0, -20.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[350.0, -5.0]">
         </property>
     </property>
     <property name="MonotonicitySolver" class="ptolemy.data.ontologies.lattice.LatticeOntologySolver">
-        <property name="modelURL" class="ptolemy.data.expr.StringParameter" value="DimensionSquaredMonotonicitySolverModel.xml">
+        <property name="modelURL" class="ptolemy.data.expr.FileParameter" value="DimensionSquaredMonotonicitySolverModel.xml">
         </property>
         <property name="_trainedConceptRecordArray" class="ptolemy.data.expr.Parameter" value="{{Concept = &quot;{x = Monotonic}&quot;, NamedObj = &quot;.ProductLatticeMonotonicityAnalysis.IntegratorConstraintExpression.expression&quot;}, {Concept = &quot;{}&quot;, NamedObj = &quot;.ProductLatticeMonotonicityAnalysis.ConstantExpression.expression&quot;}, {Concept = &quot;{x = Monotonic}&quot;, NamedObj = &quot;.ProductLatticeMonotonicityAnalysis.IntegratorConstraintExpression.output&quot;}, {Concept = &quot;{}&quot;, NamedObj = &quot;.ProductLatticeMonotonicityAnalysis.ConstantExpression.output&quot;}}">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[350.0, 50.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[350.0, 65.0]">
         </property>
         <property name="DisplayActions" class="ptolemy.data.ontologies.gui.OntologyDisplayActions">
         </property>
@@ -31,18 +31,22 @@
         </property>
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Demo of the montonicity analysis algorithm.&#10;&#10;This expression shows the an example taken from a constraint on the&#10;integrator componennt. The analysis correctly infers it as monotonic:">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Montonicity analysis algorithm running over product lattice concepts.&#10;&#10;This expression shows example constraints on the multiplication&#10;and division componennts, as these both require two inputs.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-180.0, -30.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-165.0, -70.0]">
         </property>
     </property>
-    <entity name="IntegratorConstraintExpression" class="ptolemy.actor.lib.Expression">
-        <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="(x &lt;= UnknownUnknown) ? Unknown :&#10;Conflict">
+    <entity name="DivisionConstraintExpression" class="ptolemy.actor.lib.Expression">
+        <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="(x &lt;= UnknownConflict) ? Unknown :&#10;(x &lt;= ConflictUnknown) ? Unknown :&#10;(x &lt;= VelocityTime) ? Acceleration :&#10;(x &lt;= PositionTime) ? Velocity :&#10;(x &lt;= PositionVelocity) ? Time :&#10;(x &lt;= VelocityAcceleration) ? Time :&#10;(x &lt;= AccelerationAcceleration) ? Dimensionless :&#10;(x &lt;= VelocityVelocity) ? Dimensionless :&#10;(x &lt;= PositionPosition) ? Dimensionless :&#10;(x &lt;= TimeTime) ? Dimensionless :&#10;(x &lt;= DimensionlessDimensionless) ? Dimensionless :&#10;(x &lt; ConflictConflict) ? Conflict :&#10;Dimensionless">
             <property name="style" class="ptolemy.actor.gui.style.TextStyle">
                 <property name="height" class="ptolemy.data.expr.Parameter" value="10">
                 </property>
                 <property name="width" class="ptolemy.data.expr.Parameter" value="30">
                 </property>
+            </property>
+            <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.8,0.8,0.8,1.0}">
+            </property>
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="{x = General}">
             </property>
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
@@ -53,8 +57,15 @@
             <property name="displayHeight" class="ptolemy.data.expr.Parameter" value="10">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[50.0, 135.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 130.0]">
         </property>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.8,0.8,0.8,1.0}">
+            </property>
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="{x = General}">
+            </property>
+        </port>
         <port name="x" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="UnknownUnknown">
@@ -69,6 +80,10 @@
                 <property name="width" class="ptolemy.data.expr.Parameter" value="30">
                 </property>
             </property>
+            <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.6,0.6,1.0}">
+            </property>
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="{}">
+            </property>
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
             <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
@@ -78,8 +93,51 @@
             <property name="displayHeight" class="ptolemy.data.expr.Parameter" value="10">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[30.0, 260.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[50.0, 445.0]">
         </property>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.6,0.6,1.0}">
+            </property>
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="{}">
+            </property>
+        </port>
+        <port name="x" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="UnknownUnknown">
+            </property>
+        </port>
+    </entity>
+    <entity name="MultiplicationConstraintExpression" class="ptolemy.actor.lib.Expression">
+        <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="(x &lt;= UnknownConflict) ? Unknown :&#10;(x &lt;= ConflictUnknown) ? Unknown :&#10;(x &lt;= AccelerationTime) ? Velocity :&#10;(x &lt;= VelocityDimensionless) ? Velocity :&#10;(x &lt;= VelocityTime) ? Position :&#10;(x &lt;= PositionDimensionless) ? Position :&#10;/* (x &lt;= ConflictDimensionless) ? x.projectLeft() :&#10;(x &lt;= DimensionlessConflict) ? x.projectRight() : */&#10;Conflict">
+            <property name="style" class="ptolemy.actor.gui.style.TextStyle">
+                <property name="height" class="ptolemy.data.expr.Parameter" value="10">
+                </property>
+                <property name="width" class="ptolemy.data.expr.Parameter" value="30">
+                </property>
+            </property>
+            <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.2,1.0,1.0,1.0}">
+            </property>
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="{x = Monotonic}">
+            </property>
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+            </property>
+            <property name="displayHeight" class="ptolemy.data.expr.Parameter" value="10">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 315.0]">
+        </property>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.2,1.0,1.0,1.0}">
+            </property>
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="{x = Monotonic}">
+            </property>
+        </port>
         <port name="x" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="UnknownUnknown">
