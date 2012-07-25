@@ -56,7 +56,7 @@ public class ExpressionConceptFunctionParseTreeTypeInference extends
      */
     public void visitFunctionApplicationNode(ASTPtFunctionApplicationNode node)
             throws IllegalActionException {
-        _setType(node, new ObjectType(Concept.class));
+        _setType(node, new ConceptType());
     }
 
     /** Set the type of the given node. Since the expression concept function
@@ -80,6 +80,6 @@ public class ExpressionConceptFunctionParseTreeTypeInference extends
             return;
         }
 
-        _setType(node, new ObjectType(Concept.class));
+        _setType(node, new ConceptType());
     }
 }
