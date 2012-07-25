@@ -51,6 +51,15 @@ the graph has a cycle.
 public class NonLatticeCounterExample {
 
     /** Construct a NonLatticeCounterExample object with the given example
+     *  type.
+     *  @param exampleType The given example type for this counterexample.
+     */
+    public NonLatticeCounterExample(ExampleType exampleType) {
+        _exampleType = exampleType;
+        _nodeList = new ArrayList();
+    }
+
+    /** Construct a NonLatticeCounterExample object with the given example
      *  type and list of nodes in the graph.
      *  @param exampleType The given example type for this counterexample.
      *  @param nodeList The list of node weights for this counterexample.

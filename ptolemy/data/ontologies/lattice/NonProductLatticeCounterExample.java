@@ -53,7 +53,7 @@ public class NonProductLatticeCounterExample extends NonLatticeCounterExample {
      *   that is the reason that the product lattice ontology is not a lattice.
      */
     public NonProductLatticeCounterExample(Ontology subOntology) {
-        super(ProductExampleType.SUBONTOLOGY, null);
+        super(ProductExampleType.SUBONTOLOGY);
         _subOntology = subOntology;
     }
 
