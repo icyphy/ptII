@@ -21,7 +21,7 @@
     <property name="MonotonicitySolver" class="ptolemy.data.ontologies.lattice.LatticeOntologySolver">
         <property name="modelURL" class="ptolemy.data.expr.FileParameter" value="DimensionSquaredMonotonicitySolverModel.xml">
         </property>
-        <property name="_trainedConceptRecordArray" class="ptolemy.data.expr.Parameter" value="{{Concept = &quot;{x = Monotonic}&quot;, NamedObj = &quot;.ProductLatticeMonotonicityAnalysis.IntegratorConstraintExpression.expression&quot;}, {Concept = &quot;{}&quot;, NamedObj = &quot;.ProductLatticeMonotonicityAnalysis.ConstantExpression.expression&quot;}, {Concept = &quot;{x = Monotonic}&quot;, NamedObj = &quot;.ProductLatticeMonotonicityAnalysis.IntegratorConstraintExpression.output&quot;}, {Concept = &quot;{}&quot;, NamedObj = &quot;.ProductLatticeMonotonicityAnalysis.ConstantExpression.output&quot;}}">
+        <property name="_trainedConceptRecordArray" class="ptolemy.data.expr.Parameter" value="{{Concept = &quot;{}&quot;, NamedObj = &quot;.ProductLatticeMonotonicityAnalysis.ConstantExpression.expression&quot;}, {Concept = &quot;{x = General}&quot;, NamedObj = &quot;.ProductLatticeMonotonicityAnalysis.DivisionConstraintExpression.output&quot;}, {Concept = &quot;{x = Monotonic}&quot;, NamedObj = &quot;.ProductLatticeMonotonicityAnalysis.MultiplicationConstraintExpression.expression&quot;}, {Concept = &quot;{x = Monotonic}&quot;, NamedObj = &quot;.ProductLatticeMonotonicityAnalysis.MultiplicationConstraintExpression.output&quot;}, {Concept = &quot;{}&quot;, NamedObj = &quot;.ProductLatticeMonotonicityAnalysis.ConstantExpression.output&quot;}, {Concept = &quot;{x = General}&quot;, NamedObj = &quot;.ProductLatticeMonotonicityAnalysis.DivisionConstraintExpression.expression&quot;}}">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[350.0, 65.0]">
         </property>
@@ -37,7 +37,7 @@
         </property>
     </property>
     <entity name="DivisionConstraintExpression" class="ptolemy.actor.lib.Expression">
-        <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="(x &lt;= UnknownConflict) ? Unknown :&#10;(x &lt;= ConflictUnknown) ? Unknown :&#10;(x &lt;= VelocityTime) ? Acceleration :&#10;(x &lt;= PositionTime) ? Velocity :&#10;(x &lt;= PositionVelocity) ? Time :&#10;(x &lt;= VelocityAcceleration) ? Time :&#10;(x &lt;= AccelerationAcceleration) ? Dimensionless :&#10;(x &lt;= VelocityVelocity) ? Dimensionless :&#10;(x &lt;= PositionPosition) ? Dimensionless :&#10;(x &lt;= TimeTime) ? Dimensionless :&#10;(x &lt;= DimensionlessDimensionless) ? Dimensionless :&#10;(x &lt; ConflictConflict) ? Conflict :&#10;Dimensionless">
+        <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="(x &lt;= UnknownConflict) ? Unknown :&#10;(x &lt;= ConflictUnknown) ? Unknown :&#10;(x &lt;= VelocityTime) ? Acceleration :&#10;(x &lt;= PositionTime) ? Velocity :&#10;(x &lt;= PositionVelocity) ? Time :&#10;(x &lt;= VelocityAcceleration) ? Time :&#10;(x &lt;= AccelerationAcceleration) ? Dimensionless :&#10;(x &lt;= VelocityVelocity) ? Dimensionless :&#10;(x &lt;= PositionPosition) ? Dimensionless :&#10;(x &lt;= TimeTime) ? Dimensionless :&#10;(x &lt;= DimensionlessDimensionless) ? Dimensionless :&#10;(x &lt;= ConflictDimensionless) ? projectLeft(x) :&#10;(x &lt; ConflictConflict) ? Conflict :&#10;Dimensionless">
             <property name="style" class="ptolemy.actor.gui.style.TextStyle">
                 <property name="height" class="ptolemy.data.expr.Parameter" value="10">
                 </property>
@@ -105,7 +105,7 @@
         </port>
     </entity>
     <entity name="MultiplicationConstraintExpression" class="ptolemy.actor.lib.Expression">
-        <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="(x &lt;= UnknownConflict) ? Unknown :&#10;(x &lt;= ConflictUnknown) ? Unknown :&#10;(x &lt;= AccelerationTime) ? Velocity :&#10;(x &lt;= VelocityDimensionless) ? Velocity :&#10;(x &lt;= VelocityTime) ? Position :&#10;(x &lt;= PositionDimensionless) ? Position :&#10;/* (x &lt;= ConflictDimensionless) ? x.projectLeft() :&#10;(x &lt;= DimensionlessConflict) ? x.projectRight() : */&#10;Conflict">
+        <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="(x &lt;= UnknownConflict) ? Unknown :&#10;(x &lt;= ConflictUnknown) ? Unknown :&#10;(x &lt;= AccelerationTime) ? Velocity :&#10;(x &lt;= VelocityDimensionless) ? Velocity :&#10;(x &lt;= VelocityTime) ? Position :&#10;(x &lt;= PositionDimensionless) ? Position :&#10;(x &lt;= ConflictDimensionless) ? projectLeft(x) :&#10;(x &lt;= DimensionlessConflict) ? projectRight(x) :&#10;Conflict">
             <property name="style" class="ptolemy.actor.gui.style.TextStyle">
                 <property name="height" class="ptolemy.data.expr.Parameter" value="10">
                 </property>
