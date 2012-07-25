@@ -91,7 +91,7 @@ public class Expression extends LatticeOntologyAdapter {
         if (((LatticeOntologySolver)_solver).isLeastFixedPoint()) {
             setAtLeast(actor.output, actor.expression);
         } else {
-        	setAtMost(actor.output, actor.expression);
+            setAtMost(actor.output, actor.expression);
         }
         return super.constraintList();
     }
