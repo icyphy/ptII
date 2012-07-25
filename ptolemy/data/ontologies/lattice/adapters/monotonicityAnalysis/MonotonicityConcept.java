@@ -125,7 +125,7 @@ public class MonotonicityConcept extends MapTypeInfiniteConcept<Concept> {
         } else if (concept instanceof MonotonicityConcept) {
             MonotonicityConcept righthandSide = (MonotonicityConcept) concept;
             CPO graph = getOntology().getConceptGraph();
-            Set<String> keys = this._commonKeys(righthandSide);
+            Set<String> keys = this._combinedKeys(righthandSide);
 
             boolean seenHigher = false;
             boolean seenLower = false;
@@ -276,7 +276,7 @@ public class MonotonicityConcept extends MapTypeInfiniteConcept<Concept> {
     private Concept _leastUpperBound(MonotonicityConcept concept) {
         MonotonicityConcept result = createMonotonicityConcept(getOntology());
 
-        Set<String> allKeys = this._commonKeys(concept);
+        Set<String> allKeys = this._combinedKeys(concept);
         for (String variableName : allKeys) {
             CPO graph = this.getOntology().getConceptGraph();
             Concept monotonicity = (Concept) graph.leastUpperBound(
