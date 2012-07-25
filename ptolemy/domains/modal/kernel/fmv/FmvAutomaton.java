@@ -722,7 +722,7 @@ public class FmvAutomaton extends FSMActor {
                                     // exists.
                                     boolean isTrue = false;
                                     try {
-                                        characterOfSubGuard = characterOfSubGuard[1].trim();
+                                        characterOfSubGuard[1] = characterOfSubGuard[1].trim();
                                     } catch (Exception ex) {
                                         isTrue = true;
                                     }
