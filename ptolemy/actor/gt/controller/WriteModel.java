@@ -89,14 +89,14 @@ public class WriteModel extends GTEvent {
      */
     public RefiringData fire(Token arguments) throws IllegalActionException {
         RefiringData data = super.fire(arguments);
+        if (modelFile == null) {
+            throw new IllegalActionException(this,
+                    "You must set the modelFile parameter before running.");
+        }
 
         CompositeEntity model = getModelParameter().getModel();
         Writer writer = modelFile.openForWriting();
         try {
-            if (modelFile == null) {
-                throw new IllegalActionException(this,
-                        "You must set the modelFile parameter before running");
-            }
             String fileName = modelFile.asFile().getName();
             int period = fileName.indexOf('.');
             String modelName;

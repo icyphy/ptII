@@ -269,7 +269,7 @@ public class PthalesAtomicActor extends TypedAtomicActor {
         }
 
         int[] iterations = new int[totalRepetitions.length - internal];
-        if (totalRepetitions != null && totalRepetitions.length > 0) {
+        if (totalRepetitions.length > 0) {
 
             // All loops are used to build array
             for (int i = internal; i < totalRepetitions.length; i++) {
