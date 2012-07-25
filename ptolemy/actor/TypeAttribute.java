@@ -29,6 +29,10 @@ package ptolemy.actor;
 import java.util.List;
 
 import ptolemy.data.expr.Parameter;
+import ptolemy.data.type.BaseType;
+import ptolemy.data.type.Type;
+import ptolemy.data.type.Typeable;
+import ptolemy.graph.InequalityTerm;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
@@ -172,6 +176,37 @@ public class TypeAttribute extends Parameter {
                     }
                 }
             }
+            NamedObj previousContainer = getContainer();
+            if (container != previousContainer){
+                // Container is changing. Restore the previous
+                // container to its previous type, and record
+                // the previous type of the new container.
+                if (previousContainer instanceof Typeable) {
+                    // Notice that if the previous type is UNKNOWN, then this
+                    // delegate to type resolution.
+                    ((Typeable)previousContainer).setTypeEquals(_previousType);
+                    if (previousContainer instanceof Actor) {
+                        Director previousDirector = ((Actor)previousContainer).getDirector();
+                        previousDirector.invalidateResolvedTypes();
+                    }
+                }
+                if (container instanceof Typeable) {
+                    InequalityTerm term = ((Typeable)container).getTypeTerm();
+                    if (term.isSettable()) {
+                        // If the type term is a variable, then we want to
+                        // delegate to type resolution.
+                        _previousType = BaseType.UNKNOWN;
+                    } else {
+                        // If the type term is a constant, then we want to record
+                        // the constant.
+                        _previousType = ((Typeable)container).getType();
+                    }
+                    if (container instanceof Actor) {
+                        Director director = ((Actor)container).getDirector();
+                        director.invalidateResolvedTypes();
+                    }
+                }
+            }
             super.setContainer(container);
         } finally {
             workspace().doneWriting();
@@ -204,4 +239,10 @@ public class TypeAttribute extends Parameter {
 
         }
     }
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                         private fields                    ////
+
+    /** Previous resolved type before this attribute was added to its current container. */
+    private Type _previousType = BaseType.UNKNOWN;
 }
