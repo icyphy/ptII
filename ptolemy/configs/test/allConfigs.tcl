@@ -479,6 +479,38 @@ foreach i $configs {
 	}
 	list $results
     } {{}}
+
+    test "$i-6.1" "Test that clone(Workspace) works on a new Actor.  Creating kars in Kepler does this." {
+	# In general, if we call getName on a public field in an actor,
+	# then the name that is returned should be the same as the name
+	# of the field.
+	puts "-------> Before clone"
+ 	set cloneConfiguration [java::cast ptolemy.kernel.CompositeEntity [$configuration clone [java::new ptolemy.kernel.util.Workspace {clonedWorkspace}]]]
+	puts "-------> after clone"
+	set workspace61 [java::new ptolemy.kernel.util.Workspace "workspace61"]
+	set compositeEntity61 [java::new ptolemy.kernel.CompositeEntity $workspace61]
+	set workspace61Clone [java::new ptolemy.kernel.util.Workspace "workspace61Clone"]
+	set entityList [$configuration allAtomicEntityList]
+	set results {}
+	for {set iterator [$entityList iterator]} \
+		{[$iterator hasNext] == 1} {} {
+	    set entity [$iterator next]
+	    if [java::instanceof $entity ptolemy.actor.TypedAtomicActor] {
+		set actor [java::cast ptolemy.actor.TypedAtomicActor $entity]
+		set className [$actor getClassName]
+		# Create a new actor
+		set newActor [java::new $className $compositeEntity61 [$compositeEntity61 uniqueName [split $className . ]]]
+		# Clone it.
+		if [catch {set clonedActor [$newActor clone $workspace61Clone]} errMsg] {
+		    lappend $results "Cloning $className failed:\n$errMsg:\n[jdkStackTrace]\n"
+		}
+		[java::cast ptolemy.kernel.ComponentEntity $clonedActor] setContainer [java::null]
+	    }
+	}
+	[java::cast ptolemy.kernel.CompositeEntity $compositeEntity61] setContainer [java::null]
+	$cloneConfiguration setContainer [java::null]
+	list $results
+    } {{}}
 }
 
 # The list of filters is static, so we reset it

@@ -181,21 +181,54 @@ public class RecursiveLattice extends Transformer {
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         RecursiveLattice newObject = (RecursiveLattice) super.clone(workspace);
 
-        newObject._backward = new double[_forward.length];
-        newObject._backwardCache = new double[_forward.length];
-        newObject._forward = new double[_forward.length];
-        newObject._forwardCache = new double[_forward.length];
-        newObject._reflectionCoefficients = new double[_forward.length];
+        int forwardLength = 0;
+        if (_forward == null) {
+            try {
+                ArrayToken value = (ArrayToken) reflectionCoefficients.getToken();
+                forwardLength = value.length() + 1;
+            } catch (IllegalActionException ex) {
+                throw new CloneNotSupportedException("Failed to clone: " + ex);
+            }
+        } else {
+            forwardLength = _forward.length;
+        }
 
-        System.arraycopy(_backward, 0, newObject._backward, 0, _backward.length);
-        System.arraycopy(_backwardCache, 0, newObject._backwardCache, 0,
-                _backwardCache.length);
-        System.arraycopy(_forward, 0, newObject._forward, 0, _forward.length);
-        System.arraycopy(_forwardCache, 0, newObject._forwardCache, 0,
-                _forwardCache.length);
-        System.arraycopy(_reflectionCoefficients, 0,
-                newObject._reflectionCoefficients, 0,
-                _reflectionCoefficients.length);
+        int backwardLength = 0;
+        if (_backward == null) {
+            try {
+                ArrayToken value = (ArrayToken) reflectionCoefficients.getToken();
+                backwardLength = value.length() + 1;
+            } catch (IllegalActionException ex) {
+                throw new CloneNotSupportedException("Failed to clone: " + ex);
+            }
+        } else {
+            backwardLength = _backward.length;
+        }
+        newObject._backward = new double[backwardLength];
+        newObject._backwardCache = new double[backwardLength];
+        newObject._forward = new double[forwardLength];
+        newObject._forwardCache = new double[forwardLength];
+        newObject._reflectionCoefficients = new double[forwardLength - 1];
+
+        if (_backward != null) {
+            System.arraycopy(_backward, 0, newObject._backward, 0, backwardLength);
+        }
+        if (_backwardCache != null) {
+            System.arraycopy(_backwardCache, 0, newObject._backwardCache, 0,
+                    _backwardCache.length);
+        }
+        if (_forward != null) {
+            System.arraycopy(_forward, 0, newObject._forward, 0, _forward.length);
+        }
+        if (_forwardCache != null) {
+            System.arraycopy(_forwardCache, 0, newObject._forwardCache, 0,
+                    _forwardCache.length);
+        }
+        if (_reflectionCoefficients != null) {
+            System.arraycopy(_reflectionCoefficients, 0,
+                    newObject._reflectionCoefficients, 0,
+                    _reflectionCoefficients.length);
+        }
 
         try {
             ArrayToken value = (ArrayToken) reflectionCoefficients.getToken();
