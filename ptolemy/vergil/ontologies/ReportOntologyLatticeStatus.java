@@ -55,8 +55,11 @@ concepts in an ontology model based on whether the ontology is a lattice.
 public class ReportOntologyLatticeStatus {
 
     /** Show a status message depending on whether the given ontology model
-     *  is a valid lattice. Also highlight the concepts in the ontology that
-     *  demonstrate the counterexample if the ontology is not a lattice.
+     *  is a valid lattice, and if the isAcceptable parameters form acceptance
+     *  criteria.
+     *  Also highlight the concepts in the ontology that demonstrate the
+     *  counterexample if the ontology is not a lattice, or the non-acceptable
+     *  concepts do not form acceptance criteria.
      *  @param ontologyModel The specified ontology model.
      *  @param modelGraphController The graph controller for the ontology model.
      */
@@ -71,7 +74,7 @@ public class ReportOntologyLatticeStatus {
                     .getConceptGraph().nonLatticeReason();
             GraphExampleType exampleType = (GraphExampleType) nonLatticeExample
                     .getExampleType();
-            List concepts = nonLatticeExample.getNodeList();
+            List<Concept> concepts = nonLatticeExample.getNodeList();
 
             StringBuffer errorMessageBuffer = new StringBuffer();
             errorMessageBuffer
@@ -106,6 +109,9 @@ public class ReportOntologyLatticeStatus {
                     .message("The ontology model graph is a valid lattice.");
         }
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
 
     /** Highlight the given concepts in the graph, and then display the
      *  given error message.
