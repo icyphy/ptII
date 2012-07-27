@@ -122,7 +122,7 @@ public class LayoutConfiguration extends Attribute {
     
     
     /** Default value for includeDecorations. */
-    public static final boolean DEF_DECORATIONS = false;
+    public static final boolean DEF_DECORATIONS = true;
     
     /** Default value for routeEdges. */
     public static final boolean DEF_ROUTE_EDGES = true;
