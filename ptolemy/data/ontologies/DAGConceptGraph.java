@@ -23,6 +23,9 @@
  */
 package ptolemy.data.ontologies;
 
+import java.util.LinkedList;
+import java.util.List;
+
 import ptolemy.graph.CPO;
 import ptolemy.graph.DirectedAcyclicGraph;
 import ptolemy.graph.NonLatticeCounterExample;
@@ -85,6 +88,29 @@ public class DAGConceptGraph extends ConceptGraph {
      */
     public Concept bottom() {
         return (Concept) _dag.bottom();
+    }
+
+    /** Return a list of the concepts which are not acceptable, but are also
+     *  not at the top of the lattice, as required for non-acceptable concepts.
+     *
+     *  @return A list of concepts erroneously marked as not acceptable, or an
+     *   empty list if there are no errors.
+     */
+    public List<Concept> checkUnacceptableConcepts() {
+        List<Concept> invalidConcepts = new LinkedList<Concept>();
+        for (Object o : DirectedAcyclicGraph.weightArray(_dag.nodes())) {
+            if (o instanceof FiniteConcept) {
+                FiniteConcept c = (FiniteConcept) o;
+                if (!c.isValueAcceptable()) {
+                    for (Concept aboveConcept : (c).getCoverSetAbove()) {
+                        if (aboveConcept.isValueAcceptable()) {
+                            invalidConcepts.add(c);
+                        }
+                    }
+                }
+            }
+        }
+        return invalidConcepts;
     }
 
     /** Compare two concepts in the ontology. The arguments must be

@@ -31,9 +31,12 @@ package ptolemy.vergil.ontologies;
 ///////////////////////////////////////////////////////////////////
 //// ReportOntologyLatticeStatus
 
+import java.util.LinkedList;
 import java.util.List;
 
 import ptolemy.data.ontologies.Concept;
+import ptolemy.data.ontologies.ConceptGraph;
+import ptolemy.data.ontologies.DAGConceptGraph;
 import ptolemy.data.ontologies.Ontology;
 import ptolemy.graph.NonLatticeCounterExample;
 import ptolemy.graph.NonLatticeCounterExample.GraphExampleType;
@@ -59,13 +62,11 @@ public class ReportOntologyLatticeStatus {
      */
     public static void showStatusAndHighlightCounterExample(
             Ontology ontologyModel, OntologyGraphController modelGraphController) {
-        boolean isLattice = ontologyModel.isLattice();
         modelGraphController.clearAllErrorHighlights();
+        boolean isLattice = ontologyModel.isLattice();
+        List<Concept> invalidUnacceptables = _invalidUnacceptableConcepts(ontologyModel);
 
-        if (isLattice) {
-            MessageHandler
-                    .message("The ontology model graph is a valid lattice.");
-        } else {
+        if (!isLattice) {
             NonLatticeCounterExample nonLatticeExample = ontologyModel
                     .getConceptGraph().nonLatticeReason();
             GraphExampleType exampleType = (GraphExampleType) nonLatticeExample
@@ -95,18 +96,54 @@ public class ReportOntologyLatticeStatus {
                                 + exampleType + ": ");
             }
 
-            boolean first = true;
-            for (Object concept : concepts) {
-                modelGraphController.highlightError((Concept) concept);
-                if (!first) {
-                    errorMessageBuffer.append(", ");
-                }
-                errorMessageBuffer.append(((Concept) concept).toString());
-                first = false;
-            }
-            errorMessageBuffer.append(".");
+            _highlightErrors(modelGraphController, errorMessageBuffer, concepts);
+        } else if (!invalidUnacceptables.isEmpty()) {
+            _highlightErrors(modelGraphController, new StringBuffer(
+                    "There following unacceptable concepts are not at the" +
+                    "top of the lattice:\n"), invalidUnacceptables);
+        } else {
+            MessageHandler
+                    .message("The ontology model graph is a valid lattice.");
+        }
+    }
 
-            MessageHandler.error(errorMessageBuffer.toString());
+    /** Highlight the given concepts in the graph, and then display the
+     *  given error message.
+     *  @param modelGraphController The graph controller in which to highlight
+     *   this error.
+     *  @param errorMessageBuffer The text of the error message.
+     *  @param concepts The concepts involved in the error.
+     */
+    private static void _highlightErrors(
+            OntologyGraphController modelGraphController,
+            StringBuffer errorMessageBuffer,
+            List<Concept> concepts) {
+        boolean first = true;
+        for (Concept concept : concepts) {
+            modelGraphController.highlightError(concept);
+            if (!first) {
+                errorMessageBuffer.append(", ");
+            }
+            errorMessageBuffer.append(concept.toString());
+            first = false;
+        }
+        errorMessageBuffer.append(".");
+
+        MessageHandler.error(errorMessageBuffer.toString());
+    }
+
+    /** Return a list of the concepts in the given ontology which are marked
+     *  as not isAcceptable, but are not at the top of the lattice, as required.
+     *  @param ontology The ontology to check.
+     *  @return A list of invalid concepts marked as not acceptable, or an
+     *   empty list if there are no errors.
+     */
+    private static List<Concept> _invalidUnacceptableConcepts(Ontology ontology) {
+        ConceptGraph cg = ontology.getConceptGraph();
+        if (cg instanceof DAGConceptGraph) {
+            return ((DAGConceptGraph) cg).checkUnacceptableConcepts();
+        } else {
+            return new LinkedList<Concept>();
         }
     }
 }
