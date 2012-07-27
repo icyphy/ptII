@@ -677,6 +677,7 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
         
         if (_currentExpression != null) {
             _needsEvaluation = true;
+            _parseTreeValid = false;
         }
 
         if (_variablesDependentOn != null) {
