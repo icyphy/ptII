@@ -1269,8 +1269,8 @@ WEBSERVER=bennett
 jnlp_dist_update:
 	tar -cf - $(SIGNED_DIR) $(JNLPS) \
 		$(OTHER_FILES_TO_BE_DISTED) | \
-		ssh $(WEBSERVER) "cd $(DIST_DIR); /usr/sfw/bin/gtar -xvpf -"
-	scp doc/webStartHelp.htm $(WEBSERVER):$(DIST_DIR)
+		ssh $(WEBSERVER_USER)@$(WEBSERVER) "cd $(DIST_DIR); /usr/sfw/bin/gtar -xvpf -"
+	scp doc/webStartHelp.htm $(WEBSERVER_USER)@$(WEBSERVER):$(DIST_DIR)
 
 jnlp_dist_nightly:
 	gmake STOREPASSWORD="-storepass `cat $(HOME)/.certpw`" KEYSTORE=/users/ptII/adm/certs/ptkeystore KEYPASSWORD="-keypass `cat $(HOME)/.certpw`" KEYSTORE2=/users/ptII/adm/certs/ptkeystore jnlp_dist
