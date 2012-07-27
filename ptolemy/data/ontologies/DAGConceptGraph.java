@@ -23,8 +23,10 @@
  */
 package ptolemy.data.ontologies;
 
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 
 import ptolemy.graph.CPO;
 import ptolemy.graph.DirectedAcyclicGraph;
@@ -97,7 +99,8 @@ public class DAGConceptGraph extends ConceptGraph {
      *   empty list if there are no errors.
      */
     public List<Concept> checkUnacceptableConcepts() {
-        List<Concept> invalidConcepts = new LinkedList<Concept>();
+        Set<Concept> invalidConcepts = new HashSet<Concept>();
+        // Not sure why this doesn't return a unique set
         for (Object o : DirectedAcyclicGraph.weightArray(_dag.nodes())) {
             if (o instanceof FiniteConcept) {
                 FiniteConcept c = (FiniteConcept) o;
@@ -110,7 +113,7 @@ public class DAGConceptGraph extends ConceptGraph {
                 }
             }
         }
-        return invalidConcepts;
+        return new LinkedList<Concept>(invalidConcepts);
     }
 
     /** Compare two concepts in the ontology. The arguments must be

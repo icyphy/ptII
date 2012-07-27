@@ -204,7 +204,7 @@ public class OntologyGraphFrame extends ExtendedGraphFrame implements
     ////                         private variables                 ////
 
     /** The check lattice debug menu action string label. */
-    private static final String CHECK_LATTICE = "Check Lattice Graph";
+    private static final String CHECK_LATTICE = "Check Concept Lattice";
 
     /** The clear lattice errors debug menu action string label. */
     private static final String CLEAR_LATTICE_ERRORS = "Clear Lattice Errors";

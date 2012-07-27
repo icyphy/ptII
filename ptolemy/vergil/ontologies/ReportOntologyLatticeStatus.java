@@ -99,7 +99,7 @@ public class ReportOntologyLatticeStatus {
             _highlightErrors(modelGraphController, errorMessageBuffer, concepts);
         } else if (!invalidUnacceptables.isEmpty()) {
             _highlightErrors(modelGraphController, new StringBuffer(
-                    "There following unacceptable concepts are not at the" +
+                    "There following unacceptable concepts are not at the " +
                     "top of the lattice:\n"), invalidUnacceptables);
         } else {
             MessageHandler
