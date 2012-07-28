@@ -2226,10 +2226,10 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
             _graphPanner.setPreferredSize(new Dimension(200, 150));
             // _graphPanner.setMaximumSize(new Dimension(200, 450));
             _graphPanner.setSize(200, 150);
+            // NOTE: Border causes all kinds of problems!
+            _graphPanner.setBorder(BorderFactory.createEtchedBorder());
         }
 
-        // NOTE: Border causes all kinds of problems!
-        _graphPanner.setBorder(BorderFactory.createEtchedBorder());
         // Create the library of actors, or use the one in the entity,
         // if there is one.
         // FIXME: How do we make changes to the library persistent?
