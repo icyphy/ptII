@@ -98,7 +98,6 @@
         <property name="_icon" class="ptolemy.vergil.icon.CopyCatIcon">
           <property name="echos" value="1"/>
           <property name="echoBoxColor" value="{0.0, 1.0, 0.0, 1.0}"/>
-          <property name="includeName" value="true"/>
         </property>
         <property name="_configurer" class="ptolemy.actor.gui.EditorPaneFactory"/>
         <property name="_configurer2" class="ptolemy.actor.gui.InsideEntityEditorPaneFactory"/>
