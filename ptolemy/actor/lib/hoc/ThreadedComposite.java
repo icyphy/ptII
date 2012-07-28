@@ -34,7 +34,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
 import java.util.Set;
-import java.util.concurrent.LinkedBlockingQueue;
 
 import ptolemy.actor.Actor;
 import ptolemy.actor.Director;
@@ -551,7 +550,7 @@ public class ThreadedComposite extends MirrorComposite {
             newObject._outputTimes = new LinkedList<Time>();
             newObject._fireAtTimes = Collections
                     .synchronizedSet(new HashSet<Time>());
-            newObject._inputFrames = new LinkedBlockingQueue<TokenFrame>();
+            newObject._inputFrames = new LinkedList<TokenFrame>();
             newObject._outputFrames = new LinkedList<TokenFrame>();
             return newObject;
         }
@@ -701,7 +700,7 @@ public class ThreadedComposite extends MirrorComposite {
          *  @exception IllegalActionException If the initialize() method of
          *   one of the inside actors throws it.
          */
-        public void initialize() throws IllegalActionException {
+        public synchronized void initialize() throws IllegalActionException {
             // The following must be done before the initialize() methods
             // of the actors is called because those methods may call fireAt().
             // Note that previous runs may have left residual data on these lists.
@@ -803,29 +802,30 @@ public class ThreadedComposite extends MirrorComposite {
                                     + " to be processed at time "
                                     + environmentTime);
                 }
-                _inputFrames.add(new TokenFrame(environmentTime, _inputTokens,
-                        TokenFrame.EVENT));
-                if (_delayValue >= 0.0) {
-                    // Delay value is not UNDEFINED. Schedule a firing
-                    // at current time plus the delay.
-                    Time responseTime = environmentTime.add(_delayValue);
-                    // Need to be sure to call the executive director's fireAt().
-                    // Make sure to throw an exception if the executive
-                    // director does not exactly respect this request.
-                    Time response = ThreadedComposite.this
-                            .getExecutiveDirector().fireAt(
-                                    ThreadedComposite.this, responseTime);
+                synchronized (this) {
+                    _inputFrames.add(new TokenFrame(environmentTime, _inputTokens,
+                            TokenFrame.EVENT));
+                    notifyAll();
+                    if (_delayValue >= 0.0) {
+                        // Delay value is not UNDEFINED. Schedule a firing
+                        // at current time plus the delay.
+                        Time responseTime = environmentTime.add(_delayValue);
+                        // Need to be sure to call the executive director's fireAt().
+                        // Make sure to throw an exception if the executive
+                        // director does not exactly respect this request.
+                        Time response = ThreadedComposite.this
+                                .getExecutiveDirector().fireAt(
+                                        ThreadedComposite.this, responseTime);
 
-                    if (!response.equals(responseTime)) {
-                        throw new IllegalActionException(this,
-                                "Director is unable to fire the actor at the requested time: "
-                                        + responseTime
-                                        + ". It responds it will fire it at: "
-                                        + response);
-                    }
+                        if (!response.equals(responseTime)) {
+                            throw new IllegalActionException(this,
+                                    "Director is unable to fire the actor at the requested time: "
+                                            + responseTime
+                                            + ". It responds it will fire it at: "
+                                            + response);
+                        }
 
-                    // Queue an indicator to produce outputs in response to that firing.
-                    synchronized (this) {
+                        // Queue an indicator to produce outputs in response to that firing.
                         _outputTimes.add(responseTime);
                     }
                 }
@@ -847,16 +847,9 @@ public class ThreadedComposite extends MirrorComposite {
                         ._debug("Queueing a stop-frame token for the inside thread with time: "
                                 + environmentTime);
             }
-            _inputFrames.add(new TokenFrame(environmentTime, null,
-                    TokenFrame.STOP));
-
-            // FindBugs: [M M NN] Naked notify [NN_NAKED_NOTIFY]
-            // Actually FindBugs is wrong, since _inputFrames was modified
-            // and hence the state did change. It is not necessary to
-            // do this change within the synchronized(this) block since
-            // _inputFrames is a thread-safe container.
-
             synchronized (this) {
+                _inputFrames.add(new TokenFrame(environmentTime, null,
+                        TokenFrame.STOP));
                 notifyAll();
             }
         }
@@ -925,9 +918,12 @@ public class ThreadedComposite extends MirrorComposite {
                         "Queueing a stop-frame token for the inside thread with time: "
                                 + environmentTime);
             }
-            // A "stop frame" has a null token list.
-            _inputFrames.add(new TokenFrame(environmentTime, null,
-                    TokenFrame.STOP));
+            synchronized (this) {
+                // A "stop frame" has a null token list.
+                _inputFrames.add(new TokenFrame(environmentTime, null,
+                        TokenFrame.STOP));
+                notifyAll();
+            }
 
             if (_exception != null) {
                 throw new IllegalActionException(ThreadedComposite.this,
@@ -975,13 +971,17 @@ public class ThreadedComposite extends MirrorComposite {
         private Set<Time> _fireAtTimes = Collections
                 .synchronizedSet(new HashSet<Time>());
 
+        // NOTE: Cannot use LinkedBlockingQueue for _inputFrames
+        // because we have to release the lock on this director
+        // while we are waiting or we get a deadlock.
+
         /** Queue of unprocessed input events. This is a blocking
          *  queue, which blocks the calling thread if the queue is empty.
          *  This is accessed by both the director thread and the inside
          *  thread, so it has to be thread safe (LinkedBlockingQueue is a
          *  thread-safe container).
          */
-        private LinkedBlockingQueue<TokenFrame> _inputFrames = new LinkedBlockingQueue<TokenFrame>();
+        private LinkedList<TokenFrame> _inputFrames = new LinkedList<TokenFrame>();
 
         /** List of input events in the current iteration.
          *  This is accessed only in the director thread so it need
@@ -1033,9 +1033,19 @@ public class ThreadedComposite extends MirrorComposite {
                             ThreadedComposite.this
                                     ._debug("---- Waiting for inputs in the inside thread.");
                         }
-                        // The following method blocks this thread if the queue is empty.
-                        // Should we have a timeout on this in case something goes wrong?
-                        TokenFrame frame = _inputFrames.take();
+                        TokenFrame frame = null;
+                        synchronized (ThreadedDirector.this) {
+                            // The following blocks this thread if the queue is empty.
+                            while (_inputFrames.isEmpty() && !_stopRequested) {
+                                // The timeout allows this to respond to stop()
+                                // even if we have a deadlock for some reason.
+                                ThreadedDirector.this.wait(1000L);
+                            }
+                            if (_stopRequested) {
+                                break;
+                            }
+                            frame = _inputFrames.poll();
+                        }
 
                         // Check for a "stop frame" and exit the thread.
                         if (frame.type == TokenFrame.STOP) {
