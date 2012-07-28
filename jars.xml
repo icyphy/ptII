@@ -11,6 +11,7 @@
     <include name="com/jgoodies/jgoodies.jar" />
     <include name="contrib/contrib.jar" />
     <include name="doc/codeDoc.jar" />
+    <include name="doc/codeDocBcvtb.jar" />
     <include name="doc/codeDocHyVisual.jar" />
     <include name="doc/codeDocViptos.jar" />
     <include name="doc/codeDocVisualSense.jar" />
@@ -3516,6 +3517,15 @@
       </fileset>
     </jar>
 
+    <!-- doc/codeDocBcvtb.jar -->
+    <jar defaultexcludes="yes"
+	 destfile="${basedir}/doc/codeDocBcvtb.jar"
+	 >
+      <fileset dir="${basedir}">
+	<include name="doc/codeDocBcvtb/**"/>
+      </fileset>
+    </jar>
+
     <!-- doc/codeDocHyVisual.jar -->
     <jar defaultexcludes="yes"
 	 destfile="${basedir}/doc/codeDocHyVisual.jar"
@@ -6101,15 +6111,6 @@
        >
     <fileset dir="${basedir}">
       <include name="doc/design/*.pdf"/>
-    </fileset>
-  </jar>
-
-  <!-- doc/codeDocHyVisual.jar -->
-  <jar defaultexcludes="yes"
-       destfile="${basedir}/doc/codeDocHyVisual.jar"
-       >
-    <fileset dir="${basedir}">
-      <include name="doc/codeDocHyVisual/**"/>
     </fileset>
   </jar>
 
