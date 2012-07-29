@@ -433,7 +433,16 @@ public class PublisherPort extends PubSubPort {
         if (initialOutputsValue instanceof ArrayToken) {
             for (Token token : ((ArrayToken) initialOutputsValue).arrayValue()) {
                 for (IOPort source : sources) {
-                    source.broadcast(token);
+                    // NOTE: The source port may be at the same or higher
+                    // level of the hierarchy than this port, in which case
+                    // we need to send to the inside rather than the outside.
+                    if (source.depthInHierarchy() <= depthInHierarchy()) {
+                        for (int i = 0; i < source.getWidthInside(); i++) {
+                            source.sendInside(i, token);
+                        }
+                    } else {
+                        source.broadcast(token);
+                    }
                 }
             }
         }
