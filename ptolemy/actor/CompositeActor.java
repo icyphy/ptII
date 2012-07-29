@@ -1230,6 +1230,8 @@ public class CompositeActor extends CompositeEntity implements Actor,
                     if (port == null) {
                         port = (IOPort) newPort(portName);
                         new Parameter(port, "_hide", BooleanToken.TRUE);
+                        // Also make sure the port does not show up on the inside.
+                        new Parameter(port, "_hideInside", BooleanToken.TRUE);
                         port.setPersistent(false);
                         port.setInput(true);
                         port.setMultiport(true);
@@ -1379,6 +1381,8 @@ public class CompositeActor extends CompositeEntity implements Actor,
                 if (port == null) {
                     port = (IOPort) newPort(portName);
                     new Parameter(port, "_hide", BooleanToken.TRUE);
+                    // Also make sure the port does not show up on the inside.
+                    new Parameter(port, "_hideInside", BooleanToken.TRUE);
                     port.setPersistent(false);
                     port.setInput(true);
                     port.setMultiport(true);
@@ -1859,6 +1863,8 @@ public class CompositeActor extends CompositeEntity implements Actor,
                 if (publisherPort == null) {
                     publisherPort = (IOPort) newPort(portName);
                     new Parameter(publisherPort, "_hide", BooleanToken.TRUE);
+                    // Also make sure the port does not show up on the inside.
+                    new Parameter(publisherPort, "_hideInside", BooleanToken.TRUE);
                     publisherPort.setPersistent(false);
                     publisherPort.setOutput(true);
                     publisherPort.setMultiport(true);
