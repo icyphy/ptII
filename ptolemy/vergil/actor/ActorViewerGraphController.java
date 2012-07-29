@@ -487,6 +487,10 @@ public class ActorViewerGraphController extends RunnableGraphController {
 
             while (nodes.hasNext()) {
                 Port port = (Port) nodes.next();
+                // Skip the port if it is hidden.
+                if (_isHidden(port)) {
+                    continue;
+                }
                 int portRotation = IOPortController.getCardinality(port);
                 int direction = IOPortController.getDirection(portRotation);
                 if (direction == SwingConstants.WEST) {
@@ -567,6 +571,35 @@ public class ActorViewerGraphController extends RunnableGraphController {
             }
 
             return label;
+        }
+        
+        /** Return true if a property named "_hide" is set for
+         *  the specified object. A property is specified if the specified
+         *  object contains an attribute with the specified name and that
+         *  attribute is either not a boolean-valued parameter, or it is
+         *  a boolean-valued parameter with value true.
+         *  @param object The object.
+         *  @return True if the property is set.
+         */
+        private boolean _isHidden(NamedObj object) {
+            Attribute attribute = object.getAttribute("_hide");
+            if (attribute == null) {
+                return false;
+            }
+            if (attribute instanceof Parameter) {
+                try {
+                    Token token = ((Parameter) attribute).getToken();
+
+                    if (token instanceof BooleanToken) {
+                        if (!((BooleanToken) token).booleanValue()) {
+                            return false;
+                        }
+                    }
+                } catch (IllegalActionException e) {
+                    // Ignore, using default of true.
+                }
+            }
+            return true;
         }
 
         // re-order the ports according to _ordinal property
