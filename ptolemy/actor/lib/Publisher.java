@@ -203,25 +203,6 @@ public class Publisher extends TypedAtomicActor {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** If a publish and subscribe channel is set, then set up the connections.
-     *  @param attribute The attribute that changed.
-     *  @exception IllegalActionException Thrown if the new color attribute cannot
-     *      be created.
-     */
-    public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
-        if (attribute == channel) {
-            // Publisher-4.2 in Publisher.tcl calls attributeChanged()
-            // and expects it to change the channel name and propagate
-            // the channel name to any subscribers.  Vergil presumably
-            // uses change requests to change the name.
-            output.channel.setExpression(channel.stringValue());
-            output.attributeChanged(output.channel);
-        } else {
-            super.attributeChanged(attribute);
-        }
-    }
-
     /** Clone the actor into the specified workspace.
      *  @param workspace The workspace for the new object.
      *  @return A new actor.

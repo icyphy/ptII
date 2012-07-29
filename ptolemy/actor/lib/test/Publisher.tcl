@@ -367,7 +367,7 @@ test Publisher-4.1 {Channel Name Change: change the Publisher name} {
     set publisher [java::cast ptolemy.actor.lib.Publisher [$model getEntity Publisher]]
     set channel [getParameter $publisher channel]
     $channel setExpression "channel4"
-    $publisher attributeChanged $channel
+    $channel validate
 
     set manager [java::new ptolemy.actor.Manager [$model workspace] "p4manager"]
     $model setManager $manager 
@@ -400,7 +400,7 @@ test Publisher-4.2 {Channel Name Change: change the Publisher name in an Opaque 
     $propagateNameChanges setExpression true
     set channel [getParameter $publisher channel]
     $channel setExpression "channel4"
-    $publisher attributeChanged $channel
+    $channel validate
 
     # Test out the subscribers() method. listToFullNames is defined in enums.tcl
     set subscribers [listToFullNames [$publisher subscribers]]
