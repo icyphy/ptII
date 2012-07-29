@@ -436,7 +436,11 @@ public class PublisherPort extends PubSubPort {
                     // NOTE: The source port may be at the same or higher
                     // level of the hierarchy than this port, in which case
                     // we need to send to the inside rather than the outside.
-                    if (source.depthInHierarchy() <= depthInHierarchy()) {
+                    // An exception is that, in what seems like a hack,
+                    // _insideSourcePortList() will return a list with just
+                    // this PublisherPort in it if the PublisherPort is
+                    // contained by an atomic actor.
+                    if (source != this && source.depthInHierarchy() <= depthInHierarchy()) {
                         for (int i = 0; i < source.getWidthInside(); i++) {
                             source.sendInside(i, token);
                         }
