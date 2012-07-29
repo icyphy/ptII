@@ -333,6 +333,9 @@ public class ClassChanges extends MoMLFilterSimple {
         _classChanges.put("ptolemy.codegen.kernel.Director",
                 "ptolemy.codegen.actor.Director");
 
+        _classChanges.put("ptolemy.domains.de.lib.UnionMerge",
+                "ptolemy.actor.lib.UnionMerge");
+
         // Look for Kepler's NamedObjId, and if we don't find it, then
         // add it to the filter.  This makes it much easier to open
         // Kepler models in Ptolemy.
