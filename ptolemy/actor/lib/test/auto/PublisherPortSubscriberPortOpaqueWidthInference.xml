@@ -38,7 +38,7 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="{145, 45}">
             </property>
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={132, 370, 834, 634}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={10, 211, 834, 634}, maximized=false}">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 524]">
         </property>
@@ -93,6 +93,8 @@
                 <property name="channel" class="ptolemy.data.expr.StringParameter" value="channel">
                 </property>
                 <property name="global" class="ptolemy.data.expr.Parameter" value="true">
+                </property>
+                <property name="initialOutputs" class="ptolemy.actor.PublisherPort$1" value="{1}">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[210.0, 220.0]">
                 </property>
