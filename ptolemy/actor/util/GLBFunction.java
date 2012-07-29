@@ -105,13 +105,13 @@ public class GLBFunction extends MonotonicFunction {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         private methods                   ////
+    ////                       protected methods                   ////
 
     /** Update the arguments used in <code>getValue()</code>, which are the 
      *  InequalityTerms and Types of the destination ports. The arguments are
      *  only updated if the workspace version has changed. 
      */
-    private void _updateArguments() {
+    protected void _updateArguments() {
         List<IOPort> destinations;
         if (_sourcePort.getContainer().workspace().getVersion() 
                 == _cachedVariablesWorkspaceVersion) {
@@ -146,26 +146,17 @@ public class GLBFunction extends MonotonicFunction {
 */ // FIXME
     
     ///////////////////////////////////////////////////////////////////
-    ////                      private variables                    ////
+    ////                    protected variables                    ////
 
-    /**
-     * The constant types found in destination ports.
-     */
-    private Set<Type> _cachedTypes;
+    /** The constant types found in destination ports. */
+    protected Set<Type> _cachedTypes;
 
-    /**
-     * The types terms found in destination ports.
-     */
-    private InequalityTerm[] _cachedTerms;
+    /** The types terms found in destination ports. */
+    protected InequalityTerm[] _cachedTerms;
 
-    /**
-     * The workspace version number at time of last update of arguments. 
-     */
-    private long _cachedVariablesWorkspaceVersion = -1;
+    /** The workspace version number at time of last update of arguments. */
+    protected long _cachedVariablesWorkspaceVersion = -1;
 
-    /**
-     * The source port.
-     */
-    private TypedIOPort _sourcePort;
-
+    /** The source port. */
+    protected TypedIOPort _sourcePort;
 }
