@@ -140,7 +140,7 @@ public class IOPortController extends AttributeController {
     public static final double MULTIPORT_CONNECTION_SPACING = 5.0;
 
     ///////////////////////////////////////////////////////////////////
-    ////                         protected methods                 ////
+    ////                         public methods                    ////
 
     /** Return one of {-270, -180, -90, 0, 90, 180, 270} specifying
      *  the orientation of a port. This depends on whether the port
