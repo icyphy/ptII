@@ -4,7 +4,7 @@
 <entity name="array2" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.0.devel">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[697, 518]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[697, 524]">
     </property>
     <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[102, 100]">
     </property>
@@ -18,11 +18,11 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="72.0, 37.0">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={102, 102, 917, 644}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={102, 102, 931, 634}, maximized=false}">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{348.5, 259.0}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{348.5, 262.0}">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Note: with bidirectional type inference enabled (parameter accessible in expert mode),&#10;type conversion is done at the sender's side because the sender infers the expected &#10;type from the constraints that are set on the receivers input port.">
@@ -44,9 +44,9 @@
         </property>
     </entity>
     <entity name="TypeTest" class="ptolemy.actor.lib.TypeTest">
-        <property name="parameterTypes" class="ptolemy.data.expr.Parameter" value="{Const = {value = &quot;arrayType(double,1)&quot;}, Const2 = {value = &quot;arrayType(int,1)&quot;}}">
+        <property name="parameterTypes" class="ptolemy.data.expr.Parameter" value="{Const = {NONE = &quot;int&quot;, firingCountLimit = &quot;int&quot;, value = &quot;arrayType(double,1)&quot;}, Const2 = {NONE = &quot;int&quot;, firingCountLimit = &quot;int&quot;, value = &quot;arrayType(int,1)&quot;}}">
         </property>
-        <property name="portTypes" class="ptolemy.data.expr.Parameter" value="{AddSubtract = {minus = &quot;unknown&quot;, output = &quot;arrayType(double,1)&quot;, plus = &quot;arrayType(double,1)&quot;}, Const = {output = &quot;arrayType(double,1)&quot;, trigger = &quot;unknown&quot;}, Const2 = {output = &quot;arrayType(double,1)&quot;, trigger = &quot;unknown&quot;}}">
+        <property name="portTypes" class="ptolemy.data.expr.Parameter" value="{AddSubtract = {minus = &quot;arrayType(double,1)&quot;, output = &quot;arrayType(double,1)&quot;, plus = &quot;arrayType(double,1)&quot;}, Const = {output = &quot;arrayType(double,1)&quot;, trigger = &quot;unknown&quot;}, Const2 = {output = &quot;arrayType(double,1)&quot;, trigger = &quot;unknown&quot;}}">
         </property>
         <property name="trainingMode" class="ptolemy.data.expr.Parameter" value="false">
         </property>
