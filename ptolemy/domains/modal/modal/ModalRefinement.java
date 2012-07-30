@@ -274,8 +274,8 @@ public class ModalRefinement extends ModalModel implements DropTargetHandler,
                 // created its own port. That will result in the code
                 // above executing because it will set _mirrorPort to 1
                 // on this port before doing the call.
-                ModalRefinementPort containerPort = container == null ? null
-                        : (ModalRefinementPort) container.getPort(name);
+                ModalRefinementPort containerPort = (container == null ? null
+                        : (ModalRefinementPort) container.getPort(name));
                 if (containerPort == null) {
                     // The container does not have a mirror port.
                     // Delegate upwards.
