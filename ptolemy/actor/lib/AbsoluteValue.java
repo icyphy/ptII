@@ -28,7 +28,10 @@
 package ptolemy.actor.lib;
 
 import ptolemy.actor.TypedIOPort;
+import ptolemy.data.ArrayToken;
 import ptolemy.data.ScalarToken;
+import ptolemy.data.Token;
+import ptolemy.data.type.ArrayType;
 import ptolemy.data.type.BaseType;
 import ptolemy.data.type.MonotonicFunction;
 import ptolemy.data.type.Type;
@@ -44,7 +47,8 @@ import ptolemy.kernel.util.Workspace;
 /**
  Produce an output token on each firing with a value that is
  equal to the absolute value of the input. The input can have any
- scalar type. If the input type is not Complex, the output has the
+ scalar type, or it can be an array of scalars (or an array of arrays
+ of scalars, etc.). If the input type is not Complex, the output has the
  same type as the input. If the input type is Complex, the output
  type is Double, in which case, the output value is the magnitude
  of the input complex.
@@ -68,7 +72,12 @@ public class AbsoluteValue extends Transformer {
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
-        output.setTypeAtLeast(new FunctionTerm(input));
+        output.setTypeAtLeast(new TypeOfAbsoluteValue(input));
+        // FIXME: This actor accepts a rather complicated set
+        // of input types. Is there a way to express the constraints?
+        // input.setTypeAtMost(BaseType.SCALAR);
+        // Also, type constraints do not propagate backwards from
+        // the output to the input.
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -83,7 +92,7 @@ public class AbsoluteValue extends Transformer {
      */
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         AbsoluteValue newObject = (AbsoluteValue) super.clone(workspace);
-        newObject.output.setTypeAtLeast(new FunctionTerm(newObject.input));
+        newObject.output.setTypeAtLeast(new TypeOfAbsoluteValue(newObject.input));
         return newObject;
     }
 
@@ -94,19 +103,50 @@ public class AbsoluteValue extends Transformer {
     public void fire() throws IllegalActionException {
         super.fire();
         if (input.hasToken(0)) {
-            ScalarToken in = (ScalarToken) input.get(0);
-            output.send(0, in.absolute());
+            output.send(0, _absoluteValue(input.get(0)));
+        }
+    }
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
+
+    /** If the argument type is an array, then return an array
+     *  type with element types recursively defined by this method.
+     *  Otherwise, if the argument type is complex, then return
+     *  double. Otherwise, return the argument type.
+     *  @return The absolute value of the input.
+     *  @throws IllegalActionException If there is no absolute value
+     *   operation for the specified token.
+     */
+    private Token _absoluteValue(Token input) throws IllegalActionException {
+        if (input instanceof ArrayToken) {
+            int length = ((ArrayToken)input).length();
+            Token[] result = new Token[length];
+            for (int i = 0; i < length; i++) {
+                result[i] = _absoluteValue(((ArrayToken)input).getElement(i));
+            }
+            return new ArrayToken(result);
+        } else if (input instanceof ScalarToken) {
+            return ((ScalarToken)input).absolute();
+        } else {
+            throw new IllegalActionException(this, 
+                    "AbsoluteValue only accepts scalar inputs or arrays of scalars.");
         }
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         private variables                 ////
-    ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
-    // This class implements a monotonic function of the input port
-    // type. The result of the function is the same as the input type
-    // if is not Complex; otherwise, the result is Double.
-    private static class FunctionTerm extends MonotonicFunction {
+    
+    /** This class implements a monotonic function of the input port
+     *  type. It returns the type of the absolute value of the input
+     *  port type. If the input type is an array, then the function
+     *  returns an array type with element types recursively defined
+     *  by this same function.
+     *  Otherwise, if the port type is complex, then return
+     *  double. Otherwise, return the port
+     *  type.
+     */
+    private static class TypeOfAbsoluteValue extends MonotonicFunction {
 
         // FindBugs suggested making this class a static inner class:
         //
@@ -119,7 +159,7 @@ public class AbsoluteValue extends Transformer {
         // The constructor takes a port argument so that the clone()
         // method can construct an instance of this class for the
         // input port on the clone.
-        private FunctionTerm(TypedIOPort port) {
+        private TypeOfAbsoluteValue(TypedIOPort port) {
             _port = port;
         }
 
@@ -130,15 +170,7 @@ public class AbsoluteValue extends Transformer {
          *  @return A Type.
          */
         public Object getValue() {
-            Type inputType = _port.getType();
-
-            if (inputType == BaseType.COMPLEX) {
-                return BaseType.DOUBLE;
-            } else if (inputType == BaseType.COMPLEX_MATRIX) {
-                return BaseType.DOUBLE_MATRIX;
-            } else {
-                return inputType;
-            }
+            return(_outputType(_port.getType()));
         }
 
         /** Return the variables in this term. If the type of the input port
@@ -154,6 +186,26 @@ public class AbsoluteValue extends Transformer {
                 return variable;
             } else {
                 return new InequalityTerm[0];
+            }
+        }
+        
+        ///////////////////////////////////////////////////////////////
+        ////                      private inner methods            ////
+
+        /** If the argument type is an array, then return an array
+         *  type with element types recursively defined by this method.
+         *  Otherwise, if the argument type is complex, then return
+         *  double. Otherwise, return the argument type.
+         *  @return A Type.
+         */
+        private Type _outputType(Type inputType) {
+            if (inputType == BaseType.COMPLEX) {
+                return BaseType.DOUBLE;
+            } else if (inputType instanceof ArrayType) {
+                Type elementType = ((ArrayType)inputType).getElementType();
+                return new ArrayType(_outputType(elementType));
+            } else {
+                return inputType;
             }
         }
 
