@@ -81,9 +81,11 @@ public class Maximum extends TypedAtomicActor {
          * models, so we leave it as is.
          */
         maximumValue.setMultiport(true);
-        maximumValue.setTypeAtMost(BaseType.SCALAR);
+        
         maximumValue.setTypeAtLeast(input);
         maximumValue.setDefaultWidth(1);
+
+        input.setTypeAtMost(BaseType.SCALAR);
 
         channelNumber = new TypedIOPort(this, "channelNumber", false, true);
 
@@ -101,14 +103,11 @@ public class Maximum extends TypedAtomicActor {
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 
-    /** The input port.  This base class imposes no type constraints except
-     *  that the type of the input cannot be greater than the type of the
-     *  <i>maximumValue</i> output.
+    /** The input port.  This is required to be a scalar type.
      */
     public TypedIOPort input;
 
-    /** The output port for the maximum value. The type of this
-     *  output is constrained to be at most a scalar.
+    /** The output port for the maximum value.
      */
     public TypedIOPort maximumValue;
 
@@ -129,7 +128,7 @@ public class Maximum extends TypedAtomicActor {
      */
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         Maximum newObject = (Maximum) super.clone(workspace);
-        newObject.maximumValue.setTypeAtMost(BaseType.SCALAR);
+        newObject.input.setTypeAtMost(BaseType.SCALAR);
         newObject.maximumValue.setTypeAtLeast(newObject.input);
         newObject.channelNumber.setTypeEquals(BaseType.INT);
         return newObject;

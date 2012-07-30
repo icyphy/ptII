@@ -69,10 +69,11 @@ public class Limiter extends Transformer {
         top = new Parameter(this, "top");
         top.setExpression("1.0");
 
-        output.setTypeAtMost(BaseType.SCALAR);
+        input.setTypeAtMost(BaseType.SCALAR);
+        input.setTypeAtLeast(top);
+        input.setTypeAtLeast(bottom);
+
         output.setTypeAtLeast(input);
-        output.setTypeAtLeast(top);
-        output.setTypeAtLeast(bottom);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -100,10 +101,10 @@ public class Limiter extends Transformer {
      */
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         Limiter newObject = (Limiter) super.clone(workspace);
-        newObject.output.setTypeAtMost(BaseType.SCALAR);
+        newObject.input.setTypeAtMost(BaseType.SCALAR);
+        newObject.input.setTypeAtLeast(newObject.top);
+        newObject.input.setTypeAtLeast(newObject.bottom);
         newObject.output.setTypeAtLeast(newObject.input);
-        newObject.output.setTypeAtLeast(newObject.top);
-        newObject.output.setTypeAtLeast(newObject.bottom);
         return newObject;
     }
 
