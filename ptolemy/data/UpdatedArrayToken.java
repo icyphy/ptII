@@ -87,6 +87,9 @@ public class UpdatedArrayToken extends ArrayToken {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
     
+    // FindBugs says "Class doesn't override equals in superclass," but
+    // that's ok here.  See the tests in test/UpdatedArrayToken.tcl
+
     /** Return the element at the specified index.
      *  @param index The index of the desired element.
      *  @return The token contained in this array token at the
