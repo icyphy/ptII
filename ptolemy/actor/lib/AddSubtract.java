@@ -101,6 +101,11 @@ public class AddSubtract extends TypedAtomicActor {
 
         output.setTypeAtLeast(plus);
         output.setTypeAtLeast(minus);
+        
+        // To better support type inference, the two input
+        // ports should have the same type, just as their
+        // input channels all have the same type.
+        plus.setTypeSameAs(minus);
 
         _attachText("_iconDescription", "<svg>\n"
                 + "<rect x=\"-20\" y=\"-20\" " + "width=\"40\" height=\"40\" "
