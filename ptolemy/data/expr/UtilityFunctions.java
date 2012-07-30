@@ -179,6 +179,16 @@ public class UtilityFunctions {
         return token1.getType().convert(token2);
     }
 
+    /** Return the type of the first argument.
+     *  @param type1 The type being cast to.
+     *  @param type2 The type being cast.
+     *  @return The type being cast to.
+     */
+    public static Type castReturnType(Type type1, Type type2)
+            throws IllegalActionException {
+        return type1;
+    }
+
     /** Concatenate two arrays.
      *  The arrays must have the same type.
      *  Example: concatenate({1,2,3},{4,5,6}) == {1,2,3,4,5,6}.
