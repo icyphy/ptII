@@ -65,7 +65,7 @@ public class MovingMaximum extends Transformer {
         super(container, name);
 
         input.setTypeAtMost(BaseType.SCALAR);
-        output.setTypeSameAs(input);
+        output.setTypeAtLeast(input);
     }
 
     /** Clone this actor into the specified workspace. The new actor is
@@ -84,7 +84,7 @@ public class MovingMaximum extends Transformer {
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         MovingMaximum newObject = (MovingMaximum) super.clone(workspace);
         newObject.input.setTypeAtMost(BaseType.SCALAR);
-        newObject.output.setTypeSameAs(newObject.input);
+        newObject.output.setTypeAtLeast(newObject.input);
         return newObject;
     }
 

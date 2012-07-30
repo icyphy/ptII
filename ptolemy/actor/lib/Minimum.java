@@ -81,7 +81,7 @@ public class Minimum extends TypedAtomicActor {
          * models, so we leave it as is.
          */
         minimumValue.setMultiport(true);
-        minimumValue.setTypeAtMost(BaseType.SCALAR);
+        input.setTypeAtMost(BaseType.SCALAR);
         minimumValue.setTypeAtLeast(input);
         minimumValue.setDefaultWidth(1);
 
@@ -101,14 +101,12 @@ public class Minimum extends TypedAtomicActor {
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 
-    /** The input port.  This base class imposes no type constraints except
-     *  that the type of the input cannot be greater than the type of the
-     *  <i>minimumValue</i> output.
+    /** The input port.  This is required to be a scalar type.
      */
     public TypedIOPort input;
 
     /** The output port for the minimum value. The type of this
-     *  output is constrained to be at most a scalar.
+     *  output is constrained to be at least the type of the input.
      */
     public TypedIOPort minimumValue;
 
@@ -129,7 +127,7 @@ public class Minimum extends TypedAtomicActor {
      */
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         Minimum newObject = (Minimum) super.clone(workspace);
-        newObject.minimumValue.setTypeAtMost(BaseType.SCALAR);
+        newObject.input.setTypeAtMost(BaseType.SCALAR);
         newObject.minimumValue.setTypeAtLeast(newObject.input);
         newObject.channelNumber.setTypeEquals(BaseType.INT);
         return newObject;
