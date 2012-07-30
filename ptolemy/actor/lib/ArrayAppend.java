@@ -137,7 +137,7 @@ public class ArrayAppend extends Transformer {
         if (resultWidth > 0) {
             output.send(0, ArrayToken.append(arraysToAppend));
         } else {
-            Type elementType = ((ArrayType)output.getType()).getElementType();
+            Type elementType = ((ArrayType)input.getType()).getElementType();
             output.send(0, new ArrayToken(elementType));
         }
     }
