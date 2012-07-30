@@ -57,7 +57,7 @@ PortablePlaceable.
 
 public abstract class AbstractPlaceableJavaSE {
 
-    /** Construct an actor with the specified container and name.
+    /** Initialize the specified actor with window properties and pane size attributes.
      *  @param actor The actor contained in the Window.
      *  @exception IllegalActionException If the entity cannot be contained
      *   by the proposed container.
