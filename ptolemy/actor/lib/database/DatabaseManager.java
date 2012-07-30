@@ -473,7 +473,13 @@ public class DatabaseManager extends TypedAtomicActor {
                 BufferedReader reader = null;
                 try {
                     reader = passwordFile.openForReading();
-                    _password = reader.readLine().toCharArray();
+                    String line = reader.readLine();
+                    if (line == null) {
+                        _password = line.toCharArray();
+                        line = "";
+                    } else {
+                        throw new NullPointerException("Failed to read a line from " + passwordFile);
+                    }
                 } catch (Exception ex) {
                     System.out.println(getFullName() + ": Failed to read "
                             + passwordFile.stringValue() + ex);
