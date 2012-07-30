@@ -29,6 +29,7 @@ package ptolemy.actor.lib.hoc;
 
 import java.io.Writer;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -47,6 +48,7 @@ import ptolemy.actor.QueueReceiver;
 import ptolemy.actor.Receiver;
 import ptolemy.actor.TypedCompositeActor;
 import ptolemy.actor.TypedIOPort;
+import ptolemy.actor.util.GLBFunction;
 import ptolemy.data.ArrayToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.Token;
@@ -57,6 +59,7 @@ import ptolemy.data.type.Type;
 import ptolemy.data.type.TypeLattice;
 import ptolemy.graph.CPO;
 import ptolemy.graph.Inequality;
+import ptolemy.graph.InequalityTerm;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Port;
@@ -281,7 +284,7 @@ public class IterateOverArray extends MirrorComposite {
         }
     }
 
-    /** Override the base class to ensure that the ports of this
+    /** Override the base class to ensure that the input ports of this
      *  actor all have array types.
      *  @return A list of instances of Inequality.
      *  @exception IllegalActionException If the typeConstraints
@@ -289,11 +292,14 @@ public class IterateOverArray extends MirrorComposite {
      *  @see ptolemy.graph.Inequality
      */
     public Set<Inequality> typeConstraints() throws IllegalActionException {
-        Iterator ports = portList().iterator();
+        Iterator ports = inputPortList().iterator();
 
         while (ports.hasNext()) {
             TypedIOPort port = (TypedIOPort) ports.next();
             port.setTypeAtLeast(ArrayType.ARRAY_BOTTOM);
+            // With backward type resolution, we also need the following
+            // to ensure that the type does not resolve to GENERAL.
+            port.setTypeAtMost(new ArrayType(BaseType.GENERAL));
         }
 
         return super.typeConstraints();
@@ -406,17 +412,27 @@ public class IterateOverArray extends MirrorComposite {
                 // not have declared type, form type constraint.
                 if ((sourcePort.getContainer() == this)
                         && (destinationPort.getContainer() == this)) {
-                    // Both ports belong to this, so their type must be equal.
-                    // Represent this with two inequalities.
+                    // Both ports belong to this.
+                    // Require the output to be at least the input.
                     Inequality ineq1 = new Inequality(sourcePort.getTypeTerm(),
                             destinationPort.getTypeTerm());
                     result.add(ineq1);
 
-                    Inequality ineq2 = new Inequality(
-                            destinationPort.getTypeTerm(),
-                            sourcePort.getTypeTerm());
-                    result.add(ineq2);
+                    // Finally, if backward type inference is enabled,
+                    // require that the source array element type be greater
+                    // than or equal to the GLB of all the destination ports.
+                    if (_backwardTypeInferenceEnabled()) {
+                        InequalityTerm typeTerm = sourcePort.getTypeTerm();
+                        if (typeTerm.isSettable()) {
+                            result.add(new Inequality(
+                                    new GLBArrayFunction(sourcePort), 
+                                    typeTerm));
+                        }
+                    }
                 } else if (sourcePort.getContainer().equals(this)) {
+                    // The source port belongs to this, so its array element
+                    // type must be less than or equal to the type of the destination
+                    // port.
                     if (sourcePort.sourcePortList().size() == 0) {
                         // Skip this port. It is not connected on the outside.
                         continue;
@@ -435,9 +451,22 @@ public class IterateOverArray extends MirrorComposite {
                                 ArrayType.elementType(sourcePort),
                                 destinationPort.getTypeTerm());
                         result.add(ineq);
+                        
+                        // Finally, if backward type inference is enabled,
+                        // require that the source array element type be greater
+                        // than or equal to the GLB of all the destination ports.
+                        if (_backwardTypeInferenceEnabled()) {
+                            InequalityTerm typeTerm = sourcePort.getTypeTerm();
+                            if (typeTerm.isSettable()) {
+                                result.add(new Inequality(
+                                        new GLBArrayFunction(sourcePort), 
+                                        typeTerm));
+                            }
+                        }
                     } catch (IllegalActionException e) {
                         throw new InternalErrorException(e);
                     }
+                    
                 } else if (destinationPort.getContainer().equals(this)) {
                     // Require that the destination port type be an array
                     // with elements compatible with the source port.
@@ -446,6 +475,21 @@ public class IterateOverArray extends MirrorComposite {
                                 ArrayType.arrayOf(sourcePort),
                                 destinationPort.getTypeTerm());
                         result.add(ineq);
+                        
+                        // Also require that the source port type
+                        // be greater than or equal to the GLB of all
+                        // its destination ports (or array element types
+                        // of destination ports that are ports of this
+                        // IterateOverArray actor).
+                        // This ensures that backward type inference occurs.
+                        if (_backwardTypeInferenceEnabled()) {
+                            InequalityTerm typeTerm = sourcePort.getTypeTerm();
+                            if (typeTerm.isSettable()) {
+                                result.add(new Inequality(
+                                        new GLBArrayElementFunction(sourcePort), 
+                                        typeTerm));
+                            }
+                        }
                     } catch (IllegalActionException e) {
                         throw new InternalErrorException(e);
                     }
@@ -482,6 +526,90 @@ public class IterateOverArray extends MirrorComposite {
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
+    
+    ///////////////////////////////////////////////////////////////////
+    //// GLBArrayFunction
+
+    /** This class implements a monotonic function that returns an array
+     *  type with element type equal to the greatest 
+     *  lower bound (GLB) of its arguments, or if any
+     *  of its arguments is itself a port belonging to
+     *  this IterateOverArray actor, then its array element type.
+     */
+    private class GLBArrayFunction extends GLBArrayElementFunction {
+
+        public GLBArrayFunction(TypedIOPort sourcePort) {
+            super(sourcePort);
+        }
+
+        /** Return the current value of this monotonic function.
+         *  @return A Type.
+         */
+        public Object getValue() throws IllegalActionException {
+            Type elementType = (Type)super.getValue();
+            return new ArrayType(elementType);
+        }
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    //// GLBArrayElementFunction
+
+    /** This class implements a monotonic function that returns the greatest 
+     *  lower bound (GLB) of its arguments or the array element type
+     *  of its arguments. Specifically, if one of the arguments is a port
+     *  belonging to the enclosing task, then it references the array element
+     *  type of that port rather than the port type.
+     */
+    private class GLBArrayElementFunction extends GLBFunction {
+
+        public GLBArrayElementFunction(TypedIOPort sourcePort) {
+            super(sourcePort);
+        }
+
+        /** Return the current value of this monotonic function.
+         *  @return A Type.
+         */
+        public Object getValue() throws IllegalActionException {
+            _updateArguments();
+
+            Set<Type> types = new HashSet<Type>();
+            types.addAll(_cachedTypes);
+            for (int i = 0; i < _cachedTerms.length; i++) {
+                Object termObject = _cachedTerms[i].getAssociatedObject();
+                if (termObject instanceof IOPort
+                        && ((IOPort)termObject).getContainer() == IterateOverArray.this) {
+                    // The type term belongs to a port of this IterateOverArray actor.
+                    // Use its element type rather than its type.
+                    Object value = _cachedTerms[i].getValue();
+                    if (value instanceof ArrayType) {
+                        types.add(((ArrayType)value).getElementType());
+                    } else if (value.equals(BaseType.GENERAL)) {
+                        // To ensure that this function is monotonic, we have to
+                        // handle the case where the value is greater than ArrayType.
+                        // The only thing greater than ArrayType is GENERAL.
+                        types.add(BaseType.GENERAL);
+                    }
+                    // If the value is not an array type, then it must be unknown,
+                    // so we don't need to add it to the collection. Adding unknown
+                    // to the arguments to GLB does nothing.
+                } else {
+                    types.add((Type)_cachedTerms[i].getValue());
+                }
+            }
+            // If there are no destination outputs at all, then set
+            // the output type to unknown.
+            if (types.size() == 0) {
+                return BaseType.UNKNOWN;
+            }
+            // If there is only one destination, the GLB is equal to the
+            // type of that port.
+            if (types.size() == 1) {
+                return types.toArray()[0];
+            }
+
+            return TypeLattice.lattice().greatestLowerBound(types);
+        }
+    }
 
     ///////////////////////////////////////////////////////////////////
     //// IterateComposite
@@ -717,8 +845,13 @@ public class IterateOverArray extends MirrorComposite {
                 throws IllegalActionException {
             boolean result = false;
 
-            ArrayType type = (ArrayType) ((TypedIOPort) port).getType();
-            Type elementType = type.getElementType();
+            // Output type might be GENERAL, in which case, we
+            // let the element type be GENERAL.
+            Type elementType = BaseType.GENERAL;
+            Type portType = ((TypedIOPort) port).getType();
+            if (portType instanceof ArrayType) {
+                elementType = ((ArrayType) portType).getElementType();
+            }
 
             for (int i = 0; i < port.getWidthInside(); i++) {
                 try {
@@ -813,7 +946,8 @@ public class IterateOverArray extends MirrorComposite {
         }
 
         /** Override the base class to convert the token to the element
-         *  type rather than to the type of the port.
+         *  type rather than to the type of the port, unless the port
+         *  is of type GENERAL, in which case, no conversion is necessary.
          *  @param token The token to convert.
          *  @return The converted token.
          *  @exception IllegalActionException If the conversion is
@@ -823,7 +957,9 @@ public class IterateOverArray extends MirrorComposite {
             if (!(getContainer() instanceof IterateOverArray) || !isOutput()) {
                 return super.convert(token);
             }
-
+            if (getType().equals(BaseType.GENERAL)) {
+                return token;
+            }
             Type type = ((ArrayType) getType()).getElementType();
 
             if (type.equals(token.getType())) {
