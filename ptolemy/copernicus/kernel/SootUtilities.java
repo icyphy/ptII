@@ -1812,6 +1812,11 @@ public class SootUtilities {
      */
     public static SootMethod searchForMethodByName(SootClass theClass,
             String name) {
+        if (theClass == null) {
+            throw new NullPointerException("searchForMethodByName(null, " + name
+                    + ") called with a null first argument?");
+        }
+        SootClass previousClass = theClass;
         while (theClass != null) {
             if (theClass.declaresMethodByName(name)) {
                 //System.out.println("found method " + name + " in " + theClass);
@@ -1839,11 +1844,14 @@ public class SootUtilities {
             }
 
             theClass = theClass.getSuperclass();
+            if (theClass != null) {
+                previousClass = theClass;
+            }
             theClass.setLibraryClass();
         }
 
         throw new RuntimeException("Method " + name + " not found in class "
-                + theClass);
+                + previousClass);
     }
 
     /** Anywhere where the iterator of the given field is referenced

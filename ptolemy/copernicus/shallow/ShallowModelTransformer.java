@@ -970,7 +970,7 @@ public class ShallowModelTransformer extends SceneTransformer implements
         if ((object == null) || (object.attributeList() == null)) {
             System.out.println("ShallowModelTransformer: Warning: "
                     + "object == null, or object.attributeList() == null?, "
-                    + "object: " + object);
+                    + "object: " + (object == null ? "null" : object));
         } else {
             for (Iterator attributes = object.attributeList().iterator(); attributes
                     .hasNext();) {
