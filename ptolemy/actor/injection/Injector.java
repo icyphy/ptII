@@ -79,13 +79,13 @@ public class Injector {
                     return (T) implementationClass.newInstance();
                 } catch (ClassNotFoundException e) {
                     throw new IllegalStateException("Problem loading type "
-                            + implementation, e);
+                            + implementationName, e);
                 } catch (InstantiationException e) {
                     throw new IllegalStateException(
-                            "Problem instantiating type " + implementation, e);
+                            "Problem instantiating type " + implementationName, e);
                 } catch (IllegalAccessException e) {
                     throw new IllegalStateException(
-                            "Problem instantiating type " + implementation, e);
+                            "Problem instantiating type " + implementationName, e);
                 }
             }
         }
