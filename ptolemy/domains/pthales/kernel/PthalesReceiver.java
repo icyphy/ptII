@@ -632,7 +632,7 @@ public class PthalesReceiver extends SDFReceiver {
         tiling.keySet().toArray(tilingOrder);
 
         // Position computation
-        int rep = (int) Math.floor(position / (patternSize * _nbTokens));
+        int rep = (int) Math.floor(position / ((double)(patternSize * _nbTokens)));
         int dim = (int) Math.floor(position % (patternSize * _nbTokens))
                 / _nbTokens;
         int numToken = (int) Math.floor(position % _nbTokens);
