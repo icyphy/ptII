@@ -77,7 +77,6 @@ public class ParameterMirrorPort extends ParameterPort {
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         ParameterMirrorPort result = (ParameterMirrorPort) super.clone(workspace);
         result._associatedPort = null;
-        result._settingAssociatedPort = false;
         return result;
     }
 
@@ -197,10 +196,4 @@ public class ParameterMirrorPort extends ParameterPort {
 
     /** The associated port, if there is one. */
     private ParameterMirrorPort _associatedPort = null;
-
-    /** Flag indicating that we are setting the associated port. */
-    private boolean _settingAssociatedPort = false;
-
-    
-    
 }
