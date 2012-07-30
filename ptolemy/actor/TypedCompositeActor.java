@@ -561,6 +561,30 @@ public class TypedCompositeActor extends CompositeActor implements TypedActor {
         super._addRelation(relation);
     }
 
+    /** Return true if backward type inference is enabled.
+     *  This looks for a top-level attribute named
+     *  "disableBackwardTypeInference", and if it exists,
+     *  returns its boolean value. If it does not exist,
+     *  then return true.
+     *  @return True if backward type inference is enabled.
+     */
+    protected boolean _backwardTypeInferenceEnabled() {
+        try {
+            Parameter onlyForward = (Parameter) this.toplevel()
+                    .getAttribute("disableBackwardTypeInference",
+                            Parameter.class);
+            if (onlyForward != null
+                    && ((BooleanToken) onlyForward.getToken())
+                            .booleanValue()) {
+                return false;
+            }
+            return true;
+        } catch (IllegalActionException e) {
+            // This should not happen
+            throw new InternalErrorException(e);
+        }
+    }
+    
     /** Check types from a source port to a group of destination ports,
      *  assuming the source port is connected to all the ports in the
      *  group of destination ports.  Return a list of instances of
@@ -646,26 +670,18 @@ public class TypedCompositeActor extends CompositeActor implements TypedActor {
                 result.add(ineq);
             }
 
+            // Set the constraint for backwards type inference where the
+            // source port type is greater than or equal to the GLB of all
+            // its destination ports.
             // 1) only setup type constraint if source has no type declared
             if (srcUndeclared) {
                 // 2) only setup type constraint if bidirectional type 
-                // inference is enabled
-                try {
-                    Parameter onlyForward = (Parameter) this.toplevel()
-                            .getAttribute("disableBackwardTypeInference",
-                                    Parameter.class);
-                    if (onlyForward != null
-                            && ((BooleanToken) onlyForward.getToken())
-                                    .booleanValue()) {
-                        continue; // skip the GLB constraint
-                    }
-                } catch (IllegalActionException e) {
-                    // This should not happen
-                    e.printStackTrace();
+                // inference is enabled.
+                if (_backwardTypeInferenceEnabled()) {
+                    result.add(new Inequality(
+                            new GLBFunction(source),
+                            source.getTypeTerm()));
                 }
-                // default behavior, add GLB constraint
-                result.add(new Inequality(new GLBFunction(source), source
-                        .getTypeTerm()));
             }
         }
 
