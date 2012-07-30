@@ -21,6 +21,8 @@
     <property name="TestExceptionAttribute" class="ptolemy.actor.lib.TestExceptionAttribute">
         <property name="correctExceptionMessage" class="ptolemy.data.expr.StringParameter" value="Unknown inputs remain. Possible causality loop:&#10;input&#10;&#10;  in .junk.Display and .junk.Display.input">
         </property>
+        <property name="matchPrefixOfLength" class="ptolemy.data.expr.Parameter" value="20">
+        </property>
         <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[405.0, 90.0]">
