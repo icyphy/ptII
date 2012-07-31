@@ -940,11 +940,9 @@ public class ThreadedComposite extends MirrorComposite {
                         ThreadedComposite.this
                                 ._debug("Inside thread has stopped.");
                     }
-                    if (_exception != null) {
-                        throw new IllegalActionException(
+                    throw new IllegalActionException(
                                 ThreadedComposite.this, _exception,
                                 "Error in inside thread of actor.");
-                    }
                 } catch (InterruptedException e) {
                     // Ignore.
                 }
