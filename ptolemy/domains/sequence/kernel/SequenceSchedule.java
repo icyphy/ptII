@@ -977,7 +977,7 @@ public class SequenceSchedule extends Schedule {
      *  data structures instead of the _schedule
      *  Beth - added parameterization &lt;ScheduleElement&gt;
      */
-    protected List<ScheduleElement> _schedule;
+    //protected List<ScheduleElement> _schedule;
 
     /** Keeps track of our position in the list.  Used by the hasNext() methods
      *  of the iterators.

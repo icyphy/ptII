@@ -175,7 +175,7 @@ public abstract class AbstractPlaceableJavaSE {
     ////                         inner classes                     ////
 
     /** Listener for windowClosing action. */
-    class WindowClosingAdapter extends WindowAdapter {
+    public class WindowClosingAdapter extends WindowAdapter {
         public void windowClosing(WindowEvent e) {
             cleanUp();
         }

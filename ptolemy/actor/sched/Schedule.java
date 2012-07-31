@@ -637,7 +637,7 @@ public class Schedule extends ScheduleElement {
     ////                         protected variables               ////
 
     /** The list of schedule elements contained by this schedule. */
-    protected List _schedule;
+    protected List<ScheduleElement> _schedule;
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////

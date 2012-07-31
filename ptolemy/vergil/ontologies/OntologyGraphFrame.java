@@ -186,9 +186,6 @@ public class OntologyGraphFrame extends ExtendedGraphFrame implements
     /** Debug menu for the ontology editor frame. */
     protected JMenu _debugMenu;
 
-    /** The graph menu for the ontology editor frame. */
-    protected JMenu _graphMenu;
-
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 

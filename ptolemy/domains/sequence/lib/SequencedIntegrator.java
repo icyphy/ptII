@@ -139,12 +139,6 @@ public class SequencedIntegrator extends BaseMultipleMethodsActor {
     /** The current state of the integrator output port. */
     public TypedIOPort currentState;
 
-    /** The integrator input port. */
-    public TypedIOPort input;
-
-    /** The integrator output port. */
-    public TypedIOPort output;
-
     /** The sample factor input port. */
     public TypedIOPort sampleFactor;
 

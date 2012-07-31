@@ -250,9 +250,6 @@ public class OntologySolverGraphFrame extends ExtendedGraphFrame implements
     /** Debug menu for this frame. */
     protected JMenu _debugMenu;
 
-    /** The graph menu. */
-    protected JMenu _graphMenu;
-
     /** The ontology menu. */
     protected JMenu _ontologyMenu;
 

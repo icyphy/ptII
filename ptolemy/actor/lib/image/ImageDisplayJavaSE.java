@@ -112,7 +112,7 @@ public class ImageDisplayJavaSE extends AbstractPlaceableJavaSE implements
      * @see #setFrame(Object)
      */
     public Object getFrame() {
-            return _frame;
+            return _imageWindowFrame;
     }
 
     /**
@@ -206,9 +206,9 @@ public class ImageDisplayJavaSE extends AbstractPlaceableJavaSE implements
             _container = null;
         }
 
-        if (_frame != null) {
-            _frame.dispose();
-            _frame = null;
+        if (_imageWindowFrame != null) {
+            _imageWindowFrame.dispose();
+            _imageWindowFrame = null;
         }
 
         _container = container;
@@ -257,21 +257,21 @@ public class ImageDisplayJavaSE extends AbstractPlaceableJavaSE implements
      * @see #getFrame()
      */
     public void setFrame(Object frame) {
-        if (_frame != null) {
-            _frame.removeWindowListener(_windowClosingAdapter);
+        if (_imageWindowFrame != null) {
+            _imageWindowFrame.removeWindowListener(_windowClosingAdapter);
         }
 
         if (frame == null) {
-            _frame = null;
+            _imageWindowFrame = null;
             return;
         }
 
-        _frame = (ImageWindow) frame;
+        _imageWindowFrame = (ImageWindow) frame;
 
         _windowClosingAdapter = new WindowClosingAdapter();
-        _frame.addWindowListener(_windowClosingAdapter);
+        _imageWindowFrame.addWindowListener(_windowClosingAdapter);
 
-        _windowProperties.setProperties(_frame);
+        _windowProperties.setProperties(_imageWindowFrame);
     }
 
     /**
@@ -303,16 +303,10 @@ public class ImageDisplayJavaSE extends AbstractPlaceableJavaSE implements
     protected TokenEffigy _effigy;
 
     /** The frame, if one is used. */
-    protected ImageWindow _frame;
+    protected ImageWindow _imageWindowFrame;
 
     /** The picture panel. */
     protected Picture _picture;
-
-    /** A reference to the listener for removal purposes. */
-    protected WindowClosingAdapter _windowClosingAdapter;
-
-    /** An attribute that contains the size and position of the window. */
-    protected WindowPropertiesAttribute _windowProperties;
 
     /** The horizontal size of the previous image. */
     protected int _oldXSize = 0;
@@ -348,18 +342,18 @@ public class ImageDisplayJavaSE extends AbstractPlaceableJavaSE implements
                     // and it causes a save-as to destroy the original window.
                     _effigy.identifier.setExpression(_display.getFullName());
 
-                    _frame = new ImageWindow();
+                    _imageWindowFrame = new ImageWindow();
 
                     _tableau = new ImageTableau(_effigy, "tokenTableau",
-                            _frame, _oldXSize, _oldYSize);
+                            _imageWindowFrame, _oldXSize, _oldYSize);
                     _tableau.setTitle(_display.getName());
-                    _frame.setTableau(_tableau);
-                    _windowProperties.setProperties(_frame);
+                    _imageWindowFrame.setTableau(_tableau);
+                    _windowProperties.setProperties(_imageWindowFrame);
 
                     // Regrettably, since setSize() in swing doesn't actually
                     // set the size of the frame, we have to also set the
                     // size of the internal component.
-                    Component[] components = _frame.getContentPane()
+                    Component[] components = _imageWindowFrame.getContentPane()
                             .getComponents();
 
                     if (components.length > 0) {
@@ -374,16 +368,16 @@ public class ImageDisplayJavaSE extends AbstractPlaceableJavaSE implements
                 // Erase previous image.
                 _effigy.clear();
 
-                if (_frame != null) {
+                if (_imageWindowFrame != null) {
                     // Do not use show() as it overrides manual placement.
-                    _frame.toFront();
+                    _imageWindowFrame.toFront();
                 }
             }
         }
 
-        if (_frame != null) {
-            _frame.setVisible(true);
-            _frame.toFront();
+        if (_imageWindowFrame != null) {
+            _imageWindowFrame.setVisible(true);
+            _imageWindowFrame.toFront();
         }
     }
 
@@ -398,7 +392,7 @@ public class ImageDisplayJavaSE extends AbstractPlaceableJavaSE implements
         }
 
         // See also ptolemy/actor/lib/image/ImageTableau.java
-        if (_frame != null) {
+        if (_imageWindowFrame != null) {
             List tokens = new LinkedList();
             tokens.add(in);
 
@@ -502,7 +496,7 @@ public class ImageDisplayJavaSE extends AbstractPlaceableJavaSE implements
     }
 
     /** Listener for windowClosing action. */
-    class WindowClosingAdapter extends WindowAdapter {
+    class WindowClosingAdapter extends AbstractPlaceableJavaSE.WindowClosingAdapter {
         public void windowClosing(WindowEvent e) {
                 _display.cleanUp();
         }
