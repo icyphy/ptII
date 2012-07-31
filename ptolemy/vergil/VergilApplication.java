@@ -110,6 +110,7 @@ public class VergilApplication extends MoMLApplication {
         // thread, which means that the error handler will not be registered before
         // the thread starts.
         super("ptolemy/configs", args);
+        MessageHandler.setMessageHandler(new VergilGraphicalMessageHandler());
 
         // Create register an error handler with the parser so that
         // MoML errors are tolerated more than the default.

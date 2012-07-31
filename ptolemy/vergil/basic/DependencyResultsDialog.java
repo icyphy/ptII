@@ -122,15 +122,15 @@ public class DependencyResultsDialog extends SearchResultsDialog {
         Class clazz = AtomicActor.class;
         SortedSet<NamedObj> result = new TreeSet<NamedObj>(new NamedObjComparator());
         if (prerequisites) {
-            _report("Generating prerequisite information.");
+            BasicGraphFrame.report(_owner, "Generating prerequisite information.");
             System.out.println("_findDependencies: " + actor);
             result.addAll(ActorDependencies.prerequisites(actor, clazz));
-            _report("");
+            BasicGraphFrame.report(_owner, "");
         }
         if (dependents) {
-            _report("Generating dependency information.");
+            BasicGraphFrame.report(_owner, "Generating dependency information.");
             result.addAll(ActorDependencies.dependents(actor, clazz));
-            _report("");
+            BasicGraphFrame.report(_owner, "");
         }
         return result;
     }

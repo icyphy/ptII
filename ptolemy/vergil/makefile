@@ -85,6 +85,7 @@ JSRCS = \
 	VergilApplet.java \
 	VergilApplication.java \
 	VergilErrorHandler.java \
+	VergilGraphicalMessageHandler.java \
 	VergilInitializer.java
 
 OTHER_FILES_TO_BE_JARED =

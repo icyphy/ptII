@@ -97,6 +97,7 @@ import javax.swing.filechooser.FileFilter;
 import javax.swing.tree.DefaultTreeCellRenderer;
 import javax.swing.tree.TreePath;
 
+import ptolemy.actor.CompositeActor;
 import ptolemy.actor.DesignPatternGetMoMLAction;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.IORelation;
@@ -162,6 +163,7 @@ import ptolemy.vergil.tree.PTree;
 import ptolemy.vergil.tree.PTreeMenuCreator;
 import ptolemy.vergil.tree.PtolemyTreeCellRenderer;
 import ptolemy.vergil.tree.VisibleTreeModel;
+import diva.canvas.CanvasComponent;
 import diva.canvas.CanvasUtilities;
 import diva.canvas.Figure;
 import diva.canvas.FigureLayer;
@@ -181,6 +183,7 @@ import diva.gui.toolbox.JCanvasPanner;
 import diva.gui.toolbox.JContextMenu;
 import diva.util.Filter;
 import diva.util.java2d.ShapeUtilities;
+import diva.util.UserObjectContainer;
 
 ///////////////////////////////////////////////////////////////////
 //// BasicGraphFrame
@@ -955,6 +958,67 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
         return getJGraph().getSize();
     }
 
+    /** Return the figure that is an icon of a NamedObj and is
+     *  under the specified point, or null if there is none.
+     *  The point argument may need to be transformed, see
+     *  {@link ptolemy.vergil.basic.EditorDropTargetListener#_getFigureUnder(Point2d)}.
+     *
+     *  @param pane The pane in which to search
+     *  @param point The point in the graph pane.
+     *  @param filteredFigures figures that are filtered from the object search
+     *  @return The object under the specified point, or null if there
+     *   is none or it is not a NamedObj.
+     */
+    public static Figure getFigureUnder(GraphPane pane, Point2D point, final Object[] filteredFigures) {
+
+        FigureLayer layer = pane.getForegroundLayer();
+
+        // Find the figure under the point.
+        // NOTE: Unfortunately, FigureLayer.getCurrentFigure() doesn't
+        // work with a drop target (I guess it hasn't seen the mouse events),
+        // so we have to use a lower level mechanism.
+        double halo = layer.getPickHalo();
+        double width = halo * 2;
+        Rectangle2D region = new Rectangle2D.Double(point.getX()
+                - halo, point.getY() - halo, width, width);
+        // Filter away all figures given by the filteredFigures array
+        CanvasComponent figureUnderMouse = layer.pick(region, new Filter() {
+            public boolean accept(Object o) {
+                for (Object filter : filteredFigures) {
+                    CanvasComponent figure = (CanvasComponent) o;
+                    while (figure != null) {
+                        if (figure.equals(filter)) {
+                            return false;
+                        }
+                        figure = figure.getParent();
+                    }
+                }
+                return true;
+            }
+        });
+
+
+        // Find a user object belonging to the figure under the mouse
+        // or to any figure containing it (it may be a composite figure).
+        Object objectUnderMouse = null;
+
+        while (figureUnderMouse instanceof UserObjectContainer
+                && (objectUnderMouse == null)) {
+            objectUnderMouse = ((UserObjectContainer) figureUnderMouse)
+                    .getUserObject();
+
+            if (objectUnderMouse instanceof NamedObj) {
+                if (figureUnderMouse instanceof Figure) {
+                    return (Figure) figureUnderMouse;
+                }
+            }
+
+            figureUnderMouse = figureUnderMouse.getParent();
+        }
+
+        return null;
+    }
+
     /** The frame (window) being exported to HTML.
      *  @return This frame.
      */
@@ -1116,6 +1180,57 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
         }
     }
 
+    /** Opens the nearest composite actor above the target in the hierarchy
+     *  and change the zoom to show the target.
+     *  This method is useful for displaying search results and actors that
+     *  cause errors.
+     *  @param target The target.
+     *  @param owner The frame that, per the user, is generating the dialog.
+     */
+    public static void openComposite(final Frame owner, final NamedObj target) {
+        // This method is static so that it
+        NamedObj container = target.getContainer();
+        while (container != null && !(container instanceof CompositeEntity)) {
+            container = container.getContainer();
+        }
+        if (container == null) {
+            // Hmm.  Could not find container?
+            container = target;
+        }
+        try {
+            if (owner != null) {
+                report(owner, "Opening " + container.getFullName());
+            }
+            Effigy effigy = Configuration.findEffigy(target.toplevel());
+            Configuration configuration = (Configuration)effigy.toplevel();
+            Tableau tableau = configuration.openInstance(container);
+            
+            // Try to zoom and center on the target.
+            Location locationAttribute = (Location)target.getAttribute("_location", Location.class);
+            if (locationAttribute != null) {
+                Frame frame = tableau.getFrame();
+                if (frame instanceof BasicGraphFrame) {
+                    BasicGraphFrame basicGraphFrame = (BasicGraphFrame)frame;
+                    double [] locationArray = locationAttribute.getLocation();
+                    Point2D locationPoint2D = new Point2D.Double(locationArray[0], locationArray[1]);
+                    Figure figure = BasicGraphFrame.getFigureUnder(basicGraphFrame.getJGraph().getGraphPane(), locationPoint2D, new Object [] {});
+                    if (figure != null) {
+                        GraphPane pane = basicGraphFrame.getJGraph().getGraphPane();
+                        Rectangle2D bounds = figure.getBounds();
+                        basicGraphFrame.zoomFit(pane, bounds);
+                    }
+                    basicGraphFrame.setCenter(locationPoint2D);
+                }
+            }
+            if (owner != null) {
+                report(owner, "Opened " + container.getFullName());
+            }
+        } catch (Throwable throwable) {
+            MessageHandler.error("Failed to open container", throwable);
+        }
+    }
+    
+
     /** Assuming the contents of the clipboard is MoML code, paste it into
      *  the current model by issuing a change request.
      */
@@ -1259,6 +1374,16 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
 //         }
 //     }
 
+    /** Report a message to either the status bar or message handler.
+     *  @param message The message.   
+     */   
+    public static void report(Frame owner, String message) {
+        if (owner instanceof Top) {
+            ((Top)owner).report(message);
+        } else {
+            MessageHandler.message(message);
+        }
+    }
     /** Save the given entity in the user library in the given
      *  configuration.
      *  @param configuration The configuration.
@@ -1444,7 +1569,14 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
     public void zoomFit() {
         GraphPane pane = getJGraph().getGraphPane();
         Rectangle2D bounds = pane.getForegroundLayer().getLayerBounds();
+        zoomFit(pane, bounds);
+    }
 
+    /** Zoom to fit the bounds.
+     *  @param pane The pane.
+     *  @param bounds The bound to zoom to.   
+     */
+    public void zoomFit(GraphPane pane, Rectangle2D bounds) {
         if (bounds.isEmpty()) {
             // Empty diagram.
             return;
@@ -1805,7 +1937,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
                 // case is that we will have no Export PDF in the menu.
                 // That is better than preventing the user from opening a model.
                 //System.err
-                //    .println("Warning: Tried to create the Export PDF menu item, but failed: "
+                //    .printlns("Warning: Tried to create the Export PDF menu item, but failed: "
                 //            + throwable);
             }
 

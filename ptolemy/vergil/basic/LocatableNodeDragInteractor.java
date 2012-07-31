@@ -482,51 +482,7 @@ public class LocatableNodeDragInteractor extends NodeDragInteractor {
     private Figure _getFigureUnder(Point2D point, final Object[] filteredFigures) {
         GraphPane pane = getController().getGraphPane();
 
-        FigureLayer layer = pane.getForegroundLayer();
-
-        // Find the figure under the point.
-        // NOTE: Unfortunately, FigureLayer.getCurrentFigure() doesn't
-        // work with a drop target (I guess it hasn't seen the mouse events),
-        // so we have to use a lower level mechanism.
-        double halo = layer.getPickHalo();
-        double width = halo * 2;
-        Rectangle2D region = new Rectangle2D.Double(point.getX()
-                - halo, point.getY() - halo, width, width);
-        // Filter away all figures given by the filteredFigures array
-        CanvasComponent figureUnderMouse = layer.pick(region, new Filter() {
-            public boolean accept(Object o) {
-                for (Object filter : filteredFigures) {
-                    CanvasComponent figure = (CanvasComponent) o;
-                    while (figure != null) {
-                        if (figure.equals(filter)) {
-                            return false;
-                        }
-                        figure = figure.getParent();
-                    }
-                }
-                return true;
-            }
-        });
-
-        // Find a user object belonging to the figure under the mouse
-        // or to any figure containing it (it may be a composite figure).
-        Object objectUnderMouse = null;
-
-        while (figureUnderMouse instanceof UserObjectContainer
-                && (objectUnderMouse == null)) {
-            objectUnderMouse = ((UserObjectContainer) figureUnderMouse)
-                    .getUserObject();
-
-            if (objectUnderMouse instanceof NamedObj) {
-                if (figureUnderMouse instanceof Figure) {
-                    return (Figure) figureUnderMouse;
-                }
-            }
-
-            figureUnderMouse = figureUnderMouse.getParent();
-        }
-
-        return null;
+        return BasicGraphFrame.getFigureUnder(pane, point, filteredFigures);
     }
 
     /** Return the object under the specified point, or null if there

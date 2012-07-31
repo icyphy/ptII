@@ -171,7 +171,7 @@ public class SearchResultsDialog extends PtolemyDialog
                     int[] selected = _resultsTable.getSelectedRows();
                     for (int i = 0; i < selected.length; i++) {
                         NamedObj selectedObject = (NamedObj) _resultsTableModel.getValueAt(selected[i], 0);
-                        _openResult(selectedObject);
+                        BasicGraphFrame.openComposite(_owner, selectedObject);
                     }
                 }
             }
@@ -266,48 +266,7 @@ public class SearchResultsDialog extends PtolemyDialog
         _query.addCheckBox("case", "Case sensitive", false);
     }
 
-    /** Opens the nearest composite actor above the target in the hierarchy.
-     *  @param target The target.
-     */
-    protected void _openResult(final NamedObj target) {
-        NamedObj container = target.getContainer();
-        while (container != null && !(container instanceof CompositeActor)) {
-            container = container.getContainer();
-        }
-        if (container != null) {
-            try {
-                _report("Opening " + container.getFullName());
-                Tableau tableau = _configuration.openInstance(container);
 
-                // Try to zoom and center on the target.
-                Location locationAttribute = (Location)target.getAttribute("_location", Location.class);
-                if (locationAttribute != null) {
-                    Frame frame = tableau.getFrame();
-                    if (frame instanceof BasicGraphFrame) {
-                        BasicGraphFrame basicGraphFrame = (BasicGraphFrame)frame;
-                        double [] locationArray = locationAttribute.getLocation();
-                        Point2D locationPoint2D = new Point2D.Double(locationArray[0], locationArray[1]);
-                        basicGraphFrame.zoom(1.0);
-                        basicGraphFrame.setCenter(locationPoint2D);
-                    }
-                }
-                _report("Opened " + container.getFullName());
-            } catch (Throwable throwable) {
-                MessageHandler.error("Failed to open container", throwable);
-            }
-        }
-    }
-    
-    /** Report a message to either the status bar or message handler.
-     *  @param message The message.   
-     */   
-    protected void _report(String message) {
-        if (_owner instanceof Top) {
-            ((Top)_owner).report(message);
-        } else {
-            MessageHandler.message(message);
-        }
-    }
 
     /** Perform a search and update the results table.
      */
@@ -326,7 +285,8 @@ public class SearchResultsDialog extends PtolemyDialog
         try {
             pattern = Pattern.compile(findText, caseSensitive ? 0 : Pattern.CASE_INSENSITIVE);
         } catch(PatternSyntaxException ex) {
-            _report("Problem with " + findText + " as a regular expression: " + ex);
+            BasicGraphFrame.report(_owner,
+                    "Problem with " + findText + " as a regular expression: " + ex);
         }
         Set<NamedObj>results = _find(_target, findText, includeValues, includeNames, recursiveSearch, caseSensitive, pattern);
         _resultsTableModel.setContents(results);
