@@ -2004,7 +2004,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
             URI generatorPackageURI = new URI(generatorPackageURL
                     .toExternalForm().replaceAll(" ", "%20"));
             generatorPackageFile = new File(generatorPackageURI);
-        } catch (Exception ex) {
+        } catch (Throwable throwable) {
             // Ignore, we can't find the directory.
             // We return from here to quiet a FindBugs warning.
             return;
