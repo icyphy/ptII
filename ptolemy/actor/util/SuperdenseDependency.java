@@ -113,14 +113,20 @@ public class SuperdenseDependency extends BooleanDependency {
      *  @return true if this object is the same as the object argument.
      */
     public boolean equals(Object object) {
-        if (object instanceof SuperdenseDependency) {
+        // See http://www.technofundo.com/tech/java/equalhash.html
+        if (object == this) {
+            return true;
+        }
+        if ((object == null)
+                || (object.getClass() != getClass())) {
+            return false;
+        } else {
             if (((SuperdenseDependency) object)._time == Double.POSITIVE_INFINITY
                     && _time == Double.POSITIVE_INFINITY) {
                 return true;
             }
             return (_time == ((SuperdenseDependency) object)._time && _index == ((SuperdenseDependency) object)._index);
         }
-        return false;
     }
 
     /** Return the same hashCode that that Java Double object would
