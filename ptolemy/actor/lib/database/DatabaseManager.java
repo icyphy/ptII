@@ -474,7 +474,7 @@ public class DatabaseManager extends TypedAtomicActor {
                 try {
                     reader = passwordFile.openForReading();
                     String line = reader.readLine();
-                    if (line == null) {
+                    if (line != null) {
                         _password = line.toCharArray();
                         line = "";
                     } else {
