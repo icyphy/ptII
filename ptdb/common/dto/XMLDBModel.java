@@ -139,6 +139,83 @@ public class XMLDBModel implements Comparable {
                 .getModelName());
     }
 
+    /** Return true if this XMLToken object has the same
+     *  timestamp and index as that of the given XMLToken
+     *  object.
+     *  @param superdenseTime The SuperDenseTime object that this
+     *  XMLToken object is compared to.
+     *  @return True if the two SuperDenseTime objects have the same
+     *  timestamp and index.
+     */
+    public boolean equals(Object xmldbModel) {
+        // See http://www.technofundo.com/tech/java/equalhash.html
+
+        // Findbugs says:
+        // "Eq: Class defines compareTo(...) and uses Object.equals()
+        // (EQ_COMPARETO_USE_OBJECT_EQUALS)"
+
+        // "This class defines a compareTo(...) method but
+        // inherits its equals() method from
+        // java.lang.Object. Generally, the value of compareTo
+        // should return zero if and only if equals returns
+        // true. If this is violated, weird and unpredictable
+        // failures will occur in classes such as
+        // PriorityQueue. In Java 5 the PriorityQueue.remove
+        // method uses the compareTo method, while in Java 6 it
+        // uses the equals method.
+
+        // "From the JavaDoc for the compareTo method in the Comparable
+        // interface:"
+
+        // "It is strongly recommended, but not strictly required that
+        // (x.compareTo(y)==0) == (x.equals(y)). Generally speaking,
+        // any class that implements the Comparable interface and
+        // violates this condition should clearly indicate this
+        // fact. The recommended language is "Note: this class has a
+        // natural ordering that is inconsistent with equals." "
+        if (xmldbModel == this) {
+            return true;
+        }
+        if ((xmldbModel == null)
+                || (xmldbModel.getClass() != getClass())) {
+            return false;
+        } else {
+            return compareTo((XMLDBModel)xmldbModel) == 0;
+        }
+    }
+
+    /** Return the hash code for the XMLToken object. If two
+     *  XMLToken objects contains the same timestamp and index,
+     *  then they have the same hashcode.
+     *  @return The hash code for this XMLToken object.
+     */
+    public int hashCode() {
+        // See http://www.technofundo.com/tech/java/equalhash.html
+        int hashCode = 31;
+        if (_isNew) {
+            hashCode = 31 * hashCode + 1;
+        }
+        if (_listParents != null) {
+            hashCode = 31 * hashCode + _listParents.hashCode();
+        }
+        if (_parentsMap != null) {
+            hashCode = 31 * hashCode + _parentsMap.hashCode();
+        }
+        if (_listReferencedChildren != null) {
+            hashCode = 31 * hashCode + _listReferencedChildren.hashCode();
+        }
+        if (_modelContent != null) {
+            hashCode = 31 * hashCode + _modelContent.hashCode();
+        }
+        if (_modelName != null) {
+            hashCode = 31 * hashCode + _modelName.hashCode();
+        }
+        if (_modelId != null) {
+            hashCode = 31 * hashCode + _modelId.hashCode();
+        }
+        return hashCode;
+    }
+
     /**
      * Return True or false based on if the model is new or it exists in the database.
      * @return True or false based on if the model is new or it exists in the database.
