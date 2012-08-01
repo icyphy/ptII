@@ -145,6 +145,7 @@ public class AddSubtract extends TypedAtomicActor {
         AddSubtract newObject = (AddSubtract) super.clone(workspace);
         newObject.output.setTypeAtLeast(newObject.plus);
         newObject.output.setTypeAtLeast(newObject.minus);
+        newObject.plus.setTypeSameAs(newObject.minus);
         return newObject;
     }
 
