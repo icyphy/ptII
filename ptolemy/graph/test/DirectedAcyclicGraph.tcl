@@ -84,7 +84,9 @@ test DirectedAcyclicGraph-2.3 {a 3 point CPO forming a triangle} {
     $p addEdge $n1 $n2
     $p addEdge $n1 $n3
     set downN2 [$p downSet $n2]
-    set subset [java::new {Object[]} {2} {node2 node3}]
+    set subset [java::new {java.util.HashSet}]
+    $subset add $n1
+    $subset add $n2
     list [$p bottom] \
      [$p compare $n1 $n2] [$p compare $n2 $n2] \
      [$p compare $n3 $n1] [$p compare $n2 $n3] \
@@ -104,10 +106,14 @@ test DirectedAcyclicGraph-2.4 {a 3 point CPO forming a triangle} {
     $p addNodeWeight $n1
     $p addNodeWeight $n2
     $p addNodeWeight $n3
-    $p addEdge $n1 $n2
+    $p addEdge $n1 $n2	
     $p addEdge $n1 $n3
-    set subset [java::new {Object[]} {2} {node2 node3}]
-    set subset2 [java::new {Object[]} {2} {node1 node3}]
+    set subset [java::new {java.util.HashSet}]
+    $subset add $n2
+    $subset add $n3
+    set subset2 [java::new {java.util.HashSet}]
+    $subset2 add $n1
+    $subset2 add $n3
     set upN1 [$p upSet $n1]
     list [$p greatestElement $subset] \
      [$p leastElement $subset2] \
@@ -121,7 +127,7 @@ test DirectedAcyclicGraph-2.4 {a 3 point CPO forming a triangle} {
 ####
 #
 test DirectedAcyclicGraph-2.5 {lub/glb of empty subset, use the CPO in 2.3} {
-    set subset [java::new {Object[]} {0} {}]
+    set subset [java::new {java.util.HashSet}]
     list [$p leastUpperBound $subset] [$p greatestLowerBound $subset]
 } {node1 java0x0}
 
@@ -157,7 +163,10 @@ test DirectedAcyclicGraph-2.7 {a 5 point CPO that's not a lattice} {
     $p addEdge $n4 $n3
     $p addEdge $n5 $n2
     $p addEdge $n5 $n3
-    set subset [java::new {Object[]} {3} {node4 node5 node1}]
+    set subset [java::new {java.util.HashSet}]
+    $subset add $n4
+    $subset add $n5
+    $subset add $n1
     list [$p leastUpperBound $subset] \
      [$p greatestLowerBound $subset] \
      [$p leastUpperBound $n4 $n5] \
@@ -194,8 +203,12 @@ test DirectedAcyclicGraph-2.9 {test least element } {
     $p addNodeWeight $n4
     $p addEdge $n2 $n1
     $p addEdge $n3 $n2
-
-    set subset [java::new {Object[]} {4} {node2 node4 node1 node3}]
+    
+    set subset [java::new {java.util.HashSet}]
+    $subset add $n2
+    $subset add $n4
+    $subset add $n1
+    $subset add $n3
     list [$p leastElement $subset] \
      [$p greatestElement $subset] \
      [$p leastUpperBound $subset] \

@@ -597,7 +597,7 @@ public class DirectedAcyclicGraph extends DirectedGraph implements CPO<Object> {
             Object o1 = itr.next();
             Object o2 = itr.next();
             int i1 = nodeLabel(o1);
-            int i2 = nodeLabel(o1);
+            int i2 = nodeLabel(o2);
 
             int result = _compareNodeId(i1, i2);
 
