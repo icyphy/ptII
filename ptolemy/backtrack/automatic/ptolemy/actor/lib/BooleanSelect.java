@@ -75,13 +75,16 @@ import ptolemy.kernel.util.Workspace;
  * to the output, rather than a copy.  The <i>trueInput</i> and
  * <i>falseInput</i> port may receive Tokens of any type.
  * <p>
- * This actor is designed to be used with the DDF or PN director,
- * but it can also be used with SR, DE, and possibly other domains.
+ * This actor is designed to be used with the DDF or PN director.
  * It should not be used with
  * SDF because the number of tokens it consumes is not fixed.
- * <p>
- * This actor is similar to the BooleanMultiplexor actor, except that
- * it does not discard input tokens on the port that it does not read.
+ * It probably also does not make sense to use it
+ * with SR or DE, because it takes two firings to transfer
+ * a token to the output. In those domains,{
+@link BooleanMultiplexor}
+ makes more sense.
+ * Unlike BooleanMultiplexor actor, this actor
+ * does not discard input tokens on the port that it does not read.
  * @author Steve Neuendorffer, Adam Cataldo, Edward A. Lee, Gang Zhou
  * @version $Id$
  * @since Ptolemy II 2.0

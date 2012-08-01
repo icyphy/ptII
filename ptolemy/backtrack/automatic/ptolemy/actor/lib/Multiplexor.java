@@ -36,6 +36,7 @@ import ptolemy.backtrack.Checkpoint;
 import ptolemy.backtrack.Rollbackable;
 import ptolemy.backtrack.util.CheckpointRecord;
 import ptolemy.backtrack.util.FieldRecord;
+import ptolemy.data.BooleanToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.Token;
 import ptolemy.data.type.BaseType;
@@ -58,7 +59,7 @@ import ptolemy.kernel.util.StringAttribute;
  * One token is consumed from each input channel that has a token.
  * Compare this with the Select actor, which only consumes a token on
  * the selected channel.
- * @author Jeff Tsay and Edward A. Lee
+ * @author Jeff Tsay, Edward A. Lee, Stavros Tripakis
  * @version $Id$
  * @since Ptolemy II 1.0
  * @Pt.ProposedRating Yellow (ctsay)
@@ -78,12 +79,26 @@ public class Multiplexor extends Transformer implements Rollbackable {
      */
     public TypedIOPort select;
 
+    // Be sure to not use _channel if the select input
+    // is not known. That would be non-monotonic.
+    // Perform the in-range test here, where a new channel value is obtained:
+    // Be sure to read all inputs that are present, even
+    // if they aren't required in order to produce output.
+    // Tokens need to be consumed in dataflow and DE domains.
+    // Note that if the input is known to be absent,
+    // then the following sends null. Dataflow receivers
+    // interpret this as sending nothing (nothing is queued).
+    // Fixed-point receivers (SR and Continuous) interpret
+    // this as an assertion that the output is absent.
+    // If no select value has been seen, then we can
+    // assert that the output is empty. Note that this is only
+    // safe if the select input is known.
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
     /**     
      * The most recently read select input. 
      */
-    private int _channel = 0;
+    private IntToken _selectChannel;
 
     /**     
      * Construct an actor in the specified container with the specified
@@ -113,21 +128,28 @@ public class Multiplexor extends Transformer implements Rollbackable {
      */
     public void fire() throws IllegalActionException  {
         super.fire();
-        if (select.hasToken(0)) {
-            $ASSIGN$_channel(((IntToken)select.get(0)).intValue());
-        }
-        boolean inRange = false;
-        for (int i = 0; i < input.getWidth(); i++) {
-            inRange = inRange || (i == _channel);
-            if (input.hasToken(i)) {
-                Token token = input.get(i);
-                if (i == _channel) {
-                    output.send(0, token);
+        if (select.isKnown(0)) {
+            if (select.hasToken(0)) {
+                $ASSIGN$_selectChannel((IntToken)select.get(0));
+                int c = _selectChannel.intValue();
+                if (c < 0 || c >= input.getWidth()) {
+                    throw new IllegalActionException(this, "Select input is out of range: " + c+".");
                 }
             }
-        }
-        if (!inRange) {
-            throw new IllegalActionException(this, "Select input is out of range: " + _channel+".");
+            for (int i = 0; i < input.getWidth(); i++) {
+                if (input.isKnown(i)) {
+                    Token token = null;
+                    if (input.hasToken(i)) {
+                        token = input.get(i);
+                    }
+                    if (_selectChannel != null && _selectChannel.intValue() == i) {
+                        output.send(0, token);
+                    }
+                }
+            }
+            if (_selectChannel == null) {
+                output.send(0, null);
+            }
         }
     }
 
@@ -135,14 +157,22 @@ public class Multiplexor extends Transformer implements Rollbackable {
      * Initialize to the default, which is to use channel zero. 
      */
     public void initialize() {
-        $ASSIGN$_channel(0);
+        $ASSIGN$_selectChannel(null);
     }
 
-    private final int $ASSIGN$_channel(int newValue) {
+    /**     
+     * Return false. 
+     * @return False.
+     */
+    public boolean isStrict() {
+        return false;
+    }
+
+    private final IntToken $ASSIGN$_selectChannel(IntToken newValue) {
         if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
-            $RECORD$_channel.add(null, _channel, $CHECKPOINT.getTimestamp());
+            $RECORD$_selectChannel.add(null, _selectChannel, $CHECKPOINT.getTimestamp());
         }
-        return _channel = newValue;
+        return _selectChannel = newValue;
     }
 
     public void $COMMIT(long timestamp) {
@@ -151,7 +181,7 @@ public class Multiplexor extends Transformer implements Rollbackable {
     }
 
     public void $RESTORE(long timestamp, boolean trim) {
-        _channel = $RECORD$_channel.restore(_channel, timestamp, trim);
+        _selectChannel = (IntToken)$RECORD$_selectChannel.restore(_selectChannel, timestamp, trim);
         if (timestamp <= $RECORD$$CHECKPOINT.getTopTimestamp()) {
             $CHECKPOINT = $RECORD$$CHECKPOINT.restore($CHECKPOINT, this, timestamp, trim);
             FieldRecord.popState($RECORDS);
@@ -179,10 +209,10 @@ public class Multiplexor extends Transformer implements Rollbackable {
 
     protected transient CheckpointRecord $RECORD$$CHECKPOINT = new CheckpointRecord();
 
-    private transient FieldRecord $RECORD$_channel = new FieldRecord(0);
+    private transient FieldRecord $RECORD$_selectChannel = new FieldRecord(0);
 
     private transient FieldRecord[] $RECORDS = new FieldRecord[] {
-            $RECORD$_channel
+            $RECORD$_selectChannel
         };
 
 }

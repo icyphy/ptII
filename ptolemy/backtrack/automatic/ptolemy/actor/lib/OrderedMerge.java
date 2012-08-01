@@ -30,6 +30,8 @@
 package ptolemy.backtrack.automatic.ptolemy.actor.lib;
 
 import java.lang.Object;
+import java.util.HashSet;
+import java.util.Set;
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.backtrack.Checkpoint;
@@ -41,6 +43,7 @@ import ptolemy.data.IntToken;
 import ptolemy.data.ScalarToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
+import ptolemy.graph.Inequality;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -234,7 +237,6 @@ public class OrderedMerge extends TypedAtomicActor implements Rollbackable {
         inputB_tokenConsumptionRate.setVisibility(Settable.NOT_EDITABLE);
         inputB_tokenConsumptionRate.setTypeEquals(BaseType.INT);
         output = new TypedIOPort(this, "output", false, true);
-        output.setTypeSameAs(inputA);
         selectedA = new TypedIOPort(this, "selectedA", false, true);
         selectedA.setTypeEquals(BaseType.BOOLEAN);
         StringAttribute channelCardinal = new StringAttribute(selectedA, "_cardinal");
@@ -254,7 +256,6 @@ public class OrderedMerge extends TypedAtomicActor implements Rollbackable {
         OrderedMerge newObject = (OrderedMerge)super.clone(workspace);
         newObject.inputA.setTypeAtMost(BaseType.SCALAR);
         newObject.inputB.setTypeSameAs(newObject.inputA);
-        newObject.output.setTypeSameAs(newObject.inputA);
         return newObject;
     }
 
@@ -413,6 +414,18 @@ public class OrderedMerge extends TypedAtomicActor implements Rollbackable {
      */
     protected TypedIOPort _getNextPort() {
         return _nextPort;
+    }
+
+    /**     
+     * The output must be greater than or equal to each of both inputs. Since 
+     * inputA is set to be the same as inputB, the output is simply set to be
+     * greater than or equal to inputA.
+     * @return A set of type constraints
+     */
+    @Override protected Set<Inequality> _defaultTypeConstraints() {
+        Set<Inequality> result = new HashSet<Inequality>();
+        result.add(new Inequality(inputA.getTypeTerm(), output.getTypeTerm()));
+        return result;
     }
 
     private final ScalarToken $ASSIGN$_lastProduced(ScalarToken newValue) {

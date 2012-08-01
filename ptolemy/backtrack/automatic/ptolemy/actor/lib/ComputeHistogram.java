@@ -207,7 +207,9 @@ public class ComputeHistogram extends TypedAtomicActor implements Rollbackable {
     public Object clone(Workspace workspace) throws CloneNotSupportedException  {
         ComputeHistogram newObject = (ComputeHistogram)super.clone(workspace);
         newObject.$ASSIGN$_bins(new int[_numberOfBins]);
-        System.arraycopy($BACKUP$_bins(), 0, newObject.$BACKUP$_bins(), 0, _bins.length);
+        if (_bins != null) {
+            System.arraycopy($BACKUP$_bins(), 0, newObject.$BACKUP$_bins(), 0, _bins.length);
+        }
         return newObject;
     }
 

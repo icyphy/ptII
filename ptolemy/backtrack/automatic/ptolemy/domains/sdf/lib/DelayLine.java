@@ -82,6 +82,7 @@ public class DelayLine extends SDFTransformer implements Rollbackable {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+    // Set flag to invalidate cached type constraints
     // Shift down.
     // Read the next input.
     // output the output token.
@@ -118,6 +119,8 @@ public class DelayLine extends SDFTransformer implements Rollbackable {
     public void attributeTypeChanged(Attribute attribute) throws IllegalActionException  {
         if (attribute != initialValues) {
             super.attributeTypeChanged(attribute);
+        } else {
+            _typesValid = false;
         }
     }
 

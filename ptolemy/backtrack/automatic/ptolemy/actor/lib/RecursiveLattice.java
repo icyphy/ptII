@@ -215,16 +215,48 @@ public class RecursiveLattice extends Transformer implements Rollbackable {
      */
     public Object clone(Workspace workspace) throws CloneNotSupportedException  {
         RecursiveLattice newObject = (RecursiveLattice)super.clone(workspace);
-        newObject.$ASSIGN$_backward(new double[_forward.length]);
-        newObject.$ASSIGN$_backwardCache(new double[_forward.length]);
-        newObject.$ASSIGN$_forward(new double[_forward.length]);
-        newObject.$ASSIGN$_forwardCache(new double[_forward.length]);
-        newObject.$ASSIGN$_reflectionCoefficients(new double[_forward.length]);
-        System.arraycopy($BACKUP$_backward(), 0, newObject.$BACKUP$_backward(), 0, _backward.length);
-        System.arraycopy($BACKUP$_backwardCache(), 0, newObject.$BACKUP$_backwardCache(), 0, _backwardCache.length);
-        System.arraycopy($BACKUP$_forward(), 0, newObject.$BACKUP$_forward(), 0, _forward.length);
-        System.arraycopy($BACKUP$_forwardCache(), 0, newObject.$BACKUP$_forwardCache(), 0, _forwardCache.length);
-        System.arraycopy($BACKUP$_reflectionCoefficients(), 0, newObject.$BACKUP$_reflectionCoefficients(), 0, _reflectionCoefficients.length);
+        int forwardLength = 0;
+        if (_forward == null) {
+            try {
+                ArrayToken value = (ArrayToken)reflectionCoefficients.getToken();
+                forwardLength = value.length() + 1;
+            } catch (IllegalActionException ex) {
+                throw new CloneNotSupportedException("Failed to clone: " + ex);
+            }
+        } else {
+            forwardLength = _forward.length;
+        }
+        int backwardLength = 0;
+        if (_backward == null) {
+            try {
+                ArrayToken value = (ArrayToken)reflectionCoefficients.getToken();
+                backwardLength = value.length() + 1;
+            } catch (IllegalActionException ex) {
+                throw new CloneNotSupportedException("Failed to clone: " + ex);
+            }
+        } else {
+            backwardLength = _backward.length;
+        }
+        newObject.$ASSIGN$_backward(new double[backwardLength]);
+        newObject.$ASSIGN$_backwardCache(new double[backwardLength]);
+        newObject.$ASSIGN$_forward(new double[forwardLength]);
+        newObject.$ASSIGN$_forwardCache(new double[forwardLength]);
+        newObject.$ASSIGN$_reflectionCoefficients(new double[forwardLength - 1]);
+        if (_backward != null) {
+            System.arraycopy($BACKUP$_backward(), 0, newObject.$BACKUP$_backward(), 0, backwardLength);
+        }
+        if (_backwardCache != null) {
+            System.arraycopy($BACKUP$_backwardCache(), 0, newObject.$BACKUP$_backwardCache(), 0, _backwardCache.length);
+        }
+        if (_forward != null) {
+            System.arraycopy($BACKUP$_forward(), 0, newObject.$BACKUP$_forward(), 0, _forward.length);
+        }
+        if (_forwardCache != null) {
+            System.arraycopy($BACKUP$_forwardCache(), 0, newObject.$BACKUP$_forwardCache(), 0, _forwardCache.length);
+        }
+        if (_reflectionCoefficients != null) {
+            System.arraycopy($BACKUP$_reflectionCoefficients(), 0, newObject.$BACKUP$_reflectionCoefficients(), 0, _reflectionCoefficients.length);
+        }
         try {
             ArrayToken value = (ArrayToken)reflectionCoefficients.getToken();
             for (int i = 0; i < value.length(); i++) {

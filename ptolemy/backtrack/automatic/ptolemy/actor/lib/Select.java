@@ -62,13 +62,23 @@ import ptolemy.kernel.util.StringAttribute;
  * greater than or equal to the width of the input), then the actor will
  * not fire() (although it will continue to consume tokens on the
  * <i>control</i> port in its prefire() method).
- * </p><p> This actor is similar to the Multiplexor actor, except that it
+ * </p><p> This actor is similar to the {
+@link Multiplexor}
+ actor, except that it
  * never discards input tokens.  Tokens on channels that are not selected
  * are not consumed.
  * </p><p> Note that in the DE domain, where this actor is commonly used, if
  * a new value is given to the <i>control</i> port, then all previously
  * unread input tokens on the specified input channel will be read at the
  * same firing time, in the order in which they arrived.</p>
+ * <p>Note further that this actor is subtly different from the{
+@link BooleanSelect}
+ actor. In addition to the obvious difference
+ * that the latter accepts only two input streams, the latter also
+ * requires two firings to produce an output. The BooleanSelect actor
+ * is designed to work with DDF, but because of the multiple firings,
+ * will not work with DE or SR. This actor will, because it consumes
+ * the control input and the data input in the same firing.
  * @author Edward A. Lee
  * @version $Id$
  * @since Ptolemy II 1.0
