@@ -230,7 +230,12 @@ public class EntityTreeModel implements TreeModel {
          *  Otherwise, the entire tree is modified.
          */
         public void changeExecuted(final ChangeRequest change) {
-            // System.out.println("change = " + change);
+            // If the change is not structural, say for example SetVariable setting its variable,
+            // then ignore the change because it will not modify the tree.
+            if (!change.isStructuralChange()) {
+                return;
+            }
+            //System.out.println("change = " + change + change.getDescription());
             // Note that this should be in the swing thread.
             SwingUtilities.invokeLater(new Runnable() {
                 public void run() {
