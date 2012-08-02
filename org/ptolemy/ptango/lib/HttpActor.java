@@ -142,7 +142,7 @@ public class HttpActor extends TypedAtomicActor implements HttpService {
         postParameters = new TypedIOPort(this, "postParameters", false, true);
         new Parameter(postParameters, "_showName").setExpression("true");
         
-        setCookies =new TypedIOPort(this,"setCookies", true, false);   
+        setCookies = new TypedIOPort(this,"setCookies", true, false);   
         new Parameter(setCookies, "_showName").setExpression("true");
         
         // Parameters
@@ -150,13 +150,15 @@ public class HttpActor extends TypedAtomicActor implements HttpService {
         timeout.setExpression("10000L");
         timeout.setTypeEquals(BaseType.LONG);
         
-        cookiesCollection =new Parameter(this, "cookies");
+        // Parameter names should match the name of the field or
+        // else actor oriented classes will have clone problems.
+        cookiesCollection = new Parameter(this, "cookiesCollection");
 
-        pathCookies =new Parameter(this, "pathCookies");
+        pathCookies = new Parameter(this, "pathCookies");
         pathCookies.setExpression("false");
         
         // Internal variables
-        _cookiesCollectionList =new LinkedList<RecordToken>();
+        _cookiesCollectionList = new LinkedList<RecordToken>();
   }
     
     ///////////////////////////////////////////////////////////////////
