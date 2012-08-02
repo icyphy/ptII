@@ -1218,6 +1218,8 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
                         GraphPane pane = basicGraphFrame.getJGraph().getGraphPane();
                         Rectangle2D bounds = figure.getBounds();
                         basicGraphFrame.zoomFit(pane, bounds);
+                        // Zoom out slightly
+                        basicGraphFrame.zoom(0.6);
                     }
                     basicGraphFrame.setCenter(locationPoint2D);
                 }
