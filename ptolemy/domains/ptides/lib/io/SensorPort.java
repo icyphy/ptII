@@ -40,6 +40,7 @@ import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.StringParameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
@@ -100,7 +101,6 @@ public class SensorPort extends PtidesPort {
         coordinates.add(new Integer[]{-8, -8}); 
         return coordinates;
     }
-    
     
     
     /** Device delay parameter that defaults to the double value 0.0. */

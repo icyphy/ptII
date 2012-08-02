@@ -1,4 +1,4 @@
-/* This composite implements a Ptides platform.
+    /* This composite implements a Ptides platform.
 
 @Copyright (c) 2008-2011 The Regents of the University of California.
 All rights reserved.
@@ -675,10 +675,10 @@ public class PtidesPlatform extends MirrorComposite {
                                         + port.getName());
                             }
 
-                            if (_isAssociatedWithNetworkReceiver(port)) {
-                                NetworkReceiverPort networkReceiverPort = (NetworkReceiverPort) ((MirrorPort) port)
-                                        .getAssociatedPort();
-                                PtidesDirector director = (PtidesDirector) _getEmbeddedPtidesDirector();
+                            PtidesDirector director = (PtidesDirector) _getEmbeddedPtidesDirector();
+                            Port associatedPort = ((MirrorPort) port).getAssociatedPort();
+                            if (associatedPort instanceof NetworkReceiverPort) {
+                                NetworkReceiverPort networkReceiverPort = (NetworkReceiverPort) associatedPort; 
 
                                 if (!(t instanceof RecordToken)
                                         || ((RecordToken) t).labelSet().size() != 3) {
@@ -712,8 +712,25 @@ public class PtidesPlatform extends MirrorComposite {
                                                         -1,
                                                         (Token) record.get(PtidesNetworkType.payload),
                                                         farReceivers[channelIndex][i]),
-                                                ((DoubleToken) networkReceiverPort.deviceDelay
-                                                        .getToken()).doubleValue());
+                                                        PtidesDirector._getDoubleParameterValue(networkReceiverPort, "deviceDelay"));
+                                    }
+                                }
+                            } else if (associatedPort instanceof SensorPort) {
+                                SensorPort sensorPort = (SensorPort) associatedPort;
+                                Receiver[][] farReceivers = sensorPort
+                                    .deepGetReceivers();
+                                if (farReceivers.length > 0) {
+                                    for (int i = 0; i < farReceivers[channelIndex].length; i++) {
+                                        director.addInputEvent(
+                                                new PtidesEvent(
+                                                        sensorPort,
+                                                        channelIndex,
+                                                        getModelTime(),
+                                                        1,
+                                                        -1,
+                                                        t,
+                                                        farReceivers[channelIndex][i]),
+                                                        PtidesDirector._getDoubleParameterValue(sensorPort, "deviceDelay"));
                                     }
                                 }
                             } else {

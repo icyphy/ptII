@@ -1,0 +1,329 @@
+/* This is a resource scheduler.
+
+@Copyright (c) 2008-2011 The Regents of the University of California.
+All rights reserved.
+
+Permission is hereby granted, without written agreement and without
+license or royalty fees, to use, copy, modify, and distribute this
+software and its documentation for any purpose, provided that the
+above copyright notice and the following two paragraphs appear in all
+copies of this software.
+
+IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+SUCH DAMAGE.
+
+THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ENHANCEMENTS, OR MODIFICATIONS.
+
+                                                PT_COPYRIGHT_VERSION_2
+                                                COPYRIGHTENDKEY
+
+
+ */
+package ptolemy.domains.ptides.kernel;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+
+import ptolemy.actor.Actor;
+import ptolemy.actor.AtomicActor;
+import ptolemy.actor.CompositeActor;
+import ptolemy.actor.TypedAtomicActor;
+import ptolemy.actor.util.Time;
+import ptolemy.data.DoubleToken;
+import ptolemy.data.ObjectToken;
+import ptolemy.data.Token;
+import ptolemy.data.expr.Parameter;
+import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.NamedObj;
+
+/** This is a resource scheduler.
+ * 
+ * @author Patricia Derler
+   @version $Id$
+   @since Ptolemy II 0.2
+
+   @Pt.ProposedRating Red (derler)
+   @Pt.AcceptedRating Red (derler)
+ */
+public abstract class ResourceScheduler extends TypedAtomicActor {
+
+    /** Create a new actor in the specified container with the specified
+     *  name.  The name must be unique within the container or an exception
+     *  is thrown. The container argument must not be null, or a
+     *  NullPointerException will be thrown.
+     *
+     *  @param container The container.
+     *  @param name The name of this actor within the container.
+     *  @exception IllegalActionException If this actor cannot be contained
+     *   by the proposed container (see the setContainer() method).
+     *  @exception NameDuplicationException If the name coincides with
+     *   an entity already in the container.
+     */
+    public ResourceScheduler(CompositeEntity container, String name)
+            throws IllegalActionException, NameDuplicationException {
+        super(container, name);
+        _schedulePlotterEditorFactory = new SchedulePlotterEditorFactory(this,
+                "_editorFactory");
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    //                         public variables                      //
+
+    /** Execution time event type. */
+    public static enum ExecutionEventType {
+        /** Started the execution of an actor. */
+        START,
+        /** Stopped the execution of an actor. */
+        STOP,
+        /** Preempted the execution of an actor. */
+        PREEMPTED
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    //                           public methods                      //
+
+    /** Initialize local variables and the schedule plotter.
+     *  @throws IllegalActionException Thrown if list of actors to
+     *  schedule cannot be initialized.
+     */
+    @Override
+    public void initialize() throws IllegalActionException {
+        super.initialize();
+        _remainingTimes = new HashMap<Actor, Time>();
+        _executionTimes = new HashMap<Actor, Double>();
+        _lastTimeScheduled = new HashMap<Actor, Time>();
+        _actors = new ArrayList<Actor>();
+
+        _getActorsToSchedule((CompositeActor) getContainer());
+        _actors.add(this);
+
+        if (_schedulePlotterEditorFactory.plot != null) {
+            _schedulePlotterEditorFactory.plot.clear(false);
+            _schedulePlotterEditorFactory.plot.clearLegends();
+
+            for (Actor actor : _actors) {
+                _schedulePlotterEditorFactory.plot.addLegend(
+                        _actors.indexOf(actor), actor.getName());
+                event(actor, 0.0, null);
+            }
+            _schedulePlotterEditorFactory.plot.doLayout();
+        }
+    }
+
+    /** If the last actor that was scheduled finished execution 
+     *  then this method returns true.
+     *  @return True if last actor that was scheduled finished
+     *   execution.
+     */
+    public boolean lastScheduledActorFinished() {
+        return _lastActorFinished;
+    }
+
+    /** Schedule a new actor for execution and return the next time
+     *  this scheduler has to perform a reschedule.
+     *  @param actor The actor to be scheduled.
+     *  @param currentPlatformTime The current platform time.
+     *  @return Relative time when this Scheduler has to be executed
+     *    again.
+     *  @throws IllegalActionException Thrown if actor paramaters such
+     *    as execution time or priority cannot be read.
+     */
+    public abstract Time schedule(Actor actor, Time currentPlatformTime)
+            throws IllegalActionException;
+
+    /** Return a new time object using the enclosing director. 
+     *  @param time Double value of the new time object.
+     *  @return The new time object.
+     *  @throws IllegalActionException If the time object cannot be created.
+     */
+    public Time getTime(double time) throws IllegalActionException {
+        return new Time(((CompositeActor) getContainer()).getDirector(), time);
+    }
+
+    /** Plot a new execution event for an actor (i.e. an actor
+     *  started/finished execution, was preempted or resumed). 
+     * @param actor The actor. 
+     * @param physicalTime 
+     * @param scheduleEvent
+     */
+    public void event(final Actor actor, double physicalTime,
+            ExecutionEventType scheduleEvent) {
+        if (_schedulePlotterEditorFactory.plot == null) {
+            return;
+        }
+
+        double x = physicalTime;
+        int actorDataset = _actors.indexOf(actor);
+        if (actorDataset == -1) {
+            return; // actor is not being monitored
+        }
+        if (scheduleEvent == null) {
+            if (_previousY.get(actor) == null) {
+                _previousY.put(actor, (double) actorDataset);
+            }
+            _schedulePlotterEditorFactory.plot.addPoint(actorDataset, x,
+                    _previousY.get(actor), true);
+            _previousY.put(actor, (double) actorDataset);
+        } else if (scheduleEvent == ExecutionEventType.START) {
+            _schedulePlotterEditorFactory.plot.addPoint(actorDataset, x,
+                    _previousY.get(actor), true);
+            _schedulePlotterEditorFactory.plot.addPoint(actorDataset, x,
+                    actorDataset + 0.6, true);
+            _previousY.put(actor, actorDataset + 0.6);
+        } else if (scheduleEvent == ExecutionEventType.STOP) {
+            _schedulePlotterEditorFactory.plot.addPoint(actorDataset, x,
+                    actorDataset + 0.6, true);
+            _schedulePlotterEditorFactory.plot.addPoint(actorDataset, x,
+                    actorDataset, true);
+            _previousY.put(actor, (double) actorDataset);
+        } else if (scheduleEvent == ExecutionEventType.PREEMPTED) {
+            _schedulePlotterEditorFactory.plot.addPoint(actorDataset, x,
+                    actorDataset + 0.6, true);
+            _schedulePlotterEditorFactory.plot.addPoint(actorDataset, x,
+                    actorDataset + 0.4, true);
+            _previousY.put(actor, actorDataset + 0.4);
+        }
+        _schedulePlotterEditorFactory.plot.fillPlot();
+        _schedulePlotterEditorFactory.plot.repaint();
+    }
+
+    /** Create end events for the plotter.
+     *  @throws IllegalActionException Thrown by super class.
+     */
+    @Override
+    public void wrapup() throws IllegalActionException {
+        super.wrapup();
+
+        for (Actor actor : _actors) {
+            event(actor, ((CompositeActor) getContainer()).getDirector()
+                    .getEnvironmentTime().getDoubleValue(), null);
+        }
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    //                          protected methods                    // 
+
+    /** Return the value stored in a parameter associated with
+     *  the input port.
+     *  Used for deviceDelay, deviceDelayBound, networkDelayBound, 
+     *  platformDelay and sourcePlatformDelay. 
+     *  FIXME: specialized ports do contain the parameters, don't
+     *  have to get the attribute with the string! For now leave it
+     *  that way to support older models that do not use PtidesPorts.
+     *  @param object The object that has the parameter.
+     *  @param parameterName The name of the parameter to be retrieved.
+     *  @return the value of the named parameter if the parameter is not
+     *  null. Otherwise return null.
+     *  @exception IllegalActionException If thrown while getting the value
+     *  of the parameter.
+     */
+    protected static Double _getDoubleParameterValue(NamedObj object,
+            String parameterName) throws IllegalActionException {
+        Parameter parameter = (Parameter) object.getAttribute(parameterName);
+        if (parameter != null) {
+            return Double.valueOf(((DoubleToken) parameter.getToken())
+                    .doubleValue());
+        }
+        return null;
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    //                        protected variables                      //
+
+    protected HashMap<Actor, Time> _remainingTimes;
+
+    /** True if in the last request to schedule an actor, this actor
+     *  finished execution. 
+     */
+    protected boolean _lastActorFinished;
+
+    protected HashMap<Actor, Time> _lastTimeScheduled;
+
+    protected HashMap<Actor, Double> _executionTimes;
+
+    ///////////////////////////////////////////////////////////////////
+    //                        private methods                        //
+
+    private void _getActorsToSchedule(CompositeActor compositeActor)
+            throws IllegalActionException {
+        for (Object entity : compositeActor.entityList()) {
+            if (entity instanceof CompositeActor) {
+                Double executionTime = ResourceScheduler
+                        ._getDoubleParameterValue((NamedObj) entity,
+                                "executionTime");
+                if (executionTime == null) {
+                    _getActorsToSchedule((CompositeActor) entity);
+                } else {
+                    _readActorParameters((Actor) entity);
+                }
+            } else if (entity instanceof AtomicActor) {
+                _readActorParameters((Actor) entity);
+            }
+
+        }
+    }
+
+    /** Read actor parameters such as 
+     *  - which resource scheduler the actor is assigned to
+     *  - the execution time
+     *  and store these properties in local variables.
+     * @param actor The actor.
+     * @throws IllegalActionException Thrown if parameters cannot
+     * be parsed.
+     */
+    private void _readActorParameters(Actor actor)
+    throws IllegalActionException {
+        List attributeList = ((NamedObj) actor).attributeList();
+        if (attributeList.size() > 0) {
+            for (int i = 0; i < attributeList.size(); i++) {
+                Object attr = attributeList.get(i);
+                if (attr instanceof Parameter) {
+                    Token paramToken = ((Parameter) attr).getToken();
+                    if (paramToken instanceof ObjectToken) {
+                        Object paramObject = ((ObjectToken) paramToken)
+                                .getValue();
+                        if (paramObject instanceof ResourceScheduler) {
+                            ResourceScheduler scheduler = (ResourceScheduler) paramObject;
+                            if (scheduler == this) {
+                                Double executionTime = ResourceScheduler
+                                        ._getDoubleParameterValue(
+                                                (NamedObj) actor,
+                                                "executionTime");
+
+                                if (executionTime != null) {
+                                    _remainingTimes.put(actor, null);
+                                    _executionTimes.put(actor, executionTime);
+                                }
+                                _actors.add(actor);
+                                event(actor, 0.0, null);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    //                      private variables                        //
+
+    /** Contains the actors inside a ptides platform (=platforms). */
+    private List<Actor> _actors;
+
+    /** Previous positions of the actor data set. */
+    private HashMap<Actor, Double> _previousY = new HashMap();
+
+    private SchedulePlotterEditorFactory _schedulePlotterEditorFactory;
+
+}
