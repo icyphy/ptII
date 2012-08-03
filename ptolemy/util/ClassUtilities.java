@@ -233,7 +233,6 @@ public class ClassUtilities {
         // Search _sourceDirectories for sourceURLString
         for (File sourceDirectory : _sourceDirectories) {
             File sourceFile = new File(sourceDirectory, sourceURLString);
-            System.out.println("ClassUtilities.sourceResource(): + sourceFile");
             if (sourceFile.exists()) {
                 return sourceFile.getCanonicalFile().toURI().toURL();
             }
