@@ -44,14 +44,18 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import javax.swing.AbstractAction;
+import javax.swing.ActionMap;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
+import javax.swing.InputMap;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
 import javax.swing.text.JTextComponent;
 
@@ -420,21 +424,33 @@ public class PtolemyQuery extends Query implements QueryListener,
                 area.setFocusTraversalKeys(KeyboardFocusManager.FORWARD_TRAVERSAL_KEYS, null);
                 area.setFocusTraversalKeys(KeyboardFocusManager.BACKWARD_TRAVERSAL_KEYS, null);
                 
-                area.addKeyListener(new KeyAdapter() {
-                    public void keyPressed(KeyEvent e) {
-                        int code = e.getKeyCode();
-                        if (code == KeyEvent.VK_ENTER && !e.isShiftDown()) {
-                            e.consume();
-                        } else if (code == KeyEvent.VK_ENTER && e.isShiftDown()) {
-                            area.append("\n");
-                            e.consume();
-                        } 
-                        revalidate();
-                    }
+                
+                InputMap inputMap = area.getInputMap();
+                ActionMap actionMap = area.getActionMap();
+                inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_ENTER,0),"text-submit");
+                inputMap.put(KeyStroke.getKeyStroke("shift ENTER"), "TRANSFER_TEXT");
+                
+                actionMap.put("TRANSFER_TEXT",new AbstractAction()
+                {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        area.append("\n");
+                    } 
                 });
-//                addLine(attribute.getName(), attribute.getDisplayName(),
-//                        defaultValue, preferredBackgroundColor(attribute),
-//                        preferredForegroundColor(attribute));
+                
+                
+//                area.addKeyListener(new KeyAdapter() {
+//                    public void keyPressed(KeyEvent e) {
+//                        int code = e.getKeyCode();
+//                        if (code == KeyEvent.VK_ENTER && !e.isShiftDown()) {
+//                            e.consume();
+//                        } else if (code == KeyEvent.VK_ENTER && e.isShiftDown()) {
+//                            area.append("\n");
+//                            e.consume();
+//                        } 
+//                        revalidate();
+//                    }
+//                });
 
                 // The style itself does this, so we don't need to do it again.
                 attachParameter(attribute, attribute.getName());
