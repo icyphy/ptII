@@ -2992,7 +2992,8 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
     private boolean _skipVariable(String variableName) {
         if (variableName.equals("_windowProperties")
                 || variableName.startsWith("_vergil")
-                || variableName.equals("disableBackwardTypeInference")) {
+                || variableName.equals("disableBackwardTypeInference")
+                || variableName.equals("enableBackwardTypeInference")) {
             return true;
         }
         return false;

@@ -38,7 +38,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 295.0]">
         </property>
     </property>
-    <property name="disableBackwardTypeInference" class="ptolemy.data.expr.Parameter" value="false">
+    <property name="enableBackwardTypeInference" class="ptolemy.data.expr.Parameter" value="true">
     </property>
     <property name="Annotation4" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="textSize" class="ptolemy.data.expr.Parameter" value="11">

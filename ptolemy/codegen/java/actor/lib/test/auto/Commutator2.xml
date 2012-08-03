@@ -22,8 +22,6 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="{470.0, 85.0}">
         </property>
     </property>
-    <property name="disableBackwardTypeInference" class="ptolemy.data.expr.Parameter" value="true">
-    </property>
     <entity name="Test" class="ptolemy.actor.lib.Test">
         <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{{&quot;0&quot;, &quot;1.111&quot;, &quot;abc&quot;}, {&quot;1&quot;, &quot;1.111&quot;, &quot;abc&quot;}, {&quot;2&quot;, &quot;1.111&quot;, &quot;abc&quot;}}">
         </property>

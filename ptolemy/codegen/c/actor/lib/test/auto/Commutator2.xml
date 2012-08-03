@@ -22,8 +22,6 @@
     </property>
     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{337.5, 262.0}">
     </property>
-    <property name="disableBackwardTypeInference" class="ptolemy.data.expr.Parameter" value="true">
-    </property>
     <entity name="Test" class="ptolemy.actor.lib.Test">
         <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{{&quot;0&quot;, &quot;1.111&quot;, &quot;abc&quot;}, {&quot;1&quot;, &quot;1.111&quot;, &quot;abc&quot;}, {&quot;2&quot;, &quot;1.111&quot;, &quot;abc&quot;}}">
         </property>

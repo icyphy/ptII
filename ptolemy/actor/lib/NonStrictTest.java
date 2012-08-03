@@ -32,6 +32,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
+import ptolemy.actor.TypedCompositeActor;
 import ptolemy.actor.parameters.SharedParameter;
 import ptolemy.data.ArrayToken;
 import ptolemy.data.BooleanToken;
@@ -69,7 +70,7 @@ import ptolemy.util.StringUtilities;
  from Test in that it ignores absent inputs, and it checks the inputs
  in the postfire() method rather than the fire() method.</p>
  <p>
- The  input data type is undeclared, so it can resolve to anything.
+ The  input data type is general, so any input is acceptable.
  If the input is a DoubleToken or ComplexToken, then the comparison
  passes if the value is close to what it should be, within the
  specified <i>tolerance</i> (which defaults to 10<sup>-9</sup>).
@@ -329,7 +330,24 @@ public class NonStrictTest extends Sink {
         _iteration++;
         return true;
     }
-
+    
+    /** Override the base class to declare the input type to be
+     *  general if backward type inference is enabled. This will
+     *  result in upstream ports resolving to the most general
+     *  type rather than the most specific. We don't want the input
+     *  type to always be general because code generation works
+     *  much better with the most specific types rather than the
+     *  most general.
+     *  @exception IllegalActionException Not thrown in this base class.
+     */
+    public void preinitialize() throws IllegalActionException {
+        TypedCompositeActor container = (TypedCompositeActor)getContainer();
+        if (container.isBackwardTypeInferenceEnabled()) {
+            input.setTypeEquals(BaseType.GENERAL);
+        }
+        super.preinitialize();
+    }
+    
     /** If <i>trainingMode</i> is <i>true</i>, then take the collected
      *  training tokens and store them as an array in <i>correctValues</i>.
      *  @exception IllegalActionException If initialized() was called

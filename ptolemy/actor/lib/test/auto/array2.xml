@@ -25,10 +25,12 @@
     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{348.5, 262.0}">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Note: with bidirectional type inference enabled (parameter accessible in expert mode),&#10;type conversion is done at the sender's side because the sender infers the expected &#10;type from the constraints that are set on the receivers input port.">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Note: that this actor has backward type inference enabled (parameter at the top level), so&#10;type conversion is done at the sender's side because the sender infers the expected &#10;type from the constraints that are set on the receivers input port.">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{40.0, 345.0}">
         </property>
+    </property>
+    <property name="enableBackwardTypeInference" class="ptolemy.data.expr.Parameter" value="true">
     </property>
     <entity name="Const" class="ptolemy.actor.lib.Const">
         <property name="value" class="ptolemy.data.expr.Parameter" value="{1.0}">

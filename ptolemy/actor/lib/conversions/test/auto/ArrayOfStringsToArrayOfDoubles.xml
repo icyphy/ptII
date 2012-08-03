@@ -10,7 +10,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[90.0, 50.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={373, 208, 920, 650}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={373, 208, 934, 634}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 524]">
     </property>
@@ -19,22 +19,12 @@
     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{350.0, 262.0}">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This is an example of how an array of Strings can be converted&#10;to an array of doubles.&#10;&#10;To create this model, a ExpressionToToken actor was dragged &#10;onto the IterateOverArray actor.&#10;&#10;Note that the output port of the first ExpressionToToken actor&#10;was set by hand.">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This is an example of how an array of Strings can be converted&#10;to an array of doubles.&#10;&#10;To create this model, a ExpressionToToken actor was dragged &#10;onto the IterateOverArray actor.&#10;&#10;Note that enableBackeardTypeInference is set to true at the top&#10;level, and hence all types are inferred.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[200.0, 15.0]">
-        </property>
-    </property>
-    <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Currently, the type system doesn't do exactly what &#10;we want in this case. The resolved type of the output&#10;of IterateOverArray is {general}, which works in&#10;this model, but it really should be resolving to {int}.">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[0.0, 230.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{160.0, 10.0}">
         </property>
     </property>
-    <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="IterateOverArray2 was created by looking inside and adding&#10;an ExpressionToToken connected to an Expression actor&#10;that has &quot;cast(int, input)&quot; as its expression.&#10;Note that the output type of IterateOverArray2 is array(int),&#10;which is more useful than the output type of IterateOverArray.">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[5.0, 355.0]">
-        </property>
+    <property name="enableBackwardTypeInference" class="ptolemy.data.expr.Parameter" value="true">
     </property>
     <entity name="StringConst" class="ptolemy.actor.lib.StringConst">
         <property name="value" class="ptolemy.data.expr.Parameter" value="{&quot;1&quot;, &quot;2&quot;}">
@@ -52,7 +42,7 @@
         </property>
     </entity>
     <entity name="ExpressionToToken" class="ptolemy.actor.lib.conversions.ExpressionToToken">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[190.0, 205.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[185.0, 205.0]">
         </property>
     </entity>
     <entity name="IterateOverArray" class="ptolemy.actor.lib.hoc.IterateOverArray">
@@ -109,100 +99,6 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[570.0, 315.0]">
         </property>
     </entity>
-    <entity name="IterateOverArray2" class="ptolemy.actor.lib.hoc.IterateOverArray">
-        <doc>Iterate a contained actor over input arrays</doc>
-        <property name="_icon" class="ptolemy.vergil.icon.CopyCatIcon">
-        </property>
-        <property name="_configurer" class="ptolemy.actor.gui.InsideEntityEditorPaneFactory">
-        </property>
-        <property name="_tableauFactory" class="ptolemy.actor.gui.LevelSkippingTableauFactory">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[385.0, 485.0]">
-        </property>
-        <port name="port" class="ptolemy.actor.lib.hoc.IterateOverArray$IteratePort">
-            <property name="input"/>
-        </port>
-        <port name="port2" class="ptolemy.actor.lib.hoc.IterateOverArray$IteratePort">
-            <property name="output"/>
-        </port>
-        <entity name="IterateComposite" class="ptolemy.actor.lib.hoc.IterateOverArray$IterateComposite">
-            <property name="annotation" class="ptolemy.kernel.util.Attribute">
-                <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
-                </property>
-                <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-                    <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">Make sure there is a director here!</text></svg></configure>
-                </property>
-                <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-                    <configure>
-                <svg> 
-                    <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text>
-                </svg>
-              </configure>
-                </property>
-                <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
-                </property>
-                <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
-                </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="-5.0, 5.0">
-                </property>
-            </property>
-            <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
-                <property name="_location" class="ptolemy.kernel.util.Location" value="{95, 75}">
-                </property>
-            </property>
-            <port name="port" class="ptolemy.actor.lib.hoc.IterateOverArray$IteratePort">
-                <property name="input"/>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="{20.0, 260.0}">
-                </property>
-            </port>
-            <port name="port2" class="ptolemy.actor.lib.hoc.IterateOverArray$IteratePort">
-                <property name="output"/>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="{680.0, 260.0}">
-                </property>
-            </port>
-            <entity name="ExpressionToToken" class="ptolemy.actor.lib.conversions.ExpressionToToken">
-                <property name="_location" class="ptolemy.kernel.util.Location" value="{150, 295}">
-                </property>
-            </entity>
-            <entity name="Expression" class="ptolemy.actor.lib.Expression">
-                <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="cast(int, input)">
-                </property>
-                <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
-                    <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
-                    </property>
-                    <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
-                    </property>
-                    <property name="displayHeight" class="ptolemy.data.expr.Parameter" value="10">
-                    </property>
-                </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="{365, 270}">
-                </property>
-                <port name="input" class="ptolemy.actor.TypedIOPort">
-                    <property name="input"/>
-                </port>
-            </entity>
-            <relation name="relation" class="ptolemy.actor.TypedIORelation">
-            </relation>
-            <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-            </relation>
-            <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-            </relation>
-            <link port="port" relation="relation3"/>
-            <link port="port2" relation="relation2"/>
-            <link port="ExpressionToToken.input" relation="relation3"/>
-            <link port="ExpressionToToken.output" relation="relation"/>
-            <link port="Expression.output" relation="relation2"/>
-            <link port="Expression.input" relation="relation"/>
-        </entity>
-    </entity>
-    <entity name="Test3" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{{{1, 2}}}">
-        </property>
-        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[570.0, 485.0]">
-        </property>
-    </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
@@ -221,8 +117,6 @@
         <vertex name="vertex1" value="{265.0, 205.0}">
         </vertex>
     </relation>
-    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-    </relation>
     <link port="StringConst.output" relation="relation"/>
     <link port="ExpressionToToken.input" relation="relation"/>
     <link port="ExpressionToToken.output" relation="relation6"/>
@@ -234,7 +128,4 @@
     <link port="Const.output" relation="relation4"/>
     <link port="Test.input" relation="relation5"/>
     <link port="Test2.input" relation="relation3"/>
-    <link port="IterateOverArray2.port" relation="relation6"/>
-    <link port="IterateOverArray2.port2" relation="relation2"/>
-    <link port="Test3.input" relation="relation2"/>
 </entity>

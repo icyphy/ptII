@@ -2,9 +2,9 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="Accumulator" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="6.0.beta">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.0.devel">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 524]">
     </property>
     <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[104, 127]">
     </property>
@@ -18,11 +18,13 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="80.0, 45.0">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 129, 816, 518}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 129, 834, 634}, maximized=false}">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 262.0}">
+    </property>
+    <property name="enableBackwardTypeInference" class="ptolemy.data.expr.Parameter" value="true">
     </property>
     <entity name="Accumulator" class="ptolemy.actor.lib.Accumulator">
         <property name="init" class="ptolemy.data.expr.Parameter" value="0">
@@ -57,7 +59,7 @@
     <entity name="Ramp" class="ptolemy.actor.lib.Ramp">
         <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="0">
         </property>
-        <property name="init" class="ptolemy.data.expr.Parameter" value="0">
+        <property name="init" class="ptolemy.actor.parameters.PortParameter" value="0">
         </property>
         <property name="step" class="ptolemy.actor.parameters.PortParameter" value="1">
         </property>
@@ -76,28 +78,38 @@
         </property>
     </entity>
     <entity name="TypeTest" class="ptolemy.actor.lib.TypeTest">
-        <property name="parameterTypes" class="ptolemy.data.expr.Parameter" value="{Accumulator = {init = &quot;int&quot;}, Pulse = {firingCountLimit = &quot;int&quot;, indexes = &quot;arrayType(int)&quot;, repeat = &quot;boolean&quot;, values = &quot;arrayType(int,2)&quot;}, Pulse2 = {firingCountLimit = &quot;int&quot;, indexes = &quot;arrayType(int)&quot;, repeat = &quot;boolean&quot;, values = &quot;arrayType(boolean,5)&quot;}, Ramp = {firingCountLimit = &quot;int&quot;, init = &quot;int&quot;, step = &quot;int&quot;}, Test = {correctValues = &quot;arrayType(int,5)&quot;, tolerance = &quot;double&quot;, trainingMode = &quot;boolean&quot;}}">
+        <property name="parameterTypes" class="ptolemy.data.expr.Parameter" value="{Accumulator = {init = &quot;int&quot;, lowerBound = &quot;int&quot;, upperBound = &quot;int&quot;}, Pulse = {NONE = &quot;int&quot;, firingCountLimit = &quot;int&quot;, indexes = &quot;arrayType(int)&quot;, repeat = &quot;boolean&quot;, values = &quot;arrayType(int,2)&quot;}, Pulse2 = {NONE = &quot;int&quot;, firingCountLimit = &quot;int&quot;, indexes = &quot;arrayType(int)&quot;, repeat = &quot;boolean&quot;, values = &quot;arrayType(boolean,5)&quot;}, Ramp = {NONE = &quot;int&quot;, firingCountLimit = &quot;int&quot;, init = &quot;int&quot;, step = &quot;int&quot;}, Test = {correctValues = &quot;arrayType(int,5)&quot;, requireAllCorrectValues = &quot;boolean&quot;, tolerance = &quot;double&quot;, trainingMode = &quot;boolean&quot;}}">
         </property>
-        <property name="portTypes" class="ptolemy.data.expr.Parameter" value="{Accumulator = {input = &quot;int&quot;, output = &quot;int&quot;, reset = &quot;boolean&quot;}, Pulse = {output = &quot;int&quot;, trigger = &quot;unknown&quot;}, Pulse2 = {output = &quot;boolean&quot;, trigger = &quot;unknown&quot;}, Ramp = {output = &quot;int&quot;, step = &quot;int&quot;, trigger = &quot;unknown&quot;}, Test = {input = &quot;int&quot;, output = &quot;boolean&quot;}}">
+        <property name="portTypes" class="ptolemy.data.expr.Parameter" value="{Accumulator = {input = &quot;int&quot;, output = &quot;general&quot;, reset = &quot;boolean&quot;}, Pulse = {output = &quot;int&quot;, trigger = &quot;unknown&quot;}, Pulse2 = {output = &quot;boolean&quot;, trigger = &quot;unknown&quot;}, Ramp = {init = &quot;int&quot;, output = &quot;int&quot;, step = &quot;int&quot;, trigger = &quot;unknown&quot;}, Test = {input = &quot;general&quot;, output = &quot;boolean&quot;}}">
         </property>
         <property name="trainingMode" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="445.0, 200.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{445.0, 200.0}">
         </property>
     </entity>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
     </relation>
     <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
         <vertex name="vertex1" value="185.0, 140.0">
         </vertex>
     </relation>
     <relation name="relation7" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
         <vertex name="vertex1" value="165.0, 190.0">
         </vertex>
     </relation>
     <relation name="relation8" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
     </relation>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
     </relation>
     <link port="Accumulator.input" relation="relation6"/>
     <link port="Accumulator.input" relation="relation7"/>

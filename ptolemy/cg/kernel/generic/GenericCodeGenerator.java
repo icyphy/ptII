@@ -367,15 +367,7 @@ public abstract class GenericCodeGenerator extends Attribute implements
                 toplevel.setManager(manager);
             }
 
-            try {
-                // Disable the bidirectional type inference.
-                Parameter onlyForward = (Parameter) toplevel.getAttribute("disableBackwardTypeInference", Parameter.class);
-                if (onlyForward == null) {
-                    onlyForward = new Parameter(toplevel, "disableBackwardTypeInference");
-                }
-                onlyForward.setTypeEquals(BaseType.BOOLEAN);
-                onlyForward.setExpression("true");
-                
+            try {                
                 manager.preinitializeAndResolveTypes();
                 //System.out.println(((CompositeActor)container).toplevel().exportMoML());
                 //StringUtilities.exit(5);

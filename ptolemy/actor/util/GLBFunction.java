@@ -2,6 +2,7 @@ package ptolemy.actor.util;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
@@ -70,7 +71,8 @@ public class GLBFunction extends MonotonicFunction {
         Set<Type> types = new HashSet<Type>();
         types.addAll(_cachedTypes);
         for (int i = 0; i < _cachedTerms.length; i++) {
-            types.add((Type)_cachedTerms[i].getValue());
+            Type type = (Type)_cachedTerms[i].getValue();
+            types.add(type);
         }
         // If there are no destination outputs at all, then set
         // the output type to unknown.
@@ -112,17 +114,24 @@ public class GLBFunction extends MonotonicFunction {
      *  only updated if the workspace version has changed. 
      */
     protected void _updateArguments() {
-        List<IOPort> destinations;
+        List<IOPort> destinations = null;
         if (_sourcePort.getContainer().workspace().getVersion() 
                 == _cachedVariablesWorkspaceVersion) {
             return;
         }
         ArrayList<InequalityTerm> portTypeTermList = new ArrayList<InequalityTerm>();
         _cachedTypes = new HashSet<Type>();
+        // Make sure to support ports that both inputs and outputs.
         if (_sourcePort.isOutput()){
             destinations = _sourcePort.sinkPortList();
-        } else {
-            destinations = _sourcePort.insideSinkPortList();
+        }
+        if (_sourcePort.isInput()) {
+            if (destinations == null) {
+                destinations = _sourcePort.insideSinkPortList();
+            } else {
+                destinations = new LinkedList<IOPort>(destinations);
+                destinations.addAll(_sourcePort.insideSinkPortList());
+            }
         }
 
         for (IOPort destination : destinations) {

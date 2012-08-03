@@ -56,18 +56,6 @@
     </property>
     <property name="_documentation" class="ptolemy.data.expr.FileParameter" value="ptolemy/actor/ptalon/demo/EightChannelFFT/FFT.ptln">
     </property>
-    <property name="disableBackwardTypeInference" class="ptolemy.data.expr.Parameter" value="true">
-    </property>
-    <property name="Annotation5" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="textSize" class="ptolemy.data.expr.Parameter" value="12">
-        </property>
-        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.2,0.8,1.0}">
-        </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="disableBackwardTypeInference is set to true so that this model will run faster.&#10;To change the setting, right click on the background and select Configure.">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[280.0, 445.0]">
-        </property>
-    </property>
     <entity name="Const" class="ptolemy.actor.lib.Const">
         <property name="value" class="ptolemy.data.expr.Parameter" value="1.0">
         </property>

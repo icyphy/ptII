@@ -22,8 +22,6 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[325.0, 80.0]">
         </property>
     </property>
-    <property name="disableBackwardTypeInference" class="ptolemy.data.expr.Parameter" value="true">
-    </property>
     <entity name="Ramp" class="ptolemy.actor.lib.Ramp">
         <property name="step" class="ptolemy.actor.parameters.PortParameter" value="0.2">
         </property>

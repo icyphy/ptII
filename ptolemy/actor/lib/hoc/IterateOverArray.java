@@ -421,7 +421,7 @@ public class IterateOverArray extends MirrorComposite {
                     // Finally, if backward type inference is enabled,
                     // require that the source array element type be greater
                     // than or equal to the GLB of all the destination ports.
-                    if (_backwardTypeInferenceEnabled()) {
+                    if (isBackwardTypeInferenceEnabled()) {
                         InequalityTerm typeTerm = sourcePort.getTypeTerm();
                         if (typeTerm.isSettable()) {
                             result.add(new Inequality(
@@ -455,7 +455,7 @@ public class IterateOverArray extends MirrorComposite {
                         // Finally, if backward type inference is enabled,
                         // require that the source array element type be greater
                         // than or equal to the GLB of all the destination ports.
-                        if (_backwardTypeInferenceEnabled()) {
+                        if (isBackwardTypeInferenceEnabled()) {
                             InequalityTerm typeTerm = sourcePort.getTypeTerm();
                             if (typeTerm.isSettable()) {
                                 result.add(new Inequality(
@@ -482,7 +482,7 @@ public class IterateOverArray extends MirrorComposite {
                         // of destination ports that are ports of this
                         // IterateOverArray actor).
                         // This ensures that backward type inference occurs.
-                        if (_backwardTypeInferenceEnabled()) {
+                        if (isBackwardTypeInferenceEnabled()) {
                             InequalityTerm typeTerm = sourcePort.getTypeTerm();
                             if (typeTerm.isSettable()) {
                                 result.add(new Inequality(

@@ -2,11 +2,9 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="ExpressionConcatenateArrayType" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.0.devel">
     </property>
     <property name="DDF Director" class="ptolemy.domains.ddf.kernel.DDFDirector">
-        <property name="timeResolution" class="ptolemy.actor.parameters.SharedParameter" value="1E-10">
-        </property>
         <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
         </property>
         <property name="maximumReceiverCapacity" class="ptolemy.data.expr.Parameter" value="0">
@@ -30,7 +28,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[220.0, 95.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 22, 1411, 803}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 22, 1432, 803}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1198, 693]">
     </property>
@@ -45,7 +43,7 @@
         </property>
     </property>
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Edward writes:&#10;&#10;This is a also a feature request...&#10;&#10;It might be easy to fix for this particular example by providing&#10;a type constraints function to go with the concatenate function.&#10;I.e., provide a method concatenateType(Array, Array) in UtilityFunctions.&#10;&#10;At the same time, we should fix a similar limitation in the&#10;ArrayAppend actor, which has the following in its constructor:&#10;&#10;        // FIXME: correct type constraint for length&#10;        output.setTypeAtLeast(ArrayType.ARRAY_UNSIZED_BOTTOM);&#10;&#10;&#10;Any volunteers to do these? It would be good practice with&#10;a modern type system... ">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This is fixed.&#10;&#10;Edward wrote:&#10;&#10;This is a also a feature request...&#10;&#10;It might be easy to fix for this particular example by providing&#10;a type constraints function to go with the concatenate function.&#10;I.e., provide a method concatenateType(Array, Array) in UtilityFunctions.&#10;&#10;At the same time, we should fix a similar limitation in the&#10;ArrayAppend actor, which has the following in its constructor:&#10;&#10;        // FIXME: correct type constraint for length&#10;        output.setTypeAtLeast(ArrayType.ARRAY_UNSIZED_BOTTOM);&#10;&#10;&#10;Any volunteers to do these? It would be good practice with&#10;a modern type system... ">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[675.0, 375.0]">
         </property>

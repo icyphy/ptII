@@ -16,9 +16,9 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="80.0, 40.0">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={20, 97, 1172, 644}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={20, 97, 1186, 634}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[952, 518]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[952, 524]">
     </property>
     <property name="parameter" class="ptolemy.data.expr.Parameter" value="1">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -41,13 +41,15 @@
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{476.0, 259.0}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{476.0, 262.0}">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Note: with bidirectional type inference enabled (parameter accessible in expert mode),&#10;type conversion is done at the sender's side because the sender infers the expected &#10;type from the constraints that are set on the receivers input port.">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Note: with backward type inference enabled (parameter accessible at the top level),&#10;type conversion is done at the sender's side because the sender infers the expected &#10;type from the constraints that are set on the receivers input port.">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[30.0, 335.0]">
         </property>
+    </property>
+    <property name="enableBackwardTypeInference" class="ptolemy.data.expr.Parameter" value="true">
     </property>
     <entity name="Expression" class="ptolemy.actor.lib.Expression">
         <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="cast(double, 1)">
@@ -70,7 +72,7 @@
         </property>
         <property name="trainingMode" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="270.0, 165.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[275.0, 170.0]">
         </property>
     </entity>
     <entity name="Const" class="ptolemy.actor.lib.Const">

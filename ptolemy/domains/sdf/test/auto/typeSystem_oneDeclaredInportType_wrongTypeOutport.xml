@@ -10,13 +10,13 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="{75, 55}">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={134, 50, 784, 644}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={134, 50, 798, 634}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[564, 518]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[564, 524]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{282.0, 259.0}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{282.0, 262.0}">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The plus port of the AddSubtract&#10;Actor is set to &quot;long&quot;">
@@ -77,7 +77,7 @@
                 </property>
             </property>
         </property>
-        <property name="portTypes" class="ptolemy.data.expr.Parameter" value="{AddSubtract = {minus = &quot;unsignedByte&quot;, output = &quot;long&quot;, plus = &quot;long&quot;}, Const = {output = &quot;long&quot;, trigger = &quot;unknown&quot;}, Const2 = {output = &quot;unsignedByte&quot;, trigger = &quot;unknown&quot;}, Test = {input = &quot;long&quot;, output = &quot;boolean&quot;}}">
+        <property name="portTypes" class="ptolemy.data.expr.Parameter" value="{AddSubtract = {minus = &quot;long&quot;, output = &quot;long&quot;, plus = &quot;long&quot;}, Const = {output = &quot;int&quot;, trigger = &quot;unknown&quot;}, Const2 = {output = &quot;unsignedByte&quot;, trigger = &quot;unknown&quot;}, Test = {input = &quot;long&quot;, output = &quot;boolean&quot;}}">
             <property name="style" class="ptolemy.actor.gui.style.TextStyle">
                 <property name="height" class="ptolemy.data.expr.Parameter" value="10">
                 </property>
@@ -87,7 +87,7 @@
         </property>
         <property name="trainingMode" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[370.0, 270.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[365.0, 270.0]">
         </property>
     </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">

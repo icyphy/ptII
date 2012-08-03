@@ -29,6 +29,7 @@
 package ptolemy.actor.lib.gui;
 
 import ptolemy.actor.TypedAtomicActor;
+import ptolemy.actor.TypedCompositeActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.injection.ActorModuleInitializer;
 import ptolemy.actor.injection.PortableContainer;
@@ -102,7 +103,6 @@ public class Display extends TypedAtomicActor implements PortablePlaceable {
 
         input = new TypedIOPort(this, "input", true, false);
         input.setMultiport(true);
-        input.setTypeEquals(BaseType.GENERAL);
 
         rowsDisplayed = new Parameter(this, "rowsDisplayed");
         rowsDisplayed.setExpression("10");
@@ -292,6 +292,23 @@ public class Display extends TypedAtomicActor implements PortablePlaceable {
         Thread.yield();
 
         return super.postfire();
+    }
+
+    /** Override the base class to declare the input type to be
+     *  general if backward type inference is enabled. This will
+     *  result in upstream ports resolving to the most general
+     *  type rather than the most specific. We don't want the input
+     *  type to always be general because code generation works
+     *  much better with the most specific types rather than the
+     *  most general.
+     *  @exception IllegalActionException Not thrown in this base class.
+     */
+    public void preinitialize() throws IllegalActionException {
+        TypedCompositeActor container = (TypedCompositeActor)getContainer();
+        if (container.isBackwardTypeInferenceEnabled()) {
+            input.setTypeEquals(BaseType.GENERAL);
+        }
+        super.preinitialize();
     }
 
     /** Override the base class to remove the display from its graphical

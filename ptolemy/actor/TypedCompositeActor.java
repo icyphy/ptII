@@ -56,6 +56,7 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.InvalidStateException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Workspace;
 
 ///////////////////////////////////////////////////////////////////
@@ -193,6 +194,45 @@ public class TypedCompositeActor extends CompositeActor implements TypedActor {
         }
     }
 
+    /** Return true if backward type inference is enabled.
+     *  This looks for an attribute in this composite actor
+     *  named "enableBackwardTypeInference", and if it exists,
+     *  returns its boolean value. If it does not exist,
+     *  the look up the hierarchy until the top-level for such
+     *  an attribute, and if it exists,
+     *  returns its boolean value. If it does not exist,
+     *  then return false. For backward compatibility,
+     *  if it does not exist, then look for a parameter
+     *  named "disableBackwardTypeInference" at the top
+     *  level and return its value, if it exists.
+     *  @return True if backward type inference is enabled.
+     */
+    public boolean isBackwardTypeInferenceEnabled() {
+        try {
+            Parameter onlyForward = (Parameter)getAttribute(
+                    "enableBackwardTypeInference",
+                    Parameter.class);
+            if (onlyForward == null) {
+                // Look up the hierarchy.
+                NamedObj container = getContainer();
+                if (container instanceof TypedCompositeActor) {
+                    return ((TypedCompositeActor)container).isBackwardTypeInferenceEnabled();
+                } else {
+                    // At the top level, presumably, and there is no such parameter.
+                    return false;
+                }
+            } else {
+                // Parameter exists.
+                return ((BooleanToken) onlyForward.getToken())
+                            .booleanValue();
+
+            }
+        } catch (IllegalActionException e) {
+            // This should not happen
+            throw new InternalErrorException(e);
+        }
+    }
+    
     /** Create a new TypedIOPort with the specified name.
      *  The container of the port is set to this actor.
      *  This method is write-synchronized on the workspace.
@@ -561,30 +601,6 @@ public class TypedCompositeActor extends CompositeActor implements TypedActor {
         super._addRelation(relation);
     }
 
-    /** Return true if backward type inference is enabled.
-     *  This looks for a top-level attribute named
-     *  "disableBackwardTypeInference", and if it exists,
-     *  returns its boolean value. If it does not exist,
-     *  then return true.
-     *  @return True if backward type inference is enabled.
-     */
-    protected boolean _backwardTypeInferenceEnabled() {
-        try {
-            Parameter onlyForward = (Parameter) this.toplevel()
-                    .getAttribute("disableBackwardTypeInference",
-                            Parameter.class);
-            if (onlyForward != null
-                    && ((BooleanToken) onlyForward.getToken())
-                            .booleanValue()) {
-                return false;
-            }
-            return true;
-        } catch (IllegalActionException e) {
-            // This should not happen
-            throw new InternalErrorException(e);
-        }
-    }
-    
     /** Check types from a source port to a group of destination ports,
      *  assuming the source port is connected to all the ports in the
      *  group of destination ports.  Return a list of instances of
@@ -677,7 +693,7 @@ public class TypedCompositeActor extends CompositeActor implements TypedActor {
             if (srcUndeclared) {
                 // 2) only setup type constraint if bidirectional type 
                 // inference is enabled.
-                if (_backwardTypeInferenceEnabled()) {
+                if (isBackwardTypeInferenceEnabled()) {
                     result.add(new Inequality(
                             new GLBFunction(source),
                             source.getTypeTerm()));

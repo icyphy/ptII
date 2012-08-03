@@ -49,8 +49,15 @@ import ptolemy.kernel.util.NameDuplicationException;
 /**
  This actor reads a string expression from the input port and outputs
  the token resulting from the evaluation.  The type of the output port
- defaults to general.  In order to usefully use this class, you will
- probably want to set the type of the output
+ is by default undeclared. To use this actor, you may need to declare
+ the output type. Depending on how the output is used, if 
+ backward type resolution is enabled in the model
+ (the default, see the parameters of the top-level model), then
+ the type will resolve to the most general type acceptable to
+ the downstream actors. If the downstream actors all propagate
+ type constraints backwards, then it might be possible for
+ the output type to be inferred. If backward type resolution is not enabled,
+ then you will always need to set the type of the output
  port to the type of the expression that is expected.
  If the input string parses to something that does not match
  the specified output data type, then a run-time type check error
@@ -78,7 +85,8 @@ public class ExpressionToToken extends Converter {
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
         input.setTypeEquals(BaseType.STRING);
-        output.setTypeEquals(BaseType.GENERAL);
+        // With backward type resolution, the following is not appropriate.
+        // output.setTypeEquals(BaseType.GENERAL);
     }
 
     ///////////////////////////////////////////////////////////////////
