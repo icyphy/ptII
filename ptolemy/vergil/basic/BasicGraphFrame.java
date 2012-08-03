@@ -1213,14 +1213,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
                     BasicGraphFrame basicGraphFrame = (BasicGraphFrame)frame;
                     double [] locationArray = locationAttribute.getLocation();
                     Point2D locationPoint2D = new Point2D.Double(locationArray[0], locationArray[1]);
-                    Figure figure = BasicGraphFrame.getFigureUnder(basicGraphFrame.getJGraph().getGraphPane(), locationPoint2D, new Object [] {});
-                    if (figure != null) {
-                        GraphPane pane = basicGraphFrame.getJGraph().getGraphPane();
-                        Rectangle2D bounds = figure.getBounds();
-                        basicGraphFrame.zoomFit(pane, bounds);
-                        // Zoom out slightly
-                        basicGraphFrame.zoom(0.6);
-                    }
+                    basicGraphFrame.zoomReset();
                     basicGraphFrame.setCenter(locationPoint2D);
                 }
             }
