@@ -53,6 +53,7 @@ import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.KeyStroke;
@@ -424,7 +425,8 @@ public class PtolemyQuery extends Query implements QueryListener,
                 area.setFocusTraversalKeys(KeyboardFocusManager.FORWARD_TRAVERSAL_KEYS, null);
                 area.setFocusTraversalKeys(KeyboardFocusManager.BACKWARD_TRAVERSAL_KEYS, null);
                 
-                
+                final String attributeName = attribute.getName();
+                final Settable finalAttribute = attribute;
                 InputMap inputMap = area.getInputMap();
                 ActionMap actionMap = area.getActionMap();
                 inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_ENTER,0),"text-submit");
@@ -435,6 +437,24 @@ public class PtolemyQuery extends Query implements QueryListener,
                     @Override
                     public void actionPerformed(ActionEvent e) {
                         area.append("\n");
+                        if (area.getRows() < 4) {
+                            area.setRows(area.getRows() + 1);
+                            area.revalidate();
+                            ((EditParametersDialog)area.getParent().getParent().getParent().getParent()
+                                    .getParent().getParent().getParent().getParent().getParent().getParent().getParent()
+                                    .getParent().getParent().getParent().getParent()).doLayout();
+                            ((EditParametersDialog)area.getParent().getParent().getParent().getParent()
+                                    .getParent().getParent().getParent().getParent().getParent().getParent().getParent()
+                                    .getParent().getParent().getParent().getParent()).pack();
+                        }
+                    } 
+                });
+                
+                actionMap.put("text-submit",new AbstractAction()
+                {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        valueChanged(finalAttribute);
                     } 
                 });
                 
@@ -887,7 +907,7 @@ public class PtolemyQuery extends Query implements QueryListener,
     public void valueChanged(final Settable attribute) {
         // If our own change request is the cause of this notification,
         // then ignore it.
-        if (_ignoreChangeNotifications) {
+8        if (_ignoreChangeNotifications) {
             return;
         }
 
