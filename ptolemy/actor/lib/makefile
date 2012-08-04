@@ -314,6 +314,7 @@ OTHER_FILES_TO_BE_JARED = \
 	RunningMaximumIcon.xml \
 	RunningMinimumIcon.xml \
 	SelectIcon.xml \
+	SequencerIcon.xml \
 	Sinewave.gif \
 	Sinewave.xml \
 	SinewaveIcon.xml \
