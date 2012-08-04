@@ -907,7 +907,7 @@ public class PtolemyQuery extends Query implements QueryListener,
     public void valueChanged(final Settable attribute) {
         // If our own change request is the cause of this notification,
         // then ignore it.
-8        if (_ignoreChangeNotifications) {
+        if (_ignoreChangeNotifications) {
             return;
         }
 
