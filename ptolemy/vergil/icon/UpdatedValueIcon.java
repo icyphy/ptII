@@ -144,7 +144,10 @@ public class UpdatedValueIcon extends AttributeValueIcon {
     public Figure createBackgroundFigure() {
         // Measure width of a character.  Unfortunately, this
         // requires generating a label figure that we will not use.
-        LabelFigure label = new LabelFigure("m", _labelFont, 1.0,
+        // Note that pessimistic choice of character would be "m",
+        // but this results in way too much padding normally.
+        // Thus, we use "n" and correct if necessary.
+        LabelFigure label = new LabelFigure("N", _labelFont, 1.0,
                 SwingConstants.CENTER);
         Rectangle2D stringBounds = label.getBounds();
 
@@ -154,6 +157,18 @@ public class UpdatedValueIcon extends AttributeValueIcon {
 
             // NOTE: Padding of 10.
             int width = (int) ((stringBounds.getWidth() * numberOfCharacters) + 10);
+            
+            // If the actual string is too wide, then correct.
+            // Note that this will result in annoying fluctuating icon size,
+            // but this is probably better than text spilling over.
+            String currentValue = _displayString();
+            label = new LabelFigure("N", _labelFont, 1.0,
+                    SwingConstants.CENTER);
+            stringBounds = label.getBounds();
+            if (width < stringBounds.getWidth()) {
+                width = (int) stringBounds.getWidth() + 10;
+            }
+
             return new BasicRectangle(0, 0, width, 30, Color.white, 1);
         } catch (IllegalActionException ex) {
             // Should not be thrown.
