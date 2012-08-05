@@ -2478,7 +2478,7 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
          *  @return A description of the variable and its type.
          */
         public String toString() {
-            return "(" + Variable.this.toString() + ", " + getType() + ")";
+            return "(variable " + Variable.this.getFullName() + ": " + getType() + ")";
         }
     }
 }

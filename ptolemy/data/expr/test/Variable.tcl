@@ -564,7 +564,7 @@ test Variable-15.1 { setTypeAtLeast(InequalityTerm)} {
 	[[$p15 getType] toString] \
 	[[$p15 typeConstraintList] size] \
 	[listToStrings [$p15 typeConstraintList]]
-} {unknown 1 {{(TypeConstant, double) <= (ptolemy.data.expr.Variable {.E15.P15} value undefined, unknown)}}}
+} {unknown 1 {{(TypeConstant, double) <= (variable .E15.P15: unknown)}}}
 
 test Variable-16.1 {setTypeAtLeast(Typeable)} {
     set e16 [java::new {ptolemy.kernel.Entity String} E16]
@@ -583,4 +583,4 @@ test Variable-16.1 {setTypeAtLeast(Typeable)} {
 	[[$p16 getType] toString] \
 	[[$p16 typeConstraintList] size] \
 	[listToStrings [$p16 typeConstraintList]]
-} {unknown 1 {{(ptolemy.data.expr.Variable {.E16.P16_2} 16.16, double) <= (ptolemy.data.expr.Variable {.E16.P16} value undefined, unknown)}}}
+} {unknown 1 {{(variable .E16.P16_2: double) <= (variable .E16.P16: unknown)}}}

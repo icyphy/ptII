@@ -1020,7 +1020,7 @@ public class TypedIOPort extends IOPort implements Typeable {
          *  @return A description of the port and its type.
          */
         public String toString() {
-            return "(" + TypedIOPort.this.toString() + ", " + getType() + ")";
+            return "(port " + TypedIOPort.this.getFullName() + ": " + getType() + ")";
         }
     }
 }
