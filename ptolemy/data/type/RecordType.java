@@ -370,10 +370,11 @@ public class RecordType extends AssociativeType implements Cloneable {
         }
     }
 
-    /** Test if the argument type is compatible with this type.  The
+    /** Test whether the argument type is compatible with this type
+     *  (is less than or equal to this type in the type lattice).  The
      *  given type will be compatible with this type if it is
-     *  BaseType.UNKNOWN, or a RecordType that contains at least as
-     *  many fields.
+     *  BaseType.UNKNOWN, or it is a RecordType that contains at
+     *  least the fields of this record type.
      *  @param type An instance of Type.
      *  @return True if the argument is compatible with this type.
      */
@@ -458,7 +459,7 @@ public class RecordType extends AssociativeType implements Cloneable {
         return true;
     }
 
-    /** Test if the specified type is a substitution instance of this
+    /** Test whether the specified type is a substitution instance of this
      *  type.  One record is a substitution instance of another if they
      *  have fields with the same names and each field of the given type is
      *  a substitution instance of the corresponding field in this type.
