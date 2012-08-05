@@ -30,6 +30,7 @@ package ptolemy.data.type;
 
 import ptolemy.data.ObjectToken;
 import ptolemy.data.Token;
+import ptolemy.graph.CPO;
 import ptolemy.kernel.util.IllegalActionException;
 
 /**
@@ -66,7 +67,7 @@ import ptolemy.kernel.util.IllegalActionException;
  @Pt.ProposedRating Red (tfeng)
  @Pt.AcceptedRating Red (tfeng)
  */
-public class ObjectType implements Cloneable, Type {
+public class ObjectType extends StructuredType implements Cloneable {
 
     /** Construct an ObjectType with null as the Java class specified in it.
      *  This type is the most general type (top element) among all the
@@ -104,16 +105,8 @@ public class ObjectType implements Cloneable, Type {
         _class = valueClass;
     }
 
-    /** Return a new type which represents the type that results from
-     *  adding a token of this type and a token of the given argument
-     *  type.
-     *  @param rightArgumentType The type to add to this type.
-     *  @return A new type, or BaseType.GENERAL, if the operation does
-     *  not make sense for the given types.
-     */
-    public Type add(Type rightArgumentType) {
-        return TypeLattice.leastUpperBound(this, rightArgumentType);
-    }
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
     /** Return a deep clone of this type.
      *  @return A Type.
@@ -144,17 +137,6 @@ public class ObjectType implements Cloneable, Type {
                 token, this.toString()));
     }
 
-    /** Return a new type which represents the type that results from
-     *  dividing a token of this type and a token of the given
-     *  argument type.
-     *  @param rightArgumentType The type to add to this type.
-     *  @return A new type, or BaseType.GENERAL, if the operation does
-     *  not make sense for the given types.
-     */
-    public Type divide(Type rightArgumentType) {
-        return TypeLattice.leastUpperBound(this, rightArgumentType);
-    }
-
     /** Determine if the argument represents the same type as this object.
      *  @param object A Type.
      *  @return True if the argument represents the same type as this
@@ -176,21 +158,6 @@ public class ObjectType implements Cloneable, Type {
      */
     public Class<?> getTokenClass() {
         return ObjectToken.class;
-    }
-
-    /** Return a perfect hash for this type.  This number corresponds
-     *  uniquely to a particular type, and is used to improve
-     *  performance of certain operations in the TypeLattice class.
-     *  All instances of a particular type (e.g. integer array) must
-     *  return the same number.  Types that return HASH_INVALID will
-     *  not have results in TypeLattice cached.  Note that it is safer
-     *  to return HASH_INVALID, than to return a number that is not
-     *  unique, or different number for the same type from different
-     *  instances.
-     *  @return A number between 0 and HASH_MAX, or HASH_INVALID.
-     */
-    public int getTypeHash() {
-        return Type.HASH_INVALID;
     }
 
     /** Get the actual value.
@@ -222,6 +189,13 @@ public class ObjectType implements Cloneable, Type {
         return hash;
     }
 
+    /** Ignore, as this type does not have elements.
+     *  @param type The type to initialize unknown elements to.
+     */
+    @Override
+    public void initialize(Type type) {
+    }
+
     /** Return true if this type does not correspond to a single token
      *  class.  This occurs if the type is not instantiable, or it
      *  represents either an abstract base class or an interface.
@@ -232,12 +206,9 @@ public class ObjectType implements Cloneable, Type {
         return _class != null;
     }
 
-    /** Return true if this type does not correspond to a single token
-     *  class.  This occurs if the type is not instantiable, or it
-     *  represents either an abstract base class or an interface.
+    /** Return true if the specified type is less than or equal to this type.
      *  @param type The type to be checked
-     *  @return True if this type does not correspond to a single token
-     *  class.
+     *  @return True if the specified type is less than or equal to this type.
      */
     public boolean isCompatible(Type type) {
         if (type.equals(BaseType.UNKNOWN)) {
@@ -281,51 +252,8 @@ public class ObjectType implements Cloneable, Type {
         return equals(type);
     }
 
-    /** Return a new type which represents the type that results from
-     *  moduloing a token of this type and a token of the given
-     *  argument type.
-     *  @param rightArgumentType The type to add to this type.
-     *  @return A new type, or BaseType.GENERAL, if the operation does
-     *  not make sense for the given types.
-     */
-    public Type modulo(Type rightArgumentType) {
-        return TypeLattice.leastUpperBound(this, rightArgumentType);
-    }
-
-    /** Return a new type which represents the type that results from
-     *  multiplying a token of this type and a token of the given
-     *  argument type.
-     *  @param rightArgumentType The type to add to this type.
-     *  @return A new type, or BaseType.GENERAL, if the operation does
-     *  not make sense for the given types.
-     */
-    public Type multiply(Type rightArgumentType) {
-        return TypeLattice.leastUpperBound(this, rightArgumentType);
-    }
-
-    /** Return the type of the multiplicative identity for elements of
-     *  this type.
-     *  @return A new type, or BaseType.GENERAL, if the operation does
-     *  not make sense for the given types.
-     */
-    public Type one() {
-        return this;
-    }
-
-    /** Return a new type which represents the type that results from
-     *  subtracting a token of this type and a token of the given
-     *  argument type.
-     *  @param rightArgumentType The type to add to this type.
-     *  @return A new type, or BaseType.GENERAL, if the operation does
-     *  not make sense for the given types.
-     */
-    public Type subtract(Type rightArgumentType) {
-        return TypeLattice.leastUpperBound(this, rightArgumentType);
-    }
-
     /** Return a string describing this object.
-     *
-     *  @return A string.
+     *  @return A string of form 'object("classname")'.
      */
     public String toString() {
         if (_class == null) {
@@ -335,14 +263,8 @@ public class ObjectType implements Cloneable, Type {
         }
     }
 
-    /** Return the type of the additive identity for elements of
-     *  this type.
-     *  @return A new type, or BaseType.GENERAL, if the operation does
-     *  not make sense for the given types.
-     */
-    public Type zero() {
-        return this;
-    }
+    ///////////////////////////////////////////////////////////////////
+    ////                         public fields                     ////
 
     /** The bottom element among all ObjectTypes.
      */
@@ -355,25 +277,62 @@ public class ObjectType implements Cloneable, Type {
      */
     public static final ObjectType TOP = BaseType.OBJECT;
 
-    /**
-     An artificial Java class that serves as the bottom element.
-
-     @author Thomas Huining Feng
-     @version $Id$
-     @since Ptolemy II 8.0
-     @Pt.ProposedRating Red (tfeng)
-     @Pt.AcceptedRating Red (tfeng)
+    /** An artificial Java class that serves as the bottom element.
+     *  No other class subclasses this, so there is nothing below it.
      */
     public static class BottomClass {
     }
 
-    /** Compute the type representing the greatest lower bound of this type and
-     *  the given type.
-     *
-     *  @param type The given type.
-     *  @return The greatest lower bound.
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected methods                 ////
+
+    /** Compare this type with the specified type. The specified type
+     *  must be of the same structured type, otherwise an exception will
+     *  be thrown.
+     *  This method returns one of ptolemy.graph.CPO.LOWER,
+     *  ptolemy.graph.CPO.SAME, ptolemy.graph.CPO.HIGHER,
+     *  ptolemy.graph.CPO.INCOMPARABLE, indicating this type is lower
+     *  than, equal to, higher than, or incomparable with the
+     *  specified type in the type hierarchy, respectively.
+     *  @param type a StructuredType.
+     *  @return An integer.
+     *  @exception IllegalArgumentException If the specified type is
+     *   not the same structured type as this one.
      */
-    protected Type _greatestLowerBound(Type type) {
+    protected int _compare(StructuredType type) {
+        if (!(type instanceof ObjectType)) {
+            throw new IllegalArgumentException("ObjectType._compare: "
+                    + "The argument is not an ObjectType.");
+        }
+        if (this.equals(type)) {
+            return CPO.SAME;
+        }
+        if (_isLessThanOrEqualTo(this, (ObjectType)type)) {
+            return CPO.LOWER;
+        }
+        if (_isLessThanOrEqualTo((ObjectType)type, this)) {
+            return CPO.HIGHER;
+        }
+        return CPO.INCOMPARABLE;
+    }
+
+    /** Return a static instance of this object type. The return
+     *  value is used by TypeLattice to represent this type.
+     *  @return The bottom object type.
+     */
+    protected StructuredType _getRepresentative() {
+        return BOTTOM;
+    }
+
+    /** Return the greatest lower bound of this type with the specified
+     *  type. The specified type must be of the same structured type,
+     *  otherwise an exception will be thrown.
+     *  @param type a StructuredType.
+     *  @return a StructuredType.
+     *  @exception IllegalArgumentException If the specified type is
+     *   not the same structured type as this one.
+     */
+    protected StructuredType _greatestLowerBound(StructuredType type) {
         if (!(type instanceof ObjectType)) {
             throw new IllegalArgumentException(
                     "ObjectType._greatestLowerBound: The argument is not an "
@@ -390,13 +349,15 @@ public class ObjectType implements Cloneable, Type {
         }
     }
 
-    /** Compute the type representing the least upper bound of this type and
-     *  the given type.
-     *
-     *  @param type The given type.
-     *  @return The least upper bound.
+    /** Return the least upper bound of this type with the specified
+     *  type. The specified type must be of the same structured type,
+     *  otherwise an exception will be thrown.
+     *  @param type a StructuredType.
+     *  @return a StructuredType.
+     *  @exception IllegalArgumentException If the specified type is
+     *   not the same structured type as this one.
      */
-    protected Type _leastUpperBound(Type type) {
+    protected StructuredType _leastUpperBound(StructuredType type) {
         if (!(type instanceof ObjectType)) {
             throw new IllegalArgumentException(
                     "ObjectType._leastUpperBound: The argument is not an "
@@ -424,9 +385,11 @@ public class ObjectType implements Cloneable, Type {
         }
     }
 
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
+
     /** Test whether the first type is less than or equal to the second in the
      *  type lattice.
-     *
      *  @param t1 The first class.
      *  @param t2 The second class.
      *  @return true if the first class is less than or equal to the second;
@@ -447,6 +410,9 @@ public class ObjectType implements Cloneable, Type {
             return class2.isAssignableFrom(class1);
         }
     }
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                         private fields                    ////
 
     /** The Java class specified in this type.
      */
@@ -455,5 +421,4 @@ public class ObjectType implements Cloneable, Type {
     /** The actual Object, or null if the actual object is unknown.
      */
     private Object _value;
-
 }

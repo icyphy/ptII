@@ -276,18 +276,17 @@ public class ObjectToken extends Token {
         }
     }
 
-    /** Return the value of this token as a string that can be parsed
-     *  by the expression language to recover a token with the same value.
+    /** Return the value of this token as a string.
      *  The returned syntax looks like a function call to a one argument method
      *  named "object".  The argument is the string representation of the
      *  contained object, or the string "null" if the object is null.  Notice
-     *  that this syntax is not currently parseable by the expression language.
+     *  that this syntax is not currently parsable by the expression language.
      *  @return A String representing the object.
      */
     public String toString() {
         String value = _value == null ? "null" : _value.toString();
-        String clazz = _class == null ? "" : ": " + _class.getName();
-        return "object(" + value + clazz + ")";
+        // String clazz = _class == null ? "" : ": " + _class.getName();
+        return "object(" + value + ")";
     }
 
     /** A new empty ObjectToken. */
