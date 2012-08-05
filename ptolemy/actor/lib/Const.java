@@ -69,6 +69,7 @@ public class Const extends LimitedFiringSource {
         super(container, name);
         value = new Parameter(this, "value");
         value.setExpression("1");
+        value.moveToFirst();
 
         // Set the type constraint.
         output.setTypeAtLeast(value);
