@@ -66,6 +66,13 @@ import ptolemy.kernel.util.Workspace;
 public abstract class MonitoredQuantityManager extends TypedAtomicActor
         implements QuantityManager {
 
+    /** Construct an actor in the specified workspace with an empty
+     *  string as a name. You can then change the name with setName().
+     *  If the workspace argument is null, then use the default workspace.
+     *  The object is added to the workspace directory.
+     *  Increment the version number of the workspace.
+     *  @param workspace The workspace that will list the entity.
+     */
     public MonitoredQuantityManager(Workspace workspace) {
         super(workspace);
     }
