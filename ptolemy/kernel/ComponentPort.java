@@ -836,7 +836,7 @@ public class ComponentPort extends Port {
         */
     }
 
-    /** Deeply list the ports connected to this port on the outside.
+    /** Deeply list the opaque ports connected to this port on the outside.
      *  Begin by listing the ports that are connected to this port.
      *  If any of those are transparent ports that we are connected to
      *  from the inside, then list all the ports deeply connected
