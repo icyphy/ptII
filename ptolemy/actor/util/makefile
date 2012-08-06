@@ -67,16 +67,19 @@ JSRCS = \
 	CausalityInterface.java \
 	CausalityInterfaceForComposites.java \
 	ConstVariableModelAnalysis.java \
+	ConstructAssociativeType.java \
 	CQComparator.java \
 	Dependency.java \
 	DefaultCausalityInterface.java \
 	DFUtilities.java \
 	DependencyDeclaration.java \
 	ExplicitChangeContext.java \
+	ExtractFieldType.java \
 	FIFOQueue.java \
 	FreeVariableModelAnalysis.java \
 	FuzzyDoubleComparator.java \
 	GeneralComparator.java \
+	GLBFunction.java \
 	PeriodicDirector.java \
 	PeriodicDirectorHelper.java \
 	RealDependency.java \

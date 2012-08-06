@@ -378,6 +378,7 @@ OPTIONAL_FILES = \
 	reactable \
 	'AbsoluteValue$$1.class' \
 	'AbsoluteValue$$FunctionTerm.class' \
+	'AbsoluteValue$$TypeOfAbsoluteValue.class' \
 	'Commutator$$WidthDependentParameter.class' \
 	'Distributor$$WidthDependentParameter.class' \
 	'Exec$$_StreamReaderThread.class' \

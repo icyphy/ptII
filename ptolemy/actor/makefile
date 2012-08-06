@@ -150,6 +150,7 @@ OPTIONAL_FILES = \
 	'Manager$$PtolemyRunThread.class' \
 	'Manager$$State.class' \
 	'Manager$$UnpauserThread.class' \
+	'PublisherPort$$1.class' \
 	'TypedIOPort$$1.class' \
 	'TypedIOPort$$TypeTerm.class'
 

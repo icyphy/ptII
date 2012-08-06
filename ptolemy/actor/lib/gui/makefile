@@ -116,6 +116,13 @@ OPTIONAL_FILES = \
 	'Display$$DisplayWindow.class' \
 	'Display$$DisplayWindowTableau.class' \
 	'DisplayJavaSE$$1.class' \
+	'DisplayJavaSE$$2.class' \
+	'DisplayJavaSE$$3.class' \
+	'DisplayJavaSE$$4.class' \
+	'DisplayJavaSE$$5.class' \
+	'DisplayJavaSE$$6.class' \
+	'DisplayJavaSE$$7.class' \
+	'DisplayJavaSE$$8.class' \
 	'DisplayJavaSE$$DisplayWindowTableau.class' \
 	'HistogramPlotter$$1.class' \
 	'InteractiveShell$$1.class' \

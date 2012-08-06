@@ -97,6 +97,8 @@ OPTIONAL_FILES = \
 	'IterateOverArray$$1.class' \
 	'IterateOverArray$$2.class' \
 	'IterateOverArray$$3.class' \
+	'IterateOverArray$$GLBArrayElementFunction.class' \
+	'IterateOverArray$$GLBArrayFunction.class' \
 	'IterateOverArray$$IterateComposite.class' \
 	'IterateOverArray$$IterateComposite$$1.class' \
 	'IterateOverArray$$IterateDirector.class' \

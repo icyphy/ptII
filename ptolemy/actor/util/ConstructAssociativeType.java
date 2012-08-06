@@ -47,7 +47,10 @@ import ptolemy.kernel.util.IllegalActionException;
  *  passed to the constructor. 
  *  
  * @author Edward A. Lee, Marten Lohstroh
- *
+ * @version $Id: CompositeType.java $
+ * @since Ptolemy II 9.0
+ * @Pt.ProposedRating Red (marten)
+ * @Pt.AcceptedRating Red
  */
 public class ConstructAssociativeType extends MonotonicFunction {
 

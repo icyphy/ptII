@@ -113,11 +113,14 @@ OPTIONAL_FILES = \
 	'BasicGraphController$$UnitSolverDialogAction.class' \
 	'BasicGraphFrame$$1.class' \
 	'BasicGraphFrame$$2.class' \
+	'BasicGraphFrame$$3.class' \
 	'BasicGraphFrame$$ExportHTMLAction.class' \
 	'BasicGraphFrame$$ExportImageAction.class' \
 	'BasicGraphFrame$$FindAction.class' \
 	'BasicGraphFrame$$FindInLibraryAction.class' \
 	'BasicGraphFrame$$FolderFileFilter.class' \
+	'BasicGraphFrame$$HierarchyTreeCellRenderer.class' \
+	'BasicGraphFrame$$HierarchyTreeSelectionListener.class' \
 	'BasicGraphFrame$$IconVisibleLocation.class' \
 	'BasicGraphFrame$$DeletionListener.class' \
 	'BasicGraphFrame$$CopyAction.class' \
@@ -160,6 +163,7 @@ OPTIONAL_FILES = \
 	'IconController$$IconRenderer.class' \
 	'LocatableNodeDragInteractor$$1.class' \
 	'LocatableNodeDragInteractor$$2.class' \
+	'OffsetMoMLChangeRequest$$1.class' \
 	'MoMLModelAttributeController$$LookInsideAction$$1.class' \
 	'MoMLModelAttributeController$$LookInsideAction.class' \
 	'PtolemyLayoutAction$$PtolemyLayout.class' \

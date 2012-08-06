@@ -75,13 +75,11 @@ OPTIONAL_FILES = \
 	'MonitorReceiverContents$$1$$1.class' \
 	'MonitorReceiverContents$$1$$2.class' \
 	'MonitorReceiverContents$$1.class' \
+	'ShowTypes$$1.class' \
 	'VisualModelReference$$1.class' \
 	'VisualModelReference$$2.class' \
 	'VisualModelReference$$3.class' \
 	'VisualModelReference$$LookInside.class' \
-	'MonitorReceiverContents$$1$$1.class' \
-	'MonitorReceiverContents$$1$$2.class' \
-	'MonitorReceiverContents$$1.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 

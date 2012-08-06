@@ -87,7 +87,8 @@ OPTIONAL_FILES = \
 	'AutoTests$$1.class' \
 	'ModelTests$$1.class' \
 	'ModelTests$$2.class' \
-	'TclTests$$1.class'
+	'TclTests$$1.class' \
+	'TclTests$$2.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 

@@ -28,6 +28,9 @@ COPYRIGHTENDKEY
 
 package ptolemy.data.type;
 
+///////////////////////////////////////////////////////////////////
+////AssociativeType
+
 /**
 This class represents structures that store (key, value) pairs. It prescribes
 a get() method that retrieves the type of the value associated with a given 
@@ -39,10 +42,6 @@ key.
 @Pt.ProposedRating Red (marten)
 @Pt.AcceptedRating Red
 */
-
-///////////////////////////////////////////////////////////////////
-////AssociativeType
-
 public abstract class AssociativeType extends StructuredType {
 
     ///////////////////////////////////////////////////////////////////
@@ -53,5 +52,5 @@ public abstract class AssociativeType extends StructuredType {
      *  @return a Type.
      */
     public abstract Type get(String label);
-    
 }
+

@@ -46,6 +46,7 @@ PTPACKAGE = 	vergil
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 EXAMPLE_MODELS = \
+	AddingStringsException.xml \
 	Channel.xml \
 	ChannelBadDesign.xml \
 	ChannelGoodDesign.xml \

@@ -33,7 +33,7 @@ ME =		doc/books/systems
 
 # Sub directories to run make in.
 DIRS =		continuous dataflow discreteevents expressions fsm intro \
-		modal plotter pn synchronous vergil
+		modal plotter pn synchronous types vergil
 
 # Root of Ptolemy II directory
 ROOT =		../../..
