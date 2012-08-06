@@ -79,6 +79,10 @@ import ptolemy.kernel.util.NameDuplicationException;
  </p><p> During runtime, this actor consumes and ignores any input tokens.
  This makes it very easy to add this actor to an existing model without
  changing the behavior of the model.</p>
+ 
+ </p><p><b>Note:</b> For some reason, the way this actor reaches into
+ other actors is not thread safe. This actor does not work with PN
+ or Rendezvous, therefore.
 
  @author Steve Neuendorffer
  @version $Id$
@@ -233,6 +237,13 @@ public class TypeTest extends Discard {
             RecordToken correctPortTypes = (RecordToken) portTypes.getToken();
             RecordToken correctParameterTypes = (RecordToken) parameterTypes
                     .getToken();
+            
+            if (((correctPortTypes == null) || (correctPortTypes.labelSet().size() == 0))
+                    && ((correctParameterTypes == null) || (correctParameterTypes.labelSet().size() == 0))) {
+                throw new IllegalActionException(
+                        this,
+                        "TypeTest actor has no training data.");
+            }
 
             if (correctPortTypes != null) {
                 for (Iterator actorNames = correctPortTypes.labelSet()
