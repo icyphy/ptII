@@ -154,8 +154,8 @@ public abstract class ResourceScheduler extends TypedAtomicActor {
     /** Plot a new execution event for an actor (i.e. an actor
      *  started/finished execution, was preempted or resumed). 
      * @param actor The actor. 
-     * @param physicalTime 
-     * @param scheduleEvent
+     * @param physicalTime The physical time when this scheduling event occurred.
+     * @param scheduleEvent The scheduling event.
      */
     public void event(final Actor actor, double physicalTime,
             ExecutionEventType scheduleEvent) {
@@ -241,6 +241,9 @@ public abstract class ResourceScheduler extends TypedAtomicActor {
     ///////////////////////////////////////////////////////////////////
     //                        protected variables                      //
 
+    /** The remaining execution time for every actor that has been scheduled
+     *  or null if the actor execution finished. 
+     */
     protected HashMap<Actor, Time> _remainingTimes;
 
     /** True if in the last request to schedule an actor, this actor
@@ -248,8 +251,13 @@ public abstract class ResourceScheduler extends TypedAtomicActor {
      */
     protected boolean _lastActorFinished;
 
+    /** The last time an actor's remaining time was updated due to a scheduling
+     *  request.
+     */
     protected HashMap<Actor, Time> _lastTimeScheduled;
 
+    /** The execution times of actors.
+     */
     protected HashMap<Actor, Double> _executionTimes;
 
     ///////////////////////////////////////////////////////////////////
