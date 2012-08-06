@@ -16,8 +16,8 @@
 
   <property name="debuglevel" value="source,lines,vars" />
 
-  <!-- Location of findbugs, which does static analysis on the code.  findbugs-1.3.9 does not terminate, so use 1.3.8 -->
-  <property name="findbugs.home" value="${basedir}/vendors/findbugs-1.3.8" />
+  <!-- Location of findbugs, which does static analysis on the code.  findbugs-1.3.9 does not terminate, so use 1.3.8, which takes 5 minutes.  findbugs-2.0.1-rc4 takes 30 mintues. -->
+  <property name="findbugs.home" value="${basedir}/vendors/findbugs-2.0.1" />
 
   <!-- Packages to exclude from targets that call javadoc.
        Unfortunately, <fileset> results in a command line that is too long.
@@ -396,7 +396,7 @@ For example:
 
   <target name="reports"
 	  description="Generate non-test reports about the Ptolemy II code base."
-	  depends="checkstyle, doccheck" />
+	  depends="checkstyle, doccheck, findbugs, ojdcheck" />
 
   <target name="run" depends="vergil"
 	  description="Invoke the Ptolemy II User Interface (alias for the vergil target)"/>
