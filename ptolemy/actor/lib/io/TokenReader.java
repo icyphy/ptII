@@ -88,7 +88,7 @@ public class TokenReader extends FileReader {
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
 
-    /** The strategy to use if:
+    /** The error handled strategy.  The strategy to use if:
      *  <ul>
      *  <li> the file or URL cannot be read,</li>
      *  <li> the data read from the file or the URL cannot be parsed,</li>

@@ -139,13 +139,10 @@ public class XMLDBModel implements Comparable {
                 .getModelName());
     }
 
-    /** Return true if this XMLToken object has the same
-     *  timestamp and index as that of the given XMLToken
-     *  object.
-     *  @param superdenseTime The SuperDenseTime object that this
-     *  XMLToken object is compared to.
-     *  @return True if the two SuperDenseTime objects have the same
-     *  timestamp and index.
+    /** Return true if this XMLDBModel has the same
+     *  name as the argument.
+     *  @param xmldbModel The XMLDBModel object to be compared.
+     *  @return True if the two XMLDBModels have the same name.
      */
     public boolean equals(Object xmldbModel) {
         // See http://www.technofundo.com/tech/java/equalhash.html

@@ -1388,6 +1388,8 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
 //     }
 
     /** Report a message to either the status bar or message handler.
+     *  @param owner The frame that, per the user, is generating the
+     *  dialog.
      *  @param message The message.   
      */   
     public static void report(Frame owner, String message) {

@@ -58,6 +58,7 @@ public class MCApplication {
     /** Build the model.
      *  <p>Read the model "NCApplication.xml" from the current directory.
      *  @param args Ignored
+     *  @exception Exception If there is a problem reading the model.
      */
     public static void main(String[] args) throws Exception {
         CompositeEntity _toplevel;

@@ -92,8 +92,9 @@ public interface ImageDisplayInterface {
      */
     public Object getTableau();
 
-    /** initiate function.
-     * @param object of the ImageDisplay actor.
+    /** Initialize an object.  Derived classes should include
+     * class-specific initialization here.
+     * @param imageDisplay The object to be initialized
      * @exception IllegalActionException If the entity cannot be contained
      * by the proposed container.
      * @exception NameDuplicationException If the container already has an
@@ -117,7 +118,7 @@ public interface ImageDisplayInterface {
             NameDuplicationException;
 
 
-    /** place container
+    /** Set the container to be placed.
      *  @param container The Container to be placed.
      */
     public void placeContainer(Container container);
@@ -138,8 +139,8 @@ public interface ImageDisplayInterface {
     /**
      * Set the platform dependent picture of the image.
      * The container can be AWT container or Android view.
-     * @param container the platform dependent container.
-     * @see #getPlatformContainer()
+     * @param picture The picture
+     * @see #getPicture();
      */
     public void setPicture(Object picture);
 

@@ -1162,11 +1162,13 @@ public abstract class Top extends JFrame {
         }
     }
 
-    /** Add the name of the last file open or set the name
-     * to the first position if already in the list
+    /** Add the name of the last file open or set the name to the
+     * first position if already in the list.
      * @param file name of the file to add
-     * @param delete If true, remove from the history list, otherwise the file
-     * is added to the beginning.
+     * @param delete If true, remove from the history list, otherwise
+     * the file is added to the beginning.
+     * @exception IOException If the history file cannot be created, written to,
+     * or saved.
      */
     protected void _updateHistory(String file, boolean delete) throws IOException {
         List<String> historyList = _readHistory();

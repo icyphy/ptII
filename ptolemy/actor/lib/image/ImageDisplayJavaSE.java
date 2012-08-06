@@ -141,8 +141,8 @@ public class ImageDisplayJavaSE extends AbstractPlaceableJavaSE implements
             return _tableau;
     }
 
-    /** initiate function.
-     * @param object of the ImageDisplay actor.
+    /** Initialize an object. 
+     * @param imageDisplay The object to be initialized.
      * @exception IllegalActionException If the entity cannot be contained
      * by the proposed container.
      * @exception NameDuplicationException If the container already has an
@@ -277,8 +277,8 @@ public class ImageDisplayJavaSE extends AbstractPlaceableJavaSE implements
     /**
      * Set the platform dependent picture of the image.
      * The container can be AWT container or Android view.
-     * @param container the platform dependent container.
-     * @see #getPlatformContainer()
+     * @param picture The picture
+     * @see #getPicture()
      */
     public void setPicture(Object picture) {
         _picture = (Picture) picture;

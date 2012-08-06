@@ -157,8 +157,8 @@ public class FMUImport extends TypedAtomicActor {
      * time 0.  This is done so that FMUs can share initialization
      * data if necessary.  For details, see the Section 3.4, Pseudo
      * Code Example in the FMI-1.0 Co-simulation Specification at
-     * <a href="http://www.modelisar.com/specifications/FMI_for_CoSimulation_v1.0.pdf">http://www.modelisar.com/specifications/FMI_for_CoSimulation_v1.0.pdf<a>..  For
-     * an explanation, see figure 4 of
+     * <a href="http://www.modelisar.com/specifications/FMI_for_CoSimulation_v1.0.pdf">http://www.modelisar.com/specifications/FMI_for_CoSimulation_v1.0.pdf</a>.
+     * For an explanation, see figure 4 of
      * <br>
      * Michael Wetter,
      * "<a href="http://dx.doi.org/10.1080/19401493.2010.518631">Co-simulation of building energy and control systems with the Building Controls Virtual Test Bed</a>,"

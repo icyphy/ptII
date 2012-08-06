@@ -1062,6 +1062,7 @@ public class ArrayToken extends AbstractNotConvertibleToken {
      *  value.
      *  @param index The index of the element to be updated.
      *  @param value The value of the element to be updated.
+     *  @return A new array.
      *  @throws IllegalActionException Should not be thrown in this base class.
      */
     public ArrayToken update(int index, Token value) throws IllegalActionException {

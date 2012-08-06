@@ -51,9 +51,9 @@ import ptolemy.util.MessageHandler;
  *  name: doc.tutorial.graph.ConnectivityReporter. Alternatively,
  *  you can paste the following MoML code into the model:
  *  <pre>
-   <property name="HelloWorld" class="doc.tutorial.graph.ConnectivityReporter">
-     <property name="_location" class="ptolemy.kernel.util.Location" value="[100, 100]"/>
-   </property>
+ *  &lt;property name="HelloWorld" class="doc.tutorial.graph.ConnectivityReporter"&gt;
+ *   &lt;property name="_location" class="ptolemy.kernel.util.Location" value="[100, 100]"/&gt;
+ *  &lt;/property&gt;
  *  </pre>
  *  In the above, the _location property is necessary to ensure
  *  that Vergil shows an icon for the ConnectivityReporter attribute.
@@ -69,6 +69,10 @@ public class ConnectivityReporter extends Attribute {
      *  the attribute in a model using MoML.
      *  @param container The containing model.
      *  @param name The name to give this attribute.
+     *  @exception IllegalActionException If the factory is not of an
+     *   acceptable attribute for the container.
+     *  @exception NameDuplicationException If the name coincides with
+     *   an attribute already in the container.
      */
     public ConnectivityReporter(NamedObj container, String name)
             throws IllegalActionException, NameDuplicationException {
@@ -85,7 +89,16 @@ public class ConnectivityReporter extends Attribute {
      *  method of this inner class to be invoked.
      */
     public class DoubleClickHandler extends EditorFactory {
-
+        /**
+         * Construct a DoubleClickHandler attribute.
+         *
+         * @param container The container 
+         * @param name The name of the handler
+         * @exception IllegalActionException If the factory is not of an
+         *  acceptable attribute for the container.
+         * @exception NameDuplicationException If the name coincides with
+         *  an attribute already in the container.
+         */
         public DoubleClickHandler(NamedObj container, String name)
                 throws IllegalActionException, NameDuplicationException {
             super(container, name);

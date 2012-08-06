@@ -22,7 +22,7 @@ This page describes how we release software.
 <li>Look for auto directories that don't have corresponding junit/ directories.
 <pre>
 cd $PTII
-ls -d `find . -name auto | awk -F / '{for(i=1;i<(NF);i++) { printf("%s/", $i);}printf("junit\n")}'`
+ls -d `find . -name auto | awk -F / '{for(i=1;i<(NF);i++) { printf("%s/", $i);}printf("junit\n")}'`o
 </pre>
 
 <li>Check that each demo has a test:

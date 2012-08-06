@@ -57,13 +57,13 @@ import ptolemy.util.MessageHandler;
  *  runs Dijkstra's algorithm and reports the minimum distance.
  *  <p>
  *  To place this attribute in model, in Vergil, select
- *  Graph->Instantiate Attribute and specify for the class
+ *  Graph-&gt;Instantiate Attribute and specify for the class
  *  name: doc.tutorial.graph.ShortestPathFinder. Alternatively,
  *  you can paste the following MoML code into the model:
  *  <pre>
-   <property name="ShortestPathFinder" class="doc.tutorial.graph.ShortestPathFinder">
-     <property name="_location" class="ptolemy.kernel.util.Location" value="[100, 100]"/>
-   </property>
+ *  &lt;property name="ShortestPathFinder" class="doc.tutorial.graph.ShortestPathFinder"&gt;
+ *    &lt;property name="_location" class="ptolemy.kernel.util.Location" value="[100, 100]"/&gt;
+ *  &lt;/property&gt;
  *  </pre>
  *  In the above, the _location property is necessary to ensure
  *  that Vergil shows an icon for the HelloWorld attribute.
@@ -80,6 +80,10 @@ public class ShortestPathFinder extends Attribute {
      *  the attribute in a model using MoML.
      *  @param container The containing model.
      *  @param name The name to give this attribute.
+     *  @exception IllegalActionException If the factory is not of an
+     *   acceptable attribute for the container.
+     *  @exception NameDuplicationException If the name coincides with
+     *   an attribute already in the container.
      */
     public ShortestPathFinder(NamedObj container, String name)
             throws IllegalActionException, NameDuplicationException {
@@ -178,6 +182,14 @@ public class ShortestPathFinder extends Attribute {
      */
     public class Calculate extends EditorFactory {
 
+        /* Construct a Calculate attribute.
+         * @param container The container 
+         * @param name The name of the handler
+         * @exception IllegalActionException If the factory is not of an
+         *  acceptable attribute for the container.
+         * @exception NameDuplicationException If the name coincides with
+         *  an attribute already in the container.
+         */
         public Calculate(NamedObj container, String name)
                 throws IllegalActionException, NameDuplicationException {
             super(container, name);

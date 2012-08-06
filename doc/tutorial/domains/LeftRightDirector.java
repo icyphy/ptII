@@ -151,6 +151,18 @@ public class LeftRightDirector extends StaticSchedulingDirector {
          *  arguments, which are assumed to actors.
          */
         public static class LeftRightComparator implements Comparator {
+            /** Compare  the horizontal positions of the two
+             *  arguments, which are assumed to actors.
+             *  @param o1 The first Object, which is assumed to be an
+             *  instance of Locatable
+             *  @param o2 The first Object, which is assumed to be an
+             *  instance of Locatable
+             *  @return -1 if the x value of the location of the o1 object
+             *  is less than x value of the location of the o2 object,
+             *  0 if the x values are the same, 1 if the x value of the
+             *  location of th o1 object is greater than the x value
+             *  of the o2 object.
+             */
             public int compare(Object o1, Object o2) {
                 // In case there is no location for an actor,
                 // provide a default.

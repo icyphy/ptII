@@ -159,9 +159,11 @@ public class MicaLeds extends TypedAtomicActor {
 
 
     /** Clone the actor into the specified workspace.
+     *  @param workspace The workspace that is to contain the cloned
+     *  actor.
      *  @return A new actor.
-     *  @exception CloneNotSupportedException If a derived class contains
-     *   an attribute that cannot be cloned.
+     *  @exception CloneNotSupportedException If a derived class
+     *   contains an attribute that cannot be cloned.
      */
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         MicaLeds newObject = (MicaLeds) super.clone(workspace);

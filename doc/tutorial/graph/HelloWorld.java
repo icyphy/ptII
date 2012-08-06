@@ -49,9 +49,9 @@ import ptolemy.util.MessageHandler;
  *  name: doc.tutorial.graph.HelloWorld. Alternatively,
  *  you can paste the following MoML code into the model:
  *  <pre>
-   <property name="HelloWorld" class="doc.tutorial.graph.HelloWorld">
-     <property name="_location" class="ptolemy.kernel.util.Location" value="[100, 100]"/>
-   </property>
+ *  &lt;property name="HelloWorld" class="doc.tutorial.graph.HelloWorld"&gt;
+ *    &lt;property name="_location" class="ptolemy.kernel.util.Location" value="[100, 100]"/&gt;
+ *  &lt;/property&gt;
  *  </pre>
  *  In the above, the _location property is necessary to ensure
  *  that Vergil shows an icon for the HelloWorld attribute.
