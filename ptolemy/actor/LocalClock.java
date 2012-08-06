@@ -262,7 +262,10 @@ public class LocalClock extends AbstractSettableAttribute {
      *  @return The local time as a string value.
      */
     public String getExpression() {
-        return String.valueOf(_localTime);
+        if (_localTime == null)
+            return "";
+        else 
+            return String.valueOf(_localTime);
     }
     
     /** Get current local time. If it has never been set, then this will return
