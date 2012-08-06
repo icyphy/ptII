@@ -112,19 +112,33 @@ if {"$isRunningNightlyBuild" == "true"} {
 # Actors like Const now use Dependency Injection to that we can support Android.
 java::call ptolemy.actor.injection.ActorModuleInitializer initializeInjector
 
+proc scriptName {} {
+    global argv0 PTII
+    #set filename [file join [pwd] [info script]]
+    #set file [java::new java.io.File $filename]
+    #set canonicalPath [$file getCanonicalPath]
+    set relativeFilename \
+	[java::call ptolemy.util.StringUtilities substituteFilePrefix \
+	     $PTII [file join [pwd] [info script]] {$PTII}]
+    if [ regexp {testsuite/auto.tcl$} $relativeFilename] {
+	return
+    }
+    return "$relativeFilename:"
+}
+
 proc print_verbose {test_name test_description contents_of_test code answer {testtype "NORMAL"}} {
     global FAILED KNOWN_FAILED VERBOSE errorInfo
-    global isRunningNightlyBuild showKnownFailures
+    global isRunningNightlyBuild showKnownFailures argv0
     puts "\n"
     if {$VERBOSE \
 	    ||"$showKnownFailures" == "true" \
 	    || ("$showKnownFailures" != "true" \
 		    && "$testtype" == "NORMAL")} {
-	puts "==== $test_name $test_description"
+	puts "==== [scriptName] $test_name $test_description"
 	puts "==== Contents of test case:"
 	puts "$contents_of_test"
     } else {
-	puts "==== $test_name $test_description"
+	puts "==== [scriptName] $test_name $test_description"
     }
     if {$code != 0} {
 	if {$testtype == "NORMAL"} {
