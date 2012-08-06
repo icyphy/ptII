@@ -65,8 +65,7 @@ JSRCS = \
 	PtidesReceiver.java \
 	PtidesTopLevelDirector.java \
 	ResourceScheduler.java \
-	SchedulePlotterEditorFactory.java \
-	SchedulerListener.java \
+	SchedulePlotterEditorFactory.java \ 
 	Tag.java
 
 OTHER_FILES_TO_BE_JARED = \
