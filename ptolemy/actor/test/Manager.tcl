@@ -169,13 +169,15 @@ test Manager-8.4 {Test type resolution} {
 
     catch {$manager resolveTypes} msg
     list $msg
-# NOTE: bidirectional type inference solves this problem, so no error
-# is thrown any more, without bidirectional type inference the output
+# NOTE: bidirectional type inference solves this problem, so if were enabled, no error
+# would be thrown any more, without bidirectional type inference the output
 # would have been:
 # {ptolemy.actor.TypeConflictException: Types resolved to unacceptable types in .E0 due to the following inequalities:
 #  (ptolemy.actor.TypedIOPort {.E0.E1.P1}, unknown) <= (ptolemy.actor.TypedIOPort {.E0.E2.P2}, double)
 # }
-} {{}}
+} {{ptolemy.actor.TypeConflictException: Types resolved to unacceptable types in .E0 due to the following inequalities:
+  (ptolemy.actor.TypedIOPort {.E0.E1.P1}, unknown) <= (ptolemy.actor.TypedIOPort {.E0.E2.P2}, double)
+}}
 
 ######################################################################
 ####
@@ -272,9 +274,9 @@ test Manager-8.7 {Test type resolution} {
     set rt4 [[$p4 getType] toString]
 
     list $rt1 $rt21 $rt22 $rt23 $rt3 $rt4
-# NOTE: fourth element would be int if bidirectional type inference were 
-# disabled
-} {int int int double int double}
+# NOTE: fourth element would be double if bidirectional type inference were 
+# enabled
+} {int int int int int double}
 
 ######################################################################
 ####
@@ -288,7 +290,7 @@ test Manager-8.8 {Test type resolution} {
     catch {$manager resolveTypes} msg
     list $msg
 } {{ptolemy.actor.TypeConflictException: Type conflicts occurred in .E0 on the following inequalities:
-  (ptolemy.actor.TypedIOPort {.E0.E2.P23}, double) <= (ptolemy.actor.TypedIOPort {.E0.E4.P4}, int)
+  (port .E0.E2.P23: double) <= (port .E0.E4.P4: int)
 }}
 
 ######################################################################

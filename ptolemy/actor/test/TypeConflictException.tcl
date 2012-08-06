@@ -71,12 +71,13 @@ test TypeConflictException-1.0 {Constructor that takes a List} {
     set ex2 [java::new ptolemy.actor.TypeConflictException $conflicts \
 	    "Detail Message"]
     list [$ex1 getMessage] [$ex2 getMessage]
-} {{Type conflicts occurred at the following inequalities:
-  (ptolemy.actor.TypedIOPort {..E1.P1}, double) <= (ptolemy.actor.TypedIOPort {..E1.P2}, unknown)
-  (ptolemy.actor.TypedIOPort {..E1.P2}, unknown) <= (ptolemy.actor.TypedIOPort {..E1.P1}, double)
+} {{Type conflicts occurred on the following inequalities:
+
+  (port ..E1.P1: double) <= (port ..E1.P2: unknown)
+  (port ..E1.P2: unknown) <= (port ..E1.P1: double)
 } {Detail Message
-  (ptolemy.actor.TypedIOPort {..E1.P1}, double) <= (ptolemy.actor.TypedIOPort {..E1.P2}, unknown)
-  (ptolemy.actor.TypedIOPort {..E1.P2}, unknown) <= (ptolemy.actor.TypedIOPort {..E1.P1}, double)
+  (port ..E1.P1: double) <= (port ..E1.P2: unknown)
+  (port ..E1.P2: unknown) <= (port ..E1.P1: double)
 }}
 
 ######################################################################
@@ -128,11 +129,12 @@ test TypeConflictException-1.1 {Test with structured types} {
 
     set ex [java::new ptolemy.actor.TypeConflictException $conflicts]
     list [$ex getMessage]
-} {{Type conflicts occurred at the following inequalities:
-  (ptolemy.actor.TypedIOPort {..E1.port2}, arrayType(unknown)) <= (ptolemy.data.expr.Parameter {..E1.param2} value undefined, {name = string, value = unknown})
-  (ptolemy.actor.TypedIOPort {..E1.port2}, arrayType(unknown)) <= (ptolemy.data.expr.Parameter {..E1.param} value undefined, unknown)
-  (ptolemy.actor.TypedIOPort {..E1.port}, unknown) <= (ptolemy.actor.TypedIOPort {..E1.port2}, arrayType(unknown))
-  (ptolemy.actor.TypedIOPort {..E1.port}, unknown) <= (ptolemy.data.expr.Parameter {..E1.param2} value undefined, {name = string, value = unknown})
-  (ptolemy.actor.TypedIOPort {..E1.port}, unknown) <= (ptolemy.data.expr.Parameter {..E1.param} value undefined, unknown)
-  (ptolemy.data.expr.Parameter {..E1.param2} value undefined, {name = string, value = unknown}) <= (ptolemy.data.expr.Parameter {..E1.param} value undefined, unknown)
+} {{Type conflicts occurred on the following inequalities:
+
+  (port ..E1.port2: arrayType(unknown)) <= (variable ..E1.param2: {name = string, value = unknown})
+  (port ..E1.port2: arrayType(unknown)) <= (variable ..E1.param: unknown)
+  (port ..E1.port: unknown) <= (port ..E1.port2: arrayType(unknown))
+  (port ..E1.port: unknown) <= (variable ..E1.param2: {name = string, value = unknown})
+  (port ..E1.port: unknown) <= (variable ..E1.param: unknown)
+  (variable ..E1.param2: {name = string, value = unknown}) <= (variable ..E1.param: unknown)
 }}
