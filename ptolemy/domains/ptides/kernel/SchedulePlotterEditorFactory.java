@@ -59,8 +59,7 @@ public class SchedulePlotterEditorFactory extends EditorFactory {
      * @param container
      *                The container.
      * @param name
-     *                The name of the factory.
-     * @param plot 
+     *                The name of the factory. 
      * @exception IllegalActionException
      *                    If the factory is not of an acceptable attribute
      *                    for the container.
