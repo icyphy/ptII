@@ -1103,6 +1103,9 @@ public class PtidesMulticoreDirector extends PtidesBasicDirector {
     /** Do nothing. When plotting execution times for multicore, the core
      * id is needed, which this method does not provide.
      * TODO: PtidesBasicDirector could be modified to not call this method.
+     * @param actor Actor that produced an execution time event.
+     *  @param time Time when the event occurred.
+     *  @param event Type of the event. 
      */
     protected void _sendExecutionTimeEvent(Actor actor, double time,
             ExecutionEventType event) {
@@ -1357,7 +1360,7 @@ public class PtidesMulticoreDirector extends PtidesBasicDirector {
         }
         
         /** Group of PtidesEvent with same tag and destination
-         * input port group */
+         * input port group. */
         protected List<PtidesEvent> events;
         
         /** Execution physical tag when processing started. */
