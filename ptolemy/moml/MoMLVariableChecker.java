@@ -331,9 +331,13 @@ public class MoMLVariableChecker {
         if (exception instanceof UndefinedConstantOrIdentifierException) {
             idException = (UndefinedConstantOrIdentifierException) exception;
         } else {
-            if (exception.getCause() instanceof UndefinedConstantOrIdentifierException) {
-                idException = (UndefinedConstantOrIdentifierException) exception
-                        .getCause();
+            Throwable cause = exception.getCause();
+            while (cause instanceof IllegalActionException) {
+                if (cause instanceof UndefinedConstantOrIdentifierException) {
+                    idException = (UndefinedConstantOrIdentifierException) cause;
+                    break;
+                }
+                cause = ((IllegalActionException)cause).getCause();
             }
         }
 
