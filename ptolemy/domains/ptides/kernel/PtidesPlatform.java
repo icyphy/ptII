@@ -521,6 +521,12 @@ public class PtidesPlatform extends MirrorComposite {
             }
         }
         
+        /** Return a specialized ParameterPort.
+         * @param name The name of the port to create.
+         * @return The new ParameterPort.
+         * @throws NameDuplicationException Thrown if the container already has
+         *  a port with this name.
+         */
         public Port newParameterPort(String name) throws NameDuplicationException {
             try {
                 PortParameter parameter = new PortParameter(this, name);
