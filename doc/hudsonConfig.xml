@@ -4,6 +4,35 @@
   <description></description>
   <project-properties class="java.util.concurrent.ConcurrentHashMap">
     <entry>
+      <string>hudson-plugins-checkstyle-CheckStylePublisher</string>
+      <external-property>
+        <originalValue class="hudson.plugins.checkstyle.CheckStylePublisher">
+          <healthy></healthy>
+          <unHealthy></unHealthy>
+          <thresholdLimit>low</thresholdLimit>
+          <pluginName>[CHECKSTYLE] </pluginName>
+          <defaultEncoding></defaultEncoding>
+          <canRunOnFailed>false</canRunOnFailed>
+          <useDeltaValues>false</useDeltaValues>
+          <thresholds>
+            <unstableTotalAll></unstableTotalAll>
+            <unstableTotalHigh></unstableTotalHigh>
+            <unstableTotalNormal></unstableTotalNormal>
+            <unstableTotalLow></unstableTotalLow>
+            <failedTotalAll></failedTotalAll>
+            <failedTotalHigh></failedTotalHigh>
+            <failedTotalNormal></failedTotalNormal>
+            <failedTotalLow></failedTotalLow>
+          </thresholds>
+          <shouldDetectModules>false</shouldDetectModules>
+          <dontComputeNew>true</dontComputeNew>
+          <pattern>reports/checkstyle_errors.xml</pattern>
+        </originalValue>
+        <propertyOverridden>false</propertyOverridden>
+        <modified>true</modified>
+      </external-property>
+    </entry>
+    <entry>
       <string>blockBuildWhenDownstreamBuilding</string>
       <boolean-property>
         <originalValue class="boolean">false</originalValue>
@@ -75,6 +104,13 @@
       <trigger-property>
         <propertyOverridden>false</propertyOverridden>
       </trigger-property>
+    </entry>
+    <entry>
+      <string>hudson-plugins-disk_usage-DiskUsageProperty</string>
+      <base-property>
+        <originalValue class="hudson.plugins.disk_usage.DiskUsageProperty"/>
+        <propertyOverridden>false</propertyOverridden>
+      </base-property>
     </entry>
     <entry>
       <string>logRotator</string>
@@ -162,6 +198,31 @@ PTINYOS_MOMLROOT=${WORKSPACE}/vendors/ptinyos/moml</localVarText>
       </boolean-property>
     </entry>
     <entry>
+      <string>htmlpublisher-HtmlPublisher</string>
+      <external-property>
+        <originalValue class="htmlpublisher.HtmlPublisher">
+          <reportTargets>
+            <htmlpublisher.HtmlPublisherTarget>
+              <reportName>Doccheck</reportName>
+              <reportDir>reports/doccheck</reportDir>
+              <reportFiles>index.html</reportFiles>
+              <keepAll>false</keepAll>
+              <wrapperName>htmlpublisher-wrapper.html</wrapperName>
+            </htmlpublisher.HtmlPublisherTarget>
+            <htmlpublisher.HtmlPublisherTarget>
+              <reportName>Ojdcheck</reportName>
+              <reportDir>reports/ojdcheck</reportDir>
+              <reportFiles>index.html</reportFiles>
+              <keepAll>false</keepAll>
+              <wrapperName>htmlpublisher-wrapper.html</wrapperName>
+            </htmlpublisher.HtmlPublisherTarget>
+          </reportTargets>
+        </originalValue>
+        <propertyOverridden>false</propertyOverridden>
+        <modified>true</modified>
+      </external-property>
+    </entry>
+    <entry>
       <string>hudson-tasks-junit-JUnitResultArchiver</string>
       <external-property>
         <originalValue class="hudson.tasks.junit.JUnitResultArchiver">
@@ -178,6 +239,40 @@ PTINYOS_MOMLROOT=${WORKSPACE}/vendors/ptinyos/moml</localVarText>
       <external-property>
         <propertyOverridden>false</propertyOverridden>
         <modified>false</modified>
+      </external-property>
+    </entry>
+    <entry>
+      <string>hudson-plugins-analysis-collector-AnalysisPublisher</string>
+      <external-property>
+        <originalValue class="hudson.plugins.analysis.collector.AnalysisPublisher">
+          <healthy></healthy>
+          <unHealthy></unHealthy>
+          <thresholdLimit>low</thresholdLimit>
+          <pluginName>[ANALYSIS-COLLECTOR] </pluginName>
+          <defaultEncoding></defaultEncoding>
+          <canRunOnFailed>false</canRunOnFailed>
+          <useDeltaValues>false</useDeltaValues>
+          <thresholds>
+            <unstableTotalAll></unstableTotalAll>
+            <unstableTotalHigh></unstableTotalHigh>
+            <unstableTotalNormal></unstableTotalNormal>
+            <unstableTotalLow></unstableTotalLow>
+            <failedTotalAll></failedTotalAll>
+            <failedTotalHigh></failedTotalHigh>
+            <failedTotalNormal></failedTotalNormal>
+            <failedTotalLow></failedTotalLow>
+          </thresholds>
+          <shouldDetectModules>false</shouldDetectModules>
+          <dontComputeNew>true</dontComputeNew>
+          <isCheckStyleDeactivated>false</isCheckStyleDeactivated>
+          <isDryDeactivated>true</isDryDeactivated>
+          <isFindBugsDeactivated>false</isFindBugsDeactivated>
+          <isPmdDeactivated>true</isPmdDeactivated>
+          <isOpenTasksDeactivated>true</isOpenTasksDeactivated>
+          <isWarningsDeactivated>true</isWarningsDeactivated>
+        </originalValue>
+        <propertyOverridden>false</propertyOverridden>
+        <modified>true</modified>
       </external-property>
     </entry>
     <entry>
@@ -475,6 +570,36 @@ make -k USER=hudson PTIIHOME=/var/lib/hudson/jobs/ptII/workspace PTIIADM=/var/li
       </scm-property>
     </entry>
     <entry>
+      <string>hudson-plugins-findbugs-FindBugsPublisher</string>
+      <external-property>
+        <originalValue class="hudson.plugins.findbugs.FindBugsPublisher">
+          <healthy></healthy>
+          <unHealthy></unHealthy>
+          <thresholdLimit>low</thresholdLimit>
+          <pluginName>[FINDBUGS] </pluginName>
+          <defaultEncoding></defaultEncoding>
+          <canRunOnFailed>false</canRunOnFailed>
+          <useDeltaValues>false</useDeltaValues>
+          <thresholds>
+            <unstableTotalAll></unstableTotalAll>
+            <unstableTotalHigh></unstableTotalHigh>
+            <unstableTotalNormal></unstableTotalNormal>
+            <unstableTotalLow></unstableTotalLow>
+            <failedTotalAll></failedTotalAll>
+            <failedTotalHigh></failedTotalHigh>
+            <failedTotalNormal></failedTotalNormal>
+            <failedTotalLow></failedTotalLow>
+          </thresholds>
+          <shouldDetectModules>false</shouldDetectModules>
+          <dontComputeNew>true</dontComputeNew>
+          <pattern>reports/ptII-findbugs.xml</pattern>
+          <isRankActivated>false</isRankActivated>
+        </originalValue>
+        <propertyOverridden>false</propertyOverridden>
+        <modified>true</modified>
+      </external-property>
+    </entry>
+    <entry>
       <string>hudson-triggers-TimerTrigger</string>
       <trigger-property>
         <originalValue class="hudson.triggers.TimerTrigger">
@@ -498,6 +623,7 @@ make -k USER=hudson PTIIHOME=/var/lib/hudson/jobs/ptII/workspace PTIIADM=/var/li
   <cascadingChildrenNames class="java.util.concurrent.CopyOnWriteArraySet"/>
   <cascading-job-properties class="java.util.concurrent.CopyOnWriteArraySet">
     <string>org-hudsonci-plugins-snapshotmonitor-WatchedDependenciesProperty</string>
+    <string>hudson-plugins-disk_usage-DiskUsageProperty</string>
   </cascading-job-properties>
   <scm class="hudson.scm.NullSCM"/>
   <canRoam>false</canRoam>
