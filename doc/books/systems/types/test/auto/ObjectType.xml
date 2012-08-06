@@ -47,6 +47,8 @@
         </port>
     </entity>
     <entity name="MonitorValue" class="ptolemy.actor.lib.gui.MonitorValue">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="object(ptolemy.actor.lib.Const {.ObjectType.Const})">
+        </property>
         <doc>Monitor and display values</doc>
         <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="55">
         </property>
@@ -66,6 +68,10 @@
         </port>
     </entity>
     <entity name="TypeTest" class="ptolemy.actor.lib.TypeTest">
+        <property name="parameterTypes" class="ptolemy.data.expr.Parameter" value="{Const = {NONE = &quot;int&quot;, firingCountLimit = &quot;int&quot;, value = &quot;object(\&quot;ptolemy.actor.lib.Const\&quot;)&quot;}, MonitorValue = {displayWidth = &quot;int&quot;, initial = &quot;unknown&quot;, value = &quot;unknown&quot;}}">
+        </property>
+        <property name="portTypes" class="ptolemy.data.expr.Parameter" value="{Const = {output = &quot;object(\&quot;ptolemy.actor.lib.Const\&quot;)&quot;, trigger = &quot;unknown&quot;}, MonitorValue = {input = &quot;object(\&quot;ptolemy.actor.lib.Const\&quot;)&quot;}}">
+        </property>
         <property name="trainingMode" class="ptolemy.data.expr.Parameter" value="false">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{235, 110}">

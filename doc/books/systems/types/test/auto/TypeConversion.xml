@@ -45,6 +45,8 @@
         </port>
     </entity>
     <entity name="MonitorValue" class="ptolemy.actor.lib.gui.MonitorValue">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="-2.1415926535898">
+        </property>
         <doc>Monitor and display values</doc>
         <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="20">
         </property>
@@ -109,9 +111,13 @@
         </port>
     </entity>
     <entity name="TypeTest" class="ptolemy.actor.lib.TypeTest">
+        <property name="parameterTypes" class="ptolemy.data.expr.Parameter" value="{Const = {NONE = &quot;int&quot;, firingCountLimit = &quot;int&quot;, value = &quot;int&quot;}, Const2 = {NONE = &quot;int&quot;, firingCountLimit = &quot;int&quot;, value = &quot;double&quot;}, MonitorValue = {displayWidth = &quot;int&quot;, initial = &quot;unknown&quot;, value = &quot;unknown&quot;}}">
+        </property>
+        <property name="portTypes" class="ptolemy.data.expr.Parameter" value="{AddSubtract = {minus = &quot;double&quot;, output = &quot;double&quot;, plus = &quot;double&quot;}, Const = {output = &quot;int&quot;, trigger = &quot;unknown&quot;}, Const2 = {output = &quot;double&quot;, trigger = &quot;unknown&quot;}, MonitorValue = {input = &quot;double&quot;}}">
+        </property>
         <property name="trainingMode" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[370.0, 95.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{370.0, 95.0}">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
