@@ -190,6 +190,7 @@ public class ShowTypes extends AbstractInitializableAttribute implements Executi
                             if (attribute == null) {
                                 try {
                                     attribute = new StringParameter(port, "_showInfo");
+                                    attribute.setPersistent(false);
                                 } catch (NameDuplicationException e) {
                                     throw new InternalErrorException(e);
                                 }
