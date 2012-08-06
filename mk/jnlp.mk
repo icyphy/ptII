@@ -1772,6 +1772,10 @@ book_real_clean:
 	rm -f $(JNLP_FILE_FIXED) $(JNLP_FILE) $(JNLP_HTM)
 	rm -rf $(JNLP_HTML_EXPORT)
 
+# Create the .jnlp file, but don't fix it yet:
+# make -n JNLP_MODEL_DIRECTORY=doc/papers/y12/designContracts JNLP_MODEL=DCMotorTol KEYSTORE=/users/ptII/adm/certs/ptkeystore KEYALIAS=ptolemy STOREPASSWORD="-storepass `cat $HOME/.certpw`" KEYPASSWORD="-storepass `cat $HOME/.certpw`" DIST_BASE=ptolemyII/ptII8.1/jnlp-modularSemantics jnlp_file
+jnlp_file: $(JNLP_FILE)
+
 # Fix the jnlp file by substituting in the proper URL
 jnlp_file_fixed: $(JNLP_FILE_FIXED)
 $(JNLP_FILE_FIXED): $(JNLP_FILE)
