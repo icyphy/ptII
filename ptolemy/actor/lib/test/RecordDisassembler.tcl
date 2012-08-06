@@ -80,8 +80,8 @@ test RecordDisassembler-2.1 {run with one input port, has label error} {
     set m [$e0 getManager]
     catch {$m execute} msg
      list $msg
-} {{ptolemy.actor.TypeConflictException: Type conflicts occurred in .top on the following inequalities:
-  (ptolemy.actor.TypedIOPort {.top.disassembler.input}, {}) <= (TypeConstant, {disRampOut = general})
+} {ptolemy.actor.TypeConflictException: Type conflicts occurred in .top on the following inequalities:
+  (port .top.disassembler.input: {}) <= (TypeConstant, {disRampOut = general})
 }}
 
 test RecordDisassembler-2.2 {correct above label error} {

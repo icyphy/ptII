@@ -1,3 +1,4 @@
+
 # Test UnionDisassembler
 #
 # @Author: Christopher Brooks
@@ -72,16 +73,16 @@ test UnionDisassembler-1.1 {Test getVerboseString} {
     list [list $results0] \
 	"\n" \
 	[list $results1]
-} {{{{(ptolemy.actor.util.ConstructAssociativeType, {|car = unknown, cloth = unknown, money = unknown, record = unknown|}) <= (ptolemy.actor.TypedIOPort {.UnionDisassemblerTest.UnionDisassembler.input}, unknown)'}
-{'(ptolemy.actor.util.ExtractFieldType, unknown) <= (ptolemy.actor.TypedIOPort {.UnionDisassemblerTest.UnionDisassembler.car}, unknown)'}
-{'(ptolemy.actor.util.ExtractFieldType, unknown) <= (ptolemy.actor.TypedIOPort {.UnionDisassemblerTest.UnionDisassembler.cloth}, unknown)'}
-{'(ptolemy.actor.util.ExtractFieldType, unknown) <= (ptolemy.actor.TypedIOPort {.UnionDisassemblerTest.UnionDisassembler.money}, unknown)'}
-{'(ptolemy.actor.util.ExtractFieldType, unknown) <= (ptolemy.actor.TypedIOPort {.UnionDisassemblerTest.UnionDisassembler.record}, unknown)}}} {
-} {{{(ptolemy.actor.util.ConstructAssociativeType, {|car = int, cloth = int, money = string, record = {car = int, cloth = int, money = string}|}) <= (ptolemy.actor.TypedIOPort {.UnionDisassemblerTest.UnionDisassembler.input}, {|car = int, cloth = int, money = string, record = {car = int, cloth = int, money = string}|})'}
-{'(ptolemy.actor.util.ExtractFieldType, int) <= (ptolemy.actor.TypedIOPort {.UnionDisassemblerTest.UnionDisassembler.car}, int)'}
-{'(ptolemy.actor.util.ExtractFieldType, int) <= (ptolemy.actor.TypedIOPort {.UnionDisassemblerTest.UnionDisassembler.cloth}, int)'}
-{'(ptolemy.actor.util.ExtractFieldType, string) <= (ptolemy.actor.TypedIOPort {.UnionDisassemblerTest.UnionDisassembler.money}, string)'}
-{'(ptolemy.actor.util.ExtractFieldType, {car = int, cloth = int, money = string}) <= (ptolemy.actor.TypedIOPort {.UnionDisassemblerTest.UnionDisassembler.record}, {car = int, cloth = int, money = string})}}}}
+} {{{{(ptolemy.actor.util.ConstructAssociativeType, {|car = unknown, cloth = unknown, money = unknown, record = unknown|}) <= (port .UnionDisassemblerTest.UnionDisassembler.input: unknown)'}
+{'(ptolemy.actor.util.ExtractFieldType, unknown) <= (port .UnionDisassemblerTest.UnionDisassembler.car: unknown)'}
+{'(ptolemy.actor.util.ExtractFieldType, unknown) <= (port .UnionDisassemblerTest.UnionDisassembler.cloth: unknown)'}
+{'(ptolemy.actor.util.ExtractFieldType, unknown) <= (port .UnionDisassemblerTest.UnionDisassembler.money: unknown)'}
+{'(ptolemy.actor.util.ExtractFieldType, unknown) <= (port .UnionDisassemblerTest.UnionDisassembler.record: unknown)}}} {
+} {{{(ptolemy.actor.util.ConstructAssociativeType, {|car = int, cloth = int, money = string, record = {car = int, cloth = int, money = string}|}) <= (port .UnionDisassemblerTest.UnionDisassembler.input: {|car = int, cloth = int, money = string, record = {car = int, cloth = int, money = string}|})'}
+{'(ptolemy.actor.util.ExtractFieldType, int) <= (port .UnionDisassemblerTest.UnionDisassembler.car: int)'}
+{'(ptolemy.actor.util.ExtractFieldType, int) <= (port .UnionDisassemblerTest.UnionDisassembler.cloth: int)'}
+{'(ptolemy.actor.util.ExtractFieldType, string) <= (port .UnionDisassemblerTest.UnionDisassembler.money: string)'}
+{'(ptolemy.actor.util.ExtractFieldType, {car = int, cloth = int, money = string}) <= (port .UnionDisassemblerTest.UnionDisassembler.record: {car = int, cloth = int, money = string})}}}}
 
 # The list of filters is static, so we reset it
 java::call ptolemy.moml.MoMLParser setMoMLFilters [java::null]
