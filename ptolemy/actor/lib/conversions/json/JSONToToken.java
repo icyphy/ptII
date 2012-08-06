@@ -68,7 +68,7 @@ the type.
   <li>'0x..' => Integer (hexadecimal)</li>
   <li>x'.'y | exponent encoded => Double</li>
   <li>x => Long, or Integer if value remains the same after conversion</li>
-</ul></p>
+</ul>
 If non of the above apply, the value is interpreted as a String.</p>
 <p>Note that JSON allows array elements to have different types, whereas the 
 <code>ArrayToken</code> does not. Conversion of such mixed array will result
@@ -88,8 +88,8 @@ the least upper bound of the entire collection.</p>
 public class JSONToToken extends Converter {
 
     /** Construct a JSONToToken actor with the given container and name.
-     *  @param container
-     *  @param name
+     *  @param container The container.
+     *  @param name The name of this actor.
      *  @exception IllegalActionException If the actor cannot be contained
      *   by the proposed container.
      *  @exception NameDuplicationException If the container already has an

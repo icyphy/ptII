@@ -69,8 +69,8 @@ type, the value of the Token is wrapped into an array of size one.
 public class TokenToJSON extends Converter {
 
     /** Construct a TokenToJSON actor with the given container and name.
-     *  @param container
-     *  @param name
+     *  @param container The container.
+     *  @param name The name of this actor.
      *  @exception IllegalActionException If the actor cannot be contained
      *   by the proposed container.
      *  @exception NameDuplicationException If the container already has an
