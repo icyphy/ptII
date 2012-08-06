@@ -115,8 +115,10 @@ public class PtidesDirector extends DEDirector {
     ////                         public methods                    ////
 
     /** Add a new event to the input queue. Compute the time when 
-     *  this input can be consumed and store in queue.
+     *  this input can be consumed and store in queue. The time depends on
+     *  the device delay.
      *  @param event New input event.
+     *  @param deviceDelay The device delay. 
      *  @throws IllegalActionException If device delay parameter cannot be computed.
      */
     public void addInputEvent(PtidesEvent event, double deviceDelay)
@@ -379,7 +381,7 @@ public class PtidesDirector extends DEDirector {
     /** Find resource scheduler for actor and request scheduling.
      *  TODO: This method could be moved to the Director class such that all other
      *  MoCs can do resource usage simulation.
-     *  @param event
+     *  @param actor The actor to be scheduled.
      *  @return Time until next scheduling action or 0.0 if actor can start execution.
      *  @throws IllegalActionException
      */
@@ -973,7 +975,7 @@ public class PtidesDirector extends DEDirector {
 
     /** Set the next time to fire the director to the provided time if it is earlier than
      * the currently set next fire time.
-     * @param time
+     * @param time The next fire time.
      */
     protected void _setNextFireTime(Time time) {
         if (_nextFireTime == null) {
