@@ -18,6 +18,10 @@
     </property>
     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{101.0873579545454, 305.270202020202}">
     </property>
+    <property name="ShowTypes" class="ptolemy.vergil.actor.lib.ShowTypes">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{100, 135}">
+        </property>
+    </property>
     <entity name="SampleDelay" class="ptolemy.domains.sdf.lib.SampleDelay">
         <property name="initialOutputs" class="ptolemy.data.expr.Parameter" value="{null}">
         </property>
@@ -27,11 +31,18 @@
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="20">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-15.0, 285.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 250.0]">
         </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="object(null)">
+            </property>
+        </port>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="object">
+            </property>
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="object(null)">
             </property>
         </port>
     </entity>
@@ -45,24 +56,47 @@
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{-105, 270}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-65.0, 220.0]">
         </property>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="object(null)">
+            </property>
+        </port>
+        <port name="trigger" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="unknown">
+            </property>
+        </port>
     </entity>
     <entity name="TypeTest" class="ptolemy.actor.lib.TypeTest">
+        <property name="parameterTypes" class="ptolemy.data.expr.Parameter" value="{Const = {NONE = &quot;int&quot;, firingCountLimit = &quot;int&quot;, value = &quot;object(null)&quot;}, Discard = {_hideName = &quot;boolean&quot;}, SampleDelay = {initialOutputs = &quot;arrayType(object(null),1)&quot;}}">
+        </property>
+        <property name="portTypes" class="ptolemy.data.expr.Parameter" value="{Const = {output = &quot;object(null)&quot;, trigger = &quot;unknown&quot;}, Discard = {input = &quot;object(null)&quot;}, SampleDelay = {input = &quot;object(null)&quot;, output = &quot;object(null)&quot;}}">
+        </property>
         <property name="trainingMode" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{135, 395}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[215.0, 360.0]">
         </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="object(null)">
+            </property>
+        </port>
     </entity>
     <entity name="Discard" class="ptolemy.actor.lib.Discard">
         <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{145, 295}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[225.0, 260.0]">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
             <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="NORTH">
+            </property>
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="object(null)">
             </property>
         </port>
     </entity>
@@ -71,7 +105,7 @@
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
-        <vertex name="vertex1" value="{65.0, 290.0}">
+        <vertex name="vertex1" value="[145.0, 255.0]">
         </vertex>
     </relation>
     <link port="SampleDelay.input" relation="relation"/>
