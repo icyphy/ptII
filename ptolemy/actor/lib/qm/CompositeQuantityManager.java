@@ -338,8 +338,8 @@ public class CompositeQuantityManager extends TypedCompositeActor implements Qua
     
     /** Intermediate Receiver sends token to this quantity manager which puts 
      *  the token to the right port. 
-     *  @param source
-     *  @param receiver 
+     *  @param source The source that sent the token.
+     *  @param receiver The target receiver of this token.
      *  @param token Token that is sent.
      *  @param port Input port that should get the token.
      *  @throws IllegalActionException
