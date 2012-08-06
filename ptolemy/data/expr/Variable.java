@@ -1072,10 +1072,6 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
      *  <br>Note that you can call this with a null argument regardless
      *  of type constraints, unless there are other variables that
      *  depend on its value.
-     *  <br>Note that {@link #setPersistent(boolean) setPersistent(true}}
-     *  may need to be called so that the change to the token is
-     *  marked as persistent and is exported.
-     *  to the token is expor
      *  @param token The new token to be stored in this variable.
      *  @exception IllegalActionException If the token type is not
      *   compatible with specified constraints, or if you are attempting
@@ -1103,6 +1099,10 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
         }
 
         setUnknown(false);
+        // We were failing to do this, creating all sorts of subtle
+        // bugs. E.g., parameters that are set directly in actors would
+        // not be persistent.  EAL 8/5/12.
+        propagateValue();
     }
 
     /** Constrain the type of this variable to be equal to or
