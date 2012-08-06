@@ -19,6 +19,18 @@ This page describes how we release software.
 
 <h2>Splitting the tree</h2>
 <ol>
+<li>Look for auto directories that don't have corresponding junit/ directories.
+<pre>
+cd $PTII
+ls -d `find . -name auto | awk -F / '{for(i=1;i<(NF);i++) { printf("%s/", $i);}printf("junit\n")}'`
+</pre>
+
+<li>Check that each demo has a test:
+<pre>
+cd $PTII/ptolemy/configs/doc
+make check_tests
+</pre>
+
 <li>Add any new models to <code>$PTII/ptolemy/configs/doc/completeDemos.htm</code>
 
 <li>If necessary create applets for new demos
