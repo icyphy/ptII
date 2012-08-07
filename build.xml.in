@@ -205,7 +205,7 @@ For example:
 	   source="${source}"
 	   target="${target}">
       <src path="${basedir}" />
-      @ANT_WEBSENSOR_SRC@
+      <!-- @ANT_WEBSENSOR_SRC@ -->
       <patternset refid="ptII.excludes" />
       <classpath refid="ptII.classpath" />
     </javac>
