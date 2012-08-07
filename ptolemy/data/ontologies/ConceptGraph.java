@@ -94,7 +94,7 @@ public abstract class ConceptGraph implements CPO<Concept> {
     /** Compute the greatest element of a subset.
      *
      *  @see #leastElement(Set)
-     *  @param subset An array of Objects representing the subset.
+     *  @param subset A set of Objects representing the subset.
      *  @return An Object representing the greatest element of the subset,
      *   or <code>null</code> if the greatest element does not exist.
      *  @exception IllegalArgumentException If at least one Object in the
@@ -121,7 +121,7 @@ public abstract class ConceptGraph implements CPO<Concept> {
     /** Compute the greatest lower bound (GLB) of a subset.
      *
      *  @see #leastUpperBound(Set)
-     *  @param subset An array of Objects representing the subset.
+     *  @param subset A set of Objects representing the subset.
      *  @return Nothing.
      *  @exception IllegalArgumentException If at least one Object is not
      *    an element of this concept graph, or greatestLowerBound is not
@@ -148,7 +148,7 @@ public abstract class ConceptGraph implements CPO<Concept> {
      *  subset that is lower than all the other elements in the
      *  subset.
      *  @see #greatestElement(Set)
-     *  @param subset An array of Objects representing the subset.
+     *  @param subset A set of Objects representing the subset.
      *  @return The least element of the subset, if it exists, and null
      *   if there is no least element of the given subset.
      *  @exception IllegalArgumentException If at least one Object in the
@@ -178,7 +178,7 @@ public abstract class ConceptGraph implements CPO<Concept> {
      *  is greater than or equal to all the elements in the
      *  subset.
      *  @see #greatestLowerBound(Set)
-     *  @param subset An array of Objects representing the subset.
+     *  @param subset An set of Objects representing the subset.
      *  @return The least upper bound of the given subset, if it exists,
      *   and null if it does not.
      *  @exception IllegalArgumentException If at least one Object in the
@@ -218,7 +218,7 @@ public abstract class ConceptGraph implements CPO<Concept> {
     /** Return the concept that is either the greatest lower or least upper
      *  bound for the given array of concepts.
      *
-     *  @param subset The array of concepts from which to calculate the bound.
+     *  @param subset The set of concepts from which to calculate the bound.
      *  @param boundType Specifies the type of bound to be returned; either
      *   GREATESTLOWER or LEASTUPPER.
      *  @return The concept that is the correct bound for the array of concepts.

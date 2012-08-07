@@ -135,7 +135,7 @@ public class DirectedAcyclicGraph extends DirectedGraph implements CPO<Object> {
     }
 
     /** Compute the greatest element of a subset.
-     *  @param subset An array of Objects representing the subset.
+     *  @param subset A set of Objects representing the subset.
      *  @return An Object representing the greatest element of the subset,
      *   or <code>null</code> if the greatest element does not exist.
      *  @exception IllegalArgumentException If at least one Object in the
@@ -164,7 +164,7 @@ public class DirectedAcyclicGraph extends DirectedGraph implements CPO<Object> {
      *  the subset is considered empty, in which case the top element
      *  of this CPO is returned, if it exists. If the subset is empty
      *  and the top does not exist, <code>null</code> is returned.
-     *  @param subset An array of Objects representing the subset.
+     *  @param subset A set of Objects representing the subset.
      *  @return An Object representing the GLB of the subset, or
      *   <code>null</code> if the GLB does not exist.
      *  @exception IllegalArgumentException If at least one Object
@@ -184,7 +184,7 @@ public class DirectedAcyclicGraph extends DirectedGraph implements CPO<Object> {
     }
 
     /** Compute the least element of a subset.
-     *  @param subset An array of Objects representing the subset.
+     *  @param subset A set of Objects representing the subset.
      *  @return An Object representing the least element of the subset,
      *   or <code>null</code> if the least element does not exist.
      *  @exception IllegalArgumentException If at least one Object in the
@@ -213,7 +213,7 @@ public class DirectedAcyclicGraph extends DirectedGraph implements CPO<Object> {
      *  the subset is considered empty, in which case the bottom element
      *  of this CPO is returned, if it exists. If the subset is empty
      *  and the bottom does not exist, <code>null</code> is returned.
-     *  @param subset An array of Objects representing the subset.
+     *  @param subset A set of Objects representing the subset.
      *  @return An Object representing the LUB of the subset, or
      *   <code>null</code> if the LUB does not exist.
      *  @exception IllegalArgumentException If at least one Object

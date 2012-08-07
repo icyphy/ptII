@@ -81,13 +81,13 @@ public interface CPO<T extends Object> {
      *  @exception IllegalArgumentException If the specified Object is not
      *   an element in this CPO, or the resulting set is infinite.
      */
-    public Object[] downSet(Object e);
+    public Object[] downSet(Object e); // FIXME: return Set instead of array
 
     /** Compute the greatest element of a subset.
      *  The greatest element of a subset is an element in the
      *  subset that is higher than all the other elements in the
      *  subset.
-     *  @param subset An array of Objects representing the subset.
+     *  @param subset A set of Objects representing the subset.
      *  @return An Object representing the greatest element of the subset,
      *   or <code>null</code> if the greatest element does not exist.
      *  @exception IllegalArgumentException If at least one Object in the
@@ -111,7 +111,7 @@ public interface CPO<T extends Object> {
      *  The GLB of a subset is the greatest element in the CPO that
      *  is lower than or the same as all the elements in the
      *  subset.
-     *  @param subset An array of Objects representing the subset.
+     *  @param subset A set of Objects representing the subset.
      *  @return An Object representing the GLB of the subset, or
      *   <code>null</code> if the GLB does not exist.
      *  @exception IllegalArgumentException If at least one Object
@@ -131,7 +131,7 @@ public interface CPO<T extends Object> {
      *  The least element of a subset is an element in the
      *  subset that is lower than all the other element in the
      *  subset.
-     *  @param subset An array of Objects representing the subset.
+     *  @param subset A set of Objects representing the subset.
      *  @return An Object representing the least element of the subset,
      *   or <code>null</code> if the least element does not exist.
      *  @exception IllegalArgumentException If at least one Object in the
@@ -155,7 +155,7 @@ public interface CPO<T extends Object> {
      *  The LUB of a subset is the least element in the CPO that
      *  is greater than or the same as all the elements in the
      *  subset.
-     *  @param subset An array of Objects representing the subset.
+     *  @param subset A set of Objects representing the subset.
      *  @return An Object representing the LUB of the subset, or
      *   <code>null</code> if the LUB does not exist.
      *  @exception IllegalArgumentException If at least one Object
@@ -179,7 +179,7 @@ public interface CPO<T extends Object> {
      *  @exception IllegalArgumentException If the specified Object is not
      *   an element of this CPO, or the resulting set is infinite.
      */
-    public Object[] upSet(Object e);
+    public Object[] upSet(Object e); // FIXME: return Set instead of array
 
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
