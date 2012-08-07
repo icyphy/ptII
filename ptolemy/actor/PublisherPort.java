@@ -123,9 +123,6 @@ public class PublisherPort extends PubSubPort {
         propagateNameChanges.setExpression("false");
         propagateNameChanges.setTypeEquals(BaseType.BOOLEAN);
         
-        setOutput(true);
-        setInput(false);
-        
         initialOutputs = new Parameter(this, "initialOutputs") {
             /** Override the base class to to allow the type to be unknown.
              *  @return True if the current type is acceptable.
@@ -136,6 +133,9 @@ public class PublisherPort extends PubSubPort {
             }
         };
         setTypeAtLeast(ArrayType.elementType(initialOutputs));
+
+        setOutput(true);
+        setInput(false);
 
         output_tokenInitProduction = new Parameter(this, "tokenInitProduction");
         output_tokenInitProduction.setExpression("0");
@@ -153,15 +153,6 @@ public class PublisherPort extends PubSubPort {
     ///////////////////////////////////////////////////////////////////
     ////                         parameters                        ////
 
-    /** The values that will be produced in the initialize method.
-     *  By default, this is empty, indicating that no initial outputs
-     *  are produced. If you wish for this port to produce initial
-     *  outputs, then give this parameter an array value specifying
-     *  the sequence of initial outputs.
-     *  Changes to this parameter after initialize() has been invoked
-     *  are ignored until the next execution of the model.
-     */
-    public Parameter initialOutputs;
 
     /** If true, then propagate channel name changes to any
      *  Subscribers.  The default value is a BooleanToken with the
@@ -189,13 +180,6 @@ public class PublisherPort extends PubSubPort {
      */
     public Parameter propagateNameChanges;
     
-    /** The rate parameter for the output port that declares the
-     *  initial production. This is not editable by default (visible
-     *  only in expert mode), as it gets set to the length
-     *  of {@link #initialOutputs} automatically.
-     */
-    public Parameter output_tokenInitProduction;
-
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -305,9 +289,9 @@ public class PublisherPort extends PubSubPort {
      *   an attribute that cannot be cloned.
      */
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        PublisherPort newObject = (PublisherPort) (super.clone(workspace));
+        PubSubPort newObject = (PubSubPort) (super.clone(workspace));
 
-        // set the type constraints
+        // Set the type constraints.
         try {
             newObject.setTypeAtLeast(ArrayType
                     .elementType(newObject.initialOutputs));
@@ -465,11 +449,13 @@ public class PublisherPort extends PubSubPort {
             // Don't preinitialize Class Definitions.
             return;
         }
+
         NamedObj actor = getContainer();
         if (actor != null && actor.getContainer() == null) {
             throw new IllegalActionException(this,
                     "PublisherPorts cannot be used at the top level, use a Publisher actor instead.");
         }
+
         Token initialOutputsValue = initialOutputs.getToken();
         if (initialOutputsValue == null) {
             output_tokenInitProduction.setToken(IntToken.ZERO);

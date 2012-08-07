@@ -28,6 +28,7 @@ package ptolemy.actor;
 
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.StringParameter;
+import ptolemy.data.type.ArrayType;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.Entity;
@@ -37,6 +38,7 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
+import ptolemy.kernel.util.Workspace;
 
 ///////////////////////////////////////////////////////////////////
 //// PubSubPort
@@ -91,6 +93,23 @@ public abstract class PubSubPort extends TypedIOPort
      *  values published on this channel.
      */
     public Parameter global;
+
+    /** The values that will be produced in the initialize method.
+     *  By default, this is empty, indicating that no initial outputs
+     *  are produced. If you wish for this port to produce initial
+     *  outputs, then give this parameter an array value specifying
+     *  the sequence of initial outputs.
+     *  Changes to this parameter after initialize() has been invoked
+     *  are ignored until the next execution of the model.
+     */
+    public Parameter initialOutputs;
+
+    /** The rate parameter for the output port that declares the
+     *  initial production. This is not editable by default (visible
+     *  only in expert mode), as it gets set to the length
+     *  of {@link #initialOutputs} automatically.
+     */
+    public Parameter output_tokenInitProduction;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
