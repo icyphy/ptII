@@ -21,11 +21,13 @@
 
 	<!-- Checks that a package-info.java file exists for each package. -->
 	<!-- See http://checkstyle.sf.net/config_javadoc.html#JavadocPackage -->
-	<module name="JavadocPackage" />
+	<!-- module name="JavadocPackage" / -->
 
 	<!-- Checks whether files end with a new line. -->
 	<!-- See http://checkstyle.sf.net/config_misc.html#NewlineAtEndOfFile -->
-	<module name="NewlineAtEndOfFile" />
+	<module name="NewlineAtEndOfFile">
+	  <property name="fileExtensions" value="java"/>
+	</module>
 
 	<!-- Checks that property files contain the same keys. -->
 	<!-- See http://checkstyle.sf.net/config_misc.html#Translation -->
@@ -72,8 +74,6 @@
 		<module name="LocalVariableName" />
 		<module name="MemberName">
 			<property name="format" value="^[a-z][a-zA-Z0-9]*$" />
-			<property name="applyToProtected" value="false" />
-			<property name="applyToPrivate" value="false" />
 			<property name="applyToPackage" value="true" />
 			<property name="applyToPublic" value="true" />
 		</module>
@@ -81,13 +81,9 @@
 			<property name="format" value="^_[a-z][a-zA-Z0-9]*$" />
 			<property name="applyToProtected" value="true" />
 			<property name="applyToPrivate" value="true" />
-			<property name="applyToPackage" value="false" />
-			<property name="applyToPublic" value="false" />
 		</module>
 		<module name="MethodName">
 			<property name="format" value="^[a-z][a-zA-Z0-9]*$" />
-			<property name="applyToProtected" value="false" />
-			<property name="applyToPrivate" value="false" />
 			<property name="applyToPackage" value="true" />
 			<property name="applyToPublic" value="true" />
 		</module>
@@ -95,15 +91,11 @@
 			<property name="format" value="^_[a-z][a-zA-Z0-9]*$" />
 			<property name="applyToProtected" value="true" />
 			<property name="applyToPrivate" value="true" />
-			<property name="applyToPackage" value="false" />
-			<property name="applyToPublic" value="false" />
 		</module>
 		<module name="PackageName" />
 		<module name="ParameterName" />
 		<module name="StaticVariableName">
 			<property name="format" value="^[a-z][a-zA-Z0-9]*$" />
-			<property name="applyToProtected" value="false" />
-			<property name="applyToPrivate" value="false" />
 			<property name="applyToPackage" value="true" />
 			<property name="applyToPublic" value="true" />
 		</module>
@@ -111,13 +103,9 @@
 			<property name="format" value="^_[a-z][a-zA-Z0-9]*$" />
 			<property name="applyToProtected" value="true" />
 			<property name="applyToPrivate" value="true" />
-			<property name="applyToPackage" value="false" />
-			<property name="applyToPublic" value="false" />
 		</module>
 		<module name="ConstantName">
 			<property name="format" value="^[A-Z][A-Z0-9]*(_[A-Z0-9]+)*$" />
-			<property name="applyToProtected" value="false" />
-			<property name="applyToPrivate" value="false" />
 			<property name="applyToPackage" value="true" />
 			<property name="applyToPublic" value="true" />
 		</module>
@@ -125,8 +113,6 @@
 			<property name="format" value="^_[A-Z][A-Z0-9]*(_[A-Z0-9]+)*$" />
 			<property name="applyToProtected" value="true" />
 			<property name="applyToPrivate" value="true" />
-			<property name="applyToPackage" value="false" />
-			<property name="applyToPublic" value="false" />
 		</module>
 		
 		<module name="TypeName" />
