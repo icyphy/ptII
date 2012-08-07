@@ -1,7 +1,7 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="CompositeQM" class="ptolemy.actor.TypedCompositeActor">
+<entity name="CompositeQMAndMultiPort" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.0.devel">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
@@ -10,7 +10,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[25.0, 50.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={325, 26, 793, 634}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={70, 63, 793, 634}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[559, 524]">
     </property>
@@ -323,28 +323,6 @@
         <link port="port3" relation="relation"/>
         <link port="port4" relation="relation2"/>
     </entity>
-    <entity name="TimedPlotter2" class="ptolemy.actor.lib.gui.TimedPlotter">
-        <property name="automaticRescale" class="ptolemy.data.expr.Parameter" value="false">
-        </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1363, 76, 500, 344}, maximized=false}">
-        </property>
-        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{450.0, 125.0}">
-        </property>
-        <configure>
-<?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
-"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
-<plot>
-<title>TimedPlotter</title>
-<xLabel></xLabel>
-<yLabel></yLabel>
-<xRange min="0.0" max="20.0"/>
-<yRange min="1.0" max="6.0"/>
-<default connected="no" marks="dots" stems="yes"/>
-</plot>?>
-        </configure>
-    </entity>
     <entity name="CompositeActor3" class="ptolemy.actor.TypedCompositeActor">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[340.0, 300.0]">
         </property>
@@ -437,6 +415,32 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[235.0, 300.0]">
         </property>
     </entity>
+    <entity name="Test" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{2, -2, 6, -2, -2, -2, -2, -2, -2, -2}">
+        </property>
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{435.0, 300.0}">
+        </property>
+    </entity>
+    <entity name="Test2" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{1, -1, 3, -1, -1, -1, -1, -1, -1, -1}">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[430.0, 225.0]">
+        </property>
+    </entity>
+    <entity name="Test3" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{2, 2}">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[430.0, 165.0]">
+        </property>
+    </entity>
+    <entity name="Test4" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{1, 1, 1}">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[165.0, 120.0]">
+        </property>
+    </entity>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
@@ -445,21 +449,21 @@
     </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <relation name="relation7" class="ptolemy.actor.TypedIORelation">
-    </relation>
-    <relation name="relation8" class="ptolemy.actor.TypedIORelation">
-    </relation>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
         <vertex name="vertex1" value="[210.0, 185.0]">
         </vertex>
     </relation>
-    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
-    </relation>
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation9" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation8" class="ptolemy.actor.TypedIORelation">
     </relation>
     <link port="0.output" relation="relation2"/>
     <link port="CompositeActor.port" relation="relation2"/>
@@ -467,17 +471,17 @@
     <link port="CompositeActor.port3" relation="relation"/>
     <link port="CompositeActor2.port" relation="relation3"/>
     <link port="CompositeActor2.port2" relation="relation"/>
-    <link port="CompositeActor2.port3" relation="relation7"/>
-    <link port="CompositeActor2.port4" relation="relation8"/>
-    <link port="TimedPlotter2.input" relation="relation7"/>
-    <link port="TimedPlotter2.input" relation="relation8"/>
-    <link port="TimedPlotter2.input" relation="relation2"/>
-    <link port="TimedPlotter2.input" relation="relation4"/>
+    <link port="CompositeActor2.port3" relation="relation8"/>
+    <link port="CompositeActor2.port4" relation="relation4"/>
     <link port="CompositeActor3.port" relation="relation5"/>
-    <link port="CompositeActor3.port2" relation="relation4"/>
+    <link port="CompositeActor3.port2" relation="relation6"/>
     <link port="CompositeActor4.port" relation="relation2"/>
     <link port="CompositeActor4.port3" relation="relation9"/>
     <link port="Merge.input" relation="relation"/>
     <link port="Merge.input" relation="relation9"/>
     <link port="Merge.output" relation="relation5"/>
+    <link port="Test.input" relation="relation6"/>
+    <link port="Test2.input" relation="relation4"/>
+    <link port="Test3.input" relation="relation8"/>
+    <link port="Test4.input" relation="relation2"/>
 </entity>
