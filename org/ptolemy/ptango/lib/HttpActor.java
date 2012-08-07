@@ -171,21 +171,11 @@ public class HttpActor extends TypedAtomicActor implements HttpService {
     // FIXME: Cookies have many other fields. Do we need to include them?
     // Leave out altogether for now.
      public TypedIOPort cookies;
-
-    /** The relative URL of HTTP requests that this actor handles.
-     *  This is a string that defaults to "/*", meaning that all
-     *  requests are handled, unless there is another instance
-     *  of the actor with a more specific path that matches.
-     *  Preference is given to longer paths. So, for example,
-     *  a request "http://localhost:8080/foo/bar" will be
-     *  delegated to an actor with <i>path</i> = "/foo/bar/*",
-     *  if there is one, and otherwise to an actor with
-     *  <i>path</i> = "/foo/*", if there is one, and finally
-     *  to an actor with <i>path</i> = "/*", if the first two
-     *  don't exist.  If two actors specify the same path,
-     *  then it is undefined which one gets the request.
-     */
-    public StringParameter path;
+     
+     /**
+      * A parameter to store the cookie values. 
+      */
+     public Parameter cookiesCollection;
     
     /** An output port that sends parameters included in a get request.
      *  These are values appended to the URL in the form
@@ -203,6 +193,29 @@ public class HttpActor extends TypedAtomicActor implements HttpService {
      */
     public TypedIOPort getRequestURI;
 
+    /** The relative URL of HTTP requests that this actor handles.
+     *  This is a string that defaults to "/*", meaning that all
+     *  requests are handled, unless there is another instance
+     *  of the actor with a more specific path that matches.
+     *  Preference is given to longer paths. So, for example,
+     *  a request "http://localhost:8080/foo/bar" will be
+     *  delegated to an actor with <i>path</i> = "/foo/bar/*",
+     *  if there is one, and otherwise to an actor with
+     *  <i>path</i> = "/foo/*", if there is one, and finally
+     *  to an actor with <i>path</i> = "/*", if the first two
+     *  don't exist.  If two actors specify the same path,
+     *  then it is undefined which one gets the request.
+     */
+    public StringParameter path;
+    
+    /**
+     * A parameter indicating whether or not parameters in the URL should be 
+     * treated as cookies.  Parameters in the URL are considered cookies and 
+     * inserted in the actor's cookiesCollection parameter IF pathCookies 
+     * parameter is true.
+     */
+    public Parameter pathCookies;
+    
     /** An output port that sends parameters included in a post request.
      *  The output will be a record with
      *  one field for each name. If the request assigns multiple
@@ -231,17 +244,10 @@ public class HttpActor extends TypedAtomicActor implements HttpService {
     public TypedIOPort response;
     
     /**
-     * An input port on which to provide the possible attributes for cookies
+     * An input port on which to provide the possible attributes for cookies.
      * 
      */
     public TypedIOPort setCookies;
-    
-    /**
-     * A parameter to store the cookie values. 
-     */
-    public Parameter cookiesCollection;
-    
-    public Parameter pathCookies;
     
     /** The time in milliseconds to wait after producing the details
      *  of a request on the output ports for a response to appear at
@@ -302,6 +308,7 @@ public class HttpActor extends TypedAtomicActor implements HttpService {
      *  which is the value of the <i>path</i> parameter.
      *  This method is required by the HttpService interface.
      *  @return The relative path that this HttpService is mapped to.
+     *  @see #setRelativePath(URI)
      */
     public URI getRelativePath() {
         return _URIpath;
@@ -457,6 +464,7 @@ public class HttpActor extends TypedAtomicActor implements HttpService {
     /** Set the relative path that this HttpService is mapped to.
      *  This method is required by the HttpService interface.
      *  @param path The relative path that this HttpService is mapped to.
+     *  @see #getRelativePath()
      */
     public void setRelativePath(URI path) {
         _URIpath = path;
@@ -536,6 +544,10 @@ public class HttpActor extends TypedAtomicActor implements HttpService {
          *  
          *  @param request The HTTP get request.
          *  @param response The HTTP response to write to.
+         *  @throws ServletException  If there is a problem reading from the
+         *  servlet request or other servlet problem
+         *  @throws IOException  If there is a problem writing to the servlet
+         *  response
          */
         protected synchronized void doGet(HttpServletRequest request, 
                 HttpServletResponse response) 
@@ -551,6 +563,10 @@ public class HttpActor extends TypedAtomicActor implements HttpService {
          *  request will be postponed until the first has been completely handled.
          *  @param request The HTTP get request.
          *  @param response The HTTP response to write to.
+         *  @throws ServletException  If there is a problem reading from the
+         *  servlet request or other servlet problem
+         *  @throws IOException  If there is a problem writing to the servlet
+         *  response
          */
         protected synchronized void doPost(HttpServletRequest request, 
                 HttpServletResponse response) 
@@ -564,6 +580,10 @@ public class HttpActor extends TypedAtomicActor implements HttpService {
          *  @param request The HTTP request.
          *  @param response The HTTP response to write to.
          *  @param type The type of request. 0 for get, 1 for post.
+         *  @throws ServletException  If there is a problem reading from the
+         *  servlet request or other servlet problem
+         *  @throws IOException  If there is a problem writing to the servlet
+         *  response
          */
         private void _handleRequest(HttpServletRequest request, 
                 HttpServletResponse response, int type) 
@@ -611,7 +631,9 @@ public class HttpActor extends TypedAtomicActor implements HttpService {
                             ArrayToken array = new ArrayToken(arrayEntries);
                             fieldValues[i] = array;
                         } catch (IllegalActionException e) {
-                            _writeError(response, HttpServletResponse.SC_BAD_REQUEST, e.getMessage());
+                            _writeError(response, 
+                                    HttpServletResponse.SC_BAD_REQUEST, 
+                                    e.getMessage());
                             return;
                         }
                     }
@@ -643,7 +665,8 @@ public class HttpActor extends TypedAtomicActor implements HttpService {
                     // Note that fireAt() will modify the requested firing time if it is in the past.
                     getDirector().fireAt(HttpActor.this, timeOfRequest);
                 } catch (IllegalActionException e) {
-                    _writeError(response, HttpServletResponse.SC_BAD_REQUEST, e.getMessage());
+                    _writeError(response, HttpServletResponse.SC_BAD_REQUEST, 
+                            e.getMessage());
                     return;
                     // throw new ServletException(e.getMessage());
                 }

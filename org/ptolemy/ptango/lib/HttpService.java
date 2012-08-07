@@ -70,11 +70,12 @@ public interface HttpService {
     /** Returns an HttpServlet which is used to handle requests that
      *  arrive at the given relative path.
      *  @return An HttpServlet to handle requests. 
+     *  @see #setRelativePath(URI)
      */
     public HttpServlet getServlet();
     
     /** Set the relative path that this HttpService is mapped to.
-     *  @param path The relative path that this HttpService is mapped to.
+     *  @param relativePath The relative path that this HttpService is mapped to.
      *  @see #getRelativePath()
      */
     public void setRelativePath(URI relativePath);
@@ -84,6 +85,7 @@ public interface HttpService {
      *  if there is one, and will enable the service to access
      *  information about the web server (such as
      *  the resourcePath, resourceLocation, or temporaryFileLocation).
+     *  @param server The WebServer for this service
      */
     public void setWebServer(WebServer server);
 }
