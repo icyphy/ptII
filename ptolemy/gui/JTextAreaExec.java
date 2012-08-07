@@ -54,6 +54,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
+import javax.swing.SwingWorker;
 import javax.swing.border.Border;
 
 import ptolemy.util.ExecuteCommands;
@@ -540,7 +541,7 @@ public class JTextAreaExec extends JPanel implements ExecuteCommands {
         public void actionPerformed(ActionEvent event) {
             _cancelButton.setEnabled(false);
             appendJTextArea("Cancel button was pressed");
-            _worker.interrupt();
+            _worker.cancel(true);
             _process.destroy();
             _enableStartButton();
         }
@@ -554,25 +555,23 @@ public class JTextAreaExec extends JPanel implements ExecuteCommands {
             _cancelButton.setEnabled(true);
             _statusBar.setText("Working...");
 
-            /* Invoking start() on the SwingWorker causes a new Thread
-             * to be created that will call construct(), and then
-             * finished().  Note that finished() is called even if
-             * the _worker is interrupted because we catch the
-             * InterruptedException in _executeCommands().
-             */
-            _worker = new SwingWorker() {
-                public Object construct() {
+            _worker = new SwingWorker<Object, Void>() {
+                public Object doInBackground() {
                     return _executeCommands();
                 }
 
-                public void finished() {
+                public void done() {
                     _enableStartButton();
                     _cancelButton.setEnabled(false);
                     _updateProgressBar(0);
-                    _statusBar.setText(get().toString());
+		    try {
+			_statusBar.setText(get(1, java.util.concurrent.TimeUnit.SECONDS).toString());
+		    } catch (Exception ex) {
+			_statusBar.setText(ex.toString());
+		    }
                 }
             };
-            _worker.start();
+            _worker.execute();
         }
     };
 

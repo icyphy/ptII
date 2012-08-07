@@ -71,7 +71,6 @@ JSRCS = \
 	ShellInterpreter.java \
 	ShellTextArea.java \
 	StatusBar.java \
-	SwingWorker.java \
 	Top.java \
 	UndeferredGraphicalMessageHandler.java \
 	UndoListener.java
