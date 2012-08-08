@@ -223,6 +223,12 @@
 <port name="NetworkTransmitterPort" class="ptolemy.domains.ptides.lib.io.NetworkTransmitterPort">
 </port>
 
+<entity name="FPScheduler" class="ptolemy.domains.ptides.lib.FPScheduler"> 
+</entity>
+<entity name="FCFSScheduler" class="ptolemy.domains.ptides.lib.FCFSScheduler"> 
+</entity>
+
+
       </group>
     ?>
   </configure>

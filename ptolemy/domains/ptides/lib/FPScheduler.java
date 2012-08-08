@@ -28,7 +28,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
  */
 
-package ptolemy.domains.ptides.kernel;
+package ptolemy.domains.ptides.lib;
 
 import java.util.Stack;
 

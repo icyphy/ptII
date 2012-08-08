@@ -58,6 +58,8 @@ PTCLASSALLJAR = $(PTPACKAGE).jar
 JSRCS = \
 	ActuationDevice.java \
 	ActuatorSetup.java \
+	FCFSScheduler.java \
+	FPScheduler.java \
 	InputDevice.java \
 	MasterClock.java \
 	MulticoreExecutionTimeMonitor.java \
@@ -70,7 +72,9 @@ JSRCS = \
 	SlaveClock.java \
 	ExecutionTimeListener.java \
 	ExecutionTimeMonitor.java \
-	PlatformTimeMonitor.java
+	PlatformTimeMonitor.java \
+	ResourceScheduler.java \
+	SchedulePlotterEditorFactor.java
 
 OTHER_FILES_TO_BE_JARED = \
 	ptidesentities.xml

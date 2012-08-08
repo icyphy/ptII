@@ -59,6 +59,7 @@ import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.domains.de.kernel.DEDirector;
+import ptolemy.domains.ptides.lib.ResourceScheduler;
 import ptolemy.domains.ptides.lib.io.ActuatorPort;
 import ptolemy.domains.ptides.lib.io.NetworkReceiverPort;
 import ptolemy.domains.ptides.lib.io.PtidesPort;
@@ -260,15 +261,14 @@ public class PtidesDirector extends DEDirector {
         super.initialize();
         _calculateSuperdenseDependenices();
         _calculateDelayOffsets();
+        _resourceSchedulers = new ArrayList();
+        _schedulerForActor = null;
         for (Object entity : ((CompositeActor) getContainer()).entityList()) {
-            if (entity instanceof ResourceScheduler) {
-                if (_resourceSchedulers == null) {
-                    _resourceSchedulers = new ArrayList();
-                }
+            if (entity instanceof ResourceScheduler) { 
                 _resourceSchedulers.add((ResourceScheduler) entity);
             }
         }
-
+        
     }
 
     /** Return a new receiver of the type {@link PtidesReceiver}.
@@ -403,9 +403,11 @@ public class PtidesDirector extends DEDirector {
                                         .getValue();
                                 if (paramObject instanceof ResourceScheduler) {
                                     ResourceScheduler scheduler = (ResourceScheduler) paramObject;
-                                    _schedulerForActor.put(actor, scheduler);
-                                    object = scheduler;
-                                    break;
+                                    if (_resourceSchedulers.contains(scheduler)) {
+                                        _schedulerForActor.put(actor, scheduler);
+                                        object = scheduler;
+                                        break;
+                                    } // else could have been deleted.
                                 }
                             }
                         }

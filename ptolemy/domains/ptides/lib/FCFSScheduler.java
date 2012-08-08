@@ -28,11 +28,10 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
  */
 
-package ptolemy.domains.ptides.kernel;
+package ptolemy.domains.ptides.lib;
 
 import ptolemy.actor.Actor;
 import ptolemy.actor.util.Time;
-import ptolemy.domains.ptides.lib.ExecutionTimeListener.ExecutionEventType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
