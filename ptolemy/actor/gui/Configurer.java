@@ -392,6 +392,12 @@ public class Configurer extends JPanel implements CloseListener {
         }
         return attributes;
     }
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                       protected variables                 ////
+    
+    /** A record of the original values. */
+    protected HashMap<Settable, String> _originalValues;
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
@@ -402,9 +408,6 @@ public class Configurer extends JPanel implements CloseListener {
 
     // The object that this configurer configures.
     private NamedObj _object;
-
-    // A record of the original values.
-    private HashMap<Settable, String> _originalValues;
     
     /** */
     private boolean _originalExpertMode = true;

@@ -440,21 +440,27 @@ public class PtolemyQuery extends Query implements QueryListener,
                         if (area.getRows() < 4) {
                             area.setRows(area.getRows() + 1);
                             area.revalidate();
-                            ((EditParametersDialog)area.getParent().getParent().getParent().getParent()
+                            EditParametersDialog dialog = ((EditParametersDialog)area.getParent().getParent().getParent().getParent()
                                     .getParent().getParent().getParent().getParent().getParent().getParent().getParent()
-                                    .getParent().getParent().getParent().getParent()).doLayout();
-                            ((EditParametersDialog)area.getParent().getParent().getParent().getParent()
-                                    .getParent().getParent().getParent().getParent().getParent().getParent().getParent()
-                                    .getParent().getParent().getParent().getParent()).pack();
+                                    .getParent().getParent().getParent().getParent());
+                            dialog.doLayout();
+                            dialog.pack();
                         }
                     } 
                 });
+                
+                final PtolemyQuery query = this;
                 
                 actionMap.put("text-submit",new AbstractAction()
                 {
                     @Override
                     public void actionPerformed(ActionEvent e) {
-                        valueChanged(finalAttribute);
+                        revalidate();
+                        query.changed(attributeName);
+                        EditParametersDialog dialog = ((EditParametersDialog)area.getParent().getParent().getParent().getParent()
+                                .getParent().getParent().getParent().getParent().getParent().getParent().getParent()
+                                .getParent().getParent().getParent().getParent());
+                        ((Configurer)dialog.contents)._originalValues.put(finalAttribute, finalAttribute.getValueAsString());
                     } 
                 });
                 
