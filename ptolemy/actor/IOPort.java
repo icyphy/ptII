@@ -2207,8 +2207,9 @@ public class IOPort extends ComponentPort {
      *  @return A list of IOPort objects.
      */
     public List<IOPort> insideSinkPortList() {
-        // FIXME: Why Doesn't this just get the containers of the
-        // receivers returned by deepGetReceivers()?
+        // NOTE: This doesn't just get the containers of the
+        // receivers returned by deepGetReceivers()
+        // because the receivers may not have yet been created.
         // FIXME: This should cache the result.
         try {
             _workspace.getReadAccess();
@@ -3251,8 +3252,9 @@ public class IOPort extends ComponentPort {
      *  @return A list of IOPort objects.
      */
     public List<IOPort> sinkPortList() {
-        // FIXME: Why Doesn't this just get the containers of the
-        // receivers returned by getRemoteReceivers()?
+        // NOTE: This doesn't just get the containers of the
+        // receivers returned by deepGetReceivers()
+        // because the receivers may not have yet been created.
         try {
             _workspace.getReadAccess();
             if (_sinkPortListVersion != _workspace.getVersion()) {
