@@ -768,8 +768,14 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
                 .getGraphModel();
         Object[] selection = model.getSelectionAsArray();
 
+        // Used by Kepler's Comad.
+        selection = BasicGraphFrameExtension.filterDeletedObjects(graphModel,
+                selection);
+
         // Generate the MoML to carry out the deletion
         StringBuffer moml = _deleteMoML(graphModel, selection, model);
+
+        BasicGraphFrameExtension.filterDeleteMoml(graphModel, selection, moml);
 
         // Next process the deletion MoML. This should be the large majority
         // of most deletions.
@@ -780,6 +786,8 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
                     moml.toString());
             change.setUndoable(true);
             container.requestChange(change);
+            BasicGraphFrameExtension.alternateDelete(selection, graphModel,
+                    container);
         } catch (Exception ex) {
             MessageHandler
                     .error("Delete failed, changeRequest was:" + moml, ex);
@@ -1269,12 +1277,19 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
             moml.append((String) transferable
                     .getTransferData(DataFlavor.stringFlavor));
 
+            // Needed by Kepler's Comad.
+            BasicGraphFrameExtension.alternatePasteMomlModification(container,
+                    moml);
+
             moml.append("</group>\n");
 
             MoMLChangeRequest change = new OffsetMoMLChangeRequest(this,
                     container, moml.toString());
             change.setUndoable(true);
             container.requestChange(change);
+
+            // Added by Lei Dou to update the signature for Kepler/Comad
+            BasicGraphFrameExtension.alternatePaste(container, moml);
         } catch (Exception ex) {
             MessageHandler.error("Paste failed", ex);
         }
