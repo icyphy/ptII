@@ -94,7 +94,7 @@
                 </property>
                 <property name="global" class="ptolemy.data.expr.Parameter" value="true">
                 </property>
-                <property name="initialOutputs" class="ptolemy.actor.PublisherPort$1" value="{1}">
+                <property name="initialOutputs" class="ptolemy.actor.PubSubPort$1" value="{1}">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[210.0, 220.0]">
                 </property>

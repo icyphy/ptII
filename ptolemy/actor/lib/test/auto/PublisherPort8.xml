@@ -93,7 +93,7 @@
             <property name="output"/>
             <property name="channel" class="ptolemy.data.expr.StringParameter" value="bar">
             </property>
-            <property name="initialOutputs" class="ptolemy.actor.PublisherPort$1" value="{0, 2}">
+            <property name="initialOutputs" class="ptolemy.actor.PubSubPort$1" value="{0, 2}">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[415.0, 190.0]">
             </property>
