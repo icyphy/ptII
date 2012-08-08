@@ -566,6 +566,7 @@ public class PropertyClassChanges extends MoMLFilterSimple {
         rateParameterChanges.put("tokenProductionRate", null);
         rateParameterChanges.put("tokenConsumptionRate", null);
         rateParameterChanges.put("tokenInitProduction", null);
+        rateParameterChanges.put("tokenInitConsumption", null);
         _actorsWithPropertyClassChanges
                 .put("ptolemy.domains.sdf.lib.Autocorrelation",
                         rateParameterChanges);

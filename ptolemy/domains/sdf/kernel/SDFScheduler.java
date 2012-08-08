@@ -96,6 +96,10 @@ import ptolemy.math.Fraction;
  this parameter to break the dependency in a cyclic
  graph.
  <p>
+ In addition, an input port may initially have available input tokens.
+ This is indicated by a <i>tokenInitConsumption</i> parameter on the
+ input port.
+ <p>
  Note that this scheduler only ensures that the number of firings is
  minimal.  Most notably, it does not attempt to minimize the size of
  the buffers that are associated with each relation.  The resulting
@@ -108,7 +112,8 @@ import ptolemy.math.Fraction;
  one token for each firing, and each input port consumes one token on
  each firing, and no tokens are created during initialization.)  If
  this is not the case then parameters named <i>tokenConsumptionRate</i>,
- <i>tokenProductionRate</i>, and <i>tokenInitProduction</i> must be set.
+ <i>tokenProductionRate</i>, <i>tokenInitProduction</i>, and
+ <i>tokenInitConsumption</i> must be set.
  The SDFIOPort class provides easier access to these parameters.
  <p>
  Note that reconstructing the schedule is expensive, so the schedule is
@@ -219,6 +224,8 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
                 if (port.isInput()) {
                     _declareDependency(analysis, port, "tokenConsumptionRate",
                             _rateVariables);
+                    _declareDependency(analysis, port, "tokenInitConsumption",
+                            _rateVariables);
                 }
 
                 if (port.isOutput()) {
@@ -290,6 +297,16 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
                 Variable variable;
                 variable = DFUtilities.getRateVariable(port,
                         "tokenInitProduction");
+                _listenToRateVariable(variable, rateVariables);
+                newList.add(variable);
+
+                if (set.contains(variable)) {
+                    _assertDynamicRateVariable(model, variable, rateVariables,
+                            analysis);
+                }
+
+                variable = DFUtilities.getRateVariable(port,
+                        "tokenInitConsumption");
                 _listenToRateVariable(variable, rateVariables);
                 newList.add(variable);
 
@@ -1544,6 +1561,24 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
                                 readyToScheduleActorList);
                     }
                 }
+                
+                // Also simulate initially available tokens on input ports.
+                Iterator inputPorts = actor.inputPortList().iterator();
+
+                while (inputPorts.hasNext()) {
+                    IOPort inputPort = (IOPort) inputPorts.next();
+                    int count = DFUtilities.getTokenInitConsumption(inputPort);
+
+                    if (_debugging && VERBOSE) {
+                        _debug("Simulating " + count
+                                + " initial tokens on input " + inputPort);
+                    }
+
+                    if (count > 0) {
+                        _simulateInitialTokens(inputPort, count, actorList,
+                                readyToScheduleActorList);
+                    }
+                }
             }
 
             // Simulate a number of tokens initially present on each
@@ -1964,6 +1999,91 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
                         // to a markedly more serial schedule, as can
                         // be demonstrated by animating the simulations"
                         readyToScheduleActorList.addFirst(connectedActor);
+                    }
+                }
+            }
+        }
+    }
+
+    /** Simulate the availability of initial tokens on the given input port when
+     *  its actor first fires.  If its actors becomes ready to fire with these
+     *  initial tokens, given that only actors in the actor list are being scheduled, then
+     *  add its actors to the list of actors that are ready to schedule.
+     *  @param inputPort The port that will have initial tokens.
+     *  @param initialTokens The number of initial tokens.
+     *  @param actorList The list of actors that are being scheduled.
+     *  @param readyToScheduleActorList The list of actors that are ready
+     *   to be scheduled.  This will be updated if the actor of this input
+     *   port becomes ready to fire.
+     */
+    @SuppressWarnings("unused")
+    private void _simulateInitialTokens(IOPort inputPort, int initialTokens,
+            List actorList, LinkedList readyToScheduleActorList)
+            throws IllegalActionException {
+        Receiver[][] receivers = inputPort.getReceivers();
+
+        if (_debugging && VERBOSE) {
+            _debug("Initializing with " + initialTokens + " tokens on "
+                    + inputPort.getFullName());
+            _debug("input channels = " + receivers.length);
+            _debug("width = " + inputPort.getWidth());
+        }
+
+        for (int channel = 0; channel < receivers.length; channel++) {
+            if (receivers[channel] == null) {
+                continue;
+            }
+
+            for (int copy = 0; copy < receivers[channel].length; copy++) {
+                if (!(receivers[channel][copy] instanceof SDFReceiver)) {
+                    // NOTE: This should only occur if it is null.
+                    continue;
+                }
+
+                SDFReceiver receiver = (SDFReceiver) receivers[channel][copy];
+                IOPort itsPort = receivers[channel][copy].getContainer();
+                ComponentEntity itsActor = (ComponentEntity) itsPort
+                        .getContainer();
+
+                // Increment the number of waiting tokens.
+                receiver._waitingTokens += initialTokens;
+
+                // Update the buffer size, if necessary.
+                boolean enforce = ((BooleanToken) constrainBufferSizes
+                        .getToken()).booleanValue();
+
+                if (enforce) {
+                    int capacity = receiver.getCapacity();
+
+                    if ((capacity == SDFReceiver.INFINITE_CAPACITY)
+                            || (receiver._waitingTokens > capacity)) {
+                        receiver.setCapacity(receiver._waitingTokens);
+                    }
+                }
+
+                // Only proceed if the connected actor is
+                // something we are scheduling.
+                // The most notable time when this will not be
+                // true is when a connection is made to the
+                // inside of an opaque port.
+                if (actorList.contains(itsActor)) {
+                    // Check and see whether the connectedActor
+                    // can be scheduled.
+                    int inputCount = _countUnfulfilledInputs(
+                            (Actor) itsActor, actorList, false);
+                    int firingsRemaining = _getFiringCount(itsActor);
+
+                    // If so, then add it to the proper list.
+                    // Note that the actor may appear more than once.
+                    // This is OK, since we remove all of the appearances from
+                    // the list when the actor is actually scheduled.
+                    if ((inputCount < 1) && (firingsRemaining > 0)) {
+                        // Ned Stoffel suggested changing this from
+                        // addLast() to addFirst() so as to minimize
+                        // the number of tokens in transit.  "This leads
+                        // to a markedly more serial schedule, as can
+                        // be demonstrated by animating the simulations"
+                        readyToScheduleActorList.addFirst(itsActor);
                     }
                 }
             }

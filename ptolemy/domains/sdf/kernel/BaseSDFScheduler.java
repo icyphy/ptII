@@ -256,6 +256,15 @@ public abstract class BaseSDFScheduler extends Scheduler {
                 if (_debugging && VERBOSE) {
                     _debug("Setting tokenConsumptionRate to " + rate.intValue());
                 }
+                
+                // External ports do not any initial consumption tokens
+                // that are caused by the inside model, so we set this
+                // parameter to zero.
+                DFUtilities.setIfNotDefined(port, "tokenInitConsumption", 0);
+
+                if (_debugging && VERBOSE) {
+                    _debug("Setting tokenInitConsumption to 0.");
+                }
             } else if (port.isOutput()) {
                 DFUtilities.setIfNotDefined(port, "tokenProductionRate",
                         rate.intValue());
@@ -301,6 +310,15 @@ public abstract class BaseSDFScheduler extends Scheduler {
                     foundOutputPort = connectedPort;
                     inferredRate = newRate;
                 }
+                
+                // If this output port has had its tokenInitConsumption
+                // parameter set to something other than zero, the this
+                // means that it will receive a token on the inside from
+                // some port that does initial production, such as PublisherPort.
+                // These initial tokens become initial _production_ for this
+                // port.
+                int initConsumption = DFUtilities.getTokenInitConsumption(port);
+                inferredRate += initConsumption;
 
                 DFUtilities.setIfNotDefined(port, "tokenInitProduction",
                         inferredRate);

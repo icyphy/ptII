@@ -176,6 +176,10 @@ public class CachedSDFScheduler extends SDFScheduler {
             IOPort inputPort = (IOPort) inputPorts.next();
             int rate = DFUtilities.getTokenConsumptionRate(inputPort);
             rates.append(rate);
+            
+            int initRate = DFUtilities.getTokenInitConsumption(inputPort);
+            rates.append("_");
+            rates.append(initRate);
         }
 
         Iterator outputPorts = _outputPortList.iterator();

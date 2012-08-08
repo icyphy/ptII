@@ -653,7 +653,7 @@ public class ModularCompiledSDFTypedCompositeActor extends
      *          as a result of the added relations or ports.
      *  @exception IllegalActionException If the published port cannot be found.
      */
-    public void linkToPublishedPort(String name, IOPort subscriberPort)
+    public IOPort linkToPublishedPort(String name, IOPort subscriberPort)
             throws IllegalActionException, NameDuplicationException {
         try {
             ++_creatingPubSub;
@@ -668,67 +668,65 @@ public class ModularCompiledSDFTypedCompositeActor extends
                     port.liberalLink(_publisherRelations.get(name));
                 }
 
-                super.linkToPublishedPort(name, subscriberPort);
+                return super.linkToPublishedPort(name, subscriberPort);
             } else {
                 NamedObj container = getContainer();
                 if (!isOpaque() && container instanceof CompositeActor) {
                     // Published ports are not propagated if this actor
                     // is opaque.
-                    ((CompositeActor) container).linkToPublishedPort(name,
+                    return ((CompositeActor) container).linkToPublishedPort(name,
                             subscriberPort);
+                } else if (!(container instanceof CompositeActor)) {
+                    throw new IllegalActionException(subscriberPort, "No matching publisher port");
                 } else {
-                    if (container != null) {
-                        IOPort stubPort;
-                        if (!(_subscriberPorts != null && _subscriberPorts
-                                .containsKey(name))) {
-                            stubPort = new TypedIOPort(this,
-                                    uniqueName("subscriberStubPort"));
-                            stubPort.setMultiport(true);
-                            stubPort.setInput(true);
-                            stubPort.setPersistent(false);
-                            new Parameter(stubPort, "_hide", BooleanToken.TRUE);
+                    IOPort stubPort;
+                    if (!(_subscriberPorts != null && _subscriberPorts
+                            .containsKey(name))) {
+                        stubPort = new TypedIOPort(this,
+                                uniqueName("subscriberStubPort"));
+                        stubPort.setMultiport(true);
+                        stubPort.setInput(true);
+                        stubPort.setPersistent(false);
+                        new Parameter(stubPort, "_hide", BooleanToken.TRUE);
 
-                            if (_subscriberPorts == null) {
-                                _subscriberPorts = new HashMap<String, IOPort>();
-                            }
-                            _subscriberPorts.put(name, stubPort);
-
-                            IORelation relation = new TypedIORelation(this,
-                                    this.uniqueName("subscriberRelation"));
-
-                            // Prevent the relation and its links from being exported.
-                            relation.setPersistent(false);
-
-                            if (_subscriberRelations == null) {
-                                _subscriberRelations = new HashMap<String, IORelation>();
-                            }
-
-                            _subscriberRelations.put(name, relation);
-
-                            // Prevent the relation from showing up in vergil.
-                            new Parameter(relation, "_hide", BooleanToken.TRUE);
-                            stubPort.liberalLink(relation);
-                            subscriberPort.liberalLink(relation);
-
-                            Director director = getDirector();
-                            if (director != null) {
-                                director.invalidateSchedule();
-                                director.invalidateResolvedTypes();
-                            }
-                        } else {
-                            stubPort = _subscriberPorts.get(name);
-                            if (stubPort.getContainer() == null) {
-                                // The user deleted the port.
-                                stubPort.setContainer(this);
-                                stubPort.liberalLink(_subscriberRelations
-                                        .get(name));
-                            }
+                        if (_subscriberPorts == null) {
+                            _subscriberPorts = new HashMap<String, IOPort>();
                         }
-                        if (container instanceof CompositeActor) {
-                            ((CompositeActor) container).linkToPublishedPort(
-                                    name, stubPort);
+                        _subscriberPorts.put(name, stubPort);
+
+                        IORelation relation = new TypedIORelation(this,
+                                this.uniqueName("subscriberRelation"));
+
+                        // Prevent the relation and its links from being exported.
+                        relation.setPersistent(false);
+
+                        if (_subscriberRelations == null) {
+                            _subscriberRelations = new HashMap<String, IORelation>();
+                        }
+
+                        _subscriberRelations.put(name, relation);
+
+                        // Prevent the relation from showing up in vergil.
+                        new Parameter(relation, "_hide", BooleanToken.TRUE);
+                        stubPort.liberalLink(relation);
+                        subscriberPort.liberalLink(relation);
+
+                        Director director = getDirector();
+                        if (director != null) {
+                            director.invalidateSchedule();
+                            director.invalidateResolvedTypes();
+                        }
+                    } else {
+                        stubPort = _subscriberPorts.get(name);
+                        if (stubPort.getContainer() == null) {
+                            // The user deleted the port.
+                            stubPort.setContainer(this);
+                            stubPort.liberalLink(_subscriberRelations
+                                    .get(name));
                         }
                     }
+                    return ((CompositeActor) container).linkToPublishedPort(
+                                name, stubPort);
                 }
             }
         } finally {

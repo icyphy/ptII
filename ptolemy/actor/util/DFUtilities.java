@@ -228,6 +228,26 @@ public class DFUtilities {
         }
     }
 
+    /** Get the number of tokens that are initially
+     *  available on the given input port
+     *  after initialization.  If the port is not an
+     *  input port, then presumably any initial tokens
+     *  will be available on the inside.  Return the value of
+     *  the port's <i>tokenInitConsumption</i> parameter.   If the parameter
+     *  does not exist, then assume the port has no initial tokens.
+     *  a value of zero.
+     *  @param port The given port.
+     *  @return The number of tokens the scheduler believes will be available
+     *   at the given input port after initialization.
+     *  @exception IllegalActionException If the tokenInitConsumption
+     *   parameter has an invalid expression.
+     *  @see #setTokenInitConsumption
+     */
+    public static int getTokenInitConsumption(IOPort port)
+            throws IllegalActionException {
+        return getRateVariableValue(port, "tokenInitConsumption", 0);
+    }
+
     /** Get the number of tokens that are produced on the given port
      *  during initialization.  If the port is not an
      *  output port, then return zero.  Otherwise, return the value of
@@ -450,6 +470,22 @@ public class DFUtilities {
     public static void setTokenConsumptionRate(IOPort port, int rate)
             throws IllegalActionException {
         setRate(port, "tokenConsumptionRate", rate);
+    }
+
+    /** Set the <i>tokenInitConsumption</i> parameter of the given port to
+     *  the given rate.  If no parameter exists, then create a new one.
+     *  The new one is an instance of Variable, so it is not persistent.
+     *  That is, it will not be saved in the MoML file if the model is
+     *  saved. The port is normally an output port, but this is not
+     *  checked.
+     *  @param port The given port.
+     *  @param rate The given rate.
+     *  @exception IllegalActionException If the rate is negative.
+     *  @see #getTokenInitProduction
+     */
+    public static void setTokenInitConsumption(IOPort port, int rate)
+            throws IllegalActionException {
+        setRate(port, "tokenInitConsumption", rate);
     }
 
     /** Set the <i>tokenInitProduction</i> parameter of the given port to
