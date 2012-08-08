@@ -175,8 +175,8 @@ test Manager-8.4 {Test type resolution} {
 # {ptolemy.actor.TypeConflictException: Types resolved to unacceptable types in .E0 due to the following inequalities:
 #  (ptolemy.actor.TypedIOPort {.E0.E1.P1}, unknown) <= (ptolemy.actor.TypedIOPort {.E0.E2.P2}, double)
 # }
-} {{ptolemy.actor.TypeConflictException: Types resolved to unacceptable types in .E0 due to the following inequalities:
-  (ptolemy.actor.TypedIOPort {.E0.E1.P1}, unknown) <= (ptolemy.actor.TypedIOPort {.E0.E2.P2}, double)
+} {ptolemy.actor.TypeConflictException: Types resolved to unacceptable types in .E0 due to the following objects:
+  (port .E0.E1.P1: unknown)
 }}
 
 ######################################################################
