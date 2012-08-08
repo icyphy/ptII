@@ -117,6 +117,8 @@ public class Subscriber extends TypedAtomicActor {
         // this actor.
         input.channel.setExpression("$channel");
         input.global.setExpression("global");
+        
+        output.setTypeAtLeast(input);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -169,6 +171,8 @@ public class Subscriber extends TypedAtomicActor {
         // and the output of the subscriber and not the other way around
         // to not break any existing models.
         newObject.output.setWidthEquals(newObject.input, false);
+
+        newObject.output.setTypeAtLeast(newObject.input);
 
         return newObject;
     }

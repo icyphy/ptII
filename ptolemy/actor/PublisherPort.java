@@ -26,23 +26,15 @@
  */
 package ptolemy.actor;
 
-import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 import ptolemy.actor.util.DFUtilities;
 import ptolemy.data.ArrayToken;
 import ptolemy.data.BooleanToken;
-import ptolemy.data.IntToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.StringParameter;
-import ptolemy.data.expr.Variable;
-import ptolemy.data.type.ArrayType;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.InstantiableNamedObj;
@@ -51,10 +43,7 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.kernel.util.Nameable;
 import ptolemy.kernel.util.NamedObj;
-import ptolemy.kernel.util.Settable;
-import ptolemy.kernel.util.Workspace;
 
 ///////////////////////////////////////////////////////////////////
 //// PublisherPort
@@ -123,26 +112,9 @@ public class PublisherPort extends PubSubPort {
         propagateNameChanges.setExpression("false");
         propagateNameChanges.setTypeEquals(BaseType.BOOLEAN);
         
-        initialOutputs = new Parameter(this, "initialOutputs") {
-            /** Override the base class to to allow the type to be unknown.
-             *  @return True if the current type is acceptable.
-             */
-            public boolean isTypeAcceptable() {
-                return super.isTypeAcceptable()
-                        || getType().equals(BaseType.UNKNOWN);
-            }
-        };
-        setTypeAtLeast(ArrayType.elementType(initialOutputs));
-
         setOutput(true);
         setInput(false);
 
-        output_tokenInitProduction = new Parameter(this, "tokenInitProduction");
-        output_tokenInitProduction.setExpression("0");
-        output_tokenInitProduction.setVisibility(Settable.NOT_EDITABLE);
-        output_tokenInitProduction.setTypeEquals(BaseType.INT);
-        output_tokenInitProduction.setPersistent(false);
-        
         // In order for this to show up in the vergil library, it has to have
         // an icon description.
         _attachText("_smallIconDescription", "<svg>\n"
@@ -276,32 +248,25 @@ public class PublisherPort extends PubSubPort {
                     }
                 }
             }
+        } else if (attribute == initialOutputs) {
+            // Set the production rate parameter for the benefit of SDF.
+            // If this port is not opaque, SDF will not see it, so the
+            // corresponding SubscriberPorts become responsible for
+            // setting their tokenInitConsumption parameters.
+            Token initialOutputsValue = initialOutputs.getToken();
+            if (initialOutputsValue != null) {
+                if (!(initialOutputsValue instanceof ArrayToken)) {
+                    throw new IllegalActionException(this,
+                            "initialOutputs value is required to be an array.");
+                }
+                int length = ((ArrayToken)initialOutputsValue).length();
+                DFUtilities.setOrCreate(this, "tokenInitProduction", length);
+            }
         } else {
             super.attributeChanged(attribute);
         }
     }
-    
-    /** Clone the actor into the specified workspace. This calls the
-     *  base class and then resets the type constraints.
-     *  @param workspace The workspace for the new object.
-     *  @return A new actor.
-     *  @exception CloneNotSupportedException If a derived class contains
-     *   an attribute that cannot be cloned.
-     */
-    public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        PubSubPort newObject = (PubSubPort) (super.clone(workspace));
-
-        // Set the type constraints.
-        try {
-            newObject.setTypeAtLeast(ArrayType
-                    .elementType(newObject.initialOutputs));
-        } catch (IllegalActionException e) {
-            throw new InternalErrorException(e);
-        }
-
-        return newObject;
-    }
-    
+        
     /** Notify this object that the containment hierarchy above it has
      *  changed. This registers the port as a publisher with the
      *  container of the container, if there is one.
@@ -342,25 +307,6 @@ public class PublisherPort extends PubSubPort {
                     } catch (NameDuplicationException e) {
                         throw new InternalErrorException(e);
                     }
-                }
-            }
-        }
-        
-        // If we have previously set the tokenInitProduction variable
-        // of some inside port, restore it now to its original value.
-        if (_tokenInitProductionSet != null) {
-            for (IOPort port : _tokenInitProductionSet.keySet()) {
-                String previousValue = _tokenInitProductionSet.get(port);
-                Variable variable = DFUtilities.getRateVariable(port, "tokenInitProduction");
-                if (previousValue == null) {
-                    try {
-                        variable.setContainer(null);
-                    } catch (NameDuplicationException e) {
-                        // Should not occur.
-                        throw new InternalErrorException(e);
-                    }
-                } else {
-                    variable.setExpression(previousValue);
                 }
             }
         }
@@ -411,81 +357,42 @@ public class PublisherPort extends PubSubPort {
         }
  
         Token initialOutputsValue = initialOutputs.getToken();
-        // Since this port may be in a transparent composite,
-        // send initial tokens from the inside source ports.
-        List<IOPort> sources = _insideSourcePortList();
         if (initialOutputsValue instanceof ArrayToken) {
-            for (Token token : ((ArrayToken) initialOutputsValue).arrayValue()) {
-                for (IOPort source : sources) {
-                    // NOTE: The source port may be at the same or higher
-                    // level of the hierarchy than this port, in which case
-                    // we need to send to the inside rather than the outside.
-                    // An exception is that, in what seems like a hack,
-                    // _insideSourcePortList() will return a list with just
-                    // this PublisherPort in it if the PublisherPort is
-                    // contained by an atomic actor.
-                    if (source != this && source.depthInHierarchy() <= depthInHierarchy()) {
-                        for (int i = 0; i < source.getWidthInside(); i++) {
-                            source.sendInside(i, token);
+            // If this port has inside receivers, then it is an opaque port
+            // for a composite actor, and the right way to send outputs is
+            // to populate the inside receivers.
+            Receiver[][] receivers = getInsideReceivers();
+            if (receivers != null && receivers.length > 0 && receivers[0].length > 0) {
+                for (int i = 0; i < receivers.length; i++) {
+                    for (int j = 0; j < receivers.length; j++) {
+                        for (Token token : ((ArrayToken) initialOutputsValue).arrayValue()) {
+                            receivers[i][j].put(token);
                         }
-                    } else {
-                        source.broadcast(token);
                     }
+                }
+            } else {
+                // If this port is transparent or is contained by an atomic actor, then
+                // send initial tokens directly from it. It is not correct to send
+                // them from the source ports connected on the inside because those
+                // ports may also have other destinations.
+                for (Token token : ((ArrayToken) initialOutputsValue).arrayValue()) {
+                    broadcast(token);
                 }
             }
         }
     }
     
-    /** For the benefit of the SDF scheduler, set the
-     *  tokenInitProduction parameter.  If the container
-     *  of this port is transparent composite actor, then
-     *  set the tokenInitProduction parameter of the port
-     *  that will be actually used to produce the initial tokens.
+    /** Override the base class to throw an exception if this port is at the top level.
      *  @exception IllegalActionException If the port is in
-     *  the top level.
+     *   the top level, or if the superclass throws it.
      */
     public void preinitialize() throws IllegalActionException {
-        if (((InstantiableNamedObj)getContainer()).isWithinClassDefinition()) {
-            // Don't preinitialize Class Definitions.
-            return;
-        }
-
         NamedObj actor = getContainer();
         if (actor != null && actor.getContainer() == null) {
             throw new IllegalActionException(this,
                     "PublisherPorts cannot be used at the top level, use a Publisher actor instead.");
         }
-
-        Token initialOutputsValue = initialOutputs.getToken();
-        if (initialOutputsValue == null) {
-            output_tokenInitProduction.setToken(IntToken.ZERO);
-        } else {
-            if (!(initialOutputsValue instanceof ArrayToken)) {
-                throw new IllegalActionException(this,
-                        "initialOutputs value is required to be an array.");
-            }
-            if (_tokenInitProductionSet == null) {
-                _tokenInitProductionSet = new HashMap<IOPort,String>();
-            }
-            int length = ((ArrayToken)initialOutputsValue).length();
-            NamedObj container = getContainer();
-            if (container instanceof CompositeActor
-                    && !((CompositeActor)container).isOpaque()) {
-                List<IOPort> sources = _insideSourcePortList();
-                for (IOPort source : sources) {
-                    Variable previousVariable = DFUtilities.getRateVariable(source, "tokenInitProduction");
-                    if (previousVariable == null) {
-                        _tokenInitProductionSet.put(source, null);
-                    } else {
-                        String previousValue = previousVariable.getExpression();
-                        _tokenInitProductionSet.put(source, previousValue);
-                    }
-                    DFUtilities.setOrCreate(source, "tokenInitProduction", length);
-                }
-            } else {
-                output_tokenInitProduction.setToken(new IntToken(length));
-            }
-        }
+        super.preinitialize();
     }
     
     /** Override the base class to refuse to accept setting to be an input.
@@ -574,52 +481,6 @@ public class PublisherPort extends PubSubPort {
         return results;
     }
     
-    /** Return a list of the ports that can send data through this port
-     *  from the inside.  This includes both output ports and opaque
-     *  input ports that are connected on the inside to this port.
-     *  These are the ports that will send data through this one from the inside.
-     *  Unlike the public method {@link #insideSourcePortList()}, this method
-     *  does not require this port to be an opaque port.
-     *  @return A list of IOPort objects.
-     */
-    private List<IOPort> _insideSourcePortList() {
-        try {
-            _workspace.getReadAccess();
-            Nameable container = getContainer();
-
-            if (!(container instanceof CompositeActor)) {
-                // We used to return an empty list here, but the container
-                // might be an AtomicActor.  For example, a Publisher
-                // contains a PublisherPort.
-                // Test: $PTII/bin/vergil $PTII/ptolemy/actor/lib/test/auto/PublisherSubscriber10InitialOutputs.xml
-                List<IOPort> ports = new LinkedList<IOPort>();
-                ports.add(this);
-                return ports;
-                
-            }
-
-            Director dir = ((CompositeActor) container).getDirector();
-            int depthOfDirector = dir.depthInHierarchy();
-            LinkedList<IOPort> result = new LinkedList<IOPort>();
-            Iterator<?> ports = deepInsidePortList().iterator();
-
-            while (ports.hasNext()) {
-                IOPort port = (IOPort) ports.next();
-                int depth = port.getContainer().depthInHierarchy();
-
-                if (port.isInput() && (depth < depthOfDirector)) {
-                    result.addLast(port);
-                } else if (port.isOutput() && (depth >= depthOfDirector)) {
-                    result.addLast(port);
-                }
-            }
-
-            return result;
-        } finally {
-            _workspace.doneReading();
-        }
-    }
-
     /** Update the channel name of any connected SubscriberPorts.
      *  Note that the channel name of connected SubscriptionAggregatorPorts
      *  are not updated.
@@ -675,12 +536,6 @@ public class PublisherPort extends PubSubPort {
     
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
-    /** Set of ports whose tokenInitProduction variable has been set
-     *  in preinitialize to something other than 0. This is needed so
-     *  that these variables can be unset if the hierarchy changes.
-     */
-    private Map<IOPort,String> _tokenInitProductionSet;
     
     /** Flag to prevent recursive call of subscribers() method. */
     private boolean _inUpdateCall = false;

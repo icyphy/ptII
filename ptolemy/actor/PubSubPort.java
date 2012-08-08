@@ -73,6 +73,17 @@ public abstract class PubSubPort extends TypedIOPort
         global = new Parameter(this, "global");
         global.setTypeEquals(BaseType.BOOLEAN);
         global.setExpression("false");
+        
+        initialOutputs = new Parameter(this, "initialOutputs") {
+            /** Override the base class to to allow the type to be unknown.
+             *  @return True if the current type is acceptable.
+             */
+            public boolean isTypeAcceptable() {
+                return super.isTypeAcceptable()
+                        || getType().equals(BaseType.UNKNOWN);
+            }
+        };
+        setTypeAtLeast(ArrayType.elementType(initialOutputs));
     }
     
     ///////////////////////////////////////////////////////////////////
@@ -123,6 +134,27 @@ public abstract class PubSubPort extends TypedIOPort
                 "Cannot add Initializables to publisher and subscriber ports.");
     }
     
+    /** Clone the actor into the specified workspace. This calls the
+     *  base class and then resets the type constraints.
+     *  @param workspace The workspace for the new object.
+     *  @return A new actor.
+     *  @exception CloneNotSupportedException If a derived class contains
+     *   an attribute that cannot be cloned.
+     */
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        PubSubPort newObject = (PubSubPort) (super.clone(workspace));
+
+        // Set the type constraints.
+        try {
+            newObject.setTypeAtLeast(ArrayType
+                    .elementType(newObject.initialOutputs));
+        } catch (IllegalActionException e) {
+            throw new InternalErrorException(e);
+        }
+
+        return newObject;
+    }
+
     /** Notify this object that the containment hierarchy above it has
      *  changed. This method does nothing because instead we use
      *  {@link #preinitialize()} to handle re-establishing the connections.

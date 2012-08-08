@@ -26,10 +26,16 @@
  */
 package ptolemy.actor;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+import ptolemy.actor.util.DFUtilities;
+import ptolemy.data.ArrayToken;
 import ptolemy.data.BooleanToken;
+import ptolemy.data.Token;
 import ptolemy.data.expr.StringParameter;
+import ptolemy.data.expr.Variable;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Entity;
@@ -37,6 +43,7 @@ import ptolemy.kernel.InstantiableNamedObj;
 import ptolemy.kernel.Port;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 
@@ -144,11 +151,54 @@ public class SubscriberPort extends PubSubPort {
             // because it will remove the published port name by _channel.
             // If _channel is set to a real name (not a regex pattern),
             // Then chaos ensues.  See test 3.0 in SubscriptionAggregator.tcl
+        } else if (attribute == initialOutputs) {
+            // Set the initial token parameter for the benefit of SDF.
+            // If this port is not opaque, SDF will not see it, so we
+            // will need in preinitialize() to set the init production
+            // of the inside ports.
+            Token initialOutputsValue = initialOutputs.getToken();
+            if (initialOutputsValue != null) {
+                if (!(initialOutputsValue instanceof ArrayToken)) {
+                    throw new IllegalActionException(this,
+                            "initialOutputs value is required to be an array.");
+                }
+                int length = ((ArrayToken)initialOutputsValue).length();
+                DFUtilities.setOrCreate(this, "tokenInitProduction", length);
+            }
         } else {
             super.attributeChanged(attribute);
         }
     }
     
+    /** Notify this object that the containment hierarchy above it has
+     *  changed. This restores the tokenInitConsumption parameters of
+     *  any ports that had that parameter changed in a previous
+     *  call to preinitialize().
+     *  @exception IllegalActionException If the change is not
+     *   acceptable.
+     */
+    @Override
+    public void hierarchyChanged() throws IllegalActionException {        
+        // If we have previously set the tokenInitConsumption variable
+        // of some port, restore it now to its original value.
+        if (_tokenInitConsumptionSet != null) {
+            for (IOPort port : _tokenInitConsumptionSet.keySet()) {
+                String previousValue = _tokenInitConsumptionSet.get(port);
+                Variable variable = DFUtilities.getRateVariable(port, "tokenInitConsumption");
+                if (previousValue == null) {
+                    try {
+                        variable.setContainer(null);
+                    } catch (NameDuplicationException e) {
+                        // Should not occur.
+                        throw new InternalErrorException(e);
+                    }
+                } else {
+                    variable.setExpression(previousValue);
+                }
+            }
+        }
+        super.hierarchyChanged();
+    }
     /** Notify this object that the containment hierarchy above it will be
      *  changed, which results in 
      *  @exception IllegalActionException If unlinking to a published port fails.
@@ -176,6 +226,42 @@ public class SubscriberPort extends PubSubPort {
             }
         }
         super.hierarchyWillChange();
+    }
+    
+    /** If {@link #initialOutputs} has been set, then make available the
+     *  inputs specified by its array value.
+     */
+    @Override
+    public void initialize() throws IllegalActionException {
+        if (((InstantiableNamedObj)getContainer()).isWithinClassDefinition()) {
+            // Don't initialize Class Definitions.
+            // See $PTII/ptolemy/actor/lib/test/auto/PublisherToplevelSubscriberPortAOC.xml 
+            return;
+        }
+ 
+        Token initialOutputsValue = initialOutputs.getToken();
+        if (initialOutputsValue instanceof ArrayToken) {
+            // If this port is opaque, put the tokens into the receivers.
+            if (isOpaque()) {
+                Receiver[][] receivers = getReceivers();
+                if (receivers != null) {
+                    for (int i = 0; i < receivers.length; i++) {
+                        for (int j = 0; j < receivers.length; j++) {
+                            for (Token token : ((ArrayToken) initialOutputsValue).arrayValue()) {
+                                receivers[i][j].put(token);
+                            }
+                        }
+                    }
+                }
+            } else {
+                // The port is not opaque.
+                for (Token token : ((ArrayToken) initialOutputsValue).arrayValue()) {
+                    for (int i = 0; i < getWidth(); i++) {
+                        sendInside(i, token);
+                    }
+                }
+            }
+        }
     }
     
     /** Override the base class to ensure that there is a publisher.
@@ -253,8 +339,10 @@ public class SubscriberPort extends PubSubPort {
             NamedObj container = immediateContainer.getContainer();
             if (container instanceof CompositeActor) {
                 try {
+                    IOPort publisherPort = null;
                     try {
-                        ((CompositeActor) container).linkToPublishedPort(
+                        publisherPort =
+                                ((CompositeActor) container).linkToPublishedPort(
                                 _channel, this, _global);
                     } catch (IllegalActionException ex) {
                         // If we have a LazyTypedCompositeActor that
@@ -266,11 +354,56 @@ public class SubscriberPort extends PubSubPort {
                         _updatePublisherPorts((CompositeEntity)toplevel());
                         // Now try again.
                         try {
-                            ((CompositeActor) container).linkToPublishedPort(
+                            publisherPort =
+                                    ((CompositeActor) container).linkToPublishedPort(
                                     _channel, this, _global);
                         } catch (IllegalActionException ex2) {
                             // Rethrow with the "this" so that Go To Actor works.
                             throw new IllegalActionException(this, ex2, "Failed to update link.");
+                        }
+                    }
+                    // Set the init consumption parameter for this port, or if this
+                    // port is not opaque, for the opaque ports connected to it on the inside.
+                    // The init consumption will be the sum of the number of initial
+                    // tokens this port has and the number of initial tokens produced
+                    // by the publisher port if it is not opaque (if it is opaque, then
+                    // its token init production parameter will be seen by the scheduler).
+                    int length = 0;
+                    
+                    Token initialOutputsValue = initialOutputs.getToken();
+                    if (initialOutputsValue != null) {
+                        length = ((ArrayToken)initialOutputsValue).length();
+                    }
+
+                    // If the publisherPort has initial production and is not opaque,
+                    // then for the benefit of SDF we need to set the tokenInitConsumption
+                    // parameter here so that the SDF scheduler knows that initial tokens
+                    // will be available.
+                    if (!publisherPort.isOpaque()) {
+                        length += DFUtilities.getTokenInitProduction(publisherPort);
+                    }
+                         
+                    if (length > 0) {
+                        if (isOpaque()) {
+                            DFUtilities.setOrCreate(this, "tokenInitConsumption", length);
+                        } else {
+                            // If this port is not opaque, then we have
+                            // to set the parameter for inside ports that will
+                            // actually receive the initial token.
+                            if (_tokenInitConsumptionSet == null) {
+                                _tokenInitConsumptionSet = new HashMap<IOPort,String>();
+                            }
+                            List<IOPort> insidePorts = deepInsidePortList();
+                            for (IOPort port : insidePorts) {
+                                Variable previousVariable = DFUtilities.getRateVariable(port, "tokenInitConsumption");
+                                if (previousVariable == null) {
+                                    _tokenInitConsumptionSet.put(port, null);
+                                } else {
+                                    String previousValue = previousVariable.getExpression();
+                                    _tokenInitConsumptionSet.put(port, previousValue);
+                                }
+                                DFUtilities.setOrCreate(port, "tokenInitConsumption", length);
+                            }
                         }
                     }
                 } catch (NameDuplicationException e) {
@@ -306,4 +439,13 @@ public class SubscriberPort extends PubSubPort {
             }
         }
     }
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
+
+    /** Set of ports whose tokenInitConsumption variable has been set
+     *  in preinitialize to something other than 0. This is needed so
+     *  that these variables can be unset if the hierarchy changes.
+     */
+    private Map<IOPort,String> _tokenInitConsumptionSet;
 }
