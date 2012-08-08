@@ -140,7 +140,7 @@ public interface ImageDisplayInterface {
      * Set the platform dependent picture of the image.
      * The container can be AWT container or Android view.
      * @param picture The picture
-     * @see #getPicture();
+     * @see #getPicture()
      */
     public void setPicture(Object picture);
 

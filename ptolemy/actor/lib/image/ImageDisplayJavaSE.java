@@ -142,7 +142,7 @@ public class ImageDisplayJavaSE extends AbstractPlaceableJavaSE implements
     }
 
     /** Initialize an object. 
-     * @param imageDisplay The object to be initialized.
+     * @param imageDisplayActor The object to be initialized.
      * @exception IllegalActionException If the entity cannot be contained
      * by the proposed container.
      * @exception NameDuplicationException If the container already has an

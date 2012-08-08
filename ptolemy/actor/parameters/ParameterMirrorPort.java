@@ -82,7 +82,7 @@ public class ParameterMirrorPort extends ParameterPort {
 
     /** Return the associated port, or null if there is none.
      *  @return The associated port, or null if there is none.
-     *  @see #setAssociatedPort(MirrorPort)
+     *  @see #setAssociatedPort(ParameterMirrorPort)
      */
     public ParameterMirrorPort getAssociatedPort() {
         return _associatedPort;
