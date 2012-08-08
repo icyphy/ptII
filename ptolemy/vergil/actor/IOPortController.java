@@ -464,9 +464,11 @@ public class IOPortController extends AttributeController {
                             ColorAttribute color = null; 
                             if (object instanceof MonitoredQuantityManager) {
                                 color = ((MonitoredQuantityManager) qmList.get(0)).color; 
+                            } else if (object instanceof CompositeQuantityManager) {
+                                color = ((CompositeQuantityManager) qmList.get(0)).color;
                             } else if (object instanceof IOPort) {
                                 color = ((CompositeQuantityManager) ((IOPort)qmList.get(0)).getContainer()).color; 
-                            }
+                            } 
                             fill = color.asColor();
 
                             StringAttribute info = (StringAttribute) port
