@@ -512,7 +512,10 @@ public class Director extends Attribute implements Executable {
     public Time fireContainerAt(Time time, int microstep)
             throws IllegalActionException {
         Actor container = (Actor) getContainer();
-        if (container != null) {
+        // Some composites, such as RunCompositeActor want to be treated
+        // as if they are at the top level even though they have an executive
+        // director, so be sure to check _isTopLevel().
+        if (container != null && !_isTopLevel()) {
             Director director = container.getExecutiveDirector();
             if (director != null) {
                 if (_debugging) {
@@ -578,7 +581,10 @@ public class Director extends Attribute implements Executable {
             Actor container = (Actor) getContainer();
             if (container != null && container.getContainer() != null) {
                 Director executiveDirector = container.getExecutiveDirector();
-                if (executiveDirector != null) {
+                // Some composites, such as RunCompositeActor want to be treated
+                // as if they are at the top level even though they have an executive
+                // director, so be sure to check _isTopLevel().
+                if (executiveDirector != null && !_isTopLevel()) {
                     return executiveDirector.getModelTime();
                 }
             }
@@ -640,7 +646,10 @@ public class Director extends Attribute implements Executable {
         if (container instanceof CompositeActor) {
             Director executiveDirector = ((CompositeActor) container)
                     .getExecutiveDirector();
-            if (executiveDirector != null) {
+            // Some composites, such as RunCompositeActor want to be treated
+            // as if they are at the top level even though they have an executive
+            // director, so be sure to check _isTopLevel().
+            if (executiveDirector != null && !_isTopLevel()) {
                 return executiveDirector.getModelNextIterationTime();
             }
         }
@@ -659,12 +668,15 @@ public class Director extends Attribute implements Executable {
         if (_startTime == null) {
             if (isEmbedded() && getContainer() instanceof Actor) {
                 // The previous implementation assumes this method is only called
-                // during initialize. Is this a valid assumption? No, it's not.
+                // during initialize. This is not a valid assumption.
                 // It is called when attributeChanged() on startTime, and also
                 // when cloning.
                 Director executiveDirector = ((Actor) getContainer())
                         .getExecutiveDirector();
-                if (executiveDirector != null) {
+                // Some composites, such as RunCompositeActor want to be treated
+                // as if they are at the top level even though they have an executive
+                // director, so be sure to check _isTopLevel().
+                if (executiveDirector != null && !_isTopLevel()) {
                     return executiveDirector.getModelTime();
                 } else {
                     return _zeroTime;
@@ -904,11 +916,14 @@ public class Director extends Attribute implements Executable {
     }
 
     /** Return true if this director is embedded inside an opaque composite
-     *  actor contained by another composite actor.
+     *  actor contained by another composite actor. Note that some classes,
+     *  such as RunCompositeActor, may return false even if they are actually
+     *  embedded, but they want to be treated as if they were not.
      *  @return True if this directory is embedded inside an opaque composite
-     *  actor contained by another composite actor.
+     *   actor contained by another composite actor.
+     *  @see #setEmbedded(boolean)
      */
-    public boolean isEmbedded() {
+    public final boolean isEmbedded() {
         return !_isTopLevel();
     }
 
@@ -1297,6 +1312,20 @@ public class Director extends Attribute implements Executable {
         setModelTime(new Time(this, newTime));
     }
 
+    /** With a false argument, force this director to behave as if it is
+     *  a top-level director even if it is not. This is used by composite
+     *  actors such as RunCompositeActor that need for the inside director
+     *  to behave as if it is running at the top level.
+     *  @param force False to force this director to behave as if it were
+     *   not embedded.
+     *  @see #isEmbedded()
+     */
+    public final void setEmbedded(boolean force) {
+        if (!force) {
+            _notEmbeddedForced = true;
+        }
+    }
+
     /** Set a new value to the current time of the model.
      *  @exception IllegalActionException If the new time is less than
      *   the current time returned by getCurrentTime().
@@ -1384,7 +1413,10 @@ public class Director extends Attribute implements Executable {
         if (container instanceof Actor) {
             Director executiveDirector = ((Actor) container)
                     .getExecutiveDirector();
-            if (executiveDirector != null) {
+            // Some composites, such as RunCompositeActor want to be treated
+            // as if they are at the top level even though they have an executive
+            // director, so be sure to check _isTopLevel().
+            if (executiveDirector != null && !_isTopLevel()) {
                 return executiveDirector.suggestedModalModelDirectors();
             }
         }
@@ -1576,11 +1608,15 @@ public class Director extends Attribute implements Executable {
         return isEmbedded();
     }
 
-    /** Return true if this is a top-level director.
+    /** Return true if this is a top-level director, or if it should
+     *  always be handled as if it were a top-level director.
      *  Parts of this method is read synchronized on the workspace.
      * @return True if this director is at the top-level.
      */
     protected boolean _isTopLevel() {
+        if (_notEmbeddedForced) {
+            return true;
+        }
         NamedObj container = getContainer();
 
         // NOTE: the container may not be a composite actor.
@@ -1764,6 +1800,11 @@ public class Director extends Attribute implements Executable {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
+    /** Flag indicating that this director has been forced to behave
+     *  as if it were at the top level.
+     */
+    private transient boolean _notEmbeddedForced = false;
+    
     /** Start time. */
     private transient Time _startTime;
 

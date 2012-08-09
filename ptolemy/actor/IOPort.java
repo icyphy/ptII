@@ -4711,7 +4711,7 @@ public class IOPort extends ComponentPort {
             // may belong to an opaque composite actor.
             Director executiveDirector = ((Actor) container)
                     .getExecutiveDirector();
-            if (executiveDirector != null) {
+            if (executiveDirector != null && executiveDirector != director) {
                 executiveDirector.invalidateSchedule();
                 executiveDirector.invalidateResolvedTypes();
             }

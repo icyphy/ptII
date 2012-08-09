@@ -704,7 +704,10 @@ public class DEDirector extends Director implements SuperdenseTimeDirector {
         // Go through hierarchy to find the minimum step.
         Director executiveDirector = ((CompositeActor) getContainer())
                 .getExecutiveDirector();
-        if (executiveDirector != null) { 
+        // Some composites, such as RunCompositeActor want to be treated
+        // as if they are at the top level even though they have an executive
+        // director, so be sure to check _isTopLevel().
+        if (executiveDirector != null && !_isTopLevel()) { 
             
             Time aFutureTimeOfUpperLevel = localClock.getLocalTimeForEnvironmentTime(
                     executiveDirector.getModelNextIterationTime());
@@ -815,7 +818,10 @@ public class DEDirector extends Director implements SuperdenseTimeDirector {
                 if (container instanceof CompositeActor) {
                     Director executiveDirector = ((CompositeActor) container)
                             .getExecutiveDirector();
-                    if (executiveDirector instanceof SuperdenseTimeDirector) {
+                    // Some composites, such as RunCompositeActor want to be treated
+                    // as if they are at the top level even though they have an executive
+                    // director, so be sure to check _isTopLevel().
+                    if (executiveDirector instanceof SuperdenseTimeDirector && !_isTopLevel()) {
                         _microstep = ((SuperdenseTimeDirector) executiveDirector)
                                 .getIndex();
                     }
@@ -1019,7 +1025,10 @@ public class DEDirector extends Director implements SuperdenseTimeDirector {
             if (container instanceof CompositeActor) {
                 Director executiveDirector = ((CompositeActor) container)
                         .getExecutiveDirector();
-                if (executiveDirector instanceof SuperdenseTimeDirector) {
+                // Some composites, such as RunCompositeActor want to be treated
+                // as if they are at the top level even though they have an executive
+                // director, so be sure to check _isTopLevel().
+                if (executiveDirector instanceof SuperdenseTimeDirector && !_isTopLevel()) {
                     _microstep = ((SuperdenseTimeDirector) executiveDirector)
                             .getIndex();
                 }
@@ -1887,7 +1896,10 @@ public class DEDirector extends Director implements SuperdenseTimeDirector {
                 if (container instanceof CompositeActor) {
                     Director executiveDirector = ((CompositeActor) container)
                             .getExecutiveDirector();
-                    if (executiveDirector instanceof SuperdenseTimeDirector) {
+                    // Some composites, such as RunCompositeActor want to be treated
+                    // as if they are at the top level even though they have an executive
+                    // director, so be sure to check _isTopLevel().
+                    if (executiveDirector instanceof SuperdenseTimeDirector && !_isTopLevel()) {
                         // If the next event microstep in the past (which it should
                         // not be normally), then we will consider it to match.
                         microstepMatches = nextEvent.microstep() <= _microstep;

@@ -742,19 +742,24 @@ public class MultirateFSMDirector extends FSMDirector {
      */
     protected CompositeActor _getEnclosingDomainActor()
             throws IllegalActionException {
-        // Keep moving up towards the toplevel of the hierarchy until
-        // we find an executive director that is not an instance of
-        // MultirateFSMDirector or until we reach the toplevel composite actor.
-        CompositeActor container = (CompositeActor) getContainer();
-        Director director = container.getExecutiveDirector();
+        if (isEmbedded()) {
+            // Keep moving up towards the toplevel of the hierarchy until
+            // we find an executive director that is not an instance of
+            // MultirateFSMDirector or until we reach the toplevel composite actor.
+            CompositeActor container = (CompositeActor) getContainer();
+            Director director = container.getExecutiveDirector();
 
-        while (director != null) {
-            if (director instanceof MultirateFSMDirector) {
-                // Move up another level in the hierarchy.
-                container = (CompositeActor) (container.getContainer());
-                director = container.getExecutiveDirector();
-            } else {
-                return container;
+            while (director != null) {
+                if (director instanceof MultirateFSMDirector) {
+                    if (!director.isEmbedded()) {
+                        break;
+                    }
+                    // Move up another level in the hierarchy.
+                    container = (CompositeActor) (container.getContainer());
+                    director = container.getExecutiveDirector();
+                } else {
+                    return container;
+                }
             }
         }
 

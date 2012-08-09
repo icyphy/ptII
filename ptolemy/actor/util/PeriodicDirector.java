@@ -59,6 +59,15 @@ public interface PeriodicDirector extends Executable, Nameable {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    /** Return true if this director is embedded inside an opaque composite
+     *  actor contained by another composite actor. Note that some classes,
+     *  such as RunCompositeActor, may return false even if they are actually
+     *  embedded, but they want to be treated as if they were not.
+     *  @return True if this directory is embedded inside an opaque composite
+     *  actor contained by another composite actor.
+     */
+    public boolean isEmbedded();
+
     /** Return the value of the period as a double.
      *  @return The value of the period as a double.
      *  @exception IllegalActionException If the period parameter

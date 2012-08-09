@@ -629,7 +629,6 @@ public class FixedPointDirector extends StaticSchedulingDirector implements
      */
     public boolean transferOutputs(IOPort port) throws IllegalActionException {
         boolean result = false;
-        ((CompositeActor) getContainer()).getExecutiveDirector();
         int outsideWidth = port.getWidth();
         for (int i = 0; i < port.getWidthInside(); i++) {
             if (port.isKnownInside(i)) {

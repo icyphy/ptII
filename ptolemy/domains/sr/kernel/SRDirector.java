@@ -360,7 +360,7 @@ public class SRDirector extends FixedPointDirector implements PeriodicDirector {
             if (container instanceof CompositeActor) {
                 Director executiveDirector = ((CompositeActor) container)
                         .getExecutiveDirector();
-                if (executiveDirector instanceof SuperdenseTimeDirector) {
+                if (isEmbedded() && executiveDirector instanceof SuperdenseTimeDirector) {
                     _index = ((SuperdenseTimeDirector) executiveDirector)
                             .getIndex();
                 } else {

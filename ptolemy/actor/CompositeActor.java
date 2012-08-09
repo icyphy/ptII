@@ -1948,7 +1948,6 @@ public class CompositeActor extends CompositeEntity implements Actor,
      *  @param change The requested change.
      */
     public void requestChange(ChangeRequest change) {
-        Manager manager = getManager();
         super.requestChange(change);
         // stopFire() should be called after the change has been requested
         // to ensure that if it is being requested in a separate thread
@@ -1958,10 +1957,11 @@ public class CompositeActor extends CompositeEntity implements Actor,
         // The call of stopFire() only needs to happen in case the change
         // represents a structural change. Not if we request a change to
         // refresh the GUI.
-        if (manager != null && change.isStructuralChange()) {
+        if (getManager() != null && change.isStructuralChange()) {
             stopFire();
         }
     }
+    
     /** Specify whether this object is a class definition.
      *  If the argument is true and this entity is not a class
      *  definition, then the cache of published and subscribed ports
@@ -2160,8 +2160,12 @@ public class CompositeActor extends CompositeEntity implements Actor,
             }
 
             Director director = getDirector();
+            Director executiveDirector = getExecutiveDirector();
 
-            if (director != null) {
+            // Call stop() on the director. Be sure the
+            // director is an internal director, or else an infinite
+            // loop will result!
+            if (director != null && director != executiveDirector) {
                 director.stop();
             }
         } finally {

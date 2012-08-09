@@ -32,6 +32,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
+import ptolemy.actor.Director;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.TypedCompositeActor;
 import ptolemy.actor.parameters.ParameterPort;
@@ -41,6 +42,7 @@ import ptolemy.data.Token;
 import ptolemy.data.expr.Variable;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
+import ptolemy.kernel.util.ChangeListener;
 import ptolemy.kernel.util.ChangeRequest;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -193,15 +195,6 @@ public class LifeCycleManager extends TypedCompositeActor {
         }
     }
 
-    /** Return true, since this actor is always opaque.
-     *  This method is <i>not</i> synchronized on the workspace,
-     *  so the caller should be.
-     */
-    public boolean isOpaque() {
-        // FIXME: Override getDirector() to ensure that there is always a director.
-        return true;
-    }
-
     /** Request that given change be executed.   In this class,
      *  do not delegate the change request to the container, but
      *  execute the request immediately or record it, depending on
@@ -261,6 +254,14 @@ public class LifeCycleManager extends TypedCompositeActor {
             // Make sure that change requests are not executed when requested,
             // but rather only executed when executeChangeRequests() is called.
             setDeferringChangeRequests(true);
+            
+            Director insideDirector = getDirector();
+            Director outsideDirector = getExecutiveDirector();
+            if (insideDirector == outsideDirector) {
+                throw new IllegalActionException(this, "An inside director is required to execute the inside model.");
+            }
+            // Force the inside director to behave as if it were at the top level.
+            insideDirector.setEmbedded(false);
 
             _readInputs();
 

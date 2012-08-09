@@ -422,7 +422,10 @@ public class PtidesBasicDirector extends DEDirector {
         schedulerExecutionTimeBound = new Parameter(this,
                 "schedulerExecutionTime");
         schedulerExecutionTimeBound.setTypeEquals(BaseType.DOUBLE);
-        schedulerExecutionTimeBound.setExpression("0.0"); 
+        schedulerExecutionTimeBound.setExpression("0.0");
+        
+        // Force isEmbedded() to always return false.
+        setEmbedded(false);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -713,14 +716,6 @@ public class PtidesBasicDirector extends DEDirector {
 
         _setIcon(_getIdleIcon(), true);
 
-    }
-
-    /** Return false to get the superclass DE director to behave exactly
-     *  as if it is executing at the top level.
-     *  @return False.
-     */
-    public boolean isEmbedded() {
-        return false;
     }
 
     /** Return a new receiver of the type {@link PtidesBasicReceiver}.

@@ -30,8 +30,6 @@ package ptolemy.actor.lib.hoc;
 
 import java.util.Iterator;
 
-import ptolemy.actor.Director;
-import ptolemy.actor.Receiver;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.data.IntToken;
 import ptolemy.data.expr.Parameter;
@@ -195,19 +193,9 @@ public class RunCompositeActor extends LifeCycleManager {
             _debug("---- calling fire(), which will execute a subsystem.");
         }
 
-        // FIXME: Return result should be used to set what postfire() returns?
         _executeInsideModel();
     }
     
-    /** Return null, indicating that there is no executive director.
-     *  In fact, there is, but since the inside model is supposed to run
-     *  as if there were not.
-     *  @return null.
-     */
-    public Director getExecutiveDirector() {
-        return null;
-    }
-
     /** Initialize this actor, which in this case, does nothing.  The
      *  initialization of the submodel is accomplished in fire().  The
      *  subclass of this can set the
@@ -223,21 +211,6 @@ public class RunCompositeActor extends LifeCycleManager {
         _iteration = 0;
     }
     
-    /** Override the base class to make sure we actually use the
-     *  executive director instead of null as returned by
-     *  {@link #getExecutiveDirector()}.
-     *  @exception IllegalActionException If there is no executive director.
-     *  @return A new object implementing the Receiver interface.
-     */
-    public Receiver newReceiver() throws IllegalActionException {
-        Director director = super.getExecutiveDirector();
-        if (director == null) {
-            throw new IllegalActionException(this,
-                    "Cannot create a receiver without an executive director.");
-        }
-        return director.newReceiver();
-    }
-
     /** Return true, indicating that execution can continue.  The
      *  subclass of this can set the
      *  <i>_isSubclassOfRunCompositeActor</i> to be true to call the

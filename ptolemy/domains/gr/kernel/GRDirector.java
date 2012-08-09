@@ -199,7 +199,7 @@ public class GRDirector extends StaticSchedulingDirector {
         // matter which actor requests firing.
         Nameable container = getContainer();
 
-        if (container instanceof Actor) {
+        if (isEmbedded() && container instanceof Actor) {
             Actor modalModel = (Actor) container;
             Director executiveDirector = modalModel.getExecutiveDirector();
 

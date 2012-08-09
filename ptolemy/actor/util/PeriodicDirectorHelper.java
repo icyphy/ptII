@@ -98,7 +98,10 @@ public class PeriodicDirectorHelper {
         if (periodValue == 0.0) {
             if (container != null) {
                 Director executiveDirector = container.getExecutiveDirector();
-                if (executiveDirector != null) {
+                // Some composites, such as RunCompositeActor want to be treated
+                // as if they are at the top level even though they have an executive
+                // director, so be sure to check _isTopLevel().
+                if (executiveDirector != null && _director.isEmbedded()) {
                     return executiveDirector.fireAt(container, time);
                 }
             }
@@ -151,7 +154,10 @@ public class PeriodicDirectorHelper {
             // firing.
             Actor container = (Actor) _director.getContainer();
             Director executiveDirector = container.getExecutiveDirector();
-            if (executiveDirector != null) {
+            // Some composites, such as RunCompositeActor want to be treated
+            // as if they are at the top level even though they have an executive
+            // director, so be sure to check _isTopLevel().
+            if (executiveDirector != null && _director.isEmbedded()) {
                 executiveDirector.fireAtCurrentTime(container);
             }
         }
@@ -172,7 +178,10 @@ public class PeriodicDirectorHelper {
             Time currentTime = ((Director) _director).getModelTime();
             _nextFiringTime = currentTime.add(periodValue);
 
-            if (executiveDirector != null) {
+            // Some composites, such as RunCompositeActor want to be treated
+            // as if they are at the top level even though they have an executive
+            // director, so be sure to check _isTopLevel().
+            if (executiveDirector != null && _director.isEmbedded()) {
                 // Not at the top level.
                 // NOTE: The following throws an exception if the time
                 // requested cannot be honored by the enclosed director
@@ -230,7 +239,11 @@ public class PeriodicDirectorHelper {
                 // to fire.
                 Director executiveDirector = ((Actor) _director.getContainer())
                         .getExecutiveDirector();
-                if (executiveDirector instanceof SuperdenseTimeDirector) {
+                // Some composites, such as RunCompositeActor want to be treated
+                // as if they are at the top level even though they have an executive
+                // director, so be sure to check _isTopLevel().
+                if (executiveDirector instanceof SuperdenseTimeDirector
+                        && _director.isEmbedded()) {
                     int index = ((SuperdenseTimeDirector) executiveDirector)
                             .getIndex();
                     if (index != 1) {

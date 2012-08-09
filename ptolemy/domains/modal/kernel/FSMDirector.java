@@ -303,7 +303,7 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
     public Dependency defaultDependency() {
         Director executiveDirector = ((Actor) getContainer())
                 .getExecutiveDirector();
-        if (executiveDirector != null) {
+        if (isEmbedded() && executiveDirector != null) {
             return executiveDirector.defaultDependency();
         }
         return BooleanDependency.OTIMES_IDENTITY;
@@ -362,7 +362,7 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
         Actor container = (Actor) getContainer();
         if (container != null) {
             Director director = container.getExecutiveDirector();
-            if (director != null) {
+            if (isEmbedded() && director != null) {
                 if (_debugging) {
                     _debug("**** Requesting that enclosing director refire me at "
                             + time + " with microstep " + microstep);
@@ -554,7 +554,7 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
     public int getIndex() {
         Director executiveDirector = ((Actor) getContainer())
                 .getExecutiveDirector();
-        if (executiveDirector instanceof SuperdenseTimeDirector) {
+        if (isEmbedded() && executiveDirector instanceof SuperdenseTimeDirector) {
             return ((SuperdenseTimeDirector) executiveDirector).getIndex()
                     + _indexOffset;
         }
@@ -716,7 +716,7 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
     public void invalidateSchedule() {
         Director executiveDirector = ((Actor) getContainer())
                 .getExecutiveDirector();
-        if (executiveDirector != null) {
+        if (isEmbedded() && executiveDirector != null) {
             executiveDirector.invalidateSchedule();
         }
     }
