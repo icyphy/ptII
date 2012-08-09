@@ -194,8 +194,14 @@ public class OffsetMoMLChangeRequest extends MoMLChangeRequest {
             final NamedObj containerFinal = container;
             Runnable doHelloWorld = new Runnable() {
                     public void run() {
-                        Interactor interactor = controllerFinal.getEdgeController(new Object())
-                            .getEdgeInteractor();
+                        Interactor interactor = null;
+                        try {
+                            interactor = controllerFinal.getEdgeController(new Object())
+                                .getEdgeInteractor();
+                        } catch (Exception ex) {
+                            interactor = controllerFinal.getNodeController(null)
+                                .getNodeInteractor();
+                        }
                         SelectionInteractor selectionInteractor = (SelectionInteractor) interactor;
                         SelectionRenderer defaultSelectionRenderer = selectionInteractor.getSelectionRenderer();
                         SelectionModel selectionModel = controllerFinal.getSelectionModel();
