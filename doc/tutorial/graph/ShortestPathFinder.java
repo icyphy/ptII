@@ -182,7 +182,7 @@ public class ShortestPathFinder extends Attribute {
      */
     public class Calculate extends EditorFactory {
 
-        /* Construct a Calculate attribute.
+        /** Construct a Calculate attribute.
          * @param container The container 
          * @param name The name of the handler
          * @exception IllegalActionException If the factory is not of an

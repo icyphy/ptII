@@ -969,7 +969,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
     /** Return the figure that is an icon of a NamedObj and is
      *  under the specified point, or null if there is none.
      *  The point argument may need to be transformed, see
-     *  {@link ptolemy.vergil.basic.EditorDropTargetListener#_getFigureUnder(Point2d)}.
+     *  {@link ptolemy.vergil.basic.EditorDropTargetListener#_getFigureUnder(Point2D)}.
      *
      *  @param pane The pane in which to search
      *  @param point The point in the graph pane.
