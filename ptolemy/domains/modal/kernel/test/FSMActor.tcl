@@ -265,7 +265,7 @@ test FSMActor-6.2 {test typeConstraints} {
     set constraints [$fsm typeConstraints]
     set l [lsort [listToStrings $constraints]]
     join $l "\n"
-} {(TypeConstant, boolean) <= (ptolemy.data.expr.Parameter {..fsm.stateDependentCausality} fal(TypeConstant, boolean) <= (variable ..fsm.stateDependentCausality: boolean)
+} {(TypeConstant, boolean) <= (variable ..fsm.stateDependentCausality: boolean)
 (TypeConstant, boolean) <= (variable ..fsm.t0.defaultTransition: boolean)
 (TypeConstant, boolean) <= (variable ..fsm.t0.errorTransition: boolean)
 (TypeConstant, boolean) <= (variable ..fsm.t0.immediate: boolean)
@@ -275,19 +275,7 @@ test FSMActor-6.2 {test typeConstraints} {
 (TypeConstant, double) <= (variable ..fsm.t0.exitAngle: double)
 (TypeConstant, double) <= (variable ..fsm.t0.gamma: double)
 (TypeConstant, string) <= (variable ..fsm.t0.annotation: string)
-(ptolemy.domains.modal.kernel.AbstractActionsAttribute$TypeFunction, int, (p1_0+1)) <= (port ..fsm.p2: int)
----- Result should have been:
-(TypeConstant, boolean) <= (ptolemy.data.expr.Parameter {..fsm.stateDependentCausality} false, boolean)
-(TypeConstant, boolean) <= (ptolemy.data.expr.Parameter {..fsm.t0.defaultTransition} false, boolean)
-(TypeConstant, boolean) <= (ptolemy.data.expr.Parameter {..fsm.t0.errorTransition} false, boolean)
-(TypeConstant, boolean) <= (ptolemy.data.expr.Parameter {..fsm.t0.immediate} false, boolean)
-(TypeConstant, boolean) <= (ptolemy.data.expr.Parameter {..fsm.t0.nondeterministic} false, boolean)
-(TypeConstant, boolean) <= (ptolemy.data.expr.Parameter {..fsm.t0.preemptive} false, boolean)
-(TypeConstant, boolean) <= (ptolemy.data.expr.Parameter {..fsm.t0.reset} false, boolean)
-(TypeConstant, double) <= (ptolemy.data.expr.Parameter {..fsm.t0.exitAngle} 0.628318530718, double)
-(TypeConstant, double) <= (ptolemy.data.expr.Parameter {..fsm.t0.gamma} 0.0, double)
-(TypeConstant, string) <= (ptolemy.data.expr.StringParameter {..fsm.t0.annotation} "", string)
-(ptolemy.domains.modal.kernel.AbstractActionsAttribute$TypeFunction, int, (p1_0+1)) <= (ptolemy.actor.TypedIOPort {..fsm.p2}, int)}
+(ptolemy.domains.modal.kernel.AbstractActionsAttribute$TypeFunction, int, (p1_0+1)) <= (port ..fsm.p2: int)}
 
 ######################################################################
 ####
