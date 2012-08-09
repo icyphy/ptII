@@ -1,0 +1,14 @@
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+<script type="text/javascript">
+function showInfo(){
+	alert("You information has been accepted.");
+	
+    var firstName = $("#firstName").val();
+    var lastName = $("#lastName").val();
+    var gender = $("#gender").val();
+    $("p").html("<h3>Confirmation:</h3>");
+	$("#panel").html("First Name: " + firstName +"<br />"
+			+ "Last Name: " + lastName + "<br />"
+			+ "Gender: " + gender);
+}
+</script>
