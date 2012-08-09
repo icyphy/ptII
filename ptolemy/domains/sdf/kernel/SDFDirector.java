@@ -112,7 +112,7 @@ import ptolemy.kernel.util.Workspace;
  limit on the number of times the director will fire its hierarchy
  before it returns false in postfire.  If this number is not greater
  than zero, then no limit is set and postfire will always return true.
- The default value of the iterations parameter is an IntToken with value zero.
+ The default value of the iterations parameter is an IntToken with value one.
  </p><p>
  If any actor's postfire() method returns false during an iteration,
  then at the conclusion of the iteration, this director's postfire() method
@@ -260,7 +260,7 @@ public class SDFDirector extends StaticSchedulingDirector implements
      *  of data processed by the SDF model is a function of both this
      *  parameter and the value of parameter <i>vectorizationFactor</i>, since
      *  <i>vectorizationFactor</i> can influence the choice of schedule.
-     *  The default value is an IntToken with the value zero.
+     *  The default value is an IntToken with the value one.
      */
     public Parameter iterations;
 
@@ -864,7 +864,9 @@ public class SDFDirector extends StaticSchedulingDirector implements
             NameDuplicationException {
         iterations = new Parameter(this, "iterations");
         iterations.setTypeEquals(BaseType.INT);
-        iterations.setExpression("0");
+        // See "SDF director iterations parameter default of 0 is unfriendly"
+        // http://bugzilla.ecoinformatics.org/show_bug.cgi?id=5546
+        iterations.setExpression("1");
 
         vectorizationFactor = new Parameter(this, "vectorizationFactor");
         vectorizationFactor.setTypeEquals(BaseType.INT);

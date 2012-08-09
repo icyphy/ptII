@@ -42,6 +42,12 @@ if {[info procs enumToObjects] == "" } then {
 }
 
 
+proc setIterations {director iterations} {
+    set iter [$director getAttribute iterations]
+    # _testSetToken is defined in $PTII/util/testsuite/testParams.tcl
+    _testSetToken $iter [java::new {ptolemy.data.IntToken int} $iterations]
+}
+
 proc setTokenConsumptionRate {port rate} {
     set attribute [$port getAttribute tokenConsumptionRate]
     set parameter [java::cast ptolemy.data.expr.Parameter $attribute]
@@ -236,6 +242,9 @@ test SDFDirector-6.1 {Test wormhole activation} {
     set p2 [java::new ptolemy.actor.TypedIOPort $c1 p2]
     $p2 setOutput 1
     set d5 [java::new ptolemy.domains.sdf.kernel.SDFDirector $c1 d5]
+
+    setIterations $d5 0
+
     set a2 [java::new ptolemy.domains.sdf.kernel.test.SDFTestDelay $c1 Delay]
     set a3 [java::new ptolemy.domains.sdf.kernel.test.SDFTestConsumer $e1 Consumer]
     $e1 connect [java::field $a1 output] $p1 R1
@@ -308,6 +317,7 @@ test SDFDirector-7.1 {Multirate and Hierarchy execution tests} {
     set manager [java::new ptolemy.actor.Manager $w Manager]
     set toplevel [java::new ptolemy.actor.TypedCompositeActor $w]
     set director [java::new ptolemy.domains.sdf.kernel.SDFDirector $toplevel Director]
+    setIterations $d3 0
     $toplevel setName Toplevel
     $toplevel setManager $manager
     $toplevel setDirector $director
@@ -320,6 +330,8 @@ test SDFDirector-7.1 {Multirate and Hierarchy execution tests} {
     set p2 [java::new ptolemy.actor.TypedIOPort $c1 p2]
     $p2 setOutput 1
     set d5 [java::new ptolemy.domains.sdf.kernel.SDFDirector $c1 d5]
+    setIterations $d5 0
+
     $c1 setDirector $d5
     set s5 [$d5 getScheduler]
     set a2 [java::new ptolemy.domains.sdf.kernel.test.SDFTestDelay $c1 Delay]
