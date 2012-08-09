@@ -351,7 +351,6 @@ CODEGENPACKAGES = \
 	ptolemy.codegen.c.kernel.type.parameterizedTemplates \
 	ptolemy.codegen.c.kernel.type.polymorphic \
 	ptolemy.codegen.c.targets.openRTOS \
-	ptolemy.codegen.c.targets.openRTOS.actor.lib \
 	ptolemy.codegen.c.targets.openRTOS.actor.lib.gui \
 	ptolemy.codegen.c.targets.openRTOS.domains.giotto.kernel \
 	ptolemy.codegen.c.targets.openRTOS.domains.fsm.kernel \
@@ -660,6 +659,7 @@ ALLPACKAGES = \
 	$(PTPTALON_PACKAGES) \
 	$(USER_PACKAGES) \
 	doc.doclets \
+	org.ptolemy.ptango.lib \
 	ptolemy.actor.process \
 	ptolemy.actor.lib.jni \
 	ptolemy.actor.lib.net \
