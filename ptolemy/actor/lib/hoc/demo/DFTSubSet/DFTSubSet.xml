@@ -196,6 +196,8 @@
         <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
             <property name="_location" class="ptolemy.kernel.util.Location" value="75.0, 40.0">
             </property>
+            <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
+            </property>
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -284,6 +286,8 @@
         </property>
         <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
             <property name="_location" class="ptolemy.kernel.util.Location" value="70.0, 45.0">
+            </property>
+            <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
             </property>
         </property>
         <property name="frequency" class="ptolemy.actor.parameters.PortParameter" value="1.0/SinePeriod">

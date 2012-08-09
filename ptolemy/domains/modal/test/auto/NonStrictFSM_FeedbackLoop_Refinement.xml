@@ -195,6 +195,8 @@
         </entity>
         <entity name="init" class="ptolemy.domains.modal.modal.Refinement">
             <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
+               <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
+               </property>
                 <property name="allowDisconnectedGraphs" class="ptolemy.data.expr.Parameter" value="true">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="{95.0, 45.0}">
@@ -240,6 +242,8 @@
         </entity>
         <entity name="state" class="ptolemy.domains.modal.modal.Refinement">
             <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
+               <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
+               </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="{130, 55}">
                 </property>
             </property>

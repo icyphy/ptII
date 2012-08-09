@@ -254,6 +254,8 @@
             <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[105.0, 35.0]">
                 </property>
+                <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
+                </property>
             </property>
             <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={69, 383, 815, 518}, maximized=false}">
             </property>
@@ -408,6 +410,8 @@
         <entity name="StateChange" class="ptolemy.domains.modal.modal.TransitionRefinement">
             <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
                 <property name="_location" class="ptolemy.kernel.util.Location" value="110.0, 40.0">
+                </property>
+                <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
                 </property>
             </property>
             <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={181, 37, 815, 518}, maximized=false}">

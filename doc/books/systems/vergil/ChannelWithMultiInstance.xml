@@ -188,6 +188,8 @@
         <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
             <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 65.0]">
             </property>
+            <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
+            </property>
         </property>
         <property name="annotation" class="ptolemy.kernel.util.Attribute">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">

@@ -244,6 +244,8 @@ whenever phase difference exceeds a threshold ( = PI/3 radians).</text></svg></c
                 <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 55.0]">
                     </property>
+                    <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
+                    </property>
                 </property>
                 <port name="delta_phase" class="ptolemy.domains.modal.modal.RefinementPort">
                     <property name="input"/>
@@ -274,6 +276,8 @@ whenever phase difference exceeds a threshold ( = PI/3 radians).</text></svg></c
             <entity name="normal" class="ptolemy.domains.modal.modal.Refinement">
                 <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[85.0, 45.0]">
+                    </property>
+                    <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
                     </property>
                 </property>
                 <port name="delta_phase" class="ptolemy.domains.modal.modal.RefinementPort">
@@ -585,6 +589,8 @@ At t= 0.5, a phase disturbance occurs as modeled in the 'disturbance' state.</te
                 <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
                     <property name="_location" class="ptolemy.kernel.util.Location" value="{135, 75}">
                     </property>
+                    <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
+                    </property>
                 </property>
                 <port name="ph" class="ptolemy.domains.modal.modal.RefinementPort">
                     <property name="output"/>
@@ -619,6 +625,8 @@ At t= 0.5, a phase disturbance occurs as modeled in the 'disturbance' state.</te
             <entity name="disturbance" class="ptolemy.domains.modal.modal.Refinement">
                 <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
                     <property name="_location" class="ptolemy.kernel.util.Location" value="{160, 60}">
+                    </property>
+                    <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
                     </property>
                 </property>
                 <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={433, 270, 813, 510}, maximized=false}">
@@ -784,6 +792,8 @@ At t= 0.5, a phase disturbance occurs as modeled in the 'disturbance' state.</te
             </property>
             <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[75.0, 50.0]">
+                </property>
+                <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
                 </property>
             </property>
             <property name="b" class="ptolemy.data.expr.Parameter" value="{0.07671485653 , 0.04086655717 , 0.04923641133 , 0.05683858274 , 0.06396710188 , 0.0701509089 , 0.07412469478 , 0.07568670451 , 0.07568670451 , 0.07412469478 , 0.07015 , 0.063967 , 0.05683858274 , 0.04923641133 , 0.04086655717 , 0.07671485653 }">
@@ -1043,6 +1053,8 @@ At t= 0.5, a phase disturbance occurs as modeled in the 'disturbance' state.</te
             </property>
             <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[90.0, 55.0]">
+                </property>
+                <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
                 </property>
             </property>
             <property name="b" class="ptolemy.data.expr.Parameter" value="{0.07671485653 , 0.04086655717 , 0.04923641133 , 0.05683858274 , 0.06396710188 , 0.0701509089 , 0.07412469478 , 0.07568670451 , 0.07568670451 , 0.07412469478 , 0.07015 , 0.063967 , 0.05683858274 , 0.04923641133 , 0.04086655717 , 0.07671485653 }">

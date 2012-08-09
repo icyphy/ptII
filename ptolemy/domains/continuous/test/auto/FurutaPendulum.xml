@@ -333,7 +333,10 @@ time (CT).</text></svg></configure>
         <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[102, 100]">
         </property>
         <property name="SDF" class="ptolemy.domains.sdf.kernel.SDFDirector">
-            <property name="_location" class="ptolemy.kernel.util.Location" value="72.23333288828536, 33.0333334695726">
+            <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="72.2333
+3288828536, 33.0333334695726">
             </property>
         </property>
         <property name="w0" class="ptolemy.data.expr.Parameter" value="w0">
@@ -443,6 +446,8 @@ time (CT).</text></svg></configure>
             <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute">
             </property>
             <property name="SDF" class="ptolemy.domains.sdf.kernel.SDFDirector">
+                <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
+                </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="63.0, 28.0">
                 </property>
             </property>
@@ -824,6 +829,9 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
                 <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
                 </property>
                 <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
+                    <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
+                    </property>
+
                     <property name="_location" class="ptolemy.kernel.util.Location" value="95.0, 60.0">
                     </property>
                 </property>
@@ -924,6 +932,9 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
             </entity>
             <entity name="swingUpController" class="ptolemy.domains.fsm.modal.Refinement">
                 <property name="SDF" class="ptolemy.domains.sdf.kernel.SDFDirector">
+                    <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
+                    </property>
+
                     <property name="_location" class="ptolemy.kernel.util.Location" value="80.0, 34.0">
                     </property>
                 </property>
@@ -1190,6 +1201,8 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
             </entity>
             <entity name="catchController" class="ptolemy.domains.fsm.modal.Refinement">
                 <property name="SDF" class="ptolemy.domains.sdf.kernel.SDFDirector">
+                    <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
+                    </property>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="70.0, 24.0">
                     </property>
                 </property>
@@ -1456,6 +1469,8 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
             </entity>
             <entity name="stabilizeController" class="ptolemy.domains.fsm.modal.Refinement">
                 <property name="SDF" class="ptolemy.domains.sdf.kernel.SDFDirector">
+                    <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
+                    </property>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="70.0, 24.0">
                     </property>
                 </property>

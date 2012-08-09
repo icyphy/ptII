@@ -110,6 +110,8 @@
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="{75, 50}">
             </property>
+            <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
+            </property>
         </property>
         <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={350, 132, 815, 533}, maximized=false}">
         </property>
@@ -153,6 +155,8 @@
             <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="3">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="{85.0, 60.0}">
+            </property>
+            <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
             </property>
         </property>
         <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={465, 422, 815, 533}, maximized=false}">

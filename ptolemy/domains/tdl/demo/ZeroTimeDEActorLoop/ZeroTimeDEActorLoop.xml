@@ -180,6 +180,8 @@
             </port>
             <entity name="reg task +" class="ptolemy.domains.tdl.kernel.TDLTask">
                 <property name="SDF director" class="ptolemy.domains.sdf.kernel.SDFDirector">
+                   <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
+                   </property>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[85.0, 90.0]">
                     </property>
                 </property>

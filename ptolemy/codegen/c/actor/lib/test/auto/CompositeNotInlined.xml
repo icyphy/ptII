@@ -34,6 +34,8 @@
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="{85, 45}">
             </property>
+            <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
+            </property>
         </property>
         <port name="port" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>

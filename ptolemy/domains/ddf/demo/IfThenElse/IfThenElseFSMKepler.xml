@@ -513,6 +513,8 @@
             <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[45.0, 20.0]">
                 </property>
+                <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
+                </property>
             </property>
             <port name="ramp" class="ptolemy.domains.fsm.modal.RefinementPort">
                 <property name="input"/>
@@ -555,6 +557,8 @@
         <entity name="gainPlus" class="ptolemy.domains.fsm.modal.Refinement">
             <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[55.0, 30.0]">
+                </property>
+                <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
                 </property>
             </property>
             <port name="ramp" class="ptolemy.domains.fsm.modal.RefinementPort">

@@ -327,6 +327,8 @@ help it make decisions.</text></svg></configure>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{665.0, 200.0}">
         </property>
         <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
+           <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
+           </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="110.0, 70.0">
             </property>
         </property>
@@ -385,6 +387,8 @@ help it make decisions.</text></svg></configure>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{665.0, 345.0}">
         </property>
         <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
+           <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
+           </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="110.0, 70.0">
             </property>
         </property>
@@ -528,6 +532,8 @@ help it make decisions.</text></svg></configure>
         <property name="period" class="ptolemy.data.expr.Parameter" value="250">
         </property>
         <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
+           <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
+           </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="130.0, 60.0">
             </property>
         </property>
@@ -576,6 +582,8 @@ help it make decisions.</text></svg></configure>
         <property name="period" class="ptolemy.data.expr.Parameter" value="1000">
         </property>
         <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
+           <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
+           </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="130.0, 60.0">
             </property>
         </property>

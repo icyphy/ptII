@@ -28,6 +28,8 @@
         <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
             <property name="_location" class="ptolemy.kernel.util.Location" value="{140.0, 60.0}">
             </property>
+            <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
+            </property>
         </property>
         <property name="CodeGenerator_AutoAdded" class="ptolemy.cg.kernel.generic.program.procedural.java.JavaCodeGenerator">
             <property name="codeDirectory" class="ptolemy.data.expr.FileParameter" value="$HOME/cg/">

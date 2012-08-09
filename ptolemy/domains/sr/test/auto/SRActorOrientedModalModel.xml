@@ -509,6 +509,8 @@
         </entity>
         <entity name="clean" class="ptolemy.domains.modal.modal.Refinement">
             <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
+                    <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
+                    </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[60.0, 135.0]">
                 </property>
             </property>
@@ -560,6 +562,9 @@
         </entity>
         <entity name="noisy" class="ptolemy.domains.modal.modal.Refinement">
             <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
+                    <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
+                    </property>
+
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 80.0]">
                 </property>
             </property>

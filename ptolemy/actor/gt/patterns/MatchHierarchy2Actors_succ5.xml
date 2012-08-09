@@ -134,6 +134,8 @@ navigate between multiple files (when the buttons are enabled).</text></svg></co
         <property name="_location" class="ptolemy.kernel.util.Location" value="[235.0, 150.0]">
         </property>
         <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
+           <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
+           </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="{85, 60}">
             </property>
         </property>

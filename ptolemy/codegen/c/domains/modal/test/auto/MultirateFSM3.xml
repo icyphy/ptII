@@ -131,6 +131,8 @@
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[225.0, 80.0]">
                 </property>
+                <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
+                </property>
             </property>
             <port name="input" class="ptolemy.domains.modal.modal.RefinementPort">
                 <property name="input"/>
@@ -185,6 +187,8 @@
                 <property name="allowDisconnectedGraphs" class="ptolemy.data.expr.Parameter" value="true">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="{235.0, 90.0}">
+                </property>
+                <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
                 </property>
             </property>
             <port name="input" class="ptolemy.domains.modal.modal.RefinementPort">

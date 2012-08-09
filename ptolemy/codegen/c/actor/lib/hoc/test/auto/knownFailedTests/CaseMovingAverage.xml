@@ -211,6 +211,8 @@
                 <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
                     <property name="_location" class="ptolemy.kernel.util.Location" value="{85.0, 45.0}">
                     </property>
+                    <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
+                    </property>
                 </property>
                 <port name="Input" class="ptolemy.actor.lib.hoc.RefinementPort">
                     <property name="input"/>
@@ -322,6 +324,8 @@
             <entity name="default" class="ptolemy.domains.fsm.modal.Refinement">
                 <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
                     <property name="_location" class="ptolemy.kernel.util.Location" value="{80, 40}">
+                    </property>
+                    <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
                     </property>
                 </property>
                 <port name="Input" class="ptolemy.actor.lib.hoc.RefinementPort">
@@ -661,6 +665,8 @@
                 <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
                     <property name="_location" class="ptolemy.kernel.util.Location" value="{85, 35}">
                     </property>
+                    <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
+                    </property>
                 </property>
                 <port name="port" class="ptolemy.actor.lib.hoc.RefinementPort">
                     <property name="input"/>
@@ -696,6 +702,8 @@
             <entity name="default" class="ptolemy.domains.fsm.modal.Refinement">
                 <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[75.0, 45.0]">
+                    </property>
+                    <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
                     </property>
                 </property>
                 <port name="port" class="ptolemy.actor.lib.hoc.RefinementPort">

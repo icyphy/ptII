@@ -77,6 +77,8 @@
         <property name="PSDFDirector" class="ptolemy.domains.psdf.kernel.PSDFDirector">
             <property name="_location" class="ptolemy.kernel.util.Location" value="215.0, 45.0">
             </property>
+            <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
+            </property>
         </property>
         <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {104, 129, 815, 509}, maximized = false}">
         </property>
@@ -98,6 +100,8 @@
                 <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="blockSize">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="95.0, 65.0">
+                </property>
+                <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
                 </property>
             </property>
             <property name="quantizationLevels" class="ptolemy.data.expr.Parameter" value="512">

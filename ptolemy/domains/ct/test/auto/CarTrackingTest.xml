@@ -353,6 +353,8 @@ triggers a fault between time 25.0 and 50.0</text></svg></configure>
             <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[108, 175]">
             </property>
             <property name="SDF" class="ptolemy.domains.sdf.kernel.SDFDirector">
+                    <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
+                    </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="125.0, 45.0">
                 </property>
             </property>
@@ -1631,6 +1633,9 @@ For continuous-time models, use the CTEmbeddedDirector.</text></svg></configure>
             <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[232, 230]">
             </property>
             <property name="SDF" class="ptolemy.domains.sdf.kernel.SDFDirector">
+                    <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
+                    </property>
+
                 <property name="_location" class="ptolemy.kernel.util.Location" value="115.0, 90.0">
                 </property>
             </property>

@@ -497,6 +497,8 @@ Then delete this annotation.</text>
         </entity>
         <entity name="state" class="ptolemy.domains.fsm.modal.Refinement">
             <property name="PSDF_Director" class="ptolemy.domains.psdf.kernel.PSDFDirector">
+               <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
+               </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="{110, 55}">
                 </property>
             </property>

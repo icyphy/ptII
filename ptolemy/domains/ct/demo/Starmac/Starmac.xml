@@ -6840,6 +6840,8 @@ http://java3d.dev.java.net/</text></svg></configure>
         <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
             <property name="_location" class="ptolemy.kernel.util.Location" value="[105.0, 45.0]">
             </property>
+            <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
+            </property>
         </property>
         <port name="Thrust Commands" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>

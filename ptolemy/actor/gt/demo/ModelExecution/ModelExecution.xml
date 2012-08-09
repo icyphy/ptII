@@ -194,6 +194,8 @@
                     </property>
                     <entity name="Replacement" class="ptolemy.actor.gt.Replacement">
                         <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
+                           <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
+                           </property>
                             <property name="_location" class="ptolemy.kernel.util.Location" value="{100.0, 70.0}">
                             </property>
                         </property>

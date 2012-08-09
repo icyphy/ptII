@@ -403,6 +403,8 @@
         <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
             <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 45.0]">
             </property>
+            <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
+            </property>
         </property>
         <port name="seq" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -1016,6 +1018,8 @@ This is for illustration purposes only and not needed by the above model.</text>
                     <property name="allowDisconnectedGraphs" class="ptolemy.data.expr.Parameter" value="true">
                     </property>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="{60, 45}">
+                    </property>
+                    <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
                     </property>
                 </property>
                 <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={193, 106, 828, 614}, maximized=false}">

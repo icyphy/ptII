@@ -2259,6 +2259,8 @@
             </port>
             <entity name="dynamicsController" class="ptolemy.domains.tdl.kernel.TDLTask">
                 <property name="SDF director" class="ptolemy.domains.sdf.kernel.SDFDirector">
+                   <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
+                   </property>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[90.0, 65.0]">
                     </property>
                 </property>
@@ -2305,6 +2307,8 @@
                     <property name="_location" class="ptolemy.kernel.util.Location" value="{180.0, 235.0}">
                     </property>
                     <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
+                       <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
+                       </property>
                         <property name="_location" class="ptolemy.kernel.util.Location" value="[75.0, 55.0]">
                         </property>
                     </property>
@@ -2348,6 +2352,8 @@
                         <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{663.0, 546.0}">
                         </property>
                         <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
+                           <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
+                           </property>
                             <property name="_location" class="ptolemy.kernel.util.Location" value="[75.0, 50.0]">
                             </property>
                         </property>
@@ -2633,6 +2639,8 @@
                         <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{663.0, 546.0}">
                         </property>
                         <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
+                           <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
+                           </property>
                             <property name="_location" class="ptolemy.kernel.util.Location" value="[100.0, 50.0]">
                             </property>
                         </property>
@@ -2744,6 +2752,8 @@
                                 </property>
                             </property>
                             <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
+                               <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
+                               </property>
                                 <property name="_location" class="ptolemy.kernel.util.Location" value="{90, 70}">
                                 </property>
                             </property>
@@ -3126,6 +3136,8 @@
                                 </property>
                             </property>
                             <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
+                               <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
+                               </property>
                                 <property name="_location" class="ptolemy.kernel.util.Location" value="{90, 70}">
                                 </property>
                             </property>
@@ -3724,6 +3736,8 @@
                                 </property>
                             </property>
                             <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
+                               <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
+                               </property>
                                 <property name="_location" class="ptolemy.kernel.util.Location" value="[85.0, 55.0]">
                                 </property>
                             </property>
@@ -4517,6 +4531,8 @@
             </port>
             <entity name="DCMotorController" class="ptolemy.domains.tdl.kernel.TDLTask">
                 <property name="SDF director" class="ptolemy.domains.sdf.kernel.SDFDirector">
+                   <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
+                   </property>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[80.0, 45.0]">
                     </property>
                 </property>

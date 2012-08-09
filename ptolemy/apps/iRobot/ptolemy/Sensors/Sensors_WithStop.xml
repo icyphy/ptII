@@ -17,6 +17,8 @@
         </property>
     </property>
     <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
+       <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
+       </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[75.0, 45.0]">
         </property>
     </property>
@@ -94,6 +96,8 @@
         </entity>
         <entity name="init" class="ptolemy.domains.fsm.modal.Refinement">
             <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
+               <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
+               </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[80.0, 50.0]">
                 </property>
             </property>
@@ -109,6 +113,8 @@
                 <property name="embeddedCCode" class="ptolemy.kernel.util.StringAttribute" value="/***fileDependencies***/&#10;oi.h&#10;iRobotFunctions.c&#10;/**/&#10;&#10;/***preinitBlock***/&#10;// Include the functions file if it has not already been included.&#10;#ifndef I_ROBOT_FUNCTIONS&#10;#define I_ROBOT_FUNCTIONS&#10;#include &quot;iRobotFunctions.c&quot;&#10;#endif&#10;/**/&#10;&#10;/***initBlock***/&#10;  // Initialize the microcontroller&#10;  initializeRobot();&#10;&#10;  // Turn on the Create power if off&#10;  powerOnRobot();&#10;&#10;  // Start the open interface&#10;  byteTx(CmdStart);&#10;&#10;  // Change to 28800 baud&#10;  baud28k();&#10;&#10;  // Take full control of the Create&#10;  byteTx(CmdFull);&#10;&#10;  // Get rid of unwanted data in the serial port receiver&#10;  flushRx();&#10;/**/&#10;&#10;/***fireBlock***/&#10;/**/&#10;&#10;/***wrapupBlock***/&#10;/**/&#10;&#10;">
                 </property>
                 <property name="SDFDirector" class="ptolemy.domains.sdf.kernel.SDFDirector">
+                   <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
+                   </property>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[125.0, 115.0]">
                     </property>
                 </property>
@@ -148,6 +154,8 @@
         </entity>
         <entity name="run" class="ptolemy.domains.fsm.modal.Refinement">
             <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
+               <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
+               </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 40.0]">
                 </property>
             </property>

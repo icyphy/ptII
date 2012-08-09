@@ -68,6 +68,8 @@
         <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
             <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 35.0]">
             </property>
+            <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
+            </property>
         </property>
         <property name="DocViewerAttribute" class="ptolemy.kernel.util.SingletonAttribute">
             <property name="_location" class="ptolemy.kernel.util.Location" value="[200.0, 70.0]">

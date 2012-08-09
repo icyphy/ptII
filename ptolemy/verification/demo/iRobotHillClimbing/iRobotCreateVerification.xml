@@ -3090,6 +3090,8 @@
             </property>
         </property>
         <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
+           <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
+           </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[75.0, 60.0]">
             </property>
         </property>
@@ -3817,6 +3819,8 @@
             </property>
         </property>
         <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
+           <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
+           </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[-20.0, -40.0]">
             </property>
         </property>
@@ -5199,6 +5203,8 @@
             </property>
         </property>
         <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
+           <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
+           </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[-35.0, -5.0]">
             </property>
         </property>

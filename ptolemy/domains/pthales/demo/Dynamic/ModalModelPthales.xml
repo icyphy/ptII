@@ -217,6 +217,8 @@
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="{90.0, 95.0}">
             </property>
+            <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
+            </property>
         </property>
         <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={292, 258, 813, 510}, maximized=false}">
         </property>
@@ -276,6 +278,8 @@
             <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="{85.0, 60.0}">
+            </property>
+            <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
             </property>
         </property>
         <port name="out" class="ptolemy.actor.TypedIOPort">
@@ -407,6 +411,8 @@
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="{90.0, 95.0}">
                 </property>
+                <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
+                </property>
             </property>
             <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={292, 258, 813, 510}, maximized=false}">
             </property>
@@ -462,6 +468,8 @@
                 <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="4">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="{100.0, 105.0}">
+                </property>
+                <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
                 </property>
             </property>
             <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={232, 245, 813, 510}, maximized=false}">

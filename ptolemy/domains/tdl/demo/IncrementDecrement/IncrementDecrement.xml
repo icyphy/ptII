@@ -204,6 +204,8 @@
             </port>
             <entity name="incTask" class="ptolemy.domains.tdl.kernel.TDLTask">
                 <property name="SDF director" class="ptolemy.domains.sdf.kernel.SDFDirector">
+                   <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
+                   </property>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[80.0, 45.0]">
                     </property>
                 </property>
@@ -326,6 +328,8 @@
             </entity>
             <entity name="decTask" class="ptolemy.domains.tdl.kernel.TDLTask">
                 <property name="SDF director" class="ptolemy.domains.sdf.kernel.SDFDirector">
+                   <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
+                   </property>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[90.0, 65.0]">
                     </property>
                 </property>
@@ -485,6 +489,8 @@
             </port>
             <entity name="incTask" class="ptolemy.domains.tdl.kernel.TDLTask">
                 <property name="SDF director" class="ptolemy.domains.sdf.kernel.SDFDirector">
+                   <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
+                   </property>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[80.0, 45.0]">
                     </property>
                 </property>
@@ -607,6 +613,8 @@
             </entity>
             <entity name="decTask" class="ptolemy.domains.tdl.kernel.TDLTask">
                 <property name="SDF director" class="ptolemy.domains.sdf.kernel.SDFDirector">
+                   <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
+                   </property>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[90.0, 65.0]">
                     </property>
                 </property>
@@ -857,6 +865,8 @@
             </port>
             <entity name="sum" class="ptolemy.domains.tdl.kernel.TDLTask">
                 <property name="SDF director" class="ptolemy.domains.sdf.kernel.SDFDirector">
+                   <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
+                   </property>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[85.0, 45.0]">
                     </property>
                 </property>
@@ -902,6 +912,8 @@
             </entity>
             <entity name="fastSum" class="ptolemy.domains.tdl.kernel.TDLTask">
                 <property name="SDF director" class="ptolemy.domains.sdf.kernel.SDFDirector">
+                   <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
+                   </property>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[85.0, 45.0]">
                     </property>
                 </property>

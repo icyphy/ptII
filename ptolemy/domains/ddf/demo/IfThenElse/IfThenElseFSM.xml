@@ -750,6 +750,8 @@ is an input on the control port.
             <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
                 <property name="_location" class="ptolemy.kernel.util.Location" value="{90, 35}">
                 </property>
+                <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
+                </property>
             </property>
             <port name="ramp" class="ptolemy.domains.fsm.modal.RefinementPort">
                 <property name="input"/>
@@ -788,6 +790,8 @@ is an input on the control port.
         <entity name="gainPlus" class="ptolemy.domains.fsm.modal.Refinement">
             <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[85.0, 40.0]">
+                </property>
+                <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
                 </property>
             </property>
             <port name="ramp" class="ptolemy.domains.fsm.modal.RefinementPort">

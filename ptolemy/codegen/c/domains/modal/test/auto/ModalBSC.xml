@@ -258,6 +258,8 @@ refinement changing the state change to double (0.5).</text></svg></configure>
             <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
                 <property name="_location" class="ptolemy.kernel.util.Location" value="135.0, 40.0">
                 </property>
+                <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
+                </property>
             </property>
             <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={73, 176, 815, 518}, maximized=false}">
             </property>
@@ -424,6 +426,8 @@ refinement changing the state change to double (0.5).</text></svg></configure>
         <entity name="StateChange" class="ptolemy.domains.modal.modal.TransitionRefinement">
             <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
                 <property name="_location" class="ptolemy.kernel.util.Location" value="110.0, 40.0">
+                </property>
+                <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
                 </property>
             </property>
             <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={103, 167, 815, 518}, maximized=false}">

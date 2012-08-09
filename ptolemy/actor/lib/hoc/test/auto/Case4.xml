@@ -64,6 +64,8 @@
             <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
                 <property name="_location" class="ptolemy.kernel.util.Location" value="{70, 65}">
                 </property>
+                <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
+                </property>
             </property>
             <port name="port" class="ptolemy.actor.lib.hoc.RefinementPort">
                 <property name="input"/>
@@ -101,6 +103,8 @@
         <entity name="default" class="ptolemy.actor.lib.hoc.Refinement">
             <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[40.0, 30.0]">
+                </property>
+                <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
                 </property>
             </property>
             <port name="port" class="ptolemy.actor.lib.hoc.RefinementPort">

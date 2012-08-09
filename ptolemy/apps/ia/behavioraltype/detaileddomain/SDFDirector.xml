@@ -2,6 +2,8 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="SDFDirector" class="ptolemy.domains.fsm.kernel.InterfaceAutomaton">
+   <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
+   </property>
     <property name="initialStateName" class="ptolemy.kernel.util.StringAttribute" value="0">
     </property>
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="3.1-devel">
@@ -19,6 +21,8 @@
     </property>
     <property name="annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="SDFDirector">
+           <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
+           </property>
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="80.0, 75.0">
         </property>

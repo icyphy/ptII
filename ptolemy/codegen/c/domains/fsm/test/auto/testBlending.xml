@@ -295,6 +295,8 @@ http://controls.ae.gatech.edu/projects/sec/status/may01.pdf
             <property name="SDF" class="ptolemy.domains.sdf.kernel.SDFDirector">
                 <property name="_location" class="ptolemy.kernel.util.Location" value="90.0, 50.0">
                 </property>
+                <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
+                </property>
             </property>
             <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={270, 151, 701, 468}, maximized=false}">
             </property>
@@ -335,6 +337,8 @@ http://controls.ae.gatech.edu/projects/sec/status/may01.pdf
             <property name="SDF" class="ptolemy.domains.sdf.kernel.SDFDirector">
                 <property name="_location" class="ptolemy.kernel.util.Location" value="60.0, 30.0">
                 </property>
+                <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
+                </property>
             </property>
             <port name="output" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
@@ -372,6 +376,8 @@ http://controls.ae.gatech.edu/projects/sec/status/may01.pdf
             </property>
             <property name="SDF" class="ptolemy.domains.sdf.kernel.SDFDirector">
                 <property name="_location" class="ptolemy.kernel.util.Location" value="80.0, 30.0">
+                </property>
+                <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
                 </property>
             </property>
             <property name="STEP" class="ptolemy.data.expr.Parameter" value="STEP">
@@ -484,6 +490,8 @@ http://controls.ae.gatech.edu/projects/sec/status/may01.pdf
             </property>
             <property name="SDF" class="ptolemy.domains.sdf.kernel.SDFDirector">
                 <property name="_location" class="ptolemy.kernel.util.Location" value="345.0, 284.5">
+                </property>
+                <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
                 </property>
             </property>
             <property name="STEP" class="ptolemy.data.expr.Parameter" value="STEP">
@@ -660,6 +668,8 @@ http://controls.ae.gatech.edu/projects/sec/status/may01.pdf
         </property>
         <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
             <property name="_location" class="ptolemy.kernel.util.Location" value="70.0, 45.0">
+            </property>
+            <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
             </property>
         </property>
         <property name="frequency" class="ptolemy.actor.parameters.PortParameter" value="1.0">

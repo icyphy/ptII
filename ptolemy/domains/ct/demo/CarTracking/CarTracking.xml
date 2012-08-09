@@ -472,6 +472,8 @@ jerky ride.</text></svg></configure>
             <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[108, 175]">
             </property>
             <property name="SDF" class="ptolemy.domains.sdf.kernel.SDFDirector">
+               <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
+               </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="125.0, 45.0">
                 </property>
             </property>
@@ -2201,6 +2203,8 @@ jerky ride.</text></svg></configure>
             <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[232, 230]">
             </property>
             <property name="SDF" class="ptolemy.domains.sdf.kernel.SDFDirector">
+               <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
+               </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[85.0, 80.0]">
                 </property>
             </property>

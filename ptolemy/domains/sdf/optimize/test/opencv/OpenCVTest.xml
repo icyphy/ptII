@@ -13,6 +13,8 @@
     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{405.5625000000001, 221.1599751655629}">
     </property>
     <property name="OptimizingSDFDirector" class="ptolemy.domains.sdf.optimize.OptimizingSDFDirector">
+       <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
+       </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[75.0, 45.0]">
         </property>
     </property>
@@ -69,6 +71,8 @@
         <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{279.9329229797979, 95.9041982323232}">
         </property>
         <property name="OptimizingSDFDirector" class="ptolemy.domains.sdf.optimize.OptimizingSDFDirector">
+           <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
+           </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, -45.0]">
             </property>
         </property>

@@ -57,6 +57,8 @@
         </property>
     </property>
     <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
+                    <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
+                    </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[60.0, 60.0]">
         </property>
     </property>
@@ -118,6 +120,8 @@
             </property>
         </property>
         <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
+                    <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
+                    </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[-25.0, 100.0]">
             </property>
         </property>
@@ -518,6 +522,8 @@
             </property>
         </property>
         <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
+                    <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
+                    </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[-35.0, -5.0]">
             </property>
         </property>
@@ -2843,6 +2849,8 @@
         </entity>
         <entity name="PowerOn" class="ptolemy.domains.fsm.modal.Refinement">
             <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
+                    <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
+                    </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[95.0, 75.0]">
                 </property>
             </property>
@@ -2910,6 +2918,8 @@
                 <property name="embeddedCCode" class="ptolemy.kernel.util.StringAttribute" value="/***fileDependencies***/&#10;oi.h&#10;iRobotFunctions.c&#10;/**/&#10;&#10;/***preinitBlock***/&#10;// Include the functions file if it has not already been included.&#10;#ifndef I_ROBOT_FUNCTIONS&#10;#define I_ROBOT_FUNCTIONS&#10;#include &quot;iRobotFunctions.c&quot;&#10;#include &quot;oi.h&quot;&#10;&#10;void drive2(int16_t velocity, int16_t radius)&#10;{&#10;  byteTx(CmdDrive);&#10;  byteTx((uint8_t)((velocity &gt;&gt; 8) &amp; 0x00FF));&#10;  byteTx((uint8_t)(velocity &amp; 0x00FF));&#10;  byteTx((uint8_t)((radius &gt;&gt; 8) &amp; 0x00FF));&#10;  byteTx((uint8_t)(radius &amp; 0x00FF));&#10;}&#10;&#10;#endif&#10;/**/&#10;&#10;/***initBlock***/&#10;  // Initialize the microcontroller&#10;  initializeRobot();&#10;&#10;  // Turn on the Create power if off&#10;  powerOnRobot();&#10;&#10;  // Start the open interface&#10;  byteTx(CmdStart);&#10;&#10;  // Change to 28800 baud&#10;  baud28k();&#10;&#10;  // Take full control of the Create&#10;  byteTx(CmdFull);&#10;&#10;  // Get rid of unwanted data in the serial port receiver&#10;  flushRx();&#10;&#10;  // Perform initial rounding detection&#10;  DIDR0 |= 0x20;  // disable digital input on C5&#10;  PRR &amp;= ~_BV(PRADC); // Turn off ADC power save&#10;  ADCSRA = (_BV(ADEN) | _BV(ADPS2) | _BV(ADPS1) | _BV(ADPS0)); // Enabled, prescaler = 128&#10;  ADMUX = (_BV(REFS0) | 0x07); // set voltage reference, select channel C7 (was C5, modified by Winthrop)&#10;  // First channel read by ADC will be the one specified on the line above.&#10;&#10;   ADCSRA |= 0x40;&#10;      while(ADCSRA &amp; 0x40) ;&#10;     int leftValue;&#10;     int rightValue;&#10;      // The ADC output is 10 bits unsigned, or 0 to 1023.&#10;      // Normalize here.&#10;      // FIXME: Why reverse the polarity?&#10;      leftValue = 512 - ADC;&#10;      ADMUX = (_BV(REFS0) | 0x06);  // Change ADC mux to read other channel&#10;      // Sample the Y accelerometer, pointed 45 degrees right of forward, on channel 6&#10;      ADCSRA |= 0x40;&#10;      while(ADCSRA &amp; 0x40) ;&#10;      rightValue = 512 - ADC;&#10;      ADMUX = (_BV(REFS0) | 0x07);  // Change ADC mux back to read first channel&#10;&#10;while((rightValue&gt;10)||(rightValue&lt;-10)){&#10; 	drive2(20, RadCCW );&#10;	delay10ms(20);&#10;&#10;      ADCSRA |= 0x40;&#10;      while(ADCSRA &amp; 0x40) ;&#10;      // The ADC output is 10 bits unsigned, or 0 to 1023.&#10;      // Normalize here.&#10;      // FIXME: Why reverse the polarity?&#10;      leftValue = 512 - ADC;&#10;      ADMUX = (_BV(REFS0) | 0x06);  // Change ADC mux to read other channel&#10;      // Sample the Y accelerometer, pointed 45 degrees right of forward, on channel 6&#10;      ADCSRA |= 0x40;&#10;      while(ADCSRA &amp; 0x40) ;&#10;      rightValue = 512 - ADC;&#10;      ADMUX = (_BV(REFS0) | 0x07);  // Change ADC mux back to read first channel&#10;}&#10;drive2(20, RadStraight );&#10;delay10ms(20);&#10;&#10;&#10;/**/&#10;&#10;/***fireBlock***/&#10;/**/&#10;&#10;/***wrapupBlock***/&#10;/**/&#10;&#10;">
                 </property>
                 <property name="SDFDirector" class="ptolemy.domains.sdf.kernel.SDFDirector">
+                    <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
+                    </property>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[125.0, 115.0]">
                     </property>
                 </property>
@@ -3119,6 +3129,8 @@
             </property>
         </property>
         <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
+                    <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
+                    </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[-20.0, -40.0]">
             </property>
         </property>

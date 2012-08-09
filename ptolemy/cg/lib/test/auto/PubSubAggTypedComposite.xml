@@ -74,6 +74,8 @@
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="{100, 50}">
             </property>
+            <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
+            </property>
         </property>
         <entity name="Test" class="ptolemy.actor.lib.Test">
             <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{2, 2}">

@@ -236,6 +236,8 @@ the error rate.</text></svg></configure>
         <property name="HDF Director" class="ptolemy.domains.hdf.kernel.HDFDirector">
             <property name="_location" class="ptolemy.kernel.util.Location" value="{85, 60}">
             </property>
+            <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
+            </property>
         </property>
         <port name="port" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -357,6 +359,8 @@ the error rate.</text></svg></configure>
                 <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[145.0, 75.0]">
                     </property>
+                    <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
+                    </property>
                 </property>
                 <port name="input" class="ptolemy.domains.fsm.modal.RefinementPort">
                     <property name="input"/>
@@ -391,6 +395,8 @@ the error rate.</text></svg></configure>
             <entity name="state2" class="ptolemy.domains.fsm.modal.Refinement">
                 <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[155.0, 60.0]">
+                    </property>
+                    <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
                     </property>
                 </property>
                 <port name="input" class="ptolemy.domains.fsm.modal.RefinementPort">
@@ -551,6 +557,8 @@ the error rate.</text></svg></configure>
                 <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
                     <property name="_location" class="ptolemy.kernel.util.Location" value="{155.0, 85.0}">
                     </property>
+                    <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
+                    </property>
                 </property>
                 <port name="input" class="ptolemy.domains.fsm.modal.RefinementPort">
                     <property name="input"/>
@@ -585,6 +593,8 @@ the error rate.</text></svg></configure>
             <entity name="state2" class="ptolemy.domains.fsm.modal.Refinement">
                 <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
                     <property name="_location" class="ptolemy.kernel.util.Location" value="{165.0, 70.0}">
+                    </property>
+                    <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
                     </property>
                 </property>
                 <port name="input" class="ptolemy.domains.fsm.modal.RefinementPort">

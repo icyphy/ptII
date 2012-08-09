@@ -259,6 +259,8 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
             <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
                 <property name="_location" class="ptolemy.kernel.util.Location" value="100.0, 50.0">
                 </property>
+                <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
+                </property>
             </property>
             <port name="in" class="ptolemy.domains.fsm.modal.RefinementPort">
                 <property name="input"/>
@@ -314,6 +316,8 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
             </property>
             <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
                 <property name="_location" class="ptolemy.kernel.util.Location" value="105.0, 45.0">
+                </property>
+                <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
                 </property>
             </property>
             <port name="in" class="ptolemy.domains.fsm.modal.RefinementPort">

@@ -159,6 +159,8 @@ to another. Then delete this annotation.</text>
             <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
                 <property name="_location" class="ptolemy.kernel.util.Location" value="{105, 60}">
                 </property>
+                <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
+                </property>
             </property>
             <property name="scale" class="ptolemy.data.expr.Parameter" value="10">
                 <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -317,6 +319,8 @@ to another. Then delete this annotation.</text>
                     <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
                         <property name="_location" class="ptolemy.kernel.util.Location" value="{110, 65}">
                         </property>
+                        <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
+                        </property>
                     </property>
                     <property name="scale" class="ptolemy.data.expr.Parameter" value="30">
                         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -371,6 +375,8 @@ to another. Then delete this annotation.</text>
                 <entity name="state2" class="ptolemy.domains.modal.modal.Refinement">
                     <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
                         <property name="_location" class="ptolemy.kernel.util.Location" value="{90, 50}">
+                        </property>
+                        <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
                         </property>
                     </property>
                     <property name="scale" class="ptolemy.data.expr.Parameter" value="20">
@@ -456,6 +462,8 @@ to another. Then delete this annotation.</text>
         <entity name="state2" class="ptolemy.domains.modal.modal.Refinement">
             <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
                 <property name="_location" class="ptolemy.kernel.util.Location" value="{70, 45}">
+                </property>
+                <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
                 </property>
             </property>
             <property name="scale" class="ptolemy.data.expr.Parameter" value="2">
@@ -615,6 +623,8 @@ to another. Then delete this annotation.</text>
                     <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
                         <property name="_location" class="ptolemy.kernel.util.Location" value="{120.0, 75.0}">
                         </property>
+                        <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
+                        </property>
                     </property>
                     <property name="scale" class="ptolemy.data.expr.Parameter" value="14">
                         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -669,6 +679,8 @@ to another. Then delete this annotation.</text>
                 <entity name="state2" class="ptolemy.domains.modal.modal.Refinement">
                     <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
                         <property name="_location" class="ptolemy.kernel.util.Location" value="{100.0, 60.0}">
+                        </property>
+                        <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
                         </property>
                     </property>
                     <property name="scale" class="ptolemy.data.expr.Parameter" value="10">

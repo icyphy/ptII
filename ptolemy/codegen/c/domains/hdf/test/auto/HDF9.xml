@@ -102,6 +102,8 @@
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="{95, 70}">
             </property>
+            <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
+            </property>
         </property>
         <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={121, 198, 815, 518}, maximized=false}">
         </property>

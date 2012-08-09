@@ -20,6 +20,8 @@
       <property name="Continuous Director" class="ptolemy.domains.continuous.kernel.ContinuousDirector"/>
       <property name="Director" class="ptolemy.actor.Director">
          <doc>Simple director that executes actors in the order in which they were created.</doc>
+          <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
+          </property>
       </property>
    </group>
 
