@@ -1,7 +1,7 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="PublisherPort8" class="ptolemy.actor.TypedCompositeActor">
+<entity name="SubscriberPortInitialValues1" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.0.devel">
     </property>
     <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
@@ -10,7 +10,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="{90, 40}">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={66, 124, 934, 634}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={418, 355, 934, 634}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 524]">
     </property>
@@ -38,8 +38,6 @@
         <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
             <property name="_location" class="ptolemy.kernel.util.Location" value="{85, 75}">
             </property>
-            <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
-            </property>
         </property>
         <port name="PublisherPort" class="ptolemy.actor.PublisherPort">
             <property name="output"/>
@@ -52,10 +50,14 @@
             <property name="input"/>
             <property name="channel" class="ptolemy.data.expr.StringParameter" value="bar">
             </property>
+            <property name="initialTokens" class="ptolemy.actor.PubSubPort$1" value="{0,2}">
+            </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 235.0]">
             </property>
         </port>
         <entity name="Ramp" class="ptolemy.actor.lib.Ramp">
+            <property name="step" class="ptolemy.actor.parameters.PortParameter" value="1">
+            </property>
             <doc>Create a sequence of tokens with increasing value</doc>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[260.0, 225.0]">
             </property>
@@ -83,8 +85,6 @@
         <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
             <property name="_location" class="ptolemy.kernel.util.Location" value="{95, 85}">
             </property>
-            <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
-            </property>
         </property>
         <port name="SubscriberPort" class="ptolemy.actor.SubscriberPort">
             <property name="input"/>
@@ -97,7 +97,7 @@
             <property name="output"/>
             <property name="channel" class="ptolemy.data.expr.StringParameter" value="bar">
             </property>
-            <property name="initialTokens" class="ptolemy.actor.PubSubPort$1" value="{0, 2}">
+            <property name="initialTokens" class="ptolemy.actor.PubSubPort$1" value="">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[415.0, 190.0]">
             </property>

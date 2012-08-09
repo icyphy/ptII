@@ -48,6 +48,7 @@ import ptolemy.actor.gui.PtolemyPreferences;
 import ptolemy.actor.lib.qm.CompositeQuantityManager;
 import ptolemy.actor.lib.qm.MonitoredQuantityManager;
 import ptolemy.actor.parameters.ParameterPort;
+import ptolemy.data.ArrayToken;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.IntToken;
@@ -688,10 +689,16 @@ public class IOPortController extends AttributeController {
                         } else {
                             channel = ((PublisherPort)port).channel.stringValue();
                         }
+                        // Also display the number of initial tokens in parens.
+                        Token initialTokens = ((PublisherPort)port).initialTokens.getToken();
+                        if (initialTokens instanceof ArrayToken) {
+                            int number = ((ArrayToken)initialTokens).length();
+                            channel = channel + " (" + number + ")";
+                        }
                     } catch (IllegalActionException e) {
                         // Ignore and display question marks.
                         e.printStackTrace();
-                    }
+                    }                    
                     // The anchor argument below is (sadly) ignored.
                     Figure label = new LabelFigure(
                             channel, _pubSubLabelFont, 0.0, SwingConstants.SOUTH_EAST, _pubSubLabelColor);
@@ -722,6 +729,12 @@ public class IOPortController extends AttributeController {
                             channel = ((SubscriberPort)port).channel.getExpression();
                         } else {
                             channel = ((SubscriberPort)port).channel.stringValue();
+                        }
+                        // Also display the number of initial tokens in parens.
+                        Token initialTokens = ((SubscriberPort)port).initialTokens.getToken();
+                        if (initialTokens instanceof ArrayToken) {
+                            int number = ((ArrayToken)initialTokens).length();
+                            channel = channel + " (" + number + ")";
                         }
                     } catch (IllegalActionException e) {
                         // Ignore and display question marks.

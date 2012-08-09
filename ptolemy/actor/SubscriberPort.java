@@ -151,12 +151,12 @@ public class SubscriberPort extends PubSubPort {
             // because it will remove the published port name by _channel.
             // If _channel is set to a real name (not a regex pattern),
             // Then chaos ensues.  See test 3.0 in SubscriptionAggregator.tcl
-        } else if (attribute == initialOutputs) {
+        } else if (attribute == initialTokens) {
             // Set the initial token parameter for the benefit of SDF.
             // If this port is not opaque, SDF will not see it, so we
             // will need in preinitialize() to set the init production
             // of the inside ports.
-            Token initialOutputsValue = initialOutputs.getToken();
+            Token initialOutputsValue = initialTokens.getToken();
             if (initialOutputsValue != null) {
                 if (!(initialOutputsValue instanceof ArrayToken)) {
                     throw new IllegalActionException(this,
@@ -228,7 +228,7 @@ public class SubscriberPort extends PubSubPort {
         super.hierarchyWillChange();
     }
     
-    /** If {@link #initialOutputs} has been set, then make available the
+    /** If {@link #initialTokens} has been set, then make available the
      *  inputs specified by its array value.
      */
     @Override
@@ -239,7 +239,7 @@ public class SubscriberPort extends PubSubPort {
             return;
         }
  
-        Token initialOutputsValue = initialOutputs.getToken();
+        Token initialOutputsValue = initialTokens.getToken();
         if (initialOutputsValue instanceof ArrayToken) {
             // If this port is opaque, put the tokens into the receivers.
             if (isOpaque()) {
@@ -370,7 +370,7 @@ public class SubscriberPort extends PubSubPort {
                     // its token init production parameter will be seen by the scheduler).
                     int length = 0;
                     
-                    Token initialOutputsValue = initialOutputs.getToken();
+                    Token initialOutputsValue = initialTokens.getToken();
                     if (initialOutputsValue != null) {
                         length = ((ArrayToken)initialOutputsValue).length();
                     }

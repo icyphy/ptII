@@ -695,12 +695,12 @@ public class ExternalIOPortController extends AttributeController {
             label.translate(-8.0, bounds.getMaxY() + labelHeight + 4);
             figure.add(label);
             
-            if (port instanceof PublisherPort) {
-                String initialOutputs = ((PublisherPort)port).initialOutputs.getExpression();
-                if (!(initialOutputs.trim().equals(""))) {
-                    initialOutputs = "Initial outputs: " + initialOutputs;
+            if (port instanceof PubSubPort) {
+                String initialTokens = ((PubSubPort)port).initialTokens.getExpression();
+                if (!(initialTokens.trim().equals(""))) {
+                    initialTokens = "Initial tokens: " + initialTokens;
                     label = new LabelFigure(
-                            initialOutputs, _labelFont, 0.0, SwingConstants.SOUTH_EAST, _pubSubLabelColor);
+                            initialTokens, _labelFont, 0.0, SwingConstants.SOUTH_EAST, _pubSubLabelColor);
                     label.translate(-8.0, bounds.getMaxY() + 2 * labelHeight + 8);
                     figure.add(label);
                 }

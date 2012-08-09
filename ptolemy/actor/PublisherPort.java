@@ -248,12 +248,12 @@ public class PublisherPort extends PubSubPort {
                     }
                 }
             }
-        } else if (attribute == initialOutputs) {
+        } else if (attribute == initialTokens) {
             // Set the production rate parameter for the benefit of SDF.
             // If this port is not opaque, SDF will not see it, so the
             // corresponding SubscriberPorts become responsible for
             // setting their tokenInitConsumption parameters.
-            Token initialOutputsValue = initialOutputs.getToken();
+            Token initialOutputsValue = initialTokens.getToken();
             if (initialOutputsValue != null) {
                 if (!(initialOutputsValue instanceof ArrayToken)) {
                     throw new IllegalActionException(this,
@@ -345,7 +345,7 @@ public class PublisherPort extends PubSubPort {
         super.hierarchyWillChange();
     }
 
-    /** If {@link #initialOutputs} has been set, then produce the
+    /** If {@link #initialTokens} has been set, then produce the
      *  outputs specified by its array value.
      */
     @Override
@@ -356,7 +356,7 @@ public class PublisherPort extends PubSubPort {
             return;
         }
  
-        Token initialOutputsValue = initialOutputs.getToken();
+        Token initialOutputsValue = initialTokens.getToken();
         if (initialOutputsValue instanceof ArrayToken) {
             // If this port has inside receivers, then it is an opaque port
             // for a composite actor, and the right way to send outputs is

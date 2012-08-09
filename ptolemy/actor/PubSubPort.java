@@ -74,7 +74,7 @@ public abstract class PubSubPort extends TypedIOPort
         global.setTypeEquals(BaseType.BOOLEAN);
         global.setExpression("false");
         
-        initialOutputs = new Parameter(this, "initialOutputs") {
+        initialTokens = new Parameter(this, "initialTokens") {
             /** Override the base class to to allow the type to be unknown.
              *  @return True if the current type is acceptable.
              */
@@ -83,7 +83,7 @@ public abstract class PubSubPort extends TypedIOPort
                         || getType().equals(BaseType.UNKNOWN);
             }
         };
-        setTypeAtLeast(ArrayType.elementType(initialOutputs));
+        setTypeAtLeast(ArrayType.elementType(initialTokens));
     }
     
     ///////////////////////////////////////////////////////////////////
@@ -105,22 +105,18 @@ public abstract class PubSubPort extends TypedIOPort
      */
     public Parameter global;
 
-    /** The values that will be produced in the initialize method.
-     *  By default, this is empty, indicating that no initial outputs
-     *  are produced. If you wish for this port to produce initial
-     *  outputs, then give this parameter an array value specifying
-     *  the sequence of initial outputs.
+    /** The values that will be made available in the initialize method.
+     *  By default, this is empty, indicating that no initial tokens are
+     *  available. If you wish for this port to have initial tokens,
+     *  then give this parameter an array value specifying
+     *  the sequence of initial values. If this is an output port,
+     *  these initial values will be sent in the initialize() phase.
+     *  If this is an input port, then these initial values will be
+     *  available for reading after the initialize() phase.
      *  Changes to this parameter after initialize() has been invoked
      *  are ignored until the next execution of the model.
      */
-    public Parameter initialOutputs;
-
-    /** The rate parameter for the output port that declares the
-     *  initial production. This is not editable by default (visible
-     *  only in expert mode), as it gets set to the length
-     *  of {@link #initialOutputs} automatically.
-     */
-    public Parameter output_tokenInitProduction;
+    public Parameter initialTokens;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -147,7 +143,7 @@ public abstract class PubSubPort extends TypedIOPort
         // Set the type constraints.
         try {
             newObject.setTypeAtLeast(ArrayType
-                    .elementType(newObject.initialOutputs));
+                    .elementType(newObject.initialTokens));
         } catch (IllegalActionException e) {
             throw new InternalErrorException(e);
         }

@@ -146,7 +146,7 @@
         <port name="output" class="ptolemy.actor.PublisherPort">
             <property name="output"/>
             <property name="multiport"/>
-            <property name="initialOutputs" class="ptolemy.actor.PubSubPort$1" value="{1}">
+            <property name="initialTokens" class="ptolemy.actor.PubSubPort$1" value="{1}">
             </property>
             <property name="_hide" class="ptolemy.data.expr.SingletonParameter" value="false">
             </property>

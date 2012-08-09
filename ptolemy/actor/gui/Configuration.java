@@ -39,7 +39,7 @@ import java.util.List;
 import java.util.Set;
 
 import ptolemy.actor.ApplicationConfigurer;
-import ptolemy.actor.PublisherPort;
+import ptolemy.actor.PubSubPort;
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.data.ArrayToken;
 import ptolemy.data.BooleanToken;
@@ -522,11 +522,10 @@ public class Configuration extends CompositeEntity implements
                                     && lesserNamedObj != null
                                     && (greaterNamedObj.getContainer() != lesserNamedObj
                                             .getContainer())
-                                    // Publisher.output is a
-                                    // PublisherPort that contains an
-                                    // initialOutputs that is used to
+                                    // PubSubPort that contains an
+                                    // initialTokens that is used to
                                     // set the type.
-                                    && !(lesserNamedObj.getContainer() instanceof PublisherPort)) {
+                                    && !(lesserNamedObj.getContainer() instanceof PubSubPort)) {
                                 results.append(clone.getFullName()
                                         + " has type constraints with "
                                         + "associated objects that don't have "
