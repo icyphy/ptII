@@ -86,7 +86,7 @@ public class EditIconGraphController extends BasicGraphController {
      *  @return An exception.
      */
     public EdgeController getEdgeController(Object edge) {
-        throw new InternalErrorException("An icon edit has no edges.");
+        throw new InternalErrorException("An icon editor has no edges.");
     }
 
     /** Return the node controller appropriate for the specified object.
@@ -121,6 +121,8 @@ public class EditIconGraphController extends BasicGraphController {
                 throw new RuntimeException("Unrecognized object: "
                         + semanticObject);
             }
+        } else if (object == null){
+            return _attributeController;
         }
 
         throw new RuntimeException("Node with unknown semantic object: "
