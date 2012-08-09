@@ -1,0 +1,175 @@
+#! /bin/sh
+# If a SDFDirector has no iterations parameter, then insert one
+# and set it to 0.
+
+# Usage: fix-files [-n] [-d] 
+
+# Typical usage
+
+
+# 1. Generate a file that contains the names of the .xml files
+#   cd $PTII
+#   adm/bin/ptIItxtfiles | egrep '.xml$' >& /tmp/xmlFiles
+#
+# 2. Generate a file that contains the names of the .xml files that have
+#    SDFDirector or its derived classes.
+#   cat /tmp/xmlFiles | xargs egrep 'SDFDirector"|DTDirector"|HDFDirector"|PthalesDirector"' | awk -F : '{print $1}' | sort | uniq > /tmp/sdfFiles
+#
+#
+# 3. Review /tmp/sdfFiles by hand for .xml files that are used to
+#    define actors in the library, for example
+#   doc/findbugsOut.xml
+#   ptolemy/configs/*.xml
+#
+# 4. Run the script without updating the files.
+#   $PTII/ptolemy/domains/sdf/kernel/fixSDFIterations -n `cat /tmp/sdfFiles`
+#
+# 5. Run the script with updating the files:
+#   $PTII/ptolemy/domains/sdf/kernel/fixSDFIterations `cat /tmp/sdfFiles`
+
+
+printonly=no
+
+while getopts nd-- opt
+do
+	case $opt in
+		d) 	set -x;;
+		n) 	printonly=yes;;
+	   \?)	echo "$0: Usage: $0 [-n] [-x] [filenames . . .]"
+			echo " -n  Print only, do not actually do anything"
+			echo " -d  debug"
+			exit 3;;
+	esac
+done
+shift `expr $OPTIND - 1`
+SCCS=/usr/ccs/bin/sccs
+
+filesupdated=/tmp/fix-files_filesupdated.$$
+
+doit() {
+        awk '{
+                 if ($0 ~ /SDFDirector"/ || $0 ~/DTDirector"/ || $0 ~ /HDFDirector"/ || $0 ~ /PthalesDirector"/) {
+                     sawSDFDirector=1
+                     split($0, indent, "<")
+                     closer= indent[1] "</property>"
+                 } 
+                 if (sawSDFDirector == 1) {
+                     if ($0 ~ /<property name="iterations"/) {
+                         sawIterations=1
+                     } 
+                     if ($0 == closer) {
+                        if (sawIterations == 0) {
+                           print indent[1] "    <property name=\"iterations\" class=\"ptolemy.data.expr.Parameter\" value=\"0\">"
+                           print indent[1] "    </property>"
+                        }
+                        sawSDFDirector=0
+                        sawIterations=0
+                     }
+                 }
+                 print $0
+             }' $file > /tmp/fix-files.tmp
+	diff $file /tmp/fix-files.tmp
+}
+
+EGREPMATCH='SDFDirector|DTDirector|HDFDirector|PthalesDirector'
+LOGMESSAGE="Updated iterations to 0"
+
+topdir=`pwd`
+files=$@
+for fullfile in $files
+do
+	cd $topdir
+	echo "Now processing: $fullfile"
+
+	if [ ! -f $fullfile ]; then
+	    echo "WARNING: $fullfile does not exist, skipping"
+	    continue
+	fi
+
+	# Check that the file has a trailing newline, sed hates it
+	# if it does not
+	results=`tail -1 $fullfile | od -b | tail -2 | head -1 | egrep '012 *$'`
+	if [ "x$results" = "x" ]; then
+		echo "WARNING: $fullfile: does not have a trailing newline, skipping"
+		continue
+	fi
+
+	# # Skip files that contain lines longer than 4000 chars
+	# results=`awk 'length($0) > 4000 {print "line", NR, "is longer than 4000 chars"}' $fullfile`
+	# if [ "x$results" != "x" ]; then
+	# 	echo "WARNING: $fullfile: $results, skipping"
+	# 	continue
+ 	# fi
+
+
+        egrep -e  "$EGREPMATCH" $fullfile
+	#awk '$0 ~ /diva.jar/ {print "Contains diva.jar, skipping"; exit 1}
+	#    $0 ~ /If you were able to run applets, you would have a demo here/ {exit 0}' $fullfile
+	retval=$?
+	if [ $retval != 1 ]; then
+		# There was a difference, so we might want to check this sucker out
+		file=`basename $fullfile`
+		dirname=`dirname $fullfile`
+		cd $dirname
+
+		retval=0
+
+		if [ "$printonly" = "no" ]; then
+			if [ -d SCCS ]; then
+			    $SCCS edit $file
+			    retval=$?
+ 			fi    
+			#co -q -l $file
+
+		else
+			if [ -d SCCS ]; then
+			   $SCCS info | awk '{print $1}' | grep "$file"
+			    #rlog -R -L $file
+			    retval=$?
+			    if [ $retval = 1 ]; then
+				echo "	Would be checked out. "
+			    else
+				echo "	Some sort of rlog problem. "
+			    fi
+			    doit
+			else   
+			    doit
+			fi    
+		fi
+		if [ "$printonly" = "no" ]; then
+			if [ $retval != 0 ]; then
+				echo "	Could not check out $1. Skipping"
+				continue
+			else
+				doit
+				cp -f /tmp/fix-files.tmp  $file
+				if [ -d SCCS ]; then
+				    $SCCS delget -y"$LOGMESSAGE" $file
+				else    
+				    if [ -d CVS ]; then
+					echo "skipping cvs commit"
+					#cvs commit -m "$LOGMESSAGE" $file 
+                                    else  					
+					#if [ -d .svn ]; then
+					#   svn commit -m "$LOGMESSAGE" $file    
+					#fi   
+					echo "Not running svn commit, just copying"
+					echo $file >> $filesupdated
+				    fi
+				fi
+				#/users/ptdesign/adm/bin/sccsadmin $file
+    				#grep Copyright $file
+			fi
+		fi	
+	else
+	   echo "	No difference, so no checkout"
+	fi
+#rm -f /tmp/fix-files.tmp 
+done
+
+if [ "$printonly" = "no" ]; then
+    echo "Thes files should be checked in:"
+    cat $filesupdated
+fi
+
+rm -f $filesupdated
