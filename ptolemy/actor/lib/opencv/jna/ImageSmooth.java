@@ -44,19 +44,15 @@ import com.sun.jna.Pointer;
 //// ImageSmooth
 
 /**
- * Smooth image
-  * @author Tatsuaki Iwata, Edward A. Lee, Jan Reineke, Christopher Brooks
- * @version
+ * Smooth an image using the Open Computer Vision (OpenCV) Library.
+ * @author Tatsuaki Iwata, Edward A. Lee, Jan Reineke, Christopher Brooks
+ * @version $Id$
  * @since Ptolemy II 7.1
  * @Pt.ProposedRating Red (cxh)
  * @Pt.AcceptedRating Red (cxh)
  */
 public class ImageSmooth extends Transformer {
     /** Construct an actor with the given container and name.
-     *  In addition to invoking the base class constructors, construct
-     *  the <i>init</i> and <i>step</i> parameter and the <i>step</i>
-     *  port. Initialize <i>init</i>
-     *  to IntToken with value 0, and <i>step</i> to IntToken with value 1.
      *  @param container The container.
      *  @param name The name of this actor.
      *  @exception IllegalActionException If the actor cannot be contained

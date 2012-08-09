@@ -1,4 +1,4 @@
-/* An actor that capture image from camera by using OpenCV
+ /* An actor that capture image from camera by using OpenCV
 
 Copyright (c) 2010-2011 The Regents of the University of California.
 All rights reserved.
@@ -41,23 +41,18 @@ import com.sun.jna.Pointer;
 import com.sun.jna.ptr.PointerByReference;
 
 ///////////////////////////////////////////////////////////////////
-////CvCameraCapture
+//// ImageReader
 
 /**
-* A simple actor starts a video capture process using
-* the Open Computer Vision (OpenCV) Library.
-* @author Tatsuaki Iwata, Edward A. Lee, Christopher Brooks
-* @version
-* @since
-* @Pt.ProposedRating
-* @Pt.AcceptedRating
+ * Read an image using the Open Computer Vision (OpenCV) Library.
+ * @author Tatsuaki Iwata, Edward A. Lee, Christopher Brooks
+ * @version $Id$
+ * @since Ptolemy II 8.1
+ * @Pt.ProposedRating Red (cxh)
+ * @Pt.AcceptedRating Red (cxh)
 */
 public class ImageReader extends Source {
     /** Construct an actor with the given container and name.
-     *  In addition to invoking the base class constructors, construct
-     *  the <i>init</i> and <i>step</i> parameter and the <i>step</i>
-     *  port. Initialize <i>init</i>
-     *  to IntToken with value 0, and <i>step</i> to IntToken with value 1.
      *  @param container The container.
      *  @param name The name of this actor.
      *  @exception IllegalActionException If the actor cannot be contained

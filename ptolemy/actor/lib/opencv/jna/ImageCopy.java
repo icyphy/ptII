@@ -41,12 +41,12 @@ import com.sun.jna.Pointer;
 import com.sun.jna.ptr.PointerByReference;
 
 ///////////////////////////////////////////////////////////////////
-//// ImageFlip
+//// ImageCopy
 
 /**
- * Flip image
-  * @author Tatsuaki Iwata, Edward A. Lee, Jan Reineke, Christopher Brooks
- * @version
+ * Copy Image using the Open Computer Vision (OpenCV) Library..
+ * @author Tatsuaki Iwata, Edward A. Lee, Jan Reineke, Christopher Brooks
+ * @version $Id$
  * @since Ptolemy II 7.1
  * @Pt.ProposedRating Red (cxh)
  * @Pt.AcceptedRating Red (cxh)

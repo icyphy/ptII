@@ -47,8 +47,8 @@ import com.sun.jna.ptr.PointerByReference;
 * A simple actor starts a video capture process using
 * the Open Computer Vision (OpenCV) Library.
 * @author Tatsuaki Iwata, Edward A. Lee, Christopher Brooks
-* @version
-* @since
+* @version $Id$
+* @since Ptolemy II 8.1
 * @Pt.ProposedRating
 * @Pt.AcceptedRating
 */
