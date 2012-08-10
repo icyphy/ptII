@@ -33,6 +33,7 @@ import ptolemy.actor.Director;
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.TypedIORelation;
+import ptolemy.domains.sdf.kernel.SDFDirector;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
@@ -185,6 +186,14 @@ public class EmbeddedCodeActor extends CompiledCompositeActor {
             try {
                 constructor.newInstance(new Object[] { this,
                         getExecutiveDirector().getName() });
+                localDirector = getDirector();
+                if (localDirector instanceof SDFDirector) {
+                    // Needed for $PTII/bin/vergil ptolemy/cg/lib/test/auto/Scale_c.xml
+                    // See "SDF director iterations parameter default of 0 is unfriendly"
+                    // http://bugzilla.ecoinformatics.org/show_bug.cgi?id=5546
+                    ((SDFDirector)localDirector).iterations.setExpression("0");
+                    
+                }
             } catch (Exception ex) {
                 throw new IllegalActionException(this, ex,
                         "Failed to instantiate the enclosing director class: "
