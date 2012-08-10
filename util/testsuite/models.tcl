@@ -30,11 +30,33 @@
 # 						COPYRIGHTENDKEY
 #######################################################################
 
+# Create a Continuous model with no actors in it and return it.
+# The optional argument sets the stop time for the execution.
+# It defaults to 1.0.
+#
+proc continuousModel {{stopTime 1.0}} {
+    set e0 [java::new ptolemy.actor.TypedCompositeActor]
+    createBasicModelErrorHandler $e0
+    set manager [java::new ptolemy.actor.Manager]
+    $e0 setName top
+    $e0 setManager $manager
+    set director \
+	[java::new ptolemy.domains.continuous.kernel.ContinuousDirector $e0 ContinuousDirector]
+    #$director setStopTime $stopTime
+    set stopparam [getParameter $director stopTime]
+    $stopparam setToken [java::new ptolemy.data.DoubleToken $stopTime];
+    return $e0
+}
+
+proc ctModel {{stopTime 1.0}} {
+    return continuousModel $stopTime
+}
+
 # Create a CT model with no actors in it and return it.
 # The optional argument sets the stop time for the execution.
 # It defaults to 1.0.
 #
-proc ctModel {{stopTime 1.0}} {
+proc ctOldModel {{stopTime 1.0}} {
     set e0 [java::new ptolemy.actor.TypedCompositeActor]
     createBasicModelErrorHandler $e0
     set manager [java::new ptolemy.actor.Manager]

@@ -244,8 +244,8 @@ test Ramp-2.7 {check types of the above model} {
     list [[$constOut getType] toString] [[$recIn getType] toString]
 } {{arrayType({name = string, value = double},2)} {arrayType({name = string, value = double},2)}}
 
-test Ramp-3.1 {Run a CT model which will detect errors in scheduling} {
-    set e0 [ctModel 5]
+test Ramp-3.1 {Run a Continous model which will detect errors in scheduling} {
+    set e0 [continuousModel 5]
     set ramp [java::new ptolemy.actor.lib.Ramp $e0 ramp]
     set rec [java::new ptolemy.actor.lib.Recorder $e0 rec]
     $e0 connect \
