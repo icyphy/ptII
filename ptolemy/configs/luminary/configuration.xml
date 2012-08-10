@@ -34,7 +34,6 @@
   <entity name="effigyFactory" class="ptolemy.actor.gui.EffigyFactory">
     <input source="ptolemy/configs/graphEffigyFactory.xml"/>
     <input source="ptolemy/configs/modalEffigyFactories.xml"/>
-    <input source="ptolemy/configs/fsmEffigyFactories.xml"/>
     <!-- Import HTML viewer, text editor, etc. -->
     <input source="ptolemy/configs/extendedEffigyFactories.xml"/>
   </entity>

@@ -6,8 +6,6 @@
   <!-- These will appear in the View menu of an fsm tableau. -->
   <property name="Case Editor"
             class="ptolemy.vergil.modal.CaseGraphTableau$Factory"/>
-  <property name="Classic Case Editor"
-            class="ptolemy.vergil.fsm.CaseGraphTableau$Factory"/>
   <property name="Tree View"
             class="ptolemy.vergil.tree.TreeTableau$Factory"/>
   <property name="XML view"

@@ -201,7 +201,37 @@ public class ClassChanges extends MoMLFilterSimple {
 
         // New in 3.1-devel
         _classChanges.put("ptolemy.domains.fsm.lib.RelationList",
-                "ptolemy.domains.fsm.kernel.RelationList");
+                "ptolemy.domains.modal.kernel.RelationList");
+
+        _classChanges.put("ptolemy.domains.fsm.kernel.CommitActionsAttribute",
+	        "ptolemy.domains.modal.kernel.CommitActionsAttribute");
+
+        _classChanges.put("ptolemy.domains.fsm.kernel.FSMDirector",
+			  "ptolemy.domains.modal.kernel.FSMDirector");
+
+        _classChanges.put("ptolemy.domains.fsm.kernel.OutputActionsAttribute",
+	        "ptolemy.domains.modal.kernel.OutputActionsAttribute");
+
+        _classChanges.put("ptolemy.domains.fsm.kernel.State",
+	        "ptolemy.domains.modal.kernel.State");
+
+        _classChanges.put("ptolemy.domains.fsm.kernel.Transition",
+	        "ptolemy.domains.modal.kernel.Transition");
+
+        _classChanges.put("ptolemy.domains.fsm.modal.ModalModel",
+                "ptolemy.domains.modal.modal.ModalModel");
+
+        _classChanges.put("ptolemy.domains.fsm.modal.ModalPort",
+                "ptolemy.domains.modal.modal.ModalPort");
+
+        _classChanges.put("ptolemy.domains.fsm.modal.State",
+	        "ptolemy.domains.modal.modal.State");
+
+        _classChanges.put("ptolemy.domains.fsm.modal.Refinement",
+	        "ptolemy.domains.modal.modal.Refinement");
+
+        _classChanges.put("ptolemy.domains.fsm.modal.RefinementPort",
+	        "ptolemy.domains.modal.modal.RefinementPort");
 
         // Renamed in 3.1-devel
         _classChanges.put("ptolemy.vergil.icon.ImageEditorIcon",
@@ -221,16 +251,16 @@ public class ClassChanges extends MoMLFilterSimple {
 
         // Moved ModalModel
         _classChanges.put("ptolemy.vergil.fsm.modal.ModalModel",
-                "ptolemy.domains.fsm.modal.ModalModel");
+                "ptolemy.domains.modal.modal.ModalModel");
 
         // Moved InterfaceAutomatonTransition
         _classChanges.put(
                 "ptolemy.domains.fsm.kernel.InterfaceAutomatonTransition",
-                "ptolemy.domains.fsm.kernel.ia.InterfaceAutomatonTransition");
+                "ptolemy.domains.modal.kernel.ia.InterfaceAutomatonTransition");
 
         // Moved InterfaceAutomatonTransition
         _classChanges.put("ptolemy.domains.fsm.kernel.InterfaceAutomaton",
-                "ptolemy.domains.fsm.kernel.ia.InterfaceAutomaton");
+                "ptolemy.domains.modal.kernel.ia.InterfaceAutomaton");
 
         // Moved InterfaceAutomatonTransition
         _classChanges.put(
@@ -244,31 +274,31 @@ public class ClassChanges extends MoMLFilterSimple {
         // Moved ModalTableauFactory
         _classChanges.put(
                 "ptolemy.vergil.fsm.modal.ModalModel$ModalTableauFactory",
-                "ptolemy.vergil.fsm.modal.ModalTableauFactory");
+                "ptolemy.vergil.modal.modal.ModalTableauFactory");
 
         // Moved ModalPort
         _classChanges.put("ptolemy.vergil.fsm.modal.ModalPort",
-                "ptolemy.domains.fsm.modal.ModalPort");
+                "ptolemy.domains.modal.modal.ModalPort");
 
         // Moved ModalController
         _classChanges.put("ptolemy.vergil.fsm.modal.ModalController",
-                "ptolemy.domains.fsm.modal.ModalController");
+                "ptolemy.domains.modal.modal.ModalController");
 
         // Moved Refinement
         _classChanges.put("ptolemy.vergil.fsm.modal.Refinement",
-                "ptolemy.domains.fsm.modal.Refinement");
+                "ptolemy.domains.modal.modal.Refinement");
 
         // Moved RefinementPort
         _classChanges.put("ptolemy.vergil.fsm.modal.RefinementPort",
-                "ptolemy.domains.fsm.modal.RefinementPort");
+                "ptolemy.domains.modal.modal.RefinementPort");
 
         // Moved TransitionRefinement
         _classChanges.put("ptolemy.vergil.fsm.modal.TransitionRefinement",
-                "ptolemy.domains.fsm.modal.TransitionRefinement");
+                "ptolemy.domains.modal.modal.TransitionRefinement");
 
         // Moved TransitionRefinementPort
         _classChanges.put("ptolemy.vergil.fsm.modal.TransitionRefinementPort",
-                "ptolemy.domains.fsm.modal.TransitionRefinementPort");
+                "ptolemy.domains.modal.modal.TransitionRefinementPort");
 
         // Moved IDAttribute from ptolemy.kernel.attributes to
         // ptolemy.vergil.kernel.atttributes
@@ -438,7 +468,6 @@ public class ClassChanges extends MoMLFilterSimple {
                 "ptolemy.vergil.basic.export.web.WebExportable");
         _classChanges.put("ptolemy.vergil.basic.export.html.WebExporter",
                 "ptolemy.vergil.basic.export.web.WebExporter");
-
 
     }
 

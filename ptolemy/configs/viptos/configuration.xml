@@ -80,56 +80,6 @@
         </property>
       </entity>
     </entity>
-    <!-- We need an FSM editor, but do not want it to appear in the -->
-    <!-- File->New menu. -->
-    <entity name="FSM Editor"
-            class="ptolemy.actor.gui.PtolemyEffigy$FactoryWithoutNew">
-      <entity name="blank" class="ptolemy.domains.fsm.kernel.FSMActor">
-        <input source="ptolemy/configs/fsmLibrary.xml"/>
-        <!-- Annotate with instructions. -->
-	    <property name="annotation" class="ptolemy.kernel.util.Attribute">
-			<property name="_hideName"
-    	            class="ptolemy.kernel.util.SingletonAttribute"/>
-	        <property name="_iconDescription"
-            	    class="ptolemy.kernel.util.SingletonConfigurableAttribute"><configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">Create a state machine here.  Create transitions by holding 
-the control key and dragging from one state to another.  
-Right click to configure the properties of this model, including 
-setting the final state(s).  Then delete this annotation.</text>
-</svg></configure></property>
-	       <property name="_location"
-           	     	class="ptolemy.kernel.util.Location" value="120.0, 5.0"/>
-      	   <property name="_controllerFactory"
-                    class="ptolemy.vergil.basic.NodeControllerFactory"/>
-           <property name="_editorFactory"
-                    class="ptolemy.vergil.toolbox.AnnotationEditorFactory"/>
-        </property>
-      </entity>
-    </entity>
-    <entity name="Modal Model"
-            class="ptolemy.actor.gui.PtolemyEffigy$FactoryWithoutNew">
-      <entity name="blank" class="ptolemy.domains.fsm.modal.ModalModel">
-        <entity name="_Controller" class="ptolemy.domains.fsm.kernel.FSMActor">
-          <input source="ptolemy/configs/fsmLibrary.xml"/>
-          <property name="annotation" class="ptolemy.kernel.util.Attribute">
-            <property name="_hideName"
-                      class="ptolemy.kernel.util.SingletonAttribute"/>
-            <property name="_iconDescription"
-                      class="ptolemy.kernel.util.SingletonConfigurableAttribute"><configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">Create a state machine here (and ports, if needed) and
-create refinements for the states.  Create transitions
-by holding the control key and dragging from one state
-to another.  Right click to configure the properties 
-of this model, including setting the initial state.
-</text></svg></configure></property>
-            <property name="_location"
-                      class="ptolemy.kernel.util.Location" value="120.0, 5.0"/>
-            <property name="_controllerFactory"
-                      class="ptolemy.vergil.basic.NodeControllerFactory"/>
-            <property name="_editorFactory"
-                      class="ptolemy.vergil.toolbox.AnnotationEditorFactory"/>
-          </property>
-        </entity>
-      </entity>
-    </entity>
 
     <!-- Import HTML viewer, text editor, etc. -->
     <input source="ptolemy/configs/extendedEffigyFactories.xml"/>
@@ -142,7 +92,6 @@ of this model, including setting the initial state.
   <!-- of other editors that appear in the View menu.            -->
   <property name="tableauFactory" class="ptolemy.actor.gui.TableauFactory">
       <input source="ptolemy/configs/modalTableauFactory.xml"/>
-      <input source="ptolemy/configs/fsmTableauFactory.xml"/>
 
       <property name="NCCompositeActor Editor"
           class="ptolemy.domains.ptinyos.gui.NCCompositeActorTableauFactory">

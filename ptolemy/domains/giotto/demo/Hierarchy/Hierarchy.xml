@@ -71,14 +71,6 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[365.0, 290.0]">
         </property>
     </property>
-    <property name="CCodeGenerator" class="ptolemy.codegen.c.kernel.CCodeGenerator">
-        <property name="generateEmbeddedCode" class="ptolemy.data.expr.Parameter" value="false">
-        </property>
-        <property name="target" class="ptolemy.data.expr.StringParameter" value="openRTOS">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[100.0, 310.0]">
-        </property>
-    </property>
     <property name="WCET" class="ptolemy.data.expr.Parameter" value="0.0022000300000000004">
     </property>
     <property name="frequency" class="ptolemy.data.expr.Parameter" value="1">

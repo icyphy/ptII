@@ -4,12 +4,6 @@
 <!-- Factory for FSM editor.  -->
 <property name="factory1" class="ptolemy.actor.gui.PtolemyTableauFactory">
   <!-- These will appear in the View menu of an fsm tableau. -->
-  <property name="Classic FSM Editor"
-            class="ptolemy.vergil.fsm.FSMGraphTableau$Factory">
-    <!-- Specify the default library to use if the model does not -->
-    <!-- contain a library attribute.  -->
-    <input source="ptolemy/configs/ptiny/fsmLibraryPtiny.xml"/>
-  </property>
   <property name="Run Window"
             class="ptolemy.actor.gui.RunTableau$TopFactory"/>
   <property name="Tree View"

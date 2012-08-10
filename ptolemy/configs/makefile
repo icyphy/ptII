@@ -75,9 +75,7 @@ OTHER_FILES_TO_BE_JARED = \
 	extendedEffigyFactories.xml \
 	extendedTableauFactories.xml \
 	fsmController.xml \
-	fsmEffigyFactories.xml \
 	fsmLibrary.xml \
-	fsmTableauFactory.xml \
 	fmvEffigyFactory.xml \
 	fmvTableauFactory.xml \
 	graphEffigyFactory.xml \
@@ -109,7 +107,6 @@ OTHER_FILES_TO_BE_JARED = \
 	utilityColorAttribute.xml \
 	utilityCompositeActor.xml \
 	utilityFileParameter.xml \
-	utilityFsmModalModal.xml \
 	utilityIntRangeParameter.xml \
 	utilityLiveLink.xml \
 	utilityModalModel.xml \

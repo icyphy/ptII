@@ -57,7 +57,6 @@
     <property name="blank" class="ptolemy.vergil.icon.EditorIcon"/>
   </entity>
     <input source="ptolemy/configs/modalEffigyFactories.xml"/>
-    <!-- input source="ptolemy/configs/fsmEffigyFactories.xml"/ -->
     <!-- Need extendedEffigyFactories so that we can open html -->
     <input source="ptolemy/configs/extendedEffigyFactories.xml"/>
   </entity>
@@ -69,7 +68,6 @@
   <!-- of other editors that appear in the View menu.            -->
   <property name="tableauFactory" class="ptolemy.actor.gui.TableauFactory">
     <input source="ptolemy/configs/ptiny/modalTableauFactoryPtiny.xml"/>
-    <!-- input source="ptolemy/configs/ptiny/fsmTableauFactoryPtiny.xml"/ -->
     <input source="ptolemy/configs/ptiny/graphTableauFactoryPtiny.xml"/>
     <input source="ptolemy/configs/extendedTableauFactories.xml"/>
   </property>

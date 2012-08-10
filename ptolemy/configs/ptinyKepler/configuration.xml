@@ -41,7 +41,6 @@
   <entity name="effigyFactory" class="ptolemy.actor.gui.EffigyFactory">
     <input source="ptolemy/configs/graphEffigyFactory.xml"/>
     <input source="ptolemy/configs/modalEffigyFactories.xml"/>
-    <input source="ptolemy/configs/fsmEffigyFactories.xml"/>
     <input source="ptolemy/configs/extendedEffigyFactories.xml"/>
   </entity>
 
@@ -52,7 +51,6 @@
   <!-- of other editors that appear in the View menu.            -->
   <property name="tableauFactory" class="ptolemy.actor.gui.TableauFactory">
     <input source="ptolemy/configs/modalTableauFactory.xml"/>
-    <input source="ptolemy/configs/fsmTableauFactory.xml"/>
     <input source="ptolemy/configs/graphTableauFactory.xml"/>
     <input source="ptolemy/configs/extendedTableauFactories.xml"/>
   </property>
