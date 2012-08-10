@@ -1405,7 +1405,7 @@ public class Director extends Attribute implements Executable {
      *  director used by a modal model. This base class delegates
      *  to the executive director, if there is one, and otherwise
      *  returns an array with only one element,
-     *  "ptolemy.domains.fsm.kernel.FSMDirector".
+     *  "ptolemy.domains.modal.kernel.FSMDirector".
      *  @return An array of suggested directors to be used with ModalModel.
      */
     public String[] suggestedModalModelDirectors() {
