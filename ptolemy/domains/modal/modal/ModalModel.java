@@ -205,7 +205,7 @@ public class ModalModel extends TypedCompositeActor implements ChangeListener {
                 try {
                     Class.forName(className);
                 } catch (ClassNotFoundException e) {
-                    if (className.equals("ptolemy.domains.fsm.kernel.FSMDirector")) {
+                    if (className.equals("ptolemy.domains.modal.kernel.FSMDirector")) {
                         className = "ptolemy.domains.modal.kernel.FSMDirector";
                         try {
                             Class.forName(className);

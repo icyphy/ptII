@@ -38,7 +38,7 @@ import ptolemy.kernel.util.NamedObj;
 /**
  An interface to specify the containment relationship as seen by the model
  designer. This interface can be implemented by an attribute (such as {@link
- ptolemy.domains.fsm.kernel.ContainmentExtender}. Such an attribute defines a
+ ptolemy.domains.modal.kernel.ContainmentExtender}. Such an attribute defines a
  special containment relationship that is slightly different from the
  containment relationship defined by {@link NamedObj#getContainer()}. The {@link
  #getExtendedContainer()} method returns the container of the object that

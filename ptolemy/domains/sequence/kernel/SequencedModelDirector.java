@@ -678,8 +678,8 @@ public abstract class SequencedModelDirector extends Director {
      *  @see ptolemy.actor.Director#suggestedModalModelDirectors()
      */
     public String[] suggestedModalModelDirectors() {
-        return new String[] { "ptolemy.domains.fsm.kernel.FSMDirector",
-                "ptolemy.domains.fsm.kernel.MultirateFSMDirector",
+        return new String[] { "ptolemy.domains.modal.kernel.FSMDirector",
+                "ptolemy.domains.modal.kernel.MultirateFSMDirector",
                 "ptolemy.domains.hdf.kernel.HDFFSMDirector" };
     }
 

@@ -124,7 +124,7 @@ import ptolemy.kernel.util.Workspace;
  method because hierarchical models may change their structures during their
  preinitialize() method. For example, a modal model does not specify its
  initial state (and its refinement) until the end of its preinitialize()
- method. See {@link ptolemy.domains.fsm.kernel.FSMActor}. In order to support
+ method. See {@link ptolemy.domains.modal.kernel.FSMActor}. In order to support
  mutation, this director recalculates the depths at the beginning of its next
  iteration.
  </p><p>
@@ -1279,8 +1279,8 @@ public class DEDirector extends Director implements SuperdenseTimeDirector {
      */
     public String[] suggestedModalModelDirectors() {
         String[] defaultSuggestions = new String[2];
-        defaultSuggestions[1] = "ptolemy.domains.fsm.kernel.MultirateFSMDirector";
-        defaultSuggestions[0] = "ptolemy.domains.fsm.kernel.FSMDirector";
+        defaultSuggestions[1] = "ptolemy.domains.modal.kernel.MultirateFSMDirector";
+        defaultSuggestions[0] = "ptolemy.domains.modal.kernel.FSMDirector";
         return defaultSuggestions;
     }
 

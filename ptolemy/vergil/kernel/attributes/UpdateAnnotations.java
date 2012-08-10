@@ -202,7 +202,7 @@ public class UpdateAnnotations extends MoMLFilterSimple {
                 return;
             }
             if (!(parentContainer instanceof Attribute)) {
-                // ptolemy.domains.fsm.modal.ModalController cannot be cast to ptolemy.kernel.util.Attribute
+                // ptolemy.domains.modal.modal.ModalController cannot be cast to ptolemy.kernel.util.Attribute
                 return;
             }
 

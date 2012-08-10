@@ -158,8 +158,8 @@ public class RendezvousDirector extends CompositeProcessDirector {
         // Default is a NonStrictFSMDirector, while FSMDirector is also
         // in the array.
         String[] defaultSuggestions = new String[] {
-                "ptolemy.domains.fsm.kernel.FSMDirector",
-                "ptolemy.domains.fsm.kernel.NonStrictFSMDirector" };
+                "ptolemy.domains.modal.kernel.FSMDirector",
+                "ptolemy.domains.modal.kernel.NonStrictFSMDirector" };
         return defaultSuggestions;
     }
 

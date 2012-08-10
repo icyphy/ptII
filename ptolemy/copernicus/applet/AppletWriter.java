@@ -1663,8 +1663,8 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
                 "ptolemy/vergil/vergilApplet.jar");
 
         // FIXME: unfortunately, vergil depends on FSM now.
-        classMap.put("ptolemy.domains.fsm.kernel.FSMActor",
-                "ptolemy/domains/fsm/fsm.jar");
+        classMap.put("ptolemy.domains.modal.kernel.FSMActor",
+                "ptolemy.domains.modal/fsm.jar");
 
         // FIXME: vergil.fsm.modal.ModalModel depends on CTStepSizeControlActor
         classMap.put("ptolemy.domains.ct.kernel.CTStepSizeControlActor",
@@ -2123,7 +2123,7 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
     // The jar files that are necessary to run vergil if the codebase
     // is ".".
     // For example:
-    // "lib/diva.jar,ptolemy/domains/fsm/fsm.jar,ptolemy/domains/ct/ct.jar,ptolemy/vergil/vergilApplet.jar"
+    // "lib/diva.jar,ptolemy.domains.modal/fsm.jar,ptolemy/domains/ct/ct.jar,ptolemy/vergil/vergilApplet.jar"
     private String _vergilJarFiles;
 
     // The jar files that are necessary for the jnlp file.

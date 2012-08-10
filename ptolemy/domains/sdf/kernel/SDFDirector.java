@@ -52,7 +52,9 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
+import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.Workspace;
 
 ///////////////////////////////////////////////////////////////////
@@ -154,11 +156,11 @@ import ptolemy.kernel.util.Workspace;
  @see ptolemy.domains.sdf.kernel.SDFScheduler
  @see ptolemy.domains.sdf.kernel.SDFReceiver
 
- @author Steve Neuendorffer
+ @author Steve Neuendorffer, Contributor: Christopher Brooks
  @version $Id$
  @since Ptolemy II 0.2
- @Pt.ProposedRating Green (neuendor)
- @Pt.AcceptedRating Green (neuendor)
+ @Pt.ProposedRating Yellow (cxh)
+ @Pt.AcceptedRating Yellow (cxh)
  */
 public class SDFDirector extends StaticSchedulingDirector implements
         PeriodicDirector {
@@ -260,7 +262,19 @@ public class SDFDirector extends StaticSchedulingDirector implements
      *  of data processed by the SDF model is a function of both this
      *  parameter and the value of parameter <i>vectorizationFactor</i>, since
      *  <i>vectorizationFactor</i> can influence the choice of schedule.
-     *  The default value is an IntToken with the value one.
+     *
+     *  <p>If the number of iterations is -1, which is the value of
+     *  the AUTO choice in the UI, then if the container of the
+     *  director is the the top level then one iteration will occur
+     *  before postfire() eturns false.</p>
+     *
+     *  <p>If the number of iterations is -1 and and the container of
+     *  the director is <b>not</b> at the top level then postfire()
+     *  will always return true and execution will continue
+     *  forever.</p>
+     *
+     *  The default value is an IntToken with the value AUTO, which
+     *  is -1.  The UI has a second choice: UNBOUNDED, which is 0.
      */
     public Parameter iterations;
 
@@ -387,6 +401,39 @@ public class SDFDirector extends StaticSchedulingDirector implements
         // ports.  Note that this must occur after scheduling, since
         // rate parameters are assumed to exist.
         scheduler.declareRateDependency();
+    }
+
+    /** Return the number of iterations.
+     *
+     *  <p>The number of iterations returned depends on the value of
+     *  the <i>iterations</i> parameter and whether the container
+     *  of the director is at the top level. 
+     *  See the {@link #interations} documentation for details.</p>
+     *
+     *  <p>Code that uses SDFDirector should call getIterations()
+     *  instead of directly referring to the value of the
+     *  <i>iterations</i> parameter.
+     *
+     *  @return the number of iterations
+     *  @exception If thrown while getting the value of the
+     *  iterations parameter.
+     */
+    public int getIterations() throws IllegalActionException {
+        // See "SDF director iterations parameter default of 0 is unfriendly"
+        // http://bugzilla.ecoinformatics.org/show_bug.cgi?id=5546
+        int iterationsValue = ((IntToken) (iterations.getToken())).intValue();
+        if (iterationsValue >= 0) {
+            return iterationsValue;
+        }
+        NamedObj container = getContainer();
+        if (container != null
+                && container.getContainer() == null) {
+            // The container of this director is at the toplevel
+            if (iterations.equals(_auto)) {
+                return 1;
+            } 
+        }
+        return 0;
     }
 
     /** Return the time value of the next iteration.
@@ -673,7 +720,7 @@ public class SDFDirector extends StaticSchedulingDirector implements
      *  does not contain a legal value.
      */
     public boolean postfire() throws IllegalActionException {
-        int iterationsValue = ((IntToken) (iterations.getToken())).intValue();
+        int iterationsValue = getIterations();
         _iterationCount++;
 
         if ((iterationsValue > 0) && (_iterationCount >= iterationsValue)) {
@@ -703,8 +750,8 @@ public class SDFDirector extends StaticSchedulingDirector implements
      *  @see ptolemy.actor.Director#suggestedModalModelDirectors()
      */
     public String[] suggestedModalModelDirectors() {
-        return new String[] { "ptolemy.domains.fsm.kernel.FSMDirector",
-                "ptolemy.domains.fsm.kernel.MultirateFSMDirector",
+        return new String[] { "ptolemy.domains.modal.kernel.FSMDirector",
+                "ptolemy.domains.modal.kernel.MultirateFSMDirector",
                 "ptolemy.domains.hdf.kernel.HDFFSMDirector" };
     }
 
@@ -862,11 +909,23 @@ public class SDFDirector extends StaticSchedulingDirector implements
      */
     private void _init() throws IllegalActionException,
             NameDuplicationException {
+
+        // AUTO and UNBOUNDED are used to set the value of iterations,
+        // see the getIterations() method.
+
+        Parameter AUTO = new Parameter(this, "AUTO");
+        AUTO.setToken(_auto);
+        AUTO.setVisibility(Settable.EXPERT);
+
+        Parameter UNBOUNDED = new Parameter(this, "UNBOUNDED");
+        UNBOUNDED.setToken(IntToken.ZERO);
+        UNBOUNDED.setVisibility(Settable.EXPERT);
+
         iterations = new Parameter(this, "iterations");
         iterations.setTypeEquals(BaseType.INT);
-        // See "SDF director iterations parameter default of 0 is unfriendly"
-        // http://bugzilla.ecoinformatics.org/show_bug.cgi?id=5546
-        iterations.setExpression("1");
+        iterations.addChoice("AUTO");
+        iterations.addChoice("UNBOUNDED");
+        iterations.setExpression("AUTO");
 
         vectorizationFactor = new Parameter(this, "vectorizationFactor");
         vectorizationFactor.setTypeEquals(BaseType.INT);
@@ -912,9 +971,16 @@ public class SDFDirector extends StaticSchedulingDirector implements
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
+    /** The value used to signify special behavior for the
+     *  iterations parameter.
+     */
+    private static final IntToken _auto = new IntToken(-1);
+
     /** The real time at which the model begins executing. */
     private long _realStartTime = 0L;
 
     /** Cache of the most recent value of vectorizationFactor. */
     private int _vectorizationFactor = 1;
+
+
 }

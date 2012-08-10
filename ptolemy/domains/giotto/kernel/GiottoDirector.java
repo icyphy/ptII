@@ -708,8 +708,8 @@ public class GiottoDirector extends StaticSchedulingDirector implements
      */
     public String[] suggestedModalModelDirectors() {
         String[] defaultSuggestions = new String[2];
-        defaultSuggestions[0] = "ptolemy.domains.fsm.kernel.NonStrictFSMDirector";
-        defaultSuggestions[1] = "ptolemy.domains.fsm.kernel.FSMDirector";
+        defaultSuggestions[0] = "ptolemy.domains.modal.kernel.NonStrictFSMDirector";
+        defaultSuggestions[1] = "ptolemy.domains.modal.kernel.FSMDirector";
         return defaultSuggestions;
     }
 

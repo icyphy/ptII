@@ -684,10 +684,10 @@ public class DDFDirector extends Director {
      */
     public String[] suggestedModalModelDirectors() {
         String[] defaultSuggestions = {
-                "ptolemy.domains.fsm.kernel.MultirateFSMDirector",
+                "ptolemy.domains.modal.kernel.MultirateFSMDirector",
                 "ptolemy.domains.hdf.kernel.HDFFSMDirector",
-                "ptolemy.domains.fsm.kernel.FSMDirector",
-                "ptolemy.domains.fsm.kernel.NonStrictFSMDirector" };
+                "ptolemy.domains.modal.kernel.FSMDirector",
+                "ptolemy.domains.modal.kernel.NonStrictFSMDirector" };
         return defaultSuggestions;
     }
 

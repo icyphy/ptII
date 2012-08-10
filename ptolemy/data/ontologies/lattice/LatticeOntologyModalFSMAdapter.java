@@ -51,7 +51,7 @@ import ptolemy.kernel.util.NamedObj;
 //////////////////////////////////////////////////////////////////////////
 //// LatticeOntologyModelFSMAdapter
 
-/** An adapter class for ptolemy.domains.fsm.kernel.FSMActor.
+/** An adapter class for ptolemy.domains.modal.kernel.FSMActor.
  *
  *  @author Charles Shelton, Man-Kit Leung
  *  @version $Id$
