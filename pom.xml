@@ -499,12 +499,6 @@ See $PTII/doc/coding/maven.htm
       <artifactId>JUnitParams</artifactId>
       <version>0.3.5</version>
     </dependency>
-    <dependency>  <!-- $PTII/vendors/sun/jxta/jxta.jar -->
-      <groupId>jxta</groupId>
-      <artifactId>jxta</artifactId>
-      <version>2.0</version>
-    </dependency>
-
 
     <!-- <dependency>
       <groupId>log4j</groupId>
@@ -602,12 +596,6 @@ See $PTII/doc/coding/maven.htm
       <version>ptII</version>
     </dependency>
 
-    <dependency>  <!-- $PTII/vendors/sun/jxta/jxtasecurity.jar -->
-      <groupId>jxta</groupId>
-      <artifactId>jxtasecurity</artifactId>
-      <version>1.0</version>
-    </dependency>
-
     <dependency> 
       <groupId>PDFRenderer</groupId>
       <artifactId>PDFRenderer</artifactId>
@@ -693,12 +681,10 @@ See $PTII/doc/coding/maven.htm
            <exclude>ptolemy/actor/lib/jai/**</exclude>
            <exclude>ptolemy/actor/lib/jmf/**</exclude>
            <exclude>ptolemy/actor/lib/joystick/**</exclude>
-           <exclude>ptolemy/actor/lib/jxta/**</exclude>
 	   <exclude>ptolemy/actor/lib/mail/**</exclude>
            <exclude>ptolemy/actor/lib/opencv/**</exclude>
            <exclude>ptolemy/domains/gr/lib/quicktime/**</exclude>
 	   <exclude>ptolemy/homer/**</exclude>
-           <exclude>ptolemy/moml/jxta/**</exclude>
            <exclude>ptolemy/moml/test/NoPackageActor.java</exclude>
 	   <exclude>ptserver/**</exclude>
            <exclude>src/**</exclude>

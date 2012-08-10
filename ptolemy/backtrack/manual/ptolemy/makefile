@@ -33,7 +33,7 @@
 
 ME =		ptolemy/backtrack/manual/ptolemy
 
-DIRS =		actor configs domains
+DIRS =		actor configs
 
 # Root of the Java directory
 ROOT =		../../../..
@@ -51,8 +51,7 @@ PTCLASSJAR =
 # Include the .class files from these jars in PTCLASSALLJAR
 PTCLASSALLJARS = \
 		actor/actor.jar \
-		configs/configs.jar \
-		domains/domains.jar
+		configs/configs.jar
 
 PTCLASSALLJAR = $(PTPACKAGE).jar
 
@@ -67,7 +66,7 @@ EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
 # Don't include demo or DIRS here, or else 'make sources' will run 'make demo'
-MISC_FILES =	actor configs domains
+MISC_FILES =	actor configs
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES

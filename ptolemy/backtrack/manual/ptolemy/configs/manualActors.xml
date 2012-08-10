@@ -7,11 +7,6 @@
       <group>
         <entity name="Domain Specific" class="ptolemy.moml.EntityLibrary">
           <group>
-            <entity name="Continuous Time" class="ptolemy.moml.EntityLibrary">
-              <group>
-                <entity name="CTCompositeActor" class="ptolemy.backtrack.manual.ptolemy.domains.ct.kernel.CTCompositeActor"/>
-              </group>
-            </entity>
           </group>
         </entity>
       </group>
