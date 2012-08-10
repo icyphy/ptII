@@ -58,10 +58,6 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="{275, 50}">
         </property>
     </property>
-    <property name="StaticSchedulingCodeGenerator" class="ptolemy.codegen.kernel.StaticSchedulingCodeGenerator">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[425.0, 50.0]">
-        </property>
-    </property>
     <entity name="Ramp" class="ptolemy.actor.lib.Ramp">
         <property name="step" class="ptolemy.actor.parameters.PortParameter" value="0.05">
         </property>

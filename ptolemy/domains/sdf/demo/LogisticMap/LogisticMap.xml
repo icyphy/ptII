@@ -18,10 +18,6 @@
     </property>
     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{428.5, 308.5}">
     </property>
-    <property name="StaticSchedulingCodeGenerator" class="ptolemy.codegen.kernel.StaticSchedulingCodeGenerator">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[60.0, 100.0]">
-        </property>
-    </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model shows a polynomial mapping described by&#10;the equation: x(n+1) = rx(n)(1-x(n)) which was &#10;originally introduced as a demographic model where&#10;x(n) is a number between 0 and 1, and represents&#10;the population at year n and r is a positive number,&#10;and represents a combined rate for reproduction and&#10;starvation. &#10;&#10;It is often cited as an archetypal example of how&#10;complex, chaotic behavior can arise from very simple&#10;non-linear dynamical equations:&#10;* With 0&lt;r&lt;1, the population will eventually die.&#10;* With 1&lt;r&lt;2, the population will quickly stabilize to&#10;  (r-1)/r.&#10;* With 2&lt;r&lt;3, the population will eventually stabilize &#10;  to (r-1)/r, after oscillating around that value for&#10;  some time.&#10;* With 3&lt;r&lt;3.45, the population will oscillate between&#10;  2 values forever.&#10;* With 3.45&lt;r&lt;3.54, the population will oscillate&#10;  between 4 values.&#10;* With r slightly bigger than 3.54, the population &#10;  will oscillate between 8 values, then 16, 32, etc.&#10;  The lengths of the parameter intervals which yield&#10;  the same number of oscillations decrease rapidly...&#10;* At r = 3.57 is the onset of chaos and we can no&#10;  longer see any oscillations.&#10;&#10;For more details, see &#10;http://en.wikipedia.org/wiki/Logistic_map">
         </property>

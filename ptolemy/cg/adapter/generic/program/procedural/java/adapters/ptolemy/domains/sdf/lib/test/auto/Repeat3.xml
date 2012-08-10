@@ -18,10 +18,6 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[95.0, 60.0]">
         </property>
     </property>
-    <property name="StaticSchedulingCodeGenerator" class="ptolemy.codegen.kernel.StaticSchedulingCodeGenerator">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[290.0, 70.0]">
-        </property>
-    </property>
     <entity name="Scale" class="ptolemy.actor.lib.Scale">
         <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
             <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="factor">

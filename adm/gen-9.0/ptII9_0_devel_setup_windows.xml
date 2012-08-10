@@ -107,7 +107,7 @@
     -->
     <packs>
         <pack name="Ptiny" required="yes">
-            <description>Ptiny: The common domains: CT, DE, DDF, FSM, HDF, PN, Rendezvous, SDF and SR.
+            <description>Ptiny: The common domains: Continuous, DE, DDF, HDF, Modal, PN, Rendezvous, SDF and SR.
 The Ptiny pack is required. 
 </description>
             <file src="../../README.txt" targetdir="$INSTALL_PATH"/>
@@ -221,14 +221,6 @@ The Ptiny pack is required.
                   targetdir="$INSTALL_PATH/ptolemy/domains/continuous/demo"/>
             <file src="../../jar_dist/ptolemy/domains/continuous/doc/doc.jar"
                   targetdir="$INSTALL_PATH/ptolemy/domains/continuous/doc"/>
-            <file src="../../jar_dist/ptolemy/domains/ct/demo/demo.jar"
-                  targetdir="$INSTALL_PATH/ptolemy/domains/ct/demo"/>
-            <file src="../../jar_dist/ptolemy/domains/ct/doc/doc.jar"
-                  targetdir="$INSTALL_PATH/ptolemy/domains/ct/doc"/>
-            <file src="../../jar_dist/ptolemy/domains/fsm/doc/doc.jar"
-                  targetdir="$INSTALL_PATH/ptolemy/domains/fsm/doc"/>
-            <file src="../../jar_dist/ptolemy/domains/fsm/demo/demo.jar"
-                  targetdir="$INSTALL_PATH/ptolemy/domains/fsm/demo"/>
             <file src="../../jar_dist/ptolemy/domains/modal/doc/doc.jar"
                   targetdir="$INSTALL_PATH/ptolemy/domains/modal/doc"/>
             <file src="../../jar_dist/ptolemy/domains/modal/demo/demo.jar"
@@ -313,20 +305,6 @@ The Ptiny pack is required.
 
 		 Then add missing jars
 	      -->
-            <file src="../../jar_dist/ptolemy/codegen/codegen.jar"
-                  targetdir="$INSTALL_PATH/ptolemy/codegen"/>
-            <file src="../../jar_dist/ptolemy/codegen/c/vergil/vergil.jar"
-                  targetdir="$INSTALL_PATH/ptolemy/codegen/c/vergil"/>
-            <file src="../../jar_dist/ptolemy/codegen/demo/demo.jar"
-                  targetdir="$INSTALL_PATH/ptolemy/codegen/demo"/>
-            <file src="../../jar_dist/ptolemy/codegen/c/domains/fsm/demo/demo.jar"
-                  targetdir="$INSTALL_PATH/ptolemy/codegen/c/domains/fsm/demo"/>
-            <file src="../../jar_dist/ptolemy/codegen/c/domains/modal/demo/demo.jar"
-                  targetdir="$INSTALL_PATH/ptolemy/codegen/c/domains/modal/demo"/>
-            <file src="../../jar_dist/ptolemy/codegen/c/domains/pn/demo/demo.jar"
-                  targetdir="$INSTALL_PATH/ptolemy/codegen/c/domains/pn/demo"/>
-            <file src="../../jar_dist/ptolemy/codegen/java/actor/lib/embeddedJava/demo/demo.jar"
-                  targetdir="$INSTALL_PATH/ptolemy/codegen/java/actor/lib/embeddedJava/demo"/>
             <file src="../../jar_dist/lib/jasminclasses.jar"
                   targetdir="$INSTALL_PATH/lib"/>
             <file src="../../jar_dist/lib/sootclasses.jar"
@@ -453,12 +431,8 @@ The Ptiny pack is required.
                   targetdir="$INSTALL_PATH/ptolemy/verification"/>
             <file src="../../jar_dist/ptolemy/verification/demo/demo.jar"
                   targetdir="$INSTALL_PATH/ptolemy/verification/demo"/>
-            <file src="../../jar_dist/ptolemy/codegen/rtmaude/rtmaude.jar"
-                  targetdir="$INSTALL_PATH/ptolemy/codegen/rtmaude"/>
             <file src="../../jar_dist/ptolemy/domains/ptera/ptera.jar"
                   targetdir="$INSTALL_PATH/ptolemy/domains/ptera"/>
-            <file src="../../jar_dist/ptolemy/vergil/fsm/fmv/fmv.jar"
-                  targetdir="$INSTALL_PATH/ptolemy/vergil/fsm/fmv"/>
             <file src="../../jar_dist/ptolemy/vergil/modal/fmv/fmv.jar"
                   targetdir="$INSTALL_PATH/ptolemy/vergil/modal/fmv"/>
             <file src="../../jar_dist/ptolemy/vergil/gt/gt.jar"
@@ -477,8 +451,6 @@ The Ptiny pack is required.
                   targetdir="$INSTALL_PATH/lib"/>
             <file src="../../jar_dist/ptolemy/vergil/ptera/ptera.jar"
                   targetdir="$INSTALL_PATH/ptolemy/vergil/ptera"/>
-            <file src="../../jar_dist/ptolemy/vergil/fsm/fmv/fmv.jar"
-                  targetdir="$INSTALL_PATH/ptolemy/vergil/fsm/fmv"/>
             <file src="../../jar_dist/ptolemy/vergil/modal/fmv/fmv.jar"
                   targetdir="$INSTALL_PATH/ptolemy/vergil/modal/fmv"/>
             <file src="../../jar_dist/ptolemy/vergil/gt/gt.jar"
@@ -523,14 +495,10 @@ The Ptiny pack is required.
                   targetdir="$INSTALL_PATH/ptolemy/domains/ci"/>
             <file src="../../jar_dist/ptolemy/domains/continuous/continuous.jar"
                   targetdir="$INSTALL_PATH/ptolemy/domains/continuous"/>
-            <file src="../../jar_dist/ptolemy/domains/ct/ct.jar"
-                  targetdir="$INSTALL_PATH/ptolemy/domains/ct"/>
             <file src="../../jar_dist/ptolemy/domains/ddf/ddf.jar"
                   targetdir="$INSTALL_PATH/ptolemy/domains/ddf"/>
             <file src="../../jar_dist/ptolemy/domains/de/de.jar"
                   targetdir="$INSTALL_PATH/ptolemy/domains/de"/>
-            <file src="../../jar_dist/ptolemy/domains/fsm/fsm.jar"
-                  targetdir="$INSTALL_PATH/ptolemy/domains/fsm"/>
             <file src="../../jar_dist/ptolemy/domains/gr/gr.jar"
                   targetdir="$INSTALL_PATH/ptolemy/domains/gr"/>
             <file src="../../jar_dist/ptolemy/domains/hdf/hdf.jar"

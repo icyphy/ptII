@@ -55,10 +55,6 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[10.0, 505.0]">
         </property>
     </property>
-    <property name="StaticSchedulingCodeGenerator" class="ptolemy.codegen.kernel.StaticSchedulingCodeGenerator">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[505.0, 110.0]">
-        </property>
-    </property>
     <entity name="Uncoded Symbols" class="ptolemy.actor.lib.Bernoulli">
         <property name="seed" class="ptolemy.actor.parameters.SharedParameter" value="0L">
         </property>

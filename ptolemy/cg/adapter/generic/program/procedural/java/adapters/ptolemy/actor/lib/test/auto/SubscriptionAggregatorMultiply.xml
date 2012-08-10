@@ -18,10 +18,6 @@
     </property>
     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{358.5, 244.5}">
     </property>
-    <property name="JavaCodeGenerator" class="ptolemy.codegen.java.kernel.JavaCodeGenerator">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[460.0, 45.0]">
-        </property>
-    </property>
     <entity name="Publisher" class="ptolemy.actor.lib.Publisher">
         <property name="channel" class="ptolemy.data.expr.StringParameter" value="channel1">
         </property>

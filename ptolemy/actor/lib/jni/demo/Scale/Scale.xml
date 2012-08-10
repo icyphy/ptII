@@ -66,26 +66,6 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[245.0, 105.0]">
         </property>
-        <property name="CodeGenerator_AutoAdded" class="ptolemy.codegen.kernel.StaticSchedulingCodeGenerator">
-            <property name="codeDirectory" class="ptolemy.data.expr.FileParameter" value="$HOME/codegen/">
-                <property name="allowFiles" class="ptolemy.data.expr.Parameter" value="false">
-                </property>
-                <property name="allowDirectories" class="ptolemy.data.expr.Parameter" value="true">
-                </property>
-            </property>
-            <property name="compile" class="ptolemy.data.expr.Parameter" value="true">
-            </property>
-            <property name="generatorPackage" class="ptolemy.data.expr.StringParameter" value="ptolemy.codegen.c">
-            </property>
-            <property name="generateComment" class="ptolemy.data.expr.Parameter" value="true">
-            </property>
-            <property name="inline" class="ptolemy.data.expr.Parameter" value="false">
-            </property>
-            <property name="overwriteFiles" class="ptolemy.data.expr.Parameter" value="true">
-            </property>
-            <property name="run" class="ptolemy.data.expr.Parameter" value="true">
-            </property>
-        </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="unknown">

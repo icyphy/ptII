@@ -20,10 +20,6 @@
     </property>
     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{306.9507575757576, 186.3207859848484}">
     </property>
-    <property name="StaticSchedulingCodeGenerator" class="ptolemy.codegen.kernel.StaticSchedulingCodeGenerator">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[370.0, 100.0]">
-        </property>
-    </property>
     <entity name="AddSubtract" class="ptolemy.actor.lib.AddSubtract">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[345.0, 230.0]">
         </property>

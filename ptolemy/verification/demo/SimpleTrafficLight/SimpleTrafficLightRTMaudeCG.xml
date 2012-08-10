@@ -96,17 +96,6 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[140.0, 80.0]">
         </property>
     </property>
-    <property name="RTMaudeCodeGenerator" class="ptolemy.codegen.rtmaude.kernel.RTMaudeCodeGenerator">
-        <property name="codeDirectory" class="ptolemy.data.expr.FileParameter" value="/cygdrive/c/">
-        </property>
-        <property name="inline" class="ptolemy.data.expr.Parameter" value="true">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[435.0, 55.0]">
-        </property>
-        <property name="Safety Property" class="ptolemy.codegen.rtmaude.data.expr.PropertyParameter" value="">
-        </property>
-        <property name="Alternation Property" class="ptolemy.codegen.rtmaude.data.expr.PropertyParameter" value="">
-        </property>
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="textSize" class="ptolemy.data.expr.Parameter" value="10">

@@ -791,12 +791,6 @@ http://java3d.dev.java.net/</text></svg></configure>
         </property>
         <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{388.0, 199.0}">
         </property>
-        <property name="StaticSchedulingCodeGenerator" class="ptolemy.codegen.kernel.StaticSchedulingCodeGenerator">
-            <property name="generateEmbeddedCode" class="ptolemy.data.expr.Parameter" value="false">
-            </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[105.0, 110.0]">
-            </property>
-        </property>
         <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
             <property name="_location" class="ptolemy.kernel.util.Location" value="[105.0, 45.0]">
             </property>

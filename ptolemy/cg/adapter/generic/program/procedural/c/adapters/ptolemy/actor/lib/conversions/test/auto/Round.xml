@@ -18,10 +18,6 @@
     </property>
     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
     </property>
-    <property name="JavaCodeGenerator" class="ptolemy.codegen.java.kernel.JavaCodeGenerator">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{310, 65}">
-        </property>
-    </property>
     <entity name="Test" class="ptolemy.actor.lib.Test">
         <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{{2, 1, 2, 1}, {2, 1, 2, 1}, {2, 1, 2, 1}, {2, 1, 2, 1}, {2, 1, 2, 1}, {2, 1, 2, 1}, {2, 1, 2, 1}, {2, 1, 2, 1}, {2, 1, 2, 1}, {2, 1, 2, 1}}">
         </property>

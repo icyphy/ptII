@@ -24,10 +24,6 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[30.0, 270.0]">
         </property>
     </property>
-    <property name="JavaCodeGenerator" class="ptolemy.codegen.java.kernel.JavaCodeGenerator">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[345.0, 45.0]">
-        </property>
-    </property>
     <entity name="Const" class="ptolemy.actor.lib.Const">
         <doc>Create a constant sequence.</doc>
         <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">

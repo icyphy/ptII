@@ -87,8 +87,6 @@
     <exclude name="**/HTMLAboutJUnitTest.*" />
     <exclude name="**/javasound/test/junit/JUnitTclTest.*" />
     <exclude name="**/KielerJUnitTest.*" />
-    <exclude name="**/ptolemy/codegen/test/junit/AutoCodegenTests.*" />
-    <exclude name="**/ptolemy/codegen/test/junit/AutoCodegenKnownFailedTests.*" />
     <exclude name="**/ptolemy/util/test/junit/AutoCGTests.*" />
     <exclude name="**/ptolemy/util/test/junit/AutoCGKnownFailedTests.*" />
     <exclude name="**/ptolemy/util/test/junit/ModelKnownFailedTests.*" />
@@ -109,10 +107,6 @@
   <patternset id="test.long.includes">
     <include name="**/JUnitCGJavaTest.*" />
     <include name="**/ptolemy/actor/lib/test/junit/JUnitTclTest.*" />
-    <include name="**/ptolemy/codegen/test/junit/AutoCodegenCKnownFailedTests.*" /> 
-    <include name="**/ptolemy/codegen/test/junit/AutoCodegenCTests.*" /> 
-    <include name="**/ptolemy/codegen/test/junit/AutoCodegenJavaKnownFailedTests.*" /> 
-    <include name="**/ptolemy/codegen/test/junit/AutoCodegenJavaTests.*" /> 
     <include name="**/ptolemy/configs/test/junit/JUnitTclTest.*" />
     <include name="**/ptolemy/domains/continuous/test/junit/JUnitTclTest.*" />
     <include name="**/ptolemy/domains/de/test/junit/JUnitTclTest*" />
@@ -123,10 +117,6 @@
   <patternset id="test.long.excludes">
     <exclude name="**/JUnitCGJavaTest.*" />
     <exclude name="**/ptolemy/actor/lib/test/junit/JUnitTclTest.*" />
-    <exclude name="**/ptolemy/codegen/test/junit/AutoCodegenCKnownFailedTests.*" />
-    <exclude name="**/ptolemy/codegen/test/junit/AutoCodegenCTests.*" />
-    <exclude name="**/ptolemy/codegen/test/junit/AutoCodegenJavaKnownFailedTests.*" />
-    <exclude name="**/ptolemy/codegen/test/junit/AutoCodegenJavaTests.*" />
     <exclude name="**/ptolemy/configs/test/junit/JUnitTclTest.*" />
     <exclude name="**/ptolemy/domains/continuous/test/junit/JUnitTclTest.*" />
     <exclude name="**/ptolemy/domains/de/test/junit/JUnitTclTest*" />

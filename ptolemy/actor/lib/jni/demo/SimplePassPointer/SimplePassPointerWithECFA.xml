@@ -18,14 +18,6 @@
     </property>
     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{360.5, 258.0}">
     </property>
-    <property name="CCodeGenerator" class="ptolemy.codegen.c.kernel.CCodeGenerator">
-        <property name="generateCpp" class="ptolemy.data.expr.Parameter" value="false">
-        </property>
-        <property name="generateEmbeddedCode" class="ptolemy.data.expr.Parameter" value="false">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[225.0, 40.0]">
-        </property>
-    </property>
     <property name="AnnotationUpdated" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
         </property>
@@ -107,42 +99,6 @@
         </property>
         <property name="input_file" class="ptolemy.data.expr.FileParameter" value="C:\projects\X-Tri8\Monkey.jpg">
         </property>
-        <property name="CodeGenerator_AutoAdded" class="ptolemy.codegen.c.kernel.CCodeGenerator">
-            <property name="allowDynamicMultiportReference" class="ptolemy.data.expr.Parameter" value="false">
-            </property>
-            <property name="codeDirectory" class="ptolemy.data.expr.FileParameter" value="$HOME/codegen/">
-                <property name="allowFiles" class="ptolemy.data.expr.Parameter" value="false">
-                </property>
-                <property name="allowDirectories" class="ptolemy.data.expr.Parameter" value="true">
-                </property>
-            </property>
-            <property name="compile" class="ptolemy.data.expr.Parameter" value="true">
-            </property>
-            <property name="compileTarget" class="ptolemy.data.expr.StringParameter" value="">
-            </property>
-            <property name="generatorPackage" class="ptolemy.data.expr.StringParameter" value="ptolemy.codegen.c">
-            </property>
-            <property name="generateComment" class="ptolemy.data.expr.Parameter" value="true">
-            </property>
-            <property name="generateCpp" class="ptolemy.data.expr.Parameter" value="false">
-            </property>
-            <property name="generateEmbeddedCode" class="ptolemy.data.expr.Parameter" value="true">
-            </property>
-            <property name="inline" class="ptolemy.data.expr.Parameter" value="false">
-            </property>
-            <property name="measureTime" class="ptolemy.data.expr.Parameter" value="false">
-            </property>
-            <property name="overwriteFiles" class="ptolemy.data.expr.Parameter" value="true">
-            </property>
-            <property name="padBuffers" class="ptolemy.data.expr.Parameter" value="true">
-            </property>
-            <property name="run" class="ptolemy.data.expr.Parameter" value="true">
-            </property>
-            <property name="sourceLineBinding" class="ptolemy.data.expr.Parameter" value="false">
-            </property>
-            <property name="target" class="ptolemy.data.expr.StringParameter" value="default">
-            </property>
-        </property>
         <port name="in" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="int">
@@ -174,42 +130,6 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[295.0, 105.0]">
         </property>
         <property name="input_file" class="ptolemy.data.expr.FileParameter" value="C:\projects\X-Tri8\Monkey.jpg">
-        </property>
-        <property name="CodeGenerator_AutoAdded" class="ptolemy.codegen.c.kernel.CCodeGenerator">
-            <property name="allowDynamicMultiportReference" class="ptolemy.data.expr.Parameter" value="false">
-            </property>
-            <property name="codeDirectory" class="ptolemy.data.expr.FileParameter" value="$HOME/codegen/">
-                <property name="allowFiles" class="ptolemy.data.expr.Parameter" value="false">
-                </property>
-                <property name="allowDirectories" class="ptolemy.data.expr.Parameter" value="true">
-                </property>
-            </property>
-            <property name="compile" class="ptolemy.data.expr.Parameter" value="true">
-            </property>
-            <property name="compileTarget" class="ptolemy.data.expr.StringParameter" value="">
-            </property>
-            <property name="generatorPackage" class="ptolemy.data.expr.StringParameter" value="ptolemy.codegen.c">
-            </property>
-            <property name="generateComment" class="ptolemy.data.expr.Parameter" value="true">
-            </property>
-            <property name="generateCpp" class="ptolemy.data.expr.Parameter" value="false">
-            </property>
-            <property name="generateEmbeddedCode" class="ptolemy.data.expr.Parameter" value="true">
-            </property>
-            <property name="inline" class="ptolemy.data.expr.Parameter" value="false">
-            </property>
-            <property name="measureTime" class="ptolemy.data.expr.Parameter" value="false">
-            </property>
-            <property name="overwriteFiles" class="ptolemy.data.expr.Parameter" value="true">
-            </property>
-            <property name="padBuffers" class="ptolemy.data.expr.Parameter" value="true">
-            </property>
-            <property name="run" class="ptolemy.data.expr.Parameter" value="true">
-            </property>
-            <property name="sourceLineBinding" class="ptolemy.data.expr.Parameter" value="false">
-            </property>
-            <property name="target" class="ptolemy.data.expr.StringParameter" value="default">
-            </property>
         </property>
         <port name="in" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>

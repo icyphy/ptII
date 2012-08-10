@@ -4,22 +4,6 @@
 <entity name="Drive_and_Rotate" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="7.1.devel">
     </property>
-    <property name="StaticSchedulingCodeGenerator" class="ptolemy.codegen.kernel.StaticSchedulingCodeGenerator">
-        <property name="codeDirectory" class="ptolemy.data.expr.FileParameter" value="$PTII/ptolemy/apps/iRobot/ptolemy/Sensors">
-        </property>
-        <property name="generateCpp" class="ptolemy.data.expr.Parameter" value="true">
-        </property>
-        <property name="generateJNI" class="ptolemy.data.expr.Parameter" value="false">
-        </property>
-        <property name="measureTime" class="ptolemy.data.expr.Parameter" value="false">
-        </property>
-        <property name="overwriteFiles" class="ptolemy.data.expr.Parameter" value="true">
-        </property>
-        <property name="run" class="ptolemy.data.expr.Parameter" value="false">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{250.0, 45.0}">
-        </property>
-    </property>
     <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
        <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
        </property>
@@ -127,32 +111,6 @@
                     </property>
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[130.0, 140.0]">
-                </property>
-                <property name="CodeGenerator_AutoAdded" class="ptolemy.codegen.kernel.StaticSchedulingCodeGenerator">
-                    <property name="codeDirectory" class="ptolemy.data.expr.FileParameter" value="$HOME/codegen/">
-                        <property name="allowFiles" class="ptolemy.data.expr.Parameter" value="false">
-                        </property>
-                        <property name="allowDirectories" class="ptolemy.data.expr.Parameter" value="true">
-                        </property>
-                    </property>
-                    <property name="compile" class="ptolemy.data.expr.Parameter" value="true">
-                    </property>
-                    <property name="compileTarget" class="ptolemy.data.expr.StringParameter" value="">
-                    </property>
-                    <property name="generatorPackage" class="ptolemy.data.expr.StringParameter" value="ptolemy.codegen.c">
-                    </property>
-                    <property name="generateComment" class="ptolemy.data.expr.Parameter" value="true">
-                    </property>
-                    <property name="generateJNI" class="ptolemy.data.expr.Parameter" value="true">
-                    </property>
-                    <property name="inline" class="ptolemy.data.expr.Parameter" value="false">
-                    </property>
-                    <property name="overwriteFiles" class="ptolemy.data.expr.Parameter" value="true">
-                    </property>
-                    <property name="run" class="ptolemy.data.expr.Parameter" value="true">
-                    </property>
-                    <property name="sourceLineBinding" class="ptolemy.data.expr.Parameter" value="false">
-                    </property>
                 </property>
             </entity>
         </entity>

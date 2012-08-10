@@ -18,10 +18,6 @@
     </property>
     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
     </property>
-    <property name="JavaCodeGenerator" class="ptolemy.codegen.java.kernel.JavaCodeGenerator">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[185.0, 55.0]">
-        </property>
-    </property>
     <entity name="Distributor" class="ptolemy.actor.lib.Distributor">
         <property name="DistributorIcon" class="ptolemy.vergil.icon.EditorIcon">
             <property name="rectangle" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">

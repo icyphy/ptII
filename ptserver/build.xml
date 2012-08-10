@@ -70,7 +70,6 @@
 			<exclude name="ptolemy/actor/lib/reactable/" />
 			<exclude name="ptolemy/backtrack/eclipse/" />
 			<exclude name="ptolemy/backtrack/test/" />
-			<exclude name="ptolemy/codegen/newInterfaces/" />
 			<exclude name="doc/coding/templates/" />
 			<exclude name="ptolemy/copernicus/kernel/fragment/" />
 			<exclude name="ptolemy/distributed/" />
@@ -159,7 +158,6 @@
 			<exclude name="ptolemy/calltrop/" />
 			<exclude name="ptolemy/cg/" />
 			<exclude name="ptolemy/chic/" />
-			<exclude name="ptolemy/codegen/" />
 			<exclude name="ptolemy/component/" />
 			<exclude name="ptolemy/copernicus/" />
 			<exclude name="ptolemy/demo/" />
@@ -259,7 +257,6 @@
 				<exclude name="ptolemy/actor/lib/reactable/" />
 				<exclude name="ptolemy/backtrack/eclipse/" />
 				<exclude name="ptolemy/backtrack/test/" />
-				<exclude name="ptolemy/codegen/newInterfaces/" />
 				<exclude name="doc/coding/templates/" />
 				<exclude name="ptolemy/copernicus/kernel/fragment/" />
 				<exclude name="ptolemy/distributed/" />
@@ -349,7 +346,6 @@
 				<exclude name="ptolemy/calltrop/" />
 				<exclude name="ptolemy/cg/" />
 				<exclude name="ptolemy/chic/" />
-				<exclude name="ptolemy/codegen/" />
 				<exclude name="ptolemy/component/" />
 				<exclude name="ptolemy/copernicus/" />
 				<exclude name="ptolemy/demo/" />
@@ -380,7 +376,6 @@
 			<exclude name="ptolemy/actor/lib/reactable/" />
 			<exclude name="ptolemy/backtrack/eclipse/" />
 			<exclude name="ptolemy/backtrack/test/" />
-			<exclude name="ptolemy/codegen/newInterfaces/" />
 			<exclude name="doc/coding/templates/" />
 			<exclude name="ptolemy/copernicus/kernel/fragment/" />
 			<exclude name="ptolemy/distributed/" />
@@ -470,7 +465,6 @@
 			<exclude name="ptolemy/calltrop/" />
 			<exclude name="ptolemy/cg/" />
 			<exclude name="ptolemy/chic/" />
-			<exclude name="ptolemy/codegen/" />
 			<exclude name="ptolemy/component/" />
 			<exclude name="ptolemy/copernicus/" />
 			<exclude name="ptolemy/demo/" />

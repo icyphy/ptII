@@ -52,12 +52,6 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="{145.0, 230.0}">
         </property>
     </property>
-    <property name="CCodeGenerator" class="ptolemy.codegen.c.kernel.CCodeGenerator">
-        <property name="generateEmbeddedCode" class="ptolemy.data.expr.Parameter" value="false">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[85.0, 370.0]">
-        </property>
-    </property>
     <property name="Formal Model Converter" class="ptolemy.verification.kernel.MathematicalModelConverter">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[83.0, 465.0]">
         </property>

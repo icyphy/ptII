@@ -22,10 +22,6 @@
     </property>
     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
     </property>
-    <property name="JavaCodeGenerator" class="ptolemy.codegen.java.kernel.JavaCodeGenerator">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[265.0, 55.0]">
-        </property>
-    </property>
     <entity name="VectorAssembler" class="ptolemy.actor.lib.VectorAssembler">
         <property name="_location" class="ptolemy.kernel.util.Location" value="190.0, 190.0">
         </property>

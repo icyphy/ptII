@@ -18,10 +18,6 @@
     </property>
     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 290.5}">
     </property>
-    <property name="JavaCodeGenerator" class="ptolemy.codegen.java.kernel.JavaCodeGenerator">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{350, 45}">
-        </property>
-    </property>
     <entity name="Test" class="ptolemy.actor.lib.Test">
         <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{{&quot;{1, 2, 3}&quot;, &quot;1.3&quot;, &quot;true&quot;, &quot;{{1}, {2, 3}, {4, 5, 4, 3, 3}}&quot;}, {&quot;{1, 2, 3}&quot;, &quot;1.3&quot;, &quot;true&quot;, &quot;{{1}, {2, 3}, {4, 5, 4, 3, 3}}&quot;}, {&quot;{1, 2, 3}&quot;, &quot;1.3&quot;, &quot;true&quot;, &quot;{{1}, {2, 3}, {4, 5, 4, 3, 3}}&quot;}, {&quot;{1, 2, 3}&quot;, &quot;1.3&quot;, &quot;true&quot;, &quot;{{1}, {2, 3}, {4, 5, 4, 3, 3}}&quot;}, {&quot;{1, 2, 3}&quot;, &quot;1.3&quot;, &quot;true&quot;, &quot;{{1}, {2, 3}, {4, 5, 4, 3, 3}}&quot;}, {&quot;{1, 2, 3}&quot;, &quot;1.3&quot;, &quot;true&quot;, &quot;{{1}, {2, 3}, {4, 5, 4, 3, 3}}&quot;}, {&quot;{1, 2, 3}&quot;, &quot;1.3&quot;, &quot;true&quot;, &quot;{{1}, {2, 3}, {4, 5, 4, 3, 3}}&quot;}, {&quot;{1, 2, 3}&quot;, &quot;1.3&quot;, &quot;true&quot;, &quot;{{1}, {2, 3}, {4, 5, 4, 3, 3}}&quot;}, {&quot;{1, 2, 3}&quot;, &quot;1.3&quot;, &quot;true&quot;, &quot;{{1}, {2, 3}, {4, 5, 4, 3, 3}}&quot;}, {&quot;{1, 2, 3}&quot;, &quot;1.3&quot;, &quot;true&quot;, &quot;{{1}, {2, 3}, {4, 5, 4, 3, 3}}&quot;}}">
         </property>

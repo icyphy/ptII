@@ -42,10 +42,6 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[25.0, 570.0]">
         </property>
     </property>
-    <property name="StaticSchedulingCodeGenerator" class="ptolemy.codegen.kernel.StaticSchedulingCodeGenerator">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[235.0, 45.0]">
-        </property>
-    </property>
     <entity name="Delay" class="ptolemy.domains.sdf.lib.SampleDelay">
         <property name="initialOutputs" class="ptolemy.data.expr.Parameter" value="{0}">
         </property>

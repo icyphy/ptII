@@ -40,12 +40,6 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 470.0]">
         </property>
     </property>
-    <property name="StaticSchedulingCodeGenerator" class="ptolemy.codegen.kernel.StaticSchedulingCodeGenerator">
-        <property name="inline" class="ptolemy.data.expr.Parameter" value="true">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[255.0, 50.0]">
-        </property>
-    </property>
     <entity name="ModalModel" class="ptolemy.domains.fsm.modal.ModalModel">
         <property name="directorClass" class="ptolemy.data.expr.StringParameter" value="ptolemy.domains.fsm.kernel.FSMDirector">
             <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
