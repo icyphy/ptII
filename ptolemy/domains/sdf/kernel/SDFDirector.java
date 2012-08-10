@@ -422,7 +422,7 @@ public class SDFDirector extends StaticSchedulingDirector implements
         // See "SDF director iterations parameter default of 0 is unfriendly"
         // http://bugzilla.ecoinformatics.org/show_bug.cgi?id=5546
         int iterationsValue = ((IntToken) (iterations.getToken())).intValue();
-        if (iterationsValue >= 0) {
+        if (iterationsValue > 0) {
             return iterationsValue;
         }
         NamedObj container = getContainer();
