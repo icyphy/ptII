@@ -335,8 +335,7 @@ time (CT).</text></svg></configure>
         <property name="SDF" class="ptolemy.domains.sdf.kernel.SDFDirector">
             <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="72.2333
-3288828536, 33.0333334695726">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="72.23333288828536, 33.0333334695726">
             </property>
         </property>
         <property name="w0" class="ptolemy.data.expr.Parameter" value="w0">
