@@ -205,10 +205,21 @@ public class ModalModel extends TypedCompositeActor implements ChangeListener {
                 try {
                     Class.forName(className);
                 } catch (ClassNotFoundException e) {
-                    throw new IllegalActionException(this, null, e,
-                            "Invalid directorClass.");
+                    if (className.equals("ptolemy.domains.fsm.kernel.FSMDirector")) {
+                        className = "ptolemy.domains.modal.kernel.FSMDirector";
+                        try {
+                            Class.forName(className);
+                        } catch (ClassNotFoundException e2) {
+                            throw new IllegalActionException(this, null, e2,
+                                    "Invalid directorClass. \"" + className + "\".");
+                        }
+                    } else {
+                        throw new IllegalActionException(this, null, e,
+                                "Invalid directorClass. \"" + className + "\".");
+                    }
                 }
 
+                final String finalClassName = className;
                 // NOTE: Creating a new director has to be done in a
                 // change request.
                 ChangeRequest request = new ChangeRequest(this,
@@ -217,8 +228,9 @@ public class ModalModel extends TypedCompositeActor implements ChangeListener {
                         Director director = getDirector();
 
                         // Contruct a new director
-                        Class newDirectorClass = Class.forName(directorClass
-                                .stringValue());
+                        //Class newDirectorClass = Class.forName(directorClass
+                        //        .stringValue());
+                        Class newDirectorClass = Class.forName(finalClassName);
                         Constructor newDirectorConstructor = newDirectorClass
                                 .getConstructor(new Class[] {
                                         CompositeEntity.class, String.class });
