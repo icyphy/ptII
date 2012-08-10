@@ -480,6 +480,8 @@ public class ClassChanges extends MoMLFilterSimple {
         // Classes that are obsolete and should be removed.
         _classesToRemove = new HashSet();
 
+        _classesToRemove.add("ptolemy.codegen.c.kernel.CCodeGenerator");
+
         // NotEditableParameter
         _classesToRemove.add("ptolemy.data.expr.NotEditableParameter");
 
@@ -491,6 +493,7 @@ public class ClassChanges extends MoMLFilterSimple {
 
         // SRRandomizedScheduler
         _classesToRemove.add("ptolemy.domains.sr.kernel.SRRandomizedScheduler");
+
 
     }
 }
