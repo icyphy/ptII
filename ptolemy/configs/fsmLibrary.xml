@@ -5,9 +5,6 @@
   <configure>
     <entity name="StateLibrary" class="ptolemy.kernel.CompositeEntity">
       <input source="ptolemy/configs/basicUtilities.xml"/>
-      <entity name="State" class="ptolemy.domains.fsm.kernel.State">
-        <property name="_centerName" class="ptolemy.kernel.util.Attribute"/>
-      </entity>
     </entity>
   </configure>
 </property>

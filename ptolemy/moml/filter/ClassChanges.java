@@ -96,13 +96,16 @@ public class ClassChanges extends MoMLFilterSimple {
             if (_classChanges.containsKey(attributeValue)) {
                 // We found a class with a class change.
                 MoMLParser.setModified(true);
+
+		// Uncomment this to trace changes.
+		//System.out.println("ClassChanges: " + attributeValue  + " " + _classChanges.get(attributeValue));
+
                 return (String) _classChanges.get(attributeValue);
             } else if (_classesToRemove.contains(attributeValue)) {
                 // We found a class to remove.
                 return null;
             }
         }
-
         return attributeValue;
     }
 

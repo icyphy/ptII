@@ -200,6 +200,15 @@ proc listToFullNames {list} {
 }
 
 ######################################################################
+#### listToFullClassNames
+# Return a list of classnames obtained by invoking the getClass 
+# and then getName on the objects in the argument, which is a list.
+#
+proc listToFullClassNames {list} {
+    return [objectsToFullClassNames [listToObjects $list]]
+}
+
+######################################################################
 #### listToStrings
 # Return a list of strings obtained by invoking the toString method
 # on the objects in the argument, which is an enumeration.
@@ -283,6 +292,19 @@ proc objectsToFullNames {objlist} {
             	lappend results NOT_NAMEABLE.
             }
         }
+    }
+    return $results
+}
+
+######################################################################
+#### objectsToFullClassnames
+# Return a list of classnames obtained by invoking the getClass 
+# and then getName on the objects in the argument, which is a list.
+#
+proc objectsToFullClassNames {objlist} {
+    set results {}
+    foreach obj $objlist {
+        lappend results [[$obj getClass] getName]
     }
     return $results
 }

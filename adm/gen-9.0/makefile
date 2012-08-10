@@ -303,8 +303,8 @@ $(PTIIDIST):
 	cp $(PTIIHOME)/.glimpse_exclude $(PTIIDIST)
 	ls -l $(PTIIDIST)/configure $(PTIIDIST)/config
 	# Copy libjvm.dll.a because it was removed by src.ex
-	cp $(PTIIHOME)/ptolemy/codegen/c/lib/win/libjvm.dll.a $(PTIIDIST)/ptolemy/codegen/c/lib/win
-	ls -l  $(PTIIDIST)/ptolemy/codegen/c/lib/win/libjvm.dll.a
+	#cp $(PTIIHOME)/ptolemy/codegen/c/lib/win/libjvm.dll.a $(PTIIDIST)/ptolemy/codegen/c/lib/win
+	#ls -l  $(PTIIDIST)/ptolemy/codegen/c/lib/win/libjvm.dll.a
 	touch $(PTIIDIST)/configure
 	# Copy the vergil script for use in the full tar file
 	(cd $(PTIIHOME)/bin; make)
@@ -438,8 +438,8 @@ $(PTII_SRC): $(PTII_FULL)
 	mv src/ptII$(VERSION)/ptolemy/domains/tm/makefile.tmp \
 		src/ptII$(VERSION)/ptolemy/domains/tm/makefile
 	# Copy libjvm.dll.a because it was removed by src.ex
-	cp $(PTIIHOME)/ptolemy/codegen/c/lib/win/libjvm.dll.a \
-		src/ptII$(VERSION)/ptolemy/codegen/c/lib/win/
+	#cp $(PTIIHOME)/ptolemy/codegen/c/lib/win/libjvm.dll.a \
+	#       src/ptII$(VERSION)/ptolemy/codegen/c/lib/win/
 	ls -l  		src/ptII$(VERSION)/ptolemy/codegen/c/lib/win/
 	# Update the versions
 	./updateversions $(VERSION) $(VERSION)_`date +"%Y%m%d"` $(VERSION_FILES) 

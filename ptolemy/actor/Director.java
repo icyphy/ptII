@@ -1421,7 +1421,7 @@ public class Director extends Attribute implements Executable {
             }
         }
         // Default is just one suggestion.
-        String[] defaultSuggestions = { "ptolemy.domains.fsm.kernel.FSMDirector" };
+        String[] defaultSuggestions = { "ptolemy.domains.modal.kernel.FSMDirector" };
         return defaultSuggestions;
     }
 
