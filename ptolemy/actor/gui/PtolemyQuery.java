@@ -30,6 +30,7 @@ package ptolemy.actor.gui;
 
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Container;
 import java.awt.KeyboardFocusManager;
 import java.awt.Window;
 import java.awt.event.ActionEvent;
@@ -213,6 +214,7 @@ public class PtolemyQuery extends Query implements QueryListener,
                         component = addSlider(name, displayName, current, min, max);
                         attachParameter(attribute, name);
                         foundStyle = true;
+                        _addSubmitAction(component, attribute.getName(), attribute);
                     } else if (attribute instanceof DoubleRangeParameter) {
                         double current = ((DoubleToken) ((DoubleRangeParameter) attribute)
                                 .getToken()).doubleValue();
@@ -230,11 +232,13 @@ public class PtolemyQuery extends Query implements QueryListener,
                                 precision);
                         attachParameter(attribute, name);
                         foundStyle = true;
+                        _addSubmitAction(component, attribute.getName(), attribute);
                     } else if (attribute instanceof ColorAttribute) {
                         component = addColorChooser(name, displayName,
                                 attribute.getExpression());
                         attachParameter(attribute, name);
                         foundStyle = true;
+                        _addSubmitAction(component, attribute.getName(), attribute);
                     } else if (attribute instanceof CustomQueryBoxParameter) {
                         JLabel label = new JLabel(displayName + ": ");
                         label.setBackground(_background);
@@ -243,6 +247,7 @@ public class PtolemyQuery extends Query implements QueryListener,
                         _addPair(name, label, component, component);
                         attachParameter(attribute, name);
                         foundStyle = true;
+                        _addSubmitAction(component, attribute.getName(), attribute);
                     } else if (attribute instanceof FileParameter
                             || attribute instanceof FilePortParameter) {
                         // Specify the directory in which to start browsing
@@ -316,10 +321,12 @@ public class PtolemyQuery extends Query implements QueryListener,
                                 preferredForegroundColor(attribute));
                         attachParameter(attribute, name);
                         foundStyle = true;
+                        _addSubmitAction(component, attribute.getName(), attribute);
                     } else if (attribute instanceof PasswordAttribute) {
                         component = addPassword(name, displayName, "");
                         attachParameter(attribute, name);
                         foundStyle = true;
+                        _addSubmitAction(component, attribute.getName(), attribute);
                     } else if (attribute instanceof Parameter
                             && (((Parameter) attribute).getChoices() != null)) {
                         Parameter castAttribute = (Parameter) attribute;
@@ -333,6 +340,7 @@ public class PtolemyQuery extends Query implements QueryListener,
                                 preferredForegroundColor(attribute));
                         attachParameter(attribute, name);
                         foundStyle = true;
+                        _addSubmitAction(component, attribute.getName(), attribute);
                     } else if ((attribute instanceof NamedObj)
                             && ((((NamedObj) attribute)
                                     .getAttribute("_textWidthHint") != null) || ((NamedObj) attribute)
@@ -369,6 +377,7 @@ public class PtolemyQuery extends Query implements QueryListener,
                                 widthValue);
                         attachParameter(attribute, name);
                         foundStyle = true;
+                        _addSubmitAction(component, attribute.getName(), attribute);
                     } else if (attribute instanceof Variable) {
                         Type declaredType = ((Variable) attribute)
                                 .getDeclaredType();
@@ -385,6 +394,7 @@ public class PtolemyQuery extends Query implements QueryListener,
                                         ((BooleanToken) current).booleanValue());
                                 attachParameter(attribute, name);
                                 foundStyle = true;
+                                _addSubmitAction(component, attribute.getName(), attribute);
                             }
                         }
                     }
@@ -397,6 +407,7 @@ public class PtolemyQuery extends Query implements QueryListener,
                             component = addDisplay(name, displayName, defaultValue);
                             attachParameter(attribute, name);
                             foundStyle = true;
+                            _addSubmitAction(component, attribute.getName(), attribute);
                         } else if (component instanceof JTextComponent) {
                             component.setBackground(_background);
                             ((JTextComponent) component).setEditable(false);
@@ -425,14 +436,9 @@ public class PtolemyQuery extends Query implements QueryListener,
                 area.setFocusTraversalKeys(KeyboardFocusManager.FORWARD_TRAVERSAL_KEYS, null);
                 area.setFocusTraversalKeys(KeyboardFocusManager.BACKWARD_TRAVERSAL_KEYS, null);
                 
-                final String attributeName = attribute.getName();
-                final Settable finalAttribute = attribute;
-                InputMap inputMap = area.getInputMap();
-                ActionMap actionMap = area.getActionMap();
-                inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_ENTER,0),"text-submit");
-                inputMap.put(KeyStroke.getKeyStroke("shift ENTER"), "TRANSFER_TEXT");
+                area.getInputMap().put(KeyStroke.getKeyStroke("shift ENTER"), "TRANSFER_TEXT");
                 
-                actionMap.put("TRANSFER_TEXT",new AbstractAction()
+                area.getActionMap().put("TRANSFER_TEXT",new AbstractAction()
                 {
                     @Override
                     public void actionPerformed(ActionEvent e) {
@@ -448,35 +454,8 @@ public class PtolemyQuery extends Query implements QueryListener,
                         }
                     } 
                 });
-                
-                final PtolemyQuery query = this;
-                
-                actionMap.put("text-submit",new AbstractAction()
-                {
-                    @Override
-                    public void actionPerformed(ActionEvent e) {
-                        revalidate();
-                        query.changed(attributeName);
-                        EditParametersDialog dialog = ((EditParametersDialog)area.getParent().getParent().getParent().getParent()
-                                .getParent().getParent().getParent().getParent().getParent().getParent().getParent()
-                                .getParent().getParent().getParent().getParent());
-                        ((Configurer)dialog.contents)._originalValues.put(finalAttribute, finalAttribute.getValueAsString());
-                    } 
-                });
-                
-                
-//                area.addKeyListener(new KeyAdapter() {
-//                    public void keyPressed(KeyEvent e) {
-//                        int code = e.getKeyCode();
-//                        if (code == KeyEvent.VK_ENTER && !e.isShiftDown()) {
-//                            e.consume();
-//                        } else if (code == KeyEvent.VK_ENTER && e.isShiftDown()) {
-//                            area.append("\n");
-//                            e.consume();
-//                        } 
-//                        revalidate();
-//                    }
-//                });
+                 
+                _addSubmitAction(area, attribute.getName(), attribute);
 
                 // The style itself does this, so we don't need to do it again.
                 attachParameter(attribute, attribute.getName());
@@ -484,6 +463,38 @@ public class PtolemyQuery extends Query implements QueryListener,
         } finally {
             _addingStyledEntryFor = null;
         }
+    }
+    
+    private void _addSubmitAction(final JComponent component, final String attributeName, final Settable attribute) {
+        component.getInputMap().put(KeyStroke.getKeyStroke(KeyEvent.VK_ENTER,0),"submit");
+        final PtolemyQuery query = this; 
+        component.getActionMap().put("submit",new AbstractAction()
+        {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                revalidate(); 
+                try { 
+                    Container container = component.getParent().getParent().getParent().getParent()
+                        .getParent().getParent().getParent().getParent().getParent().getParent().getParent()
+                        .getParent().getParent();
+                    if (component instanceof JTextArea) {
+                        container = component.getParent().getParent().getParent().getParent()
+                            .getParent().getParent().getParent().getParent().getParent().getParent().getParent()
+                            .getParent().getParent().getParent().getParent();
+                    }
+                    if (container instanceof EditParametersDialog) {
+                        query.changed(attributeName); 
+                        attribute.validate();
+                        EditParametersDialog dialog = (EditParametersDialog) container;
+                        ((Configurer)dialog.contents)._originalValues.put(attribute, attribute.getValueAsString());
+                        dialog._handleClosing();
+                    }
+                } catch (IllegalActionException e1) { 
+                    // Do not display errors here, just show error dialogue if attribute cannot be validated, 
+                    // do not update originalValues and do not close.
+                } 
+            } 
+        });
     }
 
     /** Attach an attribute to an entry with name <i>entryName</i>,
