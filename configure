@@ -660,7 +660,6 @@ PTLBNL_JARS
 PTLBNL_DIR
 PTKVM_DIR
 PTKIELER_DIR
-PTJXTA_DIR
 PTJYTHON_PACKAGES
 PTJYTHON_DIR
 PTJXL_JAR
@@ -758,7 +757,6 @@ LEJOS_DIR
 KVM_DIR
 KVM_CLASSES
 KIELER_JAR
-JXTA_DIR
 JYTHON_DIR
 JUNIT_JARS
 JODE_CLASSES
@@ -906,7 +904,6 @@ with_junit
 with_junitparams
 with_jxl
 with_jython
-with_jxta
 with_kieler
 with_guava
 with_javacv
@@ -1612,8 +1609,6 @@ Optional Packages:
   --with-jython=DIR       use jython.jar from DIR,
                           defaults to \$PTII/lib, though the path
 			  is searched for jython
-  --with-jxta=DIR       use jxta.jar from DIR,
-                          defaults to \$PTII/vendors/sun/jxta
   --with-kieler-jar=JARFILE       use JARFILE,
                           defaults to \$PTII/lib/kieler.jar
   --with-guava-jar=JARFILE       use JARFILE,
@@ -8463,97 +8458,19 @@ else
 fi
 
 #--------------------------------------------------------------------
-#	"JXTA technology is a set of open protocols that allow any
-#	connected device on the network ranging from cell phones and wireless
-#	PDAs to PCs and servers to communicate and collaborate in a P2P
-#	manner."
-#
-#	See http://www.jxta.org
-#       See if there was a command-line option for where JXTA is
-#       If not, look for $PTII/vendors/sun/jxta/jxta.jar
-#--------------------------------------------------------------------
-
-# We only need to look for jxta if $PTII/ptolemy/actor/lib/jxta is present
-JXTA_USER_DIR="$PTII/ptolemy/actor/lib/jxta"
-# PTJXTA_DIR is set to jxta and used in
-# $PTII/actor/lib/makefile if jxta was found
-PTJXTA_DIR=
-
-# Directory that contains the jxta jar files
-JXTA_DIR='${PTII}/vendors/sun/jxta'
-
-if test ! -d "$JXTA_USER_DIR"; then
-    if test "${PTVERBOSE:-none}" != "none"; then { $as_echo "$as_me:${as_lineno-$LINENO}: result: $JXTA_USER_DIR is not present,
-    so we need not find JXTA." >&5
-$as_echo "$JXTA_USER_DIR is not present,
-    so we need not find JXTA." >&6; }; fi
-else
-    { $as_echo "$as_me:${as_lineno-$LINENO}: checking for jxta directory that contains jxta.jar" >&5
-$as_echo_n "checking for jxta directory that contains jxta.jar... " >&6; }
-
-# Check whether --with-jxta was given.
-if test "${with_jxta+set}" = set; then :
-  withval=$with_jxta; JXTA_DIR=$withval
-else
-  JXTA_DIR=$PTII/vendors/sun/jxta
-fi
-
-
-    if test -f "$JXTA_DIR/jxta.jar"; then
-	if test "${PTVERBOSE:-none}" = "none"; then { $as_echo "$as_me:${as_lineno-$LINENO}: result: ok" >&5
-$as_echo "ok" >&6; }; else { $as_echo "$as_me:${as_lineno-$LINENO}: result: $JXTA_DIR" >&5
-$as_echo "$JXTA_DIR" >&6; }; fi
-	# Set to jxta and used in
-	# $PTII/ptolemy/actor/lib/makefile if jxta was found
-	PTJXTA_DIR=jxta
-    fi
-
-    if test "$PTJXTA_DIR" = ""; then
-        { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Failed to find PTII/vendors/sun/jxta/jxta.jar
-    perhaps JXTA is not installed?
-    You need not download JXTA unless you plan on using the peer to peer
-    actors in ptolemy/actor/lib/jxta
-    The JXTA SDK can be downloaded from http://www.jxta.org" >&5
-$as_echo "$as_me: WARNING: Failed to find PTII/vendors/sun/jxta/jxta.jar
-    perhaps JXTA is not installed?
-    You need not download JXTA unless you plan on using the peer to peer
-    actors in ptolemy/actor/lib/jxta
-    The JXTA SDK can be downloaded from http://www.jxta.org" >&2;}
-	# Note that we don't substitute in the ${PTII} here
-	JXTA_DIR='${PTII}/vendors/sun/jxta'
-    fi
-fi
-
-if test -z "$PTJXTA_DIR"; then
-   updateExcludes "vendors/sun/jxta/"
-   updateExcludes "ptolemy/actor/lib/jxta/"
-   updateExcludes "ptolemy/moml/jxta/"
-else
-   updateClasspath "$JXTA_DIR/jxta.jar"
-   updateClasspath "$JXTA_DIR/cryptix-asn1.jar"
-   updateClasspath "$JXTA_DIR/cryptix32.jar"
-   updateClasspath "$JXTA_DIR/beepcore.jar"
-   updateClasspath "$JXTA_DIR/minimalBC.jar"
-   updateClasspath "$JXTA_DIR/jxtasecurity.jar"
-   updateClasspath "$JXTA_DIR/log4j.jar"
-   updateClasspath "$JXTA_DIR/jxtaptls.jar"
-fi
-
-
-#--------------------------------------------------------------------
 #	Classes used to layout entities and relations in Vergil that use the
 #       KIELER layout algorithm.
 #	http://www.informatik.uni-kiel.de/rtsys/kieler/
 #
 #--------------------------------------------------------------------
 
-# We only need to look for jxta if $PTII/ptolemy/vergil/basic/layout/kieler is present
+# We only need to look for kieler if $PTII/ptolemy/vergil/basic/layout/kieler is present
 KIELER_USER_DIR="$PTII/ptolemy/vergil/basic/layout/kieler"
 # PTKIELER_DIR is set to kieler and used in
 # $PTII/ptolemy/vergil/basic/layout/makefile if kieler was found
 PTKIELER_DIR=
 
-# Directory that contains the jxta jar files
+# Directory that contains the kieler jar files
 KIELER_JAR='${PTII}/lib/kieler.jar'
 GUAVA_JAR='${PTII}/lib/guava.jar'
 
@@ -12243,9 +12160,6 @@ ANT_JAVADOC_EXCLUDEPACKAGENAMES=`echo "$ANT_ALWAYS_EXCLUDE $ANT_EXCLUDE"| sed 's
 # Jython home directory that contains jython.jar, see http://www.jython.org
 
 
-# JXTA home directory that contains jxta.jar, see http://www.jxta.org
-
-
 # keytool command used to generate a certificate for testing actor.lib.security actors
 
 
@@ -12592,10 +12506,6 @@ ANT_JAVADOC_EXCLUDEPACKAGENAMES=`echo "$ANT_ALWAYS_EXCLUDE $ANT_EXCLUDE"| sed 's
 
 # Ptolemy II packages that use Jython
 # PTJYTHON_PACKAGES is used in ptII/doc/makefile
-
-
-# Set to jxta ans used in
-# $PTII/actor/lib/makefile if jxta.jar was found
 
 
 # Set to kieler and used in
