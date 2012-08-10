@@ -8,7 +8,7 @@
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
     </property>
-    <property name="CT Director" class="ptolemy.domains.ct.kernel.CTMixedSignalDirector">
+    <property name="Continuous Director" class="ptolemy.domains.continuous.kernel.ContinuousDirector">
         <property name="timeResolution" class="ptolemy.actor.parameters.SharedParameter" value="1.0E-10">
         </property>
         <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
@@ -28,16 +28,6 @@
         <property name="valueResolution" class="ptolemy.data.expr.Parameter" value="1.0E-6">
         </property>
         <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="false">
-        </property>
-        <property name="ODESolver" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.ExplicitRK23Solver&quot;">
-            <property name="style" class="ptolemy.actor.gui.style.EditableChoiceStyle">
-                <property name="choice0" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.ExplicitRK23Solver&quot;">
-                </property>
-                <property name="choice1" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.BackwardEulerSolver&quot;">
-                </property>
-                <property name="choice2" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.ForwardEulerSolver&quot;">
-                </property>
-            </property>
         </property>
         <property name="runAheadLength" class="ptolemy.data.expr.Parameter" value="0.1">
         </property>
@@ -68,23 +58,23 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[360.0, 175.0]">
         </property>
     </entity>
-    <entity name="ContinuousClock" class="ptolemy.domains.ct.lib.ContinuousClock">
+    <entity name="ContinuousClock" class="ptolemy.domains.continuous.lib.ContinuousClock">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[60.0, 100.0]">
         </property>
     </entity>
-    <entity name="ContinuousClock2" class="ptolemy.domains.ct.lib.ContinuousClock">
+    <entity name="ContinuousClock2" class="ptolemy.domains.continuous.lib.ContinuousClock">
         <property name="values" class="ptolemy.data.expr.Parameter" value="{2.1, 2.9}">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[55.0, 170.0]">
         </property>
     </entity>
-    <entity name="ContinuousClock3" class="ptolemy.domains.ct.lib.ContinuousClock">
+    <entity name="ContinuousClock3" class="ptolemy.domains.continuous.lib.ContinuousClock">
         <property name="values" class="ptolemy.data.expr.Parameter" value="{3.1, 3.9}">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[60.0, 245.0]">
         </property>
     </entity>
-    <entity name="PeriodicSampler" class="ptolemy.domains.ct.lib.CTPeriodicSampler">
+    <entity name="PeriodicSampler" class="ptolemy.domains.continuous.lib.PeriodicSampler">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[150.0, 195.0]">
         </property>
     </entity>

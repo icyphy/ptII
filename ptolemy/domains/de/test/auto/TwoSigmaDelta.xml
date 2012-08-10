@@ -67,7 +67,7 @@
         </property>
         <property name="feedbackGain" class="ptolemy.data.expr.Parameter" value="feedbackGain">
         </property>
-        <property name="CTMixedSignalDirector" class="ptolemy.domains.ct.kernel.CTMixedSignalDirector">
+        <property name="ContinuousDirector" class="ptolemy.domains.continuous.kernel.ContinuousDirector">
             <property name="timeResolution" class="ptolemy.actor.parameters.SharedParameter" value="1.0E-10">
             </property>
             <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
@@ -131,7 +131,7 @@
                 </property>
             </property>
         </entity>
-        <entity name="ZeroOrderHold" class="ptolemy.domains.ct.lib.ZeroOrderHold">
+        <entity name="ZeroOrderHold" class="ptolemy.domains.continuous.lib.ZeroOrderHold">
             <property name="defaultValue" class="ptolemy.data.expr.Parameter" value="0">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="{282.23828125,255.74452209472656}">
@@ -141,26 +141,14 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="{550.630859375,212.02734375}">
             </property>
         </entity>
-        <entity name="Integrator1" class="ptolemy.domains.ct.lib.Integrator">
+        <entity name="Integrator1" class="ptolemy.domains.continuous.lib.Integrator">
             <property name="initialState" class="ptolemy.data.expr.Parameter" value="0.0">
-            </property>
-            <property name="IntegratorIcon" class="ptolemy.vergil.icon.EditorIcon">
-                <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 125, 815, 518}, maximized=false}">
-                </property>
-                <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
-                </property>
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="{629.630859375,283.9535217285156}">
             </property>
         </entity>
-        <entity name="Integrator2" class="ptolemy.domains.ct.lib.Integrator">
+        <entity name="Integrator2" class="ptolemy.domains.continuous.lib.Integrator">
             <property name="initialState" class="ptolemy.data.expr.Parameter" value="0.0">
-            </property>
-            <property name="IntegratorIcon" class="ptolemy.vergil.icon.EditorIcon">
-                <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 125, 815, 518}, maximized=false}">
-                </property>
-                <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
-                </property>
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="{174.1953125,327.78826904296875}">
             </property>
@@ -235,7 +223,7 @@
                 </property>
             </property>
         </entity>
-        <entity name="PeriodicSampler" class="ptolemy.domains.ct.lib.CTPeriodicSampler">
+        <entity name="PeriodicSampler" class="ptolemy.domains.continuous.lib.PeriodicSampler">
             <property name="samplePeriod" class="ptolemy.data.expr.Parameter" value="samplePeriod">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="{410.080078125,352.1796875}">
@@ -309,10 +297,10 @@
         <link port="Add1.plus" relation="CR7"/>
         <link port="Add1.plus" relation="CR8"/>
         <link port="Add1.output" relation="CR2"/>
-        <link port="Integrator1.input" relation="CR2"/>
-        <link port="Integrator1.output" relation="CR3"/>
-        <link port="Integrator2.input" relation="CR3"/>
-        <link port="Integrator2.output" relation="CR4"/>
+        <link port="Integrator1.derivative" relation="CR2"/>
+        <link port="Integrator1.state" relation="CR3"/>
+        <link port="Integrator2.derivative" relation="CR3"/>
+        <link port="Integrator2.state" relation="CR4"/>
         <link port="Scale0.input" relation="CR0"/>
         <link port="Scale0.output" relation="CR1"/>
         <link port="Scale1.input" relation="CR3"/>
@@ -403,7 +391,7 @@
         </property>
         <property name="feedbackGain" class="ptolemy.data.expr.Parameter" value="feedbackGain">
         </property>
-        <property name="CTMixedSignalDirector" class="ptolemy.domains.ct.kernel.CTMixedSignalDirector">
+        <property name="ContinuousDirector" class="ptolemy.domains.continuous.kernel.ContinuousDirector">
             <property name="timeResolution" class="ptolemy.actor.parameters.SharedParameter" value="1.0E-10">
             </property>
             <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
@@ -469,7 +457,7 @@
                 </property>
             </property>
         </entity>
-        <entity name="ZeroOrderHold" class="ptolemy.domains.ct.lib.ZeroOrderHold">
+        <entity name="ZeroOrderHold" class="ptolemy.domains.continuous.lib.ZeroOrderHold">
             <property name="defaultValue" class="ptolemy.data.expr.Parameter" value="0">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="{282.23828125,255.74452209472656}">
@@ -479,26 +467,14 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="{550.0, 210.0}">
             </property>
         </entity>
-        <entity name="Integrator1" class="ptolemy.domains.ct.lib.Integrator">
+        <entity name="Integrator1" class="ptolemy.domains.continuous.lib.Integrator">
             <property name="initialState" class="ptolemy.data.expr.Parameter" value="0.0">
-            </property>
-            <property name="IntegratorIcon" class="ptolemy.vergil.icon.EditorIcon">
-                <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 125, 815, 518}, maximized=false}">
-                </property>
-                <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
-                </property>
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="{629.630859375,283.9535217285156}">
             </property>
         </entity>
-        <entity name="Integrator2" class="ptolemy.domains.ct.lib.Integrator">
+        <entity name="Integrator2" class="ptolemy.domains.continuous.lib.Integrator">
             <property name="initialState" class="ptolemy.data.expr.Parameter" value="0.0">
-            </property>
-            <property name="IntegratorIcon" class="ptolemy.vergil.icon.EditorIcon">
-                <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 125, 815, 518}, maximized=false}">
-                </property>
-                <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
-                </property>
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="{174.1953125,327.78826904296875}">
             </property>
@@ -573,7 +549,7 @@
                 </property>
             </property>
         </entity>
-        <entity name="PeriodicSampler" class="ptolemy.domains.ct.lib.CTPeriodicSampler">
+        <entity name="PeriodicSampler" class="ptolemy.domains.continuous.lib.PeriodicSampler">
             <property name="samplePeriod" class="ptolemy.data.expr.Parameter" value="samplePeriod">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="{410.080078125,352.1796875}">
@@ -647,10 +623,10 @@
         <link port="Add1.plus" relation="CR7"/>
         <link port="Add1.plus" relation="CR8"/>
         <link port="Add1.output" relation="CR2"/>
-        <link port="Integrator1.input" relation="CR2"/>
-        <link port="Integrator1.output" relation="CR3"/>
-        <link port="Integrator2.input" relation="CR3"/>
-        <link port="Integrator2.output" relation="CR4"/>
+        <link port="Integrator1.derivative" relation="CR2"/>
+        <link port="Integrator1.state" relation="CR3"/>
+        <link port="Integrator2.derivative" relation="CR3"/>
+        <link port="Integrator2.state" relation="CR4"/>
         <link port="Scale0.input" relation="CR0"/>
         <link port="Scale0.output" relation="CR1"/>
         <link port="Scale1.input" relation="CR3"/>
