@@ -45,97 +45,100 @@ if {[string compare test [info procs test]] == 1} then {
 set timeOutSeconds 12000
 
 test allDemos-1.0 {} {
-    set file [open $PTII/ptolemy/configs/doc/models.txt]
-    set modelsFileContents [read $file]
-    close $file
-    set models [split $modelsFileContents "\n"]
-    foreach model $models {
-	if {[string length $model] < 1} {
-	    continue
-	}
 
-        set grDemos [list \
-			 "domains/continuous/demo/BouncingBall/BouncingBall.xml" \
-			 "domains/continuous/demo/CartPendulum/CartPendulum.xml" \
-			 "domains/continuous/demo/NewtonsCradle/NewtonsCradleAnimated.xml" \
-			 "domains/continuous/demo/NewtonsCradle/NewtonsCradleComplicated.xml" \
-			 "domains/continuous/demo/NewtonsCradle/NewtonsCradleNondeterministic.xml" \
-			 "domains/continuous/demo/NewtonsCradle/NewtonsCradlePerfectlyInelastic1.xml" \
-			 "domains/continuous/demo/NewtonsCradle/ParameterizedNewtonsCradleAnimatedNondeterministic.xml" \
-			 "domains/continuous/demo/NewtonsCradle/ParameterizedNewtonsCradleAnimated.xml" \
-			 "domains/continuous/demo/Pendulum3D/Pendulum3D_reduced.xml" \
-			 "domains/continuous/demo/Pendulum3D/Pendulum3D.xml" \
-			 "domains/continuous/demo/Starmac/Starmac.xml" \
-			 "domains/ct/demo/BouncingBall/BouncingBallWithoutGR.xml" \
-			 "domains/ct/demo/BouncingBall/BouncingBall.xml" \
-			 "domains/ct/demo/CartPendulum/CartPendulum.xml" \
-			 "domains/ct/demo/NewtonsCradle/NewtonsCradleAnimated.xml" \
-			 "domains/ct/demo/NewtonsCradle/NewtonsCradleComplicated.xml" \
-			 "domains/ct/demo/NewtonsCradle/NewtonsCradleNondeterministic.xml" \
-			 "domains/ct/demo/NewtonsCradle/NewtonsCradlePerfectlyInelastic1.xml" \
-			 "domains/ct/demo/NewtonsCradle/ParameterizedNewtonsCradleAnimated.xml" \
-			 "domains/ct/demo/NewtonsCradle/ParameterizedNewtonsCradleAnimatedNondeterministic.xml" \
-			 "domains/ct/demo/Pendulum3D/Pendulum3D.xml" \
-			 "domains/de/demo/Clock/Clock.xml" \
-			 "domains/gr/demo/Pong/Pong.xml" \
-			 "domains/sdf/demo/Gravitation/Gravitation.xml" \
-			 "domains/sdf/demo/Gravitation/GravitationWithCollisionDetection.xml" \
-			 "actor/gt/demo/BouncingBallX2/BouncingBallX2.xml"]
+    puts "Skipping allDemos-1.0, use cd $PTII; ant test.single -Dtest.name=ptolemy.vergil.basic.export.test.junit.ExportModelJUnitTest"
 
-	set isGRDemo false
-	foreach grDemo $grDemos {
-	    if {[string first $grDemo $model] != -1} {
-		set isGRDemo true
-		continue
-	    }
-	}
-	if {[string first "domains/gr/demo" $model] != -1} {
-	    set isGRDemo true
-	}
-	if {$isGRDemo} {
-	    puts "Skipping $model, it is a GR model"
-	    continue;
-	}
-	# We create a new parser each time and avoid leaks,
-	# See ptdevel mail from 6/15/2009
+#     set file [open $PTII/ptolemy/configs/doc/models.txt]
+#     set modelsFileContents [read $file]
+#     close $file
+#     set models [split $modelsFileContents "\n"]
+#     foreach model $models {
+# 	if {[string length $model] < 1} {
+# 	    continue
+# 	}
 
-	set parser [java::new ptolemy.moml.MoMLParser]
+#         set grDemos [list \
+# 			 "domains/continuous/demo/BouncingBall/BouncingBall.xml" \
+# 			 "domains/continuous/demo/CartPendulum/CartPendulum.xml" \
+# 			 "domains/continuous/demo/NewtonsCradle/NewtonsCradleAnimated.xml" \
+# 			 "domains/continuous/demo/NewtonsCradle/NewtonsCradleComplicated.xml" \
+# 			 "domains/continuous/demo/NewtonsCradle/NewtonsCradleNondeterministic.xml" \
+# 			 "domains/continuous/demo/NewtonsCradle/NewtonsCradlePerfectlyInelastic1.xml" \
+# 			 "domains/continuous/demo/NewtonsCradle/ParameterizedNewtonsCradleAnimatedNondeterministic.xml" \
+# 			 "domains/continuous/demo/NewtonsCradle/ParameterizedNewtonsCradleAnimated.xml" \
+# 			 "domains/continuous/demo/Pendulum3D/Pendulum3D_reduced.xml" \
+# 			 "domains/continuous/demo/Pendulum3D/Pendulum3D.xml" \
+# 			 "domains/continuous/demo/Starmac/Starmac.xml" \
+# 			 "domains/ct/demo/BouncingBall/BouncingBallWithoutGR.xml" \
+# 			 "domains/ct/demo/BouncingBall/BouncingBall.xml" \
+# 			 "domains/ct/demo/CartPendulum/CartPendulum.xml" \
+# 			 "domains/ct/demo/NewtonsCradle/NewtonsCradleAnimated.xml" \
+# 			 "domains/ct/demo/NewtonsCradle/NewtonsCradleComplicated.xml" \
+# 			 "domains/ct/demo/NewtonsCradle/NewtonsCradleNondeterministic.xml" \
+# 			 "domains/ct/demo/NewtonsCradle/NewtonsCradlePerfectlyInelastic1.xml" \
+# 			 "domains/ct/demo/NewtonsCradle/ParameterizedNewtonsCradleAnimated.xml" \
+# 			 "domains/ct/demo/NewtonsCradle/ParameterizedNewtonsCradleAnimatedNondeterministic.xml" \
+# 			 "domains/ct/demo/Pendulum3D/Pendulum3D.xml" \
+# 			 "domains/de/demo/Clock/Clock.xml" \
+# 			 "domains/gr/demo/Pong/Pong.xml" \
+# 			 "domains/sdf/demo/Gravitation/Gravitation.xml" \
+# 			 "domains/sdf/demo/Gravitation/GravitationWithCollisionDetection.xml" \
+# 			 "actor/gt/demo/BouncingBallX2/BouncingBallX2.xml"]
 
-	# The list of filters is static, so we reset it in case there
-	# filters were already added.
-	$parser setMoMLFilters [java::null]
+# 	set isGRDemo false
+# 	foreach grDemo $grDemos {
+# 	    if {[string first $grDemo $model] != -1} {
+# 		set isGRDemo true
+# 		continue
+# 	    }
+# 	}
+# 	if {[string first "domains/gr/demo" $model] != -1} {
+# 	    set isGRDemo true
+# 	}
+# 	if {$isGRDemo} {
+# 	    puts "Skipping $model, it is a GR model"
+# 	    continue;
+# 	}
+# 	# We create a new parser each time and avoid leaks,
+# 	# See ptdevel mail from 6/15/2009
 
-	# Add backward compatibility filters
-	$parser addMoMLFilters \
-	    [java::call ptolemy.moml.filter.BackwardCompatibility allFilters]
+# 	set parser [java::new ptolemy.moml.MoMLParser]
 
-	# Filter out graphical classes while inside MoMLParser
-	# See ptII/util/testsuite/removeGraphicalClasses.tcl
-	removeGraphicalClasses $parser
+# 	# The list of filters is static, so we reset it in case there
+# 	# filters were already added.
+# 	$parser setMoMLFilters [java::null]
 
-	#set filters [$parser getMoMLFilters]
-	#puts "filters: [$filters size]"
-	#puts [listToStrings $filters]
+# 	# Add backward compatibility filters
+# 	$parser addMoMLFilters \
+# 	    [java::call ptolemy.moml.filter.BackwardCompatibility allFilters]
 
-	regsub {\$CLASSPATH} $model {$PTII} modelPath
-	set modelPath [subst $modelPath]
-	set modelFile [java::new java.io.File $modelPath]
-	set modelPath [$modelFile getCanonicalPath]
-        puts "modelPath: $modelPath"
+# 	# Filter out graphical classes while inside MoMLParser
+# 	# See ptII/util/testsuite/removeGraphicalClasses.tcl
+# 	removeGraphicalClasses $parser
 
-	set startTime [java::call -noconvert System currentTimeMillis]
-	set toplevel [java::cast ptolemy.kernel.CompositeEntity \
-		[$parser parseFile $modelPath]]
-	puts "####$modelPath\n[$toplevel getFullName] [java::call ptolemy.actor.Manager timeAndMemory [$startTime longValue]]\n[$toplevel statistics [java::null]]"
-	$toplevel setContainer [java::null]
-	$parser resetAll
+# 	#set filters [$parser getMoMLFilters]
+# 	#puts "filters: [$filters size]"
+# 	#puts [listToStrings $filters]
 
-	# Bert Rodiers writes: "Another issues seems to be
-	# ptolemy.data.expr.CachedMethod. For example
-	# ParseTreeEvaluator uses this object which caches things in
-	# its static member, but the contents are never cleared."
-	java::call ptolemy.data.expr.CachedMethod clear
+# 	regsub {\$CLASSPATH} $model {$PTII} modelPath
+# 	set modelPath [subst $modelPath]
+# 	set modelFile [java::new java.io.File $modelPath]
+# 	set modelPath [$modelFile getCanonicalPath]
+#         puts "modelPath: $modelPath"
 
-	java::call System gc
-    }
+# 	set startTime [java::call -noconvert System currentTimeMillis]
+# 	set toplevel [java::cast ptolemy.kernel.CompositeEntity \
+# 		[$parser parseFile $modelPath]]
+# 	puts "####$modelPath\n[$toplevel getFullName] [java::call ptolemy.actor.Manager timeAndMemory [$startTime longValue]]\n[$toplevel statistics [java::null]]"
+# 	$toplevel setContainer [java::null]
+# 	$parser resetAll
+
+# 	# Bert Rodiers writes: "Another issues seems to be
+# 	# ptolemy.data.expr.CachedMethod. For example
+# 	# ParseTreeEvaluator uses this object which caches things in
+# 	# its static member, but the contents are never cleared."
+# 	java::call ptolemy.data.expr.CachedMethod clear
+
+# 	java::call System gc
+#     }
 } {}
