@@ -862,7 +862,6 @@ ANT_ALWAYS_EXCLUDE='<exclude name="**/CVS/"/>
 <exclude name="ptolemy/codegen/lib/"/>
 <exclude name="ptolemy/copernicus/kernel/fragment/"/>
 <exclude name="ptolemy/copernicus/shallow/cg/"/>
-<exclude name="ptolemy/domains/ct/demo/Saber/"/>
 <exclude name="ptolemy/domains/giotto/demo/Hierarchy/Hierarchy/"/>
 <exclude name="ptolemy/domains/giotto/demo/Multimode/Multimode/"/>
 <exclude name="ptolemy/domains/giotto/demo/Simple/Simple/"/>
@@ -1328,37 +1327,6 @@ case "`uname -s`" in
   	   ;;
 esac
 
-#--------------------------------------------------------------------
-#       Codegen directories
-#       Check for various codegen directories that are in the devel
-#       tree, but not shipped.
-#--------------------------------------------------------------------
-PTCODEGEN_OPTIONAL_PACKAGES=
-# We only need to look for if $PTII/ptolemy/codegen exists
-CODEGEN_USER_DIR="$PTII/ptolemy/codegen"
-if test ! -d "$CODEGEN_USER_DIR"; then
-    PT_MSG_STATUS([$CODEGEN_USER_DIR is not present,
-    so we need not check for optional codegen target packages for javadoc.])
-
-else
-    AC_MSG_CHECKING([for optional codegen packages on which to run javadoc])
-    codegendocpackages="ptolemy.codegen.c.targets.arduino ptolemy.codegen.c.targets.pret ptolemy.codegen.c.targets.pret.actor.lib.gui ptolemy.codegen.c.targets.pret.domains.fsm.kernel ptolemy.codegen.c.targets.pret.domains.giotto.kernel ptolemy.codegen.c.targets.win32 ptolemy.codegen.c.targets.win32.actor.lib.io ptolemy.codegen.c.targets.win32.domains.pn.kernel ptolemy.domains.giotto.cgc"
-    for package in $codegendocpackages
-    do
-        if test "${PTVERBOSE:-none}" = "none"; then
-            $PT_ECHO $ECHO_N "."
-	else
-            $PT_ECHO $ECHO_N "$package "
-        fi
-	path="${PTII}/`echo $package | sed 's@\.@/@g'`"
-	
-   	if test -d "${path}"; then
-	    PTCODEGEN_OPTIONAL_PACKAGES="$PTCODEGEN_OPTIONAL_PACKAGES $package"
-        fi
-    done
-    PT_MSG_RESULT(ok)
-fi 
-
 
 #--------------------------------------------------------------------
 #       COLT is a 
@@ -1447,10 +1415,10 @@ fi
 #	
 #--------------------------------------------------------------------
 # We only need to look for CUnit if this directory is present
-CUNIT_USER_DIR="$PTII/ptolemy/codegen/c/kernel/type/test"
+CUNIT_USER_DIR="$PTII/ptolemy/cg/kernle/generic/program/procedural/c/type"
 
 # PTCUNIT_DIR is set to test and used in 
-# ptII/ptolemy/codegen/c/kernel/type/test/makefile
+# $PTII/ptolemy/cg/kernle/generic/program/procedural/c/type
 # if CUnit is found
 PTCUNIT_DIR=
 
@@ -1458,7 +1426,7 @@ if test ! -d "$CUNIT_USER_DIR"; then
     PT_MSG_STATUS([$CUNIT_USER_DIR is not present,
     so we need not find CUnit for testing])
 else
-    AC_MSG_CHECKING([for CUnit to be used to test the C codegen templates])
+    AC_MSG_CHECKING([for CUnit to be used to test the C cg templates])
     AC_ARG_WITH(tools_jar, [  --with-cunit=DIR    use CUnit from DIR,
                           defaults to /usr/local or $PTII/vendors/CUnit],
 	CUNIT_DIR=$withval,
@@ -2831,83 +2799,19 @@ else
 fi 
 
 #--------------------------------------------------------------------
-#	"JXTA technology is a set of open protocols that allow any
-#	connected device on the network ranging from cell phones and wireless
-#	PDAs to PCs and servers to communicate and collaborate in a P2P
-#	manner."
-#
-#	See http://www.jxta.org
-#       See if there was a command-line option for where JXTA is
-#       If not, look for $PTII/vendors/sun/jxta/jxta.jar
-#--------------------------------------------------------------------
-
-# We only need to look for jxta if $PTII/ptolemy/actor/lib/jxta is present
-JXTA_USER_DIR="$PTII/ptolemy/actor/lib/jxta"
-# PTJXTA_DIR is set to jxta and used in
-# $PTII/actor/lib/makefile if jxta was found
-PTJXTA_DIR=
-
-# Directory that contains the jxta jar files
-JXTA_DIR='${PTII}/vendors/sun/jxta'
-
-if test ! -d "$JXTA_USER_DIR"; then
-    PT_MSG_STATUS([$JXTA_USER_DIR is not present,
-    so we need not find JXTA.])
-else
-    AC_MSG_CHECKING([for jxta directory that contains jxta.jar])
-    AC_ARG_WITH(jxta, [  --with-jxta=DIR       use jxta.jar from DIR,
-                          defaults to \$PTII/vendors/sun/jxta],
-	JXTA_DIR=$withval,
-	JXTA_DIR=$PTII/vendors/sun/jxta)
-
-    if test -f "$JXTA_DIR/jxta.jar"; then
-	PT_MSG_RESULT([$JXTA_DIR])
-	# Set to jxta and used in
-	# $PTII/ptolemy/actor/lib/makefile if jxta was found
-	PTJXTA_DIR=jxta
-    fi	
-
-    if test "$PTJXTA_DIR" = ""; then
-        AC_MSG_WARN([Failed to find PTII/vendors/sun/jxta/jxta.jar
-    perhaps JXTA is not installed?
-    You need not download JXTA unless you plan on using the peer to peer
-    actors in ptolemy/actor/lib/jxta
-    The JXTA SDK can be downloaded from http://www.jxta.org])
-	# Note that we don't substitute in the ${PTII} here
-	JXTA_DIR='${PTII}/vendors/sun/jxta'
-    fi
-fi
-
-if test -z "$PTJXTA_DIR"; then
-   updateExcludes "vendors/sun/jxta/"
-   updateExcludes "ptolemy/actor/lib/jxta/"
-   updateExcludes "ptolemy/moml/jxta/"
-else
-   updateClasspath "$JXTA_DIR/jxta.jar"
-   updateClasspath "$JXTA_DIR/cryptix-asn1.jar"
-   updateClasspath "$JXTA_DIR/cryptix32.jar"
-   updateClasspath "$JXTA_DIR/beepcore.jar"
-   updateClasspath "$JXTA_DIR/minimalBC.jar"
-   updateClasspath "$JXTA_DIR/jxtasecurity.jar"
-   updateClasspath "$JXTA_DIR/log4j.jar"
-   updateClasspath "$JXTA_DIR/jxtaptls.jar"
-fi 
-
-
-#--------------------------------------------------------------------
 #	Classes used to layout entities and relations in Vergil that use the
 #       KIELER layout algorithm.
 #	http://www.informatik.uni-kiel.de/rtsys/kieler/
 #
 #--------------------------------------------------------------------
 
-# We only need to look for jxta if $PTII/ptolemy/vergil/basic/layout/kieler is present
+# We only need to look for kieler if $PTII/ptolemy/vergil/basic/layout/kieler is present
 KIELER_USER_DIR="$PTII/ptolemy/vergil/basic/layout/kieler"
 # PTKIELER_DIR is set to kieler and used in
 # $PTII/ptolemy/vergil/basic/layout/makefile if kieler was found
 PTKIELER_DIR=
 
-# Directory that contains the jxta jar files
+# Directory that contains the kieler jar files
 KIELER_JAR='${PTII}/lib/kieler.jar'
 GUAVA_JAR='${PTII}/lib/guava.jar'
 
@@ -3137,51 +3041,6 @@ fi
 
 if test -z "$PTOPENCV_DIR"; then
    updateExcludes "ptolemy/actor/lib/opencv/"
-fi
-
-# PTCGOPENCV_DIR is set to OpenCVTracking and used in 
-# $PTII/ptolemy/codegen/demo/makefile if opencv was found
-PTOPENCVCG_DIR=OpenCVTracking
-
-# We only need to look for OpenCVif the actor/lib/opencv directory is present
-OPENCVCG_USER_DIR="$PTII/ptolemy/codegen/demo/OpenCVTracking"
-
-if test ! -d "$OPENCVCG_USER_DIR"; then
-    PT_MSG_STATUS([$OPENCVCG_USER_DIR is not present,
-    so we need not find OpenCV - The Open Computer Vision API.])
-else
-    AC_PATH_PROG(PTCC, gcc)
-    if test "${PTCC:-none}" = "none"; then
-        AC_MSG_WARN([Failed to find gcc])
-        AC_PATH_PROG(PTCC, cc)
-        if test "${PTCC:-none}" != "none"; then
-            PT_MSG_RESULT([$PTCC])
-        else    
-            AC_MSG_WARN([Failed to find gcc or cc, so we will
-    not be able use the OpenCV Codegen code in $OPENCVCG_USER_DIR]);
-        fi
-    fi
-
-    if test "${PTCC:-none}" != "none"; then
-       AC_MSG_CHECKING([for OpenCV C API])
-       # FIXME: This will not work if $PTII has spaces
-       dirs="/Library/Frameworks/OpenCV.framework/Headers /usr/local/include/opencv"
-       for dir in $dirs
-       do
-           if test -f "$dir/cv.h"; then
-               PT_MSG_RESULT([$dir/cv.h}])
-	       PTOPENCV_INCLUDE_DIR=$dir
-	       break;
-           fi
-       done
-       if test ! -f "$PTOPENCV_INCLUDE_DIR/cv.h"; then
-           AC_MSG_WARN([Failed to find cv.h
-    Checked the following directories:
-    $dirs
-    The OpenCV Codegen facility in $OPENCVCG_USER_DIR requires cv.h.
-    However, Ptolemy will run without this facility.])
-       fi
-   fi
 fi
 
 
@@ -5436,9 +5295,6 @@ AC_SUBST(JUNIT_JARS)
 # Jython home directory that contains jython.jar, see http://www.jython.org
 AC_SUBST(JYTHON_DIR)
 
-# JXTA home directory that contains jxta.jar, see http://www.jxta.org
-AC_SUBST(JXTA_DIR)
-
 # keytool command used to generate a certificate for testing actor.lib.security actors
 AC_SUBST(KEYTOOL)
 
@@ -5540,9 +5396,6 @@ AC_SUBST(PTCHIC_DIR)
 # if the CaffeineMark Java Benchmark kit is found
 AC_SUBST(PTCM_DIR)
 
-# Optional codegen package that are in the devel tree, but not shipped.
-# Used in doc/makefile
-AC_SUBST(PTCODEGEN_OPTIONAL_PACKAGES)
 
 # Set to colt and used in $PTII/ptolemy/actor/lib/makefile if colt was found.
 AC_SUBST(PTCOLT_DIR)
@@ -5568,7 +5421,7 @@ AC_SUBST(PTCOMM_PACKAGES)
 AC_SUBST(PTCOPERNICUS_DIR)
 
 # PTCUNIT_DIR is set to test and used in 
-# ptII/ptolemy/codegen/c/kernel/type/test/makefile
+# ptolemy/cg/kernle/generic/program/procedural/c/type
 # if CUnit is found
 AC_SUBST(PTCUNIT_DIR)
 
@@ -5790,10 +5643,6 @@ AC_SUBST(PTJYTHON_DIR)
 # PTJYTHON_PACKAGES is used in ptII/doc/makefile
 AC_SUBST(PTJYTHON_PACKAGES)
 
-# Set to jxta ans used in
-# $PTII/actor/lib/makefile if jxta.jar was found
-AC_SUBST(PTJXTA_DIR)
-
 # Set to kieler and used in
 # $PTII/ptolemy/vergil/basic/layout/makefile if kieler was found
 AC_SUBST(PTKIELER_DIR)
@@ -5862,10 +5711,6 @@ AC_SUBST(PTMESCAL_DIR)
 # Set to opencv and used in 
 # $PTII/ptolemy/actor/lib/makefile if OpenCV Open Computer Vision was found
 AC_SUBST(PTOPENCV_DIR)
-
-# PTCGOPENCV_DIR is set to OpenCVTracking and used in 
-# $PTII/ptolemy/codegen/demo/makefile if opencv was found
-AC_SUBST(PTOPENCVCG_DIR)
 
 # Directory that contains cv.h
 AC_SUBST(PTOPENCV_INCLUDE_DIR)

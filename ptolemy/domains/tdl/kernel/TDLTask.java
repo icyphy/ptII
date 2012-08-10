@@ -34,7 +34,7 @@ import java.util.List;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.TypedCompositeActor;
 import ptolemy.data.expr.Parameter;
-import ptolemy.domains.fsm.modal.ModalPort;
+import ptolemy.domains.modal.modal.ModalPort;
 import ptolemy.domains.sdf.kernel.SDFDirector;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Port;

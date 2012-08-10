@@ -147,7 +147,6 @@
             <!-- NOTE: because this is in a configure, this list completely -->
             <!-- replaces anything in basicLibrary.xml, so we repeat this.  -->
             <input source="ptolemy/configs/basicDirectors.xml"/>
-            <input source="ptolemy/configs/classicDirectors.xml"/>
             <input source="ptolemy/configs/experimentalDirectors.xml"/>
           </group>
         ?>
@@ -166,7 +165,6 @@
             <input source="ptolemy/domains/ca/lib/caentities.xml"/>
 	    <!-- Chic actors are not being shipped in 4.0 -->
             <!-- input source="ptolemy/chic/chic.xml"/ -->
-            <input source="ptolemy/configs/codegen.xml"/>
 	    <!-- Javacomm serial actors depend on javacomm being present  -->
             <input source="ptolemy/actor/lib/io/comm/comm.xml"/>
 	    <!-- Corba actors are not being shipped in 4.0 -->

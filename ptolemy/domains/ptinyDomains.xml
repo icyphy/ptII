@@ -13,9 +13,6 @@
 	     contains this file. -->
 	    <input source="ptolemy/domains/continuous/lib/continuousentities.xml"/>
 
-	    <!-- CT domain has been replaced by continuous.
-            input source="ptolemy/domains/ct/lib/ctentities.xml"/ -->
-
             <input source="ptolemy/domains/ddf/lib/ddfentities.xml"/>	 
             <input source="ptolemy/domains/de/lib/deentities.xml"/>
             <input source="ptolemy/domains/pn/lib/pnentities.xml"/>

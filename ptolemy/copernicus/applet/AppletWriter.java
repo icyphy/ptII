@@ -56,7 +56,7 @@ import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Director;
 import ptolemy.actor.gui.SizeAttribute;
 import ptolemy.actor.gui.WindowPropertiesAttribute;
-import ptolemy.codegen.kernel.CodeGeneratorUtilities;
+import ptolemy.cg.kernel.generic.CodeGeneratorUtilities;
 import ptolemy.copernicus.kernel.MakefileWriter;
 import ptolemy.data.ArrayToken;
 import ptolemy.data.IntMatrixToken;

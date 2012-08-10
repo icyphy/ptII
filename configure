@@ -643,7 +643,6 @@ PTPDFRENDERER_JAR
 PTPDFRENDERER_DIR
 PTOPENCV_PACKAGES
 PTOPENCV_INCLUDE_DIR
-PTOPENCVCG_DIR
 PTOPENCV_DIR
 PTMESCAL_DIR
 PTMATLAB_PACKAGES
@@ -732,7 +731,6 @@ PTCOMM_DIR
 PTCOLT_PACKAGES
 PTCOLT_JARS
 PTCOLT_DIR
-PTCODEGEN_OPTIONAL_PACKAGES
 PTCM_DIR
 PTCHIC_DIR
 PTCALTROP_DIR
@@ -4068,7 +4066,6 @@ ANT_ALWAYS_EXCLUDE='<exclude name="**/CVS/"/>
 <exclude name="ptolemy/codegen/lib/"/>
 <exclude name="ptolemy/copernicus/kernel/fragment/"/>
 <exclude name="ptolemy/copernicus/shallow/cg/"/>
-<exclude name="ptolemy/domains/ct/demo/Saber/"/>
 <exclude name="ptolemy/domains/giotto/demo/Hierarchy/Hierarchy/"/>
 <exclude name="ptolemy/domains/giotto/demo/Multimode/Multimode/"/>
 <exclude name="ptolemy/domains/giotto/demo/Simple/Simple/"/>
@@ -5937,42 +5934,6 @@ case "`uname -s`" in
   	   ;;
 esac
 
-#--------------------------------------------------------------------
-#       Codegen directories
-#       Check for various codegen directories that are in the devel
-#       tree, but not shipped.
-#--------------------------------------------------------------------
-PTCODEGEN_OPTIONAL_PACKAGES=
-# We only need to look for if $PTII/ptolemy/codegen exists
-CODEGEN_USER_DIR="$PTII/ptolemy/codegen"
-if test ! -d "$CODEGEN_USER_DIR"; then
-    if test "${PTVERBOSE:-none}" != "none"; then { $as_echo "$as_me:${as_lineno-$LINENO}: result: $CODEGEN_USER_DIR is not present,
-    so we need not check for optional codegen target packages for javadoc." >&5
-$as_echo "$CODEGEN_USER_DIR is not present,
-    so we need not check for optional codegen target packages for javadoc." >&6; }; fi
-
-else
-    { $as_echo "$as_me:${as_lineno-$LINENO}: checking for optional codegen packages on which to run javadoc" >&5
-$as_echo_n "checking for optional codegen packages on which to run javadoc... " >&6; }
-    codegendocpackages="ptolemy.codegen.c.targets.arduino ptolemy.codegen.c.targets.pret ptolemy.codegen.c.targets.pret.actor.lib.gui ptolemy.codegen.c.targets.pret.domains.fsm.kernel ptolemy.codegen.c.targets.pret.domains.giotto.kernel ptolemy.codegen.c.targets.win32 ptolemy.codegen.c.targets.win32.actor.lib.io ptolemy.codegen.c.targets.win32.domains.pn.kernel ptolemy.domains.giotto.cgc"
-    for package in $codegendocpackages
-    do
-        if test "${PTVERBOSE:-none}" = "none"; then
-            $PT_ECHO $ECHO_N "."
-	else
-            $PT_ECHO $ECHO_N "$package "
-        fi
-	path="${PTII}/`echo $package | sed 's@\.@/@g'`"
-
-   	if test -d "${path}"; then
-	    PTCODEGEN_OPTIONAL_PACKAGES="$PTCODEGEN_OPTIONAL_PACKAGES $package"
-        fi
-    done
-    if test "${PTVERBOSE:-none}" = "none"; then { $as_echo "$as_me:${as_lineno-$LINENO}: result: ok" >&5
-$as_echo "ok" >&6; }; else { $as_echo "$as_me:${as_lineno-$LINENO}: result: ok" >&5
-$as_echo "ok" >&6; }; fi
-fi
-
 
 #--------------------------------------------------------------------
 #       COLT is a
@@ -6086,10 +6047,10 @@ fi
 #
 #--------------------------------------------------------------------
 # We only need to look for CUnit if this directory is present
-CUNIT_USER_DIR="$PTII/ptolemy/codegen/c/kernel/type/test"
+CUNIT_USER_DIR="$PTII/ptolemy/cg/kernle/generic/program/procedural/c/type"
 
 # PTCUNIT_DIR is set to test and used in
-# ptII/ptolemy/codegen/c/kernel/type/test/makefile
+# $PTII/ptolemy/cg/kernle/generic/program/procedural/c/type
 # if CUnit is found
 PTCUNIT_DIR=
 
@@ -6099,8 +6060,8 @@ if test ! -d "$CUNIT_USER_DIR"; then
 $as_echo "$CUNIT_USER_DIR is not present,
     so we need not find CUnit for testing" >&6; }; fi
 else
-    { $as_echo "$as_me:${as_lineno-$LINENO}: checking for CUnit to be used to test the C codegen templates" >&5
-$as_echo_n "checking for CUnit to be used to test the C codegen templates... " >&6; }
+    { $as_echo "$as_me:${as_lineno-$LINENO}: checking for CUnit to be used to test the C cg templates" >&5
+$as_echo_n "checking for CUnit to be used to test the C cg templates... " >&6; }
 
 # Check whether --with-tools_jar was given.
 if test "${with_tools_jar+set}" = set; then :
@@ -8913,144 +8874,6 @@ fi
 
 if test -z "$PTOPENCV_DIR"; then
    updateExcludes "ptolemy/actor/lib/opencv/"
-fi
-
-# PTCGOPENCV_DIR is set to OpenCVTracking and used in
-# $PTII/ptolemy/codegen/demo/makefile if opencv was found
-PTOPENCVCG_DIR=OpenCVTracking
-
-# We only need to look for OpenCVif the actor/lib/opencv directory is present
-OPENCVCG_USER_DIR="$PTII/ptolemy/codegen/demo/OpenCVTracking"
-
-if test ! -d "$OPENCVCG_USER_DIR"; then
-    if test "${PTVERBOSE:-none}" != "none"; then { $as_echo "$as_me:${as_lineno-$LINENO}: result: $OPENCVCG_USER_DIR is not present,
-    so we need not find OpenCV - The Open Computer Vision API." >&5
-$as_echo "$OPENCVCG_USER_DIR is not present,
-    so we need not find OpenCV - The Open Computer Vision API." >&6; }; fi
-else
-    # Extract the first word of "gcc", so it can be a program name with args.
-set dummy gcc; ac_word=$2
-{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for $ac_word" >&5
-$as_echo_n "checking for $ac_word... " >&6; }
-if ${ac_cv_path_PTCC+:} false; then :
-  $as_echo_n "(cached) " >&6
-else
-  case $PTCC in
-  [\\/]* | ?:[\\/]*)
-  ac_cv_path_PTCC="$PTCC" # Let the user override the test with a path.
-  ;;
-  *)
-  as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
-for as_dir in $PATH
-do
-  IFS=$as_save_IFS
-  test -z "$as_dir" && as_dir=.
-    for ac_exec_ext in '' $ac_executable_extensions; do
-  if { test -f "$as_dir/$ac_word$ac_exec_ext" && $as_test_x "$as_dir/$ac_word$ac_exec_ext"; }; then
-    ac_cv_path_PTCC="$as_dir/$ac_word$ac_exec_ext"
-    $as_echo "$as_me:${as_lineno-$LINENO}: found $as_dir/$ac_word$ac_exec_ext" >&5
-    break 2
-  fi
-done
-  done
-IFS=$as_save_IFS
-
-  ;;
-esac
-fi
-PTCC=$ac_cv_path_PTCC
-if test -n "$PTCC"; then
-  { $as_echo "$as_me:${as_lineno-$LINENO}: result: $PTCC" >&5
-$as_echo "$PTCC" >&6; }
-else
-  { $as_echo "$as_me:${as_lineno-$LINENO}: result: no" >&5
-$as_echo "no" >&6; }
-fi
-
-
-    if test "${PTCC:-none}" = "none"; then
-        { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Failed to find gcc" >&5
-$as_echo "$as_me: WARNING: Failed to find gcc" >&2;}
-        # Extract the first word of "cc", so it can be a program name with args.
-set dummy cc; ac_word=$2
-{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for $ac_word" >&5
-$as_echo_n "checking for $ac_word... " >&6; }
-if ${ac_cv_path_PTCC+:} false; then :
-  $as_echo_n "(cached) " >&6
-else
-  case $PTCC in
-  [\\/]* | ?:[\\/]*)
-  ac_cv_path_PTCC="$PTCC" # Let the user override the test with a path.
-  ;;
-  *)
-  as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
-for as_dir in $PATH
-do
-  IFS=$as_save_IFS
-  test -z "$as_dir" && as_dir=.
-    for ac_exec_ext in '' $ac_executable_extensions; do
-  if { test -f "$as_dir/$ac_word$ac_exec_ext" && $as_test_x "$as_dir/$ac_word$ac_exec_ext"; }; then
-    ac_cv_path_PTCC="$as_dir/$ac_word$ac_exec_ext"
-    $as_echo "$as_me:${as_lineno-$LINENO}: found $as_dir/$ac_word$ac_exec_ext" >&5
-    break 2
-  fi
-done
-  done
-IFS=$as_save_IFS
-
-  ;;
-esac
-fi
-PTCC=$ac_cv_path_PTCC
-if test -n "$PTCC"; then
-  { $as_echo "$as_me:${as_lineno-$LINENO}: result: $PTCC" >&5
-$as_echo "$PTCC" >&6; }
-else
-  { $as_echo "$as_me:${as_lineno-$LINENO}: result: no" >&5
-$as_echo "no" >&6; }
-fi
-
-
-        if test "${PTCC:-none}" != "none"; then
-            if test "${PTVERBOSE:-none}" = "none"; then { $as_echo "$as_me:${as_lineno-$LINENO}: result: ok" >&5
-$as_echo "ok" >&6; }; else { $as_echo "$as_me:${as_lineno-$LINENO}: result: $PTCC" >&5
-$as_echo "$PTCC" >&6; }; fi
-        else
-            { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Failed to find gcc or cc, so we will
-    not be able use the OpenCV Codegen code in $OPENCVCG_USER_DIR" >&5
-$as_echo "$as_me: WARNING: Failed to find gcc or cc, so we will
-    not be able use the OpenCV Codegen code in $OPENCVCG_USER_DIR" >&2;};
-        fi
-    fi
-
-    if test "${PTCC:-none}" != "none"; then
-       { $as_echo "$as_me:${as_lineno-$LINENO}: checking for OpenCV C API" >&5
-$as_echo_n "checking for OpenCV C API... " >&6; }
-       # FIXME: This will not work if $PTII has spaces
-       dirs="/Library/Frameworks/OpenCV.framework/Headers /usr/local/include/opencv"
-       for dir in $dirs
-       do
-           if test -f "$dir/cv.h"; then
-               if test "${PTVERBOSE:-none}" = "none"; then { $as_echo "$as_me:${as_lineno-$LINENO}: result: ok" >&5
-$as_echo "ok" >&6; }; else { $as_echo "$as_me:${as_lineno-$LINENO}: result: $dir/cv.h}" >&5
-$as_echo "$dir/cv.h}" >&6; }; fi
-	       PTOPENCV_INCLUDE_DIR=$dir
-	       break;
-           fi
-       done
-       if test ! -f "$PTOPENCV_INCLUDE_DIR/cv.h"; then
-           { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Failed to find cv.h
-    Checked the following directories:
-    $dirs
-    The OpenCV Codegen facility in $OPENCVCG_USER_DIR requires cv.h.
-    However, Ptolemy will run without this facility." >&5
-$as_echo "$as_me: WARNING: Failed to find cv.h
-    Checked the following directories:
-    $dirs
-    The OpenCV Codegen facility in $OPENCVCG_USER_DIR requires cv.h.
-    However, Ptolemy will run without this facility." >&2;}
-       fi
-   fi
 fi
 
 
@@ -12524,9 +12347,6 @@ ANT_JAVADOC_EXCLUDEPACKAGENAMES=`echo "$ANT_ALWAYS_EXCLUDE $ANT_EXCLUDE"| sed 's
 # if the CaffeineMark Java Benchmark kit is found
 
 
-# Optional codegen package that are in the devel tree, but not shipped.
-# Used in doc/makefile
-
 
 # Set to colt and used in $PTII/ptolemy/actor/lib/makefile if colt was found.
 
@@ -12552,7 +12372,7 @@ ANT_JAVADOC_EXCLUDEPACKAGENAMES=`echo "$ANT_ALWAYS_EXCLUDE $ANT_EXCLUDE"| sed 's
 
 
 # PTCUNIT_DIR is set to test and used in
-# ptII/ptolemy/codegen/c/kernel/type/test/makefile
+# ptolemy/cg/kernle/generic/program/procedural/c/type
 # if CUnit is found
 
 
@@ -12845,10 +12665,6 @@ ANT_JAVADOC_EXCLUDEPACKAGENAMES=`echo "$ANT_ALWAYS_EXCLUDE $ANT_EXCLUDE"| sed 's
 
 # Set to opencv and used in
 # $PTII/ptolemy/actor/lib/makefile if OpenCV Open Computer Vision was found
-
-
-# PTCGOPENCV_DIR is set to OpenCVTracking and used in
-# $PTII/ptolemy/codegen/demo/makefile if opencv was found
 
 
 # Directory that contains cv.h

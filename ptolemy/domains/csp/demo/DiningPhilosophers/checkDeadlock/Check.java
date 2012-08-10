@@ -31,8 +31,8 @@ import java.util.HashMap;
 import java.util.Iterator;
 
 import ptolemy.actor.gui.MoMLApplication;
-import ptolemy.domains.fsm.kernel.State;
-import ptolemy.domains.fsm.kernel.ia.InterfaceAutomaton;
+import ptolemy.domains.modal.kernel.State;
+import ptolemy.domains.modal.kernel.ia.InterfaceAutomaton;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;

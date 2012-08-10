@@ -31,11 +31,11 @@ import java.util.StringTokenizer;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.TypedActor;
 import ptolemy.actor.gui.Configuration;
-import ptolemy.domains.fsm.kernel.State;
-import ptolemy.domains.fsm.kernel.Transition;
-import ptolemy.domains.fsm.modal.ModalController;
-import ptolemy.domains.fsm.modal.Refinement;
-import ptolemy.domains.fsm.modal.RefinementPort;
+import ptolemy.domains.modal.kernel.State;
+import ptolemy.domains.modal.kernel.Transition;
+import ptolemy.domains.modal.modal.ModalController;
+import ptolemy.domains.modal.modal.Refinement;
+import ptolemy.domains.modal.modal.RefinementPort;
 import ptolemy.domains.tdl.kernel.TDLMode;
 import ptolemy.gui.ComponentDialog;
 import ptolemy.gui.Query;
@@ -46,8 +46,8 @@ import ptolemy.kernel.util.Nameable;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.moml.MoMLChangeRequest;
 import ptolemy.util.MessageHandler;
-import ptolemy.vergil.fsm.FSMGraphController;
-import ptolemy.vergil.fsm.StateController;
+import ptolemy.vergil.modal.FSMGraphController;
+import ptolemy.vergil.modal.StateController;
 import ptolemy.vergil.toolbox.FigureAction;
 import ptolemy.vergil.toolbox.MenuActionFactory;
 import diva.graph.GraphController;
@@ -229,10 +229,14 @@ public class HierarchicalModeController extends StateController {
                         try {
                             // NOTE: This is awkward.
                             if (entity instanceof Refinement) {
-                                ((Refinement) entity).setMirrorDisable(true);
+                                // FIXME: not sure if this should be -1 or 1.
+                                ((Refinement) entity).setMirrorDisable(1);
+
+                            ((Refinement) entity).setMirrorDisable(1);
                             } else if (entity instanceof ModalController) {
+                                // FIXME: not sure if this should be -1 or 1.
                                 ((ModalController) entity)
-                                        .setMirrorDisable(true);
+                                        .setMirrorDisable(1);
                             }
 
                             Port newPort = entity.newPort(port.getName());
@@ -274,10 +278,10 @@ public class HierarchicalModeController extends StateController {
                         } finally {
                             // NOTE: This is awkward.
                             if (entity instanceof Refinement) {
-                                ((Refinement) entity).setMirrorDisable(false);
+                                ((Refinement) entity).setMirrorDisable(0);
                             } else if (entity instanceof ModalController) {
                                 ((ModalController) entity)
-                                        .setMirrorDisable(false);
+                                        .setMirrorDisable(0);
                             }
                         }
                     }

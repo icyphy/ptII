@@ -28,7 +28,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
  */
 package ptolemy.domains.tdl.kernel;
 
-import ptolemy.domains.fsm.kernel.State;
+import ptolemy.domains.modal.kernel.State;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;

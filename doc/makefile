@@ -66,7 +66,6 @@ PTCLASSJAR =
 UI_FILES_TO_BE_JARED = \
 	acks.htm \
 	authors.htm \
-	codegen.htm \
 	copernicus.htm \
 	default.css \
 	deployJava.txt \
@@ -312,88 +311,6 @@ CGPACKAGES = \
 	ptolemy.cg.lib \
 	ptolemy.cg.lib.syntactic
 
-# Codegen packages.  Use this command to update:
-# cd $PTII/ptolemy/codegen; find . -name "*.java" | xargs -n 1 dirname | sort | uniq | awk '{dir=substr($0, 2, length($0)-1) ; print "ptolemy/codegen" dir}' | sed 's@/@.@g'
-CODEGENPACKAGES = \
-	$(PTCODEGEN_OPTIONAL_PACKAGES) \
-	ptolemy.codegen.actor \
-	ptolemy.codegen.c.actor \
-	ptolemy.codegen.c.actor.lib \
-	ptolemy.codegen.c.actor.lib.colt \
-	ptolemy.codegen.c.actor.lib.comm \
-	ptolemy.codegen.c.actor.lib.conversions \
-	ptolemy.codegen.c.actor.lib.gui \
-	ptolemy.codegen.c.actor.lib.hoc \
-	ptolemy.codegen.c.actor.lib.io \
-	ptolemy.codegen.c.actor.lib.javasound \
-	ptolemy.codegen.c.actor.lib.jni \
-	ptolemy.codegen.c.actor.lib.logic \
-	ptolemy.codegen.c.actor.lib.string \
-	ptolemy.codegen.c.actor.lib.test \
-	ptolemy.codegen.c.actor.lib.tutorial \
-	ptolemy.codegen.c.actor.parameters \
-	ptolemy.codegen.c.actor.sched \
-	ptolemy.codegen.c.domains.de.kernel \
-	ptolemy.codegen.c.domains.de.lib \
-	ptolemy.codegen.c.domains.fsm.kernel \
-	ptolemy.codegen.c.domains.fsm.modal \
-	ptolemy.codegen.c.domains.giotto.kernel \
-	ptolemy.codegen.c.domains.hdf.kernel \
-	ptolemy.codegen.c.domains.modal.kernel \
-	ptolemy.codegen.c.domains.modal.modal \
-	ptolemy.codegen.c.domains.pn.kernel \
-	ptolemy.codegen.c.domains.sdf.kernel \
-	ptolemy.codegen.c.domains.sdf.lib \
-	ptolemy.codegen.c.domains.sr.kernel \
-	ptolemy.codegen.c.domains.sr.lib \
-	ptolemy.codegen.c.domains.sr.lib.gui \
-	ptolemy.codegen.c.kernel \
-	ptolemy.codegen.c.kernel.type.parameterizedTemplates \
-	ptolemy.codegen.c.kernel.type.polymorphic \
-	ptolemy.codegen.c.targets.openRTOS \
-	ptolemy.codegen.c.targets.openRTOS.actor.lib.gui \
-	ptolemy.codegen.c.targets.openRTOS.domains.giotto.kernel \
-	ptolemy.codegen.c.targets.openRTOS.domains.fsm.kernel \
-	ptolemy.codegen.c.targets.openRTOS.domains.pn.kernel \
-	ptolemy.codegen.c.targets.openRTOS.domains.sdf.kernel \
-	ptolemy.codegen.c.targets.posix \
-	ptolemy.codegen.c.targets.posix.actor.lib.io \
-	ptolemy.codegen.c.vergil.actor.lib \
-	ptolemy.codegen.gui \
-	ptolemy.codegen.java.actor \
-	ptolemy.codegen.java.actor.lib \
-	ptolemy.codegen.java.actor.lib.colt \
-	ptolemy.codegen.java.actor.lib.conversions \
-	ptolemy.codegen.java.actor.lib.embeddedJava \
-	ptolemy.codegen.java.actor.lib.gui \
-	ptolemy.codegen.java.actor.lib.hoc \
-	ptolemy.codegen.java.actor.lib.jopio \
-	ptolemy.codegen.java.actor.lib.logic \
-	ptolemy.codegen.java.actor.lib.string \
-	ptolemy.codegen.java.actor.parameters \
-	ptolemy.codegen.java.actor.sched \
-	ptolemy.codegen.java.domains.modal.kernel \
-	ptolemy.codegen.java.domains.sdf.kernel \
-	ptolemy.codegen.java.domains.sdf.lib \
-	ptolemy.codegen.java.kernel \
-	ptolemy.codegen.java.kernel.type.polymorphic \
-	ptolemy.codegen.kernel \
-	ptolemy.codegen.kernel.test \
-	ptolemy.codegen.kernel.test.actor \
-	ptolemy.codegen.kernel.test.domains.sdf.kernel \
-	ptolemy.codegen.rtmaude.actor \
-	ptolemy.codegen.rtmaude.actor.lib \
-	ptolemy.codegen.rtmaude.actor.lib.gui \
-	ptolemy.codegen.rtmaude.data.expr \
-	ptolemy.codegen.rtmaude.domains.de.kernel \
-	ptolemy.codegen.rtmaude.domains.de.lib \
-	ptolemy.codegen.rtmaude.domains.fsm.kernel \
-	ptolemy.codegen.rtmaude.domains.fsm.modal \
-	ptolemy.codegen.rtmaude.domains.sr.kernel \
-	ptolemy.codegen.rtmaude.kernel \
-	ptolemy.codegen.rtmaude.kernel.util \
-	ptolemy.codegen.util
-
 # Java packages for copernicus
 COPERNICUSPACKAGES = \
 	ptolemy.copernicus.applet \
@@ -517,18 +434,11 @@ HYVISUALPACKAGES = \
 	$(BCVTBPACKAGES) \
 	$(PTCOLT_PACKAGES) \
 	$(PTJYTHON_PACKAGES) \
-	ptolemy.domains.ct.kernel \
-	ptolemy.domains.ct.kernel.solver \
-	ptolemy.domains.ct.lib \
 	ptolemy.domains.de.kernel \
 	ptolemy.domains.de.lib \
-	ptolemy.domains.fsm.kernel \
-	ptolemy.domains.fsm.kernel.ia \
-	ptolemy.domains.fsm.modal \
 	ptolemy.domains.sdf.optimize \
 	ptolemy.domains.sdf.optimize.lib \
-	ptolemy.hsif \
-	ptolemy.vergil.fsm.modal
+	ptolemy.hsif
 
 # All the HyVisual generated documentation
 HYVISUAL_DOCS = \
@@ -536,8 +446,6 @@ HYVISUAL_DOCS = \
 	codeDocHyVisual/doc/codeDoc/ptolemy/actor/lib/Ramp.xml \
 	codeDocHyVisual/doc/codeDoc/ptolemy/actor/lib/RampIdx.xml
 
-# Currently, there are no .java files in fsm.lib
-#			ptolemy.domains.fsm.lib
 
 # PTIDES packages
 PTIDES_PACKAGES = \
@@ -600,7 +508,6 @@ PTBACKTRACK_PACKAGES = \
 	ptolemy.backtrack \
 	ptolemy.backtrack.automatic.ptolemy.actor.lib \
 	ptolemy.backtrack.automatic.ptolemy.domains.sdf.lib \
-	ptolemy.backtrack.manual.ptolemy.domains.ct.kernel \
 	ptolemy.backtrack.manual.ptolemy.actor.lib \
 	ptolemy.backtrack.ui \
 	ptolemy.backtrack.util \
@@ -620,7 +527,6 @@ USER_PACKAGES =
 ALLPACKAGES = \
 	$(CGPACKAGES) \
 	$(COREPACKAGES) \
-	$(CODEGENPACKAGES) \
 	$(COMPACKAGES) \
 	$(COPERNICUSPACKAGES) \
 	$(DATAONTOLOGIESPACKAGES) \
@@ -681,7 +587,6 @@ ALLPACKAGES = \
 	ptolemy.domains.ddf.kernel \
 	ptolemy.domains.ddf.lib \
 	ptolemy.domains.dt.kernel \
-	ptolemy.domains.fsm.kernel.fmv \
 	ptolemy.domains.giotto.kernel \
 	ptolemy.domains.giotto.lib \
 	ptolemy.domains.hdf.kernel \
@@ -711,9 +616,6 @@ ALLPACKAGES = \
 	ptolemy.domains.tester.lib \
 	ptolemy.domains.tm.kernel \
 	ptolemy.domains.tm.lib \
-	ptolemy.vergil.fsm \
-	ptolemy.vergil.fsm.fmv \
-	ptolemy.vergil.fsm.ia \
 	ptolemy.vergil.ontologies \
 	ptolemy.vergil.pdfrenderer \
 	ptolemy.vergil.ptera \
@@ -891,55 +793,17 @@ codeDoc/tree.html:	../ptolemy/plot/*.java \
 			../ptolemy/actor/process/*.java \
 			../ptolemy/actor/sched/*.java \
 			../ptolemy/actor/util/*.java \
-			../ptolemy/codegen/c/actor/*.java \
-			../ptolemy/codegen/c/actor/lib/*.java \
-			../ptolemy/codegen/c/actor/lib/comm/*.java \
-			../ptolemy/codegen/c/actor/lib/conversions/*.java \
-			../ptolemy/codegen/c/actor/lib/gui/*.java \
-			../ptolemy/codegen/c/actor/lib/hoc/*.java \
-			../ptolemy/codegen/c/actor/lib/io/*.java \
-			../ptolemy/codegen/c/actor/lib/javasound/*.java \
-			../ptolemy/codegen/c/actor/lib/jni/*.java \
-			../ptolemy/codegen/c/actor/lib/logic/*.java \
-			../ptolemy/codegen/c/actor/lib/string/*.java \
-			../ptolemy/codegen/c/actor/sched/*.java \
-			../ptolemy/codegen/c/domains/fsm/kernel/*.java \
-			../ptolemy/codegen/c/domains/fsm/modal/*.java \
-			../ptolemy/codegen/c/domains/hdf/kernel/*.java \
-			../ptolemy/codegen/c/domains/modal/kernel/*.java \
-			../ptolemy/codegen/c/domains/modal/modal/*.java \
-			../ptolemy/codegen/c/domains/sdf/kernel/*.java \
-			../ptolemy/codegen/c/domains/sdf/lib/*.java \
-			../ptolemy/codegen/c/kernel/*.java \
-			../ptolemy/codegen/gui/*.java \
-			../ptolemy/codegen/java/kernel/*.java \
-			../ptolemy/codegen/java/actor/*.java \
-			../ptolemy/codegen/java/actor/parameters/*.java \
-			../ptolemy/codegen/java/domains/modal/kernel/*.java \
-			../ptolemy/codegen/java/domains/sdf/kernel/*.java \
-			../ptolemy/codegen/java/domains/sdf/lib/*.java \
-			../ptolemy/codegen/java/actor/lib/colt/*.java \
-			../ptolemy/codegen/java/actor/lib/conversions/*.java \
-			../ptolemy/codegen/java/actor/lib/hoc/*.java \
-			../ptolemy/codegen/java/actor/lib/logic/*.java \
-			../ptolemy/codegen/java/actor/lib/string/*.java \
-			../ptolemy/codegen/java/actor/lib/*.java \
-			../ptolemy/codegen/kernel/*.java \
 			../ptolemy/domains/curriculum/*.java \
 			../ptolemy/domains/ci/kernel/*.java \
 			../ptolemy/domains/ci/lib/*.java \
 			../ptolemy/domains/csp/kernel/*.java \
 			../ptolemy/domains/csp/lib/*.java \
-			../ptolemy/domains/ct/kernel/*.java \
-			../ptolemy/domains/ct/kernel/solver/*.java \
-			../ptolemy/domains/ct/lib/*.java \
 			../ptolemy/domains/dde/kernel/*.java \
 			../ptolemy/domains/dde/lib/*.java \
 			../ptolemy/domains/ddf/kernel/*.java \
 			../ptolemy/domains/ddf/lib/*.java \
 			../ptolemy/domains/de/kernel/*.java \
 			../ptolemy/domains/de/lib/*.java \
-			../ptolemy/domains/fsm/kernel/*.java \
 			../ptolemy/domains/giotto/kernel/*.java \
 			../ptolemy/domains/pn/kernel/*.java \
 			../ptolemy/domains/psdf/kernel/*.java \
@@ -976,9 +840,6 @@ codeDoc/tree.html:	../ptolemy/plot/*.java \
 			../ptolemy/vergil/basic/*.java \
 			../ptolemy/vergil/debugger/*.java \
 			../ptolemy/vergil/icon/*.java \
-			../ptolemy/vergil/fsm/*.java \
-			../ptolemy/vergil/fsm/ia/*.java \
-			../ptolemy/vergil/fsm/modal/*.java \
 			../ptolemy/vergil/kernel/*.java \
 			../ptolemy/vergil/toolbox/*.java \
 			../ptolemy/vergil/tree/*.java \

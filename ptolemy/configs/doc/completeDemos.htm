@@ -57,7 +57,6 @@ Ptolemy II models that illustrate Model of Computation-oriented functionality.
 
 <li><a href="#continuous">Continuous (Continuous Time)</a>
 <!--/bcvtbDocs-->
-<li><a href="#ct">CT (Continuous Time)</a>
 <!--/vergilDocs-->
 
 <li><a href="#dde">DDE (Distributed Discrete Events)</a>
@@ -74,8 +73,6 @@ Ptolemy II models that illustrate Model of Computation-oriented functionality.
 <!--/vergilDocs-->
 <li><a href="#dt">DT (Discrete Time)</a>
 <!--vergilDocs-->
-
-<li><a href="#fsm">FSM (Finite State Machines)</a>
 
 <!--/vergilDocs-->
 <li><a href="#giotto">Giotto (Synchronous Periodic Systems)</a>
@@ -265,84 +262,6 @@ An recent implementation of Continuous Time semantics, for use with the <a href=
 <li><a href="../../domains/continuous/demo/V2V/V2V.xml">Vehicle 2 Vehicle</a>
 </ul>
 <!--/bcvtbDocs-->
-<h3><a name="ct">Continuous Time (CT)</a></h3>
-An earlier implementation of Continuous Time semantics, for use with the <a href="#fsm">Finite State Machine</a> domain.
-<ul>
-<!-- Please keep the demos alphabetical -->
-<!--/vergilDocs-->
-
-<li><a href="../../domains/ct/demo/BouncingBall/BouncingBallWithoutGR.xml">Bouncing Ball</a> (Does not require Java 3D)
-<!-- BouncingBall uses GR, and we don't ship GR in ptiny -->
-<li><a href="../../domains/ct/demo/BouncingBall/BouncingBall.xml">Bouncing Ball</a>  (Requires Java 3D, see the <a href="../../domains/gr/doc/main.htm">GR domain</a>)
-<!--vergilDocs-->
-
-<li><a href="../../domains/ct/demo/Brownian/Brownian.xml">Brownian</a> 
-<!--/vergilDocs-->
-<!-- CartPendulum uses PDFAttribute, which is not shipped in ptiny -->
-<li><a href="../../domains/ct/demo/CartPendulum/CartPendulum.xml">Cart with Pendulum</a> (Requires Java 3D, see the <a href="../../domains/gr/doc/main.htm">GR domain</a>)
-<!--/vergilDocs-->
-
-<li><a href="../../domains/ct/demo/CarTracking/CarTracking.xml">Car Tracking</a> 
-<li><a href="../../domains/ct/demo/ComparedClocks/ComparedClocks.xml">Compared Clocks</a>
-<li><a href="../../domains/ct/demo/CTInsideDE/CTInsideDE.xml">CT Inside DE</a>
-<li><a href="../../domains/ct/demo/Transmission/EfficiencyCurve.xml">Efficiency Curve</a>
-<li><a href="../../domains/ct/demo/Helicopter/Helicopter.xml">Helicopter Control</a>
-<li><a href="../../domains/ct/demo/HierarchicalExecution/HierarchicalExecution.xml">Hierarchical Execution</a>
-<li>Hybrid Plant: <a href="../../domains/ct/demo/HybridPlant/DeterministicHybridPlant.xml">Deterministic</a>, 
-<a href="../../domains/ct/demo/HybridPlant/RandomHybridPlant.xml">Random</a>
-<li><a href="../../domains/ct/demo/Hysteresis/Hysteresis.xml">Hysteresis</a>
-<li><a href="../../domains/ct/demo/Hysteresis/HysteresisWithRandomDelay.xml">HysteresisWithRandomDelay</a>
-<li><a href="../../domains/ct/demo/Hysteresis/HysteresisWithRandomLosses.xml">HysteresisWithRandomLosses</a>
-<li><a href="../../domains/ct/demo/Spontaneous/IncreasingRatePoisson.xml">IncreasingRatePoisson</a>
-<li><a href="../../domains/ct/demo/LevelCrossingDetector/LevelCrossingDetector.xml">Level Crossing Detector</a>
-<li><a href="../../domains/ct/demo/LevelCrossingDetector/LevelCrossingDetectorDetectingDirections.xml">Level Crossing Detector with Different Detecting Directions</a>
-<li><a href="../../domains/ct/demo/LevelCrossingDetectorDetectsGlitches/LevelCrossingDetectorDetectsGlitches.xml">Level Crossing Detector Detects Glitches</a>
-<li><a href="../../domains/ct/demo/Lorenz/Lorenz.xml">Lorenz Attractors</a>
-<!-- Saber -->
-<li><a href="../../matlab/demo/MatlabCT/MatlabCT.xml">Matlab in CT</a> (Requires that Matlab be installed locally)
-<li><a href="../../domains/ct/demo/SigmaDelta/SigmaDelta.xml">MEMS accelerometer</a>
-<li><a href="../../domains/ct/demo/NewtonsCradle/NewtonsCradle.xml">NewtonsCradle</a>
-
-<!--/vergilDocs-->
-<!-- These Newton's Cradle demos require GR -->
-<li><a href="../../domains/ct/demo/NewtonsCradle/NewtonsCradleAnimated.xml">NewtonsCradleAnimated</a> (Requires Java 3D, see the <a href="../../domains/gr/doc/main.htm">GR domain</a>)
-<li><a href="../../domains/ct/demo/NewtonsCradle/NewtonsCradleComplicated.xml">Newton's Cradle with Complicated Dynamics</a> (Requires Java 3D, see the <a href="../../domains/gr/doc/main.htm">GR domain</a>)
-<li><a href="../../domains/ct/demo/NewtonsCradle/NewtonsCradleNondeterministic.xml">Newton's Cradle with Nondeterministic State Machine</a> (Requires Java 3D, see the <a href="../../domains/gr/doc/main.htm">GR domain</a>)
-<li><a href="../../domains/ct/demo/NewtonsCradle/NewtonsCradlePerfectlyInelastic1.xml">Newton's Cradle with Perfectly Inelastic Collisions</a> (Requires Java 3D, see the <a href="../../domains/gr/doc/main.htm">GR domain</a>)
-<li><a href="../../domains/ct/demo/NewtonsCradle/ParameterizedNewtonsCradleAnimated.xml">Newton's Cradle with Configurable Parameters</a> (Requires Java 3D, see the <a href="../../domains/gr/doc/main.htm">GR domain</a>)
-<li><a href="../../domains/ct/demo/NewtonsCradle/ParameterizedNewtonsCradleAnimatedNondeterministic.xml">Newton's Cradle with Balls Having Different Masses</a> (Requires Java 3D, see the <a href="../../domains/gr/doc/main.htm">GR domain</a>)
-<li><a href="../../domains/ct/demo/Pendulum3D/Pendulum3D.xml">3D Pendulum</a> (Requires Java 3D, see the <a href="../../domains/gr/doc/main.htm">GR domain</a>)
-<!--vergilDocs-->
-
-<li><a href="../../domains/ct/demo/Spontaneous/Poisson.xml">Poisson</a>
-<li><a href="../../domains/ct/demo/SampledClocks/SampledClocks.xml">Sampled Clocks</a>
-<li><a href="../../domains/ct/demo/Satellite/Satellite.xml">Satellite</a>
-
-<!--/vergilDocs-->
-<!-- SinuBouncingBall uses PDFAttribute, which is not shipped in ptiny -->
-<li><a href="../../domains/ct/demo/SinuBouncingBall/SinuBouncingBall.xml">Ball Bouncing on a Sinusoidal Surface</a>
-<!--vergilDocs-->
-
-<li><a href="../../domains/ct/demo/SquareWave/SquareWave.xml">Square Wave Response</a>
-<!--/vergilDocs-->
-<!-- Starmac uses Java3D -->
-<li><a href="../../domains/ct/demo/Starmac/Starmac.xml">Starmac</a>
-<li><a href="../../domains/ct/demo/StickyMasses/StickyMasses.xml">Sticky Point Masses</a>
-<li><a href="../../domains/ct/demo/StickyMasses/StickyMassesNewVersion.xml">Sticky Point Masses Modified Version</a>
-<li><a href="../../domains/ct/demo/Switch/Switch.xml">Switching Continuous Signals using Modal Models</a> 
-<li><a href="../../domains/ct/demo/Thermostat/Thermostat.xml">Thermostat</a>
-<li><a href="../../domains/ct/demo/Transmission/Transmission.xml">Transmission</a>
-<li><a href="../../domains/ct/demo/ContinuousClock/TriggeredContinuousClock.xml">Triggered Continuous Clock</a>
-
-<!--/bcvtbDocs-->
-<!-- Units includes ct.lib.Integrator, which is not shipped with BCVTB -->
-<li><a href="../../data/unit/demo/Units/Units.xml">Units</a>
-<!--bcvtbDocs-->
-
-<li><a href="../../domains/ct/demo/V2V/V2V.xml">Vehicle 2 Vehicle</a>
-<!-- jspaces -->
-<!--vergilDocs-->
-</ul>
 
 <!--/vergilDocs-->
 
@@ -449,19 +368,6 @@ visible parameters, and MonitorValue</a>
 
 <!--vergilDocs-->
 <!--/bcvtbDocs-->
-<h3><a name="fsm">Finite State Machine (FSM)</a></h3>
-An earlier implementation of Finite State Machine semantics, for use with the <a href="#ct">CT</a> domain.
-<ul>
-<li><a href="../../domains/fsm/demo/ABP/ABP.xml">Alternating&nbsp;Bit</a>
-<li><a href="../../domains/fsm/demo/ChainedTransitions/ChainedTransitions.xml">Chained Transitions</a>
-<li><a href="../../domains/fsm/demo/Blending/Blending.xml">Blending</a> (In the full version of Ptolemy: with codegen)
-<li><a href="../../domains/fsm/demo/ModalBSC/ModalBSC.xml">Modal&nbsp;Binary Symmetric Channel</a> (In the full version of Ptolemy: with codegen)
-<!-- FSM MultipleRuns has problems with dangling threads, so we -->
-<!-- comment it ../../domains/fsm/demo/MultipleRuns/MultipleRuns.xml Multiple&nbsp;Runs -->
---> 
-<li><a href="../../domains/fsm/demo/StateTracker/StateTracker.xml">State&nbsp;Tracker</a>
-<!-- systemLevelType-->
-</ul>
 
 <!--/vergilDocs-->
 <!--Ptiny does not include Giotto-->

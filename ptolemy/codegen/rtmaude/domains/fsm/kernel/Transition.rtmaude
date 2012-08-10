@@ -1,2 +1,0 @@
-/***termBlock($source, $target, $guard, $out, $set)***/
-('$info(name) : '$source --> '$target {guard: ($guard) output: ($out) set: ($set)})/**/

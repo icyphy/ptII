@@ -29,7 +29,7 @@ import ptolemy.actor.gui.Effigy;
 import ptolemy.actor.gui.PtolemyEffigy;
 import ptolemy.actor.gui.Tableau;
 import ptolemy.actor.gui.TableauFactory;
-import ptolemy.domains.fsm.kernel.FSMActor;
+import ptolemy.domains.modal.kernel.FSMActor;
 import ptolemy.domains.tdl.kernel.TDLModule;
 import ptolemy.domains.tdl.kernel.TDLModuleDirector;
 import ptolemy.kernel.util.IllegalActionException;

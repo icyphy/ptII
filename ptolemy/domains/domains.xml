@@ -16,7 +16,6 @@
 	     contains this file. -->
 
 	    <input source="ptolemy/domains/ca/lib/caentities.xml"/>
-	    <input source="ptolemy/domains/ct/lib/ctentities.xml"/>
 	    <input source="ptolemy/domains/dde/dde.xml"/>	 
 
 	    <!-- ddf is shipped with ptiny, so no need to list fsm here -->

@@ -28,7 +28,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
  */
 package ptolemy.domains.tdl.kernel;
 
-import ptolemy.domains.fsm.modal.ModalModel;
+import ptolemy.domains.modal.modal.ModalModel;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.Port;

@@ -1,3 +1,0 @@
-/***termBlock***/
-< '$info(name) : Parameter | exp : $val($info(name)), value : $info(evaluatedValue), status : valid >
-/**/

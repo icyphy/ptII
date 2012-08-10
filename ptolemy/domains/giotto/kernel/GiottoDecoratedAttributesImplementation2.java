@@ -152,7 +152,7 @@ public class GiottoDecoratedAttributesImplementation2 extends
 
             parentContainer = container.getContainer().getContainer();
 
-            if (parentContainer instanceof ptolemy.domains.fsm.modal.ModalModel) {
+            if (parentContainer instanceof ptolemy.domains.modal.modal.ModalModel) {
                 dummyParam = new Parameter(parentContainer, "WCET");
                 dummyParam.setTypeEquals(BaseType.DOUBLE);
                 dummyParam.setExpression(Double.toString(dirWCET));
@@ -169,7 +169,7 @@ public class GiottoDecoratedAttributesImplementation2 extends
 
             parentContainer = container.getContainer().getContainer();
 
-            if (parentContainer instanceof ptolemy.domains.fsm.modal.ModalModel) {
+            if (parentContainer instanceof ptolemy.domains.modal.modal.ModalModel) {
 
                 try {
                     dummyParam = new Parameter(parentContainer, "WCET");

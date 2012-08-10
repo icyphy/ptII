@@ -41,7 +41,6 @@ import ptolemy.domains.continuous.kernel.ContinuousDirector;
 import ptolemy.domains.continuous.kernel.HybridModalDirector;
 import ptolemy.domains.continuous.lib.Integrator;
 import ptolemy.domains.continuous.lib.LevelCrossingDetector;
-import ptolemy.domains.ct.kernel.CTCompositeActor;
 import ptolemy.domains.modal.kernel.FSMActor;
 import ptolemy.domains.modal.kernel.State;
 import ptolemy.domains.modal.kernel.Transition;
@@ -111,7 +110,7 @@ public class Thermostat extends TypedCompositeActor {
         newPlot.setYRange(0.0, 0.2);
         newPlot.setSize(500, 300);
 
-        CTCompositeActor hs = new CTCompositeActor(this, "HS");
+        TypedCompositeActor hs = new TypedCompositeActor(this, "HS");
 
         // the ports
         TypedIOPort hsin = (TypedIOPort) hs.newPort("input");
@@ -165,7 +164,7 @@ public class Thermostat extends TypedCompositeActor {
         hsdir.controllerName.setExpression("Controller");
 
         //hsdir.addDebugListener(dbl);
-        CTCompositeActor ctInc = new CTCompositeActor(hs, "Increasing");
+        TypedCompositeActor ctInc = new TypedCompositeActor(hs, "Increasing");
 
         //ZeroOrderHold ctIncH = new ZeroOrderHold(ctInc, "Hold");
         Integrator ctIncI = new Integrator(ctInc, "Integrator");
@@ -222,7 +221,7 @@ public class Thermostat extends TypedCompositeActor {
         ContinuousDirector ctIncDir = new ContinuousDirector(ctInc, "CTIncDir");
 
         //ctIncDir.addDebugListener(dbl);
-        CTCompositeActor ctDec = new CTCompositeActor(hs, "Decreasing");
+        TypedCompositeActor ctDec = new TypedCompositeActor(hs, "Decreasing");
 
         //ctDec.addDebugListener(dbl);
         //ZeroOrderHold ctDecH = new ZeroOrderHold(ctDec, "Hold");

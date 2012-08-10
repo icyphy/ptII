@@ -31,9 +31,9 @@ package ptolemy.domains.hdf.kernel;
 
 import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
-import ptolemy.domains.fsm.kernel.FSMActor;
-import ptolemy.domains.fsm.kernel.MultirateFSMDirector;
-import ptolemy.domains.fsm.kernel.State;
+import ptolemy.domains.modal.kernel.FSMActor;
+import ptolemy.domains.modal.kernel.MultirateFSMDirector;
+import ptolemy.domains.modal.kernel.State;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.util.ChangeRequest;

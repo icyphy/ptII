@@ -37,7 +37,7 @@ import ptolemy.cg.kernel.generic.program.ProgramCodeGeneratorAdapter;
 import ptolemy.cg.kernel.generic.program.procedural.ProceduralTemplateParser;
 import ptolemy.data.type.BaseType;
 import ptolemy.data.type.Type;
-import ptolemy.domains.fsm.modal.ModalController;
+import ptolemy.domains.modal.modal.ModalController;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.util.StringUtilities;
 

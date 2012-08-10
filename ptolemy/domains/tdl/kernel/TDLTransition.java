@@ -38,7 +38,7 @@ import ptolemy.data.expr.ASTPtRootNode;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.ParseTreeFreeVariableCollector;
 import ptolemy.data.expr.PtParser;
-import ptolemy.domains.fsm.kernel.Transition;
+import ptolemy.domains.modal.kernel.Transition;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;

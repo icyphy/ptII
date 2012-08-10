@@ -60,9 +60,7 @@ ME =		ptolemy/actor/lib
 # $PTII/configure looks for Jython and sets PTJYTHON_DIR in
 # $PTII/mk/ptII.mk if it was found.  Otherwise, PTJYTHON_DIR is empty.
 #
-# $PTII/configure looks for JXTA and sets PTJXTA_DIR in
-# $PTII/mk/ptII.mk if it was found.  Otherwise, PTJXTA_DIR is empty.
-#
+
 # $PTII/configure looks for Open Computer Vision and sets PTOPENCV_DIR in
 # $PTII/mk/ptII.mk if it was found.  Otherwise, PTOPENCV_DIR is empty.
 #
@@ -72,7 +70,7 @@ DIRS = 		conversions embeddedJava gui logic hoc image \
 		$(PTCOLT_DIR) $(PTDATABASE_DIR) $(PTFMI_DIR) \
 		$(PTEXCEL_DIR) $(PTJAI_DIR) $(PTJAVAMAIL_DIR) \
 		$(PTJMF_DIR) $(PTJOYSTICK_DIR) \
-		$(PTJYTHON_DIR) $(PTJXTA_DIR) $(PTOPENCV_DIR)
+		$(PTJYTHON_DIR) $(PTOPENCV_DIR)
 
 # Root of the Java directory
 ROOT =		../../..

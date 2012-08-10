@@ -45,7 +45,7 @@ import ptolemy.cg.kernel.generic.program.NamedProgramCodeGeneratorAdapter;
 import ptolemy.cg.kernel.generic.program.ProgramCodeGeneratorAdapter;
 import ptolemy.data.type.BaseType;
 import ptolemy.data.type.Type;
-import ptolemy.domains.fsm.modal.ModalController;
+import ptolemy.domains.modal.modal.ModalController;
 import ptolemy.domains.ptides.lib.ActuationDevice;
 import ptolemy.domains.ptides.lib.ActuatorSetup;
 import ptolemy.domains.ptides.lib.OutputDevice;

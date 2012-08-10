@@ -32,9 +32,9 @@ import ptolemy.actor.Director;
 import ptolemy.actor.util.BooleanDependency;
 import ptolemy.actor.util.BreakCausalityInterface;
 import ptolemy.actor.util.CausalityInterface;
-import ptolemy.domains.fsm.modal.ModalModel;
-import ptolemy.domains.fsm.modal.ModalPort;
-import ptolemy.domains.fsm.modal.Refinement;
+import ptolemy.domains.modal.modal.ModalModel;
+import ptolemy.domains.modal.modal.ModalPort;
+import ptolemy.domains.modal.modal.Refinement;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Entity;
@@ -265,7 +265,8 @@ public class TDLModule extends ModalModel {
                 } else if (entity instanceof Refinement) {
                     if (entity.getPort(name) == null) {
                         try {
-                            ((Refinement) entity).setMirrorDisable(true);
+                            // FIXME: not sure if this should be -1 or 1.
+                            ((Refinement) entity).setMirrorDisable(1);
 
                             /* Port newPort = */entity.newPort(name);
 
@@ -276,7 +277,7 @@ public class TDLModule extends ModalModel {
                              * ((TypedIOPort)newPort).setTypeSameAs(port); }
                              */
                         } finally {
-                            ((Refinement) entity).setMirrorDisable(false);
+                            ((Refinement) entity).setMirrorDisable(0);
                         }
                     }
                 }

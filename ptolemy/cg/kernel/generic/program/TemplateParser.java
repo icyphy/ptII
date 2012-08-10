@@ -63,7 +63,7 @@ import ptolemy.data.expr.Variable;
 import ptolemy.data.type.ArrayType;
 import ptolemy.data.type.BaseType;
 import ptolemy.data.type.Type;
-import ptolemy.domains.fsm.modal.ModalController;
+import ptolemy.domains.modal.modal.ModalController;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;

@@ -318,12 +318,6 @@ JUNIT_JAVA_ARGS = -Dptolemy.ptII.doNotExit=true
 # Jython home directory that contains jython.jar, see http://www.jython.org
 JYTHON_DIR =    @JYTHON_DIR@
 
-# JXTA home directory that contains jxta.jar, see http://www.jxta.org
-JXTA_DIR =	@JXTA_DIR@
-
-# Jar files used by JXTA
-JXTA_JARS = $(JXTA_DIR)/jxta.jar$(CLASSPATHSEPARATOR)$(JXTA_DIR)/log4j.jar$(CLASSPATHSEPARATOR)$(JXTA_DIR)/beepcore.jar$(CLASSPATHSEPARATOR)$(JXTA_DIR)/jxtasecurity.jar$(CLASSPATHSEPARATOR)$(JXTA_DIR)/cryptix-asn1.jar$(CLASSPATHSEPARATOR)$(JXTA_DIR)/cryptix32.jar$(CLASSPATHSEPARATOR)$(JXTA_DIR)/jxtaptls.jar$(CLASSPATHSEPARATOR)$(JXTA_DIR)/minimalBC.jar
-
 # keytool command used to generate a certificate for testing actor.lib.security actors
 KEYTOOL =	@KEYTOOL@
 
@@ -377,10 +371,6 @@ PTCHIC_DIR = @PTCHIC_DIR@
 # if the CaffeineMark Java Benchmark kit is found.
 PTCM_DIR =	@PTCM_DIR@
 
-# Optional codegen package that are in the devel tree, but not shipped.
-# Used in doc/makefile
-PTCODEGEN_OPTIONAL_PACKAGES =	@PTCODEGEN_OPTIONAL_PACKAGES@
-
 # Set to colt and used in $PTII/ptolemy/actor/lib/makefile if colt was found.
 PTCOLT_DIR =    @PTCOLT_DIR@
 
@@ -405,7 +395,7 @@ PTCOMM_PACKAGES =	@PTCOMM_PACKAGES@
 PTCOPERNICUS_DIR = @PTCOPERNICUS_DIR@
 
 # PTCUNIT_DIR is set to test and used in 
-# ptII/ptolemy/codegen/c/kernel/type/test/makefile
+# $PTII/ptolemy/cg/kernle/generic/program/procedural/c/type
 # if CUnit is found
 PTCUNIT_DIR =		@PTCUNIT_DIR@
 
@@ -560,7 +550,7 @@ PTJACL_DIR =	@PTJACL_DIR@
 PTJACL_JAR =	@PTJACL_JAR@
 
 # Jar files used in configs/test/makefile and vergil/test/makefile
-PTJACL_JARS =   $(DIVA_JAR)$(CLASSPATHSEPARATOR)$(JYTHON_DIR)/jython.jar$(CLASSPATHSEPARATOR)$(JXTA_JARS)$(CLASSPATHSEPARATOR)$(SOOT_CLASSES)$(CLASSPATHSEPARATOR)$(PTCOLT_JARS)$(CLASSPATHSEPARATOR)
+PTJACL_JARS =   $(DIVA_JAR)$(CLASSPATHSEPARATOR)$(JYTHON_DIR)/jython.jar$(CLASSPATHSEPARATOR)$(SOOT_CLASSES)$(CLASSPATHSEPARATOR)$(PTCOLT_JARS)$(CLASSPATHSEPARATOR)
 
 # jtclsh script to run Jacl for the test suite.
 # We could use bin/ptjacl here, but instead we start it from within
@@ -678,10 +668,6 @@ PTJYTHON_DIR=	@PTJYTHON_DIR@
 # PTJYTHON_PACKAGES is used in ptII/doc/makefile
 PTJYTHON_PACKAGES = @PTJYTHON_PACKAGES@
 
-# Set to jxta and used in
-# $PTII/actor/lib/makefile if jxta.jar was found
-PTJXTA_DIR =	@PTJXTA_DIR@
-
 # Set to opencv and used in 
 # $PTII/ptolemy/actor/lib/makefile if OpenCV Open Computer Vision was found
 PTOPENCV_DIR = @PTOPENCV_DIR@
@@ -689,14 +675,6 @@ PTOPENCV_DIR = @PTOPENCV_DIR@
 # Ptolemy II packages that use OpenCV
 # PTOPENCV_PACKAGES is used in ptII/doc/makefile
 PTOPENCV_PACKAGES = @PTOPENCV_PACKAGES@
-
-# PTCGOPENCV_DIR is set to OpenCVTracking and used in 
-# $PTII/ptolemy/codegen/demo/makefile if opencv was found
-PTOPENCVCG_DIR = @PTOPENCVCG_DIR@
-
-# Directory that contains cv.h.
-# Used in $PTII/ptolemy/codegen/demo/makefile/OpenCVTracking
-PTOPENCV_INCLUDE_DIR = @PTOPENCV_INCLUDE_DIR@
 
 # Set to kieler and used in
 # $PTII/ptolemy/vergil/basic/layout/makefile if kieler was found

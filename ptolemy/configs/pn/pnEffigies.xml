@@ -12,12 +12,6 @@
     </entity>
     <!-- We need an FSM editor, but do not want it to appear in the -->
     <!-- File->New menu. -->
-    <entity name="FSM Editor"
-            class="ptolemy.actor.gui.PtolemyEffigy$FactoryWithoutNew">
-      <entity name="blank" class="ptolemy.domains.fsm.kernel.FSMActor">
-        <input source="ptolemy/configs/fsmLibrary.xml"/>
-      </entity>
-    </entity>
     <entity name="Modal Model"
             class="ptolemy.actor.gui.PtolemyEffigy$FactoryWithoutNew">
       <entity name="blank" class="ptolemy.domains.fsm.modal.ModalModel">

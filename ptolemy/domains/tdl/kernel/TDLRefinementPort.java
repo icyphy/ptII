@@ -29,7 +29,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
 package ptolemy.domains.tdl.kernel;
 
 import ptolemy.data.expr.Parameter;
-import ptolemy.domains.fsm.modal.RefinementPort;
+import ptolemy.domains.modal.modal.RefinementPort;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;

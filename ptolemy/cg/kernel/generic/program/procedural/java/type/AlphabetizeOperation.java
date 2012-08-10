@@ -32,8 +32,8 @@ import java.io.File;
 import java.io.FileWriter;
 import java.util.TreeSet;
 
-import ptolemy.codegen.kernel.CodeStream;
-import ptolemy.codegen.kernel.CodeStream.Signature;
+import ptolemy.cg.kernel.generic.program.CodeStream;
+import ptolemy.cg.kernel.generic.program.CodeStream.Signature;
 import ptolemy.util.FileUtilities;
 
 /**

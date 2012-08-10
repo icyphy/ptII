@@ -33,7 +33,7 @@ ME =		ptolemy/configs
 
 # If you add a configuration, be sure to add the jar file
 # in PTCLASSALLJARS below
-DIRS =		codegen bcvtb doc dsp full fullViewer hyvisual jxta \
+DIRS =		bcvtb doc dsp full fullViewer hyvisual jxta \
 		luminary pn ptdb ptiny ptinyKepler \
 		ptinyViewer ptserver \
 		space viptos visualsense test
@@ -67,8 +67,6 @@ OTHER_FILES_TO_BE_JARED = \
 	basicUtilities.xml \
 	basicUtilitiesFSM.xml \
 	caseTableauFactory.xml \
-	classicDirectors.xml \
-	codegen.xml \
 	cosimulation.xml \
 	customize.xml \
 	defaultFullConfiguration.xml \
@@ -130,7 +128,6 @@ OTHER_FILES_TO_BE_JARED = \
 
 # Include these jars in PTCLASSALLJAR
 PTCLASSALLJARS = \
-		codegen/codegen.jar \
 		bcvtb/bcvtb.jar \
 		doc/doc.jar \
 		dsp/dsp.jar \

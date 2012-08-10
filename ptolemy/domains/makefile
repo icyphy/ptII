@@ -43,8 +43,8 @@ EXPERIMENTAL_DOMAINS =
 #   Java 3D was found
 # PTSPACE_DIR is set to space by configure in $PTII/mk/ptII.mk if
 #   ojdbc6.jar was found.
-DOMAINS =	ca ci continuous coroutine csp ct curriculum \
-	        dde ddf de fsm hdf modal pn sdf dt \
+DOMAINS =	ca ci continuous coroutine csp curriculum \
+	        dde ddf de hdf modal pn sdf dt \
 	        giotto ontologies petrinet rendezvous \
 		$(PTPSDF_DIR) ptera pthales ptides ptinyos $(PTSPACE_DIR) \
 		sequence sr taskpt tdl tester tm $(PTJAVA3D_DIR) wireless
@@ -100,11 +100,9 @@ PTAUXALLJAR =	experimentalDomains.jar
 # See ptolemy/configs/basicDirectors.xml 
 # If you change this, change DIRS above
 PTCLASSALLJARS = \
-		ct/ct.jar \
 		continuous/continuous.jar \
 		de/de.jar \
 		ddf/ddf.jar \
-		fsm/fsm.jar \
 		hdf/hdf.jar \
 		modal/modal.jar \
 		ontologies/ontologies.jar \
@@ -142,14 +140,10 @@ OTHER_JARS = demo.jar
 
 DEMOJARS = \
 	ca/demo/demo.jar \
-	ct/demo/demo.jar \
-	ct/doc/doc.jar \
 	de/demo/demo.jar \
 	de/doc/doc.jar \
 	ddf/demo/demo.jar \
 	ddf/doc/doc.jar \
-	fsm/demo/demo.jar \
-	fsm/doc/doc.jar \
 	hdf/demo/demo.jar \
 	hdf/doc/doc.jar \
 	modal/doc/doc.jar \

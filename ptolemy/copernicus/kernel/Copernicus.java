@@ -45,7 +45,7 @@ import java.util.Map;
 
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.gui.MoMLApplication;
-import ptolemy.codegen.kernel.CodeGeneratorUtilities;
+import ptolemy.cg.kernel.generic.CodeGeneratorUtilities;
 import ptolemy.data.StringToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.StringParameter;

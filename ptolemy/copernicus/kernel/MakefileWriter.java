@@ -35,7 +35,7 @@ import java.util.Map;
 
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.gui.JNLPUtilities;
-import ptolemy.codegen.kernel.CodeGeneratorUtilities;
+import ptolemy.cg.kernel.generic.CodeGeneratorUtilities;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.moml.MoMLParser;

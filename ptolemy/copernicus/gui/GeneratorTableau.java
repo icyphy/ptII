@@ -54,7 +54,7 @@ import ptolemy.actor.gui.PtolemyEffigy;
 import ptolemy.actor.gui.PtolemyFrame;
 import ptolemy.actor.gui.Tableau;
 import ptolemy.actor.gui.TableauFactory;
-import ptolemy.codegen.kernel.CodeGeneratorUtilities;
+import ptolemy.cg.kernel.generic.CodeGeneratorUtilities;
 import ptolemy.copernicus.kernel.Copernicus;
 import ptolemy.copernicus.kernel.GeneratorAttribute;
 import ptolemy.gui.JTextAreaExec;
