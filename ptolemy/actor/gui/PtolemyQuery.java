@@ -170,7 +170,7 @@ public class PtolemyQuery extends Query implements QueryListener,
         // it in this class.
         // Look for a ParameterEditorStyle.
         boolean foundStyle = false;
-        
+
         try {
             _addingStyledEntryFor = attribute;
 
@@ -211,10 +211,12 @@ public class PtolemyQuery extends Query implements QueryListener,
                         int min = ((IntRangeParameter) attribute).getMinValue();
                         int max = ((IntRangeParameter) attribute).getMaxValue();
 
-                        component = addSlider(name, displayName, current, min, max);
+                        component = addSlider(name, displayName, current, min,
+                                max);
                         attachParameter(attribute, name);
                         foundStyle = true;
-                        _addSubmitAction(component, attribute.getName(), attribute);
+                        _addSubmitAction(component, attribute.getName(),
+                                attribute);
                     } else if (attribute instanceof DoubleRangeParameter) {
                         double current = ((DoubleToken) ((DoubleRangeParameter) attribute)
                                 .getToken()).doubleValue();
@@ -227,18 +229,21 @@ public class PtolemyQuery extends Query implements QueryListener,
 
                         // Get the quantized integer for the current value.
                         int quantized = ((int) Math
-                                .round(((current - min) * precision) / (max - min)));
+                                .round(((current - min) * precision)
+                                        / (max - min)));
                         component = addSlider(name, displayName, quantized, 0,
                                 precision);
                         attachParameter(attribute, name);
                         foundStyle = true;
-                        _addSubmitAction(component, attribute.getName(), attribute);
+                        _addSubmitAction(component, attribute.getName(),
+                                attribute);
                     } else if (attribute instanceof ColorAttribute) {
                         component = addColorChooser(name, displayName,
                                 attribute.getExpression());
                         attachParameter(attribute, name);
                         foundStyle = true;
-                        _addSubmitAction(component, attribute.getName(), attribute);
+                        _addSubmitAction(component, attribute.getName(),
+                                attribute);
                     } else if (attribute instanceof CustomQueryBoxParameter) {
                         JLabel label = new JLabel(displayName + ": ");
                         label.setBackground(_background);
@@ -247,7 +252,8 @@ public class PtolemyQuery extends Query implements QueryListener,
                         _addPair(name, label, component, component);
                         attachParameter(attribute, name);
                         foundStyle = true;
-                        _addSubmitAction(component, attribute.getName(), attribute);
+                        _addSubmitAction(component, attribute.getName(),
+                                attribute);
                     } else if (attribute instanceof FileParameter
                             || attribute instanceof FilePortParameter) {
                         // Specify the directory in which to start browsing
@@ -284,12 +290,14 @@ public class PtolemyQuery extends Query implements QueryListener,
                             Token value = marker.getToken();
 
                             if (value instanceof BooleanToken) {
-                                allowFiles = ((BooleanToken) value).booleanValue();
+                                allowFiles = ((BooleanToken) value)
+                                        .booleanValue();
                             }
                         }
 
-                        marker = (Parameter) ((NamedObj) attribute).getAttribute(
-                                "allowDirectories", Parameter.class);
+                        marker = (Parameter) ((NamedObj) attribute)
+                                .getAttribute("allowDirectories",
+                                        Parameter.class);
 
                         if (marker != null) {
                             Token value = marker.getToken();
@@ -321,12 +329,14 @@ public class PtolemyQuery extends Query implements QueryListener,
                                 preferredForegroundColor(attribute));
                         attachParameter(attribute, name);
                         foundStyle = true;
-                        _addSubmitAction(component, attribute.getName(), attribute);
+                        _addSubmitAction(component, attribute.getName(),
+                                attribute);
                     } else if (attribute instanceof PasswordAttribute) {
                         component = addPassword(name, displayName, "");
                         attachParameter(attribute, name);
                         foundStyle = true;
-                        _addSubmitAction(component, attribute.getName(), attribute);
+                        _addSubmitAction(component, attribute.getName(),
+                                attribute);
                     } else if (attribute instanceof Parameter
                             && (((Parameter) attribute).getChoices() != null)) {
                         Parameter castAttribute = (Parameter) attribute;
@@ -340,7 +350,8 @@ public class PtolemyQuery extends Query implements QueryListener,
                                 preferredForegroundColor(attribute));
                         attachParameter(attribute, name);
                         foundStyle = true;
-                        _addSubmitAction(component, attribute.getName(), attribute);
+                        _addSubmitAction(component, attribute.getName(),
+                                attribute);
                     } else if ((attribute instanceof NamedObj)
                             && ((((NamedObj) attribute)
                                     .getAttribute("_textWidthHint") != null) || ((NamedObj) attribute)
@@ -356,7 +367,8 @@ public class PtolemyQuery extends Query implements QueryListener,
                         Attribute widthAttribute = ((NamedObj) attribute)
                                 .getAttribute("_textWidthHint");
                         if (widthAttribute instanceof Variable) {
-                            Token token = ((Variable) widthAttribute).getToken();
+                            Token token = ((Variable) widthAttribute)
+                                    .getToken();
                             if (token instanceof IntToken) {
                                 widthValue = ((IntToken) token).intValue();
                             }
@@ -364,7 +376,8 @@ public class PtolemyQuery extends Query implements QueryListener,
                         Attribute heightAttribute = ((NamedObj) attribute)
                                 .getAttribute("_textHeightHint");
                         if (heightAttribute instanceof Variable) {
-                            Token token = ((Variable) heightAttribute).getToken();
+                            Token token = ((Variable) heightAttribute)
+                                    .getToken();
                             if (token instanceof IntToken) {
                                 heightValue = ((IntToken) token).intValue();
                             }
@@ -373,11 +386,12 @@ public class PtolemyQuery extends Query implements QueryListener,
                         component = addTextArea(name, displayName,
                                 attribute.getExpression(),
                                 preferredBackgroundColor(attribute),
-                                preferredForegroundColor(attribute), heightValue,
-                                widthValue);
+                                preferredForegroundColor(attribute),
+                                heightValue, widthValue);
                         attachParameter(attribute, name);
                         foundStyle = true;
-                        _addSubmitAction(component, attribute.getName(), attribute);
+                        _addSubmitAction(component, attribute.getName(),
+                                attribute);
                     } else if (attribute instanceof Variable) {
                         Type declaredType = ((Variable) attribute)
                                 .getDeclaredType();
@@ -389,12 +403,14 @@ public class PtolemyQuery extends Query implements QueryListener,
                             // to an expression that evaluates to to a boolean,
                             // and the default Line style should be used.
                             if (attribute.getExpression().equals("true")
-                                    || attribute.getExpression().equals("false")) {
+                                    || attribute.getExpression()
+                                            .equals("false")) {
                                 component = addCheckBox(name, displayName,
                                         ((BooleanToken) current).booleanValue());
                                 attachParameter(attribute, name);
                                 foundStyle = true;
-                                _addSubmitAction(component, attribute.getName(), attribute);
+                                _addSubmitAction(component,
+                                        attribute.getName(), attribute);
                             }
                         }
                     }
@@ -404,10 +420,12 @@ public class PtolemyQuery extends Query implements QueryListener,
                     if (attribute.getVisibility() == Settable.NOT_EDITABLE) {
                         if (component == null) {
                             String defaultValue = attribute.getExpression();
-                            component = addDisplay(name, displayName, defaultValue);
+                            component = addDisplay(name, displayName,
+                                    defaultValue);
                             attachParameter(attribute, name);
                             foundStyle = true;
-                            _addSubmitAction(component, attribute.getName(), attribute);
+                            _addSubmitAction(component, attribute.getName(),
+                                    attribute);
                         } else if (component instanceof JTextComponent) {
                             component.setBackground(_background);
                             ((JTextComponent) component).setEditable(false);
@@ -427,34 +445,41 @@ public class PtolemyQuery extends Query implements QueryListener,
             }
 
             if (!(foundStyle)) {
-                
+
                 // Make the text scrollable.
-                final JTextArea area = addTextArea(attribute.getName(), attribute.getDisplayName(),
-                defaultValue, preferredBackgroundColor(attribute),
-                preferredForegroundColor(attribute), 1, DEFAULT_ENTRY_WIDTH);
+                final JTextArea area = addTextArea(attribute.getName(),
+                        attribute.getDisplayName(), defaultValue,
+                        preferredBackgroundColor(attribute),
+                        preferredForegroundColor(attribute), 1,
+                        DEFAULT_ENTRY_WIDTH);
                 area.setRows(Math.min(5, area.getLineCount()));
-                area.setFocusTraversalKeys(KeyboardFocusManager.FORWARD_TRAVERSAL_KEYS, null);
-                area.setFocusTraversalKeys(KeyboardFocusManager.BACKWARD_TRAVERSAL_KEYS, null);
-                
-                area.getInputMap().put(KeyStroke.getKeyStroke("shift ENTER"), "TRANSFER_TEXT");
-                
-                area.getActionMap().put("TRANSFER_TEXT",new AbstractAction()
-                {
+                area.setFocusTraversalKeys(
+                        KeyboardFocusManager.FORWARD_TRAVERSAL_KEYS, null);
+                area.setFocusTraversalKeys(
+                        KeyboardFocusManager.BACKWARD_TRAVERSAL_KEYS, null);
+
+                area.getInputMap().put(KeyStroke.getKeyStroke("shift ENTER"),
+                        "TRANSFER_TEXT");
+
+                area.getActionMap().put("TRANSFER_TEXT", new AbstractAction() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
                         area.append("\n");
                         if (area.getRows() < 4) {
                             area.setRows(area.getRows() + 1);
                             area.revalidate();
-                            EditParametersDialog dialog = ((EditParametersDialog)area.getParent().getParent().getParent().getParent()
-                                    .getParent().getParent().getParent().getParent().getParent().getParent().getParent()
-                                    .getParent().getParent().getParent().getParent());
+                            EditParametersDialog dialog = ((EditParametersDialog) area
+                                    .getParent().getParent().getParent()
+                                    .getParent().getParent().getParent()
+                                    .getParent().getParent().getParent()
+                                    .getParent().getParent().getParent()
+                                    .getParent().getParent().getParent());
                             dialog.doLayout();
                             dialog.pack();
                         }
-                    } 
+                    }
                 });
-                 
+
                 _addSubmitAction(area, attribute.getName(), attribute);
 
                 // The style itself does this, so we don't need to do it again.
@@ -463,38 +488,6 @@ public class PtolemyQuery extends Query implements QueryListener,
         } finally {
             _addingStyledEntryFor = null;
         }
-    }
-    
-    private void _addSubmitAction(final JComponent component, final String attributeName, final Settable attribute) {
-        component.getInputMap().put(KeyStroke.getKeyStroke(KeyEvent.VK_ENTER,0),"submit");
-        final PtolemyQuery query = this; 
-        component.getActionMap().put("submit",new AbstractAction()
-        {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                revalidate(); 
-                try { 
-                    Container container = component.getParent().getParent().getParent().getParent()
-                        .getParent().getParent().getParent().getParent().getParent().getParent().getParent()
-                        .getParent().getParent();
-                    if (component instanceof JTextArea) {
-                        container = component.getParent().getParent().getParent().getParent()
-                            .getParent().getParent().getParent().getParent().getParent().getParent().getParent()
-                            .getParent().getParent().getParent().getParent();
-                    }
-                    if (container instanceof EditParametersDialog) {
-                        query.changed(attributeName); 
-                        attribute.validate();
-                        EditParametersDialog dialog = (EditParametersDialog) container;
-                        ((Configurer)dialog.contents)._originalValues.put(attribute, attribute.getValueAsString());
-                        dialog._handleClosing();
-                    }
-                } catch (IllegalActionException e1) { 
-                    // Do not display errors here, just show error dialogue if attribute cannot be validated, 
-                    // do not update originalValues and do not close.
-                } 
-            } 
-        });
     }
 
     /** Attach an attribute to an entry with name <i>entryName</i>,
@@ -993,7 +986,7 @@ public class PtolemyQuery extends Query implements QueryListener,
             attribute.removeValueListener(this);
         }
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
@@ -1008,7 +1001,8 @@ public class PtolemyQuery extends Query implements QueryListener,
     protected void _addPair(String name, JLabel label, Component widget,
             Object entry) {
         if (_addingStyledEntryFor != null) {
-            List<Settable> settables = ((NamedObj)_addingStyledEntryFor).attributeList(Settable.class);
+            List<Settable> settables = ((NamedObj) _addingStyledEntryFor)
+                    .attributeList(Settable.class);
             if (settables == null || settables.size() == 0) {
                 super._addPair(name, label, widget, entry);
             } else {
@@ -1016,14 +1010,16 @@ public class PtolemyQuery extends Query implements QueryListener,
                 // parameters is visible.
                 boolean foundOne = false;
                 for (Settable settable : settables) {
-                    if (Configurer.isVisible((NamedObj)_addingStyledEntryFor, settable)) {
+                    if (Configurer.isVisible((NamedObj) _addingStyledEntryFor,
+                            settable)) {
                         foundOne = true;
                         break;
                     }
                 }
                 if (foundOne) {
                     HierarchicalConfigurer configurer = new HierarchicalConfigurer(
-                            PtolemyQuery.this, name, _addingStyledEntryFor, widget);
+                            PtolemyQuery.this, name, _addingStyledEntryFor,
+                            widget);
                     super._addPair(name, label, configurer, entry);
                 } else {
                     super._addPair(name, label, widget, entry);
@@ -1042,6 +1038,50 @@ public class PtolemyQuery extends Query implements QueryListener,
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
+
+    /** Add submit action to component in dialogue. If parameter could be 
+     *  validated close the dialogue after.
+     *  @param component The component.
+     *  @param attributeName The name of the attribute edited by the component.
+     *  @param attribute The attribute edited by the component.
+     */
+    private void _addSubmitAction(final JComponent component,
+            final String attributeName, final Settable attribute) {
+        component.getInputMap().put(
+                KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0), "submit");
+        final PtolemyQuery query = this;
+        component.getActionMap().put("submit", new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                revalidate();
+                try {
+                    Container container = component.getParent().getParent()
+                            .getParent().getParent().getParent().getParent()
+                            .getParent().getParent().getParent().getParent()
+                            .getParent().getParent().getParent();
+                    if (component instanceof JTextArea) {
+                        container = component.getParent().getParent()
+                                .getParent().getParent().getParent()
+                                .getParent().getParent().getParent()
+                                .getParent().getParent().getParent()
+                                .getParent().getParent().getParent()
+                                .getParent();
+                    }
+                    if (container instanceof EditParametersDialog) {
+                        query.changed(attributeName);
+                        attribute.validate();
+                        EditParametersDialog dialog = (EditParametersDialog) container;
+                        ((Configurer) dialog.contents)._originalValues.put(
+                                attribute, attribute.getValueAsString());
+                        dialog._handleClosing();
+                    }
+                } catch (IllegalActionException e1) {
+                    // Do not display errors here, just show error dialogue if attribute cannot be validated, 
+                    // do not update originalValues and do not close.
+                }
+            }
+        });
+    }
 
     /** Return the expression for the specified Settable, unless it
      *  is an instance of DoubleRangeParameter, in which case, return
@@ -1082,7 +1122,7 @@ public class PtolemyQuery extends Query implements QueryListener,
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    
+
     // Settable for which we are adding a styled entry.
     private Settable _addingStyledEntryFor;
 
@@ -1119,7 +1159,7 @@ public class PtolemyQuery extends Query implements QueryListener,
     // Maps an attribute name to a list of entry names that the
     // attribute is attached to.
     private Map<Settable, List<String>> _varToListOfEntries;
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
 
@@ -1133,7 +1173,8 @@ public class PtolemyQuery extends Query implements QueryListener,
          *  @param parameter The parameter containing parameters.
          *  @param widget The widget to use to edit the parameter.
          */
-        public HierarchicalConfigurer(Query owner, String name, Settable parameter, Component widget) {
+        public HierarchicalConfigurer(Query owner, String name,
+                Settable parameter, Component widget) {
             super(BoxLayout.X_AXIS);
             _owner = owner;
             _parameter = parameter;
@@ -1145,7 +1186,8 @@ public class PtolemyQuery extends Query implements QueryListener,
             // Add the listener last so that there is no notification
             // of the first value.
             if (widget instanceof JTextField) {
-                ((JTextField)widget).addActionListener(new QueryActionListener(_owner, name));
+                ((JTextField) widget)
+                        .addActionListener(new QueryActionListener(_owner, name));
 
                 // Add a listener for loss of focus.  When the entry gains
                 // and then loses focus, listeners are notified of an update,
@@ -1158,7 +1200,8 @@ public class PtolemyQuery extends Query implements QueryListener,
                 // the value is restored to the original, and then sometime
                 // later, the focus is lost and the entered value becomes
                 // the value of the parameter.  I don't know of any workaround.
-                ((JTextField)widget).addFocusListener(new QueryFocusListener(_owner, name));
+                ((JTextField) widget).addFocusListener(new QueryFocusListener(
+                        _owner, name));
             }
         }
 
@@ -1166,7 +1209,7 @@ public class PtolemyQuery extends Query implements QueryListener,
             // Open a dialog to edit parameters contained by the parameter.
             new EditParametersDialog(
                     JOptionPane.getFrameForComponent(PtolemyQuery.this),
-                    (NamedObj)_parameter);
+                    (NamedObj) _parameter);
         }
 
         private Query _owner;
