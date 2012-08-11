@@ -58,7 +58,7 @@ ME =		ptolemy
 #
 DIRS = util math kernel plot graph moml data actor gui media	\
 	$(PTMATLAB_DIR)	domains	$(PTCOPERNICUS_DIR) verification \
-	vergil hsif $(PTCHIC_DIR) cg codegen component $(PTBACKTRACK_DIR) \
+	vergil hsif $(PTCHIC_DIR) cg component $(PTBACKTRACK_DIR) \
 	configs \
 	$(PTDISTRIBUTED_DIR) $(PTHOMER_DIR) ptp $(PTCALTROP_DIR) \
 	contrib demo
@@ -120,7 +120,7 @@ MISC_FILES = util kernel plot graph moml data actor gui math media	\
 	$(PTHOMER_DIR) \
 	$(PTMATLAB_DIR)	domains vergil configs
 
-OPTIONAL_FILES = apps cal chic cg codegen component demo hsif matlab
+OPTIONAL_FILES = apps cal chic cg component demo hsif matlab
 
 
 all: suball $(EXTRA_SRCS)

@@ -413,12 +413,6 @@ $(PTII_SRC): $(PTII_FULL)
 		> src/ptII$(VERSION)/doc/img/makefile.tmp
 	mv src/ptII$(VERSION)/doc/img/makefile.tmp \
 		src/ptII$(VERSION)/doc/img/makefile
-	# Fix up ct/demo/makefile
-	egrep -v Corba \
-		src/ptII$(VERSION)/ptolemy/domains/ct/demo/makefile \
-		> src/ptII$(VERSION)/ptolemy/domains/ct/demo/makefile.tmp
-	mv src/ptII$(VERSION)/ptolemy/domains/ct/demo/makefile.tmp \
-		src/ptII$(VERSION)/ptolemy/domains/ct/demo/makefile
 	# Fix up dde/kernel/test/makefile
 	egrep -v DDEDirector.tcl \
 		src/ptII$(VERSION)/ptolemy/domains/dde/kernel/test/makefile \
@@ -440,7 +434,7 @@ $(PTII_SRC): $(PTII_FULL)
 	# Copy libjvm.dll.a because it was removed by src.ex
 	#cp $(PTIIHOME)/ptolemy/codegen/c/lib/win/libjvm.dll.a \
 	#       src/ptII$(VERSION)/ptolemy/codegen/c/lib/win/
-	ls -l  		src/ptII$(VERSION)/ptolemy/codegen/c/lib/win/
+	#ls -l  		src/ptII$(VERSION)/ptolemy/codegen/c/lib/win/
 	# Update the versions
 	./updateversions $(VERSION) $(VERSION)_`date +"%Y%m%d"` $(VERSION_FILES) 
 	(cd src; \
@@ -567,17 +561,11 @@ BASE_SRC_TO_BE_REMOVED = \
 		ptolemy/configs/copernicus \
 		ptolemy/copernicus \
 		ptolemy/domains/ci \
-		ptolemy/domains/ct/lib/IPCInterface.java \
-		ptolemy/domains/ct/lib/IPCInterface.class \
 		ptolemy/domains/dde \
 		ptolemy/domains/ddf \
 		ptolemy/domains/domains.xml \
 		ptolemy/domains/dt \
 		ptolemy/domains/ddf/test/auto/controlled_kahnnet.xml \
-		ptolemy/domains/fsm/kernel/test/auto/booleanSelect.xml \
-		ptolemy/domains/fsm/kernel/test/auto/feedBackLoop.xml \
-		ptolemy/domains/fsm/test/auto/booleanSelect.xml \
-		ptolemy/domains/fsm/test/auto/feedBackLoop.xml \
 		ptolemy/domains/giotto \
 		ptolemy/domains/gr \
 		ptolemy/domains/hde \
@@ -606,7 +594,6 @@ HYVISUAL_SRC_TO_BE_REMOVED = \
 		ptolemy/actor/lib/security \
 		ptolemy/actor/lib/xslt \
 		ptolemy/actor/ptalon \
-		ptolemy/codegen \
 		ptolemy/configs/ptiny \
 		ptolemy/domains/csp \
 		ptolemy/domains/pn \
@@ -626,7 +613,6 @@ VIPTOS_SRC_TO_BE_REMOVED = \
 		ptolemy/actor/TypedCompositeActorWithCoSimulation.java \
 		ptolemy/actor/ptalon \
 		ptolemy/configs/hyvisual \
-		ptolemy/codegen \
 		ptolemy/domains/ptinyDomains.xml \
 		ptolemy/hsif
 
@@ -1124,7 +1110,8 @@ remote1local: $(PTII_FULL) $(GENLOGDIR)
 		remote1done >& $(REMOTE1LOG)" &
 
 # Commands run by hudson
-hudson: 
+hudson:
+ 
 	$(MAKE) -k USER=hudson \
 	PTIIHOME=/var/lib/hudson/jobs/ptII/workspace \
 	PTIIADM=/var/lib/hudson/jobs/ptII/workspace/adm \
@@ -1219,7 +1206,6 @@ remote1distclean:
 	@echo "#"
 	@echo "#ptIInightly-mail#: Starting make clean at `date`"
 	@echo "`uptime`"
-	-rm -rf $(HOME)/codegen
 	(cd $(REMOTE1PTIIDIST); \
 		$(MAKE) clean)
 	-(cd $(REMOTE1PTIIDIST); \
@@ -1280,14 +1266,10 @@ JSALLDIRS = \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/continuous/lib \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/csp/kernel \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/csp/lib \
-	$(REMOTE1PTIIDIST)/ptolemy/domains/ct/kernel \
-	$(REMOTE1PTIIDIST)/ptolemy/domains/ct/kernel/solver \
-	$(REMOTE1PTIIDIST)/ptolemy/domains/ct/lib \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/dde/kernel \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/dde/lib \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/de/kernel \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/de/lib \
-	$(REMOTE1PTIIDIST)/ptolemy/domains/fsm/kernel/fmv \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/gr/kernel \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/gr/lib \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/jogl/kernel \
@@ -1334,9 +1316,6 @@ JSALLDIRS = \
 	$(REMOTE1PTIIDIST)/ptolemy/media \
 	$(REMOTE1PTIIDIST)/ptolemy/media/javasound \
 	$(REMOTE1PTIIDIST)/ptolemy/moml \
-	$(REMOTE1PTIIDIST)/ptolemy/domains/fsm/modal \
-	$(REMOTE1PTIIDIST)/ptolemy/domains/fsm/kernel \
-	$(REMOTE1PTIIDIST)/ptolemy/domains/fsm/kernel/ia \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/giotto/kernel \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/modal/modal \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/modal/kernel \
@@ -1352,8 +1331,6 @@ JSALLDIRS = \
 	$(REMOTE1PTIIDIST)/ptolemy/vergil/toolbox \
 	$(REMOTE1PTIIDIST)/ptolemy/vergil/icon \
 	$(REMOTE1PTIIDIST)/ptolemy/vergil/tree \
-	$(REMOTE1PTIIDIST)/ptolemy/vergil/fsm \
-	$(REMOTE1PTIIDIST)/ptolemy/vergil/fsm/modal \
 	$(REMOTE1PTIIDIST)/ptolemy/vergil/modal/fmv \
 	$(REMOTE1PTIIDIST)/ptolemy/vergil/modal/ia \
 	$(REMOTE1PTIIDIST)/ptolemy/vergil/modal/modal \
@@ -1447,10 +1424,8 @@ JSALLDIRS = \
 	$(REMOTE1PTIIDIST)/doc/tutorial/graph \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/ci/demo \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/csp/demo \
-	$(REMOTE1PTIIDIST)/ptolemy/domains/ct/demo \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/dde/demo \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/de/demo \
-	$(REMOTE1PTIIDIST)/ptolemy/domains/fsm/demo \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/pn/demo \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/sdf/demo \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/wireless/demo \
@@ -1478,55 +1453,6 @@ NONJSALLCOREDIRS = \
 
 # Directories to run tests in outside of JavaScope
 NONJSALLDIRS = \
-	ptolemy/codegen/kernel \
-	ptolemy/codegen/actor \
-	ptolemy/codegen/c \
-	ptolemy/codegen/c/kernel \
-	ptolemy/codegen/c/actor \
-	ptolemy/codegen/c/actor/parameters \
-	ptolemy/codegen/c/domains/fsm/kernel \
-	ptolemy/codegen/c/domains/fsm/modal \
-	ptolemy/codegen/c/domains/hdf/kernel \
-	ptolemy/codegen/c/domains/modal/kernel \
-	ptolemy/codegen/c/domains/modal/modal \
-	ptolemy/codegen/c/domains/sdf/kernel \
-	ptolemy/codegen/c/domains/sdf/lib \
-	ptolemy/codegen/c/domains/sr/lib \
-	ptolemy/codegen/c/domains/pn/kernel \
-	ptolemy/codegen/c/actor/lib/colt \
-	ptolemy/codegen/c/actor/lib/comm \
-	ptolemy/codegen/c/actor/lib/conversions \
-	ptolemy/codegen/c/actor/lib/hoc \
-	ptolemy/codegen/c/actor/lib/io \
-	ptolemy/codegen/c/actor/lib/javasound \
-	ptolemy/codegen/c/actor/lib/jni \
-	ptolemy/codegen/c/actor/lib/logic \
-	ptolemy/codegen/c/actor/lib/string \
-	ptolemy/codegen/c/actor/lib/tutorial \
-	ptolemy/codegen/c/actor/lib \
-	ptolemy/codegen/c/domains/fsm \
-	ptolemy/codegen/c/domains/giotto \
-	ptolemy/codegen/c/domains/hdf \
-	ptolemy/codegen/c/domains/modal \
-	ptolemy/codegen/c/domains/pn \
-	ptolemy/codegen/c/domains/sdf \
-	ptolemy/codegen/c/targets/mpi \
-	ptolemy/codegen/java/kernel \
-	ptolemy/codegen/java/actor \
-	ptolemy/codegen/java/actor/parameters \
-	ptolemy/codegen/java/domains/sdf/kernel \
-	ptolemy/codegen/java/domains/sdf/lib \
-	ptolemy/codegen/java/actor/lib/colt \
-	ptolemy/codegen/java/actor/lib/conversions \
-	ptolemy/codegen/java/actor/lib/embeddedJava \
-	ptolemy/codegen/java/actor/lib/hoc \
-	ptolemy/codegen/java/actor/lib/logic \
-	ptolemy/codegen/java/actor/lib/string \
-	ptolemy/codegen/java/actor/lib \
-	ptolemy/codegen/java/actor/lib/gui \
-	ptolemy/codegen/java/domains/modal \
-	ptolemy/codegen/java/domains/sdf \
-	ptolemy/codegen/ \
 	ptolemy/cg/kernel/generic/program/procedural/java \
 	ptolemy/cg/kernel/generic \
 	ptolemy/cg/kernel/generic/html \

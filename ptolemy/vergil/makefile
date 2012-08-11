@@ -55,7 +55,6 @@ PTAUXALLJARS = \
 		actor/actor.jar \
 		basic/basic.jar \
 		basic/export/export.jar \
-		fsm/fsm.jar \
 		icon/icon.jar \
 		kernel/kernel.jar \
 		debugger/debugger.jar \

@@ -132,7 +132,6 @@ PTCLASSALLJARS = \
 		fullViewer/fullViewer.jar \
 		hyvisual/hyvisual.jar \
 		jxta/jxta.jar \
-		luminary/luminary.jar \
 		pn/pn.jar \
 		ptiny/ptiny.jar \
 		ptinyKepler/ptinyKepler.jar \

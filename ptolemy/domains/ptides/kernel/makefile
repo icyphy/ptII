@@ -65,7 +65,7 @@ JSRCS = \
 	Tag.java
 
 OTHER_FILES_TO_BE_JARED = \
-	PtidesPlatform.xml
+	PtidesPlatformIcon.xml
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
