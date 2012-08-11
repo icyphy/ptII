@@ -425,9 +425,12 @@ public class SDFDirector extends StaticSchedulingDirector implements
         if (iterationsValue > 0) {
             return iterationsValue;
         }
-        NamedObj container = getContainer();
-        if (container != null
-                && container.getContainer() == null) {
+	// The director should call isEmbedded()
+	// instead of seeing whether the container's container is null.
+	// The reason for this is RunCompositeActor, where the container's
+	// container is not null, but you still want the model to behave
+	// as if it were at the top level... 
+        if (!isEmbedded()) {
             // The container of this director is at the toplevel
             if (iterations.equals(_auto)) {
                 return 1;
@@ -916,10 +919,12 @@ public class SDFDirector extends StaticSchedulingDirector implements
         Parameter AUTO = new Parameter(this, "AUTO");
         AUTO.setToken(_auto);
         AUTO.setVisibility(Settable.EXPERT);
+	AUTO.setPersistent(false);
 
         Parameter UNBOUNDED = new Parameter(this, "UNBOUNDED");
         UNBOUNDED.setToken(IntToken.ZERO);
         UNBOUNDED.setVisibility(Settable.EXPERT);
+	UNBOUNDED.setPersistent(false);
 
         iterations = new Parameter(this, "iterations");
         iterations.setTypeEquals(BaseType.INT);
