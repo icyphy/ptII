@@ -795,7 +795,7 @@ test BackwardCompatibility-13.3 {The input directive also calls setContext() whi
 }}
 
 set testMoML "$header
-    <entity name=\"ModalModel\" class=\"ptolemy.domains.fsm.modal.ModalModel\">
+    <entity name=\"ModalModel\" class=\"ptolemy.domains.modal.modal.ModalModel\">
         <property name=\"_tableauFactory\" class=\"ptolemy.kernel.util.Attribute\">
         </property>
     </entity>
@@ -824,7 +824,7 @@ test BackwardCompatibility-14.1 {ModalModel _tableauFactory changed} {
 } {0 1 {<?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="ModalModel" class="ptolemy.domains.fsm.modal.ModalModel">
+<entity name="ModalModel" class="ptolemy.domains.modal.modal.ModalModel">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.0.devel">
     </property>
     <property name="_tableauFactory" class="ptolemy.kernel.util.Attribute">

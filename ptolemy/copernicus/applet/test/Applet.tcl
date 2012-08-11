@@ -70,7 +70,7 @@ test Applet-1.2 {Create an applet for a graphical demo that uses diva.jar in a d
 	
     set args [java::new {String[]} 11 \
 	[list \
-	    [file join $relativePathToPTII ptolemy domains fsm demo \
+	    [file join $relativePathToPTII ptolemy domains modal demo \
 		MultipleRuns MultipleRuns.xml] \
 	    "-ptIIUserDirectory" "$ptapplet" \
 	    "-targetPath" "\$modelName" \

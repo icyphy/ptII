@@ -169,7 +169,7 @@ test PropertyClassChanges-1.2 {Remove _Director from a modal model, based on dom
 <entity name="PropertClassChangesTest" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.0.devel">
     </property>
-    <entity name="modeCtrl" class="ptolemy.domains.fsm.modal.ModalModel">
+    <entity name="modeCtrl" class="ptolemy.domains.modal.modal.ModalModel">
         <property name="directorClass" class="ptolemy.data.expr.StringParameter" value="ptolemy.domains.hdf.kernel.HDFFSMDirector">
         </property>
         <property name="_tableauFactory" class="ptolemy.kernel.util.Attribute">
