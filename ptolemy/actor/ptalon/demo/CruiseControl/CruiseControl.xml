@@ -39,7 +39,7 @@
         <property name="_hide" class="ptolemy.data.expr.Parameter" value="">
         </property>
     </property>
-    <property name="CT Director" class="ptolemy.domains.ct.kernel.CTMixedSignalDirector">
+    <property name="Continuous Director" class="ptolemy.domains.continuous.kernel.ContinuousDirector">
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="5.0">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[95.0, 50.0]">
@@ -118,7 +118,7 @@
         </property>
         <configure>
             <ptalon file="ptolemy.actor.ptalon.demo.CruiseControl.LinearStateSpace">
-                <ptalonParameter name="integrator" value="ptolemy.domains.ct.lib.Integrator"/>
+                <ptalonParameter name="integrator" value="ptolemy.domains.continuous.lib.Integrator"/>
                 <ptalonParameter name="adder" value="ptolemy.actor.lib.AddSubtract"/>
                 <ptalonParameter name="scale" value="ptolemy.actor.lib.Scale"/>
                 <ptalonExpressionParameter name="A" value="[0.0, 1.0; 0.0, -1.0]"/>

@@ -1,17 +1,17 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="ParameterSweepSmallWorldFSM" class="ptolemy.domains.fsm.modal.ModalModel">
+<entity name="ParameterSweepSmallWorldFSM" class="ptolemy.domains.modal.modal.ModalModel">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="6.1.devel">
     </property>
-    <property name="_tableauFactory" class="ptolemy.vergil.fsm.modal.ModalTableauFactory">
+    <property name="_tableauFactory" class="ptolemy.vergil.modal.modal.ModalTableauFactory">
     </property>
-    <entity name="_Controller" class="ptolemy.domains.fsm.modal.ModalController">
+    <entity name="_Controller" class="ptolemy.domains.modal.modal.ModalController">
         <property name="finalStateNames" class="ptolemy.kernel.util.StringAttribute" value="stop">
         </property>
         <property name="_library" class="ptolemy.moml.LibraryAttribute">
             <configure>
-        <entity name="state library" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/configs/basicUtilities.xml"></input><entity name="state" class="ptolemy.domains.fsm.kernel.State"><property name="_centerName" class="ptolemy.kernel.util.Attribute"></property><property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory"></property></entity></entity>
+        <entity name="state library" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/configs/basicUtilities.xml"></input><entity name="state" class="ptolemy.domains.modal.kernel.State"><property name="_centerName" class="ptolemy.kernel.util.Attribute"></property><property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory"></property></entity></entity>
       </configure>
         </property>
         <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 25, 1024, 612}, maximized=false}">
@@ -152,54 +152,54 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="[200.0, 500.0]">
             </property>
         </property>
-        <entity name="state" class="ptolemy.domains.fsm.kernel.State">
+        <entity name="state" class="ptolemy.domains.modal.kernel.State">
             <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="state">
             </property>
             <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
-            <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
+            <property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 210.0]">
             </property>
         </entity>
-        <entity name="stop" class="ptolemy.domains.fsm.kernel.State">
+        <entity name="stop" class="ptolemy.domains.modal.kernel.State">
             <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
-            <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
+            <property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[-80.0, 65.0]">
             </property>
         </entity>
-        <entity name="state2" class="ptolemy.domains.fsm.kernel.State">
+        <entity name="state2" class="ptolemy.domains.modal.kernel.State">
             <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
-            <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
+            <property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[50.0, 515.0]">
             </property>
         </entity>
-        <entity name="start" class="ptolemy.domains.fsm.kernel.State">
+        <entity name="start" class="ptolemy.domains.modal.kernel.State">
             <property name="isInitialState" class="ptolemy.data.expr.Parameter" value="true">
             </property>
             <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
-            <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
+            <property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[160.0, 230.0]">
             </property>
         </entity>
-        <entity name="state3" class="ptolemy.domains.fsm.kernel.State">
+        <entity name="state3" class="ptolemy.domains.modal.kernel.State">
             <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
-            <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
+            <property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, -30.0]">
             </property>
         </entity>
-        <relation name="relation" class="ptolemy.domains.fsm.kernel.Transition">
+        <relation name="relation" class="ptolemy.domains.modal.kernel.Transition">
             <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="i &lt; runs_i">
             </property>
-            <property name="setActions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute" value="i = i + 1; state.fileName.value = filePrefix + i + &quot;_&quot; + j + &quot;.txt&quot;; state.resetOnEachRun.value = false">
+            <property name="setActions" class="ptolemy.domains.modal.kernel.CommitActionsAttribute" value="i = i + 1; state.fileName.value = filePrefix + i + &quot;_&quot; + j + &quot;.txt&quot;; state.resetOnEachRun.value = false">
             </property>
             <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="-0.5654915362398992">
             </property>
@@ -214,10 +214,10 @@
             <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
             </property>
         </relation>
-        <relation name="relation2" class="ptolemy.domains.fsm.kernel.Transition">
+        <relation name="relation2" class="ptolemy.domains.modal.kernel.Transition">
             <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="j &gt;= runs_j">
             </property>
-            <property name="setActions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute" value="i = 0; j =0">
+            <property name="setActions" class="ptolemy.domains.modal.kernel.CommitActionsAttribute" value="i = 0; j =0">
             </property>
             <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="-0.99543187410999">
             </property>
@@ -232,10 +232,10 @@
             <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
             </property>
         </relation>
-        <relation name="relation3" class="ptolemy.domains.fsm.kernel.Transition">
+        <relation name="relation3" class="ptolemy.domains.modal.kernel.Transition">
             <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="i &gt;= runs_i">
             </property>
-            <property name="setActions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute" value="i = 0; j = j + 1; state.fileName.value = filePrefix + i + &quot;_&quot; + j + &quot;.txt&quot;; state.resetOnEachRun.value = true">
+            <property name="setActions" class="ptolemy.domains.modal.kernel.CommitActionsAttribute" value="i = 0; j = j + 1; state.fileName.value = filePrefix + i + &quot;_&quot; + j + &quot;.txt&quot;; state.resetOnEachRun.value = true">
             </property>
             <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.2759834358837985">
             </property>
@@ -250,7 +250,7 @@
             <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
             </property>
         </relation>
-        <relation name="relation4" class="ptolemy.domains.fsm.kernel.Transition">
+        <relation name="relation4" class="ptolemy.domains.modal.kernel.Transition">
             <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="i &lt; runs_i">
             </property>
             <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="-0.6596494599802332">
@@ -266,10 +266,10 @@
             <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
             </property>
         </relation>
-        <relation name="relation5" class="ptolemy.domains.fsm.kernel.Transition">
+        <relation name="relation5" class="ptolemy.domains.modal.kernel.Transition">
             <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="true">
             </property>
-            <property name="setActions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute" value="state.fileName.value = filePrefix + i + &quot;_&quot; + j + &quot;.txt&quot;; state.resetOnEachRun.value = true; state.range.value = startRange">
+            <property name="setActions" class="ptolemy.domains.modal.kernel.CommitActionsAttribute" value="state.fileName.value = filePrefix + i + &quot;_&quot; + j + &quot;.txt&quot;; state.resetOnEachRun.value = true; state.range.value = startRange">
             </property>
             <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.6283185307179586">
             </property>
@@ -284,10 +284,10 @@
             <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
             </property>
         </relation>
-        <relation name="relation6" class="ptolemy.domains.fsm.kernel.Transition">
+        <relation name="relation6" class="ptolemy.domains.modal.kernel.Transition">
             <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="j &gt;= runs_j">
             </property>
-            <property name="setActions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute" value="i = 0; j = 0">
+            <property name="setActions" class="ptolemy.domains.modal.kernel.CommitActionsAttribute" value="i = 0; j = 0">
             </property>
             <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.6283185307179586">
             </property>
@@ -302,7 +302,7 @@
             <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
             </property>
         </relation>
-        <relation name="relation7" class="ptolemy.domains.fsm.kernel.Transition">
+        <relation name="relation7" class="ptolemy.domains.modal.kernel.Transition">
             <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="j &lt; runs_j">
             </property>
             <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.6283185307179586">
@@ -318,10 +318,10 @@
             <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
             </property>
         </relation>
-        <relation name="relation8" class="ptolemy.domains.fsm.kernel.Transition">
+        <relation name="relation8" class="ptolemy.domains.modal.kernel.Transition">
             <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="i &gt;= runs_i">
             </property>
-            <property name="setActions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute" value="i = 0; j = j + 1; state.fileName.value = filePrefix + i + &quot;_&quot; + j + &quot;.txt&quot;; state.resetOnEachRun.value = true; state.range.value = startRange + j * 10">
+            <property name="setActions" class="ptolemy.domains.modal.kernel.CommitActionsAttribute" value="i = 0; j = j + 1; state.fileName.value = filePrefix + i + &quot;_&quot; + j + &quot;.txt&quot;; state.resetOnEachRun.value = true; state.range.value = startRange + j * 10">
             </property>
             <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.8982493102662625">
             </property>
@@ -353,7 +353,7 @@
         <link port="state3.outgoingPort" relation="relation6"/>
         <link port="state3.outgoingPort" relation="relation7"/>
     </entity>
-    <entity name="state" class="ptolemy.domains.fsm.modal.Refinement">
+    <entity name="state" class="ptolemy.domains.modal.modal.Refinement">
         <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
             <property name="iterations" class="ptolemy.data.expr.Parameter" value="1">
             </property>
