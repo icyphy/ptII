@@ -48,8 +48,6 @@ PTPACKAGE = 	kernel
 PTCLASSJAR =	$(PTPACKAGE).jar
 
 JSRCS = \
-	FCFSScheduler.java \
-	FPScheduler.java \
 	PtidesActorProperties.java \
 	PtidesBasicDirector.java \
 	PtidesBasicPreemptiveDirector.java \
@@ -64,13 +62,9 @@ JSRCS = \
 	PtidesPreemptiveUserEDFDirector.java \
 	PtidesReceiver.java \
 	PtidesTopLevelDirector.java \
-	ResourceScheduler.java \
-	SchedulePlotterEditorFactory.java \ 
 	Tag.java
 
 OTHER_FILES_TO_BE_JARED = \
-	FCFSSchedulerIcon.xml \
-	FPSchedulerIcon.xml \
 	PtidesPlatform.xml
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
