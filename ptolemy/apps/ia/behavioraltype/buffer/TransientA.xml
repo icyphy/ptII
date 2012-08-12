@@ -1,7 +1,7 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="TransientA" class="ptolemy.domains.fsm.kernel.InterfaceAutomaton">
+<entity name="TransientA" class="ptolemy.domains.modal.kernel.InterfaceAutomaton">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="3.1-devel">
     </property>
     <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={48, -15, 815, 466}, maximized=false}">
@@ -22,22 +22,22 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="505.0, 120.0">
         </property>
     </port>
-    <entity name="0t" class="ptolemy.domains.fsm.kernel.State">
+    <entity name="0t" class="ptolemy.domains.modal.kernel.State">
         <property name="_location" class="ptolemy.kernel.util.Location" value="325.0, 140.0">
         </property>
         <property name="_centerName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
     </entity>
-    <entity name="1" class="ptolemy.domains.fsm.kernel.State">
+    <entity name="1" class="ptolemy.domains.modal.kernel.State">
         <property name="_location" class="ptolemy.kernel.util.Location" value="425.0, 140.0">
         </property>
         <property name="_centerName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
     </entity>
-    <relation name="relation" class="ptolemy.domains.fsm.kernel.InterfaceAutomatonTransition">
+    <relation name="relation" class="ptolemy.domains.modal.kernel.InterfaceAutomatonTransition">
         <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="true">
         </property>
-        <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute" value="a=true">
+        <property name="outputActions" class="ptolemy.domains.modal.kernel.OutputActionsAttribute" value="a=true">
         </property>
         <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.004334564778666394">
         </property>

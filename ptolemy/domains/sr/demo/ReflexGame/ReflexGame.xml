@@ -146,32 +146,32 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="360.0, 235.0">
             </property>
         </port>
-        <entity name="modal model" class="ptolemy.domains.fsm.modal.ModalModel">
-            <property name="directorClass" class="ptolemy.data.expr.StringParameter" value="ptolemy.domains.fsm.kernel.FSMDirector">
+        <entity name="modal model" class="ptolemy.domains.modal.modal.ModalModel">
+            <property name="directorClass" class="ptolemy.data.expr.StringParameter" value="ptolemy.domains.modal.kernel.FSMDirector">
             </property>
             <property name="_tableauFactory" class="ptolemy.vergil.fsm.modal.ModalTableauFactory">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="210.0, 185.0">
             </property>
-            <port name="startTime" class="ptolemy.domains.fsm.modal.ModalPort">
+            <port name="startTime" class="ptolemy.domains.modal.modal.ModalPort">
                 <property name="input"/>
             </port>
-            <port name="stopTime" class="ptolemy.domains.fsm.modal.ModalPort">
+            <port name="stopTime" class="ptolemy.domains.modal.modal.ModalPort">
                 <property name="input"/>
             </port>
-            <port name="startOut" class="ptolemy.domains.fsm.modal.ModalPort">
+            <port name="startOut" class="ptolemy.domains.modal.modal.ModalPort">
                 <property name="output"/>
             </port>
-            <port name="stopOut" class="ptolemy.domains.fsm.modal.ModalPort">
+            <port name="stopOut" class="ptolemy.domains.modal.modal.ModalPort">
                 <property name="output"/>
             </port>
-            <port name="responseTime" class="ptolemy.domains.fsm.modal.ModalPort">
+            <port name="responseTime" class="ptolemy.domains.modal.modal.ModalPort">
                 <property name="output"/>
             </port>
-            <entity name="_Controller" class="ptolemy.domains.fsm.modal.ModalController">
+            <entity name="_Controller" class="ptolemy.domains.modal.modal.ModalController">
                 <property name="_library" class="ptolemy.moml.LibraryAttribute">
                     <configure>
-        <entity name="state library" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/configs/basicUtilities.xml"></input><entity name="state" class="ptolemy.domains.fsm.kernel.State"><property name="_centerName" class="ptolemy.kernel.util.Attribute"></property><property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory"></property></entity></entity>
+        <entity name="state library" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/configs/basicUtilities.xml"></input><entity name="state" class="ptolemy.domains.modal.kernel.State"><property name="_centerName" class="ptolemy.kernel.util.Attribute"></property><property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory"></property></entity></entity>
       </configure>
                 </property>
                 <property name="savedStartTime" class="ptolemy.data.expr.Parameter" value="4.166">
@@ -193,21 +193,21 @@
                     <property name="_location" class="ptolemy.kernel.util.Location" value="300.0, 90.0">
                     </property>
                 </property>
-                <port name="startTime" class="ptolemy.domains.fsm.modal.RefinementPort">
+                <port name="startTime" class="ptolemy.domains.modal.modal.RefinementPort">
                     <property name="input"/>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="60.0, 125.0">
                     </property>
                     <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="WEST">
                     </property>
                 </port>
-                <port name="stopTime" class="ptolemy.domains.fsm.modal.RefinementPort">
+                <port name="stopTime" class="ptolemy.domains.modal.modal.RefinementPort">
                     <property name="input"/>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="60.0, 210.0">
                     </property>
                     <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="WEST">
                     </property>
                 </port>
-                <port name="startOut" class="ptolemy.domains.fsm.modal.RefinementPort">
+                <port name="startOut" class="ptolemy.domains.modal.modal.RefinementPort">
                     <property name="input"/>
                     <property name="output"/>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="530.0, 95.0">
@@ -215,7 +215,7 @@
                     <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="WEST">
                     </property>
                 </port>
-                <port name="stopOut" class="ptolemy.domains.fsm.modal.RefinementPort">
+                <port name="stopOut" class="ptolemy.domains.modal.modal.RefinementPort">
                     <property name="input"/>
                     <property name="output"/>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="535.0, 155.0">
@@ -223,7 +223,7 @@
                     <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="WEST">
                     </property>
                 </port>
-                <port name="responseTime" class="ptolemy.domains.fsm.modal.RefinementPort">
+                <port name="responseTime" class="ptolemy.domains.modal.modal.RefinementPort">
                     <property name="input"/>
                     <property name="output"/>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="545.0, 225.0">
@@ -231,7 +231,7 @@
                     <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="WEST">
                     </property>
                 </port>
-                <entity name="stopReceived" class="ptolemy.domains.fsm.kernel.State">
+                <entity name="stopReceived" class="ptolemy.domains.modal.kernel.State">
                     <property name="isInitialState" class="ptolemy.data.expr.Parameter" value="true">
                     </property>
                     <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
@@ -239,32 +239,32 @@
                     <property name="_location" class="ptolemy.kernel.util.Location" value="391.0, 296.0">
                     </property>
                 </entity>
-                <entity name="startReceived" class="ptolemy.domains.fsm.kernel.State">
+                <entity name="startReceived" class="ptolemy.domains.modal.kernel.State">
                     <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                     </property>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="278.0, 265.0">
                     </property>
                 </entity>
-                <entity name="ready" class="ptolemy.domains.fsm.kernel.State">
+                <entity name="ready" class="ptolemy.domains.modal.kernel.State">
                     <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                     </property>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="181.0, 191.0">
                     </property>
                 </entity>
-                <relation name="relation" class="ptolemy.domains.fsm.kernel.Transition">
+                <relation name="relation" class="ptolemy.domains.modal.kernel.Transition">
                     <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="stopTime_isPresent">
                     </property>
-                    <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute" value="startOut = savedStartTime; stopOut = stopTime; responseTime = stopTime - savedStartTime">
+                    <property name="outputActions" class="ptolemy.domains.modal.kernel.OutputActionsAttribute" value="startOut = savedStartTime; stopOut = stopTime; responseTime = stopTime - savedStartTime">
                     </property>
                     <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
                     </property>
                     <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
                     </property>
                 </relation>
-                <relation name="relation2" class="ptolemy.domains.fsm.kernel.Transition">
+                <relation name="relation2" class="ptolemy.domains.modal.kernel.Transition">
                     <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="startTime_isPresent">
                     </property>
-                    <property name="setActions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute" value="savedStartTime = startTime">
+                    <property name="setActions" class="ptolemy.domains.modal.kernel.CommitActionsAttribute" value="savedStartTime = startTime">
                     </property>
                     <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
                     </property>

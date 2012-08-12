@@ -14,7 +14,7 @@
     <!-- File->New menu. -->
     <entity name="Modal Model"
             class="ptolemy.actor.gui.PtolemyEffigy$FactoryWithoutNew">
-      <entity name="blank" class="ptolemy.domains.fsm.modal.ModalModel">
+      <entity name="blank" class="ptolemy.domains.modal.modal.ModalModel">
 	<input source="ptolemy/configs/modalController.xml"/>
       </entity>
     </entity>

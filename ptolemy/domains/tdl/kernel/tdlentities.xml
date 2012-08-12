@@ -5,7 +5,7 @@
   <doc>
 	TDL entities
   </doc>
-  <entity name="Mode" class="ptolemy.domains.fsm.kernel.State">
+  <entity name="Mode" class="ptolemy.domains.modal.kernel.State">
   </entity>
 
 </class>

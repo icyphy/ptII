@@ -1,7 +1,7 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="SDFDirector_SDFReceiver_Producer_SDFConsumer" class="ptolemy.domains.fsm.kernel.InterfaceAutomaton">
+<entity name="SDFDirector_SDFReceiver_Producer_SDFConsumer" class="ptolemy.domains.modal.kernel.InterfaceAutomaton">
     <property name="initialStateName" class="ptolemy.kernel.util.StringAttribute" value="0_0_0_0">
     </property>
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="3.1-devel">
@@ -38,54 +38,54 @@
     </property>
     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 209.5}">
     </property>
-    <entity name="0_0_0_0" class="ptolemy.domains.fsm.kernel.State">
+    <entity name="0_0_0_0" class="ptolemy.domains.modal.kernel.State">
         <property name="_location" class="ptolemy.kernel.util.Location" value="90.0, 335.0">
         </property>
     </entity>
-    <entity name="1_0_1_0" class="ptolemy.domains.fsm.kernel.State">
+    <entity name="1_0_1_0" class="ptolemy.domains.modal.kernel.State">
         <property name="_location" class="ptolemy.kernel.util.Location" value="165.0, 335.0">
         </property>
     </entity>
-    <entity name="1_1t_2_0" class="ptolemy.domains.fsm.kernel.State">
+    <entity name="1_1t_2_0" class="ptolemy.domains.modal.kernel.State">
         <property name="_location" class="ptolemy.kernel.util.Location" value="245.0, 335.0">
         </property>
     </entity>
-    <entity name="1_2_3_0" class="ptolemy.domains.fsm.kernel.State">
+    <entity name="1_2_3_0" class="ptolemy.domains.modal.kernel.State">
         <property name="_location" class="ptolemy.kernel.util.Location" value="325.0, 335.0">
         </property>
     </entity>
-    <entity name="2_2_0_0" class="ptolemy.domains.fsm.kernel.State">
+    <entity name="2_2_0_0" class="ptolemy.domains.modal.kernel.State">
         <property name="_location" class="ptolemy.kernel.util.Location" value="405.0, 335.0">
         </property>
     </entity>
-    <entity name="3_2_0_1" class="ptolemy.domains.fsm.kernel.State">
+    <entity name="3_2_0_1" class="ptolemy.domains.modal.kernel.State">
         <property name="_location" class="ptolemy.kernel.util.Location" value="390.0, 145.0">
         </property>
     </entity>
-    <entity name="3_3t_0_2" class="ptolemy.domains.fsm.kernel.State">
+    <entity name="3_3t_0_2" class="ptolemy.domains.modal.kernel.State">
         <property name="_location" class="ptolemy.kernel.util.Location" value="290.0, 85.0">
         </property>
     </entity>
-    <entity name="3_0_0_3" class="ptolemy.domains.fsm.kernel.State">
+    <entity name="3_0_0_3" class="ptolemy.domains.modal.kernel.State">
         <property name="_location" class="ptolemy.kernel.util.Location" value="110.0, 120.0">
         </property>
     </entity>
-    <entity name="3_2_0_3" class="ptolemy.domains.fsm.kernel.State">
+    <entity name="3_2_0_3" class="ptolemy.domains.modal.kernel.State">
         <property name="_location" class="ptolemy.kernel.util.Location" value="190.0, 135.0">
         </property>
     </entity>
-    <entity name="0_2_0_0" class="ptolemy.domains.fsm.kernel.State">
+    <entity name="0_2_0_0" class="ptolemy.domains.modal.kernel.State">
         <property name="_location" class="ptolemy.kernel.util.Location" value="140.0, 200.0">
         </property>
     </entity>
-    <entity name="1_2_1_0" class="ptolemy.domains.fsm.kernel.State">
+    <entity name="1_2_1_0" class="ptolemy.domains.modal.kernel.State">
         <property name="_location" class="ptolemy.kernel.util.Location" value="185.0, 265.0">
         </property>
     </entity>
-    <relation name="SDFDirector_SDFRec_Pro" class="ptolemy.domains.fsm.kernel.InterfaceAutomatonTransition">
+    <relation name="SDFDirector_SDFRec_Pro" class="ptolemy.domains.modal.kernel.InterfaceAutomatonTransition">
         <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="true">
         </property>
-        <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute" value="fP=true">
+        <property name="outputActions" class="ptolemy.domains.modal.kernel.OutputActionsAttribute" value="fP=true">
         </property>
         <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="-0.02101866956905049">
         </property>
@@ -98,10 +98,10 @@
         <property name="label" class="ptolemy.kernel.util.StringAttribute" value="fP;">
         </property>
     </relation>
-    <relation name="SDFDirector_SDFRec_Pro2" class="ptolemy.domains.fsm.kernel.InterfaceAutomatonTransition">
+    <relation name="SDFDirector_SDFRec_Pro2" class="ptolemy.domains.modal.kernel.InterfaceAutomatonTransition">
         <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="true">
         </property>
-        <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute" value="p=true">
+        <property name="outputActions" class="ptolemy.domains.modal.kernel.OutputActionsAttribute" value="p=true">
         </property>
         <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="-0.020094174281502425">
         </property>
@@ -114,10 +114,10 @@
         <property name="label" class="ptolemy.kernel.util.StringAttribute" value="p;">
         </property>
     </relation>
-    <relation name="SDFDirector_SDFRec_Pro3" class="ptolemy.domains.fsm.kernel.InterfaceAutomatonTransition">
+    <relation name="SDFDirector_SDFRec_Pro3" class="ptolemy.domains.modal.kernel.InterfaceAutomatonTransition">
         <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="true">
         </property>
-        <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute" value="pR=true">
+        <property name="outputActions" class="ptolemy.domains.modal.kernel.OutputActionsAttribute" value="pR=true">
         </property>
         <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="-0.025040511406349147">
         </property>
@@ -130,10 +130,10 @@
         <property name="label" class="ptolemy.kernel.util.StringAttribute" value="pR;">
         </property>
     </relation>
-    <relation name="SDFDirector_SDFRec_Pro4" class="ptolemy.domains.fsm.kernel.InterfaceAutomatonTransition">
+    <relation name="SDFDirector_SDFRec_Pro4" class="ptolemy.domains.modal.kernel.InterfaceAutomatonTransition">
         <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="true">
         </property>
-        <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute" value="fPR=true">
+        <property name="outputActions" class="ptolemy.domains.modal.kernel.OutputActionsAttribute" value="fPR=true">
         </property>
         <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="-0.022832935250556984">
         </property>
@@ -146,10 +146,10 @@
         <property name="label" class="ptolemy.kernel.util.StringAttribute" value="fPR;">
         </property>
     </relation>
-    <relation name="SDFDirector_SDFRec_Pro_SDFCon" class="ptolemy.domains.fsm.kernel.InterfaceAutomatonTransition">
+    <relation name="SDFDirector_SDFRec_Pro_SDFCon" class="ptolemy.domains.modal.kernel.InterfaceAutomatonTransition">
         <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="true">
         </property>
-        <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute" value="fC=true">
+        <property name="outputActions" class="ptolemy.domains.modal.kernel.OutputActionsAttribute" value="fC=true">
         </property>
         <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.5496537212599674">
         </property>
@@ -162,10 +162,10 @@
         <property name="label" class="ptolemy.kernel.util.StringAttribute" value="fC;">
         </property>
     </relation>
-    <relation name="SDFDirector_SDFRec_Pro_SDFCon2" class="ptolemy.domains.fsm.kernel.InterfaceAutomatonTransition">
+    <relation name="SDFDirector_SDFRec_Pro_SDFCon2" class="ptolemy.domains.modal.kernel.InterfaceAutomatonTransition">
         <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="true">
         </property>
-        <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute" value="g=true">
+        <property name="outputActions" class="ptolemy.domains.modal.kernel.OutputActionsAttribute" value="g=true">
         </property>
         <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.36247594101233804">
         </property>
@@ -178,10 +178,10 @@
         <property name="label" class="ptolemy.kernel.util.StringAttribute" value="g;">
         </property>
     </relation>
-    <relation name="SDFDirector_SDFRec_Pro_SDFCon3" class="ptolemy.domains.fsm.kernel.InterfaceAutomatonTransition">
+    <relation name="SDFDirector_SDFRec_Pro_SDFCon3" class="ptolemy.domains.modal.kernel.InterfaceAutomatonTransition">
         <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="true">
         </property>
-        <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute" value="t=true">
+        <property name="outputActions" class="ptolemy.domains.modal.kernel.OutputActionsAttribute" value="t=true">
         </property>
         <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.3393035178560669">
         </property>
@@ -194,10 +194,10 @@
         <property name="label" class="ptolemy.kernel.util.StringAttribute" value="t;">
         </property>
     </relation>
-    <relation name="SDFDirector_SDFRec_Pro_SDFCon4" class="ptolemy.domains.fsm.kernel.InterfaceAutomatonTransition">
+    <relation name="SDFDirector_SDFRec_Pro_SDFCon4" class="ptolemy.domains.modal.kernel.InterfaceAutomatonTransition">
         <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="true">
         </property>
-        <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute" value="t=true">
+        <property name="outputActions" class="ptolemy.domains.modal.kernel.OutputActionsAttribute" value="t=true">
         </property>
         <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.24237085729857882">
         </property>
@@ -210,10 +210,10 @@
         <property name="label" class="ptolemy.kernel.util.StringAttribute" value="t;">
         </property>
     </relation>
-    <relation name="SDFDirector_SDFRec_Pro_SDFCon5" class="ptolemy.domains.fsm.kernel.InterfaceAutomatonTransition">
+    <relation name="SDFDirector_SDFRec_Pro_SDFCon5" class="ptolemy.domains.modal.kernel.InterfaceAutomatonTransition">
         <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="true">
         </property>
-        <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute" value="fCR=true">
+        <property name="outputActions" class="ptolemy.domains.modal.kernel.OutputActionsAttribute" value="fCR=true">
         </property>
         <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.31198673190285375">
         </property>
@@ -226,10 +226,10 @@
         <property name="label" class="ptolemy.kernel.util.StringAttribute" value="fCR;">
         </property>
     </relation>
-    <relation name="SDFDirector_SDFRec_Pro_SDFCon6" class="ptolemy.domains.fsm.kernel.InterfaceAutomatonTransition">
+    <relation name="SDFDirector_SDFRec_Pro_SDFCon6" class="ptolemy.domains.modal.kernel.InterfaceAutomatonTransition">
         <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="true">
         </property>
-        <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute" value="fCR=true">
+        <property name="outputActions" class="ptolemy.domains.modal.kernel.OutputActionsAttribute" value="fCR=true">
         </property>
         <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
         </property>
@@ -238,10 +238,10 @@
         <property name="label" class="ptolemy.kernel.util.StringAttribute" value="fCR;">
         </property>
     </relation>
-    <relation name="SDFDirector_SDFRec_Pro5" class="ptolemy.domains.fsm.kernel.InterfaceAutomatonTransition">
+    <relation name="SDFDirector_SDFRec_Pro5" class="ptolemy.domains.modal.kernel.InterfaceAutomatonTransition">
         <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="true">
         </property>
-        <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute" value="fP=true">
+        <property name="outputActions" class="ptolemy.domains.modal.kernel.OutputActionsAttribute" value="fP=true">
         </property>
         <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.22653976831224176">
         </property>
@@ -254,10 +254,10 @@
         <property name="label" class="ptolemy.kernel.util.StringAttribute" value="fP;">
         </property>
     </relation>
-    <relation name="SDFDirector_SDFRec_Pro6" class="ptolemy.domains.fsm.kernel.InterfaceAutomatonTransition">
+    <relation name="SDFDirector_SDFRec_Pro6" class="ptolemy.domains.modal.kernel.InterfaceAutomatonTransition">
         <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="true">
         </property>
-        <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute" value="p=true">
+        <property name="outputActions" class="ptolemy.domains.modal.kernel.OutputActionsAttribute" value="p=true">
         </property>
         <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.042921995606092375">
         </property>

@@ -945,38 +945,38 @@
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[535.0, 370.0]">
                 </property>
             </port>
-            <entity name="ModalModel" class="ptolemy.domains.fsm.modal.ModalModel">
+            <entity name="ModalModel" class="ptolemy.domains.modal.modal.ModalModel">
                 <property name="_tableauFactory" class="ptolemy.vergil.fsm.modal.ModalTableauFactory">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="{605.0, 255.0}">
                 </property>
-                <port name="current_velocity" class="ptolemy.domains.fsm.modal.ModalPort">
+                <port name="current_velocity" class="ptolemy.domains.modal.modal.ModalPort">
                     <property name="input"/>
                     <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
                     </property>
                 </port>
-                <port name="collided" class="ptolemy.domains.fsm.modal.ModalPort">
+                <port name="collided" class="ptolemy.domains.modal.modal.ModalPort">
                     <property name="input"/>
                     <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
                     </property>
                 </port>
-                <port name="out" class="ptolemy.domains.fsm.modal.ModalPort">
+                <port name="out" class="ptolemy.domains.modal.modal.ModalPort">
                     <property name="output"/>
                 </port>
-                <port name="velocities" class="ptolemy.domains.fsm.modal.ModalPort">
+                <port name="velocities" class="ptolemy.domains.modal.modal.ModalPort">
                     <property name="input"/>
                     <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
                     </property>
                 </port>
-                <port name="collided_index" class="ptolemy.domains.fsm.modal.ModalPort">
+                <port name="collided_index" class="ptolemy.domains.modal.modal.ModalPort">
                     <property name="input"/>
                     <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
                     </property>
                 </port>
-                <entity name="_Controller" class="ptolemy.domains.fsm.modal.ModalController">
+                <entity name="_Controller" class="ptolemy.domains.modal.modal.ModalController">
                     <property name="_library" class="ptolemy.moml.LibraryAttribute">
                         <configure>
-        <entity name="state library" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/configs/basicUtilities.xml"></input><entity name="state" class="ptolemy.domains.fsm.kernel.State"><property name="_centerName" class="ptolemy.kernel.util.Attribute"></property><property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory"></property></entity></entity>
+        <entity name="state library" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/configs/basicUtilities.xml"></input><entity name="state" class="ptolemy.domains.modal.kernel.State"><property name="_centerName" class="ptolemy.kernel.util.Attribute"></property><property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory"></property></entity></entity>
       </configure>
                     </property>
                     <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 125, 815, 517}, maximized=false}">
@@ -987,33 +987,33 @@
                     </property>
                     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
                     </property>
-                    <port name="current_velocity" class="ptolemy.domains.fsm.modal.RefinementPort">
+                    <port name="current_velocity" class="ptolemy.domains.modal.modal.RefinementPort">
                         <property name="input"/>
                         <property name="_location" class="ptolemy.kernel.util.Location" value="[45.0, 145.0]">
                         </property>
                     </port>
-                    <port name="collided" class="ptolemy.domains.fsm.modal.RefinementPort">
+                    <port name="collided" class="ptolemy.domains.modal.modal.RefinementPort">
                         <property name="input"/>
                         <property name="_location" class="ptolemy.kernel.util.Location" value="[45.0, 225.0]">
                         </property>
                     </port>
-                    <port name="out" class="ptolemy.domains.fsm.modal.RefinementPort">
+                    <port name="out" class="ptolemy.domains.modal.modal.RefinementPort">
                         <property name="input"/>
                         <property name="output"/>
                         <property name="_location" class="ptolemy.kernel.util.Location" value="[520.0, 210.0]">
                         </property>
                     </port>
-                    <port name="velocities" class="ptolemy.domains.fsm.modal.RefinementPort">
+                    <port name="velocities" class="ptolemy.domains.modal.modal.RefinementPort">
                         <property name="input"/>
                         <property name="_location" class="ptolemy.kernel.util.Location" value="[45.0, 85.0]">
                         </property>
                     </port>
-                    <port name="collided_index" class="ptolemy.domains.fsm.modal.RefinementPort">
+                    <port name="collided_index" class="ptolemy.domains.modal.modal.RefinementPort">
                         <property name="input"/>
                         <property name="_location" class="ptolemy.kernel.util.Location" value="[45.0, 295.0]">
                         </property>
                     </port>
-                    <entity name="normal" class="ptolemy.domains.fsm.kernel.State">
+                    <entity name="normal" class="ptolemy.domains.modal.kernel.State">
                         <property name="isInitialState" class="ptolemy.data.expr.Parameter" value="true">
                         </property>
                         <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
@@ -1023,7 +1023,7 @@
                         <property name="_location" class="ptolemy.kernel.util.Location" value="{275.0, 235.0}">
                         </property>
                     </entity>
-                    <entity name="collision" class="ptolemy.domains.fsm.kernel.State">
+                    <entity name="collision" class="ptolemy.domains.modal.kernel.State">
                         <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                         </property>
                         <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
@@ -1031,12 +1031,12 @@
                         <property name="_location" class="ptolemy.kernel.util.Location" value="[371.30163279968303, 170.11756554212158]">
                         </property>
                     </entity>
-                    <relation name="relation" class="ptolemy.domains.fsm.kernel.Transition">
+                    <relation name="relation" class="ptolemy.domains.modal.kernel.Transition">
                         <property name="annotation" class="ptolemy.data.expr.StringParameter" value="">
                         </property>
                         <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="collided">
                         </property>
-                        <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute" value="out = velocities(collided_index)">
+                        <property name="outputActions" class="ptolemy.domains.modal.kernel.OutputActionsAttribute" value="out = velocities(collided_index)">
                         </property>
                         <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.9621480202339487">
                         </property>
@@ -1051,10 +1051,10 @@
                         <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
                         </property>
                     </relation>
-                    <relation name="relation2" class="ptolemy.domains.fsm.kernel.Transition">
+                    <relation name="relation2" class="ptolemy.domains.modal.kernel.Transition">
                         <property name="annotation" class="ptolemy.data.expr.StringParameter" value="">
                         </property>
-                        <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute" value="out = current_velocity">
+                        <property name="outputActions" class="ptolemy.domains.modal.kernel.OutputActionsAttribute" value="out = current_velocity">
                         </property>
                         <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="1.0027310696839027">
                         </property>
@@ -1069,12 +1069,12 @@
                         <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
                         </property>
                     </relation>
-                    <relation name="relation3" class="ptolemy.domains.fsm.kernel.Transition">
+                    <relation name="relation3" class="ptolemy.domains.modal.kernel.Transition">
                         <property name="annotation" class="ptolemy.data.expr.StringParameter" value="">
                         </property>
                         <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="!collided">
                         </property>
-                        <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute" value="out = current_velocity">
+                        <property name="outputActions" class="ptolemy.domains.modal.kernel.OutputActionsAttribute" value="out = current_velocity">
                         </property>
                         <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="2.4884279256372257">
                         </property>

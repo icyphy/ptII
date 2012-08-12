@@ -107,10 +107,10 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[195.0, 115.0]">
         </property>
-        <port name="port" class="ptolemy.domains.fsm.modal.ModalPort">
+        <port name="port" class="ptolemy.domains.modal.modal.ModalPort">
             <property name="input"/>
         </port>
-        <port name="port2" class="ptolemy.domains.fsm.modal.ModalPort">
+        <port name="port2" class="ptolemy.domains.modal.modal.ModalPort">
             <property name="output"/>
         </port>
         <entity name="_Controller" class="ptolemy.domains.tdl.kernel.TDLController">

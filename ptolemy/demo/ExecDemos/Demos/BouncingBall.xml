@@ -406,25 +406,25 @@ http://java.sun.com/products/java-media/3D/</text></svg></configure>
             </property>
         </property>
     </entity>
-    <entity name="Ball Model" class="ptolemy.domains.fsm.modal.ModalModel">
+    <entity name="Ball Model" class="ptolemy.domains.modal.modal.ModalModel">
         <property name="_tableauFactory" class="ptolemy.vergil.fsm.modal.ModalTableauFactory">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[535.0, 145.0]">
         </property>
-        <port name="position" class="ptolemy.domains.fsm.modal.ModalPort">
+        <port name="position" class="ptolemy.domains.modal.modal.ModalPort">
             <property name="output"/>
         </port>
-        <port name="bump" class="ptolemy.domains.fsm.modal.ModalPort">
+        <port name="bump" class="ptolemy.domains.modal.modal.ModalPort">
             <property name="output"/>
         </port>
-        <port name="velocity" class="ptolemy.domains.fsm.modal.ModalPort">
+        <port name="velocity" class="ptolemy.domains.modal.modal.ModalPort">
             <property name="output"/>
         </port>
-        <entity name="_Controller" class="ptolemy.domains.fsm.modal.ModalController">
+        <entity name="_Controller" class="ptolemy.domains.modal.modal.ModalController">
             <property name="initialStateName" class="ptolemy.kernel.util.StringAttribute">
             </property>
             <property name="_library" class="ptolemy.moml.LibraryAttribute">
-                <configure><entity name="state library" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/configs/basicUtilities.xml"></input><entity name="state" class="ptolemy.domains.fsm.kernel.State"><property name="_centerName" class="ptolemy.kernel.util.Attribute"></property></entity></entity></configure>
+                <configure><entity name="state library" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/configs/basicUtilities.xml"></input><entity name="state" class="ptolemy.domains.modal.kernel.State"><property name="_centerName" class="ptolemy.kernel.util.Attribute"></property></entity></entity></configure>
             </property>
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 350]">
             </property>
@@ -438,25 +438,25 @@ http://java.sun.com/products/java-media/3D/</text></svg></configure>
             </property>
             <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 175.0}">
             </property>
-            <port name="position" class="ptolemy.domains.fsm.modal.RefinementPort">
+            <port name="position" class="ptolemy.domains.modal.modal.RefinementPort">
                 <property name="input"/>
                 <property name="output"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="35.0, 145.0">
                 </property>
             </port>
-            <port name="bump" class="ptolemy.domains.fsm.modal.RefinementPort">
+            <port name="bump" class="ptolemy.domains.modal.modal.RefinementPort">
                 <property name="input"/>
                 <property name="output"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="35.0, 90.0">
                 </property>
             </port>
-            <port name="velocity" class="ptolemy.domains.fsm.modal.RefinementPort">
+            <port name="velocity" class="ptolemy.domains.modal.modal.RefinementPort">
                 <property name="input"/>
                 <property name="output"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="35.0, 40.0">
                 </property>
             </port>
-            <entity name="init" class="ptolemy.domains.fsm.kernel.State">
+            <entity name="init" class="ptolemy.domains.modal.kernel.State">
                 <property name="isInitialState" class="ptolemy.data.expr.Parameter" value="true">
                 </property>
                 <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
@@ -466,7 +466,7 @@ http://java.sun.com/products/java-media/3D/</text></svg></configure>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="360.0, 125.0">
                 </property>
             </entity>
-            <entity name="free" class="ptolemy.domains.fsm.kernel.State">
+            <entity name="free" class="ptolemy.domains.modal.kernel.State">
                 <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="free">
                 </property>
                 <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
@@ -476,7 +476,7 @@ http://java.sun.com/products/java-media/3D/</text></svg></configure>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="185.0, 175.0">
                 </property>
             </entity>
-            <entity name="stop" class="ptolemy.domains.fsm.kernel.State">
+            <entity name="stop" class="ptolemy.domains.modal.kernel.State">
                 <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 </property>
                 <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
@@ -484,7 +484,7 @@ http://java.sun.com/products/java-media/3D/</text></svg></configure>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="130.0, 25.0">
                 </property>
             </entity>
-            <relation name="relation" class="ptolemy.domains.fsm.kernel.Transition">
+            <relation name="relation" class="ptolemy.domains.modal.kernel.Transition">
                 <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="abs(position) &lt; stoppedThreshold &amp;&amp; abs(velocity) &lt; stoppedThreshold">
                 </property>
                 <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.6283185307179586">
@@ -494,10 +494,10 @@ http://java.sun.com/products/java-media/3D/</text></svg></configure>
                 <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
             </relation>
-            <relation name="relation2" class="ptolemy.domains.fsm.kernel.Transition">
+            <relation name="relation2" class="ptolemy.domains.modal.kernel.Transition">
                 <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="true">
                 </property>
-                <property name="setActions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute" value="free.initialPosition = initialPosition; free.initialVelocity = 0.0">
+                <property name="setActions" class="ptolemy.domains.modal.kernel.CommitActionsAttribute" value="free.initialPosition = initialPosition; free.initialVelocity = 0.0">
                 </property>
                 <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="-0.4216814692820417">
                 </property>
@@ -506,10 +506,10 @@ http://java.sun.com/products/java-media/3D/</text></svg></configure>
                 <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
             </relation>
-            <relation name="relation3" class="ptolemy.domains.fsm.kernel.Transition">
+            <relation name="relation3" class="ptolemy.domains.modal.kernel.Transition">
                 <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="bump_isPresent">
                 </property>
-                <property name="setActions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute" value="free.initialVelocity = -elasticity * velocity; free.initialPosition = position">
+                <property name="setActions" class="ptolemy.domains.modal.kernel.CommitActionsAttribute" value="free.initialVelocity = -elasticity * velocity; free.initialPosition = position">
                 </property>
                 <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="2.376245723355259">
                 </property>
@@ -527,7 +527,7 @@ http://java.sun.com/products/java-media/3D/</text></svg></configure>
             <link port="free.outgoingPort" relation="relation3"/>
             <link port="stop.incomingPort" relation="relation"/>
         </entity>
-        <entity name="free" class="ptolemy.domains.fsm.modal.Refinement">
+        <entity name="free" class="ptolemy.domains.modal.modal.Refinement">
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 450]">
             </property>
             <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[104, 102]">
@@ -591,19 +591,19 @@ falling in a gravitational field.</text></svg></configure>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="155.0, 5.0">
                 </property>
             </property>
-            <port name="position" class="ptolemy.domains.fsm.modal.RefinementPort">
+            <port name="position" class="ptolemy.domains.modal.modal.RefinementPort">
                 <property name="output"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="500.0, 170.0">
                 </property>
                 <property name="_showName" class="ptolemy.kernel.util.SingletonAttribute">
                 </property>
             </port>
-            <port name="bump" class="ptolemy.domains.fsm.modal.RefinementPort">
+            <port name="bump" class="ptolemy.domains.modal.modal.RefinementPort">
                 <property name="output"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="500.0, 125.0">
                 </property>
             </port>
-            <port name="velocity" class="ptolemy.domains.fsm.modal.RefinementPort">
+            <port name="velocity" class="ptolemy.domains.modal.modal.RefinementPort">
                 <property name="output"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="500.0, 60.0">
                 </property>

@@ -59,19 +59,19 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[35.0, 290.0]">
         </property>
     </property>
-    <entity name="Poisson" class="ptolemy.domains.fsm.modal.ModalModel">
+    <entity name="Poisson" class="ptolemy.domains.modal.modal.ModalModel">
         <property name="_tableauFactory" class="ptolemy.vergil.fsm.modal.ModalTableauFactory">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[120.0, 250.0]">
         </property>
         <property name="rate" class="ptolemy.data.expr.Parameter" value="rate">
         </property>
-        <port name="event" class="ptolemy.domains.fsm.modal.ModalPort">
+        <port name="event" class="ptolemy.domains.modal.modal.ModalPort">
             <property name="output"/>
             <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;DISCRETE&quot;">
             </property>
         </port>
-        <entity name="_Controller" class="ptolemy.domains.fsm.modal.ModalController">
+        <entity name="_Controller" class="ptolemy.domains.modal.modal.ModalController">
             <property name="initialStateName" class="ptolemy.kernel.util.StringAttribute">
             </property>
             <property name="annotation" class="ptolemy.kernel.util.Attribute">
@@ -93,7 +93,7 @@ variable multiplied by the rate parameter.</text></svg></configure>
             </property>
             <property name="_library" class="ptolemy.moml.LibraryAttribute">
                 <configure>
-        <entity name="state library" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/configs/basicUtilities.xml"></input><entity name="state" class="ptolemy.domains.fsm.kernel.State"><property name="_centerName" class="ptolemy.kernel.util.Attribute"></property><property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory"></property></entity></entity>
+        <entity name="state library" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/configs/basicUtilities.xml"></input><entity name="state" class="ptolemy.domains.modal.kernel.State"><property name="_centerName" class="ptolemy.kernel.util.Attribute"></property><property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory"></property></entity></entity>
       </configure>
             </property>
             <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-2, 377, 815, 518}, maximized=false}">
@@ -112,13 +112,13 @@ variable multiplied by the rate parameter.</text></svg></configure>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[330.0, 110.0]">
                 </property>
             </property>
-            <port name="event" class="ptolemy.domains.fsm.modal.RefinementPort">
+            <port name="event" class="ptolemy.domains.modal.modal.RefinementPort">
                 <property name="input"/>
                 <property name="output"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[530.0, 190.0]">
                 </property>
             </port>
-            <entity name="wait" class="ptolemy.domains.fsm.kernel.State">
+            <entity name="wait" class="ptolemy.domains.modal.kernel.State">
                 <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="wait">
                 </property>
                 <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
@@ -128,7 +128,7 @@ variable multiplied by the rate parameter.</text></svg></configure>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[290.0, 155.0]">
                 </property>
             </entity>
-            <entity name="init" class="ptolemy.domains.fsm.kernel.State">
+            <entity name="init" class="ptolemy.domains.modal.kernel.State">
                 <property name="isInitialState" class="ptolemy.data.expr.Parameter" value="true">
                 </property>
                 <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
@@ -138,10 +138,10 @@ variable multiplied by the rate parameter.</text></svg></configure>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[100.0, 155.0]">
                 </property>
             </entity>
-            <relation name="relation" class="ptolemy.domains.fsm.kernel.Transition">
+            <relation name="relation" class="ptolemy.domains.modal.kernel.Transition">
                 <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="event_isPresent">
                 </property>
-                <property name="setActions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute" value="wait.threshold = -log(1-random())">
+                <property name="setActions" class="ptolemy.domains.modal.kernel.CommitActionsAttribute" value="wait.threshold = -log(1-random())">
                 </property>
                 <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="2.356194490192345">
                 </property>
@@ -152,10 +152,10 @@ variable multiplied by the rate parameter.</text></svg></configure>
                 <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
             </relation>
-            <relation name="relation2" class="ptolemy.domains.fsm.kernel.Transition">
+            <relation name="relation2" class="ptolemy.domains.modal.kernel.Transition">
                 <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="true">
                 </property>
-                <property name="setActions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute" value="wait.threshold = -log(1-random())">
+                <property name="setActions" class="ptolemy.domains.modal.kernel.CommitActionsAttribute" value="wait.threshold = -log(1-random())">
                 </property>
                 <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.6283185307179586">
                 </property>
@@ -171,7 +171,7 @@ variable multiplied by the rate parameter.</text></svg></configure>
             <link port="wait.outgoingPort" relation="relation"/>
             <link port="init.outgoingPort" relation="relation2"/>
         </entity>
-        <entity name="wait" class="ptolemy.domains.fsm.modal.Refinement">
+        <entity name="wait" class="ptolemy.domains.modal.modal.Refinement">
             <property name="CTEmbedded Director" class="ptolemy.domains.ct.kernel.CTEmbeddedDirector">
                 <property name="_location" class="ptolemy.kernel.util.Location" value="{85.0, 60.0}">
                 </property>
@@ -195,7 +195,7 @@ variable multiplied by the rate parameter.</text></svg></configure>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="{200.0, 60.0}">
                 </property>
             </property>
-            <port name="event" class="ptolemy.domains.fsm.modal.RefinementPort">
+            <port name="event" class="ptolemy.domains.modal.modal.RefinementPort">
                 <property name="output"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[490.0, 195.0]">
                 </property>

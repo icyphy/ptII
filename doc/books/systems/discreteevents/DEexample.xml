@@ -36,30 +36,30 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 200.0]">
         </property>
     </entity>
-    <entity name="ModalModel" class="ptolemy.domains.fsm.modal.ModalModel">
+    <entity name="ModalModel" class="ptolemy.domains.modal.modal.ModalModel">
         <property name="_tableauFactory" class="ptolemy.vergil.fsm.modal.ModalTableauFactory">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[220.0, 120.0]">
         </property>
-        <port name="clock" class="ptolemy.domains.fsm.modal.ModalPort">
+        <port name="clock" class="ptolemy.domains.modal.modal.ModalPort">
             <property name="input"/>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
         </port>
-        <port name="error" class="ptolemy.domains.fsm.modal.ModalPort">
+        <port name="error" class="ptolemy.domains.modal.modal.ModalPort">
             <property name="input"/>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
         </port>
-        <port name="status" class="ptolemy.domains.fsm.modal.ModalPort">
+        <port name="status" class="ptolemy.domains.modal.modal.ModalPort">
             <property name="output"/>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
         </port>
-        <entity name="_Controller" class="ptolemy.domains.fsm.modal.ModalController">
+        <entity name="_Controller" class="ptolemy.domains.modal.modal.ModalController">
             <property name="_library" class="ptolemy.moml.LibraryAttribute">
                 <configure>
-        <entity name="state library" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/configs/basicUtilities.xml"></input><entity name="state" class="ptolemy.domains.fsm.kernel.State"><property name="_centerName" class="ptolemy.kernel.util.Attribute"></property><property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory"></property></entity></entity>
+        <entity name="state library" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/configs/basicUtilities.xml"></input><entity name="state" class="ptolemy.domains.modal.kernel.State"><property name="_centerName" class="ptolemy.kernel.util.Attribute"></property><property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory"></property></entity></entity>
       </configure>
             </property>
             <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={254, 517, 646, 265}, maximized=false}">
@@ -70,23 +70,23 @@
             </property>
             <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{216.5, 77.0}">
             </property>
-            <port name="clock" class="ptolemy.domains.fsm.modal.RefinementPort">
+            <port name="clock" class="ptolemy.domains.modal.modal.RefinementPort">
                 <property name="input"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[20.820662592687825, 41.048765047395136]">
                 </property>
             </port>
-            <port name="error" class="ptolemy.domains.fsm.modal.RefinementPort">
+            <port name="error" class="ptolemy.domains.modal.modal.RefinementPort">
                 <property name="input"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[20.820662592687825, 116.04876504739514]">
                 </property>
             </port>
-            <port name="status" class="ptolemy.domains.fsm.modal.RefinementPort">
+            <port name="status" class="ptolemy.domains.modal.modal.RefinementPort">
                 <property name="input"/>
                 <property name="output"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[405.0, 80.0]">
                 </property>
             </port>
-            <entity name="normal" class="ptolemy.domains.fsm.kernel.State">
+            <entity name="normal" class="ptolemy.domains.modal.kernel.State">
                 <property name="isInitialState" class="ptolemy.data.expr.Parameter" value="true">
                 </property>
                 <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
@@ -96,7 +96,7 @@
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[165.82066259268782, 91.04876504739514]">
                 </property>
             </entity>
-            <entity name="error" class="ptolemy.domains.fsm.kernel.State">
+            <entity name="error" class="ptolemy.domains.modal.kernel.State">
                 <property name="isInitialState" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
                 <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
@@ -106,12 +106,12 @@
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[290.82066259268777, 91.04876504739514]">
                 </property>
             </entity>
-            <relation name="relation" class="ptolemy.domains.fsm.kernel.Transition">
+            <relation name="relation" class="ptolemy.domains.modal.kernel.Transition">
                 <property name="annotation" class="ptolemy.data.expr.StringParameter" value="">
                 </property>
                 <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="clock_isPresent &amp;&amp; !error_isPresent">
                 </property>
-                <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute" value="status = 1">
+                <property name="outputActions" class="ptolemy.domains.modal.kernel.OutputActionsAttribute" value="status = 1">
                 </property>
                 <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="2.4176118871494103">
                 </property>
@@ -126,12 +126,12 @@
                 <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
             </relation>
-            <relation name="relation2" class="ptolemy.domains.fsm.kernel.Transition">
+            <relation name="relation2" class="ptolemy.domains.modal.kernel.Transition">
                 <property name="annotation" class="ptolemy.data.expr.StringParameter" value="">
                 </property>
                 <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="error_isPresent">
                 </property>
-                <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute" value="status = 0">
+                <property name="outputActions" class="ptolemy.domains.modal.kernel.OutputActionsAttribute" value="status = 0">
                 </property>
                 <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.6283185307179586">
                 </property>
@@ -146,12 +146,12 @@
                 <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
             </relation>
-            <relation name="relation3" class="ptolemy.domains.fsm.kernel.Transition">
+            <relation name="relation3" class="ptolemy.domains.modal.kernel.Transition">
                 <property name="annotation" class="ptolemy.data.expr.StringParameter" value="">
                 </property>
                 <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="clock_isPresent">
                 </property>
-                <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute" value="status = 0">
+                <property name="outputActions" class="ptolemy.domains.modal.kernel.OutputActionsAttribute" value="status = 0">
                 </property>
                 <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="2.356194490192345">
                 </property>

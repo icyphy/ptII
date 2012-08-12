@@ -50,17 +50,17 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[55.0, 10.0]">
         </property>
-        <port name="s" class="ptolemy.domains.fsm.modal.ModalPort">
+        <port name="s" class="ptolemy.domains.modal.modal.ModalPort">
             <property name="input"/>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
         </port>
-        <port name="incAct" class="ptolemy.domains.fsm.modal.ModalPort">
+        <port name="incAct" class="ptolemy.domains.modal.modal.ModalPort">
             <property name="output"/>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
         </port>
-        <port name="decAct" class="ptolemy.domains.fsm.modal.ModalPort">
+        <port name="decAct" class="ptolemy.domains.modal.modal.ModalPort">
             <property name="output"/>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
@@ -68,7 +68,7 @@
         <entity name="_Controller" class="ptolemy.domains.tdl.kernel.TDLController">
             <property name="_library" class="ptolemy.moml.LibraryAttribute">
                 <configure>
-        <entity name="state library" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/configs/basicUtilities.xml"></input><entity name="mode" class="ptolemy.domains.fsm.kernel.State"><property name="period" class="ptolemy.data.expr.Parameter" value="1"></property><property name="_centerName" class="ptolemy.kernel.util.Attribute"></property><property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory"></property></entity></entity>
+        <entity name="state library" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/configs/basicUtilities.xml"></input><entity name="mode" class="ptolemy.domains.modal.kernel.State"><property name="period" class="ptolemy.data.expr.Parameter" value="1"></property><property name="_centerName" class="ptolemy.kernel.util.Attribute"></property><property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory"></property></entity></entity>
       </configure>
             </property>
             <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={266, 128, 813, 507}, maximized=false}">
@@ -114,7 +114,7 @@
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[460.0, 170.0]">
                 </property>
             </port>
-            <entity name="regular" class="ptolemy.domains.fsm.kernel.State">
+            <entity name="regular" class="ptolemy.domains.modal.kernel.State">
                 <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="regular">
                 </property>
                 <property name="isInitialState" class="ptolemy.data.expr.Parameter" value="true">
@@ -128,7 +128,7 @@
                 <property name="_location" class="ptolemy.kernel.util.Location" value="{140, 135}">
                 </property>
             </entity>
-            <entity name="fastDec" class="ptolemy.domains.fsm.kernel.State">
+            <entity name="fastDec" class="ptolemy.domains.modal.kernel.State">
                 <display name="fast"/>
                 <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="fastDec">
                 </property>
@@ -777,17 +777,17 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[255.0, 10.0]">
         </property>
-        <port name="inc_in" class="ptolemy.domains.fsm.modal.ModalPort">
+        <port name="inc_in" class="ptolemy.domains.modal.modal.ModalPort">
             <property name="input"/>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
         </port>
-        <port name="dec_in" class="ptolemy.domains.fsm.modal.ModalPort">
+        <port name="dec_in" class="ptolemy.domains.modal.modal.ModalPort">
             <property name="input"/>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
         </port>
-        <port name="sum_actuator" class="ptolemy.domains.fsm.modal.ModalPort">
+        <port name="sum_actuator" class="ptolemy.domains.modal.modal.ModalPort">
             <property name="output"/>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
@@ -795,7 +795,7 @@
         <entity name="_Controller" class="ptolemy.domains.tdl.kernel.TDLController">
             <property name="_library" class="ptolemy.moml.LibraryAttribute">
                 <configure>
-        <entity name="state library" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/configs/basicUtilities.xml"></input><entity name="mode" class="ptolemy.domains.fsm.kernel.State"><property name="period" class="ptolemy.data.expr.Parameter" value="1"></property><property name="_centerName" class="ptolemy.kernel.util.Attribute"></property><property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory"></property></entity></entity>
+        <entity name="state library" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/configs/basicUtilities.xml"></input><entity name="mode" class="ptolemy.domains.modal.kernel.State"><property name="period" class="ptolemy.data.expr.Parameter" value="1"></property><property name="_centerName" class="ptolemy.kernel.util.Attribute"></property><property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory"></property></entity></entity>
       </configure>
             </property>
             <port name="inc_in" class="ptolemy.domains.tdl.kernel.TDLRefinementPort">
@@ -832,7 +832,7 @@
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[400.0, 95.0]">
                 </property>
             </port>
-            <entity name="sum" class="ptolemy.domains.fsm.kernel.State">
+            <entity name="sum" class="ptolemy.domains.modal.kernel.State">
                 <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="sum">
                 </property>
                 <property name="isInitialState" class="ptolemy.data.expr.Parameter" value="true">

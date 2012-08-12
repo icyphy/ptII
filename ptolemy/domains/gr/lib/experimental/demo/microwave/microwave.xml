@@ -758,10 +758,10 @@
                     </property>
                 </property>
             </entity>
-            <entity name="fsm actor" class="ptolemy.domains.fsm.kernel.FSMActor">
+            <entity name="fsm actor" class="ptolemy.domains.modal.kernel.FSMActor">
                 <property name="_library" class="ptolemy.moml.LibraryAttribute">
                     <configure>
-            <entity name="state library" class="ptolemy.kernel.CompositeEntity"><entity name="state" class="ptolemy.domains.fsm.kernel.State"></entity></entity>
+            <entity name="state library" class="ptolemy.kernel.CompositeEntity"><entity name="state" class="ptolemy.domains.modal.kernel.State"></entity></entity>
           </configure>
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="454.0, 203.0">
@@ -810,7 +810,7 @@
                     <property name="_location" class="ptolemy.kernel.util.Location" value="103.0, 187.0">
                     </property>
                 </port>
-                <entity name="int_to_7_segment" class="ptolemy.domains.fsm.kernel.State">
+                <entity name="int_to_7_segment" class="ptolemy.domains.modal.kernel.State">
                     <property name="isInitialState" class="ptolemy.data.expr.Parameter" value="true">
                     </property>
                     <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
@@ -818,10 +818,10 @@
                     <property name="_location" class="ptolemy.kernel.util.Location" value="258.0, 159.0">
                     </property>
                 </entity>
-                <relation name="relation" class="ptolemy.domains.fsm.kernel.Transition">
+                <relation name="relation" class="ptolemy.domains.modal.kernel.Transition">
                     <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="in_int == 0">
                     </property>
-                    <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute" value="outA = 0.9; outB = 0.9; outC = 0.9; outD = 0.9; outE = 0.9; outF = 0.9; outG = 0.9">
+                    <property name="outputActions" class="ptolemy.domains.modal.kernel.OutputActionsAttribute" value="outA = 0.9; outB = 0.9; outC = 0.9; outD = 0.9; outE = 0.9; outF = 0.9; outG = 0.9">
                     </property>
                     <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
                     </property>
@@ -830,10 +830,10 @@
                     <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
                     </property>
                 </relation>
-                <relation name="relation2" class="ptolemy.domains.fsm.kernel.Transition">
+                <relation name="relation2" class="ptolemy.domains.modal.kernel.Transition">
                     <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="in_int == 1">
                     </property>
-                    <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute" value="outA = 0.1; outB = 0.9; outC = 0.9; outD = 0.1; outE = 0.1; outF = 0.1; outG = 0.1">
+                    <property name="outputActions" class="ptolemy.domains.modal.kernel.OutputActionsAttribute" value="outA = 0.1; outB = 0.9; outC = 0.9; outD = 0.1; outE = 0.1; outF = 0.1; outG = 0.1">
                     </property>
                     <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
                     </property>
@@ -842,10 +842,10 @@
                     <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
                     </property>
                 </relation>
-                <relation name="relation3" class="ptolemy.domains.fsm.kernel.Transition">
+                <relation name="relation3" class="ptolemy.domains.modal.kernel.Transition">
                     <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="in_int == 2">
                     </property>
-                    <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute" value="outA = 0.9; outB = 0.9; outC = 0.1; outD = 0.9; outE = 0.9; outF = 0.1; outG = 0.9">
+                    <property name="outputActions" class="ptolemy.domains.modal.kernel.OutputActionsAttribute" value="outA = 0.9; outB = 0.9; outC = 0.1; outD = 0.9; outE = 0.9; outF = 0.1; outG = 0.9">
                     </property>
                     <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
                     </property>
@@ -854,10 +854,10 @@
                     <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
                     </property>
                 </relation>
-                <relation name="relation4" class="ptolemy.domains.fsm.kernel.Transition">
+                <relation name="relation4" class="ptolemy.domains.modal.kernel.Transition">
                     <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="in_int == 3">
                     </property>
-                    <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute" value="outA = 0.9; outB = 0.9; outC = 0.9; outD = 0.9; outE = 0.1; outF = 0.1; outG = 0.9">
+                    <property name="outputActions" class="ptolemy.domains.modal.kernel.OutputActionsAttribute" value="outA = 0.9; outB = 0.9; outC = 0.9; outD = 0.9; outE = 0.1; outF = 0.1; outG = 0.9">
                     </property>
                     <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
                     </property>
@@ -866,10 +866,10 @@
                     <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
                     </property>
                 </relation>
-                <relation name="relation5" class="ptolemy.domains.fsm.kernel.Transition">
+                <relation name="relation5" class="ptolemy.domains.modal.kernel.Transition">
                     <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="in_int == 4">
                     </property>
-                    <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute" value="outA = 0.1; outB = 0.9; outC = 0.9; outD = 0.1; outE = 0.1; outF = 0.9; outG = 0.9">
+                    <property name="outputActions" class="ptolemy.domains.modal.kernel.OutputActionsAttribute" value="outA = 0.1; outB = 0.9; outC = 0.9; outD = 0.1; outE = 0.1; outF = 0.9; outG = 0.9">
                     </property>
                     <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
                     </property>
@@ -878,10 +878,10 @@
                     <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
                     </property>
                 </relation>
-                <relation name="relation6" class="ptolemy.domains.fsm.kernel.Transition">
+                <relation name="relation6" class="ptolemy.domains.modal.kernel.Transition">
                     <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="in_int == 5">
                     </property>
-                    <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute" value="outA = 0.9; outB = 0.1; outC = 0.9; outD = 0.9; outE = 0.1; outF = 0.9; outG = 0.9">
+                    <property name="outputActions" class="ptolemy.domains.modal.kernel.OutputActionsAttribute" value="outA = 0.9; outB = 0.1; outC = 0.9; outD = 0.9; outE = 0.1; outF = 0.9; outG = 0.9">
                     </property>
                     <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
                     </property>
@@ -890,10 +890,10 @@
                     <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
                     </property>
                 </relation>
-                <relation name="relation7" class="ptolemy.domains.fsm.kernel.Transition">
+                <relation name="relation7" class="ptolemy.domains.modal.kernel.Transition">
                     <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="in_int == 6">
                     </property>
-                    <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute" value="outA = 0.9; outB = 0.1; outC = 0.9; outD = 0.9; outE = 0.9; outF = 0.9; outG = 0.9">
+                    <property name="outputActions" class="ptolemy.domains.modal.kernel.OutputActionsAttribute" value="outA = 0.9; outB = 0.1; outC = 0.9; outD = 0.9; outE = 0.9; outF = 0.9; outG = 0.9">
                     </property>
                     <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
                     </property>
@@ -902,10 +902,10 @@
                     <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
                     </property>
                 </relation>
-                <relation name="relation8" class="ptolemy.domains.fsm.kernel.Transition">
+                <relation name="relation8" class="ptolemy.domains.modal.kernel.Transition">
                     <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="in_int == 7">
                     </property>
-                    <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute" value="outA = 0.9; outB = 0.9; outC = 0.9; outD = 0.1; outE = 0.1; outF = 0.1; outG = 0.1">
+                    <property name="outputActions" class="ptolemy.domains.modal.kernel.OutputActionsAttribute" value="outA = 0.9; outB = 0.9; outC = 0.9; outD = 0.1; outE = 0.1; outF = 0.1; outG = 0.1">
                     </property>
                     <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
                     </property>
@@ -914,10 +914,10 @@
                     <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
                     </property>
                 </relation>
-                <relation name="relation9" class="ptolemy.domains.fsm.kernel.Transition">
+                <relation name="relation9" class="ptolemy.domains.modal.kernel.Transition">
                     <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="in_int == 8">
                     </property>
-                    <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute" value="outA = 0.9; outB = 0.9; outC = 0.9; outD = 0.9; outE = 0.9; outF = 0.9; outG = 0.9">
+                    <property name="outputActions" class="ptolemy.domains.modal.kernel.OutputActionsAttribute" value="outA = 0.9; outB = 0.9; outC = 0.9; outD = 0.9; outE = 0.9; outF = 0.9; outG = 0.9">
                     </property>
                     <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
                     </property>
@@ -926,10 +926,10 @@
                     <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
                     </property>
                 </relation>
-                <relation name="relation10" class="ptolemy.domains.fsm.kernel.Transition">
+                <relation name="relation10" class="ptolemy.domains.modal.kernel.Transition">
                     <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="in_int == 9">
                     </property>
-                    <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute" value="outA = 0.9; outB = 0.9; outC = 0.9; outD = 0.9; outE = 0.1; outF = 0.9; outG = 0.9">
+                    <property name="outputActions" class="ptolemy.domains.modal.kernel.OutputActionsAttribute" value="outA = 0.9; outB = 0.9; outC = 0.9; outD = 0.9; outE = 0.1; outF = 0.9; outG = 0.9">
                     </property>
                     <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
                     </property>

@@ -70,7 +70,7 @@
             <link port="output" relation="relation"/>
             <link port="Const.output" relation="relation"/>
         </entity>
-        <entity name="default" class="ptolemy.domains.fsm.modal.Refinement">
+        <entity name="default" class="ptolemy.domains.modal.modal.Refinement">
             <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
                 <property name="_location" class="ptolemy.kernel.util.Location" value="{75.0, 65.0}">
                 </property>

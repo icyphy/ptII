@@ -221,10 +221,10 @@ The Ptiny pack is required.
                   targetdir="$INSTALL_PATH/ptolemy/domains/ct/demo"/>
             <file src="../../jar_dist/ptolemy/domains/ct/doc/doc.jar"
                   targetdir="$INSTALL_PATH/ptolemy/domains/ct/doc"/>
-            <file src="../../jar_dist/ptolemy/domains/fsm/doc/doc.jar"
-                  targetdir="$INSTALL_PATH/ptolemy/domains/fsm/doc"/>
-            <file src="../../jar_dist/ptolemy/domains/fsm/demo/demo.jar"
-                  targetdir="$INSTALL_PATH/ptolemy/domains/fsm/demo"/>
+            <file src="../../jar_dist/ptolemy.domains.modal/doc/doc.jar"
+                  targetdir="$INSTALL_PATH/ptolemy.domains.modal/doc"/>
+            <file src="../../jar_dist/ptolemy.domains.modal/demo/demo.jar"
+                  targetdir="$INSTALL_PATH/ptolemy.domains.modal/demo"/>
             <file src="../../jar_dist/ptolemy/domains/modal/doc/doc.jar"
                   targetdir="$INSTALL_PATH/ptolemy/domains/modal/doc"/>
             <file src="../../jar_dist/ptolemy/domains/modal/demo/demo.jar"
@@ -519,8 +519,8 @@ The Ptiny pack is required.
                   targetdir="$INSTALL_PATH/ptolemy/domains/ddf"/>
             <file src="../../jar_dist/ptolemy/domains/de/de.jar"
                   targetdir="$INSTALL_PATH/ptolemy/domains/de"/>
-            <file src="../../jar_dist/ptolemy/domains/fsm/fsm.jar"
-                  targetdir="$INSTALL_PATH/ptolemy/domains/fsm"/>
+            <file src="../../jar_dist/ptolemy.domains.modal/fsm.jar"
+                  targetdir="$INSTALL_PATH/ptolemy.domains.modal"/>
             <file src="../../jar_dist/ptolemy/domains/gr/gr.jar"
                   targetdir="$INSTALL_PATH/ptolemy/domains/gr"/>
             <file src="../../jar_dist/ptolemy/domains/hdf/hdf.jar"

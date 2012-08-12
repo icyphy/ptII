@@ -59,35 +59,35 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[390.0, 215.0]">
         </property>
     </entity>
-    <entity name="ModalModel" class="ptolemy.domains.fsm.modal.ModalModel">
+    <entity name="ModalModel" class="ptolemy.domains.modal.modal.ModalModel">
         <property name="_tableauFactory" class="ptolemy.vergil.fsm.modal.ModalTableauFactory">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{205.0, 130.0}">
         </property>
-        <port name="out" class="ptolemy.domains.fsm.modal.ModalPort">
+        <port name="out" class="ptolemy.domains.modal.modal.ModalPort">
             <property name="output"/>
         </port>
-        <port name="control" class="ptolemy.domains.fsm.modal.ModalPort">
+        <port name="control" class="ptolemy.domains.modal.modal.ModalPort">
             <property name="input"/>
         </port>
-        <entity name="_Controller" class="ptolemy.domains.fsm.modal.ModalController">
+        <entity name="_Controller" class="ptolemy.domains.modal.modal.ModalController">
             <property name="_library" class="ptolemy.moml.LibraryAttribute">
                 <configure>
-        <entity name="state library" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/configs/basicUtilities.xml"></input><entity name="state" class="ptolemy.domains.fsm.kernel.State"><property name="_centerName" class="ptolemy.kernel.util.Attribute"></property><property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory"></property></entity></entity>
+        <entity name="state library" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/configs/basicUtilities.xml"></input><entity name="state" class="ptolemy.domains.modal.kernel.State"><property name="_centerName" class="ptolemy.kernel.util.Attribute"></property><property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory"></property></entity></entity>
       </configure>
             </property>
-            <port name="out" class="ptolemy.domains.fsm.modal.RefinementPort">
+            <port name="out" class="ptolemy.domains.modal.modal.RefinementPort">
                 <property name="input"/>
                 <property name="output"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[320.0, 180.0]">
                 </property>
             </port>
-            <port name="control" class="ptolemy.domains.fsm.modal.RefinementPort">
+            <port name="control" class="ptolemy.domains.modal.modal.RefinementPort">
                 <property name="input"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="{20.0, 200.0}">
                 </property>
             </port>
-            <entity name="state" class="ptolemy.domains.fsm.kernel.State">
+            <entity name="state" class="ptolemy.domains.modal.kernel.State">
                 <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="state">
                 </property>
                 <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
@@ -97,7 +97,7 @@
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[120.0, 190.0]">
                 </property>
             </entity>
-            <entity name="state2" class="ptolemy.domains.fsm.kernel.State">
+            <entity name="state2" class="ptolemy.domains.modal.kernel.State">
                 <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="state2">
                 </property>
                 <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
@@ -107,10 +107,10 @@
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[225.0, 190.0]">
                 </property>
             </entity>
-            <relation name="relation" class="ptolemy.domains.fsm.kernel.Transition">
+            <relation name="relation" class="ptolemy.domains.modal.kernel.Transition">
                 <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="control_isPresent">
                 </property>
-                <property name="setActions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute" value="state2.Clock.period = 2.0">
+                <property name="setActions" class="ptolemy.domains.modal.kernel.CommitActionsAttribute" value="state2.Clock.period = 2.0">
                 </property>
                 <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.6283185307179586">
                 </property>
@@ -125,10 +125,10 @@
                 <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
             </relation>
-            <relation name="relation2" class="ptolemy.domains.fsm.kernel.Transition">
+            <relation name="relation2" class="ptolemy.domains.modal.kernel.Transition">
                 <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="control_isPresent">
                 </property>
-                <property name="setActions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute" value="state.Clock.period = 1.0">
+                <property name="setActions" class="ptolemy.domains.modal.kernel.CommitActionsAttribute" value="state.Clock.period = 1.0">
                 </property>
                 <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.6283185307179586">
                 </property>
@@ -148,7 +148,7 @@
             <link port="state2.incomingPort" relation="relation"/>
             <link port="state2.outgoingPort" relation="relation2"/>
         </entity>
-        <entity name="state" class="ptolemy.domains.fsm.modal.Refinement">
+        <entity name="state" class="ptolemy.domains.modal.modal.Refinement">
             <property name="DEDirector" class="ptolemy.domains.de.kernel.DEDirector">
                 <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
                 </property>
@@ -169,12 +169,12 @@
                 <property name="_location" class="ptolemy.kernel.util.Location" value="{85.0, 55.0}">
                 </property>
             </property>
-            <port name="out" class="ptolemy.domains.fsm.modal.RefinementPort">
+            <port name="out" class="ptolemy.domains.modal.modal.RefinementPort">
                 <property name="output"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[320.0, 200.0]">
                 </property>
             </port>
-            <port name="control" class="ptolemy.domains.fsm.modal.RefinementPort">
+            <port name="control" class="ptolemy.domains.modal.modal.RefinementPort">
                 <property name="input"/>
             </port>
             <entity name="Clock" class="ptolemy.actor.lib.Clock">
@@ -195,7 +195,7 @@
             <link port="out" relation="relation"/>
             <link port="Clock.output" relation="relation"/>
         </entity>
-        <entity name="state2" class="ptolemy.domains.fsm.modal.Refinement">
+        <entity name="state2" class="ptolemy.domains.modal.modal.Refinement">
             <property name="DEDirector" class="ptolemy.domains.de.kernel.DEDirector">
                 <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
                 </property>
@@ -216,12 +216,12 @@
                 <property name="_location" class="ptolemy.kernel.util.Location" value="{85.0, 55.0}">
                 </property>
             </property>
-            <port name="out" class="ptolemy.domains.fsm.modal.RefinementPort">
+            <port name="out" class="ptolemy.domains.modal.modal.RefinementPort">
                 <property name="output"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[315.0, 200.0]">
                 </property>
             </port>
-            <port name="control" class="ptolemy.domains.fsm.modal.RefinementPort">
+            <port name="control" class="ptolemy.domains.modal.modal.RefinementPort">
                 <property name="input"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[50.0, 190.0]">
                 </property>

@@ -1,7 +1,7 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="SDFDomain_SDFConsumer" class="ptolemy.domains.fsm.kernel.InterfaceAutomaton">
+<entity name="SDFDomain_SDFConsumer" class="ptolemy.domains.modal.kernel.InterfaceAutomaton">
     <property name="initialStateName" class="ptolemy.kernel.util.StringAttribute" value="0_0">
     </property>
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="3.1-devel">
@@ -30,30 +30,30 @@
     </property>
     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
     </property>
-    <entity name="0_0" class="ptolemy.domains.fsm.kernel.State">
+    <entity name="0_0" class="ptolemy.domains.modal.kernel.State">
         <property name="_location" class="ptolemy.kernel.util.Location" value="105.0, 185.0">
         </property>
     </entity>
-    <entity name="2_0" class="ptolemy.domains.fsm.kernel.State">
+    <entity name="2_0" class="ptolemy.domains.modal.kernel.State">
         <property name="_location" class="ptolemy.kernel.util.Location" value="195.0, 185.0">
         </property>
     </entity>
-    <entity name="3_1" class="ptolemy.domains.fsm.kernel.State">
+    <entity name="3_1" class="ptolemy.domains.modal.kernel.State">
         <property name="_location" class="ptolemy.kernel.util.Location" value="285.0, 185.0">
         </property>
     </entity>
-    <entity name="4_2" class="ptolemy.domains.fsm.kernel.State">
+    <entity name="4_2" class="ptolemy.domains.modal.kernel.State">
         <property name="_location" class="ptolemy.kernel.util.Location" value="370.0, 185.0">
         </property>
     </entity>
-    <entity name="5_3" class="ptolemy.domains.fsm.kernel.State">
+    <entity name="5_3" class="ptolemy.domains.modal.kernel.State">
         <property name="_location" class="ptolemy.kernel.util.Location" value="240.0, 120.0">
         </property>
     </entity>
-    <relation name="SDFDomain" class="ptolemy.domains.fsm.kernel.InterfaceAutomatonTransition">
+    <relation name="SDFDomain" class="ptolemy.domains.modal.kernel.InterfaceAutomatonTransition">
         <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="true">
         </property>
-        <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute" value="p_pR=true">
+        <property name="outputActions" class="ptolemy.domains.modal.kernel.OutputActionsAttribute" value="p_pR=true">
         </property>
         <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.005184508975232658">
         </property>
@@ -66,10 +66,10 @@
         <property name="label" class="ptolemy.kernel.util.StringAttribute" value="p_pR;">
         </property>
     </relation>
-    <relation name="SDFDomain_SDFConsumer" class="ptolemy.domains.fsm.kernel.InterfaceAutomatonTransition">
+    <relation name="SDFDomain_SDFConsumer" class="ptolemy.domains.modal.kernel.InterfaceAutomatonTransition">
         <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="true">
         </property>
-        <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute" value="fC=true">
+        <property name="outputActions" class="ptolemy.domains.modal.kernel.OutputActionsAttribute" value="fC=true">
         </property>
         <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.0062303430090198605">
         </property>
@@ -82,10 +82,10 @@
         <property name="label" class="ptolemy.kernel.util.StringAttribute" value="fC;">
         </property>
     </relation>
-    <relation name="SDFDomain_SDFConsumer2" class="ptolemy.domains.fsm.kernel.InterfaceAutomatonTransition">
+    <relation name="SDFDomain_SDFConsumer2" class="ptolemy.domains.modal.kernel.InterfaceAutomatonTransition">
         <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="true">
         </property>
-        <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute" value="g=true">
+        <property name="outputActions" class="ptolemy.domains.modal.kernel.OutputActionsAttribute" value="g=true">
         </property>
         <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="-0.02680038138066009">
         </property>
@@ -98,10 +98,10 @@
         <property name="label" class="ptolemy.kernel.util.StringAttribute" value="g;">
         </property>
     </relation>
-    <relation name="SDFDomain_SDFConsumer3" class="ptolemy.domains.fsm.kernel.InterfaceAutomatonTransition">
+    <relation name="SDFDomain_SDFConsumer3" class="ptolemy.domains.modal.kernel.InterfaceAutomatonTransition">
         <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="true">
         </property>
-        <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute" value="t=true">
+        <property name="outputActions" class="ptolemy.domains.modal.kernel.OutputActionsAttribute" value="t=true">
         </property>
         <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.3503589619075908">
         </property>
@@ -114,10 +114,10 @@
         <property name="label" class="ptolemy.kernel.util.StringAttribute" value="t;">
         </property>
     </relation>
-    <relation name="SDFDomain_SDFConsumer4" class="ptolemy.domains.fsm.kernel.InterfaceAutomatonTransition">
+    <relation name="SDFDomain_SDFConsumer4" class="ptolemy.domains.modal.kernel.InterfaceAutomatonTransition">
         <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="true">
         </property>
-        <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute" value="fCR=true">
+        <property name="outputActions" class="ptolemy.domains.modal.kernel.OutputActionsAttribute" value="fCR=true">
         </property>
         <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.33156050575027696">
         </property>

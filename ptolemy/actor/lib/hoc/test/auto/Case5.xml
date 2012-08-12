@@ -35,7 +35,7 @@
         <port name="port2" class="ptolemy.actor.lib.hoc.MultiCompositePort">
             <property name="output"/>
         </port>
-        <entity name="default" class="ptolemy.domains.fsm.modal.Refinement">
+        <entity name="default" class="ptolemy.domains.modal.modal.Refinement">
             <property name="_location" class="ptolemy.kernel.util.Location" value="{0.0, 0.0}">
             </property>
             <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">

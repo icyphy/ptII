@@ -118,47 +118,47 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[1045.0, 205.0]">
         </property>
     </property>
-    <entity name="ModalModel" class="ptolemy.domains.fsm.modal.ModalModel">
+    <entity name="ModalModel" class="ptolemy.domains.modal.modal.ModalModel">
         <property name="_tableauFactory" class="ptolemy.vergil.fsm.modal.ModalTableauFactory">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[570.0, 110.0]">
         </property>
-        <port name="x" class="ptolemy.domains.fsm.modal.ModalPort">
+        <port name="x" class="ptolemy.domains.modal.modal.ModalPort">
             <property name="output"/>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
         </port>
-        <port name="z" class="ptolemy.domains.fsm.modal.ModalPort">
+        <port name="z" class="ptolemy.domains.modal.modal.ModalPort">
             <property name="output"/>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
         </port>
-        <port name="theta" class="ptolemy.domains.fsm.modal.ModalPort">
+        <port name="theta" class="ptolemy.domains.modal.modal.ModalPort">
             <property name="output"/>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
         </port>
-        <port name="theta_dot" class="ptolemy.domains.fsm.modal.ModalPort">
+        <port name="theta_dot" class="ptolemy.domains.modal.modal.ModalPort">
             <property name="output"/>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
         </port>
-        <port name="d" class="ptolemy.domains.fsm.modal.ModalPort">
+        <port name="d" class="ptolemy.domains.modal.modal.ModalPort">
             <property name="output"/>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
         </port>
-        <port name="d_dot" class="ptolemy.domains.fsm.modal.ModalPort">
+        <port name="d_dot" class="ptolemy.domains.modal.modal.ModalPort">
             <property name="output"/>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
         </port>
-        <entity name="_Controller" class="ptolemy.domains.fsm.modal.ModalController">
+        <entity name="_Controller" class="ptolemy.domains.modal.modal.ModalController">
             <property name="initialStateName" class="ptolemy.kernel.util.StringAttribute">
             </property>
             <property name="_library" class="ptolemy.moml.LibraryAttribute">
                 <configure>
-        <entity name="state library" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/configs/basicUtilities.xml"></input><entity name="state" class="ptolemy.domains.fsm.kernel.State"><property name="_centerName" class="ptolemy.kernel.util.Attribute"></property><property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory"></property></entity></entity>
+        <entity name="state library" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/configs/basicUtilities.xml"></input><entity name="state" class="ptolemy.domains.modal.kernel.State"><property name="_centerName" class="ptolemy.kernel.util.Attribute"></property><property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory"></property></entity></entity>
       </configure>
             </property>
             <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={101, 28, 811, 598}, maximized=false}">
@@ -175,43 +175,43 @@
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[80.0, 50.0]">
                 </property>
             </property>
-            <port name="x" class="ptolemy.domains.fsm.modal.RefinementPort">
+            <port name="x" class="ptolemy.domains.modal.modal.RefinementPort">
                 <property name="input"/>
                 <property name="output"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[447.7496032714844, 266.0918273925781]">
                 </property>
             </port>
-            <port name="z" class="ptolemy.domains.fsm.modal.RefinementPort">
+            <port name="z" class="ptolemy.domains.modal.modal.RefinementPort">
                 <property name="input"/>
                 <property name="output"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[447.7496032714844, 226.09182739257812]">
                 </property>
             </port>
-            <port name="theta" class="ptolemy.domains.fsm.modal.RefinementPort">
+            <port name="theta" class="ptolemy.domains.modal.modal.RefinementPort">
                 <property name="input"/>
                 <property name="output"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[557.7496032714844, 266.0918273925781]">
                 </property>
             </port>
-            <port name="theta_dot" class="ptolemy.domains.fsm.modal.RefinementPort">
+            <port name="theta_dot" class="ptolemy.domains.modal.modal.RefinementPort">
                 <property name="input"/>
                 <property name="output"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[502.7496032714844, 266.0918273925781]">
                 </property>
             </port>
-            <port name="d" class="ptolemy.domains.fsm.modal.RefinementPort">
+            <port name="d" class="ptolemy.domains.modal.modal.RefinementPort">
                 <property name="input"/>
                 <property name="output"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[557.7496032714844, 226.09182739257812]">
                 </property>
             </port>
-            <port name="d_dot" class="ptolemy.domains.fsm.modal.RefinementPort">
+            <port name="d_dot" class="ptolemy.domains.modal.modal.RefinementPort">
                 <property name="input"/>
                 <property name="output"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[502.7496032714844, 226.09182739257812]">
                 </property>
             </port>
-            <entity name="init" class="ptolemy.domains.fsm.kernel.State">
+            <entity name="init" class="ptolemy.domains.modal.kernel.State">
                 <property name="isInitialState" class="ptolemy.data.expr.Parameter" value="true">
                 </property>
                 <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
@@ -221,7 +221,7 @@
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[227.71499252319336, 201.6197259724638]">
                 </property>
             </entity>
-            <entity name="state" class="ptolemy.domains.fsm.kernel.State">
+            <entity name="state" class="ptolemy.domains.modal.kernel.State">
                 <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="state">
                 </property>
                 <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
@@ -231,7 +231,7 @@
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[262.71499252319336, 316.6197259724638]">
                 </property>
             </entity>
-            <entity name="constrained" class="ptolemy.domains.fsm.kernel.State">
+            <entity name="constrained" class="ptolemy.domains.modal.kernel.State">
                 <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="state, constrainedState">
                 </property>
                 <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
@@ -241,10 +241,10 @@
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[377.71499252319336, 246.6197259724638]">
                 </property>
             </entity>
-            <relation name="relation" class="ptolemy.domains.fsm.kernel.Transition">
+            <relation name="relation" class="ptolemy.domains.modal.kernel.Transition">
                 <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="true">
                 </property>
-                <property name="setActions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute" value="&#10;state.acceleration = 9.8;&#10;state.initialTheta = -PI/10;&#10;state.initialTheta_dot = 0.5;&#10;state.initiald = 0;&#10;state.initiald_dot = -1.4">
+                <property name="setActions" class="ptolemy.domains.modal.kernel.CommitActionsAttribute" value="&#10;state.acceleration = 9.8;&#10;state.initialTheta = -PI/10;&#10;state.initialTheta_dot = 0.5;&#10;state.initiald = 0;&#10;state.initiald_dot = -1.4">
                     <property name="style" class="ptolemy.actor.gui.style.TextStyle">
                         <property name="height" class="ptolemy.data.expr.Parameter" value="10">
                         </property>
@@ -263,10 +263,10 @@
                 <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
             </relation>
-            <relation name="relation2" class="ptolemy.domains.fsm.kernel.Transition">
+            <relation name="relation2" class="ptolemy.domains.modal.kernel.Transition">
                 <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="(z &lt;= 0) &amp;&amp; (-sin(theta)*theta_dot &lt;= 0)">
                 </property>
-                <property name="setActions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute" value="&#10;state.initialTheta_dot = -lambda*theta_dot; &#10;state.initiald_dot = d_dot + (1+lambda)*m*length*cos(theta)*theta_dot/(m+M)">
+                <property name="setActions" class="ptolemy.domains.modal.kernel.CommitActionsAttribute" value="&#10;state.initialTheta_dot = -lambda*theta_dot; &#10;state.initiald_dot = d_dot + (1+lambda)*m*length*cos(theta)*theta_dot/(m+M)">
                     <property name="style" class="ptolemy.actor.gui.style.TextStyle">
                         <property name="height" class="ptolemy.data.expr.Parameter" value="10">
                         </property>
@@ -285,10 +285,10 @@
                 <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
             </relation>
-            <relation name="relation3" class="ptolemy.domains.fsm.kernel.Transition">
+            <relation name="relation3" class="ptolemy.domains.modal.kernel.Transition">
                 <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="(abs(z) &lt; 1e-3) &amp;&amp; (abs(theta_dot) &lt; 1e-3)">
                 </property>
-                <property name="setActions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute" value="constrainedState.initialTheta = pi/2*theta/abs(theta);&#10;constrainedState.initialTheta_dot = 0;&#10;constrainedState.initiald = d;&#10;constrainedState.initiald_dot = d_dot">
+                <property name="setActions" class="ptolemy.domains.modal.kernel.CommitActionsAttribute" value="constrainedState.initialTheta = pi/2*theta/abs(theta);&#10;constrainedState.initialTheta_dot = 0;&#10;constrainedState.initiald = d;&#10;constrainedState.initiald_dot = d_dot">
                     <property name="style" class="ptolemy.actor.gui.style.TextStyle">
                         <property name="height" class="ptolemy.data.expr.Parameter" value="10">
                         </property>
@@ -314,7 +314,7 @@
             <link port="state.outgoingPort" relation="relation3"/>
             <link port="constrained.incomingPort" relation="relation3"/>
         </entity>
-        <entity name="state" class="ptolemy.domains.fsm.modal.Refinement">
+        <entity name="state" class="ptolemy.domains.modal.modal.Refinement">
             <property name="acceleration" class="ptolemy.data.expr.Parameter" value="9.8">
                 <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
                     <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
@@ -508,42 +508,42 @@
                 <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 </property>
             </port>
-            <port name="x" class="ptolemy.domains.fsm.modal.RefinementPort">
+            <port name="x" class="ptolemy.domains.modal.modal.RefinementPort">
                 <property name="output"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[895.0, 590.0]">
                 </property>
                 <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 </property>
             </port>
-            <port name="z" class="ptolemy.domains.fsm.modal.RefinementPort">
+            <port name="z" class="ptolemy.domains.modal.modal.RefinementPort">
                 <property name="output"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[895.0, 530.0]">
                 </property>
                 <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 </property>
             </port>
-            <port name="theta" class="ptolemy.domains.fsm.modal.RefinementPort">
+            <port name="theta" class="ptolemy.domains.modal.modal.RefinementPort">
                 <property name="output"/>
                 <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[350.0, 390.0]">
                 </property>
             </port>
-            <port name="theta_dot" class="ptolemy.domains.fsm.modal.RefinementPort">
+            <port name="theta_dot" class="ptolemy.domains.modal.modal.RefinementPort">
                 <property name="output"/>
                 <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[205.0, 315.0]">
                 </property>
             </port>
-            <port name="d" class="ptolemy.domains.fsm.modal.RefinementPort">
+            <port name="d" class="ptolemy.domains.modal.modal.RefinementPort">
                 <property name="output"/>
                 <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[365.0, 255.0]">
                 </property>
             </port>
-            <port name="d_dot" class="ptolemy.domains.fsm.modal.RefinementPort">
+            <port name="d_dot" class="ptolemy.domains.modal.modal.RefinementPort">
                 <property name="output"/>
                 <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 </property>
@@ -585,7 +585,7 @@
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[660.0, 445.0]">
                 </property>
-                <port name="theta" class="ptolemy.domains.fsm.modal.RefinementPort">
+                <port name="theta" class="ptolemy.domains.modal.modal.RefinementPort">
                     <property name="input"/>
                     <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
                     </property>
@@ -766,7 +766,7 @@
             <link port="z position.output" relation="relation4"/>
             <link port="z position.in" relation="relation10"/>
         </entity>
-        <entity name="constrainedState" class="ptolemy.domains.fsm.modal.Refinement">
+        <entity name="constrainedState" class="ptolemy.domains.modal.modal.Refinement">
             <property name="acceleration" class="ptolemy.data.expr.Parameter" value="0.0">
                 <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
                     <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
@@ -960,32 +960,32 @@
                 <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 </property>
             </port>
-            <port name="x" class="ptolemy.domains.fsm.modal.RefinementPort">
+            <port name="x" class="ptolemy.domains.modal.modal.RefinementPort">
                 <property name="output"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[850.0, 585.0]">
                 </property>
             </port>
-            <port name="z" class="ptolemy.domains.fsm.modal.RefinementPort">
+            <port name="z" class="ptolemy.domains.modal.modal.RefinementPort">
                 <property name="output"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[810.0, 540.0]">
                 </property>
             </port>
-            <port name="theta" class="ptolemy.domains.fsm.modal.RefinementPort">
+            <port name="theta" class="ptolemy.domains.modal.modal.RefinementPort">
                 <property name="output"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[365.0, 515.0]">
                 </property>
             </port>
-            <port name="theta_dot" class="ptolemy.domains.fsm.modal.RefinementPort">
+            <port name="theta_dot" class="ptolemy.domains.modal.modal.RefinementPort">
                 <property name="output"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[235.0, 380.0]">
                 </property>
             </port>
-            <port name="d" class="ptolemy.domains.fsm.modal.RefinementPort">
+            <port name="d" class="ptolemy.domains.modal.modal.RefinementPort">
                 <property name="output"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[355.0, 265.0]">
                 </property>
             </port>
-            <port name="d_dot" class="ptolemy.domains.fsm.modal.RefinementPort">
+            <port name="d_dot" class="ptolemy.domains.modal.modal.RefinementPort">
                 <property name="output"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[325.0, 200.0]">
                 </property>
@@ -1025,7 +1025,7 @@
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[655.0, 445.0]">
                 </property>
-                <port name="theta" class="ptolemy.domains.fsm.modal.RefinementPort">
+                <port name="theta" class="ptolemy.domains.modal.modal.RefinementPort">
                     <property name="input"/>
                     <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
                     </property>

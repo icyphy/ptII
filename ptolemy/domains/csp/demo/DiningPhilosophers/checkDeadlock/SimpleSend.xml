@@ -1,7 +1,7 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="SimpleSend" class="ptolemy.domains.fsm.kernel.InterfaceAutomaton">
+<entity name="SimpleSend" class="ptolemy.domains.modal.kernel.InterfaceAutomaton">
     <property name="initialStateName" class="ptolemy.kernel.util.StringAttribute" value="0">
     </property>
     <property name="_nonStrictMarker" class="ptolemy.kernel.util.Attribute">
@@ -10,7 +10,7 @@
     </property>
     <property name="_library" class="ptolemy.moml.LibraryAttribute">
         <configure>
-            <entity name="state library" class="ptolemy.kernel.CompositeEntity"><entity name="state" class="ptolemy.domains.fsm.kernel.State"></entity></entity>
+            <entity name="state library" class="ptolemy.kernel.CompositeEntity"><entity name="state" class="ptolemy.domains.modal.kernel.State"></entity></entity>
           </configure>
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[803, 624]">
@@ -82,7 +82,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="375.0, 410.0">
         </property>
     </port>
-    <entity name="0" class="ptolemy.domains.fsm.kernel.State">
+    <entity name="0" class="ptolemy.domains.modal.kernel.State">
         <property name="refinementName" class="ptolemy.kernel.util.StringAttribute">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="302.0, 348.0">
@@ -92,7 +92,7 @@
         <port name="outgoingPort" class="ptolemy.kernel.ComponentPort">
         </port>
     </entity>
-    <entity name="1" class="ptolemy.domains.fsm.kernel.State">
+    <entity name="1" class="ptolemy.domains.modal.kernel.State">
         <property name="refinementName" class="ptolemy.kernel.util.StringAttribute">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="302.0, 263.0">
@@ -102,7 +102,7 @@
         <port name="outgoingPort" class="ptolemy.kernel.ComponentPort">
         </port>
     </entity>
-    <entity name="2" class="ptolemy.domains.fsm.kernel.State">
+    <entity name="2" class="ptolemy.domains.modal.kernel.State">
         <property name="refinementName" class="ptolemy.kernel.util.StringAttribute">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="212.0, 223.0">
@@ -112,7 +112,7 @@
         <port name="outgoingPort" class="ptolemy.kernel.ComponentPort">
         </port>
     </entity>
-    <entity name="4" class="ptolemy.domains.fsm.kernel.State">
+    <entity name="4" class="ptolemy.domains.modal.kernel.State">
         <property name="refinementName" class="ptolemy.kernel.util.StringAttribute">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="187.0, 138.0">
@@ -122,7 +122,7 @@
         <port name="outgoingPort" class="ptolemy.kernel.ComponentPort">
         </port>
     </entity>
-    <entity name="3" class="ptolemy.domains.fsm.kernel.State">
+    <entity name="3" class="ptolemy.domains.modal.kernel.State">
         <property name="refinementName" class="ptolemy.kernel.util.StringAttribute">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="392.0, 223.0">
@@ -132,7 +132,7 @@
         <port name="outgoingPort" class="ptolemy.kernel.ComponentPort">
         </port>
     </entity>
-    <entity name="5" class="ptolemy.domains.fsm.kernel.State">
+    <entity name="5" class="ptolemy.domains.modal.kernel.State">
         <property name="refinementName" class="ptolemy.kernel.util.StringAttribute">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="422.0, 138.0">
@@ -142,7 +142,7 @@
         <port name="outgoingPort" class="ptolemy.kernel.ComponentPort">
         </port>
     </entity>
-    <entity name="8" class="ptolemy.domains.fsm.kernel.State">
+    <entity name="8" class="ptolemy.domains.modal.kernel.State">
         <property name="refinementName" class="ptolemy.kernel.util.StringAttribute">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="192.0, 318.0">
@@ -152,7 +152,7 @@
         <port name="outgoingPort" class="ptolemy.kernel.ComponentPort">
         </port>
     </entity>
-    <entity name="6" class="ptolemy.domains.fsm.kernel.State">
+    <entity name="6" class="ptolemy.domains.modal.kernel.State">
         <property name="refinementName" class="ptolemy.kernel.util.StringAttribute">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="132.0, 233.0">
@@ -162,7 +162,7 @@
         <port name="outgoingPort" class="ptolemy.kernel.ComponentPort">
         </port>
     </entity>
-    <entity name="9" class="ptolemy.domains.fsm.kernel.State">
+    <entity name="9" class="ptolemy.domains.modal.kernel.State">
         <property name="refinementName" class="ptolemy.kernel.util.StringAttribute">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="427.0, 323.0">
@@ -172,7 +172,7 @@
         <port name="outgoingPort" class="ptolemy.kernel.ComponentPort">
         </port>
     </entity>
-    <entity name="7" class="ptolemy.domains.fsm.kernel.State">
+    <entity name="7" class="ptolemy.domains.modal.kernel.State">
         <property name="refinementName" class="ptolemy.kernel.util.StringAttribute">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="477.0, 233.0">
@@ -182,12 +182,12 @@
         <port name="outgoingPort" class="ptolemy.kernel.ComponentPort">
         </port>
     </entity>
-    <relation name="relation" class="ptolemy.domains.fsm.kernel.InterfaceAutomatonTransition">
+    <relation name="relation" class="ptolemy.domains.modal.kernel.InterfaceAutomatonTransition">
         <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="c_isPresent">
         </property>
-        <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute">
+        <property name="outputActions" class="ptolemy.domains.modal.kernel.OutputActionsAttribute">
         </property>
-        <property name="setActions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute">
+        <property name="setActions" class="ptolemy.domains.modal.kernel.CommitActionsAttribute">
         </property>
         <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="-0.012409797708873013">
         </property>
@@ -202,12 +202,12 @@
         <property name="label" class="ptolemy.kernel.util.StringAttribute" value="c?">
         </property>
     </relation>
-    <relation name="relation2" class="ptolemy.domains.fsm.kernel.InterfaceAutomatonTransition">
+    <relation name="relation2" class="ptolemy.domains.modal.kernel.InterfaceAutomatonTransition">
         <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="true">
         </property>
-        <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute" value="iGW1=true">
+        <property name="outputActions" class="ptolemy.domains.modal.kernel.OutputActionsAttribute" value="iGW1=true">
         </property>
-        <property name="setActions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute">
+        <property name="setActions" class="ptolemy.domains.modal.kernel.CommitActionsAttribute">
         </property>
         <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.5188195172243593">
         </property>
@@ -222,12 +222,12 @@
         <property name="label" class="ptolemy.kernel.util.StringAttribute" value="iGW1!">
         </property>
     </relation>
-    <relation name="relation3" class="ptolemy.domains.fsm.kernel.InterfaceAutomatonTransition">
+    <relation name="relation3" class="ptolemy.domains.modal.kernel.InterfaceAutomatonTransition">
         <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="iGW1F_isPresent">
         </property>
-        <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute">
+        <property name="outputActions" class="ptolemy.domains.modal.kernel.OutputActionsAttribute">
         </property>
-        <property name="setActions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute">
+        <property name="setActions" class="ptolemy.domains.modal.kernel.CommitActionsAttribute">
         </property>
         <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.41381197891064425">
         </property>
@@ -242,12 +242,12 @@
         <property name="label" class="ptolemy.kernel.util.StringAttribute" value="iGW1F?">
         </property>
     </relation>
-    <relation name="relation4" class="ptolemy.domains.fsm.kernel.InterfaceAutomatonTransition">
+    <relation name="relation4" class="ptolemy.domains.modal.kernel.InterfaceAutomatonTransition">
         <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="iGW1T_isPresent">
         </property>
-        <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute">
+        <property name="outputActions" class="ptolemy.domains.modal.kernel.OutputActionsAttribute">
         </property>
-        <property name="setActions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute">
+        <property name="setActions" class="ptolemy.domains.modal.kernel.CommitActionsAttribute">
         </property>
         <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.11360566833051243">
         </property>
@@ -262,12 +262,12 @@
         <property name="label" class="ptolemy.kernel.util.StringAttribute" value="iGW1T?">
         </property>
     </relation>
-    <relation name="relation5" class="ptolemy.domains.fsm.kernel.InterfaceAutomatonTransition">
+    <relation name="relation5" class="ptolemy.domains.modal.kernel.InterfaceAutomatonTransition">
         <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="true">
         </property>
-        <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute" value="p1=true">
+        <property name="outputActions" class="ptolemy.domains.modal.kernel.OutputActionsAttribute" value="p1=true">
         </property>
-        <property name="setActions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute">
+        <property name="setActions" class="ptolemy.domains.modal.kernel.CommitActionsAttribute">
         </property>
         <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.3186919321333808">
         </property>
@@ -282,12 +282,12 @@
         <property name="label" class="ptolemy.kernel.util.StringAttribute" value="p1!">
         </property>
     </relation>
-    <relation name="relation6" class="ptolemy.domains.fsm.kernel.InterfaceAutomatonTransition">
+    <relation name="relation6" class="ptolemy.domains.modal.kernel.InterfaceAutomatonTransition">
         <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="p1R_isPresent">
         </property>
-        <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute">
+        <property name="outputActions" class="ptolemy.domains.modal.kernel.OutputActionsAttribute">
         </property>
-        <property name="setActions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute">
+        <property name="setActions" class="ptolemy.domains.modal.kernel.CommitActionsAttribute">
         </property>
         <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.26094175006431897">
         </property>
@@ -302,12 +302,12 @@
         <property name="label" class="ptolemy.kernel.util.StringAttribute" value="p1R?">
         </property>
     </relation>
-    <relation name="relation7" class="ptolemy.domains.fsm.kernel.InterfaceAutomatonTransition">
+    <relation name="relation7" class="ptolemy.domains.modal.kernel.InterfaceAutomatonTransition">
         <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="true">
         </property>
-        <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute" value="c1=true">
+        <property name="outputActions" class="ptolemy.domains.modal.kernel.OutputActionsAttribute" value="c1=true">
         </property>
-        <property name="setActions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute">
+        <property name="setActions" class="ptolemy.domains.modal.kernel.CommitActionsAttribute">
         </property>
         <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.38589184440536345">
         </property>
@@ -322,12 +322,12 @@
         <property name="label" class="ptolemy.kernel.util.StringAttribute" value="c1!">
         </property>
     </relation>
-    <relation name="relation8" class="ptolemy.domains.fsm.kernel.InterfaceAutomatonTransition">
+    <relation name="relation8" class="ptolemy.domains.modal.kernel.InterfaceAutomatonTransition">
         <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="true">
         </property>
-        <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute" value="iGW2=true">
+        <property name="outputActions" class="ptolemy.domains.modal.kernel.OutputActionsAttribute" value="iGW2=true">
         </property>
-        <property name="setActions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute">
+        <property name="setActions" class="ptolemy.domains.modal.kernel.CommitActionsAttribute">
         </property>
         <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.2972777867493479">
         </property>
@@ -342,12 +342,12 @@
         <property name="label" class="ptolemy.kernel.util.StringAttribute" value="iGW2!">
         </property>
     </relation>
-    <relation name="relation9" class="ptolemy.domains.fsm.kernel.InterfaceAutomatonTransition">
+    <relation name="relation9" class="ptolemy.domains.modal.kernel.InterfaceAutomatonTransition">
         <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="iGW2F_isPresent">
         </property>
-        <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute">
+        <property name="outputActions" class="ptolemy.domains.modal.kernel.OutputActionsAttribute">
         </property>
-        <property name="setActions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute">
+        <property name="setActions" class="ptolemy.domains.modal.kernel.CommitActionsAttribute">
         </property>
         <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.4193179883138491">
         </property>
@@ -362,12 +362,12 @@
         <property name="label" class="ptolemy.kernel.util.StringAttribute" value="iGW2F?">
         </property>
     </relation>
-    <relation name="relation10" class="ptolemy.domains.fsm.kernel.InterfaceAutomatonTransition">
+    <relation name="relation10" class="ptolemy.domains.modal.kernel.InterfaceAutomatonTransition">
         <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="iGW2T_isPresent">
         </property>
-        <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute">
+        <property name="outputActions" class="ptolemy.domains.modal.kernel.OutputActionsAttribute">
         </property>
-        <property name="setActions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute">
+        <property name="setActions" class="ptolemy.domains.modal.kernel.CommitActionsAttribute">
         </property>
         <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="-0.07355443085262592">
         </property>
@@ -382,12 +382,12 @@
         <property name="label" class="ptolemy.kernel.util.StringAttribute" value="iGW2T?">
         </property>
     </relation>
-    <relation name="relation11" class="ptolemy.domains.fsm.kernel.InterfaceAutomatonTransition">
+    <relation name="relation11" class="ptolemy.domains.modal.kernel.InterfaceAutomatonTransition">
         <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="true">
         </property>
-        <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute" value="p2=true">
+        <property name="outputActions" class="ptolemy.domains.modal.kernel.OutputActionsAttribute" value="p2=true">
         </property>
-        <property name="setActions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute">
+        <property name="setActions" class="ptolemy.domains.modal.kernel.CommitActionsAttribute">
         </property>
         <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="-0.20560726671399118">
         </property>
@@ -402,12 +402,12 @@
         <property name="label" class="ptolemy.kernel.util.StringAttribute" value="p2!">
         </property>
     </relation>
-    <relation name="relation12" class="ptolemy.domains.fsm.kernel.InterfaceAutomatonTransition">
+    <relation name="relation12" class="ptolemy.domains.modal.kernel.InterfaceAutomatonTransition">
         <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="p2R_isPresent">
         </property>
-        <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute">
+        <property name="outputActions" class="ptolemy.domains.modal.kernel.OutputActionsAttribute">
         </property>
-        <property name="setActions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute">
+        <property name="setActions" class="ptolemy.domains.modal.kernel.CommitActionsAttribute">
         </property>
         <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="-0.18428301992258178">
         </property>
@@ -422,12 +422,12 @@
         <property name="label" class="ptolemy.kernel.util.StringAttribute" value="p2R?">
         </property>
     </relation>
-    <relation name="relation13" class="ptolemy.domains.fsm.kernel.InterfaceAutomatonTransition">
+    <relation name="relation13" class="ptolemy.domains.modal.kernel.InterfaceAutomatonTransition">
         <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="true">
         </property>
-        <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute" value="c2=true">
+        <property name="outputActions" class="ptolemy.domains.modal.kernel.OutputActionsAttribute" value="c2=true">
         </property>
-        <property name="setActions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute">
+        <property name="setActions" class="ptolemy.domains.modal.kernel.CommitActionsAttribute">
         </property>
         <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="-0.254276620269958">
         </property>

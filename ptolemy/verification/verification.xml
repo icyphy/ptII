@@ -11,4 +11,4 @@
             <property name="Formal Model Converter" class="ptolemy.verification.kernel.MathematicalModelConverter"/>
 	    <entity name="BoundedBufferTimedDelay" class="ptolemy.verification.lib.BoundedBufferTimedDelay"/>
 	    <entity name="BoundedBufferNondeterministicDelay" class="ptolemy.verification.lib.BoundedBufferNondeterministicDelay" />
-	    <entity name="FmvAutomaton" class="ptolemy.domains.fsm.kernel.fmv.FmvAutomaton"/>
+	    <entity name="FmvAutomaton" class="ptolemy.domains.modal.kernel.fmv.FmvAutomaton"/>

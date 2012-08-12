@@ -659,8 +659,8 @@
         <link port="Copy1:ZOH2.input" relation="Copy1:relation17"/>
         <link port="Copy1:ZOH2.output" relation="relation2"/>
     </entity>
-    <entity name="modal model" class="ptolemy.domains.fsm.modal.ModalModel">
-        <property name="_Director" class="ptolemy.domains.fsm.kernel.HSDirector">
+    <entity name="modal model" class="ptolemy.domains.modal.modal.ModalModel">
+        <property name="_Director" class="ptolemy.domains.modal.kernel.HSDirector">
             <property name="controllerName" class="ptolemy.kernel.util.StringAttribute" value="_Controller">
             </property>
         </property>
@@ -668,33 +668,33 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="387.0, 286.5">
         </property>
-        <port name="theta" class="ptolemy.domains.fsm.modal.ModalPort">
+        <port name="theta" class="ptolemy.domains.modal.modal.ModalPort">
             <property name="input"/>
         </port>
-        <port name="omega" class="ptolemy.domains.fsm.modal.ModalPort">
+        <port name="omega" class="ptolemy.domains.modal.modal.ModalPort">
             <property name="input"/>
         </port>
-        <port name="theta_desired" class="ptolemy.domains.fsm.modal.ModalPort">
+        <port name="theta_desired" class="ptolemy.domains.modal.modal.ModalPort">
             <property name="input"/>
         </port>
-        <port name="omega_desired" class="ptolemy.domains.fsm.modal.ModalPort">
+        <port name="omega_desired" class="ptolemy.domains.modal.modal.ModalPort">
             <property name="input"/>
         </port>
-        <port name="omega_dot_desired" class="ptolemy.domains.fsm.modal.ModalPort">
+        <port name="omega_dot_desired" class="ptolemy.domains.modal.modal.ModalPort">
             <property name="input"/>
         </port>
-        <port name="motor_control" class="ptolemy.domains.fsm.modal.ModalPort">
+        <port name="motor_control" class="ptolemy.domains.modal.modal.ModalPort">
             <property name="output"/>
         </port>
-        <port name="mode" class="ptolemy.domains.fsm.modal.ModalPort">
+        <port name="mode" class="ptolemy.domains.modal.modal.ModalPort">
             <property name="output"/>
         </port>
-        <entity name="_Controller" class="ptolemy.domains.fsm.modal.ModalController">
+        <entity name="_Controller" class="ptolemy.domains.modal.modal.ModalController">
             <property name="initialStateName" class="ptolemy.kernel.util.StringAttribute" value="init">
             </property>
             <property name="_nonStrictMarker" class="ptolemy.kernel.util.Attribute">
             </property>
-            <property name="_library" class="ptolemy.moml.LibraryAttribute"><configure><entity name="state library" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/configs/basicUtilities.xml"/><entity name="state" class="ptolemy.domains.fsm.kernel.State"><property name="_centerName" class="ptolemy.kernel.util.Attribute"/></entity></entity></configure></property>
+            <property name="_library" class="ptolemy.moml.LibraryAttribute"><configure><entity name="state library" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/configs/basicUtilities.xml"/><entity name="state" class="ptolemy.domains.modal.kernel.State"><property name="_centerName" class="ptolemy.kernel.util.Attribute"/></entity></entity></configure></property>
             <property name="annotation" class="ptolemy.kernel.util.Attribute">
                 <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
                 </property>
@@ -710,44 +710,44 @@ For continuous-time models, use the CTEmbeddedDirector.</text></svg></configure>
             </property>
             <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute">
             </property>
-            <port name="theta" class="ptolemy.domains.fsm.modal.RefinementPort">
+            <port name="theta" class="ptolemy.domains.modal.modal.RefinementPort">
                 <property name="input"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="33.5, 90.0">
                 </property>
             </port>
-            <port name="omega" class="ptolemy.domains.fsm.modal.RefinementPort">
+            <port name="omega" class="ptolemy.domains.modal.modal.RefinementPort">
                 <property name="input"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="38.0, 160.0">
                 </property>
             </port>
-            <port name="theta_desired" class="ptolemy.domains.fsm.modal.RefinementPort">
+            <port name="theta_desired" class="ptolemy.domains.modal.modal.RefinementPort">
                 <property name="input"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="62.0, 229.0">
                 </property>
             </port>
-            <port name="omega_desired" class="ptolemy.domains.fsm.modal.RefinementPort">
+            <port name="omega_desired" class="ptolemy.domains.modal.modal.RefinementPort">
                 <property name="input"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="67.0, 309.0">
                 </property>
             </port>
-            <port name="omega_dot_desired" class="ptolemy.domains.fsm.modal.RefinementPort">
+            <port name="omega_dot_desired" class="ptolemy.domains.modal.modal.RefinementPort">
                 <property name="input"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="74.0, 399.0">
                 </property>
             </port>
-            <port name="motor_control" class="ptolemy.domains.fsm.modal.RefinementPort">
+            <port name="motor_control" class="ptolemy.domains.modal.modal.RefinementPort">
                 <property name="input"/>
                 <property name="output"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="535.0, 135.5">
                 </property>
             </port>
-            <port name="mode" class="ptolemy.domains.fsm.modal.RefinementPort">
+            <port name="mode" class="ptolemy.domains.modal.modal.RefinementPort">
                 <property name="input"/>
                 <property name="output"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="512.0, 301.75">
                 </property>
             </port>
-            <entity name="slidingMode" class="ptolemy.domains.fsm.kernel.State">
+            <entity name="slidingMode" class="ptolemy.domains.modal.kernel.State">
                 <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="slidingMode">
                 </property>
                 <property name="_centerName" class="ptolemy.kernel.util.Attribute">
@@ -761,7 +761,7 @@ For continuous-time models, use the CTEmbeddedDirector.</text></svg></configure>
                 <port name="outgoingPort" class="ptolemy.kernel.ComponentPort">
                 </port>
             </entity>
-            <entity name="onSurface" class="ptolemy.domains.fsm.kernel.State">
+            <entity name="onSurface" class="ptolemy.domains.modal.kernel.State">
                 <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="onSurface, onSurface">
                 </property>
                 <property name="_centerName" class="ptolemy.kernel.util.Attribute">
@@ -775,7 +775,7 @@ For continuous-time models, use the CTEmbeddedDirector.</text></svg></configure>
                 <port name="outgoingPort" class="ptolemy.kernel.ComponentPort">
                 </port>
             </entity>
-            <entity name="init" class="ptolemy.domains.fsm.kernel.State">
+            <entity name="init" class="ptolemy.domains.modal.kernel.State">
                 <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="init">
                 </property>
                 <property name="_centerName" class="ptolemy.kernel.util.Attribute">
@@ -789,12 +789,12 @@ For continuous-time models, use the CTEmbeddedDirector.</text></svg></configure>
                 <port name="outgoingPort" class="ptolemy.kernel.ComponentPort">
                 </port>
             </entity>
-            <relation name="relation" class="ptolemy.domains.fsm.kernel.Transition">
+            <relation name="relation" class="ptolemy.domains.modal.kernel.Transition">
                 <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="abs(theta-theta_desired)&lt;delta">
                 </property>
-                <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute">
+                <property name="outputActions" class="ptolemy.domains.modal.kernel.OutputActionsAttribute">
                 </property>
-                <property name="setActions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute" value="mode=2">
+                <property name="setActions" class="ptolemy.domains.modal.kernel.CommitActionsAttribute" value="mode=2">
                 </property>
                 <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="1.243283098059911">
                 </property>
@@ -807,12 +807,12 @@ For continuous-time models, use the CTEmbeddedDirector.</text></svg></configure>
                 <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
                 </property>
             </relation>
-            <relation name="relation3" class="ptolemy.domains.fsm.kernel.Transition">
+            <relation name="relation3" class="ptolemy.domains.modal.kernel.Transition">
                 <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="true">
                 </property>
-                <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute">
+                <property name="outputActions" class="ptolemy.domains.modal.kernel.OutputActionsAttribute">
                 </property>
-                <property name="setActions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute" value="mode=1">
+                <property name="setActions" class="ptolemy.domains.modal.kernel.CommitActionsAttribute" value="mode=1">
                 </property>
                 <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.6283185307179586">
                 </property>
@@ -825,12 +825,12 @@ For continuous-time models, use the CTEmbeddedDirector.</text></svg></configure>
                 <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
                 </property>
             </relation>
-            <relation name="relation2" class="ptolemy.domains.fsm.kernel.Transition">
+            <relation name="relation2" class="ptolemy.domains.modal.kernel.Transition">
                 <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="abs(theta-theta_desired)&gt;delta">
                 </property>
-                <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute">
+                <property name="outputActions" class="ptolemy.domains.modal.kernel.OutputActionsAttribute">
                 </property>
-                <property name="setActions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute" value="mode=1">
+                <property name="setActions" class="ptolemy.domains.modal.kernel.CommitActionsAttribute" value="mode=1">
                 </property>
                 <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="1.048318530717959">
                 </property>
@@ -850,7 +850,7 @@ For continuous-time models, use the CTEmbeddedDirector.</text></svg></configure>
             <link port="onSurface.outgoingPort" relation="relation2"/>
             <link port="init.outgoingPort" relation="relation3"/>
         </entity>
-        <entity name="slidingMode" class="ptolemy.domains.fsm.modal.Refinement">
+        <entity name="slidingMode" class="ptolemy.domains.modal.modal.Refinement">
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute">
             </property>
             <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute">
@@ -883,42 +883,42 @@ For continuous-time models, use the CTEmbeddedDirector.</text></svg></configure>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="127.0, 38.0">
                 </property>
             </property>
-            <port name="theta" class="ptolemy.domains.fsm.modal.RefinementPort">
+            <port name="theta" class="ptolemy.domains.modal.modal.RefinementPort">
                 <property name="input"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="38.5, 95.0">
                 </property>
                 <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="1">
                 </property>
             </port>
-            <port name="omega" class="ptolemy.domains.fsm.modal.RefinementPort">
+            <port name="omega" class="ptolemy.domains.modal.modal.RefinementPort">
                 <property name="input"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="38.0, 190.0">
                 </property>
                 <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="1">
                 </property>
             </port>
-            <port name="theta_desired" class="ptolemy.domains.fsm.modal.RefinementPort">
+            <port name="theta_desired" class="ptolemy.domains.modal.modal.RefinementPort">
                 <property name="input"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="72.0, 399.0">
                 </property>
                 <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="1">
                 </property>
             </port>
-            <port name="omega_desired" class="ptolemy.domains.fsm.modal.RefinementPort">
+            <port name="omega_desired" class="ptolemy.domains.modal.modal.RefinementPort">
                 <property name="input"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="82.0, 489.0">
                 </property>
                 <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="1">
                 </property>
             </port>
-            <port name="omega_dot_desired" class="ptolemy.domains.fsm.modal.RefinementPort">
+            <port name="omega_dot_desired" class="ptolemy.domains.modal.modal.RefinementPort">
                 <property name="input"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="84.0, 564.0">
                 </property>
                 <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="1">
                 </property>
             </port>
-            <port name="motor_control" class="ptolemy.domains.fsm.modal.RefinementPort">
+            <port name="motor_control" class="ptolemy.domains.modal.modal.RefinementPort">
                 <property name="output"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="815.0, 134.0">
                 </property>
@@ -927,7 +927,7 @@ For continuous-time models, use the CTEmbeddedDirector.</text></svg></configure>
                 <property name="tokenInitProduction" class="ptolemy.data.expr.Parameter" value="0">
                 </property>
             </port>
-            <port name="mode" class="ptolemy.domains.fsm.modal.RefinementPort">
+            <port name="mode" class="ptolemy.domains.modal.modal.RefinementPort">
                 <property name="output"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="721.9040767386134, 479.4004796163068">
                 </property>
@@ -1241,7 +1241,7 @@ For continuous-time models, use the CTEmbeddedDirector.</text></svg></configure>
             <link port="1:AddSubtract.minus" relation="relation3"/>
             <link port="1:AddSubtract.output" relation="1:relation2"/>
         </entity>
-        <entity name="onSurface" class="ptolemy.domains.fsm.modal.Refinement">
+        <entity name="onSurface" class="ptolemy.domains.modal.modal.Refinement">
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute">
             </property>
             <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute">
@@ -1256,42 +1256,42 @@ For continuous-time models, use the CTEmbeddedDirector.</text></svg></configure>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="127.0, 38.0">
                 </property>
             </property>
-            <port name="theta" class="ptolemy.domains.fsm.modal.RefinementPort">
+            <port name="theta" class="ptolemy.domains.modal.modal.RefinementPort">
                 <property name="input"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="53.5, 75.0">
                 </property>
                 <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="1">
                 </property>
             </port>
-            <port name="omega" class="ptolemy.domains.fsm.modal.RefinementPort">
+            <port name="omega" class="ptolemy.domains.modal.modal.RefinementPort">
                 <property name="input"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="53.0, 125.0">
                 </property>
                 <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="0">
                 </property>
             </port>
-            <port name="theta_desired" class="ptolemy.domains.fsm.modal.RefinementPort">
+            <port name="theta_desired" class="ptolemy.domains.modal.modal.RefinementPort">
                 <property name="input"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="67.0, 179.0">
                 </property>
                 <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="1">
                 </property>
             </port>
-            <port name="omega_desired" class="ptolemy.domains.fsm.modal.RefinementPort">
+            <port name="omega_desired" class="ptolemy.domains.modal.modal.RefinementPort">
                 <property name="input"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="72.0, 234.0">
                 </property>
                 <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="0">
                 </property>
             </port>
-            <port name="omega_dot_desired" class="ptolemy.domains.fsm.modal.RefinementPort">
+            <port name="omega_dot_desired" class="ptolemy.domains.modal.modal.RefinementPort">
                 <property name="input"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="94.0, 289.0">
                 </property>
                 <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="0">
                 </property>
             </port>
-            <port name="motor_control" class="ptolemy.domains.fsm.modal.RefinementPort">
+            <port name="motor_control" class="ptolemy.domains.modal.modal.RefinementPort">
                 <property name="output"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="460.0, 174.0">
                 </property>
@@ -1300,7 +1300,7 @@ For continuous-time models, use the CTEmbeddedDirector.</text></svg></configure>
                 <property name="tokenInitProduction" class="ptolemy.data.expr.Parameter" value="0">
                 </property>
             </port>
-            <port name="mode" class="ptolemy.domains.fsm.modal.RefinementPort">
+            <port name="mode" class="ptolemy.domains.modal.modal.RefinementPort">
                 <property name="output"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="472.0, 300.0">
                 </property>
@@ -1363,42 +1363,42 @@ For continuous-time models, use the CTEmbeddedDirector.</text></svg></configure>
             <link port="1:Scale.input" relation="1:relation"/>
             <link port="1:Scale.output" relation="relation"/>
         </entity>
-        <entity name="init" class="ptolemy.domains.fsm.modal.Refinement">
+        <entity name="init" class="ptolemy.domains.modal.modal.Refinement">
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute">
             </property>
             <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute">
             </property>
-            <port name="theta" class="ptolemy.domains.fsm.modal.RefinementPort">
+            <port name="theta" class="ptolemy.domains.modal.modal.RefinementPort">
                 <property name="input"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="80.5, 75.0">
                 </property>
             </port>
-            <port name="omega" class="ptolemy.domains.fsm.modal.RefinementPort">
+            <port name="omega" class="ptolemy.domains.modal.modal.RefinementPort">
                 <property name="input"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="85.0, 135.0">
                 </property>
             </port>
-            <port name="theta_desired" class="ptolemy.domains.fsm.modal.RefinementPort">
+            <port name="theta_desired" class="ptolemy.domains.modal.modal.RefinementPort">
                 <property name="input"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="104.0, 194.0">
                 </property>
             </port>
-            <port name="omega_desired" class="ptolemy.domains.fsm.modal.RefinementPort">
+            <port name="omega_desired" class="ptolemy.domains.modal.modal.RefinementPort">
                 <property name="input"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="109.0, 244.0">
                 </property>
             </port>
-            <port name="omega_dot_desired" class="ptolemy.domains.fsm.modal.RefinementPort">
+            <port name="omega_dot_desired" class="ptolemy.domains.modal.modal.RefinementPort">
                 <property name="input"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="121.0, 304.0">
                 </property>
             </port>
-            <port name="motor_control" class="ptolemy.domains.fsm.modal.RefinementPort">
+            <port name="motor_control" class="ptolemy.domains.modal.modal.RefinementPort">
                 <property name="output"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="485.0, 154.0">
                 </property>
             </port>
-            <port name="mode" class="ptolemy.domains.fsm.modal.RefinementPort">
+            <port name="mode" class="ptolemy.domains.modal.modal.RefinementPort">
                 <property name="output"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="467.0, 220.0">
                 </property>

@@ -164,34 +164,34 @@ used to simplify the model.</text></svg></configure>
 </plot>?>
         </configure>
     </entity>
-    <entity name="car model" class="ptolemy.domains.fsm.modal.ModalModel">
+    <entity name="car model" class="ptolemy.domains.modal.modal.ModalModel">
         <property name="_tableauFactory" class="ptolemy.vergil.fsm.modal.ModalTableauFactory">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="210.0, 215.0">
         </property>
-        <port name="position" class="ptolemy.domains.fsm.modal.ModalPort">
+        <port name="position" class="ptolemy.domains.modal.modal.ModalPort">
             <property name="output"/>
             <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
             </property>
         </port>
-        <port name="gear" class="ptolemy.domains.fsm.modal.ModalPort">
+        <port name="gear" class="ptolemy.domains.modal.modal.ModalPort">
             <property name="input"/>
             <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;DISCRETE&quot;">
             </property>
         </port>
-        <port name="throttle" class="ptolemy.domains.fsm.modal.ModalPort">
+        <port name="throttle" class="ptolemy.domains.modal.modal.ModalPort">
             <property name="input"/>
         </port>
-        <port name="velocity" class="ptolemy.domains.fsm.modal.ModalPort">
+        <port name="velocity" class="ptolemy.domains.modal.modal.ModalPort">
             <property name="output"/>
             <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
             </property>
         </port>
-        <entity name="_Controller" class="ptolemy.domains.fsm.modal.ModalController">
+        <entity name="_Controller" class="ptolemy.domains.modal.modal.ModalController">
             <property name="initialStateName" class="ptolemy.kernel.util.StringAttribute">
             </property>
             <property name="_library" class="ptolemy.moml.LibraryAttribute">
-                <configure><entity name="state library" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/configs/basicUtilities.xml"></input><entity name="state" class="ptolemy.domains.fsm.kernel.State"><property name="_centerName" class="ptolemy.kernel.util.Attribute"></property></entity></entity></configure>
+                <configure><entity name="state library" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/configs/basicUtilities.xml"></input><entity name="state" class="ptolemy.domains.modal.kernel.State"><property name="_centerName" class="ptolemy.kernel.util.Attribute"></property></entity></entity></configure>
             </property>
             <property name="annotation" class="ptolemy.kernel.util.Attribute">
                 <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -241,29 +241,29 @@ to see how the function closure
                 <property name="_location" class="ptolemy.kernel.util.Location" value="270.0, 180.0">
                 </property>
             </property>
-            <port name="position" class="ptolemy.domains.fsm.modal.RefinementPort">
+            <port name="position" class="ptolemy.domains.modal.modal.RefinementPort">
                 <property name="input"/>
                 <property name="output"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="535.0, 205.0">
                 </property>
             </port>
-            <port name="gear" class="ptolemy.domains.fsm.modal.RefinementPort">
+            <port name="gear" class="ptolemy.domains.modal.modal.RefinementPort">
                 <property name="input"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="20.0, 200.0">
                 </property>
             </port>
-            <port name="throttle" class="ptolemy.domains.fsm.modal.RefinementPort">
+            <port name="throttle" class="ptolemy.domains.modal.modal.RefinementPort">
                 <property name="input"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="20.0, 250.0">
                 </property>
             </port>
-            <port name="velocity" class="ptolemy.domains.fsm.modal.RefinementPort">
+            <port name="velocity" class="ptolemy.domains.modal.modal.RefinementPort">
                 <property name="input"/>
                 <property name="output"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="535.0, 265.0">
                 </property>
             </port>
-            <entity name="inGear" class="ptolemy.domains.fsm.kernel.State">
+            <entity name="inGear" class="ptolemy.domains.modal.kernel.State">
                 <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="state">
                 </property>
                 <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
@@ -273,7 +273,7 @@ to see how the function closure
                 <property name="_location" class="ptolemy.kernel.util.Location" value="260.0, 210.0">
                 </property>
             </entity>
-            <entity name="init" class="ptolemy.domains.fsm.kernel.State">
+            <entity name="init" class="ptolemy.domains.modal.kernel.State">
                 <property name="isInitialState" class="ptolemy.data.expr.Parameter" value="true">
                 </property>
                 <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
@@ -283,10 +283,10 @@ to see how the function closure
                 <property name="_location" class="ptolemy.kernel.util.Location" value="175.0, 230.0">
                 </property>
             </entity>
-            <relation name="relation" class="ptolemy.domains.fsm.kernel.Transition">
+            <relation name="relation" class="ptolemy.domains.modal.kernel.Transition">
                 <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="gear_isPresent">
                 </property>
-                <property name="setActions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute" value="state.efficiencyFunction = function(rpm:double) 1/(1+((rpm-300*gear)/100)^2)">
+                <property name="setActions" class="ptolemy.domains.modal.kernel.CommitActionsAttribute" value="state.efficiencyFunction = function(rpm:double) 1/(1+((rpm-300*gear)/100)^2)">
                 </property>
                 <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="2.160046119885927">
                 </property>
@@ -297,10 +297,10 @@ to see how the function closure
                 <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
             </relation>
-            <relation name="relation2" class="ptolemy.domains.fsm.kernel.Transition">
+            <relation name="relation2" class="ptolemy.domains.modal.kernel.Transition">
                 <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="true">
                 </property>
-                <property name="setActions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute" value="state.efficiencyFunction = function(rpm:double) 1/(1+((rpm-300)/100)^2)">
+                <property name="setActions" class="ptolemy.domains.modal.kernel.CommitActionsAttribute" value="state.efficiencyFunction = function(rpm:double) 1/(1+((rpm-300)/100)^2)">
                 </property>
                 <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="1.3077625089165776">
                 </property>
@@ -316,7 +316,7 @@ to see how the function closure
             <link port="inGear.outgoingPort" relation="relation"/>
             <link port="init.outgoingPort" relation="relation2"/>
         </entity>
-        <entity name="state" class="ptolemy.domains.fsm.modal.Refinement">
+        <entity name="state" class="ptolemy.domains.modal.modal.Refinement">
             <property name="CTEmbedded Director" class="ptolemy.domains.ct.kernel.CTEmbeddedDirector">
                 <property name="timeResolution" class="ptolemy.actor.parameters.SharedParameter" value="1.0E-10">
                 </property>
@@ -430,22 +430,22 @@ and rpm).  The integrators model the inertia of the vehicle.</text></svg></confi
             </property>
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
             </property>
-            <port name="position" class="ptolemy.domains.fsm.modal.RefinementPort">
+            <port name="position" class="ptolemy.domains.modal.modal.RefinementPort">
                 <property name="output"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="565.0, 275.0">
                 </property>
             </port>
-            <port name="gear" class="ptolemy.domains.fsm.modal.RefinementPort">
+            <port name="gear" class="ptolemy.domains.modal.modal.RefinementPort">
                 <property name="input"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="35.0, 175.0">
                 </property>
             </port>
-            <port name="throttle" class="ptolemy.domains.fsm.modal.RefinementPort">
+            <port name="throttle" class="ptolemy.domains.modal.modal.RefinementPort">
                 <property name="input"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="35.0, 220.0">
                 </property>
             </port>
-            <port name="velocity" class="ptolemy.domains.fsm.modal.RefinementPort">
+            <port name="velocity" class="ptolemy.domains.modal.modal.RefinementPort">
                 <property name="output"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="510.0, 345.0">
                 </property>

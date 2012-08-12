@@ -1,7 +1,7 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE class PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<class name="Controller" extends="ptolemy.domains.fsm.kernel.FSMActor">
+<class name="Controller" extends="ptolemy.domains.modal.kernel.FSMActor">
     <property name="initialStateName" class="ptolemy.kernel.util.StringAttribute" value="Init">
     </property>
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="4.0-alpha">
@@ -36,26 +36,26 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="522.0, 92.0">
         </property>
     </port>
-    <entity name="Init" class="ptolemy.domains.fsm.kernel.State">
+    <entity name="Init" class="ptolemy.domains.modal.kernel.State">
         <property name="_location" class="ptolemy.kernel.util.Location" value="152.0, 42.5">
         </property>
     </entity>
-    <entity name="State0" class="ptolemy.domains.fsm.kernel.State">
+    <entity name="State0" class="ptolemy.domains.modal.kernel.State">
         <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="mode0">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="243.0, 60.0">
         </property>
     </entity>
-    <entity name="State1" class="ptolemy.domains.fsm.kernel.State">
+    <entity name="State1" class="ptolemy.domains.modal.kernel.State">
         <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="mode1">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="462.0, 124.0">
         </property>
     </entity>
-    <relation name="t0" class="ptolemy.domains.fsm.kernel.Transition">
+    <relation name="t0" class="ptolemy.domains.modal.kernel.Transition">
         <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="true">
         </property>
-        <property name="setActions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute" value="mode0.ramp1.init = 0; mode0.ramp2.init = 0">
+        <property name="setActions" class="ptolemy.domains.modal.kernel.CommitActionsAttribute" value="mode0.ramp1.init = 0; mode0.ramp2.init = 0">
         </property>
         <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="PI/5.0">
         </property>
@@ -66,12 +66,12 @@
         <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
         </property>
     </relation>
-    <relation name="t1" class="ptolemy.domains.fsm.kernel.Transition">
+    <relation name="t1" class="ptolemy.domains.modal.kernel.Transition">
         <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="in_isPresent &amp;&amp; (in % 4 == 0)">
         </property>
-        <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute" value="out = 1">
+        <property name="outputActions" class="ptolemy.domains.modal.kernel.OutputActionsAttribute" value="out = 1">
         </property>
-        <property name="setActions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute" value="mode1.ramp1.init = refIn1_isPresent ? (refIn1 + 1) : 0; mode1.ramp2.init = refIn2_isPresent ? (refIn2 + 1) : 0">
+        <property name="setActions" class="ptolemy.domains.modal.kernel.CommitActionsAttribute" value="mode1.ramp1.init = refIn1_isPresent ? (refIn1 + 1) : 0; mode1.ramp2.init = refIn2_isPresent ? (refIn2 + 1) : 0">
         </property>
         <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="PI/5.0">
         </property>
@@ -82,12 +82,12 @@
         <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
         </property>
     </relation>
-    <relation name="t2" class="ptolemy.domains.fsm.kernel.Transition">
+    <relation name="t2" class="ptolemy.domains.modal.kernel.Transition">
         <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="in_isPresent &amp;&amp; (in % 4 == 0)">
         </property>
-        <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute" value="out = 0">
+        <property name="outputActions" class="ptolemy.domains.modal.kernel.OutputActionsAttribute" value="out = 0">
         </property>
-        <property name="setActions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute" value="mode0.ramp1.init = refIn1_isPresent ? (refIn1 + 1) : 0; mode0.ramp2.init = refIn2_isPresent ? (refIn2 + 1) : 0">
+        <property name="setActions" class="ptolemy.domains.modal.kernel.CommitActionsAttribute" value="mode0.ramp1.init = refIn1_isPresent ? (refIn1 + 1) : 0; mode0.ramp2.init = refIn2_isPresent ? (refIn2 + 1) : 0">
         </property>
         <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="PI/5.0">
         </property>

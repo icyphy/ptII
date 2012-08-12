@@ -24,30 +24,30 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[60.0, 100.0]">
         </property>
     </entity>
-    <entity name="ModalModel" class="ptolemy.domains.fsm.modal.ModalModel">
+    <entity name="ModalModel" class="ptolemy.domains.modal.modal.ModalModel">
         <property name="_tableauFactory" class="ptolemy.vergil.fsm.modal.ModalTableauFactory">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[360.0, 130.0]">
         </property>
-        <port name="in" class="ptolemy.domains.fsm.modal.ModalPort">
+        <port name="in" class="ptolemy.domains.modal.modal.ModalPort">
             <property name="input"/>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
         </port>
-        <port name="prevIn" class="ptolemy.domains.fsm.modal.ModalPort">
+        <port name="prevIn" class="ptolemy.domains.modal.modal.ModalPort">
             <property name="input"/>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
         </port>
-        <port name="prevPrevIn" class="ptolemy.domains.fsm.modal.ModalPort">
+        <port name="prevPrevIn" class="ptolemy.domains.modal.modal.ModalPort">
             <property name="input"/>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
         </port>
-        <entity name="_Controller" class="ptolemy.domains.fsm.modal.ModalController">
+        <entity name="_Controller" class="ptolemy.domains.modal.modal.ModalController">
             <property name="_library" class="ptolemy.moml.LibraryAttribute">
                 <configure>
-        <entity name="state library" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/configs/basicUtilities.xml"></input><entity name="state" class="ptolemy.domains.fsm.kernel.State"><property name="_centerName" class="ptolemy.kernel.util.Attribute"></property><property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory"></property></entity></entity>
+        <entity name="state library" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/configs/basicUtilities.xml"></input><entity name="state" class="ptolemy.domains.modal.kernel.State"><property name="_centerName" class="ptolemy.kernel.util.Attribute"></property><property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory"></property></entity></entity>
       </configure>
             </property>
             <property name="count" class="ptolemy.data.expr.Parameter" value="0">
@@ -77,22 +77,22 @@
             </property>
             <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{296.0, 98.5}">
             </property>
-            <port name="in" class="ptolemy.domains.fsm.modal.RefinementPort">
+            <port name="in" class="ptolemy.domains.modal.modal.RefinementPort">
                 <property name="input"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[25.0, 65.0]">
                 </property>
             </port>
-            <port name="prevIn" class="ptolemy.domains.fsm.modal.RefinementPort">
+            <port name="prevIn" class="ptolemy.domains.modal.modal.RefinementPort">
                 <property name="input"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[25.0, 105.0]">
                 </property>
             </port>
-            <port name="prevPrevIn" class="ptolemy.domains.fsm.modal.RefinementPort">
+            <port name="prevPrevIn" class="ptolemy.domains.modal.modal.RefinementPort">
                 <property name="input"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[25.0, 145.0]">
                 </property>
             </port>
-            <entity name="init" class="ptolemy.domains.fsm.kernel.State">
+            <entity name="init" class="ptolemy.domains.modal.kernel.State">
                 <property name="isInitialState" class="ptolemy.data.expr.Parameter" value="true">
                 </property>
                 <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
@@ -102,7 +102,7 @@
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[259.4072591396871, 35.32818603515628]">
                 </property>
             </entity>
-            <entity name="different" class="ptolemy.domains.fsm.kernel.State">
+            <entity name="different" class="ptolemy.domains.modal.kernel.State">
                 <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="different">
                 </property>
                 <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
@@ -112,7 +112,7 @@
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[214.4072591396871, 115.32818603515628]">
                 </property>
             </entity>
-            <entity name="same" class="ptolemy.domains.fsm.kernel.State">
+            <entity name="same" class="ptolemy.domains.modal.kernel.State">
                 <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 </property>
                 <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
@@ -120,12 +120,12 @@
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[364.4072591396871, 135.32818603515628]">
                 </property>
             </entity>
-            <relation name="relation2" class="ptolemy.domains.fsm.kernel.Transition">
+            <relation name="relation2" class="ptolemy.domains.modal.kernel.Transition">
                 <property name="annotation" class="ptolemy.data.expr.StringParameter" value="">
                 </property>
                 <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="in == prevIn">
                 </property>
-                <property name="setActions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute" value="count = 2">
+                <property name="setActions" class="ptolemy.domains.modal.kernel.CommitActionsAttribute" value="count = 2">
                 </property>
                 <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.6283185307179586">
                 </property>
@@ -140,7 +140,7 @@
                 <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
             </relation>
-            <relation name="relation3" class="ptolemy.domains.fsm.kernel.Transition">
+            <relation name="relation3" class="ptolemy.domains.modal.kernel.Transition">
                 <property name="annotation" class="ptolemy.data.expr.StringParameter" value="">
                 </property>
                 <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="in != prevIn">
@@ -158,12 +158,12 @@
                 <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
             </relation>
-            <relation name="relation4" class="ptolemy.domains.fsm.kernel.Transition">
+            <relation name="relation4" class="ptolemy.domains.modal.kernel.Transition">
                 <property name="annotation" class="ptolemy.data.expr.StringParameter" value="">
                 </property>
                 <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="in == prevIn">
                 </property>
-                <property name="setActions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute" value="count = count + 1">
+                <property name="setActions" class="ptolemy.domains.modal.kernel.CommitActionsAttribute" value="count = count + 1">
                 </property>
                 <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="2.623224691438779">
                 </property>
@@ -178,12 +178,12 @@
                 <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
             </relation>
-            <relation name="relation7" class="ptolemy.domains.fsm.kernel.Transition">
+            <relation name="relation7" class="ptolemy.domains.modal.kernel.Transition">
                 <property name="annotation" class="ptolemy.data.expr.StringParameter" value="">
                 </property>
                 <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="in != prevIn">
                 </property>
-                <property name="setActions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute" value="count = 1">
+                <property name="setActions" class="ptolemy.domains.modal.kernel.CommitActionsAttribute" value="count = 1">
                 </property>
                 <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="2.4311971934403442">
                 </property>
@@ -198,12 +198,12 @@
                 <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
             </relation>
-            <relation name="relation" class="ptolemy.domains.fsm.kernel.Transition">
+            <relation name="relation" class="ptolemy.domains.modal.kernel.Transition">
                 <property name="annotation" class="ptolemy.data.expr.StringParameter" value="">
                 </property>
                 <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="true">
                 </property>
-                <property name="setActions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute" value="count = 1">
+                <property name="setActions" class="ptolemy.domains.modal.kernel.CommitActionsAttribute" value="count = 1">
                 </property>
                 <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="-1.1233487725845042">
                 </property>
@@ -229,7 +229,7 @@
             <link port="same.outgoingPort" relation="relation3"/>
             <link port="same.outgoingPort" relation="relation4"/>
         </entity>
-        <entity name="different" class="ptolemy.domains.fsm.modal.Refinement">
+        <entity name="different" class="ptolemy.domains.modal.modal.Refinement">
             <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
                <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
                </property>
@@ -244,17 +244,17 @@
             </property>
             <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{301.0, 156.0}">
             </property>
-            <port name="in" class="ptolemy.domains.fsm.modal.RefinementPort">
+            <port name="in" class="ptolemy.domains.modal.modal.RefinementPort">
                 <property name="input"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[20.0, 90.0]">
                 </property>
             </port>
-            <port name="prevIn" class="ptolemy.domains.fsm.modal.RefinementPort">
+            <port name="prevIn" class="ptolemy.domains.modal.modal.RefinementPort">
                 <property name="input"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[20.0, 130.0]">
                 </property>
             </port>
-            <port name="prevPrevIn" class="ptolemy.domains.fsm.modal.RefinementPort">
+            <port name="prevPrevIn" class="ptolemy.domains.modal.modal.RefinementPort">
                 <property name="input"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[20.0, 170.0]">
                 </property>

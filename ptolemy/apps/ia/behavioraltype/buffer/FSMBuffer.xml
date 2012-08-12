@@ -1,12 +1,12 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="FSMBuffer" class="ptolemy.domains.fsm.kernel.FSMActor">
+<entity name="FSMBuffer" class="ptolemy.domains.modal.kernel.FSMActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="3.1-devel">
     </property>
     <property name="_library" class="ptolemy.moml.LibraryAttribute">
         <configure>
-    <entity name="state library" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/configs/annotation.xml"></input><entity name="state" class="ptolemy.domains.fsm.kernel.State"><property name="_centerName" class="ptolemy.kernel.util.Attribute"></property></entity></entity>
+    <entity name="state library" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/configs/annotation.xml"></input><entity name="state" class="ptolemy.domains.modal.kernel.State"><property name="_centerName" class="ptolemy.kernel.util.Attribute"></property></entity></entity>
   </configure>
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
@@ -75,19 +75,19 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="370.0, 255.0">
         </property>
     </port>
-    <entity name="0" class="ptolemy.domains.fsm.kernel.State">
+    <entity name="0" class="ptolemy.domains.modal.kernel.State">
         <property name="_centerName" class="ptolemy.kernel.util.Attribute">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="185.0, 180.0">
         </property>
     </entity>
-    <entity name="1" class="ptolemy.domains.fsm.kernel.State">
+    <entity name="1" class="ptolemy.domains.modal.kernel.State">
         <property name="_centerName" class="ptolemy.kernel.util.Attribute">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="310.0, 180.0">
         </property>
     </entity>
-    <relation name="relation" class="ptolemy.domains.fsm.kernel.Transition">
+    <relation name="relation" class="ptolemy.domains.modal.kernel.Transition">
         <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="p/pR">
         </property>
         <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="-0.6321914559536237">
@@ -99,7 +99,7 @@
         <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
         </property>
     </relation>
-    <relation name="relation2" class="ptolemy.domains.fsm.kernel.Transition">
+    <relation name="relation2" class="ptolemy.domains.modal.kernel.Transition">
         <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="g/t">
         </property>
         <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="-0.5265086987051137">
@@ -111,7 +111,7 @@
         <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
         </property>
     </relation>
-    <relation name="relation3" class="ptolemy.domains.fsm.kernel.Transition">
+    <relation name="relation3" class="ptolemy.domains.modal.kernel.Transition">
         <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="hR/hRT">
         </property>
         <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="2.0747492134819296">
@@ -123,7 +123,7 @@
         <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
         </property>
     </relation>
-    <relation name="relation4" class="ptolemy.domains.fsm.kernel.Transition">
+    <relation name="relation4" class="ptolemy.domains.modal.kernel.Transition">
         <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="hT/hTF">
         </property>
         <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="2.0825311792845524">
@@ -135,7 +135,7 @@
         <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
         </property>
     </relation>
-    <relation name="relation5" class="ptolemy.domains.fsm.kernel.Transition">
+    <relation name="relation5" class="ptolemy.domains.modal.kernel.Transition">
         <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="hR/hRF">
         </property>
         <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="2.0689049150238317">
@@ -147,7 +147,7 @@
         <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
         </property>
     </relation>
-    <relation name="relation6" class="ptolemy.domains.fsm.kernel.Transition">
+    <relation name="relation6" class="ptolemy.domains.modal.kernel.Transition">
         <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="hT/hTT">
         </property>
         <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="2.0714267609987687">

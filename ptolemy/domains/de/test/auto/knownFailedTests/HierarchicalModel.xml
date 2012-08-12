@@ -34,8 +34,8 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[435.0, 445.0]">
         </property>
     </property>
-    <entity name="A" class="ptolemy.domains.fsm.modal.ModalModel">
-        <property name="directorClass" class="ptolemy.data.expr.StringParameter" value="ptolemy.domains.fsm.kernel.FSMDirector">
+    <entity name="A" class="ptolemy.domains.modal.modal.ModalModel">
+        <property name="directorClass" class="ptolemy.data.expr.StringParameter" value="ptolemy.domains.modal.kernel.FSMDirector">
         </property>
         <property name="conservativeAnalysis" class="ptolemy.data.expr.Parameter" value="false">
         </property>
@@ -43,33 +43,33 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{230.0, 160.0}">
         </property>
-        <port name="input" class="ptolemy.domains.fsm.modal.ModalPort">
+        <port name="input" class="ptolemy.domains.modal.modal.ModalPort">
             <property name="input"/>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="unknown">
             </property>
             <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="WEST">
             </property>
         </port>
-        <port name="output" class="ptolemy.domains.fsm.modal.ModalPort">
+        <port name="output" class="ptolemy.domains.modal.modal.ModalPort">
             <property name="output"/>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="unknown">
             </property>
             <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="EAST">
             </property>
         </port>
-        <port name="trigger" class="ptolemy.domains.fsm.modal.ModalPort">
+        <port name="trigger" class="ptolemy.domains.modal.modal.ModalPort">
             <property name="input"/>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="unknown">
             </property>
             <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="WEST">
             </property>
         </port>
-        <entity name="_Controller" class="ptolemy.domains.fsm.modal.ModalController">
+        <entity name="_Controller" class="ptolemy.domains.modal.modal.ModalController">
             <property name="initialStateName" class="ptolemy.kernel.util.StringAttribute">
             </property>
             <property name="_library" class="ptolemy.moml.LibraryAttribute">
                 <configure>
-        <entity name="state library" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/configs/basicUtilities.xml"></input><entity name="state" class="ptolemy.domains.fsm.kernel.State"><property name="_centerName" class="ptolemy.kernel.util.Attribute"></property><property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory"></property></entity></entity>
+        <entity name="state library" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/configs/basicUtilities.xml"></input><entity name="state" class="ptolemy.domains.modal.kernel.State"><property name="_centerName" class="ptolemy.kernel.util.Attribute"></property><property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory"></property></entity></entity>
       </configure>
             </property>
             <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {104, 126, 815, 516}, maximized = false}">
@@ -95,23 +95,23 @@ output with no delay.</text></svg></configure>
                 <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
                 </property>
             </property>
-            <port name="input" class="ptolemy.domains.fsm.modal.RefinementPort">
+            <port name="input" class="ptolemy.domains.modal.modal.RefinementPort">
                 <property name="input"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[125.0, 150.0]">
                 </property>
             </port>
-            <port name="output" class="ptolemy.domains.fsm.modal.RefinementPort">
+            <port name="output" class="ptolemy.domains.modal.modal.RefinementPort">
                 <property name="input"/>
                 <property name="output"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="450.0, 155.0">
                 </property>
             </port>
-            <port name="trigger" class="ptolemy.domains.fsm.modal.RefinementPort">
+            <port name="trigger" class="ptolemy.domains.modal.modal.RefinementPort">
                 <property name="input"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="125.0, 230.0">
                 </property>
             </port>
-            <entity name="delay" class="ptolemy.domains.fsm.kernel.State">
+            <entity name="delay" class="ptolemy.domains.modal.kernel.State">
                 <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="state">
                 </property>
                 <property name="isInitialState" class="ptolemy.data.expr.Parameter" value="true">
@@ -123,7 +123,7 @@ output with no delay.</text></svg></configure>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="235.0, 185.0">
                 </property>
             </entity>
-            <entity name="noDelay" class="ptolemy.domains.fsm.kernel.State">
+            <entity name="noDelay" class="ptolemy.domains.modal.kernel.State">
                 <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="noDelay">
                 </property>
                 <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
@@ -133,7 +133,7 @@ output with no delay.</text></svg></configure>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="365.0, 185.0">
                 </property>
             </entity>
-            <relation name="relation" class="ptolemy.domains.fsm.kernel.Transition">
+            <relation name="relation" class="ptolemy.domains.modal.kernel.Transition">
                 <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="trigger == 1">
                 </property>
                 <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.6283185307179586">
@@ -145,7 +145,7 @@ output with no delay.</text></svg></configure>
                 <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
             </relation>
-            <relation name="relation2" class="ptolemy.domains.fsm.kernel.Transition">
+            <relation name="relation2" class="ptolemy.domains.modal.kernel.Transition">
                 <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="trigger == 0">
                 </property>
                 <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.6283185307179586">
@@ -162,22 +162,22 @@ output with no delay.</text></svg></configure>
             <link port="noDelay.incomingPort" relation="relation"/>
             <link port="noDelay.outgoingPort" relation="relation2"/>
         </entity>
-        <entity name="state" class="ptolemy.domains.fsm.modal.Refinement">
+        <entity name="state" class="ptolemy.domains.modal.modal.Refinement">
             <property name="DEE Director" class="ptolemy.domains.de.kernel.DEDirector">
                 <property name="_location" class="ptolemy.kernel.util.Location" value="90.0, 55.0">
                 </property>
             </property>
-            <port name="input" class="ptolemy.domains.fsm.modal.RefinementPort">
+            <port name="input" class="ptolemy.domains.modal.modal.RefinementPort">
                 <property name="input"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="110.0, 215.0">
                 </property>
             </port>
-            <port name="output" class="ptolemy.domains.fsm.modal.RefinementPort">
+            <port name="output" class="ptolemy.domains.modal.modal.RefinementPort">
                 <property name="output"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="415.0, 215.0">
                 </property>
             </port>
-            <port name="trigger" class="ptolemy.domains.fsm.modal.RefinementPort">
+            <port name="trigger" class="ptolemy.domains.modal.modal.RefinementPort">
                 <property name="input"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[110.0, 155.0]">
                 </property>
@@ -203,22 +203,22 @@ output with no delay.</text></svg></configure>
             <link port="TimedDelay.input" relation="relation"/>
             <link port="TimedDelay.output" relation="relation2"/>
         </entity>
-        <entity name="noDelay" class="ptolemy.domains.fsm.modal.Refinement">
+        <entity name="noDelay" class="ptolemy.domains.modal.modal.Refinement">
             <property name="DEE Director" class="ptolemy.domains.de.kernel.DEDirector">
                 <property name="_location" class="ptolemy.kernel.util.Location" value="300.0, 311.5338541666667">
                 </property>
             </property>
-            <port name="input" class="ptolemy.domains.fsm.modal.RefinementPort">
+            <port name="input" class="ptolemy.domains.modal.modal.RefinementPort">
                 <property name="input"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="175.0, 180.0">
                 </property>
             </port>
-            <port name="output" class="ptolemy.domains.fsm.modal.RefinementPort">
+            <port name="output" class="ptolemy.domains.modal.modal.RefinementPort">
                 <property name="output"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="440.0, 180.0">
                 </property>
             </port>
-            <port name="trigger" class="ptolemy.domains.fsm.modal.RefinementPort">
+            <port name="trigger" class="ptolemy.domains.modal.modal.RefinementPort">
                 <property name="input"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[175.0, 115.0]">
                 </property>
@@ -247,8 +247,8 @@ output with no delay.</text></svg></configure>
         <link port="noDelay.output" relation="outputRelation"/>
         <link port="noDelay.trigger" relation="triggerRelation"/>
     </entity>
-    <entity name="B" class="ptolemy.domains.fsm.modal.ModalModel">
-        <property name="directorClass" class="ptolemy.data.expr.StringParameter" value="ptolemy.domains.fsm.kernel.FSMDirector">
+    <entity name="B" class="ptolemy.domains.modal.modal.ModalModel">
+        <property name="directorClass" class="ptolemy.data.expr.StringParameter" value="ptolemy.domains.modal.kernel.FSMDirector">
         </property>
         <property name="conservativeAnalysis" class="ptolemy.data.expr.Parameter" value="false">
         </property>
@@ -256,33 +256,33 @@ output with no delay.</text></svg></configure>
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[385.0, 235.0]">
         </property>
-        <port name="input" class="ptolemy.domains.fsm.modal.ModalPort">
+        <port name="input" class="ptolemy.domains.modal.modal.ModalPort">
             <property name="input"/>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="unknown">
             </property>
             <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="WEST">
             </property>
         </port>
-        <port name="output" class="ptolemy.domains.fsm.modal.ModalPort">
+        <port name="output" class="ptolemy.domains.modal.modal.ModalPort">
             <property name="output"/>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="unknown">
             </property>
             <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="EAST">
             </property>
         </port>
-        <port name="trigger" class="ptolemy.domains.fsm.modal.ModalPort">
+        <port name="trigger" class="ptolemy.domains.modal.modal.ModalPort">
             <property name="input"/>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="unknown">
             </property>
             <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="WEST">
             </property>
         </port>
-        <entity name="_Controller" class="ptolemy.domains.fsm.modal.ModalController">
+        <entity name="_Controller" class="ptolemy.domains.modal.modal.ModalController">
             <property name="initialStateName" class="ptolemy.kernel.util.StringAttribute">
             </property>
             <property name="_library" class="ptolemy.moml.LibraryAttribute">
                 <configure>
-        <entity name="state library" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/configs/basicUtilities.xml"></input><entity name="state" class="ptolemy.domains.fsm.kernel.State"><property name="_centerName" class="ptolemy.kernel.util.Attribute"></property><property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory"></property></entity></entity>
+        <entity name="state library" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/configs/basicUtilities.xml"></input><entity name="state" class="ptolemy.domains.modal.kernel.State"><property name="_centerName" class="ptolemy.kernel.util.Attribute"></property><property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory"></property></entity></entity>
       </configure>
             </property>
             <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {104, 126, 815, 516}, maximized = false}">
@@ -308,23 +308,23 @@ output with no delay.</text></svg></configure>
                 <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
                 </property>
             </property>
-            <port name="input" class="ptolemy.domains.fsm.modal.RefinementPort">
+            <port name="input" class="ptolemy.domains.modal.modal.RefinementPort">
                 <property name="input"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[140.0, 150.0]">
                 </property>
             </port>
-            <port name="output" class="ptolemy.domains.fsm.modal.RefinementPort">
+            <port name="output" class="ptolemy.domains.modal.modal.RefinementPort">
                 <property name="input"/>
                 <property name="output"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="450.0, 155.0">
                 </property>
             </port>
-            <port name="trigger" class="ptolemy.domains.fsm.modal.RefinementPort">
+            <port name="trigger" class="ptolemy.domains.modal.modal.RefinementPort">
                 <property name="input"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="140.0, 225.0">
                 </property>
             </port>
-            <entity name="delay" class="ptolemy.domains.fsm.kernel.State">
+            <entity name="delay" class="ptolemy.domains.modal.kernel.State">
                 <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="state">
                 </property>
                 <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
@@ -334,7 +334,7 @@ output with no delay.</text></svg></configure>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="235.0, 185.0">
                 </property>
             </entity>
-            <entity name="noDelay" class="ptolemy.domains.fsm.kernel.State">
+            <entity name="noDelay" class="ptolemy.domains.modal.kernel.State">
                 <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="noDelay">
                 </property>
                 <property name="isInitialState" class="ptolemy.data.expr.Parameter" value="true">
@@ -346,7 +346,7 @@ output with no delay.</text></svg></configure>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="365.0, 185.0">
                 </property>
             </entity>
-            <relation name="relation" class="ptolemy.domains.fsm.kernel.Transition">
+            <relation name="relation" class="ptolemy.domains.modal.kernel.Transition">
                 <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="trigger == 0">
                 </property>
                 <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.6283185307179586">
@@ -358,7 +358,7 @@ output with no delay.</text></svg></configure>
                 <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
             </relation>
-            <relation name="relation2" class="ptolemy.domains.fsm.kernel.Transition">
+            <relation name="relation2" class="ptolemy.domains.modal.kernel.Transition">
                 <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="trigger == 1">
                 </property>
                 <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.6283185307179586">
@@ -375,22 +375,22 @@ output with no delay.</text></svg></configure>
             <link port="noDelay.incomingPort" relation="relation"/>
             <link port="noDelay.outgoingPort" relation="relation2"/>
         </entity>
-        <entity name="state" class="ptolemy.domains.fsm.modal.Refinement">
+        <entity name="state" class="ptolemy.domains.modal.modal.Refinement">
             <property name="DEE Director" class="ptolemy.domains.de.kernel.DEDirector">
                 <property name="_location" class="ptolemy.kernel.util.Location" value="90.0, 55.0">
                 </property>
             </property>
-            <port name="input" class="ptolemy.domains.fsm.modal.RefinementPort">
+            <port name="input" class="ptolemy.domains.modal.modal.RefinementPort">
                 <property name="input"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="110.0, 215.0">
                 </property>
             </port>
-            <port name="output" class="ptolemy.domains.fsm.modal.RefinementPort">
+            <port name="output" class="ptolemy.domains.modal.modal.RefinementPort">
                 <property name="output"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="415.0, 215.0">
                 </property>
             </port>
-            <port name="trigger" class="ptolemy.domains.fsm.modal.RefinementPort">
+            <port name="trigger" class="ptolemy.domains.modal.modal.RefinementPort">
                 <property name="input"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[110.0, 150.0]">
                 </property>
@@ -416,22 +416,22 @@ output with no delay.</text></svg></configure>
             <link port="TimedDelay.input" relation="relation"/>
             <link port="TimedDelay.output" relation="relation2"/>
         </entity>
-        <entity name="noDelay" class="ptolemy.domains.fsm.modal.Refinement">
+        <entity name="noDelay" class="ptolemy.domains.modal.modal.Refinement">
             <property name="DEE Director" class="ptolemy.domains.de.kernel.DEDirector">
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[75.0, 45.0]">
                 </property>
             </property>
-            <port name="input" class="ptolemy.domains.fsm.modal.RefinementPort">
+            <port name="input" class="ptolemy.domains.modal.modal.RefinementPort">
                 <property name="input"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="175.0, 180.0">
                 </property>
             </port>
-            <port name="output" class="ptolemy.domains.fsm.modal.RefinementPort">
+            <port name="output" class="ptolemy.domains.modal.modal.RefinementPort">
                 <property name="output"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="440.0, 180.0">
                 </property>
             </port>
-            <port name="trigger" class="ptolemy.domains.fsm.modal.RefinementPort">
+            <port name="trigger" class="ptolemy.domains.modal.modal.RefinementPort">
                 <property name="input"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[175.0, 115.0]">
                 </property>

@@ -320,10 +320,10 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="{45.0, 205.0}">
         </property>
     </property>
-    <entity name="Train" class="ptolemy.domains.fsm.kernel.FSMActor">
+    <entity name="Train" class="ptolemy.domains.modal.kernel.FSMActor">
         <property name="_library" class="ptolemy.moml.LibraryAttribute">
             <configure>
-    <entity name="StateLibrary" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/configs/basicUtilities.xml"></input><entity name="State" class="ptolemy.domains.fsm.kernel.State"><property name="_centerName" class="ptolemy.kernel.util.Attribute"></property></entity></entity>
+    <entity name="StateLibrary" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/configs/basicUtilities.xml"></input><entity name="State" class="ptolemy.domains.modal.kernel.State"><property name="_centerName" class="ptolemy.kernel.util.Attribute"></property></entity></entity>
   </configure>
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[120.0, 120.0]">
@@ -381,7 +381,7 @@
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="int">
             </property>
         </port>
-        <entity name="Tinit" class="ptolemy.domains.fsm.kernel.State">
+        <entity name="Tinit" class="ptolemy.domains.modal.kernel.State">
             <property name="isInitialState" class="ptolemy.data.expr.Parameter" value="true">
             </property>
             <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="false">
@@ -389,38 +389,38 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="[261.9159235777115, 72.47087415586111]">
             </property>
         </entity>
-        <entity name="far" class="ptolemy.domains.fsm.kernel.State">
+        <entity name="far" class="ptolemy.domains.modal.kernel.State">
             <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="false">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[416.91592357771157, 127.47087415586111]">
             </property>
         </entity>
-        <entity name="approaching" class="ptolemy.domains.fsm.kernel.State">
+        <entity name="approaching" class="ptolemy.domains.modal.kernel.State">
             <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="false">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[495.0, 235.0]">
             </property>
         </entity>
-        <entity name="within" class="ptolemy.domains.fsm.kernel.State">
+        <entity name="within" class="ptolemy.domains.modal.kernel.State">
             <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="false">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[381.9159235777115, 287.4708741558611]">
             </property>
         </entity>
-        <entity name="leaving" class="ptolemy.domains.fsm.kernel.State">
+        <entity name="leaving" class="ptolemy.domains.modal.kernel.State">
             <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="false">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[271.9159235777115, 212.4708741558611]">
             </property>
         </entity>
-        <relation name="relation" class="ptolemy.domains.fsm.kernel.Transition">
+        <relation name="relation" class="ptolemy.domains.modal.kernel.Transition">
             <property name="annotation" class="ptolemy.data.expr.StringParameter" value="">
             </property>
             <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="Sec_isPresent &amp;&amp; distance &gt; 10">
             </property>
-            <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute" value="Tin = 0; Tleave = 0; Tapproaching = 0">
+            <property name="outputActions" class="ptolemy.domains.modal.kernel.OutputActionsAttribute" value="Tin = 0; Tleave = 0; Tapproaching = 0">
             </property>
-            <property name="setActions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute" value="distance = -10">
+            <property name="setActions" class="ptolemy.domains.modal.kernel.CommitActionsAttribute" value="distance = -10">
             </property>
             <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="-0.39988609959717314">
             </property>
@@ -435,14 +435,14 @@
             <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
             </property>
         </relation>
-        <relation name="relation2" class="ptolemy.domains.fsm.kernel.Transition">
+        <relation name="relation2" class="ptolemy.domains.modal.kernel.Transition">
             <property name="annotation" class="ptolemy.data.expr.StringParameter" value="">
             </property>
             <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="true">
             </property>
-            <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute" value="Tin = 0; Tleave = 0; Tapproaching = 0">
+            <property name="outputActions" class="ptolemy.domains.modal.kernel.OutputActionsAttribute" value="Tin = 0; Tleave = 0; Tapproaching = 0">
             </property>
-            <property name="setActions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute" value="distance = -10">
+            <property name="setActions" class="ptolemy.domains.modal.kernel.CommitActionsAttribute" value="distance = -10">
             </property>
             <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="-0.6573693516317907">
             </property>
@@ -457,14 +457,14 @@
             <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
             </property>
         </relation>
-        <relation name="relation3" class="ptolemy.domains.fsm.kernel.Transition">
+        <relation name="relation3" class="ptolemy.domains.modal.kernel.Transition">
             <property name="annotation" class="ptolemy.data.expr.StringParameter" value="">
             </property>
             <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="Sec_isPresent &amp;&amp; distance &gt;= -3">
             </property>
-            <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute" value="Tapproaching = 1 ">
+            <property name="outputActions" class="ptolemy.domains.modal.kernel.OutputActionsAttribute" value="Tapproaching = 1 ">
             </property>
-            <property name="setActions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute" value="distance = distance + 1">
+            <property name="setActions" class="ptolemy.domains.modal.kernel.CommitActionsAttribute" value="distance = distance + 1">
             </property>
             <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="-0.4862364487379796">
             </property>
@@ -479,14 +479,14 @@
             <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
             </property>
         </relation>
-        <relation name="relation4" class="ptolemy.domains.fsm.kernel.Transition">
+        <relation name="relation4" class="ptolemy.domains.modal.kernel.Transition">
             <property name="annotation" class="ptolemy.data.expr.StringParameter" value="">
             </property>
             <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="Sec_isPresent &amp;&amp; distance == 0">
             </property>
-            <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute" value="Tin = 1">
+            <property name="outputActions" class="ptolemy.domains.modal.kernel.OutputActionsAttribute" value="Tin = 1">
             </property>
-            <property name="setActions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute" value="distance = distance + 1">
+            <property name="setActions" class="ptolemy.domains.modal.kernel.CommitActionsAttribute" value="distance = distance + 1">
             </property>
             <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="-0.5118407943899019">
             </property>
@@ -501,14 +501,14 @@
             <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
             </property>
         </relation>
-        <relation name="relation5" class="ptolemy.domains.fsm.kernel.Transition">
+        <relation name="relation5" class="ptolemy.domains.modal.kernel.Transition">
             <property name="annotation" class="ptolemy.data.expr.StringParameter" value="">
             </property>
             <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="Sec_isPresent &amp;&amp; distance &gt;= 3">
             </property>
-            <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute" value="Tleave = 1 ">
+            <property name="outputActions" class="ptolemy.domains.modal.kernel.OutputActionsAttribute" value="Tleave = 1 ">
             </property>
-            <property name="setActions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute" value="distance = distance + 1">
+            <property name="setActions" class="ptolemy.domains.modal.kernel.CommitActionsAttribute" value="distance = distance + 1">
             </property>
             <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="-0.32661321627216267">
             </property>
@@ -523,12 +523,12 @@
             <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
             </property>
         </relation>
-        <relation name="relation6" class="ptolemy.domains.fsm.kernel.Transition">
+        <relation name="relation6" class="ptolemy.domains.modal.kernel.Transition">
             <property name="annotation" class="ptolemy.data.expr.StringParameter" value="">
             </property>
             <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="Sec_isPresent &amp;&amp; distance&lt;-3">
             </property>
-            <property name="setActions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute" value="distance = distance + 2">
+            <property name="setActions" class="ptolemy.domains.modal.kernel.CommitActionsAttribute" value="distance = distance + 2">
             </property>
             <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="2.474017772583677">
             </property>
@@ -543,12 +543,12 @@
             <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
             </property>
         </relation>
-        <relation name="relation7" class="ptolemy.domains.fsm.kernel.Transition">
+        <relation name="relation7" class="ptolemy.domains.modal.kernel.Transition">
             <property name="annotation" class="ptolemy.data.expr.StringParameter" value="">
             </property>
             <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="Sec_isPresent &amp;&amp; distance &lt; 3">
             </property>
-            <property name="setActions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute" value="distance = distance + 1">
+            <property name="setActions" class="ptolemy.domains.modal.kernel.CommitActionsAttribute" value="distance = distance + 1">
             </property>
             <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="2.356194490192345">
             </property>
@@ -563,12 +563,12 @@
             <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
             </property>
         </relation>
-        <relation name="relation8" class="ptolemy.domains.fsm.kernel.Transition">
+        <relation name="relation8" class="ptolemy.domains.modal.kernel.Transition">
             <property name="annotation" class="ptolemy.data.expr.StringParameter" value="">
             </property>
             <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="Sec_isPresent &amp;&amp; distance &lt; 0">
             </property>
-            <property name="setActions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute" value="distance = distance + 1">
+            <property name="setActions" class="ptolemy.domains.modal.kernel.CommitActionsAttribute" value="distance = distance + 1">
             </property>
             <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="2.601077214362448">
             </property>
@@ -583,12 +583,12 @@
             <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
             </property>
         </relation>
-        <relation name="relation9" class="ptolemy.domains.fsm.kernel.Transition">
+        <relation name="relation9" class="ptolemy.domains.modal.kernel.Transition">
             <property name="annotation" class="ptolemy.data.expr.StringParameter" value="">
             </property>
             <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="Sec_isPresent &amp;&amp; distance &lt;= 10">
             </property>
-            <property name="setActions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute" value="distance = distance + 1">
+            <property name="setActions" class="ptolemy.domains.modal.kernel.CommitActionsAttribute" value="distance = distance + 1">
             </property>
             <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="2.477507768113079">
             </property>
@@ -622,10 +622,10 @@
         <link port="leaving.outgoingPort" relation="relation"/>
         <link port="leaving.outgoingPort" relation="relation9"/>
     </entity>
-    <entity name="Gate" class="ptolemy.domains.fsm.kernel.FSMActor">
+    <entity name="Gate" class="ptolemy.domains.modal.kernel.FSMActor">
         <property name="_library" class="ptolemy.moml.LibraryAttribute">
             <configure>
-    <entity name="StateLibrary" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/configs/basicUtilities.xml"></input><entity name="State" class="ptolemy.domains.fsm.kernel.State"><property name="_centerName" class="ptolemy.kernel.util.Attribute"></property></entity></entity>
+    <entity name="StateLibrary" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/configs/basicUtilities.xml"></input><entity name="State" class="ptolemy.domains.modal.kernel.State"><property name="_centerName" class="ptolemy.kernel.util.Attribute"></property></entity></entity>
   </configure>
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[390.0, 65.0]">
@@ -658,7 +658,7 @@
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="int">
             </property>
         </port>
-        <entity name="Ginit" class="ptolemy.domains.fsm.kernel.State">
+        <entity name="Ginit" class="ptolemy.domains.modal.kernel.State">
             <property name="isInitialState" class="ptolemy.data.expr.Parameter" value="true">
             </property>
             <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="false">
@@ -666,36 +666,36 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="{155.0, 115.0}">
             </property>
         </entity>
-        <entity name="open" class="ptolemy.domains.fsm.kernel.State">
+        <entity name="open" class="ptolemy.domains.modal.kernel.State">
             <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="false">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[295.0, 145.0]">
             </property>
         </entity>
-        <entity name="closed" class="ptolemy.domains.fsm.kernel.State">
+        <entity name="closed" class="ptolemy.domains.modal.kernel.State">
             <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="false">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[295.0, 265.0]">
             </property>
         </entity>
-        <entity name="closing" class="ptolemy.domains.fsm.kernel.State">
+        <entity name="closing" class="ptolemy.domains.modal.kernel.State">
             <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="false">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[400.0, 205.0]">
             </property>
         </entity>
-        <entity name="opening" class="ptolemy.domains.fsm.kernel.State">
+        <entity name="opening" class="ptolemy.domains.modal.kernel.State">
             <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="false">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[185.0, 200.0]">
             </property>
         </entity>
-        <relation name="relation" class="ptolemy.domains.fsm.kernel.Transition">
+        <relation name="relation" class="ptolemy.domains.modal.kernel.Transition">
             <property name="annotation" class="ptolemy.data.expr.StringParameter" value="">
             </property>
             <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="true">
             </property>
-            <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute" value="Gopen = 1">
+            <property name="outputActions" class="ptolemy.domains.modal.kernel.OutputActionsAttribute" value="Gopen = 1">
             </property>
             <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="-0.4470744346691727">
             </property>
@@ -710,12 +710,12 @@
             <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
             </property>
         </relation>
-        <relation name="relation2" class="ptolemy.domains.fsm.kernel.Transition">
+        <relation name="relation2" class="ptolemy.domains.modal.kernel.Transition">
             <property name="annotation" class="ptolemy.data.expr.StringParameter" value="">
             </property>
             <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="Tapproaching_isPresent">
             </property>
-            <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute" value="Gopen = 0">
+            <property name="outputActions" class="ptolemy.domains.modal.kernel.OutputActionsAttribute" value="Gopen = 0">
             </property>
             <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="-0.22153432114003657">
             </property>
@@ -730,7 +730,7 @@
             <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
             </property>
         </relation>
-        <relation name="relation3" class="ptolemy.domains.fsm.kernel.Transition">
+        <relation name="relation3" class="ptolemy.domains.modal.kernel.Transition">
             <property name="annotation" class="ptolemy.data.expr.StringParameter" value="">
             </property>
             <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="Tin_isPresent">
@@ -748,7 +748,7 @@
             <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
             </property>
         </relation>
-        <relation name="relation4" class="ptolemy.domains.fsm.kernel.Transition">
+        <relation name="relation4" class="ptolemy.domains.modal.kernel.Transition">
             <property name="annotation" class="ptolemy.data.expr.StringParameter" value="">
             </property>
             <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="Tleave_isPresent">
@@ -766,12 +766,12 @@
             <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
             </property>
         </relation>
-        <relation name="relation5" class="ptolemy.domains.fsm.kernel.Transition">
+        <relation name="relation5" class="ptolemy.domains.modal.kernel.Transition">
             <property name="annotation" class="ptolemy.data.expr.StringParameter" value="">
             </property>
             <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="true">
             </property>
-            <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute" value="Gopen = 1">
+            <property name="outputActions" class="ptolemy.domains.modal.kernel.OutputActionsAttribute" value="Gopen = 1">
             </property>
             <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="-0.2671200644903232">
             </property>

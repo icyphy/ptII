@@ -193,7 +193,7 @@
             <link port="Scale2.input" relation="relation4"/>
             <link port="Scale2.output" relation="relation2"/>
         </entity>
-        <entity name="default" class="ptolemy.domains.fsm.modal.Refinement">
+        <entity name="default" class="ptolemy.domains.modal.modal.Refinement">
             <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
                 <property name="_location" class="ptolemy.kernel.util.Location" value="{65, 40}">
                 </property>

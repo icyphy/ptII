@@ -15,7 +15,7 @@
         </property>
     </property>
     <entity name="lego1" class="ptolemy.domains.giotto.demo.Legiotto.lego">
-        <property name="modal" class="ptolemy.domains.fsm.kernel.FSMDirector">
+        <property name="modal" class="ptolemy.domains.modal.kernel.FSMDirector">
             <property name="controllerName" class="ptolemy.kernel.util.StringAttribute" value="controller">
             </property>
         </property>
@@ -33,7 +33,7 @@
         </property>
     </entity>
     <entity name="lego2" class="ptolemy.domains.giotto.demo.Legiotto.lego">
-        <property name="modal" class="ptolemy.domains.fsm.kernel.FSMDirector">
+        <property name="modal" class="ptolemy.domains.modal.kernel.FSMDirector">
             <property name="controllerName" class="ptolemy.kernel.util.StringAttribute" value="controller">
             </property>
         </property>
@@ -51,7 +51,7 @@
         </property>
     </entity>
     <entity name="lego3" class="ptolemy.domains.giotto.demo.Legiotto.lego">
-        <property name="modal" class="ptolemy.domains.fsm.kernel.FSMDirector">
+        <property name="modal" class="ptolemy.domains.modal.kernel.FSMDirector">
             <property name="controllerName" class="ptolemy.kernel.util.StringAttribute" value="controller">
             </property>
         </property>

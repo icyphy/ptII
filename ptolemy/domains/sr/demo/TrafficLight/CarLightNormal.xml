@@ -1,52 +1,52 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE class PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<class name="CarLightNormal" extends="ptolemy.domains.fsm.modal.ModalModel">
+<class name="CarLightNormal" extends="ptolemy.domains.modal.modal.ModalModel">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.0.beta">
     </property>
     <property name="_tableauFactory" class="ptolemy.vergil.fsm.modal.ModalTableauFactory">
     </property>
     <property name="_location" class="ptolemy.kernel.util.Location" value="[-190.0, -45.0]">
     </property>
-    <port name="Pgo" class="ptolemy.domains.fsm.modal.ModalPort">
+    <port name="Pgo" class="ptolemy.domains.modal.modal.ModalPort">
         <property name="output"/>
         <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
         </property>
     </port>
-    <port name="Pstop" class="ptolemy.domains.fsm.modal.ModalPort">
+    <port name="Pstop" class="ptolemy.domains.modal.modal.ModalPort">
         <property name="output"/>
         <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
         </property>
     </port>
-    <port name="Sec" class="ptolemy.domains.fsm.modal.ModalPort">
+    <port name="Sec" class="ptolemy.domains.modal.modal.ModalPort">
         <property name="input"/>
         <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
         </property>
         <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="SOUTH">
         </property>
     </port>
-    <port name="Cred" class="ptolemy.domains.fsm.modal.ModalPort">
+    <port name="Cred" class="ptolemy.domains.modal.modal.ModalPort">
         <property name="output"/>
         <property name="_type" class="ptolemy.actor.TypeAttribute" value="int">
         </property>
         <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
         </property>
     </port>
-    <port name="Cyel" class="ptolemy.domains.fsm.modal.ModalPort">
+    <port name="Cyel" class="ptolemy.domains.modal.modal.ModalPort">
         <property name="output"/>
         <property name="_type" class="ptolemy.actor.TypeAttribute" value="int">
         </property>
         <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
         </property>
     </port>
-    <port name="Cgrn" class="ptolemy.domains.fsm.modal.ModalPort">
+    <port name="Cgrn" class="ptolemy.domains.modal.modal.ModalPort">
         <property name="output"/>
         <property name="_type" class="ptolemy.actor.TypeAttribute" value="int">
         </property>
         <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
         </property>
     </port>
-    <entity name="_Controller" class="ptolemy.domains.fsm.modal.ModalController">
+    <entity name="_Controller" class="ptolemy.domains.modal.modal.ModalController">
         <property name="annotation" class="ptolemy.kernel.util.Attribute">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
@@ -64,7 +64,7 @@ three seconds and to stay green for two.</text></svg></configure>
         </property>
         <property name="_library" class="ptolemy.moml.LibraryAttribute">
             <configure>
-        <entity name="state library" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/configs/basicUtilities.xml"></input><entity name="state" class="ptolemy.domains.fsm.kernel.State"><property name="_centerName" class="ptolemy.kernel.util.Attribute"></property><property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory"></property></entity></entity>
+        <entity name="state library" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/configs/basicUtilities.xml"></input><entity name="state" class="ptolemy.domains.modal.kernel.State"><property name="_centerName" class="ptolemy.kernel.util.Attribute"></property><property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory"></property></entity></entity>
       </configure>
         </property>
         <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={62, 78, 900, 611}, maximized=false}">
@@ -94,7 +94,7 @@ three seconds and to stay green for two.</text></svg></configure>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[60.02021589309288, 61.768302917480554]">
             </property>
         </property>
-        <port name="Pgo" class="ptolemy.domains.fsm.modal.RefinementPort">
+        <port name="Pgo" class="ptolemy.domains.modal.modal.RefinementPort">
             <property name="input"/>
             <property name="output"/>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[600.0202158930929, 191.76830291748055]">
@@ -102,7 +102,7 @@ three seconds and to stay green for two.</text></svg></configure>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="int">
             </property>
         </port>
-        <port name="Pstop" class="ptolemy.domains.fsm.modal.RefinementPort">
+        <port name="Pstop" class="ptolemy.domains.modal.modal.RefinementPort">
             <property name="input"/>
             <property name="output"/>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[600.0202158930929, 231.76830291748055]">
@@ -110,14 +110,14 @@ three seconds and to stay green for two.</text></svg></configure>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="int">
             </property>
         </port>
-        <port name="Sec" class="ptolemy.domains.fsm.modal.RefinementPort">
+        <port name="Sec" class="ptolemy.domains.modal.modal.RefinementPort">
             <property name="input"/>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[45.02021589309288, 136.76830291748055]">
             </property>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="int">
             </property>
         </port>
-        <port name="Cred" class="ptolemy.domains.fsm.modal.RefinementPort">
+        <port name="Cred" class="ptolemy.domains.modal.modal.RefinementPort">
             <property name="input"/>
             <property name="output"/>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[600.0202158930929, 61.768302917480554]">
@@ -125,7 +125,7 @@ three seconds and to stay green for two.</text></svg></configure>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="int">
             </property>
         </port>
-        <port name="Cyel" class="ptolemy.domains.fsm.modal.RefinementPort">
+        <port name="Cyel" class="ptolemy.domains.modal.modal.RefinementPort">
             <property name="input"/>
             <property name="output"/>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[600.0202158930929, 106.76830291748055]">
@@ -133,7 +133,7 @@ three seconds and to stay green for two.</text></svg></configure>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="int">
             </property>
         </port>
-        <port name="Cgrn" class="ptolemy.domains.fsm.modal.RefinementPort">
+        <port name="Cgrn" class="ptolemy.domains.modal.modal.RefinementPort">
             <property name="input"/>
             <property name="output"/>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[600.0202158930929, 151.76830291748055]">
@@ -141,7 +141,7 @@ three seconds and to stay green for two.</text></svg></configure>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="int">
             </property>
         </port>
-        <entity name="Cinit" class="ptolemy.domains.fsm.kernel.State">
+        <entity name="Cinit" class="ptolemy.domains.modal.kernel.State">
             <property name="isInitialState" class="ptolemy.data.expr.Parameter" value="true">
             </property>
             <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
@@ -151,7 +151,7 @@ three seconds and to stay green for two.</text></svg></configure>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[205.02021589309288, 136.76830291748055]">
             </property>
         </entity>
-        <entity name="Cred" class="ptolemy.domains.fsm.kernel.State">
+        <entity name="Cred" class="ptolemy.domains.modal.kernel.State">
             <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
             <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
@@ -159,7 +159,7 @@ three seconds and to stay green for two.</text></svg></configure>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[330.0202158930929, 136.76830291748055]">
             </property>
         </entity>
-        <entity name="Credyel" class="ptolemy.domains.fsm.kernel.State">
+        <entity name="Credyel" class="ptolemy.domains.modal.kernel.State">
             <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
             <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
@@ -167,7 +167,7 @@ three seconds and to stay green for two.</text></svg></configure>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[395.0202158930929, 226.76830291748055]">
             </property>
         </entity>
-        <entity name="Cgrn" class="ptolemy.domains.fsm.kernel.State">
+        <entity name="Cgrn" class="ptolemy.domains.modal.kernel.State">
             <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
             <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
@@ -175,7 +175,7 @@ three seconds and to stay green for two.</text></svg></configure>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[350.0202158930929, 331.76830291748064]">
             </property>
         </entity>
-        <entity name="Cyel" class="ptolemy.domains.fsm.kernel.State">
+        <entity name="Cyel" class="ptolemy.domains.modal.kernel.State">
             <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
             <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
@@ -183,10 +183,10 @@ three seconds and to stay green for two.</text></svg></configure>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[280.0, 330.0]">
             </property>
         </entity>
-        <relation name="relation" class="ptolemy.domains.fsm.kernel.Transition">
+        <relation name="relation" class="ptolemy.domains.modal.kernel.Transition">
             <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="true">
             </property>
-            <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute" value="&#10;  Cred=1;&#10;  Cyel=0;&#10;  Cgrn=0">
+            <property name="outputActions" class="ptolemy.domains.modal.kernel.OutputActionsAttribute" value="&#10;  Cred=1;&#10;  Cyel=0;&#10;  Cgrn=0">
                 <property name="style" class="ptolemy.actor.gui.style.TextStyle">
                     <property name="height" class="ptolemy.data.expr.Parameter" value="10">
                     </property>
@@ -194,7 +194,7 @@ three seconds and to stay green for two.</text></svg></configure>
                     </property>
                 </property>
             </property>
-            <property name="setActions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute" value="count = 0">
+            <property name="setActions" class="ptolemy.domains.modal.kernel.CommitActionsAttribute" value="count = 0">
             </property>
             <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="-0.4136070863151954">
             </property>
@@ -209,12 +209,12 @@ three seconds and to stay green for two.</text></svg></configure>
             <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
             </property>
         </relation>
-        <relation name="relation2" class="ptolemy.domains.fsm.kernel.Transition">
+        <relation name="relation2" class="ptolemy.domains.modal.kernel.Transition">
             <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="Sec_isPresent &amp;&amp; count == 2">
             </property>
-            <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute" value="Cyel=1; Pstop=1">
+            <property name="outputActions" class="ptolemy.domains.modal.kernel.OutputActionsAttribute" value="Cyel=1; Pstop=1">
             </property>
-            <property name="setActions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute" value="count =0">
+            <property name="setActions" class="ptolemy.domains.modal.kernel.CommitActionsAttribute" value="count =0">
             </property>
             <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="-0.4262866406113318">
             </property>
@@ -229,12 +229,12 @@ three seconds and to stay green for two.</text></svg></configure>
             <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
             </property>
         </relation>
-        <relation name="relation3" class="ptolemy.domains.fsm.kernel.Transition">
+        <relation name="relation3" class="ptolemy.domains.modal.kernel.Transition">
             <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="Sec_isPresent">
             </property>
-            <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute" value="Cred=0; Cyel=0; Cgrn=1">
+            <property name="outputActions" class="ptolemy.domains.modal.kernel.OutputActionsAttribute" value="Cred=0; Cyel=0; Cgrn=1">
             </property>
-            <property name="setActions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute" value="count = 0">
+            <property name="setActions" class="ptolemy.domains.modal.kernel.CommitActionsAttribute" value="count = 0">
             </property>
             <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="-0.4988341685120892">
             </property>
@@ -249,10 +249,10 @@ three seconds and to stay green for two.</text></svg></configure>
             <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
             </property>
         </relation>
-        <relation name="relation4" class="ptolemy.domains.fsm.kernel.Transition">
+        <relation name="relation4" class="ptolemy.domains.modal.kernel.Transition">
             <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="Sec_isPresent &amp;&amp; count == 1">
             </property>
-            <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute" value="Cyel=1; Cgrn=0">
+            <property name="outputActions" class="ptolemy.domains.modal.kernel.OutputActionsAttribute" value="Cyel=1; Cgrn=0">
             </property>
             <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="-1.4365132725447742">
             </property>
@@ -267,7 +267,7 @@ three seconds and to stay green for two.</text></svg></configure>
             <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
             </property>
         </relation>
-        <relation name="relation5" class="ptolemy.domains.fsm.kernel.Transition">
+        <relation name="relation5" class="ptolemy.domains.modal.kernel.Transition">
             <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="&#10;  Sec_isPresent">
                 <property name="style" class="ptolemy.actor.gui.style.TextStyle">
                     <property name="height" class="ptolemy.data.expr.Parameter" value="10">
@@ -276,7 +276,7 @@ three seconds and to stay green for two.</text></svg></configure>
                     </property>
                 </property>
             </property>
-            <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute" value="&#10;  Pgo=1;&#10;  Cred=1;&#10;  Cyel=0;&#10;  Cgrn=0">
+            <property name="outputActions" class="ptolemy.domains.modal.kernel.OutputActionsAttribute" value="&#10;  Pgo=1;&#10;  Cred=1;&#10;  Cyel=0;&#10;  Cgrn=0">
                 <property name="style" class="ptolemy.actor.gui.style.TextStyle">
                     <property name="height" class="ptolemy.data.expr.Parameter" value="10">
                     </property>
@@ -284,7 +284,7 @@ three seconds and to stay green for two.</text></svg></configure>
                     </property>
                 </property>
             </property>
-            <property name="setActions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute" value="count = 0">
+            <property name="setActions" class="ptolemy.domains.modal.kernel.CommitActionsAttribute" value="count = 0">
                 <property name="style" class="ptolemy.actor.gui.style.TextStyle">
                     <property name="height" class="ptolemy.data.expr.Parameter" value="10">
                     </property>
@@ -305,10 +305,10 @@ three seconds and to stay green for two.</text></svg></configure>
             <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
             </property>
         </relation>
-        <relation name="relation6" class="ptolemy.domains.fsm.kernel.Transition">
+        <relation name="relation6" class="ptolemy.domains.modal.kernel.Transition">
             <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="Sec_isPresent &amp;&amp; count &lt; 2">
             </property>
-            <property name="setActions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute" value="count = count + 1">
+            <property name="setActions" class="ptolemy.domains.modal.kernel.CommitActionsAttribute" value="count = count + 1">
             </property>
             <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="2.3928795140629">
             </property>
@@ -323,10 +323,10 @@ three seconds and to stay green for two.</text></svg></configure>
             <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
             </property>
         </relation>
-        <relation name="relation7" class="ptolemy.domains.fsm.kernel.Transition">
+        <relation name="relation7" class="ptolemy.domains.modal.kernel.Transition">
             <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="Sec_isPresent &amp;&amp; count &lt; 1">
             </property>
-            <property name="setActions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute" value="count = count + 1">
+            <property name="setActions" class="ptolemy.domains.modal.kernel.CommitActionsAttribute" value="count = count + 1">
             </property>
             <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="2.2098233688578977">
             </property>

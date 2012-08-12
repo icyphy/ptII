@@ -164,7 +164,7 @@ Press 'r' or 'f' to rotate over wrist</text></svg></configure>
                 <property name="tokenInitProduction" class="ptolemy.data.expr.Parameter" value="0">
                 </property>
             </port>
-            <entity name="FSM_motor_number" class="ptolemy.domains.fsm.kernel.FSMActor">
+            <entity name="FSM_motor_number" class="ptolemy.domains.modal.kernel.FSMActor">
                 <property name="_nonStrictMarker" class="ptolemy.kernel.util.Attribute">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="{280.0, 175.0}">
@@ -189,7 +189,7 @@ Press 'r' or 'f' to rotate over wrist</text></svg></configure>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[645.0, 185.0]">
                     </property>
                 </port>
-                <entity name="switchState" class="ptolemy.domains.fsm.kernel.State">
+                <entity name="switchState" class="ptolemy.domains.modal.kernel.State">
                     <property name="isInitialState" class="ptolemy.data.expr.Parameter" value="true">
                     </property>
                     <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
@@ -197,10 +197,10 @@ Press 'r' or 'f' to rotate over wrist</text></svg></configure>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[290.0, 135.0]">
                     </property>
                 </entity>
-                <relation name="relation_q" class="ptolemy.domains.fsm.kernel.Transition">
+                <relation name="relation_q" class="ptolemy.domains.modal.kernel.Transition">
                     <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="in == 113">
                     </property>
-                    <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute" value="out = 0">
+                    <property name="outputActions" class="ptolemy.domains.modal.kernel.OutputActionsAttribute" value="out = 0">
                     </property>
                     <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="2.814996153882795">
                     </property>
@@ -213,10 +213,10 @@ Press 'r' or 'f' to rotate over wrist</text></svg></configure>
                     <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
                     </property>
                 </relation>
-                <relation name="relation_e" class="ptolemy.domains.fsm.kernel.Transition">
+                <relation name="relation_e" class="ptolemy.domains.modal.kernel.Transition">
                     <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="in == 101">
                     </property>
-                    <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute" value="out = 1">
+                    <property name="outputActions" class="ptolemy.domains.modal.kernel.OutputActionsAttribute" value="out = 1">
                     </property>
                     <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="2.8338869770601818">
                     </property>
@@ -229,10 +229,10 @@ Press 'r' or 'f' to rotate over wrist</text></svg></configure>
                     <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
                     </property>
                 </relation>
-                <relation name="relation_d" class="ptolemy.domains.fsm.kernel.Transition">
+                <relation name="relation_d" class="ptolemy.domains.modal.kernel.Transition">
                     <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="in == 100">
                     </property>
-                    <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute" value="out = 1">
+                    <property name="outputActions" class="ptolemy.domains.modal.kernel.OutputActionsAttribute" value="out = 1">
                     </property>
                     <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="2.795148512309889">
                     </property>
@@ -245,10 +245,10 @@ Press 'r' or 'f' to rotate over wrist</text></svg></configure>
                     <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
                     </property>
                 </relation>
-                <relation name="relation_w" class="ptolemy.domains.fsm.kernel.Transition">
+                <relation name="relation_w" class="ptolemy.domains.modal.kernel.Transition">
                     <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="in == 115">
                     </property>
-                    <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute" value="out = 2">
+                    <property name="outputActions" class="ptolemy.domains.modal.kernel.OutputActionsAttribute" value="out = 2">
                     </property>
                     <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="2.3241765241008454">
                     </property>
@@ -261,10 +261,10 @@ Press 'r' or 'f' to rotate over wrist</text></svg></configure>
                     <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
                     </property>
                 </relation>
-                <relation name="relation_s" class="ptolemy.domains.fsm.kernel.Transition">
+                <relation name="relation_s" class="ptolemy.domains.modal.kernel.Transition">
                     <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="in == 119">
                     </property>
-                    <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute" value="out = 2">
+                    <property name="outputActions" class="ptolemy.domains.modal.kernel.OutputActionsAttribute" value="out = 2">
                     </property>
                     <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="2.743307905144223">
                     </property>
@@ -277,10 +277,10 @@ Press 'r' or 'f' to rotate over wrist</text></svg></configure>
                     <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
                     </property>
                 </relation>
-                <relation name="relation_r" class="ptolemy.domains.fsm.kernel.Transition">
+                <relation name="relation_r" class="ptolemy.domains.modal.kernel.Transition">
                     <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="in == 114">
                     </property>
-                    <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute" value="out = 3">
+                    <property name="outputActions" class="ptolemy.domains.modal.kernel.OutputActionsAttribute" value="out = 3">
                     </property>
                     <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="2.741056404632479">
                     </property>
@@ -293,10 +293,10 @@ Press 'r' or 'f' to rotate over wrist</text></svg></configure>
                     <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
                     </property>
                 </relation>
-                <relation name="relation_f" class="ptolemy.domains.fsm.kernel.Transition">
+                <relation name="relation_f" class="ptolemy.domains.modal.kernel.Transition">
                     <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="in == 102">
                     </property>
-                    <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute" value="out = 3">
+                    <property name="outputActions" class="ptolemy.domains.modal.kernel.OutputActionsAttribute" value="out = 3">
                     </property>
                     <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="2.6942467779971433">
                     </property>
@@ -309,10 +309,10 @@ Press 'r' or 'f' to rotate over wrist</text></svg></configure>
                     <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
                     </property>
                 </relation>
-                <relation name="relation_t" class="ptolemy.domains.fsm.kernel.Transition">
+                <relation name="relation_t" class="ptolemy.domains.modal.kernel.Transition">
                     <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="in == 116">
                     </property>
-                    <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute" value="out = 4">
+                    <property name="outputActions" class="ptolemy.domains.modal.kernel.OutputActionsAttribute" value="out = 4">
                     </property>
                     <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="2.8873165895380457">
                     </property>
@@ -325,10 +325,10 @@ Press 'r' or 'f' to rotate over wrist</text></svg></configure>
                     <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
                     </property>
                 </relation>
-                <relation name="relation_g" class="ptolemy.domains.fsm.kernel.Transition">
+                <relation name="relation_g" class="ptolemy.domains.modal.kernel.Transition">
                     <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="in == 103">
                     </property>
-                    <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute" value="out = 4">
+                    <property name="outputActions" class="ptolemy.domains.modal.kernel.OutputActionsAttribute" value="out = 4">
                     </property>
                     <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="2.7772611300004293">
                     </property>
@@ -416,7 +416,7 @@ Press 'r' or 'f' to rotate over wrist</text></svg></configure>
                 <property name="tokenInitProduction" class="ptolemy.data.expr.Parameter" value="0">
                 </property>
             </port>
-            <entity name="FSM_motor_number" class="ptolemy.domains.fsm.kernel.FSMActor">
+            <entity name="FSM_motor_number" class="ptolemy.domains.modal.kernel.FSMActor">
                 <property name="_nonStrictMarker" class="ptolemy.kernel.util.Attribute">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="278.0, 176.0">
@@ -441,7 +441,7 @@ Press 'r' or 'f' to rotate over wrist</text></svg></configure>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="503.0, 203.5">
                     </property>
                 </port>
-                <entity name="switchState" class="ptolemy.domains.fsm.kernel.State">
+                <entity name="switchState" class="ptolemy.domains.modal.kernel.State">
                     <property name="isInitialState" class="ptolemy.data.expr.Parameter" value="true">
                     </property>
                     <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
@@ -449,10 +449,10 @@ Press 'r' or 'f' to rotate over wrist</text></svg></configure>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="251.0, 212.0">
                     </property>
                 </entity>
-                <relation name="relation_w" class="ptolemy.domains.fsm.kernel.Transition">
+                <relation name="relation_w" class="ptolemy.domains.modal.kernel.Transition">
                     <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="in == 115">
                     </property>
-                    <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute" value="out = 1">
+                    <property name="outputActions" class="ptolemy.domains.modal.kernel.OutputActionsAttribute" value="out = 1">
                     </property>
                     <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="2.114175137685627">
                     </property>
@@ -465,10 +465,10 @@ Press 'r' or 'f' to rotate over wrist</text></svg></configure>
                     <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
                     </property>
                 </relation>
-                <relation name="relation_e" class="ptolemy.domains.fsm.kernel.Transition">
+                <relation name="relation_e" class="ptolemy.domains.modal.kernel.Transition">
                     <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="in == 101">
                     </property>
-                    <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute" value="out = 1">
+                    <property name="outputActions" class="ptolemy.domains.modal.kernel.OutputActionsAttribute" value="out = 1">
                     </property>
                     <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="2.6623632064886595">
                     </property>
@@ -481,10 +481,10 @@ Press 'r' or 'f' to rotate over wrist</text></svg></configure>
                     <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
                     </property>
                 </relation>
-                <relation name="relation_t" class="ptolemy.domains.fsm.kernel.Transition">
+                <relation name="relation_t" class="ptolemy.domains.modal.kernel.Transition">
                     <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="in == 116">
                     </property>
-                    <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute" value="out = 1">
+                    <property name="outputActions" class="ptolemy.domains.modal.kernel.OutputActionsAttribute" value="out = 1">
                     </property>
                     <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="2.6629912857640448">
                     </property>
@@ -497,10 +497,10 @@ Press 'r' or 'f' to rotate over wrist</text></svg></configure>
                     <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
                     </property>
                 </relation>
-                <relation name="relation_g" class="ptolemy.domains.fsm.kernel.Transition">
+                <relation name="relation_g" class="ptolemy.domains.modal.kernel.Transition">
                     <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="in == 103">
                     </property>
-                    <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute" value="out = -1">
+                    <property name="outputActions" class="ptolemy.domains.modal.kernel.OutputActionsAttribute" value="out = -1">
                     </property>
                     <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="2.8001600971340546">
                     </property>
@@ -513,10 +513,10 @@ Press 'r' or 'f' to rotate over wrist</text></svg></configure>
                     <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
                     </property>
                 </relation>
-                <relation name="relation_s" class="ptolemy.domains.fsm.kernel.Transition">
+                <relation name="relation_s" class="ptolemy.domains.modal.kernel.Transition">
                     <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="in == 119">
                     </property>
-                    <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute" value="out = -1">
+                    <property name="outputActions" class="ptolemy.domains.modal.kernel.OutputActionsAttribute" value="out = -1">
                     </property>
                     <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="2.450746426203509">
                     </property>
@@ -529,10 +529,10 @@ Press 'r' or 'f' to rotate over wrist</text></svg></configure>
                     <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
                     </property>
                 </relation>
-                <relation name="relation_d" class="ptolemy.domains.fsm.kernel.Transition">
+                <relation name="relation_d" class="ptolemy.domains.modal.kernel.Transition">
                     <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="in == 100">
                     </property>
-                    <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute" value="out = -1">
+                    <property name="outputActions" class="ptolemy.domains.modal.kernel.OutputActionsAttribute" value="out = -1">
                     </property>
                     <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="2.7748599937877403">
                     </property>
@@ -545,10 +545,10 @@ Press 'r' or 'f' to rotate over wrist</text></svg></configure>
                     <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
                     </property>
                 </relation>
-                <relation name="relation_f" class="ptolemy.domains.fsm.kernel.Transition">
+                <relation name="relation_f" class="ptolemy.domains.modal.kernel.Transition">
                     <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="in == 102">
                     </property>
-                    <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute" value="out = 1">
+                    <property name="outputActions" class="ptolemy.domains.modal.kernel.OutputActionsAttribute" value="out = 1">
                     </property>
                     <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="2.4293884067770857">
                     </property>
@@ -561,10 +561,10 @@ Press 'r' or 'f' to rotate over wrist</text></svg></configure>
                     <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
                     </property>
                 </relation>
-                <relation name="relation_a" class="ptolemy.domains.fsm.kernel.Transition">
+                <relation name="relation_a" class="ptolemy.domains.modal.kernel.Transition">
                     <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="in == 97">
                     </property>
-                    <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute" value="out = 1">
+                    <property name="outputActions" class="ptolemy.domains.modal.kernel.OutputActionsAttribute" value="out = 1">
                     </property>
                     <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="2.468880651737476">
                     </property>
@@ -577,10 +577,10 @@ Press 'r' or 'f' to rotate over wrist</text></svg></configure>
                     <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
                     </property>
                 </relation>
-                <relation name="relation_r" class="ptolemy.domains.fsm.kernel.Transition">
+                <relation name="relation_r" class="ptolemy.domains.modal.kernel.Transition">
                     <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="in == 114">
                     </property>
-                    <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute" value="out = -1">
+                    <property name="outputActions" class="ptolemy.domains.modal.kernel.OutputActionsAttribute" value="out = -1">
                     </property>
                     <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="2.8080657033351266">
                     </property>
@@ -593,10 +593,10 @@ Press 'r' or 'f' to rotate over wrist</text></svg></configure>
                     <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
                     </property>
                 </relation>
-                <relation name="relation_q" class="ptolemy.domains.fsm.kernel.Transition">
+                <relation name="relation_q" class="ptolemy.domains.modal.kernel.Transition">
                     <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="in == 113">
                     </property>
-                    <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute" value="out = -1">
+                    <property name="outputActions" class="ptolemy.domains.modal.kernel.OutputActionsAttribute" value="out = -1">
                     </property>
                     <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="2.9155475434975884">
                     </property>
@@ -3285,8 +3285,8 @@ Press 'r' or 'f' to rotate over wrist</text></svg></configure>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[205.0, 270.0]">
         </property>
         <entity name="get_direction" class="ptolemy.actor.TypedCompositeActor">
-            <entity name="FSM_motor_number" class="ptolemy.domains.fsm.kernel.FSMActor">
-                <entity name="switchState" class="ptolemy.domains.fsm.kernel.State">
+            <entity name="FSM_motor_number" class="ptolemy.domains.modal.kernel.FSMActor">
+                <entity name="switchState" class="ptolemy.domains.modal.kernel.State">
                     <property name="isInitialState" class="ptolemy.data.expr.Parameter" value="true">
                     </property>
                     <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
@@ -3294,10 +3294,10 @@ Press 'r' or 'f' to rotate over wrist</text></svg></configure>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="251.0, 212.0">
                     </property>
                 </entity>
-                <relation name="relation_w" class="ptolemy.domains.fsm.kernel.Transition">
+                <relation name="relation_w" class="ptolemy.domains.modal.kernel.Transition">
                     <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="in == 115">
                     </property>
-                    <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute" value="out = 1">
+                    <property name="outputActions" class="ptolemy.domains.modal.kernel.OutputActionsAttribute" value="out = 1">
                     </property>
                     <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="PI/5.0">
                     </property>
@@ -3308,10 +3308,10 @@ Press 'r' or 'f' to rotate over wrist</text></svg></configure>
                     <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
                     </property>
                 </relation>
-                <relation name="relation_e" class="ptolemy.domains.fsm.kernel.Transition">
+                <relation name="relation_e" class="ptolemy.domains.modal.kernel.Transition">
                     <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="in == 101">
                     </property>
-                    <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute" value="out = 1">
+                    <property name="outputActions" class="ptolemy.domains.modal.kernel.OutputActionsAttribute" value="out = 1">
                     </property>
                     <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="PI/5.0">
                     </property>
@@ -3322,10 +3322,10 @@ Press 'r' or 'f' to rotate over wrist</text></svg></configure>
                     <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
                     </property>
                 </relation>
-                <relation name="relation_t" class="ptolemy.domains.fsm.kernel.Transition">
+                <relation name="relation_t" class="ptolemy.domains.modal.kernel.Transition">
                     <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="in == 116">
                     </property>
-                    <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute" value="out = 1">
+                    <property name="outputActions" class="ptolemy.domains.modal.kernel.OutputActionsAttribute" value="out = 1">
                     </property>
                     <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="PI/5.0">
                     </property>
@@ -3336,10 +3336,10 @@ Press 'r' or 'f' to rotate over wrist</text></svg></configure>
                     <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
                     </property>
                 </relation>
-                <relation name="relation_g" class="ptolemy.domains.fsm.kernel.Transition">
+                <relation name="relation_g" class="ptolemy.domains.modal.kernel.Transition">
                     <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="in == 103">
                     </property>
-                    <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute" value="out = -1">
+                    <property name="outputActions" class="ptolemy.domains.modal.kernel.OutputActionsAttribute" value="out = -1">
                     </property>
                     <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="2.8001600971340546">
                     </property>
@@ -3350,10 +3350,10 @@ Press 'r' or 'f' to rotate over wrist</text></svg></configure>
                     <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
                     </property>
                 </relation>
-                <relation name="relation_s" class="ptolemy.domains.fsm.kernel.Transition">
+                <relation name="relation_s" class="ptolemy.domains.modal.kernel.Transition">
                     <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="in == 119">
                     </property>
-                    <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute" value="out = -1">
+                    <property name="outputActions" class="ptolemy.domains.modal.kernel.OutputActionsAttribute" value="out = -1">
                     </property>
                     <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="2.450746426203509">
                     </property>
@@ -3364,10 +3364,10 @@ Press 'r' or 'f' to rotate over wrist</text></svg></configure>
                     <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
                     </property>
                 </relation>
-                <relation name="relation_d" class="ptolemy.domains.fsm.kernel.Transition">
+                <relation name="relation_d" class="ptolemy.domains.modal.kernel.Transition">
                     <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="in == 100">
                     </property>
-                    <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute" value="out = -1">
+                    <property name="outputActions" class="ptolemy.domains.modal.kernel.OutputActionsAttribute" value="out = -1">
                     </property>
                     <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="2.7748599937877403">
                     </property>
@@ -3378,10 +3378,10 @@ Press 'r' or 'f' to rotate over wrist</text></svg></configure>
                     <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
                     </property>
                 </relation>
-                <relation name="relation_f" class="ptolemy.domains.fsm.kernel.Transition">
+                <relation name="relation_f" class="ptolemy.domains.modal.kernel.Transition">
                     <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="in == 102">
                     </property>
-                    <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute" value="out = 1">
+                    <property name="outputActions" class="ptolemy.domains.modal.kernel.OutputActionsAttribute" value="out = 1">
                     </property>
                     <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="2.4293884067770857">
                     </property>
@@ -3392,10 +3392,10 @@ Press 'r' or 'f' to rotate over wrist</text></svg></configure>
                     <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
                     </property>
                 </relation>
-                <relation name="relation_a" class="ptolemy.domains.fsm.kernel.Transition">
+                <relation name="relation_a" class="ptolemy.domains.modal.kernel.Transition">
                     <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="in == 97">
                     </property>
-                    <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute" value="out = 1">
+                    <property name="outputActions" class="ptolemy.domains.modal.kernel.OutputActionsAttribute" value="out = 1">
                     </property>
                     <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="2.468880651737476">
                     </property>
@@ -3406,10 +3406,10 @@ Press 'r' or 'f' to rotate over wrist</text></svg></configure>
                     <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
                     </property>
                 </relation>
-                <relation name="relation_r" class="ptolemy.domains.fsm.kernel.Transition">
+                <relation name="relation_r" class="ptolemy.domains.modal.kernel.Transition">
                     <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="in == 114">
                     </property>
-                    <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute" value="out = -1">
+                    <property name="outputActions" class="ptolemy.domains.modal.kernel.OutputActionsAttribute" value="out = -1">
                     </property>
                     <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="2.8080657033351266">
                     </property>
@@ -3420,10 +3420,10 @@ Press 'r' or 'f' to rotate over wrist</text></svg></configure>
                     <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
                     </property>
                 </relation>
-                <relation name="relation_q" class="ptolemy.domains.fsm.kernel.Transition">
+                <relation name="relation_q" class="ptolemy.domains.modal.kernel.Transition">
                     <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="in == 113">
                     </property>
-                    <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute" value="out = -1">
+                    <property name="outputActions" class="ptolemy.domains.modal.kernel.OutputActionsAttribute" value="out = -1">
                     </property>
                     <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="2.9155475434975884">
                     </property>

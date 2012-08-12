@@ -1034,33 +1034,33 @@ sensors.</text></svg></configure>
             <property name="_location" class="ptolemy.kernel.util.Location" value="115.0, 120.0">
             </property>
         </entity>
-        <entity name="modal model" class="ptolemy.domains.fsm.modal.ModalModel">
+        <entity name="modal model" class="ptolemy.domains.modal.modal.ModalModel">
             <property name="_tableauFactory" class="ptolemy.vergil.fsm.modal.ModalTableauFactory">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="195.0, 120.0">
             </property>
-            <port name="decision" class="ptolemy.domains.fsm.modal.ModalPort">
+            <port name="decision" class="ptolemy.domains.modal.modal.ModalPort">
                 <property name="input"/>
                 <property name="_type" class="ptolemy.actor.TypeAttribute" value="unknown">
                 </property>
                 <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="WEST">
                 </property>
             </port>
-            <port name="x" class="ptolemy.domains.fsm.modal.ModalPort">
+            <port name="x" class="ptolemy.domains.modal.modal.ModalPort">
                 <property name="output"/>
                 <property name="_type" class="ptolemy.actor.TypeAttribute" value="unknown">
                 </property>
                 <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="EAST">
                 </property>
             </port>
-            <port name="y" class="ptolemy.domains.fsm.modal.ModalPort">
+            <port name="y" class="ptolemy.domains.modal.modal.ModalPort">
                 <property name="output"/>
                 <property name="_type" class="ptolemy.actor.TypeAttribute" value="unknown">
                 </property>
                 <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="EAST">
                 </property>
             </port>
-            <entity name="_Controller" class="ptolemy.domains.fsm.modal.ModalController">
+            <entity name="_Controller" class="ptolemy.domains.modal.modal.ModalController">
                 <property name="annotation" class="ptolemy.kernel.util.Attribute">
                     <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
                     </property>
@@ -1080,27 +1080,27 @@ to another. Then delete this annotation.</text>
                 </property>
                 <property name="_library" class="ptolemy.moml.LibraryAttribute">
                     <configure>
-        <entity name="state library" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/configs/basicUtilities.xml"></input><entity name="state" class="ptolemy.domains.fsm.kernel.State"><property name="_centerName" class="ptolemy.kernel.util.Attribute"></property><property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory"></property></entity></entity>
+        <entity name="state library" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/configs/basicUtilities.xml"></input><entity name="state" class="ptolemy.domains.modal.kernel.State"><property name="_centerName" class="ptolemy.kernel.util.Attribute"></property><property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory"></property></entity></entity>
       </configure>
                 </property>
-                <port name="decision" class="ptolemy.domains.fsm.modal.RefinementPort">
+                <port name="decision" class="ptolemy.domains.modal.modal.RefinementPort">
                     <property name="input"/>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="50.0, 330.0">
                     </property>
                 </port>
-                <port name="x" class="ptolemy.domains.fsm.modal.RefinementPort">
+                <port name="x" class="ptolemy.domains.modal.modal.RefinementPort">
                     <property name="input"/>
                     <property name="output"/>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="45.0, 240.0">
                     </property>
                 </port>
-                <port name="y" class="ptolemy.domains.fsm.modal.RefinementPort">
+                <port name="y" class="ptolemy.domains.modal.modal.RefinementPort">
                     <property name="input"/>
                     <property name="output"/>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="50.0, 135.0">
                     </property>
                 </port>
-                <entity name="state" class="ptolemy.domains.fsm.kernel.State">
+                <entity name="state" class="ptolemy.domains.modal.kernel.State">
                     <property name="isInitialState" class="ptolemy.data.expr.Parameter" value="true">
                     </property>
                     <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
@@ -1110,10 +1110,10 @@ to another. Then delete this annotation.</text>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="230.0, 215.0">
                     </property>
                 </entity>
-                <relation name="relation" class="ptolemy.domains.fsm.kernel.Transition">
+                <relation name="relation" class="ptolemy.domains.modal.kernel.Transition">
                     <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="decision_isPresent &amp;&amp; decision == 1">
                     </property>
-                    <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute" value="y = speed; x = 0">
+                    <property name="outputActions" class="ptolemy.domains.modal.kernel.OutputActionsAttribute" value="y = speed; x = 0">
                     </property>
                     <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="2.356194490192345">
                     </property>
@@ -1124,10 +1124,10 @@ to another. Then delete this annotation.</text>
                     <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
                     </property>
                 </relation>
-                <relation name="relation2" class="ptolemy.domains.fsm.kernel.Transition">
+                <relation name="relation2" class="ptolemy.domains.modal.kernel.Transition">
                     <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="decision_isPresent &amp;&amp; decision == 2">
                     </property>
-                    <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute" value="x =speed; y = 0">
+                    <property name="outputActions" class="ptolemy.domains.modal.kernel.OutputActionsAttribute" value="x =speed; y = 0">
                     </property>
                     <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="2.356194490192345">
                     </property>
@@ -1138,10 +1138,10 @@ to another. Then delete this annotation.</text>
                     <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
                     </property>
                 </relation>
-                <relation name="relation3" class="ptolemy.domains.fsm.kernel.Transition">
+                <relation name="relation3" class="ptolemy.domains.modal.kernel.Transition">
                     <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="decision_isPresent &amp;&amp; decision == 3">
                     </property>
-                    <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute" value="x = 0; y = -speed">
+                    <property name="outputActions" class="ptolemy.domains.modal.kernel.OutputActionsAttribute" value="x = 0; y = -speed">
                     </property>
                     <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="2.4047019309170086">
                     </property>
@@ -1152,10 +1152,10 @@ to another. Then delete this annotation.</text>
                     <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
                     </property>
                 </relation>
-                <relation name="relation4" class="ptolemy.domains.fsm.kernel.Transition">
+                <relation name="relation4" class="ptolemy.domains.modal.kernel.Transition">
                     <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="decision_isPresent &amp;&amp; decision == 4">
                     </property>
-                    <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute" value="x = -speed; y = 0">
+                    <property name="outputActions" class="ptolemy.domains.modal.kernel.OutputActionsAttribute" value="x = -speed; y = 0">
                     </property>
                     <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="2.3031167774103443">
                     </property>

@@ -165,22 +165,22 @@ crosses the level 0.5 four times.</text></svg></configure>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[0.0, 440.0]">
         </property>
     </property>
-    <entity name="SignalWithGlitches" class="ptolemy.domains.fsm.modal.ModalModel">
+    <entity name="SignalWithGlitches" class="ptolemy.domains.modal.modal.ModalModel">
         <property name="_tableauFactory" class="ptolemy.vergil.fsm.modal.ModalTableauFactory">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[135.0, 135.0]">
         </property>
-        <port name="input" class="ptolemy.domains.fsm.modal.ModalPort">
+        <port name="input" class="ptolemy.domains.modal.modal.ModalPort">
             <property name="input"/>
         </port>
-        <port name="output" class="ptolemy.domains.fsm.modal.ModalPort">
+        <port name="output" class="ptolemy.domains.modal.modal.ModalPort">
             <property name="output"/>
         </port>
-        <entity name="_Controller" class="ptolemy.domains.fsm.modal.ModalController">
+        <entity name="_Controller" class="ptolemy.domains.modal.modal.ModalController">
             <property name="initialStateName" class="ptolemy.kernel.util.StringAttribute">
             </property>
             <property name="_library" class="ptolemy.moml.LibraryAttribute">
-                <configure><entity name="state library" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/configs/basicUtilities.xml"></input><entity name="state" class="ptolemy.domains.fsm.kernel.State"><property name="_centerName" class="ptolemy.kernel.util.Attribute"></property></entity></entity></configure>
+                <configure><entity name="state library" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/configs/basicUtilities.xml"></input><entity name="state" class="ptolemy.domains.modal.kernel.State"><property name="_centerName" class="ptolemy.kernel.util.Attribute"></property></entity></entity></configure>
             </property>
             <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 125, 815, 518}, maximized=false}">
             </property>
@@ -216,18 +216,18 @@ The final state (state4) simply connects the input to the output.</text></svg></
             </property>
             <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
             </property>
-            <port name="input" class="ptolemy.domains.fsm.modal.RefinementPort">
+            <port name="input" class="ptolemy.domains.modal.modal.RefinementPort">
                 <property name="input"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[30.0, 125.0]">
                 </property>
             </port>
-            <port name="output" class="ptolemy.domains.fsm.modal.RefinementPort">
+            <port name="output" class="ptolemy.domains.modal.modal.RefinementPort">
                 <property name="input"/>
                 <property name="output"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[570.0, 135.0]">
                 </property>
             </port>
-            <entity name="state1" class="ptolemy.domains.fsm.kernel.State">
+            <entity name="state1" class="ptolemy.domains.modal.kernel.State">
                 <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="const">
                 </property>
                 <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
@@ -237,7 +237,7 @@ The final state (state4) simply connects the input to the output.</text></svg></
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[170.0, 50.0]">
                 </property>
             </entity>
-            <entity name="state2" class="ptolemy.domains.fsm.kernel.State">
+            <entity name="state2" class="ptolemy.domains.modal.kernel.State">
                 <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="const">
                 </property>
                 <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
@@ -247,7 +247,7 @@ The final state (state4) simply connects the input to the output.</text></svg></
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[285.0, 50.0]">
                 </property>
             </entity>
-            <entity name="state3" class="ptolemy.domains.fsm.kernel.State">
+            <entity name="state3" class="ptolemy.domains.modal.kernel.State">
                 <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="const">
                 </property>
                 <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
@@ -257,7 +257,7 @@ The final state (state4) simply connects the input to the output.</text></svg></
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[400.0, 55.0]">
                 </property>
             </entity>
-            <entity name="state4" class="ptolemy.domains.fsm.kernel.State">
+            <entity name="state4" class="ptolemy.domains.modal.kernel.State">
                 <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="const">
                 </property>
                 <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
@@ -267,7 +267,7 @@ The final state (state4) simply connects the input to the output.</text></svg></
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[510.0, 55.0]">
                 </property>
             </entity>
-            <entity name="init" class="ptolemy.domains.fsm.kernel.State">
+            <entity name="init" class="ptolemy.domains.modal.kernel.State">
                 <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="init">
                 </property>
                 <property name="isInitialState" class="ptolemy.data.expr.Parameter" value="true">
@@ -279,10 +279,10 @@ The final state (state4) simply connects the input to the output.</text></svg></
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[45.0, 55.0]">
                 </property>
             </entity>
-            <relation name="relation" class="ptolemy.domains.fsm.kernel.Transition">
+            <relation name="relation" class="ptolemy.domains.modal.kernel.Transition">
                 <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="true">
                 </property>
-                <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute" value="output = 0.0">
+                <property name="outputActions" class="ptolemy.domains.modal.kernel.OutputActionsAttribute" value="output = 0.0">
                 </property>
                 <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.6283185307179586">
                 </property>
@@ -293,10 +293,10 @@ The final state (state4) simply connects the input to the output.</text></svg></
                 <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
             </relation>
-            <relation name="relation2" class="ptolemy.domains.fsm.kernel.Transition">
+            <relation name="relation2" class="ptolemy.domains.modal.kernel.Transition">
                 <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="true">
                 </property>
-                <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute" value="output = 2.0">
+                <property name="outputActions" class="ptolemy.domains.modal.kernel.OutputActionsAttribute" value="output = 2.0">
                 </property>
                 <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.6283185307179586">
                 </property>
@@ -307,10 +307,10 @@ The final state (state4) simply connects the input to the output.</text></svg></
                 <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
             </relation>
-            <relation name="relation3" class="ptolemy.domains.fsm.kernel.Transition">
+            <relation name="relation3" class="ptolemy.domains.modal.kernel.Transition">
                 <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="true">
                 </property>
-                <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute" value="output = -1.0">
+                <property name="outputActions" class="ptolemy.domains.modal.kernel.OutputActionsAttribute" value="output = -1.0">
                 </property>
                 <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.6283185307179586">
                 </property>
@@ -321,7 +321,7 @@ The final state (state4) simply connects the input to the output.</text></svg></
                 <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
             </relation>
-            <relation name="relation4" class="ptolemy.domains.fsm.kernel.Transition">
+            <relation name="relation4" class="ptolemy.domains.modal.kernel.Transition">
                 <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="output &gt; 1.5">
                 </property>
                 <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.6283185307179586">
@@ -342,7 +342,7 @@ The final state (state4) simply connects the input to the output.</text></svg></
             <link port="state4.incomingPort" relation="relation3"/>
             <link port="init.outgoingPort" relation="relation4"/>
         </entity>
-        <entity name="const" class="ptolemy.domains.fsm.modal.Refinement">
+        <entity name="const" class="ptolemy.domains.modal.modal.Refinement">
             <property name="CTEmbedded Director" class="ptolemy.domains.ct.kernel.CTEmbeddedDirector">
                 <property name="timeResolution" class="ptolemy.actor.parameters.SharedParameter" value="1.0E-10">
                 </property>
@@ -375,12 +375,12 @@ The final state (state4) simply connects the input to the output.</text></svg></
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 45.0]">
                 </property>
             </property>
-            <port name="input" class="ptolemy.domains.fsm.modal.RefinementPort">
+            <port name="input" class="ptolemy.domains.modal.modal.RefinementPort">
                 <property name="input"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[30.0, 105.0]">
                 </property>
             </port>
-            <port name="output" class="ptolemy.domains.fsm.modal.RefinementPort">
+            <port name="output" class="ptolemy.domains.modal.modal.RefinementPort">
                 <property name="output"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[230.0, 105.0]">
                 </property>
@@ -390,7 +390,7 @@ The final state (state4) simply connects the input to the output.</text></svg></
             <link port="input" relation="relation"/>
             <link port="output" relation="relation"/>
         </entity>
-        <entity name="init" class="ptolemy.domains.fsm.modal.Refinement">
+        <entity name="init" class="ptolemy.domains.modal.modal.Refinement">
             <property name="CTEmbedded Director" class="ptolemy.domains.ct.kernel.CTEmbeddedDirector">
                 <property name="timeResolution" class="ptolemy.actor.parameters.SharedParameter" value="1.0E-10">
                 </property>
@@ -423,12 +423,12 @@ The final state (state4) simply connects the input to the output.</text></svg></
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 40.0]">
                 </property>
             </property>
-            <port name="input" class="ptolemy.domains.fsm.modal.RefinementPort">
+            <port name="input" class="ptolemy.domains.modal.modal.RefinementPort">
                 <property name="input"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[30.0, 115.0]">
                 </property>
             </port>
-            <port name="output" class="ptolemy.domains.fsm.modal.RefinementPort">
+            <port name="output" class="ptolemy.domains.modal.modal.RefinementPort">
                 <property name="output"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[225.0, 115.0]">
                 </property>

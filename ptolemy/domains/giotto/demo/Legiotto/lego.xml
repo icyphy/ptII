@@ -4,7 +4,7 @@
 <class name="lego" extends="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="2.1-devel-2">
     </property>
-    <property name="modal" class="ptolemy.domains.fsm.kernel.FSMDirector">
+    <property name="modal" class="ptolemy.domains.modal.kernel.FSMDirector">
         <property name="controllerName" class="ptolemy.kernel.util.StringAttribute" value="controller">
         </property>
     </property>
@@ -142,7 +142,7 @@
         <link port="bumped" relation="r0"/>
         <link port="LegoBumper.bumped" relation="r0"/>
     </entity>
-    <entity name="controller" class="ptolemy.domains.fsm.kernel.FSMActor">
+    <entity name="controller" class="ptolemy.domains.modal.kernel.FSMActor">
         <property name="initialStateName" class="ptolemy.kernel.util.StringAttribute" value="initialStateName">
         </property>
         <property name="_nonStrictMarker" class="ptolemy.kernel.util.Attribute">
@@ -166,7 +166,7 @@
         <port name="bumped" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
         </port>
-        <entity name="leading" class="ptolemy.domains.fsm.kernel.State">
+        <entity name="leading" class="ptolemy.domains.modal.kernel.State">
             <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="maneuver">
             </property>
             <port name="incomingPort" class="ptolemy.kernel.ComponentPort">
@@ -174,7 +174,7 @@
             <port name="outgoingPort" class="ptolemy.kernel.ComponentPort">
             </port>
         </entity>
-        <entity name="following" class="ptolemy.domains.fsm.kernel.State">
+        <entity name="following" class="ptolemy.domains.modal.kernel.State">
             <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="follow">
             </property>
             <port name="incomingPort" class="ptolemy.kernel.ComponentPort">
@@ -182,7 +182,7 @@
             <port name="outgoingPort" class="ptolemy.kernel.ComponentPort">
             </port>
         </entity>
-        <entity name="stopping" class="ptolemy.domains.fsm.kernel.State">
+        <entity name="stopping" class="ptolemy.domains.modal.kernel.State">
             <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="maneuver">
             </property>
             <port name="incomingPort" class="ptolemy.kernel.ComponentPort">
@@ -190,7 +190,7 @@
             <port name="outgoingPort" class="ptolemy.kernel.ComponentPort">
             </port>
         </entity>
-        <entity name="evading" class="ptolemy.domains.fsm.kernel.State">
+        <entity name="evading" class="ptolemy.domains.modal.kernel.State">
             <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="maneuver">
             </property>
             <port name="incomingPort" class="ptolemy.kernel.ComponentPort">
@@ -198,12 +198,12 @@
             <port name="outgoingPort" class="ptolemy.kernel.ComponentPort">
             </port>
         </entity>
-        <relation name="t1" class="ptolemy.domains.fsm.kernel.Transition">
+        <relation name="t1" class="ptolemy.domains.modal.kernel.Transition">
             <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="leader_isPresent &amp;&amp; leader != legoID">
             </property>
-            <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute">
+            <property name="outputActions" class="ptolemy.domains.modal.kernel.OutputActionsAttribute">
             </property>
-            <property name="setActions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute">
+            <property name="setActions" class="ptolemy.domains.modal.kernel.CommitActionsAttribute">
             </property>
             <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="PI/5.0">
             </property>
@@ -216,12 +216,12 @@
             <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
             </property>
         </relation>
-        <relation name="t2" class="ptolemy.domains.fsm.kernel.Transition">
+        <relation name="t2" class="ptolemy.domains.modal.kernel.Transition">
             <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="leader_isPresent &amp;&amp; leader == legoID">
             </property>
-            <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute">
+            <property name="outputActions" class="ptolemy.domains.modal.kernel.OutputActionsAttribute">
             </property>
-            <property name="setActions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute" value="maneuver.routinePulse.indexes = {0, 1}; maneuver.routinePulse.values = {0, 0}; maneuver.LegoLink.legoID = 0">
+            <property name="setActions" class="ptolemy.domains.modal.kernel.CommitActionsAttribute" value="maneuver.routinePulse.indexes = {0, 1}; maneuver.routinePulse.values = {0, 0}; maneuver.LegoLink.legoID = 0">
             </property>
             <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="PI/5.0">
             </property>
@@ -234,12 +234,12 @@
             <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
             </property>
         </relation>
-        <relation name="t3" class="ptolemy.domains.fsm.kernel.Transition">
+        <relation name="t3" class="ptolemy.domains.modal.kernel.Transition">
             <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="step_isPresent &amp;&amp; step == 1">
             </property>
-            <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute">
+            <property name="outputActions" class="ptolemy.domains.modal.kernel.OutputActionsAttribute">
             </property>
-            <property name="setActions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute" value="maneuver.routinePulse.indexes = [0 : 1 : (evadingSteps - 1)].toArray(); maneuver.routinePulse.values = evadingRoutine; maneuver.LegoLink.legoID = legoID">
+            <property name="setActions" class="ptolemy.domains.modal.kernel.CommitActionsAttribute" value="maneuver.routinePulse.indexes = [0 : 1 : (evadingSteps - 1)].toArray(); maneuver.routinePulse.values = evadingRoutine; maneuver.LegoLink.legoID = legoID">
             </property>
             <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="PI/5.0">
             </property>
@@ -252,12 +252,12 @@
             <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
             </property>
         </relation>
-        <relation name="t4" class="ptolemy.domains.fsm.kernel.Transition">
+        <relation name="t4" class="ptolemy.domains.modal.kernel.Transition">
             <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="step_isPresent &amp;&amp; step == (evadingSteps - 1)">
             </property>
-            <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute">
+            <property name="outputActions" class="ptolemy.domains.modal.kernel.OutputActionsAttribute">
             </property>
-            <property name="setActions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute" value="maneuver.routinePulse.indexes = [0 : 1 : (leadingSteps - 1)].toArray(); maneuver.routinePulse.values = leadingRoutine; maneuver.routinePulse.repeat = true; maneuver.LegoLink.legoID = 0">
+            <property name="setActions" class="ptolemy.domains.modal.kernel.CommitActionsAttribute" value="maneuver.routinePulse.indexes = [0 : 1 : (leadingSteps - 1)].toArray(); maneuver.routinePulse.values = leadingRoutine; maneuver.routinePulse.repeat = true; maneuver.LegoLink.legoID = 0">
             </property>
             <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="PI/5.0">
             </property>
@@ -270,12 +270,12 @@
             <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
             </property>
         </relation>
-        <relation name="t5" class="ptolemy.domains.fsm.kernel.Transition">
+        <relation name="t5" class="ptolemy.domains.modal.kernel.Transition">
             <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="bumped_isPresent &amp;&amp; bumped == 1">
             </property>
-            <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute">
+            <property name="outputActions" class="ptolemy.domains.modal.kernel.OutputActionsAttribute">
             </property>
-            <property name="setActions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute" value="maneuver.routinePulse.indexes = {0, 1}; maneuver.routinePulse.values = {0, 0}; maneuver.LegoLink.legoID = 0">
+            <property name="setActions" class="ptolemy.domains.modal.kernel.CommitActionsAttribute" value="maneuver.routinePulse.indexes = {0, 1}; maneuver.routinePulse.values = {0, 0}; maneuver.LegoLink.legoID = 0">
             </property>
             <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="PI/5.0">
             </property>

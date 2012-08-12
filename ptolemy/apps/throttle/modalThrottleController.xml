@@ -95,7 +95,7 @@
         </property>
         <property name="friction_constant" class="ptolemy.data.expr.Parameter" value="friction_constant">
         </property>
-        <property name="FSM" class="ptolemy.domains.fsm.kernel.FSMDirector">
+        <property name="FSM" class="ptolemy.domains.modal.kernel.FSMDirector">
             <property name="controllerName" class="ptolemy.kernel.util.StringAttribute" value="controllerFSM">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="74.0, 40.0">
@@ -150,14 +150,14 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="475.0, 264.0">
             </property>
         </port>
-        <entity name="controllerFSM" class="ptolemy.domains.fsm.kernel.FSMActor">
+        <entity name="controllerFSM" class="ptolemy.domains.modal.kernel.FSMActor">
             <property name="initialStateName" class="ptolemy.kernel.util.StringAttribute" value="init">
             </property>
             <property name="_nonStrictMarker" class="ptolemy.kernel.util.Attribute">
             </property>
             <property name="_library" class="ptolemy.moml.LibraryAttribute">
                 <configure>
-            <entity name="state library" class="ptolemy.kernel.CompositeEntity"><entity name="state" class="ptolemy.domains.fsm.kernel.State"/></entity>
+            <entity name="state library" class="ptolemy.kernel.CompositeEntity"><entity name="state" class="ptolemy.domains.modal.kernel.State"/></entity>
           </configure>
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="407.0, 264.0">
@@ -183,7 +183,7 @@
                 <property name="_location" class="ptolemy.kernel.util.Location" value="549.0, 239.0">
                 </property>
             </port>
-            <entity name="slidingMode" class="ptolemy.domains.fsm.kernel.State">
+            <entity name="slidingMode" class="ptolemy.domains.modal.kernel.State">
                 <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="slidingMode">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="201.0, 177.0">
@@ -193,7 +193,7 @@
                 <port name="outgoingPort" class="ptolemy.kernel.ComponentPort">
                 </port>
             </entity>
-            <entity name="steadyState" class="ptolemy.domains.fsm.kernel.State">
+            <entity name="steadyState" class="ptolemy.domains.modal.kernel.State">
                 <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="steadyState">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="380.0, 304.0">
@@ -203,7 +203,7 @@
                 <port name="outgoingPort" class="ptolemy.kernel.ComponentPort">
                 </port>
             </entity>
-            <entity name="init" class="ptolemy.domains.fsm.kernel.State">
+            <entity name="init" class="ptolemy.domains.modal.kernel.State">
                 <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="slidingMode">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="156.0, 53.0">
@@ -213,12 +213,12 @@
                 <port name="outgoingPort" class="ptolemy.kernel.ComponentPort">
                 </port>
             </entity>
-            <relation name="relation" class="ptolemy.domains.fsm.kernel.Transition">
+            <relation name="relation" class="ptolemy.domains.modal.kernel.Transition">
                 <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="abs(theta-theta_desired)&lt;delta">
                 </property>
-                <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute" value="mode=2">
+                <property name="outputActions" class="ptolemy.domains.modal.kernel.OutputActionsAttribute" value="mode=2">
                 </property>
-                <property name="setActions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute">
+                <property name="setActions" class="ptolemy.domains.modal.kernel.CommitActionsAttribute">
                 </property>
                 <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="PI/5.0">
                 </property>
@@ -231,12 +231,12 @@
                 <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
                 </property>
             </relation>
-            <relation name="relation3" class="ptolemy.domains.fsm.kernel.Transition">
+            <relation name="relation3" class="ptolemy.domains.modal.kernel.Transition">
                 <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="abs(theta-theta_desired)&gt;delta">
                 </property>
-                <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute" value="mode=1">
+                <property name="outputActions" class="ptolemy.domains.modal.kernel.OutputActionsAttribute" value="mode=1">
                 </property>
-                <property name="setActions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute">
+                <property name="setActions" class="ptolemy.domains.modal.kernel.CommitActionsAttribute">
                 </property>
                 <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="PI/5.0">
                 </property>
@@ -249,12 +249,12 @@
                 <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
                 </property>
             </relation>
-            <relation name="relation2" class="ptolemy.domains.fsm.kernel.Transition">
+            <relation name="relation2" class="ptolemy.domains.modal.kernel.Transition">
                 <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="true">
                 </property>
-                <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute" value="mode = 1">
+                <property name="outputActions" class="ptolemy.domains.modal.kernel.OutputActionsAttribute" value="mode = 1">
                 </property>
-                <property name="setActions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute">
+                <property name="setActions" class="ptolemy.domains.modal.kernel.CommitActionsAttribute">
                 </property>
                 <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="PI/5.0">
                 </property>

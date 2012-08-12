@@ -149,12 +149,12 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[40.0, 290.0]">
         </property>
     </property>
-    <entity name="TopCtrl" class="ptolemy.domains.fsm.modal.ModalModel">
+    <entity name="TopCtrl" class="ptolemy.domains.modal.modal.ModalModel">
         <property name="directorClass" class="ptolemy.kernel.util.StringAttribute" value="ptolemy.domains.hdf.kernel.HDFFSMDirector">
             <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
-                <property name="style0" class="ptolemy.kernel.util.StringAttribute" value="ptolemy.domains.fsm.kernel.HSDirector">
+                <property name="style0" class="ptolemy.kernel.util.StringAttribute" value="ptolemy.domains.modal.kernel.HSDirector">
                 </property>
-                <property name="style1" class="ptolemy.kernel.util.StringAttribute" value="ptolemy.domains.fsm.kernel.FSMDirector">
+                <property name="style1" class="ptolemy.kernel.util.StringAttribute" value="ptolemy.domains.modal.kernel.FSMDirector">
                 </property>
                 <property name="style2" class="ptolemy.kernel.util.StringAttribute" value="ptolemy.domains.hdf.kernel.HDFFSMDirector">
                 </property>
@@ -168,21 +168,21 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="430.0, 135.0">
         </property>
-        <port name="input" class="ptolemy.domains.fsm.modal.ModalPort">
+        <port name="input" class="ptolemy.domains.modal.modal.ModalPort">
             <property name="input"/>
             <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="4">
             </property>
         </port>
-        <port name="output" class="ptolemy.domains.fsm.modal.ModalPort">
+        <port name="output" class="ptolemy.domains.modal.modal.ModalPort">
             <property name="output"/>
             <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="4">
             </property>
         </port>
-        <entity name="_Controller" class="ptolemy.domains.fsm.modal.ModalController">
+        <entity name="_Controller" class="ptolemy.domains.modal.modal.ModalController">
             <property name="initialStateName" class="ptolemy.kernel.util.StringAttribute" value="stateA">
             </property>
             <property name="_library" class="ptolemy.moml.LibraryAttribute">
-                <configure><entity name="state library" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/configs/basicUtilities.xml"></input><entity name="state" class="ptolemy.domains.fsm.kernel.State"><property name="_centerName" class="ptolemy.kernel.util.Attribute"></property></entity></entity></configure>
+                <configure><entity name="state library" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/configs/basicUtilities.xml"></input><entity name="state" class="ptolemy.domains.modal.kernel.State"><property name="_centerName" class="ptolemy.kernel.util.Attribute"></property></entity></entity></configure>
             </property>
             <property name="annotation" class="ptolemy.kernel.util.Attribute">
                 <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -201,18 +201,18 @@ to another. Then delete this annotation.</text>
                 <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
                 </property>
             </property>
-            <port name="input" class="ptolemy.domains.fsm.modal.RefinementPort">
+            <port name="input" class="ptolemy.domains.modal.modal.RefinementPort">
                 <property name="input"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="35.0, 55.0">
                 </property>
             </port>
-            <port name="output" class="ptolemy.domains.fsm.modal.RefinementPort">
+            <port name="output" class="ptolemy.domains.modal.modal.RefinementPort">
                 <property name="input"/>
                 <property name="output"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="30.0, 100.0">
                 </property>
             </port>
-            <entity name="stateA" class="ptolemy.domains.fsm.kernel.State">
+            <entity name="stateA" class="ptolemy.domains.modal.kernel.State">
                 <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="stateA">
                 </property>
                 <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
@@ -220,7 +220,7 @@ to another. Then delete this annotation.</text>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="145.0, 185.0">
                 </property>
             </entity>
-            <entity name="stateB" class="ptolemy.domains.fsm.kernel.State">
+            <entity name="stateB" class="ptolemy.domains.modal.kernel.State">
                 <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="stateB">
                 </property>
                 <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
@@ -228,7 +228,7 @@ to another. Then delete this annotation.</text>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="{255.0, 190.0}">
                 </property>
             </entity>
-            <relation name="relation" class="ptolemy.domains.fsm.kernel.Transition">
+            <relation name="relation" class="ptolemy.domains.modal.kernel.Transition">
                 <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="input%32 &gt;=16">
                 </property>
                 <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.6283185307179586">
@@ -240,7 +240,7 @@ to another. Then delete this annotation.</text>
                 <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
             </relation>
-            <relation name="relation2" class="ptolemy.domains.fsm.kernel.Transition">
+            <relation name="relation2" class="ptolemy.domains.modal.kernel.Transition">
                 <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="input%32 &lt;16">
                 </property>
                 <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.6283185307179586">
@@ -257,7 +257,7 @@ to another. Then delete this annotation.</text>
             <link port="stateB.incomingPort" relation="relation"/>
             <link port="stateB.outgoingPort" relation="relation2"/>
         </entity>
-        <entity name="stateA" class="ptolemy.domains.fsm.modal.Refinement">
+        <entity name="stateA" class="ptolemy.domains.modal.modal.Refinement">
             <property name="HDFA" class="ptolemy.domains.hdf.kernel.HDFDirector">
                 <property name="allowDisconnectedGraphs" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
@@ -270,22 +270,22 @@ to another. Then delete this annotation.</text>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="-200.0, -100.0">
                 </property>
             </property>
-            <port name="input" class="ptolemy.domains.fsm.modal.RefinementPort">
+            <port name="input" class="ptolemy.domains.modal.modal.RefinementPort">
                 <property name="input"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="-215.0, 65.0">
                 </property>
             </port>
-            <port name="output" class="ptolemy.domains.fsm.modal.RefinementPort">
+            <port name="output" class="ptolemy.domains.modal.modal.RefinementPort">
                 <property name="output"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="170.0, 65.0">
                 </property>
             </port>
-            <entity name="CtrlA" class="ptolemy.domains.fsm.modal.ModalModel">
+            <entity name="CtrlA" class="ptolemy.domains.modal.modal.ModalModel">
                 <property name="directorClass" class="ptolemy.kernel.util.StringAttribute" value="ptolemy.domains.hdf.kernel.HDFFSMDirector">
                     <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
-                        <property name="style0" class="ptolemy.kernel.util.StringAttribute" value="ptolemy.domains.fsm.kernel.HSDirector">
+                        <property name="style0" class="ptolemy.kernel.util.StringAttribute" value="ptolemy.domains.modal.kernel.HSDirector">
                         </property>
-                        <property name="style1" class="ptolemy.kernel.util.StringAttribute" value="ptolemy.domains.fsm.kernel.FSMDirector">
+                        <property name="style1" class="ptolemy.kernel.util.StringAttribute" value="ptolemy.domains.modal.kernel.FSMDirector">
                         </property>
                         <property name="style2" class="ptolemy.kernel.util.StringAttribute" value="ptolemy.domains.hdf.kernel.HDFFSMDirector">
                         </property>
@@ -299,21 +299,21 @@ to another. Then delete this annotation.</text>
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="80.0, 65.0">
                 </property>
-                <port name="input" class="ptolemy.domains.fsm.modal.ModalPort">
+                <port name="input" class="ptolemy.domains.modal.modal.ModalPort">
                     <property name="input"/>
                     <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="2">
                     </property>
                 </port>
-                <port name="output" class="ptolemy.domains.fsm.modal.ModalPort">
+                <port name="output" class="ptolemy.domains.modal.modal.ModalPort">
                     <property name="output"/>
                     <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="2">
                     </property>
                 </port>
-                <entity name="_Controller" class="ptolemy.domains.fsm.modal.ModalController">
+                <entity name="_Controller" class="ptolemy.domains.modal.modal.ModalController">
                     <property name="initialStateName" class="ptolemy.kernel.util.StringAttribute" value="initialA">
                     </property>
                     <property name="_library" class="ptolemy.moml.LibraryAttribute">
-                        <configure><entity name="state library" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/configs/basicUtilities.xml"></input><entity name="state" class="ptolemy.domains.fsm.kernel.State"><property name="_centerName" class="ptolemy.kernel.util.Attribute"></property></entity></entity></configure>
+                        <configure><entity name="state library" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/configs/basicUtilities.xml"></input><entity name="state" class="ptolemy.domains.modal.kernel.State"><property name="_centerName" class="ptolemy.kernel.util.Attribute"></property></entity></entity></configure>
                     </property>
                     <property name="annotation" class="ptolemy.kernel.util.Attribute">
                         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -332,18 +332,18 @@ to another. Then delete this annotation.</text>
                         <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
                         </property>
                     </property>
-                    <port name="input" class="ptolemy.domains.fsm.modal.RefinementPort">
+                    <port name="input" class="ptolemy.domains.modal.modal.RefinementPort">
                         <property name="input"/>
                         <property name="_location" class="ptolemy.kernel.util.Location" value="{0.0, 0.0}">
                         </property>
                     </port>
-                    <port name="output" class="ptolemy.domains.fsm.modal.RefinementPort">
+                    <port name="output" class="ptolemy.domains.modal.modal.RefinementPort">
                         <property name="input"/>
                         <property name="output"/>
                         <property name="_location" class="ptolemy.kernel.util.Location" value="{0.0, 0.0}">
                         </property>
                     </port>
-                    <entity name="stateA1" class="ptolemy.domains.fsm.kernel.State">
+                    <entity name="stateA1" class="ptolemy.domains.modal.kernel.State">
                         <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="stateA1">
                         </property>
                         <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
@@ -351,7 +351,7 @@ to another. Then delete this annotation.</text>
                         <property name="_location" class="ptolemy.kernel.util.Location" value="[145.0, 180.0]">
                         </property>
                     </entity>
-                    <entity name="stateA2" class="ptolemy.domains.fsm.kernel.State">
+                    <entity name="stateA2" class="ptolemy.domains.modal.kernel.State">
                         <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="stateA2">
                         </property>
                         <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
@@ -359,15 +359,15 @@ to another. Then delete this annotation.</text>
                         <property name="_location" class="ptolemy.kernel.util.Location" value="[295.0, 175.0]">
                         </property>
                     </entity>
-                    <entity name="initialA" class="ptolemy.domains.fsm.kernel.State">
+                    <entity name="initialA" class="ptolemy.domains.modal.kernel.State">
                         <property name="_location" class="ptolemy.kernel.util.Location" value="{75, 260}">
                         </property>
                     </entity>
-                    <entity name="transient" class="ptolemy.domains.fsm.kernel.State">
+                    <entity name="transient" class="ptolemy.domains.modal.kernel.State">
                         <property name="_location" class="ptolemy.kernel.util.Location" value="[225.0, 115.0]">
                         </property>
                     </entity>
-                    <relation name="relation" class="ptolemy.domains.fsm.kernel.Transition">
+                    <relation name="relation" class="ptolemy.domains.modal.kernel.Transition">
                         <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="input%32 &gt;= 8 &amp;&amp; input%32 &lt; 16">
                         </property>
                         <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.6283185307179586">
@@ -379,7 +379,7 @@ to another. Then delete this annotation.</text>
                         <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
                         </property>
                     </relation>
-                    <relation name="relation2" class="ptolemy.domains.fsm.kernel.Transition">
+                    <relation name="relation2" class="ptolemy.domains.modal.kernel.Transition">
                         <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="input%32 &lt;8">
                         </property>
                         <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.6283185307179586">
@@ -391,7 +391,7 @@ to another. Then delete this annotation.</text>
                         <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
                         </property>
                     </relation>
-                    <relation name="relation3" class="ptolemy.domains.fsm.kernel.Transition">
+                    <relation name="relation3" class="ptolemy.domains.modal.kernel.Transition">
                         <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="true">
                         </property>
                         <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.6283185307179586">
@@ -403,7 +403,7 @@ to another. Then delete this annotation.</text>
                         <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
                         </property>
                     </relation>
-                    <relation name="relation4" class="ptolemy.domains.fsm.kernel.Transition">
+                    <relation name="relation4" class="ptolemy.domains.modal.kernel.Transition">
                         <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="true">
                         </property>
                         <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.6283185307179586">
@@ -424,7 +424,7 @@ to another. Then delete this annotation.</text>
                     <link port="transient.incomingPort" relation="relation2"/>
                     <link port="transient.outgoingPort" relation="relation4"/>
                 </entity>
-                <entity name="stateA1" class="ptolemy.domains.fsm.modal.Refinement">
+                <entity name="stateA1" class="ptolemy.domains.modal.modal.Refinement">
                     <property name="HDFA1" class="ptolemy.domains.hdf.kernel.HDFDirector">
                         <property name="allowDisconnectedGraphs" class="ptolemy.data.expr.Parameter" value="false">
                         </property>
@@ -441,12 +441,12 @@ to another. Then delete this annotation.</text>
                     </property>
                     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
                     </property>
-                    <port name="input" class="ptolemy.domains.fsm.modal.RefinementPort">
+                    <port name="input" class="ptolemy.domains.modal.modal.RefinementPort">
                         <property name="input"/>
                         <property name="_location" class="ptolemy.kernel.util.Location" value="55.0, 135.0">
                         </property>
                     </port>
-                    <port name="output" class="ptolemy.domains.fsm.modal.RefinementPort">
+                    <port name="output" class="ptolemy.domains.modal.modal.RefinementPort">
                         <property name="output"/>
                         <property name="_location" class="ptolemy.kernel.util.Location" value="370.0, 135.0">
                         </property>
@@ -478,7 +478,7 @@ to another. Then delete this annotation.</text>
                     <link port="ArrayToSequence.input" relation="relation2"/>
                     <link port="ArrayToSequence.output" relation="relation3"/>
                 </entity>
-                <entity name="stateA2" class="ptolemy.domains.fsm.modal.Refinement">
+                <entity name="stateA2" class="ptolemy.domains.modal.modal.Refinement">
                     <property name="HDFA2" class="ptolemy.domains.hdf.kernel.HDFDirector">
                         <property name="allowDisconnectedGraphs" class="ptolemy.data.expr.Parameter" value="false">
                         </property>
@@ -495,12 +495,12 @@ to another. Then delete this annotation.</text>
                     </property>
                     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
                     </property>
-                    <port name="input" class="ptolemy.domains.fsm.modal.RefinementPort">
+                    <port name="input" class="ptolemy.domains.modal.modal.RefinementPort">
                         <property name="input"/>
                         <property name="_location" class="ptolemy.kernel.util.Location" value="55.0, 135.0">
                         </property>
                     </port>
-                    <port name="output" class="ptolemy.domains.fsm.modal.RefinementPort">
+                    <port name="output" class="ptolemy.domains.modal.modal.RefinementPort">
                         <property name="output"/>
                         <property name="_location" class="ptolemy.kernel.util.Location" value="480.0, 135.0">
                         </property>
@@ -594,7 +594,7 @@ to another. Then delete this annotation.</text>
             <link port="SequenceToArray.input" relation="relation"/>
             <link port="SequenceToArray.output" relation="relation2"/>
         </entity>
-        <entity name="stateB" class="ptolemy.domains.fsm.modal.Refinement">
+        <entity name="stateB" class="ptolemy.domains.modal.modal.Refinement">
             <property name="HDFB" class="ptolemy.domains.hdf.kernel.HDFDirector">
                 <property name="allowDisconnectedGraphs" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
@@ -611,12 +611,12 @@ to another. Then delete this annotation.</text>
             </property>
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
             </property>
-            <port name="input" class="ptolemy.domains.fsm.modal.RefinementPort">
+            <port name="input" class="ptolemy.domains.modal.modal.RefinementPort">
                 <property name="input"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="25.0, 185.0">
                 </property>
             </port>
-            <port name="output" class="ptolemy.domains.fsm.modal.RefinementPort">
+            <port name="output" class="ptolemy.domains.modal.modal.RefinementPort">
                 <property name="output"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="560.0, 195.0">
                 </property>
@@ -635,12 +635,12 @@ to another. Then delete this annotation.</text>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="220.0, 195.0">
                 </property>
             </entity>
-            <entity name="CtrlB" class="ptolemy.domains.fsm.modal.ModalModel">
+            <entity name="CtrlB" class="ptolemy.domains.modal.modal.ModalModel">
                 <property name="directorClass" class="ptolemy.kernel.util.StringAttribute" value="ptolemy.domains.hdf.kernel.HDFFSMDirector">
                     <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
-                        <property name="style0" class="ptolemy.kernel.util.StringAttribute" value="ptolemy.domains.fsm.kernel.HSDirector">
+                        <property name="style0" class="ptolemy.kernel.util.StringAttribute" value="ptolemy.domains.modal.kernel.HSDirector">
                         </property>
-                        <property name="style1" class="ptolemy.kernel.util.StringAttribute" value="ptolemy.domains.fsm.kernel.FSMDirector">
+                        <property name="style1" class="ptolemy.kernel.util.StringAttribute" value="ptolemy.domains.modal.kernel.FSMDirector">
                         </property>
                         <property name="style2" class="ptolemy.kernel.util.StringAttribute" value="ptolemy.domains.hdf.kernel.HDFFSMDirector">
                         </property>
@@ -654,34 +654,34 @@ to another. Then delete this annotation.</text>
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="465.0, 195.0">
                 </property>
-                <port name="input" class="ptolemy.domains.fsm.modal.ModalPort">
+                <port name="input" class="ptolemy.domains.modal.modal.ModalPort">
                     <property name="input"/>
                     <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="2">
                     </property>
                 </port>
-                <port name="ouput" class="ptolemy.domains.fsm.modal.ModalPort">
+                <port name="ouput" class="ptolemy.domains.modal.modal.ModalPort">
                     <property name="output"/>
                     <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="2">
                     </property>
                 </port>
-                <entity name="_Controller" class="ptolemy.domains.fsm.modal.ModalController">
+                <entity name="_Controller" class="ptolemy.domains.modal.modal.ModalController">
                     <property name="initialStateName" class="ptolemy.kernel.util.StringAttribute" value="initialB">
                     </property>
                     <property name="_library" class="ptolemy.moml.LibraryAttribute">
-                        <configure><entity name="state library" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/configs/basicUtilities.xml"></input><entity name="state" class="ptolemy.domains.fsm.kernel.State"><property name="_centerName" class="ptolemy.kernel.util.Attribute"></property></entity></entity></configure>
+                        <configure><entity name="state library" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/configs/basicUtilities.xml"></input><entity name="state" class="ptolemy.domains.modal.kernel.State"><property name="_centerName" class="ptolemy.kernel.util.Attribute"></property></entity></entity></configure>
                     </property>
-                    <port name="input" class="ptolemy.domains.fsm.modal.RefinementPort">
+                    <port name="input" class="ptolemy.domains.modal.modal.RefinementPort">
                         <property name="input"/>
                         <property name="_location" class="ptolemy.kernel.util.Location" value="{0.0, 0.0}">
                         </property>
                     </port>
-                    <port name="ouput" class="ptolemy.domains.fsm.modal.RefinementPort">
+                    <port name="ouput" class="ptolemy.domains.modal.modal.RefinementPort">
                         <property name="input"/>
                         <property name="output"/>
                         <property name="_location" class="ptolemy.kernel.util.Location" value="{0.0, 0.0}">
                         </property>
                     </port>
-                    <entity name="stateB1" class="ptolemy.domains.fsm.kernel.State">
+                    <entity name="stateB1" class="ptolemy.domains.modal.kernel.State">
                         <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="stateB1">
                         </property>
                         <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
@@ -689,7 +689,7 @@ to another. Then delete this annotation.</text>
                         <property name="_location" class="ptolemy.kernel.util.Location" value="110.0, 170.0">
                         </property>
                     </entity>
-                    <entity name="stateB2" class="ptolemy.domains.fsm.kernel.State">
+                    <entity name="stateB2" class="ptolemy.domains.modal.kernel.State">
                         <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="stateB2">
                         </property>
                         <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
@@ -697,19 +697,19 @@ to another. Then delete this annotation.</text>
                         <property name="_location" class="ptolemy.kernel.util.Location" value="[275.0, 160.0]">
                         </property>
                     </entity>
-                    <entity name="initialB" class="ptolemy.domains.fsm.kernel.State">
+                    <entity name="initialB" class="ptolemy.domains.modal.kernel.State">
                         <property name="_location" class="ptolemy.kernel.util.Location" value="[40.0, 145.0]">
                         </property>
                     </entity>
-                    <entity name="transient" class="ptolemy.domains.fsm.kernel.State">
+                    <entity name="transient" class="ptolemy.domains.modal.kernel.State">
                         <property name="_location" class="ptolemy.kernel.util.Location" value="[180.0, 115.0]">
                         </property>
                     </entity>
-                    <entity name="transient2" class="ptolemy.domains.fsm.kernel.State">
+                    <entity name="transient2" class="ptolemy.domains.modal.kernel.State">
                         <property name="_location" class="ptolemy.kernel.util.Location" value="[215.0, 235.0]">
                         </property>
                     </entity>
-                    <relation name="relation" class="ptolemy.domains.fsm.kernel.Transition">
+                    <relation name="relation" class="ptolemy.domains.modal.kernel.Transition">
                         <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="input%32 &gt;= 24">
                         </property>
                         <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.6283185307179586">
@@ -721,7 +721,7 @@ to another. Then delete this annotation.</text>
                         <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
                         </property>
                     </relation>
-                    <relation name="relation2" class="ptolemy.domains.fsm.kernel.Transition">
+                    <relation name="relation2" class="ptolemy.domains.modal.kernel.Transition">
                         <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="input%32 &gt;=16 &amp;&amp; input%32 &lt; 24">
                         </property>
                         <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.6283185307179586">
@@ -733,7 +733,7 @@ to another. Then delete this annotation.</text>
                         <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
                         </property>
                     </relation>
-                    <relation name="relation3" class="ptolemy.domains.fsm.kernel.Transition">
+                    <relation name="relation3" class="ptolemy.domains.modal.kernel.Transition">
                         <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="true">
                         </property>
                         <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.6283185307179586">
@@ -745,7 +745,7 @@ to another. Then delete this annotation.</text>
                         <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
                         </property>
                     </relation>
-                    <relation name="relation4" class="ptolemy.domains.fsm.kernel.Transition">
+                    <relation name="relation4" class="ptolemy.domains.modal.kernel.Transition">
                         <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="true">
                         </property>
                         <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.6283185307179586">
@@ -757,7 +757,7 @@ to another. Then delete this annotation.</text>
                         <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
                         </property>
                     </relation>
-                    <relation name="relation5" class="ptolemy.domains.fsm.kernel.Transition">
+                    <relation name="relation5" class="ptolemy.domains.modal.kernel.Transition">
                         <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="true">
                         </property>
                         <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.6283185307179586">
@@ -780,7 +780,7 @@ to another. Then delete this annotation.</text>
                     <link port="transient2.incomingPort" relation="relation"/>
                     <link port="transient2.outgoingPort" relation="relation5"/>
                 </entity>
-                <entity name="stateB1" class="ptolemy.domains.fsm.modal.Refinement">
+                <entity name="stateB1" class="ptolemy.domains.modal.modal.Refinement">
                     <property name="HDFB1" class="ptolemy.domains.hdf.kernel.HDFDirector">
                         <property name="allowDisconnectedGraphs" class="ptolemy.data.expr.Parameter" value="false">
                         </property>
@@ -797,12 +797,12 @@ to another. Then delete this annotation.</text>
                     </property>
                     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
                     </property>
-                    <port name="input" class="ptolemy.domains.fsm.modal.RefinementPort">
+                    <port name="input" class="ptolemy.domains.modal.modal.RefinementPort">
                         <property name="input"/>
                         <property name="_location" class="ptolemy.kernel.util.Location" value="50.0, 135.0">
                         </property>
                     </port>
-                    <port name="ouput" class="ptolemy.domains.fsm.modal.RefinementPort">
+                    <port name="ouput" class="ptolemy.domains.modal.modal.RefinementPort">
                         <property name="output"/>
                         <property name="_location" class="ptolemy.kernel.util.Location" value="375.0, 155.0">
                         </property>
@@ -861,7 +861,7 @@ to another. Then delete this annotation.</text>
                     <link port="AddSubtract.output" relation="relation5"/>
                     <link port="Const.output" relation="relation4"/>
                 </entity>
-                <entity name="stateB2" class="ptolemy.domains.fsm.modal.Refinement">
+                <entity name="stateB2" class="ptolemy.domains.modal.modal.Refinement">
                     <property name="HDFB2" class="ptolemy.domains.hdf.kernel.HDFDirector">
                         <property name="allowDisconnectedGraphs" class="ptolemy.data.expr.Parameter" value="false">
                         </property>
@@ -878,12 +878,12 @@ to another. Then delete this annotation.</text>
                     </property>
                     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
                     </property>
-                    <port name="input" class="ptolemy.domains.fsm.modal.RefinementPort">
+                    <port name="input" class="ptolemy.domains.modal.modal.RefinementPort">
                         <property name="input"/>
                         <property name="_location" class="ptolemy.kernel.util.Location" value="35.0, 135.0">
                         </property>
                     </port>
-                    <port name="ouput" class="ptolemy.domains.fsm.modal.RefinementPort">
+                    <port name="ouput" class="ptolemy.domains.modal.modal.RefinementPort">
                         <property name="output"/>
                         <property name="_location" class="ptolemy.kernel.util.Location" value="650.0, 220.0">
                         </property>

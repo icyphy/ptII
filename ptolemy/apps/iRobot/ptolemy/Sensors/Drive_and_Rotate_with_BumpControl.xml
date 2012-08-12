@@ -24,21 +24,21 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="{140.0, 80.0}">
         </property>
     </property>
-    <entity name="InitializeAndRun" class="ptolemy.domains.fsm.modal.ModalModel">
+    <entity name="InitializeAndRun" class="ptolemy.domains.modal.modal.ModalModel">
         <property name="_tableauFactory" class="ptolemy.vergil.fsm.modal.ModalTableauFactory">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[60.0, 105.0]">
         </property>
-        <port name="bump" class="ptolemy.domains.fsm.modal.ModalPort">
+        <port name="bump" class="ptolemy.domains.modal.modal.ModalPort">
             <property name="output"/>
         </port>
-        <port name="angle" class="ptolemy.domains.fsm.modal.ModalPort">
+        <port name="angle" class="ptolemy.domains.modal.modal.ModalPort">
             <property name="output"/>
         </port>
-        <entity name="_Controller" class="ptolemy.domains.fsm.modal.ModalController">
+        <entity name="_Controller" class="ptolemy.domains.modal.modal.ModalController">
             <property name="_library" class="ptolemy.moml.LibraryAttribute">
                 <configure>
-        <entity name="state library" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/configs/basicUtilities.xml"></input><entity name="state" class="ptolemy.domains.fsm.kernel.State"><property name="_centerName" class="ptolemy.kernel.util.Attribute"></property><property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory"></property></entity></entity>
+        <entity name="state library" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/configs/basicUtilities.xml"></input><entity name="state" class="ptolemy.domains.modal.kernel.State"><property name="_centerName" class="ptolemy.kernel.util.Attribute"></property><property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory"></property></entity></entity>
       </configure>
             </property>
             <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 125, 815, 518}, maximized=false}">
@@ -66,19 +66,19 @@
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[425.0, 160.0]">
                 </property>
             </property>
-            <port name="bump" class="ptolemy.domains.fsm.modal.RefinementPort">
+            <port name="bump" class="ptolemy.domains.modal.modal.RefinementPort">
                 <property name="input"/>
                 <property name="output"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[490.0, 30.0]">
                 </property>
             </port>
-            <port name="angle" class="ptolemy.domains.fsm.modal.RefinementPort">
+            <port name="angle" class="ptolemy.domains.modal.modal.RefinementPort">
                 <property name="input"/>
                 <property name="output"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[490.0, 70.0]">
                 </property>
             </port>
-            <entity name="init" class="ptolemy.domains.fsm.kernel.State">
+            <entity name="init" class="ptolemy.domains.modal.kernel.State">
                 <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="init">
                 </property>
                 <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
@@ -88,7 +88,7 @@
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[160.0, 290.0]">
                 </property>
             </entity>
-            <entity name="run" class="ptolemy.domains.fsm.kernel.State">
+            <entity name="run" class="ptolemy.domains.modal.kernel.State">
                 <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="run">
                 </property>
                 <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
@@ -98,7 +98,7 @@
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[195.0, 225.0]">
                 </property>
             </entity>
-            <entity name="handleBump: Reverse" class="ptolemy.domains.fsm.kernel.State">
+            <entity name="handleBump: Reverse" class="ptolemy.domains.modal.kernel.State">
                 <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="handleBump">
                 </property>
                 <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="false">
@@ -108,7 +108,7 @@
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[315.0, 95.0]">
                 </property>
             </entity>
-            <entity name="handleBump: Rotate" class="ptolemy.domains.fsm.kernel.State">
+            <entity name="handleBump: Rotate" class="ptolemy.domains.modal.kernel.State">
                 <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="handleBump: Rotate">
                 </property>
                 <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
@@ -118,7 +118,7 @@
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[95.0, 95.0]">
                 </property>
             </entity>
-            <relation name="relation" class="ptolemy.domains.fsm.kernel.Transition">
+            <relation name="relation" class="ptolemy.domains.modal.kernel.Transition">
                 <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="true">
                 </property>
                 <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.6283185307179586">
@@ -134,10 +134,10 @@
                 <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
             </relation>
-            <relation name="relation2" class="ptolemy.domains.fsm.kernel.Transition">
+            <relation name="relation2" class="ptolemy.domains.modal.kernel.Transition">
                 <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="bump">
                 </property>
-                <property name="setActions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute" value="RelativeAngle = angle">
+                <property name="setActions" class="ptolemy.domains.modal.kernel.CommitActionsAttribute" value="RelativeAngle = angle">
                 </property>
                 <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.6283185307179586">
                 </property>
@@ -152,7 +152,7 @@
                 <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
             </relation>
-            <relation name="relation3" class="ptolemy.domains.fsm.kernel.Transition">
+            <relation name="relation3" class="ptolemy.domains.modal.kernel.Transition">
                 <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="true">
                 </property>
                 <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.6283185307179586">
@@ -168,7 +168,7 @@
                 <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
             </relation>
-            <relation name="relation4" class="ptolemy.domains.fsm.kernel.Transition">
+            <relation name="relation4" class="ptolemy.domains.modal.kernel.Transition">
                 <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="(RelativeAngle - angle) &gt;= 90">
                 </property>
                 <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.6283185307179586">
@@ -193,7 +193,7 @@
             <link port="handleBump: Rotate.incomingPort" relation="relation3"/>
             <link port="handleBump: Rotate.outgoingPort" relation="relation4"/>
         </entity>
-        <entity name="init" class="ptolemy.domains.fsm.modal.Refinement">
+        <entity name="init" class="ptolemy.domains.modal.modal.Refinement">
             <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
                <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
                </property>
@@ -208,10 +208,10 @@
             </property>
             <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
             </property>
-            <port name="bump" class="ptolemy.domains.fsm.modal.RefinementPort">
+            <port name="bump" class="ptolemy.domains.modal.modal.RefinementPort">
                 <property name="output"/>
             </port>
-            <port name="angle" class="ptolemy.domains.fsm.modal.RefinementPort">
+            <port name="angle" class="ptolemy.domains.modal.modal.RefinementPort">
                 <property name="output"/>
             </port>
             <entity name="initializeIRobot" class="ptolemy.actor.lib.jni.EmbeddedCActor">
@@ -231,7 +231,7 @@
                 </property>
             </entity>
         </entity>
-        <entity name="run" class="ptolemy.domains.fsm.modal.Refinement">
+        <entity name="run" class="ptolemy.domains.modal.modal.Refinement">
             <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
                <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
                </property>
@@ -246,14 +246,14 @@
             </property>
             <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{329.4393939393939, 296.7007575757576}">
             </property>
-            <port name="bump" class="ptolemy.domains.fsm.modal.RefinementPort">
+            <port name="bump" class="ptolemy.domains.modal.modal.RefinementPort">
                 <property name="output"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[105.0, 75.0]">
                 </property>
                 <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 </property>
             </port>
-            <port name="angle" class="ptolemy.domains.fsm.modal.RefinementPort">
+            <port name="angle" class="ptolemy.domains.modal.modal.RefinementPort">
                 <property name="output"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[50.0, 275.0]">
                 </property>
@@ -511,13 +511,13 @@
             <link port="Expression.advanceButton" relation="relation8"/>
             <link port="Expression.playButton" relation="relation6"/>
         </entity>
-        <entity name="handleBump" class="ptolemy.domains.fsm.modal.Refinement">
-            <port name="bump" class="ptolemy.domains.fsm.modal.RefinementPort">
+        <entity name="handleBump" class="ptolemy.domains.modal.modal.Refinement">
+            <port name="bump" class="ptolemy.domains.modal.modal.RefinementPort">
                 <property name="output"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[-240.0, -145.0]">
                 </property>
             </port>
-            <port name="angle" class="ptolemy.domains.fsm.modal.RefinementPort">
+            <port name="angle" class="ptolemy.domains.modal.modal.RefinementPort">
                 <property name="output"/>
             </port>
             <entity name="BusyWait" class="ptolemy.actor.lib.jni.EmbeddedCActor">
@@ -620,13 +620,13 @@
             <link port="Const.output" relation="relation2"/>
             <link port="Const2.output" relation="relation3"/>
         </entity>
-        <entity name="handleBump: Rotate" class="ptolemy.domains.fsm.modal.Refinement">
-            <port name="bump" class="ptolemy.domains.fsm.modal.RefinementPort">
+        <entity name="handleBump: Rotate" class="ptolemy.domains.modal.modal.Refinement">
+            <port name="bump" class="ptolemy.domains.modal.modal.RefinementPort">
                 <property name="output"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[-240.0, -210.0]">
                 </property>
             </port>
-            <port name="angle" class="ptolemy.domains.fsm.modal.RefinementPort">
+            <port name="angle" class="ptolemy.domains.modal.modal.RefinementPort">
                 <property name="output"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[-100.0, -25.0]">
                 </property>

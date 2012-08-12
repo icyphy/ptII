@@ -4039,7 +4039,7 @@ ViewScreen to direct the robotic arm motion.</text></svg></configure>
                     </property>
                 </property>
             </entity>
-            <entity name="decrement and check if Zero" class="ptolemy.domains.fsm.kernel.FSMActor">
+            <entity name="decrement and check if Zero" class="ptolemy.domains.modal.kernel.FSMActor">
                 <property name="_nonStrictMarker" class="ptolemy.kernel.util.Attribute">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="429.0, 130.0">
@@ -4058,7 +4058,7 @@ ViewScreen to direct the robotic arm motion.</text></svg></configure>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="507.0, 206.5">
                     </property>
                 </port>
-                <entity name="checkZero" class="ptolemy.domains.fsm.kernel.State">
+                <entity name="checkZero" class="ptolemy.domains.modal.kernel.State">
                     <property name="isInitialState" class="ptolemy.data.expr.Parameter" value="true">
                     </property>
                     <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
@@ -4066,7 +4066,7 @@ ViewScreen to direct the robotic arm motion.</text></svg></configure>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="274.0, 177.0">
                     </property>
                 </entity>
-                <relation name="t3" class="ptolemy.domains.fsm.kernel.Transition">
+                <relation name="t3" class="ptolemy.domains.modal.kernel.Transition">
                     <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="in != 0">
                     </property>
                     <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="PI/5.0">
@@ -4079,9 +4079,9 @@ ViewScreen to direct the robotic arm motion.</text></svg></configure>
                     </property>
                     <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
                     </property>
-                    <property name="actions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute">
+                    <property name="actions" class="ptolemy.domains.modal.kernel.CommitActionsAttribute">
                     </property>
-                    <property name="act3" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute" value="out = in - 1">
+                    <property name="act3" class="ptolemy.domains.modal.kernel.OutputActionsAttribute" value="out = in - 1">
                     </property>
                 </relation>
                 <link port="checkZero.incomingPort" relation="t3"/>

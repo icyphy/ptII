@@ -37,10 +37,10 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="{315, 170}">
         </property>
     </entity>
-    <entity name="FSMActor" class="ptolemy.domains.fsm.kernel.FSMActor">
+    <entity name="FSMActor" class="ptolemy.domains.modal.kernel.FSMActor">
         <property name="_library" class="ptolemy.moml.LibraryAttribute">
             <configure>
-    <entity name="StateLibrary" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/configs/basicUtilities.xml"></input><input source="ptolemy/configs/propertiesAttributeLibrary.xml"></input><entity name="State" class="ptolemy.domains.fsm.kernel.State"><property name="_centerName" class="ptolemy.kernel.util.Attribute"></property></entity></entity>
+    <entity name="StateLibrary" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/configs/basicUtilities.xml"></input><input source="ptolemy/configs/propertiesAttributeLibrary.xml"></input><entity name="State" class="ptolemy.domains.modal.kernel.State"><property name="_centerName" class="ptolemy.kernel.util.Attribute"></property></entity></entity>
   </configure>
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[190.0, 125.0]">
@@ -55,7 +55,7 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="{580.0, 200.0}">
             </property>
         </port>
-        <entity name="state" class="ptolemy.domains.fsm.kernel.State">
+        <entity name="state" class="ptolemy.domains.modal.kernel.State">
             <property name="isInitialState" class="ptolemy.data.expr.Parameter" value="true">
             </property>
             <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
@@ -65,7 +65,7 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="{170.0, 200.0}">
             </property>
         </entity>
-        <entity name="state2" class="ptolemy.domains.fsm.kernel.State">
+        <entity name="state2" class="ptolemy.domains.modal.kernel.State">
             <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
             <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
@@ -73,12 +73,12 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="{310.0, 195.0}">
             </property>
         </entity>
-        <relation name="relation" class="ptolemy.domains.fsm.kernel.Transition">
+        <relation name="relation" class="ptolemy.domains.modal.kernel.Transition">
             <property name="annotation" class="ptolemy.data.expr.StringParameter" value="">
             </property>
             <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="true">
             </property>
-            <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute" value="out = 1">
+            <property name="outputActions" class="ptolemy.domains.modal.kernel.OutputActionsAttribute" value="out = 1">
             </property>
             <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.6283185307179586">
             </property>
@@ -93,12 +93,12 @@
             <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
             </property>
         </relation>
-        <relation name="relation2" class="ptolemy.domains.fsm.kernel.Transition">
+        <relation name="relation2" class="ptolemy.domains.modal.kernel.Transition">
             <property name="annotation" class="ptolemy.data.expr.StringParameter" value="">
             </property>
             <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="in_isPresent">
             </property>
-            <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute" value="out = 1">
+            <property name="outputActions" class="ptolemy.domains.modal.kernel.OutputActionsAttribute" value="out = 1">
             </property>
             <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="2.356194490192345">
             </property>
