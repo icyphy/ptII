@@ -245,7 +245,7 @@ test Ramp-2.7 {check types of the above model} {
 } {{arrayType({name = string, value = double},2)} {arrayType({name = string, value = double},2)}}
 
 test Ramp-3.1 {Run a Continous model which will detect errors in scheduling} {
-    # ct used to fail with {ptolemy.actor.sched.NotSchedulableException: ramp is a SequenceActor, which cannot be a source actor in the CT domain.   in .top.ramp}}, but continuous passes
+    # ct used to fail with "ptolemy.actor.sched.NotSchedulableException: ramp is a SequenceActor, which cannot be a source actor in the CT domain.   in .top.ramp", but continuous passes
 
     set e0 [continuousModel 5]
     set ramp [java::new ptolemy.actor.lib.Ramp $e0 ramp]
