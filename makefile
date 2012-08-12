@@ -69,11 +69,9 @@ PTDEMODOCJARS = \
 		doc/docConfig.jar \
 		ptolemy/actor/lib/javasound/demo/demo.jar \
 		ptolemy/data/type/demo/demo.jar \
-		ptolemy/domains/ct/demo/demo.jar \
 		ptolemy/domains/de/demo/demo.jar \
 		ptolemy/domains/dt/demo/demo.jar \
 		ptolemy/domains/giotto/demo/demo.jar \
-		ptolemy/domains/fsm/demo/demo.jar \
 		ptolemy/domains/pn/demo/demo.jar \
 		ptolemy/domains/sdf/demo/demo.jar \
 		ptolemy/domains/tm/demo/demo.jar \
@@ -242,7 +240,6 @@ cleanDerivedJavaFiles:
 	(cd $(PTII)/ptolemy/moml/unit; rm -f `make -s echo_OPTIONAL_JSRCS`)
 	-(cd $(PTII)/ptolemy/copernicus/kernel/fragment; rm -f `make -s echo_OPTIONAL_JSRCS`)
 	rm -rf vendors ptolemy/apps
-	rm -rf ptolemy/domains/ct/demo/Corba/util/*.java
 	rm -rf ptolemy/backtrack/util/java/util/*.java
 
 CLEAN_SHIPPING_FILES = \
@@ -262,18 +259,6 @@ CLEAN_SHIPPING_FILES = \
 		ptolemy/actor/lib/python/demo/HelloWorld \
 		ptolemy/actor/lib/python/demo/NotifyFailedTest \
 		ptolemy/actor/lib/security/test/foo.keystore \
-		ptolemy/codegen/c/actor/lib/javasound/test/outfile.wav \
-		ptolemy/codegen/c/domains/sdf/kernel/test/foo.c \
-		ptolemy/codegen/c/targets/arduino \
-		ptolemy/codegen/c/targets/iRobot \
-		ptolemy/codegen/c/targets/luminary \
-		ptolemy/codegen/c/targets/pret \
-		ptolemy/codegen/c/targets/win32 \
-		ptolemy/codegen/domains/sr \
-		ptolemy/codegen/kernel/newInterfaces \
-		ptolemy/codegen/kernel/test/substitute.out \
-		ptolemy/codegen/newinterface \
-		ptolemy/codegen/vhdl \
 		ptolemy/copernicus/*/test/codeGenerator.tmp \
 		ptolemy/copernicus/jhdl \
 		ptolemy/copernicus/kernel/fragment \
