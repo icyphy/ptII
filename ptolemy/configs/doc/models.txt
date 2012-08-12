@@ -77,14 +77,6 @@ $CLASSPATH/ptolemy/cg/lib/demo/ModularCG/ModularCG.xml
 $CLASSPATH/ptolemy/cg/lib/demo/ModularCGPubSub/ModularCGPubSub.xml
 $CLASSPATH/ptolemy/cg/lib/demo/Scale/ScaleC.xml
 $CLASSPATH/ptolemy/cg/lib/demo/Scale/ScaleJava.xml
-$CLASSPATH/ptolemy/codegen/c/domains/fsm/demo/Mod4Counter/Mod4Counter.xml
-$CLASSPATH/ptolemy/codegen/c/domains/pn/demo/Gravitation/Gravitation.xml
-$CLASSPATH/ptolemy/codegen/c/domains/pn/demo/PNButterfly/PNButterfly.xml
-$CLASSPATH/ptolemy/codegen/demo/Butterfly/Butterfly.xml
-$CLASSPATH/ptolemy/codegen/demo/Life/Life.xml
-$CLASSPATH/ptolemy/codegen/java/actor/lib/embeddedJava/demo/CompiledCompositeActor/CompiledCompositeActor.xml
-$CLASSPATH/ptolemy/codegen/java/actor/lib/embeddedJava/demo/Scale/Scale.xml
-$CLASSPATH/ptolemy/codegen/rtmaude/demo/HierarchicalTrafficLight/HierarchicalTrafficLight.xml
 $CLASSPATH/ptolemy/configs/doc/ClassesIllustrated.xml
 $CLASSPATH/ptolemy/data/ontologies/demo/CarTracking/CarTracking.xml
 $CLASSPATH/ptolemy/data/ontologies/demo/ConstAbstractInterpretation/ConstAbstractInterpretation.xml
