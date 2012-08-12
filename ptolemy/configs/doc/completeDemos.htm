@@ -127,13 +127,6 @@ Ptolemy II models that illustrate non-MoC oriented functionality
       <li><a href="#cgLib"><code>ptolemy/cg</code> Library demos</a></li>
       <li><a href="#cgPtides"><code>ptolemy/cg</code> Ptides demos</a></li>
     </ul>
-
-    <li><a href="#codegen"><code>ptolemy/codegen</code> Code Generation</a></li>
-    <ul>
-      <li><a href="#pnCodegen">C PN Code Generation</a>
-      <li><a href="#sdfCodegen">C SDF Code Generation</a>
-      <li><a href="#javaSDFCodegen">Java SDF Code Generation</a>
-    </ul>
   </ul>
 <li><a href="#ontologies">Ontology Analysis</a>
 <li><a href="#noDomain">Models that have no domain</a>
@@ -310,7 +303,6 @@ visible parameters, and MonitorValue</a>
 <li><a href="../../domains/de/demo/Clock/Clock.xml">Clock</a> (Requires Java 3D, see the <a href="../../domains/gr/doc/main.htm">GR domain</a>)  
 <li><a href="../../domains/de/demo/ClockDrift/ClockDrift.xml">Clock Drift</a> (New in Ptolemy II 9.0)
 <li><a href="../../actor/lib/hoc/demo/ThreadedComposite/ConcurrentChat.xml">Concurrent Chat</a> 
-<li><a href="../../codegen/rtmaude/demo/HierarchicalTrafficLight/HierarchicalTrafficLight.xml">Hierarchical Traffic Light Verification, Real Time Maude Code Generation Version</a> (Requires RT Maude, see the <a href="../../verification/README.html">Verification documentation) 
 <li><a href="../../actor/lib/hoc/demo/HocDE/HocDE.xml">Higher-Order Components</a> 
 <!--vergilDocs-->
 <li><a href="../../domains/de/demo/OpenQueueingNetwork/OpenQueueingNetwork.xml">Open Queueing Network</a>
@@ -827,9 +819,6 @@ requires that JMF be installed:
 
 <!--/ptinyKeplerDocs-->
 <!-- Ptiny does not include codegen -->
-Ptolemy II has several generations of code generation facilities.  
-<br/><code>ptolemy/cg/</code> is the most recent facility.
-<br/><code>ptolemy/codegen</code> is the older facility.
 
 <h3><a name="cg"><code>ptolemy/cg</code></a></h3>
 Newer Ptolemy code generation demos that use files  in <code>ptolemy/cg</code>.
@@ -861,22 +850,13 @@ Newer Ptolemy code generation demos that use files  in <code>ptolemy/cg</code>.
 
 <h3><a name"codegen"><code>ptolemy/codegen</code></h3>
 Older Ptolemy code generation demos that use files  in <code>ptolemy/codegen</code>.
-<h4><a name="pnCodegen">C PN Code Generation</a></h4>
-<ul>
-<!-- Please keep the demos alphabetical -->
-<li><a href="../../codegen/c/domains/pn/demo/Gravitation/Gravitation.xml">Gravitation</a> 
-<li><a href="../../codegen/c/domains/pn/demo/PNButterfly/PNButterfly.xml">PN Butterfly</a> 
-</ul>
 
 <h4><a name="sdfCodegen">C SDF Code Generation</a></h4>
 <ul>
 <!-- Please keep the demos alphabetical -->
 <li><a href="../../domains/sdf/demo/Butterfly/Butterfly.xml">Butterfly</a>
-<li><a href="../../codegen/demo/Butterfly/Butterfly.xml">Butterfly</a> (with C CompiledCompositeActor)
 <li><a href="../../actor/lib/hoc/demo/Case/Case.xml">Case</a>
-<li><a href="../../codegen/demo/Life/Life.xml">Life</a>  
 <li><a href="../../domains/sdf/demo/LogisticMap/LogisticMap.xml">LogisticMap</a>   
-<li><a href="../../codegen/c/domains/fsm/demo/Mod4Counter/Mod4Counter.xml">Mod4Counter</a> 
 <li><a href="../../actor/lib/jni/demo/Scale/Scale.xml">Scale</a>  
 <li><a href="../../actor/lib/jni/demo/Scale/ScaleWithEmbeddedCFileActor.xml">Scale with EmbeddedCFileActor</a>  (New in 
 Ptolemy II 8.0)
@@ -885,12 +865,6 @@ Ptolemy II 8.0)
 
 </ul>
 
-<h4><a name="javaSDFCodegen">Java SDF Code Generation</a></h4>
-<ul>
-<li><a href="../../codegen/java/actor/lib/embeddedJava/demo/CompiledCompositeActor/CompiledCompositeActor.xml">Expression demo with Java CompiledCompositeActor</a>    
-<li><a href="../../codegen/java/actor/lib/embeddedJava/demo/Scale/Scale.xml">Scale with Embedded Java</a>  
-
-</ul>
 <!--ptinyKeplerDocs-->
 
 <!--/ptinyKeplerDocs-->
