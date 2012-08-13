@@ -183,7 +183,7 @@ public class DygraphsJSPlotter extends BasicJSPlotter {
     // Other JavaScript libraries required
     private String[] _otherLibs = {
             "<script type=\"text/javascript\" src=\"http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js\"></script>\n", 
-            "<script type=\"text/javascript\" src=\"http://dygraphs.com/dygraph-combined.js\"></script>\n"
+            "<script type=\"text/javascript\" src=\"http://kelvin-mirex-svn.googlecode.com/svn-history/r49/trunk/misc/vis-demo/js/dygraph-combined.js\"></script>\n"
     };
     
     // HTML code specifying the layout of the HTML page

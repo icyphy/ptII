@@ -43,6 +43,7 @@ import javax.swing.text.html.HTMLEditorKit;
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.data.ArrayToken;
+import ptolemy.data.BooleanToken;
 import ptolemy.data.StringToken;
 import ptolemy.data.Token;
 
@@ -219,9 +220,11 @@ public class HTMLPageAssembler extends TypedAtomicActor{
             content = content.replaceAll("<!--", "").replaceAll("-->", "");
             
             output.broadcast(new StringToken(content));
-            outputFile.openForWriting().write(content);
             
-            outputFile.close();
+            if(((BooleanToken) saveToFile.getToken()).booleanValue()){
+                outputFile.openForWriting().write(content);
+                outputFile.close(); 
+            }
             template.close();
             
         } catch (BadLocationException e) {

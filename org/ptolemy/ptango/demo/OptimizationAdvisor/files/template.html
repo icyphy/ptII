@@ -1,0 +1,44 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html>
+	<head>
+		<title>Title of document</title>
+	</head>
+
+	<body>
+		<div id="control" style="width:100%; margin:0 atuo">
+		<p id="preInfo"></p>
+			<form method="post">
+				Day Temperature: <input type="text" name="TDay" id="TDay" value="24.0"/>
+				Night Temperature: <input type="text" name="TNight" id="TNight" value="15.0"/><br/>
+				Leaving Time: <input type="text" name="LTime" id="LTime" value="-1"/>
+				Return Time: <input type="text" name="RTime" id="RTime" value="-1"/><br/>
+				<button type="submit" id="simulate"> Simulate </button>
+			</form>
+			<button onclick="refresh()"> Refresh Graphs </button>
+		</div><hr></hr>
+		<div id="oldData"> </div>
+		<div id="oldEvents"> </div>
+		<div id="newData"> </div>
+		<div id="newEvents"> </div>
+		<div id="script"></div>
+		<div id="mainChart" style="width: 800px; height: 300px; margin: 0 auto"></div>
+		<hr></hr>
+		<div id="previousChart" style="width: 800px; height: 300px; margin: 0 auto"></div>
+		<hr></hr>
+		<div id="infoContainer" style="width: 800px; height: 50px; margin:0 auto">
+			<div id="legend-container" style="width: 30%; height:100%; float: left"></div>
+			<div id="eventsInfo-container" style="width: 69%; height:100%; float: right"></div>
+		</div>
+		<div id="bodyEnd">
+		<hr>
+		<h2>Instructions:</h2>
+		<p><ol>
+			<li><b style="color:blue">Hide/show</b> a data trace or event trace by <b style="color:blue">clicking </b> the corresponding checkbox.</li>
+			<li>Get <b style="color:blue">all events</b> that happened at a particular point on the X axis by <b style="color:blue">single click</b> on a data point on the upper chart</li>
+			<li><b style="color:blue">Zoom-in/out</b> to/from an interval by <b style="color:blue">dragging</b> on the lower chart.</li>
+		</ol></p>
+		</div>
+	</body>
+</html>
