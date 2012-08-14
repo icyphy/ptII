@@ -164,7 +164,9 @@
 	
 	function refresh(){
 		drawChart(true);
-		drawChart(false);
+		if(oldData.length > 0){
+			drawChart(false);
+		}
 	}
 </script>
 
