@@ -236,6 +236,12 @@ public class ClassChanges extends MoMLFilterSimple {
         _classChanges.put("ptolemy.domains.fsm.modal.RefinementPort",
 	        "ptolemy.domains.modal.modal.RefinementPort");
 
+        _classChanges.put("ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory",
+                "ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory");
+
+        _classChanges.put("ptolemy.vergil.fsm.modal.ModalTableauFactory",
+                "ptolemy.vergil.modal.modal.ModalTableauFactory");
+
         // Renamed in 3.1-devel
         _classChanges.put("ptolemy.vergil.icon.ImageEditorIcon",
                 "ptolemy.vergil.icon.ImageIcon");
