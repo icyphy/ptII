@@ -2,6 +2,9 @@
 # If a SDFDirector has no iterations parameter, then insert one
 # and set it to 0.
 
+# Note that now that iterations is set to AUTO by default in SDFDirector,
+# this script is probably not necessary.
+
 # Usage: fix-files [-n] [-d] 
 
 # Typical usage
