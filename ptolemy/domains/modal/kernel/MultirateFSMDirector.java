@@ -482,8 +482,15 @@ public class MultirateFSMDirector extends FSMDirector {
 
         if ((currentRefinements == null) || (currentRefinements.length != 1)) {
             throw new IllegalActionException(this,
-                    "Initial state is required to have exactly one refinement: "
-                            + initialState.getName());
+                    "The initial state is required to have exactly one refinement: \""
+                    + initialState.getName() 
+                    + "\".  The getRefinement() method on the \""
+                    + initialState.getName()
+                    + "\" state returned "
+                    + (currentRefinements == null
+                            ? "null."
+                            : currentRefinements.length
+                            + " refinements, only 1 should have been returned."));
         }
 
         TypedCompositeActor currentRefinement = (TypedCompositeActor) (currentRefinements[0]);
