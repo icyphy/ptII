@@ -8,7 +8,7 @@
     </property>
     <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[16, 44]">
     </property>
-    <property name="CT" class="ptolemy.domains.ct.kernel.CTMixedSignalDirector">
+    <property name="CT" class="ptolemy.domains.continuous.kernel.ContinuousDirector">
         <property name="timeResolution" class="ptolemy.actor.parameters.SharedParameter" value="1.0E-10">
         </property>
         <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
@@ -28,16 +28,6 @@
         <property name="valueResolution" class="ptolemy.data.expr.Parameter" value="1.0E-6">
         </property>
         <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="false">
-        </property>
-        <property name="ODESolver" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.ExplicitRK23Solver&quot;">
-            <property name="style" class="ptolemy.actor.gui.style.EditableChoiceStyle">
-                <property name="choice0" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.ExplicitRK23Solver&quot;">
-                </property>
-                <property name="choice1" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.BackwardEulerSolver&quot;">
-                </property>
-                <property name="choice2" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.ForwardEulerSolver&quot;">
-                </property>
-            </property>
         </property>
         <property name="runAheadLength" class="ptolemy.data.expr.Parameter" value="0.1">
         </property>
@@ -142,7 +132,7 @@ time (CT).</text></svg></configure>
     </property>
     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{344.0, 239.5}">
     </property>
-    <entity name="FurutaPendulum" class="ptolemy.domains.ct.lib.DifferentialSystem">
+    <entity name="FurutaPendulum" class="ptolemy.domains.continuous.lib.DifferentialSystem">
         <property name="stateVariableNames" class="ptolemy.data.expr.Parameter" value="{&quot;x1&quot;, &quot;x2&quot;, &quot;x3&quot;, &quot;x4&quot;}">
         </property>
         <property name="initialStates" class="ptolemy.data.expr.Parameter" value="[-3.0, 0.01, 0.0, 0.0]">
@@ -157,21 +147,21 @@ time (CT).</text></svg></configure>
         </property>
         <property name="epsilon" class="ptolemy.data.expr.Parameter" value="0.08103060">
         </property>
-        <property name="x1_dot" class="ptolemy.data.expr.Parameter" value="&quot;x2&quot;">
+        <property name="x1_dot" class="ptolemy.data.expr.Parameter" value="x2">
         </property>
-        <property name="x2_dot" class="ptolemy.data.expr.Parameter" value="&quot;1.0/(alfa*beta+pow(alfa*sin(x1),2.0)-pow(gamma*cos(x1),2.0))*((alfa*beta+pow(alfa*sin(x1), 2.0))*pow(x4,2.0)*sin(x1)*cos(x1)-pow(gamma*x2,2.0)*sin(x1)*cos(x1)+2.0*alfa*gamma*x2*x4*sin(x1)*pow(cos(x1),2.0)-gamma*cos(x1)*g*u+(alfa*beta+pow(alfa*sin(x1),2.0))*epsilon/alfa*sin(x1))&quot;">
+        <property name="x2_dot" class="ptolemy.data.expr.Parameter" value="1.0/(alfa*beta+pow(alfa*sin(x1),2.0)-pow(gamma*cos(x1),2.0))*((alfa*beta+pow(alfa*sin(x1), 2.0))*pow(x4,2.0)*sin(x1)*cos(x1)-pow(gamma*x2,2.0)*sin(x1)*cos(x1)+2.0*alfa*gamma*x2*x4*sin(x1)*pow(cos(x1),2.0)-gamma*cos(x1)*g*u+(alfa*beta+pow(alfa*sin(x1),2.0))*epsilon/alfa*sin(x1))">
         </property>
-        <property name="x3_dot" class="ptolemy.data.expr.Parameter" value="&quot;x4&quot;">
+        <property name="x3_dot" class="ptolemy.data.expr.Parameter" value="x4">
         </property>
-        <property name="x4_dot" class="ptolemy.data.expr.Parameter" value="&quot;1/(alfa*beta+pow(alfa*sin(x1),2.0)-pow(gamma*cos(x1),2.0))*(-gamma*alfa*pow(x4,2.0)*sin(x1)*pow(cos(x2),2.0)-gamma*epsilon*sin(x1)*cos(x1)+gamma*alfa*pow(x2,2.0)*sin(x1)-2*pow(alfa,2.0)*x2*x4*sin(x1)*cos(x1)+alfa*g*u)&quot;">
+        <property name="x4_dot" class="ptolemy.data.expr.Parameter" value="1/(alfa*beta+pow(alfa*sin(x1),2.0)-pow(gamma*cos(x1),2.0))*(-gamma*alfa*pow(x4,2.0)*sin(x1)*pow(cos(x2),2.0)-gamma*epsilon*sin(x1)*cos(x1)+gamma*alfa*pow(x2,2.0)*sin(x1)-2*pow(alfa,2.0)*x2*x4*sin(x1)*cos(x1)+alfa*g*u)">
         </property>
-        <property name="Theta" class="ptolemy.data.expr.Parameter" value="&quot;x1&quot;">
+        <property name="Theta" class="ptolemy.data.expr.Parameter" value="x1">
         </property>
-        <property name="dTheta" class="ptolemy.data.expr.Parameter" value="&quot;x2&quot;">
+        <property name="dTheta" class="ptolemy.data.expr.Parameter" value="x2">
         </property>
-        <property name="Phi" class="ptolemy.data.expr.Parameter" value="&quot;x3&quot;">
+        <property name="Phi" class="ptolemy.data.expr.Parameter" value="x3">
         </property>
-        <property name="dPhi" class="ptolemy.data.expr.Parameter" value="&quot;x4&quot;">
+        <property name="dPhi" class="ptolemy.data.expr.Parameter" value="x4">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[756, 458]">
         </property>
@@ -210,49 +200,11 @@ time (CT).</text></svg></configure>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[716.2068328857422, 334.9567642211914]">
             </property>
         </port>
-        <entity name="x1" class="ptolemy.domains.ct.lib.Integrator">
+        <entity name="x1" class="ptolemy.domains.continuous.lib.Integrator">
             <property name="initialState" class="ptolemy.data.expr.Parameter" value="initialStates(0,0)">
-            </property>
-            <property name="IntegratorIcon" class="ptolemy.vergil.icon.EditorIcon">
-                <property name="rectangle" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
-                    <property name="_location" class="ptolemy.kernel.util.Location" value="-0.0, 0.0">
-                    </property>
-                    <property name="width" class="ptolemy.data.expr.Parameter" value="38.0">
-                    </property>
-                    <property name="height" class="ptolemy.data.expr.Parameter" value="40.0">
-                    </property>
-                    <property name="centered" class="ptolemy.data.expr.Parameter" value="true">
-                    </property>
-                    <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 1.0, 1.0, 1.0}">
-                    </property>
-                </property>
-                <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={117, 239, 815, 518}, maximized=false}">
-                </property>
-                <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
-                </property>
-                <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="4.0">
-                </property>
-                <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{0.0, 0.0}">
-                </property>
-                <property name="image" class="ptolemy.vergil.kernel.attributes.ImageAttribute">
-                    <property name="source" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/ptolemy/domains/ct/lib/integral.gif">
-                    </property>
-                    <property name="_location" class="ptolemy.kernel.util.Location" value="[-5.0, -16.0]">
-                    </property>
-                </property>
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[555.0, 50.0]">
             </property>
-            <port name="input" class="ptolemy.actor.TypedIOPort">
-                <property name="input"/>
-                <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
-                </property>
-            </port>
-            <port name="output" class="ptolemy.actor.TypedIOPort">
-                <property name="output"/>
-                <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
-                </property>
-            </port>
         </entity>
         <entity name="x1_dot" class="ptolemy.actor.lib.Expression">
             <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="x2">
@@ -281,49 +233,11 @@ time (CT).</text></svg></configure>
                 <property name="input"/>
             </port>
         </entity>
-        <entity name="x2" class="ptolemy.domains.ct.lib.Integrator">
+        <entity name="x2" class="ptolemy.domains.continuous.lib.Integrator">
             <property name="initialState" class="ptolemy.data.expr.Parameter" value="initialStates(0,1)">
-            </property>
-            <property name="IntegratorIcon" class="ptolemy.vergil.icon.EditorIcon">
-                <property name="rectangle" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
-                    <property name="_location" class="ptolemy.kernel.util.Location" value="-0.0, 0.0">
-                    </property>
-                    <property name="width" class="ptolemy.data.expr.Parameter" value="38.0">
-                    </property>
-                    <property name="height" class="ptolemy.data.expr.Parameter" value="40.0">
-                    </property>
-                    <property name="centered" class="ptolemy.data.expr.Parameter" value="true">
-                    </property>
-                    <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 1.0, 1.0, 1.0}">
-                    </property>
-                </property>
-                <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={117, 239, 815, 518}, maximized=false}">
-                </property>
-                <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
-                </property>
-                <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="4.0">
-                </property>
-                <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{0.0, 0.0}">
-                </property>
-                <property name="image" class="ptolemy.vergil.kernel.attributes.ImageAttribute">
-                    <property name="source" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/ptolemy/domains/ct/lib/integral.gif">
-                    </property>
-                    <property name="_location" class="ptolemy.kernel.util.Location" value="[-5.0, -16.0]">
-                    </property>
-                </property>
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[550.0, 110.0]">
             </property>
-            <port name="input" class="ptolemy.actor.TypedIOPort">
-                <property name="input"/>
-                <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
-                </property>
-            </port>
-            <port name="output" class="ptolemy.actor.TypedIOPort">
-                <property name="output"/>
-                <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
-                </property>
-            </port>
         </entity>
         <entity name="x2_dot" class="ptolemy.actor.lib.Expression">
             <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="1.0/(alfa*beta+pow(alfa*sin(x1),2.0)-pow(gamma*cos(x1),2.0))*((alfa*beta+pow(alfa*sin(x1), 2.0))*pow(x4,2.0)*sin(x1)*cos(x1)-pow(gamma*x2,2.0)*sin(x1)*cos(x1)+2.0*alfa*gamma*x2*x4*sin(x1)*pow(cos(x1),2.0)-gamma*cos(x1)*g*u+(alfa*beta+pow(alfa*sin(x1),2.0))*epsilon/alfa*sin(x1))">
@@ -352,49 +266,11 @@ time (CT).</text></svg></configure>
                 <property name="input"/>
             </port>
         </entity>
-        <entity name="x3" class="ptolemy.domains.ct.lib.Integrator">
+        <entity name="x3" class="ptolemy.domains.continuous.lib.Integrator">
             <property name="initialState" class="ptolemy.data.expr.Parameter" value="initialStates(0,2)">
-            </property>
-            <property name="IntegratorIcon" class="ptolemy.vergil.icon.EditorIcon">
-                <property name="rectangle" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
-                    <property name="_location" class="ptolemy.kernel.util.Location" value="-0.0, 0.0">
-                    </property>
-                    <property name="width" class="ptolemy.data.expr.Parameter" value="38.0">
-                    </property>
-                    <property name="height" class="ptolemy.data.expr.Parameter" value="40.0">
-                    </property>
-                    <property name="centered" class="ptolemy.data.expr.Parameter" value="true">
-                    </property>
-                    <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 1.0, 1.0, 1.0}">
-                    </property>
-                </property>
-                <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={117, 239, 815, 518}, maximized=false}">
-                </property>
-                <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
-                </property>
-                <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="4.0">
-                </property>
-                <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{0.0, 0.0}">
-                </property>
-                <property name="image" class="ptolemy.vergil.kernel.attributes.ImageAttribute">
-                    <property name="source" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/ptolemy/domains/ct/lib/integral.gif">
-                    </property>
-                    <property name="_location" class="ptolemy.kernel.util.Location" value="[-5.0, -16.0]">
-                    </property>
-                </property>
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[255.0, 190.0]">
             </property>
-            <port name="input" class="ptolemy.actor.TypedIOPort">
-                <property name="input"/>
-                <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
-                </property>
-            </port>
-            <port name="output" class="ptolemy.actor.TypedIOPort">
-                <property name="output"/>
-                <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
-                </property>
-            </port>
         </entity>
         <entity name="x3_dot" class="ptolemy.actor.lib.Expression">
             <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="x4">
@@ -423,49 +299,11 @@ time (CT).</text></svg></configure>
                 <property name="input"/>
             </port>
         </entity>
-        <entity name="x4" class="ptolemy.domains.ct.lib.Integrator">
+        <entity name="x4" class="ptolemy.domains.continuous.lib.Integrator">
             <property name="initialState" class="ptolemy.data.expr.Parameter" value="initialStates(0,3)">
-            </property>
-            <property name="IntegratorIcon" class="ptolemy.vergil.icon.EditorIcon">
-                <property name="rectangle" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
-                    <property name="_location" class="ptolemy.kernel.util.Location" value="-0.0, 0.0">
-                    </property>
-                    <property name="width" class="ptolemy.data.expr.Parameter" value="38.0">
-                    </property>
-                    <property name="height" class="ptolemy.data.expr.Parameter" value="40.0">
-                    </property>
-                    <property name="centered" class="ptolemy.data.expr.Parameter" value="true">
-                    </property>
-                    <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 1.0, 1.0, 1.0}">
-                    </property>
-                </property>
-                <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={117, 239, 815, 518}, maximized=false}">
-                </property>
-                <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
-                </property>
-                <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="4.0">
-                </property>
-                <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{0.0, 0.0}">
-                </property>
-                <property name="image" class="ptolemy.vergil.kernel.attributes.ImageAttribute">
-                    <property name="source" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/ptolemy/domains/ct/lib/integral.gif">
-                    </property>
-                    <property name="_location" class="ptolemy.kernel.util.Location" value="[-5.0, -16.0]">
-                    </property>
-                </property>
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[535.0, 420.0]">
             </property>
-            <port name="input" class="ptolemy.actor.TypedIOPort">
-                <property name="input"/>
-                <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
-                </property>
-            </port>
-            <port name="output" class="ptolemy.actor.TypedIOPort">
-                <property name="output"/>
-                <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
-                </property>
-            </port>
         </entity>
         <entity name="x4_dot" class="ptolemy.actor.lib.Expression">
             <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="1/(alfa*beta+pow(alfa*sin(x1),2.0)-pow(gamma*cos(x1),2.0))*(-gamma*alfa*pow(x4,2.0)*sin(x1)*pow(cos(x2),2.0)-gamma*epsilon*sin(x1)*cos(x1)+gamma*alfa*pow(x2,2.0)*sin(x1)-2*pow(alfa,2.0)*x2*x4*sin(x1)*cos(x1)+alfa*g*u)">
@@ -631,32 +469,32 @@ time (CT).</text></svg></configure>
         <link port="dTheta" relation="_R6"/>
         <link port="Phi" relation="_R7"/>
         <link port="dPhi" relation="_R8"/>
-        <link port="x1.input" relation="_R"/>
-        <link port="x1.output" relation="relation_x1"/>
+        <link port="x1.derivative" relation="_R"/>
+        <link port="x1.state" relation="relation_x1"/>
         <link port="x1_dot.output" relation="_R"/>
         <link port="x1_dot.x1" relation="relation_x1"/>
         <link port="x1_dot.x2" relation="relation_x2"/>
         <link port="x1_dot.x3" relation="relation_x3"/>
         <link port="x1_dot.x4" relation="relation_x4"/>
         <link port="x1_dot.u" relation="relation_u"/>
-        <link port="x2.input" relation="_R2"/>
-        <link port="x2.output" relation="relation_x2"/>
+        <link port="x2.derivative" relation="_R2"/>
+        <link port="x2.state" relation="relation_x2"/>
         <link port="x2_dot.output" relation="_R2"/>
         <link port="x2_dot.x1" relation="relation_x1"/>
         <link port="x2_dot.x2" relation="relation_x2"/>
         <link port="x2_dot.x3" relation="relation_x3"/>
         <link port="x2_dot.x4" relation="relation_x4"/>
         <link port="x2_dot.u" relation="relation_u"/>
-        <link port="x3.input" relation="_R3"/>
-        <link port="x3.output" relation="relation_x3"/>
+        <link port="x3.derivative" relation="_R3"/>
+        <link port="x3.state" relation="relation_x3"/>
         <link port="x3_dot.output" relation="_R3"/>
         <link port="x3_dot.x1" relation="relation_x1"/>
         <link port="x3_dot.x2" relation="relation_x2"/>
         <link port="x3_dot.x3" relation="relation_x3"/>
         <link port="x3_dot.x4" relation="relation_x4"/>
         <link port="x3_dot.u" relation="relation_u"/>
-        <link port="x4.input" relation="_R4"/>
-        <link port="x4.output" relation="relation_x4"/>
+        <link port="x4.derivative" relation="_R4"/>
+        <link port="x4.state" relation="relation_x4"/>
         <link port="x4_dot.output" relation="_R4"/>
         <link port="x4_dot.x1" relation="relation_x1"/>
         <link port="x4_dot.x2" relation="relation_x2"/>
@@ -707,7 +545,7 @@ time (CT).</text></svg></configure>
 </plot>?>
         </configure>
     </entity>
-    <entity name="ZOH1" class="ptolemy.domains.ct.lib.ZeroOrderHold">
+    <entity name="ZOH1" class="ptolemy.domains.continuous.lib.ZeroOrderHold">
         <property name="defaultValue" class="ptolemy.data.expr.Parameter" value="0">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[171.5, 62.0]">
@@ -723,7 +561,7 @@ time (CT).</text></svg></configure>
             </property>
         </port>
     </entity>
-    <entity name="ZOH2" class="ptolemy.domains.ct.lib.ZeroOrderHold">
+    <entity name="ZOH2" class="ptolemy.domains.continuous.lib.ZeroOrderHold">
         <property name="defaultValue" class="ptolemy.data.expr.Parameter" value="-2.0">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[371.5, 262.0]">
@@ -739,7 +577,7 @@ time (CT).</text></svg></configure>
             </property>
         </port>
     </entity>
-    <entity name="Sampler" class="ptolemy.domains.ct.lib.CTPeriodicSampler">
+    <entity name="Sampler" class="ptolemy.domains.continuous.lib.PeriodicSampler">
         <property name="samplePeriod" class="ptolemy.data.expr.Parameter" value="h">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[71.5, 262.0]">
@@ -757,7 +595,7 @@ time (CT).</text></svg></configure>
             </property>
         </port>
     </entity>
-    <entity name="ZOH3" class="ptolemy.domains.ct.lib.ZeroOrderHold">
+    <entity name="ZOH3" class="ptolemy.domains.continuous.lib.ZeroOrderHold">
         <property name="defaultValue" class="ptolemy.data.expr.Parameter" value="0">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[326.5, 316.0]">
@@ -796,7 +634,7 @@ time (CT).</text></svg></configure>
 </plot>?>
         </configure>
     </entity>
-    <entity name="PeriodicSampler2" class="ptolemy.domains.ct.lib.CTPeriodicSampler">
+    <entity name="PeriodicSampler2" class="ptolemy.domains.continuous.lib.PeriodicSampler">
         <property name="samplePeriod" class="ptolemy.data.expr.Parameter" value="h">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[506.5, 217.0]">
@@ -814,7 +652,7 @@ time (CT).</text></svg></configure>
             </property>
         </port>
     </entity>
-    <entity name="PeriodicSampler" class="ptolemy.domains.ct.lib.CTPeriodicSampler">
+    <entity name="PeriodicSampler" class="ptolemy.domains.continuous.lib.PeriodicSampler">
         <property name="samplePeriod" class="ptolemy.data.expr.Parameter" value="h">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[506.5, 152.0]">
@@ -1526,7 +1364,7 @@ time (CT).</text></svg></configure>
         <entity name="modal controller" class="ptolemy.domains.modal.modal.ModalModel">
             <property name="directorClass" class="ptolemy.data.expr.StringParameter" value="ptolemy.domains.modal.kernel.FSMDirector">
             </property>
-            <property name="_tableauFactory" class="ptolemy.vergil.fsm.modal.ModalTableauFactory">
+            <property name="_tableauFactory" class="ptolemy.vergil.modal.modal.ModalTableauFactory">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="400.0, 220.0">
             </property>
@@ -1563,7 +1401,7 @@ time (CT).</text></svg></configure>
                     <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
                         <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">Create a state machine here (and ports, if needed) and
 create refinements for the states. Each refinement needs a director.
-For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
+For hybrid system models, use the ContinuousDirector.</text></svg></configure>
                     </property>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="85.0, -5.0">
                     </property>
@@ -1623,7 +1461,7 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
                     </property>
                     <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                     </property>
-                    <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
+                    <property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory">
                     </property>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="115.0, 100.0">
                     </property>
@@ -1633,7 +1471,7 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
                     </property>
                     <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                     </property>
-                    <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
+                    <property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory">
                     </property>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="{330.0, 150.0}">
                     </property>
@@ -1643,7 +1481,7 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
                     </property>
                     <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                     </property>
-                    <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
+                    <property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory">
                     </property>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="150.0, 290.0">
                     </property>
@@ -1653,7 +1491,7 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
                     </property>
                     <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                     </property>
-                    <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
+                    <property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory">
                     </property>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="400.0, 310.0">
                     </property>
