@@ -1626,7 +1626,7 @@
     <entity name="StickyMassesModel" class="ptolemy.actor.TypedCompositeActor">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[135.0, 240.0]">
         </property>
-        <property name="CT Director" class="ptolemy.domains.ct.kernel.CTMixedSignalDirector">
+        <property name="Continuous Director" class="ptolemy.domains.continuous.kernel.ContinuousDirector">
             <property name="timeResolution" class="ptolemy.actor.parameters.SharedParameter" value="1.0E-10">
             </property>
             <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
@@ -1644,16 +1644,6 @@
             <property name="valueResolution" class="ptolemy.data.expr.Parameter" value="1.0E-6">
             </property>
             <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="false">
-            </property>
-            <property name="ODESolver" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.ExplicitRK23Solver&quot;">
-                <property name="style" class="ptolemy.actor.gui.style.EditableChoiceStyle">
-                    <property name="choice0" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.ExplicitRK23Solver&quot;">
-                    </property>
-                    <property name="choice1" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.BackwardEulerSolver&quot;">
-                    </property>
-                    <property name="choice2" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.ForwardEulerSolver&quot;">
-                    </property>
-                </property>
             </property>
             <property name="runAheadLength" class="ptolemy.data.expr.Parameter" value="0.1">
             </property>
@@ -1704,14 +1694,14 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="[370.0, 90.0]">
             </property>
         </port>
-        <entity name="PeriodicSampler" class="ptolemy.domains.ct.lib.CTPeriodicSampler">
+        <entity name="PeriodicSampler" class="ptolemy.domains.continuous.lib.PeriodicSampler">
             <property name="samplePeriod" class="ptolemy.data.expr.Parameter" value="0.1">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[230.0, 120.0]">
             </property>
         </entity>
         <entity name="Sticky Mass model" class="ptolemy.domains.modal.modal.ModalModel">
-            <property name="_tableauFactory" class="ptolemy.vergil.fsm.modal.ModalTableauFactory">
+            <property name="_tableauFactory" class="ptolemy.vergil.modal.modal.ModalTableauFactory">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[85.0, 115.0]">
             </property>
@@ -1865,7 +1855,7 @@
                     </property>
                     <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                     </property>
-                    <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
+                    <property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory">
                     </property>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[155.0, 225.0]">
                     </property>
@@ -1875,7 +1865,7 @@
                     </property>
                     <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                     </property>
-                    <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
+                    <property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory">
                     </property>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[250.0, 235.0]">
                     </property>
@@ -1885,7 +1875,7 @@
                     </property>
                     <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                     </property>
-                    <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
+                    <property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory">
                     </property>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[475.0, 235.0]">
                     </property>
@@ -1942,7 +1932,7 @@
                 </property>
                 <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[104, 102]">
                 </property>
-                <property name="Refinement Solver" class="ptolemy.domains.ct.kernel.CTEmbeddedDirector">
+                <property name="Continuous Director" class="ptolemy.domains.continuous.kernel.ContinuousDirector">
                     <property name="timeResolution" class="ptolemy.actor.parameters.SharedParameter" value="1.0E-10">
                     </property>
                     <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
@@ -1962,16 +1952,6 @@
                     <property name="valueResolution" class="ptolemy.data.expr.Parameter" value="1.0E-6">
                     </property>
                     <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="false">
-                    </property>
-                    <property name="ODESolver" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.ExplicitRK23Solver&quot;">
-                        <property name="style" class="ptolemy.actor.gui.style.EditableChoiceStyle">
-                            <property name="choice0" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.ExplicitRK23Solver&quot;">
-                            </property>
-                            <property name="choice1" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.BackwardEulerSolver&quot;">
-                            </property>
-                            <property name="choice2" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.ForwardEulerSolver&quot;">
-                            </property>
-                        </property>
                     </property>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="65.0, 34.5">
                     </property>
@@ -1999,7 +1979,7 @@
                     </property>
                     <property name="italic" class="ptolemy.data.expr.Parameter" value="false">
                     </property>
-                    <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model gives two separate ordinary differential&#10;equations, one for each point mass attached to a spring.&#10;The ZeroCrossingDetector actor detects the collision&#10;of the point masses and emits the &quot;touched&quot; event.">
+                    <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model gives two separate ordinary differential&#10;equations, one for each point mass attached to a spring.&#10;The LevelCrossingDetector actor detects the collision&#10;of the point masses and emits the &quot;touched&quot; event.">
                         <property name="_style" class="ptolemy.actor.gui.style.TextStyle">
                             <property name="height" class="ptolemy.data.expr.Parameter" value="20">
                             </property>
@@ -2067,12 +2047,12 @@
                     <property name="_location" class="ptolemy.kernel.util.Location" value="285.0, 375.0">
                     </property>
                 </port>
-                <entity name="ZeroCrossingDetector" class="ptolemy.domains.ct.lib.ZeroCrossingDetector">
+                <entity name="LevelCrossingDetector" class="ptolemy.domains.continuous.lib.LevelCrossingDetector">
                     <property name="defaultEventValue" class="ptolemy.data.expr.Parameter" value="0.0">
                     </property>
                     <property name="errorTolerance" class="ptolemy.data.expr.Parameter" value="1.0E-4">
                     </property>
-                    <property name="ZeroCrossingDetectorIcon" class="ptolemy.vergil.icon.EditorIcon">
+                    <property name="LevelCrossingDetectorIcon" class="ptolemy.vergil.icon.EditorIcon">
                         <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 125, 815, 518}, maximized=false}">
                         </property>
                         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
@@ -2100,38 +2080,20 @@
                     <property name="_location" class="ptolemy.kernel.util.Location" value="90.0, 365.0">
                     </property>
                 </entity>
-                <entity name="V2 integrator" class="ptolemy.domains.ct.lib.Integrator">
+                <entity name="V2 integrator" class="ptolemy.domains.continuous.lib.Integrator">
                     <property name="initialState" class="ptolemy.data.expr.Parameter" value="v2">
-                    </property>
-                    <property name="IntegratorIcon" class="ptolemy.vergil.icon.EditorIcon">
-                        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={117, 239, 815, 518}, maximized=false}">
-                        </property>
-                        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
-                        </property>
                     </property>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="215.0, 245.0">
                     </property>
                 </entity>
-                <entity name="P1 integrator" class="ptolemy.domains.ct.lib.Integrator">
+                <entity name="P1 integrator" class="ptolemy.domains.continuous.lib.Integrator">
                     <property name="initialState" class="ptolemy.data.expr.Parameter" value="p1">
-                    </property>
-                    <property name="IntegratorIcon" class="ptolemy.vergil.icon.EditorIcon">
-                        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={117, 239, 815, 518}, maximized=false}">
-                        </property>
-                        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
-                        </property>
                     </property>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="350.0, 140.0">
                     </property>
                 </entity>
-                <entity name="V1 integrator" class="ptolemy.domains.ct.lib.Integrator">
+                <entity name="V1 integrator" class="ptolemy.domains.continuous.lib.Integrator">
                     <property name="initialState" class="ptolemy.data.expr.Parameter" value="v1">
-                    </property>
-                    <property name="IntegratorIcon" class="ptolemy.vergil.icon.EditorIcon">
-                        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={117, 239, 815, 518}, maximized=false}">
-                        </property>
-                        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
-                        </property>
                     </property>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="195.0, 140.0">
                     </property>
@@ -2151,14 +2113,8 @@
                         <property name="input"/>
                     </port>
                 </entity>
-                <entity name="P2 integrator" class="ptolemy.domains.ct.lib.Integrator">
+                <entity name="P2 integrator" class="ptolemy.domains.continuous.lib.Integrator">
                     <property name="initialState" class="ptolemy.data.expr.Parameter" value="p2">
-                    </property>
-                    <property name="IntegratorIcon" class="ptolemy.vergil.icon.EditorIcon">
-                        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={117, 239, 815, 518}, maximized=false}">
-                        </property>
-                        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
-                        </property>
                     </property>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="380.0, 245.0">
                     </property>
@@ -2192,23 +2148,23 @@
                 <link port="P1" relation="1:_R3"/>
                 <link port="P2" relation="1:_R7"/>
                 <link port="touched" relation="relation"/>
-                <link port="ZeroCrossingDetector.output" relation="relation"/>
-                <link port="ZeroCrossingDetector.trigger" relation="relation2"/>
+                <link port="LevelCrossingDetector.output" relation="relation"/>
+                <link port="LevelCrossingDetector.trigger" relation="relation2"/>
                 <link port="Expression.output" relation="1:_R1"/>
                 <link port="Expression.P1" relation="1:_R3"/>
                 <link port="AddSubtract.plus" relation="1:_R3"/>
                 <link port="AddSubtract.minus" relation="1:_R7"/>
                 <link port="AddSubtract.output" relation="relation2"/>
-                <link port="V2 integrator.input" relation="1:_R5"/>
-                <link port="V2 integrator.output" relation="1:_R6"/>
-                <link port="P1 integrator.input" relation="1:_R2"/>
-                <link port="P1 integrator.output" relation="1:_R3"/>
-                <link port="V1 integrator.input" relation="1:_R1"/>
-                <link port="V1 integrator.output" relation="1:_R2"/>
+                <link port="V2 integrator.derivative" relation="1:_R5"/>
+                <link port="V2 integrator.state" relation="1:_R6"/>
+                <link port="P1 integrator.derivative" relation="1:_R2"/>
+                <link port="P1 integrator.state" relation="1:_R3"/>
+                <link port="V1 integrator.derivative" relation="1:_R1"/>
+                <link port="V1 integrator.state" relation="1:_R2"/>
                 <link port="Expression2.output" relation="1:_R5"/>
                 <link port="Expression2.P2" relation="1:_R7"/>
-                <link port="P2 integrator.input" relation="1:_R6"/>
-                <link port="P2 integrator.output" relation="1:_R7"/>
+                <link port="P2 integrator.derivative" relation="1:_R6"/>
+                <link port="P2 integrator.state" relation="1:_R7"/>
             </entity>
             <entity name="Together" class="ptolemy.domains.modal.modal.Refinement">
                 <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 450]">
@@ -2221,7 +2177,7 @@
                 </property>
                 <property name="stickiness" class="ptolemy.data.expr.Parameter" value="10.0">
                 </property>
-                <property name="Refinement Solver" class="ptolemy.domains.ct.kernel.CTEmbeddedDirector">
+                <property name="Continuous Director" class="ptolemy.domains.continuous.kernel.ContinuousDirector">
                     <property name="timeResolution" class="ptolemy.actor.parameters.SharedParameter" value="1.0E-10">
                     </property>
                     <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
@@ -2241,16 +2197,6 @@
                     <property name="valueResolution" class="ptolemy.data.expr.Parameter" value="1.0E-6">
                     </property>
                     <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="false">
-                    </property>
-                    <property name="ODESolver" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.ExplicitRK23Solver&quot;">
-                        <property name="style" class="ptolemy.actor.gui.style.EditableChoiceStyle">
-                            <property name="choice0" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.ExplicitRK23Solver&quot;">
-                            </property>
-                            <property name="choice1" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.BackwardEulerSolver&quot;">
-                            </property>
-                            <property name="choice2" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.ForwardEulerSolver&quot;">
-                            </property>
-                        </property>
                     </property>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="70.0, 39.5">
                     </property>
@@ -2334,14 +2280,8 @@
                     <property name="_location" class="ptolemy.kernel.util.Location" value="485.0, 315.0">
                     </property>
                 </port>
-                <entity name="Stickiness integrator" class="ptolemy.domains.ct.lib.Integrator">
+                <entity name="Stickiness integrator" class="ptolemy.domains.continuous.lib.Integrator">
                     <property name="initialState" class="ptolemy.data.expr.Parameter" value="stickiness">
-                    </property>
-                    <property name="IntegratorIcon" class="ptolemy.vergil.icon.EditorIcon">
-                        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={117, 239, 815, 518}, maximized=false}">
-                        </property>
-                        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
-                        </property>
                     </property>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="65.0, 415.0">
                     </property>
@@ -2361,14 +2301,8 @@
                         <property name="input"/>
                     </port>
                 </entity>
-                <entity name="V1 integrator" class="ptolemy.domains.ct.lib.Integrator">
+                <entity name="V1 integrator" class="ptolemy.domains.continuous.lib.Integrator">
                     <property name="initialState" class="ptolemy.data.expr.Parameter" value="v">
-                    </property>
-                    <property name="IntegratorIcon" class="ptolemy.vergil.icon.EditorIcon">
-                        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={117, 239, 815, 518}, maximized=false}">
-                        </property>
-                        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
-                        </property>
                     </property>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="65.0, 160.0">
                     </property>
@@ -2388,14 +2322,8 @@
                         <property name="input"/>
                     </port>
                 </entity>
-                <entity name="P1 integrator" class="ptolemy.domains.ct.lib.Integrator">
+                <entity name="P1 integrator" class="ptolemy.domains.continuous.lib.Integrator">
                     <property name="initialState" class="ptolemy.data.expr.Parameter" value="p">
-                    </property>
-                    <property name="IntegratorIcon" class="ptolemy.vergil.icon.EditorIcon">
-                        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={117, 239, 815, 518}, maximized=false}">
-                        </property>
-                        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
-                        </property>
                     </property>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="155.0, 160.0">
                     </property>
@@ -2437,16 +2365,16 @@
                 <link port="P2" relation="1:_R4"/>
                 <link port="Stickiness" relation="1:_R1"/>
                 <link port="Force" relation="relation"/>
-                <link port="Stickiness integrator.input" relation="1:relation0"/>
-                <link port="Stickiness integrator.output" relation="1:_R1"/>
+                <link port="Stickiness integrator.derivative" relation="1:relation0"/>
+                <link port="Stickiness integrator.state" relation="1:_R1"/>
                 <link port="Expression.output" relation="1:relation1"/>
                 <link port="Expression.P1" relation="1:_R4"/>
-                <link port="V1 integrator.input" relation="1:relation1"/>
-                <link port="V1 integrator.output" relation="1:_R3"/>
+                <link port="V1 integrator.derivative" relation="1:relation1"/>
+                <link port="V1 integrator.state" relation="1:_R3"/>
                 <link port="Expression2.output" relation="relation"/>
                 <link port="Expression2.P1" relation="1:_R4"/>
-                <link port="P1 integrator.input" relation="1:_R3"/>
-                <link port="P1 integrator.output" relation="1:_R4"/>
+                <link port="P1 integrator.derivative" relation="1:_R3"/>
+                <link port="P1 integrator.state" relation="1:_R4"/>
                 <link port="Gain.input" relation="1:_R1"/>
                 <link port="Gain.output" relation="1:relation0"/>
             </entity>
