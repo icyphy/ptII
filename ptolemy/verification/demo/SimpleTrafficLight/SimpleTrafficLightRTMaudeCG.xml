@@ -96,7 +96,6 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[140.0, 80.0]">
         </property>
     </property>
-    </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="textSize" class="ptolemy.data.expr.Parameter" value="10">
         </property>
