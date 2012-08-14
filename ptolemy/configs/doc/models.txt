@@ -41,10 +41,6 @@ $CLASSPATH/ptolemy/actor/lib/jai/demo/VQSequenceDisplay/VQSequenceDisplay.xml
 $CLASSPATH/ptolemy/actor/lib/javasound/demo/KarplusStrong/KarplusStrong.xml
 $CLASSPATH/ptolemy/actor/lib/jmf/demo/JMFJAI/JMFJAI.xml
 $CLASSPATH/ptolemy/actor/lib/jmf/demo/VideoCapture/VideoCapture.xml
-$CLASSPATH/ptolemy/actor/lib/jni/demo/Scale/Scale.xml
-$CLASSPATH/ptolemy/actor/lib/jni/demo/Scale/ScaleWithEmbeddedCFileActor.xml
-$CLASSPATH/ptolemy/actor/lib/jni/demo/SimplePassPointer/SimplePassPointer.xml
-$CLASSPATH/ptolemy/actor/lib/jni/demo/SimplePassPointer/SimplePassPointerWithECFA.xml
 $CLASSPATH/ptolemy/actor/lib/python/demo/Ptolemnizer/Ptolemnizer.xml
 $CLASSPATH/ptolemy/actor/lib/python/demo/PythonScale/PythonScale.xml
 $CLASSPATH/ptolemy/actor/lib/security/demo/Signature/Signature.xml
