@@ -1664,11 +1664,7 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
 
         // FIXME: unfortunately, vergil depends on FSM now.
         classMap.put("ptolemy.domains.modal.kernel.FSMActor",
-                "ptolemy.domains.modal/fsm.jar");
-
-        // FIXME: vergil.fsm.modal.ModalModel depends on CTStepSizeControlActor
-        classMap.put("ptolemy.domains.ct.kernel.CTStepSizeControlActor",
-                "ptolemy/domains/ct/ct.jar");
+                "ptolemy/domains/modal/modal.jar");
 
         // FIXME: unfortunately, vergil depends on domains.modal now.
         classMap.put("ptolemy.domains.modal.modal.ModalModel",

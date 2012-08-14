@@ -108,6 +108,7 @@
     <include name="ptolemy/domains/modal/demo/demo.jar" />
     <include name="ptolemy/domains/modal/doc/doc.jar" />
     <include name="ptolemy/domains/modal/modal.jar" />
+    <include name="ptolemy/domains/modal/modal/modal.jar" />
     <include name="ptolemy/domains/pn/demo/demo.jar" />
     <include name="ptolemy/domains/pn/doc/doc.jar" />
     <include name="ptolemy/domains/pn/pn.jar" />
@@ -160,6 +161,7 @@
     <include name="ptolemy/vergil/gt/gt.jar" />
     <include name="ptolemy/vergil/kernel/attributes/demo/demo.jar" />
     <include name="ptolemy/vergil/modal/fmv/fmv.jar" />
+    <include name="ptolemy/vergil/modal/modal/modal.jar" />
     <include name="ptolemy/vergil/ontologies/ontologies.jar" />
     <include name="ptolemy/vergil/pdfrenderer/pdfrenderer.jar" />
     <include name="ptolemy/vergil/ptera/ptera.jar" />
@@ -2262,6 +2264,15 @@
       </fileset>
     </jar>
 
+    <!-- ptolemy/vergil/modal/modal/modal.jar -->
+    <jar defaultexcludes="yes"
+	 destfile="${basedir}/ptolemy/vergil/modal/modal/modal.jar"
+	 >
+      <fileset dir="${basedir}">
+	<include name="ptolemy/vergil/modal/modal/*.class"/>
+      </fileset>
+    </jar>
+
     <!-- ptolemy/vergil/gt/gt.jar -->
     <jar defaultexcludes="yes"
 	 destfile="${basedir}/ptolemy/vergil/gt/gt.jar"
@@ -3090,6 +3101,15 @@
       <fileset dir="${basedir}">
 	<include name="ptolemy/domains/modal/kernel/ia/*.class"/>
       </fileset>
+      <fileset dir="${basedir}">
+	<include name="ptolemy/domains/modal/modal/*.class"/>
+      </fileset>
+    </jar>
+
+    <!-- ptolemy/domains/modal/modal/modal.jar -->
+    <jar defaultexcludes="yes"
+	 destfile="${basedir}/ptolemy/domains/modal/modal/modal.jar"
+	 >
       <fileset dir="${basedir}">
 	<include name="ptolemy/domains/modal/modal/*.class"/>
       </fileset>
