@@ -101,7 +101,8 @@ public class CompiledCompositeActor extends TypedCompositeActor {
         // FindBugs wants this.
         if (!(compositeActor instanceof ptolemy.cg.lib.CompiledCompositeActor)) {
             throw new InternalErrorException(compositeActor, null,
-                    " is not an instance of "
+                    compositeActor.getFullName() 
+                    + " is not an instance of "
                             + "ptolemy.cg.lib.CompiledCompositeActor.");
         }
 
