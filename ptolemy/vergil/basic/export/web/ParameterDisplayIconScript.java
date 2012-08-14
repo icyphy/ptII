@@ -76,7 +76,7 @@ public class ParameterDisplayIconScript extends DefaultIconScript {
     ////                         public methods                    ////
 
     /** Override base class since content here should only be added if
-     * it does not exist already
+     * it does not exist already.
      * 
      * @return False, since default content should only be added if no content
      * already exists
@@ -195,8 +195,8 @@ public class ParameterDisplayIconScript extends DefaultIconScript {
      *  included in a web page for the container of this object for
      *  objects that do not override onmouseover.
      *  This class provides an HTML table containing parameter names and values,
-     *  plus a placeholder <div> tag which the script writes information in upon 
-     *  onmouseover().  
+     *  plus a placeholder <div/> tag which the script writes information in 
+     *  upon onmouseover().  
      *  
      *  @param exporter The exporter to which to provide the content.
      *  @throws IllegalActionException If evaluating the value

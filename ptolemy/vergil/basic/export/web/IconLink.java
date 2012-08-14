@@ -107,7 +107,7 @@ public class IconLink extends WebContent implements WebExportable {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** A link is of type text/html
+    /** A link is of type text/html.
      * 
      * @return The string text/html
      */
@@ -115,7 +115,7 @@ public class IconLink extends WebContent implements WebExportable {
         return "text/html";
     }
 
-    /** Return true, since new content should overwrite old
+    /** Return true, since new content should overwrite old.
      * 
      * @return True, since new content should overwrite old
      */

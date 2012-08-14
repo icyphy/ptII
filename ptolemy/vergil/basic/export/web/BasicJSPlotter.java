@@ -331,21 +331,21 @@ public abstract class BasicJSPlotter extends WebContent
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
     
-    /** BasicJSPlotter is of type text/html
+    /** BasicJSPlotter is of type text/html.
      *  @return The string "text/html"
      */
     public String getMimeType() {
         return "text/html";
     }
 
-    /** Return true, since new content should overwrite old
+    /** Return true, since new content should overwrite old.
      *  @return true, since new content should overwrite old
      */
     public boolean isOverwriteable() {
         return true;
     }
     
-    /** Get the parameter values from the GUI input
+    /** Get the parameter values from the GUI input.
      *  @return The hash map containing the values of all parameters 
      *  @throws IllegalActionException
      */
@@ -413,7 +413,7 @@ public abstract class BasicJSPlotter extends WebContent
         return pageContent.toString();
     }
     
-    /** Insert a string to the body with auto-indent
+    /** Insert a string to the body with auto-indent.
      * @param content The content to be inserted
      */
     public void insertBodyContent(String content){

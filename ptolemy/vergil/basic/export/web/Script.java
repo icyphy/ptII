@@ -131,7 +131,7 @@ function writeText(text) {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
     
-    /** Script is of type text/javascript for backwards compatibility
+    /** Script is of type text/javascript for backwards compatibility.
      *  return string text/javascript
      */
     // FIXME:  Any other types of scripts?
@@ -146,7 +146,7 @@ function writeText(text) {
         return "text/javascript";
     }
 
-    /** Return true, since new scripts and method calls should overwrite old
+    /** Return true, since new scripts and method calls should overwrite old.
      * 
      * @return True, since new scripts and method calls should overwrite old
      */

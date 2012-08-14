@@ -88,7 +88,7 @@ public class WebElement extends StringAttribute {
      * @param webName The web name of this WebElement
      * @return The WebElement that was created (or that previously existed) 
      * with persistent set to false
-     * @throws An IllegalActionException if the WebAttribute cannot be created
+     * @throws IllegalActionException if the WebAttribute cannot be created
      * (perhaps another Attribute exists with the requested name)
      */
     public static WebElement createWebElement(NamedObj container, String id,
@@ -119,6 +119,7 @@ public class WebElement extends StringAttribute {
      * 
      * @return The name of the desired parent element, or the empty string if
      * none.
+     * @see setParent(String)
      */
     public String getParent() {
         return _parent;
@@ -126,30 +127,33 @@ public class WebElement extends StringAttribute {
     
 
     /** Return the web name of this element; for example, "myElement" in 
-     * <div name="myElement"> in HTML.
+     * <div name="myElement"/> in HTML.
      * 
      * @return The web name of this element; for example, "myElement" in 
-     * <div name="myElement"> in HTML.
+     * <div name="myElement"/> in HTML.
+     * @see setWebName(String)
      */
     public String getWebName() {
         return _webName;
     }
     
     /** Set the name of the desired parent element.  Can also be a special 
-     * constant for tags that do not typically have names, like <head> and 
-     * <body>.
+     * constant for tags that do not typically have names, like <head/> and 
+     * <body/>.
      * 
      * @param parent  The name or special constant of the parent element.
+     * @see getParent()
      */
     public void setParent(String parent) {
         _parent = parent;
     }
     
     /** Set the web name of this element; for example, "myElement" in 
-     * <div name="myElement"> in HTML.
+     * <div name="myElement"/> in HTML.
      * 
      * @param webName The web name of this element; for example, "myElement" in 
-     * <div name="myElement"> in HTML.
+     * <div name="myElement"/> in HTML.
+     * @see setWebName()
      */
     public void setWebName(String webName) {
         _webName = webName;
@@ -158,20 +162,20 @@ public class WebElement extends StringAttribute {
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
     
-    /** A special constant indicating that the <body> element should
+    /** A special constant indicating that the <body/> element should
      *  be the parent.
-     *  The <head> and <body> tags of an HTML document do not typically
+     *  The <head/> and <body/> tags of an HTML document do not typically
      *  have names.  For example, almost no one writes <head name="head">, 
-     *  it's only <head>.  Therefore, the WebExporter will not be able to use
+     *  it's only <head/>.  Therefore, the WebExporter will not be able to use
      *  the name to find the parent element.  
      */
     public static final String BODY = "body";
     
-    /** A special constant indicating that the <head> element should
+    /** A special constant indicating that the <head/> element should
      *  be the parent.
-     *  The <head> and <body> tags of an HTML document do not typically
+     *  The <head/> and <body/> tags of an HTML document do not typically
      *  have names.  For example, almost no one writes <head name="head">, 
-     *  it's only <head>.  Therefore, the WebExporter will not be able to use
+     *  it's only <head/>.  Therefore, the WebExporter will not be able to use
      *  the name to find the parent element.  
      */
     public static final String HEAD = "head";
@@ -188,7 +192,15 @@ public class WebElement extends StringAttribute {
      *  </ul>
      *  The default is "start".
      */
+    
+    /** Special constant indicating to put content in a div with the name
+     * "start" which occurs at the beginning of the HTML body.
+     */
     public static final String START = "start";
+    
+    /** Special constant indicating to put content in a div with the name 
+     * "end" which occurs at the end of the HTML body.
+     */
     public static final String END = "end";
     
     ///////////////////////////////////////////////////////////////////

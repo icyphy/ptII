@@ -64,13 +64,13 @@ public interface HttpService {
      *  which is the value set previously by a call to
      *  {@link #setRelativePath(URI)}.
      *  @return The relative path that this HttpService is mapped to.
+     *  @see #setRelativePath(URI)
      */
     public URI getRelativePath();
     
     /** Returns an HttpServlet which is used to handle requests that
      *  arrive at the given relative path.
      *  @return An HttpServlet to handle requests. 
-     *  @see #setRelativePath(URI)
      */
     public HttpServlet getServlet();
     

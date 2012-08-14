@@ -111,7 +111,7 @@ public class DefaultTitle extends WebContent implements WebExportable {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** A title is of type text/html
+    /** A title is of type text/html.
      * 
      * @return The string text/html
      */

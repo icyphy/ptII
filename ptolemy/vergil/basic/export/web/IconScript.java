@@ -191,7 +191,7 @@ public class IconScript extends Script implements WebExportable {
     
     /** Provide method call to invoke script that can be included as an 
      *  attribute of an HTML tag, e.g. onclick="runFunction()" in
-     *  <button onclick="runFunction()">
+     *  <button onclick="runFunction()"/>
      *  
      *  @param exporter  The web exporter to which to write content.
      *  @throws IllegalActionException If the eventType cannot be obtained,

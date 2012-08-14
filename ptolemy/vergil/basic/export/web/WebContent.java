@@ -182,6 +182,7 @@ public abstract class WebContent extends StringParameter
      * defineAttribute() method.  Subclasses should override. Please also see
      * {@link ptolemy.vergil.basic.export.web.WebAttribute}
      * 
+     * @param  exporter  The WebExporter to write content to
      * @throws IllegalActionException If there is a problem creating the web
      * content.
      */
@@ -194,6 +195,7 @@ public abstract class WebContent extends StringParameter
      * defineElement() method.  Subclasses should override. Please also see
      * {@link ptolemy.vergil.basic.export.web.WebElement}
      * 
+     * @param  exporter  The WebExporter to write content to
      * @throws IllegalActionException If there is a problem creating the web
      * content.
      */

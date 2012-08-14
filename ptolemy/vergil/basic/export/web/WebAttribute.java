@@ -75,20 +75,22 @@ public class WebAttribute extends StringAttribute {
     ////                         public methods                    ////
     
     /** Return the web name of this element; for example, "myElement" in 
-     * <div name="myElement"> in HTML.
+     * <div name="myElement"> </div> in HTML.
      * 
      * @return The web name of this element; for example, "myElement" in 
-     * <div name="myElement"> in HTML.
+     * <div name="myElement"> </div> in HTML.
+     * @see #setWebName(String)
      */
     public String getWebName() {
         return _webName;
     }
     
     /** Set the web name of this element; for example, "myElement" in 
-     * <div name="myElement"> in HTML.
+     * <div name="myElement"> </div> in HTML.
      * 
      * @param webName The web name of this element; for example, "myElement" in 
-     * <div name="myElement"> in HTML.
+     * <div name="myElement"> </div> in HTML.
+     * @see #getWebName()
      */
     public void setWebName(String webName) {
         _webName = webName;
@@ -105,7 +107,7 @@ public class WebAttribute extends StringAttribute {
      * @param webName The web name of this WebAttribute
      * @return The WebAttribute that was created (or that previously existed) 
      * with persistent set to false
-     * @throws An IllegalActionException if the WebAttribute cannot be created
+     * @throws IllegalActionException if the WebAttribute cannot be created
      * (perhaps another Attribute exists with the requested name)
      */
     public static WebAttribute createWebAttribute(NamedObj container, 

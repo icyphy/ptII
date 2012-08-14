@@ -83,7 +83,7 @@ public class HTMLText extends WebContent {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
     
-    /** HTMLText is of type text/html
+    /** HTMLText is of type text/html.
      * 
      * @return The string text/html
      */
@@ -91,7 +91,7 @@ public class HTMLText extends WebContent {
         return "text/html";
     }
 
-    /** Return true, since new content should overwrite old
+    /** Return true, since new content should overwrite old.
      * 
      * @return true, since new content should overwrite old
      */
@@ -99,7 +99,7 @@ public class HTMLText extends WebContent {
         return true;
     }
     
-    /** Generate a <div> element holding the text content.
+    /** Generate a <div/> element holding the text content.
      * 
      *  @param exporter The WebExporter to add content to
      *  @throws IllegalActionException If something is wrong generating the

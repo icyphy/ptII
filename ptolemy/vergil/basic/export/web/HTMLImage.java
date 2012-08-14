@@ -121,7 +121,7 @@ public class HTMLImage extends WebContent {
         return "image/gif";
     }
 
-    /** Return true, since old images should be overwritten with new
+    /** Return true, since old images should be overwritten with new.
      * 
      * @return True, since old images should be overwritten with new
      */
@@ -132,8 +132,8 @@ public class HTMLImage extends WebContent {
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
    
-     /** Generate the image file and a <table> element holding an <img> element
-      *  and a caption for the image. 
+     /** Generate the image file and a <table/> element holding an <img/> 
+      *  element and a caption for the image. 
      *  
      *  @param exporter The WebExporter to add content to
      *  @throws IllegalActionException If something is wrong generating the 

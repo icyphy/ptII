@@ -74,7 +74,7 @@ import ptolemy.kernel.util.NamedObj;
  */
 public class DygraphsJSPlotter extends BasicJSPlotter {
     
-    /** Customize some parameters
+    /** Customize some parameters.
      *  @param container The container.
      *  @param name The name.
      *  @throws IllegalActionException If the superclass throws it.

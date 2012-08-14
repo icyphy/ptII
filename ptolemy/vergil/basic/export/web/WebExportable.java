@@ -54,6 +54,8 @@ public interface WebExportable extends Nameable {
      * Please see the list of Mime types here, in the Media type and subtype(s)
      * field of the table:
      * http://reference.sitepoint.com/html/mime-types-full
+     * 
+     * @return The Mime type of the content (for example, text/html)
      */
     public String getMimeType();
     
