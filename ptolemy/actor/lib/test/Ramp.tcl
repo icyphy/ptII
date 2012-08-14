@@ -255,7 +255,7 @@ test Ramp-3.1 {Run a Continous model which will detect errors in scheduling} {
             [java::field [java::cast ptolemy.actor.lib.Sink $rec] input]
     catch {[$e0 getManager] execute} msg
     list $msg
-} {}
+} {{}}
 
 
 ######################################################################
