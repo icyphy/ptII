@@ -397,18 +397,23 @@ public class PtidesDirector extends DEDirector {
                     for (int i = 0; i < attributeList.size(); i++) {
                         Object attr = attributeList.get(i);
                         if (attr instanceof Parameter) {
-                            Token paramToken = ((Parameter) attr).getToken();
-                            if (paramToken instanceof ObjectToken) {
-                                Object paramObject = ((ObjectToken) paramToken)
-                                        .getValue();
-                                if (paramObject instanceof ResourceScheduler) {
-                                    ResourceScheduler scheduler = (ResourceScheduler) paramObject;
-                                    if (_resourceSchedulers.contains(scheduler)) {
-                                        _schedulerForActor.put(actor, scheduler);
-                                        object = scheduler;
-                                        break;
-                                    } // else could have been deleted.
+                            try {
+                                Token paramToken = ((Parameter) attr).getToken();
+                                if (paramToken instanceof ObjectToken) {
+                                    Object paramObject = ((ObjectToken) paramToken)
+                                            .getValue();
+                                    if (paramObject instanceof ResourceScheduler) {
+                                        ResourceScheduler scheduler = (ResourceScheduler) paramObject;
+                                        if (_resourceSchedulers.contains(scheduler)) {
+                                            _schedulerForActor.put(actor, scheduler);
+                                            object = scheduler;
+                                            break;
+                                        } // else could have been deleted.
+                                    }
                                 }
+                            } catch (IllegalActionException ex) {
+                                // Do nothing, the resource scheduler might
+                                // have been deleted.
                             }
                         }
                     }
