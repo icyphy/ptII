@@ -47,6 +47,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.Workspace;
+import ptolemy.moml.MoMLChangeRequest;
 
 ///////////////////////////////////////////////////////////////////
 //// WindowPropertiesAttribute
@@ -155,13 +156,41 @@ public class WindowPropertiesAttribute extends Parameter implements
             // Determine whether the window is maximized.
             boolean maximized = (frame.getExtendedState() & Frame.MAXIMIZED_BOTH) == Frame.MAXIMIZED_BOTH;
 
-            // Construct values for the record token.
-            setToken("{bounds={" + bounds.x + ", " + bounds.y + ", "
+            // Get the current values.
+            RecordToken value = (RecordToken) getToken();
+            ArrayToken boundsToken = (ArrayToken) value.get("bounds");
+            BooleanToken maximizedToken = (BooleanToken) value.get("maximized");
+            int x = ((IntToken) boundsToken.getElement(0)).intValue();
+            int y = ((IntToken) boundsToken.getElement(1)).intValue();
+            int width = ((IntToken) boundsToken.getElement(2)).intValue();
+            int height = ((IntToken) boundsToken.getElement(3)).intValue();
+
+            // If the new values are different, then do a MoMLChangeRequest.
+            if (maximizedToken.booleanValue() != maximized 
+                    || x != bounds.x
+                    || y != bounds.y
+                    || width != bounds.width
+                    || height != bounds.height) {
+                // Construct values for the record token.
+                String values = "{bounds={" + bounds.x + ", " + bounds.y + ", "
                     + bounds.width + ", " + bounds.height + "}, maximized="
-                    + maximized + "}");
-            // Not clear why the following is needed, but if it isn't there,
-            // then window properties may not be recorded.
-            propagateValue();
+                    + maximized + "}";
+
+                // Don't call setToken(), instead use a MoMLChangeRequest so that
+                // the model is marked modified so that any changes are preserved.
+                // See "closing workflow does not save the location change of popup display windows."
+                // http://bugzilla.ecoinformatics.org/show_bug.cgi?id=5188
+                //setToken(values);
+
+                String moml = "<property name=\"" + getName()
+                    + "\" value=\"" + values + "\"/>";
+                MoMLChangeRequest request = new MoMLChangeRequest(this,
+                        getContainer(), moml);
+                getContainer().requestChange(request);
+                // Not clear why the following is needed, but if it isn't there,
+                // then window properties may not be recorded.
+                propagateValue();
+            }
         } catch (IllegalActionException ex) {
             throw new InternalErrorException("Can't set propertes value! " + ex);
         }
