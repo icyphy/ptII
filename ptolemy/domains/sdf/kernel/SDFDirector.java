@@ -432,7 +432,7 @@ public class SDFDirector extends StaticSchedulingDirector implements
 	// as if it were at the top level... 
         if (!isEmbedded()) {
             // The container of this director is at the toplevel
-            if (iterations.equals(_auto)) {
+            if (iterations.getToken().equals(_auto)) {
                 return 1;
             } 
         }
