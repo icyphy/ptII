@@ -42,10 +42,10 @@ import java.util.StringTokenizer;
 
 import ptolemy.actor.Actor;
 import ptolemy.actor.TypedIOPort;
-import ptolemy.actor.lib.jni.PointerToken;
 import ptolemy.cg.adapter.generic.adapters.ptolemy.actor.Director;
 import ptolemy.cg.kernel.generic.CodeGeneratorAdapter;
 import ptolemy.cg.kernel.generic.GenericCodeGenerator;
+import ptolemy.cg.lib.PointerToken;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.expr.Parameter;

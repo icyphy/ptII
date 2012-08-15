@@ -1490,21 +1490,21 @@ public class TemplateParser {
 
         ProgramCodeGeneratorAdapter adapter = null;
         CodeStream codeStream = null;
-        if (component != null
-                && component instanceof ptolemy.actor.lib.jni.EmbeddedCActor) {
-            adapter = (ProgramCodeGeneratorAdapter) codeGenerator
-                    .getAdapter(codeGenerator.getContainer());
-            codeStream = new CodeStream(adapter);
-            // We have an EmbeddedCActor, read the codeBlocks from
-            // the embeddedCCode parameter.
-            codeStream
-                    .setCodeBlocks(((ptolemy.actor.lib.jni.EmbeddedCActor) component).embeddedCCode
-                            .getExpression());
-        } else {
+//         if (component != null
+//                 && component instanceof ptolemy.actor.lib.jni.EmbeddedCActor) {
+//             adapter = (ProgramCodeGeneratorAdapter) codeGenerator
+//                     .getAdapter(codeGenerator.getContainer());
+//             codeStream = new CodeStream(adapter);
+//             // We have an EmbeddedCActor, read the codeBlocks from
+//             // the embeddedCCode parameter.
+//             codeStream
+//                     .setCodeBlocks(((ptolemy.actor.lib.jni.EmbeddedCActor) component).embeddedCCode
+//                             .getExpression());
+//         } else {
             adapter = (ProgramCodeGeneratorAdapter) codeGenerator
                     .getAdapter(component);
             codeStream = new CodeStream(adapter);
-        }
+//         }
 
         return codeStream;
     }
