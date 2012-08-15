@@ -31,6 +31,7 @@ package ptolemy.domains.ptides.lib;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 
 import ptolemy.actor.Actor;
@@ -42,10 +43,12 @@ import ptolemy.data.DoubleToken;
 import ptolemy.data.ObjectToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
+import ptolemy.graph.Inequality;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
+import ptolemy.kernel.util.Workspace;
 
 /** This is a resource scheduler.
  * 
@@ -73,8 +76,13 @@ public abstract class ResourceScheduler extends TypedAtomicActor {
     public ResourceScheduler(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        _schedulePlotterEditorFactory = new SchedulePlotterEditorFactory(this,
-                "_editorFactory");
+        try {
+            _schedulePlotterEditorFactory = new SchedulePlotterEditorFactory(this,
+                this.uniqueName("_editorFactory"));
+        } catch (NameDuplicationException e) {
+            // Do nothing, we made sure that there cannot be a name duplication
+            // exception.
+        }
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -92,6 +100,28 @@ public abstract class ResourceScheduler extends TypedAtomicActor {
 
     ///////////////////////////////////////////////////////////////////
     //                           public methods                      //
+    
+    /** Clone the actor into the specified workspace.
+     *  @param workspace The workspace for the new object.
+     *  @return A new actor.
+     *  @exception CloneNotSupportedException If a derived class contains
+     *   an attribute that cannot be cloned.
+     */
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        ResourceScheduler newObject = (ResourceScheduler) super.clone(workspace);
+
+        try {
+            newObject._schedulePlotterEditorFactory = new SchedulePlotterEditorFactory(newObject,
+                this.uniqueName("_editorFactory"));
+        } catch (NameDuplicationException e) {
+            // Do nothing, we made sure that there cannot be a name duplication
+            // exception.
+        } catch (IllegalActionException e) {
+            // If we would run into this catch clause 
+        }
+        
+        return newObject;
+    }
 
     /** Initialize local variables and the schedule plotter.
      *  @throws IllegalActionException Thrown if list of actors to
@@ -100,6 +130,7 @@ public abstract class ResourceScheduler extends TypedAtomicActor {
     @Override
     public void initialize() throws IllegalActionException {
         super.initialize();
+        
         _remainingTimes = new HashMap<Actor, Time>();
         _executionTimes = new HashMap<Actor, Double>();
         _lastTimeScheduled = new HashMap<Actor, Time>();
