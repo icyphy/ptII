@@ -158,19 +158,27 @@ public class WindowPropertiesAttribute extends Parameter implements
 
             // Get the current values.
             RecordToken value = (RecordToken) getToken();
-            ArrayToken boundsToken = (ArrayToken) value.get("bounds");
-            BooleanToken maximizedToken = (BooleanToken) value.get("maximized");
-            int x = ((IntToken) boundsToken.getElement(0)).intValue();
-            int y = ((IntToken) boundsToken.getElement(1)).intValue();
-            int width = ((IntToken) boundsToken.getElement(2)).intValue();
-            int height = ((IntToken) boundsToken.getElement(3)).intValue();
+            boolean updateValue = false;
+            if (value == null) {
+                updateValue = true;
+            } else {
+                ArrayToken boundsToken = (ArrayToken) value.get("bounds");
+                BooleanToken maximizedToken = (BooleanToken) value.get("maximized");
+                int x = ((IntToken) boundsToken.getElement(0)).intValue();
+                int y = ((IntToken) boundsToken.getElement(1)).intValue();
+                int width = ((IntToken) boundsToken.getElement(2)).intValue();
+                int height = ((IntToken) boundsToken.getElement(3)).intValue();
 
-            // If the new values are different, then do a MoMLChangeRequest.
-            if (maximizedToken.booleanValue() != maximized 
-                    || x != bounds.x
-                    || y != bounds.y
-                    || width != bounds.width
-                    || height != bounds.height) {
+                // If the new values are different, then do a MoMLChangeRequest.
+                if (maximizedToken.booleanValue() != maximized 
+                        || x != bounds.x
+                        || y != bounds.y
+                        || width != bounds.width
+                        || height != bounds.height) {
+                    updateValue = true;
+                }
+            }
+            if (updateValue) {
                 // Construct values for the record token.
                 String values = "{bounds={" + bounds.x + ", " + bounds.y + ", "
                     + bounds.width + ", " + bounds.height + "}, maximized="
