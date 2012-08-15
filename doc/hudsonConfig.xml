@@ -6,28 +6,6 @@
     <entry>
       <string>hudson-plugins-checkstyle-CheckStylePublisher</string>
       <external-property>
-        <originalValue class="hudson.plugins.checkstyle.CheckStylePublisher">
-          <healthy></healthy>
-          <unHealthy></unHealthy>
-          <thresholdLimit>low</thresholdLimit>
-          <pluginName>[CHECKSTYLE] </pluginName>
-          <defaultEncoding></defaultEncoding>
-          <canRunOnFailed>false</canRunOnFailed>
-          <useDeltaValues>false</useDeltaValues>
-          <thresholds>
-            <unstableTotalAll></unstableTotalAll>
-            <unstableTotalHigh></unstableTotalHigh>
-            <unstableTotalNormal></unstableTotalNormal>
-            <unstableTotalLow></unstableTotalLow>
-            <failedTotalAll></failedTotalAll>
-            <failedTotalHigh></failedTotalHigh>
-            <failedTotalNormal></failedTotalNormal>
-            <failedTotalLow></failedTotalLow>
-          </thresholds>
-          <shouldDetectModules>false</shouldDetectModules>
-          <dontComputeNew>true</dontComputeNew>
-          <pattern>reports/checkstyle_errors.xml</pattern>
-        </originalValue>
         <propertyOverridden>false</propertyOverridden>
         <modified>true</modified>
       </external-property>
