@@ -1025,6 +1025,62 @@ fi
 
 
 #--------------------------------------------------------------------
+#       Ptango is the Ptolemy Internet of Things project
+#	See http://chess.eecs.berkeley.edu/ptango
+#--------------------------------------------------------------------
+
+# PTANGO_DIR is set to ptango if ptango is found.
+PTANGO_DIR=
+
+# Jetty and Servlet jar files used by Ptango.  Also used by ptserver.
+PTJETTY_JAR=
+PTSERVLET_JAR=
+
+# We only need to look for Hessian if $PTANGO_USER_DIR is present
+PTANGO_USER_DIR="$PTII/org/ptolemy/ptango"
+if test ! -d "$PTANGO_USER_DIR"; then
+    PT_MSG_STATUS([$PTANGO_USER_DIR is not present,
+    so we need not find the Jetty and Servlet.])
+else
+    AC_MSG_CHECKING([for Jetty, used by ptango ])
+    AC_ARG_WITH(jetty, [  --with-jetty=JAR       use jetty.jar from JAR,
+                          defaults to \$PTII/ptserver/lib/jetty-all-8.1.2.v20120308.jar],
+        PTJETTY_JAR=$withval,
+	PTJETTY_JAR=$PTII/ptserver/lib/jetty-all-8.1.2.v20120308.jar)
+    if test  -f "$PTJETTY_JAR"; then
+	PT_MSG_RESULT([$PTJETTY_JAR])
+	
+        AC_MSG_CHECKING([for Servlet, used by ptango ])
+	AC_ARG_WITH(servlet, [  --with-servlet=JAR       use servlet.jar from JAR,
+                          defaults to \$PTII/ptserver/lib/javax.servlet-api-3.0.1.jar],
+	    PTSERVLET_JAR=$withval,
+	    PTSERVLET_JAR=$PTII/ptserver/lib/javax.servlet-api-3.0.1.jar)
+
+        if test  -f "$PTSERVLET_JAR"; then
+	    PT_MSG_RESULT([$PTSERVLET_JAR])
+	    PTANGO_DIR=ptango
+            # PTANGO_PACKAGES is used in ptII/doc/makefile
+	    PTANGO_PACKAGES=`find $PTANGO_USER_DIR -name "*.java" | grep -v /test | awk -F / '{printf("%s", $1); for (i = 2; i < NF; i++) printf(".%s", $i); printf("\n")}' | sort | uniq | awk '{printf("%s ", $0)}'`
+        fi
+    fi
+
+    if test "$PTANGO_DIR" = ""; then
+        AC_MSG_WARN([Failed to find the jar files necessary to compile ptango.
+    Ptango is the Ptolemy Internet of Things project.
+    For further instructions, see http://chess.eecs.berkeley.edu/ptango.])
+    else
+        PTANGO_JARS="${CLASSPATHSEPARATOR}${PTJETTY_JAR}${CLASSPATHSEPARATOR}${PTSERVLET_JAR}"
+    fi
+fi
+
+if test -z "$PTANGO_JARS"; then
+   updateExcludes "ptserver/"
+else
+   updateClasspath "$PTJETTY_JAR"
+   updateClasspath "$PTSERVLET_JAR"
+fi 
+
+#--------------------------------------------------------------------
 #       Boost is used by Mescal, which is not shipped with
 #       the standard Ptolemy II download
 #	See http://www.boost.org
