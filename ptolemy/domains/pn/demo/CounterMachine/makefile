@@ -48,8 +48,8 @@ JSRCS =
 
 OTHER_FILES_TO_BE_JARED = \
 	$(JSRCS) \
-	CounterPrelim.xml \
 	CounterMachine.xml \
+	CounterMachinePrelim.xml \
 	CounterMachineWithException.xml
 
 EXTRA_SRCS = \
