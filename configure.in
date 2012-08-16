@@ -1074,7 +1074,7 @@ else
 fi
 
 if test -z "$PTANGO_JARS"; then
-   updateExcludes "ptserver/"
+   updateExcludes "org/ptolemy/ptango/"
 else
    updateClasspath "$PTJETTY_JAR"
    updateClasspath "$PTSERVLET_JAR"
@@ -4188,6 +4188,7 @@ fi
 
 if test -z "$PTSERVER_JARS"; then
    updateExcludes "ptserver/"
+   updateExcludes "ptolemy/homer/"
 else
    updateClasspath "$PTHESSIAN_JAR"
    updateClasspath "$PTJETTY_JAR"
