@@ -74,6 +74,7 @@ JSRCS =	Documentation.java \
 	MoMLUndoEntry.java \
 	MoMLVariableChecker.java \
 	ParserAttribute.java \
+	SimpleErrorHandler.java \
 	StreamErrorHandler.java \
 	UndoContext.java \
 	Vertex.java

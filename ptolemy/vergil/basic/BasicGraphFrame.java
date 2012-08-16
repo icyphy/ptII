@@ -146,13 +146,16 @@ import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.StringAttribute;
 import ptolemy.kernel.util.Workspace;
+import ptolemy.moml.ErrorHandler;
 import ptolemy.moml.IconLoader;
 import ptolemy.moml.LibraryAttribute;
 import ptolemy.moml.MoMLChangeRequest;
 import ptolemy.moml.MoMLParser;
 import ptolemy.moml.MoMLVariableChecker;
+import ptolemy.moml.SimpleErrorHandler;
 import ptolemy.util.CancelException;
 import ptolemy.util.MessageHandler;
+import ptolemy.util.SimpleMessageHandler;
 import ptolemy.vergil.icon.DesignPatternIcon;
 import ptolemy.vergil.kernel.AttributeNodeModel;
 import ptolemy.vergil.toolbox.MenuItemFactory;
@@ -3775,7 +3778,19 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
                     return true;
                 }
                 // Not a match. See whether any of its children are a match.
-                int childCount = _libraryModel.getChildCount(candidate);
+                int childCount = 0;
+                ErrorHandler momlErrorHandler = MoMLParser.getErrorHandler();
+                MoMLParser.setErrorHandler(new SimpleErrorHandler());
+                MessageHandler messageHandler = MessageHandler.getMessageHandler();
+                MessageHandler.setMessageHandler(new SimpleMessageHandler());
+                try {
+                    childCount = _libraryModel.getChildCount(candidate);
+                } catch (Throwable throwable) {
+                    report("Skipping opening " + candidate.getName() + ": " + throwable);
+                } finally {
+                    MoMLParser.setErrorHandler(momlErrorHandler);
+                    MessageHandler.setMessageHandler(messageHandler);
+                }
                 if (!_libraryModel.isLeaf(candidate) && childCount > 0) {
                     _stack.push(candidate);
                     _indexes.push(Integer.valueOf(i + 1));

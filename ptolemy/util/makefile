@@ -56,6 +56,7 @@ JSRCS = \
 	MessageHandler.java \
 	MultiHashMap.java \
 	OrderedResourceBundle.java \
+	SimpleMessageHandler.java \
 	StreamExec.java \
 	StringBufferExec.java \
 	StringUtilities.java \
