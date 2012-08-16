@@ -1,0 +1,294 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="Poisson" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.0.devel">
+    </property>
+    <property name="Continuous Director" class="ptolemy.domains.continuous.kernel.ContinuousDirector">
+        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="400.0">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[75.0, 45.0]">
+        </property>
+    </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model generates a Poisson process using the Continuous domain.&#10;The time between events is an exponential random variable.&#10;The model plots the events vs. time and a histogram of the&#10;time between events, which should be exponentially distributed.&#10;The method used here would tolerate time-varying rates, although&#10;that is not shown in this example.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[165.0, 20.0]">
+        </property>
+    </property>
+    <property name="rate" class="ptolemy.data.expr.Parameter" value="1.0">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+            </property>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[25.0, 85.0]">
+        </property>
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={30, 22, 887, 634}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[653, 524]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{326.5, 262.0}">
+    </property>
+    <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.4,0.4,0.4,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author: Edward A. Lee">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 300.0]">
+        </property>
+    </property>
+    <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,0.0,0.0,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Look inside the Poisson actor&#10;to see how this is implemented.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[5.0, 205.0]">
+        </property>
+    </property>
+    <property name="Annotation4" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 1.0, 1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The state machine calls the random() expression language function,&#10;so we can't get repeatable results.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[100.0, 255.0]">
+        </property>
+    </property>
+    <entity name="Poisson" class="ptolemy.domains.modal.modal.ModalModel">
+        <property name="_tableauFactory" class="ptolemy.vergil.modal.modal.ModalTableauFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[140.0, 180.0]">
+        </property>
+        <property name="rate" class="ptolemy.data.expr.Parameter" value="rate">
+        </property>
+        <port name="event" class="ptolemy.domains.modal.modal.ModalPort">
+            <property name="output"/>
+            <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;DISCRETE&quot;">
+            </property>
+        </port>
+        <entity name="_Controller" class="ptolemy.domains.modal.modal.ModalController">
+            <property name="AnnotationUpdated" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+                <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                </property>
+                <property name="_hideAllParameters" class="ptolemy.data.expr.Parameter" value="true">
+                </property>
+                <property name="textSize" class="ptolemy.data.expr.Parameter" value="14">
+                </property>
+                <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+                </property>
+                <property name="fontFamily" class="ptolemy.data.expr.StringParameter" value="SansSerif">
+                </property>
+                <property name="bold" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="italic" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="text" class="ptolemy.kernel.util.StringAttribute" value="On each transition, generate a new random&#10;number with an exponential distribution.&#10;In the &quot;wait&quot; state, wait an amount of&#10;time that is the value of this random&#10;variable multiplied by the rate parameter.">
+                    <property name="_style" class="ptolemy.actor.gui.style.TextStyle">
+                        <property name="height" class="ptolemy.data.expr.Parameter" value="20">
+                        </property>
+                        <property name="width" class="ptolemy.data.expr.Parameter" value="80">
+                        </property>
+                    </property>
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{5.0, 5.0}">
+                </property>
+            </property>
+            <property name="_library" class="ptolemy.moml.LibraryAttribute">
+                <configure>
+        <entity name="state library" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/configs/basicUtilities.xml"></input><entity name="state" class="ptolemy.domains.modal.kernel.State"><property name="_centerName" class="ptolemy.kernel.util.Attribute"></property><property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory"></property></entity></entity>
+      </configure>
+            </property>
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={423, 207, 834, 635}, maximized=false}">
+            </property>
+            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 524]">
+            </property>
+            <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+            </property>
+            <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 262.0}">
+            </property>
+            <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+                <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,0.0,0.0,1.0}">
+                </property>
+                <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Look inside the wait state to&#10;see how this is implemented.">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[330.0, 110.0]">
+                </property>
+            </property>
+            <port name="event" class="ptolemy.domains.modal.modal.RefinementPort">
+                <property name="input"/>
+                <property name="output"/>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[530.0, 190.0]">
+                </property>
+            </port>
+            <entity name="wait" class="ptolemy.domains.modal.kernel.State">
+                <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="wait">
+                </property>
+                <property name="isInitialState" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                </property>
+                <property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[255.0, 255.0]">
+                </property>
+            </entity>
+            <entity name="init" class="ptolemy.domains.modal.kernel.State">
+                <property name="isInitialState" class="ptolemy.data.expr.Parameter" value="true">
+                </property>
+                <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                </property>
+                <property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[250.0, 175.0]">
+                </property>
+            </entity>
+            <relation name="relation" class="ptolemy.domains.modal.kernel.Transition">
+                <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="event_isPresent">
+                </property>
+                <property name="setActions" class="ptolemy.domains.modal.kernel.CommitActionsAttribute" value="wait.threshold = -log(1-random())">
+                </property>
+                <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="2.356194490192345">
+                </property>
+                <property name="gamma" class="ptolemy.data.expr.Parameter" value="-0.25425894091872997">
+                </property>
+                <property name="reset" class="ptolemy.data.expr.Parameter" value="true">
+                </property>
+                <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+            </relation>
+            <relation name="relation2" class="ptolemy.domains.modal.kernel.Transition">
+                <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="true">
+                </property>
+                <property name="setActions" class="ptolemy.domains.modal.kernel.CommitActionsAttribute" value="wait.threshold = -log(1-random())">
+                </property>
+                <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.6283185307179586">
+                </property>
+                <property name="gamma" class="ptolemy.data.expr.Parameter" value="0.4230975867282429">
+                </property>
+                <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+            </relation>
+            <link port="wait.incomingPort" relation="relation"/>
+            <link port="wait.incomingPort" relation="relation2"/>
+            <link port="wait.outgoingPort" relation="relation"/>
+            <link port="init.outgoingPort" relation="relation2"/>
+        </entity>
+        <entity name="wait" class="ptolemy.domains.modal.modal.Refinement">
+            <property name="Continuous Director" class="ptolemy.domains.continuous.kernel.ContinuousDirector">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{85.0, 60.0}">
+                </property>
+            </property>
+            <property name="threshold" class="ptolemy.data.expr.Parameter" value="1.0916892970886">
+                <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+                </property>
+                <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                    <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+                    </property>
+                </property>
+                <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                    <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+                </property>
+                <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{200.0, 60.0}">
+                </property>
+            </property>
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={373, 208, 934, 634}, maximized=false}">
+            </property>
+            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 524]">
+            </property>
+            <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+            </property>
+            <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{350.0, 262.0}">
+            </property>
+            <port name="event" class="ptolemy.domains.modal.modal.RefinementPort">
+                <property name="output"/>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[490.0, 195.0]">
+                </property>
+            </port>
+            <entity name="Const" class="ptolemy.actor.lib.Const">
+                <property name="value" class="ptolemy.data.expr.Parameter" value="rate">
+                </property>
+                <doc>Create a constant sequence.</doc>
+                <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                    <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+                    </property>
+                    <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+                    </property>
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{165.0, 195.0}">
+                </property>
+            </entity>
+            <entity name="Integrator" class="ptolemy.domains.continuous.lib.Integrator">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{260.0, 195.0}">
+                </property>
+            </entity>
+            <entity name="LevelCrossingDetector" class="ptolemy.domains.continuous.lib.LevelCrossingDetector">
+                <property name="level" class="ptolemy.data.expr.Parameter" value="threshold">
+                </property>
+                <property name="LevelCrossingDetectorIcon" class="ptolemy.vergil.icon.EditorIcon">
+                    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 125, 815, 518}, maximized=false}">
+                    </property>
+                    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+                    </property>
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{350.0, 195.0}">
+                </property>
+            </entity>
+            <relation name="relation" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <link port="event" relation="relation3"/>
+            <link port="Const.output" relation="relation"/>
+            <link port="Integrator.derivative" relation="relation"/>
+            <link port="Integrator.state" relation="relation2"/>
+            <link port="LevelCrossingDetector.output" relation="relation3"/>
+            <link port="LevelCrossingDetector.trigger" relation="relation2"/>
+        </entity>
+        <relation name="eventRelation" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <link port="event" relation="eventRelation"/>
+        <link port="_Controller.event" relation="eventRelation"/>
+        <link port="wait.event" relation="eventRelation"/>
+    </entity>
+    <entity name="NonStrictTest" class="ptolemy.actor.lib.NonStrictTest">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.2116607985923, 1.8380007416278, 0.4989459492238, 0.3449776599981, 1.1639815042504, 0.5032113583425, 1.2716876774571, 0.3011101221528, 3.604038358069, 0.8466979449642, 1.3613269729557, 0.6992039647407, 0.0551229005106, 0.3237240655468, 0.5312069627076, 0.0133026658646, 0.0172631105271, 0.088147446184, 0.0439064146254, 0.5632436071192, 0.9519742714041, 0.0106713639071, 0.1016964649686, 0.1708298373226, 0.9485246703104, 1.4627335687785, 0.7831430802299, 2.0592770484953, 0.0640355491154, 1.1073103582415, 2.6196249523507, 0.0320632096554, 0.3865393118846, 0.0071371852459, 0.1726781599761, 2.3627797099018, 0.0837564349094, 0.3849746194194, 0.1285962333603, 0.1435244923403, 1.0274530219038, 0.5294767792165, 0.563615332507, 0.7804393735581, 0.4847911836882, 0.4824052196329, 0.0713251743855, 0.234997749503, 1.2271499504937, 0.2404102494029, 0.1440848187985, 0.448929937052, 1.3157684366563, 0.9867371658727, 1.1868876787505, 1.1965898099389, 1.16751147439, 0.0734669059758, 0.7867102062428, 0.2077228980998, 0.2670556764008, 1.0461159211102, 1.2064996722699, 0.2263791706097, 2.3662981910521, 1.396581507521, 1.0217643163383, 0.0907130305808, 0.7948536769323, 3.1385198352498, 0.9166280487913, 2.4963664651625, 1.6748882794546, 0.625314372971, 1.3894357596763, 0.3028972813753, 1.5155912870836, 0.0291835883751, 1.1388348324141, 0.1995727288294, 0.4123125173549, 1.5615139642405, 0.5648328024149, 0.9780293243861, 0.2088326261386, 2.9317352051075, 0.3367619853595, 0.8774608458563, 0.3318789985843, 0.6616410246766, 0.8503600154928, 0.1161693071748, 0.0115275451191, 0.6472040348935, 0.0817041158507, 0.3750600349349, 1.2944134719591, 0.9606147157794, 0.0219268004567, 0.0259895034464, 0.0071676422095, 1.2271702029706, 0.1611827367699, 1.0286254188113, 1.0629661710153, 1.6193782286567, 0.265109182787, 4.4954125868237, 0.761511903597, 0.938512695495, 0.1570443947471, 1.4637898196658, 0.3078909297248, 0.6682690055324, 1.2618136116708, 0.2913003202455, 0.2886442533242, 0.1385484081577, 1.6105165699683, 0.4991316005622, 1.0559687078462, 0.8386867283063, 0.3672053647264, 0.6419578591729, 1.5418257567252, 1.1513284120239, 0.7014513427752, 1.3654581477558, 1.8164293208375, 1.5447701232545, 0.7255192592029, 0.246443399048, 2.6188579019108, 0.1719199109013, 1.7222428425493, 3.2603588971684, 0.4225466785414, 1.1360756304863, 0.6816777696321, 1.4338583800219, 0.2140396039739, 1.5408178003216, 0.0951579102126, 0.0056602316167, 1.5179190039837, 0.0372553244098, 0.4661593416697, 3.7698057195135, 1.909435574985, 0.7213971706206, 0.7082356577229, 0.7779836430634, 0.1375859944651, 0.1484642101496, 5.3397882649911, 0.4623074688481, 1.3026003349785, 1.2635098459166, 0.3987175414658, 0.5921222338514, 1.2274067521838, 0.2592350858785, 0.387191823838, 0.8122741591321, 0.4617888742041, 0.4767553512136, 0.105286996888, 2.2812236637393, 0.0089234174914, 4.5888029765191, 0.010202158094, 1.3103605173706, 0.5406446819235, 0.1033200302759, 0.0442172159785, 0.1943627828476, 2.0446609212715, 4.5295319829023, 3.348075353688, 2.7353713673432, 0.2918930789229, 0.7685569337935, 0.0063161087841, 1.066433323143, 1.1434626872813, 0.4185700845508, 1.866400464298, 0.1901411486564, 0.3000343127384, 0.1878795811597, 0.9479003371216, 0.9612865665463, 0.8911735433425, 0.0842943362525, 1.7672889531569, 1.0969912897461, 0.3205058434211, 0.6264183411649, 0.7117348740411, 1.8367167277254, 2.4649791894343, 3.3953433027476, 0.1446169520291, 1.67210766357, 0.0756938100594, 1.6934371937912, 1.9551719529, 0.1364897231494, 0.2445490424235, 1.3089719287267, 0.0794568158151, 1.0246290486648, 3.1040082870636, 2.2904942542941, 0.6222100581848, 0.2238946756473, 1.3340317797989, 4.11308688068, 1.1219956823295, 1.7091161709305, 1.4919723664984, 0.312723986322, 0.1931234376683, 1.0224187164582, 0.1742817462457, 0.3432588221657, 0.0882934139181, 0.6983934762127, 4.9008065506137, 0.4022205388334, 0.654171402754, 1.5765978407826, 2.4598842847158, 0.1374823972691, 0.4635513944028, 0.902749173334, 0.8646870484008, 0.0493436791764, 0.5064409227724, 1.7443200923722, 0.6070075188292, 1.342931633976, 0.4936570774501, 0.2227821515479, 1.955413802664, 4.4878104023135, 0.1078421477763, 0.4209126474509, 0.2804558849546, 0.1035356981933, 1.6208160621221, 0.4069314480472, 0.9678189912653, 0.8972335908233, 2.3164220844568, 0.3113004389315, 0.4939285819833, 0.6926675002425, 0.6752016744606, 0.2078853190804, 0.0798732474447, 1.4023231676824, 0.624257776556, 2.0391910751968, 0.1456625701288, 0.6605795811912, 2.225953913649, 0.669643402132, 0.7125577885719, 0.1025604383019, 0.6032988405308, 0.1824019511039, 1.1306095058337, 0.1109021056441, 0.0198083553475, 1.4826399979044, 1.1250099347483, 0.7936494882598, 2.8774085247968, 0.0845606426841, 5.6910418007821, 1.5075790726064, 0.2201941643175, 0.9534386276635, 0.3718857298546, 0.0698034627885, 0.3381727789522, 0.0574497438322, 1.1402911626901, 0.2036864370318, 1.4715828376589, 0.1076718069573, 0.3775258152859, 1.105791715045, 0.3544430282089, 0.0431111745031, 2.5860621793835, 3.7894106989446, 0.3726398694463, 0.139398845234, 0.5835244200477, 0.070946770415, 2.6200757099073, 0.0399511464792, 0.2080953523147, 0.3395055960707, 0.1021978042036, 0.3502978945773, 0.8924122121898, 0.8930913216916, 1.579814191203, 0.941124364425, 0.2142736066058, 0.2860016054656, 2.0665098307202, 0.6019862137699, 0.0084649323302, 0.2130868325645, 0.2816242877141, 0.0515819129511, 0.2753767923084, 0.041989189269, 0.1873302905735, 0.2560499764235, 0.0151509389482, 1.2477032293151, 1.7048112727252, 0.1475190311654, 0.0405976308851, 0.2164814883486, 1.2108192820263, 0.0385560736481, 0.0556894047853, 1.2843813056089, 0.2975996984644, 0.9919071207891, 0.7106397902807, 0.1407091158829, 0.9204383673407, 0.5810525799931, 0.1884171820003, 0.853004278572, 0.6623905381181, 2.9675971889115, 0.3003825564521, 0.2115897419389, 0.7594944092136, 1.6886414636489, 0.2808413886587, 0.7305812365447, 0.1717161645921, 1.2690980541254, 1.2679615472131, 0.9840044498148, 2.5757769877693, 1.3077381271704, 0.7895681273205, 0.0171774720849, 1.2831889012661, 0.0872973470239, 0.096716040808, 0.3685279397437, 2.0410399653318, 0.7169224410934, 0.6418602890958, 0.8857574879017, 0.0979874170443, 4.0359259851862, 1.0024057854491, 0.1338092676538, 0.5874587304916, 1.8090893001846, 0.760610596107, 1.6887977504156, 0.4472103515268, 1.6633875580131, 2.4770124437751, 0.3838019888624, 0.6193208460323, 0.4699778230837, 2.2433262692442, 0.486811944762, 0.1914829423238, 0.147868541195, 0.0828618685499, 0.2770781172799, 3.0659545928405, 1.6852001366441, 0.126393759425, 0.2910717681832, 1.1690722299526, 0.5267032936428, 0.27326593952, 0.3285468009771, 2.0573985312946, 1.556023972687, 2.0945316868656, 0.3686091292941, 0.2534126633804, 1.6772625480301, 0.7573868472566, 2.5152853381927, 1.6134256717514, 0.7550522283039, 1.3547791758205, 0.1772093756233, 0.0221255329496, 1.2913524122904, 0.6791031707563, 0.2291609996009, 1.1419235436969, 0.3356045070562, 0.5044053715009, 2.2941385263029, 1.4542924616055, 0.5512874881349, 1.3359183236017, 0.0783723290165, 1.7895536532034, 1.6315424395655, 1.743621272659, 2.5692966566145, 1.3340752123668, 4.4921186427207, 0.1347264880986, 0.3723488580675, 1.5492123291577, 0.5918845839674, 0.4110456558948, 0.2994837279679}">
+        </property>
+        <property name="tolerance" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+        <property name="requireAllCorrectValues" class="ptolemy.actor.parameters.SharedParameter" value="false">
+        </property>
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[365.0, 180.0]">
+        </property>
+    </entity>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="[230.0, 180.0]">
+        </vertex>
+    </relation>
+    <link port="Poisson.event" relation="relation2"/>
+    <link port="NonStrictTest.input" relation="relation2"/>
+</entity>
