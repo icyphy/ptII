@@ -31,9 +31,56 @@
       directory.</p>
 
     <h3>Running the tests</h3>
-    The tests themselves are written in Tcl, and use
-    <a href="../install.htm#Jacl">Jacl</a>
-    which is a 100% Java implementation of a subset of Tcl.
+    There are three types of tests:
+    <ol>
+      <li>Unit tests that are mostly written in Tcl, and use
+	<a href="../install.htm#Jacl">Jacl</a>
+	which is a 100% Java implementation of a subset of Tcl.
+	These tests appear in the <code>test/</code> directories
+	as <code>*.tcl</code> files
+      </li>
+      <li>System tests that are Ptolemy models.  These tests
+	appear in the <code>test/auto/</code> directories as
+	<code>*.xml</code> files .
+      </li>
+      <li>JUnit tests that can invoke the Tcl and auto tests above.
+	These tests appear in the <code>test/junit</code>
+	directories.
+      </li>
+      </ol>
+
+    <dl>
+      <dt>To run the tcl and model tests in one directory:</dt>
+      <dd>
+	<pre>
+	  cd $PTII/ptolemy/actor/lib/test
+	  make tests
+	</pre>  
+	</dd>
+      <dt>To run the tcl and model tests using JUnit from the $PTII directory:</dt>
+      <dd>
+	<pre>
+	  cd $PTII
+	  ant test.single -Dtest.name=ptolemy.actor.lib.test.junit.JUnitTclTest -Djunit.formatter=plain
+	</pre>
+	To get usage for the test.single rule, try <code>ant test.single</code> and
+	look at the first few lines of output.
+      </dd>
+      <dt>To run the tcl and model tests using JUnit from a <code>test/</code> directory</dt>
+      <dd>
+	<pre>
+	  cd $PTII/ptolemy/actor/lib/test
+	  $PTII/bin/ptjunit
+	</pre>
+      </dd>
+      <dt>To run the tcl and model tests using JUnit from Eclipse</dt>
+      <dd>Currently, this does not work because some of the tests must be run
+	from the <code>test/</code>directory and ant under Eclipse runs from
+	<code>$PTII</code>.</dd>
+    </dl>
+	      
+    See below for details
+
     <p>Resources:</p>
     <ul>
       <li> Tcl Primer - A quick summary of Tcl  <a href="http://www.tcl.tk/scripting/primer.html" target="_top"><code>http://www.tcl.tk/scripting/primer.html</code></a></li> 
