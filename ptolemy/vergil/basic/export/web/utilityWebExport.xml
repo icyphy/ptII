@@ -5,8 +5,7 @@
 <!-- Utilities supporting customized web export. -->
 <entity name="WebExport" class="ptolemy.moml.EntityLibrary">
   <configure>
-    <?moml
-      <group>
+    <?moml <group>
       
 <!------------------------------------------->
 <property name="HTMLText" class="ptolemy.vergil.basic.export.web.HTMLText" value="HTML export text">
@@ -47,6 +46,15 @@
 <!------------------------------------------->
 <property name="DefaultTitle" class="ptolemy.vergil.basic.export.web.DefaultTitle" value="$(this.getName())">
 </property>
+
+<!------------------------------------------->
+<property name="DygraphsJSPlotter" class="ptolemy.vergil.basic.export.web.DygraphsJSPlotter">
+</property>
+
+<!------------------------------------------->
+<entity name="HTMLPageAssembler" class="ptolemy.vergil.basic.export.html.HTMLPageAssembler">
+</entity>
+
 
 <!------------------------------------------->
       </group>

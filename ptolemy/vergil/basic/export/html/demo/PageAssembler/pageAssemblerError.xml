@@ -1,0 +1,95 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="pageAssemblerError" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.0.devel">
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-8, -8, 1296, 776}, maximized=true}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1068, 660]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.25">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{388.869817839196, 247.7501570351759}">
+    </property>
+    <property name="lineSeperator" class="ptolemy.data.expr.StringParameter" value="\r\n">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
+            </property>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:red" y="20">-S-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[0.0, 85.0]">
+        </property>
+    </property>
+    <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
+        <property name="iterations" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <property name="allowDisconnectedGraphs" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[50.0, 45.0]">
+        </property>
+    </property>
+    <property name="TestExceptionAttribute" class="ptolemy.actor.lib.TestExceptionAttribute">
+        <property name="correctExceptionMessage" class="ptolemy.data.expr.StringParameter" value="Cannot find a &quot;div&quot; with id = &quot;ghost&quot; in the template file.&#10;  in .pageAssemblerError.HTMLPageAssembler">
+        </property>
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[230.0, 70.0]">
+        </property>
+    </property>
+    <entity name="HTMLPageAssembler" class="ptolemy.vergil.basic.export.html.HTMLPageAssembler">
+        <property name="saveToFile" class="ptolemy.data.expr.Parameter" value="true">
+            <display name="Save the new HTML page to a separate file"/>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[355.0, 185.0]">
+        </property>
+        <port name="ghost" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+        </port>
+    </entity>
+    <entity name="Display" class="ptolemy.actor.lib.gui.Display">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-8, -8, 1296, 776}, maximized=true}">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[1280, 717]">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[475.0, 185.0]">
+        </property>
+    </entity>
+    <entity name="StringConst" class="ptolemy.actor.lib.StringConst">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="I should not be inserted into the template.">
+        </property>
+        <doc>Create a constant sequence with a string value.</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="80">
+            </property>
+            <property name="displayHeight" class="ptolemy.data.expr.Parameter" value="10">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[140.0, 185.0]">
+        </property>
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
+    </entity>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="HTMLPageAssembler.output" relation="relation2"/>
+    <link port="HTMLPageAssembler.ghost" relation="relation3"/>
+    <link port="Display.input" relation="relation2"/>
+    <link port="StringConst.output" relation="relation3"/>
+</entity>
