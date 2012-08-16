@@ -281,9 +281,7 @@ HYBRID_SYSTEMS_ONLY0_JNLP_JARS = \
 	ptolemy/hsif/hsif.jar \
 	ptolemy/hsif/demo/demo.jar \
 	ptolemy/domains/continuous/continuous.jar \
-	ptolemy/domains/ct/ct.jar \
 	ptolemy/domains/de/de.jar \
-	ptolemy/domains/fsm/fsm.jar \
 	ptolemy/domains/gr/gr.jar \
 	ptolemy/domains/gr/demo/demo.jar \
 	ptolemy/domains/modal/modal.jar \
@@ -303,10 +301,6 @@ HYBRID_SYSTEMS_MAIN_JAR = \
 HYBRID_SYSTEMS_DEMO_AND_DOC_JARS = \
 	ptolemy/domains/continuous/demo/demo.jar \
 	ptolemy/domains/continuous/doc/doc.jar \
-	ptolemy/domains/ct/demo/demo.jar \
-	ptolemy/domains/ct/doc/doc.jar \
-	ptolemy/domains/fsm/doc/doc.jar \
-	ptolemy/domains/fsm/demo/demo.jar \
 	ptolemy/domains/modal/doc/doc.jar \
 	ptolemy/domains/modal/demo/demo.jar \
 	ptolemy/domains/sdf/demo/demo.jar \
@@ -394,14 +388,6 @@ PTINY_SANDBOX_JNLP_JARS = \
 #######
 # Full
 #
-CODEGEN_JARS = \
-	ptolemy/codegen/codegen.jar \
-	ptolemy/codegen/c/vergil/vergil.jar \
-	ptolemy/codegen/demo/demo.jar \
-	ptolemy/codegen/c/domains/fsm/demo/demo.jar \
-	ptolemy/codegen/c/domains/modal/demo/demo.jar \
-	ptolemy/codegen/c/domains/pn/demo/demo.jar \
-	ptolemy/codegen/java/actor/lib/embeddedJava/demo/demo.jar \
 
 COPERNICUS_JARS = \
 	lib/jasminclasses.jar \
@@ -417,9 +403,6 @@ BACKTRACK_JARS =
 
 
 EXEC_JARS = 	ptolemy/actor/gui/exec/exec.jar
-
-RTMAUDE_JARS = \
-	ptolemy/codegen/rtmaude/rtmaude.jar 
 
 PDFRENDERER_JARS = ptolemy/vergil/pdfrenderer/pdfrenderer.jar \
 		lib/PDFRenderer.jar
@@ -460,8 +443,6 @@ FULL_8_1_JARS = \
 # Jar files that will appear in a full JNLP Ptolemy II Runtime
 # ptolemy/domains/sdf/lib/vq/data/data.jar contains images for HTVQ demo
 FULL_ONLY_JNLP_JARS = \
-	$(CODEGEN_JARS) \
-	$(RTMAUDE_JARS) \
 	$(COPERNICUS_JARS) \
 	contrib/contrib.jar \
 	doc/design/design.jar \
@@ -638,7 +619,6 @@ VISUAL_SENSE_JNLP_JARS =	\
 # hopefully without duplicates so that  we don't sign jars twice.
 # We include plotapplication.jar so that the ptplot and histogram
 # commands will work.
-# Include ddf.jar because codegen needs it
 ALL_NON_APPLICATION_JNLP_JARS = \
 	$(NATIVE_SIGNED_LIB_JARS) \
 	$(BCVTB_ONLY_JNLP_JARS) \
@@ -654,8 +634,6 @@ ALL_NON_APPLICATION_JNLP_JARS = \
 	$(VISUAL_SENSE_ONLY_JNLP_JARS) \
 	$(PTINY_ONLY_JNLP_JARS) \
 	$(DSP_ONLY_JNLP_JARS) \
-	$(CODEGEN_DOMAIN_JARS) \
-	ptolemy/domains/ddf/ddf.jar \
 	ptolemy/plot/plotapplication.jar
 
 # All the jar files, include the application jars
@@ -1151,17 +1129,16 @@ $(JAR_DIST_DIR): $(NATIVE_SIGNED_LIB_JARS)
 	done;
 
 # Jarfiles used by applet code generation
-CODEGEN_DOMAIN_JARS = \
+APPLET_DOMAIN_JARS = \
 	ptolemy/domains/ci/ci.jar \
 	ptolemy/domains/continuous/continuous.jar \
-	ptolemy/domains/ct/ct.jar \
 	ptolemy/domains/ddf/ddf.jar \
 	ptolemy/domains/de/de.jar \
-	ptolemy/domains/fsm/fsm.jar \
 	ptolemy/domains/gr/gr.jar \
 	ptolemy/domains/hdf/hdf.jar \
 	ptolemy/domains/modal/modal.jar \
 	ptolemy/domains/pn/pn.jar \
+	ptolemy/domains/ptides/ptides.jar \
 	ptolemy/domains/sdf/sdf.jar \
 	ptolemy/domains/sr/sr.jar \
 	ptolemy/domains/wireless/wireless.jar \
@@ -1169,7 +1146,7 @@ CODEGEN_DOMAIN_JARS = \
 
 UNJAR_JARS = \
 	ptolemy/actor/gui/jnlp/jnlp.jar \
-	$(CODEGEN_DOMAIN_JARS) \
+	$(APPLET_DOMAIN_JARS) \
 	$(ALL_NON_APPLICATION_JNLP_JARS)
 
 
@@ -1282,7 +1259,7 @@ update_gr_codeDoc:
 	ssh $(WEBSERVER_USER)@$(WEBSERVER) "cd $(DIST_JAR)/doc; jar -xf ../../jnlp-$(PTVERSION)/signed/doc/codeDoc.jar"
 
 APPLET_FILES_TO_BE_UPDATED = \
-	$(CODEGEN_DOMAIN_JARS) \
+	$(APPLET_DOMAIN_JARS) \
 	doc/codeDoc.jar \
 	doc/webStartHelp.htm \
 	lib/diva.jar \
@@ -1552,9 +1529,7 @@ osgi_sr_test:
 	$(MKOSGI) $(PTII) $(OSGI_TARGET_DIRECTORY) ptolemy.sr.example $(OSGI_SR_TEST_JARS)
 
 OSGI_CT_TEST_JARS = \
-	$(OSGI_PTOLEMY_JARS) \
-	ptolemy/domains/ct/ct.jar \
-	ptolemy/domains/fsm/fsm.jar
+	$(OSGI_PTOLEMY_JARS)
 
 osgi_ct_test:
 	rm -rf $(OSGI_TARGET_DIRECTORY)/*
@@ -1650,9 +1625,7 @@ osgi_codegen_test:
 	ptolemy/actor/lib/javasound/javasound.jar \
 	ptolemy/actor/lib/jni/jni.jar \
 	ptolemy/data/data.jar \
-	ptolemy/domains/ct/ct.jar \
 	ptolemy/domains/hdf/hdf.jar \
-	ptolemy/domains/fsm/fsm.jar \
 	ptolemy/domains/pn/pn.jar \
 	ptolemy/domains/sdf/sdf.jar \
 	ptolemy/graph/graph.jar \
@@ -1662,10 +1635,7 @@ osgi_codegen_test:
 	ptolemy/media/media.jar \
 	ptolemy/moml/moml.jar \
 	ptolemy/plot/plot.jar \
-	ptolemy/util/util.jar \
-	ptolemy/codegen/codegen.jar \
-
-
+	ptolemy/util/util.jar
 
 osgi_demo_test:
 	rm -rf $(OSGI_TARGET_DIRECTORY)/*
