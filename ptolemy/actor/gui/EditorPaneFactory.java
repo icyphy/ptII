@@ -132,7 +132,7 @@ public class EditorPaneFactory extends Attribute {
 
         List<Settable> parameters = new LinkedList<Settable>(
                 object.attributeList(Settable.class));
-        int nbrOfTabs = 1;
+        int numberOfTabs = 1;
         PtolemyQuery mainTab = new PtolemyQuery(object);
         mainTab.setTextWidth(40);
         tabs.addTab(object.getDisplayName(), mainTab);
@@ -160,15 +160,15 @@ public class EditorPaneFactory extends Attribute {
             foundOne = foundOne || foundDecoratorAttribute;
             if (foundDecoratorAttribute) {
                 tabs.addTab(decorator.getFullName(), decoratorQuery);
-                nbrOfTabs += 1;
+                numberOfTabs += 1;
             }
         }
 
-        if (nbrOfTabs > 1) {
+        if (numberOfTabs > 1) {
             query.add(tabs, BorderLayout.CENTER);
         }
 
-        PtolemyQuery queryForMainAttributes = (nbrOfTabs > 1) ? mainTab : query;
+        PtolemyQuery queryForMainAttributes = (numberOfTabs > 1) ? mainTab : query;
 
         for (Settable parameter : parameters) {
             if (Configurer.isVisible(object, parameter)) {
