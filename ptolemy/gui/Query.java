@@ -2392,6 +2392,17 @@ public class Query extends JPanel {
 
         }
 
+        public Dimension getPreferredSize() {
+            // If we have a TextArea, display as many parameters as we
+            // can of the TextArea before adding a scrollbar for all
+            // the parameters.
+            if (textArea.getLineCount() > 1) {
+                return textArea.getPreferredSize();
+            } else {
+                return super.getPreferredSize();
+            }
+        }
+
         public String getText() {
             String retval = textArea.getText();
             return retval;
