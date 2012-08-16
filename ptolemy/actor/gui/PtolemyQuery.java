@@ -469,10 +469,10 @@ public class PtolemyQuery extends Query implements QueryListener,
                             area.setRows(area.getRows() + 1);
                             area.revalidate();
                             Component parent = area.getParent();
-                            while ((parent != null) && !(parent instanceof EditParameterDialog)) {
+                            while ((parent != null) && !(parent instanceof EditParametersDialog)) {
                                 parent = parent.getParent();
                             }
-                            if (parent instanceof EditParameterDialog) {
+                            if (parent instanceof EditParametersDialog) {
                                 EditParametersDialog dialog = (EditParametersDialog) parent;
                                 dialog.doLayout();
                                 dialog.pack();
