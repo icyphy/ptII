@@ -468,14 +468,15 @@ public class PtolemyQuery extends Query implements QueryListener,
                         if (area.getRows() < 4) {
                             area.setRows(area.getRows() + 1);
                             area.revalidate();
-                            EditParametersDialog dialog = ((EditParametersDialog) area
-                                    .getParent().getParent().getParent()
-                                    .getParent().getParent().getParent()
-                                    .getParent().getParent().getParent()
-                                    .getParent().getParent().getParent()
-                                    .getParent().getParent().getParent());
-                            dialog.doLayout();
-                            dialog.pack();
+                            Component parent = area.getParent();
+                            while ((parent != null) && !(parent instanceof EditParametersDialog)) {
+                                parent = parent.getParent();
+                            }
+                            if (parent instanceof EditParameterDialog) {
+                                EditParametersDialog dialog = (EditParametersDialog) parent;
+                                dialog.doLayout();
+                                dialog.pack();
+                            }
                         }
                     }
                 });
@@ -1055,22 +1056,14 @@ public class PtolemyQuery extends Query implements QueryListener,
             public void actionPerformed(ActionEvent e) {
                 revalidate();
                 try {
-                    Container container = component.getParent().getParent()
-                            .getParent().getParent().getParent().getParent()
-                            .getParent().getParent().getParent().getParent()
-                            .getParent().getParent().getParent();
-                    if (component instanceof JTextArea) {
-                        container = component.getParent().getParent()
-                                .getParent().getParent().getParent()
-                                .getParent().getParent().getParent()
-                                .getParent().getParent().getParent()
-                                .getParent().getParent().getParent()
-                                .getParent();
+                    Component parent = component.getParent();
+                    while ((parent != null) && !(parent instanceof EditParametersDialog)) {
+                        parent = parent.getParent();
                     }
-                    if (container instanceof EditParametersDialog) {
+                    if (parent instanceof EditParametersDialog) {
                         query.changed(attributeName);
                         attribute.validate();
-                        EditParametersDialog dialog = (EditParametersDialog) container;
+                        EditParametersDialog dialog = (EditParametersDialog) parent;
                         ((Configurer) dialog.contents)._originalValues.put(
                                 attribute, attribute.getValueAsString());
                         dialog._handleClosing();
