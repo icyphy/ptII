@@ -224,6 +224,8 @@ $CLASSPATH/ptolemy/domains/petrinet/demo/PetriNetDiningPhilosophers/PetriNetDini
 $CLASSPATH/ptolemy/domains/petrinet/demo/PetriNetSimple/PetriNetSimple.xml
 $CLASSPATH/ptolemy/domains/pn/demo/BrockAckerman/BrockAckerman.xml
 $CLASSPATH/ptolemy/domains/pn/demo/CounterMachine/CounterMachine.xml
+$CLASSPATH/ptolemy/domains/pn/demo/CounterMachine/CounterMachinePrelim.xml
+$CLASSPATH/ptolemy/domains/pn/demo/CounterMachine/CounterMachineWithException.xml
 $CLASSPATH/ptolemy/domains/pn/demo/NondeterministicMerge/NondeterministicMerge.xml
 $CLASSPATH/ptolemy/domains/pn/demo/NondeterministicMergeWithFeedback/NondeterministicMergeWithFeedback.xml
 $CLASSPATH/ptolemy/domains/pn/demo/OrderedMerge/OrderedMerge.xml
