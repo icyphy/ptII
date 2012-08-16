@@ -161,12 +161,9 @@ public class OffsetMoMLChangeRequest extends MoMLChangeRequest {
             //xOffset = mouseLocation.x - componentLocation.x - minimumLocation[0];
             //yOffset = mouseLocation.y - componentLocation.y - minimumLocation[1];
 
-            // FIXME: If scale != 1.0, then we have problems.  Pasting
-            // in the EditIconFrame has problems because the
-            // _ZOOM_SCALE is set to 4.0.
-
-            xOffset = mouseLocation.x - componentLocation.x + visibleCanvas.getX() - minimumLocation[0];
-            yOffset = mouseLocation.y - componentLocation.y + visibleCanvas.getY() - minimumLocation[1];
+            // We adjust by the scale here to get from screen coordinates to model coordinates?
+            xOffset = (mouseLocation.x - componentLocation.x)/scale + visibleCanvas.getX() - minimumLocation[0];
+            yOffset = (mouseLocation.y - componentLocation.y)/scale + visibleCanvas.getY() - minimumLocation[1];
 
             //System.out.println("OffsetMoMLChangeRequest: mouse.x: " + mouseLocation.x + " comp.x: " + componentLocation.x + " visCanv.x: " + visibleCanvas.getX() + " min.x: " + minimumLocation[0] + " scale: " + scale + " xOff: " + xOffset + " " + visibleCanvas);
             //System.out.println("OffsetMoMLChangeRequest: mouse.y: " + mouseLocation.y + " comp.y: " + componentLocation.y + " visCanv.y: " + visibleCanvas.getY() + " min.y: " + minimumLocation[1] + " scale: " + scale + " yOff: " + yOffset);
