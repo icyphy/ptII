@@ -33,6 +33,8 @@ import java.util.Set;
 import java.awt.EventQueue;
 import java.awt.MouseInfo;
 import java.awt.Point;
+import java.awt.geom.AffineTransform;
+import java.awt.geom.Rectangle2D;
 import javax.swing.SwingUtilities;
 
 import ptolemy.kernel.util.IllegalActionException;
@@ -133,7 +135,7 @@ public class OffsetMoMLChangeRequest extends MoMLChangeRequest {
 
         double xOffset = _PASTE_OFFSET;
         double yOffset = _PASTE_OFFSET;
-
+        double scale = 1.0;
         GraphController controller = null;
         SelectionModel selectionModel = null;
 
@@ -141,15 +143,33 @@ public class OffsetMoMLChangeRequest extends MoMLChangeRequest {
         BasicGraphFrame basicGraphFrame = BasicGraphFrame.getBasicGraphFrame(_context);
         if (basicGraphFrame != null) {
             controller = basicGraphFrame.getJGraph().getGraphPane().getGraphController();
-            selectionModel = controller.getSelectionModel();
-
             Point componentLocation = basicGraphFrame.getJGraph().getGraphPane().getCanvas().getLocationOnScreen();
+
+            AffineTransform current = basicGraphFrame.getJGraph().getCanvasPane()
+                .getTransformContext().getTransform();
+
+            // We assume the scaling in the X and Y directions are the same.
+            scale = current.getScaleX();
+
+            Rectangle2D visibleCanvas = basicGraphFrame.getVisibleCanvasRectangle();
+
             // Get the mouse location.  We don't use a MouseMotionListener here because we
             // need the mouse location only when we paste.
             Point mouseLocation = MouseInfo.getPointerInfo().getLocation();
 
-            xOffset = mouseLocation.x - componentLocation.x - minimumLocation[0];
-            yOffset = mouseLocation.y - componentLocation.y - minimumLocation[1];
+            // Take in to account the panner and read values from visibleCanvas.
+            //xOffset = mouseLocation.x - componentLocation.x - minimumLocation[0];
+            //yOffset = mouseLocation.y - componentLocation.y - minimumLocation[1];
+
+            // FIXME: If scale != 1.0, then we have problems.  Pasting
+            // in the EditIconFrame has problems because the
+            // _ZOOM_SCALE is set to 4.0.
+
+            xOffset = mouseLocation.x - componentLocation.x + visibleCanvas.getX() - minimumLocation[0];
+            yOffset = mouseLocation.y - componentLocation.y + visibleCanvas.getY() - minimumLocation[1];
+
+            //System.out.println("OffsetMoMLChangeRequest: mouse.x: " + mouseLocation.x + " comp.x: " + componentLocation.x + " visCanv.x: " + visibleCanvas.getX() + " min.x: " + minimumLocation[0] + " scale: " + scale + " xOff: " + xOffset + " " + visibleCanvas);
+            //System.out.println("OffsetMoMLChangeRequest: mouse.y: " + mouseLocation.y + " comp.y: " + componentLocation.y + " visCanv.y: " + visibleCanvas.getY() + " min.y: " + minimumLocation[1] + " scale: " + scale + " yOff: " + yOffset);
         }
 
         NamedObj container = null;
