@@ -1,8 +1,8 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="HybridPlant" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.0.devel">
+<entity name="RandomHybridPlant" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="50.0">
@@ -26,7 +26,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[365.0, 25.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[370.0, 15.0]">
         </property>
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -34,7 +34,7 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="jobs/minute">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[535.0, 15.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[540.0, 5.0]">
         </property>
     </property>
     <property name="setupTime" class="ptolemy.data.expr.Parameter" value="1.0">
@@ -53,7 +53,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[365.0, 45.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[370.0, 35.0]">
         </property>
     </property>
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -61,7 +61,7 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="minutes">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[535.0, 35.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[540.0, 25.0]">
         </property>
     </property>
     <property name="rawMaterialInflowRate" class="ptolemy.data.expr.Parameter" value="1.5">
@@ -80,7 +80,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[365.0, 65.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[370.0, 55.0]">
         </property>
     </property>
     <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -88,7 +88,7 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="liters/minute">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[535.0, 55.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[540.0, 45.0]">
         </property>
     </property>
     <property name="maxInflowRate" class="ptolemy.data.expr.Parameter" value="2.0">
@@ -107,7 +107,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[365.0, 85.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[370.0, 75.0]">
         </property>
     </property>
     <property name="Annotation4" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -115,7 +115,7 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="liters/minute">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[535.0, 75.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[540.0, 65.0]">
         </property>
     </property>
     <property name="targetContainerLevel" class="ptolemy.data.expr.Parameter" value="10.0">
@@ -134,7 +134,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[365.0, 105.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[370.0, 95.0]">
         </property>
     </property>
     <property name="Annotation5" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -142,7 +142,7 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="liters">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[535.0, 95.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[540.0, 85.0]">
         </property>
     </property>
     <property name="initialRawMaterialLevel" class="ptolemy.data.expr.Parameter" value="3.0">
@@ -161,7 +161,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[365.0, 125.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[370.0, 115.0]">
         </property>
     </property>
     <property name="Annotation6" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -169,29 +169,29 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="liters">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[535.0, 115.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[540.0, 105.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={174, 22, 865, 634}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={217, 304, 876, 511}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[631, 524]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[663, 401]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{315.5, 262.0}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{331.5, 200.5}">
+    </property>
+    <property name="Annotation8" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Hybrid model of a plant where a continuous flow&#10;of raw material is directed into bottles as the&#10;bottles (jobs) arrive. The top level is a discrete-&#10;event model with a modal continuous-time model&#10;inside. Model parameters are to the right.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[5.0, 55.0]">
+        </property>
     </property>
     <property name="Annotation7" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="textSize" class="ptolemy.data.expr.Parameter" value="12">
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="jobs">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[85.0, 175.0]">
-        </property>
-    </property>
-    <property name="Annotation8" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Hybrid model of a plant where a continuous flow&#10;of raw material is directed into bottles as the&#10;bottles (jobs) arrive. The top level is a discrete-&#10;event model with a modal continuous-time model&#10;inside. Model parameters are to the right.">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[5.0, 60.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[95.0, 180.0]">
         </property>
     </property>
     <property name="Annotation9" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -199,21 +199,21 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author: Edward A. Lee">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[10.0, 355.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[10.0, 345.0]">
         </property>
     </property>
     <property name="Annotation10" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="textSize" class="ptolemy.data.expr.Parameter" value="12">
         </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model uses a Clock to simulate &#10;the deterministic arrival of events.&#10;Contrast this with the HybridPlant model which&#10;uses a PoissonClock to simulate a random&#10;arrival of events.">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model uses a PoissonClock to simulate &#10;the random arrival of events.&#10;Contrast this with the HybridPlant model which&#10;uses a Clock to simulate a deterministic arrival&#10;of events.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{215.0, 330.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[205.0, 320.0]">
         </property>
     </property>
     <entity name="ModalModel" class="ptolemy.domains.modal.modal.ModalModel">
         <property name="_tableauFactory" class="ptolemy.vergil.modal.modal.ModalTableauFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[350.0, 200.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[360.0, 200.0]">
         </property>
         <port name="job" class="ptolemy.domains.modal.modal.ModalPort">
             <property name="input"/>
@@ -243,13 +243,13 @@
         <entity name="state library" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/configs/basicUtilities.xml"></input><entity name="state" class="ptolemy.domains.modal.kernel.State"><property name="_centerName" class="ptolemy.kernel.util.Attribute"></property><property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory"></property></entity></entity>
       </configure>
             </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={337, 207, 1005, 635}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={228, 202, 984, 495}, maximized=false}">
             </property>
-            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[771, 524]">
+            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[771, 384]">
             </property>
             <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.9540682973113">
             </property>
-            <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{262.37675048379884, 310.48846398193535}">
+            <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{262.3767504837988, 237.1184545211138}">
             </property>
             <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
                 <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Filling the bottle at&#10;the maximum rate.">
@@ -301,7 +301,7 @@
                 </property>
                 <property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory">
                 </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="{285.0, 190.0}">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[265.0, 195.0]">
                 </property>
             </entity>
             <entity name="maxRate" class="ptolemy.domains.modal.kernel.State">
@@ -311,7 +311,7 @@
                 </property>
                 <property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory">
                 </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[280.0, 285.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[270.0, 290.0]">
                 </property>
             </entity>
             <entity name="inflowRate" class="ptolemy.domains.modal.kernel.State">
@@ -353,13 +353,13 @@
                 </property>
             </relation>
             <relation name="relation2" class="ptolemy.domains.modal.kernel.Transition">
-                <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="&#10;   emptyBuffer_isPresent&#10;   &amp;&amp; !jobDone_isPresent">
+                <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="emptyBuffer_isPresent &amp;&amp; !jobDone_isPresent">
                 </property>
-                <property name="setActions" class="ptolemy.domains.modal.kernel.CommitActionsAttribute" value="&#10;   processing.bottleInflowRate = rawMaterialInflowRate">
+                <property name="setActions" class="ptolemy.domains.modal.kernel.CommitActionsAttribute" value="processing.bottleInflowRate = rawMaterialInflowRate">
                 </property>
                 <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="-0.9463498854732767">
                 </property>
-                <property name="gamma" class="ptolemy.data.expr.Parameter" value="-3.057669247135598">
+                <property name="gamma" class="ptolemy.data.expr.Parameter" value="2.0900238010830083">
                 </property>
                 <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
@@ -371,9 +371,9 @@
                 </property>
             </relation>
             <relation name="relation3" class="ptolemy.domains.modal.kernel.Transition">
-                <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="&#10;   jobDone_isPresent">
+                <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="jobDone_isPresent">
                 </property>
-                <property name="setActions" class="ptolemy.domains.modal.kernel.CommitActionsAttribute" value="&#10;   processing.bottleInflowRate = 0.0;&#10;   processing.Bottle.initialState = 0.0">
+                <property name="setActions" class="ptolemy.domains.modal.kernel.CommitActionsAttribute" value="processing.bottleInflowRate = 0.0;&#10;processing.Bottle.initialState = 0.0">
                     <property name="style" class="ptolemy.actor.gui.style.TextStyle">
                         <property name="height" class="ptolemy.data.expr.Parameter" value="10">
                         </property>
@@ -397,7 +397,7 @@
             <relation name="relation4" class="ptolemy.domains.modal.kernel.Transition">
                 <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="true">
                 </property>
-                <property name="setActions" class="ptolemy.domains.modal.kernel.CommitActionsAttribute" value="&#10;   processing.RMBuffer.initialState = initialRawMaterialLevel;&#10;   processing.Bottle.initialState = 0.0;&#10;   processing.bottleInflowRate = 0.0">
+                <property name="setActions" class="ptolemy.domains.modal.kernel.CommitActionsAttribute" value="processing.RMBuffer.initialState = initialRawMaterialLevel;&#10;processing.Bottle.initialState = 0.0;&#10;processing.bottleInflowRate = 0.0">
                     <property name="style" class="ptolemy.actor.gui.style.TextStyle">
                         <property name="height" class="ptolemy.data.expr.Parameter" value="10">
                         </property>
@@ -411,7 +411,7 @@
                 </property>
                 <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
-                <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
+                <property name="preemptive" class="ptolemy.data.expr.Parameter" value="true">
                 </property>
                 <property name="defaultTransition" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
@@ -419,9 +419,9 @@
                 </property>
             </relation>
             <relation name="relation5" class="ptolemy.domains.modal.kernel.Transition">
-                <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="&#10;   jobDone_isPresent">
+                <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="jobDone_isPresent">
                 </property>
-                <property name="setActions" class="ptolemy.domains.modal.kernel.CommitActionsAttribute" value="&#10;   processing.bottleInflowRate = 0.0;&#10;   processing.Bottle.initialState = 0.0">
+                <property name="setActions" class="ptolemy.domains.modal.kernel.CommitActionsAttribute" value="processing.bottleInflowRate = 0.0;&#10;processing.Bottle.initialState = 0.0">
                     <property name="style" class="ptolemy.actor.gui.style.TextStyle">
                         <property name="height" class="ptolemy.data.expr.Parameter" value="10">
                         </property>
@@ -454,16 +454,16 @@
             <link port="init.outgoingPort" relation="relation4"/>
         </entity>
         <entity name="processing" class="ptolemy.domains.modal.modal.Refinement">
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 259, 834, 634}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={37, 208, 813, 510}, maximized=false}">
             </property>
-            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 524]">
+            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
             </property>
             <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
             </property>
-            <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 262.0}">
+            <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
             </property>
             <property name="Continuous Director" class="ptolemy.domains.continuous.kernel.ContinuousDirector">
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[55.0, 40.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 40.0]">
                 </property>
             </property>
             <property name="bottleInflowRate" class="ptolemy.data.expr.Parameter" value="1.5">
@@ -482,7 +482,7 @@
                 </property>
                 <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
                 </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[130.0, 65.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[135.0, 65.0]">
                 </property>
             </property>
             <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -525,8 +525,6 @@
                 </property>
             </entity>
             <entity name="RMBuffer" class="ptolemy.domains.continuous.lib.Integrator">
-                <property name="initialState" class="ptolemy.actor.parameters.PortParameter" value="3.0">
-                </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[290.0, 175.0]">
                 </property>
             </entity>
@@ -541,7 +539,7 @@
                     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
                     </property>
                 </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="{395.0, 175.0}">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[395.0, 175.0]">
                 </property>
             </entity>
             <entity name="Bottle" class="ptolemy.domains.continuous.lib.Integrator">
@@ -584,26 +582,22 @@
                 </property>
             </entity>
             <entity name="NonStrictTest" class="ptolemy.actor.lib.NonStrictTest">
-                <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5}">
+                <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.2, 0.2, 0.4, 0.4, 0.6, 0.6, 0.8, 0.8, 1.0, 1.0, 1.2, 1.2, 1.4, 1.4, 1.6, 1.6, 1.8, 1.8, 2.0, 2.0, 2.2, 2.2, 2.4, 2.4, 2.6, 2.6, 2.8, 2.8, 3.0, 3.0, 3.2, 3.2, 3.4, 3.4, 3.6, 3.6, 3.8, 3.8, 4.0, 4.0, 4.2, 4.2, 4.4, 4.4, 4.6, 4.6, 4.8, 4.8, 5.0, 5.0, 5.2, 5.2, 5.4, 5.4, 5.6, 5.6, 5.8, 5.8, 6.0, 6.0, 6.2, 6.2, 6.4, 6.4, 6.6, 6.6, 6.8, 6.8, 7.0, 7.0, 7.2, 7.2, 7.4, 7.4, 7.6, 7.6, 7.8, 7.8, 8.0, 8.0, 8.2, 8.2, 8.4, 8.4, 8.6, 8.6, 8.8, 8.8, 9.0, 9.0, 9.2, 9.2, 9.4, 9.4, 9.6, 9.6, 9.8, 9.8, 10.0, 10.0, 10.00005, 10.00005, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.1851402062, 0.1851402062, 0.3851402062, 0.3851402062, 0.5851402062, 0.5851402062, 0.7851402062, 0.7851402062, 0.9851402062, 0.9851402062, 1.1851402062, 1.1851402062, 1.3851402062, 1.3851402062, 1.5851402062, 1.5851402062, 1.7851402062, 1.7851402062, 1.9851402062, 1.9851402062, 2.1851402062, 2.1851402062, 2.3851402062, 2.3851402062, 2.5689023104, 2.5851402062, 2.5851402062, 2.7587936568, 2.7851402062, 2.7851402062, 2.9851402062, 2.9851402062, 3.1851402062, 3.1851402062, 3.3851402062, 3.3851402062, 3.5851402062, 3.5851402062, 3.7851402062, 3.7851402062, 3.9851402062, 3.9851402062, 4.1851402062, 4.1851402062, 4.3851402062, 4.3851402062, 4.5851402062, 4.5851402062, 4.7851402062, 4.7851402062, 4.9851402062, 4.9851402062, 5.1851402062, 5.1851402062, 5.3851402062, 5.3851402062, 5.5851402062, 5.5851402062, 5.7851402062, 5.7851402062, 5.9851402062, 5.9851402062, 6.1851402062, 6.1851402062, 6.3851402062, 6.3851402062, 6.5851402062, 6.5851402062, 6.7851402062, 6.7851402062, 6.9851402062, 6.9851402062, 7.1851402062, 7.1851402062, 7.3851402062, 7.3851402062, 7.5851402062, 7.5851402062, 7.7851402062, 7.7851402062, 7.9851402062, 7.9851402062, 8.1851402062, 8.1851402062, 8.3851402062, 8.3851402062, 8.5851402062, 8.5851402062, 8.7851402062, 8.7851402062, 8.9851402062, 8.9851402062, 9.1851402062, 9.1851402062, 9.3851402062, 9.3851402062, 9.5851402062, 9.5851402062, 9.7851402062, 9.7851402062, 9.8284619226, 9.9851402062, 9.9851402062, 10.00005, 10.00005, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.1850902062, 0.1850902062, 0.3850902062, 0.3850902062, 0.5850902062, 0.5850902062, 0.7850902062, 0.7850902062, 0.9850902062, 0.9850902062, 1.1850902062, 1.1850902062, 1.3850902062, 1.3850902062, 1.5850902062, 1.5850902062, 1.7850902062, 1.7850902062, 1.9850902062, 1.9850902062, 2.1850902062, 2.1850902062, 2.3850902062, 2.3850902062, 2.5850902062, 2.5850902062, 2.7850902062, 2.7850902062, 2.9850902062, 2.9850902062, 3.1850902062, 3.1850902062, 3.3850902062, 3.3850902062, 3.5850902062, 3.5850902062, 3.7850902062, 3.7850902062, 3.9850902062, 3.9850902062, 4.1850902062, 4.1850902062, 4.3850902062, 4.3850902062, 4.5850902062, 4.5850902062, 4.7850902062, 4.7850902062, 4.9850902062, 4.9850902062, 5.078818767, 5.1850902062, 5.1850902062, 5.3850902062, 5.3850902062, 5.5850902062, 5.5850902062, 5.7850902062, 5.7850902062, 5.9850902062, 5.9850902062, 6.1850902062, 6.1850902062, 6.3850902062, 6.3850902062, 6.5850902062, 6.5850902062, 6.7850902062, 6.7850902062, 6.9850902062, 6.9850902062, 7.1850902062, 7.1850902062, 7.3850902062, 7.3850902062, 7.5850902062, 7.5850902062, 7.7850902062, 7.7850902062, 7.9850902062, 7.9850902062, 8.1850902062, 8.1850902062, 8.3850902062, 8.3850902062, 8.5850902062, 8.5850902062, 8.7850902062, 8.7850902062, 8.9850902062, 8.9850902062, 9.1850902062, 9.1850902062, 9.3850902062, 9.3850902062, 9.5850902062, 9.5850902062, 9.7850902062, 9.7850902062, 9.9850902062, 9.9850902062, 10.00005, 10.00005, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.1850402062, 0.1850402062, 0.3850402062, 0.3850402062, 0.5850402062, 0.5850402062, 0.7850402062, 0.7850402062, 0.9850402062, 0.9850402062, 1.1850402062, 1.1850402062, 1.3850402062, 1.3850402062, 1.5850402062, 1.5850402062, 1.7850402062, 1.7850402062, 1.9850402062, 1.9850402062, 2.1850402062, 2.1850402062, 2.3850402062, 2.3850402062, 2.5850402062, 2.5850402062, 2.7850402062, 2.7850402062, 2.9850402062, 2.9850402062, 3.1850402062, 3.1850402062, 3.3850402062, 3.3850402062, 3.5850402062, 3.5850402062, 3.7850402062, 3.7850402062, 3.9850402062, 3.9850402062, 4.1850402062, 4.1850402062, 4.3850402062, 4.3850402062, 4.5850402062, 4.5850402062, 4.7850402062, 4.7850402062, 4.9850402062, 4.9850402062, 5.1850402062, 5.1850402062, 5.3850402062, 5.3850402062, 5.5850402062, 5.5850402062, 5.7850402062, 5.7850402062, 5.9850402062, 5.9850402062, 6.1850402062, 6.1850402062, 6.3850402062, 6.3850402062, 6.5850402062, 6.5850402062, 6.7850402062, 6.7850402062, 6.9850402062, 6.9850402062, 7.1850402062, 7.1850402062, 7.3850402062, 7.3850402062, 7.5850402062, 7.5850402062, 7.7850402062, 7.7850402062, 7.9850402062, 7.9850402062, 8.1850402062, 8.1850402062, 8.3850402062, 8.3850402062, 8.5850402062, 8.5850402062, 8.7850402062, 8.7850402062, 8.9850402062, 8.9850402062, 9.1850402062, 9.1850402062, 9.3850402062, 9.3850402062, 9.5850402062, 9.5850402062, 9.5954000416, 9.7850402062, 9.7850402062, 9.9850402062, 9.9850402062, 10.00005, 10.00005, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.1849902062, 0.1849902062, 0.3849902062, 0.3849902062, 0.5849902062, 0.5849902062, 0.7849902062, 0.7849902062, 0.9849902062, 0.9849902062, 1.1849902062, 1.1849902062, 1.3849902062, 1.3849902062, 1.5849902062, 1.5849902062, 1.7849902062, 1.7849902062, 1.9849902062, 1.9849902062, 2.1849902062, 2.1849902062, 2.3849902062, 2.3849902062, 2.5849902062, 2.5849902062, 2.7849902062, 2.7849902062, 2.9849902062, 2.9849902062, 3.1849902062, 3.1849902062, 3.3849902062, 3.3849902062, 3.5849902062, 3.5849902062, 3.7849902062, 3.7849902062, 3.9849902062, 3.9849902062, 4.0003150574, 4.1849902062, 4.1849902062, 4.3849902062, 4.3849902062, 4.5849902062, 4.5849902062, 4.7849902062, 4.7849902062, 4.9849902062, 4.9849902062, 5.1849902062, 5.1849902062, 5.3849902062, 5.3849902062, 5.5849902062, 5.5849902062, 5.7849902062, 5.7849902062, 5.9849902062, 5.9849902062, 6.1849902062, 6.1849902062, 6.3849902062, 6.3849902062, 6.5849902062, 6.5849902062, 6.7849902062, 6.7849902062, 6.9849902062, 6.9849902062, 7.1849902062, 7.1849902062, 7.3849902062, 7.3849902062, 7.5849902062, 7.5849902062, 7.7849902062, 7.7849902062, 7.9334706752, 7.9849902062, 7.9849902062, 8.1849902062, 8.1849902062, 8.3849902062, 8.3849902062, 8.5849902062, 8.5849902062, 8.7849902062, 8.7849902062, 8.9849902062, 8.9849902062, 9.1849902062, 9.1849902062, 9.3849902062, 9.3849902062, 9.5849902062, 9.5849902062, 9.7849902062, 9.7849902062, 9.9849902062, 9.9849902062, 10.00005, 10.00005, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.1849402062, 0.1849402062, 0.3849402062, 0.3849402062, 0.5849402062, 0.5849402062, 0.7849402062, 0.7849402062, 0.9849402062, 0.9849402062, 1.1849402062, 1.1849402062, 1.251455761, 1.3849402062, 1.3849402062, 1.5849402062, 1.5849402062, 1.7849402062, 1.7849402062, 1.9849402062, 1.9849402062, 2.1849402062, 2.1849402062, 2.3849402062, 2.3849402062, 2.5849402062, 2.5849402062, 2.7849402062, 2.7849402062, 2.9849402062, 2.9849402062, 3.1849402062, 3.1849402062, 3.3849402062, 3.3849402062, 3.5849402062, 3.5849402062, 3.7849402062, 3.7849402062, 3.9849402062, 3.9849402062, 4.1849402062, 4.1849402062, 4.3849402062, 4.3849402062, 4.5849402062, 4.5849402062, 4.7849402062, 4.7849402062, 4.9849402062, 4.9849402062, 5.1849402062, 5.1849402062, 5.3849402062, 5.3849402062, 5.5849402062, 5.5849402062, 5.7849402062, 5.7849402062, 5.9849402062, 5.9849402062, 6.1849402062, 6.1849402062, 6.3849402062, 6.3849402062, 6.5849402062, 6.5849402062, 6.7849402062, 6.7849402062, 6.9849402062, 6.9849402062, 7.1849402062, 7.1849402062, 7.3849402062, 7.3849402062, 7.5849402062, 7.5849402062, 7.7849402062, 7.7849402062, 7.9849402062, 7.9849402062, 8.1849402062, 8.1849402062, 8.3849402062, 8.3849402062, 8.5849402062, 8.5849402062, 8.7849402062, 8.7849402062, 8.9849402062, 8.9849402062, 9.1849402062, 9.1849402062, 9.3849402062, 9.3849402062, 9.5849402062, 9.5849402062, 9.7849402062, 9.7849402062, 9.9849402062, 9.9849402062, 10.00005, 10.00005, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.1848902062, 0.1848902062, 0.3848902062, 0.3848902062, 0.5848902062, 0.5848902062, 0.7848902062, 0.7848902062, 0.9848902062, 0.9848902062, 1.1848902062, 1.1848902062, 1.3848902062, 1.3848902062, 1.5848902062, 1.5848902062, 1.7848902062, 1.7848902062, 1.9848902062, 1.9848902062, 2.1848902062, 2.1848902062, 2.3848902062, 2.3848902062, 2.5848902062, 2.5848902062, 2.7848902062, 2.7848902062, 2.9848902062, 2.9848902062, 3.1848902062, 3.1848902062, 3.3848902062, 3.3848902062, 3.5848902062, 3.5848902062, 3.7848902062, 3.7848902062, 3.9848902062, 3.9848902062, 4.1848902062, 4.1848902062, 4.3848902062, 4.3848902062, 4.5848902062, 4.5848902062, 4.7848902062, 4.7848902062, 4.9848902062, 4.9848902062, 5.1848902062, 5.1848902062, 5.3848902062, 5.3848902062, 5.5848902062, 5.5848902062, 5.7848902062, 5.7848902062, 5.9848902062, 5.9848902062, 6.1848902062, 6.1848902062, 6.3848902062, 6.3848902062, 6.4980520766, 6.5848902062, 6.5848902062, 6.7848902062, 6.7848902062, 6.9848902062, 6.9848902062, 7.1848902062, 7.1848902062, 7.3848902062, 7.3848902062, 7.5848902062, 7.5848902062, 7.7848902062, 7.7848902062, 7.9848902062, 7.9848902062, 8.1848902062, 8.1848902062, 8.3848902062, 8.3848902062, 8.5848902062, 8.5848902062, 8.7848902062, 8.7848902062, 8.9848902062, 8.9848902062, 9.1848902062, 9.1848902062, 9.3701694442, 9.3848902062, 9.3848902062, 9.5848902062, 9.5848902062, 9.7848902062, 9.7848902062, 9.9848902062, 9.9848902062, 10.00005, 10.00005, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.1848402062, 0.1848402062, 0.3848402062, 0.3848402062, 0.5848402062, 0.5848402062, 0.7848402062, 0.7848402062, 0.9848402062, 0.9848402062, 1.1848402062, 1.1848402062, 1.3848402062, 1.3848402062, 1.5848402062, 1.5848402062, 1.7848402062, 1.7848402062, 1.9848402062, 1.9848402062, 2.1848402062, 2.1848402062, 2.3848402062, 2.3848402062, 2.5848402062, 2.5848402062, 2.7848402062, 2.7848402062, 2.9848402062, 2.9848402062, 3.1848402062, 3.1848402062, 3.3848402062, 3.3848402062, 3.5848402062, 3.5848402062, 3.7848402062, 3.7848402062, 3.9848402062, 3.9848402062, 4.1848402062, 4.1848402062, 4.3848402062, 4.3848402062, 4.5848402062, 4.5848402062, 4.7848402062, 4.7848402062, 4.9848402062, 4.9848402062, 5.1848402062, 5.1848402062, 5.3848402062, 5.3848402062, 5.5848402062, 5.5848402062, 5.7848402062, 5.7848402062, 5.9848402062, 5.9848402062, 6.1848402062, 6.1848402062, 6.3848402062, 6.3848402062, 6.5848402062, 6.5848402062, 6.7848402062, 6.7848402062, 6.8442793814002, 6.8442793814002, 6.8442793814002, 6.8442793814002, 6.9497000000002, 6.9497000000002, 7.0892151765502, 7.0997000000002, 7.0997000000002, 7.2497000000002, 7.2497000000002, 7.3997000000002, 7.3997000000002, 7.5497000000002, 7.5497000000002, 7.6997000000002, 7.6997000000002, 7.8497000000002, 7.8497000000002, 7.9997000000002, 7.9997000000002}">
+                </property>
+                <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-4">
                 </property>
                 <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
                 </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="{369.0, 394.0}">
-                </property>
-            </entity>
-            <entity name="NonStrictTest2" class="ptolemy.actor.lib.NonStrictTest">
-                <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.2, 0.2, 0.4, 0.4, 0.6, 0.6, 0.8, 0.8, 1.0, 1.0, 1.2, 1.2, 1.4, 1.4, 1.6, 1.6, 1.8, 1.8, 2.0, 2.0, 2.2, 2.2, 2.4, 2.4, 2.6, 2.6, 2.8, 2.8, 3.0, 3.0, 3.2, 3.2, 3.4, 3.4, 3.6, 3.6, 3.8, 3.8, 4.0, 4.0, 4.2, 4.2, 4.4, 4.4, 4.6, 4.6, 4.8, 4.8, 5.0, 5.0, 5.2, 5.2, 5.4, 5.4, 5.6, 5.6, 5.8, 5.8, 6.0, 6.0, 6.2, 6.2, 6.4, 6.4, 6.6, 6.6, 6.8, 6.8, 7.0, 7.0, 7.2, 7.2, 7.4, 7.4, 7.6, 7.6, 7.8, 7.8, 8.0, 8.0, 8.2, 8.2, 8.4, 8.4, 8.6, 8.6, 8.8, 8.8, 9.0, 9.0, 9.2, 9.2, 9.4, 9.4, 9.6, 9.6, 9.8, 9.8, 10.0, 10.0, 10.00005, 10.00005, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.19995, 0.19995, 0.39995, 0.39995, 0.59995, 0.59995, 0.79995, 0.79995, 0.99995, 0.99995, 1.19995, 1.19995, 1.39995, 1.39995, 1.59995, 1.59995, 1.79995, 1.79995, 1.99995, 1.99995, 2.19995, 2.19995, 2.39995, 2.39995, 2.59995, 2.59995, 2.79995, 2.79995, 2.99995, 2.99995, 3.19995, 3.19995, 3.39995, 3.39995, 3.59995, 3.59995, 3.79995, 3.79995, 3.99995, 3.99995, 4.19995, 4.19995, 4.39995, 4.39995, 4.59995, 4.59995, 4.79995, 4.79995, 4.99995, 4.99995, 5.19995, 5.19995, 5.39995, 5.39995, 5.59995, 5.59995, 5.79995, 5.79995, 5.99995, 5.99995, 6.19995, 6.19995, 6.39995, 6.39995, 6.59995, 6.59995, 6.79995, 6.79995, 6.99995, 6.99995, 7.19995, 7.19995, 7.39995, 7.39995, 7.59995, 7.59995, 7.79995, 7.79995, 7.99995, 7.99995, 8.19995, 8.19995, 8.39995, 8.39995, 8.59995, 8.59995, 8.79995, 8.79995, 8.99995, 8.99995, 9.19995, 9.19995, 9.39995, 9.39995, 9.59995, 9.59995, 9.79995, 9.79995, 9.99995, 9.99995, 10.00005, 10.00005, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.1999, 0.1999, 0.3999, 0.3999, 0.5999, 0.5999, 0.7999, 0.7999, 0.9999, 0.9999, 1.1999, 1.1999, 1.3999, 1.3999, 1.5999, 1.5999, 1.7999, 1.7999, 1.9999, 1.9999, 2.1999, 2.1999, 2.3999, 2.3999, 2.5999, 2.5999, 2.7999, 2.7999, 2.9999, 2.9999, 3.1999, 3.1999, 3.3999, 3.3999, 3.5999, 3.5999, 3.7999, 3.7999, 3.9999, 3.9999, 4.1999, 4.1999, 4.3999, 4.3999, 4.5999, 4.5999, 4.7999, 4.7999, 4.9999, 4.9999, 5.1999, 5.1999, 5.3999, 5.3999, 5.5999, 5.5999, 5.7999, 5.7999, 5.9999, 5.9999, 6.1999, 6.1999, 6.3999, 6.3999, 6.5999, 6.5999, 6.7999, 6.7999, 6.9999, 6.9999, 7.1999, 7.1999, 7.3999, 7.3999, 7.5999, 7.5999, 7.7999, 7.7999, 7.9999, 7.9999, 8.1999, 8.1999, 8.3999, 8.3999, 8.5999, 8.5999, 8.7999, 8.7999, 8.9999, 8.9999, 9.1999, 9.1999, 9.3999, 9.3999, 9.5999, 9.5999, 9.7999, 9.7999, 9.9999, 9.9999, 10.00005, 10.00005, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.19985, 0.19985, 0.39985, 0.39985, 0.59985, 0.59985, 0.79985, 0.79985, 0.99985, 0.99985, 1.19985, 1.19985, 1.39985, 1.39985, 1.59985, 1.59985, 1.79985, 1.79985, 1.99985, 1.99985, 2.19985, 2.19985, 2.39985, 2.39985, 2.59985, 2.59985, 2.79985, 2.79985, 2.99985, 2.99985, 3.19985, 3.19985, 3.39985, 3.39985, 3.59985, 3.59985, 3.79985, 3.79985, 3.99985, 3.99985, 4.19985, 4.19985, 4.39985, 4.39985, 4.59985, 4.59985, 4.79985, 4.79985, 4.99985, 4.99985, 5.19985, 5.19985, 5.39985, 5.39985, 5.59985, 5.59985, 5.79985, 5.79985, 5.99985, 5.99985, 6.00005, 6.00005, 6.00005, 6.00005, 6.1499, 6.1499, 6.2999, 6.2999, 6.4499, 6.4499, 6.5999, 6.5999, 6.7499, 6.7499, 6.8999, 6.8999, 7.0499, 7.0499, 7.1999, 7.1999, 7.3499, 7.3499, 7.4999, 7.4999, 7.6499, 7.6499, 7.7999, 7.7999, 7.9499, 7.9499, 8.0999, 8.0999, 8.2499, 8.2499, 8.3999, 8.3999, 8.5499, 8.5499, 8.6999, 8.6999, 8.8499, 8.8499, 8.9999, 8.9999, 9.1499, 9.1499, 9.2999, 9.2999, 9.4499000000001, 9.4499000000001, 9.5999000000001, 9.5999000000001, 9.7499000000001, 9.7499000000001, 9.8999000000001, 9.8999000000001, 10.00005, 10.00005, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0664666666, 0.0664666666, 0.2664666666, 0.2664666666, 0.4664666666, 0.4664666666, 0.6664666666, 0.6664666666, 0.8664666666, 0.8664666666, 1.0664666666, 1.0664666666, 1.2664666666, 1.2664666666, 1.4664666666, 1.4664666666, 1.6664666666, 1.6664666666, 1.8664666666, 1.8664666666, 2.0664666666, 2.0664666666, 2.2664666666, 2.2664666666, 2.4664666666, 2.4664666666, 2.6664666666, 2.6664666666, 2.8664666666, 2.8664666666, 3.0664666666, 3.0664666666, 3.2664666666, 3.2664666666, 3.4664666666, 3.4664666666, 3.6664666666, 3.6664666666, 3.8664666666, 3.8664666666, 4.0664666666, 4.0664666666, 4.2664666666, 4.2664666666, 4.4664666666, 4.4664666666, 4.6664666666, 4.6664666666, 4.8664666666, 4.8664666666, 5.0664666666, 5.0664666666, 5.2664666666, 5.2664666666, 5.4664666666, 5.4664666666, 5.6664666666, 5.6664666666, 5.8664666666, 5.8664666666, 6.0, 6.0, 6.0, 6.0, 6.04984999995, 6.04984999995, 6.19984999995, 6.19984999995, 6.34984999995, 6.34984999995, 6.49984999995, 6.49984999995, 6.64984999995, 6.64984999995, 6.79984999995, 6.79984999995, 6.94984999995, 6.94984999995, 7.09984999995, 7.09984999995, 7.24984999995, 7.24984999995, 7.39984999995, 7.39984999995, 7.54984999995, 7.54984999995, 7.69984999995, 7.69984999995, 7.84984999995, 7.84984999995, 7.99984999995, 7.99984999995, 8.14984999995, 8.14984999995, 8.29984999995, 8.29984999995, 8.44984999995, 8.44984999995, 8.59984999995, 8.59984999995, 8.74984999995, 8.74984999995, 8.89984999995, 8.89984999995, 9.04984999995, 9.04984999995, 9.19984999995, 9.19984999995, 9.34984999995, 9.34984999995, 9.49984999995, 9.49984999995, 9.64984999995, 9.64984999995, 9.79984999995, 9.79984999995, 9.94984999995, 9.94984999995, 10.00005, 10.00005, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.1330666666, 0.1330666666, 0.3330666666, 0.3330666666, 0.5330666666, 0.5330666666, 0.7330666666, 0.7330666666, 0.9330666666, 0.9330666666, 1.1330666666, 1.1330666666, 1.3330666666, 1.3330666666, 1.5330666666, 1.5330666666, 1.7330666666, 1.7330666666, 1.9330666666, 1.9330666666, 2.1330666666, 2.1330666666, 2.3330666666, 2.3330666666, 2.5330666666, 2.5330666666, 2.7330666666, 2.7330666666, 2.9330666666, 2.9330666666, 3.1330666666, 3.1330666666, 3.3330666666, 3.3330666666, 3.5330666666, 3.5330666666, 3.7330666666, 3.7330666666, 3.9330666666, 3.9330666666, 4.1330666666, 4.1330666666, 4.3330666666, 4.3330666666, 4.5330666666, 4.5330666666, 4.7330666666, 4.7330666666, 4.9330666666, 4.9330666666, 5.1330666666, 5.1330666666, 5.3330666666, 5.3330666666, 5.5330666666, 5.5330666666, 5.7330666666, 5.7330666666, 5.9330666666, 5.9330666666, 6.0, 6.0, 6.0, 6.0, 6.09979999995, 6.09979999995, 6.24979999995, 6.24979999995, 6.39979999995, 6.39979999995, 6.54979999995, 6.54979999995, 6.69979999995, 6.69979999995, 6.84979999995, 6.84979999995, 6.99979999995, 6.99979999995, 7.14979999995, 7.14979999995, 7.29979999995, 7.29979999995, 7.44979999995, 7.44979999995, 7.59979999995, 7.59979999995, 7.74979999995, 7.74979999995, 7.89979999995, 7.89979999995, 8.04979999995, 8.04979999995, 8.19979999995, 8.19979999995, 8.34979999995, 8.34979999995, 8.49979999995, 8.49979999995, 8.64979999995, 8.64979999995, 8.79979999995, 8.79979999995, 8.94979999995, 8.94979999995, 9.09979999995, 9.09979999995, 9.24979999995, 9.24979999995, 9.39979999995, 9.39979999995, 9.54979999995, 9.54979999995, 9.69979999995, 9.69979999995, 9.84979999995, 9.84979999995, 9.99979999995, 9.99979999995, 10.00005, 10.00005, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.1996666666, 0.1996666666, 0.3996666666, 0.3996666666, 0.5996666666, 0.5996666666, 0.7996666666, 0.7996666666, 0.9996666666, 0.9996666666, 1.1996666666, 1.1996666666, 1.3996666666, 1.3996666666, 1.5996666666, 1.5996666666, 1.7996666666, 1.7996666666, 1.9996666666, 1.9996666666, 2.1996666666, 2.1996666666, 2.3996666666, 2.3996666666, 2.5996666666, 2.5996666666, 2.7996666666, 2.7996666666, 2.9996666666, 2.9996666666, 3.1996666666, 3.1996666666, 3.3996666666, 3.3996666666, 3.5996666666, 3.5996666666, 3.7996666666, 3.7996666666, 3.9996666666, 3.9996666666, 4.1996666666, 4.1996666666, 4.3996666666, 4.3996666666, 4.5996666666, 4.5996666666, 4.7996666666, 4.7996666666, 4.9996666666, 4.9996666666, 5.1996666666, 5.1996666666, 5.3996666666, 5.3996666666, 5.5996666666, 5.5996666666, 5.7996666666, 5.7996666666, 5.9996666666, 5.9996666666, 6.0, 6.0, 6.0, 6.0, 6.14974999995, 6.14974999995, 6.29974999995, 6.29974999995, 6.44974999995, 6.44974999995, 6.59974999995, 6.59974999995, 6.74974999995, 6.74974999995, 6.89974999995, 6.89974999995, 7.04974999995, 7.04974999995, 7.19974999995, 7.19974999995, 7.34974999995, 7.34974999995, 7.49974999995, 7.49974999995, 7.64974999995, 7.64974999995, 7.79974999995, 7.79974999995, 7.94974999995, 7.94974999995, 8.09974999995, 8.09974999995, 8.24974999995, 8.24974999995, 8.39974999995, 8.39974999995, 8.54974999995, 8.54974999995, 8.69974999995, 8.69974999995, 8.84974999995, 8.84974999995, 8.99974999995, 8.99974999995, 9.14974999995, 9.14974999995, 9.29974999995, 9.29974999995, 9.44974999995, 9.44974999995, 9.59974999995, 9.59974999995, 9.74974999995, 9.74974999995, 9.89974999995, 9.89974999995, 10.00005, 10.00005, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0662666666, 0.0662666666, 0.2662666666, 0.2662666666, 0.4662666666, 0.4662666666, 0.6662666666, 0.6662666666, 0.8662666666, 0.8662666666, 1.0662666666, 1.0662666666, 1.2662666666, 1.2662666666, 1.4662666666, 1.4662666666, 1.6662666666, 1.6662666666, 1.8662666666, 1.8662666666, 2.0662666666, 2.0662666666, 2.2662666666, 2.2662666666, 2.4662666666, 2.4662666666, 2.6662666666, 2.6662666666, 2.8662666666, 2.8662666666, 3.0662666666, 3.0662666666, 3.2662666666, 3.2662666666, 3.4662666666, 3.4662666666, 3.6662666666, 3.6662666666, 3.8662666666, 3.8662666666, 4.0662666666, 4.0662666666, 4.2662666666, 4.2662666666, 4.4662666666, 4.4662666666, 4.6662666666, 4.6662666666, 4.8662666666, 4.8662666666, 5.0662666666, 5.0662666666, 5.2662666666, 5.2662666666, 5.4662666666, 5.4662666666, 5.6662666666, 5.6662666666, 5.8662666666, 5.8662666666, 6.0, 6.0, 6.0, 6.0, 6.04969999995, 6.04969999995, 6.19969999995, 6.19969999995, 6.34969999995, 6.34969999995, 6.49969999995, 6.49969999995, 6.64969999995, 6.64969999995, 6.79969999995, 6.79969999995, 6.94969999995, 6.94969999995, 7.09969999995, 7.09969999995, 7.24969999995, 7.24969999995, 7.39969999995, 7.39969999995, 7.54969999995, 7.54969999995, 7.69969999995, 7.69969999995, 7.84969999995, 7.84969999995, 7.99969999995, 7.99969999995}">
-                </property>
-                <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.000005000000001E-8">
-                </property>
-                <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
-                </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[420.0, 315.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{420.0, 325.0}">
                 </property>
             </entity>
             <relation name="relation2" class="ptolemy.actor.TypedIORelation">
                 <vertex name="vertex1" value="[330.0, 175.0]">
                 </vertex>
+            </relation>
+            <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <relation name="relation5" class="ptolemy.actor.TypedIORelation">
             </relation>
             <relation name="relation" class="ptolemy.actor.TypedIORelation">
             </relation>
@@ -618,10 +612,6 @@
                 </vertex>
             </relation>
             <relation name="relation4" class="ptolemy.actor.TypedIORelation">
-            </relation>
-            <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-            </relation>
-            <relation name="relation5" class="ptolemy.actor.TypedIORelation">
             </relation>
             <link port="jobDone" relation="relation3"/>
             <link port="emptyBuffer" relation="relation5"/>
@@ -641,8 +631,7 @@
             <link port="Const2.output" relation="relation7"/>
             <link port="PeriodicSampler.input" relation="relation2"/>
             <link port="PeriodicSampler.output" relation="relation4"/>
-            <link port="NonStrictTest.input" relation="relation7"/>
-            <link port="NonStrictTest2.input" relation="relation8"/>
+            <link port="NonStrictTest.input" relation="relation8"/>
         </entity>
         <relation name="jobRelation" class="ptolemy.actor.TypedIORelation">
         </relation>
@@ -665,17 +654,6 @@
         <link port="processing.emptyBuffer" relation="emptyBufferRelation"/>
         <link port="processing.RMBufferLevel" relation="RMBufferLevelRelation"/>
     </entity>
-    <entity name="Clock" class="ptolemy.actor.lib.Clock">
-        <property name="period" class="ptolemy.actor.parameters.PortParameter" value="1.0/jobArrivalRate">
-        </property>
-        <property name="offsets" class="ptolemy.data.expr.Parameter" value="{0.0}">
-        </property>
-        <property name="values" class="ptolemy.data.expr.Parameter" value="{1}">
-        </property>
-        <doc>Create a set of pulses</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[35.0, 200.0]">
-        </property>
-    </entity>
     <entity name="Queue" class="ptolemy.domains.de.lib.Queue">
         <property name="persistentTrigger" class="ptolemy.data.expr.Parameter" value="true">
         </property>
@@ -685,7 +663,7 @@
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[170.0, 200.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[175.0, 200.0]">
         </property>
         <port name="trigger" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -708,7 +686,7 @@
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[245.0, 200.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[250.0, 200.0]">
         </property>
     </entity>
     <entity name="SingleEvent" class="ptolemy.actor.lib.SingleEvent">
@@ -726,35 +704,49 @@
         </property>
     </entity>
     <entity name="Merge" class="ptolemy.domains.de.lib.Merge">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[126.5625, 265.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[130.0, 265.0]">
+        </property>
+    </entity>
+    <entity name="PoissonClock" class="ptolemy.actor.lib.PoissonClock">
+        <property name="seed" class="ptolemy.actor.parameters.SharedParameter" value="1L">
+        </property>
+        <property name="resetOnEachRun" class="ptolemy.actor.parameters.SharedParameter" value="true">
+        </property>
+        <property name="meanTime" class="ptolemy.data.expr.Parameter" value="1.0/jobArrivalRate">
+        </property>
+        <property name="values" class="ptolemy.data.expr.Parameter" value="{0}">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[35.0, 200.0]">
         </property>
     </entity>
     <entity name="NonStrictTest" class="ptolemy.actor.lib.NonStrictTest">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{3.0, 3.15, 3.3, 3.45, 3.6, 3.75, 3.9, 4.05, 4.2, 4.35, 4.5, 4.45, 4.4, 4.35, 4.3, 4.25, 4.2, 4.15, 4.1, 4.05, 4.0, 3.95, 3.9, 3.85, 3.8, 3.75, 3.7, 3.65, 3.6, 3.55, 3.5, 3.45, 3.4, 3.35, 3.3, 3.25, 3.2, 3.15, 3.1, 3.05, 3.0, 2.95, 2.9, 2.85, 2.8, 2.75, 2.7, 2.65, 2.6, 2.55, 2.5, 2.45, 2.4, 2.35, 2.3, 2.25, 2.2, 2.15, 2.1, 2.05, 2.0, 2.14995, 2.29995, 2.44995, 2.59995, 2.74995, 2.89995, 3.04995, 3.19995, 3.34995, 3.49995, 3.45, 3.4, 3.35, 3.3, 3.25, 3.2, 3.15, 3.1, 3.05, 3.0, 2.95, 2.9, 2.85, 2.8, 2.75, 2.7, 2.65, 2.6, 2.55, 2.5, 2.45, 2.4, 2.35, 2.3, 2.25, 2.2, 2.15, 2.1, 2.05, 2.0, 1.95, 1.9, 1.85, 1.8, 1.75, 1.7, 1.65, 1.6, 1.55, 1.5, 1.45, 1.4, 1.35, 1.3, 1.25, 1.2, 1.15, 1.1, 1.05, 1.0, 1.1499, 1.2999, 1.4499, 1.5999, 1.7499, 1.8999, 2.0499, 2.1999, 2.3499, 2.4999, 2.45, 2.4, 2.35, 2.3, 2.25, 2.2, 2.15, 2.1, 2.05, 2.0, 1.95, 1.9, 1.85, 1.8, 1.75, 1.7, 1.65, 1.6, 1.55, 1.5, 1.45, 1.4, 1.35, 1.3, 1.25, 1.2, 1.15, 1.1, 1.05, 1.0, 0.95, 0.9, 0.85, 0.8, 0.75, 0.7, 0.65, 0.6, 0.55, 0.5, 0.45, 0.4, 0.35, 0.3, 0.25, 0.2, 0.15, 0.1, 0.05, 1.16157083951407E-14, 0.14985, 0.29985, 0.44985, 0.59985, 0.74985, 0.89985, 1.04985, 1.19985, 1.34985, 1.49985, 1.45, 1.4, 1.35, 1.3, 1.25, 1.2, 1.15, 1.1, 1.05, 1.0, 0.95, 0.9, 0.85, 0.8, 0.75, 0.7, 0.65, 0.6, 0.55, 0.5, 0.45, 0.4, 0.35, 0.3, 0.25, 0.2, 0.15, 0.1, 0.05, 1.028344076559051E-14, -5.000000000000001E-5, -5.000000000000001E-5, -5.000000000000001E-5, -5.000000000000001E-5, -5.000000000000001E-5, -5.000000000000001E-5, -5.000000000000001E-5, -5.000000000000001E-5, -5.000000000000001E-5, -5.000000000000001E-5, -5.000000000000001E-5, -5.000000000000001E-5, -5.000000000000001E-5, -5.000000000000001E-5, -5.000000000000001E-5, -5.000000000000001E-5, -5.000000000000001E-5, -5.000000000000001E-5, -5.000000000000001E-5, -5.000000000000001E-5, -5.000000000000001E-5, -5.000000000000001E-5, -5.000000000000001E-5, -5.000000000000001E-5, -5.000000000000001E-5, -5.000000000000001E-5, 0.04979999995, 0.19979999995, 0.34979999995, 0.49979999995, 0.64979999995, 0.79979999995, 0.94979999995, 1.09979999995, 1.24979999995, 1.39979999995, 1.48333333335, 1.43333333335, 1.38333333335, 1.33333333335, 1.28333333335, 1.23333333335, 1.18333333335, 1.13333333335, 1.08333333335, 1.03333333335, 0.98333333335, 0.93333333335, 0.88333333335, 0.83333333335, 0.78333333335, 0.73333333335, 0.68333333335, 0.63333333335, 0.58333333335, 0.53333333335, 0.48333333335, 0.43333333335, 0.38333333335, 0.33333333335, 0.28333333335, 0.23333333335, 0.18333333335, 0.13333333335, 0.08333333335, 0.03333333335, -5.000000000000143E-5, -5.000000000000143E-5, -5.000000000000143E-5, -5.000000000000143E-5, -5.000000000000143E-5, -5.000000000000143E-5, -5.000000000000143E-5, -5.000000000000143E-5, -5.000000000000143E-5, -5.000000000000143E-5, -5.000000000000143E-5, -5.000000000000143E-5, -5.000000000000143E-5, -5.000000000000143E-5, -5.000000000000143E-5, -5.000000000000143E-5, -5.000000000000143E-5, -5.000000000000143E-5, -5.000000000000143E-5, -5.000000000000143E-5, -5.000000000000143E-5, -5.000000000000143E-5, -5.000000000000143E-5, -5.000000000000143E-5, -5.000000000000143E-5, -5.000000000000143E-5, -5.000000000000143E-5, 0.09974999995, 0.24974999995, 0.39974999995, 0.54974999995, 0.69974999995, 0.84974999995, 0.99974999995, 1.14974999995, 1.29974999995, 1.44974999995, 1.46668333335, 1.41668333335, 1.36668333335, 1.31668333335, 1.26668333335, 1.21668333335, 1.16668333335, 1.11668333335, 1.06668333335, 1.01668333335, 0.96668333335, 0.91668333335, 0.86668333335, 0.81668333335, 0.76668333335, 0.71668333335, 0.66668333335, 0.61668333335, 0.56668333335, 0.51668333335, 0.46668333335, 0.41668333335, 0.36668333335, 0.31668333335, 0.26668333335, 0.21668333335, 0.16668333335, 0.11668333335, 0.06668333335, 0.01668333335, -5.000000000000143E-5, -5.000000000000143E-5, -5.000000000000143E-5, -5.000000000000143E-5, -5.000000000000143E-5, -5.000000000000143E-5, -5.000000000000143E-5, -5.000000000000143E-5, -5.000000000000143E-5, -5.000000000000143E-5, -5.000000000000143E-5, -5.000000000000143E-5, -5.000000000000143E-5, -5.000000000000143E-5, -5.000000000000143E-5, -5.000000000000143E-5, -5.000000000000143E-5, -5.000000000000143E-5, -5.000000000000143E-5, -5.000000000000143E-5, -5.000000000000143E-5, -5.000000000000143E-5, -5.000000000000143E-5, -5.000000000000143E-5, -5.000000000000143E-5, -5.000000000000143E-5, -5.000000000000143E-5, 0.14969999995, 0.29969999995, 0.44969999995, 0.59969999995, 0.74969999995, 0.89969999995, 1.04969999995, 1.19969999995, 1.34969999995, 1.49969999995, 1.45003333335, 1.40003333335, 1.35003333335, 1.30003333335, 1.25003333335, 1.20003333335, 1.15003333335, 1.10003333335, 1.05003333335, 1.00003333335, 0.95003333335, 0.90003333335, 0.85003333335, 0.80003333335, 0.75003333335, 0.70003333335, 0.65003333335, 0.60003333335, 0.55003333335, 0.50003333335, 0.45003333335, 0.40003333335, 0.35003333335, 0.30003333335, 0.25003333335, 0.20003333335, 0.15003333335, 0.10003333335, 0.05003333335, 3.333334999917892E-5, -5.0E-5, -5.0E-5, -5.0E-5, -5.0E-5, -5.0E-5, -5.0E-5, -5.0E-5, -5.0E-5, -5.0E-5, -5.0E-5, -5.0E-5, -5.0E-5, -5.0E-5, -5.0E-5, -5.0E-5, -5.0E-5, -5.0E-5, -5.0E-5, -5.0E-5, -5.0E-5, -5.0E-5, -5.0E-5, -5.0E-5, -5.0E-5, -5.0E-5, -5.0E-5, 0.04964999995, 0.19964999995, 0.34964999995, 0.49964999995, 0.64964999995, 0.79964999995, 0.94964999995, 1.09964999995, 1.24964999995, 1.39964999995, 1.48338333335, 1.43338333335, 1.38338333335, 1.33338333335, 1.28338333335, 1.23338333335, 1.18338333335, 1.13338333335, 1.08338333335, 1.03338333335, 0.98338333335, 0.93338333335, 0.88338333335, 0.83338333335, 0.78338333335, 0.73338333335, 0.68338333335, 0.63338333335, 0.58338333335, 0.53338333335, 0.48338333335, 0.43338333335, 0.38338333335, 0.33338333335, 0.28338333335, 0.23338333335, 0.18338333335, 0.13338333335, 0.08338333335, 0.03338333335, -5.000000000000143E-5, -5.000000000000143E-5, -5.000000000000143E-5, -5.000000000000143E-5, -5.000000000000143E-5, -5.000000000000143E-5, -5.000000000000143E-5, -5.000000000000143E-5, -5.000000000000143E-5, -5.000000000000143E-5, -5.000000000000143E-5, -5.000000000000143E-5, -5.000000000000143E-5, -5.000000000000143E-5}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{3.0, 3.15, 3.3, 3.45, 3.6, 3.75, 3.9, 4.05, 4.2, 4.35, 4.5, 4.45, 4.4, 4.35, 4.3, 4.25, 4.2, 4.15, 4.1, 4.05, 4.0, 3.95, 3.9, 3.85, 3.8, 3.75, 3.7, 3.65, 3.6, 3.55, 3.5, 3.45, 3.4, 3.35, 3.3, 3.25, 3.2, 3.15, 3.1, 3.05, 3.0, 2.95, 2.9, 2.85, 2.8, 2.75, 2.7, 2.65, 2.6, 2.55, 2.5, 2.45, 2.4, 2.35, 2.3, 2.25, 2.2, 2.15, 2.1, 2.05, 2.0, 2.14995, 2.29995, 2.44995, 2.59995, 2.74995, 2.89995, 3.04995, 3.19995, 3.34995, 3.49995, 3.64995, 3.79995, 3.94995, 4.09995, 4.24995, 4.39995, 4.54995, 4.69995, 4.84995, 4.99995, 5.14995, 5.29995, 5.44995, 5.59995, 5.74995, 5.89995, 6.04995, 6.19995, 6.34995, 6.49995, 6.64995, 6.79995, 6.94995, 7.09995, 7.24995, 7.39995, 7.54995, 7.69995, 7.6648097938, 7.6148097938, 7.5648097938, 7.5148097938, 7.4648097938, 7.4148097938, 7.3648097938, 7.3148097938, 7.2648097938, 7.2148097938, 7.1648097938, 7.1148097938, 7.0648097938, 7.0148097938, 6.9648097938, 6.9148097938, 6.8648097938, 6.8148097938, 6.7648097938, 6.7148097938, 6.6648097938, 6.6148097938, 6.5648097938, 6.5148097938, 6.4648097938, 6.4148097938, 6.3648097938, 6.3148097938, 6.2648097938, 6.2148097938, 6.1648097938, 6.1148097938, 6.0648097938, 6.0148097938, 5.9648097938, 5.9148097938, 5.8648097938, 5.8148097938, 5.7648097938, 5.7148097938, 5.6648097938, 5.6148097938, 5.5648097938, 5.5148097938, 5.4648097938, 5.4148097938, 5.3648097938, 5.3148097938, 5.2648097938, 5.2148097938, 5.3499, 5.4999, 5.6499, 5.7999, 5.9499, 6.0999, 6.2499, 6.3999, 6.5499, 6.6999, 6.6648097938, 6.6148097938, 6.5648097938, 6.5148097938, 6.4648097938, 6.4148097938, 6.3648097938, 6.3148097938, 6.2648097938, 6.2148097938, 6.1648097938, 6.1148097938, 6.0648097938, 6.0148097938, 5.9648097938, 5.9148097938, 5.8648097938, 5.8148097938, 5.7648097938, 5.7148097938, 5.6648097938, 5.6148097938, 5.5648097938, 5.5148097938, 5.4648097938, 5.4148097938, 5.3648097938, 5.3148097938, 5.2648097938, 5.2148097938, 5.1648097938, 5.1148097938, 5.0648097938, 5.0148097938, 4.9648097938, 4.9148097938, 4.8648097938, 4.8148097938, 4.7648097938, 4.7148097938, 4.6648097938, 4.6148097938, 4.5648097938, 4.5148097938, 4.4648097938, 4.4148097938, 4.3648097938, 4.3148097938, 4.2648097938, 4.2148097938, 4.34985, 4.49985, 4.64985, 4.79985, 4.94985, 5.09985, 5.24985, 5.39985, 5.54985, 5.69985, 5.6648097938, 5.6148097938, 5.5648097938, 5.5148097938, 5.4648097938, 5.4148097938, 5.3648097938, 5.3148097938, 5.2648097938, 5.2148097938, 5.1648097938, 5.1148097938, 5.0648097938, 5.0148097938, 4.9648097938, 4.9148097938, 4.8648097938, 4.8148097938, 4.7648097938, 4.7148097938, 4.6648097938, 4.6148097938, 4.5648097938, 4.5148097938, 4.4648097938, 4.4148097938, 4.3648097938, 4.3148097938, 4.2648097938, 4.2148097938, 4.1648097938, 4.1148097938, 4.0648097938, 4.0148097938, 3.9648097938, 3.9148097938, 3.8648097938, 3.8148097938, 3.7648097938, 3.7148097938, 3.6648097938, 3.6148097938, 3.5648097938, 3.5148097938, 3.4648097938, 3.4148097938, 3.3648097938, 3.3148097938, 3.2648097938, 3.2148097938, 3.3498, 3.4998, 3.6498, 3.7998, 3.9498, 4.0998, 4.2498, 4.3998, 4.5498, 4.6998, 4.6648097938, 4.6148097938, 4.5648097938, 4.5148097938, 4.4648097938, 4.4148097938, 4.3648097938, 4.3148097938, 4.2648097938, 4.2148097938, 4.1648097938, 4.1148097938, 4.0648097938, 4.0148097938, 3.9648097938, 3.9148097938, 3.8648097938, 3.8148097938, 3.7648097938, 3.7148097938, 3.6648097938, 3.6148097938, 3.5648097938, 3.5148097938, 3.4648097938, 3.4148097938, 3.3648097938001, 3.3148097938001, 3.2648097938001, 3.2148097938001, 3.1648097938001, 3.1148097938001, 3.0648097938001, 3.0148097938001, 2.9648097938001, 2.9148097938001, 2.8648097938001, 2.8148097938001, 2.7648097938001, 2.7148097938001, 2.6648097938001, 2.6148097938001, 2.5648097938001, 2.5148097938001, 2.4648097938001, 2.4148097938001, 2.3648097938001, 2.3148097938001, 2.2648097938001, 2.2148097938001, 2.3497500000001, 2.4997500000001, 2.6497500000001, 2.7997500000001, 2.9497500000001, 3.0997500000001, 3.2497500000001, 3.3997500000001, 3.5497500000001, 3.6997500000001, 3.6648097938001, 3.6148097938001, 3.5648097938001, 3.5148097938001, 3.4648097938001, 3.4148097938001, 3.3648097938001, 3.3148097938001, 3.2648097938001, 3.2148097938001, 3.1648097938001, 3.1148097938001, 3.0648097938001, 3.0148097938001, 2.9648097938001, 2.9148097938001, 2.8648097938001, 2.8148097938001, 2.7648097938001, 2.7148097938001, 2.6648097938001, 2.6148097938001, 2.5648097938001, 2.5148097938001, 2.4648097938001, 2.4148097938001, 2.3648097938001, 2.3148097938001, 2.2648097938001, 2.2148097938001, 2.1648097938001, 2.1148097938001, 2.0648097938001, 2.0148097938001, 1.9648097938001, 1.9148097938001, 1.8648097938001, 1.8148097938001, 1.7648097938001, 1.7148097938001, 1.6648097938001, 1.6148097938001, 1.5648097938001, 1.5148097938001, 1.4648097938001, 1.4148097938001, 1.3648097938001, 1.3148097938001, 1.2648097938001, 1.2148097938001, 1.3497000000001, 1.4997000000001, 1.6497000000001, 1.7997000000001, 1.9497000000001, 2.0997000000001, 2.2497000000001, 2.3997000000001, 2.5497000000001, 2.6997000000001, 2.6648097938001, 2.6148097938001, 2.5648097938001, 2.5148097938001, 2.4648097938001, 2.4148097938001, 2.3648097938001, 2.3148097938001, 2.2648097938001, 2.2148097938001, 2.1648097938001, 2.1148097938001, 2.0648097938001, 2.0148097938001, 1.9648097938001, 1.9148097938001, 1.8648097938001, 1.8148097938001, 1.7648097938001, 1.7148097938001, 1.6648097938001, 1.6148097938001, 1.5648097938001, 1.5148097938001, 1.4648097938001, 1.4148097938001, 1.3648097938001, 1.3148097938001, 1.2648097938001, 1.2148097938001, 1.1648097938001, 1.1148097938001, 1.0648097938001, 1.0148097938001, 0.9648097938001, 0.9148097938001, 0.8648097938001, 0.8148097938001, 0.7648097938001, 0.7148097938001, 0.6648097938001, 0.6148097938001, 0.5648097938001, 0.5148097938001, 0.4648097938001, 0.4148097938001, 0.3648097938001, 0.3148097938001, 0.2648097938001, 0.2148097938001, 0.3496500000001, 0.4996500000001, 0.6496500000001, 0.7996500000001, 0.9496500000001, 1.0996500000001, 1.2496500000001, 1.3996500000001, 1.5496500000001, 1.6996500000001, 1.6648097938001, 1.6148097938001, 1.5648097938001, 1.5148097938001, 1.4648097938001, 1.4148097938001, 1.3648097938001, 1.3148097938001, 1.2648097938001, 1.2148097938001, 1.1648097938001, 1.1148097938001, 1.0648097938001, 1.0148097938001, 0.9648097938001, 0.9148097938001, 0.8648097938001, 0.8148097938001, 0.7648097938001, 0.7148097938001, 0.6648097938001, 0.6148097938001, 0.5648097938001, 0.5148097938001, 0.4648097938001, 0.4148097938001, 0.3648097938001, 0.3148097938001, 0.2648097938001, 0.2148097938001, 0.1648097938001, 0.1148097938001, 0.0648097938001, 0.0148097938001, -4.99999999999997E-5, -4.99999999999997E-5, -4.99999999999997E-5, -4.99999999999997E-5, -4.99999999999997E-5, -4.99999999999997E-5, -4.99999999999997E-5, -4.99999999999997E-5}">
+        </property>
+        <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-4">
         </property>
         <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[550.0, 210.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[560.0, 210.0]">
         </property>
     </entity>
     <entity name="NonStrictTest2" class="ptolemy.actor.lib.NonStrictTest">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0, 1, 2, 1, 2, 3, 2, 3, 4, 3, 4, 5, 4, 5, 6, 5, 6, 7, 6, 7, 8, 7, 8, 9}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{10.0, 10.0, 10.0, 10.0, 10.0, 10.0, 10.0}">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[555.0, 365.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[565.0, 275.0]">
         </property>
     </entity>
     <entity name="NonStrictTest3" class="ptolemy.actor.lib.NonStrictTest">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{10.0, 10.0, 10.0, 10.0, 10.0, 10.0, 10.0}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0, 0, 0, 1, 2, 3, 4, 3, 4, 3, 4, 3, 4, 5, 4, 5, 4, 5, 6, 7, 6, 7}">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[550.0, 300.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[570.0, 330.0]">
         </property>
     </entity>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="[450.0, 300.0]">
+        <vertex name="vertex1" value="[455.0, 300.0]">
         </vertex>
     </relation>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="[96.5625, 300.0]">
+        <vertex name="vertex1" value="[100.0, 300.0]">
         </vertex>
     </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
@@ -774,7 +766,6 @@
     <link port="ModalModel.job" relation="relation2"/>
     <link port="ModalModel.jobDone" relation="relation3"/>
     <link port="ModalModel.RMBufferLevel" relation="relation7"/>
-    <link port="Clock.output" relation="relation"/>
     <link port="Queue.input" relation="relation"/>
     <link port="Queue.output" relation="relation6"/>
     <link port="Queue.trigger" relation="relation8"/>
@@ -785,8 +776,9 @@
     <link port="Merge.input" relation="relation9"/>
     <link port="Merge.input" relation="relation4"/>
     <link port="Merge.output" relation="relation8"/>
+    <link port="PoissonClock.output" relation="relation"/>
     <link port="NonStrictTest.input" relation="relation7"/>
-    <link port="NonStrictTest2.input" relation="relation10"/>
-    <link port="NonStrictTest3.input" relation="relation3"/>
+    <link port="NonStrictTest2.input" relation="relation3"/>
+    <link port="NonStrictTest3.input" relation="relation10"/>
     <link relation1="relation3" relation2="relation4"/>
 </entity>
