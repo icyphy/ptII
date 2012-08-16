@@ -1869,6 +1869,14 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
             System.out.println("BasicGraphFrame._close() : " + this.getName());
         }
 
+        try {
+            _updateWindowAttributes();
+        } catch (KernelException ex) {
+            // Ignore problems here.  Errors simply result in a default
+            // size and location.
+            System.out.println("While closing, failed to update size, position or zoom factor: " + ex);
+        }
+
         boolean result = super._close();
 
         if (result) {
@@ -2822,75 +2830,12 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
      *  @exception IOException If the write fails.
      */
     protected void _writeFile(File file) throws IOException {
-        // First, record size and position.
         try {
-            // Record the position of the top-level frame, assuming
-            // there is one.
-            Component component = _getRightComponent().getParent();
-            Component parent = component.getParent();
-
-            while ((parent != null) && !(parent instanceof Frame)) {
-                component = parent;
-                parent = component.getParent();
-            }
-
-            // If there is no parent that is a Frame, do nothing.
-            // We know that: (parent == null) || (parent instanceof Frame)
-            if (parent != null) {
-                WindowPropertiesAttribute properties = (WindowPropertiesAttribute) getModel()
-                        .getAttribute("_windowProperties",
-                                WindowPropertiesAttribute.class);
-
-                if (properties == null) {
-                    properties = new WindowPropertiesAttribute(getModel(),
-                            "_windowProperties");
-                }
-
-                properties.recordProperties((Frame) parent);
-            }
-
-            _createSizeAttribute();
-
-            // Also record zoom and pan state.
-            JCanvas canvas = getJGraph().getGraphPane().getCanvas();
-            AffineTransform current = canvas.getCanvasPane()
-                    .getTransformContext().getTransform();
-
-            // We assume the scaling in the X and Y directions are the same.
-            double scale = current.getScaleX();
-            Parameter zoom = (Parameter) getModel().getAttribute(
-                    "_vergilZoomFactor", Parameter.class);
-
-            if (zoom == null) {
-                // NOTE: This will not propagate.
-                zoom = new ExpertParameter(getModel(), "_vergilZoomFactor");
-            }
-
-            zoom.setToken(new DoubleToken(scale));
-
-            // Make sure the visibility is only expert.
-            zoom.setVisibility(Settable.EXPERT);
-
-            // Save the center, to record the pan state.
-            Point2D center = getCenter();
-            Parameter pan = (Parameter) getModel().getAttribute(
-                    "_vergilCenter", Parameter.class);
-
-            if (pan == null) {
-                // NOTE: This will not propagate.
-                pan = new ExpertParameter(getModel(), "_vergilCenter");
-            }
-
-            Token[] centerArray = new Token[2];
-            centerArray[0] = new DoubleToken(center.getX());
-            centerArray[1] = new DoubleToken(center.getY());
-            pan.setToken(new ArrayToken(centerArray));
-
-            // Make sure the visibility is only expert.
-            pan.setVisibility(Settable.EXPERT);
-        } catch (Throwable throwable) {
-            // Ignore problems here.  Errors simply result in a default
-            // size and location.
+            _updateWindowAttributes();
+        } catch (KernelException ex) {
+            // Ignore problems here.  Errors simply result in a
+            // default size and location.
+            System.out.println("While writing, failed to save size, position or zoom factor: " + ex);
         }
 
         if (_isDesignPattern()) {
@@ -3202,6 +3147,125 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
         return null;
     }
     
+    /** Update the size, zoom and position of the window.
+     *  This method is typically called when closing the window
+     *  or writing the moml file out.
+     *  @exception IllegalActionException If there is a problem
+     *  getting a parameter.
+     *  @exception NameDuplicationException If there is a problem
+     *  creating a parameter.
+     */
+    private void _updateWindowAttributes()
+             throws IllegalActionException, NameDuplicationException {
+        // First, record size and position.
+
+        // See "composite window size & position not always saved"
+        // http://bugzilla.ecoinformatics.org/show_bug.cgi?id=5637
+
+        // Record the position of the top-level frame, assuming
+        // there is one.
+        Component component = _getRightComponent().getParent();
+        Component parent = component.getParent();
+
+        while ((parent != null) && !(parent instanceof Frame)) {
+            component = parent;
+            parent = component.getParent();
+        }
+
+        // If there is no parent that is a Frame, do nothing.
+        // We know that: (parent == null) || (parent instanceof Frame)
+        if (parent != null) {
+            WindowPropertiesAttribute properties = (WindowPropertiesAttribute) getModel()
+                .getAttribute("_windowProperties",
+                        WindowPropertiesAttribute.class);
+            
+            if (properties == null) {
+                properties = new WindowPropertiesAttribute(getModel(),
+                        "_windowProperties");
+            }
+            
+            // This method uses MoMLChangeRequest
+            properties.recordProperties((Frame) parent);
+        }
+
+        _createSizeAttribute();
+
+        // Also record zoom and pan state.
+        JCanvas canvas = getJGraph().getGraphPane().getCanvas();
+        AffineTransform current = canvas.getCanvasPane()
+            .getTransformContext().getTransform();
+
+        // We assume the scaling in the X and Y directions are the same.
+        double scale = current.getScaleX();
+        Parameter zoom = (Parameter) getModel().getAttribute(
+                "_vergilZoomFactor", Parameter.class);
+
+        boolean updateValue = false;
+        if (zoom == null) {
+            // NOTE: This will not propagate.
+            zoom = new ExpertParameter(getModel(), "_vergilZoomFactor");
+            updateValue = true;
+        } else {
+            double oldZoom = ((DoubleToken)zoom.getToken()).doubleValue();
+            if (oldZoom != scale) {
+                updateValue = true;
+            }
+        }
+
+        if (updateValue) {
+            // Don't call setToken(), instead use a MoMLChangeRequest so that
+            // the model is marked modified so that any changes are preserved.
+            //zoom.setToken(new DoubleToken(scale));
+            String moml = "<property name=\"_vergilZoomFactor\" "
+                + " value=\"" + scale + "\"/>";
+            MoMLChangeRequest request = new MoMLChangeRequest(this,
+                    getModel(), moml);
+            request.setUndoable(true);
+            getModel().requestChange(request);
+
+            // Make sure the visibility is only expert.
+            zoom.setVisibility(Settable.EXPERT);
+        }
+
+        // Save the center, to record the pan state.
+        Point2D center = getCenter();
+        Parameter pan = (Parameter) getModel().getAttribute(
+                "_vergilCenter", Parameter.class);
+
+        updateValue = false;
+        if (pan == null) {
+            // NOTE: This will not propagate.
+            pan = new ExpertParameter(getModel(), "_vergilCenter");
+            updateValue = true;
+        } else {
+            Token[] oldCenter = ((ArrayToken)pan.getToken()).arrayValue();
+            double oldCenterX = ((DoubleToken)oldCenter[0]).doubleValue();
+            double oldCenterY = ((DoubleToken)oldCenter[1]).doubleValue();
+            if (center.getX() != oldCenterX
+                    || center.getY() != oldCenterY) {
+                updateValue = true;
+            }
+        }
+
+        if (updateValue) {
+            //Token[] centerArray = new Token[2];
+            //centerArray[0] = new DoubleToken(center.getX());
+            //centerArray[1] = new DoubleToken(center.getY());
+            //pan.setToken(new ArrayToken(centerArray));
+
+            String moml = "<property name=\"_vergilCenter\" "
+                + " value=\"{" + center.getX()
+                + ", " + center.getY() + "}\"/>";
+            MoMLChangeRequest request = new MoMLChangeRequest(this,
+                    getModel(), moml);
+            request.setUndoable(true);
+            getModel().requestChange(request);
+
+            // Make sure the visibility is only expert.
+            pan.setVisibility(Settable.EXPERT);
+        }
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
