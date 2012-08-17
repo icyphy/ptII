@@ -723,11 +723,7 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable, 
 	        }
 	    }
 
-	    /** FIXME : roxana gheorghiu
-	     * I commented this out because now I will add the libraries from the actor's parameter
-	     */
-           // printWriter.println("<link rel=\"stylesheet\" type=\"text/css\" href=\"" + jsLibrary + "javascript/" + FILENAMES[2] + "\" media=\"screen\"/>");
-	    /*
+	    printWriter.println("<link rel=\"stylesheet\" type=\"text/css\" href=\"" + jsLibrary + "javascript/" + FILENAMES[2] + "\" media=\"screen\"/>");
 	    if (usePtWebsite) {
 	        // FIXME: this absolute path is not very safe.  The
 	        // problem is that we don't know where $PTII is located on
@@ -735,18 +731,18 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable, 
 	        printWriter.println("<link href=\""
 	                + ssiRoot
 	                + "ptolemyII/ptIIlatest/ptII/doc/default.css\" rel=\"stylesheet\" type=\"text/css\"/>");
-	    }*/
+	    }
 
 	    // Title needed for the HTML validator.
 	    printWriter.println("<title>" + _title + "</title>");
 
             // NOTE: Due to a bug somewhere (browser, Javascript, etc.), can't end this with />. Have to use </script>.
-   // printWriter.println("<script type=\"text/javascript\" src=\"" + jsLibrary + "javascript/" + FILENAMES[0] + "\"></script>");
-   // printWriter.println("<script type=\"text/javascript\" src=\"" + jsLibrary + "javascript/" + FILENAMES[1] + "\"></script>");
+	    printWriter.println("<script type=\"text/javascript\" src=\"" + jsLibrary + "javascript/" + FILENAMES[0] + "\"></script>");
+	    printWriter.println("<script type=\"text/javascript\" src=\"" + jsLibrary + "javascript/" + FILENAMES[1] + "\"></script>");
 
             // FILENAMES[2] is a stylesheet <link, so it goes in the head, see above.
 
-    //printWriter.println("<script type=\"text/javascript\" src=\"" + jsLibrary + "javascript/" + FILENAMES[3] + "\"></script>");
+	    printWriter.println("<script type=\"text/javascript\" src=\"" + jsLibrary + "javascript/" + FILENAMES[3] + "\"></script>");
             // Could alternatively use a CDS (Content Delivery Service) for the JavaScript library for jquery.
             // index.println("<script type=\"text/javascript\" src=\"http://ajax.googleapis.com/ajax/libs/jquery/1.4/jquery.min.js\"></script>");
 
