@@ -29,6 +29,7 @@
 package ptolemy.actor.lib.hoc;
 
 import java.io.File;
+import java.net.URI;
 import java.net.URL;
 import java.util.Iterator;
 
@@ -51,6 +52,7 @@ import ptolemy.data.expr.StringParameter;
 import ptolemy.data.expr.Variable;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.attributes.URIAttribute;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
@@ -328,8 +330,17 @@ public class ModelReference extends TypedAtomicActor implements
                 MoMLParser parser = new MoMLParser();
 
                 try {
-                    _model = parser.parse(null, url);
+                    // It is possible for the specified model to actually
+                    // be the model that contains this ModelReference, which is an
+                    // error. To prevent arcane stack overflow exceptions, catch this.
+                    URI myURI = URIAttribute.getModelURI(this);
                     
+                    if (myURI != null && myURI.toURL().toExternalForm().equals(url.toExternalForm())) {
+                        throw new IllegalActionException(this, "Cannot reference my own container.");
+                    }
+
+                    _model = parser.parse(null, url);
+                                        
                     // If we choose the option to spawn models of the same URL separately
                     // then get rid of the spawned model.
                     if (((BooleanToken) spawnSeparateModels.getToken())
