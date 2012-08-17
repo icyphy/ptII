@@ -1,0 +1,241 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="FixFIR" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.0.devel">
+    </property>
+    <property name="SDFDirector" class="ptolemy.domains.sdf.kernel.SDFDirector">
+        <property name="iterations" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="67.71429443359375, 39.0">
+        </property>
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[605, 524]">
+    </property>
+    <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[102, 152]">
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={17, 22, 839, 634}, maximized=false}">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{302.5, 262.0}">
+    </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model compares three realizations of an FIR filter.&#10;The top one has fixed-point inputs and coefficients.&#10;The middle one uses only double precision.&#10;The bottom one has quantized coefficients, but performs&#10;arithmetic using double precision.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[190.0, 10.0]">
+        </property>
+    </property>
+    <entity name="Impulse" class="ptolemy.actor.lib.Pulse">
+        <property name="indexes" class="ptolemy.data.expr.Parameter" value="{0}">
+        </property>
+        <property name="values" class="ptolemy.data.expr.Parameter" value="{1}">
+        </property>
+        <property name="repeat" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="45.0, 225.0">
+        </property>
+    </entity>
+    <entity name="FIR Double Precision" class="ptolemy.domains.sdf.lib.FIR">
+        <property name="taps" class="ptolemy.data.expr.Parameter" value="{-0.040609, -0.001628, 0.17853, 0.37665, 0.37665, 0.17853, -0.001628, -0.040609}">
+        </property>
+        <property name="FIRIcon" class="ptolemy.vergil.icon.EditorIcon">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {104, 129, 815, 509}, maximized = false}">
+            </property>
+            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="240.0, 225.0">
+        </property>
+    </entity>
+    <entity name="FIR Quantized Coefficients" class="ptolemy.domains.sdf.lib.FIR">
+        <property name="taps" class="ptolemy.data.expr.Parameter" value="{quantize(-.040609, 8, 2), quantize(-.001628, 8, 2), quantize(.17853, 8, 2), quantize(.37665, 8, 2), quantize(.37665, 8, 2), quantize(.17853, 8, 2), quantize(-.001628, 8, 2), quantize(-.040609, 8, 2)}">
+        </property>
+        <property name="FIRIcon" class="ptolemy.vergil.icon.EditorIcon">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {104, 129, 815, 509}, maximized = false}">
+            </property>
+            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="240.0, 285.0">
+        </property>
+    </entity>
+    <entity name="FIR Fixed Point" class="ptolemy.domains.sdf.lib.FIR">
+        <property name="taps" class="ptolemy.data.expr.Parameter" value="{fix(-.040609, 6, 2), fix(-.001628, 6, 2), fix(.17853, 6, 2), fix(.37665, 6, 2), fix(.37665, 6, 2), fix(.17853, 6, 2), fix(-.001628, 6, 2), fix(-.040609, 6, 2)}">
+        </property>
+        <property name="FIRIcon" class="ptolemy.vergil.icon.EditorIcon">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {104, 129, 815, 509}, maximized = false}">
+            </property>
+            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[240.0, 145.0]">
+        </property>
+    </entity>
+    <entity name="FixToDouble" class="ptolemy.actor.lib.conversions.FixToDouble">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[325.0, 145.0]">
+        </property>
+    </entity>
+    <entity name="Spectrum1" class="ptolemy.domains.sdf.lib.Spectrum">
+        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[604, 454]">
+        </property>
+        <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[102, 100]">
+        </property>
+        <property name="AnnotationUpdated" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+            <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+            <property name="_hideAllParameters" class="ptolemy.data.expr.Parameter" value="true">
+            </property>
+            <property name="textSize" class="ptolemy.data.expr.Parameter" value="14">
+            </property>
+            <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+            </property>
+            <property name="fontFamily" class="ptolemy.data.expr.StringParameter" value="SansSerif">
+            </property>
+            <property name="bold" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="italic" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This composite actor produces a magnitude-only&#10;frequency-domain representation of the input.&#10;The number of inputs required to produce any&#10;output is 2^order, and the number of outputs&#10;produced will be 2^order.  The output represents&#10;frequencies from -pi to pi radians per second,&#10;centered at zero frequency.">
+                <property name="_style" class="ptolemy.actor.gui.style.TextStyle">
+                    <property name="height" class="ptolemy.data.expr.Parameter" value="20">
+                    </property>
+                    <property name="width" class="ptolemy.data.expr.Parameter" value="80">
+                    </property>
+                </property>
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{406.0, 72.0}">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{415.0, 165.0}">
+        </property>
+    </entity>
+    <entity name="Spectrum2" class="ptolemy.domains.sdf.lib.Spectrum">
+        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[604, 454]">
+        </property>
+        <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[102, 100]">
+        </property>
+        <property name="AnnotationUpdated" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+            <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+            <property name="_hideAllParameters" class="ptolemy.data.expr.Parameter" value="true">
+            </property>
+            <property name="textSize" class="ptolemy.data.expr.Parameter" value="14">
+            </property>
+            <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+            </property>
+            <property name="fontFamily" class="ptolemy.data.expr.StringParameter" value="SansSerif">
+            </property>
+            <property name="bold" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="italic" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This composite actor produces a magnitude-only&#10;frequency-domain representation of the input.&#10;The number of inputs required to produce any&#10;output is 2^order, and the number of outputs&#10;produced will be 2^order.  The output represents&#10;frequencies from -pi to pi radians per second,&#10;centered at zero frequency.">
+                <property name="_style" class="ptolemy.actor.gui.style.TextStyle">
+                    <property name="height" class="ptolemy.data.expr.Parameter" value="20">
+                    </property>
+                    <property name="width" class="ptolemy.data.expr.Parameter" value="80">
+                    </property>
+                </property>
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{406.0, 72.0}">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="415.0, 225.0">
+        </property>
+    </entity>
+    <entity name="Spectrum3" class="ptolemy.domains.sdf.lib.Spectrum">
+        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[604, 454]">
+        </property>
+        <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[102, 100]">
+        </property>
+        <property name="AnnotationUpdated" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+            <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+            <property name="_hideAllParameters" class="ptolemy.data.expr.Parameter" value="true">
+            </property>
+            <property name="textSize" class="ptolemy.data.expr.Parameter" value="14">
+            </property>
+            <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+            </property>
+            <property name="fontFamily" class="ptolemy.data.expr.StringParameter" value="SansSerif">
+            </property>
+            <property name="bold" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="italic" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This composite actor produces a magnitude-only&#10;frequency-domain representation of the input.&#10;The number of inputs required to produce any&#10;output is 2^order, and the number of outputs&#10;produced will be 2^order.  The output represents&#10;frequencies from -pi to pi radians per second,&#10;centered at zero frequency.">
+                <property name="_style" class="ptolemy.actor.gui.style.TextStyle">
+                    <property name="height" class="ptolemy.data.expr.Parameter" value="20">
+                    </property>
+                    <property name="width" class="ptolemy.data.expr.Parameter" value="80">
+                    </property>
+                </property>
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{406.0, 72.0}">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="415.0, 285.0">
+        </property>
+    </entity>
+    <entity name="DoubleToFix" class="ptolemy.actor.lib.conversions.DoubleToFix">
+        <property name="quantization" class="ptolemy.kernel.util.StringAttribute" value="round">
+            <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
+                <property name="round" class="ptolemy.kernel.util.StringAttribute" value="round">
+                </property>
+                <property name="truncate" class="ptolemy.kernel.util.StringAttribute" value="truncate">
+                </property>
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[145.0, 145.0]">
+        </property>
+    </entity>
+    <entity name="Test" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{{-100.0, -100.0, -100.0}, {-68.3394139908786, -74.9235858321392, -70.8373153114486}, {-62.3627202002403, -68.9549151064374, -64.8579849072861}, {-58.914301320508, -65.5199734854193, -61.4051165068585}, {-56.5187822112216, -63.1435477929004, -59.0032501967981}, {-54.7141859263698, -61.3638955700468, -57.1902861718922}, {-53.2951730546287, -59.9759927895842, -55.7607195924722}, {-52.1526925546264, -58.8711964492623, -54.6052851861077}, {-51.2221822320635, -57.9854610940039, -53.659149324818}, {-50.4625839304718, -57.2783756529632, -52.8809140600421}, {-49.8465125305844, -56.723361598425, -52.2427713793054}, {-49.3551603403364, -56.3026168116317, -51.7253880920141}, {-48.9754581841458, -56.0043306303441, -51.3150409791623}, {-48.6984140269456, -55.8210972179042, -51.0019206281395}, {-48.5181161022316, -55.7490239711471, -50.7790873868938}, {-48.4311413963877, -55.787291276122, -50.6418150212973}, {-48.4362352178027, -55.9380545676317, -50.5871797913089}, {-48.5341957336113, -56.2066651431466, -50.6138163568042}, {-48.7279407726771, -56.6022616757643, -50.7217978827748}, {-49.0227696776136, -57.1388821330483, -50.9126203135755}, {-49.4268728881078, -57.8374137092493, -51.1892875776298}, {-49.9522010540219, -58.7290392498968, -51.5565103298046}, {-50.6159100434114, -59.8616180374056, -52.0210501785669}, {-51.4428053269596, -61.3124449436248, -52.5922701841884}, {-52.4696593631783, -63.2168091474616, -53.283001362826}, {-53.7533552247185, -65.8435982990855, -54.1109256472518}, {-55.3877318334032, -69.8588757034624, -55.1008568275758}, {-57.5433021931179, -77.9734353898336, -56.2886914027979}, {-60.5814278717821, -82.7967265451374, -57.728722903607}, {-65.517960692654, -71.3070222028074, -59.5084522538957}, {-78.8008457031981, -66.5668762827158, -61.7825443260788}, {-70.3090932906203, -63.5851839928744, -64.8664170573518}, {-62.7881336381704, -61.4549255719668, -69.5877803561137}, {-58.8536420900362, -59.8440693137644, -80.0173758499728}, {-56.2093420231458, -58.5954138464837, -78.3776225627904}, {-54.2504917436952, -57.6240377074008, -69.7475133488839}, {-52.7273043616077, -56.8810741578801, -65.8253919538375}, {-51.5130397543704, -56.3384551230556, -63.4259206124249}, {-50.5353800203434, -55.9819238248621, -61.8325161943022}, {-49.7500847793339, -55.8079933134568, -60.7742844395154}, {-49.1291453805823, -55.8233081694405, -60.1305117340365}, {-48.6548966477794, -56.0461151377606, -59.8513077143295}, {-48.316934707466, -56.5105403221042, -59.9330047847438}, {-48.1105349414027, -57.2759906931445, -60.4166546593855}, {-48.0360054848468, -58.4481302703233, -61.4079884003812}, {-48.0987685907168, -60.2315708900395, -63.1433879224662}, {-48.3101958025919, -63.0947183405342, -66.224054378504}, {-48.6894713108169, -68.5595827584634, -72.9920438237821}, {-49.2671732038842, -100.0, -80.0957532136359}, {-50.0921688046601, -66.9635673156413, -66.3309783308185}, {-51.2457613599313, -60.4795296817899, -60.6473112215109}, {-52.8741544078302, -56.458733189607, -56.8483131292586}, {-55.2773030462115, -53.4711504458782, -53.9311442116861}, {-59.2369510508807, -51.0624010294954, -51.5351218663277}, {-68.4239612956656, -49.0283828559871, -49.4880737740011}, {-67.6245252158134, -47.2594179791216, -47.6938470023811}, {-57.7729019204945, -45.6895526367208, -46.0929979865793}, {-52.9573991996512, -44.2759118256828, -44.6460461444544}, {-49.6647430376439, -42.98897517527, -43.3253304050071}, {-47.1280514720898, -41.807498087515, -42.110651399856}, {-45.0490712658456, -40.7156446898105, -40.9867631576318}, {-43.2800344983704, -39.7012678965129, -39.9418438217661}, {-41.7367092242847, -38.7548257976024, -38.9665186909212}, {-40.3664062132005, -37.8686708003182, -38.0532114700393}, {-39.1338994363175, -37.0365672023276, -37.1956991761564}, {-38.0144259517556, -36.2533541780506, -36.388798123573}, {-36.9898803777066, -35.5147043896992, -35.6281369681677}, {-36.0465992362916, -34.81694727615, -34.9099891715554}, {-35.173998745037, -34.1569371775523, -34.2311470007881}, {-34.363699289313, -33.5319532225878, -33.5888251811678}, {-33.6089415103247, -32.9396221552793, -32.9805861201522}, {-32.9041845027944, -32.377858017508, -32.4042810889921}, {-32.2448217986166, -31.8448144107455, -31.8580033893678}, {-31.6269758663526, -31.338846278318, -31.3400506452663}, {-31.0473463403305, -30.8584789858503, -30.8488941295433}, {-30.503095874082, -30.4023830618811, -30.3831535752995}, {-29.9917628825084, -29.9693533754207, -29.9415763081913}, {-29.5111938523147, -29.5582918259318, -29.5230198152892}, {-29.0594901267291, -29.1681928392222, -29.1264370711519}, {-28.6349655545865, -28.7981311238292, -28.7508640940604}, {-28.2361124030195, -28.4472512628793, -28.3954093197322}, {-27.8615736317791, -28.1147588073804, -28.0592444666565}, {-27.5101201191246, -27.7999126063324, -27.7415966337563}, {-27.1806317808044, -27.5020181625434, -27.4417414226117}, {-26.8720817784672, -27.2204218446399, -27.1589969167288}, {-26.5835232009471, -26.9545058183987, -26.8927183820569}, {-26.3140777409312, -26.7036835863492, -26.6422935781771}, {-26.062925994066, -26.4673960451985, -26.4071385898023}, {-25.829299087044, -26.2451079872071, -26.1866941045909}, {-25.6124714022656, -26.036304985084, -25.980422076621}, {-25.4117542140869, -25.8404906109669, -25.7878027258717}, {-25.2264900888606, -25.6571839491161, -25.6083318331971}, {-25.0560479304809, -25.4859173694875, -25.4415182979545}, {-24.8998185768, -25.326234535661, -25.2868819319543}, {-24.7572108714793, -25.1776886259275, -25.1439514689636}, {-24.6276481515909, -25.0398407508621, -25.0122627738054}, {-24.5105651043841, -24.9122585545706, -24.8913572392742}, {-24.4054049576464, -24.7945149900976, -24.7807803627462}, {-24.3116169774663, -24.6861872623093, -24.6800804975717}, {-24.2286542552655, -24.5868559339618, -24.58880777714}, {-24.1559717729488, -24.4961041926802, -24.5065132119455}, {-24.0930247410797, -24.4135172782255, -24.4327479620576}, {-24.0392672102363, -24.3386820707297, -24.3670627891127}, {-23.9941509601866, -24.2711868415259, -24.3090076932855}, {-23.957124675247, -24.2106211688009, -24.2581317416303}, {-23.9276334171381, -24.1565760205222, -24.2139830946835}, {-23.9051184087556, -24.1086440069417, -24.1761092382414}, {-23.8890171434533, -24.0664198044306, -24.1440574267316}, {-23.8787638345965, -24.02950075145, -24.1173753435477}, {-23.8737902191655, -23.9974876160968, -24.0956119820748}, {-23.873526726977, -23.9699855328988, -24.0783187488786}, {-23.8774040235547, -23.9466051043654, -24.065050787661}, {-23.8848549297519, -23.9269636602766, -24.0553685191005}, {-23.8953167149026, -23.9106866648451, -24.0488393876627}, {-23.9082337525946, -23.897409258788, -24.045039801923}, {-23.9230605192398, -23.8867779200662, -24.0435572500293}, {-23.9392649056695, -23.8784522237125, -24.0439925667597}, {-23.9563318013203, -23.8721066778681, -24.0459623233958}, {-23.9737668995809, -23.8674326100368, -24.0491013065205}, {-23.9911006620524, -23.8641400747771, -24.0530650471155}, {-24.0078923693794, -23.8619597517311, -24.0575323571947}, {-24.0237341775599, -23.8606448011862, -24.0622078279397}, {-24.0382550918454, -23.8599726434003, -24.0668242411166}, {-24.0511247660966, -23.8597466278097, -24.071144844668}, {-24.0620570342587, -23.8597975590584, -24.0749654439476}, {-24.070813082839, -23.8599850485819, -24.0781162622}, {-24.077204179111, -23.8601986632492, -24.0804635276127}, {-24.0810938792119, -23.8603588462639, -24.0819107495336}, {-24.0823996531185, -23.8604175900718, -24.0823996531185}, {-24.0810938792119, -23.8603588462639, -24.0819107495336}, {-24.077204179111, -23.8601986632492, -24.0804635276127}, {-24.070813082839, -23.8599850485819, -24.0781162622}, {-24.0620570342587, -23.8597975590584, -24.0749654439476}, {-24.0511247660966, -23.8597466278097, -24.071144844668}, {-24.0382550918454, -23.8599726434003, -24.0668242411166}, {-24.0237341775599, -23.8606448011862, -24.0622078279397}, {-24.0078923693794, -23.8619597517311, -24.0575323571947}, {-23.9911006620524, -23.8641400747771, -24.0530650471155}, {-23.9737668995809, -23.8674326100368, -24.0491013065205}, {-23.9563318013203, -23.8721066778681, -24.0459623233958}, {-23.9392649056695, -23.8784522237125, -24.0439925667597}, {-23.9230605192398, -23.8867779200662, -24.0435572500293}, {-23.9082337525946, -23.897409258788, -24.045039801923}, {-23.8953167149026, -23.9106866648451, -24.0488393876627}, {-23.8848549297519, -23.9269636602766, -24.0553685191005}, {-23.8774040235547, -23.9466051043654, -24.065050787661}, {-23.873526726977, -23.9699855328988, -24.0783187488786}, {-23.8737902191655, -23.9974876160968, -24.0956119820748}, {-23.8787638345965, -24.02950075145, -24.1173753435477}, {-23.8890171434533, -24.0664198044306, -24.1440574267316}, {-23.9051184087556, -24.1086440069417, -24.1761092382414}, {-23.9276334171381, -24.1565760205222, -24.2139830946835}, {-23.957124675247, -24.2106211688009, -24.2581317416303}, {-23.9941509601866, -24.2711868415259, -24.3090076932855}, {-24.0392672102363, -24.3386820707297, -24.3670627891127}, {-24.0930247410797, -24.4135172782255, -24.4327479620576}, {-24.1559717729488, -24.4961041926802, -24.5065132119455}, {-24.2286542552655, -24.5868559339618, -24.58880777714}, {-24.3116169774663, -24.6861872623093, -24.6800804975717}, {-24.4054049576464, -24.7945149900976, -24.7807803627462}, {-24.5105651043841, -24.9122585545706, -24.8913572392742}, {-24.6276481515909, -25.0398407508621, -25.0122627738054}, {-24.7572108714793, -25.1776886259275, -25.1439514689636}, {-24.8998185768, -25.326234535661, -25.2868819319543}, {-25.0560479304809, -25.4859173694875, -25.4415182979545}, {-25.2264900888606, -25.6571839491161, -25.6083318331971}, {-25.4117542140869, -25.8404906109669, -25.7878027258717}, {-25.6124714022656, -26.036304985084, -25.980422076621}, {-25.829299087044, -26.2451079872071, -26.1866941045909}, {-26.062925994066, -26.4673960451985, -26.4071385898023}, {-26.3140777409312, -26.7036835863492, -26.6422935781771}, {-26.5835232009471, -26.9545058183987, -26.8927183820569}, {-26.8720817784672, -27.2204218446399, -27.1589969167288}, {-27.1806317808044, -27.5020181625434, -27.4417414226117}, {-27.5101201191246, -27.7999126063324, -27.7415966337563}, {-27.8615736317791, -28.1147588073804, -28.0592444666565}, {-28.2361124030195, -28.4472512628793, -28.3954093197322}, {-28.6349655545865, -28.7981311238292, -28.7508640940604}, {-29.0594901267291, -29.1681928392222, -29.1264370711519}, {-29.5111938523147, -29.5582918259318, -29.5230198152892}, {-29.9917628825084, -29.9693533754207, -29.9415763081913}, {-30.503095874082, -30.4023830618811, -30.3831535752995}, {-31.0473463403305, -30.8584789858503, -30.8488941295433}, {-31.6269758663526, -31.338846278318, -31.3400506452663}, {-32.2448217986166, -31.8448144107455, -31.8580033893678}, {-32.9041845027944, -32.377858017508, -32.4042810889921}, {-33.6089415103247, -32.9396221552793, -32.9805861201522}, {-34.363699289313, -33.5319532225878, -33.5888251811678}, {-35.173998745037, -34.1569371775523, -34.2311470007881}, {-36.0465992362916, -34.81694727615, -34.9099891715554}, {-36.9898803777066, -35.5147043896992, -35.6281369681677}, {-38.0144259517556, -36.2533541780506, -36.388798123573}, {-39.1338994363175, -37.0365672023276, -37.1956991761564}, {-40.3664062132005, -37.8686708003182, -38.0532114700393}, {-41.7367092242847, -38.7548257976024, -38.9665186909212}, {-43.2800344983704, -39.7012678965129, -39.9418438217661}, {-45.0490712658456, -40.7156446898105, -40.9867631576318}, {-47.1280514720898, -41.807498087515, -42.110651399856}, {-49.6647430376439, -42.98897517527, -43.3253304050071}, {-52.9573991996512, -44.2759118256828, -44.6460461444544}, {-57.7729019204945, -45.6895526367208, -46.0929979865793}, {-67.6245252158134, -47.2594179791216, -47.6938470023811}, {-68.4239612956656, -49.0283828559871, -49.4880737740011}, {-59.2369510508807, -51.0624010294954, -51.5351218663277}, {-55.2773030462115, -53.4711504458782, -53.9311442116861}, {-52.8741544078302, -56.458733189607, -56.8483131292586}, {-51.2457613599313, -60.4795296817899, -60.6473112215109}, {-50.0921688046601, -66.9635673156413, -66.3309783308185}, {-49.2671732038842, -100.0, -80.0957532136359}, {-48.6894713108169, -68.5595827584634, -72.9920438237821}, {-48.3101958025919, -63.0947183405342, -66.224054378504}, {-48.0987685907168, -60.2315708900395, -63.1433879224662}, {-48.0360054848468, -58.4481302703233, -61.4079884003812}, {-48.1105349414027, -57.2759906931445, -60.4166546593855}, {-48.316934707466, -56.5105403221042, -59.9330047847438}, {-48.6548966477794, -56.0461151377606, -59.8513077143295}, {-49.1291453805823, -55.8233081694405, -60.1305117340365}, {-49.7500847793339, -55.8079933134568, -60.7742844395154}, {-50.5353800203434, -55.9819238248621, -61.8325161943022}, {-51.5130397543704, -56.3384551230556, -63.4259206124249}, {-52.7273043616077, -56.8810741578801, -65.8253919538375}, {-54.2504917436952, -57.6240377074008, -69.7475133488839}, {-56.2093420231458, -58.5954138464837, -78.3776225627904}, {-58.8536420900362, -59.8440693137644, -80.0173758499728}, {-62.7881336381704, -61.4549255719668, -69.5877803561137}, {-70.3090932906203, -63.5851839928744, -64.8664170573518}, {-78.8008457031981, -66.5668762827158, -61.7825443260788}, {-65.517960692654, -71.3070222028074, -59.5084522538957}, {-60.5814278717821, -82.7967265451374, -57.728722903607}, {-57.5433021931179, -77.9734353898336, -56.2886914027979}, {-55.3877318334032, -69.8588757034624, -55.1008568275758}, {-53.7533552247185, -65.8435982990855, -54.1109256472518}, {-52.4696593631783, -63.2168091474616, -53.283001362826}, {-51.4428053269596, -61.3124449436248, -52.5922701841884}, {-50.6159100434114, -59.8616180374056, -52.0210501785669}, {-49.9522010540219, -58.7290392498968, -51.5565103298046}, {-49.4268728881078, -57.8374137092493, -51.1892875776298}, {-49.0227696776136, -57.1388821330483, -50.9126203135755}, {-48.7279407726771, -56.6022616757643, -50.7217978827748}, {-48.5341957336113, -56.2066651431466, -50.6138163568042}, {-48.4362352178027, -55.9380545676317, -50.5871797913089}, {-48.4311413963877, -55.787291276122, -50.6418150212973}, {-48.5181161022316, -55.7490239711471, -50.7790873868938}, {-48.6984140269456, -55.8210972179042, -51.0019206281395}, {-48.9754581841458, -56.0043306303441, -51.3150409791623}, {-49.3551603403364, -56.3026168116317, -51.7253880920141}, {-49.8465125305844, -56.723361598425, -52.2427713793054}, {-50.4625839304718, -57.2783756529632, -52.8809140600421}, {-51.2221822320635, -57.9854610940039, -53.659149324818}, {-52.1526925546264, -58.8711964492623, -54.6052851861077}, {-53.2951730546287, -59.9759927895842, -55.7607195924722}, {-54.7141859263698, -61.3638955700468, -57.1902861718922}, {-56.5187822112216, -63.1435477929004, -59.0032501967981}, {-58.914301320508, -65.5199734854193, -61.4051165068585}, {-62.3627202002403, -68.9549151064374, -64.8579849072861}, {-68.3394139908786, -74.9235858321392, -70.8373153114486}}">
+        </property>
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[545.0, 200.0]">
+        </property>
+    </entity>
+    <relation name="_R0" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex0" value="101.85714721679688, 225.0">
+        </vertex>
+    </relation>
+    <relation name="_R4" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation1" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation7" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="Impulse.output" relation="_R0"/>
+    <link port="FIR Double Precision.input" relation="_R0"/>
+    <link port="FIR Double Precision.output" relation="relation4"/>
+    <link port="FIR Quantized Coefficients.input" relation="_R0"/>
+    <link port="FIR Quantized Coefficients.output" relation="relation7"/>
+    <link port="FIR Fixed Point.input" relation="relation6"/>
+    <link port="FIR Fixed Point.output" relation="_R4"/>
+    <link port="FixToDouble.input" relation="_R4"/>
+    <link port="FixToDouble.output" relation="relation1"/>
+    <link port="Spectrum1.input" relation="relation1"/>
+    <link port="Spectrum1.output" relation="relation"/>
+    <link port="Spectrum2.input" relation="relation4"/>
+    <link port="Spectrum2.output" relation="relation5"/>
+    <link port="Spectrum3.input" relation="relation7"/>
+    <link port="Spectrum3.output" relation="relation2"/>
+    <link port="DoubleToFix.input" relation="_R0"/>
+    <link port="DoubleToFix.output" relation="relation6"/>
+    <link port="Test.input" relation="relation"/>
+    <link port="Test.input" relation="relation5"/>
+    <link port="Test.input" relation="relation2"/>
+</entity>

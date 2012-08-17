@@ -1,0 +1,390 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="Eye" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.0.devel">
+    </property>
+    <property name="AnnotationUpdated" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
+        <property name="_hideAllParameters" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="14">
+        </property>
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+        </property>
+        <property name="fontFamily" class="ptolemy.data.expr.StringParameter" value="SansSerif">
+        </property>
+        <property name="bold" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="italic" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model shows a simple, physical-level model of a&#10;communication system. This system uses 2-level PAM (pulse&#10;amplitude modulation). It has a square-root raised cosine&#10;pulse shaper, where a top-level parameter (editable from the&#10;run control panel) specifies the excess bandwidth, which is&#10;typically between 0.0 and 1.0. The model has a matched&#10;filter. The output display is known as an &quot;eye diagram.&quot;">
+            <property name="_style" class="ptolemy.actor.gui.style.TextStyle">
+                <property name="height" class="ptolemy.data.expr.Parameter" value="20">
+                </property>
+                <property name="width" class="ptolemy.data.expr.Parameter" value="80">
+                </property>
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[185.0, 20.0]">
+        </property>
+    </property>
+    <property name="excess_bandwidth" class="ptolemy.data.expr.Parameter" value="1.0">
+    </property>
+    <property name="noise_standard_deviation" class="ptolemy.data.expr.Parameter" value="0.0">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[671, 524]">
+    </property>
+    <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[102, 100]">
+    </property>
+    <property name="filterLength" class="ptolemy.data.expr.Parameter" value="128">
+    </property>
+    <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
+        <property name="iterations" class="ptolemy.data.expr.Parameter" value="100">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="60.0, 31.0">
+        </property>
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1, 22, 905, 634}, maximized=false}">
+    </property>
+    <property name="AnnotationUpdated2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
+        <property name="_hideAllParameters" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="14">
+        </property>
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.2, 0.2, 0.2, 1.0}">
+        </property>
+        <property name="fontFamily" class="ptolemy.data.expr.StringParameter" value="SansSerif">
+        </property>
+        <property name="bold" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="italic" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author: Edward A. Lee">
+            <property name="_style" class="ptolemy.actor.gui.style.TextStyle">
+                <property name="height" class="ptolemy.data.expr.Parameter" value="20">
+                </property>
+                <property name="width" class="ptolemy.data.expr.Parameter" value="80">
+                </property>
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{5.0, 420.0}">
+        </property>
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{335.5, 262.0}">
+    </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="12">
+        </property>
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 0.0, 1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The director above controls&#10;the execution.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[5.0, 70.0]">
+        </property>
+    </property>
+    <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="12">
+        </property>
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 0.0, 1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="To get documentation for&#10;an actor, right click and select&#10;&quot;Get Documentation&quot;.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[20.0, 335.0]">
+        </property>
+    </property>
+    <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="12">
+        </property>
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 0.0, 1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="To discover the class name that&#10;implements an actor, linger over&#10;the actor.  To discover a port name,&#10;linger over the port.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[320.0, 345.0]">
+        </property>
+    </property>
+    <entity name="Random Symbol Source" class="ptolemy.actor.lib.DiscreteRandomSource">
+        <property name="seed" class="ptolemy.actor.parameters.SharedParameter" value="1L">
+        </property>
+        <property name="resetOnEachRun" class="ptolemy.actor.parameters.SharedParameter" value="true">
+        </property>
+        <property name="values" class="ptolemy.data.expr.Parameter" value="{-1, 1}">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="70.0, 225.0">
+        </property>
+    </entity>
+    <entity name="Square Root Raised Cosine Pulse Shaper" class="ptolemy.domains.sdf.lib.RaisedCosine">
+        <property name="interpolation" class="ptolemy.data.expr.Parameter" value="16">
+        </property>
+        <property name="taps" class="ptolemy.data.expr.Parameter" value="{-0.0012482740635, -0.0011903060515, -9.407694003731499E-4, -5.260433783559684E-4, 3.829441208974308E-18, 5.624792833503237E-4, 0.0010756467338, 0.0014553912222, 0.0016323583907, 0.001563735401, 0.0012418156085, 6.978126447579175E-4, 1.857445084866264E-18, -7.539615925759657E-4, -0.0014497847281, -0.0019728636568, -0.00222594326, -0.0021455904339, -0.0017148882213, -9.701297744195441E-4, 6.498594951332145E-18, 0.001063279169, 0.0020602204031, 0.0028259938868, 0.0032152513756, 0.0031264317751, 0.002521894443, 0.0014404957257, -2.192721655792149E-18, -0.0016120684175, -0.0031590046181, -0.0043851629277, -0.0050525378759, -0.0049791320862, -0.0040738294849, -0.0023624129901, 2.842416961212045E-18, 0.0027335073167, 0.0054564625222, 0.0077262394441, 0.0090945681767, 0.0091720854219, 0.0076950112492, 0.0045858605101, -4.06059565887435E-18, -0.0056492484545, -0.0116924196904, -0.0172354572215, -0.0212206590789, -0.0225133005811, -0.0200070292479, -0.0127385014171, 7.30907218597383E-18, 0.0185618163506, 0.0428722055313, 0.0723889203301, 0.1061032953946, 0.1425842370139, 0.1800632632314, 0.2165545240899, 0.25, 0.2784272452584, 0.300105438719, 0.3136853214306, 0.3183098861838, 0.3136853214306, 0.300105438719, 0.2784272452584, 0.25, 0.2165545240899, 0.1800632632314, 0.1425842370139, 0.1061032953946, 0.0723889203301, 0.0428722055313, 0.0185618163506, 7.30907218597383E-18, -0.0127385014171, -0.0200070292479, -0.0225133005811, -0.0212206590789, -0.0172354572215, -0.0116924196904, -0.0056492484545, -4.06059565887435E-18, 0.0045858605101, 0.0076950112492, 0.0091720854219, 0.0090945681767, 0.0077262394441, 0.0054564625222, 0.0027335073167, 2.842416961212045E-18, -0.0023624129901, -0.0040738294849, -0.0049791320862, -0.0050525378759, -0.0043851629277, -0.0031590046181, -0.0016120684175, -2.192721655792149E-18, 0.0014404957257, 0.002521894443, 0.0031264317751, 0.0032152513756, 0.0028259938868, 0.0020602204031, 0.001063279169, 6.498594951332145E-18, -9.701297744195441E-4, -0.0017148882213, -0.0021455904339, -0.00222594326, -0.0019728636568, -0.0014497847281, -7.539615925759657E-4, 1.857445084866264E-18, 6.978126447579175E-4, 0.0012418156085, 0.001563735401, 0.0016323583907, 0.0014553912222, 0.0010756467338, 5.624792833503237E-4, 3.829441208974308E-18, -5.260433783559684E-4, -9.407694003731499E-4, -0.0011903060515}">
+        </property>
+        <property name="length" class="ptolemy.data.expr.Parameter" value="filterLength">
+        </property>
+        <property name="excessBW" class="ptolemy.data.expr.Parameter" value="excess_bandwidth">
+        </property>
+        <property name="root" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="symbolInterval" class="ptolemy.data.expr.Parameter" value="16">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="240.0, 225.0">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="tokenInitProduction" class="ptolemy.data.expr.Parameter" value="0">
+            </property>
+            <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="0">
+            </property>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="0">
+            </property>
+        </port>
+    </entity>
+    <entity name="Adder" class="ptolemy.actor.lib.AddSubtract">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="320.0, 275.0">
+        </property>
+    </entity>
+    <entity name="Gaussian Noise Source" class="ptolemy.actor.lib.Gaussian">
+        <property name="seed" class="ptolemy.actor.parameters.SharedParameter" value="1L">
+        </property>
+        <property name="mean" class="ptolemy.actor.parameters.PortParameter" value="0.0">
+        </property>
+        <property name="standardDeviation" class="ptolemy.actor.parameters.PortParameter" value="noise_standard_deviation">
+        </property>
+        <property name="GaussianIcon" class="ptolemy.vergil.icon.EditorIcon">
+            <property name="rectangle" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[3.0, 0.0]">
+                </property>
+                <property name="width" class="ptolemy.data.expr.Parameter" value="60">
+                </property>
+                <property name="height" class="ptolemy.data.expr.Parameter" value="40">
+                </property>
+                <property name="centered" class="ptolemy.data.expr.Parameter" value="true">
+                </property>
+                <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 1.0, 1.0, 1.0}">
+                </property>
+            </property>
+            <property name="ellipse" class="ptolemy.vergil.kernel.attributes.EllipseAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[4.0, -2.0]">
+                </property>
+                <property name="width" class="ptolemy.data.expr.Parameter" value="23.0">
+                </property>
+                <property name="height" class="ptolemy.data.expr.Parameter" value="30.0">
+                </property>
+                <property name="centered" class="ptolemy.data.expr.Parameter" value="true">
+                </property>
+                <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 1.0, 1.0, 1.0}">
+                </property>
+            </property>
+            <property name="rectangle2" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[5.0, 4.0]">
+                </property>
+                <property name="lineColor" class="ptolemy.actor.gui.ColorAttribute" value="none">
+                </property>
+                <property name="width" class="ptolemy.data.expr.Parameter" value="49.0">
+                </property>
+                <property name="height" class="ptolemy.data.expr.Parameter" value="26.0">
+                </property>
+                <property name="centered" class="ptolemy.data.expr.Parameter" value="true">
+                </property>
+                <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 1.0, 1.0, 1.0}">
+                </property>
+            </property>
+            <property name="line" class="ptolemy.vergil.kernel.attributes.LineAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[14.0, -9.0]">
+                </property>
+                <property name="x" class="ptolemy.data.expr.Parameter" value="5.0">
+                </property>
+                <property name="y" class="ptolemy.data.expr.Parameter" value="5.0">
+                </property>
+            </property>
+            <property name="line2" class="ptolemy.vergil.kernel.attributes.LineAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[19.0, -4.0]">
+                </property>
+                <property name="x" class="ptolemy.data.expr.Parameter" value="5.0">
+                </property>
+                <property name="y" class="ptolemy.data.expr.Parameter" value="2.0">
+                </property>
+            </property>
+            <property name="line3" class="ptolemy.vergil.kernel.attributes.LineAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[-11.0, -4.0]">
+                </property>
+                <property name="x" class="ptolemy.data.expr.Parameter" value="5.0">
+                </property>
+                <property name="y" class="ptolemy.data.expr.Parameter" value="-5.0">
+                </property>
+            </property>
+            <property name="line4" class="ptolemy.vergil.kernel.attributes.LineAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[-11.0, -4.0]">
+                </property>
+                <property name="x" class="ptolemy.data.expr.Parameter" value="-5.0">
+                </property>
+                <property name="y" class="ptolemy.data.expr.Parameter" value="2.0">
+                </property>
+            </property>
+            <property name="line5" class="ptolemy.vergil.kernel.attributes.LineAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[-26.0, 0.0]">
+                </property>
+                <property name="lineColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.6,0.6,1.0}">
+                </property>
+                <property name="x" class="ptolemy.data.expr.Parameter" value="30.0">
+                </property>
+                <property name="y" class="ptolemy.data.expr.Parameter" value="0.0">
+                </property>
+            </property>
+            <property name="line6" class="ptolemy.vergil.kernel.attributes.LineAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[4.0, -16.0]">
+                </property>
+                <property name="lineColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.6,0.6,1.0}">
+                </property>
+                <property name="x" class="ptolemy.data.expr.Parameter" value="0.0">
+                </property>
+                <property name="y" class="ptolemy.data.expr.Parameter" value="15">
+                </property>
+            </property>
+            <property name="line7" class="ptolemy.vergil.kernel.attributes.LineAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[-26.0, 10.0]">
+                </property>
+                <property name="lineColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.6,0.6,1.0}">
+                </property>
+                <property name="x" class="ptolemy.data.expr.Parameter" value="30.0">
+                </property>
+                <property name="y" class="ptolemy.data.expr.Parameter" value="0.0">
+                </property>
+            </property>
+            <property name="line8" class="ptolemy.vergil.kernel.attributes.LineAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[4.0, 5.0]">
+                </property>
+                <property name="lineColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.6,0.6,1.0}">
+                </property>
+                <property name="x" class="ptolemy.data.expr.Parameter" value="0.0">
+                </property>
+                <property name="y" class="ptolemy.data.expr.Parameter" value="5">
+                </property>
+            </property>
+            <property name="line9" class="ptolemy.vergil.kernel.attributes.LineAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[-6.0, 5.0]">
+                </property>
+                <property name="lineColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.6,0.6,1.0}">
+                </property>
+                <property name="x" class="ptolemy.data.expr.Parameter" value="20.0">
+                </property>
+                <property name="y" class="ptolemy.data.expr.Parameter" value="0.0">
+                </property>
+            </property>
+            <property name="line10" class="ptolemy.vergil.kernel.attributes.LineAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[11.0, 2.0]">
+                </property>
+                <property name="lineColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.6,0.6,1.0}">
+                </property>
+                <property name="x" class="ptolemy.data.expr.Parameter" value="3">
+                </property>
+                <property name="y" class="ptolemy.data.expr.Parameter" value="3">
+                </property>
+            </property>
+            <property name="line11" class="ptolemy.vergil.kernel.attributes.LineAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[-6.0, 5.0]">
+                </property>
+                <property name="lineColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.6,0.6,1.0}">
+                </property>
+                <property name="x" class="ptolemy.data.expr.Parameter" value="3">
+                </property>
+                <property name="y" class="ptolemy.data.expr.Parameter" value="3">
+                </property>
+            </property>
+            <property name="line12" class="ptolemy.vergil.kernel.attributes.LineAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[-3.0, 2.0]">
+                </property>
+                <property name="lineColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.6,0.6,1.0}">
+                </property>
+                <property name="x" class="ptolemy.data.expr.Parameter" value="-3">
+                </property>
+                <property name="y" class="ptolemy.data.expr.Parameter" value="3">
+                </property>
+            </property>
+            <property name="line13" class="ptolemy.vergil.kernel.attributes.LineAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[14.0, 5.0]">
+                </property>
+                <property name="lineColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.6,0.6,1.0}">
+                </property>
+                <property name="x" class="ptolemy.data.expr.Parameter" value="-3">
+                </property>
+                <property name="y" class="ptolemy.data.expr.Parameter" value="3">
+                </property>
+            </property>
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={124, 350, 815, 518}, maximized=false}">
+            </property>
+            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+            </property>
+            <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="4.0">
+            </property>
+            <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{0.0, 0.0}">
+            </property>
+        </property>
+        <doc>Create a sequence of gaussian random variables</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="70.0, 300.0">
+        </property>
+    </entity>
+    <entity name="Matched Filter" class="ptolemy.domains.sdf.lib.RaisedCosine">
+        <property name="interpolation" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <property name="taps" class="ptolemy.data.expr.Parameter" value="{-0.0012482740635, -0.0011903060515, -9.407694003731499E-4, -5.260433783559684E-4, 3.829441208974308E-18, 5.624792833503237E-4, 0.0010756467338, 0.0014553912222, 0.0016323583907, 0.001563735401, 0.0012418156085, 6.978126447579175E-4, 1.857445084866264E-18, -7.539615925759657E-4, -0.0014497847281, -0.0019728636568, -0.00222594326, -0.0021455904339, -0.0017148882213, -9.701297744195441E-4, 6.498594951332145E-18, 0.001063279169, 0.0020602204031, 0.0028259938868, 0.0032152513756, 0.0031264317751, 0.002521894443, 0.0014404957257, -2.192721655792149E-18, -0.0016120684175, -0.0031590046181, -0.0043851629277, -0.0050525378759, -0.0049791320862, -0.0040738294849, -0.0023624129901, 2.842416961212045E-18, 0.0027335073167, 0.0054564625222, 0.0077262394441, 0.0090945681767, 0.0091720854219, 0.0076950112492, 0.0045858605101, -4.06059565887435E-18, -0.0056492484545, -0.0116924196904, -0.0172354572215, -0.0212206590789, -0.0225133005811, -0.0200070292479, -0.0127385014171, 7.30907218597383E-18, 0.0185618163506, 0.0428722055313, 0.0723889203301, 0.1061032953946, 0.1425842370139, 0.1800632632314, 0.2165545240899, 0.25, 0.2784272452584, 0.300105438719, 0.3136853214306, 0.3183098861838, 0.3136853214306, 0.300105438719, 0.2784272452584, 0.25, 0.2165545240899, 0.1800632632314, 0.1425842370139, 0.1061032953946, 0.0723889203301, 0.0428722055313, 0.0185618163506, 7.30907218597383E-18, -0.0127385014171, -0.0200070292479, -0.0225133005811, -0.0212206590789, -0.0172354572215, -0.0116924196904, -0.0056492484545, -4.06059565887435E-18, 0.0045858605101, 0.0076950112492, 0.0091720854219, 0.0090945681767, 0.0077262394441, 0.0054564625222, 0.0027335073167, 2.842416961212045E-18, -0.0023624129901, -0.0040738294849, -0.0049791320862, -0.0050525378759, -0.0043851629277, -0.0031590046181, -0.0016120684175, -2.192721655792149E-18, 0.0014404957257, 0.002521894443, 0.0031264317751, 0.0032152513756, 0.0028259938868, 0.0020602204031, 0.001063279169, 6.498594951332145E-18, -9.701297744195441E-4, -0.0017148882213, -0.0021455904339, -0.00222594326, -0.0019728636568, -0.0014497847281, -7.539615925759657E-4, 1.857445084866264E-18, 6.978126447579175E-4, 0.0012418156085, 0.001563735401, 0.0016323583907, 0.0014553912222, 0.0010756467338, 5.624792833503237E-4, 3.829441208974308E-18, -5.260433783559684E-4, -9.407694003731499E-4, -0.0011903060515}">
+        </property>
+        <property name="length" class="ptolemy.data.expr.Parameter" value="filterLength">
+        </property>
+        <property name="excessBW" class="ptolemy.data.expr.Parameter" value="excess_bandwidth">
+        </property>
+        <property name="root" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="symbolInterval" class="ptolemy.data.expr.Parameter" value="16">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="405.0, 275.0">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="tokenInitProduction" class="ptolemy.data.expr.Parameter" value="0">
+            </property>
+            <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="0">
+            </property>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="0">
+            </property>
+        </port>
+    </entity>
+    <entity name="Test" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{-1.558188137521534E-6, -2.971656343271821E-6, -3.765504580541325E-6, -3.552899631522538E-6, -2.137352297863662E-6, 4.144855740337191E-7, 3.747727192092844E-6, 7.25247845891872E-6, 1.015563131129626E-5, 1.166000156583529E-5, 1.110906038801414E-5, 8.14795758656576E-6, 2.848660065593672E-6, -4.23015126357778E-6, -1.206917108526334E-5, -1.930781713486452E-5, -2.600585252569113E-5, -2.908566048051805E-5, -2.710089635406778E-5, -1.934521834418655E-5, -6.1224052114594E-6, 1.113613755971811E-5, 2.995088249280552E-5, 4.708466732756971E-5, 5.902135978829419E-5, 6.257254306574786E-5, 5.55206535109348E-5, 3.718775076514391E-5, 8.816842397442162E-6, -2.633010348940044E-5, -6.321719682891807E-5, -9.56312330782823E-5, -1.186370721581512E-4, -1.248463589167734E-4, -1.10027559947456E-4, -7.293390945239577E-5, -1.603368004985939E-5, 5.428584221239587E-5, 1.281560890817172E-4, 1.933308388163582E-4, 2.368725391376207E-4, 2.472300955144908E-4, 2.164257091940929E-4, 1.420108108070158E-4, 2.844064056422317E-5, -1.124389434999849E-4, -2.620005564947389E-4, -3.966046723882541E-4, -4.919796537962938E-4, -5.219915013093061E-4, -4.67048081458296E-4, -3.166515483143373E-4, -7.238385244725387E-5, 2.504860822720005E-4, 6.231978942974285E-4, 0.0010057043818, 0.0013508165404, 0.0016099234553, 0.001739644522, 0.0017085580773, 0.0015030393543, 0.0011312593433, 6.245559375676744E-4, 3.568138542907334E-5, -5.646149075151537E-4, -0.001100248835, -0.0014952168229, -0.0016855114225, -0.0016292237574, -0.0013145906162, -7.646285093169488E-4, -3.733878189186718E-5, 7.7901006411255E-4, 0.001575369938, 0.002235325098, 0.0026509376465, 0.0027390336636, 0.0024556635061, 0.0018064866898, 8.511667100047908E-4, -2.979415840166773E-4, -0.0014911375037, -0.0025544216262, -0.0033134794224, -0.0036190921628, -0.0033719361595, -0.0025431878736, -0.0011875174557, 5.542957860837439E-4, 0.0024647907991, 0.0042715059259, 0.0056794733578, 0.0064114343306, 0.0062512456072, 0.0050849359355, 0.0029334601291, -3.005377148205303E-5, -0.0034752153003, -0.0069399543199, -0.0098723559884, -0.0116935036245, -0.0118752755182, -0.0100259143533, -0.0059744127688, 1.561487772796597E-4, 0.007896031256, 0.0164054825417, 0.0244867046074, 0.0306340128011, 0.0331212291636, 0.0301213173436, 0.0198494628243, 7.161087659734117E-4, -0.0285161260986, -0.0686020706906, -0.1197091876218, -0.181356871568, -0.2524066541546, -0.3311067459364, -0.4151891840065, -0.5020126731422, -0.5887395607401, -0.6725317826462, -0.7507484708621, -0.8211274891177, -0.881934540205, -0.9320665553985, -0.9711005289793, -0.9992796652524, -1.0174631040897, -1.0269991085339, -1.0295801874558, -1.0270744310501, -1.0213542530413, -1.0141395052314, -1.0068697840207, -1.0006170322538, -0.9960446910802, -0.9934142425848, -0.9926346352089, -0.9933454202829, -0.9950209852753, -0.9970814357687, -0.9989956473301, -1.0003621975751, -1.0009668483044, -1.000795024297, -1.0000153904661, -0.9989316302245, -0.9979127354884, -0.9973136012029, -0.9973989874344, -0.9982833817459, -0.9998970145431, -1.0019845256046, -1.00413802013, -1.0058610952702, -1.0066555370357, -1.0061184398644, -1.0040350453018, -1.0004473451939, -0.9957086239044, -0.9904656765163, -0.9856094468967, -0.9821734766498, -0.9811913872133, -0.9835267579235, -0.9896936239007, -0.9996888303605, -1.0128581755627, -1.0278164344894, -1.0424370455801, -1.0539208165677, -1.0589450726117, -1.0538860369945, -1.0350988206703, -0.9992274601662, -0.9435408389837, -0.8662158550087, -0.7665835989489, -0.645290417777, -0.5043575581297, -0.3471279687999, -0.1780991504923, -0.0026517695529, 0.1733059737305, 0.3437495567834, 0.5029700915429, 0.6459892013709, 0.7689195505226, 0.8692378857216, 0.9459448149059, 0.9995908223431, 1.0321882963027, 1.0469696746201, 1.0480573828705, 1.0400536837229, 1.0275911675596, 1.0148845932231, 1.0053249223448, 1.0011527392437, 1.0032411395539, 1.0110082605899, 1.0224678347498, 1.034413568949, 1.0427209536987, 1.0427394106643, 1.0297394776345, 0.9993731907705, 0.9481141874713, 0.8736218929658, 0.7750128471616, 0.6530073064097, 0.5099393679005, 0.349629599867, 0.1771313081413, -0.0016273720602, -0.18027437805, -0.3524602861129, -0.5123204210372, -0.6548931546117, -0.776459248659, -0.8747743283495, -0.9491761390195, -1.0005577080192, -1.031218702035, -1.0445936011189, -1.0448974837027, -1.0367135375217, -1.0245597861685, -1.0124722418709, -1.0036396296659, -1.0001198201602, -1.0026606625093, -1.0106387289614, -1.0221193997911, -1.0340316171442, -1.0424413746767, -1.0429003404929, -1.0308405216371, -1.0019782711099, -0.9527193647607, -0.8804873770913, -0.7839961907371, -0.6634264330498, -0.5204985715515, -0.3584395393883, -0.1818475971108, 0.0035328591214, 0.1911091599622, 0.3737895166231, 0.5443599385441, 0.6958650841903, 0.821970592411, 0.9172872097889, 0.9776408076742, 1.0002736344877, 0.9839860422019, 0.9291830384878, 0.837859349006, 0.7135121402925, 0.560991178079, 0.3862951049505, 0.1963236379087, -0.001403865791, -0.1990526785966, -0.388788812923, -0.5630958169411, -0.715080938265, -0.8387591997316, -0.9293039139446, -0.9832524141189, -0.9986533554256, -0.9751622319989, -0.9140465591715, -0.8181262310523, -0.6916345924842, -0.5400062488106, -0.369599735968, -0.1873678006282, -4.923066979577722E-4, 0.1839957264232, 0.359588131881, 0.5206400115712, 0.6626558255987, 0.7825011203612, 0.8785242746613, 0.9505785229657, 0.9999352279606, 1.0291252016568, 1.0416558243006, 1.0416851646425, 1.0336484144872, 1.0218700822432, 1.0101915895918, 1.0016431032134, 0.9981852976715, 1.0005415044375, 1.0081337600908, 1.0191281804442, 1.030586516715, 1.038712400035, 1.0391733393191, 1.027473614272, 0.9993430451674, 0.9511433315153, 0.8801979495971, 0.7850813946442, 0.6658173024142, 0.5239761062949, 0.3626652174395, 0.1864127253338, 9.533311385526989E-4, -0.1870679529976, -0.370453381506, -0.5418467127202, -0.6941377982928, -0.8208515293145, -0.9164973254229, -0.9768591240309, -0.9992045592178, -0.9824360476327, -0.9271159344151, -0.8354302237053, -0.7110690501733, -0.5590404850626, -0.3854317126113, -0.1971330864085, -0.0015407998074, 0.1937469612555, 0.3812272259006, 0.5537719074662, 0.7048815247397, 0.8289069897884, 0.921235589725, 0.9784389218126, 0.998381614487, 0.9802901984437, 0.9247815925234, 0.8338504779035, 0.7108146708711, 0.5602175605564, 0.3876870633148, 0.1997514792775, 0.0036142000668, -0.1931086113978, -0.3826805918608, -0.5575583024551, -0.7107123248692, -0.8359412419325, -0.9281616476956, -0.9836566254237, -1.0002657375727, -0.9775016309984, -0.9165818828561, -0.8203695149551, -0.6932214914128, -0.540750919424, -0.3695151715945, -0.186648128126, 5.403690806217648E-4, 0.1849714613105, 0.3601829208094, 0.5206667173928, 0.6621348829531, 0.7816952878274, 0.8779258654709, 0.9508438705913, 1.001769006631, 1.0331257545886, 1.0481408313106, 1.0505237334982, 1.0441300016533, 1.0326417173429, 1.0192921619251, 1.0066568073395, 0.9965259879332, 0.9898663639222, 0.986869430316, 0.9870767219631, 0.9895638745932, 0.9931600814078, 0.9966763130898, 0.9991152820522, 0.9998385845877, 0.9986715114649, 0.995933176431, 0.9923881060497, 0.989124482044, 0.9873727450046, 0.9882854473592, 0.9927042680471, 1.0009424095925, 1.0126098975033, 1.0265056080704, 1.0405934911533, 1.0520720390342, 1.05753641386, 1.0532227583144, 1.0353150934496, 1.0002815770393, 0.9452403543192, 0.868256943946, 0.7686033251955, 0.6469222938659, 0.5052827006706, 0.3471155927564, 0.1770322373171, 5.361411260584074E-4, -0.1763485868019, -0.3475018533966, -0.5071489098003, -0.650279832119, -0.7730098791867, -0.8728482244553, -0.9488504102661, -1.0016338628682, -1.033285802965, -1.0471084237234, -1.0472841805044, -1.03846214243, -1.0253075860859, -1.0120551429407, -1.0021056255085, -0.9977028373875, -0.9997195650081, -1.0075722000067, -1.0192719352691, -1.0316082558885, -1.0404486100818, -1.0411277560872, -1.028892265227, -0.9993544940351, -0.9489472505708, -0.8752760940522, -0.7773985203743, -0.6559764325053, -0.5132933820208, -0.353134559405, -0.1805394697914, -0.0014482836566, 0.1777279608498, 0.350576596138, 0.5111519754066, 0.654403668274, 0.7765279492177, 0.8752130634815, 0.949758019242, 1.0010494020798, 1.0314307858463, 1.0444143160972, 1.0443209857714, 1.0358528728242, 1.0236403440296, 1.0118039091224, 1.0035689765137, 1.0009670217784, 1.0046490512401, 1.0138273916391, 1.0263506197663, 1.0389048361506, 1.0473234898723, 1.0469785284175, 1.0332185917599, 1.0018159011265, 0.9493827581183, 0.8737212323668, 0.774075402558, 0.6512640159272, 0.5076817647818, 0.3471687405126, 0.1747589890487, -0.003670526729, -0.1818207527097, -0.3534254678377, -0.5127018482212, -0.6547587840166, -0.7759289055822, -0.8739970347625, -0.948306842266, -0.9997380545281, -1.0305576796939, -1.0441594432254, -1.0447149747224, -1.0367675701427, -1.024803827533, -1.0128398699829, -1.0040571182345, -1.000517870232, -1.0029837499375, -1.0108510764872, -1.022207195013, -1.0340016871364, -1.0423170127568, -1.0427153031783, -1.0306323466573, -1.001783571875, -0.9525657918459, -0.8803914858356, -0.783962450145, -0.6634483414392, -0.5205614413024, -0.3585242926743, -0.1819348187838, 0.0034593322466, 0.1910596879986, 0.3737674906653, 0.5443620797526, 0.6958830263209, 0.8219933520086, 0.9173040132853, 0.9776437069086, 1.0002594037625, 0.9839566358171, 0.9291457361225, 0.837825354269, 0.713494198162, 0.5610006386846, 0.3863389890996, 0.1964022951216, -0.0012979838115, -0.1989347715589, -0.3886798962627, -0.5630194618975, -0.7150590298756, -0.8388073807246, -0.9294275146812, -0.9834436765851, -0.9988906295699, -0.9754119247168, -0.9142666142914, -0.8182720988712, -0.6916666598443, -0.5398976771262, -0.3693434237898, -0.1869811389506, -1.856161968252578E-5, 0.1844901866143, 0.3600209832994, 0.5209240331928, 0.6627127068799, 0.7822762424742, 0.8780002735483, 0.9497853136209, 0.9989575014056, 1.0280931052796, 1.040736790156, 1.0410660731444, 1.0335121961915, 1.0223693964654, 1.0114229944716, 1.0036255020632, 1.0008463082271, 1.0037147113418, 1.0115686128933, 1.0225127047685, 1.0335812007833, 1.0409918393267, 1.0404707278785, 1.0276222083114, 0.9983084896336, 0.9490413465491, 0.8772933265092, 0.7817664352748, 0.6625705204064, 0.5213048674257, 0.3610386432541, 0.1861932239714, 0.0023361996155, -0.1840975432846, -0.3661381595617, -0.5366447006849, -0.6886779063748, -0.815860262796, -0.9127038982825, -0.9748901125814, -0.9994850455887, -0.9850993944801, -0.931954803815, -0.8418886240216, -0.7182841089146, -0.5659338549539, -0.3908435119655, -0.1999844317144, -0.0010052589704, 0.1980863777332, 0.3892598769574, 0.5648022333583, 0.7176492292132, 0.8416927958533, 0.9320500222989, 0.9852798577277, 0.9995349405501, 0.974638314312, 0.9120781020846, 0.8149173956243, 0.6876215762549, 0.5358105656058, 0.3659487949673, 0.1849904757095, 1.575626192774091E-6, -0.1822176770571, -0.3554852636656, -0.5145415729285, -0.6552852711162, -0.7749257339387, -0.8720432594648, -0.9465554689145, -0.9995925954813, -1.0333102990548, -1.0506272401305, -1.0549400213111, -1.0498266020396, -1.0387653387714, -1.024891832453, -1.0108112858315, -0.9984780576112, -0.989147174273, -0.9833954408494, -0.9812032109123, -0.982082500185, -0.9852334863005, -0.9897098626811, -0.9945741096698, -0.9990263727186, -1.0024949346447, -1.0046817011121, -1.0055619919089, -1.005343648254, -1.004395231323, -1.0031564585807, -1.0020456019006, -1.0013782137223, -1.0013093408718, -1.0018076366282, -1.0026649789883, -1.0035399589911, -1.0040285798753, -1.0037513399481, -1.0024430904369, -1.0000279133783, -0.9966814924903, -0.9928369253783, -0.9891596448504, -0.9864747012999, -0.9856536016725, -0.987470636993, -0.9924433239274, -1.0006748380084, -1.0117177078324, -1.0244773494113, -1.037171249579, -1.0473549821673, -1.052020186211, -1.0477627331104, -1.0310122362117, -0.9983043975352, -0.9465913191939, -0.8735340466764, -0.7777813218301, -0.6591957320036, -0.5190077408097, -0.3598806361235, -0.1858760548201, -0.0023173844284, 0.1844436470992, 0.3673441713542, 0.5389913713162, 0.6920825732729, 0.8198357497493, 0.9164006976891, 0.9772221385778, 0.9993259866795, 0.9815240132234, 0.9244913801724, 0.8307402239389, 0.704476837555, 0.55135409198, 0.3781354138416, 0.1922926584145, 0.0015646886733, -0.1864938972567, -0.3649438243166, -0.5278433392479, -0.670556275656, -0.7899658140785, -0.8845802709587, -0.9545247355096, -1.001417229873, -1.0281553435866, -1.0385973874109, -1.0371937893175, -1.0285813512606, -1.0171738320575, -1.0067799770851, -1.0002783027827, -0.9993739005684, -1.0044564853199, -1.0145712740432, -1.0275055775598, -1.0399848660218, -1.0479632339546, -1.0469853568489, -1.0325908634569, -1.0007281017691, -0.9481429466772, -0.8727097797656, -0.7736759909805, -0.6517981316484, -0.5093565473796, -0.3500453473661, -0.1787450600458, -0.0011953946381, 0.1764057108116, 0.3478439156882, 0.5073344112056, 0.6499344029302, 0.7718870514425, 0.8708673557, 0.9461087004029, 0.9983958798017, 1.0299406940356, 1.0441203648629, 1.0451307001516, 1.0375709484491, 1.0259994638395, 1.0144994960622, 1.0062936132556, 1.0034410126744, 1.0066446462013, 1.0151853339156, 1.0269887362193, 1.0388192225126, 1.046583380733, 1.045716175665, 1.0316154587303, 1.0000831905227, 0.9477503065636, 0.8724156298169, 0.7733006287677, 0.6511826769937, 0.5083981002009, 0.3487148538402, 0.1770859609854, -6.94966666016386E-4, -0.1784065824813, -0.3498459348982, -0.5092703225753, -0.6517981316484, -0.7737358490015, -0.8728051089798, -0.9482523920088, -1.0008309421862, -1.0326739441863, -1.0470407750253, -1.0479880819393, -1.0399805913172, -1.0274770527567, -1.0145256949848, -1.004402225889, -0.999319445782, -1.0002313582828, -1.0067468155103, -1.0171588907198, -1.0285870485807, -1.0372204880603, -1.0386434088665, -1.0282169343955, -1.0014884047966, -0.9545969634206, -0.8846448651543, -0.7900065978288, -0.6705525802548, -0.5277703728701, -0.3647736493748, -0.1861970760456, 0.0020168054602, 0.192925125824, 0.3789665975475, 0.5523926021882, 0.7057188725739, 0.8321677248128, 0.9260713668884, 0.9832093862956, 1.0010548220665, 0.9789285554112, 0.9180196592618, 0.8213026358779, 0.6933426997802, 0.5400059679843, 0.3680951540828, 0.1849364533756, -0.0020534749004, -0.1857904436614, -0.3599067792538, -0.5190710104283, -0.6592230432353, -0.7777114859907, -0.8733275971694, -0.9462384779961, -0.9978268201729, -1.0304706643349, -1.0472525857488, -1.0516563398014, -1.0472621043722, -1.037468101672, -1.0252598453193, -1.0130427433272, -1.0025470236523, -0.9948066147901, -0.9902064417966, -0.9885862990631, -0.989384651131, -0.9918028476182, -0.9949695647316, -0.9980868144734, -1.0005392499199, -1.0019725205799, -1.0023051603291, -1.0017059018699, -1.0005304301167, -0.9992323799686, -0.9982637349141, -0.9979806185528, -0.9985692157221, -1.0000033823942, -1.0020408051798, -1.0042589405322, -1.006126108149, -1.0070977764397, -1.0067239519731, -1.0047512253544, -1.0012027838683, -0.9964216761706, -0.9910666426632, -0.9860554470596, -0.9824573264452, -0.9813430042809, -0.9836069562195, -0.9897814614921, -0.9998647699002, -1.0131860332615, -1.0283273293905, -1.0431182833543, -1.0547118928441, -1.0597418707926, -1.0545529888142, -1.035487489544, -0.9991973383896, -0.9429855276117, -0.8650810472062, -0.7648798341193, -0.6430967548204, -0.5018150148451, -0.3444231087598, -0.1754397697149, -2.380095617103629E-4, 0.1753108015148, 0.3452437810875, 0.5039297910687, 0.6464722955046, 0.7690561709588, 0.8692073631531, 0.9459417998018, 0.9997897585733, 1.0326930267416, 1.0477836265564, 1.0490635025166, 1.0410134770702, 1.028166021664, 1.0146794990608, 1.0039512191387, 0.9983029904685, 0.9987662277599, 1.0049847434741, 1.0152429627764, 1.026616419863, 1.0352310039382, 1.0366084329636, 1.0260685931018, 0.9991521035121, 0.9520445980727, 0.8819366927622, 0.7873234463877, 0.6682059274588, 0.5261837162024, 0.3644331492456, 0.1875749033316, 0.0014425627675, -0.187229486549, -0.3711755956442, -0.5429997462685, -0.6955810125374, -0.8224580971302, -0.9181704665411, -0.9785379517453, -1.00086275987, -0.9840623884081, -0.9287001521593, -0.8369462104943, -0.712462563373, -0.5602249062806, -0.386293826813, -0.197548869643, -0.0013991200146, 0.1945166562783, 0.3826284085581, 0.5557212522729, 0.7072010236929, 0.8313314643794, 0.9234368932957, 0.9800653756957, 0.9991052733328, 0.979867944877, 0.9231030193684, 0.8309748690509, 0.7069864896349, 0.5558546336367, 0.3833391468178, 0.1960312342128, 0.0011072476304, -0.1939435868451, -0.3816074476782, -0.5546388658535, -0.7063462210592, -0.8308574983621, -0.9233545382226, -0.9802652332316, -0.9994018792342, -0.9800552871691, -0.9230098149471, -0.8305086741583, -0.7061582394991, -0.5547790609053, -0.3822110743677, -0.1950822407234, -5.50942728342672E-4, 0.1939670717347, 0.3810765475003, 0.5536753527202, 0.705212828699, 0.8299259756034, 0.9230468078336, 0.9809753559303, 1.0014106675934, 0.9834523280736, 0.927636457763, 0.8359362229271, 0.7117098311108, 0.5595980131593, 0.3853713476285, 0.1957293704164, -0.0019445663657, -0.1998663135897, -0.3901627831516, -0.5652008895701, -0.7179193252344, -0.8421469531743, -0.9328904715065, -0.9865739806275, -1.0012112447268, -0.9765130866988, -0.9138891093571, -0.8163692848319, -0.6884333117215, -0.5357581844676, -0.3648980289094, -0.1829156247691, 0.0030108599768, 0.185979996089, 0.3597317580861, 0.5189601393092, 0.659552924579, 0.7787434113222, 0.8751657872772, 0.9488135277481, 1.0009016522317, 1.0336790786604, 1.0501465907628, 1.0537665636631, 1.0481609600132, 1.0368279399421, 1.0228992187768, 1.0089554750453, 0.9969108370255, 0.9879704075184, 0.9826576454403, 0.9809019282769, 0.9821714117213, 0.9856328759783, 0.99031889863, 0.9952834904672, 0.9997269935001, 1.0030944149554, 1.0051095853626, 1.0057746189387, 1.0053261875473, 1.0041610877908, 1.002744368951, 1.0015147989014, 1.0008020469791, 1.0007677471541, 1.0013788736521, 1.0024170918301, 1.0035225358633, 1.0042654574075, 1.0042350061051, 1.0031315669236, 1.000844840488, 0.9975195978093, 0.9935663880385, 0.9896398446834, 0.9865689177898, 0.9852453980844, 0.9864802416389, 0.9908420437896, 0.9984954760681, 1.0090591503292, 1.0215019583076, 1.0340944167568, 1.0444271138259, 1.0495023909025, 1.0458984602532, 1.0299979164986, 0.998259524007, 0.9475447360178, 0.8754098214943, 0.7803991868572, 0.6622844712471, 0.5222311673082, 0.3628740971298, 0.1882897758326, 0.0038616479314, -0.1839572779314, -0.3679714600968, -0.5406390170364, -0.6945104978662, -0.8226795758403, -0.919213311623, -0.979530471669, -1.0006966066478, -0.9816295348638, -0.9231670543781, -0.8280228371235, -0.7006179581316, -0.5468027586409, -0.3734891182564, -0.1882198854364, 0.0012931785927, 0.1876294271959, 0.3640842821462, 0.5250291452208, 0.6661817439365, 0.7847697682762, 0.8795793724968, 0.9508894519379, 1.0002955462456, 1.0304737924495, 1.0448454550975, 1.0472336285541, 1.0415140954999, 1.0312957471993, 1.019656923604, 1.0089579586438, 1.0007423526886, 0.9957300789799, 0.9938974131566, 0.9946292356538, 0.9969228228995, 0.9996174056836, 1.0016217142016, 1.0021125695854, 1.0006781349484, 0.9974045654623, 0.9928655472314, 0.9880444510874, 0.9841843544116, 0.9825856620513, 0.984375000105, 0.9902729937766, 1.0003895143945, 1.0140728349585, 1.0298340426488, 1.0453605130257, 1.0576230173854, 1.0630710685656, 1.0579014618007, 1.0383766685196, 1.0011605791862, 0.9436553235586, 0.8642738388392, 0.7626518201745, 0.6397614446268, 0.497916266593, 0.3406641474273, 0.1725757737326, -0.0010536870535, -0.1745639713479, -0.34231860868, -0.4990891953093, -0.6404017132025, -0.7628155850481, -0.8641129786515, -0.9433847487975, -1.0010062722351, -1.0385258334904, -1.058448075636, -1.0639677299293, -1.0586658015792, -1.0462003303818, -1.0300198036576, -1.0131233515407, -0.9978857100881, -0.9859573458958, -0.9782419691516, -0.9749458135645, -0.9756863456741, -0.9796431307225, -0.9857308444652, -0.9927740299632, -0.9996588022031, -1.005478740442, -1.009600736408, -1.0117089280529, -1.0117990927049, -1.0101352300772, -1.0071784291215, -1.0035002557054, -0.999693369869, -0.9962909701029, -0.9937042420922, -0.9921836751888, -0.9918063950444, -0.9924880506424, -0.9940147405487, -0.9960883114062, -0.9983710791047, -1.0005544517952, -1.0023805679924, -1.0036746656242, -1.0043568819723, -1.0044390539464, -1.0040089022987, -1.0032055642864, -1.0021912775733, -1.0011240530656, -1.0001354671706, -0.9993164218049, -0.9987121058187, -0.9983257220841, -0.9981290898786, -0.9980772133833, -0.9981203485107, -0.9982266258903, -0.9983797819634, -0.9985831506958, -0.9988546610385, -0.9992170337998, -0.9996855529126, -1.0002563424346, -1.0008980812908, -1.0015495235225, -1.0021241488178, -1.002521915274, -1.0026466498078, -1.0024263397637, -1.0018327136518, -1.0008961968314, -0.9997095757298, -0.9984337121916, -0.9972729719485, -0.9964511420907, -0.9961769822478, -0.9966065056427, -0.9978077346533, -0.9997340401431, -1.0022116305885, -1.0049452998882, -1.0075442980978, -1.0095674066759, -1.0105833246353, -1.010239704112, -1.0083320162809, -1.0048622331465, -1.0000742118361, -0.9944733577742, -0.9887915124928, -0.9839271287031, -0.9808473909896, -0.9804616432718, -0.9834768680837, -0.9902493255461, -1.0006485195091, -1.0139500875781, -1.0287728538594, -1.0430721767654, -1.0541971053222, -1.059013139502, -1.0540861220888, -1.0359165980463, -1.0012022660402, -0.9471402949069, -0.8716823484096, -0.7737814426044, -0.6535800730477, -0.5125271312578, -0.3534110612739, -0.1803031070768, 0.0015885482908, 0.1861460829829, 0.3666369288337, 0.536057442927, 0.6875031785899, 0.8145420282095, 0.9115668188062, 0.9741059703209, 0.999071175734, 0.9849445604589, 0.9318656469678, 0.8416449180292, 0.7176921722108, 0.5648684940331, 0.3892716971702, 0.1979676808902, -0.0013182248867, -0.2005350695877, -0.3916503113442, -0.5669895745192, -0.7195584445722, -0.8433336361304, -0.93351205115, -0.9867075712573, -1.0010838342846, -0.9764320374766, -0.9141577576512, -0.8172046435901, -0.6899023916298, -0.5377462400795, -0.3671165770573, -0.1849511683511, 0.0016138210992, 0.185614768231, 0.3606221393994, 0.5210704614461, 0.6625352390689, 0.781937708116, 0.8776623222851, 0.9495773368147, 0.9989492025201, 1.0282870403869, 1.0410642627936, 1.0413978261299, 1.0336797758986, 1.0221940171822, 1.010747619309, 1.0023453280641, 0.9989329697319, 1.0012302879464, 1.0086668554046, 1.0194266115572, 1.0305979716559, 1.0384180600422, 1.0385921521137, 1.0266634924135, 0.9983985443929, 0.9501895250031, 0.8793804862892, 0.7845531129751, 0.6657222357542, 0.5244322054971, 0.3637475497904, 0.1881391990498, 0.0032750572785, -0.1842697743114, -0.3673626998018, -0.5386994634806, -0.6912008456758, -0.818395352641, -0.9147651542733, -0.976036066784, -0.9993938434577, -0.9836332138617, -0.9292042333438, -0.838186850752, -0.7141855820723, -0.5621561688478, -0.3881763568939, -0.1991746507003, -0.0026316294947, 0.1937317322756, 0.3822651479408, 0.5556872788929, 0.7073606332941, 0.8315343982949, 0.9235483408881, 0.9799926611932, 0.9988171704765, 0.9794039650898, 0.9225698413497, 0.8305313726289, 0.7068189938487, 0.5561457560778, 0.3842347572075, 0.1976104506853, 0.0033602344246, -0.1911261195095, -0.3784305838325, -0.5513850718597, -0.7033436508059, -0.8284384775392, -0.9218093413071, -0.9797973322492, -1.0000911376973, -0.9818349994472, -0.9256620618704, -0.8336803054539, -0.7093971353218, -0.5575874862364, -0.3841102900909, -0.1956804489369, 3.945459925430559E-4, 0.1965026124246, 0.3850278399015, 0.5586515843868, 0.7106414431265, 0.8351162004879, 0.9272759098749, 0.9835878291272, 1.0019146473656, 0.9816120364472, 0.9235285288336, 0.8299699535882, 0.7046017753943, 0.5522994311185, 0.378953447048, 0.1912377659028, -0.0036490742714, -0.19825952188, -0.3851786943671, -0.557301678669, -0.7080965434838, -0.831844064469, -0.9238463182638, -0.9805976168281, -0.99990953178, -0.9810025128504, -0.9245287313039, -0.8325575415634, -0.7085084518231, -0.5570358549925, -0.3838681399041, -0.1956050469666, 5.215372261830107E-4, 0.1969167174612, 0.3859135070085, 0.5600758137822, 0.7125022923932, 0.837118571293, 0.9289444523458, 0.9843223292424, 1.0010872266286, 0.9786984726369, 0.9182587828693, 0.8224764721451, 0.6955392815983, 0.5429075973483, 0.3710347657906, 0.1870275152667, -0.0017355813046, -0.1880055748672, -0.3650596829397, -0.527066855122, -0.6693970117954, -0.7888513227499, -0.8837955703042, -0.9541850454345, -1.0014740271167, -1.0284307119215, -1.0388377611474, -1.0371319721901, -1.0279953364018, -1.0159323803206, -1.0048678117891, -0.997797637764, -0.9965232090353, -1.0014912885693, -1.0117546972073, -1.0250580463241, -1.0380423712534, -1.0465520738181, -1.0460184157655, -1.0318867421776, -1.0000441177338, -0.9472413850525, -0.8714095728622, -0.7719029427307, -0.6496180426747, -0.5069830637251, -0.347818031032, -0.1770779416108, -5.01472949092735E-4, 0.1758036675308, 0.3458021138182, 0.5039601458929, 0.6456256247202, 0.7673262361113, 0.8669617191867, 0.9438759890551, 0.9988002977212, 1.0337084860304, 1.0515394309385, 1.0558769558785, 1.050591663033, 1.0394857027755, 1.0259746450996, 1.0128356581969, 1.002043349571, 0.9947047304384, 0.9910938804928, 0.9907761734904, 0.9928025091676, 0.9959468768408, 0.9989564964362, 1.0007831621523, 1.0007672981768, 0.9987522920475, 0.9951152280682, 0.9907102161144, 0.9867310825211, 0.984509952181, 0.9852762147617, 0.9899056026009, 0.9986910186834, 1.011165101103, 1.0259994450837, 1.0409974486969, 1.0531877466367, 1.0590142195391, 1.0546077997147, 1.0361159086252, 1.0000552698866, 0.9436694016726, 0.8652226854747, 0.7642318719363, 0.641594974806, 0.4996051268115, 0.3418452530514, 0.1729710266769, -0.0015995250799, -0.1760623269931, -0.3446357314985, -0.5019645156354, -0.6434835174452, -0.7657093531173, -0.86643604779, -0.9448200681579, -1.0013448995093, -1.0377046210059, -1.0565593765683, -1.0612502215393, -1.0554745301894, -1.0429594031609, -1.0271636418312, -1.0110342423057, -0.9968362802376, -0.9860663614412, -0.97945050436, -0.9770184353664, -0.9782387711037, -0.9821942013012, -0.9877730701853, -0.9938538669421, -0.9994619287081, -1.003882683399, -1.0067223272543, -1.0079140593541, -1.0076750835718, -1.006425553359, -1.0046848863563, -1.0029629191117, -1.0016630350264, -1.0010117998723, -1.0010251733797, -1.0015156497395, -1.0021384756856, -1.0024692126934, -1.0021001103976, -1.0007396603675, -0.9982924732131, -0.9949362102884, -0.9911191753516, -0.9875339409342, -0.9850371843755, -0.9845268650864, -0.986788603845, -0.9923279878623, -1.0012085854821, -1.0129163091279, -1.0262692640554, -1.0393884817585, -1.0497393325074, -1.054246523601, -1.0494781437497, -1.0318869956188, -0.9980881108057, -0.9451657341861, -0.8709533388043, -0.7742913171791, -0.6552256351516, -0.5151313164428, -0.3567481068904, -0.1841226964834, -0.0024592818075, 0.1821126536906, 0.3628382990158, 0.5326854308483, 0.6847175106899, 0.8124680876732, 0.9102933659995, 0.9736821523464, 0.999499800251, 0.986185597673, 0.9338314663604, 0.8442014483108, 0.7206646423536, 0.5680526433594, 0.3924503953459, 0.2009317674172, 0.0012528207427, -0.1984832373971, -0.3901748910726, -0.5660702825258, -0.71909981064, -0.8431793080704, -0.9334705021196, -0.9865866166639, -1.0007263927596, -0.9757603989033, -0.9131999426708, -0.8161091879934, -0.6889338771665, -0.5372590302578, -0.3675072651994, -0.1865936898884, -0.001556929826, 0.1808116306282, 0.3543172470605, 0.5136673325799, 0.6547129956475, 0.7746106547697, 0.8718934295672, 0.9464487257739, 0.9994025592503, 1.0329372850234, 1.050028520572, 1.0541532441999, 1.0489805493888, 1.03807363433, 1.0246275805263, 1.0112636796177, 0.9998953456025, 0.9916735376973, 0.9870118041798, 0.9856833078168, 0.9869752796715, 0.989880963571, 0.9933058012772, 0.9962637033058, 0.998040842873, 0.9983083360579, 0.9971710317091, 0.9951467922984, 0.9930784652323, 0.9919882860837, 0.9928910459679, 0.9965872838901, 1.0034605305802, 1.0133029456337, 1.0251915127589, 1.0374324939638, 1.0475855221464, 1.0525711414075, 1.0488575111473, 1.0327141442896, 1.0005074598323, 0.9490460388452, 0.8758838732465, 0.7796158790328, 0.66011031729, 0.5186612412991, 0.3580447190299, 0.1824699563015, -0.002575387341, -0.1905781197004, -0.374335386763, -0.546351661567, -0.6992701485914, -0.8263090602979, -0.9216726005237, -0.9809081007714}">
+        </property>
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[495.0, 275.0]">
+        </property>
+    </entity>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation8" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation10" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="Random Symbol Source.output" relation="relation2"/>
+    <link port="Square Root Raised Cosine Pulse Shaper.input" relation="relation2"/>
+    <link port="Square Root Raised Cosine Pulse Shaper.output" relation="relation5"/>
+    <link port="Adder.plus" relation="relation5"/>
+    <link port="Adder.plus" relation="relation8"/>
+    <link port="Adder.output" relation="relation10"/>
+    <link port="Gaussian Noise Source.output" relation="relation8"/>
+    <link port="Matched Filter.input" relation="relation10"/>
+    <link port="Matched Filter.output" relation="relation"/>
+    <link port="Test.input" relation="relation"/>
+</entity>

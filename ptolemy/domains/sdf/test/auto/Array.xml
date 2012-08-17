@@ -1,0 +1,308 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="Array" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.0.devel">
+    </property>
+    <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
+        <property name="iterations" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="70.0, 35.0">
+        </property>
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={6, 22, 1282, 817}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1048, 707]">
+    </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
+        <property name="_hideAllParameters" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="14">
+        </property>
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+        </property>
+        <property name="fontFamily" class="ptolemy.data.expr.StringParameter" value="SansSerif">
+        </property>
+        <property name="bold" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="italic" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Note that the Ptolemy II&#10;expression language has&#10;extensive support for&#10;arrays, but this is&#10;not shown here.">
+            <property name="_style" class="ptolemy.actor.gui.style.TextStyle">
+                <property name="height" class="ptolemy.data.expr.Parameter" value="20">
+                </property>
+                <property name="width" class="ptolemy.data.expr.Parameter" value="80">
+                </property>
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{10.0, 290.0}">
+        </property>
+    </property>
+    <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
+        <property name="_hideAllParameters" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="12">
+        </property>
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 0.0, 1.0}">
+        </property>
+        <property name="fontFamily" class="ptolemy.data.expr.StringParameter" value="SansSerif">
+        </property>
+        <property name="bold" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="italic" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Many operations on arrays&#10;are best done by converting&#10;the arrays to a sequences&#10;and back again. Here, a&#10;sequence of random numbers&#10;is converted to an array.&#10;An alternative would be to&#10;use a Const actor with the&#10;expression random(100).">
+            <property name="_style" class="ptolemy.actor.gui.style.TextStyle">
+                <property name="height" class="ptolemy.data.expr.Parameter" value="20">
+                </property>
+                <property name="width" class="ptolemy.data.expr.Parameter" value="80">
+                </property>
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{10.0, 125.0}">
+        </property>
+    </property>
+    <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
+        <property name="_hideAllParameters" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="14">
+        </property>
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.2, 0.2, 0.2, 1.0}">
+        </property>
+        <property name="fontFamily" class="ptolemy.data.expr.StringParameter" value="SansSerif">
+        </property>
+        <property name="bold" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="italic" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author: Edward A. Lee">
+            <property name="_style" class="ptolemy.actor.gui.style.TextStyle">
+                <property name="height" class="ptolemy.data.expr.Parameter" value="20">
+                </property>
+                <property name="width" class="ptolemy.data.expr.Parameter" value="80">
+                </property>
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{10.0, 395.0}">
+        </property>
+    </property>
+    <property name="rectangle" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="10.0, 455.0">
+        </property>
+        <property name="lineWidth" class="ptolemy.data.expr.Parameter" value="2.0">
+        </property>
+        <property name="width" class="ptolemy.data.expr.Parameter" value="290.0">
+        </property>
+        <property name="height" class="ptolemy.data.expr.Parameter" value="40.0">
+        </property>
+        <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,1.0,0.4,1.0}">
+        </property>
+        <property name="rounding" class="ptolemy.data.expr.Parameter" value="10.0">
+            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+            </property>
+        </property>
+    </property>
+    <property name="Annotation4" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
+        <property name="_hideAllParameters" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="14">
+        </property>
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+        </property>
+        <property name="fontFamily" class="ptolemy.data.expr.StringParameter" value="SansSerif">
+        </property>
+        <property name="bold" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="italic" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Illustration of some simple array actors.">
+            <property name="_style" class="ptolemy.actor.gui.style.TextStyle">
+                <property name="height" class="ptolemy.data.expr.Parameter" value="20">
+                </property>
+                <property name="width" class="ptolemy.data.expr.Parameter" value="80">
+                </property>
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{15.0, 465.0}">
+        </property>
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.4009890391073">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{338.478515625, 258.9233081613788}">
+    </property>
+    <entity name="ArrayMaximum" class="ptolemy.actor.lib.ArrayMaximum">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="260.0, 80.0">
+        </property>
+    </entity>
+    <entity name="ArrayMinimum" class="ptolemy.actor.lib.ArrayMinimum">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="260.0, 145.0">
+        </property>
+    </entity>
+    <entity name="ArraySort" class="ptolemy.actor.lib.ArraySort">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="260.0, 215.0">
+        </property>
+    </entity>
+    <entity name="ArraySort2" class="ptolemy.actor.lib.ArraySort">
+        <property name="ascending" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="260.0, 305.0">
+        </property>
+    </entity>
+    <entity name="SequenceToArray" class="ptolemy.domains.sdf.lib.SequenceToArray">
+        <property name="arrayLength" class="ptolemy.actor.parameters.PortParameter" value="100">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="130.0, 90.0">
+        </property>
+    </entity>
+    <entity name="Uniform" class="ptolemy.actor.lib.Uniform">
+        <property name="seed" class="ptolemy.actor.parameters.SharedParameter" value="1L">
+        </property>
+        <property name="resetOnEachRun" class="ptolemy.actor.parameters.SharedParameter" value="true">
+        </property>
+        <property name="lowerBound" class="ptolemy.actor.parameters.PortParameter" value="0.0">
+        </property>
+        <property name="upperBound" class="ptolemy.actor.parameters.PortParameter" value="1.0">
+        </property>
+        <doc>Create a sequence of uniformly distributed random numbers</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="50.0, 90.0">
+        </property>
+    </entity>
+    <entity name="ArrayAverage" class="ptolemy.actor.lib.ArrayAverage">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="260.0, 370.0">
+        </property>
+    </entity>
+    <entity name="ArrayElement" class="ptolemy.actor.lib.ArrayElement">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="465.0, 225.0">
+        </property>
+    </entity>
+    <entity name="ArrayExtract" class="ptolemy.actor.lib.ArrayExtract">
+        <property name="extractLength" class="ptolemy.actor.parameters.PortParameter" value="10">
+        </property>
+        <property name="outputArrayLength" class="ptolemy.actor.parameters.PortParameter" value="10">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="535.0, 290.0">
+        </property>
+    </entity>
+    <entity name="Const" class="ptolemy.actor.lib.Const">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+        <doc>Create a constant sequence</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[410.0, 345.0]">
+        </property>
+    </entity>
+    <entity name="Test" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.9991512994811}">
+        </property>
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[620.0, 45.0]">
+        </property>
+    </entity>
+    <entity name="Test2" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.0014820210081}">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[625.0, 115.0]">
+        </property>
+    </entity>
+    <entity name="Test3" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{17}">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[640.0, 170.0]">
+        </property>
+    </entity>
+    <entity name="Test4" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.0014820210081}">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[685.0, 225.0]">
+        </property>
+    </entity>
+    <entity name="Test5" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{{{0.0014820210081, 0.0033914724683, 0.014395248798, 0.0184046023758, 0.0283924594405, 0.0330546779358, 0.0552326367791, 0.0619476821899, 0.0710624050788, 0.0896541021226}}}">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[640.0, 360.0]">
+        </property>
+    </entity>
+    <entity name="Test6" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.4644813924737}">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{554.7542976204604, 383.47817270991953}">
+        </property>
+    </entity>
+    <entity name="Test7" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{{{0.0014820210081, 0.0033914724683, 0.014395248798, 0.0184046023758, 0.0283924594405, 0.0330546779358, 0.0552326367791, 0.0619476821899, 0.0710624050788, 0.0896541021226, 0.092501464153, 0.1093656434738, 0.1121307903292, 0.1150435481409, 0.1307946068617, 0.1371972023164, 0.1418543569363, 0.1508084612721, 0.1539994516453, 0.1571478450649, 0.1628956852533, 0.1784840809794, 0.1801343629785, 0.1906266834992, 0.190717202806, 0.1938329781236, 0.2073478204658, 0.2260848733844, 0.2477458101622, 0.2491321078754, 0.2564950829022, 0.2602357445368, 0.2632907767922, 0.27013652617, 0.2868991431105, 0.2895925787596, 0.3034192267282, 0.3075076231928, 0.3278603013975, 0.3320921495986, 0.3385157237256, 0.3400086995392, 0.3567796156917, 0.3723131340826, 0.3727919477455, 0.3882910137171, 0.4022134536765, 0.4054149664105, 0.4155904501838, 0.4179660784451, 0.4233984429753, 0.4247853277262, 0.4327725860828, 0.4374342614331, 0.4379889543283, 0.4505283076153, 0.4847752231967, 0.5038404360143, 0.5455630506725, 0.5463303032626, 0.548192015187, 0.566486559615, 0.581010588389, 0.5860517292153, 0.5867897711739, 0.6132555351407, 0.6145745844952, 0.6234486246944, 0.6292616401889, 0.6306091704917, 0.6626503755874, 0.700258816831, 0.7123046833997, 0.7125163018101, 0.7370472030256, 0.7490031794989, 0.7634603289074, 0.7636535794004, 0.7756838766866, 0.7913646816341, 0.795316213432, 0.8020425526032, 0.8057913775947, 0.8520477874557, 0.8549230397909, 0.8682560413216, 0.8750645730673, 0.8769329754471, 0.8892810196829, 0.8953971178358, 0.8957062031179, 0.9209472225522, 0.9210255780813, 0.9311608513098, 0.9419804983382, 0.9466919558042, 0.9499540279981, 0.9845144899336, 0.9946377635236, 0.9991512994811}, {0.014395248798, 0.2491321078754, 0.2260848733844, 0.3567796156917, 0.6145745844952, 0.7123046833997, 0.3278603013975, 0.9991512994811, 0.6306091704917, 0.0710624050788, 0.4374342614331, 0.1508084612721, 0.1801343629785, 0.8892810196829, 0.1418543569363, 0.1121307903292, 0.190717202806, 0.0014820210081, 0.5860517292153, 0.0896541021226, 0.8769329754471, 0.1093656434738, 0.9210255780813, 0.795316213432, 0.4179660784451, 0.7756838766866, 0.6626503755874, 0.8549230397909, 0.2073478204658, 0.1628956852533, 0.8957062031179, 0.7370472030256, 0.0552326367791, 0.2868991431105, 0.1571478450649, 0.8520477874557, 0.7636535794004, 0.2602357445368, 0.2632907767922, 0.1906266834992, 0.566486559615, 0.9845144899336, 0.3075076231928, 0.3723131340826, 0.0283924594405, 0.0184046023758, 0.548192015187, 0.2564950829022, 0.1307946068617, 0.8953971178358, 0.9311608513098, 0.3320921495986, 0.4379889543283, 0.9946377635236, 0.5463303032626, 0.9466919558042, 0.4327725860828, 0.1784840809794, 0.4054149664105, 0.0619476821899, 0.3385157237256, 0.8020425526032, 0.5455630506725, 0.6292616401889, 0.0033914724683, 0.3727919477455, 0.6132555351407, 0.8682560413216, 0.7125163018101, 0.092501464153, 0.7634603289074, 0.700258816831, 0.1150435481409, 0.7490031794989, 0.9209472225522, 0.3400086995392, 0.8057913775947, 0.9419804983382, 0.1938329781236, 0.581010588389, 0.4847752231967, 0.4247853277262, 0.5038404360143, 0.6234486246944, 0.0330546779358, 0.4233984429753, 0.3034192267282, 0.3882910137171, 0.2895925787596, 0.1539994516453, 0.5867897711739, 0.1371972023164, 0.7913646816341, 0.4022134536765, 0.27013652617, 0.8750645730673, 0.2477458101622, 0.9499540279981, 0.4155904501838, 0.4505283076153}, {0.9991512994811, 0.9946377635236, 0.9845144899336, 0.9499540279981, 0.9466919558042, 0.9419804983382, 0.9311608513098, 0.9210255780813, 0.9209472225522, 0.8957062031179, 0.8953971178358, 0.8892810196829, 0.8769329754471, 0.8750645730673, 0.8682560413216, 0.8549230397909, 0.8520477874557, 0.8057913775947, 0.8020425526032, 0.795316213432, 0.7913646816341, 0.7756838766866, 0.7636535794004, 0.7634603289074, 0.7490031794989, 0.7370472030256, 0.7125163018101, 0.7123046833997, 0.700258816831, 0.6626503755874, 0.6306091704917, 0.6292616401889, 0.6234486246944, 0.6145745844952, 0.6132555351407, 0.5867897711739, 0.5860517292153, 0.581010588389, 0.566486559615, 0.548192015187, 0.5463303032626, 0.5455630506725, 0.5038404360143, 0.4847752231967, 0.4505283076153, 0.4379889543283, 0.4374342614331, 0.4327725860828, 0.4247853277262, 0.4233984429753, 0.4179660784451, 0.4155904501838, 0.4054149664105, 0.4022134536765, 0.3882910137171, 0.3727919477455, 0.3723131340826, 0.3567796156917, 0.3400086995392, 0.3385157237256, 0.3320921495986, 0.3278603013975, 0.3075076231928, 0.3034192267282, 0.2895925787596, 0.2868991431105, 0.27013652617, 0.2632907767922, 0.2602357445368, 0.2564950829022, 0.2491321078754, 0.2477458101622, 0.2260848733844, 0.2073478204658, 0.1938329781236, 0.190717202806, 0.1906266834992, 0.1801343629785, 0.1784840809794, 0.1628956852533, 0.1571478450649, 0.1539994516453, 0.1508084612721, 0.1418543569363, 0.1371972023164, 0.1307946068617, 0.1150435481409, 0.1121307903292, 0.1093656434738, 0.092501464153, 0.0896541021226, 0.0710624050788, 0.0619476821899, 0.0552326367791, 0.0330546779358, 0.0283924594405, 0.0184046023758, 0.014395248798, 0.0033914724683, 0.0014820210081}}}">
+        </property>
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{375.0, 305.0}">
+        </property>
+    </entity>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="195.0, 125.0">
+        </vertex>
+    </relation>
+    <relation name="relation7" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation9" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="310.0, 215.0">
+        </vertex>
+    </relation>
+    <relation name="relation12" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation11" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation10" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation8" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="ArrayMaximum.input" relation="relation"/>
+    <link port="ArrayMaximum.output" relation="relation11"/>
+    <link port="ArrayMinimum.input" relation="relation"/>
+    <link port="ArrayMinimum.output" relation="relation3"/>
+    <link port="ArrayMinimum.index" relation="relation4"/>
+    <link port="ArraySort.input" relation="relation"/>
+    <link port="ArraySort.output" relation="relation9"/>
+    <link port="ArraySort2.input" relation="relation"/>
+    <link port="ArraySort2.output" relation="relation8"/>
+    <link port="SequenceToArray.input" relation="relation7"/>
+    <link port="SequenceToArray.output" relation="relation"/>
+    <link port="Uniform.output" relation="relation7"/>
+    <link port="ArrayAverage.input" relation="relation"/>
+    <link port="ArrayAverage.output" relation="relation10"/>
+    <link port="ArrayElement.input" relation="relation9"/>
+    <link port="ArrayElement.output" relation="relation6"/>
+    <link port="ArrayExtract.input" relation="relation9"/>
+    <link port="ArrayExtract.output" relation="relation2"/>
+    <link port="ArrayExtract.extractLength" relation="relation12"/>
+    <link port="Const.output" relation="relation12"/>
+    <link port="Test.input" relation="relation11"/>
+    <link port="Test2.input" relation="relation3"/>
+    <link port="Test3.input" relation="relation4"/>
+    <link port="Test4.input" relation="relation6"/>
+    <link port="Test5.input" relation="relation2"/>
+    <link port="Test6.input" relation="relation10"/>
+    <link port="Test7.input" relation="relation9"/>
+    <link port="Test7.input" relation="relation"/>
+    <link port="Test7.input" relation="relation8"/>
+</entity>

@@ -1,0 +1,125 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="Butterfly" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.0.devel">
+    </property>
+    <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
+        <property name="iterations" class="ptolemy.data.expr.Parameter" value="100">
+        </property>
+        <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <property name="allowDisconnectedGraphs" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[80.0, 40.0]">
+        </property>
+    </property>
+    <property name="AnnotationUpdated" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
+        <property name="_hideAllParameters" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="14">
+        </property>
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.2, 0.2, 0.2, 1.0}">
+        </property>
+        <property name="fontFamily" class="ptolemy.data.expr.StringParameter" value="SansSerif">
+        </property>
+        <property name="bold" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="italic" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author: Edward A. Lee">
+            <property name="_style" class="ptolemy.actor.gui.style.TextStyle">
+                <property name="height" class="ptolemy.data.expr.Parameter" value="20">
+                </property>
+                <property name="width" class="ptolemy.data.expr.Parameter" value="80">
+                </property>
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{33.5, 395.5}">
+        </property>
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[652, 524]">
+    </property>
+    <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[104, 102]">
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={193, 153, 886, 634}, maximized=false}">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{326.0, 262.0}">
+    </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="12">
+        </property>
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="To execute the generated code, you need to have the&#10;directory containing jvm.dll in your path variable.&#10;jvm.dll is found in directories like&#10;C:\Program Files\Java\jdk1.5.0_06\jre\bin\client or&#10;C:\Program Files\Java\jdk1.5.0_06\jre\bin\server.&#10;It is used for invoking JVM to load GUI interface only. ">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[295.0, 25.0]">
+        </property>
+    </property>
+    <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model traces an elaborate curve&#10;called the butterfly curve. It was&#10;described by T. Fay, American&#10;Mathematical Monthly, 96(5), May, 1989&#10;">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 80.0]">
+        </property>
+    </property>
+    <entity name="Ramp" class="ptolemy.actor.lib.Ramp">
+        <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="0">
+        </property>
+        <property name="init" class="ptolemy.actor.parameters.PortParameter" value="0">
+        </property>
+        <property name="step" class="ptolemy.actor.parameters.PortParameter" value="PI/100.0">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[105.0, 325.0]">
+        </property>
+    </entity>
+    <entity name="Polar to Cartesian" class="ptolemy.actor.lib.conversions.PolarToCartesian">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[338.5, 265.5]">
+        </property>
+    </entity>
+    <entity name="Expression2" class="ptolemy.actor.lib.Expression">
+        <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="-2.0*cos(4.0*ramp) + exp(cos(ramp)) + (sin(ramp/12.0) * (sin(ramp/12.0))^4)">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[290.0, 190.0]">
+        </property>
+        <port name="ramp" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+    </entity>
+    <entity name="Test" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{{0.718281828459, 0.0}, {0.7323498998425, 0.0230150227893}, {0.7742261076831, 0.048710177944}, {0.8429341080518, 0.0796807330612}, {0.9368720594756, 0.1183544649571}, {1.0538500778532, 0.1669134547667}, {1.1911414040978, 0.2272223751166}, {1.3455460525356, 0.3007651766994}, {1.5134654082936, 0.3885918697759}, {1.690985979504, 0.4912768414031}, {1.8739702915163, 0.608889857869}, {2.0581527407709, 0.7409805811323}, {2.2392381096691, 0.8865770859853}, {2.4130003834776, 1.0441985096886}, {2.5753795074814, 1.2118816067868}, {2.7225737772681, 1.3872206276443}, {2.8511256658179, 1.5674195987696}, {2.9579990552266, 1.7493557647022}, {3.0406460543463, 1.9296526630897}, {3.0970618411181, 2.1047610537818}, {3.1258262635464, 2.2710457156226}, {3.1261312588596, 2.4248759663492}, {3.0977934983951, 2.5627176556382}, {3.0412520275927, 2.681224331588}, {2.9575510372754, 2.777325288147}, {2.8483082651311, 2.8483082651311}, {2.7156698760856, 2.8918946920594}, {2.562252998482, 2.9063055392399}, {2.3910773916164, 2.8903160602232}, {2.205487981912, 2.8432979735763}, {2.009070223435, 2.765247932493}, {1.8055604082414, 2.6568014607408}, {1.5987531690694, 2.5192318847793}, {1.3924084783222, 2.354434155975}, {1.1901604516711, 2.1648938247707}, {0.9954302119133, 1.9536417913983}, {0.8113449602868, 1.7241958063554}, {0.640665241032, 1.4804900198066}, {0.4857221746328, 1.2267941742937}, {0.3483661811212, 0.9676242923544}, {0.2299284234208, 0.7076469234907}, {0.1311958791841, 0.4515791781175}, {0.0524006059399, 0.2040868855786}, {-0.0067765928577, -0.0303167337037}, {-0.0471882552265, -0.2473694967699}, {-0.0701886135138, -0.4431534648856}, {-0.077589069259, -0.6141807251276}, {-0.0716019694372, -0.7574697159968}, {-0.0547741565918, -0.870610288234}, {-0.0299120215205, -0.9518159580036}, {1.270987134086636E-15, -0.9999621131635}, {0.0318853807581, -1.0146092671058}, {0.0626636887238, -0.9960108105027}, {0.0893387335054, -0.9451050805976}, {0.1090844002549, -0.8634919414365}, {0.1193259563367, -0.753394437561}, {0.1178147292312, -0.6176064391889}, {0.1026942199589, -0.4594275301424}, {0.072555930692, -0.2825866926453}, {0.0264834428572, -0.0911566082223}, {-0.0359164234351, 0.1105393851206}, {-0.1144962136803, 0.3180254678656}, {-0.2085647063402, 0.5267743168097}, {-0.3168981839435, 0.7323084952563}, {-0.4377658857963, 0.9302998618351}, {-0.5689690622872, 1.1166646589523}, {-0.7078927066595, 1.2876520532131}, {-0.8515687183622, 1.4399240653056}, {-0.9967489606755, 1.5706250417104}, {-1.1399864215069, 1.677439079889}, {-1.2777224764104, 1.758634115911}, {-1.4063780922539, 1.8130917114864}, {-1.5224467026028, 1.8403219280126}, {-1.6225864345331, 1.8404630399}, {-1.7037093725991, 1.8142662091657}, {-1.763065609003, 1.763065609003}, {-1.7983199481718, 1.6887348367918}, {-1.8076193061012, 1.5936307881735}, {-1.7896490658091, 1.4805264652797}, {-1.743676914701, 1.3525344566238}, {-1.66958299113, 1.2130230470904}, {-1.5678754985887, 1.0655270885443}, {-1.4396912986946, 0.913655880658}, {-1.28678135979, 0.7610003747914}, {-1.1114813076114, 0.6110420196847}, {-0.9166676890166, 0.4670655162832}, {-0.7057009102486, 0.3320776415819}, {-0.4823561390339, 0.2087341406852}, {-0.2507437569052, 0.0992764763899}, {-0.0152212071762, 0.0054799717803}, {0.2197017014073, -0.0713854100831}, {0.4494618104693, -0.1305807270167}, {0.669543611383, -0.1719095807662}, {0.8755798379557, -0.1957152816739}, {1.0634492657593, -0.2028637969854}, {1.2293693930185, -0.1947129832654}, {1.3699817960615, -0.1730689487789}, {1.4824281241046, -0.1401307154508}, {1.5644149194363, -0.098424644103}, {1.6142657145105, -0.0507303438089}}">
+        </property>
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[485.0, 270.0]">
+        </property>
+    </entity>
+    <relation name="node9" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex0" value="[169.5, 275.5]">
+        </vertex>
+    </relation>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="Ramp.output" relation="node9"/>
+    <link port="Polar to Cartesian.magnitude" relation="relation"/>
+    <link port="Polar to Cartesian.angle" relation="node9"/>
+    <link port="Polar to Cartesian.x" relation="relation2"/>
+    <link port="Polar to Cartesian.y" relation="relation3"/>
+    <link port="Expression2.output" relation="relation"/>
+    <link port="Expression2.ramp" relation="node9"/>
+    <link port="Test.input" relation="relation2"/>
+    <link port="Test.input" relation="relation3"/>
+</entity>
