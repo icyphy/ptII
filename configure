@@ -2516,6 +2516,16 @@ fi
 # PT_MSG_STATUS
 
 
+# Fix permissions on files.
+# If the distribution was in a jar file, then some files might not be executable.
+execFiles=ptolemy/util/test/junit/javachdir
+for file in $files
+do
+    if test -f $file; then
+        chmod a+x $file
+    fi
+done
+
 # Java does not find things in c:/program files/java
 { $as_echo "$as_me:${as_lineno-$LINENO}: checking if your path has 'program files/java' instead of 'Program Files/Java' " >&5
 $as_echo_n "checking if your path has 'program files/java' instead of 'Program Files/Java' ... " >&6; }
