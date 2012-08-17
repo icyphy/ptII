@@ -73,6 +73,16 @@ AC_DEFUN([PT_MSG_STATUS],
 [if test "${PTVERBOSE:-none}" != "none"; then AC_MSG_RESULT([$1]); fi ])# PT_MSG_STATUS 
 
 
+# Fix permissions on files.
+# If the distribution was in a jar file, then some files might not be executable.
+execFiles=ptolemy/util/test/junit/javachdir
+for file in $files
+do
+    if test -f $file; then
+        chmod a+x $file
+    fi
+done
+
 # Java does not find things in c:/program files/java
 AC_MSG_CHECKING([if your path has 'program files/java' instead of 'Program Files/Java' ])
 echo "$PATH" | egrep 'program files/java' > /dev/null
