@@ -19,7 +19,7 @@
         </property>
     </property>
     <property name="MonotonicitySolver" class="ptolemy.data.ontologies.lattice.LatticeOntologySolver">
-        <property name="modelURL" class="ptolemy.data.expr.FileParameter" value="DimensionSystemMonotonicitySolverModel.xml">
+        <property name="modelURL" class="ptolemy.data.expr.FileParameter" value="solvers/DimensionSystemMonotonicitySolverModel.xml">
         </property>
         <property name="_trainedConceptRecordArray" class="ptolemy.data.expr.Parameter" value="{{Concept = &quot;{x = Antimonotonic}&quot;, NamedObj = &quot;.MonotonicityAnalysis.AntimonotonicExpression.expression&quot;}, {Concept = &quot;{x = Monotonic}&quot;, NamedObj = &quot;.MonotonicityAnalysis.IntegratorConstraintExpression.output&quot;}, {Concept = &quot;{x = Monotonic}&quot;, NamedObj = &quot;.MonotonicityAnalysis.IntegratorConstraintExpression.expression&quot;}, {Concept = &quot;{}&quot;, NamedObj = &quot;.MonotonicityAnalysis.ConstantExpression.output&quot;}, {Concept = &quot;{x = NonMonotonic_{&lt;Unknown, Velocity&gt;}}&quot;, NamedObj = &quot;.MonotonicityAnalysis.NonmonotonicSubexpression.output&quot;}, {Concept = &quot;{x = Antimonotonic}&quot;, NamedObj = &quot;.MonotonicityAnalysis.AntimonotonicExpression.output&quot;}, {Concept = &quot;{}&quot;, NamedObj = &quot;.MonotonicityAnalysis.ConstantExpression.expression&quot;}, {Concept = &quot;{x = NonMonotonic_{&lt;Unknown, Velocity&gt;}}&quot;, NamedObj = &quot;.MonotonicityAnalysis.NonmonotonicSubexpression.expression&quot;}}">
         </property>
