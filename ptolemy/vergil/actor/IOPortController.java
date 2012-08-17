@@ -764,20 +764,7 @@ public class IOPortController extends AttributeController {
             }
 
             // New way to specify a highlight color.
-            try {
-                ColorAttribute highlightAttribute = (ColorAttribute) (port
-                        .getAttribute("_highlightColor", ColorAttribute.class));
-                if (highlightAttribute != null
-                        && !highlightAttribute.getExpression().trim()
-                                .equals("")) {
-                    Color color = highlightAttribute.asColor();
-                    AnimationRenderer animationRenderer = new AnimationRenderer(
-                            color);
-                    animationRenderer.renderSelected(figure);
-                }
-            } catch (IllegalActionException e) {
-                // Ignore.
-            }
+            AttributeController.renderHighlight(port, figure);
 
             return figure;
         }

@@ -43,6 +43,7 @@ import ptolemy.kernel.util.StringAttribute;
 import ptolemy.vergil.icon.EditorIcon;
 import ptolemy.vergil.icon.XMLIcon;
 import ptolemy.vergil.kernel.AnimationRenderer;
+import ptolemy.vergil.kernel.AttributeController;
 import ptolemy.vergil.kernel.ShadowRenderer;
 import diva.canvas.Figure;
 import diva.canvas.toolbox.SVGUtilities;
@@ -216,22 +217,10 @@ public class IconController extends ParameterizedNodeController {
             } catch (IllegalActionException e) {
                 // Ignore
             }
-            // New way to specify a highlight color.
-            try {
-                ColorAttribute highlightAttribute = (ColorAttribute) (object
-                        .getAttribute("_highlightColor", ColorAttribute.class));
-                if (highlightAttribute != null
-                        && !highlightAttribute.getExpression().trim()
-                                .equals("")) {
-                    Color color = highlightAttribute.asColor();
-                    AnimationRenderer animationRenderer = new AnimationRenderer(
-                            color);
-                    animationRenderer.renderSelected(result);
-                }
-            } catch (IllegalActionException e) {
-                // Ignore.
-            }
             
+            // New way to specify a highlight color.
+            AttributeController.renderHighlight(object, result);
+
             // If a shadow is specified, render it now.
             // The shadow attribute can be contained by the container
             // so that it is applied to all icons corresponding to Entity

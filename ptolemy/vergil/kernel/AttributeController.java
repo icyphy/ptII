@@ -27,8 +27,12 @@
  */
 package ptolemy.vergil.kernel;
 
+import java.awt.Color;
 import javax.swing.Action;
 
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.NamedObj;
+import ptolemy.actor.gui.ColorAttribute;
 import ptolemy.actor.gui.Configuration;
 import ptolemy.vergil.basic.BasicGraphController;
 import ptolemy.vergil.basic.CustomizeDocumentationAction;
@@ -37,6 +41,7 @@ import ptolemy.vergil.basic.IconController;
 import ptolemy.vergil.basic.RemoveCustomDocumentationAction;
 import ptolemy.vergil.toolbox.MenuActionFactory;
 import ptolemy.vergil.toolbox.MoveAction;
+import diva.canvas.Figure;
 import diva.graph.GraphController;
 import diva.graph.JGraph;
 import diva.gui.GUIUtilities;
@@ -119,6 +124,29 @@ public class AttributeController extends IconController {
         GUIUtilities.addHotKey(jgraph, _renameAction);
     }
 
+    /** Render the value of the _highlightColor parameter.
+     *  @param namedObj  The NamedObj that contains the _highlightColor
+     *  parameter.
+     *  @param Figure the Diva figure that is rendered.
+     */
+    public static void renderHighlight(NamedObj namedObj, Figure figure) {
+        // New way to specify a highlight color.
+        try {
+            ColorAttribute highlightAttribute = (ColorAttribute) (namedObj
+                    .getAttribute("_highlightColor", ColorAttribute.class));
+            if (highlightAttribute != null
+                    && !highlightAttribute.getExpression().trim()
+                    .equals("")) {
+                Color color = highlightAttribute.asColor();
+                AnimationRenderer animationRenderer = new AnimationRenderer(
+                        color);
+                animationRenderer.renderSelected(figure);
+            }
+        } catch (IllegalActionException e) {
+            // Ignore.
+        }
+
+    }
     /** Set the configuration.  This is used in derived classes to
      *  to open files (such as documentation).  The configuration is
      *  is important because it keeps track of which files are already

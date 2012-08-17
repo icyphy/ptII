@@ -212,25 +212,8 @@ public class StateController extends AttributeController {
             Figure figure = icon.createFigure();
             figure.setToolTipText(object.getName());
 
-            // This code was copied from ptolemy.vergil.actor.IOPortController
-            // in the render() method of the EntityPortRenderer inner class
-            // to allow states in a modal model or ontology concepts in an
-            // ontology model to be highlighted when their _highlightColor
-            // attribute is set.
-            try {
-                ColorAttribute highlightAttribute = (ColorAttribute) (object
-                        .getAttribute("_highlightColor", ColorAttribute.class));
-                if (highlightAttribute != null
-                        && !highlightAttribute.getExpression().trim()
-                                .equals("")) {
-                    Color color = highlightAttribute.asColor();
-                    AnimationRenderer animationRenderer = new AnimationRenderer(
-                            color);
-                    animationRenderer.renderSelected(figure);
-                }
-            } catch (IllegalActionException e) {
-                // Ignore.
-            }
+            // New way to specify a highlight color.
+            AttributeController.renderHighlight(object, figure);
 
             return figure;
         }

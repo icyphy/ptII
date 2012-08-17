@@ -43,6 +43,7 @@ import ptolemy.actor.IOPort;
 import ptolemy.actor.PubSubPort;
 import ptolemy.actor.PublisherPort;
 import ptolemy.actor.SubscriberPort;
+import ptolemy.actor.gui.ColorAttribute;
 import ptolemy.actor.parameters.ParameterPort;
 import ptolemy.data.type.Typeable;
 import ptolemy.kernel.InstantiableNamedObj;
@@ -661,6 +662,10 @@ public class ExternalIOPortController extends AttributeController {
                 figure = new BasicFigure(polygon, Color.black);
                 figure.setToolTipText("Unknown port");
             }
+
+            // New way to specify a highlight color.
+            Port port = (Port) location.getContainer();
+            AttributeController.renderHighlight(port, figure);
 
             return figure;
         }

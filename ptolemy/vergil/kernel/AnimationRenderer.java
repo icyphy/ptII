@@ -169,7 +169,6 @@ public class AnimationRenderer implements SelectionRenderer {
                     } else {
                         FigureContainer parent = (FigureContainer) figure
                                 .getParent();
-
                         if (parent != null) {
                             FigureDecorator d = _prototypeDecorator
                                     .newInstance(figure);
