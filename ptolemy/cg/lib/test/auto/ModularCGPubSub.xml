@@ -1,0 +1,253 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="ModularCGPubSub" class="ptolemy.actor.TypedCompositeActor">
+    <property name="Rectangle" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="275.0, 185.0">
+        </property>
+        <property name="width" class="ptolemy.data.expr.Parameter" value="534.0">
+        </property>
+        <property name="height" class="ptolemy.data.expr.Parameter" value="288.0">
+        </property>
+        <property name="centered" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="_renderFirst" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+    </property>
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.0.devel">
+    </property>
+    <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
+        <property name="iterations" class="ptolemy.data.expr.Parameter" value="2">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 410.0]">
+        </property>
+    </property>
+    <property name="ModularCodeGenerator" class="ptolemy.cg.kernel.generic.program.procedural.java.modular.ModularCodeGenerator">
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={77, 22, 1233, 706}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[999, 596]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{499.5, 298.0}">
+    </property>
+    <property name="annotation" class="ptolemy.kernel.util.Attribute">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:darkgray">Authors: Dai Bui, Bert Rodiers, Edward A. Lee, Christopher Brooks</text></svg></configure>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-10.0, 555.0]">
+        </property>
+    </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="16">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Modular Code Generation with Publisher/Subscriber actors">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 10.0]">
+        </property>
+    </property>
+    <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The top-level of this model is an ordinary composite actor that&#10;is not code generated. It just runs in simulation, as usual.&#10;The composite in the model, however, is an instance of&#10;ModularCodeGenTypedCompositeActor. This has two key properties:&#10;&#10;1) It is lazy. The inside of this model is not expanded until it is needed.&#10;&#10;2) When it fires the first time, it will generate code for its inside model.&#10;Subsequently, it will use that code and not look at the inside model.&#10;If the model is changed (anywhere) then it will regenerate code. If you close&#10;and re-open the model and run it, it will run the generated code and will&#10;never expand the inside model.&#10;&#10;The generated code goes (by default) into a directory $HOME/cg. You can&#10;look at the generated code. Note that this example supports Publisher and&#10;Subscribe actors (in a rather clever way due to Bert Rodiers). ">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[20.0, 50.0]">
+        </property>
+        <property name="Rectangle" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{80, 215}">
+            </property>
+            <property name="centered" class="ptolemy.data.expr.Parameter" value="true">
+            </property>
+        </property>
+    </property>
+    <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="12">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This Composite is a &#10;ModularCodeGenTypedCompositeActor&#10;To see the name of the class, use the&#10;mouse to hover over the actor.&#10;&#10;Inside this composite is a  Subscriber actor&#10;and a composite that contains a Publisher.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{255.0, 440.0}">
+        </property>
+    </property>
+    <property name="Annotation4" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Things to try:&#10;* Run the model and look at the console.&#10;You should see messages about generating and compiling.&#10;If you don't, then the code is probably already generated.&#10;&#10;* Run the model again, there console should not have &#10;messages about compiling.&#10;&#10;* Hover the mouse over the A1 composite.  Note that the&#10;class name is&#10; ptolemy.cg.lib.ModularCodeGenTypedCompositeActor&#10;This means that the contents are lazily evaluated and code&#10;will be generated.&#10;&#10;* Open the A1 Composite by (Windows: right-click,&#10;Mac: Command-Click)&#10;and then select Open Actor.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{555.0, 45.0}">
+        </property>
+    </property>
+    <entity name="A1" class="ptolemy.cg.lib.ModularCodeGenTypedCompositeActor">
+        <property name="recompileHierarchy" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="recompileThisLevel" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[275.0, 415.0]">
+        </property>
+        <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
+            <property name="iterations" class="ptolemy.data.expr.Parameter" value="2">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[80.0, 45.0]">
+            </property>
+        </property>
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={34, 131, 848, 460}, maximized=false}">
+        </property>
+        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[635, 350]">
+        </property>
+        <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+        </property>
+        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{317.5, 175.0}">
+        </property>
+        <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+            <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This is the second from the top composite, which is a&#10;ModularCodeGenTypedCompositeActor.&#10;&#10;The first time the model is run, code is generated in $HOME/cg.&#10;The second and subsequent times the model is run, the code&#10;is reused.&#10;If the model is modified, then the code is regenerated.">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[170.0, 0.0]">
+            </property>
+        </property>
+        <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+            <property name="textSize" class="ptolemy.data.expr.Parameter" value="12">
+            </property>
+            <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The A2 Composite is a &#10;ModularCodeGenTypedCompositeActor&#10;To see the name of the class, use the&#10;mouse to hover over the actor.&#10;&#10;Inside the A2 composite is a  Publisher actor.">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 180.0]">
+            </property>
+        </property>
+        <port name="port" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[40.0, 155.0]">
+            </property>
+        </port>
+        <port name="port3" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[480.0, 160.0]">
+            </property>
+        </port>
+        <configure>
+            <group>
+                <entity name="A2" class="ptolemy.cg.lib.ModularCodeGenTypedCompositeActor">
+                    <property name="recompileHierarchy" class="ptolemy.data.expr.Parameter" value="true">
+                    </property>
+                    <property name="recompileThisLevel" class="ptolemy.data.expr.Parameter" value="true">
+                    </property>
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="[175.0, 155.0]">
+                    </property>
+                    <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
+                        <property name="iterations" class="ptolemy.data.expr.Parameter" value="2">
+                        </property>
+                        <property name="_location" class="ptolemy.kernel.util.Location" value="[75.0, 40.0]">
+                        </property>
+                    </property>
+                    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={32, 390, 813, 510}, maximized=false}">
+                    </property>
+                    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+                    </property>
+                    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+                    </property>
+                    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
+                    </property>
+                    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+                        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This is the third from the top composite, which is a&#10;ModularCodeGenTypedCompositeActor.&#10;&#10;The first time the model is run, code is generated in $HOME/cg.&#10;The second and subsequent times the model is run, the code&#10;is reused.&#10;If the model is modified, then the code is regenerated.">
+                        </property>
+                        <property name="_location" class="ptolemy.kernel.util.Location" value="{180.0, 10.0}">
+                        </property>
+                    </property>
+                    <port name="port" class="ptolemy.actor.TypedIOPort">
+                        <property name="input"/>
+                        <property name="_location" class="ptolemy.kernel.util.Location" value="[38.5, 190.0]">
+                        </property>
+                    </port>
+                    <configure>
+                        <group>
+                            <entity name="Publisher" class="ptolemy.actor.lib.Publisher">
+                                <property name="channel" class="ptolemy.data.expr.StringParameter" value="channel">
+                                </property>
+                                <property name="_location" class="ptolemy.kernel.util.Location" value="[248.5, 190.0]">
+                                </property>
+                            </entity>
+                            <entity name="Scale" class="ptolemy.actor.lib.Scale">
+                                <property name="factor" class="ptolemy.data.expr.Parameter" value="3">
+                                </property>
+                                <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
+                                    <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="factor">
+                                    </property>
+                                </property>
+                                <property name="_location" class="ptolemy.kernel.util.Location" value="[165.0, 190.0]">
+                                </property>
+                            </entity>
+                            <relation name="relation" class="ptolemy.actor.TypedIORelation">
+                                <vertex name="vertex1" value="[105.0, 190.0]">
+                                </vertex>
+                            </relation>
+                            <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+                            </relation>
+                            <link port="port" relation="relation"/>
+                            <link port="Publisher.input" relation="relation2"/>
+                            <link port="Scale.input" relation="relation"/>
+                            <link port="Scale.output" relation="relation2"/>
+                        </group>
+                    </configure>
+                </entity>
+                <entity name="Subscriber" class="ptolemy.actor.lib.Subscriber">
+                    <property name="channel" class="ptolemy.data.expr.StringParameter" value="channel">
+                    </property>
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="{320.0, 160.0}">
+                    </property>
+                </entity>
+                <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+                </relation>
+                <relation name="relation" class="ptolemy.actor.TypedIORelation">
+                </relation>
+                <link port="port" relation="relation3"/>
+                <link port="port3" relation="relation"/>
+                <link port="A2.port" relation="relation3"/>
+                <link port="Subscriber.output" relation="relation"/>
+            </group>
+        </configure>
+    </entity>
+    <entity name="Const" class="ptolemy.actor.lib.Const">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="2">
+        </property>
+        <doc>Create a constant sequence.</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[180.0, 415.0]">
+        </property>
+    </entity>
+    <entity name="Test" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{}">
+        </property>
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[530.0, 405.0]">
+        </property>
+    </entity>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="vertex1" value="[215.0, 415.0]">
+        </vertex>
+    </relation>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="vertex1" value="[330.0, 405.0]">
+        </vertex>
+    </relation>
+    <link port="A1.port" relation="relation2"/>
+    <link port="A1.port3" relation="relation"/>
+    <link port="Const.output" relation="relation2"/>
+    <link port="Test.input" relation="relation"/>
+</entity>
