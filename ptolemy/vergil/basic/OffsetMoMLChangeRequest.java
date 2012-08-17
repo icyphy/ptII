@@ -225,16 +225,18 @@ public class OffsetMoMLChangeRequest extends MoMLChangeRequest {
                         selectionModel.clearSelection();
                         AbstractBasicGraphModel graphModel = (AbstractBasicGraphModel) controllerFinal.getGraphModel();
             
-                        Iterator nodes = graphModel.nodes(containerFinal);
-                        while (nodes.hasNext()) {
-                            Location node = (Location) nodes.next();
-                            NamedObj entity = (NamedObj) graphModel.getSemanticObject(node);
-                            if (_topObjects.contains(entity)) {
-                                // If we don't do this in an invokeLater, then the
-                                // canvas will not be updated so the controller will
-                                // not have the figures and this will be null.
-                                Figure figure = controllerFinal.getFigure(node);
-                                selectionModel.addSelection(figure);
+                        if (graphModel != null) {
+                            Iterator nodes = graphModel.nodes(containerFinal);
+                            while (nodes.hasNext()) {
+                                Location node = (Location) nodes.next();
+                                NamedObj entity = (NamedObj) graphModel.getSemanticObject(node);
+                                if (_topObjects.contains(entity)) {
+                                    // If we don't do this in an invokeLater, then the
+                                    // canvas will not be updated so the controller will
+                                    // not have the figures and this will be null.
+                                    Figure figure = controllerFinal.getFigure(node);
+                                    selectionModel.addSelection(figure);
+                                }
                             }
                         }
                     }
