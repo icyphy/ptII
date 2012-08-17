@@ -122,7 +122,8 @@ public class HttpActor extends TypedAtomicActor implements HttpService {
         response = new TypedIOPort(this, "response", true, false);
         response.setTypeEquals(BaseType.STRING);
         response.setMultiport(true);
-        
+        new Parameter(response, "_showName").setExpression("true");           
+
         cookies = new TypedIOPort(this, "cookies", false, true);
         new Parameter(cookies, "_showName").setExpression("true");           
         
@@ -595,14 +596,15 @@ public class HttpActor extends TypedAtomicActor implements HttpService {
                 _requestURI = request.getRequestURI();
                 _requestType = type;
                 _cookies = request.getCookies();
-                System.out.println("COOKIES: "+_cookies.length);
-                for(int i=0; i<_cookies.length; i++)
-                    System.out.println(_cookies[i].getValue());
-                    
                 if (_debugging) {
                     _debug("Received get request with URI: " + _requestURI);
+                    _debug("Number of Cookies: " + _cookies.length);
+                    for(int i=0; i<_cookies.length; i++) {
+                        HttpActor.this._debug(_cookies[i].getValue());
+                    }
                     _debug("Requesting firing at the current time.");
                 }
+                    
                 // Get the parameters that have been either posted or included
                 // as assignments in a get using the URL syntax ...?name=value.
                 // Note that each parameter name may have more than one value,
