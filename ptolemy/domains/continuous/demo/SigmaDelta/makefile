@@ -44,26 +44,15 @@ include $(CONFIG)
 PTPACKAGE = 	SigmaDelta
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
-TCL_SRCS = \
-	SigmaDelta.tcl
-
-JSRCS = \
-	SigmaDelta.java
+JSRCS =
 
 OTHER_FILES_TO_BE_JARED = \
 	$(JSRCS) \
 	SigmaDelta.xml \
 
 EXTRA_SRCS = \
-	$(TCL_SRCS) \
 	$(OTHER_FILES_TO_BE_JARED) \
-	SDCTPlot.gif \
-	SDDEPlot.gif \
-	SigmaDelta.gif \
-	SigmaDelta.htm \
-	SigmaDelta.vsd \
-	SigmaDelta2.gif \
-	SigmaDelta2.vsd
+	SigmaDelta.htm
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.

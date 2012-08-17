@@ -56,7 +56,6 @@ EXTRA_SRCS = \
 	data_fault1.txt \
 	data_fault2.txt \
 	data_fault-on.txt \
-	DMIB_data.txt \
 	DMIB_data1.txt
 
 # Sources that may or may not be present, but if they are present, we don't
