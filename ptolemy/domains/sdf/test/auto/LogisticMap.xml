@@ -1,0 +1,154 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="LogisticMap" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.0.devel">
+    </property>
+    <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
+        <property name="iterations" class="ptolemy.data.expr.Parameter" value="360">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[60.0, 30.0]">
+        </property>
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={4, 22, 1091, 727}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[857, 617]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{428.5, 308.5}">
+    </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model shows a polynomial mapping described by&#10;the equation: x(n+1) = rx(n)(1-x(n)) which was &#10;originally introduced as a demographic model where&#10;x(n) is a number between 0 and 1, and represents&#10;the population at year n and r is a positive number,&#10;and represents a combined rate for reproduction and&#10;starvation. &#10;&#10;It is often cited as an archetypal example of how&#10;complex, chaotic behavior can arise from very simple&#10;non-linear dynamical equations:&#10;* With 0&lt;r&lt;1, the population will eventually die.&#10;* With 1&lt;r&lt;2, the population will quickly stabilize to&#10;  (r-1)/r.&#10;* With 2&lt;r&lt;3, the population will eventually stabilize &#10;  to (r-1)/r, after oscillating around that value for&#10;  some time.&#10;* With 3&lt;r&lt;3.45, the population will oscillate between&#10;  2 values forever.&#10;* With 3.45&lt;r&lt;3.54, the population will oscillate&#10;  between 4 values.&#10;* With r slightly bigger than 3.54, the population &#10;  will oscillate between 8 values, then 16, 32, etc.&#10;  The lengths of the parameter intervals which yield&#10;  the same number of oscillations decrease rapidly...&#10;* At r = 3.57 is the onset of chaos and we can no&#10;  longer see any oscillations.&#10;&#10;For more details, see &#10;http://en.wikipedia.org/wiki/Logistic_map">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[440.0, 15.0]">
+        </property>
+    </property>
+    <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.4, 0.4, 0.4, 1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author: Gang Zhou">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[25.0, 465.0]">
+        </property>
+    </property>
+    <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="12">
+        </property>
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="To execute the generated code, you need to have the&#10;directory containing jvm.dll in your path variable.&#10;jvm.dll is found in directories like&#10;C:\Program Files\Java\jdk1.5.0_06\jre\bin\client or&#10;C:\Program Files\Java\jdk1.5.0_06\jre\bin\server.&#10;It is used for invoking JVM to load GUI interface only. ">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 510.0]">
+        </property>
+    </property>
+    <entity name="SampleDelay" class="ptolemy.domains.sdf.lib.SampleDelay">
+        <property name="initialOutputs" class="ptolemy.data.expr.Parameter" value="{0.3}">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="initialOutputs">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="20">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[45.0, 330.0]">
+        </property>
+    </entity>
+    <entity name="AddSubtract" class="ptolemy.actor.lib.AddSubtract">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[260.0, 270.0]">
+        </property>
+    </entity>
+    <entity name="Const" class="ptolemy.actor.lib.Const">
+        <doc>Create a constant sequence.</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[145.0, 260.0]">
+        </property>
+    </entity>
+    <entity name="MultiplyDivide" class="ptolemy.actor.lib.MultiplyDivide">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[380.0, 345.0]">
+        </property>
+    </entity>
+    <entity name="Sleep" class="ptolemy.actor.lib.Sleep">
+        <property name="sleepTime" class="ptolemy.actor.parameters.PortParameter" value="1L">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[135.0, 330.0]">
+        </property>
+    </entity>
+    <entity name="MultiplyDivide2" class="ptolemy.actor.lib.MultiplyDivide">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[295.0, 170.0]">
+        </property>
+    </entity>
+    <entity name="Const2" class="ptolemy.actor.lib.Const">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="1000.0">
+        </property>
+        <doc>Create a constant sequence.</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[192.24523162841797, 197.42203903198242]">
+        </property>
+    </entity>
+    <entity name="Test" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{2.31E-4, 2.5635076929E-7, 2.871127880031971E-10, 3.244374503504626E-13, 3.698586933994074E-16, 4.253374974093184E-19, 4.933914969948095E-22, 5.772680514839273E-25, 6.811763007510342E-28, 8.105997978937308E-31, 9.72719757472477E-34, 1.176990906541697E-36, 1.435928905980871E-39, 1.766192554356472E-42, 2.190078767402025E-45, 2.737598459252532E-48, 3.449374058658192E-51, 4.380705054495905E-54, 5.60730246975476E-57, 7.233420185983642E-60, 9.403446241778737E-63, 1.231851457673015E-65, 1.62604392412838E-68, 2.162638419090745E-71, 2.897935481581599E-74, 3.91221290013516E-77, 5.320609544183819E-80, 7.289235075531833E-83, 1.005914440423393E-85, 1.398221072188517E-88, 1.957509501063924E-91, 2.760088396500134E-94, 3.919325523030192E-97, 5.604635497933177E-100, 8.070675117023776E-103, 1.170247891968448E-105, 1.708561922273934E-108, 2.511586025742684E-111, 3.717147318099173E-114, 5.53854950396777E-117, 8.307824255951657E-120, 1.254481462648701E-122, 1.906811823226026E-125, 2.91742208953582E-128, 4.492830017885165E-131, 6.963886527722008E-134, 1.086366298324634E-136, 1.705595088369675E-139, 2.694840239624088E-142, 4.2847959810023E-145, 6.855673569603683E-148, 1.103763444706193E-150, 1.788096780424034E-153, 2.914597752091176E-156, 4.779940313429531E-159, 7.886901517158729E-162, 1.30922565184835E-164, 2.186406838586745E-167, 3.673163488825733E-170, 6.207646296115491E-173, 1.055299870339634E-175, 1.804562778280774E-178, 3.103847978642933E-181, 5.369657003052275E-184, 9.343203185310963E-187, 1.635060557429419E-189, 2.877706581075779E-192, 5.093540648504131E-195, 9.066502354337356E-198, 1.622903921426388E-200, 2.921227058567499E-203, 5.287420976007175E-206, 9.623106176333063E-209, 1.761028430268951E-211, 3.240292311694871E-214, 5.994540776635514E-217, 1.114984584454206E-219, 2.085021172929366E-222, 3.919839805107211E-225, 7.408497231652632E-228, 1.407614474014001E-230, 2.688543645366743E-233, 5.162003799104149E-236, 9.962667332271012E-239, 1.932757462460577E-241, 3.768877051798126E-244, 7.38699902152433E-247, 1.455238807240294E-249, 2.881372838335783E-252, 5.73393194828821E-255, 1.146786389657643E-257, 2.305040643211862E-260, 4.656182099287963E-263, 9.452049661554564E-266, 1.928218130957131E-268, 3.952847168462119E-271, 8.142865167031964E-274, 1.685573089575616E-276, 3.50599202631728E-279, 7.327523335003112E-282, 1.538779900350652E-284, 3.246825589739874E-287, 6.883270250248528E-290, 1.466136563302935E-292, 3.137532245468278E-295, 6.745694327756792E-298, 1.457069974795465E-300, 3.161841845306156E-303, 6.892815222767411E-306, 1.50952653378606E-308, 3.320958374329E-311, 7.339318007E-314, 1.6293286E-316, 3.6334E-319, 8.15E-322, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0}">
+        </property>
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{300, 450}">
+        </property>
+    </entity>
+    <entity name="Ramp" class="ptolemy.actor.lib.Ramp">
+        <property name="init" class="ptolemy.actor.parameters.PortParameter" value="1.1">
+        </property>
+        <property name="step" class="ptolemy.actor.parameters.PortParameter" value="0.01">
+        </property>
+        <doc>Create a sequence of tokens with increasing value</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{70, 150}">
+        </property>
+    </entity>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="[195.0, 330.0]">
+        </vertex>
+    </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="[240.0, 410.0]">
+        </vertex>
+    </relation>
+    <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation7" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation8" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="SampleDelay.input" relation="relation4"/>
+    <link port="SampleDelay.output" relation="relation6"/>
+    <link port="AddSubtract.plus" relation="relation"/>
+    <link port="AddSubtract.minus" relation="relation2"/>
+    <link port="AddSubtract.output" relation="relation3"/>
+    <link port="Const.output" relation="relation"/>
+    <link port="MultiplyDivide.multiply" relation="relation3"/>
+    <link port="MultiplyDivide.multiply" relation="relation2"/>
+    <link port="MultiplyDivide.multiply" relation="relation8"/>
+    <link port="MultiplyDivide.output" relation="relation4"/>
+    <link port="Sleep.input" relation="relation6"/>
+    <link port="Sleep.output" relation="relation2"/>
+    <link port="MultiplyDivide2.multiply" relation="relation5"/>
+    <link port="MultiplyDivide2.divide" relation="relation7"/>
+    <link port="MultiplyDivide2.output" relation="relation8"/>
+    <link port="Const2.output" relation="relation7"/>
+    <link port="Test.input" relation="relation4"/>
+    <link port="Ramp.output" relation="relation5"/>
+</entity>

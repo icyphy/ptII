@@ -1,0 +1,330 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="MaximumEntropySpectrum" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.0.devel">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[802, 524]">
+    </property>
+    <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[-4, -4]">
+    </property>
+    <property name="SDF" class="ptolemy.domains.sdf.kernel.SDFDirector">
+        <property name="iterations" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <property name="allowDisconnectedGraphs" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="allowRateChanges" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="69.0, 31.0">
+        </property>
+    </property>
+    <property name="log2numInputs" class="ptolemy.data.expr.Parameter" value="8">
+    </property>
+    <property name="ARorder" class="ptolemy.data.expr.Parameter" value="32">
+    </property>
+    <property name="noisePower" class="ptolemy.data.expr.Parameter" value="0.1">
+    </property>
+    <property name="AnnotationUpdated" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
+        <property name="_hideAllParameters" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="14">
+        </property>
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+        </property>
+        <property name="fontFamily" class="ptolemy.data.expr.StringParameter" value="SansSerif">
+        </property>
+        <property name="bold" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="italic" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Estimate the spectrum of three sinusoids in noise&#10;by three different techniques.">
+            <property name="_style" class="ptolemy.actor.gui.style.TextStyle">
+                <property name="height" class="ptolemy.data.expr.Parameter" value="20">
+                </property>
+                <property name="width" class="ptolemy.data.expr.Parameter" value="80">
+                </property>
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{150.0, 10.0}">
+        </property>
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={3, 22, 1036, 634}, maximized=false}">
+    </property>
+    <property name="AnnotationUpdated2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
+        <property name="_hideAllParameters" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="14">
+        </property>
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.2, 0.2, 0.2, 1.0}">
+        </property>
+        <property name="fontFamily" class="ptolemy.data.expr.StringParameter" value="SansSerif">
+        </property>
+        <property name="bold" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="italic" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author: Edward A. Lee">
+            <property name="_style" class="ptolemy.actor.gui.style.TextStyle">
+                <property name="height" class="ptolemy.data.expr.Parameter" value="20">
+                </property>
+                <property name="width" class="ptolemy.data.expr.Parameter" value="80">
+                </property>
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{10.0, 335.0}">
+        </property>
+    </property>
+    <property name="AnnotationUpdated3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
+        <property name="_hideAllParameters" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="18">
+        </property>
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
+        </property>
+        <property name="fontFamily" class="ptolemy.data.expr.StringParameter" value="SansSerif">
+        </property>
+        <property name="bold" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="italic" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Synchronous Dataflow Modeling">
+            <property name="_style" class="ptolemy.actor.gui.style.TextStyle">
+                <property name="height" class="ptolemy.data.expr.Parameter" value="20">
+                </property>
+                <property name="width" class="ptolemy.data.expr.Parameter" value="80">
+                </property>
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{435.0, 55.0}">
+        </property>
+    </property>
+    <property name="AnnotationUpdated4" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
+        <property name="_hideAllParameters" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="14">
+        </property>
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 0.0, 1.0}">
+        </property>
+        <property name="fontFamily" class="ptolemy.data.expr.StringParameter" value="SansSerif">
+        </property>
+        <property name="bold" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="italic" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This example illustrates SDF modeling, which&#10;is well-suited to signal processing. In SDF,&#10;components communicate using streams, but their&#10;production and consumption rates are fixed.&#10;Because of these fixed rates, extensive static&#10;analysis of the model is possible, enabling&#10;efficient code generation and optimization.">
+            <property name="_style" class="ptolemy.actor.gui.style.TextStyle">
+                <property name="height" class="ptolemy.data.expr.Parameter" value="20">
+                </property>
+                <property name="width" class="ptolemy.data.expr.Parameter" value="80">
+                </property>
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[430.0, 235.0]">
+        </property>
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{401.0, 262.0}">
+    </property>
+    <entity name="Spectrum" class="ptolemy.domains.sdf.lib.Spectrum">
+        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[604, 454]">
+        </property>
+        <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[102, 100]">
+        </property>
+        <property name="order" class="ptolemy.data.expr.Parameter" value="log2numInputs">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[300.0, 100.0]">
+        </property>
+    </entity>
+    <entity name="Gaussian" class="ptolemy.actor.lib.Gaussian">
+        <property name="seed" class="ptolemy.actor.parameters.SharedParameter" value="1L">
+        </property>
+        <property name="resetOnEachRun" class="ptolemy.actor.parameters.SharedParameter" value="true">
+        </property>
+        <property name="mean" class="ptolemy.actor.parameters.PortParameter" value="0.0">
+        </property>
+        <property name="standardDeviation" class="ptolemy.actor.parameters.PortParameter" value="noisePower">
+        </property>
+        <doc>Create a sequence of gaussian random variables</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[45.0, 310.0]">
+        </property>
+    </entity>
+    <entity name="Sinewave" class="ptolemy.actor.lib.Sinewave">
+        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 450]">
+        </property>
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={108, 103, 811, 561}}">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[50.0, 85.0]">
+        </property>
+        <port name="frequency" class="ptolemy.actor.parameters.ParameterPort">
+            <property name="input"/>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{10.0, 85.0}">
+            </property>
+        </port>
+        <port name="phase" class="ptolemy.actor.parameters.ParameterPort">
+            <property name="input"/>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{10.0, 125.0}">
+            </property>
+        </port>
+    </entity>
+    <entity name="Sinewave2" class="ptolemy.actor.lib.Sinewave">
+        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 450]">
+        </property>
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={108, 103, 811, 561}}">
+        </property>
+        <property name="frequency" class="ptolemy.actor.parameters.PortParameter" value="540.0">
+            <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure>
+      <svg>
+	<polyline points="-15,-15, -3,-5, -16,5" style="stroke:black"></polyline>
+      </svg>
+    </configure>
+            </property>
+            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:green" y="20">-P-</text>
+      </svg>
+    </configure>
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="50.0, 95.0">
+            </property>
+            <doc>The frequency of the sinusoid, in the same units as the sampling frequency.</doc>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[50.0, 145.0]">
+        </property>
+        <port name="frequency" class="ptolemy.actor.parameters.ParameterPort">
+            <property name="input"/>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{30.0, 90.0}">
+            </property>
+        </port>
+        <port name="phase" class="ptolemy.actor.parameters.ParameterPort">
+            <property name="input"/>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{10.0, 125.0}">
+            </property>
+        </port>
+    </entity>
+    <entity name="Sinewave3" class="ptolemy.actor.lib.Sinewave">
+        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 450]">
+        </property>
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={108, 103, 811, 561}}">
+        </property>
+        <property name="frequency" class="ptolemy.actor.parameters.PortParameter" value="2000.0">
+            <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure>
+      <svg>
+	<polyline points="-15,-15, -3,-5, -16,5" style="stroke:black"></polyline>
+      </svg>
+    </configure>
+            </property>
+            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:green" y="20">-P-</text>
+      </svg>
+    </configure>
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="50.0, 95.0">
+            </property>
+            <doc>The frequency of the sinusoid, in the same units as the sampling frequency.</doc>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[50.0, 205.0]">
+        </property>
+        <port name="frequency" class="ptolemy.actor.parameters.ParameterPort">
+            <property name="input"/>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{30.0, 90.0}">
+            </property>
+        </port>
+        <port name="phase" class="ptolemy.actor.parameters.ParameterPort">
+            <property name="input"/>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{10.0, 125.0}">
+            </property>
+        </port>
+    </entity>
+    <entity name="AddSubtract" class="ptolemy.actor.lib.AddSubtract">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[165.0, 165.0]">
+        </property>
+    </entity>
+    <entity name="IIR" class="ptolemy.actor.lib.IIR">
+        <property name="denominator" class="ptolemy.data.expr.Parameter" value="{1.0, 0.99}">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[150.0, 310.0]">
+        </property>
+    </entity>
+    <entity name="SmoothedPeriodogram" class="ptolemy.domains.sdf.lib.SmoothedPeriodogram">
+        <property name="numberOfInputs" class="ptolemy.data.expr.Parameter" value="2^log2numInputs">
+        </property>
+        <property name="numberOfLags" class="ptolemy.data.expr.Parameter" value="64">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[300.0, 165.0]">
+        </property>
+    </entity>
+    <entity name="MaximumEntropySpectrum" class="ptolemy.domains.sdf.lib.MaximumEntropySpectrum">
+        <property name="order" class="ptolemy.data.expr.Parameter" value="ARorder">
+        </property>
+        <property name="numberOfInputs" class="ptolemy.data.expr.Parameter" value="2^log2numInputs">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[300.0, 240.0]">
+        </property>
+    </entity>
+    <entity name="Test" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{{0.9524107711753, 9.0727900881007, 10.4205994700664}, {11.0440327728718, 9.2845060593515, 9.7499420405647}, {9.1256961478566, 8.8613975851265, 6.9722048905968}, {1.0736109186783, 5.8251532675394, 3.2542864952044}, {-1.7389630858478, -4.9312111925418, 0.1897683266876}, {-13.6753984998946, -0.0553400705882, -1.9251267448241}, {-7.612614280799, -0.9789785205315, -3.1977627116949}, {-2.3449078462631, 1.4259550293885, -3.8346929855422}, {-0.4843976349007, -4.8263867559962, -4.1797382374419}, {-3.1237861770961, -10.3194216530208, -4.7392821851298}, {-22.291377520917, -2.9764751465513, -5.8442562984789}, {-8.292781421145, -3.1838275446964, -7.262144092025}, {-10.5831190826536, -6.0257121299605, -8.5176796092436}, {-9.6661975919348, -6.2211835083561, -9.2853778171148}, {-7.1386376435472, -3.3568604307092, -9.3927665855129}, {-9.7410501540962, -3.1105566486923, -8.7416283435726}, {-8.394647237358, -10.6365332680987, -7.4052322946736}, {-4.7633367889983, -13.5156367770172, -6.3645924872707}, {-13.613268605941, -3.3893472824861, -7.7625116415773}, {-22.9271703394396, -5.4265844250481, -10.7864833707983}, {-10.083268411726, -5.2015043558937, -13.5401628736677}, {-10.2718591655069, -7.7176952636551, -15.6004256736306}, {-15.6357200791807, -4.0840011870206, -17.0112647165756}, {-18.4455275105602, -6.3829805908173, -17.8625834326647}, {-30.9587520038808, -4.5509032688445, -18.2318765482509}, {-16.9715236949474, -6.9193028615422, -18.1940477890419}, {-23.2032416084864, -4.2478152146491, -17.8488087163173}, {-15.8865048568656, -6.2681818877489, -17.3574633128243}, {-14.5723574174253, -4.6791284665337, -16.9583143171005}, {-17.6776568214979, -6.9272257990507, -16.8826646059947}, {-13.8198455978895, -4.1990993993322, -17.179506879246}, {-29.9834603759632, -6.0045922029244, -17.6805171698167}, {-22.9070113034336, -4.6535957659122, -18.1660318278609}, {-16.4938216335109, -6.3940276092541, -18.4925931187548}, {-19.7873362132483, -4.3329926197096, -18.603630290128}, {-21.4475222751436, -5.7548008402073, -18.4997480851743}, {-31.5108758801999, -4.6245147565985, -18.2132067662604}, {-11.7711019474985, -6.033798446276, -17.7908526872603}, {-20.8741809998904, -4.06633856866, -17.2824281837832}, {-24.7650644380812, -4.9712307605394, -16.7369985371831}, {-21.5430456498414, -4.4344771971141, -16.2143220307482}, {-14.9803373103595, -4.9735593062087, -15.8082524602216}, {-12.6849081122494, -3.8769054646476, -15.6503600591794}, {-27.9247259290717, -3.7608015954824, -15.8451301406954}, {-21.6504380169862, -4.5093881240628, -16.3671559097398}, {-17.8930805162135, -3.6940699061724, -17.0547311025219}, {-16.5451242697673, -3.9823727414732, -17.7134658463416}, {-26.8571017037783, -2.7093490373506, -18.1981624451852}, {-28.1374119910322, -4.2215377873187, -18.4256047393482}, {-28.894639334764, -2.1187612049549, -18.3580938432067}, {-18.9912495236825, -3.8938814448509, -17.9891904833404}, {-18.8676294103765, -1.0650437973825, -17.3399835093071}, {-21.0090096569349, -4.3267942036595, -16.4647597435057}, {-18.685398048666, -0.3958288363131, -15.4586099045161}, {-27.4526923851087, -3.4537806351334, -14.4470422984332}, {-25.9986819331585, 1.0321451458724, -13.5326230458561}, {-35.758111746975, -3.9503540821427, -12.7181755153174}, {-22.1989440962728, 2.1563771470553, -11.8866321611388}, {-24.1560543286472, -2.4104236583823, -10.8599783279437}, {-18.1205279427413, 4.2922392418325, -9.4594093827667}, {-11.6412803633154, -3.9723336526523, -7.5123154561591}, {-17.8153016218429, 6.2713093854991, -4.8028285630797}, {-14.6867145703601, 2.9327865188886, -0.9148025177015}, {-16.3635059748002, 12.5399666400509, 5.4776329472912}, {18.0389435751948, 14.4213178751932, 20.42246805531}, {-17.8234026775265, 12.8453458279231, 5.8036359080176}, {-15.2405237247913, 3.2843621560329, -0.1115692368984}, {-19.6601749041322, 7.283576680629, -3.7799645635082}, {-16.6197102729388, -3.5731844390336, -6.4413789200044}, {-15.2161139692293, 5.8766804007827, -8.4374740342749}, {-23.8389764466582, -1.8246326065134, -9.9222904128811}, {-20.2112679719793, 4.4704648826931, -11.0145258395593}, {-19.6332757762162, -3.4852414791782, -11.8395544141951}, {-22.5282187713709, 3.9692188926481, -12.5317840024538}, {-17.685249148039, -2.5437773644686, -13.2041555242687}, {-18.7102890048828, 3.2848533283168, -13.9013482092986}, {-16.7055061653804, -3.2151494489027, -14.5829375616006}, {-19.0838805110632, 3.0823746879523, -15.1589797510534}, {-22.7113257523505, -2.6450470829932, -15.5429668231418}, {-20.1159548082688, 2.7392573087425, -15.6871232888517}, {-13.916487173026, -2.9570739928598, -15.6032964666374}, {-16.6324072343637, 2.7400038155403, -15.3853403330576}, {-13.0564593064828, -2.2636069660554, -15.221728150015}, {-16.6758242416466, 2.5200252914555, -15.3322687337229}, {-20.0817080107972, -2.4695188268358, -15.7989184027225}, {-18.8786622683796, 2.6185142699209, -16.4788675922353}, {-16.6274109724639, -1.9468377143985, -17.1352197742986}, {-14.9168776764075, 2.5694279295798, -17.5841603147885}, {-16.213154331955, -1.9510961882859, -17.7272986725216}, {-18.0693539657574, 2.7569256346541, -17.5316214314847}, {-18.214666536234, -1.4074719835636, -17.0186098542092}, {-13.9551824181512, 2.8125534671574, -16.2802156087944}, {-15.447498438532, -1.3429721914018, -15.5107197918075}, {-18.3339017876087, 3.1350168018874, -14.984321120279}, {-14.310468955083, -0.6173484674785, -14.8782744366918}, {-12.3897127124589, 3.2683016540528, -15.0912790497578}, {-18.2566199337941, -0.4494678166766, -15.349154827665}, {-15.2245518851964, 3.7153894755637, -15.4189070173344}, {-15.5199866820941, 0.3809453807903, -15.1750143528259}, {-11.9427480375035, 4.0101356112794, -14.5740425161518}, {-13.6643584475718, 0.7935679545669, -13.6312619441525}, {-11.7663154097337, 4.661398112953, -12.4217899667831}, {-9.3198988328844, 2.0032722620745, -11.0904441795452}, {-9.7547669699266, 5.0954538948085, -9.8188256801809}, {-7.5909172119331, 2.5656216345825, -8.700116400296}, {-6.1595580342842, 6.3064935859217, -7.617450942266}, {-6.0786207709341, 4.8162144919361, -6.2853483339281}, {-3.3191686844954, 7.0490429925324, -4.3585828192683}, {-1.748852020493, 6.0530611968153, -1.4167439356393}, {2.172079154584, 10.5373648266445, 3.2917017070473}, {9.294289494756, 13.8301590188722, 11.8510783830259}, {16.6491301880156, 13.3025311969034, 14.7303207180108}, {2.024908630228, 11.425555208969, 9.6501986965758}, {-6.4071796327768, 12.2952537145465, 10.0743492425852}, {18.4400319427498, 13.9096767333517, 15.9826565668026}, {0.3243642618535, 13.0871021104174, 9.901380631401}, {-4.0638784924368, 7.0735447224148, 2.4917452733819}, {-6.8702207728667, 6.5598242769112, -1.6454035189645}, {-7.9257685320163, 2.198856804345, -4.1057728245471}, {-10.3549279650904, 5.451428558637, -5.4491804655404}, {-11.1333269120359, 3.404576540202, -5.9359944530653}, {-13.8107463087034, 2.0331304726589, -5.7675021993649}, {-14.8220043754232, 1.2545426967817, -5.2778637876848}, {-14.4336851018971, 1.385784708288, -5.1045220068306}, {-16.1305027011434, 2.0895600158491, -5.8144645177781}, {-15.9062427813024, -3.3818202488158, -7.1342604144503}, {-14.9192268442736, 0.6965254258338, -8.4019115552154}, {-18.509165657614, -4.4082886081881, -9.2421395458067}, {-20.5092960643051, 1.6730256028311, -9.5306310938136}, {-18.509165657614, -4.4082886081881, -9.2421395458067}, {-14.9192268442736, 0.6965254258338, -8.4019115552154}, {-15.9062427813024, -3.3818202488158, -7.1342604144503}, {-16.1305027011434, 2.0895600158491, -5.8144645177781}, {-14.4336851018971, 1.385784708288, -5.1045220068306}, {-14.8220043754232, 1.2545426967817, -5.2778637876848}, {-13.8107463087034, 2.0331304726589, -5.7675021993649}, {-11.1333269120359, 3.404576540202, -5.9359944530653}, {-10.3549279650904, 5.451428558637, -5.4491804655404}, {-7.9257685320163, 2.198856804345, -4.1057728245471}, {-6.8702207728667, 6.5598242769112, -1.6454035189645}, {-4.0638784924368, 7.0735447224148, 2.4917452733819}, {0.3243642618535, 13.0871021104174, 9.901380631401}, {18.4400319427498, 13.9096767333517, 15.9826565668026}, {-6.4071796327768, 12.2952537145465, 10.0743492425852}, {2.024908630228, 11.425555208969, 9.6501986965758}, {16.6491301880156, 13.3025311969034, 14.7303207180108}, {9.294289494756, 13.8301590188722, 11.8510783830259}, {2.172079154584, 10.5373648266445, 3.2917017070473}, {-1.748852020493, 6.0530611968153, -1.4167439356393}, {-3.3191686844954, 7.0490429925324, -4.3585828192683}, {-6.0786207709341, 4.8162144919361, -6.2853483339281}, {-6.1595580342842, 6.3064935859217, -7.617450942266}, {-7.5909172119331, 2.5656216345825, -8.700116400296}, {-9.7547669699266, 5.0954538948085, -9.8188256801809}, {-9.3198988328844, 2.0032722620745, -11.0904441795452}, {-11.7663154097337, 4.661398112953, -12.4217899667831}, {-13.6643584475718, 0.7935679545669, -13.6312619441525}, {-11.9427480375035, 4.0101356112794, -14.5740425161518}, {-15.5199866820941, 0.3809453807903, -15.1750143528259}, {-15.2245518851964, 3.7153894755637, -15.4189070173344}, {-18.2566199337941, -0.4494678166766, -15.349154827665}, {-12.3897127124589, 3.2683016540528, -15.0912790497578}, {-14.310468955083, -0.6173484674785, -14.8782744366918}, {-18.3339017876087, 3.1350168018874, -14.984321120279}, {-15.447498438532, -1.3429721914018, -15.5107197918075}, {-13.9551824181512, 2.8125534671574, -16.2802156087944}, {-18.214666536234, -1.4074719835636, -17.0186098542092}, {-18.0693539657574, 2.7569256346541, -17.5316214314847}, {-16.213154331955, -1.9510961882859, -17.7272986725216}, {-14.9168776764075, 2.5694279295798, -17.5841603147885}, {-16.6274109724639, -1.9468377143985, -17.1352197742986}, {-18.8786622683796, 2.6185142699209, -16.4788675922353}, {-20.0817080107972, -2.4695188268358, -15.7989184027225}, {-16.6758242416466, 2.5200252914555, -15.3322687337229}, {-13.0564593064828, -2.2636069660554, -15.221728150015}, {-16.6324072343637, 2.7400038155403, -15.3853403330576}, {-13.916487173026, -2.9570739928598, -15.6032964666374}, {-20.1159548082688, 2.7392573087425, -15.6871232888517}, {-22.7113257523505, -2.6450470829932, -15.5429668231418}, {-19.0838805110632, 3.0823746879523, -15.1589797510534}, {-16.7055061653804, -3.2151494489027, -14.5829375616006}, {-18.7102890048828, 3.2848533283168, -13.9013482092986}, {-17.685249148039, -2.5437773644686, -13.2041555242687}, {-22.5282187713709, 3.9692188926481, -12.5317840024538}, {-19.6332757762162, -3.4852414791782, -11.8395544141951}, {-20.2112679719793, 4.4704648826931, -11.0145258395593}, {-23.8389764466582, -1.8246326065134, -9.9222904128811}, {-15.2161139692293, 5.8766804007827, -8.4374740342749}, {-16.6197102729388, -3.5731844390336, -6.4413789200044}, {-19.6601749041322, 7.283576680629, -3.7799645635082}, {-15.2405237247913, 3.2843621560329, -0.1115692368984}, {-17.8234026775265, 12.8453458279231, 5.8036359080176}, {18.0389435751948, 14.4213178751932, 20.42246805531}, {-16.3635059748002, 12.5399666400509, 5.4776329472912}, {-14.6867145703601, 2.9327865188886, -0.9148025177015}, {-17.8153016218429, 6.2713093854991, -4.8028285630797}, {-11.6412803633154, -3.9723336526523, -7.5123154561591}, {-18.1205279427413, 4.2922392418325, -9.4594093827667}, {-24.1560543286472, -2.4104236583823, -10.8599783279437}, {-22.1989440962728, 2.1563771470553, -11.8866321611388}, {-35.758111746975, -3.9503540821427, -12.7181755153174}, {-25.9986819331585, 1.0321451458724, -13.5326230458561}, {-27.4526923851087, -3.4537806351334, -14.4470422984332}, {-18.685398048666, -0.3958288363131, -15.4586099045161}, {-21.0090096569349, -4.3267942036595, -16.4647597435057}, {-18.8676294103765, -1.0650437973825, -17.3399835093071}, {-18.9912495236825, -3.8938814448509, -17.9891904833404}, {-28.894639334764, -2.1187612049549, -18.3580938432067}, {-28.1374119910322, -4.2215377873187, -18.4256047393482}, {-26.8571017037783, -2.7093490373506, -18.1981624451852}, {-16.5451242697673, -3.9823727414732, -17.7134658463416}, {-17.8930805162135, -3.6940699061724, -17.0547311025219}, {-21.6504380169862, -4.5093881240628, -16.3671559097398}, {-27.9247259290717, -3.7608015954824, -15.8451301406954}, {-12.6849081122494, -3.8769054646476, -15.6503600591794}, {-14.9803373103595, -4.9735593062087, -15.8082524602216}, {-21.5430456498414, -4.4344771971141, -16.2143220307482}, {-24.7650644380812, -4.9712307605394, -16.7369985371831}, {-20.8741809998904, -4.06633856866, -17.2824281837832}, {-11.7711019474985, -6.033798446276, -17.7908526872603}, {-31.5108758801999, -4.6245147565985, -18.2132067662604}, {-21.4475222751436, -5.7548008402073, -18.4997480851743}, {-19.7873362132483, -4.3329926197096, -18.603630290128}, {-16.4938216335109, -6.3940276092541, -18.4925931187548}, {-22.9070113034336, -4.6535957659122, -18.1660318278609}, {-29.9834603759632, -6.0045922029244, -17.6805171698167}, {-13.8198455978895, -4.1990993993322, -17.179506879246}, {-17.6776568214979, -6.9272257990507, -16.8826646059947}, {-14.5723574174253, -4.6791284665337, -16.9583143171005}, {-15.8865048568656, -6.2681818877489, -17.3574633128243}, {-23.2032416084864, -4.2478152146491, -17.8488087163173}, {-16.9715236949474, -6.9193028615422, -18.1940477890419}, {-30.9587520038808, -4.5509032688445, -18.2318765482509}, {-18.4455275105602, -6.3829805908173, -17.8625834326647}, {-15.6357200791807, -4.0840011870206, -17.0112647165756}, {-10.2718591655069, -7.7176952636551, -15.6004256736306}, {-10.083268411726, -5.2015043558937, -13.5401628736677}, {-22.9271703394396, -5.4265844250481, -10.7864833707983}, {-13.613268605941, -3.3893472824861, -7.7625116415773}, {-4.7633367889983, -13.5156367770172, -6.3645924872707}, {-8.394647237358, -10.6365332680987, -7.4052322946736}, {-9.7410501540962, -3.1105566486923, -8.7416283435726}, {-7.1386376435472, -3.3568604307092, -9.3927665855129}, {-9.6661975919348, -6.2211835083561, -9.2853778171148}, {-10.5831190826536, -6.0257121299605, -8.5176796092436}, {-8.292781421145, -3.1838275446964, -7.262144092025}, {-22.291377520917, -2.9764751465513, -5.8442562984789}, {-3.1237861770961, -10.3194216530208, -4.7392821851298}, {-0.4843976349007, -4.8263867559962, -4.1797382374419}, {-2.3449078462631, 1.4259550293885, -3.8346929855422}, {-7.612614280799, -0.9789785205315, -3.1977627116949}, {-13.6753984998946, -0.0553400705882, -1.9251267448241}, {-1.7389630858478, -4.9312111925418, 0.1897683266876}, {1.0736109186783, 5.8251532675394, 3.2542864952044}, {9.1256961478566, 8.8613975851265, 6.9722048905968}, {11.0440327728718, 9.2845060593515, 9.7499420405647}}">
+        </property>
+        <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.042059947006645E-8">
+        </property>
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[545.0, 165.0]">
+        </property>
+    </entity>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation7" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="[225.0, 165.0]">
+        </vertex>
+    </relation>
+    <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation8" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation9" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="Spectrum.input" relation="relation7"/>
+    <link port="Spectrum.output" relation="relation2"/>
+    <link port="Gaussian.output" relation="relation6"/>
+    <link port="Sinewave.output" relation="relation"/>
+    <link port="Sinewave2.output" relation="relation4"/>
+    <link port="Sinewave3.output" relation="relation5"/>
+    <link port="AddSubtract.plus" relation="relation"/>
+    <link port="AddSubtract.plus" relation="relation4"/>
+    <link port="AddSubtract.plus" relation="relation5"/>
+    <link port="AddSubtract.plus" relation="relation8"/>
+    <link port="AddSubtract.output" relation="relation7"/>
+    <link port="IIR.input" relation="relation6"/>
+    <link port="IIR.output" relation="relation8"/>
+    <link port="SmoothedPeriodogram.input" relation="relation7"/>
+    <link port="SmoothedPeriodogram.output" relation="relation3"/>
+    <link port="MaximumEntropySpectrum.input" relation="relation7"/>
+    <link port="MaximumEntropySpectrum.output" relation="relation9"/>
+    <link port="Test.input" relation="relation2"/>
+    <link port="Test.input" relation="relation3"/>
+    <link port="Test.input" relation="relation9"/>
+</entity>
