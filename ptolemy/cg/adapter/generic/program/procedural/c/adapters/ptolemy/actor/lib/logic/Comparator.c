@@ -11,7 +11,7 @@ $put(output, $get(left) < ($get(right) + $val(tolerance)));
 /**/
 
 /*** LEBlock ***/
-$put(output, $ref(get) <= ($get(right) + $val(tolerance)));
+$put(output, $get(left) <= ($get(right) + $val(tolerance)));
 /**/
 
 /*** EQBlock ***/

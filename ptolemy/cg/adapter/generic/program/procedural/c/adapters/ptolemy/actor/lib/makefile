@@ -74,6 +74,7 @@ JSRCS = \
 	Maximum.java \
 	MultiplyDivide.java \
 	Publisher.java \
+	Pulse.java \
 	Ramp.java \
 	Remainder.java \
 	Scale.java \
