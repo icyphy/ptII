@@ -1203,7 +1203,6 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
         NamedObj container = target.getContainer();
         while (container != null && !(container instanceof CompositeEntity)) {
             container = container.getContainer();
-            System.out.println("BasicGraphFrame: openComposite " + target.getFullName() + " " + container);
         }
         if (container == null) {
             // Hmm.  Could not find container?
@@ -1237,7 +1236,6 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
             }
             if (locationAttribute != null) {
                 Frame frame = tableau.getFrame();
-                System.out.println("BasicGraphFrame: openComposite frame: " + frame);
                 if (frame instanceof BasicGraphFrame) {
                     BasicGraphFrame basicGraphFrame = (BasicGraphFrame)frame;
                     double [] locationArray = locationAttribute.getLocation();
