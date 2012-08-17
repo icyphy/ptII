@@ -88,11 +88,15 @@ public class MessageHandler {
         } catch (Throwable throwable2) {
             // An applet was throwing an exception while handling
             // the error - so we print the original message if _error() fails.
-            System.err.println("Internal Error, exception thrown while "
-                    + "handling error: \"" + info + "\"\n");
-            throwable.printStackTrace();
-            System.err.println("Internal Error:\n");
-            throwable2.printStackTrace();
+            if (_handler instanceof SimpleMessageHandler) {
+                throw new RuntimeException(throwable);
+            } else {
+                System.err.println("Internal Error, exception thrown while "
+                        + "handling error: \"" + info + "\"\n");
+                throwable.printStackTrace();
+                System.err.println("Internal Error:\n");
+                throwable2.printStackTrace();
+            } 
         }
     }
 
