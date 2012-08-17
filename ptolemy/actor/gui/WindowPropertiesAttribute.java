@@ -169,6 +169,10 @@ public class WindowPropertiesAttribute extends Parameter implements
                 int width = ((IntToken) boundsToken.getElement(2)).intValue();
                 int height = ((IntToken) boundsToken.getElement(3)).intValue();
 
+                if (maximizedToken == null) {
+                    maximizedToken = BooleanToken.FALSE;
+                }
+
                 // If the new values are different, then do a MoMLChangeRequest.
                 if (maximizedToken.booleanValue() != maximized 
                         || x != bounds.x
