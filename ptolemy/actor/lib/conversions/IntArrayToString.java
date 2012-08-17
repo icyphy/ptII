@@ -27,7 +27,7 @@
  */
 package ptolemy.actor.lib.conversions;
 
-import ptolemy.actor.TypedAtomicActor;
+import ptolemy.actor.Transformer;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.data.ArrayToken;
 import ptolemy.data.IntToken;
@@ -55,7 +55,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  @Pt.ProposedRating Red (winthrop)
  @Pt.AcceptedRating Red (winthrop)
  */
-public class IntArrayToString extends TypedAtomicActor {
+public class IntArrayToString extends Transformer {
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -68,25 +68,14 @@ public class IntArrayToString extends TypedAtomicActor {
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
-        input = new TypedIOPort(this, "input", true, false);
         input.setTypeEquals(new ArrayType(BaseType.INT));
 
-        output = new TypedIOPort(this, "output", false, true);
         output.setTypeEquals(BaseType.STRING);
 
         _attachText("_iconDescription", "<svg>\n"
                 + "<polygon points=\"-15,-15 15,15 15,-15 -15,15\" "
                 + "style=\"fill:white\"/>\n" + "</svg>\n");
     }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         public variables                  ////
-
-    /** The port for the input, which has type <i>{int}</i>. */
-    public TypedIOPort input;
-
-    /** The output port, which has type <i>string</i>. */
-    public TypedIOPort output;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
