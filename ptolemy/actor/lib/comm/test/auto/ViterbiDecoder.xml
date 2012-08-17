@@ -1,0 +1,1095 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="ViterbiDecoder" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.0.devel">
+    </property>
+    <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
+        <property name="iterations" class="ptolemy.data.expr.Parameter" value="1000">
+        </property>
+        <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <property name="allowDisconnectedGraphs" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="70.0, 50.0">
+        </property>
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={5, 23, 1034, 647}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[800, 537]">
+    </property>
+    <property name="polynomialArray" class="ptolemy.data.expr.Parameter" value="{05, 07, 011}">
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="160.0, 50.0">
+        </property>
+    </property>
+    <property name="delay" class="ptolemy.data.expr.Parameter" value="10">
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="355.0, 50.0">
+        </property>
+    </property>
+    <property name="initialState" class="ptolemy.data.expr.Parameter" value="0">
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="355.0, 30.0">
+        </property>
+    </property>
+    <property name="noisePower" class="ptolemy.data.expr.Parameter" value="0.5">
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[160.0, 70.0]">
+        </property>
+    </property>
+    <property name="trueLevel" class="ptolemy.data.expr.Parameter" value="1.0">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="355.0, 70.0">
+        </property>
+    </property>
+    <property name="falseLevel" class="ptolemy.data.expr.Parameter" value="-1.0">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="355.0, 90.0">
+        </property>
+    </property>
+    <property name="uncodeBlockSize" class="ptolemy.kernel.util.Attribute">
+        <property name="_location" class="ptolemy.kernel.util.Attribute">
+        </property>
+    </property>
+    <property name="uncodedRate" class="ptolemy.data.expr.Parameter" value="2">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="160.0, 30.0">
+        </property>
+    </property>
+    <property name="AnnotationUpdated" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
+        <property name="_hideAllParameters" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="14">
+        </property>
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+        </property>
+        <property name="fontFamily" class="ptolemy.data.expr.StringParameter" value="SansSerif">
+        </property>
+        <property name="bold" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="italic" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This example compares uncoded transmission&#10;of a binary antipodal signal through a&#10;Gaussian noise channel to coded transmission.&#10;The total number of errors in each case and&#10;error rate are displayed in the icons below.&#10;The ViterbiDecoder actor does soft decoding.">
+            <property name="_style" class="ptolemy.actor.gui.style.TextStyle">
+                <property name="height" class="ptolemy.data.expr.Parameter" value="20">
+                </property>
+                <property name="width" class="ptolemy.data.expr.Parameter" value="80">
+                </property>
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{455.0, 5.0}">
+        </property>
+    </property>
+    <property name="AnnotationUpdated2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
+        <property name="_hideAllParameters" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="14">
+        </property>
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.2, 0.2, 0.2, 1.0}">
+        </property>
+        <property name="fontFamily" class="ptolemy.data.expr.StringParameter" value="SansSerif">
+        </property>
+        <property name="bold" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="italic" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Authors: Ye Zhou and Edward A. Lee">
+            <property name="_style" class="ptolemy.actor.gui.style.TextStyle">
+                <property name="height" class="ptolemy.data.expr.Parameter" value="20">
+                </property>
+                <property name="width" class="ptolemy.data.expr.Parameter" value="80">
+                </property>
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 505.0]">
+        </property>
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{400.0, 268.5}">
+    </property>
+    <entity name="AddSubtract" class="ptolemy.actor.lib.AddSubtract">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[330.0, 185.0]">
+        </property>
+    </entity>
+    <entity name="Gaussian" class="ptolemy.actor.lib.Gaussian">
+        <property name="seed" class="ptolemy.actor.parameters.SharedParameter" value="1L">
+        </property>
+        <property name="mean" class="ptolemy.actor.parameters.PortParameter" value="0.0">
+        </property>
+        <property name="standardDeviation" class="ptolemy.actor.parameters.PortParameter" value="noisePower">
+        </property>
+        <property name="GaussianIcon" class="ptolemy.vergil.icon.EditorIcon">
+            <property name="rectangle" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[3.0, 0.0]">
+                </property>
+                <property name="width" class="ptolemy.data.expr.Parameter" value="60">
+                </property>
+                <property name="height" class="ptolemy.data.expr.Parameter" value="40">
+                </property>
+                <property name="centered" class="ptolemy.data.expr.Parameter" value="true">
+                </property>
+                <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 1.0, 1.0, 1.0}">
+                </property>
+            </property>
+            <property name="ellipse" class="ptolemy.vergil.kernel.attributes.EllipseAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[4.0, -2.0]">
+                </property>
+                <property name="width" class="ptolemy.data.expr.Parameter" value="23.0">
+                </property>
+                <property name="height" class="ptolemy.data.expr.Parameter" value="30.0">
+                </property>
+                <property name="centered" class="ptolemy.data.expr.Parameter" value="true">
+                </property>
+                <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 1.0, 1.0, 1.0}">
+                </property>
+            </property>
+            <property name="rectangle2" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[5.0, 4.0]">
+                </property>
+                <property name="lineColor" class="ptolemy.actor.gui.ColorAttribute" value="none">
+                </property>
+                <property name="width" class="ptolemy.data.expr.Parameter" value="49.0">
+                </property>
+                <property name="height" class="ptolemy.data.expr.Parameter" value="26.0">
+                </property>
+                <property name="centered" class="ptolemy.data.expr.Parameter" value="true">
+                </property>
+                <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 1.0, 1.0, 1.0}">
+                </property>
+            </property>
+            <property name="line" class="ptolemy.vergil.kernel.attributes.LineAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[14.0, -9.0]">
+                </property>
+                <property name="x" class="ptolemy.data.expr.Parameter" value="5.0">
+                </property>
+                <property name="y" class="ptolemy.data.expr.Parameter" value="5.0">
+                </property>
+            </property>
+            <property name="line2" class="ptolemy.vergil.kernel.attributes.LineAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[19.0, -4.0]">
+                </property>
+                <property name="x" class="ptolemy.data.expr.Parameter" value="5.0">
+                </property>
+                <property name="y" class="ptolemy.data.expr.Parameter" value="2.0">
+                </property>
+            </property>
+            <property name="line3" class="ptolemy.vergil.kernel.attributes.LineAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[-11.0, -4.0]">
+                </property>
+                <property name="x" class="ptolemy.data.expr.Parameter" value="5.0">
+                </property>
+                <property name="y" class="ptolemy.data.expr.Parameter" value="-5.0">
+                </property>
+            </property>
+            <property name="line4" class="ptolemy.vergil.kernel.attributes.LineAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[-11.0, -4.0]">
+                </property>
+                <property name="x" class="ptolemy.data.expr.Parameter" value="-5.0">
+                </property>
+                <property name="y" class="ptolemy.data.expr.Parameter" value="2.0">
+                </property>
+            </property>
+            <property name="line5" class="ptolemy.vergil.kernel.attributes.LineAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[-26.0, 0.0]">
+                </property>
+                <property name="lineColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.6,0.6,1.0}">
+                </property>
+                <property name="x" class="ptolemy.data.expr.Parameter" value="30.0">
+                </property>
+                <property name="y" class="ptolemy.data.expr.Parameter" value="0.0">
+                </property>
+            </property>
+            <property name="line6" class="ptolemy.vergil.kernel.attributes.LineAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[4.0, -16.0]">
+                </property>
+                <property name="lineColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.6,0.6,1.0}">
+                </property>
+                <property name="x" class="ptolemy.data.expr.Parameter" value="0.0">
+                </property>
+                <property name="y" class="ptolemy.data.expr.Parameter" value="15">
+                </property>
+            </property>
+            <property name="line7" class="ptolemy.vergil.kernel.attributes.LineAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[-26.0, 10.0]">
+                </property>
+                <property name="lineColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.6,0.6,1.0}">
+                </property>
+                <property name="x" class="ptolemy.data.expr.Parameter" value="30.0">
+                </property>
+                <property name="y" class="ptolemy.data.expr.Parameter" value="0.0">
+                </property>
+            </property>
+            <property name="line8" class="ptolemy.vergil.kernel.attributes.LineAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[4.0, 5.0]">
+                </property>
+                <property name="lineColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.6,0.6,1.0}">
+                </property>
+                <property name="x" class="ptolemy.data.expr.Parameter" value="0.0">
+                </property>
+                <property name="y" class="ptolemy.data.expr.Parameter" value="5">
+                </property>
+            </property>
+            <property name="line9" class="ptolemy.vergil.kernel.attributes.LineAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[-6.0, 5.0]">
+                </property>
+                <property name="lineColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.6,0.6,1.0}">
+                </property>
+                <property name="x" class="ptolemy.data.expr.Parameter" value="20.0">
+                </property>
+                <property name="y" class="ptolemy.data.expr.Parameter" value="0.0">
+                </property>
+            </property>
+            <property name="line10" class="ptolemy.vergil.kernel.attributes.LineAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[11.0, 2.0]">
+                </property>
+                <property name="lineColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.6,0.6,1.0}">
+                </property>
+                <property name="x" class="ptolemy.data.expr.Parameter" value="3">
+                </property>
+                <property name="y" class="ptolemy.data.expr.Parameter" value="3">
+                </property>
+            </property>
+            <property name="line11" class="ptolemy.vergil.kernel.attributes.LineAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[-6.0, 5.0]">
+                </property>
+                <property name="lineColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.6,0.6,1.0}">
+                </property>
+                <property name="x" class="ptolemy.data.expr.Parameter" value="3">
+                </property>
+                <property name="y" class="ptolemy.data.expr.Parameter" value="3">
+                </property>
+            </property>
+            <property name="line12" class="ptolemy.vergil.kernel.attributes.LineAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[-3.0, 2.0]">
+                </property>
+                <property name="lineColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.6,0.6,1.0}">
+                </property>
+                <property name="x" class="ptolemy.data.expr.Parameter" value="-3">
+                </property>
+                <property name="y" class="ptolemy.data.expr.Parameter" value="3">
+                </property>
+            </property>
+            <property name="line13" class="ptolemy.vergil.kernel.attributes.LineAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[14.0, 5.0]">
+                </property>
+                <property name="lineColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.6,0.6,1.0}">
+                </property>
+                <property name="x" class="ptolemy.data.expr.Parameter" value="-3">
+                </property>
+                <property name="y" class="ptolemy.data.expr.Parameter" value="3">
+                </property>
+            </property>
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={124, 350, 815, 518}, maximized=false}">
+            </property>
+            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+            </property>
+            <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="4.0">
+            </property>
+            <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{0.0, 0.0}">
+            </property>
+        </property>
+        <doc>Create a sequence of gaussian random variables</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[230.0, 235.0]">
+        </property>
+    </entity>
+    <entity name="BooleanToAnything" class="ptolemy.actor.lib.conversions.BooleanToAnything">
+        <property name="falseValue" class="ptolemy.data.expr.Parameter" value="falseLevel">
+        </property>
+        <property name="trueValue" class="ptolemy.data.expr.Parameter" value="trueLevel">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[245.0, 170.0]">
+        </property>
+    </entity>
+    <entity name="Bernoulli" class="ptolemy.actor.lib.Bernoulli">
+        <property name="seed" class="ptolemy.actor.parameters.SharedParameter" value="1L">
+        </property>
+        <property name="resetOnEachRun" class="ptolemy.actor.parameters.SharedParameter" value="true">
+        </property>
+        <property name="trueProbability" class="ptolemy.data.expr.Parameter" value="0.5">
+        </property>
+        <doc>Create a sequence of bernoulli random variables</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[75.0, 480.0]">
+        </property>
+    </entity>
+    <entity name="SampleDelay" class="ptolemy.domains.sdf.lib.SampleDelay">
+        <property name="initialOutputs" class="ptolemy.data.expr.Parameter" value="repeat(delay*uncodedRate, false)">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="initialOutputs">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="20">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[365.0, 275.0]">
+        </property>
+    </entity>
+    <entity name="AddSubtract2" class="ptolemy.actor.lib.AddSubtract">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{325.0, 395.0}">
+        </property>
+    </entity>
+    <entity name="BooleanToAnything3" class="ptolemy.actor.lib.conversions.BooleanToAnything">
+        <property name="falseValue" class="ptolemy.data.expr.Parameter" value="falseLevel">
+        </property>
+        <property name="trueValue" class="ptolemy.data.expr.Parameter" value="trueLevel">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[205.0, 380.0]">
+        </property>
+    </entity>
+    <entity name="Comparator" class="ptolemy.actor.lib.logic.Comparator">
+        <property name="comparison" class="ptolemy.kernel.util.StringAttribute" value="&gt;">
+            <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
+                <property name="gt" class="ptolemy.kernel.util.StringAttribute" value="&gt;">
+                </property>
+                <property name="ge" class="ptolemy.kernel.util.StringAttribute" value="&gt;=">
+                </property>
+                <property name="lt" class="ptolemy.kernel.util.StringAttribute" value="&lt;">
+                </property>
+                <property name="le" class="ptolemy.kernel.util.StringAttribute" value="&lt;=">
+                </property>
+                <property name="eq" class="ptolemy.kernel.util.StringAttribute" value="==">
+                </property>
+            </property>
+        </property>
+        <property name="tolerance" class="ptolemy.data.expr.Parameter" value="0.0">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="comparison">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="6">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[415.0, 405.0]">
+        </property>
+    </entity>
+    <entity name="Const" class="ptolemy.actor.lib.Const">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="0.0">
+        </property>
+        <doc>Create a constant sequence</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[325.0, 455.0]">
+        </property>
+    </entity>
+    <entity name="Count Errors" class="ptolemy.actor.TypedCompositeActor">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[530.0, 195.0]">
+        </property>
+        <property name="AnnotationUpdated" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+            <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+            <property name="_hideAllParameters" class="ptolemy.data.expr.Parameter" value="true">
+            </property>
+            <property name="textSize" class="ptolemy.data.expr.Parameter" value="14">
+            </property>
+            <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+            </property>
+            <property name="fontFamily" class="ptolemy.data.expr.StringParameter" value="SansSerif">
+            </property>
+            <property name="bold" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="italic" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Count errors and produce both&#10;the total number of errors and&#10;the error rate.">
+                <property name="_style" class="ptolemy.actor.gui.style.TextStyle">
+                    <property name="height" class="ptolemy.data.expr.Parameter" value="20">
+                    </property>
+                    <property name="width" class="ptolemy.data.expr.Parameter" value="80">
+                    </property>
+                </property>
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{50.0, 40.0}">
+            </property>
+        </property>
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 129, 834, 634}, maximized=false}">
+        </property>
+        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 524]">
+        </property>
+        <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+        </property>
+        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 262.0}">
+        </property>
+        <port name="data" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="20.0, 140.0">
+            </property>
+            <property name="_showName" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </port>
+        <port name="reference" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="20.0, 270.0">
+            </property>
+            <property name="_showName" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </port>
+        <port name="errors" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="415.0, 160.0">
+            </property>
+            <property name="_showName" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </port>
+        <port name="rate" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="515.0, 245.0">
+            </property>
+            <property name="_showName" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </port>
+        <entity name="Accumulator" class="ptolemy.actor.lib.Accumulator">
+            <property name="init" class="ptolemy.data.expr.Parameter" value="0">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="330.0, 215.0">
+            </property>
+        </entity>
+        <entity name="BooleanToAnything" class="ptolemy.actor.lib.conversions.BooleanToAnything">
+            <property name="falseValue" class="ptolemy.data.expr.Parameter" value="0">
+            </property>
+            <property name="trueValue" class="ptolemy.data.expr.Parameter" value="1">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="205.0, 205.0">
+            </property>
+        </entity>
+        <entity name="LogicFunction" class="ptolemy.actor.lib.logic.LogicFunction">
+            <property name="function" class="ptolemy.kernel.util.StringAttribute" value="xor">
+                <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
+                    <property name="and" class="ptolemy.kernel.util.StringAttribute" value="and">
+                    </property>
+                    <property name="or" class="ptolemy.kernel.util.StringAttribute" value="or">
+                    </property>
+                    <property name="xor" class="ptolemy.kernel.util.StringAttribute" value="xor">
+                    </property>
+                    <property name="nand" class="ptolemy.kernel.util.StringAttribute" value="nand">
+                    </property>
+                    <property name="nor" class="ptolemy.kernel.util.StringAttribute" value="nor">
+                    </property>
+                    <property name="xnor" class="ptolemy.kernel.util.StringAttribute" value="xnor">
+                    </property>
+                </property>
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
+                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="function">
+                </property>
+                <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="6">
+                </property>
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="125.0, 205.0">
+            </property>
+        </entity>
+        <entity name="Ramp" class="ptolemy.actor.lib.Ramp">
+            <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="0">
+            </property>
+            <property name="init" class="ptolemy.actor.parameters.PortParameter" value="1.0">
+            </property>
+            <property name="step" class="ptolemy.actor.parameters.PortParameter" value="1.0">
+            </property>
+            <doc>Create a sequence of tokens with increasing value</doc>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="165.0, 280.0">
+            </property>
+        </entity>
+        <entity name="MultiplyDivide" class="ptolemy.actor.lib.MultiplyDivide">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="425.0, 245.0">
+            </property>
+        </entity>
+        <relation name="relation9" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+            <vertex name="vertex1" value="70.0, 270.0">
+            </vertex>
+        </relation>
+        <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+            <vertex name="vertex1" value="390.0, 215.0">
+            </vertex>
+        </relation>
+        <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <link port="data" relation="relation"/>
+        <link port="reference" relation="relation4"/>
+        <link port="errors" relation="relation2"/>
+        <link port="rate" relation="relation6"/>
+        <link port="Accumulator.input" relation="relation9"/>
+        <link port="Accumulator.output" relation="relation2"/>
+        <link port="BooleanToAnything.input" relation="relation3"/>
+        <link port="BooleanToAnything.output" relation="relation9"/>
+        <link port="LogicFunction.input" relation="relation"/>
+        <link port="LogicFunction.input" relation="relation4"/>
+        <link port="LogicFunction.output" relation="relation3"/>
+        <link port="Ramp.output" relation="relation5"/>
+        <link port="Ramp.trigger" relation="relation4"/>
+        <link port="MultiplyDivide.multiply" relation="relation2"/>
+        <link port="MultiplyDivide.divide" relation="relation5"/>
+        <link port="MultiplyDivide.output" relation="relation6"/>
+    </entity>
+    <entity name="Count Errors2" class="ptolemy.actor.TypedCompositeActor">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[540.0, 470.0]">
+        </property>
+        <property name="AnnotationUpdated" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+            <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+            <property name="_hideAllParameters" class="ptolemy.data.expr.Parameter" value="true">
+            </property>
+            <property name="textSize" class="ptolemy.data.expr.Parameter" value="14">
+            </property>
+            <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+            </property>
+            <property name="fontFamily" class="ptolemy.data.expr.StringParameter" value="SansSerif">
+            </property>
+            <property name="bold" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="italic" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Count errors and produce both&#10;the total number of errors and&#10;the error rate.">
+                <property name="_style" class="ptolemy.actor.gui.style.TextStyle">
+                    <property name="height" class="ptolemy.data.expr.Parameter" value="20">
+                    </property>
+                    <property name="width" class="ptolemy.data.expr.Parameter" value="80">
+                    </property>
+                </property>
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{50.0, 40.0}">
+            </property>
+        </property>
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 129, 834, 634}, maximized=false}">
+        </property>
+        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 524]">
+        </property>
+        <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+        </property>
+        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 262.0}">
+        </property>
+        <port name="data" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="20.0, 140.0">
+            </property>
+            <property name="_showName" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </port>
+        <port name="reference" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="20.0, 270.0">
+            </property>
+            <property name="_showName" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </port>
+        <port name="errors" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="415.0, 160.0">
+            </property>
+            <property name="_showName" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </port>
+        <port name="rate" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="515.0, 245.0">
+            </property>
+            <property name="_showName" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </port>
+        <entity name="Accumulator" class="ptolemy.actor.lib.Accumulator">
+            <property name="init" class="ptolemy.data.expr.Parameter" value="0">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="330.0, 215.0">
+            </property>
+        </entity>
+        <entity name="BooleanToAnything" class="ptolemy.actor.lib.conversions.BooleanToAnything">
+            <property name="falseValue" class="ptolemy.data.expr.Parameter" value="0">
+            </property>
+            <property name="trueValue" class="ptolemy.data.expr.Parameter" value="1">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="205.0, 205.0">
+            </property>
+        </entity>
+        <entity name="LogicFunction" class="ptolemy.actor.lib.logic.LogicFunction">
+            <property name="function" class="ptolemy.kernel.util.StringAttribute" value="xor">
+                <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
+                    <property name="and" class="ptolemy.kernel.util.StringAttribute" value="and">
+                    </property>
+                    <property name="or" class="ptolemy.kernel.util.StringAttribute" value="or">
+                    </property>
+                    <property name="xor" class="ptolemy.kernel.util.StringAttribute" value="xor">
+                    </property>
+                    <property name="nand" class="ptolemy.kernel.util.StringAttribute" value="nand">
+                    </property>
+                    <property name="nor" class="ptolemy.kernel.util.StringAttribute" value="nor">
+                    </property>
+                    <property name="xnor" class="ptolemy.kernel.util.StringAttribute" value="xnor">
+                    </property>
+                </property>
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
+                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="function">
+                </property>
+                <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="6">
+                </property>
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="125.0, 205.0">
+            </property>
+        </entity>
+        <entity name="Ramp" class="ptolemy.actor.lib.Ramp">
+            <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="0">
+            </property>
+            <property name="init" class="ptolemy.actor.parameters.PortParameter" value="1.0">
+            </property>
+            <property name="step" class="ptolemy.actor.parameters.PortParameter" value="1.0">
+            </property>
+            <doc>Create a sequence of tokens with increasing value</doc>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="165.0, 280.0">
+            </property>
+        </entity>
+        <entity name="MultiplyDivide" class="ptolemy.actor.lib.MultiplyDivide">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="425.0, 245.0">
+            </property>
+        </entity>
+        <relation name="relation9" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+            <vertex name="vertex1" value="70.0, 270.0">
+            </vertex>
+        </relation>
+        <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+            <vertex name="vertex1" value="390.0, 215.0">
+            </vertex>
+        </relation>
+        <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <link port="data" relation="relation"/>
+        <link port="reference" relation="relation4"/>
+        <link port="errors" relation="relation2"/>
+        <link port="rate" relation="relation6"/>
+        <link port="Accumulator.input" relation="relation9"/>
+        <link port="Accumulator.output" relation="relation2"/>
+        <link port="BooleanToAnything.input" relation="relation3"/>
+        <link port="BooleanToAnything.output" relation="relation9"/>
+        <link port="LogicFunction.input" relation="relation"/>
+        <link port="LogicFunction.input" relation="relation4"/>
+        <link port="LogicFunction.output" relation="relation3"/>
+        <link port="Ramp.output" relation="relation5"/>
+        <link port="Ramp.trigger" relation="relation4"/>
+        <link port="MultiplyDivide.multiply" relation="relation2"/>
+        <link port="MultiplyDivide.divide" relation="relation5"/>
+        <link port="MultiplyDivide.output" relation="relation6"/>
+    </entity>
+    <entity name="ConvolutionalCoder" class="ptolemy.actor.lib.comm.ConvolutionalCoder">
+        <property name="uncodedRate" class="ptolemy.data.expr.Parameter" value="uncodedRate">
+        </property>
+        <property name="polynomialArray" class="ptolemy.data.expr.Parameter" value="polynomialArray">
+        </property>
+        <property name="initialState" class="ptolemy.data.expr.Parameter" value="0">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[170.0, 160.0]">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="2">
+            </property>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="3">
+            </property>
+        </port>
+    </entity>
+    <entity name="Gaussian2" class="ptolemy.actor.lib.Gaussian">
+        <property name="seed" class="ptolemy.actor.parameters.SharedParameter" value="1L">
+        </property>
+        <property name="mean" class="ptolemy.actor.parameters.PortParameter" value="0.0">
+        </property>
+        <property name="standardDeviation" class="ptolemy.actor.parameters.PortParameter" value="noisePower">
+        </property>
+        <property name="GaussianIcon" class="ptolemy.vergil.icon.EditorIcon">
+            <property name="rectangle" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[3.0, 0.0]">
+                </property>
+                <property name="width" class="ptolemy.data.expr.Parameter" value="60">
+                </property>
+                <property name="height" class="ptolemy.data.expr.Parameter" value="40">
+                </property>
+                <property name="centered" class="ptolemy.data.expr.Parameter" value="true">
+                </property>
+                <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 1.0, 1.0, 1.0}">
+                </property>
+            </property>
+            <property name="ellipse" class="ptolemy.vergil.kernel.attributes.EllipseAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[4.0, -2.0]">
+                </property>
+                <property name="width" class="ptolemy.data.expr.Parameter" value="23.0">
+                </property>
+                <property name="height" class="ptolemy.data.expr.Parameter" value="30.0">
+                </property>
+                <property name="centered" class="ptolemy.data.expr.Parameter" value="true">
+                </property>
+                <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 1.0, 1.0, 1.0}">
+                </property>
+            </property>
+            <property name="rectangle2" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[5.0, 4.0]">
+                </property>
+                <property name="lineColor" class="ptolemy.actor.gui.ColorAttribute" value="none">
+                </property>
+                <property name="width" class="ptolemy.data.expr.Parameter" value="49.0">
+                </property>
+                <property name="height" class="ptolemy.data.expr.Parameter" value="26.0">
+                </property>
+                <property name="centered" class="ptolemy.data.expr.Parameter" value="true">
+                </property>
+                <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 1.0, 1.0, 1.0}">
+                </property>
+            </property>
+            <property name="line" class="ptolemy.vergil.kernel.attributes.LineAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[14.0, -9.0]">
+                </property>
+                <property name="x" class="ptolemy.data.expr.Parameter" value="5.0">
+                </property>
+                <property name="y" class="ptolemy.data.expr.Parameter" value="5.0">
+                </property>
+            </property>
+            <property name="line2" class="ptolemy.vergil.kernel.attributes.LineAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[19.0, -4.0]">
+                </property>
+                <property name="x" class="ptolemy.data.expr.Parameter" value="5.0">
+                </property>
+                <property name="y" class="ptolemy.data.expr.Parameter" value="2.0">
+                </property>
+            </property>
+            <property name="line3" class="ptolemy.vergil.kernel.attributes.LineAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[-11.0, -4.0]">
+                </property>
+                <property name="x" class="ptolemy.data.expr.Parameter" value="5.0">
+                </property>
+                <property name="y" class="ptolemy.data.expr.Parameter" value="-5.0">
+                </property>
+            </property>
+            <property name="line4" class="ptolemy.vergil.kernel.attributes.LineAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[-11.0, -4.0]">
+                </property>
+                <property name="x" class="ptolemy.data.expr.Parameter" value="-5.0">
+                </property>
+                <property name="y" class="ptolemy.data.expr.Parameter" value="2.0">
+                </property>
+            </property>
+            <property name="line5" class="ptolemy.vergil.kernel.attributes.LineAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[-26.0, 0.0]">
+                </property>
+                <property name="lineColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.6,0.6,1.0}">
+                </property>
+                <property name="x" class="ptolemy.data.expr.Parameter" value="30.0">
+                </property>
+                <property name="y" class="ptolemy.data.expr.Parameter" value="0.0">
+                </property>
+            </property>
+            <property name="line6" class="ptolemy.vergil.kernel.attributes.LineAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[4.0, -16.0]">
+                </property>
+                <property name="lineColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.6,0.6,1.0}">
+                </property>
+                <property name="x" class="ptolemy.data.expr.Parameter" value="0.0">
+                </property>
+                <property name="y" class="ptolemy.data.expr.Parameter" value="15">
+                </property>
+            </property>
+            <property name="line7" class="ptolemy.vergil.kernel.attributes.LineAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[-26.0, 10.0]">
+                </property>
+                <property name="lineColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.6,0.6,1.0}">
+                </property>
+                <property name="x" class="ptolemy.data.expr.Parameter" value="30.0">
+                </property>
+                <property name="y" class="ptolemy.data.expr.Parameter" value="0.0">
+                </property>
+            </property>
+            <property name="line8" class="ptolemy.vergil.kernel.attributes.LineAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[4.0, 5.0]">
+                </property>
+                <property name="lineColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.6,0.6,1.0}">
+                </property>
+                <property name="x" class="ptolemy.data.expr.Parameter" value="0.0">
+                </property>
+                <property name="y" class="ptolemy.data.expr.Parameter" value="5">
+                </property>
+            </property>
+            <property name="line9" class="ptolemy.vergil.kernel.attributes.LineAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[-6.0, 5.0]">
+                </property>
+                <property name="lineColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.6,0.6,1.0}">
+                </property>
+                <property name="x" class="ptolemy.data.expr.Parameter" value="20.0">
+                </property>
+                <property name="y" class="ptolemy.data.expr.Parameter" value="0.0">
+                </property>
+            </property>
+            <property name="line10" class="ptolemy.vergil.kernel.attributes.LineAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[11.0, 2.0]">
+                </property>
+                <property name="lineColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.6,0.6,1.0}">
+                </property>
+                <property name="x" class="ptolemy.data.expr.Parameter" value="3">
+                </property>
+                <property name="y" class="ptolemy.data.expr.Parameter" value="3">
+                </property>
+            </property>
+            <property name="line11" class="ptolemy.vergil.kernel.attributes.LineAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[-6.0, 5.0]">
+                </property>
+                <property name="lineColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.6,0.6,1.0}">
+                </property>
+                <property name="x" class="ptolemy.data.expr.Parameter" value="3">
+                </property>
+                <property name="y" class="ptolemy.data.expr.Parameter" value="3">
+                </property>
+            </property>
+            <property name="line12" class="ptolemy.vergil.kernel.attributes.LineAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[-3.0, 2.0]">
+                </property>
+                <property name="lineColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.6,0.6,1.0}">
+                </property>
+                <property name="x" class="ptolemy.data.expr.Parameter" value="-3">
+                </property>
+                <property name="y" class="ptolemy.data.expr.Parameter" value="3">
+                </property>
+            </property>
+            <property name="line13" class="ptolemy.vergil.kernel.attributes.LineAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[14.0, 5.0]">
+                </property>
+                <property name="lineColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.6,0.6,1.0}">
+                </property>
+                <property name="x" class="ptolemy.data.expr.Parameter" value="-3">
+                </property>
+                <property name="y" class="ptolemy.data.expr.Parameter" value="3">
+                </property>
+            </property>
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={124, 350, 815, 518}, maximized=false}">
+            </property>
+            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+            </property>
+            <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="4.0">
+            </property>
+            <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{0.0, 0.0}">
+            </property>
+        </property>
+        <doc>Create a sequence of gaussian random variables</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[210.0, 440.0]">
+        </property>
+    </entity>
+    <entity name="ViterbiDecoder2" class="ptolemy.actor.lib.comm.ViterbiDecoder">
+        <property name="uncodedRate" class="ptolemy.data.expr.Parameter" value="uncodedRate">
+        </property>
+        <property name="polynomialArray" class="ptolemy.data.expr.Parameter" value="polynomialArray">
+        </property>
+        <property name="delay" class="ptolemy.data.expr.Parameter" value="delay">
+        </property>
+        <property name="softDecoding" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="constellation" class="ptolemy.data.expr.Parameter" value="{falseLevel, trueLevel}">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[420.0, 185.0]">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="inputType" class="ptolemy.actor.TypeAttribute" value="double">
+            </property>
+            <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="3">
+            </property>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="2">
+            </property>
+        </port>
+    </entity>
+    <entity name="NonStrictTest" class="ptolemy.actor.lib.NonStrictTest">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1}">
+        </property>
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[725.0, 145.0]">
+        </property>
+    </entity>
+    <entity name="NonStrictTest2" class="ptolemy.actor.lib.NonStrictTest">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 7.604562737642585E-4, 7.598784194528875E-4, 7.593014426727411E-4, 7.587253414264037E-4, 7.58150113722517E-4, 7.575757575757576E-4, 7.57002271006813E-4, 7.564296520423601E-4, 7.558578987150416E-4, 7.552870090634441E-4, 7.547169811320754E-4, 7.541478129713424E-4, 7.535795026375283E-4, 7.530120481927711E-4, 7.524454477050414E-4, 7.518796992481203E-4, 7.513148009015778E-4, 7.507507507507507E-4, 7.501875468867217E-4, 7.496251874062968E-4, 7.49063670411985E-4, 7.485029940119761E-4, 7.479431563201197E-4, 7.473841554559044E-4, 7.468259895444362E-4, 7.462686567164179E-4, 7.457121551081282E-4, 7.451564828614009E-4, 7.446016381236039E-4, 7.44047619047619E-4, 7.434944237918215E-4, 7.429420505200594E-4, 7.423904974016332E-4, 7.41839762611276E-4, 7.412898443291327E-4, 7.407407407407407E-4, 7.401924500370096E-4, 7.396449704142012E-4, 7.390983000739098E-4, 7.385524372230429E-4, 7.380073800738007E-4, 7.374631268436578E-4, 7.369196757553427E-4, 7.363770250368188E-4, 7.358351729212656E-4, 7.352941176470588E-4, 7.347538574577516E-4, 7.342143906020558E-4, 7.336757153338225E-4, 7.331378299120235E-4, 7.326007326007326E-4, 7.320644216691069E-4, 7.31528895391368E-4, 7.309941520467836E-4, 7.304601899196494E-4, 7.2992700729927E-4, 7.293946024799417E-4, 7.288629737609329E-4, 7.283321194464676E-4, 7.27802037845706E-4, 7.272727272727272E-4, 7.267441860465116E-4, 7.262164124909223E-4, 7.25689404934688E-4, 7.251631617113851E-4, 7.246376811594203E-4, 7.24112961622013E-4, 7.23589001447178E-4, 7.230657989877079E-4, 7.22543352601156E-4, 7.220216606498195E-4, 7.215007215007215E-4, 7.209805335255948E-4, 7.204610951008645E-4, 7.199424046076314E-4, 7.194244604316547E-4, 7.189072609633358E-4, 7.183908045977011E-4, 7.178750897343862E-4, 7.173601147776184E-4, 7.168458781362007E-4, 7.163323782234957E-4, 7.158196134574087E-4, 7.15307582260372E-4, 7.147962830593281E-4, 7.142857142857143E-4, 7.137758743754461E-4, 7.132667617689016E-4, 7.127583749109052E-4, 7.122507122507123E-4, 7.117437722419929E-4, 7.112375533428165E-4, 7.107320540156361E-4, 7.102272727272727E-4, 7.097232079489E-4, 7.092198581560284E-4, 7.087172218284905E-4, 7.08215297450425E-4, 7.077140835102619E-4, 7.072135785007072E-4, 7.067137809187279E-4, 7.062146892655367E-4, 7.057163020465773E-4, 7.052186177715092E-4, 7.047216349541931E-4, 7.042253521126761E-4, 7.037297677691766E-4, 7.032348804500703E-4, 7.027406886858749E-4, 7.022471910112359E-4, 7.017543859649122E-4, 7.012622720897616E-4, 7.00770847932726E-4, 7.002801120448179E-4, 6.997900629811056E-4, 6.993006993006993E-4, 6.988120195667365E-4, 6.983240223463687E-4, 6.978367062107466E-4, 6.97350069735007E-4, 6.968641114982578E-4, 6.963788300835655E-4, 6.958942240779402E-4, 6.954102920723226E-4, 6.949270326615705E-4, 6.944444444444445E-4, 6.939625260235947E-4, 6.934812760055479E-4, 6.93000693000693E-4, 6.925207756232687E-4, 6.920415224913495E-4, 6.915629322268327E-4, 6.91085003455425E-4, 6.906077348066298E-4, 6.901311249137336E-4, 6.89655172413793E-4, 6.891798759476223E-4, 6.887052341597796E-4, 6.882312456985547E-4, 6.87757909215956E-4, 6.872852233676976E-4, 6.868131868131869E-4, 6.863417982155113E-4, 6.858710562414266E-4, 6.854009595613434E-4, 6.849315068493151E-4, 6.844626967830253E-4, 6.839945280437756E-4, 6.83526999316473E-4, 6.830601092896175E-4, 6.825938566552901E-4, 6.821282401091405E-4, 6.816632583503749E-4, 6.811989100817438E-4, 6.807351940095302E-4, 6.802721088435374E-4, 6.798096532970768E-4, 6.793478260869565E-4, 6.788866259334691E-4, 6.784260515603799E-4, 6.779661016949153E-4, 6.775067750677507E-4, 6.770480704129993E-4, 6.765899864682003E-4, 6.76132521974307E-4, 6.756756756756757E-4, 6.752194463200541E-4, 6.747638326585695E-4, 6.743088334457181E-4, 6.738544474393531E-4, 6.734006734006734E-4, 6.729475100942127E-4, 6.724949562878278E-4, 6.720430107526882E-4, 6.71591672263264E-4, 6.711409395973154E-4, 6.706908115358819E-4, 6.702412868632708E-4, 6.697923643670462E-4, 6.693440428380187E-4, 6.688963210702341E-4, 6.684491978609625E-4, 6.680026720106881E-4, 6.675567423230974E-4, 6.6711140760507E-4, 6.666666666666666E-4, 6.662225183211193E-4, 6.657789613848203E-4, 6.653359946773121E-4, 6.648936170212766E-4, 6.64451827242525E-4, 6.640106241699867E-4, 6.635700066357001E-4, 6.63129973474801E-4, 6.626905235255136E-4, 6.622516556291391E-4, 6.618133686300463E-4, 6.613756613756613E-4, 6.609385327164573E-4, 6.605019815059445E-4, 6.600660066006601E-4, 6.596306068601583E-4, 6.591957811470006E-4, 6.587615283267457E-4, 6.583278472679394E-4, 6.578947368421052E-4, 6.574621959237344E-4, 6.57030223390276E-4, 6.565988181221273E-4, 6.561679790026247E-4, 6.557377049180328E-4, 6.55307994757536E-4, 6.548788474132286E-4, 6.544502617801048E-4, 6.540222367560497E-4, 6.5359477124183E-4, 6.531678641410843E-4, 6.527415143603133E-4, 6.523157208088715E-4, 6.51890482398957E-4, 6.514657980456026E-4, 6.510416666666666E-4, 6.506180871828237E-4, 6.501950585175553E-4, 6.49772579597141E-4, 6.493506493506494E-4, 6.489292667099286E-4, 6.485084306095979E-4, 6.480881399870382E-4, 6.476683937823834E-4, 6.472491909385113E-4, 6.46830530401035E-4, 6.464124111182935E-4, 6.459948320413437E-4, 6.455777921239509E-4, 6.451612903225806E-4, 6.447453255963894E-4, 6.443298969072165E-4, 6.43915003219575E-4, 6.435006435006435E-4, 6.430868167202572E-4, 6.426735218508997E-4, 6.422607578676942E-4, 6.418485237483953E-4, 6.414368184733803E-4, 6.41025641025641E-4, 6.406149903907751E-4, 6.402048655569782E-4, 6.397952655150352E-4, 6.393861892583121E-4, 6.389776357827476E-4, 6.385696040868455E-4, 6.381620931716656E-4, 6.377551020408163E-4, 6.373486297004461E-4, 6.369426751592356E-4, 6.365372374283895E-4, 6.361323155216285E-4, 6.357279084551812E-4, 6.353240152477764E-4, 6.349206349206349E-4, 6.345177664974619E-4, 6.341154090044388E-4, 6.337135614702154E-4, 6.333122229259025E-4, 6.329113924050633E-4, 6.325110689437065E-4, 6.321112515802782E-4, 6.317119393556538E-4, 6.313131313131314E-4, 6.309148264984228E-4, 6.305170239596469E-4, 6.30119722747322E-4, 6.297229219143577E-4, 6.293266205160479E-4, 6.289308176100629E-4, 6.285355122564425E-4, 6.28140703517588E-4, 6.277463904582549E-4, 6.273525721455458E-4, 6.269592476489029E-4, 6.265664160401002E-4, 6.261740763932373E-4, 6.257822277847309E-4, 6.253908692933083E-4, 6.25E-4, 6.246096189881324E-4, 6.242197253433209E-4, 6.238303181534623E-4, 6.234413965087282E-4, 6.230529595015577E-4, 6.226650062266501E-4, 6.222775357809583E-4, 6.218905472636816E-4, 6.215040397762585E-4, 6.211180124223603E-4, 6.207324643078833E-4, 6.203473945409429E-4, 6.199628022318661E-4, 6.195786864931846E-4, 6.191950464396285E-4, 6.188118811881188E-4, 6.184291898577613E-4, 6.180469715698393E-4, 6.176652254478073E-4, 6.172839506172839E-4, 6.169031462060457E-4, 6.165228113440197E-4, 6.161429451632779E-4, 6.157635467980296E-4, 6.153846153846154E-4, 6.150061500615006E-4, 6.146281499692685E-4, 6.142506142506142E-4, 6.138735420503376E-4, 6.134969325153375E-4, 6.131207847946045E-4, 6.127450980392157E-4, 6.12369871402327E-4, 6.119951040391676E-4, 6.116207951070336E-4, 6.112469437652812E-4, 6.108735491753207E-4, 6.105006105006105E-4, 6.101281269066504E-4, 6.097560975609756E-4, 6.093845216331506E-4, 6.090133982947625E-4, 6.086427267194157E-4, 6.082725060827251E-4, 6.079027355623101E-4, 6.075334143377885E-4, 6.071645415907711E-4, 6.067961165048543E-4, 6.064281382656155E-4, 6.060606060606061E-4, 6.056935190793458E-4, 6.053268765133172E-4, 6.049606775559589E-4, 6.045949214026602E-4, 6.042296072507553E-4, 6.038647342995169E-4, 6.035003017501509E-4, 6.031363088057901E-4, 6.027727546714888E-4, 6.024096385542169E-4, 6.020469596628537E-4, 6.016847172081829E-4, 6.013229104028864E-4, 6.009615384615385E-4, 6.006006006006006E-4, 6.002400960384153E-4, 5.998800239952009E-4, 5.995203836930455E-4, 5.991611743559018E-4, 5.988023952095808E-4, 5.984440454817474E-4, 5.980861244019139E-4, 5.977286312014345E-4, 5.973715651135006E-4, 5.970149253731343E-4, 5.966587112171838E-4, 5.963029218843172E-4, 5.959475566150178E-4, 5.955926146515784E-4, 5.952380952380953E-4, 5.94883997620464E-4, 5.945303210463733E-4, 5.941770647653001E-4, 5.938242280285036E-4, 5.934718100890207E-4, 5.931198102016608E-4, 5.927682276229994E-4, 5.924170616113745E-4, 5.920663114268798E-4, 5.91715976331361E-4, 5.913660555884093E-4, 5.91016548463357E-4, 5.906674542232723E-4, 5.903187721369539E-4, 5.899705014749262E-4, 5.896226415094339E-4, 5.892751915144372E-4, 5.889281507656066E-4, 5.885815185403178E-4, 5.88235294117647E-4, 5.878894767783657E-4, 5.875440658049354E-4, 5.871990604815032E-4, 5.868544600938967E-4, 5.865102639296188E-4, 5.861664712778429E-4, 5.858230814294083E-4, 5.85480093676815E-4, 5.851375073142189E-4, 5.847953216374269E-4, 5.844535359438924E-4, 5.841121495327102E-4, 5.837711617046118E-4, 5.834305717619603E-4, 5.830903790087463E-4, 5.827505827505828E-4, 5.824111822947001E-4, 5.820721769499418E-4, 5.817335660267597E-4, 5.813953488372093E-4, 5.810575246949448E-4, 5.807200929152149E-4, 5.803830528148578E-4, 5.80046403712297E-4, 5.797101449275362E-4, 5.793742757821553E-4, 5.790387955993051E-4, 5.787037037037037E-4, 5.78368999421631E-4, 5.780346820809249E-4, 5.777007510109763E-4, 5.773672055427252E-4, 5.770340450086555E-4, 5.767012687427913E-4, 5.763688760806917E-4, 5.76036866359447E-4, 5.757052389176742E-4, 5.753739930955121E-4, 5.750431282346176E-4, 5.747126436781609E-4, 5.743825387708214E-4, 5.74052812858783E-4, 5.737234652897303E-4, 5.733944954128441E-4, 5.730659025787965E-4, 5.72737686139748E-4, 5.724098454493417E-4, 5.720823798627002E-4, 5.717552887364208E-4, 5.714285714285715E-4, 5.711022272986865E-4, 5.707762557077625E-4, 5.704506560182544E-4, 5.701254275940707E-4, 5.698005698005698E-4, 5.694760820045558E-4, 5.691519635742744E-4, 5.688282138794084E-4, 5.685048322910744E-4, 5.681818181818182E-4, 5.678591709256105E-4, 5.675368898978433E-4, 5.672149744753262E-4, 5.668934240362812E-4, 5.665722379603399E-4, 5.662514156285391E-4, 5.659309564233164E-4, 5.656108597285068E-4, 5.652911249293386E-4, 5.649717514124294E-4, 5.64652738565782E-4, 5.64334085778781E-4, 5.640157924421884E-4, 5.636978579481398E-4, 5.633802816901409E-4, 5.630630630630631E-4, 5.627462014631402E-4, 5.624296962879641E-4, 5.621135469364812E-4, 5.617977528089888E-4, 5.614823133071309E-4, 5.611672278338945E-4, 5.608524957936063E-4, 5.605381165919282E-4, 5.602240896358543E-4, 5.599104143337066E-4, 5.595970900951316E-4, 5.592841163310962E-4, 5.589714924538849E-4, 5.586592178770949E-4, 5.583472920156337E-4, 5.580357142857143E-4, 5.577244841048522E-4, 5.574136008918618E-4, 5.571030640668524E-4, 5.567928730512249E-4, 5.564830272676684E-4, 5.561735261401557E-4, 5.558643690939411E-4, 5.555555555555556E-4, 5.55247084952804E-4, 5.549389567147614E-4, 5.546311702717693E-4, 5.543237250554324E-4, 5.54016620498615E-4, 5.537098560354374E-4, 5.534034311012728E-4, 5.530973451327434E-4, 5.52791597567717E-4, 5.524861878453039E-4, 5.521811154058532E-4, 5.518763796909492E-4, 5.515719801434088E-4, 5.512679162072767E-4, 5.509641873278236E-4, 5.506607929515419E-4, 5.50357732526142E-4, 5.5005500550055E-4, 5.497526113249038E-4, 5.494505494505495E-4, 5.491488193300384E-4, 5.488474204171241E-4, 5.485463521667581E-4, 5.482456140350877E-4, 5.47945205479452E-4, 5.47645125958379E-4, 5.473453749315818E-4, 5.470459518599562E-4, 5.467468562055768E-4, 5.46448087431694E-4, 5.461496450027307E-4, 5.458515283842794E-4, 5.455537370430987E-4, 5.452562704471102E-4, 5.449591280653951E-4, 5.446623093681918E-4, 5.443658138268917E-4, 5.44069640914037E-4, 5.43773790103317E-4, 5.434782608695652E-4, 5.431830526887561E-4, 5.428881650380022E-4, 5.425935973955507E-4, 5.422993492407809E-4, 5.420054200542005E-4, 5.417118093174431E-4, 5.414185165132648E-4, 5.411255411255411E-4, 5.408328826392645E-4, 5.405405405405405E-4, 5.402485143165856E-4, 5.399568034557236E-4, 5.396654074473826E-4, 5.393743257820927E-4, 5.390835579514825E-4, 5.387931034482759E-4, 5.385029617662897E-4, 5.382131324004305E-4, 5.379236148466917E-4, 5.376344086021505E-4, 5.373455131649651E-4, 5.370569280343716E-4, 5.367686527106817E-4, 5.36480686695279E-4, 5.361930294906167E-4, 5.359056806002144E-4, 5.356186395286556E-4, 5.353319057815846E-4, 5.350454788657035E-4, 5.347593582887701E-4, 5.344735435595938E-4, 5.341880341880342E-4, 5.339028296849973E-4, 5.336179295624333E-4, 5.333333333333334E-4, 5.330490405117271E-4, 5.327650506126798E-4, 5.324813631522897E-4, 5.321979776476849E-4, 5.319148936170213E-4, 5.31632110579479E-4, 5.313496280552603E-4, 5.310674455655868E-4, 5.307855626326964E-4, 5.305039787798408E-4, 5.302226935312832E-4, 5.299417064122947E-4, 5.296610169491525E-4, 5.293806246691371E-4, 5.291005291005291E-4, 5.288207297726071E-4, 5.285412262156448E-4, 5.282620179609086E-4, 5.279831045406547E-4, 5.277044854881266E-4, 5.274261603375527E-4, 5.271481286241434E-4, 5.268703898840885E-4, 5.26592943654555E-4, 5.263157894736842E-4, 5.260389268805891E-4, 5.257623554153522E-4, 5.254860746190226E-4, 5.252100840336134E-4, 5.249343832020997E-4, 5.246589716684155E-4, 5.243838489774515E-4, 5.241090146750524E-4, 5.238344683080147E-4, 5.235602094240838E-4, 5.232862375719519E-4, 5.230125523012552E-4, 5.227391531625719E-4, 5.224660397074191E-4, 5.221932114882506E-4, 5.219206680584551E-4, 5.216484089723526E-4, 5.213764337851929E-4, 5.211047420531526E-4, 5.208333333333333E-4, 5.205622071837585E-4, 5.202913631633715E-4, 5.200208008320333E-4, 5.197505197505198E-4, 5.194805194805195E-4, 5.192107995846313E-4, 5.189413596263622E-4, 5.186721991701245E-4, 5.184033177812338E-4, 5.181347150259067E-4, 5.178663904712584E-4, 5.175983436853002E-4, 5.173305742369374E-4, 5.17063081695967E-4, 5.167958656330749E-4, 5.165289256198347E-4, 5.162622612287042E-4, 5.159958720330237E-4, 5.157297576070139E-4, 5.154639175257732E-4, 5.151983513652757E-4, 5.149330587023687E-4, 5.14668039114771E-4, 5.1440329218107E-4, 5.141388174807198E-4, 5.138746145940391E-4, 5.136106831022085E-4, 5.13347022587269E-4, 5.13083632632119E-4, 5.128205128205128E-4, 5.125576627370579E-4, 5.122950819672131E-4, 5.120327700972862E-4, 5.117707267144319E-4, 5.115089514066496E-4, 5.112474437627812E-4, 5.10986203372509E-4, 5.107252298263534E-4, 5.104645227156713E-4, 5.102040816326531E-4, 5.099439061703213E-4, 5.096839959225281E-4, 5.094243504839531E-4, 5.091649694501018E-4, 5.089058524173028E-4, 5.08646998982706E-4, 5.083884087442806E-4, 5.081300813008131E-4, 5.078720162519045E-4, 5.076142131979696E-4, 5.073566717402334E-4, 5.070993914807302E-4, 5.068423720223011E-4, 5.065856129685917E-4, 5.063291139240507E-4, 5.060728744939271E-4, 5.058168942842691E-4, 5.055611729019212E-4, 5.053057099545225E-4, 5.05050505050505E-4, 5.047955577990914E-4, 5.045408678102926E-4, 5.042864346949068E-4, 5.040322580645161E-4, 5.037783375314861E-4, 5.035246727089627E-4, 5.032712632108706E-4, 5.030181086519115E-4, 5.027652086475615E-4, 5.025125628140704E-4, 5.022601707684581E-4, 5.02008032128514E-4, 5.017561465127947E-4, 5.015045135406219E-4, 5.012531328320802E-4, 5.01002004008016E-4, 5.00751126690035E-4, 5.005005005005005E-4, 5.002501250625312E-4, 5.0E-4}">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{646.0, 195.0}">
+        </property>
+    </entity>
+    <entity name="NonStrictTest3" class="ptolemy.actor.lib.NonStrictTest">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 6, 6, 6, 6, 6, 6, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 17, 17, 17, 17, 17, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 19, 19, 19, 19, 19, 19, 19, 19, 19, 19, 19, 19, 19, 19, 19, 19, 19, 19, 19, 19, 19, 19, 19, 19, 19, 19, 19, 19, 19, 19, 19, 19, 19, 19, 19, 19, 19, 19, 19, 19, 19, 19, 19, 19, 19, 19, 19, 19, 19, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 23, 23, 23, 24, 24, 24, 24, 24, 24, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 27, 27, 27, 27, 27, 27, 27, 27, 27, 27, 27, 27, 27, 27, 27, 27, 27, 27, 27, 27, 27, 27, 27, 27, 27, 27, 27, 27, 27, 27, 27, 27, 27, 27, 27, 27, 27, 27, 27, 27, 27, 27, 27, 27, 27, 27, 27, 27, 27, 27, 27, 27, 27, 27, 27, 27, 27, 27, 27, 27, 27, 27, 27, 27, 27, 27, 27, 27, 27, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 29, 29, 29, 29, 29, 29, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 31, 31, 31, 31, 31, 31, 31, 31, 31, 31, 31, 31, 31, 31, 31, 31, 31, 31, 31, 31, 31, 31, 31, 31, 31, 31, 31, 31, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 33, 33, 33, 33, 33, 33, 33, 33, 33, 33, 33, 33, 33, 33, 33, 33, 33, 33, 33, 33, 33, 33, 33, 33, 33, 33, 33, 33, 33, 33, 33, 33, 33, 33, 33, 33, 33, 33, 33, 33, 33, 33, 33, 33, 33, 33, 33, 33, 33, 33, 33, 33, 33, 33, 33, 33, 33, 33, 33, 33, 33, 33, 33, 33, 33, 33, 33, 33, 33, 33, 33, 33, 33, 33, 33, 33, 33, 33, 33, 33, 33, 33, 33, 33, 33, 33, 33, 33, 33, 33, 33, 33, 33, 33, 33, 33, 33, 33, 33, 33, 33, 33, 33, 33, 33, 33, 33, 33, 33, 33, 33, 33, 33, 33, 33, 33, 33, 33, 33, 33, 33, 33, 33, 33, 33, 33, 33, 33, 33, 33, 33, 33, 33, 33, 33, 33, 33, 33, 33, 33, 33, 33, 33, 33, 33, 33, 33, 33, 33, 33, 33, 33, 33, 33, 33, 33, 33, 33, 33, 33, 33, 33, 33, 33, 33, 33, 33, 33, 33, 33, 33, 33, 33, 33, 33, 33, 33, 33, 33, 33, 33, 33, 33, 33, 34, 34, 34, 34, 35, 35, 35, 35, 35, 36, 36, 36, 36, 36, 36, 36, 36, 36, 36, 36, 36, 36, 36, 37, 37, 37, 37, 37, 37, 37, 37, 37, 37, 37, 37, 38, 38, 38, 38, 38, 38, 38, 38, 39, 39, 39, 39, 39, 40, 40, 40, 40, 40, 40, 40, 40, 40, 41, 41, 41, 41, 41, 41, 41, 41, 41, 41, 41, 41, 41, 41, 41, 41, 41, 41, 41, 41, 41, 41, 41, 41, 41, 41, 41, 41, 41, 41, 41, 41, 41, 41, 41, 42, 42, 42, 42, 42, 42, 42, 42, 42, 43, 43, 43, 43, 43, 43, 43, 43, 43, 43, 43, 43, 43, 43, 43, 43, 43, 43, 43, 43, 43, 43, 43, 43, 43, 43, 43, 43, 43, 43, 43, 43, 43, 43, 43, 43, 43, 43, 43, 43, 43, 43, 43, 43, 43, 43, 43, 43, 43, 43, 43, 43, 43, 44, 44, 44, 44, 44, 44, 44, 44, 44, 44, 44, 44, 44, 44, 44, 44, 44, 44, 44, 44, 44, 44, 44, 44, 44, 44, 44, 44, 44, 44, 44, 44, 44, 44, 44, 44, 44, 44, 44, 44, 44, 44, 44, 44, 44, 44, 44, 44, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45}">
+        </property>
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[640.0, 335.0]">
+        </property>
+    </entity>
+    <entity name="NonStrictTest4" class="ptolemy.actor.lib.NonStrictTest">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0076923076923, 0.0152671755725, 0.0151515151515, 0.015037593985, 0.0149253731343, 0.0148148148148, 0.0147058823529, 0.014598540146, 0.0144927536232, 0.0143884892086, 0.0142857142857, 0.0141843971631, 0.0140845070423, 0.013986013986, 0.0138888888889, 0.0137931034483, 0.013698630137, 0.0136054421769, 0.0135135135135, 0.0134228187919, 0.0133333333333, 0.0132450331126, 0.0131578947368, 0.0130718954248, 0.012987012987, 0.0129032258065, 0.0128205128205, 0.0127388535032, 0.0126582278481, 0.0125786163522, 0.0125, 0.0124223602484, 0.0123456790123, 0.0122699386503, 0.0121951219512, 0.0121212121212, 0.0120481927711, 0.0119760479042, 0.0119047619048, 0.0118343195266, 0.0117647058824, 0.0116959064327, 0.0116279069767, 0.0115606936416, 0.0114942528736, 0.0114285714286, 0.0113636363636, 0.0112994350282, 0.0112359550562, 0.0167597765363, 0.0166666666667, 0.0165745856354, 0.0164835164835, 0.016393442623, 0.0163043478261, 0.0162162162162, 0.0161290322581, 0.0160427807487, 0.0159574468085, 0.015873015873, 0.0157894736842, 0.0157068062827, 0.015625, 0.0155440414508, 0.0154639175258, 0.0153846153846, 0.015306122449, 0.0152284263959, 0.0151515151515, 0.0150753768844, 0.015, 0.0149253731343, 0.0148514851485, 0.0147783251232, 0.0147058823529, 0.0146341463415, 0.0145631067961, 0.0144927536232, 0.0144230769231, 0.0143540669856, 0.0142857142857, 0.0142180094787, 0.0141509433962, 0.0140845070423, 0.0140186915888, 0.0139534883721, 0.0138888888889, 0.0138248847926, 0.0137614678899, 0.013698630137, 0.0136363636364, 0.0135746606335, 0.018018018018, 0.0179372197309, 0.0178571428571, 0.0177777777778, 0.0176991150442, 0.0176211453744, 0.0175438596491, 0.0174672489083, 0.0173913043478, 0.017316017316, 0.0172413793103, 0.0171673819742, 0.017094017094, 0.0170212765957, 0.0169491525424, 0.0168776371308, 0.0168067226891, 0.0167364016736, 0.0166666666667, 0.0165975103734, 0.0165289256198, 0.0164609053498, 0.016393442623, 0.0163265306122, 0.0162601626016, 0.0161943319838, 0.0161290322581, 0.0160642570281, 0.016, 0.0159362549801, 0.015873015873, 0.0158102766798, 0.0157480314961, 0.0156862745098, 0.015625, 0.0155642023346, 0.015503875969, 0.015444015444, 0.0153846153846, 0.0153256704981, 0.0152671755725, 0.0152091254753, 0.0151515151515, 0.0150943396226, 0.015037593985, 0.0149812734082, 0.0149253731343, 0.0148698884758, 0.0148148148148, 0.0147601476015, 0.0147058823529, 0.014652014652, 0.014598540146, 0.0145454545455, 0.0144927536232, 0.014440433213, 0.0143884892086, 0.0143369175627, 0.0142857142857, 0.0142348754448, 0.0141843971631, 0.0141342756184, 0.0140845070423, 0.0140350877193, 0.013986013986, 0.01393728223, 0.0138888888889, 0.0138408304498, 0.0137931034483, 0.0137457044674, 0.013698630137, 0.0136518771331, 0.0136054421769, 0.0135593220339, 0.0135135135135, 0.013468013468, 0.0134228187919, 0.0133779264214, 0.0133333333333, 0.0132890365449, 0.0132450331126, 0.013201320132, 0.0131578947368, 0.0131147540984, 0.0130718954248, 0.0130293159609, 0.012987012987, 0.0129449838188, 0.0129032258065, 0.0128617363344, 0.0128205128205, 0.0127795527157, 0.0127388535032, 0.0126984126984, 0.0126582278481, 0.01261829653, 0.0125786163522, 0.012539184953, 0.0125, 0.01246105919, 0.0124223602484, 0.0123839009288, 0.0123456790123, 0.0123076923077, 0.0122699386503, 0.0122324159021, 0.0121951219512, 0.0121580547112, 0.0121212121212, 0.012084592145, 0.0120481927711, 0.012012012012, 0.0119760479042, 0.0119402985075, 0.0119047619048, 0.0118694362018, 0.0118343195266, 0.0117994100295, 0.0117647058824, 0.0117302052786, 0.0116959064327, 0.0116618075802, 0.0116279069767, 0.0115942028986, 0.0115606936416, 0.0115273775216, 0.0114942528736, 0.0143266475645, 0.0142857142857, 0.014245014245, 0.0142045454545, 0.014164305949, 0.0141242937853, 0.0140845070423, 0.0140449438202, 0.0140056022409, 0.0139664804469, 0.0139275766017, 0.0138888888889, 0.0138504155125, 0.0138121546961, 0.0137741046832, 0.0137362637363, 0.013698630137, 0.0136612021858, 0.0136239782016, 0.0135869565217, 0.0135501355014, 0.0135135135135, 0.0134770889488, 0.0134408602151, 0.0134048257373, 0.0133689839572, 0.0133333333333, 0.0132978723404, 0.0132625994695, 0.0132275132275, 0.0131926121372, 0.0131578947368, 0.0131233595801, 0.0130890052356, 0.0130548302872, 0.0130208333333, 0.012987012987, 0.0129533678756, 0.0129198966408, 0.0128865979381, 0.012853470437, 0.0128205128205, 0.0127877237852, 0.0127551020408, 0.0127226463104, 0.0126903553299, 0.0126582278481, 0.0126262626263, 0.0125944584383, 0.0125628140704, 0.0125313283208, 0.0125, 0.0124688279302, 0.0124378109453, 0.014888337469, 0.0148514851485, 0.0148148148148, 0.0147783251232, 0.014742014742, 0.0147058823529, 0.0171149144254, 0.0170731707317, 0.0170316301703, 0.0169902912621, 0.0169491525424, 0.0169082125604, 0.0168674698795, 0.0168269230769, 0.0167865707434, 0.0167464114833, 0.0167064439141, 0.0166666666667, 0.0166270783848, 0.0165876777251, 0.016548463357, 0.0165094339623, 0.0164705882353, 0.018779342723, 0.0187353629977, 0.018691588785, 0.018648018648, 0.0186046511628, 0.0185614849188, 0.0185185185185, 0.0184757505774, 0.0184331797235, 0.0183908045977, 0.0183486238532, 0.0183066361556, 0.0182648401826, 0.0182232346241, 0.0181818181818, 0.0181405895692, 0.0180995475113, 0.0180586907449, 0.018018018018, 0.0179775280899, 0.0179372197309, 0.0178970917226, 0.0178571428571, 0.0178173719376, 0.0177777777778, 0.0177383592018, 0.0176991150442, 0.0176600441501, 0.0176211453744, 0.0175824175824, 0.0175438596491, 0.0175054704595, 0.0174672489083, 0.0174291938998, 0.0173913043478, 0.0173535791757, 0.017316017316, 0.0172786177106, 0.0172413793103, 0.0172043010753, 0.0171673819742, 0.017130620985, 0.017094017094, 0.0170575692964, 0.0170212765957, 0.0169851380042, 0.0169491525424, 0.0169133192389, 0.0168776371308, 0.0168421052632, 0.0168067226891, 0.0167714884696, 0.0167364016736, 0.0167014613779, 0.0166666666667, 0.016632016632, 0.0165975103734, 0.0165631469979, 0.0165289256198, 0.0164948453608, 0.0164609053498, 0.0164271047228, 0.016393442623, 0.0163599182004, 0.0163265306122, 0.0162932790224, 0.0162601626016, 0.0162271805274, 0.0161943319838, 0.0161616161616, 0.0161290322581, 0.0160965794769, 0.0160642570281, 0.0160320641283, 0.016, 0.0159680638723, 0.0159362549801, 0.0159045725646, 0.015873015873, 0.0158415841584, 0.0158102766798, 0.0157790927022, 0.0157480314961, 0.0157170923379, 0.0156862745098, 0.0156555772994, 0.015625, 0.0155945419103, 0.0155642023346, 0.0155339805825, 0.015503875969, 0.0154738878143, 0.015444015444, 0.0154142581888, 0.0153846153846, 0.0153550863724, 0.0153256704981, 0.0152963671128, 0.0152671755725, 0.0152380952381, 0.0152091254753, 0.0151802656546, 0.0151515151515, 0.0170132325142, 0.0169811320755, 0.0169491525424, 0.0169172932331, 0.0168855534709, 0.0168539325843, 0.0168224299065, 0.0167910447761, 0.0167597765363, 0.0167286245353, 0.0166975881262, 0.0166666666667, 0.0166358595194, 0.0166051660517, 0.0165745856354, 0.0165441176471, 0.0165137614679, 0.0164835164835, 0.0164533820841, 0.0164233576642, 0.016393442623, 0.0163636363636, 0.016333938294, 0.0163043478261, 0.0162748643761, 0.0162454873646, 0.0162162162162, 0.0161870503597, 0.016157989228, 0.0161290322581, 0.0161001788909, 0.0160714285714, 0.0160427807487, 0.0160142348754, 0.0159857904085, 0.0159574468085, 0.0159292035398, 0.0159010600707, 0.0176366843034, 0.0176056338028, 0.0175746924429, 0.0175438596491, 0.0175131348511, 0.0174825174825, 0.0174520069808, 0.0174216027875, 0.0173913043478, 0.0173611111111, 0.0173310225303, 0.0173010380623, 0.0172711571675, 0.0172413793103, 0.0172117039587, 0.0171821305842, 0.0171526586621, 0.0171232876712, 0.017094017094, 0.0170648464164, 0.0170357751278, 0.0170068027211, 0.0169779286927, 0.0169491525424, 0.0169204737733, 0.0168918918919, 0.0168634064081, 0.016835016835, 0.0168067226891, 0.0167785234899, 0.0167504187605, 0.0167224080268, 0.016694490818, 0.0166666666667, 0.0166389351082, 0.0166112956811, 0.016583747927, 0.0165562913907, 0.0165289256198, 0.016501650165, 0.0181219110379, 0.0180921052632, 0.0180623973727, 0.0180327868852, 0.0180032733224, 0.0179738562092, 0.0179445350734, 0.0179153094463, 0.0178861788618, 0.0178571428571, 0.0178282009724, 0.0177993527508, 0.0177705977383, 0.0177419354839, 0.0177133655395, 0.0176848874598, 0.0176565008026, 0.0176282051282, 0.0176, 0.017571884984, 0.0175438596491, 0.0175159235669, 0.0174880763116, 0.0174603174603, 0.0174326465927, 0.0174050632911, 0.0173775671406, 0.0173501577287, 0.0173228346457, 0.0172955974843, 0.0172684458399, 0.0172413793103, 0.0172143974961, 0.0171875, 0.0171606864275, 0.0171339563863, 0.0171073094868, 0.0170807453416, 0.0170542635659, 0.0170278637771, 0.0170015455951, 0.016975308642, 0.0169491525424, 0.0169230769231, 0.0168970814132, 0.0168711656442, 0.0168453292496, 0.0168195718654, 0.0167938931298, 0.0167682926829, 0.0167427701674, 0.016717325228, 0.0166919575114, 0.0166666666667, 0.0166414523449, 0.0166163141994, 0.0165912518854, 0.0165662650602, 0.0165413533835, 0.0165165165165, 0.0164917541229, 0.0179640718563, 0.0179372197309, 0.0179104477612, 0.0178837555887, 0.0178571428571, 0.0178306092125, 0.0178041543027, 0.0177777777778, 0.0177514792899, 0.0177252584934, 0.0176991150442, 0.0176730486009, 0.0176470588235, 0.0176211453744, 0.0175953079179, 0.0175695461201, 0.0175438596491, 0.0175182481752, 0.0174927113703, 0.0174672489083, 0.0174418604651, 0.0174165457184, 0.0173913043478, 0.0173661360347, 0.0173410404624, 0.017316017316, 0.0172910662824, 0.0172661870504, 0.0172413793103, 0.0172166427547, 0.0171919770774, 0.0171673819742, 0.0171428571429, 0.0171184022825, 0.017094017094, 0.0170697012802, 0.0170454545455, 0.0170212765957, 0.0169971671388, 0.016973125884, 0.0169491525424, 0.0169252468265, 0.0169014084507, 0.0168776371308, 0.0168539325843, 0.0168302945302, 0.0168067226891, 0.0167832167832, 0.0167597765363, 0.0167364016736, 0.016713091922, 0.0166898470097, 0.0166666666667, 0.0166435506241, 0.016620498615, 0.0165975103734, 0.0165745856354, 0.0165517241379, 0.0165289256198, 0.0165061898212, 0.0164835164835, 0.0164609053498, 0.0164383561644, 0.0164158686731, 0.016393442623, 0.0163710777626, 0.016348773842, 0.0163265306122, 0.0163043478261, 0.0162822252374, 0.0162601626016, 0.0162381596752, 0.0162162162162, 0.0161943319838, 0.0161725067385, 0.0161507402423, 0.0161290322581, 0.0161073825503, 0.0160857908847, 0.0160642570281, 0.0160427807487, 0.0160213618158, 0.016, 0.0159786950732, 0.0159574468085, 0.0159362549801, 0.0159151193634, 0.0158940397351, 0.015873015873, 0.0158520475561, 0.0158311345646, 0.0158102766798, 0.0157894736842, 0.0157687253614, 0.0157480314961, 0.0157273918742, 0.0170157068063, 0.0169934640523, 0.0169712793734, 0.0169491525424, 0.0169270833333, 0.0169050715215, 0.0168831168831, 0.0168612191958, 0.0168393782383, 0.0168175937904, 0.0167958656331, 0.0167741935484, 0.0167525773196, 0.016731016731, 0.0167095115681, 0.0166880616175, 0.0166666666667, 0.0166453265045, 0.0166240409207, 0.0178799489144, 0.0178571428571, 0.0178343949045, 0.0178117048346, 0.0177890724269, 0.0177664974619, 0.0177439797212, 0.0177215189873, 0.0176991150442, 0.0176767676768, 0.0176544766709, 0.0176322418136, 0.0176100628931, 0.0175879396985, 0.0175658720201, 0.0175438596491, 0.017521902378, 0.0175, 0.0174781523096, 0.0174563591022, 0.0174346201743, 0.0174129353234, 0.0173913043478, 0.0173697270471, 0.0173482032218, 0.0173267326733, 0.017305315204, 0.0172839506173, 0.0172626387176, 0.0172413793103, 0.0172201722017, 0.017199017199, 0.0171779141104, 0.0171568627451, 0.0171358629131, 0.0171149144254, 0.017094017094, 0.0170731707317, 0.0170523751523, 0.0170316301703, 0.0170109356015, 0.0169902912621, 0.0169696969697, 0.0169491525424, 0.0169286577993, 0.0169082125604, 0.0168878166466, 0.0168674698795, 0.0168471720818, 0.0168269230769, 0.0168067226891, 0.0167865707434, 0.0167664670659, 0.0167464114833, 0.0167264038232, 0.0167064439141, 0.0166865315852, 0.0166666666667, 0.0166468489893, 0.0166270783848, 0.0166073546856, 0.0165876777251, 0.0165680473373, 0.016548463357, 0.0165289256198, 0.0176886792453, 0.017667844523, 0.0176470588235, 0.0176263219741, 0.0176056338028, 0.0175849941383, 0.0175644028103, 0.0175438596491, 0.017523364486, 0.0175029171529, 0.0174825174825, 0.0174621653085, 0.0174418604651, 0.0174216027875, 0.0174013921114, 0.0173812282735, 0.0173611111111, 0.0173410404624, 0.0173210161663, 0.0173010380623, 0.0172811059908, 0.0172612197929, 0.0172413793103, 0.0172215843858, 0.0172018348624, 0.0171821305842, 0.0171624713959, 0.0171428571429, 0.0171232876712, 0.018244013683, 0.0182232346241, 0.0182025028441, 0.0181818181818, 0.0181611804767, 0.0181405895692, 0.0181200453001, 0.0180995475113, 0.0180790960452, 0.0180586907449, 0.0180383314543, 0.018018018018, 0.0179977502812, 0.0179775280899, 0.0179573512907, 0.0179372197309, 0.0179171332587, 0.0178970917226, 0.0178770949721, 0.0178571428571, 0.0178372352285, 0.0178173719376, 0.0189098998888, 0.0188888888889, 0.0188679245283, 0.0188470066519, 0.0188261351052, 0.0199115044248, 0.0198895027624, 0.0198675496689, 0.0198456449835, 0.0198237885463, 0.019801980198, 0.0197802197802, 0.019758507135, 0.0197368421053, 0.0197152245345, 0.019693654267, 0.0196721311475, 0.0196506550218, 0.0196292257361, 0.0196078431373, 0.0195865070729, 0.0195652173913, 0.0195439739414, 0.0195227765727, 0.0195016251354, 0.0194805194805, 0.0194594594595, 0.0194384449244, 0.0194174757282, 0.0193965517241, 0.0193756727664, 0.0193548387097, 0.0193340494092, 0.0203862660944, 0.0203644158628, 0.0203426124197, 0.020320855615, 0.0202991452991, 0.0202774813234, 0.0202558635394, 0.0202342917998, 0.0202127659574, 0.0201912858661, 0.02016985138, 0.0201484623542, 0.0201271186441, 0.0201058201058, 0.0200845665962, 0.0200633579725, 0.0200421940928, 0.0200210748156, 0.02, 0.0199789695058, 0.0199579831933, 0.0199370409234, 0.0199161425577, 0.0198952879581, 0.0198744769874, 0.0198537095089, 0.0198329853862, 0.0198123044838, 0.0197916666667, 0.0197710718002, 0.0197505197505, 0.0197300103842, 0.0197095435685, 0.019689119171, 0.01966873706, 0.0196483971044, 0.0196280991736, 0.0196078431373, 0.019587628866, 0.0195674562307, 0.0195473251029, 0.0195272353546, 0.0195071868583, 0.0194871794872, 0.0194672131148, 0.0194472876151, 0.019427402863, 0.0194075587334, 0.019387755102, 0.0203873598369, 0.020366598778, 0.0203458799593, 0.020325203252, 0.0203045685279, 0.0202839756592, 0.0202634245187, 0.0202429149798, 0.0202224469161, 0.020202020202, 0.0201816347124, 0.0201612903226, 0.0201409869084, 0.0201207243461, 0.0201005025126, 0.0200803212851, 0.0200601805416, 0.0200400801603, 0.02002002002, 0.02, 0.01998001998, 0.0199600798403, 0.0199401794616, 0.0199203187251, 0.0199004975124, 0.0198807157058, 0.0198609731877, 0.0198412698413, 0.01982160555, 0.019801980198, 0.0197823936696, 0.0197628458498, 0.0197433366239, 0.0197238658777, 0.0197044334975, 0.0196850393701, 0.0196656833825, 0.0196463654224, 0.0196270853778, 0.0196078431373, 0.0195886385896, 0.0195694716243, 0.019550342131, 0.01953125, 0.019512195122, 0.0194931773879, 0.0194741966894, 0.0194552529183, 0.019436345967, 0.0194174757282, 0.0193986420951, 0.0203488372093, 0.0203291384318, 0.0203094777563, 0.0202898550725, 0.0202702702703, 0.0202507232401, 0.0202312138728, 0.0202117420597, 0.0201923076923, 0.0201729106628, 0.0201535508637, 0.0201342281879, 0.0201149425287, 0.0200956937799, 0.0210325047801, 0.0210124164279, 0.0209923664122, 0.0209723546235, 0.0209523809524, 0.0209324452902, 0.0209125475285, 0.0208926875594, 0.0208728652751, 0.0208530805687, 0.0208333333333, 0.0208136234626, 0.0207939508507, 0.0207743153919, 0.0207547169811, 0.0207351555137, 0.0207156308851, 0.0206961429915, 0.0206766917293, 0.0206572769953, 0.0206378986867, 0.020618556701, 0.0205992509363, 0.0205799812909, 0.0205607476636, 0.0205415499533, 0.0205223880597, 0.0205032618826, 0.0204841713222, 0.0204651162791, 0.0204460966543, 0.0204271123491, 0.0204081632653, 0.0203892493049, 0.0203703703704, 0.0203515263645, 0.0203327171904, 0.0203139427516, 0.020295202952, 0.0202764976959, 0.0202578268877, 0.0202391904324, 0.0202205882353, 0.020202020202, 0.0201834862385, 0.0201649862511, 0.0201465201465, 0.0201280878317, 0.0201096892139, 0.0200913242009, 0.0200729927007, 0.0200546946217, 0.0200364298725, 0.0200181983621, 0.02, 0.0199818346957, 0.0199637023593, 0.0199456029012, 0.0199275362319, 0.0199095022624, 0.0198915009042, 0.0198735320687, 0.0198555956679, 0.0198376916141, 0.0198198198198, 0.019801980198, 0.0197841726619, 0.0197663971249, 0.0197486535009, 0.019730941704, 0.0197132616487, 0.0196956132498, 0.0196779964222, 0.0196604110813, 0.0196428571429, 0.0196253345227, 0.0196078431373, 0.0195903829029, 0.0195729537367, 0.0195555555556, 0.0195381882771, 0.019520851819, 0.0195035460993, 0.0194862710363, 0.0194690265487, 0.0194518125553, 0.0194346289753, 0.0194174757282, 0.0194003527337, 0.0193832599119, 0.0193661971831, 0.0193491644679, 0.0193321616872, 0.0193151887621, 0.019298245614, 0.0192813321648, 0.0192644483363, 0.0192475940507, 0.0192307692308, 0.0192139737991, 0.0191972076789, 0.0191804707934, 0.0191637630662, 0.0191470844212, 0.02, 0.0199826238054, 0.0199652777778, 0.0208152645273, 0.0207972270364, 0.0207792207792, 0.0207612456747, 0.0207433016422, 0.020725388601, 0.0215703192407, 0.0215517241379, 0.021533161068, 0.0215146299484, 0.0214961306965, 0.0214776632302, 0.0214592274678, 0.0214408233276, 0.0214224507284, 0.021404109589, 0.0213857998289, 0.0213675213675, 0.0213492741247, 0.0213310580205, 0.0213128729753, 0.0212947189097, 0.0212765957447, 0.0212585034014, 0.0212404418012, 0.0212224108659, 0.0212044105174, 0.021186440678, 0.0211685012701, 0.0211505922166, 0.0211327134404, 0.0211148648649, 0.0210970464135, 0.0219224283305, 0.0219039595619, 0.0218855218855, 0.0218671152229, 0.0218487394958, 0.0218303946264, 0.0218120805369, 0.02179379715, 0.0217755443886, 0.0217573221757, 0.0217391304348, 0.0217209690894, 0.0217028380634, 0.0216847372811, 0.0216666666667, 0.0216486261449, 0.0216306156406, 0.021612635079, 0.0215946843854, 0.0215767634855, 0.0215588723051, 0.0215410107705, 0.0215231788079, 0.0215053763441, 0.0214876033058, 0.0214698596201, 0.0214521452145, 0.0214344600165, 0.0214168039539, 0.0213991769547, 0.0213815789474, 0.0213640098603, 0.0213464696223, 0.0213289581624, 0.0213114754098, 0.021294021294, 0.0212765957447, 0.0212591986917, 0.0212418300654, 0.0212244897959, 0.021207177814, 0.0211898940505, 0.0211726384365, 0.0211554109032, 0.0211382113821, 0.021121039805, 0.0211038961039, 0.0210867802109, 0.0210696920583, 0.0210526315789, 0.0210355987055, 0.0210185933711, 0.0210016155089, 0.0209846650525, 0.0209677419355, 0.0217566478646, 0.0217391304348, 0.0217216411907, 0.0217041800643, 0.021686746988, 0.0216693418941, 0.0216519647153, 0.0216346153846, 0.0216172938351, 0.0216, 0.0215827338129, 0.0215654952077, 0.0215482841181, 0.0215311004785, 0.0215139442231, 0.0214968152866, 0.0214797136038, 0.0214626391097, 0.0214455917395, 0.0214285714286, 0.0214115781126, 0.0213946117274, 0.021377672209, 0.0213607594937, 0.0213438735178, 0.021327014218, 0.0213101815312, 0.0212933753943, 0.0212765957447, 0.0212598425197, 0.021243115657, 0.0212264150943, 0.0212097407698, 0.0211930926217, 0.0211764705882, 0.0211598746082, 0.0211433046202, 0.0211267605634, 0.0211102423769, 0.02109375, 0.0210772833724, 0.0210608424337, 0.0210444271239, 0.0210280373832, 0.0210116731518, 0.0209953343701, 0.020979020979, 0.0209627329193, 0.0209464701319, 0.0209302325581, 0.0209140201394, 0.0208978328173, 0.0208816705336, 0.0208655332303, 0.0208494208494, 0.0208333333333, 0.0208172706245, 0.0208012326656, 0.0207852193995, 0.0207692307692, 0.0207532667179, 0.0207373271889, 0.0207214121259, 0.0207055214724, 0.0206896551724, 0.02067381317, 0.0206579954093, 0.0206422018349, 0.0206264323911, 0.0213740458015, 0.0213577421815, 0.0213414634146, 0.021325209444, 0.0213089802131, 0.0212927756654, 0.0212765957447, 0.0212604403948, 0.0212443095599, 0.0212282031842, 0.0212121212121, 0.0211960635882, 0.0211800302572, 0.021164021164, 0.0211480362538, 0.0211320754717, 0.0211161387632, 0.0211002260739, 0.0210843373494, 0.0210684725357, 0.0210526315789, 0.0210368144252, 0.021021021021, 0.0210052513128, 0.0209895052474, 0.0209737827715, 0.0209580838323, 0.020942408377, 0.0209267563528, 0.0209111277072, 0.0208955223881, 0.020879940343, 0.0208643815201, 0.0208488458675, 0.0208333333333, 0.0208178438662, 0.0208023774146, 0.0207869339272, 0.0207715133531, 0.0207561156412, 0.0207407407407, 0.020725388601, 0.0207100591716, 0.0206947524021, 0.0206794682422, 0.0206642066421, 0.0206489675516, 0.0206337509211, 0.020618556701, 0.0206033848418, 0.0205882352941, 0.0205731080088, 0.0205580029369, 0.0205429200293, 0.0205278592375, 0.0205128205128, 0.0204978038067, 0.0212143379663, 0.0211988304094, 0.0211833455077, 0.0211678832117, 0.0211524434719, 0.0211370262391, 0.0218499635834, 0.0218340611354, 0.0218181818182, 0.0218023255814, 0.0217864923747, 0.021770682148, 0.0217548948513, 0.0217391304348, 0.0217233888487, 0.0217076700434, 0.0216919739696, 0.021676300578, 0.0216606498195, 0.021645021645, 0.0216294160058, 0.021613832853, 0.0215982721382, 0.0215827338129, 0.0215672178289, 0.0215517241379, 0.021536252692, 0.0215208034433, 0.0215053763441, 0.0214899713467, 0.0214745884037, 0.0214592274678, 0.0214438884918, 0.0221428571429, 0.0221270521056, 0.0221112696148, 0.0220955096222, 0.0220797720798, 0.0220640569395, 0.0220483641536, 0.0220326936745, 0.0220170454545, 0.0220014194464, 0.0219858156028, 0.0219702338767, 0.021954674221, 0.0219391365888, 0.0219236209335, 0.0219081272085, 0.0218926553672, 0.0218772053634, 0.0218617771509, 0.0218463706836, 0.0218309859155, 0.0218156228008, 0.021800281294, 0.0217849613493, 0.0217696629213, 0.0217543859649, 0.0217391304348, 0.0217238962859, 0.0224089635854, 0.0223932820154, 0.0223776223776, 0.0223619846261, 0.0223463687151, 0.0223307745987, 0.0223152022315, 0.0222996515679, 0.0222841225627, 0.0222686151705, 0.0222531293463, 0.0222376650452, 0.0222222222222, 0.0222068008328, 0.0221914008322, 0.022176022176, 0.0221606648199, 0.0221453287197, 0.0221300138313, 0.0221147201106, 0.0220994475138, 0.0220841959972, 0.0220689655172, 0.0220537560303, 0.0220385674931, 0.0220233998624, 0.0220082530949, 0.0219931271478, 0.021978021978, 0.0219629375429, 0.0219478737997, 0.021932830706, 0.0219178082192, 0.0219028062971, 0.0218878248974, 0.0218728639781, 0.0218579234973, 0.021843003413, 0.0218281036835, 0.0218132242672, 0.0217983651226, 0.0217835262083, 0.021768707483, 0.0217539089055, 0.0217391304348, 0.0217243720299, 0.0217096336499, 0.0216949152542, 0.0216802168022, 0.0216655382532, 0.021650879567, 0.0216362407032, 0.0216216216216, 0.0216070222822, 0.0215924426451, 0.0215778826703, 0.0215633423181, 0.0215488215488, 0.021534320323, 0.0215198386012, 0.0215053763441, 0.0214909335124, 0.0214765100671, 0.0214621059691, 0.0214477211796, 0.0214333556597, 0.0214190093708, 0.0214046822742, 0.0213903743316, 0.0213760855043, 0.0213618157543, 0.0213475650434, 0.0213333333333, 0.0213191205863, 0.0213049267643, 0.0212907518297, 0.0212765957447, 0.0212624584718, 0.0212483399734, 0.0212342402123, 0.0212201591512, 0.0212060967528, 0.0211920529801, 0.0211780277962, 0.021164021164, 0.0211500330469, 0.0211360634082, 0.0211221122112, 0.0211081794195, 0.0210942649967, 0.0210803689065, 0.0210664911126, 0.0210526315789, 0.0210387902696, 0.0210249671485, 0.0210111621799, 0.0209973753281, 0.0209836065574, 0.0209698558322, 0.0209561231172, 0.020942408377, 0.0209287115762, 0.0209150326797, 0.0209013716525, 0.0208877284595, 0.0208741030659, 0.0208604954368, 0.0208469055375, 0.0208333333333, 0.0208197787899, 0.0208062418726, 0.0207927225471, 0.0207792207792, 0.0207657365347, 0.0207522697795, 0.0207388204796, 0.020725388601, 0.02071197411, 0.0206985769728, 0.0206851971558, 0.0206718346253, 0.0213040671401, 0.0212903225806, 0.0212765957447, 0.0212628865979, 0.0212491951062, 0.0212355212355, 0.0212218649518, 0.0212082262211, 0.0211946050096, 0.0211810012837, 0.0211674150096, 0.0211538461538, 0.0211402946829, 0.0211267605634, 0.021113243762, 0.0210997442455, 0.0210862619808, 0.0210727969349, 0.0210593490747, 0.0210459183673, 0.0210325047801, 0.0210191082803, 0.0210057288351, 0.0209923664122, 0.020979020979, 0.0209656925032, 0.0209523809524, 0.0209390862944, 0.0209258084971, 0.0209125475285, 0.0208993033566, 0.0208860759494, 0.0208728652751, 0.0208596713021, 0.0208464939987, 0.0208333333333, 0.0208201892744, 0.0208070617907, 0.0207939508507, 0.0207808564232, 0.020767778477, 0.0207547169811, 0.0207416719045, 0.0207286432161, 0.0207156308851, 0.0207026348808, 0.0206896551724, 0.0206766917293, 0.020663744521, 0.0206508135169, 0.0206378986867, 0.020625, 0.0206121174266, 0.0205992509363, 0.0205864004991, 0.0205735660848, 0.0205607476636, 0.0205479452055, 0.0205351586808, 0.0205223880597, 0.0205096333126, 0.0204968944099, 0.0204841713222, 0.0204714640199, 0.0204587724737, 0.0204460966543, 0.0204334365325, 0.0204207920792, 0.0204081632653, 0.0203955500618, 0.0203829524398, 0.0203703703704, 0.0203578038248, 0.0203452527744, 0.0203327171904, 0.0203201970443, 0.0203076923077, 0.020295202952, 0.020282728949, 0.0202702702703, 0.0202578268877, 0.020245398773, 0.0202329858982, 0.0202205882353, 0.0202082057563, 0.0201958384333, 0.0201834862385, 0.0201711491443, 0.0201588271228, 0.0201465201465, 0.0201342281879, 0.0201219512195, 0.0201096892139, 0.0200974421437, 0.0200852099817, 0.0200729927007, 0.0200607902736, 0.0200486026731, 0.0200364298725, 0.0200242718447, 0.0200121285628, 0.02, 0.0199878861296, 0.0199757869249, 0.0199637023593, 0.0199516324063, 0.0199395770393, 0.0199275362319, 0.0199155099578, 0.0199034981906, 0.0198915009042, 0.0198795180723, 0.0198675496689, 0.0198555956679, 0.0198436560433, 0.0198317307692, 0.0198198198198, 0.0198079231693, 0.0197960407918, 0.0197841726619, 0.0197723187537, 0.0197604790419, 0.0197486535009, 0.0197368421053, 0.0197250448296, 0.0197132616487, 0.0197014925373, 0.0196897374702, 0.0196779964222, 0.0196662693683, 0.0196545562835, 0.0196428571429, 0.0196311719215, 0.0196195005945, 0.0196078431373, 0.0195961995249, 0.0195845697329, 0.0195729537367, 0.0195613515116, 0.0195497630332, 0.0195381882771, 0.0195266272189, 0.0195150798344, 0.0195035460993, 0.0194920259894, 0.0194805194805, 0.0194690265487, 0.0194575471698, 0.01944608132, 0.0194346289753, 0.0194231901118, 0.0194117647059, 0.0194003527337, 0.0193889541716, 0.0193775689959, 0.0193661971831, 0.0193548387097, 0.0193434935522, 0.0193321616872, 0.0193208430913, 0.0193095377414, 0.019298245614, 0.0192869666861, 0.0192757009346, 0.0192644483363, 0.0192532088681, 0.0192419825073, 0.0192307692308, 0.0192195690157, 0.0192083818393, 0.0191972076789, 0.0191860465116, 0.0191748983149, 0.0191637630662, 0.0191526407429, 0.0191415313225, 0.0191304347826, 0.0191193511008, 0.0191082802548, 0.0190972222222, 0.0190861769809, 0.0190751445087, 0.0190641247834, 0.0190531177829, 0.0196191575303, 0.0196078431373, 0.0195965417867, 0.0195852534562, 0.0201496833621, 0.0201380897583, 0.0201265094882, 0.0201149425287, 0.020103388857, 0.0206659012629, 0.0206540447504, 0.0206422018349, 0.0206303724928, 0.020618556701, 0.0206067544362, 0.0205949656751, 0.0205831903945, 0.0205714285714, 0.0205596801828, 0.0205479452055, 0.0205362236167, 0.0205245153934, 0.0205128205128, 0.0210706150342, 0.0210586226522, 0.0210466439135, 0.0210346787948, 0.0210227272727, 0.0210107893242, 0.0209988649262, 0.0209869540556, 0.0209750566893, 0.0209631728045, 0.0209513023783, 0.0209394453877, 0.0214932126697, 0.0214810627473, 0.0214689265537, 0.0214568040655, 0.0214446952596, 0.0214326001128, 0.021420518602, 0.0214084507042, 0.0219594594595, 0.0219471018571, 0.0219347581552, 0.0219224283305, 0.0219101123596, 0.0224592925323, 0.0224466891134, 0.0224340998317, 0.0224215246637, 0.0224089635854, 0.0223964165733, 0.0223838836038, 0.0223713646532, 0.0223588596982, 0.022905027933, 0.0228922389726, 0.0228794642857, 0.0228667038483, 0.0228539576366, 0.0228412256267, 0.0228285077951, 0.022815804118, 0.0228031145717, 0.0227904391329, 0.0227777777778, 0.0227651304831, 0.0227524972253, 0.0227398779811, 0.0227272727273, 0.0227146814404, 0.0227021040975, 0.0226895406752, 0.0226769911504, 0.0226644555003, 0.0226519337017, 0.0226394257316, 0.0226269315673, 0.0226144511859, 0.0226019845645, 0.0225895316804, 0.022577092511, 0.0225646670336, 0.0225522552255, 0.0225398570643, 0.0225274725275, 0.0225151015925, 0.0225027442371, 0.0224904004388, 0.0224780701754, 0.0230136986301, 0.0230010952903, 0.0229885057471, 0.0229759299781, 0.0229633679606, 0.0229508196721, 0.0229382850901, 0.0229257641921, 0.0229132569558, 0.0234460196292, 0.0234332425068, 0.0234204793028, 0.0234077299946, 0.0233949945593, 0.0233822729744, 0.0233695652174, 0.0233568712656, 0.0233441910966, 0.023331524688, 0.0233188720174, 0.0233062330623, 0.0232936078007, 0.0232809962101, 0.0232683982684, 0.0232558139535, 0.0232432432432, 0.0232306861156, 0.0232181425486, 0.0232056125202, 0.0231930960086, 0.0231805929919, 0.0231681034483, 0.023155627356, 0.0231431646932, 0.0231307154384, 0.0231182795699, 0.0231058570661, 0.0230934479055, 0.0230810520666, 0.0230686695279, 0.0230563002681, 0.0230439442658, 0.0230316014997, 0.0230192719486, 0.0230069555912, 0.0229946524064, 0.0229823623731, 0.0229700854701, 0.0229578216765, 0.0229455709712, 0.0229333333333, 0.022921108742, 0.0229088971763, 0.0228966986155, 0.0228845130389, 0.0228723404255, 0.0228601807549, 0.0228480340064, 0.0228359001593, 0.0228237791932, 0.0228116710875, 0.0227995758218, 0.0233174350821, 0.0233050847458, 0.0232927474854, 0.0232804232804, 0.02326811211, 0.0232558139535, 0.0232435287903, 0.0232312565998, 0.0232189973615, 0.0232067510549, 0.0231945176595, 0.0231822971549, 0.0231700895208, 0.0231578947368, 0.0231457127827, 0.0231335436383, 0.0231213872832, 0.0231092436975, 0.0230971128609, 0.0230849947534, 0.023072889355, 0.0230607966457, 0.0230487166056, 0.0230366492147, 0.0230245944532, 0.0230125523013, 0.0230005227392, 0.0229885057471, 0.0229765013055, 0.0229645093946, 0.0229525299948, 0.0229405630865, 0.0229286086503, 0.0229166666667, 0.0229047371161, 0.0228928199792, 0.0228809152366, 0.022869022869, 0.0228571428571, 0.0228452751817, 0.0228334198236, 0.0228215767635, 0.0228097459824, 0.0227979274611, 0.0227861211807, 0.0227743271222, 0.0227625452664, 0.0227507755946, 0.0232558139535, 0.0232438016529, 0.0232318017553, 0.0232198142415, 0.0232078390923, 0.0231958762887, 0.0231839258114, 0.0231719876416, 0.0231600617602, 0.0231481481481, 0.0231362467866, 0.0231243576567, 0.0231124807396, 0.0231006160164, 0.0230887634684, 0.0230769230769, 0.0230650948232, 0.0230532786885, 0.0230414746544, 0.0230296827021, 0.0230179028133, 0.0230061349693, 0.0229943791518, 0.0229826353422, 0.0229709035222, 0.0229591836735, 0.0229474757777, 0.0229357798165, 0.0229240957718, 0.0229124236253, 0.0229007633588, 0.0228891149542, 0.0228774783935, 0.0228658536585, 0.0228542407313, 0.0228426395939, 0.0228310502283, 0.0228194726166, 0.022807906741, 0.0227963525836, 0.0227848101266, 0.0227732793522, 0.0227617602428, 0.0227502527806, 0.022738756948, 0.0227272727273, 0.022715800101, 0.0227043390515, 0.0226928895613, 0.0226814516129, 0.0226700251889, 0.0226586102719, 0.0226472068445, 0.0226358148893, 0.0226244343891, 0.0226130653266, 0.0226017076846, 0.0225903614458, 0.0225790265931, 0.0225677031093, 0.0225563909774, 0.0225450901804, 0.0225338007011, 0.0225225225225, 0.0225112556278, 0.0225}">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[690.0, 400.0]">
+        </property>
+    </entity>
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="[125.0, 480.0]">
+        </vertex>
+    </relation>
+    <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation12" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation13" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation8" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="[465.0, 275.0]">
+        </vertex>
+    </relation>
+    <relation name="relation11" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation7" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation10" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation16" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation17" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation9" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation14" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="AddSubtract.plus" relation="relation6"/>
+    <link port="AddSubtract.plus" relation="relation3"/>
+    <link port="AddSubtract.output" relation="relation2"/>
+    <link port="Gaussian.output" relation="relation3"/>
+    <link port="BooleanToAnything.input" relation="relation7"/>
+    <link port="BooleanToAnything.output" relation="relation6"/>
+    <link port="Bernoulli.output" relation="relation4"/>
+    <link port="SampleDelay.input" relation="relation4"/>
+    <link port="SampleDelay.output" relation="relation8"/>
+    <link port="AddSubtract2.plus" relation="relation"/>
+    <link port="AddSubtract2.plus" relation="relation10"/>
+    <link port="AddSubtract2.output" relation="relation12"/>
+    <link port="BooleanToAnything3.input" relation="relation4"/>
+    <link port="BooleanToAnything3.output" relation="relation"/>
+    <link port="Comparator.left" relation="relation12"/>
+    <link port="Comparator.right" relation="relation13"/>
+    <link port="Comparator.output" relation="relation11"/>
+    <link port="Const.output" relation="relation13"/>
+    <link port="Count Errors.data" relation="relation16"/>
+    <link port="Count Errors.reference" relation="relation8"/>
+    <link port="Count Errors.errors" relation="relation17"/>
+    <link port="Count Errors.rate" relation="relation5"/>
+    <link port="Count Errors2.data" relation="relation11"/>
+    <link port="Count Errors2.reference" relation="relation4"/>
+    <link port="Count Errors2.errors" relation="relation9"/>
+    <link port="Count Errors2.rate" relation="relation14"/>
+    <link port="ConvolutionalCoder.input" relation="relation4"/>
+    <link port="ConvolutionalCoder.output" relation="relation7"/>
+    <link port="Gaussian2.output" relation="relation10"/>
+    <link port="ViterbiDecoder2.input" relation="relation2"/>
+    <link port="ViterbiDecoder2.output" relation="relation16"/>
+    <link port="NonStrictTest.input" relation="relation17"/>
+    <link port="NonStrictTest2.input" relation="relation5"/>
+    <link port="NonStrictTest3.input" relation="relation9"/>
+    <link port="NonStrictTest4.input" relation="relation14"/>
+</entity>
