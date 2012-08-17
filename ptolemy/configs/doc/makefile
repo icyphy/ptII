@@ -169,11 +169,12 @@ check_applets:
 	@ls `grep .xml completeDemos.htm | grep -v "<!--" | $(GAWK) -F \" '{print $$2}' | sed 's/.xml/.htm/'` 2>&1 | sed 's/ls: //' | grep "No such file" | $(GAWK) '{print $$1}' | sed 's@:@@'
 
 check_tests:
-	@$(ROOT)/adm/bin/chkdemotests
+	@$(ROOT)/adm/bin/chkdemotests 
 
 listDemos:
-	@ls `grep .xml completeDemos.htm | grep -v "<!--" | $(GAWK) -F \" '{print $$2}'`
+	@ls `grep .xml completeDemos.htm | grep -v "<!--" | $(GAWK) -F \" '{print $$2}'` | sort
 
+listNewDemos:
 	#@ls `grep .xml completeDemos.htm | grep -i "New in Ptolemy II 8.0" | grep -v "<!--" | $(GAWK) -F \" '{print $$2}'`
 
 # Open the demos 10 at a time, print statistics and close.
