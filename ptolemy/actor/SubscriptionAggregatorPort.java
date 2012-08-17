@@ -297,6 +297,7 @@ public class SubscriptionAggregatorPort extends SubscriberPort {
     
     /** Return true if every input channel that has tokens has enough tokens.
      *  @param channelIndex The channel index. This is required to be 0.
+     *  @param vectorLength The number of tokens to query the channel for.
      *  @return True if every input channel that has tokens has enough tokens.
      *  @exception IllegalActionException If the channel index is not 0
      *   or if the superclass throws it.

@@ -64,8 +64,10 @@ public class GLBFunction extends MonotonicFunction {
 
     /** Return the current value of this monotonic function.
      *  @return A Type.
+     *  @exception IllegalActionException If thrown while getting the
+     *  value of the chached terms.
      */
-    public Object getValue() throws IllegalActionException {
+    public Object getValue()  throws IllegalActionException {
         _updateArguments();
 
         Set<Type> types = new HashSet<Type>();

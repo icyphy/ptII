@@ -383,7 +383,7 @@ public class TypedAtomicActor extends AtomicActor<TypedIOPort> implements
     ///////////////////////////////////////////////////////////////////
     ////                      protected variables                  ////
 
-    /** Whether or not the resolved types are still valid */
+    /** Whether or not the resolved types are still valid. */
     protected boolean _typesValid;
     
     ///////////////////////////////////////////////////////////////////

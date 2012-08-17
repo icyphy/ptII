@@ -314,7 +314,7 @@ public class PublisherPort extends PubSubPort {
     }
 
     /** Notify this object that the containment hierarchy above it will be
-     *  changed, which results in 
+     *  changed, which results in publisher ports being unregistered.
      *  @exception IllegalActionException If unlinking to a published port fails.
      */
     public void hierarchyWillChange() throws IllegalActionException {

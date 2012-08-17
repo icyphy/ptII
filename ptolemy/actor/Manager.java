@@ -1192,6 +1192,7 @@ public class Manager extends NamedObj implements Runnable {
     /** Set the status message, such as the amount of time consumed.
      *  This method is called to update the status bar, so the
      *  output should be short.
+     *  @param message The message to be displayed.
      *  @see #getStatusMessage()
      */
     public void setStatusMessage(String message) {

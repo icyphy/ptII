@@ -141,21 +141,21 @@ public class UnionDisassembler extends TypedAtomicActor {
      *  <ul>
      *  <li><tt>input >= {|x = typeOf(outputPortX), y = typeOf(outputPortY)
      *  , ..|}</tt>, which requires the types of the fields in the input union
-     *  to be compatible with the types of the corresponding output ports.
-     *  </li>
+     *  to be compatible with the types of the corresponding output ports.</li>
+     *
      *  <li><tt>each output >= the type of the corresponding field inside the 
      *  input union</tt>, which is similar to the usual default constraints, 
      *  however this constraint establishes a dependency between fields inside 
      *  the input union and the outputs of this actor, instead of just between
-     *  its inputs and outputs.
-     *  </li>
-     *  </ul></li>
-     *  Note that the constraint <tt>input <= {|x = GENERAL, y = GENERAL, ..|}
+     *  its inputs and outputs.</li>
+     *  </ul>
+     *
+     *  <p>Note that the constraint <tt>input &lt;= {|x = GENERAL, y = GENERAL, ..|}
      *  </tt>, which is used in RecordDisassembler to force the input to 
      *  contain a corresponding field for each output port, is useless for
      *  UnionDisassembler. This is due to the inverse width subtyping of 
-     *  <code>UnionToken</code>.
-
+     *  <code>UnionToken</code>.</p>
+     *
      *  @return A set of Inequality instances
      *  @see ConstructAssociativeType
      *  @see ExtractFieldType

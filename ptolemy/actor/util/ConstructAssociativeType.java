@@ -71,6 +71,9 @@ public class ConstructAssociativeType extends MonotonicFunction {
      *  and field types equal to the current inferred or declared type of the 
      *  corresponding ports.
      *  @return A RecordType.
+     *  @exception IllegalActionException If thrown while getting the
+     *  value of the typeTerm of the port or while instantiating a type.
+     *  
      */
     public Object getValue() throws IllegalActionException {
         Type[] types = new Type[_ports.size()];

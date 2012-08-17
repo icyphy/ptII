@@ -481,7 +481,7 @@ public class DFUtilities {
      *  @param port The given port.
      *  @param rate The given rate.
      *  @exception IllegalActionException If the rate is negative.
-     *  @see #getTokenInitProduction
+     *  @see #getTokenInitConsumption(Port)
      */
     public static void setTokenInitConsumption(IOPort port, int rate)
             throws IllegalActionException {

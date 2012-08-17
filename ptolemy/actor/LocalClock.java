@@ -145,6 +145,7 @@ public class LocalClock extends AbstractSettableAttribute {
      *  The method will not be used for this class so the implementation 
      *  is empty.
      *  @param listener The listener to be added.
+     *  @see #removeValueListener(ValueListener)
      */
     public void addValueListener(ValueListener listener) {
         // nothing to do.
@@ -335,6 +336,7 @@ public class LocalClock extends AbstractSettableAttribute {
     /** The LocalClock is not editable, thus visibility is
      *  always set to NOT_EDITABLE.
      *  @return NOT_EDITABLE.
+     *  @see #setVisibility(Visibility)
      */
     public Visibility getVisibility() {
         return NOT_EDITABLE;
@@ -357,6 +359,7 @@ public class LocalClock extends AbstractSettableAttribute {
      *  The method will not be used for this class so the implementation 
      *  is empty.
      *  @param listener The listener to be removed.
+     *  @see #addValueListener(ValueListener)
      */
     public void removeValueListener(ValueListener listener) {
         // nothing to do.
@@ -426,6 +429,7 @@ public class LocalClock extends AbstractSettableAttribute {
      *  This method does not do anything because visibility is always
      *  NOT_EDITABLE.
      *  @param visibility The new visibility.
+     *  @see #getVisibility()
      */
     public void setVisibility(Visibility visibility) {
         // nothing to do, visibility is always false.
@@ -457,6 +461,7 @@ public class LocalClock extends AbstractSettableAttribute {
      *  The value of the LocalClock does not need validation, thus this method 
      *  does not do anything.
      *  @return Null.
+     *  @exception IllegalActionException Not thrown in this base class.
      */  
     public Collection validate() throws IllegalActionException {
         return null;

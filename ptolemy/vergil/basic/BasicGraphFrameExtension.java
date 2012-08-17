@@ -106,17 +106,16 @@ public class BasicGraphFrameExtension implements Serializable {
         return selection;
     }
 
-    /** 
+    /** Filter the moml to be deleted.
      * @param graphModel The graphical model.
      * @param selection The objects to be deleted.
-     * @param moml The moml to be filtered
+     * @param moml The moml to be filtered.
      */
     public static void filterDeleteMoml(AbstractBasicGraphModel graphModel,
             Object[] selection, StringBuffer moml) {
-        // FIXME: What does this method do?
     }
 
-    /** Return the drop target for a JGraph
+    /** Return the drop target for a JGraph.
      * @param jGraph The Jgraph of interest
      * @return The drop target.
      */

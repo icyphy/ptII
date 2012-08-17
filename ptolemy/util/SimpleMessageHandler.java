@@ -49,7 +49,7 @@ public class SimpleMessageHandler extends MessageHandler {
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
-    /** Throw an InternalErrorException;
+    /** Throw a RunetimException.
      *  @param info The message.
      */
     protected void _error(String info) {

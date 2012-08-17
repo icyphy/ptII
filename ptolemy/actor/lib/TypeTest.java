@@ -54,9 +54,9 @@ import ptolemy.kernel.util.NameDuplicationException;
  actor does nothing.  However, if the types are different, then the
  actor throws an exception.  Hence, as with the Test actor, this actor
  can be easily used to build automatically executed tests of the type
- system from within Vergil.
+ system from within Vergil.</p>
 
- </p><p> The types expected by this actor are stored in two parameters,
+<p> The types expected by this actor are stored in two parameters,
  each parameter contains a record of record of strings.  The outer
  record contains labels corresponding to the names of actors in the
  same level of hierarchy as this actor.  The inner record contains
@@ -65,24 +65,24 @@ import ptolemy.kernel.util.NameDuplicationException;
  representations of the types of the typeable objects.  For the
  <i>portTypes</i> parameter, the typeable objects are assumed to be
  ports, and for the <i>parameterTypes</i> parameter, the objects are
- assumed to be parameters.
+ assumed to be parameters.</p>
 
- </p><p> Note that this actor only tests type resolution at one level of
+ <p> Note that this actor only tests type resolution at one level of
  opaque hierarchy.  Hierarchical models should include multiple
  instances of this actor.  Since filling in the types manually is
  difficult, this actor includes a training mode, similar to the
  NonStrictTest actor.  This mode automatically fills in the type
  parameters.  Also note that it is not necessary to specify the types
  of all typeable objects.  Any objects for which no type is specified
- are not checked.
+ are not checked.</p>
 
- </p><p> During runtime, this actor consumes and ignores any input tokens.
+ <p> During runtime, this actor consumes and ignores any input tokens.
  This makes it very easy to add this actor to an existing model without
  changing the behavior of the model.</p>
  
- </p><p><b>Note:</b> For some reason, the way this actor reaches into
+ <p><b>Note:</b> For some reason, the way this actor reaches into
  other actors is not thread safe. This actor does not work with PN
- or Rendezvous, therefore.
+ or Rendezvous, therefore.</p>
 
  @author Steve Neuendorffer
  @version $Id$

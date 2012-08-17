@@ -412,11 +412,11 @@ public class SDFDirector extends StaticSchedulingDirector implements
      *
      *  <p>Code that uses SDFDirector should call getIterations()
      *  instead of directly referring to the value of the
-     *  <i>iterations</i> parameter.
+     *  <i>iterations</i> parameter.</p>
      *
      *  @return the number of iterations
-     *  @exception If thrown while getting the value of the
-     *  iterations parameter.
+     *  @exception IllegalActionException If thrown while getting the
+     *  value of the iterations parameter.
      */
     public int getIterations() throws IllegalActionException {
         // See "SDF director iterations parameter default of 0 is unfriendly"

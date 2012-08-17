@@ -167,7 +167,8 @@ public abstract class PubSubPort extends TypedIOPort
     }
 
     /** Notify this object that the containment hierarchy above it will be
-     *  changed, which results in 
+     *  changed, which results in this port being removed from the set
+     *  of initializables of the container.
      *  @exception IllegalActionException If unlinking to a published port fails.
      */
     public void hierarchyWillChange() throws IllegalActionException {

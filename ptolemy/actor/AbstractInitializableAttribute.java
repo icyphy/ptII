@@ -109,7 +109,7 @@ public abstract class AbstractInitializableAttribute extends Attribute
     }
 
     /** Notify this object that the containment hierarchy above it will be
-     *  changed, which results in 
+     *  changed.
      *  @exception IllegalActionException If unlinking to a published port fails.
      */
     public void hierarchyWillChange() throws IllegalActionException {

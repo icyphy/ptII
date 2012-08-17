@@ -901,23 +901,23 @@ public class DirectedGraph extends Graph {
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
 
-    // The graph analysis for computation of transitive closure.
+    /** The graph analysis for computation of transitive closure. */
     protected TransitiveClosureAnalysis _transitiveClosureAnalysis;
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
     
-    // Return the list of input edges for a specified node.
+    /** Return the list of input edges for a specified node. */
     private ArrayList _inputEdgeList(Node node) {
         return (ArrayList) _inputEdgeMap.get(node);
     }
 
-    // Return the list of output edges for a specified node.
+    /** Return the list of output edges for a specified node. */
     private ArrayList _outputEdgeList(Node node) {
         return (ArrayList) _outputEdgeMap.get(node);
     }
 
-    // Remove an object from an ArrayList if it exists in the list.
+    /** Remove an object from an ArrayList if it exists in the list. */
     private void _removeIfPresent(ArrayList list, Object element) {
         int index;
 
@@ -928,25 +928,28 @@ public class DirectedGraph extends Graph {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    // A mapping from nodes into their lists of input edges.
-    // Each key in this map is an instance of Node. Each value
-    // is an instance of ArrayList whose elements are instances of Edge.
-    // This redundant information is maintained for improved
-    // run-time efficiency when handing undirected graphs, or when operating
-    // on directed graphs in ways for which edge orientation is not relevant.
+
+    /** A mapping from nodes into their lists of input edges.
+     * Each key in this map is an instance of Node. Each value
+     * is an instance of ArrayList whose elements are instances of Edge.
+     * This redundant information is maintained for improved
+     * run-time efficiency when handing undirected graphs, or when operating
+     * on directed graphs in ways for which edge orientation is not relevant.
+     */
     private HashMap _inputEdgeMap;
 
-    // A mapping from nodes into their lists of output edges.
-    // Each key in this map is an instance of Node. Each value
-    // is an instance of ArrayList whose elements are instances of Edge.
+    /** A mapping from nodes into their lists of output edges.
+     * Each key in this map is an instance of Node. Each value
+     * is an instance of ArrayList whose elements are instances of Edge.
+     */
     private HashMap _outputEdgeMap;
 
-    // The graph analysis for computation of acyclic property
+    /** The graph analysis for computation of acyclic property. */
     private CycleExistenceAnalysis _acyclicAnalysis;
 
-    // The graph analysis for computation of sink nodes.
+    /** The graph analysis for computation of sink nodes. */
     private SinkNodeAnalysis _sinkNodeAnalysis;
 
-    // The graph analysis for computation of source nodes.
+    /** The graph analysis for computation of source nodes. */
     private SourceNodeAnalysis _sourceNodeAnalysis;
 }

@@ -48,7 +48,7 @@ import ptolemy.kernel.util.InternalErrorException;
  to a union with particular fields, create an instance of this
  class and call setTypeEquals() with that instance as an argument.
  <p>
- The depth subtyping is similar to that of <code>RecordTypes. However,
+ The depth subtyping is similar to that of <code>RecordTypes</code>. However,
  the width subtyping for <code>UnionType</code> is opposite compared to 
  <code>RecordType</code> i.e., a <code>UnionType</code> with more fields 
  is a supertype of a <code>UnionType</code> with a subset of the fields.  

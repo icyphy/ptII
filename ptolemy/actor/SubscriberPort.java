@@ -200,7 +200,7 @@ public class SubscriberPort extends PubSubPort {
         super.hierarchyChanged();
     }
     /** Notify this object that the containment hierarchy above it will be
-     *  changed, which results in 
+     *  changed, which results in the channel being unlinked from the publisher.
      *  @exception IllegalActionException If unlinking to a published port fails.
      */
     @Override

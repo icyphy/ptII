@@ -140,7 +140,7 @@ public class ActorDependencies {
     /** Return a Set of AtomicActors that are connected upstream to this AtomicActor.
      *  @param actor the Actor to be searched.
      *  @return A Set of AtomicActors that are connected to this AtomicActor.
-     *  @exception Kernelxception If thrown when a Manager is added to
+     *  @exception KernelException If thrown when a Manager is added to
      *  the top level or if preinitialize() fails.
      */
     public static Set<AtomicActor> prerequisites(Actor actor)
