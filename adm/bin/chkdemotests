@@ -12,7 +12,12 @@ do
         testFile2=`echo $testFile1 | sed 's@\.xml$@Test.xml@'`
 	#echo "2: $testFile2"
 	if [ ! -f "$configDir/$testFile2" ]; then
-	     echo "$demo"
+	    # $PTII/ptolemy/demo/test
+	    testFile3=`echo $demo | sed 's@/demo/[^/]*/@/demo/test/auto/@'`
+	    #echo "3: $testFile3"
+	    if [ ! -f "$configDir/$testFile3" ]; then
+		echo "$demo"
+	    fi	
 	fi
     fi	
 done
