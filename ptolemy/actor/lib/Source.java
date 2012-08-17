@@ -28,9 +28,11 @@
 package ptolemy.actor.lib;
 
 import ptolemy.actor.TypedAtomicActor;
+import ptolemy.actor.TypedCompositeActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.expr.SingletonParameter;
+import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -159,5 +161,22 @@ public abstract class Source extends TypedAtomicActor {
         }
 
         return super.prefire();
+    }
+    
+    /** Override the base class to declare the trigger input type to be
+     *  general if backward type inference is enabled. This will
+     *  result in upstream ports resolving to the most general
+     *  type rather than the most specific. We don't want the trigger
+     *  type to always be general because code generation works
+     *  much better with the most specific types rather than the
+     *  most general.
+     *  @exception IllegalActionException Not thrown in this base class.
+     */
+    public void preinitialize() throws IllegalActionException {
+        TypedCompositeActor container = (TypedCompositeActor)getContainer();
+        if (container.isBackwardTypeInferenceEnabled()) {
+            trigger.setTypeEquals(BaseType.GENERAL);
+        }
+        super.preinitialize();
     }
 }
