@@ -269,12 +269,16 @@ public class MoMLSimpleApplication implements ChangeListener, ExecutionListener 
     public void managerStateChanged(Manager manager) {
     }
 
-    /** Create an instance of a single model and run it.
-     *  @param args The command-line arguments naming the .xml file to run
+    /** Create an instance of each model file named in the arguments
+     *  and run it.   
+     *  @param args The command-line arguments naming the Ptolemy II
+     *  model files (typically .xml files) to be invoked.
      */
     public static void main(String[] args) {
         try {
-            new MoMLSimpleApplication(args[0]);
+            for (int i = 0; i < args.length; i++) {
+                new MoMLSimpleApplication(args[i]);
+            }
         } catch (Throwable ex) {
             System.err.println("Command failed: " + ex);
             ex.printStackTrace();
