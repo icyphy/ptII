@@ -1,0 +1,663 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-US" lang="en-US">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"/>
+<title>UCBPrefPowerForServer</title>
+<link rel="stylesheet" type="text/css" href="http://ptolemy.org/javascript/jquery.fancybox-1.3.4.css" media="screen"/>
+<style media="screen" type="text/css">
+#ui-datepicker-div, .ui-datepicker-div, .ui-datepicker-inline {
+	/*resets*/margin: 0; padding: 0; border: 0; outline: 0; line-height: 0.8; text-decoration: none; font-size: 100%; list-style: none;
+	font-family: Trebuchet MS, Arial, sans-serif;
+	background-color: #3e3d3d;
+	font-size: 1em;
+	border: 1px solid #777777;
+	width: 15.9em;
+	padding: 2.3em .3em .3em .3em;
+	position: relative;
+}
+#ui-datepicker-div,
+.ui-datepicker-div {
+	z-index: 9999; /*must have*/
+	display: none;
+	background: #3e3d3d;
+}
+.ui-datepicker-inline {
+	float: left;
+	display: block;	
+}
+.ui-datepicker-control {
+	display: none;
+}
+.ui-datepicker-current {
+	display: none;
+}
+.ui-datepicker-next, .ui-datepicker-prev {
+	position: absolute;
+	left: .5em;
+	top: .5em;
+	background: #444444 url(images/444444_40x100_textures_02_glass_25.png) 0 50% repeat-x;
+}
+.ui-datepicker-next {
+	left: 14.6em;
+}
+.ui-datepicker-next:hover, .ui-datepicker-prev:hover {
+	background: #333333 url(images/333333_40x100_textures_02_glass_25.png) 0 50% repeat-x;
+}
+.ui-datepicker-next a,
+.ui-datepicker-next label,
+.ui-datepicker-prev label,
+.ui-datepicker-prev a {
+	text-indent: -999999px;
+	width: 1.3em;
+	height: 1.4em;
+	display: block;
+	font-size: 1em;
+	background: url(images/eeeeee_7x7_arrow_left.gif) 50% 50% no-repeat;
+	border: 1px solid #777777;
+	cursor: pointer;
+}
+.ui-datepicker-next label,
+.ui-datepicker-next a {
+	background: url(images/eeeeee_7x7_arrow_right.gif) 50% 50% no-repeat;
+}
+.ui-datepicker-prev a:hover {
+	background: url(images/ffd40f_7x7_arrow_left.gif) 50% 50% no-repeat;
+}
+.ui-datepicker-next a:hover {
+	background: url(images/ffd40f_7x7_arrow_right.gif) 50% 50% no-repeat;
+}
+.ui-datepicker-prev a:active {
+	background: url(images/ffffff_7x7_arrow_left.gif) 50% 50% no-repeat;
+}
+.ui-datepicker-next a:active {
+	background: url(images/ffffff_7x7_arrow_right.gif) 50% 50% no-repeat;
+}
+.ui-datepicker-header select {
+	border: 1px solid #777777;
+	color: #cfcfcf;
+	background: #444444;
+	font-size: 1em;
+	line-height: 1.4em;
+	position: absolute;
+	top: .5em;
+	margin: 0 !important;
+	
+}
+.ui-datepicker-header select.ui-datepicker-new-month {
+width: 7em;
+left: 2.2em;
+}
+.ui-datepicker-header select.ui-datepicker-new-year {
+width: 5em;
+left: 9.4em;
+}
+table.ui-datepicker {
+	width: 15.5em;
+	text-align: right;
+}
+table.ui-datepicker td.ui-datepicker-unselectable
+{
+	padding: .1em .3em .1em 0;
+	border: 1px solid transparent;
+}
+table.ui-datepicker td a {
+	padding: .1em .3em .1em 0;
+	display: block;
+	color: #cfcfcf;
+	background: #444444 url(images/444444_40x100_textures_02_glass_25.png) 0 50% repeat-x;
+	cursor: pointer;
+	border: 1px solid #3e3d3d;
+}
+table.ui-datepicker td a:hover {
+	border: 1px solid #444444;
+	color: #ffffff;
+	background: #333333 url(images/333333_40x100_textures_02_glass_25.png) 0 50% repeat-x;
+}
+table.ui-datepicker td a:active {
+	border: 1px solid #841515;
+	color: #ffffff;
+	background: #841515 url(images/841515_40x100_textures_02_glass_35.png) 0 50% repeat-x;
+}
+table.ui-datepicker .ui-datepicker-title-row td {
+	padding: .3em 0;
+	text-align: center;
+	font-size: .9em;
+	color: #cfcfcf;
+	text-transform: uppercase;
+	/*border-bottom: 1px solid #777777;*/
+}
+
+table.ui-datepicker .ui-datepicker-title-row td a {
+	color: #cfcfcf;
+}
+
+table.ui-datepicker td.ui-datepicker-current-day a,
+table.ui-datepicker td.selected a
+{
+	color: black;
+	background: #999999 url(images/999999_40x100_textures_02_glass_25.png) 0 50% repeat-x;
+}
+
+table.ui-datepicker td.ui-datepicker-today a
+{
+	color: black;
+	background: #a21111 url(images/a21111_40x100_textures_02_glass_35.png) 0 50% repeat-x;
+}
+
+/*
+Generic ThemeRoller Classes
+>> Make your jQuery Components ThemeRoller-Compatible!
+*/
+
+/*component global class*/
+.ui-component {
+	/*resets*/margin: 0; padding: 0; border: 0; outline: 0; line-height: 1.3; text-decoration: none; font-size: 100%; list-style: none;
+	font-family: Trebuchet MS, Arial, sans-serif;
+	font-size: 1.1em;
+}
+/*component content styles*/
+.ui-component-content {
+	border: 1px solid #777777;
+	background: #3e3d3d;
+	color: #cfcfcf;
+}
+.ui-component-content a {
+	color: #cfcfcf;
+	text-decoration: underline;
+}
+/*component states*/
+.ui-default-state {
+	border: 1px solid #777777;
+	background: #444444 url(images/444444_40x100_textures_02_glass_25.png) 0 50% repeat-x;
+	font-weight: bold;
+	color: #cfcfcf !important;
+}
+.ui-default-state a {
+	color: #cfcfcf;
+}
+.ui-default-state:hover, .ui-hover-state {
+	border: 1px solid #444444;
+	background: #333333 url(images/333333_40x100_textures_02_glass_25.png) 0 50% repeat-x;
+	font-weight: bold;
+	color: #ffffff !important;
+}
+.ui-hover-state a {
+	color: #ffffff;
+}
+.ui-default-state:active, .ui-active-state {
+	border: 1px solid #841515;
+	background: #841515 url(images/841515_40x100_textures_02_glass_35.png) 0 50% repeat-x;
+	font-weight: bold;
+	color: #ffffff !important;
+	outline: none;
+}
+.ui-active-state a {
+	color: #ffffff;
+	outline: none;
+}
+/*icons*/
+.ui-arrow-right-default {background: url(images/eeeeee_7x7_arrow_right.gif) no-repeat 50% 50%;}
+.ui-arrow-right-default:hover, .ui-arrow-right-hover {background: url(images/ffd40f_7x7_arrow_right.gif) no-repeat 50% 50%;}
+.ui-arrow-right-default:active, .ui-arrow-right-active {background: url(images/ffffff_7x7_arrow_right.gif) no-repeat 50% 50%;}
+.ui-arrow-left-default {background: url(images/eeeeee_7x7_arrow_left.gif) no-repeat 50% 50%;}
+.ui-arrow-left-default:hover, .ui-arrow-left-hover {background: url(images/ffd40f_7x7_arrow_left.gif) no-repeat 50% 50%;}
+.ui-arrow-left-default:active, .ui-arrow-left-active {background: url(images/ffffff_7x7_arrow_left.gif) no-repeat 50% 50%;}
+.ui-arrow-down-default {background: url(images/eeeeee_7x7_arrow_down.gif) no-repeat 50% 50%;}
+.ui-arrow-down-default:hover, .ui-arrow-down-hover {background: url(images/ffd40f_7x7_arrow_down.gif) no-repeat 50% 50%;}
+.ui-arrow-down-default:active, .ui-arrow-down-active {background: url(images/ffffff_7x7_arrow_down.gif) no-repeat 50% 50%;}
+.ui-arrow-up-default {background: url(images/eeeeee_7x7_arrow_up.gif) no-repeat 50% 50%;}
+.ui-arrow-up-default:hover, .ui-arrow-up-hover {background: url(images/ffd40f_7x7_arrow_up.gif) no-repeat 50% 50%;}
+.ui-arrow-up-default:active, .ui-arrow-up-active {background: url(images/ffffff_7x7_arrow_up.gif) no-repeat 50% 50%;}
+.ui-close-default {background: url(images/eeeeee_11x11_icon_close.gif) no-repeat 50% 50%;}
+.ui-close-default:hover, .ui-close-hover {background: url(images/ffd40f_11x11_icon_close.gif) no-repeat 50% 50%;}
+.ui-close-default:active, .ui-close-active {background: url(images/ffffff_11x11_icon_close.gif) no-repeat 50% 50%;}
+.ui-folder-closed-default {background: url(images/eeeeee_11x11_icon_folder_closed.gif) no-repeat 50% 50%;}
+.ui-folder-closed-default:hover, .ui-folder-closed-hover {background: url(images/ffd40f_11x11_icon_folder_closed.gif) no-repeat 50% 50%;}
+.ui-folder-closed-default:active, .ui-folder-closed-active {background: url(images/ffffff_11x11_icon_folder_closed.gif) no-repeat 50% 50%;}
+.ui-folder-open-default {background: url(images/eeeeee_11x11_icon_folder_open.gif) no-repeat 50% 50%;}
+.ui-folder-open-default:hover, .ui-folder-open-hover {background: url(images/ffd40f_11x11_icon_folder_open.gif) no-repeat 50% 50%;}
+.ui-folder-open-default:active, .ui-folder-open-active {background: url(images/ffffff_11x11_icon_folder_open.gif) no-repeat 50% 50%;}
+.ui-doc-default {background: url(images/eeeeee_11x11_icon_doc.gif) no-repeat 50% 50%;}
+.ui-doc-default:hover, .ui-doc-hover {background: url(images/ffd40f_11x11_icon_doc.gif) no-repeat 50% 50%;}
+.ui-doc-default:active, .ui-doc-active {background: url(images/ffffff_11x11_icon_doc.gif) no-repeat 50% 50%;}
+.ui-arrows-leftright-default {background: url(images/eeeeee_11x11_icon_arrows_leftright.gif) no-repeat 50% 50%;}
+.ui-arrows-leftright-default:hover, .ui-arrows-leftright-hover {background: url(images/ffd40f_11x11_icon_arrows_leftright.gif) no-repeat 50% 50%;}
+.ui-arrows-leftright-default:active, .ui-arrows-leftright-active {background: url(images/ffffff_11x11_icon_arrows_leftright.gif) no-repeat 50% 50%;}
+.ui-arrows-updown-default {background: url(images/eeeeee_11x11_icon_arrows_updown.gif) no-repeat 50% 50%;}
+.ui-arrows-updown-default:hover, .ui-arrows-updown-hover {background: url(images/ffd40f_11x11_icon_arrows_updown.gif) no-repeat 50% 50%;}
+.ui-arrows-updown-default:active, .ui-arrows-updown-active {background: url(images/ffffff_11x11_icon_arrows_updown.gif) no-repeat 50% 50%;}
+.ui-minus-default {background: url(images/eeeeee_11x11_icon_minus.gif) no-repeat 50% 50%;}
+.ui-minus-default:hover, .ui-minus-hover {background: url(images/ffd40f_11x11_icon_minus.gif) no-repeat 50% 50%;}
+.ui-minus-default:active, .ui-minus-active {background: url(images/ffffff_11x11_icon_minus.gif) no-repeat 50% 50%;}
+.ui-plus-default {background: url(images/eeeeee_11x11_icon_plus.gif) no-repeat 50% 50%;}
+.ui-plus-default:hover, .ui-plus-hover {background: url(images/ffd40f_11x11_icon_plus.gif) no-repeat 50% 50%;}
+.ui-plus-default:active, .ui-plus-active {background: url(images/ffffff_11x11_icon_plus.gif) no-repeat 50% 50%;}
+/*hidden elements*/
+.ui-hidden {
+	display: none;/* for accessible hiding: position: absolute; left: -99999999px*/
+}
+.ui-accessible-hidden {
+	 position: absolute; left: -99999999px;
+}
+/*reset styles*/
+.ui-reset {
+	/*resets*/margin: 0; padding: 0; border: 0; outline: 0; line-height: 1.3; text-decoration: none; font-size: 100%; list-style: none;
+}
+/*clearfix class*/
+.ui-clearfix:after {
+    content: "."; 
+    display: block; 
+    height: 0; 
+    clear: both; 
+    visibility: hidden;
+}
+.ui-clearfix {display: inline-block;}
+/* Hides from IE-mac \*/
+* html .ui-clearfix {height: 1%;}
+.ui-clearfix {display: block;}
+/* End hide from IE-mac */
+
+/* Note: for resizable styles, use the styles listed above in the dialog section */
+
+.vehicleDetail > td:first-child
+{
+	border-left: solid 1px black;
+	border-bottom: solid 1px black;
+}
+
+.vehicleDetail > td:last-child 
+{
+	border-right: solid 1px black;
+	border-bottom: solid 1px black;
+}
+
+.vehicleDetail > td:last-child > table > tbody > tr > td:last-child
+{
+	color: White;
+}
+
+.showWhenSelected
+{	
+	visibility: hidden;
+}
+</style>
+<script type="text/javascript" src="http://ptolemy.org/javascript/jquery-1.4.3.min.js"></script>
+<script type="text/javascript" src="http://ptolemy.org/javascript/jquery.fancybox-1.3.4.pack.js"></script>
+<script type="text/javascript" src="http://ptolemy.org/javascript/pt-1.0.0.js"></script>
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.2.6/jquery.min.js"></script>  	
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.5.3/jquery-ui.min.js"></script> 	
+
+<script type="text/javascript">
+function writeText(text) {
+    document.getElementById("afterImage").innerHTML = text;
+};
+jQuery(document).ready((function() {
+   jQuery("#readTime").hide("fast");
+   jQuery("input[@name=useOnlineData]").click(function(){
+          var option = jQuery("input[@name=useOnlineData]:checked").val();
+          if (option.trim() =="true")
+                jQuery("#readTime").show();	
+         else jQuery("#readTime").hide("fast");
+   });
+   
+   jQuery("#dateStartPicker").datepicker();
+   jQuery("#dateEndPicker").datepicker();
+   jQuery("#submitBtn").click(function()
+   {
+	var startDate =new Date(jQuery("#dateStartPicker").val());
+	var endDate =new Date(jQuery("#dateEndPicker").val());
+	var timeStartMsec, timeEndMsec;
+	
+	//transform the start time in milliseconds
+	var hours = jQuery("#hourMenuStart").val(jQuery(this).find(":selected").val());
+	timeStartMsec =hours*60*60*1000;
+
+	var minutes = jQuery("#minuteMenuStart").val(jQuery(this).find(":selected").val());
+        timeStartMsec =timeStartMsec + minutes*60*1000;
+
+	var seconds =jQuery("#secondMenuStart").val(jQuery(this).find(":selected").val());
+	timeStartMsec =timeStartMsec+seconds*1000;
+
+	//alert (" time in msec: "+timeStartMsec);
+
+	//transform the end time in milliseconds
+	hours = jQuery("#hourMenuEnd").val(jQuery(this).find(":selected").val());
+	timeEndMsec =hours*60*60*1000;
+
+	minutes = jQuery("#minuteMenuEnd").val(jQuery(this).find(":selected").val());
+        timeEndMsec =timeEndMsec + minutes*60*1000;
+
+	seconds =jQuery("#secondMenuEnd").val(jQuery(this).find(":selected").val());
+	timeEndMsec =timeEndMsec+seconds*1000;
+
+
+	//alert (" time in msec: "+timeEndMsec);
+
+	var startMSec=startDate.getTime()+timeStartMsec;
+	var endMSec=endDate.getTime()+timeEndMsec;
+
+	jQuery("#startMSec").val(startMSec);
+	jQuery("#endMSec").val(endMSec);
+   });
+}));
+
+
+</script>
+
+</head><body>
+<h1>
+UCBPrefPowerForServer
+</h1>
+<form action="UCBPower" method="post">
+<div id="onlineOffline">
+<input type="radio" name="useOnlineData" checked="checked" value=false id="rbutton"/> Offline
+<input type="radio" name="useOnlineData" value=true id="rbutton" /> Online<br />
+</div>
+<div class="readTime" id="readTime"> <p>Please select a: <br /></p>
+<table width="400">
+<tr>
+ <td wisth="100"> start date: </td>
+ <td> <input type="text" id="dateStartPicker" /> </td> 
+ <td> start time: </td>
+ <td><select name="hourMenuStart" id="hourMenuStart">
+	<option value=0>00</option>
+	<option value=1>01</option>
+	<option value=2>02</option>
+	<option value=3>03</option>
+	<option value=4>04</option>
+	<option value=5>05</option>
+	<option value=6>06</option>
+	<option value=7>07</option>
+	<option value=8>08</option>
+	<option value=9>09</option>
+	<option value=10>10</option>
+	<option value=11>11</option>
+	<option value=12>12</option>
+</select></td>
+
+<td>
+<select name="minuteMenuStart" id="minuteMenuStart">
+<option value=0>00</option>
+<option value=1>01</option>
+<option value=2>02</option>
+<option value=3>03</option>
+<option value=4>04</option>
+<option value=5>05</option>
+<option value=6>06</option>
+<option value=7>07</option>
+<option value=8>08</option>
+<option value=9>09</option>
+<option value=10>10</option>
+<option value=11>11</option>
+<option value=12>12</option>
+<option value=13>13</option>
+<option value=14>14</option>
+<option value=15>15</option>
+<option value=16>16</option>
+<option value=17>17</option>
+<option value=18>18</option>
+<option value=19>19</option>
+<option value=20>20</option>
+<option value=21>21</option>
+<option value=22>22</option>
+<option value=23>23</option>
+<option value=24>24</option>
+<option value=25>25</option>
+<option value=26>26</option>
+<option value=27>27</option>
+<option value=28>28</option>
+<option value=29>29</option>
+<option value=30>30</option>
+<option value=31>31</option>
+<option value=32>32</option>
+<option value=33>33</option>
+<option value=34>34</option>
+<option value=35>35</option>
+<option value=36>36</option>
+<option value=37>37</option>
+<option value=38>38</option>
+<option value=39>39</option>
+<option value=40>40</option>
+<option value=41>41</option>
+<option value=42>42</option>
+<option value=43>43</option>
+<option value=44>44</option>
+<option value=45>45</option>
+<option value=46>46</option>
+<option value=47>47</option>
+<option value=48>48</option>
+<option value=49>49</option>
+<option value=50>50</option>
+<option value=51>51</option>
+<option value=52>52</option>
+<option value=53>53</option>
+<option value=54>54</option>
+<option value=55>55</option>
+<option value=56>56</option>
+<option value=57>57</option>
+<option value=58>58</option>
+<option value=59>59</option>
+</select></td>
+
+<td>
+<select name="secondMenuStart" id="secondMenuStart">
+<option value=0>00</option>
+<option value=1>01</option>
+<option value=2>02</option>
+<option value=3>03</option>
+<option value=4>04</option>
+<option value=5>05</option>
+<option value=6>06</option>
+<option value=7>07</option>
+<option value=8>08</option>
+<option value=9>09</option>
+<option value=10>10</option>
+<option value=11>11</option>
+<option value=12>12</option>
+<option value=13>13</option>
+<option value=14>14</option>
+<option value=15>15</option>
+<option value=16>16</option>
+<option value=17>17</option>
+<option value=18>18</option>
+<option value=19>19</option>
+<option value=20>20</option>
+<option value=21>21</option>
+<option value=22>22</option>
+<option value=23>23</option>
+<option value=24>24</option>
+<option value=25>25</option>
+<option value=26>26</option>
+<option value=27>27</option>
+<option value=28>28</option>
+<option value=29>29</option>
+<option value=30>30</option>
+<option value=31>31</option>
+<option value=32>32</option>
+<option value=33>33</option>
+<option value=34>34</option>
+<option value=35>35</option>
+<option value=36>36</option>
+<option value=37>37</option>
+<option value=38>38</option>
+<option value=39>39</option>
+<option value=40>40</option>
+<option value=41>41</option>
+<option value=42>42</option>
+<option value=43>43</option>
+<option value=44>44</option>
+<option value=45>45</option>
+<option value=46>46</option>
+<option value=47>47</option>
+<option value=48>48</option>
+<option value=49>49</option>
+<option value=50>50</option>
+<option value=51>51</option>
+<option value=52>52</option>
+<option value=53>53</option>
+<option value=54>54</option>
+<option value=55>55</option>
+<option value=56>56</option>
+<option value=57>57</option>
+<option value=58>58</option>
+<option value=59>59</option>
+</select></td>
+<td>
+(millisec:)</td><td> <input type="text" name="dateStart"  id="startMSec">
+</td>
+</tr>
+<tr>
+<td> end date: </td>
+<td> <input type="text" id="dateEndPicker"> </td> <td> end time: </td>
+<td><select name="hourMenuEnd" id="hourMenuEnd">
+<option value=0>00</option>
+<option value=1>01</option>
+<option value=2>02</option>
+<option value=3>03</option>
+<option value=4>04</option>
+<option value=5>05</option>
+<option value=6>06</option>
+<option value=7>07</option>
+<option value=8>08</option>
+<option value=9>09</option>
+<option value=10>10</option>
+<option value=11>11</option>
+<option value=12>12</option>
+</select>
+</td>
+<td>
+<select name="minuteMenuEnd" id="minuteMenuEnd">
+<option value=0>00</option>
+<option value=1>01</option>
+<option value=2>02</option>
+<option value=3>03</option>
+<option value=4>04</option>
+<option value=5>05</option>
+<option value=6>06</option>
+<option value=7>07</option>
+<option value=8>08</option>
+<option value=9>09</option>
+<option value=10>10</option>
+<option value=11>11</option>
+<option value=12>12</option>
+<option value=13>13</option>
+<option value=14>14</option>
+<option value=15>15</option>
+<option value=16>16</option>
+<option value=17>17</option>
+<option value=18>18</option>
+<option value=19>19</option>
+<option value=20>20</option>
+<option value=21>21</option>
+<option value=22>22</option>
+<option value=23>23</option>
+<option value=24>24</option>
+<option value=25>25</option>
+<option value=26>26</option>
+<option value=27>27</option>
+<option value=28>28</option>
+<option value=29>29</option>
+<option value=30>30</option>
+<option value=31>31</option>
+<option value=32>32</option>
+<option value=33>33</option>
+<option value=34>34</option>
+<option value=35>35</option>
+<option value=36>36</option>
+<option value=37>37</option>
+<option value=38>38</option>
+<option value=39>39</option>
+<option value=40>40</option>
+<option value=41>41</option>
+<option value=42>42</option>
+<option value=43>43</option>
+<option value=44>44</option>
+<option value=45>45</option>
+<option value=46>46</option>
+<option value=47>47</option>
+<option value=48>48</option>
+<option value=49>49</option>
+<option value=50>50</option>
+<option value=51>51</option>
+<option value=52>52</option>
+<option value=53>53</option>
+<option value=54>54</option>
+<option value=55>55</option>
+<option value=56>56</option>
+<option value=57>57</option>
+<option value=58>58</option>
+<option value=59>59</option>
+</select></td>
+
+<td>
+<select name="secondMenuEnd" id="secondMenuEnd">
+<option value=0>00</option>
+<option value=1>01</option>
+<option value=2>02</option>
+<option value=3>03</option>
+<option value=4>04</option>
+<option value=5>05</option>
+<option value=6>06</option>
+<option value=7>07</option>
+<option value=8>08</option>
+<option value=9>09</option>
+<option value=10>10</option>
+<option value=11>11</option>
+<option value=12>12</option>
+<option value=13>13</option>
+<option value=14>14</option>
+<option value=15>15</option>
+<option value=16>16</option>
+<option value=17>17</option>
+<option value=18>18</option>
+<option value=19>19</option>
+<option value=20>20</option>
+<option value=21>21</option>
+<option value=22>22</option>
+<option value=23>23</option>
+<option value=24>24</option>
+<option value=25>25</option>
+<option value=26>26</option>
+<option value=27>27</option>
+<option value=28>28</option>
+<option value=29>29</option>
+<option value=30>30</option>
+<option value=31>31</option>
+<option value=32>32</option>
+<option value=33>33</option>
+<option value=34>34</option>
+<option value=35>35</option>
+<option value=36>36</option>
+<option value=37>37</option>
+<option value=38>38</option>
+<option value=39>39</option>
+<option value=40>40</option>
+<option value=41>41</option>
+<option value=42>42</option>
+<option value=43>43</option>
+<option value=44>44</option>
+<option value=45>45</option>
+<option value=46>46</option>
+<option value=47>47</option>
+<option value=48>48</option>
+<option value=49>49</option>
+<option value=50>50</option>
+<option value=51>51</option>
+<option value=52>52</option>
+<option value=53>53</option>
+<option value=54>54</option>
+<option value=55>55</option>
+<option value=56>56</option>
+<option value=57>57</option>
+<option value=58>58</option>
+<option value=59>59</option>
+</select> </td>
+<td>
+(millisec:) </td> <td> <input type="text" name="dateEnd" id="endMSec" /> </td>
+</tr>
+</table>
+<button type="submit" id="submitBtn">Submit</button> 
+
+</div></form>
+</body>
+</html>

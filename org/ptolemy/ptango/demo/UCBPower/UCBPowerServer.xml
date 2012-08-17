@@ -4,13 +4,13 @@
 <entity name="UCBPowerServer" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.0.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={224, 100, 1235, 848}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={5, 87, 1022, 939}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1001, 738]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[788, 829]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.9345716248096">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.4238532110092">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{542.5394778885493, 398.9583013803681}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{303.71391752577375, 300.1114690721643}">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model launches a web server and provides a service&#10;available at http://localhost:8080/UCBPower.&#10;Run the model and navigate to that location&#10;(or double click on this comment).">
@@ -34,7 +34,7 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="{440, 335}">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.RelativeLocation" value="[205.0, 10.0]">
+        <property name="_location" class="ptolemy.kernel.util.RelativeLocation" value="{140.0, 10.0}">
         </property>
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
@@ -42,17 +42,27 @@
         </property>
         <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[80.0, 40.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{80.0, 40.0}">
         </property>
     </property>
     <property name="WebServer" class="org.ptolemy.ptango.lib.WebServer">
         <property name="resourcePath" class="ptolemy.data.expr.StringParameter" value="/">
         </property>
-        <property name="resourceLocation" class="ptolemy.data.expr.FileParameter" value="$PTII/org/ptolemy/ptango/demo/UCBPower">
+        <property name="resourceLocation" class="ptolemy.data.expr.FileParameter" value="$PTII/org/ptolemy/ptango/demo/UCBPrefPower">
         </property>
         <property name="temporaryFileLocation" class="ptolemy.data.expr.FileParameter" value="$TMPDIR">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{675.0, 55.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[500.0, 110.0]">
+        </property>
+    </property>
+    <property name="enableBackwardTypeInference" class="ptolemy.data.expr.Parameter" value="true">
+    </property>
+    <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.4,0.4,0.4,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Authors: Roxana Gheorghiu, Elizabeth Latronico, and Edward A. Lee">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[35.0, 565.0]">
         </property>
     </property>
     <entity name="HttpActor" class="org.ptolemy.ptango.lib.HttpActor">
@@ -60,24 +70,61 @@
         </property>
         <property name="timeout" class="ptolemy.data.expr.Parameter" value="60000L">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[60.0, 195.0]">
+        <property name="pathCookies" class="ptolemy.data.expr.Parameter" value="false">
         </property>
+        <property name="cookies" class="ptolemy.data.expr.Parameter" value="{firstname=&quot;roxana&quot;,lastname=&quot;gheorghiu&quot;}">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{125.0, 265.0}">
+        </property>
+        <port name="response" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="general">
+            </property>
+        </port>
         <port name="getParameters" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="general">
             </property>
         </port>
-        <port name="postParameters" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-            <property name="_type" class="ptolemy.actor.TypeAttribute" value="{text=string}">
-            </property>
-        </port>
     </entity>
     <entity name="MicrostepDelay" class="ptolemy.actor.lib.MicrostepDelay">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[60.0, 115.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[110.0, 120.0]">
         </property>
         <property name="_flipPortsHorizontal" class="ptolemy.data.expr.Parameter" value="true">
         </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="general">
+            </property>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="general">
+            </property>
+        </port>
+    </entity>
+    <entity name="RecordDisassembler" class="ptolemy.actor.lib.RecordDisassembler">
+        <display name="RecordDisassembler&#10;."/>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[210.0, 420.0]">
+        </property>
+        <port name="dateStart" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+        </port>
+        <port name="dateEnd" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+        </port>
+        <port name="useOnlineData" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+        </port>
     </entity>
     <entity name="HTMLModelExporter" class="org.ptolemy.ptango.lib.HTMLModelExporter">
         <property name="modelFileOrURL" class="ptolemy.actor.parameters.FilePortParameter" value="UCBPowerForServer.xml">
@@ -90,7 +137,13 @@
         </property>
         <property name="runBeforeExport" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[240.0, 165.0]">
+        <property name="copyJavaScriptFiles" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{475.0, 370.0}">
+        </property>
+        <property name="dateStart" class="ptolemy.data.expr.Parameter" value="">
+        </property>
+        <property name="dateEnd" class="ptolemy.data.expr.Parameter" value="">
         </property>
         <port name="modelFileOrURL" class="ptolemy.actor.parameters.ParameterPort">
             <property name="input"/>
@@ -101,31 +154,97 @@
             <property name="input"/>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="general">
+            </property>
+        </port>
+        <port name="dateStart" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="string">
+            </property>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+            <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="SOUTH">
+            </property>
+        </port>
+        <port name="dateEnd" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="string">
+            </property>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+            <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="SOUTH">
+            </property>
+        </port>
+        <port name="useOnlineData" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="boolean">
+            </property>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+            <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="SOUTH">
+            </property>
         </port>
     </entity>
-    <entity name="Display" class="ptolemy.actor.lib.gui.Display">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={657, 489, 499, 223}, maximized=false}">
+    <entity name="MicrostepDelay2" class="ptolemy.actor.lib.MicrostepDelay">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 540.0]">
         </property>
-        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
+        <property name="_flipPortsHorizontal" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[365.0, 115.0]">
+    </entity>
+    <entity name="ExpressionToToken" class="ptolemy.actor.lib.conversions.ExpressionToToken">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{325, 485}">
+        </property>
+    </entity>
+    <entity name="FileReader" class="ptolemy.actor.lib.io.FileReader">
+        <property name="fileOrURL" class="ptolemy.data.expr.FileParameter" value="pages/index.html">
+        </property>
+        <doc>Read an entire file and output as a string</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[345.0, 265.0]">
         </property>
     </entity>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <relation name="relation" class="ptolemy.actor.TypedIORelation">
-    </relation>
-    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+    <relation name="relation11" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
-        <vertex name="vertex1" value="[295.0, 115.0]">
+        <vertex name="vertex1" value="[175.0, 380.0]">
         </vertex>
     </relation>
+    <relation name="relation16" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation7" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation8" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation9" class="ptolemy.actor.TypedIORelation">
+    </relation>
     <link port="HttpActor.response" relation="relation4"/>
-    <link port="HttpActor.getRequestURI" relation="relation"/>
-    <link port="MicrostepDelay.input" relation="relation3"/>
+    <link port="HttpActor.response" relation="relation16"/>
+    <link port="HttpActor.getRequestURI" relation="relation3"/>
+    <link port="HttpActor.postParameters" relation="relation11"/>
+    <link port="MicrostepDelay.input" relation="relation8"/>
     <link port="MicrostepDelay.output" relation="relation4"/>
-    <link port="HTMLModelExporter.webPage" relation="relation3"/>
-    <link port="HTMLModelExporter.trigger" relation="relation"/>
-    <link port="Display.input" relation="relation3"/>
+    <link port="RecordDisassembler.input" relation="relation11"/>
+    <link port="RecordDisassembler.dateStart" relation="relation2"/>
+    <link port="RecordDisassembler.dateEnd" relation="relation5"/>
+    <link port="RecordDisassembler.useOnlineData" relation="relation9"/>
+    <link port="HTMLModelExporter.webPage" relation="relation"/>
+    <link port="HTMLModelExporter.trigger" relation="relation11"/>
+    <link port="HTMLModelExporter.dateStart" relation="relation2"/>
+    <link port="HTMLModelExporter.dateEnd" relation="relation5"/>
+    <link port="HTMLModelExporter.useOnlineData" relation="relation7"/>
+    <link port="MicrostepDelay2.input" relation="relation"/>
+    <link port="MicrostepDelay2.output" relation="relation16"/>
+    <link port="ExpressionToToken.input" relation="relation9"/>
+    <link port="ExpressionToToken.output" relation="relation7"/>
+    <link port="FileReader.output" relation="relation8"/>
+    <link port="FileReader.trigger" relation="relation3"/>
 </entity>
