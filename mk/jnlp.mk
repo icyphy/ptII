@@ -634,6 +634,7 @@ ALL_NON_APPLICATION_JNLP_JARS = \
 	$(VISUAL_SENSE_ONLY_JNLP_JARS) \
 	$(PTINY_ONLY_JNLP_JARS) \
 	$(DSP_ONLY_JNLP_JARS) \
+	$(APPLET_DOMAIN_JARS) \
 	ptolemy/plot/plotapplication.jar
 
 # All the jar files, include the application jars
