@@ -492,6 +492,10 @@ public class TableauFrame extends Top {
             // Check to see if we have an effigy factory, and whether it
             // is capable of creating blank effigies.
             final Configuration configuration = getConfiguration();
+            if (configuration == null) {
+                System.out.println("TableauFrame._addMenus: configuration == null?");
+                return;
+            }
             EffigyFactory effigyFactory = (EffigyFactory) configuration
                     .getEntity("effigyFactory");
             boolean canCreateBlank = false;

@@ -157,7 +157,18 @@ public class WindowPropertiesAttribute extends Parameter implements
             boolean maximized = (frame.getExtendedState() & Frame.MAXIMIZED_BOTH) == Frame.MAXIMIZED_BOTH;
 
             // Get the current values.
-            RecordToken value = (RecordToken) getToken();
+            RecordToken value = null;
+            try {
+                value = (RecordToken) getToken();
+            } catch (IllegalActionException ex) {
+                throw new IllegalActionException(this, ex,
+                        "Attempting to get the value of the WindowPropertiesAttribute "
+                        + "failed.  This can happen when a model with graphical actors "
+                        + "is run using MoMLSimpleApplication "
+                        + "because MoMLSimpleApplication does not run the model in "
+                        + "the Swing event thread.  One possibility is that the model "
+                        + "needs to be run in Vergil and saved.");
+            }
             boolean updateValue = false;
             if (value == null) {
                 updateValue = true;
@@ -204,7 +215,7 @@ public class WindowPropertiesAttribute extends Parameter implements
                 propagateValue();
             }
         } catch (IllegalActionException ex) {
-            throw new InternalErrorException("Can't set propertes value! " + ex);
+            throw new InternalErrorException(this, ex, "Can't set propertes value!");
         }
     }
 
