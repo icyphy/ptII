@@ -43,7 +43,6 @@ import ptolemy.actor.IOPort;
 import ptolemy.actor.PubSubPort;
 import ptolemy.actor.PublisherPort;
 import ptolemy.actor.SubscriberPort;
-import ptolemy.actor.gui.ColorAttribute;
 import ptolemy.actor.parameters.ParameterPort;
 import ptolemy.data.type.Typeable;
 import ptolemy.kernel.InstantiableNamedObj;
