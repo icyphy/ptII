@@ -322,8 +322,13 @@ public class TypedIOPort extends IOPort implements Typeable {
         if (type.equals(token.getType())) {
             return token;
         } else {
-            Token newToken = type.convert(token);
-            return newToken;
+            try {
+                Token newToken = type.convert(token);
+                return newToken;
+            } catch (IllegalActionException ex) {
+                // Catch the exception to show the port in which it occurred.
+                throw new IllegalActionException(this, ex, "Type conversion failed.");
+            }
         }
     }
 
