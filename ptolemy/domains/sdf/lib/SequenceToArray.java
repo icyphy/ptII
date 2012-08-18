@@ -29,6 +29,7 @@ package ptolemy.domains.sdf.lib;
 
 import ptolemy.actor.parameters.PortParameter;
 import ptolemy.actor.util.ActorTypeUtil;
+import ptolemy.actor.util.ArrayElementTypeFunction;
 import ptolemy.data.ArrayToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.Token;
@@ -90,6 +91,8 @@ public class SequenceToArray extends SDFTransformer {
         // Set the output type to be an ArrayType with element types
         // at least as general as the input type.
         output.setTypeAtLeast(ActorTypeUtil.arrayOf(input, arrayLength));
+        // For backward type inference.
+        input.setTypeAtLeast(new ArrayElementTypeFunction(output));
 
         // Set the icon.
         _attachText("_iconDescription", "<svg>\n"

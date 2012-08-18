@@ -61,6 +61,8 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 JSRCS = \
 	ActorDependencies.java \
 	ActorTypeUtil.java \
+	ArrayElementTypeFunction.java \
+	ArrayOfTypesFunction.java \
 	BooleanDependency.java \
 	BreakCausalityInterface.java \
 	CalendarQueue.java \

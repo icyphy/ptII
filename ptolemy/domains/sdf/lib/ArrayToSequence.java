@@ -29,6 +29,7 @@ package ptolemy.domains.sdf.lib;
 
 import java.util.Set;
 
+import ptolemy.actor.util.ArrayOfTypesFunction;
 import ptolemy.data.ArrayToken;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.IntToken;
@@ -84,6 +85,8 @@ public class ArrayToSequence extends SDFTransformer {
 
         // Set type constraints.
         output.setTypeAtLeast(ArrayType.elementType(input));
+        // For backward type inference.
+        input.setTypeAtLeast(new ArrayOfTypesFunction(output));
 
         // Set parameters.
         arrayLength = new Parameter(this, "arrayLength");
