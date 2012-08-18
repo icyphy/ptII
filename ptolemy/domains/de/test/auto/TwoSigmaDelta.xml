@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="TwoSigmaDelta" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.0.devel">
     </property>
     <property name="DEDirector" class="ptolemy.domains.de.kernel.DEDirector">
         <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
@@ -56,56 +56,32 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="{25.0, 60.0}">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 22, 1034, 773}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 22, 1055, 773}, maximized=false}">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{410.5, 331.5}">
     </property>
-    <entity name="CTSubsystem" class="ptolemy.actor.TypedCompositeActor">
+    <entity name="ContinuousSubsystem" class="ptolemy.actor.TypedCompositeActor">
         <property name="samplePeriod" class="ptolemy.data.expr.Parameter" value="samplePeriod">
         </property>
         <property name="feedbackGain" class="ptolemy.data.expr.Parameter" value="feedbackGain">
         </property>
-        <property name="ContinuousDirector" class="ptolemy.domains.continuous.kernel.ContinuousDirector">
-            <property name="timeResolution" class="ptolemy.actor.parameters.SharedParameter" value="1.0E-10">
-            </property>
-            <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
-            </property>
-            <property name="stopTime" class="ptolemy.data.expr.Parameter" value="1.797693135E308">
-            </property>
-            <property name="initStepSize" class="ptolemy.data.expr.Parameter" value="1.0E-4">
-            </property>
-            <property name="minStepSize" class="ptolemy.data.expr.Parameter" value="1.0E-6">
-            </property>
-            <property name="maxStepSize" class="ptolemy.data.expr.Parameter" value="1.0">
-            </property>
-            <property name="maxIterations" class="ptolemy.data.expr.Parameter" value="20">
-            </property>
-            <property name="errorTolerance" class="ptolemy.data.expr.Parameter" value="1.0E-4">
-            </property>
-            <property name="valueResolution" class="ptolemy.data.expr.Parameter" value="1.0E-6">
-            </property>
-            <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="false">
-            </property>
-            <property name="ODESolver" class="ptolemy.data.expr.Parameter" value="&quot;ExplicitRK45Solver&quot;">
-            </property>
-            <property name="runAheadLength" class="ptolemy.data.expr.Parameter" value="0.1">
-            </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="{68.0,45.70703125}">
-            </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 415.0]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{70.0, 430.0}">
-        </property>
-        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[684, 454]">
+        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[684, 524]">
         </property>
         <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[102, 100]">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={62, 102, 897, 564}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={62, 102, 918, 634}, maximized=false}">
         </property>
         <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
         </property>
-        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{342.0, 227.0}">
+        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{342.0, 262.0}">
+        </property>
+        <property name="Continuous Director" class="ptolemy.domains.continuous.kernel.ContinuousDirector">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{280, 55}">
+            </property>
         </property>
         <port name="Pin" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -142,13 +118,13 @@
             </property>
         </entity>
         <entity name="Integrator1" class="ptolemy.domains.continuous.lib.Integrator">
-            <property name="initialState" class="ptolemy.data.expr.Parameter" value="0.0">
+            <property name="initialState" class="ptolemy.actor.parameters.PortParameter" value="0.0">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="{629.630859375,283.9535217285156}">
             </property>
         </entity>
         <entity name="Integrator2" class="ptolemy.domains.continuous.lib.Integrator">
-            <property name="initialState" class="ptolemy.data.expr.Parameter" value="0.0">
+            <property name="initialState" class="ptolemy.actor.parameters.PortParameter" value="0.0">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="{174.1953125,327.78826904296875}">
             </property>
@@ -386,50 +362,26 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="{313.3333320617676, 520.0}">
         </property>
     </entity>
-    <entity name="CTSubsystem2" class="ptolemy.actor.TypedCompositeActor">
+    <entity name="ContinuousSubsystem2" class="ptolemy.actor.TypedCompositeActor">
         <property name="samplePeriod" class="ptolemy.data.expr.Parameter" value="samplePeriod">
         </property>
         <property name="feedbackGain" class="ptolemy.data.expr.Parameter" value="feedbackGain">
         </property>
-        <property name="ContinuousDirector" class="ptolemy.domains.continuous.kernel.ContinuousDirector">
-            <property name="timeResolution" class="ptolemy.actor.parameters.SharedParameter" value="1.0E-10">
-            </property>
-            <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
-            </property>
-            <property name="stopTime" class="ptolemy.data.expr.Parameter" value="1.797693135E308">
-            </property>
-            <property name="initStepSize" class="ptolemy.data.expr.Parameter" value="1.0E-4">
-            </property>
-            <property name="minStepSize" class="ptolemy.data.expr.Parameter" value="1.0E-6">
-            </property>
-            <property name="maxStepSize" class="ptolemy.data.expr.Parameter" value="1.0">
-            </property>
-            <property name="maxIterations" class="ptolemy.data.expr.Parameter" value="20">
-            </property>
-            <property name="errorTolerance" class="ptolemy.data.expr.Parameter" value="1.0E-4">
-            </property>
-            <property name="valueResolution" class="ptolemy.data.expr.Parameter" value="1.0E-6">
-            </property>
-            <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="false">
-            </property>
-            <property name="ODESolver" class="ptolemy.data.expr.Parameter" value="&quot;ExplicitRK45Solver&quot;">
-            </property>
-            <property name="runAheadLength" class="ptolemy.data.expr.Parameter" value="0.1">
-            </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="{68.0,45.70703125}">
-            </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 220.0]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 235.0]">
-        </property>
-        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[684, 454]">
+        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[684, 524]">
         </property>
         <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[102, 100]">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={338, 35, 897, 564}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={338, 35, 918, 634}, maximized=false}">
         </property>
         <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
         </property>
-        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{342.0, 227.0}">
+        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{342.0, 262.0}">
+        </property>
+        <property name="Continuous Director" class="ptolemy.domains.continuous.kernel.ContinuousDirector">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{90, 45}">
+            </property>
         </property>
         <port name="Pin" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -468,13 +420,13 @@
             </property>
         </entity>
         <entity name="Integrator1" class="ptolemy.domains.continuous.lib.Integrator">
-            <property name="initialState" class="ptolemy.data.expr.Parameter" value="0.0">
+            <property name="initialState" class="ptolemy.actor.parameters.PortParameter" value="0.0">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="{629.630859375,283.9535217285156}">
             </property>
         </entity>
         <entity name="Integrator2" class="ptolemy.domains.continuous.lib.Integrator">
-            <property name="initialState" class="ptolemy.data.expr.Parameter" value="0.0">
+            <property name="initialState" class="ptolemy.actor.parameters.PortParameter" value="0.0">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="{174.1953125,327.78826904296875}">
             </property>
@@ -737,7 +689,7 @@
         </property>
     </entity>
     <entity name="NonStrictTest2" class="ptolemy.actor.lib.NonStrictTest">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.101, 0.262, 0.34, 0.358, 0.316, 0.164, 0.032, -0.118, -0.31, -0.442, -0.408, -0.174, -0.008, 0.172, 0.246}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.101, 0.262, 0.34, 0.358, 0.316, 0.164, 0.032, -0.118, -0.31, -0.442, -0.408, -0.238, -0.052, 0.1, 0.258}">
         </property>
         <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>
@@ -808,8 +760,8 @@
         <vertex name="vertex1" value="{400.0, 520.0}">
         </vertex>
     </relation>
-    <link port="CTSubsystem.Pin" relation="_R3"/>
-    <link port="CTSubsystem.Pout" relation="_R0"/>
+    <link port="ContinuousSubsystem.Pin" relation="_R3"/>
+    <link port="ContinuousSubsystem.Pout" relation="_R0"/>
     <link port="delay.input" relation="_R0"/>
     <link port="delay.output" relation="_R1"/>
     <link port="FIR Filter.input" relation="_R1"/>
@@ -820,8 +772,8 @@
     <link port="Moving Average.output" relation="relation"/>
     <link port="Average 50 samples.input" relation="relation"/>
     <link port="Average 50 samples.output" relation="relation4"/>
-    <link port="CTSubsystem2.Pin" relation="_R6"/>
-    <link port="CTSubsystem2.Pout" relation="_R"/>
+    <link port="ContinuousSubsystem2.Pin" relation="_R6"/>
+    <link port="ContinuousSubsystem2.Pout" relation="_R"/>
     <link port="delay2.input" relation="_R"/>
     <link port="delay2.output" relation="relation5"/>
     <link port="FIR Filter2.input" relation="relation6"/>
