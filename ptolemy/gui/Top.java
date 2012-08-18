@@ -2045,7 +2045,7 @@ public abstract class Top extends JFrame {
     private String _lastURL = "http://ptolemy.eecs.berkeley.edu/xml/models/";
 
     /** History depth. */
-    private int _historyDepth = 7;
+    private int _historyDepth = 10;
 
     /** Indicator that the menu has been populated. */
     private boolean _menuPopulated = false;
