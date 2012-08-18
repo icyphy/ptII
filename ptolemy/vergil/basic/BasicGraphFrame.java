@@ -920,7 +920,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
     }
 
     /** Given a NamedObj, return the corresponding BasicGraphFrame.
-     *  @param model The NamedObj for the model.  See
+     *  @param model The NamedObj for the model. See
      *  {@link ptolemy.actor.gui.ConfigurationApplication#openModel(String)}
      *  for a static method that returns the model
      *  @return The BasicGraphFrame that corresponds with the model or
@@ -928,13 +928,21 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
      *  cannot be found or if the Effigy does not contain a Tableau.
      */
     public static BasicGraphFrame getBasicGraphFrame(NamedObj model) {
-        BasicGraphFrame frame = null;
-
         if (model == null) {
             return null;
         }
         // See PtolemyLayoutAction for similar code.
         Effigy effigy = Configuration.findEffigy(model);
+        return getBasicGraphFrame(effigy);
+    }
+
+    /** Given an Effigy, return the corresponding BasicGraphFrame, if any.
+     *  @param effigy The Effigy. To determine the Effigy of a
+     *  NamedObj, use {@link  ptolemy.actor.gui.Configuration#findEffigy(NamedObj)}.
+     *  @return The BasicGraphFrame that corresponds with the Effigy
+     *  or null if the Effigy does not contain a Tableau.
+     */
+    public static BasicGraphFrame getBasicGraphFrame(Effigy effigy) {
         if (effigy == null) {
             return null;
         }
@@ -942,6 +950,8 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
         if (entities == null) {
             return null;
         }
+
+        BasicGraphFrame frame = null;
         Iterator tableaux = entities.iterator();
         while (tableaux.hasNext()) {
             Tableau tableau = (Tableau) tableaux.next();

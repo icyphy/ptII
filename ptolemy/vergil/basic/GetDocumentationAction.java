@@ -220,7 +220,15 @@ public class GetDocumentationAction extends FigureAction {
                     true, true, false, false);
             if (toRead != null) {
                 _lastClassName = null;
+                // Opening a remote URL can be slow, so we report to the status bar.
+                BasicGraphFrame basicGraphFrame = BasicGraphFrame.getBasicGraphFrame(context);
+                if (basicGraphFrame != null) {
+                    basicGraphFrame.report("Opening " + toRead);
+                }
                 configuration.openModel(null, toRead, toRead.toExternalForm());
+                if (basicGraphFrame != null) {
+                    basicGraphFrame.report("Opened documentation for " + className);
+                }
             } else {
                 Parameter docApplicationSpecializerParameter = (Parameter) configuration
                         .getAttribute("_docApplicationSpecializer",
@@ -237,7 +245,6 @@ public class GetDocumentationAction extends FigureAction {
                     docApplicationSpecializer.handleDocumentationNotFound(
                             className, context);
                 } else {
-
                     throw new Exception(
                             "Could not get find documentation for "
                                     + className
@@ -261,8 +268,12 @@ public class GetDocumentationAction extends FigureAction {
                     tentativeRemoteDocumentationURLBase = remoteDocumentationURLBaseParameter
                             .getExpression();
                 } else {
-                    tentativeRemoteDocumentationURLBase = "http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII"
+                    if (VersionAttribute.CURRENT_VERSION.getExpression().indexOf(".devel") != -1) {
+                        tentativeRemoteDocumentationURLBase = "http://chess.eecs.berkeley.edu/ptexternal/src/ptII/";
+                    } else {
+                        tentativeRemoteDocumentationURLBase = "http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII"
                             + VersionAttribute.majorCurrentVersion() + "/ptII/";
+                    }
                 }
                 // Pop up a query an prompt the user
                 String message = "The documentation was not found.\n"
