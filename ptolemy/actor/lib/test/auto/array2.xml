@@ -48,7 +48,7 @@
     <entity name="TypeTest" class="ptolemy.actor.lib.TypeTest">
         <property name="parameterTypes" class="ptolemy.data.expr.Parameter" value="{Const = {NONE = &quot;int&quot;, firingCountLimit = &quot;int&quot;, value = &quot;arrayType(double,1)&quot;}, Const2 = {NONE = &quot;int&quot;, firingCountLimit = &quot;int&quot;, value = &quot;arrayType(int,1)&quot;}}">
         </property>
-        <property name="portTypes" class="ptolemy.data.expr.Parameter" value="{AddSubtract = {minus = &quot;arrayType(double,1)&quot;, output = &quot;arrayType(double,1)&quot;, plus = &quot;arrayType(double,1)&quot;}, Const = {output = &quot;arrayType(double,1)&quot;, trigger = &quot;unknown&quot;}, Const2 = {output = &quot;arrayType(double,1)&quot;, trigger = &quot;unknown&quot;}}">
+        <property name="portTypes" class="ptolemy.data.expr.Parameter" value="{AddSubtract = {minus = &quot;arrayType(double,1)&quot;, output = &quot;arrayType(double,1)&quot;, plus = &quot;arrayType(double,1)&quot;}, Const = {output = &quot;arrayType(double,1)&quot;, trigger = &quot;general&quot;}, Const2 = {output = &quot;arrayType(double,1)&quot;, trigger = &quot;general&quot;}}">
         </property>
         <property name="trainingMode" class="ptolemy.data.expr.Parameter" value="false">
         </property>

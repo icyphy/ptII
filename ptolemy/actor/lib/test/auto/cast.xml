@@ -68,7 +68,7 @@
     <entity name="TypeTest2" class="ptolemy.actor.lib.TypeTest">
         <property name="parameterTypes" class="ptolemy.data.expr.Parameter" value="{Const={value=&quot;int&quot;}}">
         </property>
-        <property name="portTypes" class="ptolemy.data.expr.Parameter" value="{Const={output=&quot;double&quot;, trigger=&quot;unknown&quot;}, Expression={output=&quot;double&quot;}}">
+        <property name="portTypes" class="ptolemy.data.expr.Parameter" value="{Const={output=&quot;double&quot;, trigger=&quot;general&quot;}, Expression={output=&quot;double&quot;}}">
         </property>
         <property name="trainingMode" class="ptolemy.data.expr.Parameter" value="false">
         </property>
