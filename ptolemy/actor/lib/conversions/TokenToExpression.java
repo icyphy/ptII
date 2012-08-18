@@ -27,6 +27,7 @@
  */
 package ptolemy.actor.lib.conversions;
 
+import ptolemy.actor.TypedCompositeActor;
 import ptolemy.data.StringToken;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
@@ -84,5 +85,22 @@ public class TokenToExpression extends Converter {
         } else {
             output.broadcast(new StringToken("absent"));
         }
+    }
+    
+    /** Override the base class to declare the input type to be
+     *  general if backward type inference is enabled. This will
+     *  result in upstream ports resolving to the most general
+     *  type rather than the most specific. We don't want the input
+     *  type to always be general because code generation works
+     *  much better with the most specific types rather than the
+     *  most general.
+     *  @exception IllegalActionException Not thrown in this base class.
+     */
+    public void preinitialize() throws IllegalActionException {
+        TypedCompositeActor container = (TypedCompositeActor)getContainer();
+        if (container.isBackwardTypeInferenceEnabled()) {
+            input.setTypeEquals(BaseType.GENERAL);
+        }
+        super.preinitialize();
     }
 }
