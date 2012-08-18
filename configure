@@ -10610,8 +10610,9 @@ PTSERVER_DIR=
 
 # Jar files used by ptserver.
 PTHESSIAN_JAR=
-PTJETTY_JAR=
-PTSERVLET_JAR=
+# PTJETTY and PTSERVLET_JAR may be defined above.
+# PTJETTY_JAR=
+# PTSERVLET_JAR=
 PTWMQTT_JAR=
 
 # Jar files necessary for compilation of ptserver.
@@ -10641,7 +10642,8 @@ fi
 $as_echo "ok" >&6; }; else { $as_echo "$as_me:${as_lineno-$LINENO}: result: $PTHESSIAN_JAR" >&5
 $as_echo "$PTHESSIAN_JAR" >&6; }; fi
 
-	{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for Jetty, used by ptserver " >&5
+	if test -z $PTJETTY; then
+	    { $as_echo "$as_me:${as_lineno-$LINENO}: checking for Jetty, used by ptserver " >&5
 $as_echo_n "checking for Jetty, used by ptserver ... " >&6; }
 
 # Check whether --with-jetty was given.
@@ -10651,11 +10653,14 @@ else
   PTJETTY_JAR=$PTII/ptserver/lib/jetty-all-8.1.2.v20120308.jar
 fi
 
-        if test  -f "$PTJETTY_JAR"; then
-	    if test "${PTVERBOSE:-none}" = "none"; then { $as_echo "$as_me:${as_lineno-$LINENO}: result: ok" >&5
+            if test  -f "$PTJETTY_JAR"; then
+	        if test "${PTVERBOSE:-none}" = "none"; then { $as_echo "$as_me:${as_lineno-$LINENO}: result: ok" >&5
 $as_echo "ok" >&6; }; else { $as_echo "$as_me:${as_lineno-$LINENO}: result: $PTJETTY_JAR" >&5
 $as_echo "$PTJETTY_JAR" >&6; }; fi
+	    fi
+        fi
 
+        if test -z $PTSERVLET_JAR; then
             { $as_echo "$as_me:${as_lineno-$LINENO}: checking for Servlet, used by ptserver " >&5
 $as_echo_n "checking for Servlet, used by ptserver ... " >&6; }
 
@@ -10671,8 +10676,10 @@ fi
 	        if test "${PTVERBOSE:-none}" = "none"; then { $as_echo "$as_me:${as_lineno-$LINENO}: result: ok" >&5
 $as_echo "ok" >&6; }; else { $as_echo "$as_me:${as_lineno-$LINENO}: result: $PTSERVLET_JAR" >&5
 $as_echo "$PTSERVLET_JAR" >&6; }; fi
+            fi
+        fi
 
-	        { $as_echo "$as_me:${as_lineno-$LINENO}: checking for WMQTT, used by pserver " >&5
+	{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for WMQTT, used by pserver " >&5
 $as_echo_n "checking for WMQTT, used by pserver ... " >&6; }
 
 # Check whether --with-wmqtt was given.
@@ -10683,18 +10690,16 @@ else
 fi
 
 
-                if test  -f "$PTWMQTT_JAR"; then
-	            if test "${PTVERBOSE:-none}" = "none"; then { $as_echo "$as_me:${as_lineno-$LINENO}: result: ok" >&5
+        if test  -f "$PTWMQTT_JAR"; then
+	     if test "${PTVERBOSE:-none}" = "none"; then { $as_echo "$as_me:${as_lineno-$LINENO}: result: ok" >&5
 $as_echo "ok" >&6; }; else { $as_echo "$as_me:${as_lineno-$LINENO}: result: $PTWMQTT_JAR" >&5
 $as_echo "$PTWMQTT_JAR" >&6; }; fi
 
-	            # Set to ptserver and used in
-	            # $PTII/makefile
-	            PTSERVER_DIR=ptserver
-            	    # PTSERVER_PACKAGES is used in ptII/doc/makefile
-		    PTSERVER_PACKAGES=`find ptserver -name "*.java" | grep -v /test | awk -F / '{printf("%s", $1); for (i = 2; i < NF; i++) printf(".%s", $i); printf("\n")}' | sort | uniq | awk '{printf("%s ", $0)}'`
-                fi
-            fi
+	     # Set to ptserver and used in
+	     # $PTII/makefile
+	     PTSERVER_DIR=ptserver
+             # PTSERVER_PACKAGES is used in ptII/doc/makefile
+	     PTSERVER_PACKAGES=`find ptserver -name "*.java" | grep -v /test | awk -F / '{printf("%s", $1); for (i = 2; i < NF; i++) printf(".%s", $i); printf("\n")}' | sort | uniq | awk '{printf("%s ", $0)}'`
          fi
     fi
 
@@ -10715,8 +10720,10 @@ if test -z "$PTSERVER_JARS"; then
    updateExcludes "ptolemy/homer/"
 else
    updateClasspath "$PTHESSIAN_JAR"
-   updateClasspath "$PTJETTY_JAR"
-   updateClasspath "$PTSERVLET_JAR"
+   if test -z "$PTANGO_DIR"; then
+      updateClasspath "$PTJETTY_JAR"
+      updateClasspath "$PTSERVLET_JAR"
+   fi
    updateClasspath "$PTWMQTT_JAR"
 fi
 
