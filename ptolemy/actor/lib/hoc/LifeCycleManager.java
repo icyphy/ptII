@@ -28,9 +28,11 @@
  */
 package ptolemy.actor.lib.hoc;
 
+import java.lang.ref.WeakReference;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.ListIterator;
 
 import ptolemy.actor.Director;
 import ptolemy.actor.IOPort;
@@ -44,6 +46,7 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.ChangeListener;
 import ptolemy.kernel.util.ChangeRequest;
+import ptolemy.kernel.util.Changeable;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
@@ -114,120 +117,146 @@ public class LifeCycleManager extends TypedCompositeActor {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Execute requested changes. In this class,
-     *  do not delegate the change request to the container, but
-     *  execute the request immediately.  Listeners will be notified
-     *  of success or failure.
+    /** Override the base class to delegate to the container AND
+     *  also record the listener locally.
+     *  @param listener The listener to add.
+     *  @see #removeChangeListener(ChangeListener)
+     *  @see #requestChange(ChangeRequest)
+     *  @see Changeable
+     */
+    public void addChangeListener(ChangeListener listener) {
+        NamedObj container = getContainer();
+
+        if (container != null) {
+            container.addChangeListener(listener);
+        }
+        synchronized (_changeLock) {
+            if (_changeListeners == null) {
+                _changeListeners = new LinkedList<WeakReference<ChangeListener>>();
+            } else {
+                // In case there is a previous instance, remove it.
+                removeChangeListener(listener);
+            }
+
+            _changeListeners.add(0, new WeakReference(listener));
+        }
+    }
+
+    /** Override the base class to not delegate up the hierarchy
+     *  but rather to handle the request locally.
      *  @see #addChangeListener(ChangeListener)
      *  @see #requestChange(ChangeRequest)
-     *  @see #setDeferringChangeRequests(boolean)
+     *  @see #isDeferringChangeRequests()
+     *  @see Changeable
      */
     public void executeChangeRequests() {
+        // Have to execute a copy of the change request list
+        // because the list may be modified during execution.
+        List<ChangeRequest> copy = _copyChangeRequestList();
+
+        if (copy != null) {
+            _executeChangeRequests(copy);
+            // Change requests may have been queued during the execute.
+            // Execute those by a recursive call.
+            executeChangeRequests();
+        }
+    }
+
+    /** Override the base class to not delegate to the container.
+     *  @return True if change requests are being deferred.
+     *  @see #setDeferringChangeRequests(boolean)
+     *  @see Changeable
+     */
+    public boolean isDeferringChangeRequests() {
+        return _deferChangeRequests;
+    }
+
+    /** Override the base class to remove the listener in
+     *  the container AND locally.
+     *  @param listener The listener to remove.
+     *  @see #addChangeListener(ChangeListener)
+     *  @see Changeable
+     */
+    public synchronized void removeChangeListener(ChangeListener listener) {
+        NamedObj container = getContainer();
+        if (container != null) {
+            container.removeChangeListener(listener);
+        }
         synchronized (_changeLock) {
-            if ((_changeRequests != null) && (_changeRequests.size() > 0)) {
-                // Copy the change requests lists because it may
-                // be modified during execution.
-                LinkedList copy = new LinkedList(_changeRequests);
+            if (_changeListeners != null) {
+                ListIterator<WeakReference<ChangeListener>> listeners = _changeListeners
+                        .listIterator();
 
-                // Remove the changes to be executed.
-                // We remove them even if there is a failure because
-                // otherwise we could get stuck making changes that
-                // will continue to fail.
-                _changeRequests.clear();
+                while (listeners.hasNext()) {
+                    WeakReference<ChangeListener> reference = listeners
+                            .next();
 
-                Iterator requests = copy.iterator();
-                boolean previousDeferStatus = isDeferringChangeRequests();
-
-                try {
-                    // Get write access once on the outside, to make
-                    // getting write access on each individual
-                    // modification faster.
-                    _workspace.getWriteAccess();
-
-                    // Defer change requests so that if changes are
-                    // requested during execution, they get queued.
-                    previousDeferStatus = setDeferringChangeRequests(true);
-
-                    while (requests.hasNext()) {
-                        ChangeRequest change = (ChangeRequest) requests.next();
-                        change.setListeners(_changeListeners);
-
-                        if (_debugging) {
-                            _debug("-- Executing change request "
-                                    + "with description: "
-                                    + change.getDescription());
-                        }
-
-                        // The change listeners should be those of this
-                        // actor and any container that it has!
-                        // FIXME: This is expensive... Better solution?
-                        // We previously tried issuing a dummy change
-                        // request to the container, but this caused big
-                        // problems... (weird null-pointer expections
-                        // deep in diva when making connections).
-                        // Is it sufficient to just go to the top level?
-                        List changeListeners = new LinkedList();
-                        NamedObj container = getContainer();
-
-                        while (container != null) {
-                            List list = container.getChangeListeners();
-
-                            if (list != null) {
-                                changeListeners.addAll(list);
-                            }
-
-                            container = container.getContainer();
-                        }
-
-                        change.setListeners(changeListeners);
-
-                        change.execute();
+                    if (reference.get() == listener) {
+                        listeners.remove();
+                    } else if (reference.get() == null) {
+                        listeners.remove();
                     }
-                } finally {
-                    _workspace.doneWriting();
-                    setDeferringChangeRequests(previousDeferStatus);
                 }
-
-                // Change requests may have been queued during the execute.
-                // Execute those by a recursive call.
-                executeChangeRequests();
             }
         }
     }
 
-    /** Request that given change be executed.   In this class,
-     *  do not delegate the change request to the container, but
-     *  execute the request immediately or record it, depending on
-     *  whether setDeferringChangeRequests() has been called. If
-     *  setDeferChangeRequests() has been called with a true argument,
-     *  then simply queue the request until either setDeferChangeRequests()
-     *  is called with a false argument or executeChangeRequests() is called.
-     *  If this object is already in the middle of executing a change
-     *  request, then that execution is finished before this one is performed.
-     *  Change listeners will be notified of success (or failure) of the
-     *  request when it is executed.
+    /** Override the base class to not delegate up the hierarchy.
      *  @param change The requested change.
      *  @see #executeChangeRequests()
      *  @see #setDeferringChangeRequests(boolean)
+     *  @see Changeable
      */
     public void requestChange(ChangeRequest change) {
-        // Have to ensure that the _deferChangeRequests status and
+        // Have to ensure that
         // the collection of change listeners doesn't change during
         // this execution.  But we don't want to hold a lock on the
         // this NamedObj during execution of the change because this
         // could lead to deadlock.  So we synchronize to _changeLock.
+        List<ChangeRequest> copy = null;
         synchronized (_changeLock) {
             // Queue the request.
             // Create the list of requests if it doesn't already exist
             if (_changeRequests == null) {
-                _changeRequests = new LinkedList();
+                _changeRequests = new LinkedList<ChangeRequest>();
             }
 
             _changeRequests.add(change);
-
-            if (!isDeferringChangeRequests()) {
-                executeChangeRequests();
+            if (!_deferChangeRequests) {
+                copy = _copyChangeRequestList();
             }
+        }
+
+        // Do not want to hold the _changeLock while
+        // executing change requests. See comments inside
+        // executeChangeRequests().
+        if (copy != null) {
+            _executeChangeRequests(copy);
+        }
+    }
+
+    /** Override the base class to not delegate to the container.
+     *  @param isDeferring If true, defer change requests.
+     *  @see #addChangeListener(ChangeListener)
+     *  @see #executeChangeRequests()
+     *  @see #isDeferringChangeRequests()
+     *  @see #requestChange(ChangeRequest)
+     *  @see Changeable
+     */
+    public void setDeferringChangeRequests(boolean isDeferring) {
+        // Make sure to avoid modification of this flag in the middle
+        // of a change request or change execution.
+        List<ChangeRequest> copy = null;
+        synchronized (_changeLock) {
+            _deferChangeRequests = isDeferring;
+
+            if (isDeferring == false) {
+                // Must not hold _changeLock while executing change requests.
+                copy = _copyChangeRequestList();
+            }
+        }
+        if (copy != null) {
+            _executeChangeRequests(copy);
         }
     }
 
@@ -426,14 +455,20 @@ public class LifeCycleManager extends TypedCompositeActor {
                 if (attribute instanceof Variable) {
                     if (_debugging) {
                         _debug("** Transferring parameter to output: "
-                                + port.getName());
+                                + port.getName()
+                                + " ("
+                                + ((Variable) attribute).getToken()
+                                + ")");
                     }
 
                     port.send(0, ((Variable) attribute).getToken());
                 } else if (attribute instanceof Settable) {
                     if (_debugging) {
                         _debug("** Transferring parameter as string to output: "
-                                + port.getName());
+                                + port.getName()
+                                + " ("
+                                + ((Settable) attribute).getExpression()
+                                + ")");
                     }
 
                     port.send(

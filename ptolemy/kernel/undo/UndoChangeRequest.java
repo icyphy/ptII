@@ -92,7 +92,8 @@ public class UndoChangeRequest extends ChangeRequest {
         boolean previous = _context.isDeferringChangeRequests();
 
         try {
-            previous = _context.setDeferringChangeRequests(true);
+            previous = _context.isDeferringChangeRequests();
+            _context.setDeferringChangeRequests(true);
             undoStack.undo();
         } finally {
             _context.setDeferringChangeRequests(previous);

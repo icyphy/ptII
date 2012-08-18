@@ -2138,7 +2138,8 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
         }
 
         if (_toplevel != null) {
-            _previousDeferStatus = _toplevel.setDeferringChangeRequests(true);
+            _previousDeferStatus = _toplevel.isDeferringChangeRequests();
+            _toplevel.setDeferringChangeRequests(true);
         } else {
             // Make sure a default is provided.
             _previousDeferStatus = false;

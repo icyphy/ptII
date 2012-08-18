@@ -705,69 +705,12 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
             return;
         }
 
-        List copy = null;
+        // Have to execute a copy of the change request list
+        // because the list may be modified during execution.
+        List<ChangeRequest> copy = _copyChangeRequestList();
 
-        synchronized (_changeLock) {
-            if ((_changeRequests != null) && (_changeRequests.size() > 0)) {
-                // Copy the change requests lists because it may
-                // be modified during execution.
-                copy = new LinkedList(_changeRequests);
-
-                // Remove the changes to be executed.
-                // We remove them even if there is a failure because
-                // otherwise we could get stuck making changes that
-                // will continue to fail.
-                _changeRequests.clear();
-            }
-        }
-
-        // NOTE: Have released the change lock, which makes it
-        // safe to obtain other locks below.
         if (copy != null) {
-            Iterator requests = copy.iterator();
-            boolean previousDeferStatus = isDeferringChangeRequests();
-
-            try {
-                // Get write access once on the outside, to make
-                // getting write access on each individual
-                // modification faster.
-                // NOTE: This optimization, it turns out,
-                // drastically slows down execution of models
-                // that do graphical animation or that change
-                // parameter values during execution. Changing
-                // parameter values does not require write
-                // access to the workspace.
-                // _workspace.getWriteAccess();
-                // Defer change requests so that if changes are
-                // requested during execution, they get queued.
-                previousDeferStatus = setDeferringChangeRequests(true);
-
-                while (requests.hasNext()) {
-                    ChangeRequest change = (ChangeRequest) requests.next();
-
-                    // The following is a bad idea because there may be
-                    // many fine-grain change requests in the list, and
-                    // notification triggers expensive operations such
-                    // as repairing the graph model in diva and repainting.
-                    // Hence, we do the notification once after all the
-                    // change requests have executed.  Note that this may
-                    // make it harder to optimize Vergil so that it
-                    // repaints only damaged regions of the screen.
-                    change.setListeners(_changeListeners);
-
-                    if (_debugging) {
-                        _debug("-- Executing change request "
-                                + "with description: "
-                                + change.getDescription());
-                    }
-                    change.execute();
-                }
-            } finally {
-                // NOTE: See note above.
-                // _workspace.doneWriting();
-                setDeferringChangeRequests(previousDeferStatus);
-            }
-
+            _executeChangeRequests(copy);
             // Change requests may have been queued during the execute.
             // Execute those by a recursive call.
             executeChangeRequests();
@@ -1805,11 +1748,12 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
         if (container != null) {
             container.requestChange(change);
         } else {
-            // Have to ensure that the _deferChangeRequests status and
+            // Have to ensure that
             // the collection of change listeners doesn't change during
             // this execution.  But we don't want to hold a lock on the
             // this NamedObj during execution of the change because this
             // could lead to deadlock.  So we synchronize to _changeLock.
+            List<ChangeRequest> copy = null;
             synchronized (_changeLock) {
                 // Queue the request.
                 // Create the list of requests if it doesn't already exist
@@ -1818,10 +1762,16 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
                 }
 
                 _changeRequests.add(change);
-
                 if (!_deferChangeRequests) {
-                    executeChangeRequests();
+                    copy = _copyChangeRequestList();
                 }
+            }
+
+            // Do not want to hold the _changeLock while
+            // executing change requests. See comments inside
+            // executeChangeRequests().
+            if (copy != null) {
+                _executeChangeRequests(copy);
             }
         }
     }
@@ -1846,36 +1796,33 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
      *  and set a flag requesting that future requests be executed
      *  immediately.
      *  @param isDeferring If true, defer change requests.
-     *  @return True if this object was previously deferring change
-     *   requests.
      *  @see #addChangeListener(ChangeListener)
      *  @see #executeChangeRequests()
      *  @see #isDeferringChangeRequests()
      *  @see #requestChange(ChangeRequest)
      *  @see Changeable
      */
-    public boolean setDeferringChangeRequests(boolean isDeferring) {
+    public void setDeferringChangeRequests(boolean isDeferring) {
         NamedObj container = getContainer();
 
         if (container != null) {
-            return container.setDeferringChangeRequests(isDeferring);
+            container.setDeferringChangeRequests(isDeferring);
+            return;
         }
 
         // Make sure to avoid modification of this flag in the middle
         // of a change request or change execution.
+        List<ChangeRequest> copy = null;
         synchronized (_changeLock) {
-            boolean result = _deferChangeRequests;
             _deferChangeRequests = isDeferring;
 
             if (isDeferring == false) {
-                executeChangeRequests();
+                // Must not hold _changeLock while executing change requests.
+                copy = _copyChangeRequestList();
             }
-
-            // NOTE: The reason for returning the previous value is
-            // avoid a race condition where the value can be changed
-            // between a call to isDeferringChangeRequest() and this
-            // method.
-            return result;
+        }
+        if (copy != null) {
+            _executeChangeRequests(copy);
         }
     }
 
@@ -2351,6 +2298,29 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
         }
     }
 
+    /** Return a copy of the current list of change requests, or return
+     *  null if there aren't any pending change requests.
+     *  @return A copy of the change request list, or null if there aren't any.
+     */
+    protected List<ChangeRequest> _copyChangeRequestList() {
+        synchronized (_changeLock) {
+            if ((_changeRequests != null) && (_changeRequests.size() > 0)) {
+                // Copy the change requests lists because it may
+                // be modified during execution.
+                List<ChangeRequest> copy = new LinkedList(_changeRequests);
+
+                // Remove the changes to be executed.
+                // We remove them even if there is a failure because
+                // otherwise we could get stuck making changes that
+                // will continue to fail.
+                _changeRequests.clear();
+                
+                return copy;
+            }
+        }
+        return null;
+    }
+
     /** Send a debug event to all debug listeners that have registered.
      *  @param event The event.
      */
@@ -2534,6 +2504,64 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
             return result.toString();
         } finally {
             _workspace.doneReading();
+        }
+    }
+    
+    /** Execute the specified list of change requests.
+     *  @param changeRequests The list of change requests to execute.
+     */
+    protected void _executeChangeRequests(List<ChangeRequest> changeRequests) {
+        Iterator requests = changeRequests.iterator();
+        boolean previousDeferStatus = _deferChangeRequests;
+
+        try {
+            // Get write access once on the outside, to make
+            // getting write access on each individual
+            // modification faster.
+            // NOTE: This optimization, it turns out,
+            // drastically slows down execution of models
+            // that do graphical animation or that change
+            // parameter values during execution. Changing
+            // parameter values does not require write
+            // access to the workspace.
+            // _workspace.getWriteAccess();
+            
+            // Defer change requests so that if changes are
+            // requested during execution, they get queued.
+            _deferChangeRequests = true;
+            // FIXME: How do we ensure that _deferChangeRequests
+            // does not get changed during the following loop?
+            // It is not OK to change _changeLock, as this will
+            // lead to deadlock. In particular, another thread
+            // that holds read permission on the workspace
+            // might try to acquire _changeLock and block,
+            // and then this thread will try to get write
+            // permission on the workspace, and it will block.
+            while (requests.hasNext()) {
+                ChangeRequest change = (ChangeRequest) requests.next();
+
+                // The following is a bad idea because there may be
+                // many fine-grain change requests in the list, and
+                // notification triggers expensive operations such
+                // as repairing the graph model in diva and repainting.
+                // Hence, we do the notification once after all the
+                // change requests have executed.  Note that this may
+                // make it harder to optimize Vergil so that it
+                // repaints only damaged regions of the screen.
+                change.setListeners(_changeListeners);
+
+                if (_debugging) {
+                    _debug("-- Executing change request "
+                            + "with description: "
+                            + change.getDescription());
+                }
+                change.execute();
+            }
+        } finally {
+            // NOTE: See note above.
+            // _workspace.doneWriting();
+            
+            _deferChangeRequests = previousDeferStatus;
         }
     }
 
@@ -2986,6 +3014,11 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
      */
     protected LinkedList _debugListeners = null;
 
+    /** Flag indicating that we should not immediately
+     *  execute a change request.
+     */
+    protected transient boolean _deferChangeRequests = false;
+
     /** The MoML element name. This defaults to "entity".
      *  Subclasses that wish this to be different should set it
      *  in their constructor, or override getElementName()
@@ -3012,7 +3045,7 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
-
+    
     /** Return a list of derived objects. If the <i>propagate</i>
      *  argument is true, then this list will contain only those derived
      *  objects whose values are not overridden and that are not
@@ -3334,11 +3367,6 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
      *  is specified.
      */
     private static Workspace _DEFAULT_WORKSPACE = new Workspace();
-
-    /** Flag indicating that we should not immediately
-     *  execute a change request.
-     */
-    private transient boolean _deferChangeRequests = false;
 
     // Variable indicating at what level above this object is derived.
     // Integer.MAX_VALUE indicates that it is not derived.

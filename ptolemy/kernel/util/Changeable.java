@@ -134,12 +134,10 @@ public interface Changeable {
      *  and set a flag requesting that future requests be executed
      *  immediately.
      *  @param isDeferring If true, defer change requests.
-     *  @return True if this object was previously deferring change
-     *   requests.
      *  @see #addChangeListener(ChangeListener)
      *  @see #executeChangeRequests()
      *  @see #isDeferringChangeRequests()
      *  @see #requestChange(ChangeRequest)
      */
-    public boolean setDeferringChangeRequests(boolean isDeferring);
+    public void setDeferringChangeRequests(boolean isDeferring);
 }

@@ -92,7 +92,8 @@ public class RedoChangeRequest extends ChangeRequest {
         boolean previous = _context.isDeferringChangeRequests();
 
         try {
-            previous = _context.setDeferringChangeRequests(true);
+            previous = _context.isDeferringChangeRequests();
+            _context.setDeferringChangeRequests(true);
             undoStack.redo();
         } finally {
             _context.setDeferringChangeRequests(previous);

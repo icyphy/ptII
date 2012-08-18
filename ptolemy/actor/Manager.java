@@ -705,9 +705,18 @@ public class Manager extends NamedObj implements Runnable {
         boolean result = true;
 
         long startTime = (new Date()).getTime();
+        // Execute the change requests before acquiring read access on the
+        // workspace. The reason for this is that the change requests are safe
+        // anyway, since they acquire write access on the workspace.
+        // But while copying the change request list in the NamedObj
+        // executeChangeRequest method, this thread will try to acquire a lock
+        // on a local NamedObj object called _changeLock.
+        // If it blocks, it will hold a read lock on the workspace.
+        // Meanwhile, the thread that holds the lock on _changeLock
+        // may attempt to acquire write permission on the workspace (WHY???).
+        executeChangeRequests();
         try {
             _workspace.getReadAccess();
-            executeChangeRequests();
 
             // We should infer the widths before preinitializing the container, since the latter
             // will create the receivers for which it needs the widths of the relations.
