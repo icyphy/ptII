@@ -4130,8 +4130,9 @@ PTSERVER_DIR=
 
 # Jar files used by ptserver.
 PTHESSIAN_JAR=
-PTJETTY_JAR=
-PTSERVLET_JAR=
+# PTJETTY and PTSERVLET_JAR may be defined above.
+# PTJETTY_JAR=
+# PTSERVLET_JAR=
 PTWMQTT_JAR=
 
 # Jar files necessary for compilation of ptserver.
@@ -4152,14 +4153,18 @@ else
     if test  -f "$PTHESSIAN_JAR"; then
 	PT_MSG_RESULT([$PTHESSIAN_JAR])
 
-	AC_MSG_CHECKING([for Jetty, used by ptserver ])
-	AC_ARG_WITH(jetty, [  --with-jetty=JAR       use jetty.jar from JAR,
+	if test -z $PTJETTY; then 
+	    AC_MSG_CHECKING([for Jetty, used by ptserver ])
+	    AC_ARG_WITH(jetty, [  --with-jetty=JAR       use jetty.jar from JAR,
                           defaults to \$PTII/ptserver/lib/jetty-all-8.1.2.v20120308.jar],
-	PTJETTY_JAR=$withval,
-	PTJETTY_JAR=$PTII/ptserver/lib/jetty-all-8.1.2.v20120308.jar)
-        if test  -f "$PTJETTY_JAR"; then
-	    PT_MSG_RESULT([$PTJETTY_JAR])
-	
+	    PTJETTY_JAR=$withval,
+	    PTJETTY_JAR=$PTII/ptserver/lib/jetty-all-8.1.2.v20120308.jar)
+            if test  -f "$PTJETTY_JAR"; then
+	        PT_MSG_RESULT([$PTJETTY_JAR])
+	    fi
+        fi
+        
+        if test -z $PTSERVLET_JAR; then
             AC_MSG_CHECKING([for Servlet, used by ptserver ])
 	    AC_ARG_WITH(servlet, [  --with-servlet=JAR       use servlet.jar from JAR,
                           defaults to \$PTII/ptserver/lib/javax.servlet-api-3.0.1.jar],
@@ -4168,23 +4173,23 @@ else
 
             if test  -f "$PTSERVLET_JAR"; then
 	        PT_MSG_RESULT([$PTSERVLET_JAR])
+            fi
+        fi
 
-	        AC_MSG_CHECKING([for WMQTT, used by pserver ])
-	    	AC_ARG_WITH(wmqtt, [  --with-wmqtt=JAR       use wmqtt.jar from JAR,
+	AC_MSG_CHECKING([for WMQTT, used by pserver ])
+	AC_ARG_WITH(wmqtt, [  --with-wmqtt=JAR       use wmqtt.jar from JAR,
                           defaults to \$PTII/ptserver/lib/wmqtt.jar],
-	    	PTWMQTT_JAR=$withval,
-	        PTWMQTT_JAR=$PTII/ptserver/lib/wmqtt.jar)
+	PTWMQTT_JAR=$withval,
+	PTWMQTT_JAR=$PTII/ptserver/lib/wmqtt.jar)
 
-                if test  -f "$PTWMQTT_JAR"; then
-	            PT_MSG_RESULT([$PTWMQTT_JAR])
+        if test  -f "$PTWMQTT_JAR"; then
+	     PT_MSG_RESULT([$PTWMQTT_JAR])
 
-	            # Set to ptserver and used in
-	            # $PTII/makefile
-	            PTSERVER_DIR=ptserver
-            	    # PTSERVER_PACKAGES is used in ptII/doc/makefile
-		    PTSERVER_PACKAGES=`find ptserver -name "*.java" | grep -v /test | awk -F / '{printf("%s", $1); for (i = 2; i < NF; i++) printf(".%s", $i); printf("\n")}' | sort | uniq | awk '{printf("%s ", $0)}'`
-                fi
-            fi	
+	     # Set to ptserver and used in
+	     # $PTII/makefile
+	     PTSERVER_DIR=ptserver
+             # PTSERVER_PACKAGES is used in ptII/doc/makefile
+	     PTSERVER_PACKAGES=`find ptserver -name "*.java" | grep -v /test | awk -F / '{printf("%s", $1); for (i = 2; i < NF; i++) printf(".%s", $i); printf("\n")}' | sort | uniq | awk '{printf("%s ", $0)}'`
          fi
     fi
 
@@ -4202,8 +4207,10 @@ if test -z "$PTSERVER_JARS"; then
    updateExcludes "ptolemy/homer/"
 else
    updateClasspath "$PTHESSIAN_JAR"
-   updateClasspath "$PTJETTY_JAR"
-   updateClasspath "$PTSERVLET_JAR"
+   if test -z "$PTANGO_DIR"; then
+      updateClasspath "$PTJETTY_JAR"
+      updateClasspath "$PTSERVLET_JAR"
+   fi
    updateClasspath "$PTWMQTT_JAR"
 fi 
 
