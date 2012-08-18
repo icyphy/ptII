@@ -167,8 +167,11 @@ public class ExpressionShellEffigy extends Effigy {
          */
         public Effigy createEffigy(CompositeEntity container, URL base,
                 URL input) throws Exception {
-            return new ExpressionShellEffigy(container,
-                    container.uniqueName("effigy"));
+            if (input == null) {
+                return new ExpressionShellEffigy(container,
+                        container.uniqueName("effigy"));
+            }
+            return null;
         }
     }
 }
