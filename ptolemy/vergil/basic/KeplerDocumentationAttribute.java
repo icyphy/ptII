@@ -487,6 +487,25 @@ public class KeplerDocumentationAttribute extends Attribute implements
         }
     }
 
+    /** Remove a port from the port hashtable.
+     *  @param name The name of the port.
+     *  @return The value of the port.
+     *  @exception IllegalActionException If an error occurs removing the
+     *  ConfigurableAttribute.
+     *  @exception NameDuplicationException If an error occurs removing the
+     *  ConfigurableAttribute.
+     *  @see #addPort(String, String)
+     */
+    public String removePort(String name) throws IllegalActionException,
+            NameDuplicationException {
+        String retval = (String) _portHash.remove(name);
+        if (retval != null) {
+            Attribute attribute = getAttribute("port:" + name);
+            attribute.setContainer(null);
+        }
+        return retval;
+    }
+
     /** Remove a property from the property hashtable.
      *  @param name The name of the property.
      *  @return The value of the property.
@@ -505,7 +524,7 @@ public class KeplerDocumentationAttribute extends Attribute implements
         }
         return retval;
     }
-
+    
     /** Set the author.
      *  @param author The author.
      *  @see #getAuthor()
