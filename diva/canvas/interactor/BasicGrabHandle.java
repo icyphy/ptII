@@ -87,6 +87,10 @@ public class BasicGrabHandle extends BasicRectangle implements GrabHandle {
         // Be sure to take into account that the transformContext of the
         // site and the context of the grab handle may be different.
         TransformContext tc = getTransformContext();
+        if (_site.getFigure() == null || _site.getFigure().getParent() == null) {
+            // Cannot relocate.
+            return;
+        }
         Point2D p = _site.getPoint(tc);
         double x = p.getX();
         double y = p.getY();
