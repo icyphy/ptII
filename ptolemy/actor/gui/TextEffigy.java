@@ -117,7 +117,8 @@ public class TextEffigy extends Effigy {
 
     /** Create a new effigy in the given container by reading the specified
      *  URL. If the specified URL is null, then create a blank effigy.
-     *  The extension of the URL is not checked, so this will open any file.
+     *  If the extension of the URL is one of several extensions used by
+     *  binary formats, the file is not opened and this returns null.
      *  The new effigy will have a new instance of
      *  DefaultStyledDocument associated with it.
      *  @param container The container for the effigy.
@@ -131,6 +132,22 @@ public class TextEffigy extends Effigy {
      */
     public static TextEffigy newTextEffigy(CompositeEntity container, URL base,
             URL in) throws Exception {
+        
+        // Check the extension: if it looks like a binary file do not open.
+        // Do not open KAR files,
+        // see http://bugzilla.ecoinformatics.org/show_bug.cgi?id=5280#c1
+        //
+        // TODO: find a better way to check for binary files.
+        //
+        if (in != null) {
+            String extension = EffigyFactory.getExtension(in).toLowerCase();
+            if (extension.equals("jar") || extension.equals("kar")
+                    || extension.equals("gz") || extension.equals("tar")
+                    || extension.equals("zip")) {
+                return null;
+            }
+        }
+        
         // Create a new effigy.
         TextEffigy effigy = new TextEffigy(container,
                 container.uniqueName("effigy"));
