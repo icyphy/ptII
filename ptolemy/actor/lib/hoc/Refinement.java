@@ -34,6 +34,7 @@ import ptolemy.kernel.Relation;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.Workspace;
 
 ///////////////////////////////////////////////////////////////////
 //// Refinement
@@ -64,6 +65,20 @@ public class Refinement extends TypedCompositeActor {
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
+        // The base class identifies the class name as TypedCompositeActor
+        // irrespective of the actual class name.  We override that here.
+        setClassName("ptolemy.actor.lib.hoc.Refinement");
+    }
+    
+    /** Construct a Refinement in the specified workspace with
+     *  no container and an empty string as a name. You can then change
+     *  the name with setName(). If the workspace argument is null, then
+     *  use the default workspace.
+     *  @param workspace The workspace that will list the refinement.
+     */
+    public Refinement(Workspace workspace) {
+        super(workspace);
+        
         // The base class identifies the class name as TypedCompositeActor
         // irrespective of the actual class name.  We override that here.
         setClassName("ptolemy.actor.lib.hoc.Refinement");
