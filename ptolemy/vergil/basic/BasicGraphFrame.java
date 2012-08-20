@@ -3223,19 +3223,24 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
             }
         }
 
-        if (updateValue) {
-            // Don't call setToken(), instead use a MoMLChangeRequest so that
-            // the model is marked modified so that any changes are preserved.
-            //zoom.setToken(new DoubleToken(scale));
-            String moml = "<property name=\"_vergilZoomFactor\" "
-                + " value=\"" + scale + "\"/>";
-            MoMLChangeRequest request = new MoMLChangeRequest(this,
-                    getModel(), moml);
-            request.setUndoable(true);
-            getModel().requestChange(request);
+        boolean toplevelHasEntities = false;
 
-            // Make sure the visibility is only expert.
-            zoom.setVisibility(Settable.EXPERT);
+        if (updateValue) {
+            if (((CompositeEntity)getModel().toplevel()).getEntities().hasMoreElements()) {
+                toplevelHasEntities = true;
+                // Don't call setToken(), instead use a MoMLChangeRequest so that
+                // the model is marked modified so that any changes are preserved.
+                //zoom.setToken(new DoubleToken(scale));
+                String moml = "<property name=\"_vergilZoomFactor\" "
+                    + " value=\"" + scale + "\"/>";
+                MoMLChangeRequest request = new MoMLChangeRequest(this,
+                        getModel(), moml);
+                request.setUndoable(true);
+                getModel().requestChange(request);
+
+                // Make sure the visibility is only expert.
+                zoom.setVisibility(Settable.EXPERT);
+            }
         }
 
         // Save the center, to record the pan state.
@@ -3258,7 +3263,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
             }
         }
 
-        if (updateValue) {
+        if (updateValue && toplevelHasEntities) {
             //Token[] centerArray = new Token[2];
             //centerArray[0] = new DoubleToken(center.getX());
             //centerArray[1] = new DoubleToken(center.getY());
