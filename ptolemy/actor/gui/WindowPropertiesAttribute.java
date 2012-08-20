@@ -41,6 +41,7 @@ import ptolemy.data.IntToken;
 import ptolemy.data.RecordToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.gui.Top;
+import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -170,6 +171,7 @@ public class WindowPropertiesAttribute extends Parameter implements
                         + "needs to be run in Vergil and saved.");
             }
             boolean updateValue = false;
+
             if (value == null) {
                 updateValue = true;
             } else {
@@ -193,7 +195,12 @@ public class WindowPropertiesAttribute extends Parameter implements
                     updateValue = true;
                 }
             }
-            if (updateValue) {
+
+            // Check that the toplevel is non-empty so that if a user
+            // opens Kepler and closes, they are not prompted to save
+            // a blank model.
+            if (updateValue
+                    &&  ((CompositeEntity)toplevel()).getEntities().hasMoreElements()) {
                 // Construct values for the record token.
                 String values = "{bounds={" + bounds.x + ", " + bounds.y + ", "
                     + bounds.width + ", " + bounds.height + "}, maximized="
@@ -207,6 +214,7 @@ public class WindowPropertiesAttribute extends Parameter implements
 
                 String moml = "<property name=\"" + getName()
                     + "\" value=\"" + values + "\"/>";
+
                 MoMLChangeRequest request = new MoMLChangeRequest(this,
                         getContainer(), moml);
                 getContainer().requestChange(request);
