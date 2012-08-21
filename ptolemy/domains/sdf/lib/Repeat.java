@@ -105,7 +105,7 @@ public class Repeat extends SDFTransformer {
             int repetitions = ((IntToken) numberOfTimes.getToken()).intValue();
             int count = ((IntToken) blockSize.getToken()).intValue();
 
-            if (repetitions < 1) {
+            if (repetitions < 0) {
                 throw new IllegalActionException(numberOfTimes,
                         "The value of numberOfTimes must be positive, but "
                                 + "was set to " + repetitions);
