@@ -87,10 +87,29 @@ public class BasicGrabHandle extends BasicRectangle implements GrabHandle {
         // Be sure to take into account that the transformContext of the
         // site and the context of the grab handle may be different.
         TransformContext tc = getTransformContext();
-        if (_site.getFigure() == null || _site.getFigure().getParent() == null) {
-            // Cannot relocate.
-            return;
-        }
+
+        // r64418: "Prevent null pointer exception that can happen while editing a
+        // model while it is running by checking the Figure of Site for the
+        // connector being dragged."
+
+        // However, this causes errors: 
+ 
+        // "getting an error when trying to drag a relation from a
+        // port today in Kepler.  I'm also seeing a few other issues
+        // that seem to happen after the above. I got an NPE[2] from a
+        // click, have strange actor-drag behavior (actor drags wildly
+        // / shoots off in one direction), and sometimes dots are left
+        // over on canvas at the point where I clicked on the
+        // port. Also when I'm dragging out a relation I also notice
+        // in the upper left corner of canvas a blue 'port endpoint'
+        // square (generally only noticeable in the overview section
+        // in the lower left).
+
+//         if (_site.getFigure() == null || _site.getFigure().getParent() == null) {
+//         	// Cannot relocate.
+//         	return;
+//         }
+
         Point2D p = _site.getPoint(tc);
         double x = p.getX();
         double y = p.getY();
