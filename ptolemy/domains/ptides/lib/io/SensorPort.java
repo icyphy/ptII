@@ -43,6 +43,7 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.vergil.icon.PolygonIcon;
 
 /**
  *  This port provides a specialized TypedIOPort for sensors
@@ -66,61 +67,18 @@ public class SensorPort extends PtidesPort {
     public SensorPort(CompositeEntity container, String name) throws IllegalActionException, NameDuplicationException {
         super(container, name);
         
-        this.setInput(true);
+        this.setInput(true); 
         
-        deviceDelay = new Parameter(this, "deviceDelay");
-        deviceDelay.setToken(new DoubleToken(0.0));
-        deviceDelay.setTypeEquals(BaseType.DOUBLE);
-        
-        deviceDelayBound = new Parameter(this, "deviceDelayBound");
-        deviceDelayBound.setExpression("0.0");
-        deviceDelayBound.setTypeEquals(BaseType.DOUBLE);
-        
-        timestampCorrection = new Parameter(this, "timestampCorrection");
-        timestampCorrection.setTypeEquals(BaseType.DOUBLE);
-        timestampCorrection.setExpression("0.0");
-        
-        valueCorrection = new StringParameter(this, "valueCorrection");  
-        
-        driver = new FileParameter(this, "driver");
-        
-             
-    }
-    
-    /** Return the custom shape for this port.
-     *  @return List of coordinates representing the shape.
-     */
-    public List<Integer[]> getCoordinatesForShape() {
-        List<Integer[]> coordinates = new ArrayList<Integer[]>();
-        coordinates.add(new Integer[]{-8, 8});
-        coordinates.add(new Integer[]{8, 8});
-        coordinates.add(new Integer[]{8, 4});
-        coordinates.add(new Integer[]{12, 0});
-        coordinates.add(new Integer[]{8, -4});
-        coordinates.add(new Integer[]{8, -8});
-        coordinates.add(new Integer[]{-8, -8}); 
-        return coordinates;
-    }
-    
-    
-    /** Device delay parameter that defaults to the double value 0.0. */
-    public Parameter deviceDelay;
-    
-    /** Device delay bound parameter that defaults to the double value 0.0. */
-    public Parameter deviceDelayBound;
-    
-    /** Timestamp parameter that defaults to the double value 0.0. */
-    public Parameter timestampCorrection;
-    
-    /** ValueCorrection parameter. FIXME: Whats the default? Function? */
-    public Parameter valueCorrection;
-    
-    /** Driver parameter. FIXME: Whats the default? Path to file? */
-    public Parameter driver;
+        PolygonIcon icon = new PolygonIcon(this, "_icon");
+        icon.setPolygonCoordinates(new Integer[]{-8, 8, 8, 8, 8, 4, 12, 0, 8, -4, 8, -8, -8, -8});
+    } 
     
     /** FIXME: additional parameters:
      * - sporadic behavior/ minimum interarrival time
      * - enforce sporadic behavior
+     * - driver
+     * - value correction
+     * - timestamp correction
      */
     
     

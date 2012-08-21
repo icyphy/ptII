@@ -46,6 +46,7 @@ import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.vergil.icon.PolygonIcon;
 
 /**
  *  This port provides a specialized TypedIOPort for network transmitters
@@ -69,39 +70,39 @@ public class NetworkTransmitterPort extends PtidesPort {
     public NetworkTransmitterPort(CompositeEntity container, String name) throws IllegalActionException, NameDuplicationException {
         super(container, name);
         
-        this.setOutput(true);
-        
-        deviceDelay = new Parameter(this, "deviceDelay");
-        deviceDelay.setToken(new DoubleToken(0.0));
-        deviceDelay.setTypeEquals(BaseType.DOUBLE);
-        
-        deviceDelayBound = new Parameter(this, "deviceDelayBound");
-        deviceDelayBound.setExpression("0.0");
-        deviceDelayBound.setTypeEquals(BaseType.DOUBLE); 
+        this.setOutput(true); 
         
         platformDelayBound = new Parameter(this, "platformDelayBound");
         platformDelayBound.setExpression("0.0");
-        platformDelayBound.setTypeEquals(BaseType.DOUBLE); 
+        platformDelayBound.setTypeEquals(BaseType.DOUBLE);  
         
-        admissionControlFunction = new StringParameter(this, "admissionControlFunction"); 
+        PolygonIcon icon = new PolygonIcon(this, "_icon");
+        icon.setPolygonCoordinates(new Integer[]{-8, 8, 8, 8, 8, -8, -8, -8, -8, -4, -12, -4, -12, 4, -8, 4});
+    }
+     
+    
+    /** Return the timestamp for a specific token.
+     *  @param t The token.
+     *  @return The timestamp.
+     */ 
+    public Time getTimeStampForToken(Token t) {
+        Time time = _transmittedTokens.get(t);
+        _transmittedTokenCnt.put(t, _transmittedTokenCnt.get(t).intValue() - 1);
+        if (_transmittedTokenCnt.get(t).intValue() == 0) {
+            _transmittedTokens.remove(t);
+            _transmittedTokenCnt.remove(t);
+        }
+        return time;
     }
     
-    /** Return the custom shape for this port.
-     *  @return List of coordinates representing the shape.
+    /** Save token and remember timestamp of the token. Then call send of
+     *  super class.
+     *  @param channelIndex The index of the channel, from 0 to width-1.
+     *  @param token The token to send, or null to send no token.
+     *  @exception IllegalActionException If the token to be sent cannot
+     *   be converted to the type of this port, or if the token is null.
+     *  @exception NoRoomException If there is no room in the receiver.
      */
-    public List<Integer[]> getCoordinatesForShape() {
-        List<Integer[]> coordinates = new ArrayList<Integer[]>();
-        coordinates.add(new Integer[]{-8, 8});
-        coordinates.add(new Integer[]{8, 8});
-        coordinates.add(new Integer[]{8, -8});
-        coordinates.add(new Integer[]{-8, -8});
-        coordinates.add(new Integer[]{-8, -4});
-        coordinates.add(new Integer[]{-12, -4});
-        coordinates.add(new Integer[]{-12, 4});
-        coordinates.add(new Integer[]{-8, 4});  
-        return coordinates;
-    }
-    
     @Override
     public void send(int channelIndex, Token token)
             throws IllegalActionException, NoRoomException {
@@ -116,31 +117,14 @@ public class NetworkTransmitterPort extends PtidesPort {
         _transmittedTokens.put(token, timestamp);
         _transmittedTokenCnt.put(token, _transmittedTokenCnt.get(token).intValue() + 1);
         super.send(channelIndex, token);
-    }
-    
-    /** Device delay parameter that defaults to the double value 0.0. */
-    public Parameter deviceDelay;
-    
-    /** Device delay bound parameter that defaults to the double value 0.0. */
-    public Parameter deviceDelayBound;
+    } 
     
     /** Platform delay bound parameter that defaults to the double value 0.0. */
-    public Parameter platformDelayBound;
-    
-    /** Admission control function parameter that defaults to the double value 0.0. */
-    public Parameter admissionControlFunction;
+    public Parameter platformDelayBound; 
     
     
     private HashMap<Token, Time> _transmittedTokens;
     private HashMap<Token, Integer> _transmittedTokenCnt;
 
-    public Time getTimeStampForToken(Token t) {
-        Time time = _transmittedTokens.get(t);
-        _transmittedTokenCnt.put(t, _transmittedTokenCnt.get(t).intValue() - 1);
-        if (_transmittedTokenCnt.get(t).intValue() == 0) {
-            _transmittedTokens.remove(t);
-            _transmittedTokenCnt.remove(t);
-        }
-        return time;
-    }
+    
 }

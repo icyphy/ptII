@@ -35,10 +35,10 @@ import java.awt.geom.Line2D;
 import java.awt.geom.Rectangle2D;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.swing.SwingConstants;
 
-import ptolemy.actor.CustomRenderedPort;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.PubSubPort;
 import ptolemy.actor.PublisherPort;
@@ -56,6 +56,7 @@ import ptolemy.kernel.util.NamedObj;
 import ptolemy.vergil.basic.BasicGraphController;
 import ptolemy.vergil.basic.BasicGraphFrame;
 import ptolemy.vergil.basic.WithIconGraphController;
+import ptolemy.vergil.icon.EditorIcon;
 import ptolemy.vergil.kernel.AttributeController;
 import ptolemy.vergil.toolbox.SnapConstraint;
 import diva.canvas.CanvasUtilities;
@@ -132,6 +133,33 @@ public class ExternalIOPortController extends AttributeController {
 
     /** Prototype inout multiport. */
     public static final IOPort _GENERIC_INOUT_MULTIPORT = new IOPort();
+
+    /** Polygon coordinates for input output port. */
+    public static Integer[] IOPORT_COORDINATES = new Integer[] { 0, 4, 0, 9, 6,
+            4, 12, 4, 12, -4, 6, -4, 0, -9, 0, -4, -8, -4 };
+    
+    /** Polygon coordinates for input port. */
+    public static Integer[] IPORT_COORDINATES = new Integer[] { 0, 4, 0, 9, 12,
+            0, 0, -9, 0, -4, -8, -4 };
+    
+    /** Polygon coordinates for output port. */
+    public static Integer[] OPORT_COORDINATES = new Integer[] { -8, 9, -2, 4,
+            12, 4, 12, -4, -2, -4, -8, -9 };
+    
+    /** Polygon coordinates for input output multiport. */
+    public static Integer[] MULTI_IPORT_COORDINATES = new Integer[] { -5, 4,
+            -5, 9, 1, 4, 1, 9, 7, 4, 12, 0, 7, -4, 1, -9, 1, -4, -5, -9, -5,
+            -4, -8, -4 };
+    
+    /** Polygon coordinates for output multiport. */
+    public static Integer[] MULTI_OPORT_COORDINATES = new Integer[] { -8, 4,
+            -8, 9, -2, 4, -2, 9, 4, 4, 12, 4, 12, -4, 4, -4, -2, -9, -2, -4,
+            -8, -9 };
+    
+    /** Polygon coordinates for input multiport. */
+    public static Integer[] MULTI_IOPORT_COORDINATES = new Integer[] { -4, 4,
+            -4, 9, 2, 4, 2, 9, 8, 4, 12, 4, 12, -4, 8, -4, 2, -9, 2, -4, -4,
+            -9, -4, -4, -8, -4 };
 
     // Static initializer.
     static {
@@ -342,6 +370,7 @@ public class ExternalIOPortController extends AttributeController {
      *  Publisher and subscriber ports are rendered specially.
      */
     public class PortRenderer implements NodeRenderer {
+
         /** Render a port.  If the argument implements Locatable,
          *  then render the port that is the container of that locatable.
          *  If the argument is an instance of _GENERIC_INPUT,
@@ -353,30 +382,47 @@ public class ExternalIOPortController extends AttributeController {
          *  @return The figure that is rendered.
          */
         public Figure render(Object n) {
-            Shape shape;
-            Polygon2D.Double polygon = new Polygon2D.Double();
+            Figure figure = null;
+            Locatable location = (Locatable) n;
+            if (location == null) {
+                Polygon2D.Double polygon = new Polygon2D.Double();
+                polygon.moveTo(0, 0);
+                polygon.lineTo(0, 10);
+                polygon.lineTo(12, 0);
+                polygon.lineTo(0, -10);
+                polygon.closePath();
 
-            Figure figure;
+                figure = new BasicFigure(polygon, Color.black);
+                figure.setToolTipText("Unknown port");
+                return figure;
+            }
+
+            final Port port = (Port) location.getContainer();
+            List iconList = port.attributeList(EditorIcon.class);
+
+            // Check to see whether there is an icon that has been created,
+            // but not inserted.
+            if (iconList.size() > 0) {
+                EditorIcon icon = (EditorIcon) iconList
+                        .get(iconList.size() - 1);
+                figure = icon.createFigure();
+            }
 
             // Wrap the figure in a TerminalFigure to set the direction that
             // connectors exit the port.  Note that this direction is the
             // OPPOSITE direction that is used to layout the port in the
             // Entity Controller.
             int direction;
-            Locatable location = (Location) n;
-
-            if (location != null) {
-                final Port port = (Port) location.getContainer();
-
-                Color fill;
-
+            Shape shape;
+            Polygon2D.Double polygon = new Polygon2D.Double();
+            Color fill = Color.black;
+            if (figure == null) {
                 if (!(port instanceof IOPort)) {
                     polygon.moveTo(-6, 6);
                     polygon.lineTo(0, 6);
                     polygon.lineTo(8, 0);
                     polygon.lineTo(0, -6);
                     polygon.lineTo(-6, -6);
-                    fill = Color.black;
                 } else {
                     IOPort ioport = (IOPort) port;
                     polygon.moveTo(-8, 4);
@@ -395,44 +441,14 @@ public class ExternalIOPortController extends AttributeController {
                             fill = Color.white;
                         }
                         if (ioport.isOutput() && ioport.isInput()) {
-                            polygon.lineTo(-4, 4);
-                            polygon.lineTo(-4, 9);
-                            polygon.lineTo(2, 4);
-                            polygon.lineTo(2, 9);
-                            polygon.lineTo(8, 4);
-                            polygon.lineTo(12, 4);
-                            polygon.lineTo(12, -4);
-                            polygon.lineTo(8, -4);
-                            polygon.lineTo(2, -9);
-                            polygon.lineTo(2, -4);
-                            polygon.lineTo(-4, -9);
-                            polygon.lineTo(-4, -4);
-                            polygon.lineTo(-8, -4);
+                            polygon = _createPolygon(MULTI_IOPORT_COORDINATES,
+                                    polygon);
                         } else if (ioport.isOutput()) {
-                            polygon.lineTo(-8, 4);
-                            polygon.lineTo(-8, 9);
-                            polygon.lineTo(-2, 4);
-                            polygon.lineTo(-2, 9);
-                            polygon.lineTo(4, 4);
-                            polygon.lineTo(12, 4);
-                            polygon.lineTo(12, -4);
-                            polygon.lineTo(4, -4);
-                            polygon.lineTo(-2, -9);
-                            polygon.lineTo(-2, -4);
-                            polygon.lineTo(-8, -9);
+                            polygon = _createPolygon(MULTI_OPORT_COORDINATES,
+                                    polygon);
                         } else if (ioport.isInput()) {
-                            polygon.lineTo(-5, 4);
-                            polygon.lineTo(-5, 9);
-                            polygon.lineTo(1, 4);
-                            polygon.lineTo(1, 9);
-                            polygon.lineTo(7, 4);
-                            polygon.lineTo(12, 0);
-                            polygon.lineTo(7, -4);
-                            polygon.lineTo(1, -9);
-                            polygon.lineTo(1, -4);
-                            polygon.lineTo(-5, -9);
-                            polygon.lineTo(-5, -4);
-                            polygon.lineTo(-8, -4);
+                            polygon = _createPolygon(MULTI_IPORT_COORDINATES,
+                                    polygon);
                         } else {
                             polygon = null;
                         }
@@ -449,44 +465,14 @@ public class ExternalIOPortController extends AttributeController {
                         } else {
                             fill = Color.black;
                         }
+                        Integer[] coordinates;
                         if (ioport.isOutput() && ioport.isInput()) {
-                            polygon.lineTo(0, 4);
-                            polygon.lineTo(0, 9);
-                            polygon.lineTo(6, 4);
-                            polygon.lineTo(12, 4);
-                            polygon.lineTo(12, -4);
-                            polygon.lineTo(6, -4);
-                            polygon.lineTo(0, -9);
-                            polygon.lineTo(0, -4);
-                            polygon.lineTo(-8, -4);
+                            polygon = _createPolygon(IOPORT_COORDINATES,
+                                    polygon);
                         } else if (ioport.isOutput()) {
-                            if (port instanceof CustomRenderedPort) {
-                                List<Integer[]> list = ((CustomRenderedPort)port).getCoordinatesForShape();
-                                for (int i = 0; i < list.size(); i++) {
-                                    polygon.lineTo(list.get(i)[0], list.get(i)[1]);  
-                                }
-                            } else {
-                                polygon.lineTo(-8, 9);
-                                polygon.lineTo(-2, 4);
-                                polygon.lineTo(12, 4);
-                                polygon.lineTo(12, -4);
-                                polygon.lineTo(-2, -4);
-                                polygon.lineTo(-8, -9);
-                            }
-                        } else if (ioport.isInput()) { 
-                            if (port instanceof CustomRenderedPort) {
-                                List<Integer[]> list = ((CustomRenderedPort)port).getCoordinatesForShape();
-                                for (int i = 0; i < list.size(); i++) {
-                                    polygon.lineTo(list.get(i)[0], list.get(i)[1]);  
-                                }
-                            } else {
-                                polygon.lineTo(0, 4);
-                                polygon.lineTo(0, 9); 
-                                polygon.lineTo(12, 0); 
-                                polygon.lineTo(0, -9);
-                                polygon.lineTo(0, -4);
-                                polygon.lineTo(-8, -4);
-                            }
+                            polygon = _createPolygon(OPORT_COORDINATES, polygon);
+                        } else if (ioport.isInput()) {
+                            polygon = _createPolygon(IPORT_COORDINATES, polygon);
                         } else {
                             polygon = null;
                         }
@@ -501,177 +487,147 @@ public class ExternalIOPortController extends AttributeController {
                     polygon.closePath();
                     shape = polygon;
                 }
-
                 if (port instanceof ParameterPort) {
-                    // Create a PaintedList that has two PaintedPaths,
-                    // the usual icon and the > shape.
-                    //                     PaintedList paintedList = new PaintedList();
-                    //                     paintedList.add(new PaintedPath(polygon, (float) 1.5, fill));
-                    //                     Polygon2D.Double polygon2 = new Polygon2D.Double();
-                    //                     //polygon2.moveTo(-15,-15);
-                    //                     //polygon2.lineTo(-3,-5);
-                    //                     //polygon2.lineTo(-16,-5);
-
-                    //                     polygon2.moveTo(5, 9);
-
-                    //                     polygon2.lineTo(17, 0);
-                    //                     polygon2.lineTo(5, -9);
-
-                    //                     polygon2.lineTo(5, -9);
-                    //                     polygon2.lineTo(17, 0);
-                    //                     polygon2.lineTo(5, 9);
-
-                    //                     //polygon2.lineTo(5, -9);
-                    //                     //polygon2.lineTo(17, 0);
-                    //                     //polygon2.lineTo(5, 9);
-
-                    //                     polygon2.closePath();
-                    //                     paintedList.add(new PaintedPath(polygon2, (float) 1.0, Color.black));
-                    //                     figure = new PaintedFigure(paintedList);
                     figure = new BasicFigure(shape, new Color(0, 0, 0, 0),
                             (float) 0.0);
                 } else {
                     figure = new BasicFigure(shape, fill, (float) 1.5);
                 }
+            }
 
-                if (!(port instanceof IOPort)) {
+            if (!(port instanceof IOPort)) {
+                direction = SwingConstants.NORTH;
+            } else {
+                IOPort ioport = (IOPort) port;
+
+                if (ioport.isInput() && ioport.isOutput()) {
                     direction = SwingConstants.NORTH;
+                } else if (ioport.isInput()) {
+                    direction = SwingConstants.EAST;
+                } else if (ioport.isOutput()) {
+                    direction = SwingConstants.WEST;
                 } else {
-                    IOPort ioport = (IOPort) port;
+                    // should never happen
+                    direction = SwingConstants.NORTH;
+                }
+            }
 
-                    if (ioport.isInput() && ioport.isOutput()) {
-                        direction = SwingConstants.NORTH;
-                    } else if (ioport.isInput()) {
-                        direction = SwingConstants.EAST;
-                    } else if (ioport.isOutput()) {
-                        direction = SwingConstants.WEST;
-                    } else {
-                        // should never happen
-                        direction = SwingConstants.NORTH;
+            double normal = CanvasUtilities.getNormal(direction);
+            String name = port.getDisplayName();
+            Rectangle2D backBounds = figure.getBounds();
+            figure = new CompositeFigure(figure) {
+                // Override this because we want to show the type.
+                // It doesn't work to set it once because the type
+                // has not been resolved, and anyway, it may
+                // change. NOTE: This is copied from above.
+                public String getToolTipText() {
+                    return _portTooltip(port);
+                }
+            };
+
+            if ((name != null) && !name.equals("")
+                    && !(port instanceof ParameterPort)) {
+                LabelFigure label = new LabelFigure(name, _labelFont, 1.0,
+                        SwingConstants.SOUTH_WEST);
+
+                // Shift the label slightly right so it doesn't
+                // collide with ports.
+                label.translateTo(backBounds.getX(), backBounds.getY());
+                ((CompositeFigure) figure).add(label);
+            }
+
+            if (port instanceof IOPort) {
+                // Create a diagonal connector for multiports, if necessary.
+                IOPort ioPort = (IOPort) port;
+
+                if (ioPort.isMultiport()) {
+                    int numberOfLinks = ioPort.insideRelationList().size();
+
+                    if (numberOfLinks > 1) {
+                        // The diagonal is necessary.
+                        // Line depends on the orientation.
+                        double startX, startY, endX, endY;
+                        Rectangle2D bounds = figure.getShape().getBounds2D();
+                        double x = bounds.getX();
+                        double y = bounds.getY();
+                        double width = bounds.getWidth();
+                        double height = bounds.getHeight();
+                        int extent = numberOfLinks - 1;
+
+                        if (direction == SwingConstants.EAST) {
+                            startX = x + width;
+                            startY = y + (height / 2);
+                            endX = startX
+                                    + (extent * IOPortController.MULTIPORT_CONNECTION_SPACING);
+                            endY = startY
+                                    + (extent * IOPortController.MULTIPORT_CONNECTION_SPACING);
+                        } else if (direction == SwingConstants.WEST) {
+                            startX = x;
+                            startY = y + (height / 2);
+                            endX = startX
+                                    - (extent * IOPortController.MULTIPORT_CONNECTION_SPACING);
+                            endY = startY
+                                    - (extent * IOPortController.MULTIPORT_CONNECTION_SPACING);
+                        } else if (direction == SwingConstants.NORTH) {
+                            startX = x + (width / 2);
+                            startY = y;
+                            endX = startX
+                                    - (extent * IOPortController.MULTIPORT_CONNECTION_SPACING);
+                            endY = startY
+                                    - (extent * IOPortController.MULTIPORT_CONNECTION_SPACING);
+                        } else {
+                            startX = x + (width / 2);
+                            startY = y + height;
+                            endX = startX
+                                    + (extent * IOPortController.MULTIPORT_CONNECTION_SPACING);
+                            endY = startY
+                                    + (extent * IOPortController.MULTIPORT_CONNECTION_SPACING);
+                        }
+
+                        Line2D line = new Line2D.Double(startX, startY, endX,
+                                endY);
+                        Figure lineFigure = new BasicFigure(line, fill,
+                                (float) 2.0);
+                        ((CompositeFigure) figure).add(lineFigure);
                     }
                 }
 
-                double normal = CanvasUtilities.getNormal(direction);
+                _createPubSubLabels((IOPort) ioPort, (CompositeFigure) figure);
 
-                String name = port.getDisplayName();
-                Rectangle2D backBounds = figure.getBounds();
-                figure = new CompositeFigure(figure) {
-                    // Override this because we want to show the type.
-                    // It doesn't work to set it once because the type
-                    // has not been resolved, and anyway, it may
-                    // change. NOTE: This is copied from above.
+                figure = new PortTerminal(ioPort, figure, normal, true);
+            } else {
+                Site tsite = new PerimeterSite(figure, 0);
+                tsite.setNormal(normal);
+                tsite = new FixedNormalSite(tsite);
+                figure = new TerminalFigure(figure, tsite) {
+                    // Override this because the tooltip may
+                    // change over time.  I.e., the port may
+                    // change from being an input or output, etc.
                     public String getToolTipText() {
                         return _portTooltip(port);
                     }
                 };
-
-                if ((name != null) && !name.equals("")
-                        && !(port instanceof ParameterPort)) {
-                    LabelFigure label = new LabelFigure(name, _labelFont, 1.0,
-                            SwingConstants.SOUTH_WEST);
-
-                    // Shift the label slightly right so it doesn't
-                    // collide with ports.
-                    label.translateTo(backBounds.getX(), backBounds.getY());
-                    ((CompositeFigure) figure).add(label);
-                }
-
-                if (port instanceof IOPort) {
-                    // Create a diagonal connector for multiports, if necessary.
-                    IOPort ioPort = (IOPort) port;
-
-                    if (ioPort.isMultiport()) {
-                        int numberOfLinks = ioPort.insideRelationList().size();
-
-                        if (numberOfLinks > 1) {
-                            // The diagonal is necessary.
-                            // Line depends on the orientation.
-                            double startX, startY, endX, endY;
-                            Rectangle2D bounds = figure.getShape().getBounds2D();
-                            double x = bounds.getX();
-                            double y = bounds.getY();
-                            double width = bounds.getWidth();
-                            double height = bounds.getHeight();
-                            int extent = numberOfLinks - 1;
-
-                            if (direction == SwingConstants.EAST) {
-                                startX = x + width;
-                                startY = y + (height / 2);
-                                endX = startX
-                                        + (extent * IOPortController.MULTIPORT_CONNECTION_SPACING);
-                                endY = startY
-                                        + (extent * IOPortController.MULTIPORT_CONNECTION_SPACING);
-                            } else if (direction == SwingConstants.WEST) {
-                                startX = x;
-                                startY = y + (height / 2);
-                                endX = startX
-                                        - (extent * IOPortController.MULTIPORT_CONNECTION_SPACING);
-                                endY = startY
-                                        - (extent * IOPortController.MULTIPORT_CONNECTION_SPACING);
-                            } else if (direction == SwingConstants.NORTH) {
-                                startX = x + (width / 2);
-                                startY = y;
-                                endX = startX
-                                        - (extent * IOPortController.MULTIPORT_CONNECTION_SPACING);
-                                endY = startY
-                                        - (extent * IOPortController.MULTIPORT_CONNECTION_SPACING);
-                            } else {
-                                startX = x + (width / 2);
-                                startY = y + height;
-                                endX = startX
-                                        + (extent * IOPortController.MULTIPORT_CONNECTION_SPACING);
-                                endY = startY
-                                        + (extent * IOPortController.MULTIPORT_CONNECTION_SPACING);
-                            }
-
-                            Line2D line = new Line2D.Double(startX, startY,
-                                    endX, endY);
-                            Figure lineFigure = new BasicFigure(line, fill,
-                                    (float) 2.0);
-                            ((CompositeFigure) figure).add(lineFigure);
-                        }
-                    }
-
-                    _createPubSubLabels((IOPort)ioPort, (CompositeFigure)figure);
-                    
-                    figure = new PortTerminal(ioPort, figure, normal, true);
-                } else {
-                    Site tsite = new PerimeterSite(figure, 0);
-                    tsite.setNormal(normal);
-                    tsite = new FixedNormalSite(tsite);
-                    figure = new TerminalFigure(figure, tsite) {
-                        // Override this because the tooltip may
-                        // change over time.  I.e., the port may
-                        // change from being an input or output, etc.
-                        public String getToolTipText() {
-                            return _portTooltip(port);
-                        }
-                    };
-                }
-                
-                // Have to do this as well or awt will not render a tooltip.
-                figure.setToolTipText(port.getName());
-            } else {
-                polygon.moveTo(0, 0);
-                polygon.lineTo(0, 10);
-                polygon.lineTo(12, 0);
-                polygon.lineTo(0, -10);
-                polygon.closePath();
-
-                figure = new BasicFigure(polygon, Color.black);
-                figure.setToolTipText("Unknown port");
             }
 
-            // New way to specify a highlight color.
-            Port port = (Port) location.getContainer();
+            // Have to do this as well or awt will not render a tooltip.
+            figure.setToolTipText(port.getName()); 
             AttributeController.renderHighlight(port, figure);
 
             return figure;
         }
+
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
+
+    private Polygon2D.Double _createPolygon(Integer[] coordinates,
+            Polygon2D.Double polygon) {
+        for (int i = 0; i < coordinates.length; i = i + 2) {
+            polygon.lineTo(coordinates[i], coordinates[i + 1]);
+        }
+        return polygon;
+    }
 
     /** Create a label showing the channel and initial values
      *  for PubSubPort. If the port argument is not an instance
@@ -685,27 +641,32 @@ public class ExternalIOPortController extends AttributeController {
         }
         try {
             String channel = null;
-            if (((InstantiableNamedObj)port.getContainer()).isWithinClassDefinition()) {
+            if (((InstantiableNamedObj) port.getContainer())
+                    .isWithinClassDefinition()) {
                 // If the port is in a class definition, do not expand it, it might contain $foo.$bar.
-                channel = "Channel: " + ((PubSubPort)port).channel.getExpression();
+                channel = "Channel: "
+                        + ((PubSubPort) port).channel.getExpression();
             } else {
-                channel = "Channel: " + ((PubSubPort)port).channel.stringValue();
+                channel = "Channel: "
+                        + ((PubSubPort) port).channel.stringValue();
             }
             // The anchor argument below is (sadly) ignored.
-            Figure label = new LabelFigure(
-                    channel, _labelFont, 0.0, SwingConstants.SOUTH_EAST, _pubSubLabelColor);
+            Figure label = new LabelFigure(channel, _labelFont, 0.0,
+                    SwingConstants.SOUTH_EAST, _pubSubLabelColor);
             double labelHeight = label.getBounds().getHeight();
             Rectangle2D bounds = figure.getShape().getBounds2D();
             label.translate(-8.0, bounds.getMaxY() + labelHeight + 4);
             figure.add(label);
-            
+
             if (port instanceof PubSubPort) {
-                String initialTokens = ((PubSubPort)port).initialTokens.getExpression();
+                String initialTokens = ((PubSubPort) port).initialTokens
+                        .getExpression();
                 if (!(initialTokens.trim().equals(""))) {
                     initialTokens = "Initial tokens: " + initialTokens;
-                    label = new LabelFigure(
-                            initialTokens, _labelFont, 0.0, SwingConstants.SOUTH_EAST, _pubSubLabelColor);
-                    label.translate(-8.0, bounds.getMaxY() + 2 * labelHeight + 8);
+                    label = new LabelFigure(initialTokens, _labelFont, 0.0,
+                            SwingConstants.SOUTH_EAST, _pubSubLabelColor);
+                    label.translate(-8.0, bounds.getMaxY() + 2 * labelHeight
+                            + 8);
                     figure.add(label);
                 }
             }
@@ -717,6 +678,11 @@ public class ExternalIOPortController extends AttributeController {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private members                   ////
+
+    /** Map used to keep track of icons that have been created
+     *  but not yet assigned to a container.
+     */
+    private static Map _iconsPendingContainer = new HashMap();
 
     /** Color for publish and subscribe labels. */
     private static Color _pubSubLabelColor = new Color(0.0f, 0.4f, 0.4f, 1.0f);

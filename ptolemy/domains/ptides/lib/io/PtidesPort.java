@@ -30,10 +30,15 @@ ENHANCEMENTS, OR MODIFICATIONS.
 package ptolemy.domains.ptides.lib.io;
 
 import ptolemy.actor.CustomRenderedPort;
+import ptolemy.actor.lib.hoc.MirrorPort;
+import ptolemy.data.DoubleToken;
+import ptolemy.data.expr.Parameter;
+import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.vergil.icon.PolygonIcon;
 
 /**
  *  This abstract class implements common functionality for ptides
@@ -45,7 +50,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  *  @Pt.ProposedRating Red (derler)
  *  @Pt.AcceptedRating
  */
-public abstract class PtidesPort extends CustomRenderedPort {
+public abstract class PtidesPort extends MirrorPort {
     
     /** Create a new PtidesPort with a given container and a name.
      * @param container The container of the port. 
@@ -54,19 +59,21 @@ public abstract class PtidesPort extends CustomRenderedPort {
      * @throws NameDuplicationException If name already exists.
      */
     public PtidesPort(CompositeEntity container, String name) throws IllegalActionException, NameDuplicationException {
-        super(container, name); 
-    }
-    
-    /** Override this method with an empty implementation to allow for
-     *  adding this port to the library.
-     */
-    protected void _checkContainer(Entity container)
-        throws IllegalActionException {
+        super(container, name);
         
-        //if (!(container instanceof TypedActor) && (container != null)) {
-        //    throw new IllegalActionException(container, this,
-        //            "TypedIOPort can only be contained by objects "
-        //                    + "implementing the TypedActor interface.");
-        //}
-    }
+        deviceDelay = new Parameter(this, "deviceDelay");
+        deviceDelay.setToken(new DoubleToken(0.0));
+        deviceDelay.setTypeEquals(BaseType.DOUBLE);
+        
+        deviceDelayBound = new Parameter(this, "deviceDelayBound");
+        deviceDelayBound.setExpression("0.0");
+        deviceDelayBound.setTypeEquals(BaseType.DOUBLE); 
+        
+    } 
+     
+    /** Device delay parameter that defaults to the double value 0.0. */
+    public Parameter deviceDelay;
+    
+    /** Device delay bound parameter that defaults to the double value 0.0. */
+    public Parameter deviceDelayBound;
 }

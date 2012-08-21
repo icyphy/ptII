@@ -40,6 +40,7 @@ import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.vergil.icon.PolygonIcon;
 
 /**
  *  This port provides a specialized TypedIOPort for network receivers
@@ -62,15 +63,7 @@ public class NetworkReceiverPort extends PtidesPort {
     public NetworkReceiverPort(CompositeEntity container, String name) throws IllegalActionException, NameDuplicationException {
         super(container, name);
         
-        this.setInput(true);  
-        
-        deviceDelay = new Parameter(this, "deviceDelay");
-        deviceDelay.setToken(new DoubleToken(0.0));
-        deviceDelay.setTypeEquals(BaseType.DOUBLE);
-        
-        deviceDelayBound = new Parameter(this, "deviceDelayBound");
-        deviceDelayBound.setExpression("0.0");
-        deviceDelayBound.setTypeEquals(BaseType.DOUBLE); 
+        this.setInput(true);   
         
         sourcePlatformDelayBound = new Parameter(this, "sourcePlatformDelayBound");
         sourcePlatformDelayBound.setExpression("0.0");
@@ -80,34 +73,14 @@ public class NetworkReceiverPort extends PtidesPort {
         networkDelayBound.setExpression("0.0");
         networkDelayBound.setTypeEquals(BaseType.DOUBLE); 
         
-    }
-    
-    /** Return the custom shape for this port.
-     *  @return List of coordinates representing the shape.
-     */
-    public List<Integer[]> getCoordinatesForShape() {
-        List<Integer[]> coordinates = new ArrayList<Integer[]>();
-        coordinates.add(new Integer[]{-8, 8});
-        coordinates.add(new Integer[]{8, 8});
-        coordinates.add(new Integer[]{8, 4});
-        coordinates.add(new Integer[]{12, 4});
-        coordinates.add(new Integer[]{12, -4});
-        coordinates.add(new Integer[]{8, -4});
-        coordinates.add(new Integer[]{8, -8}); 
-        coordinates.add(new Integer[]{-8, -8});
-        return coordinates;
-    }
-    
-    /** Device delay parameter that defaults to the double value 0.0. */
-    public Parameter deviceDelay;
-    
-    /** Device delay bound parameter that defaults to the double value 0.0. */
-    public Parameter deviceDelayBound;
+        PolygonIcon icon = new PolygonIcon(this, "_icon");
+        icon.setPolygonCoordinates(new Integer[]{-8, 8, 8, 8, 8, 4, 12, 4, 12, -4, 8, -4, 8, -8, -8, -8});
+    } 
     
     /** Network delay bound parameter that defaults to the double value 0.0. */
     public Parameter networkDelayBound; 
     
     /** Source platform delay bound parameter that defaults to the double value 0.0. */
-    public Parameter sourcePlatformDelayBound; 
-    
+    public Parameter sourcePlatformDelayBound;
+
 }

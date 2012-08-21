@@ -33,12 +33,16 @@ package ptolemy.domains.ptides.lib.io;
 import java.util.ArrayList;
 import java.util.List;
 
+import ptolemy.actor.TypeAttribute;
+import ptolemy.data.BooleanToken;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.vergil.icon.PolygonIcon;
 
 
 /**
@@ -64,51 +68,40 @@ public class ActuatorPort extends PtidesPort {
         
         this.setOutput(true);
         
-        deviceDelay = new Parameter(this, "deviceDelay");
-        deviceDelay.setToken(new DoubleToken(0.0));
-        deviceDelay.setTypeEquals(BaseType.DOUBLE);
+        actuateAtEventTimestamp = new Parameter(this, "actuateAtEventTimestamp"); 
+        actuateAtEventTimestamp.setTypeEquals(BaseType.BOOLEAN);
+        actuateAtEventTimestamp.setExpression("true");
+        _actuateAtEventTimestamp = true;
         
-        deviceDelayBound = new Parameter(this, "deviceDelayBound");
-        deviceDelayBound.setExpression("0.0");
-        deviceDelayBound.setTypeEquals(BaseType.DOUBLE);
-        
-        timestampCorrection = new Parameter(this, "timestampCorrection");
-        timestampCorrection.setTypeEquals(BaseType.DOUBLE);
-        timestampCorrection.setExpression("0.0");
-        
-        timestampCorrection = new Parameter(this, "valueCorrection"); 
-        driver = new Parameter(this, "driver");
+        PolygonIcon icon = new PolygonIcon(this, "_icon");
+        icon.setPolygonCoordinates(new Integer[]{-8, 8, 8, 8, 8, -8, -8, -8, -8, -4, -12, 0, -8, 4});
     }
     
-    /** Return the custom shape for this port.
-     *  @return List of coordinates representing the shape.
+    /** Actuate at event timestamp parameter that defaults to the boolean value TRUE. 
+     *  If this parameter is set to FALSE, an actuator can produce outputs as soon 
+     *  as they are available.
      */
-    public List<Integer[]> getCoordinatesForShape() {
-        List<Integer[]> coordinates = new ArrayList<Integer[]>();
-        coordinates.add(new Integer[]{-8, 8});
-        coordinates.add(new Integer[]{8, 8});
-        coordinates.add(new Integer[]{8, -8});
-        coordinates.add(new Integer[]{-8, -8});
-        coordinates.add(new Integer[]{-8, -4});
-        coordinates.add(new Integer[]{-12, 0});
-        coordinates.add(new Integer[]{-8, 4}); 
-        return coordinates;
+    public Parameter actuateAtEventTimestamp; 
+    
+    /** Return true if actuation should happen exactly at event timestamp.
+     * @return True if actuation should happen exactly at event timestamp.
+     */
+    public boolean actuateAtEventTimestamp() {
+        return _actuateAtEventTimestamp;
     }
     
-    /** Device delay parameter that defaults to the double value 0.0. */
-    public Parameter deviceDelay;
+    @Override
+    public void attributeChanged(Attribute attribute)
+            throws IllegalActionException {
+        if (attribute == actuateAtEventTimestamp) {
+            _actuateAtEventTimestamp = ((BooleanToken) actuateAtEventTimestamp.getToken())
+                    .booleanValue();
+        } else {
+            super.attributeChanged(attribute);
+        }
+    }
     
-    /** Device delay bound parameter that defaults to the double value 0.0. */
-    public Parameter deviceDelayBound;
     
-    /** Timestamp parameter that defaults to the double value 0.0. */
-    public Parameter timestampCorrection;
-    
-    /** ValueCorrection parameter. FIXME: Whats the default? Function? */
-    public Parameter valueCorrection;
-    
-    /** Driver parameter. FIXME: Whats the default? Path to file? */
-    public Parameter driver; 
-
+    private boolean _actuateAtEventTimestamp;
     
 }

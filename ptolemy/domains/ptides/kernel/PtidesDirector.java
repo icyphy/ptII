@@ -180,7 +180,8 @@ public class PtidesDirector extends DEDirector {
                             .get(event.ioPort());
                     if (ptidesOutputPortList == null) {
                         ptidesOutputPortList = new LinkedList<PtidesEvent>();
-                    }
+                    } 
+                    
                     // modify deadline of event such that it will be output after deviceDelay
                     PtidesEvent newEvent = new PtidesEvent(event.ioPort(),
                             event.channel(), event.timeStamp(),
@@ -476,6 +477,8 @@ public class PtidesDirector extends DEDirector {
                 if (inputPort instanceof NetworkReceiverPort) {
                     deviceDelayBound += _getDoubleParameterValue(inputPort, 
                             "networkDelayBound");
+                    deviceDelayBound += _getDoubleParameterValue(inputPort, 
+                            "sourcePlatformDelayBound");
                 }
                 SuperdenseDependency minDelay = SuperdenseDependency.OPLUS_IDENTITY;
                 // Find minimum path to input port group.
@@ -750,17 +753,22 @@ public class PtidesDirector extends DEDirector {
 
         // FIXME: any way of knowing if coming from sensor?
 
-        if (ioPort.isOutput()) {
-            // FIXME: add deviceDelay
+        if (ioPort.isOutput()) { 
+            
             Time deliveryTime;
             if (ioPort instanceof ActuatorPort) {
-                
-                deliveryTime = getModelTime().subtract(
-                        _getDoubleParameterValue(ioPort, "deviceDelayBound"));
-                
-                if (getEnvironmentTime().compareTo(deliveryTime) > 0) {
-                    throw new IllegalActionException("Missed Deadline at " + ioPort + "!");
+                if (((ActuatorPort)ioPort).actuateAtEventTimestamp()) {
+                    deliveryTime = getModelTime().subtract(
+                            _getDoubleParameterValue(ioPort, "deviceDelay"));
+                } else {
+                    deliveryTime = localClock.getLocalTime();
                 }
+                
+                if (getModelTime().compareTo(deliveryTime) < 0) {
+                    throw new IllegalActionException("Missed Deadline at " + ioPort + "!\n " +
+                    		"Actuation must happen at " + getModelTime() + 
+                    		" which is bigger than currentTime " + localClock.getLocalTime());
+                } 
             } else {
                 deliveryTime = localClock.getLocalTime();
             }
