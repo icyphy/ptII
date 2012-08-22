@@ -231,9 +231,9 @@ Michael Wetter (LBNL)</text></svg></configure>
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1068, 660]">
         </property>
-        <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0384245917387127">
+        <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.3204798794505728">
         </property>
-        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{552.5, 274.19980414546717}">
+        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{436.3984375, 272.0341467696629}">
         </property>
         <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
             <property name="iterations" class="ptolemy.data.expr.Parameter" value="(2*24*3600-0)/60+1">
@@ -549,23 +549,17 @@ Modified by Baobing (Brian) Wang</text></svg></configure>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[40.0, 215.0]">
                 </property>
             </property>
-            <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-                <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,0.0,0.0,1.0}">
-                </property>
-                <property name="text" class="ptolemy.kernel.util.StringAttribute" value="FIXME: Dubious cost model.">
-                </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[375.0, 540.0]">
-                </property>
-            </property>
             <property name="annotation3" class="ptolemy.kernel.util.Attribute">
                 <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
                 </property>
                 <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
                     <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">Cost model:
-OFF: $0/min
+OFF: no cost
 WARM: $0.002/min
 HEAT: $0.004/min
-"unitCost" is updated by the state machine.</text></svg></configure>
+"unitCost" is updated by the state machine.
+This model simulates the room for two days.
+Thus, the cost is multiplied by 15 to get monthly cost.</text></svg></configure>
                 </property>
                 <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
                     <configure>
@@ -578,7 +572,7 @@ HEAT: $0.004/min
                 </property>
                 <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
                 </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[360.0, 555.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[135.0, 530.0]">
                 </property>
             </property>
             <port name="TRoom" class="ptolemy.actor.TypedIOPort">
@@ -2820,7 +2814,7 @@ HEAT: $0.004/min
             <property name="_location" class="ptolemy.kernel.util.Location" value="[140.0, 15.0]">
             </property>
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={2, 54, 1287, 711}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 54, 1287, 711}, maximized=false}">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1059, 595]">
         </property>
@@ -3182,7 +3176,7 @@ HEAT: $0.004/min
         <link port="Expression2.in" relation="relation17"/>
     </entity>
     <entity name="Merge" class="ptolemy.domains.de.lib.Merge">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[411.0, 184.75]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[415.0, 185.0]">
         </property>
     </entity>
     <entity name="Previous3" class="ptolemy.domains.de.lib.Previous">
