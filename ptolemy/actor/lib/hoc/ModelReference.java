@@ -479,6 +479,10 @@ public class ModelReference extends TypedAtomicActor implements
      */
     public void fire() throws IllegalActionException {
         super.fire();
+        
+        if (_model == null) {
+            throw new IllegalActionException(this, "No model to execute");
+        }
 
         if (_throwable != null) {
             Throwable throwable = _throwable;
