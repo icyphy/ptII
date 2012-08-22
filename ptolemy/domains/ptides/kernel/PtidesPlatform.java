@@ -665,6 +665,7 @@ public class PtidesPlatform extends MirrorComposite {
         public boolean transferInputs(IOPort port)
                 throws IllegalActionException {
             boolean result = false;
+            PtidesDirector director = (PtidesDirector) _getEmbeddedPtidesDirector();
 
             for (int channelIndex = 0; channelIndex < port.getWidth(); channelIndex++) {
                 // NOTE: This is not compatible with certain cases
@@ -681,7 +682,7 @@ public class PtidesPlatform extends MirrorComposite {
                                         + port.getName());
                             }
 
-                            PtidesDirector director = (PtidesDirector) _getEmbeddedPtidesDirector();
+                            
                             Port associatedPort = ((MirrorPort) port).getAssociatedPort();
                             if (associatedPort instanceof NetworkReceiverPort) {
                                 NetworkReceiverPort networkReceiverPort = (NetworkReceiverPort) associatedPort; 
@@ -731,7 +732,7 @@ public class PtidesPlatform extends MirrorComposite {
                                                 new PtidesEvent(
                                                         sensorPort,
                                                         channelIndex,
-                                                        getModelTime(),
+                                                        director.getModelTime(),
                                                         1,
                                                         -1,
                                                         t,

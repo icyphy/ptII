@@ -41,11 +41,14 @@ import java.util.Set;
 import java.util.TreeSet;
 
 import ptolemy.actor.Actor;
+import ptolemy.actor.AtomicActor;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.Receiver;
+import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedCompositeActor;
 import ptolemy.actor.TypedIOPort;
+import ptolemy.actor.lib.Source;
 import ptolemy.actor.lib.TimeDelay;
 import ptolemy.actor.parameters.ParameterPort;
 import ptolemy.actor.parameters.SharedParameter;
@@ -508,8 +511,20 @@ public class PtidesDirector extends DEDirector {
                 _setDelayOffset((NamedObj) entity,
                         ((DoubleToken) ((TimeDelay) entity).minimumDelay
                                 .getToken()).doubleValue());
+            } 
+            if (entity instanceof Source) {
+                Double delayOffset = _getDoubleParameterValue((NamedObj)entity, "delayOffset");
+                if (delayOffset != null && delayOffset.doubleValue() > 0.0) {
+                    Actor actor = ((Source) entity);
+                    for (Object object : actor.outputPortList()) {
+                        IOPort port = ((IOPort)object);
+                        for (Object sink : port.sinkPortList()) {
+                            _setDelayOffset((NamedObj) sink, delayOffset);
+                        }
+                    }
+                }
             }
-        }
+        } 
     }
 
     /** Calculate the superdense dependency (minimum model time delay) between
@@ -602,20 +617,7 @@ public class PtidesDirector extends DEDirector {
                     SuperdenseDependency minDelay = (SuperdenseDependency) actorCausality
                             .getDependency(inputPort, outputPort);
                     // Only if dependency exists...
-                    if (!minDelay.equals(SuperdenseDependency.OPLUS_IDENTITY)) {
-                        //                        // Add connected input ports if this input port can
-                        //                        // produce pure events.
-                        //                        if(!minDelay.equals(
-                        //                                SuperdenseDependency.OTIMES_IDENTITY)) {
-                        //                            if(!_inputPortsForPureEvent.containsKey(inputPort)) 
-                        //                            {
-                        //                                _inputPortsForPureEvent.put(
-                        //                                        inputPort, new HashSet<TypedIOPort>());
-                        //                            }
-                        //                            _inputPortsForPureEvent.get(inputPort).addAll(
-                        //                                    (List<TypedIOPort>)
-                        //                                    outputPort.deepConnectedPortList());
-                        //                        }
+                    if (!minDelay.equals(SuperdenseDependency.OPLUS_IDENTITY)) { 
                         // Set input port pair for all connected ports.
                         // Assumes no delay from connections.
                         for (TypedIOPort connectedPort : (List<TypedIOPort>) outputPort
@@ -868,7 +870,7 @@ public class PtidesDirector extends DEDirector {
                 }
                 if (time == null || finished) {
                     _currentLogicalTime = event.timeStamp();
-                    _pureEvents.poll();
+                    _pureEvents.remove(event);
                     return event.actor();
                 }
             }
