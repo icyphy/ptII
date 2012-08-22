@@ -1,7 +1,7 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="OptimizationAdvisorEAL" class="ptolemy.actor.TypedCompositeActor">
+<entity name="OptimizationAdvisor" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.0.devel">
     </property>
     <property name="WebServer" class="org.ptolemy.ptango.lib.WebServer">
@@ -543,7 +543,7 @@ Modified by Baobing (Brian) Wang</text></svg></configure>
                 </property>
                 <property name="text" class="ptolemy.kernel.util.StringAttribute" value="FIXME: Dubious cost model.">
                 </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[455.0, 555.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[375.0, 540.0]">
                 </property>
             </property>
             <property name="annotation3" class="ptolemy.kernel.util.Attribute">
@@ -553,7 +553,8 @@ Modified by Baobing (Brian) Wang</text></svg></configure>
                     <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">Cost model:
 OFF: $0/min
 WARM: $0.002/min
-HEAT: $0.004/min</text></svg></configure>
+HEAT: $0.004/min
+"unitCost" is updated by the state machine.</text></svg></configure>
                 </property>
                 <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
                     <configure>
@@ -566,7 +567,7 @@ HEAT: $0.004/min</text></svg></configure>
                 </property>
                 <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
                 </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[440.0, 570.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[360.0, 555.0]">
                 </property>
             </property>
             <port name="TRoom" class="ptolemy.actor.TypedIOPort">
