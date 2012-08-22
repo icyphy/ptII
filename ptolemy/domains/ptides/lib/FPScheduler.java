@@ -115,8 +115,10 @@ public class FPScheduler extends ResourceScheduler {
             Time lasttime = _lastTimeScheduled.get(executing);
             Time timePassed = currentPlatformTime.subtract(lasttime);
             remainingTime = _remainingTimes.get(executing).subtract(timePassed); 
-            _remainingTimes.put(executing, remainingTime);
-            _lastTimeScheduled.put(executing, currentPlatformTime);
+            if (remainingTime.getDoubleValue() < 0) {
+                throw new IllegalActionException("");
+            }
+            _remainingTimes.put(executing, remainingTime); 
             if (!_currentlyExecuting.contains(actor) && executing != actor) { 
                 int executingPriority = _getPriority(executing);
                 int newActorPriority = _getPriority(actor);
@@ -125,8 +127,9 @@ public class FPScheduler extends ResourceScheduler {
                     event(executing, currentPlatformTime.getDoubleValue(), ExecutionEventType.PREEMPTED);
                     scheduleNewActor(actor, currentPlatformTime, executionTime);
                 }
-            } else {
-                _lastTimeScheduled.put(actor, currentPlatformTime);
+            } 
+            for (Actor preemptedActor : _currentlyExecuting) { 
+                _lastTimeScheduled.put(preemptedActor, currentPlatformTime);
             }
         }
         
