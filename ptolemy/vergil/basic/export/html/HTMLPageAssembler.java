@@ -207,8 +207,6 @@ public class HTMLPageAssembler extends TypedAtomicActor {
                 Enumeration<?> attriList = attributes.getAttributeNames();
                 while (attriList.hasMoreElements()) {
                     Object item = attriList.nextElement();
-                    System.out
-                            .println(item.toString() + "\t" + item.getClass());
                     if (item instanceof HTML.UnknownTag) {
                         throw new IllegalActionException(this,
                                 "Unknown HTML tag: " + item.toString());

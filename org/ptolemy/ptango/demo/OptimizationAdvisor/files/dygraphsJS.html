@@ -168,5 +168,13 @@
 			drawChart(false);
 		}
 	}
+	
+	$(document).ready(function () {
+	  	$('#TDay').val(params.TDay);
+	  	$('#TNight').val(params.TNight);
+	  	$('#LTime').val(params.LTime);
+	  	$('#RTime').val(params.RTime);
+	  	refresh();
+	});
 </script>
 
