@@ -108,7 +108,10 @@
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
         <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-            <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:darkgray">Author: Baobing (Brian) Wang (U. Maryland), Edward A. Lee (UCB), Michael Wetter (LBNL)</text></svg></configure>
+            <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:darkgray">Author: 
+Baobing (Brian) Wang (U. Maryland)
+Edward A. Lee (UCB)
+Michael Wetter (LBNL)</text></svg></configure>
         </property>
         <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
             <configure>
@@ -121,7 +124,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[40.0, 580.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[720.0, 390.0]">
         </property>
     </property>
     <property name="initialParameters" class="ptolemy.data.expr.Parameter" value="{TDay = &quot;24&quot;, TNight = &quot;15&quot;, LTime = &quot;-1&quot;, RTime = &quot;-1&quot;}">
@@ -144,9 +147,9 @@
         </property>
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model provides a web service that takes&#10;setpoints, runs a simulation model of a simple&#10;HVAC system, and estimates the cost of the&#10;setpoints.&#10;&#10;To access the web service, run the model, then&#10;point your browser to:&#10;&#10;   http://localhost:8080/room&#10;&#10;or double click on this comment.">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model provides a web service that &#10;takes setpoints, runs a simulation model &#10;of a simple HVAC system, and estimates &#10;the cost of the setpoints.&#10;&#10;To access the web service, run the model, &#10;then point your browser to:&#10;&#10;   http://localhost:8080/room&#10;&#10;or double click on this comment.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[75.0, 385.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[735.0, 175.0]">
         </property>
         <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="http://localhost:8080/room#in_browser">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -168,10 +171,18 @@
             </property>
         </property>
     </property>
+    <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Users can specify four parameters in the web page:&#10;TDay: desired temperature during the day in celsius&#10;TNight: desired temperature during the night in celsius&#10;LTime: time to leave home for work ([0, 24])&#10;RTime: time to return home from work ([0, 24])&#10;&#10;During [LTime, RTime], the heater will be turned off &#10;no matter what the temperature is to save energy. It&#10;will be turned on one hour before RTime to warm up &#10;the room so that it will not be too cold inside when &#10;the user returns home.&#10;&#10;If LTime &gt;= RTime, they are both ignored.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[75.0, 360.0]">
+        </property>
+    </property>
     <entity name="HttpActor" class="org.ptolemy.ptango.lib.HttpActor">
         <property name="path" class="ptolemy.data.expr.StringParameter" value="/room">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{175.0, 180.0}">
+        <property name="timeout" class="ptolemy.data.expr.Parameter" value="15000L">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[175.0, 155.0]">
         </property>
         <port name="getParameters" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -180,7 +191,7 @@
         </port>
     </entity>
     <entity name="Simulator" class="ptolemy.actor.lib.hoc.RunCompositeActor">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[664.0, 185.5]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[646.0, 159.75]">
         </property>
         <property name="startTime" class="ptolemy.data.expr.Parameter" value="0">
             <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -2455,7 +2466,7 @@ HEAT: $0.004/min
     </entity>
     <entity name="ParseParameters" class="ptolemy.actor.TypedCompositeActor">
         <display name="ParseParameters&#10;."/>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[529.0, 185.5]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[511.0, 159.75]">
         </property>
         <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={676, 405, 934, 634}, maximized=false}">
         </property>
@@ -2616,7 +2627,7 @@ HEAT: $0.004/min
         <link port="ExpressionToToken4.output" relation="relation12"/>
     </entity>
     <entity name="Initiation" class="ptolemy.actor.TypedCompositeActor">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[350.0, 170.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[330.0, 145.0]">
         </property>
         <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={266, 160, 928, 640}, maximized=false}">
         </property>
@@ -2771,7 +2782,7 @@ HEAT: $0.004/min
     <entity name="Previous" class="ptolemy.domains.de.lib.Previous">
         <property name="initialValue" class="ptolemy.data.expr.Parameter" value="initialTemperatures">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[659.0, 420.5]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[641.0, 394.75]">
         </property>
         <property name="_flipPortsHorizontal" class="ptolemy.data.expr.Parameter" value="true">
         </property>
@@ -2779,14 +2790,14 @@ HEAT: $0.004/min
     <entity name="Previous2" class="ptolemy.domains.de.lib.Previous">
         <property name="initialValue" class="ptolemy.data.expr.Parameter" value="initialEvents">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[644.0, 485.5]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[626.0, 459.75]">
         </property>
         <property name="_flipPortsHorizontal" class="ptolemy.data.expr.Parameter" value="true">
         </property>
     </entity>
     <entity name="PageGenerator" class="ptolemy.actor.TypedCompositeActor">
         <display name="PageGenerator&#10;.&#10;."/>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[365.0, 330.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[345.0, 305.0]">
         </property>
         <property name="_flipPortsHorizontal" class="ptolemy.data.expr.Parameter" value="true">
         </property>
@@ -3171,25 +3182,25 @@ HEAT: $0.004/min
         <link port="Expression2.in" relation="relation17"/>
     </entity>
     <entity name="Merge" class="ptolemy.domains.de.lib.Merge">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[429.0, 210.5]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[411.0, 184.75]">
         </property>
     </entity>
     <entity name="Previous3" class="ptolemy.domains.de.lib.Previous">
         <property name="initialValue" class="ptolemy.data.expr.Parameter" value="initialParameters">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[534.0, 255.5]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[516.0, 229.75]">
         </property>
     </entity>
     <entity name="Previous4" class="ptolemy.domains.de.lib.Previous">
         <property name="initialValue" class="ptolemy.data.expr.Parameter" value="initialCost">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[629.0, 545.5]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[611.0, 519.75]">
         </property>
         <property name="_flipPortsHorizontal" class="ptolemy.data.expr.Parameter" value="true">
         </property>
     </entity>
     <entity name="MicrostepDelay" class="ptolemy.actor.lib.MicrostepDelay">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[100.0, 330.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[110.0, 305.0]">
         </property>
         <property name="_flipPortsHorizontal" class="ptolemy.data.expr.Parameter" value="true">
         </property>
@@ -3197,13 +3208,13 @@ HEAT: $0.004/min
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation7" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="[740.0, 310.0]">
+        <vertex name="vertex1" value="[715.0, 310.0]">
         </vertex>
     </relation>
     <relation name="relation12" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
-        <vertex name="vertex1" value="{730.0, 320.0}">
+        <vertex name="vertex1" value="[705.0, 295.0]">
         </vertex>
     </relation>
     <relation name="relation9" class="ptolemy.actor.TypedIORelation">
@@ -3223,13 +3234,13 @@ HEAT: $0.004/min
     <relation name="relation14" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
-        <vertex name="vertex1" value="[469.0, 210.5]">
+        <vertex name="vertex1" value="[451.0, 184.75]">
         </vertex>
     </relation>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation15" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="{720.0, 360.0}">
+        <vertex name="vertex1" value="[695.0, 335.0]">
         </vertex>
     </relation>
     <relation name="relation16" class="ptolemy.actor.TypedIORelation">
