@@ -62,7 +62,7 @@ doit() {
                      } 
                      if ($0 == closer) {
                         if (sawIterations == 0) {
-                           print indent[1] "    <property name=\"iterations\" class=\"ptolemy.data.expr.Parameter\" value=\"0\">"
+                           print indent[1] "    <property name=\"iterations\" class=\"ptolemy.data.expr.Parameter\" value=\"AUTO\">"
                            print indent[1] "    </property>"
                         }
                         sawSDFDirector=0
