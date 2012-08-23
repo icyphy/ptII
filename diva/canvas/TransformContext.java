@@ -158,8 +158,14 @@ public class TransformContext {
         if (context == this) {
             return new AffineTransform();
         } else {
-            TransformContext parentContext = _component.getParent()
-                    .getTransformContext();
+            CanvasComponent parentComponent = _component.getParent();
+            // Prevent a null-pointer exception.
+            // FIXME: Why might this happen? Can't see to reproduce.
+            // FIXME: Is returning _transform the right thing to do??
+            if (parentComponent == null) {
+                return _transform;
+            }
+            TransformContext parentContext = parentComponent.getTransformContext();
             AffineTransform transform = _transform;
 
             if (parentContext == context) {
