@@ -188,27 +188,20 @@ public class TimeDelay extends Transformer {
      */
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
-        if (attribute == delay) {
+        if (attribute == delay || attribute == minimumDelay) {
+            // Change both attributes at the same time because otherwise the order
+            // in which these values are changed might lead to delay < minimumDelay
+            // and we want to catch this case. 
             double newDelay = ((DoubleToken) (delay.getToken())).doubleValue();
             double minimumDelayValue = _minimumDelay();
             if (newDelay < minimumDelayValue) {
                 throw new IllegalActionException(this,
-                        "Cannot have delay less than "
+                        "Delay " + newDelay + " < minimumDelay " 
                         + minimumDelayValue
-                        + ". Attempt to set it to "
-                        + newDelay);
+                        + ". Modify delay or minimumDelay value.");
             } else {
                 _delay = newDelay;
-            }
-        } else if (attribute == minimumDelay) {
-            double newMinimumDelay = ((DoubleToken) (minimumDelay.getToken())).doubleValue();  
-            if (newMinimumDelay > _delay) {
-                throw new IllegalActionException(this,
-                        "Cannot have minimumDelay less than "
-                        + _delay
-                        + ". Modify the delay value.");
-            } else {
-                _minimumDelay = newMinimumDelay;
+                _minimumDelay = minimumDelayValue;
             }
         } else {
             super.attributeChanged(attribute);
