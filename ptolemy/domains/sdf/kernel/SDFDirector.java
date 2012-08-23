@@ -266,7 +266,7 @@ public class SDFDirector extends StaticSchedulingDirector implements
      *  <p>If the number of iterations is -1, which is the value of
      *  the AUTO choice in the UI, then if the container of the
      *  director is the the top level then one iteration will occur
-     *  before postfire() eturns false.</p>
+     *  before postfire() returns false.</p>
      *
      *  <p>If the number of iterations is -1 and and the container of
      *  the director is <b>not</b> at the top level then postfire()
