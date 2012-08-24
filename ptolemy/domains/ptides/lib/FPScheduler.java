@@ -86,13 +86,14 @@ public class FPScheduler extends ResourceScheduler {
      *  this scheduler has to perform a reschedule.
      *  @param actor The actor to be scheduled.
      *  @param currentPlatformTime The current platform time.
+     *  @param deadline The event deadline - not used here.
      *  @return Relative time when this Scheduler has to be executed
      *    again.
      *  @throws IllegalActionException Thrown if actor paramaters such
      *    as execution time or priority cannot be read.
      */
     @Override 
-    public Time schedule(Actor actor, Time currentPlatformTime) throws IllegalActionException {
+    public Time schedule(Actor actor, Time currentPlatformTime, Double deadline) throws IllegalActionException {
         _lastActorFinished = false;
         event(this, currentPlatformTime.getDoubleValue(), ExecutionEventType.START);
         event(this, currentPlatformTime.getDoubleValue(), ExecutionEventType.STOP);
@@ -120,8 +121,8 @@ public class FPScheduler extends ResourceScheduler {
             }
             _remainingTimes.put(executing, remainingTime); 
             if (!_currentlyExecuting.contains(actor) && executing != actor) { 
-                int executingPriority = _getPriority(executing);
-                int newActorPriority = _getPriority(actor);
+                double executingPriority = _getPriority(executing);
+                double newActorPriority = _getPriority(actor);
                 if (newActorPriority < executingPriority) { 
                     remainingTime = executionTime; 
                     event(executing, currentPlatformTime.getDoubleValue(), ExecutionEventType.PREEMPTED);
@@ -157,7 +158,7 @@ public class FPScheduler extends ResourceScheduler {
      *    assigned, the lowest priority. 
      *  @throws IllegalActionException Thrown if parameter cannot be read.
      */
-    protected static int _getPriority(Actor actor) throws IllegalActionException {
+    protected double _getPriority(Actor actor) throws IllegalActionException {
         Parameter parameter = (Parameter) ((NamedObj)actor).getAttribute("priority");
         if (parameter != null) {
             return Integer.valueOf(((IntToken) parameter.getToken())
@@ -165,6 +166,12 @@ public class FPScheduler extends ResourceScheduler {
         }
         return LOWEST_PRIORITY;
     }
+    
+    ///////////////////////////////////////////////////////////////////
+    //                    protected variables                        //
+    
+    /** Stack of currently executing actors. */
+    protected Stack<Actor> _currentlyExecuting;
     
     ///////////////////////////////////////////////////////////////////
     //                        private methods                        //
@@ -182,11 +189,9 @@ public class FPScheduler extends ResourceScheduler {
         _lastTimeScheduled.put(actor, currentPlatformTime); 
     }
     
-    ///////////////////////////////////////////////////////////////////
-    //                      private variables                        //
     
-    /** Stack of currently executing actors. */
-    private Stack<Actor> _currentlyExecuting;
+    
+    
     
     
 }

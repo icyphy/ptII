@@ -113,6 +113,7 @@ public abstract class ResourceScheduler extends TypedAtomicActor {
         try {
             newObject._schedulePlotterEditorFactory = new SchedulePlotterEditorFactory(newObject,
                 this.uniqueName("_editorFactory"));
+            newObject._previousY = new HashMap<Actor, Double>();
         } catch (NameDuplicationException e) {
             // Do nothing, we made sure that there cannot be a name duplication
             // exception.
@@ -165,12 +166,13 @@ public abstract class ResourceScheduler extends TypedAtomicActor {
      *  this scheduler has to perform a reschedule.
      *  @param actor The actor to be scheduled.
      *  @param currentPlatformTime The current platform time.
+     *  @param deadline. The deadline of the event that caused the 
      *  @return Relative time when this Scheduler has to be executed
      *    again.
      *  @throws IllegalActionException Thrown if actor paramaters such
      *    as execution time or priority cannot be read.
      */
-    public abstract Time schedule(Actor actor, Time currentPlatformTime)
+    public abstract Time schedule(Actor actor, Time currentPlatformTime, Double deadline)
             throws IllegalActionException;
 
     /** Return a new time object using the enclosing director. 
@@ -361,7 +363,7 @@ public abstract class ResourceScheduler extends TypedAtomicActor {
     private List<Actor> _actors;
 
     /** Previous positions of the actor data set. */
-    private HashMap<Actor, Double> _previousY = new HashMap();
+    private HashMap<Actor, Double> _previousY = new HashMap<Actor, Double>();
 
     private SchedulePlotterEditorFactory _schedulePlotterEditorFactory;
 

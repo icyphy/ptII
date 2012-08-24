@@ -1,4 +1,4 @@
-/* This is a first come first serve scheduler.
+/* This is an earliest deadline first scheduler.
 
 @Copyright (c) 2008-2011 The Regents of the University of California.
 All rights reserved.
@@ -30,14 +30,22 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 package ptolemy.domains.ptides.lib;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Stack;
+
 import ptolemy.actor.Actor;
-import ptolemy.actor.util.Time;
+import ptolemy.actor.util.Time; 
+import ptolemy.data.IntToken;
+import ptolemy.data.expr.Parameter; 
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.NamedObj;
 
 
-/** This is a first come first serve scheduler.
+/** This is an earliest deadline first scheduler.
  * 
  * @author Patricia Derler
    @version $Id$
@@ -46,7 +54,7 @@ import ptolemy.kernel.util.NameDuplicationException;
    @Pt.ProposedRating Red (derler)
    @Pt.AcceptedRating Red (derler)
  */ 
-public class FCFSScheduler extends ResourceScheduler {
+public class EDFScheduler extends FPScheduler {
 
     /** Create a new actor in the specified container with the specified
      *  name.  The name must be unique within the container or an exception
@@ -60,70 +68,68 @@ public class FCFSScheduler extends ResourceScheduler {
      *  @exception NameDuplicationException If the name coincides with
      *   an entity already in the container.
      */
-    public FCFSScheduler(CompositeEntity container, String name)
+    public EDFScheduler(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);   
     } 
     
-    ///////////////////////////////////////////////////////////////////
-    //                      public methods                           //
+    /** Initialize local variables. 
+     *  @throws IllegalActionException Thrown in super class.
+     */
+    @Override
+    public void initialize() throws IllegalActionException { 
+        super.initialize();
+        _deadlines = new HashMap();
+    }
     
     /** Schedule a new actor for execution and return the next time
      *  this scheduler has to perform a reschedule.
      *  @param actor The actor to be scheduled.
      *  @param currentPlatformTime The current platform time.
-     *  @param deadline The deadline - not used here.
+     *  @param deadline The event deadline.
      *  @return Relative time when this Scheduler has to be executed
      *    again.
      *  @throws IllegalActionException Thrown if actor paramaters such
      *    as execution time or priority cannot be read.
-     */
-    @Override 
+     */ 
     public Time schedule(Actor actor, Time currentPlatformTime, Double deadline) throws IllegalActionException {
-        _lastActorFinished = false;
-        event(this, currentPlatformTime.getDoubleValue(), ExecutionEventType.START);
-        event(this, currentPlatformTime.getDoubleValue(), ExecutionEventType.STOP);
-        
-        if (currentlyExecuting == null) {
-            currentlyExecuting = actor;
-            event(currentlyExecuting, currentPlatformTime.getDoubleValue(),ExecutionEventType.START);
+        if (!_currentlyExecuting.contains(actor)) {
+            _deadlines.put(actor, deadline); 
         }
-        
-        Time executionTime = null;
-        Double executionTimeDouble = _executionTimes.get(currentlyExecuting);
-        if (executionTimeDouble == null) {
-            executionTime = getTime(0.0);
-        } else {
-            executionTime = getTime(executionTimeDouble);
+        Time time = super.schedule(actor, currentPlatformTime, deadline);
+        if (lastScheduledActorFinished()) {
+            _deadlines.put(actor, null);
         }
-        
-        Time remainingTime = null;
-        if (_remainingTimes.get(currentlyExecuting) == null) { // hasn't been scheduled
-            remainingTime = executionTime;
-            _remainingTimes.put(currentlyExecuting, executionTime);
-        } else { //has been scheduled
-            Time lasttime = _lastTimeScheduled.get(currentlyExecuting);
-            Time timePassed = currentPlatformTime.subtract(lasttime);
-            remainingTime = _remainingTimes.get(currentlyExecuting).subtract(timePassed); 
-            _remainingTimes.put(currentlyExecuting, remainingTime); 
-        }
-        
-        _lastTimeScheduled.put(currentlyExecuting, currentPlatformTime);
-        
-        if (remainingTime.getDoubleValue() == 0.0) { 
-            event(currentlyExecuting, currentPlatformTime.getDoubleValue(), ExecutionEventType.STOP);
-            
-            _remainingTimes.put(currentlyExecuting, null);
-            currentlyExecuting = null;
-            _lastActorFinished = true;
-        }
-        return remainingTime;
+        return time;
     }
+
+    
+    
+    ///////////////////////////////////////////////////////////////////
+    //                      protected methods                        //
+    
+    /** Get the deadline of the actor and return it as the priority. 
+     *  The priority is treated equal to deadline in this scheduler:
+     *  lower value for the priority means higher priority, lower
+     *  deadline means higher priority. 
+     *  @param actor The actor.
+     *  @return The priority of the actor or, if the actor has no priority
+     *    assigned, the lowest priority. 
+     *  @throws IllegalActionException Thrown if parameter cannot be read.
+     */
+    protected double _getPriority(Actor actor) throws IllegalActionException {
+        return _deadlines.get(actor);
+    }
+    
+    ///////////////////////////////////////////////////////////////////
+    //                        private methods                        //
+    
+
     
     ///////////////////////////////////////////////////////////////////
     //                      private variables                        //
     
-    /** Currently executing actor. */
-    private Actor currentlyExecuting;
+    // For every firing request store the deadline
+    private HashMap<Actor, Double> _deadlines;
     
 }

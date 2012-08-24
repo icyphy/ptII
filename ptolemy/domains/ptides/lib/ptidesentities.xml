@@ -222,11 +222,13 @@
 </port>
 <port name="NetworkTransmitterPort" class="ptolemy.domains.ptides.lib.io.NetworkTransmitterPort">
 </port>
-
-<entity name="FPScheduler" class="ptolemy.domains.ptides.lib.FPScheduler"> 
+<entity name="EDFScheduler" class="ptolemy.domains.ptides.lib.EDFScheduler"> 
 </entity>
 <entity name="FCFSScheduler" class="ptolemy.domains.ptides.lib.FCFSScheduler"> 
 </entity>
+<entity name="FPScheduler" class="ptolemy.domains.ptides.lib.FPScheduler"> 
+</entity>
+
 
 
       </group>

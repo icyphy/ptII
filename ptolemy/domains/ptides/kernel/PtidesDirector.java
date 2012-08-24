@@ -41,14 +41,11 @@ import java.util.Set;
 import java.util.TreeSet;
 
 import ptolemy.actor.Actor;
-import ptolemy.actor.AtomicActor;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.Receiver;
-import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedCompositeActor;
 import ptolemy.actor.TypedIOPort;
-import ptolemy.actor.lib.Source;
 import ptolemy.actor.lib.TimeDelay;
 import ptolemy.actor.parameters.ParameterPort;
 import ptolemy.actor.parameters.SharedParameter;
@@ -65,6 +62,7 @@ import ptolemy.domains.de.kernel.DEDirector;
 import ptolemy.domains.ptides.lib.ResourceScheduler;
 import ptolemy.domains.ptides.lib.io.ActuatorPort;
 import ptolemy.domains.ptides.lib.io.NetworkReceiverPort;
+import ptolemy.domains.ptides.lib.io.NetworkTransmitterPort;
 import ptolemy.domains.ptides.lib.io.PtidesPort;
 import ptolemy.domains.ptides.lib.io.SensorPort;
 import ptolemy.kernel.CompositeEntity;
@@ -163,7 +161,7 @@ public class PtidesDirector extends DEDirector {
                     _currentLogicalTime = event.timeStamp();
                     event.receiver().put(event.token());
                     _currentLogicalTime = null;
-                } 
+                }
             }
             _inputEventQueue.remove(getModelTime());
         }
@@ -183,8 +181,8 @@ public class PtidesDirector extends DEDirector {
                             .get(event.ioPort());
                     if (ptidesOutputPortList == null) {
                         ptidesOutputPortList = new LinkedList<PtidesEvent>();
-                    } 
-                    
+                    }
+
                     // modify deadline of event such that it will be output after deviceDelay
                     PtidesEvent newEvent = new PtidesEvent(event.ioPort(),
                             event.channel(), event.timeStamp(),
@@ -245,7 +243,9 @@ public class PtidesDirector extends DEDirector {
             fireContainerAt(time);
             return time;
         }
-        _pureEvents.add(new PtidesEvent(actor, null, time, 0, 0, _zeroTime));
+ 
+        _pureEvents.add(new PtidesEvent(actor, null, time, 0, 0,
+                _zeroTime));
         Time environmentTime = super.getEnvironmentTime();
         if (environmentTime.compareTo(time) <= 0) {
             fireContainerAt(time);
@@ -262,17 +262,23 @@ public class PtidesDirector extends DEDirector {
      *  in initialize() throw it.
      */
     public void initialize() throws IllegalActionException {
-        super.initialize();
+        _inputPortsForPureEvent = new HashMap<TypedIOPort, Set<TypedIOPort>>();
+        _relativeDeadlineForPureEvent = new HashMap<TypedIOPort, Double>();
+
         _calculateSuperdenseDependenices();
         _calculateDelayOffsets();
+        _calculateRelativeDeadlines();
+
+        super.initialize();
+
         _resourceSchedulers = new ArrayList();
         _schedulerForActor = null;
         for (Object entity : ((CompositeActor) getContainer()).entityList()) {
-            if (entity instanceof ResourceScheduler) { 
+            if (entity instanceof ResourceScheduler) {
                 _resourceSchedulers.add((ResourceScheduler) entity);
             }
         }
-        
+
     }
 
     /** Return a new receiver of the type {@link PtidesReceiver}.
@@ -325,12 +331,14 @@ public class PtidesDirector extends DEDirector {
                     .get(port);
             if (ptidesOutputPortList != null && ptidesOutputPortList.size() > 0) {
                 PtidesEvent event = ptidesOutputPortList.peek();
-                
-                if (port instanceof ActuatorPort && 
-                        getEnvironmentTime().compareTo(event.absoluteDeadline()) > 0) {
-                    throw new IllegalActionException("Missed Deadline at " + port + "!");
+
+                if (port instanceof ActuatorPort
+                        && getEnvironmentTime().compareTo(
+                                event.absoluteDeadline()) > 0) {
+                    throw new IllegalActionException("Missed Deadline at "
+                            + port + "!");
                 }
-                
+
                 _setNextFireTime(event.absoluteDeadline());
             }
         }
@@ -389,7 +397,8 @@ public class PtidesDirector extends DEDirector {
      *  @return Time until next scheduling action or 0.0 if actor can start execution.
      *  @throws IllegalActionException
      */
-    public Time scheduleActor(Actor actor) throws IllegalActionException {
+    public Time scheduleActor(Actor actor, Double deadline)
+            throws IllegalActionException {
         if (_schedulerForActor == null) {
             _schedulerForActor = new HashMap();
         }
@@ -402,14 +411,17 @@ public class PtidesDirector extends DEDirector {
                         Object attr = attributeList.get(i);
                         if (attr instanceof Parameter) {
                             try {
-                                Token paramToken = ((Parameter) attr).getToken();
+                                Token paramToken = ((Parameter) attr)
+                                        .getToken();
                                 if (paramToken instanceof ObjectToken) {
                                     Object paramObject = ((ObjectToken) paramToken)
                                             .getValue();
                                     if (paramObject instanceof ResourceScheduler) {
                                         ResourceScheduler scheduler = (ResourceScheduler) paramObject;
-                                        if (_resourceSchedulers.contains(scheduler)) {
-                                            _schedulerForActor.put(actor, scheduler);
+                                        if (_resourceSchedulers
+                                                .contains(scheduler)) {
+                                            _schedulerForActor.put(actor,
+                                                    scheduler);
                                             object = scheduler;
                                             break;
                                         } // else could have been deleted.
@@ -429,7 +441,7 @@ public class PtidesDirector extends DEDirector {
         }
         if (object != null) {
             return ((ResourceScheduler) object).schedule(actor,
-                    getEnvironmentTime());
+                    getEnvironmentTime(), deadline);
         } else {
             return null;
         }
@@ -443,7 +455,6 @@ public class PtidesDirector extends DEDirector {
         return (_schedulerForActor.get(actor) != null && _schedulerForActor
                 .get(actor).lastScheduledActorFinished());
     }
-
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
@@ -478,9 +489,9 @@ public class PtidesDirector extends DEDirector {
                 double deviceDelayBound = _getDoubleParameterValue(inputPort,
                         "deviceDelayBound");
                 if (inputPort instanceof NetworkReceiverPort) {
-                    deviceDelayBound += _getDoubleParameterValue(inputPort, 
+                    deviceDelayBound += _getDoubleParameterValue(inputPort,
                             "networkDelayBound");
-                    deviceDelayBound += _getDoubleParameterValue(inputPort, 
+                    deviceDelayBound += _getDoubleParameterValue(inputPort,
                             "sourcePlatformDelayBound");
                 }
                 SuperdenseDependency minDelay = SuperdenseDependency.OPLUS_IDENTITY;
@@ -511,20 +522,64 @@ public class PtidesDirector extends DEDirector {
                 _setDelayOffset((NamedObj) entity,
                         ((DoubleToken) ((TimeDelay) entity).minimumDelay
                                 .getToken()).doubleValue());
-            } 
-            if (entity instanceof Source) {
-                Double delayOffset = _getDoubleParameterValue((NamedObj)entity, "delayOffset");
-                if (delayOffset != null && delayOffset.doubleValue() > 0.0) {
-                    Actor actor = ((Source) entity);
-                    for (Object object : actor.outputPortList()) {
-                        IOPort port = ((IOPort)object);
-                        for (Object sink : port.sinkPortList()) {
-                            _setDelayOffset((NamedObj) sink, delayOffset);
-                        }
-                    }
+            }
+        }
+    }
+
+    /** Calculate the relative deadline for each input port. The relative
+     * deadline is used along with the timestamp of the event at the input port
+     * to determine the earliest time that this event may cause for an event 
+     * that needs to be output at an actuator or network transmitter.
+     * @exception IllegalActionException If cannot set 'relativeDeadline'
+     * parameter or cannot get device delay bound.
+     */
+    protected void _calculateRelativeDeadlines() throws IllegalActionException {
+
+        // Calculate relativeDeadline for each input port.
+        for (TypedIOPort port : _inputPorts) {
+
+            // Disallow SensorPort and NetworkReceiverPort.
+            if (port instanceof SensorPort
+                    || port instanceof NetworkReceiverPort) {
+                continue;
+            }
+
+            // Find minimum model time delay path from the input
+            // port to any actuator or network transmitter.
+            double relativeDeadline = Double.POSITIVE_INFINITY;
+            for (TypedIOPort outputPort : _inputPorts) {
+                // Only allow ActuatorPort and NetworkTransmitterPort.
+                if (!(outputPort instanceof ActuatorPort || outputPort instanceof NetworkTransmitterPort)) {
+                    continue;
+                }
+                double deviceDelayBound = _getDoubleParameterValue(outputPort,
+                        "deviceDelayBound");
+                SuperdenseDependency minDelay = _getSuperdenseDependencyPair(
+                        port, outputPort);
+
+                // Check if best so far.
+                double thisRelativeDeadline = minDelay.timeValue()
+                        - deviceDelayBound;
+                if (thisRelativeDeadline < relativeDeadline) {
+                    relativeDeadline = thisRelativeDeadline;
                 }
             }
-        } 
+            _setRelativeDeadline(port, relativeDeadline);
+        }
+
+        // Set relative deadlines for pure events.
+        // FIXME: may need to be modified to handle pure events which update
+        // state.
+        for (TypedIOPort port : _inputPortsForPureEvent.keySet()) {
+            Double relativeDeadline = Double.POSITIVE_INFINITY;
+            for (TypedIOPort connectedPort : _inputPortsForPureEvent.get(port)) {
+                Double thisRelativeDeadline = _getRelativeDeadline(connectedPort);
+                if (thisRelativeDeadline.compareTo(relativeDeadline) < 0) {
+                    relativeDeadline = thisRelativeDeadline;
+                }
+            }
+            _relativeDeadlineForPureEvent.put(port, relativeDeadline);
+        }
     }
 
     /** Calculate the superdense dependency (minimum model time delay) between
@@ -617,9 +672,21 @@ public class PtidesDirector extends DEDirector {
                     SuperdenseDependency minDelay = (SuperdenseDependency) actorCausality
                             .getDependency(inputPort, outputPort);
                     // Only if dependency exists...
-                    if (!minDelay.equals(SuperdenseDependency.OPLUS_IDENTITY)) { 
+                    if (!minDelay.equals(SuperdenseDependency.OPLUS_IDENTITY)) {
                         // Set input port pair for all connected ports.
                         // Assumes no delay from connections.
+                        // Add connected input ports if this input port can
+                        // produce pure events.
+                        if (!minDelay
+                                .equals(SuperdenseDependency.OTIMES_IDENTITY)) {
+                            if (!_inputPortsForPureEvent.containsKey(inputPort)) {
+                                _inputPortsForPureEvent.put(inputPort,
+                                        new HashSet<TypedIOPort>());
+                            }
+                            _inputPortsForPureEvent.get(inputPort).addAll(
+                                    (List<TypedIOPort>) outputPort
+                                            .deepConnectedPortList());
+                        }
                         for (TypedIOPort connectedPort : (List<TypedIOPort>) outputPort
                                 .deepConnectedPortList()) {
                             _putSuperdenseDependencyPair(inputPort,
@@ -693,6 +760,24 @@ public class PtidesDirector extends DEDirector {
         return true;
     }
 
+    /** Return the value of the 'relativeDeadline' parameter for an input 
+     * port.
+     * @param port Input port.
+     * @return Relative Deadline of input port.
+     * @exception IllegalActionException If cannot read parameter.
+     */
+    protected Double _getRelativeDeadline(TypedIOPort port)
+            throws IllegalActionException {
+        Parameter parameter = (Parameter) port.getAttribute("relativeDeadline");
+        if (parameter != null) {
+            return ((DoubleToken) parameter.getToken()).doubleValue();
+        } else {
+            throw new IllegalActionException(port,
+                    "relativeDeadline parameter does not exist at port "
+                            + port.getFullName() + ".");
+        }
+    }
+
     /** Return the superdense dependency between a source and a destination 
      * input port. If the mapping does not exist, it is assumed to be 
      * SuperdenseDependency.OPLUS_IDENTITY.
@@ -702,11 +787,10 @@ public class PtidesDirector extends DEDirector {
      */
     protected SuperdenseDependency _getSuperdenseDependencyPair(
             TypedIOPort source, TypedIOPort destination) {
-        Map<TypedIOPort, Map<TypedIOPort, SuperdenseDependency>> pair;
-        pair = _superdenseDependencyPair;
-        if (pair.containsKey(source)
-                && pair.get(source).containsKey(destination)) {
-            return pair.get(source).get(destination);
+        if (_superdenseDependencyPair.containsKey(source)
+                && _superdenseDependencyPair.get(source).containsKey(
+                        destination)) {
+            return _superdenseDependencyPair.get(source).get(destination);
         } else {
             return SuperdenseDependency.OPLUS_IDENTITY;
         }
@@ -755,22 +839,24 @@ public class PtidesDirector extends DEDirector {
 
         // FIXME: any way of knowing if coming from sensor?
 
-        if (ioPort.isOutput()) { 
-            
+        if (ioPort.isOutput()) {
+
             Time deliveryTime;
             if (ioPort instanceof ActuatorPort) {
-                if (((ActuatorPort)ioPort).actuateAtEventTimestamp()) {
+                if (((ActuatorPort) ioPort).actuateAtEventTimestamp()) {
                     deliveryTime = getModelTime().subtract(
                             _getDoubleParameterValue(ioPort, "deviceDelay"));
                 } else {
                     deliveryTime = localClock.getLocalTime();
                 }
-                
+
                 if (getModelTime().compareTo(deliveryTime) < 0) {
-                    throw new IllegalActionException("Missed Deadline at " + ioPort + "!\n " +
-                    		"Actuation must happen at " + getModelTime() + 
-                    		" which is bigger than currentTime " + localClock.getLocalTime());
-                } 
+                    throw new IllegalActionException("Missed Deadline at "
+                            + ioPort + "!\n " + "Actuation must happen at "
+                            + getModelTime()
+                            + " which is bigger than currentTime "
+                            + localClock.getLocalTime());
+                }
             } else {
                 deliveryTime = localClock.getLocalTime();
             }
@@ -819,51 +905,16 @@ public class PtidesDirector extends DEDirector {
      * @exception IllegalActionException If _isSafeToProcess() throws it.
      */
     protected Actor _getNextActorToFire() throws IllegalActionException {
-        //        Actor nextActorToFire = null;
-        //        if (_pureEvents != null && _pureEvents.size() > 0) {
-        //            PtidesEvent event = _pureEvents.peek();
-        //            if (_isSafeToProcess(event)) {
-        //                _currentLogicalTime = event.timeStamp();
-        //                nextActorToFire = event.actor();
-        //                _pureEvents.poll();
-        //            }
-        //        } 
-        //        
-        //        if (nextActorToFire == null & _eventQueue.size() > 0) {
-        //            PtidesEvent event = null;
-        //            if (currentEvent == null) {
-        //                event = (PtidesEvent) _eventQueue.get();
-        //            } else {
-        //                event = currentEvent;
-        //            }
-        //            if (_isSafeToProcess(event)) {
-        //                Time time = scheduleActor(event.actor());
-        //                if (time != null && time.getDoubleValue() > 0.0) {
-        //                    fireContainerAt(getEnvironmentTime().add(time));
-        //                    if (currentEvent == null) {
-        //                        currentEvent = event;
-        //                    }
-        //                    _currentLogicalTime = null;
-        //                    return null;
-        //                } 
-        //                
-        //                currentEvent = null;
-        //            } 
-        //        }
-        //        
-        //        if (nextActorToFire != null) {
-        //            if (_debugging) {
-        //                _debug("-> next actor to fire = " + nextActorToFire + " @ " + _currentLogicalTime);
-        //            } 
-        //            return nextActorToFire; 
-        //        }
-        //        _currentLogicalTime = null;
-        //        return null;
-
         for (PtidesEvent event : _pureEvents) {
             if (_isSafeToProcess(event)) {
 
-                Time time = scheduleActor(event.actor());
+                Time time = scheduleActor(
+                        event.actor(),
+                        event.timeStamp()
+                                .add(_getRelativeDeadline(((TypedIOPort) ((IOPort) event
+                                        .actor().outputPortList().get(0))
+                                        .sinkPortList().get(0))))
+                                .getDoubleValue());
                 Boolean finished = actorFinished(event.actor());
                 if (time != null && time.getDoubleValue() > 0.0) {
                     fireContainerAt(getEnvironmentTime().add(time));
@@ -877,7 +928,13 @@ public class PtidesDirector extends DEDirector {
         }
         for (Object event : _eventQueue.toArray()) {
             if (_isSafeToProcess((PtidesEvent) event)) {
-                Time time = scheduleActor(((PtidesEvent) event).actor());
+                PtidesEvent ptidesEvent = ((PtidesEvent) event);
+                Time time = scheduleActor(
+                        ptidesEvent.actor(),
+                        ptidesEvent
+                                .timeStamp()
+                                .add(_getRelativeDeadline((TypedIOPort) ptidesEvent
+                                        .ioPort())).getDoubleValue());
                 Boolean finished = actorFinished(((PtidesEvent) event).actor());
                 if (time != null && time.getDoubleValue() > 0.0) {
                     fireContainerAt(getEnvironmentTime().add(time));
@@ -931,10 +988,8 @@ public class PtidesDirector extends DEDirector {
      */
     protected void _putSuperdenseDependencyPair(TypedIOPort source,
             TypedIOPort destination, SuperdenseDependency dependency) {
-        Map<TypedIOPort, Map<TypedIOPort, SuperdenseDependency>> pair;
-        pair = _superdenseDependencyPair;
         if (!dependency.equals(SuperdenseDependency.OPLUS_IDENTITY)) {
-            pair.get(source).put(destination, dependency);
+            _superdenseDependencyPair.get(source).put(destination, dependency);
         }
     }
 
@@ -1002,6 +1057,28 @@ public class PtidesDirector extends DEDirector {
         }
     }
 
+    /** Set the value of the 'relativeDeadline' parameter for an input port.
+     * @param port Input port.
+     * @param relativeDeadline Relative deadline for input port.
+     * @exception IllegalActionException If cannot set parameter.
+     */
+    protected void _setRelativeDeadline(TypedIOPort port,
+            Double relativeDeadline) throws IllegalActionException {
+        DoubleToken token = new DoubleToken(relativeDeadline);
+        Parameter parameter = (Parameter) port.getAttribute("relativeDeadline");
+        if (parameter == null) {
+            try {
+                parameter = new Parameter(port, "relativeDeadline", token);
+            } catch (NameDuplicationException e) {
+                throw new IllegalActionException(port,
+                        "relativeDeadline parameter already exists at "
+                                + port.getFullName() + ".");
+            }
+        } else {
+            parameter.setToken(token);
+        }
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////    
 
@@ -1051,15 +1128,24 @@ public class PtidesDirector extends DEDirector {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-
     private Time _currentLogicalTime;
-    
+
     private HashMap<Time, List<PtidesEvent>> _inputEventQueue;
+
+    /** Connected input ports for an input port which may produce a pure 
+     * event. Used to calculate _relativeDeadlineForPureEvent. 
+     */
+    private Map<TypedIOPort, Set<TypedIOPort>> _inputPortsForPureEvent;
+
+    /** Map the input port where an event caused a pure event to the relative
+     * deadline for that pure event.
+     */
+    private Map<TypedIOPort, Double> _relativeDeadlineForPureEvent;
 
     private HashMap<Time, List<PtidesEvent>> _outputEventQueue;
 
     private HashMap<PtidesPort, Queue<PtidesEvent>> _ptidesOutputPortEventQueue;
-    
+
     private Queue<PtidesEvent> _pureEvents;
 
     private List<ResourceScheduler> _resourceSchedulers;

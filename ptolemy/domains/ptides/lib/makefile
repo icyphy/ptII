@@ -58,6 +58,7 @@ PTCLASSALLJAR = $(PTPACKAGE).jar
 JSRCS = \
 	ActuationDevice.java \
 	ActuatorSetup.java \
+	EDFScheduler.java \
 	FCFSScheduler.java \
 	FPScheduler.java \
 	InputDevice.java \
