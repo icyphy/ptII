@@ -141,6 +141,7 @@ public class SequenceToArray extends SDFTransformer {
         try {
             newObject.output.setTypeAtLeast(ActorTypeUtil.arrayOf(
                     newObject.input, newObject.arrayLength));
+            newObject.input.setTypeAtLeast(new ArrayElementTypeFunction(newObject.output));
         } catch (IllegalActionException e) {
             throw new InternalErrorException(e);
         }

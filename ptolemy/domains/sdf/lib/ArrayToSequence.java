@@ -151,6 +151,7 @@ public class ArrayToSequence extends SDFTransformer {
         try {
             newObject.output.setTypeAtLeast(ArrayType
                     .elementType(newObject.input));
+            newObject.input.setTypeAtLeast(new ArrayOfTypesFunction(newObject.output));
         } catch (IllegalActionException e) {
             throw new InternalErrorException(e);
         }
