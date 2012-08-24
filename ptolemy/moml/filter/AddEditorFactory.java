@@ -40,6 +40,7 @@ import ptolemy.moml.MoMLParser;
  @author Christopher Hylands, Edward A. Lee
  @version $Id$
  @since Ptolemy II 2.0
+ @deprecated Use {@link ptolemy.moml.filter.AddMissingParameter} instead because it handles multiple missing parameter at once.
  @Pt.ProposedRating Red (cxh)
  @Pt.AcceptedRating Red (cxh)
  */

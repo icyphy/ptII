@@ -111,7 +111,9 @@ public class BackwardCompatibility {
 
     static {
         _filterList = new LinkedList<MoMLFilter>();
-        _filterList.add(new AddEditorFactory());
+        // AddEditorFactory is deprecated, use AddMissingParameter instead.
+        //_filterList.add(new AddEditorFactory());
+        _filterList.add(new AddMissingParameter());
         _filterList.add(new AddIcon());
         _filterList.add(new ClassChanges());
         //_filterList.add(new UpdateAnnotations());

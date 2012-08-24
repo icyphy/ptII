@@ -1,10 +1,10 @@
-# Tests for the AddEditorFactory class
+# Tests for the AddMissingParameter class
 #
 # @Author: Christopher Brooks
 #
-# @Version: $Id$
+# @Version: $Id: AddMissingParameter.tcl 63892 2012-07-09 14:38:58Z eal $
 #
-# @Copyright (c) 2011 The Regents of the University of California.
+# @Copyright (c) 2012 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -73,10 +73,10 @@ proc filterTest {moml} {
 ######################################################################
 ####
 #
-test AddEditorFactory-1.1 {A model with a Parameter and no _editorParameter} {
+test AddMissingParameter-1.1 {A model with a SDFDirector and no iterations parameter} {
     set parameterMoML  "$header 
-<entity name=\"AddEditorFactoryTest\" class=\"ptolemy.actor.TypedCompositeActor\">
-    <property name=\"MyParameter\" class=\"ptolemy.data.expr.Parameter\" value=\"42\">
+<entity name=\"AddMissingParameterTest\" class=\"ptolemy.actor.TypedCompositeActor\">
+    <property name=\"SDF Director\" class=\"ptolemy.domains.sdf.kernel.SDFDirector\">
     </property>
 </entity>
 "
@@ -84,22 +84,25 @@ test AddEditorFactory-1.1 {A model with a Parameter and no _editorParameter} {
 } {{<?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="AddEditorFactoryTest" class="ptolemy.actor.TypedCompositeActor">
+<entity name="AddMissingParameterTest" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.0.devel">
     </property>
-    <property name="MyParameter" class="ptolemy.data.expr.Parameter" value="42">
+    <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
+        <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
+        </property>
     </property>
 </entity>
 }}
 
+
 ######################################################################
 ####
 #
-test AddEditorFactory-2.1 {A model with a Parameter and different _editorFactory} {
+test AddMissingParameter-2.1 {A model with an SDFDirector and an iterations parameter} {
     set parameterWithEditorFactoryMoML  "$header 
-<entity name=\"AddEditorFactoryTest2_1\" class=\"ptolemy.actor.TypedCompositeActor\">
-    <property name=\"MyParameter\" class=\"ptolemy.data.expr.Parameter\" value=\"42\">
-        <property name=\"_editorFactory\" class=\"ptolemy.data.expr.Parameter\" value=\"2\">
+<entity name=\"AddMissingParameterTest2_1\" class=\"ptolemy.actor.TypedCompositeActor\">
+    <property name=\"SDF Director\" class=\"ptolemy.domains.sdf.kernel.SDFDirector\">
+        <property name=\"iterations\" class=\"ptolemy.data.expr.Parameter\" value=\"10\">
         </property>
     </property>
 </entity>
@@ -108,12 +111,27 @@ test AddEditorFactory-2.1 {A model with a Parameter and different _editorFactory
 } {{<?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="AddEditorFactoryTest2_1" class="ptolemy.actor.TypedCompositeActor">
+<entity name="AddMissingParameterTest2_1" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.0.devel">
     </property>
-    <property name="MyParameter" class="ptolemy.data.expr.Parameter" value="42">
-        <property name="_editorFactory" class="ptolemy.data.expr.Parameter" value="2">
+    <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
+        <property name="iterations" class="ptolemy.data.expr.Parameter" value="10">
         </property>
     </property>
 </entity>
 }}
+
+######################################################################
+####
+#
+test AddMissingParameter-3.1 {Check toString} {
+    set filter [java::new ptolemy.moml.filter.AddMissingParameter]
+    $filter toString
+} {ptolemy.moml.filter.AddMissingParameter: If a NamedObj is missing a property, then add it.
+Optionally, only add the property if another property, such as _location is present.
+Below are the property names, the optional property and the moml:
+ptolemy.domains.sdf.kernel.SDFDirector	 -> iterations	null
+	<property name="iterations" class="ptolemy.data.expr.Parameter" value="0"/>
+ptolemy.data.expr.Parameter	 -> _editorFactory	_location
+	<property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory"/>
+}

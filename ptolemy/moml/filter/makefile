@@ -49,6 +49,7 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 JSRCS = \
 	ActorIndex.java \
 	AddEditorFactory.java \
+	AddMissingParameter.java \
 	AddIcon.java \
 	BackwardCompatibility.java \
 	ChangeFixedWidth1ToAuto.java \

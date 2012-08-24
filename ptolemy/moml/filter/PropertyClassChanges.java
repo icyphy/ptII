@@ -319,7 +319,7 @@ public class PropertyClassChanges extends MoMLFilterSimple {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
     // Map of actor names a HashMap of property names to new classes.
-    private static HashMap _actorsWithPropertyClassChanges;
+    private static HashMap _actorsWithPropertyClassChanges;    
 
     // The the full name of the actor we are currently processing
     private String _currentActorFullName;
