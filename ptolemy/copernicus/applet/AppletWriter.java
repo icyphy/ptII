@@ -1962,9 +1962,34 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
                             + jarFile.getCanonicalPath() + "\"");
                 }
                 if (!temporaryJarFileName.renameTo(jarFile)) {
-                    throw new IOException("Failed to rename \""
+                    System.out.println("Attempt #1: Failed to rename \""
                             + temporaryJarFileName + "\" to \"" + jarFile
-                            + "\"");
+                            + "\", source file "
+                            + (temporaryJarFileName.exists() ? "exists" : "does not exist")
+                            + ", destination file "
+                            + (jarFile.exists() ? "exists" : "does not exist")
+                            + ", destination file "
+                            + (jarFile.canWrite() ? "can" : "cannot")
+                            + " be written.");
+
+                    try {
+                        Thread.currentThread().sleep(1000);
+                    } catch (InterruptedException ex) {
+                        System.out.println("AppletWriter: interrupted while "
+                                + "sleeping before trying to rename "
+                                + temporaryJarFileName + " to " + jarFile
+                                + ".");
+                    }
+                    throw new IOException("Attempt #2: Failed to rename \""
+                            + temporaryJarFileName + "\" to \"" + jarFile
+                            + "\", source file "
+                            + (temporaryJarFileName.exists() ? "exists" : "does not exist")
+                            + ", destination file "
+                            + (jarFile.exists() ? "exists" : "does not exist")
+                            + ", destination file "
+                            + (jarFile.canWrite() ? "can" : "cannot")
+                            + " be written."
+                                          );
                 }
             }
         }
