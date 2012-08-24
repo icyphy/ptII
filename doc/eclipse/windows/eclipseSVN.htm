@@ -43,7 +43,7 @@
 	<br/>The first time software is to be added the menu will be:
 	<code>Help</code> | <code>Install New Software</code> 
       </li>
-      <li>In the "Work with" field, select "Indigo - http://download.eclipse.org/releases/indigo" from the drop down.  The install facility will take a few moments to connect to the site and determine
+      <li>In the "Work with" field, select "Juno - http://download.eclipse.org/releases/juno" from the drop down.  The install facility will take a few moments to connect to the site and determine
 	what is available.
       </li>
       <li>Expand the "Collaboration" tab and check the box next to
@@ -55,7 +55,9 @@
       <li> When the "Software Updates" window appears and asks about a
 	restart, select "Restart Now" and restart.
       </li>
-      <li> When Eclipse restarts, the "Workspace Launcher" window will appear.  Click on "OK" and then bring up the preferences window:
+      <li> When Eclipse restarts, the "Workspace Launcher" window will appear.  Click on "OK".
+      <li> The "Subversion Connector Discovery" window will pop up.  
+	<br/> If it does not, bring up the preferences window:
 	<br/> <code>Window</code> | <code>Preferences</code>
 	<br/> Then do <code>Team</code> | <code>SVN</code> | <code>SVN Repositories</code>.  When you click
 	on <code>SVN Repositories</code>, the "Subversion Connector Discovery" window
@@ -71,7 +73,7 @@
 	  svn --version
 	</pre>
 	<br/>If <code>svn --version</code> returns 1.5, then install SVN Kit 1.2.3
-	<br/>If <code>svn --version</code> returns 1.6, then install SVN Kit 1.3.5
+	<br/>If <code>svn --version</code> returns 1.6, then install SVN Kit 1.3.7
 
 	<p>Note: if you install a more recent version of the plugin than the
 	  version of the command line <code>svn</code> tool, then
@@ -131,7 +133,7 @@
 	Or, if your user id on source.eecs is different than your current user id
 	on your machine:
 	<pre>
-	  svn co svn+ssh://<i>yourID</i>@source.eecs.berkeley.edu/chess/ptII
+	  svn+ssh://<i>yourID</i>@source.eecs.berkeley.edu/chess/ptII
 	</pre>
 	Read/writes users may want to check "Save authentication".
 
@@ -166,29 +168,10 @@
 
       Follow the wizard, creating selections as follows:
       <ol>
-	<li> In the "Check Out As" window, use the default, <code>Check out as a project configured using the New Project Wizard</code>, then hit <code>Finish</code>.
+	<li> In the "Check Out As" window, keep the default,
+	  <code>Check out as a project with the name specified</code>, then hit <code>Finish</code>.
 	</li>
 
-	<li> In the "Select a wizard" window, select <code>Java</code> | <code>Java Project</code>, then hit <code>Next</code>.
-	</li>
-	<li> In the "Create a Java Project" window,
-	  <br/> set "Project Name" to: <code>ptII</code>
-	  <br/> set "Project Layout" to <code>Use project folder as root for sources and class files</code>.
-	  This is done so that <code>$PTII/bin</code> will contain the Ptolemy II command line scripts instead of the
-	  <code>*.class</code> files created by Eclipse.
-	</li>
-	<li> Click Next
-	</li>
-	<li> In the "New Java Project" window, select "Allow output folders for source folders", click "Finish"
-
-	<li> If you see a Confirm Overwrite Window that says:
-	  <blockquote>
-	    <code>The project you created, ptII, contains resources other than the standard .project file. If any of those resources have the same name and relative location of a resource you are checking out, the local resource will be replaced with the resource from the repository</code>
-	  </blockquote>
-	  then you probably did not change "Project Layout" as per above.  Click cancel and recreate the Java Project.
-	</li>  
-	<li> In the "Open Associated Perspective?" window, click "Yes". 
-	</li>
       </ol>
 
       <p>
@@ -196,7 +179,7 @@
 	  <br/><b>Note:</b>If you did not disable build automatically, as
 	  suggested above, then Eclipse will build the project and produce
 	  <b>thousands of errors</b>. This is not really a problem.  You will
-	  fix the errors below with the <code>.classpath.default</code> file.
+	  fix the errors in the next step with the <code>.classpath.default</code> file.
 	</li>
 
 
