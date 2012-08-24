@@ -74,7 +74,8 @@ import ptolemy.kernel.util.NamedObj;
  */
 public class DygraphsJSPlotter extends BasicJSPlotter {
     
-    /** Customize some parameters.
+    /** Construct an attribute that will generate HTML to plot using the Dygraphs
+     *  library.
      *  @param container The container.
      *  @param name The name.
      *  @throws IllegalActionException If the superclass throws it.
@@ -106,40 +107,38 @@ public class DygraphsJSPlotter extends BasicJSPlotter {
         super._provideAttributes(exporter);
         HashMap<String, String> config = getBasicConfig();
         
-        // add the graph title and other libraries
+        // Add the graph title and other libraries.
         insertHeaderContent(false, true, "<title>" + config.get("graphTitle") + "</title>\n\n");
 
         for(String line : _otherLibs){
             insertHeaderContent(false, true, line);
         }
         
-        // write the parameters to the JavaScript function in the header
+        // Write the parameters to the JavaScript function in the header.
         insertHeaderContent(true, true, "var mainChart;\n");
         insertHeaderContent(true, true, "$(function () {\n");
         insertHeaderContent(true, true, "\tvar data = " + config.get("dataJSON") + ";\n");
         insertHeaderContent(true, true, "\tvar events = " + config.get("eventsJSON") + ";\n"); 
         
-        StringBuffer configJS = new StringBuffer();
-        configJS.append("\tvar config = {graphTitle: '" + config.get("graphTitle") + "'");
-        configJS.append(", enableLegend: " + config.get("enableLegend"));
-        configJS.append(", horizontalAlign: '" + config.get("horizontalAlign") + "'");
-        configJS.append(", verticalAlign: '" + config.get("verticalAlign") + "'");
-        configJS.append(", dataConnectWidth: " + config.get("dataConnectWidth"));
-        configJS.append(", enableDataMarker: " + config.get("enableDataMarker"));
-        configJS.append(", dataMarkerRadius: " + config.get("dataMarkerRadius"));
-        configJS.append(", eventsConnectWidth: " + config.get("eventsConnectWidth"));
-        configJS.append(", enableEventsMarker: " + config.get("enableEventsMarker"));
-        configJS.append(", eventsMarkerRadius: " + config.get("eventsMarkerRadius"));
-        configJS.append(", xAxisMode: '" + config.get("xAxisMode") + "'");
-        configJS.append(", drawVerticalGridLine: " + config.get("drawVerticalGridLine"));
-        configJS.append(", xAxisTitle: '" + config.get("xAxisTitle") + "'");
-        configJS.append(", yAxisMode: '" + config.get("yAxisMode") + "'");
-        configJS.append(", drawHorizontalGridLine: " + config.get("drawHorizontalGridLine"));
-        configJS.append(", yAxisTitle: '" + config.get("yAxisTitle") + "'};\n\n");
+        insertHeaderContent(true, true, 
+                "\tvar config = {graphTitle: '" + config.get("graphTitle") + "'"
+                + ", enableLegend: " + config.get("enableLegend")
+                + ", horizontalAlign: '" + config.get("horizontalAlign") + "'"
+                + ", verticalAlign: '" + config.get("verticalAlign") + "'"
+                + ", dataConnectWidth: " + config.get("dataConnectWidth")
+                + ", enableDataMarker: " + config.get("enableDataMarker")
+                + ", dataMarkerRadius: " + config.get("dataMarkerRadius")
+                + ", eventsConnectWidth: " + config.get("eventsConnectWidth")
+                + ", enableEventsMarker: " + config.get("enableEventsMarker")
+                + ", eventsMarkerRadius: " + config.get("eventsMarkerRadius")
+                + ", xAxisMode: '" + config.get("xAxisMode") + "'"
+                + ", drawVerticalGridLine: " + config.get("drawVerticalGridLine")
+                + ", xAxisTitle: '" + config.get("xAxisTitle") + "'"
+                + ", yAxisMode: '" + config.get("yAxisMode") + "'"
+                + ", drawHorizontalGridLine: " + config.get("drawHorizontalGridLine")
+                + ", yAxisTitle: '" + config.get("yAxisTitle") + "'};\n\n");
         
-        insertHeaderContent(true, true, configJS.toString());
-        
-        // output the JavaScript code for data plotting to the header
+        // Output the JavaScript code for data plotting to the header.
         for(String line : _plotCode){
             insertHeaderContent(true, false, line + "\n");
         }
@@ -154,19 +153,19 @@ public class DygraphsJSPlotter extends BasicJSPlotter {
         insertBodyContent("<hr><div id=\"sub-container\" style=\"" + widthConfig + ": " + 
                 config.get("graphWidth") + "px; height: 280px; margin:0 auto\">\n");
         
-        // output the body content
+        // Output the body content.
         for(String line : _bodyContent){
             insertBodyContent(line + "\n");
         }
         
-        // generate the HTML page
+        // Generate the HTML page.
         WebElement webElement = WebElement.createWebElement(getContainer(), 
                 "outputHTMLFileWebAttribute", "outputHTMLFileWebAttribute");
         webElement.setExpression(getHTMLPageContent());
         webElement.setParent(config.get("outputHTMLFile"));
         exporter.defineElement(webElement, true);
         
-        // save the data and events series to a separate file if required
+        // Save the data and events series to a separate file if required.
         if (Boolean.valueOf(config.get("saveDataToFile"))) {          
             webElement = WebElement.createWebElement(getContainer(), 
                     "outputDataFileWebAttribute", "outputDataFileWebAttribute");
@@ -180,14 +179,14 @@ public class DygraphsJSPlotter extends BasicJSPlotter {
     ///////////////////////////////////////////////////////////////////
     ////                   private parameters                      ////
 
-    // Other JavaScript libraries required
-    private String[] _otherLibs = {
+    /** Other JavaScript libraries that are required. */
+    private static String[] _otherLibs = {
             "<script type=\"text/javascript\" src=\"http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js\"></script>\n", 
             "<script type=\"text/javascript\" src=\"http://kelvin-mirex-svn.googlecode.com/svn-history/r49/trunk/misc/vis-demo/js/dygraph-combined.js\"></script>\n"
     };
     
-    // HTML code specifying the layout of the HTML page
-    private String[] _bodyContent = {
+    /** HTML code specifying the layout of the HTML page. */
+    private static String[] _bodyContent = {
             "\t<div id=\"legend-container\" style=\"width: 25%; height:100%; float: left\"></div>", 
             "\t<div id=\"panel-container\" style=\"width: 25%; height:100%; float: left\"></div>", 
             "\t<div id=\"eventsInfo-container\" style=\"width: 49%; height:100%; float: right\"></div>", 
@@ -200,8 +199,8 @@ public class DygraphsJSPlotter extends BasicJSPlotter {
             "</ol></p>"
     };
 
-    // JavaScript code to plot the figure using the Dygraphs library
-    private String[] _plotCode = { 
+    /** JavaScript code to plot the figure using the Dygraphs library. */
+    private static String[] _plotCode = { 
             "\t\t\t\tvar pieChart, dataTable, seriesLabels;\n", 
             "\t\t\t\t$(document).ready(function() {", 
             "\t\t\t\t\tfunction createMainChart() {", 
