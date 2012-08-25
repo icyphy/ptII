@@ -214,6 +214,9 @@ public class GraphicalMessageHandler extends UndeferredGraphicalMessageHandler {
 
                     if (selected == 1) {
                         _showStackTrace(throwable, info);
+                    } else if (selected == 2) {
+                        // Derived classes
+                        _showNameable(throwable);
                     }
                 }
             };

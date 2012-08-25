@@ -1202,7 +1202,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
     }
 
     /** Opens the nearest composite actor above the target in the hierarchy
-     *  and change the zoom to show the target.
+     *  and possibly change the zoom and centering to show the target.
      *  This method is useful for displaying search results and actors that
      *  cause errors.
      *  @param target The target.
@@ -1248,10 +1248,38 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
                 Frame frame = tableau.getFrame();
                 if (frame instanceof BasicGraphFrame) {
                     BasicGraphFrame basicGraphFrame = (BasicGraphFrame)frame;
+
                     double [] locationArray = locationAttribute.getLocation();
                     Point2D locationPoint2D = new Point2D.Double(locationArray[0], locationArray[1]);
-                    basicGraphFrame.zoomReset();
-                    basicGraphFrame.setCenter(locationPoint2D);
+
+                    GraphPane pane = basicGraphFrame.getJGraph().getGraphPane();
+
+                    // The value returned by Rectangle2D.outcode()
+                    int outcode = 0;
+                    Figure figure = BasicGraphFrame.getFigureUnder(pane, locationPoint2D, new Object [] {});
+                    if (figure == null) {
+                        // If we can't find the figure, then force zoom and center.
+                        // I'm not sure if this can ever happen, but it might help
+                        outcode = 666;
+                    } else {
+                        Rectangle2D figureBounds = figure.getBounds();
+                        Rectangle2D canvasBounds = basicGraphFrame.getVisibleCanvasRectangle();
+                        outcode = canvasBounds.outcode(figureBounds.getX(), figureBounds.getY());
+                        //basicGraphFrame.zoomFit(pane, figureBounds);
+                        //basicGraphFrame.zoom(0.6);
+                    } 
+
+                    // Get the scale, assume that the scaling in the X
+                    // and Y directions are the same.
+                    AffineTransform current = pane.getCanvas().getCanvasPane()
+                        .getTransformContext().getTransform();
+                    double scale = current.getScaleX();
+                    if (scale < 0.8 ||  scale > 2.0 || outcode != 0) {
+                        // Only reset the zoom if the would be difficult to see
+                        // the component or if the component is not visible.
+                        basicGraphFrame.zoomReset();
+                        basicGraphFrame.setCenter(locationPoint2D);
+                    }
                 }
             }
             if (owner != null) {

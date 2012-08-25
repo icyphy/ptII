@@ -414,7 +414,7 @@ public class UndeferredGraphicalMessageHandler extends MessageHandler {
                 "Stack trace", JOptionPane.YES_NO_OPTION,
                 JOptionPane.ERROR_MESSAGE, null, options, options[0]);
 
-        if (selected == 2) {
+        if (selected == 1) {
             // Derived classes
             _showNameable(throwable);
         }
