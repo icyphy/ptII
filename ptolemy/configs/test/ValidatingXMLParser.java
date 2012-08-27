@@ -60,7 +60,10 @@ public class ValidatingXMLParser extends DefaultHandler {
      *  is replaced with the value of MoMLParser.MoML_1.dtd.
      *  @param args A single element array that names the xml file to
      *  be parsed.  The file should have
-     *  &lt;configure&gt;...&lt;configure&gt; removed.
+     *  &lt;configure&gt;...&lt;configure&gt; removed.  One workaround
+     *  is to remove the configure tags with a script before
+     *  validating, see $PTII/ptolemy/moml/test/removeconfigure.
+     *  See also <a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptIIfaq.htm#MoML">http://ptolemy.eecs.berkeley.edu/ptolemyII/ptIIfaq.htm#MoML</a>
      */
     public static void main(String[] args) {
         try {
