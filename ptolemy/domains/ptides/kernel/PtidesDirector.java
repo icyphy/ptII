@@ -245,7 +245,8 @@ public class PtidesDirector extends DEDirector {
         }
  
         _pureEvents.add(new PtidesEvent(actor, null, time, 0, 0,
-                _zeroTime));
+                _zeroTime)); 
+        
         Time environmentTime = super.getEnvironmentTime();
         if (environmentTime.compareTo(time) <= 0) {
             fireContainerAt(time);
@@ -390,62 +391,7 @@ public class PtidesDirector extends DEDirector {
         _currentLogicalTime = null;
     }
 
-    /** Find resource scheduler for actor and request scheduling.
-     *  TODO: This method could be moved to the Director class such that all other
-     *  MoCs can do resource usage simulation.
-     *  @param actor The actor to be scheduled.
-     *  @return Time until next scheduling action or 0.0 if actor can start execution.
-     *  @throws IllegalActionException
-     */
-    public Time scheduleActor(Actor actor, Double deadline)
-            throws IllegalActionException {
-        if (_schedulerForActor == null) {
-            _schedulerForActor = new HashMap();
-        }
-        Object object = _schedulerForActor.get(actor);
-        if (!_schedulerForActor.containsKey(actor)) {
-            if (object == null) {
-                List attributeList = ((NamedObj) actor).attributeList();
-                if (attributeList.size() > 0) {
-                    for (int i = 0; i < attributeList.size(); i++) {
-                        Object attr = attributeList.get(i);
-                        if (attr instanceof Parameter) {
-                            try {
-                                Token paramToken = ((Parameter) attr)
-                                        .getToken();
-                                if (paramToken instanceof ObjectToken) {
-                                    Object paramObject = ((ObjectToken) paramToken)
-                                            .getValue();
-                                    if (paramObject instanceof ResourceScheduler) {
-                                        ResourceScheduler scheduler = (ResourceScheduler) paramObject;
-                                        if (_resourceSchedulers
-                                                .contains(scheduler)) {
-                                            _schedulerForActor.put(actor,
-                                                    scheduler);
-                                            object = scheduler;
-                                            break;
-                                        } // else could have been deleted.
-                                    }
-                                }
-                            } catch (IllegalActionException ex) {
-                                // Do nothing, the resource scheduler might
-                                // have been deleted.
-                            }
-                        }
-                    }
-                    if (!_schedulerForActor.containsKey(actor)) {
-                        _schedulerForActor.put(actor, null);
-                    }
-                }
-            }
-        }
-        if (object != null) {
-            return ((ResourceScheduler) object).schedule(actor,
-                    getEnvironmentTime(), deadline);
-        } else {
-            return null;
-        }
-    }
+    
 
     /** Return true if the actor finished execution.
      *  @param actor The actor.
@@ -898,6 +844,41 @@ public class PtidesDirector extends DEDirector {
         }
         return null;
     }
+    
+    
+    
+    /** Return the execution time of a given actor. If the flag scheduleWithZeroExecutionTime
+     *  is true then return 0.0.
+     * @param scheduleWithZeroExecutionTime If true execution time is 0.0.
+     * @param actor The actor.
+     * @return The execution Time.
+     * @throws IllegalActionException Thrown if time objects cannot be created.
+     */
+    protected Time _getExecutionTime(boolean scheduleWithZeroExecutionTime,
+            Actor actor) throws IllegalActionException {
+        Time executionTime = null;
+        if (scheduleWithZeroExecutionTime) {
+            executionTime = new Time(this, 0.0);
+        } else {
+            if (_executionTimes == null) {
+                _executionTimes = new HashMap<Actor, Time>();
+            }
+            executionTime = _executionTimes.get(actor);
+            if (executionTime == null) {
+                Double executionTimeParam = _getDoubleParameterValue(
+                        (NamedObj) actor, "executionTime");
+                if (executionTimeParam == null) {
+                    executionTime = new Time(this, 0.0);
+                } else {
+                    executionTime = new Time(this, executionTimeParam);
+                }
+                _executionTimes.put(actor, executionTime);
+            }
+        }
+        return executionTime;
+    }
+    
+    
 
     /** Return the actor to fire in this iteration, or null if no actor should
      * be fired. Since _checkForNextEvent() always
@@ -906,20 +887,8 @@ public class PtidesDirector extends DEDirector {
      */
     protected Actor _getNextActorToFire() throws IllegalActionException {
         for (PtidesEvent event : _pureEvents) {
-            if (_isSafeToProcess(event)) {
-
-                Time time = scheduleActor(
-                        event.actor(),
-                        event.timeStamp()
-                                .add(_getRelativeDeadline(((TypedIOPort) ((IOPort) event
-                                        .actor().outputPortList().get(0))
-                                        .sinkPortList().get(0))))
-                                .getDoubleValue());
-                Boolean finished = actorFinished(event.actor());
-                if (time != null && time.getDoubleValue() > 0.0) {
-                    fireContainerAt(getEnvironmentTime().add(time));
-                }
-                if (time == null || finished) {
+            if (_isSafeToProcess(event)) { 
+                if (_schedule(event, _getExecutionTime(false, event.actor()))) {
                     _currentLogicalTime = event.timeStamp();
                     _pureEvents.remove(event);
                     return event.actor();
@@ -928,21 +897,11 @@ public class PtidesDirector extends DEDirector {
         }
         for (Object event : _eventQueue.toArray()) {
             if (_isSafeToProcess((PtidesEvent) event)) {
-                PtidesEvent ptidesEvent = ((PtidesEvent) event);
-                Time time = scheduleActor(
-                        ptidesEvent.actor(),
-                        ptidesEvent
-                                .timeStamp()
-                                .add(_getRelativeDeadline((TypedIOPort) ptidesEvent
-                                        .ioPort())).getDoubleValue());
-                Boolean finished = actorFinished(((PtidesEvent) event).actor());
-                if (time != null && time.getDoubleValue() > 0.0) {
-                    fireContainerAt(getEnvironmentTime().add(time));
-                }
-                if (time == null || finished) {
-                    _currentLogicalTime = ((PtidesEvent) event).timeStamp();
-                    _removeEventsFromQueue((PtidesEvent) event);
-                    return ((PtidesEvent) event).actor();
+                PtidesEvent ptidesEvent = ((PtidesEvent) event); 
+                if (_schedule(ptidesEvent, _getExecutionTime(ptidesEvent.actor() instanceof TimeDelay, ptidesEvent.actor()))) {
+                    _currentLogicalTime = ptidesEvent.timeStamp();
+                    _removeEventsFromQueue(ptidesEvent);
+                    return ptidesEvent.actor();
                 }
             }
         }
@@ -1019,6 +978,61 @@ public class PtidesDirector extends DEDirector {
         }
         return eventList;
     }
+    
+    /** Find resource scheduler for actor.
+     *  TODO: This method could be moved to the Director class such that all other
+     *  MoCs can do resource usage simulation.
+     *  @param actor The actor to be scheduled. 
+     *  @throws IllegalActionException
+     */
+    protected ResourceScheduler _getScheduler(Actor actor)
+            throws IllegalActionException {
+        if (_schedulerForActor == null) {
+            _schedulerForActor = new HashMap();
+        }
+        Object object = _schedulerForActor.get(actor);
+        if (!_schedulerForActor.containsKey(actor)) {
+            if (object == null) {
+                List attributeList = ((NamedObj) actor).attributeList();
+                if (attributeList.size() > 0) {
+                    for (int i = 0; i < attributeList.size(); i++) {
+                        Object attr = attributeList.get(i);
+                        if (attr instanceof Parameter) {
+                            try {
+                                Token paramToken = ((Parameter) attr)
+                                        .getToken();
+                                if (paramToken instanceof ObjectToken) {
+                                    Object paramObject = ((ObjectToken) paramToken)
+                                            .getValue();
+                                    if (paramObject instanceof ResourceScheduler) {
+                                        ResourceScheduler scheduler = (ResourceScheduler) paramObject;
+                                        if (_resourceSchedulers
+                                                .contains(scheduler)) {
+                                            _schedulerForActor.put(actor,
+                                                    scheduler);
+                                            object = scheduler;
+                                            break;
+                                        } // else could have been deleted.
+                                    }
+                                }
+                            } catch (IllegalActionException ex) {
+                                // Do nothing, the resource scheduler might
+                                // have been deleted.
+                            }
+                        }
+                    }
+                    if (!_schedulerForActor.containsKey(actor)) {
+                        _schedulerForActor.put(actor, null);
+                    }
+                }
+            }
+        }
+        if (object != null) {
+            return (ResourceScheduler) object;
+        } else {
+            return null;
+        }
+    }
 
     /** Set the value of the 'delayOffset' parameter for a NamedObj.
      * @param namedObj The NamedObj to have the parameter set.
@@ -1078,7 +1092,7 @@ public class PtidesDirector extends DEDirector {
             parameter.setToken(token);
         }
     }
-
+    
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////    
 
@@ -1124,12 +1138,43 @@ public class PtidesDirector extends DEDirector {
                 SuperdenseDependency.OTIMES_IDENTITY);
 
     }
+    
+    /** Schedule an event. 
+     * @param event The event.
+     * @param executionTime The execution Time for this event. 
+     * @return True if actor was scheduled and can be fired.
+     * @throws IllegalActionException Thrown if parameters cannot be read, event cannot be
+     *   scheduled or container cannot be fired at future time.
+     */
+    private boolean _schedule(PtidesEvent event, Time executionTime) throws IllegalActionException {
+        ResourceScheduler scheduler = _getScheduler(
+                event.actor()); 
+        Time time = null;
+        Boolean finished = true;
+        if (scheduler != null) {
+            double deadline = event.timeStamp()
+                    .add(_getRelativeDeadline(((TypedIOPort) ((IOPort) event
+                    .actor().outputPortList().get(0))
+                    .sinkPortList().get(0)))).getDoubleValue();
+            time = (scheduler).schedule((Actor)event.actor(),
+                    getEnvironmentTime(), deadline, executionTime);
+            finished = actorFinished(event.actor());
+            if (time != null && time.getDoubleValue() > 0.0) {
+                fireContainerAt(getEnvironmentTime().add(time));
+            }
+        } 
+        return (time == null || finished);
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
     private Time _currentLogicalTime;
 
+    /** The execution times of actors.
+     */
+    private HashMap<Actor, Time> _executionTimes;
+    
     private HashMap<Time, List<PtidesEvent>> _inputEventQueue;
 
     /** Connected input ports for an input port which may produce a pure 

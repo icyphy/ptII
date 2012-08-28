@@ -36,14 +36,13 @@ import java.util.List;
 import java.util.Stack;
 
 import ptolemy.actor.Actor;
-import ptolemy.actor.util.Time; 
+import ptolemy.actor.util.Time;
 import ptolemy.data.IntToken;
-import ptolemy.data.expr.Parameter; 
+import ptolemy.data.expr.Parameter;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
-
 
 /** This is an earliest deadline first scheduler.
  * 
@@ -53,7 +52,7 @@ import ptolemy.kernel.util.NamedObj;
 
    @Pt.ProposedRating Red (derler)
    @Pt.AcceptedRating Red (derler)
- */ 
+ */
 public class EDFScheduler extends FPScheduler {
 
     /** Create a new actor in the specified container with the specified
@@ -70,44 +69,46 @@ public class EDFScheduler extends FPScheduler {
      */
     public EDFScheduler(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
-        super(container, name);   
-    } 
-    
+        super(container, name);
+    }
+
     /** Initialize local variables. 
      *  @throws IllegalActionException Thrown in super class.
      */
     @Override
-    public void initialize() throws IllegalActionException { 
+    public void initialize() throws IllegalActionException {
         super.initialize();
         _deadlines = new HashMap();
     }
-    
+
     /** Schedule a new actor for execution and return the next time
      *  this scheduler has to perform a reschedule.
      *  @param actor The actor to be scheduled.
      *  @param currentPlatformTime The current platform time.
      *  @param deadline The event deadline.
+     *  @param executionTime The execution time of the actor.
      *  @return Relative time when this Scheduler has to be executed
      *    again.
      *  @throws IllegalActionException Thrown if actor paramaters such
      *    as execution time or priority cannot be read.
-     */ 
-    public Time schedule(Actor actor, Time currentPlatformTime, Double deadline) throws IllegalActionException {
+     */
+    public Time schedule(Actor actor, Time currentPlatformTime,
+            Double deadline, Time executionTime)
+            throws IllegalActionException {
         if (!_currentlyExecuting.contains(actor)) {
-            _deadlines.put(actor, deadline); 
+            _deadlines.put(actor, deadline);
         }
-        Time time = super.schedule(actor, currentPlatformTime, deadline);
+        Time time = super.schedule(actor, currentPlatformTime, deadline,
+                executionTime);
         if (lastScheduledActorFinished()) {
             _deadlines.put(actor, null);
         }
         return time;
     }
 
-    
-    
     ///////////////////////////////////////////////////////////////////
     //                      protected methods                        //
-    
+
     /** Get the deadline of the actor and return it as the priority. 
      *  The priority is treated equal to deadline in this scheduler:
      *  lower value for the priority means higher priority, lower
@@ -120,16 +121,14 @@ public class EDFScheduler extends FPScheduler {
     protected double _getPriority(Actor actor) throws IllegalActionException {
         return _deadlines.get(actor);
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     //                        private methods                        //
-    
 
-    
     ///////////////////////////////////////////////////////////////////
     //                      private variables                        //
-    
+
     // For every firing request store the deadline
     private HashMap<Actor, Double> _deadlines;
-    
+
 }

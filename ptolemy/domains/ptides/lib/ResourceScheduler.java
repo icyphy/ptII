@@ -77,8 +77,8 @@ public abstract class ResourceScheduler extends TypedAtomicActor {
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
         try {
-            _schedulePlotterEditorFactory = new SchedulePlotterEditorFactory(this,
-                this.uniqueName("_editorFactory"));
+            _schedulePlotterEditorFactory = new SchedulePlotterEditorFactory(
+                    this, this.uniqueName("_editorFactory"));
         } catch (NameDuplicationException e) {
             // Do nothing, we made sure that there cannot be a name duplication
             // exception.
@@ -100,7 +100,7 @@ public abstract class ResourceScheduler extends TypedAtomicActor {
 
     ///////////////////////////////////////////////////////////////////
     //                           public methods                      //
-    
+
     /** Clone the actor into the specified workspace.
      *  @param workspace The workspace for the new object.
      *  @return A new actor.
@@ -108,11 +108,12 @@ public abstract class ResourceScheduler extends TypedAtomicActor {
      *   an attribute that cannot be cloned.
      */
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        ResourceScheduler newObject = (ResourceScheduler) super.clone(workspace);
+        ResourceScheduler newObject = (ResourceScheduler) super
+                .clone(workspace);
 
         try {
-            newObject._schedulePlotterEditorFactory = new SchedulePlotterEditorFactory(newObject,
-                this.uniqueName("_editorFactory"));
+            newObject._schedulePlotterEditorFactory = new SchedulePlotterEditorFactory(
+                    newObject, this.uniqueName("_editorFactory"));
             newObject._previousY = new HashMap<Actor, Double>();
         } catch (NameDuplicationException e) {
             // Do nothing, we made sure that there cannot be a name duplication
@@ -120,7 +121,7 @@ public abstract class ResourceScheduler extends TypedAtomicActor {
         } catch (IllegalActionException e) {
             // If we would run into this catch clause 
         }
-        
+
         return newObject;
     }
 
@@ -131,9 +132,8 @@ public abstract class ResourceScheduler extends TypedAtomicActor {
     @Override
     public void initialize() throws IllegalActionException {
         super.initialize();
-        
-        _remainingTimes = new HashMap<Actor, Time>();
-        _executionTimes = new HashMap<Actor, Double>();
+
+        _remainingTimes = new HashMap<Actor, Time>(); 
         _lastTimeScheduled = new HashMap<Actor, Time>();
         _actors = new ArrayList<Actor>();
 
@@ -166,13 +166,15 @@ public abstract class ResourceScheduler extends TypedAtomicActor {
      *  this scheduler has to perform a reschedule.
      *  @param actor The actor to be scheduled.
      *  @param currentPlatformTime The current platform time.
-     *  @param deadline. The deadline of the event that caused the 
+     *  @param deadline. The deadline of the event.
+     *  @param executionTime The execution time of the actor. 
      *  @return Relative time when this Scheduler has to be executed
      *    again.
      *  @throws IllegalActionException Thrown if actor paramaters such
      *    as execution time or priority cannot be read.
      */
-    public abstract Time schedule(Actor actor, Time currentPlatformTime, Double deadline)
+    public abstract Time schedule(Actor actor, Time currentPlatformTime,
+            Double deadline, Time executionTime)
             throws IllegalActionException;
 
     /** Return a new time object using the enclosing director. 
@@ -274,11 +276,6 @@ public abstract class ResourceScheduler extends TypedAtomicActor {
     ///////////////////////////////////////////////////////////////////
     //                        protected variables                      //
 
-    /** The remaining execution time for every actor that has been scheduled
-     *  or null if the actor execution finished. 
-     */
-    protected HashMap<Actor, Time> _remainingTimes;
-
     /** True if in the last request to schedule an actor, this actor
      *  finished execution. 
      */
@@ -289,9 +286,10 @@ public abstract class ResourceScheduler extends TypedAtomicActor {
      */
     protected HashMap<Actor, Time> _lastTimeScheduled;
 
-    /** The execution times of actors.
+    /** The remaining execution time for every actor that has been scheduled
+     *  or null if the actor execution finished. 
      */
-    protected HashMap<Actor, Double> _executionTimes;
+    protected HashMap<Actor, Time> _remainingTimes;
 
     ///////////////////////////////////////////////////////////////////
     //                        private methods                        //
@@ -324,7 +322,7 @@ public abstract class ResourceScheduler extends TypedAtomicActor {
      * be parsed.
      */
     private void _readActorParameters(Actor actor)
-    throws IllegalActionException {
+            throws IllegalActionException {
         List attributeList = ((NamedObj) actor).attributeList();
         if (attributeList.size() > 0) {
             for (int i = 0; i < attributeList.size(); i++) {
@@ -343,8 +341,7 @@ public abstract class ResourceScheduler extends TypedAtomicActor {
                                                 "executionTime");
 
                                 if (executionTime != null) {
-                                    _remainingTimes.put(actor, null);
-                                    _executionTimes.put(actor, executionTime);
+                                    _remainingTimes.put(actor, null); 
                                 }
                                 _actors.add(actor);
                                 event(actor, 0.0, null);

@@ -12,9 +12,9 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[30.0, 110.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={55, 22, 891, 476}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={55, 22, 891, 634}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[657, 366]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[657, 524]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.11228353298992">
     </property>
@@ -35,7 +35,7 @@
     <property name="enableBackwardTypeInference" class="ptolemy.data.expr.Parameter" value="false">
     </property>
     <entity name="Test3" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{1.0, 2.0, 1.0, 2.0, 1.0, 2.0, 1.0, 2.0, 1.0}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{1, 2, 1, 2, 1, 2, 1, 2, 1}">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[295.0, 85.0]">
         </property>
@@ -46,11 +46,11 @@
         </property>
     </entity>
     <entity name="Test4" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{1.19, 2.14, 3.19, 4.14, 5.19, 6.14, 7.19, 8.14, 9.19}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{1.2, 2.19, 3.2, 4.19, 5.2, 6.19, 7.2, 8.19, 9.2}">
         </property>
         <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[365.0, 150.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{365.0, 150.0}">
         </property>
     </entity>
     <entity name="PtidesPlatform" class="ptolemy.domains.ptides.kernel.PtidesPlatform">
@@ -258,9 +258,9 @@
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[-165.0, -35.0]">
                 </property>
             </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={23, 361, 687, 377}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={23, 132, 687, 634}, maximized=false}">
             </property>
-            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[453, 267]">
+            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[453, 524]">
             </property>
             <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
             </property>
@@ -300,7 +300,7 @@
                 </property>
                 <property name="scheduler" class="ptolemy.data.expr.Parameter" value="EDFScheduler">
                 </property>
-                <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.05">
+                <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.1">
                 </property>
                 <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="1.0">
                 </property>
@@ -319,7 +319,7 @@
                 </property>
                 <property name="scheduler" class="ptolemy.data.expr.Parameter" value="EDFScheduler">
                 </property>
-                <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.05">
+                <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.1">
                 </property>
                 <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="0.0">
                 </property>
@@ -332,7 +332,7 @@
                 </port>
             </entity>
             <entity name="EDFScheduler" class="ptolemy.domains.ptides.lib.EDFScheduler">
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[-60.0, -30.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{-60.0, -30.0}">
                 </property>
             </entity>
             <relation name="relation" class="ptolemy.actor.TypedIORelation">

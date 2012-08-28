@@ -32,6 +32,7 @@ package ptolemy.domains.ptides.lib;
 
 import ptolemy.actor.Actor;
 import ptolemy.actor.util.Time;
+import ptolemy.domains.ptides.lib.ResourceScheduler.ExecutionEventType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -73,13 +74,14 @@ public class FCFSScheduler extends ResourceScheduler {
      *  @param actor The actor to be scheduled.
      *  @param currentPlatformTime The current platform time.
      *  @param deadline The deadline - not used here.
+     *  @param executionTime The execution time of the actor. 
      *  @return Relative time when this Scheduler has to be executed
      *    again.
      *  @throws IllegalActionException Thrown if actor paramaters such
      *    as execution time or priority cannot be read.
      */
     @Override 
-    public Time schedule(Actor actor, Time currentPlatformTime, Double deadline) throws IllegalActionException {
+    public Time schedule(Actor actor, Time currentPlatformTime, Double deadline, Time executionTime) throws IllegalActionException {
         _lastActorFinished = false;
         event(this, currentPlatformTime.getDoubleValue(), ExecutionEventType.START);
         event(this, currentPlatformTime.getDoubleValue(), ExecutionEventType.STOP);
@@ -87,15 +89,7 @@ public class FCFSScheduler extends ResourceScheduler {
         if (currentlyExecuting == null) {
             currentlyExecuting = actor;
             event(currentlyExecuting, currentPlatformTime.getDoubleValue(),ExecutionEventType.START);
-        }
-        
-        Time executionTime = null;
-        Double executionTimeDouble = _executionTimes.get(currentlyExecuting);
-        if (executionTimeDouble == null) {
-            executionTime = getTime(0.0);
-        } else {
-            executionTime = getTime(executionTimeDouble);
-        }
+        } 
         
         Time remainingTime = null;
         if (_remainingTimes.get(currentlyExecuting) == null) { // hasn't been scheduled
@@ -119,6 +113,7 @@ public class FCFSScheduler extends ResourceScheduler {
         }
         return remainingTime;
     }
+    
     
     ///////////////////////////////////////////////////////////////////
     //                      private variables                        //
