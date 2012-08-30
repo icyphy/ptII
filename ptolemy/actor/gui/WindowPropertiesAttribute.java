@@ -216,7 +216,7 @@ public class WindowPropertiesAttribute extends Parameter implements
                     + "\" value=\"" + values + "\"/>";
 
                 MoMLChangeRequest request = new MoMLChangeRequest(this,
-                        getContainer(), moml);
+                        getContainer(), moml, false);
                 getContainer().requestChange(request);
                 // Not clear why the following is needed, but if it isn't there,
                 // then window properties may not be recorded.
