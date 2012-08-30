@@ -95,6 +95,17 @@ test SDFDirector-3.1 {Test clone} {
 ######################################################################
 ####
 #
+test SDFDirector-3.5 {Default value of iterations} {
+    set w [java::new ptolemy.kernel.util.Workspace W]
+    set manager [java::new ptolemy.actor.Manager $w Manager]
+    set d1 [java::new ptolemy.domains.sdf.kernel.SDFDirector]
+    # The value should be -1, which is AUTO.
+    list [[$d1 getAttribute iterations] toString]
+} {{ptolemy.data.expr.Parameter {..iterations} -1}}
+
+######################################################################
+####
+#
 test SDFDirector-4.1 {Test _makeDirectorOf} {
     set w [java::new ptolemy.kernel.util.Workspace W]
     set manager [java::new ptolemy.actor.Manager $w Manager]
