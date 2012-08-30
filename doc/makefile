@@ -566,7 +566,6 @@ ALLPACKAGES = \
 	doc.doclets \
 	org.ptolemy.ptango.lib \
 	ptolemy.actor.process \
-	ptolemy.actor.lib.jni \
 	ptolemy.actor.lib.net \
 	ptolemy.actor.lib.qm \
 	ptolemy.actor.lib.video \
@@ -780,7 +779,6 @@ codeDoc/tree.html:	../ptolemy/plot/*.java \
 			../ptolemy/actor/lib/conversions/*.java \
 			../ptolemy/actor/lib/hoc/*.java \
 			../ptolemy/actor/lib/io/*.java \
-			../ptolemy/actor/lib/jni/*.java \
 			../ptolemy/actor/lib/net/*.java \
 			../ptolemy/actor/lib/gui/*.java \
 			../ptolemy/actor/lib/logic/*.java \
