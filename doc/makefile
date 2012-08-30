@@ -68,7 +68,6 @@ UI_FILES_TO_BE_JARED = \
 	authors.htm \
 	copernicus.htm \
 	default.css \
-	deployJava.txt \
 	deployJava.js \
 	deployJavaJNLP.js \
 	expressions.htm \

@@ -832,9 +832,10 @@ var deployJava = function() {
 
     // Ptolemy Specific Start
     // Change the name of this to displayWebStartMessage to print no message.
-    displayWebStartMessageDisabled: function(codebase) {document.write('<!-- deployJava.js displayWebStartMessage() WebStart disabled, not printing message-->');},
+    displayWebStartMessage: function(codebase) {document.write('<!-- deployJava.js displayWebStartMessage() WebStart disabled, not printing message-->');},
 
-    displayWebStartMessage: function(codebase) {
+    // To enable JNLP, comment out the function above and remove JNLP from the function name below.  Or, copy deployJavaJNLP.js over this file.
+    displayWebStartMessageJNLP: function(codebase) {
           document.write('The Java Web Start version is preferred, though browsers with versions of Java earlier than Java 1.6.0_13 may only work with the applet version. See <a href="' + codebase +'/doc/webStartHelp.htm">Web Start Help</a> for details.');
     },
     // Ptolemy Specific End
