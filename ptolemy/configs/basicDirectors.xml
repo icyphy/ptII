@@ -3,7 +3,12 @@
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
    <group>
       <doc>default director library</doc>
-      <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector"/>
+      <!-- Need to include the iterations parameter here, otherwise the AddMissingParameter
+	   filter will set iterations to 0. -->
+      <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
+          <property name="iterations" class="ptolemy.data.expr.Parameter" value="AUTO">
+          </property>
+      </property>
       <property name="DDF Director" class="ptolemy.domains.ddf.kernel.DDFDirector"/>
       <property name="HDF Director" class="ptolemy.domains.hdf.kernel.HDFDirector"/>
       <property name="PN Director" class="ptolemy.domains.pn.kernel.PNDirector"/>
