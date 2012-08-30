@@ -72,6 +72,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JRadioButton;
+import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
 import javax.swing.JSeparator;
 import javax.swing.JSlider;
@@ -1728,6 +1729,38 @@ public class Query extends JPanel {
         _entryPanel.revalidate();
     }
 
+    /** Resize the textArea and repack the containing ComponentDialog.
+     *  This method is used to handle scrollbars in entries when the
+     *  user types in more text than will fit in a line or else uses
+     *  shift-enter to create a newline in an entry.
+     *  @param textArea The text area to be have its rows set and its parent packed.
+     *  @param minimumNumberOfRows If the text area has less than this
+     *  number of rows, then one row is added and the parent
+     *  ComponentDialog of the text area is repacked.
+     */
+    protected static void _textAreaSetRowsAndRepackParent(JTextArea textArea,
+            int minimumNumberOfRows) {
+        // This method is based on code by Patricia Derler that was
+        // originally in PtolemyQuery.
+
+        // One test for this is to drag in a StringConst and type in
+        // lots of characters.  You should get a scrollbar.  See
+        // http://bugzilla.ecoinformatics.org/show_bug.cgi?id=5587
+        if (textArea.getRows() < minimumNumberOfRows) {
+            textArea.setRows(textArea.getRows() + 1);
+            textArea.revalidate();
+            Component parent = textArea.getParent();
+            while ((parent != null) && !(parent instanceof ComponentDialog)) {
+                parent = parent.getParent();
+            }
+            if (parent instanceof ComponentDialog) {
+                ComponentDialog dialog = (ComponentDialog) parent;
+                dialog.doLayout();
+                dialog.pack();
+            }
+        }
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
 
@@ -2392,7 +2425,27 @@ public class Query extends JPanel {
 
         }
 
+        public JScrollBar getHorizontalScrollBar() {
+            // If the user types in lots of characters, eventually
+            // create a scrollbar and make the textArea bigger.  Note
+            // that
+            // http://docs.oracle.com/javase/tutorial/uiswing/components/textarea.html
+            // says: "If you need to obtain only one line of input
+            // from the user, you should use a text field."
+
+            JScrollBar scrollBar = super.getHorizontalScrollBar();
+            if (scrollBar != null) {
+                if(scrollBar.isDisplayable()  && scrollBar.getHeight() > 0) {
+                    Query._textAreaSetRowsAndRepackParent(textArea, 2);
+                }
+            }
+            return scrollBar;
+        }
+
         public Dimension getPreferredSize() {
+            // For another possible solution, see
+            // http://stackoverflow.com/questions/9370561/enabling-scroll-bars-when-jtextarea-exceeds-certain-amount-of-lines
+
             // If we have a TextArea, display as many parameters as we
             // can of the TextArea before adding a scrollbar for all
             // the parameters.
