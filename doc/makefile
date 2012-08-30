@@ -397,7 +397,6 @@ BCVTBPACKAGES = \
 	ptolemy.actor.gui.jnlp \
 	ptolemy.actor.gui.properties \
 	ptolemy.actor.gui.ptjacl \
-	ptolemy.actor.lib.embeddedJava \
 	ptolemy.actor.lib.image \
 	ptolemy.actor.lib.io \
 	ptolemy.actor.lib.jopio \
