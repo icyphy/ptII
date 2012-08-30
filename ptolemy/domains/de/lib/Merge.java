@@ -27,10 +27,16 @@
  */
 package ptolemy.domains.de.lib;
 
+import ptolemy.actor.CompositeActor;
+import ptolemy.actor.Director;
+import ptolemy.actor.SuperdenseTimeDirector;
+import ptolemy.actor.util.Time;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
+import ptolemy.domains.continuous.kernel.ContinuousDirector;
+import ptolemy.domains.de.kernel.DEDirector;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -111,6 +117,10 @@ public class Merge extends DETransformer {
      */
     public void fire() throws IllegalActionException {
         super.fire();
+        _previousModelTime = ((CompositeActor) this.getContainer()).getDirector()
+                        .getModelTime();
+        _previousMicrostep = _getMicrostep();
+        _moreTokensOnOtherChannels = false;
         boolean discard = ((BooleanToken) discardEvents.getToken())
                 .booleanValue();
         Token firstAvailableToken = null;
@@ -144,10 +154,61 @@ public class Merge extends DETransformer {
                         // Refiring the actor to handle the other tokens
                         // that are still in channels
                         getDirector().fireAtCurrentTime(this);
+                        _moreTokensOnOtherChannels = true;
                         break;
                     }
                 }
             }
         }
+    } 
+
+    /** Return false if there was a firing at the current time and
+     *  microstep that produced an output token and there are more
+     *  tokens on other channels that are waiting to be produced at
+     *  the same time but future microsteps.
+     *  @return True if this actor is ready for firing, false otherwise.
+     *  @exception IllegalActionException Not thrown in this class.
+     */
+    @Override
+    public boolean prefire() throws IllegalActionException {
+        int microstep = _getMicrostep();
+        if (_moreTokensOnOtherChannels
+                && ((CompositeActor) this.getContainer()).getDirector()
+                        .getModelTime().compareTo(_previousModelTime) == 0
+                && microstep == _previousMicrostep) {
+            return false;
+        }
+        return super.prefire();
     }
+    
+    ///////////////////////////////////////////////////////////////////
+    //                        private methods                        //
+
+    /** Return the microstep of the director. 
+     *  @return The microstep.
+     *  @throws IllegalActionException Thrown if the enclosing director
+     *    is not a SuperdenseTimeDirector.
+     */
+    private int _getMicrostep() throws IllegalActionException {
+        Director director = ((CompositeActor) this.getContainer())
+                .getDirector();
+        if (director instanceof SuperdenseTimeDirector) {
+            return ((SuperdenseTimeDirector) director).getIndex();
+        }
+        throw new IllegalActionException(this,
+                "This actor can only be used with a SuperdenseTimeDirector");
+    }
+    
+    ///////////////////////////////////////////////////////////////////
+    //                        private variables                      //
+    
+    // True if there are more tokens on other channels.
+    private boolean _moreTokensOnOtherChannels = false;
+    
+    // Last time this actor was fired.
+    private Time _previousModelTime;
+    
+    // Mircostep of director during last firing of this actor.
+    private int _previousMicrostep;
+
 }
