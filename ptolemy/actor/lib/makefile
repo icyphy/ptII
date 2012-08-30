@@ -107,7 +107,6 @@ PTCLASSALLJARS = \
 	fmi/fmi.jar \
 	gui/gui.jar \
 	javasound/javasound.jar \
-	jni/jni.jar \
 	jopio/jopio.jar \
 	net/net.jar \
 	qm/qm.jar \
