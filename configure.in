@@ -814,7 +814,8 @@ done
 
 # Paths to always exclude in Ant's build.xml
 ANT_ALWAYS_EXCLUDE='<exclude name="**/CVS/"/>
-<exclude name="**/adm/"/>
+<exclude name="**/adm/dists/" />
+<exclude name="**/adm/gen-*/" />
 <exclude name="**/codeDoc/"/>
 <exclude name="**/cobertura.ser" />
 <exclude name="**/makefile" />
