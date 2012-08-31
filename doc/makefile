@@ -578,12 +578,15 @@ ALLPACKAGES = \
 	ptolemy.domains.ca.lib.gui \
 	ptolemy.domains.ci.kernel \
 	ptolemy.domains.ci.lib \
+	ptolemy.domains.coroutine.kernel \
+	ptolemy.domains.coroutine.lib \
 	ptolemy.domains.curriculum \
 	ptolemy.domains.dde.kernel \
 	ptolemy.domains.dde.lib \
 	ptolemy.domains.ddf.kernel \
 	ptolemy.domains.ddf.lib \
 	ptolemy.domains.dt.kernel \
+	ptolemy.domains.giotto.cgc \
 	ptolemy.domains.giotto.kernel \
 	ptolemy.domains.giotto.lib \
 	ptolemy.domains.hdf.kernel \
