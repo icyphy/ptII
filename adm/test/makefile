@@ -51,7 +51,9 @@ JSRCS =
 JSIMPLE_TESTS = \
 	ant.tcl \
 	license.tcl \
+	Nightly.tcl \
 	Release.tcl
+
 
 # Graphical Java tests that use Tcl.
 # If there are no tests, we use a dummy file so that the script that builds
