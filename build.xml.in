@@ -271,7 +271,7 @@ For example:
     <!-- printsummary takes one of One of on, off, and withOutAndErr.  Off is the default-->
     <junit fork="yes"
 	   jvm="ptolemy/util/test/junit/javachdir"
-	   printsummary="withOutAndErr"
+	   printsummary="off"
 	   showoutput="yes"
 	   timeout="${timeout}">
       <classpath>

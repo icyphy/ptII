@@ -2512,6 +2512,7 @@ L4JC=$(L4J_DIR)/launch4j
 
 PTSETUP_DEPENDENCIES = \
 	../../ptiny.exe \
+	../../designdocv1.exe \
 	../../jar_dist \
 	../../ptolemy/matlab/ptmatlab.dll
 
@@ -2554,6 +2555,9 @@ $(PTSETUP)_64.exe: $(PTSETUP_DEPENDENCIES) \
 	fi
 
 ../../ptiny.exe:
+	 $(MAKE) -C ../.. exes
+
+../../designdocv1.exe:
 	 $(MAKE) -C ../.. exes
 
 ../../jar_dist:

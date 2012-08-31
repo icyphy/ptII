@@ -40,24 +40,30 @@ if {[string compare test [info procs test]] == 1} then {
     source testDefs.tcl
 } {}
 
+set dir [pwd]
 test ant-1.1 {Check the build.default.xml file} {
-    set dir [pwd]
     cd $PTII
-    exec cp build.xml build.xml.bak
+    if {[file exists build.xml]} {
+	exec cp build.xml build.xml.bak
+    }
     puts "# Copying build.default.xml to build.xml"
     exec cp build.default.xml build.xml
     puts "# Running ant clean"
     puts [exec ant clean]
     puts "# Running ant" 
     puts [exec ant]
-    cd $dir
+
 } {}
 
+cd $dir
+
 test ant-1.2 {Rebuild using build.xml file} {
-    set dir [pwd]
     cd $PTII
-    exec mv build.xml.bak build.xml
-    puts "# Running ant" 
-    puts [exec ant]
-    cd $dir
+    if {[file exists build.xml.bak]} {
+	exec mv build.xml.bak build.xml
+	puts "# Running ant" 
+	puts [exec ant]
+    }
 } {}
+
+cd $dir

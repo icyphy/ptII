@@ -41,6 +41,25 @@ if {[string compare test [info procs test]] == 1} then {
     source testDefs.tcl
 } {}
 
+# This is a bit of a hack.
+#
+# We use hudson to invoke "ant installers", which invokes 
+# adm/test/junit/JUnitTclTest.java, which runs the tcl tests
+# in this directory including this file.
+#
+# This file runs make in adm/gen-X.0, which creates the installer
+# and then invokes the installer and runs the tests using make.
+# We use ptolemy.util.StreamExec to invoke make so that we
+# can get the output as it occurs and so that we can search
+# stdout and stderr for error messages.
+#
+# Try to keep up.
+#
+# In the future, it would be good to migrate away from some of
+# this.  Maven has potential, but our jnlp setup of having
+# many jnlp files does not fit the Maven model.
+
+
 # These variables match variables in the $PTII/adm/gen-$version/makefile
 set major_version 9.0
 set minor_version devel
@@ -51,7 +70,7 @@ set ptII_full $gendir/ptII$version.tar
 set ptII_src_jar $gendir/ptII$version.src.jar
 set ptsetup ptII${windows_version}_setup_windows
 
-proc nightlyMake {target {pattern {\*\*\*}}} {
+proc nightlyMake {target {pattern {.*\*\*\*.*}}} {
     global PTII gendir
     set ptIIhome $PTII
     set ptIIadm $PTII/adm
@@ -74,51 +93,71 @@ proc nightlyMake {target {pattern {\*\*\*}}} {
     return [$streamExec getPatternLog]
 }
 
+set startingDirectory [pwd]
+cd $gendir
+
 test nightly-1.1 {clean} {
-    cd $gendir
     set matches [nightlyMake clean]
     list $matches [file exists $ptII_full]
 } {{} 0}
 
 test nightly-1.2 {all} {
-    cd $gendir
     set matches [nightlyMake all]
     list $matches [file exists $ptII_full]
 } {{} 1}
 
 test nightly-1.3 {jnlp} {
-    cd $gendir
     set matches [nightlyMake jnlp]
     list $matches [file exists $PTII/vergil.jnlp]
 } {{} 1}
 
 test nightly-1.4 {src.jar} {
-    cd $gendir
     set matches [nightlyMake jnlp]
     list $matches [file exists $gendir/ptII$version.src.jar]
 } {{} 1}
 
 test nightly-1.5 {setup} {
-    cd $gendir
     set matches [nightlyMake setup]
     list $matches [file exists $gendir/$ptsetup.exe]
 } {{} 1}
 
 test nightly-1.6 {test_setup} {
-    cd $gendir
-    # FIXME: Need to check the output somehow
-    set matches [nightlyMake test_setup {.*\*\*\*.*|^Failed: [1-9].*}
+    set matches [nightlyMake test_setup {.*\*\*\*.*|^Failed: [1-9].*}]
     list $matches
 } {}
 
 test nightly-1.7 {update_andrews} {
-    cd $gendir
     set matches [nightlyMake update_andrews]
-    list $matches
-} {{} 1}
+
+    # Check that the files are there.
+    set results {}
+    set date [exec date +%Y-%m-%d]
+    set files [list ptII9.0.devel-$date.src.tar.gz  ptII9.0.devel.setup.mac-$date.app.tar.gz  ptII9_0_devel_setup_windows-$date.exe  ptII9_0_devel_setup_windows_64-$date.exe ]
+    foreach file $files {
+    puts $file
+	set url [java::new java.net.URL http://chess.eecs.berkeley.edu/ptexternal/nightly/builds/$file]
+	set connection [$url openConnection]
+	if [catch {set reader [java::new java.io.BufferedReader [java::new java.io.InputStreamReader [$connection getInputStream]]]} errMessage] {
+	    lappend $results "Could not read [$url toString]"
+        jdkStackTrace
+	} else {
+	    set line [$reader readLine]
+	    if {[string length $line] < 5 } {
+		lappend $results  "Could not read [$url toString], the line was less than 5 chars?"
+	    }
+	    set contentLength [$connection getContentLength]
+	    if {$contentLength < 1000000} {
+		lappend $results  "The content length of [$url toString] was $contentLength, which is less than 1 meg?"
+	    }
+        #puts $line                                                                                                                          $reader close
+	}
+    }
+    list $matches $results
+} {{} {}}
 
 test nightly-1.8 {updateDOPCenterImage} {
-    cd $gendir
     set matches [nightlyMake updateDOPCenterImage]
     list $matches [file exists $PTII/ptolemy/domains/space/demo/DOPCenter/DOPCenter.png]
 } {{} 1}
+
+cd $startingDirectory
