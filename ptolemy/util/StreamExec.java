@@ -35,6 +35,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Pattern;
 
 /** Execute commands in a subprocess and send the results to stderr and stdout.
  <p>As an alternative to this class, see
@@ -171,6 +172,23 @@ public class StreamExec implements ExecuteCommands {
         return null;
     }
 
+    /** Return the value of the pattern log.
+     *  <p>Calling this method resets the log of previously received
+     *  matches.</p>
+     *  @return Any strings sent that match the value of the pattern.
+     *  The matches for stdout are returned first, then the matches
+     *  for stdout.
+     *  @see #setPattern(String)
+     *  @see #stdout(String)
+     */
+    public String getPatternLog() {
+	String patternOutLog = _patternOutLog.toString();
+	String patternErrorLog = _patternErrorLog.toString();
+	_patternOutLog = new StringBuffer();
+	_patternErrorLog = new StringBuffer();
+	return patternOutLog + patternErrorLog;
+    }
+
     /** Return the return code of the last subprocess that was executed.
      *  @return the return code of the last subprocess that was executed.
      */
@@ -185,6 +203,24 @@ public class StreamExec implements ExecuteCommands {
         _commands = commands;
     }
 
+    /** Set the pattern that is used to search data sent to stdout.
+     *  <p>If the value of the pattern argument is non-null, then
+     *  each time {@link stdout(String)} is called, the value of 
+     *  the argument to stdout is compared with the pattern
+     *  regex.  If there is a match, then the value is appended
+     *  to a StringBuffer that whose value may be obtained with
+     *  the {@ #getPatternLog()} method.</p>
+     *  <p>Calling this method resets the log of previously received
+     *  matches.</p>
+     *  @param pattern The pattern used.
+     *  @see #getPatternLog()
+     */
+    public void setPattern(String pattern) {
+	_eol = StringUtilities.getProperty("line.separator");
+	_pattern = Pattern.compile(pattern);
+	_patternOutLog = new StringBuffer();
+	_patternErrorLog = new StringBuffer();
+    }
     /** Determine whether the last subprocess is waited for or not.
      *  @param waitForLastSubprocess True if the {@link #start()}
      *  method should wait for the last subprocess to finish.
@@ -219,6 +255,10 @@ public class StreamExec implements ExecuteCommands {
      *  @param text The text to append to standard error.
      */
     public void stderr(final String text) {
+	if (_pattern != null 
+	    && _pattern.matcher(text).matches()) {
+	    _patternErrorLog.append(text + _eol);
+	}
         System.err.println(text);
         System.err.flush();
     }
@@ -227,9 +267,17 @@ public class StreamExec implements ExecuteCommands {
      *  append to a StringBuffer.  {@link ptolemy.gui.JTextAreaExec} appends to a
      *  JTextArea.
      *  The output automatically gets a trailing newline appended.
+     *  <p>If {@link #setPattern(String)} has been called with a 
+     *  non-null argument, then any text that matches the pattern
+     *  regex will be appended to a log file.  The log file
+     *  may be read with {@link getPatternLog()}.</p>
      *  @param text The text to append to standard out.
      */
     public void stdout(final String text) {
+	if (_pattern != null 
+	    && _pattern.matcher(text).matches()) {
+	    _patternOutLog.append(text + _eol);
+	}
         System.out.println(text);
         System.out.flush();
     }
@@ -458,12 +506,26 @@ public class StreamExec implements ExecuteCommands {
 
     private final boolean _debug = false;
 
+    /** End of line character. */
+    private static String _eol = null;
+
     /** The environment, which is an array of Strings of the form
      *  <code>name=value</code>.  If this variable is null, then
      *  the environment of the calling process is used.
      */
     private String[] _envp;
 
+    /** The regex pattern used to match against the output of 
+     *  the subprocess.
+     */
+    private Pattern _pattern;
+
+    /** The StringBuffer that contains matches to calls to stdout(). */
+    private StringBuffer _patternErrorLog;
+
+    /** The StringBuffer that contains matches to calls to stderr(). */
+    private StringBuffer _patternOutLog;
+	
     /** The Process that we are running. */
     private Process _process;
 

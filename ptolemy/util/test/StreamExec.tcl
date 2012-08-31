@@ -198,3 +198,29 @@ test StreamExec-2.5 {Run commands in another thread and call cancel} {
     # Success is not throwing an error	
     list 1
 } {1}
+
+######################################################################
+####
+#
+test StreamExec-3.0 {Test for pattern matching} {
+    set commands [java::new java.util.LinkedList]
+    $commands add "echo first"
+    $commands add "echo second"
+    $commands add "echo Failed: 1 of 2"
+    $commands add "make notATarget"
+
+    set streamExec [java::new ptolemy.util.StreamExec]
+    $streamExec setCommands $commands
+    $streamExec setPattern {^sec.*|.*\*\*\*.*|^Failed: [1-9].*}
+    jdkCapture {    
+	jdkCaptureErr {
+	    $streamExec start
+        } stderr
+    } stdout
+    # puts "StreamExec-3.0: stdout: $stdout"
+    # puts "StreamExec-3.0: stderr: $stderr"
+    list [$streamExec getPatternLog]
+} {{second
+Failed: 1 of 2
+make: *** No rule to make target `notATarget'.  Stop.
+}}
