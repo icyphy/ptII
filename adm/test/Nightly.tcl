@@ -32,6 +32,7 @@
 
 # Ptolemy II test bed, see $PTII/doc/coding/testing.html for more information.
 
+set VERBOSE 1
 # Get rid of any previous lists of .java files etc.
 exec make clean
 
@@ -50,59 +51,74 @@ set ptII_full $gendir/ptII$version.tar
 set ptII_src_jar $gendir/ptII$version.src.jar
 set ptsetup ptII${windows_version}_setup_windows
 
-proc nightlyMake {target} {
-    global PTII
+proc nightlyMake {target {pattern {\*\*\*}}} {
+    global PTII gendir
     set ptIIhome $PTII
     set ptIIadm $PTII/adm
     set user hudson
-    exec make USER=$user PTIIHOME=${ptIIhome} PTIIADM=${ptIIadm} JAR=/usr/bin/jar TAR=/usr/bin/tar $target
+
+    # Use StreamExec so that we echo the results to stdout as the
+    # results are produced.
+    set streamExec [java::new ptolemy.util.StreamExec]
+    set commands [java::new java.util.LinkedList]
+    cd $PTII
+    $commands add "make -C $gendir USER=$user PTIIHOME=${ptIIhome} PTIIADM=${ptIIadm} JAR=/usr/bin/jar TAR=/usr/local/bin/tar $target"
+    $streamExec setCommands $commands
+    $streamExec setPattern $pattern
+    $streamExec start
+    set returnCode [$streamExec getLastSubprocessReturnCode]
+    if { $returnCode != 0 } {
+	return [list "Last subprocess returned non-zero: $returnCode" \
+		    [$streamExec getPatternLog]]
+    }
+    return [$streamExec getPatternLog]
 }
 
 test nightly-1.1 {clean} {
     cd $gendir
-    nightlyMake clean
-    list [file exists $ptII_full]
-} {0}
+    set matches [nightlyMake clean]
+    list $matches [file exists $ptII_full]
+} {{} 0}
 
 test nightly-1.2 {all} {
     cd $gendir
-    nightlyMake all
-    list [file exists $ptII_full]
-} {1}
+    set matches [nightlyMake all]
+    list $matches [file exists $ptII_full]
+} {{} 1}
 
 test nightly-1.3 {jnlp} {
     cd $gendir
-    nightlyMake jnlp
-    list [file exists $PTII/vergil.jnlp]
-} {1}
+    set matches [nightlyMake jnlp]
+    list $matches [file exists $PTII/vergil.jnlp]
+} {{} 1}
 
 test nightly-1.4 {src.jar} {
     cd $gendir
-    nightlyMake jnlp
-    list [file exists $gendir/ptII$version.src.jar]
-} {1}
+    set matches [nightlyMake jnlp]
+    list $matches [file exists $gendir/ptII$version.src.jar]
+} {{} 1}
 
 test nightly-1.5 {setup} {
     cd $gendir
-    nightlyMake setup
-    list [file exists $gendir/$ptsetup.exe]
-} {1}
+    set matches [nightlyMake setup]
+    list $matches [file exists $gendir/$ptsetup.exe]
+} {{} 1}
 
 test nightly-1.6 {test_setup} {
     cd $gendir
     # FIXME: Need to check the output somehow
-    nightlyMake test_setup
-    list 1
-} {1}
+    set matches [nightlyMake test_setup {.*\*\*\*.*|^Failed: [1-9].*}
+    list $matches
+} {}
 
 test nightly-1.7 {update_andrews} {
     cd $gendir
-    nightlyMake update_andrews
-    list 1
-} {1}
+    set matches [nightlyMake update_andrews]
+    list $matches
+} {{} 1}
 
 test nightly-1.8 {updateDOPCenterImage} {
     cd $gendir
-    nightlyMake updateDOPCenterImage
-    list [file exists $PTII/ptolemy/domains/space/demo/DOPCenter/DOPCenter.png]
-} {1}
+    set matches [nightlyMake updateDOPCenterImage]
+    list $matches [file exists $PTII/ptolemy/domains/space/demo/DOPCenter/DOPCenter.png]
+} {{} 1}

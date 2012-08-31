@@ -131,11 +131,13 @@
        These tests should be excluded by test.longest.excludes -->
   <patternset id="test.longest.includes">
     <include name="**/ptolemy/vergil/basic/export/test/junit/ExportModelJUnitTest.*" />
+    <include name="**/adm/test/JUnitTclTest*" />
   </patternset>
 
   <!-- Exclude longest running tests. -->
   <patternset id="test.longest.excludes">
     <exclude name="**/ptolemy/vergil/basic/export/test/junit/ExportModelJUnitTest.*" />
+    <exclude name="**/adm/test/JUnitTclTest*" />
   </patternset>
 
 
@@ -263,6 +265,25 @@ For example:
     <mkdir dir="${ptII.reports}/doccheck" />
     <mkdir dir="${ptII.reports}/ojdcheck" />
   </target>
+
+  <target name="installers" depends="initReports,build,jars"
+	  description="Build installers by running a test.  See adm/gen-9.0/." >
+    <!-- printsummary takes one of One of on, off, and withOutAndErr.  Off is the default-->
+    <junit fork="yes"
+	   jvm="ptolemy/util/test/junit/javachdir"
+	   printsummary="withOutAndErr"
+	   showoutput="yes"
+	   timeout="${timeout}">
+      <classpath>
+	<path refid="ptII.classpath" />
+	<pathelement location="lib/JUnitParams-0.3.0.jar"/>
+      </classpath>
+      <formatter type="${junit.formatter}" usefile="false"/>
+      <jvmarg value="-Dptolemy.ptII.dir=${basedir}" />
+      <test  name="adm.test.junit.JUnitTclTest" />
+    </junit>
+  </target>
+
 
   <target name="jars"
 	  description="Create jar files." >
