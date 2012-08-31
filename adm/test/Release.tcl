@@ -44,8 +44,6 @@ test release-1.1 {Check for missing makefiles} {
     exec make --no-print-directory --silent missingMakefiles
 } {./config/makefile
 ./doc/coding/templates/makefile
-./org/ptolemy/fmi/driver/test/junit/makefile
-./org/ptolemy/ptango/lib/makefile
 ./ptolemy/backtrack/automatic/ptolemy/actor/lib/makefile
 ./ptolemy/backtrack/automatic/ptolemy/domains/sdf/lib/makefile
 ./ptolemy/backtrack/automatic/ptolemy/math/makefile
@@ -65,7 +63,8 @@ test release-1.1 {Check for missing makefiles} {
 
 test release-2.1 {Check for directories that have java files, but are not in doc/makefile} {
     exec make --no-print-directory --silent missingDocPackages
-} {config
+} {.
+config
 contrib.actor.lib.example
 diva.util.java2d.svg
 doc.coding.templates
@@ -74,13 +73,11 @@ doc.tutorial.domains
 doc.tutorial.graph
 doc.tutorial.graph.junit
 doc.tutorial.gui
-org.ptolemy.ptango.lib
 ptolemy.actor.corba
 ptolemy.actor.corba.CoordinatorUtil
 ptolemy.actor.corba.CorbaIOUtil
 ptolemy.actor.corba.util
 ptolemy.actor.lib.javasound.test.pitchshift
-ptolemy.actor.lib.jxta
 ptolemy.actor.lib.reactable
 ptolemy.actor.lib.tutorial
 ptolemy.backtrack.automatic.ptolemy.math
@@ -90,10 +87,6 @@ ptolemy.backtrack.eclipse.plugin.console
 ptolemy.backtrack.eclipse.plugin.dialogs
 ptolemy.backtrack.eclipse.plugin.widgets
 ptolemy.backtrack.test.array1
-ptolemy.backtrack.test.ptolemy.backtrack.test.array1
-ptolemy.backtrack.test.ptolemy.backtrack.test.random1
-ptolemy.backtrack.test.ptolemy.backtrack.test.test1
-ptolemy.backtrack.test.ptolemy.backtrack.test.test2
 ptolemy.backtrack.test.random1
 ptolemy.backtrack.test.test1
 ptolemy.backtrack.test.test2
@@ -109,7 +102,6 @@ ptolemy.domains.gr.lib.quicktime
 ptolemy.domains.wireless.lib.network
 ptolemy.domains.wireless.lib.network.mac
 ptolemy.domains.wireless.lib.tinyOS
-ptolemy.moml.jxta
 ptolemy.plot.servlet}
 
 set currentDirectory [pwd]
@@ -133,23 +125,24 @@ test release-3.1 {Run svn status and look for files that should be checked in.  
 		lappend $result $line
 	    }
 	} else {
-	    append result "\n$line"
+	    lappend result "\n$line"
 	}
     }
 
+    set result [lsort $result]
     set result1 \
-{
-?       .maven
-?       cobertura.ser
-?       reports
-?       ptolemy/configs/doc/ClassesIllustrated
-?       ptolemy/matlab/META-INF
-?       ptolemy/moml/test/NoPackageActor.java
-?       ptolemy/actor/lib/jai/test/auto/PtolemyII.bmp
-?       ptolemy/actor/lib/jai/test/auto/PtolemyII.jpg
-?       ptolemy/actor/lib/jai/test/auto/PtolemyII.tif
-?       ptolemy/actor/lib/jai/test/auto/PtolemyII.pgm
-?       ptserver/test/PtolemyServer.log}
+{{
+?       .maven} {
+?       cobertura.ser} {
+?       ptolemy/actor/lib/jai/test/auto/PtolemyII.bmp} {
+?       ptolemy/actor/lib/jai/test/auto/PtolemyII.jpg} {
+?       ptolemy/actor/lib/jai/test/auto/PtolemyII.pgm} {
+?       ptolemy/actor/lib/jai/test/auto/PtolemyII.tif} {
+?       ptolemy/configs/doc/ClassesIllustrated} {
+?       ptolemy/matlab/META-INF} {
+?       ptolemy/matlab/matlabLinux.jar} {
+?       ptolemy/moml/test/NoPackageActor.java} {
+?       reports}}
     if { $result == $result1 } {
 	puts "Result was:\n$result\nWhich is ok"
         set result {}
