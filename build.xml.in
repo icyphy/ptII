@@ -40,6 +40,10 @@
   <!-- The output director for junit. -->
   <property name="junit.output.dir" value="${ptII.reports}/junit" />
 
+  <!-- The location of the file that contains the certificates used to sign JNLP files.
+       See $PTII/mk/jnlp.mk for details -->
+  <property name="keystore" value="ptKeystore"/>
+
   <!-- model names the model to be opened.  The default is the empty string.  To use this, run 'ant vergil -Dmodel=foo.xml' -->
   <property name="model" value="" />
 
@@ -388,6 +392,24 @@ For example:
   <target name="reports"
 	  description="Generate non-test reports about the Ptolemy II code base."
 	  depends="checkstyle, doccheck, findbugs, ojdcheck" />
+
+  <target name="resignjars"
+	  description="Update the certificate of jar files in signed/**/*.jar and **/signed_*.jar.">
+    <input
+       message="Please enter keystore password:"
+       addproperty="keypass" />
+    <signjar
+       alias="ptolemy" 
+       keystore="${keystore}"
+       lazy="false"
+       storepass="${keypass}"
+       >
+      <path>
+        <fileset dir="signed" includes="**/*.jar" />
+        <fileset dir="ptolemy" includes="**/signed_*.jar" />
+      </path>
+    </signjar>
+  </target>
 
   <target name="run" depends="vergil"
 	  description="Invoke the Ptolemy II User Interface (alias for the vergil target)"/>
