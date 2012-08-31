@@ -1110,13 +1110,26 @@ remote1local: $(PTII_FULL) $(GENLOGDIR)
 		remote1done >& $(REMOTE1LOG)" &
 
 # Commands run by hudson
-hudson:
- 
+hudson: 
 	$(MAKE) -k USER=hudson \
 	PTIIHOME=/var/lib/hudson/jobs/ptII/workspace \
 	PTIIADM=/var/lib/hudson/jobs/ptII/workspace/adm \
 	JAR=/usr/bin/jar \
 	clean all jnlp src.jar setup test_setup update_andrews updateDOPCenterImage
+
+hudson_start: 
+	$(MAKE) -k USER=hudson \
+	PTIIHOME=/var/lib/hudson/jobs/ptII/workspace \
+	PTIIADM=/var/lib/hudson/jobs/ptII/workspace/adm \
+	JAR=/usr/bin/jar \
+	clean all jnlp src.jar setup test_setup_start
+
+hudson_ant: 
+	$(MAKE) -k USER=hudson \
+	PTIIHOME=/var/lib/hudson/jobs/ptII/workspace \
+	PTIIADM=/var/lib/hudson/jobs/ptII/workspace/adm \
+	JAR=/usr/bin/jar \
+	test_setup_ant
 
 hudson_dist: 
 	$(MAKE) -k USER=hudson \
@@ -2567,22 +2580,36 @@ clean_setup:
 full_clean_setup: clean_setup
 	rm -rf $(PTSETUP_DEPENDENCIES)
 
-test_setup: setup_jar setup setup_mac_app_tar
+test_setup:  setup test_setup_start test_setup_ant test_setup_end
+
+test_setup_start: test_setup_announce setup_jar setup setup_mac_app_tar test_setup_installerTest test_setup_XvfbStart
+
+test_setup_announce:
 	@echo "#"
 	@echo "# Now testing the setup file" 
 	@echo "#"
 	@echo "$@ `date`"
 	@echo "`uptime`"
+
+test_setup_installerTest:
 	rm -rf test/installerTest
 	java -jar $(PTSETUP).jar installerTest.xml
+
+test_setup_XvfbStart:
 	-pkill Xvfb
 	-pkill -9 Xvfb
 	# Ignore errors 
 	-ls -l /tmp/.X8-lock
 	-rm -rf /tmp/.X8-lock
 	Xvfb :8 -screen 0 1024x768x24 &
+
+test_setup_ant:
 	#(cd test/installerTest; chmod a+x ./configure; export DISPLAY=localhost:8.0; echo "DISPLAY=$$DISPLAY"; PTII=`pwd` ./configure; PTII=`pwd` make -k PTII=`pwd` fast install tests)
-	(cd test/installerTest; chmod a+x ./configure; export DISPLAY=localhost:8.0; echo "DISPLAY=$$DISPLAY"; PTII=`pwd` ./configure; PTII=`pwd` ant build test.short)
+	(cd test/installerTest; chmod a+x ./configure; export DISPLAY=localhost:8.0; echo "DISPLAY=$$DISPLAY"; PTII=`pwd` ./configure; PTII=`pwd` ant build) 
+
+test_setup_end: test_setup_XvfbStop
+
+test_setup_XvfbStop:
 	-pkill Xvfb
 	-pkill -9 Xvfb
 	rm -f /tmp/.X8-lock
