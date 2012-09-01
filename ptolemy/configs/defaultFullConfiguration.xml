@@ -161,6 +161,7 @@
             <input source="ptolemy/configs/automataActorLibrary.xml"/>
         <!-- Backtracking actors -->
             <input source="ptolemy/backtrack/backtrack.xml"/>
+            <input source="ptolemy/cg/cg.xml"/>
             <input source="ptolemy/domains/ca/lib/caentities.xml"/>
 	    <!-- Chic actors are not being shipped in 4.0 -->
             <!-- input source="ptolemy/chic/chic.xml"/ -->
