@@ -219,8 +219,11 @@ test StreamExec-3.0 {Test for pattern matching} {
     } stdout
     # puts "StreamExec-3.0: stdout: $stdout"
     # puts "StreamExec-3.0: stderr: $stderr"
-    list [$streamExec getPatternLog]
+    set result [$streamExec getPatternLog]
+    regsub -all {make\[.*]} $result {make} result2
+    regsub -all {.  Stop.} $result2 {.} result3
+    list $result3
 } {{second
 Failed: 1 of 2
-make: *** No rule to make target `notATarget'.  Stop.
+make: *** No rule to make target `notATarget'.
 }}
