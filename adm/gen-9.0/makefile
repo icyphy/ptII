@@ -2584,7 +2584,7 @@ clean_setup:
 full_clean_setup: clean_setup
 	rm -rf $(PTSETUP_DEPENDENCIES)
 
-test_setup:  setup test_setup_start test_setup_ant test_setup_end
+test_setup:  setup test_setup_start test_setup_make test_setup_end
 
 test_setup_start: test_setup_announce setup_jar setup setup_mac_app_tar test_setup_installerTest test_setup_XvfbStart
 
@@ -2607,8 +2607,10 @@ test_setup_XvfbStart:
 	-rm -rf /tmp/.X8-lock
 	Xvfb :8 -screen 0 1024x768x24 &
 
+test_setup_make:
+	(cd test/installerTest; chmod a+x ./configure; export DISPLAY=localhost:8.0; echo "DISPLAY=$$DISPLAY"; PTII=`pwd` ./configure; PTII=`pwd` make -k PTII=`pwd` fast install tests)
+
 test_setup_ant:
-	#(cd test/installerTest; chmod a+x ./configure; export DISPLAY=localhost:8.0; echo "DISPLAY=$$DISPLAY"; PTII=`pwd` ./configure; PTII=`pwd` make -k PTII=`pwd` fast install tests)
 	(cd test/installerTest; chmod a+x ./configure; export DISPLAY=localhost:8.0; echo "DISPLAY=$$DISPLAY"; PTII=`pwd` ./configure; PTII=`pwd` ant build) 
 
 test_setup_end: test_setup_XvfbStop
