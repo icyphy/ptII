@@ -88,7 +88,7 @@
   <!-- Tests that we want to exclude because they don't work or are called by AllTests. -->
   <patternset id="test.excludes">
     @ANT_EXCLUDE_TESTS@
-    <exclude name="**/adm/test/JUnitTclTest*" />
+    <exclude name="**/adm/test/junit/JUnitTclTest*" />
     <exclude name="**/HTMLAboutJUnitTest.*" />
     <exclude name="**/javasound/test/junit/JUnitTclTest.*" />
     <exclude name="**/KielerJUnitTest.*" />
