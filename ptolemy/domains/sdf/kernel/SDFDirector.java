@@ -408,7 +408,7 @@ public class SDFDirector extends StaticSchedulingDirector implements
      *  <p>The number of iterations returned depends on the value of
      *  the <i>iterations</i> parameter and whether the container
      *  of the director is at the top level. 
-     *  See the {@link #interations} documentation for details.</p>
+     *  See the {@link #iterations} documentation for details.</p>
      *
      *  <p>Code that uses SDFDirector should call getIterations()
      *  instead of directly referring to the value of the

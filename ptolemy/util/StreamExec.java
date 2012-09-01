@@ -205,11 +205,11 @@ public class StreamExec implements ExecuteCommands {
 
     /** Set the pattern that is used to search data sent to stdout.
      *  <p>If the value of the pattern argument is non-null, then
-     *  each time {@link stdout(String)} is called, the value of 
+     *  each time {@link #stdout(String)} is called, the value of 
      *  the argument to stdout is compared with the pattern
      *  regex.  If there is a match, then the value is appended
      *  to a StringBuffer that whose value may be obtained with
-     *  the {@ #getPatternLog()} method.</p>
+     *  the {@link #getPatternLog()} method.</p>
      *  <p>Calling this method resets the log of previously received
      *  matches.</p>
      *  @param pattern The pattern used.
@@ -270,7 +270,7 @@ public class StreamExec implements ExecuteCommands {
      *  <p>If {@link #setPattern(String)} has been called with a 
      *  non-null argument, then any text that matches the pattern
      *  regex will be appended to a log file.  The log file
-     *  may be read with {@link getPatternLog()}.</p>
+     *  may be read with {@link #getPatternLog()}.</p>
      *  @param text The text to append to standard out.
      */
     public void stdout(final String text) {
