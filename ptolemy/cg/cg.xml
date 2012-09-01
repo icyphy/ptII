@@ -15,11 +15,6 @@
         </entity>
         <property name="HTMLCodeGenerator" class="ptolemy.cg.kernel.generic.html.HTMLCodeGenerator"/>
         <property name="JavaCodeGenerator" class="ptolemy.cg.kernel.generic.program.procedural.java.JavaCodeGenerator"/>
-        <entity name="CodegenActor" class="ptolemy.actor.lib.jni.CodegenActor">
-            <property name="_tableauFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
-                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="embeddedCCode"/>
-            </property>
-        </entity>
         <property name="ModularCodeGenerator" class="ptolemy.cg.kernel.generic.program.procedural.java.modular.ModularCodeGenerator"/>
         <property name="ModularSDFCodeGenerator" class="ptolemy.cg.kernel.generic.program.procedural.java.modular.ModularSDFCodeGenerator"/>
         <entity name="ModularCodeGenTypedCompositeActor" class="ptolemy.cg.lib.ModularCodeGenTypedCompositeActor"/>
