@@ -127,7 +127,6 @@ lib/ptolemy.jar
 lib/ptolemy-doc.jar
 lib/ptII.properties
 lib/ptvr.jar
-mail
 make.out
 mems
 mk/ptII.mk
