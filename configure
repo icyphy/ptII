@@ -9584,7 +9584,7 @@ $as_echo "$as_me: WARNING: Failed to find gcc or cc, so we will
            ;;
     esac
 
-	# Extract the first word of "javah", so it can be a program name with args.
+    # Extract the first word of "javah", so it can be a program name with args.
 set dummy javah; ac_word=$2
 { $as_echo "$as_me:${as_lineno-$LINENO}: checking for $ac_word" >&5
 $as_echo_n "checking for $ac_word... " >&6; }
@@ -9630,12 +9630,14 @@ fi
 $as_echo "$as_me: WARNING:  Failed to find javah at '$JAVAH', perhaps Java is not installed?" >&2;}
     fi
 
+    { $as_echo "$as_me:${as_lineno-$LINENO}: checking for the cc for JNI" >&5
+$as_echo_n "checking for the cc for JNI... " >&6; }
     if test "${PTCCJNI:-none}" != "none"; then
-        if test "${PTVERBOSE:-none}" = "none"; then { $as_echo "$as_me:${as_lineno-$LINENO}: result: ok" >&5
-$as_echo "ok" >&6; }; else { $as_echo "$as_me:${as_lineno-$LINENO}: result: $PTJNICC" >&5
-$as_echo "$PTJNICC" >&6; }; fi
+        # PT_MSG_RESULT([$PTJNICC])
         PTJNI_DIR=jni
 
+        { $as_echo "$as_me:${as_lineno-$LINENO}: checking for that the pieces for JNI have been found" >&5
+$as_echo_n "checking for that the pieces for JNI have been found... " >&6; }
         if test ! -z $PTJNI_DIR; then
             if test "${PTVERBOSE:-none}" = "none"; then { $as_echo "$as_me:${as_lineno-$LINENO}: result: ok" >&5
 $as_echo "ok" >&6; }; else { $as_echo "$as_me:${as_lineno-$LINENO}: result: '$PTJNI_ARCHITECTURE'" >&5
@@ -10618,15 +10620,8 @@ $as_echo "$PTANGO_USER_DIR is not present" >&6; }; fi
 else
     # We checked for Jetty above.
     if test  -f "$PTJETTY_JAR"; then
-	if test "${PTVERBOSE:-none}" = "none"; then { $as_echo "$as_me:${as_lineno-$LINENO}: result: ok" >&5
-$as_echo "ok" >&6; }; else { $as_echo "$as_me:${as_lineno-$LINENO}: result: $PTJETTY_JAR" >&5
-$as_echo "$PTJETTY_JAR" >&6; }; fi
-
 	# We checked for Servlet above.
         if test  -f "$PTSERVLET_JAR"; then
-	    if test "${PTVERBOSE:-none}" = "none"; then { $as_echo "$as_me:${as_lineno-$LINENO}: result: ok" >&5
-$as_echo "ok" >&6; }; else { $as_echo "$as_me:${as_lineno-$LINENO}: result: $PTSERVLET_JAR" >&5
-$as_echo "$PTSERVLET_JAR" >&6; }; fi
 	    PTANGO_DIR=ptango
             # PTANGO_PACKAGES is used in ptII/doc/makefile
 	    PTANGO_PACKAGES=`find $PTANGO_USER_DIR -name "*.java" | grep -v /test | awk -F / '{printf("%s", $1); for (i = 2; i < NF; i++) printf(".%s", $i); printf("\n")}' | sort | uniq | awk '{printf("%s ", $0)}'`
@@ -10677,10 +10672,6 @@ $as_echo "$PTSERVER_USER_DIR is not present,
 else
     # We checked for Jetty above.
     if test  -f "$PTJETTY_JAR"; then
-	if test "${PTVERBOSE:-none}" = "none"; then { $as_echo "$as_me:${as_lineno-$LINENO}: result: ok" >&5
-$as_echo "ok" >&6; }; else { $as_echo "$as_me:${as_lineno-$LINENO}: result: $PTJETTY_JAR" >&5
-$as_echo "$PTJETTY_JAR" >&6; }; fi
-
 	# We checked for Servlet above.
         if test  -f "$PTSERVLET_JAR"; then
 	    { $as_echo "$as_me:${as_lineno-$LINENO}: checking for Hessian, used by ptserver " >&5
@@ -11750,9 +11741,6 @@ $as_echo "$GIOTTO_DIR/gdk.jar" >&6; }; fi
 	else
 	   GIOTTO_CLASSES=no
         fi
-	if test "${PTVERBOSE:-none}" = "none"; then { $as_echo "$as_me:${as_lineno-$LINENO}: result: ok" >&5
-$as_echo "ok" >&6; }; else { $as_echo "$as_me:${as_lineno-$LINENO}: result: $GIOTTO_CLASSES" >&5
-$as_echo "$GIOTTO_CLASSES" >&6; }; fi
     fi
     if test "$GIOTTO_CLASSES" = "no"; then
         { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Failed to find giotto/gdk.jar
