@@ -481,6 +481,9 @@ public class ClassChanges extends MoMLFilterSimple {
         _classChanges.put("ptolemy.vergil.basic.export.html.WebExporter",
                 "ptolemy.vergil.basic.export.web.WebExporter");
 
+        // ptolemy.actor.lib.jni was removed before ptII-9.0
+        _classChanges.put("ptolemy.actor.lib.jni.EmbeddedCActor",
+                "ptolemy.cg.lib.EmbeddedCodeActor");
     }
 
     // Set of class names that are obsolete and should be simply
