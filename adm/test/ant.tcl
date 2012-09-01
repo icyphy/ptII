@@ -44,6 +44,7 @@ set dir [pwd]
 test ant-1.1 {Check the build.default.xml file} {
     cd $PTII
     if {[file exists build.xml]} {
+	puts "# Copying build.xml to build.xml.bak"
 	exec cp build.xml build.xml.bak
     }
     puts "# Copying build.default.xml to build.xml"
@@ -60,6 +61,7 @@ cd $dir
 test ant-1.2 {Rebuild using build.xml file} {
     cd $PTII
     if {[file exists build.xml.bak]} {
+	puts "# Moving build.xml.bak to build.xml"
 	exec mv build.xml.bak build.xml
 	puts "# Running ant" 
 	puts [exec ant]
