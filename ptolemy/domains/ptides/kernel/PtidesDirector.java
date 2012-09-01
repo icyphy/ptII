@@ -265,6 +265,7 @@ public class PtidesDirector extends DEDirector {
     public void initialize() throws IllegalActionException {
         _inputPortsForPureEvent = new HashMap<TypedIOPort, Set<TypedIOPort>>();
         _relativeDeadlineForPureEvent = new HashMap<TypedIOPort, Double>();
+        _executionTimes = new HashMap<Actor, Time>();
 
         _calculateSuperdenseDependenices();
         _calculateDelayOffsets();
@@ -302,7 +303,6 @@ public class PtidesDirector extends DEDirector {
     public boolean postfire() throws IllegalActionException {
         // Do not call super.postfire() because that requests a
         // refiring at the next event time on the event queue.
-
         Boolean result = !_stopRequested && !_finishRequested;
         if (getModelTime().compareTo(getModelStopTime()) >= 0) {
             // If there is a still event on the event queue with time stamp
@@ -318,13 +318,21 @@ public class PtidesDirector extends DEDirector {
         Set<Time> deliveryTimes = _outputEventQueue.keySet();
         if (deliveryTimes.size() > 0) {
             TreeSet<Time> set = new TreeSet<Time>(deliveryTimes);
+            for (PtidesEvent event : _outputEventQueue.get(set.first())) { 
+                if (event.ioPort() instanceof ActuatorPort
+                        && getEnvironmentTime().compareTo(
+                                event.timeStamp()) > 0) {
+                    throw new IllegalActionException(event.ioPort(), "Missed Deadline at "
+                            + event.ioPort() + "!");
+                }
+            }
             _setNextFireTime(set.first());
         }
         //... or from _inputEventQueue
         deliveryTimes = _inputEventQueue.keySet();
         if (deliveryTimes.size() > 0) {
             TreeSet<Time> set = new TreeSet<Time>(deliveryTimes);
-            _setNextFireTime(set.first());
+            _setNextFireTime(set.first()); 
         }
         // ... or from ptides output port queue
         for (PtidesPort port : _ptidesOutputPortEventQueue.keySet()) {
@@ -336,7 +344,7 @@ public class PtidesDirector extends DEDirector {
                 if (port instanceof ActuatorPort
                         && getEnvironmentTime().compareTo(
                                 event.absoluteDeadline()) > 0) {
-                    throw new IllegalActionException("Missed Deadline at "
+                    throw new IllegalActionException(port, "Missed Deadline at "
                             + port + "!");
                 }
 
