@@ -624,6 +624,7 @@ PTTINI_DIR
 PTSPACEDOMAIN_PACKAGES
 PTSPACEDOMAIN_JAR
 PTSPACE_DIR
+PTSERVLET_JAR
 PTSERVER_JARS
 PTSERVER_PACKAGES
 PTSERVER_DIR
@@ -683,6 +684,7 @@ PTJNI_INCLUDE
 PTJNI_ARCHITECTURE
 PTJMF_PACKAGES
 PTJMF_DIR
+PTJETTY_JAR
 PTJAVAMAIL_PACKAGES
 PTJAVAMAIL_JARS
 PTJAVAMAIL_DIR
@@ -743,6 +745,7 @@ PTBACKTRACK_ECLIPSE_JARS
 PTBACKTRACK_ECLIPSE_DOC_JARS
 PTBACKTRACK_ECLIPSE_DIR
 PTBACKTRACK_DIR
+PTANGO_PACKAGES
 PTANGO_DIR
 PSDF_DIR
 ORACLE_OJDBC_JAR
@@ -7727,6 +7730,9 @@ fi
 # Jetty jar files used by Ptango and ptserver.
 PTJETTY_JAR=
 
+# javax.servlet-api*.jar used by Ptango and ptserver.
+PTSERVLET_JAR=
+
 # We only need to look for Jetty if $PTANGO_USER_DIR is present
 # We only need to look for Jetty if $PTSERVER_USER_DIR is present
 PTANGO_USER_DIR="$PTII/org/ptolemy/ptango"
@@ -10613,7 +10619,7 @@ fi
 PTANGO_DIR=
 
 # We only enable Ptango if $PTANGO_USER_DIR is present
-PTANGO_USER_DIR="$PTII/org/ptolemy/ptango"
+PTANGO_USER_DIR="org/ptolemy/ptango"
 if test ! -d "$PTANGO_USER_DIR"; then
     if test "${PTVERBOSE:-none}" != "none"; then { $as_echo "$as_me:${as_lineno-$LINENO}: result: $PTANGO_USER_DIR is not present" >&5
 $as_echo "$PTANGO_USER_DIR is not present" >&6; }; fi
@@ -12317,6 +12323,9 @@ ANT_JAVADOC_EXCLUDEPACKAGENAMES=`echo "$ANT_ALWAYS_EXCLUDE $ANT_EXCLUDE"| sed 's
 # Used in org/ptolemy/makefile.
 
 
+# PTANGO_PACKAGES is used in ptII/doc/makefile
+
+
 # Set to backtrack if Java 1.5 or later is present
 
 
@@ -12541,6 +12550,9 @@ ANT_JAVADOC_EXCLUDEPACKAGENAMES=`echo "$ANT_ALWAYS_EXCLUDE $ANT_EXCLUDE"| sed 's
 # PTJMF_PACKAGES is used in ptII/doc/makefile.
 
 
+# Jetty jar files used by Ptango and ptserver.
+
+
 # Set to jmf if jmf.jar was found
 
 
@@ -12748,6 +12760,9 @@ ANT_JAVADOC_EXCLUDEPACKAGENAMES=`echo "$ANT_ALWAYS_EXCLUDE $ANT_EXCLUDE"| sed 's
 
 
 # PTSERVER_JARS includes hessian, jetty, servlet and mqtt jars and is used by $PTII/ptserver
+
+
+# javax.servlet-api*.jar used by Ptango and ptserver.
 
 
 # PTSPACE_DIR is set to space and used in
