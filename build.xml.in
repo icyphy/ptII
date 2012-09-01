@@ -88,6 +88,7 @@
   <!-- Tests that we want to exclude because they don't work or are called by AllTests. -->
   <patternset id="test.excludes">
     @ANT_EXCLUDE_TESTS@
+    <exclude name="**/adm/test/JUnitTclTest*" />
     <exclude name="**/HTMLAboutJUnitTest.*" />
     <exclude name="**/javasound/test/junit/JUnitTclTest.*" />
     <exclude name="**/KielerJUnitTest.*" />
@@ -131,13 +132,11 @@
        These tests should be excluded by test.longest.excludes -->
   <patternset id="test.longest.includes">
     <include name="**/ptolemy/vergil/basic/export/test/junit/ExportModelJUnitTest.*" />
-    <include name="**/adm/test/JUnitTclTest*" />
   </patternset>
 
   <!-- Exclude longest running tests. -->
   <patternset id="test.longest.excludes">
     <exclude name="**/ptolemy/vergil/basic/export/test/junit/ExportModelJUnitTest.*" />
-    <exclude name="**/adm/test/JUnitTclTest*" />
   </patternset>
 
 
