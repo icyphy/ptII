@@ -470,11 +470,10 @@ export PTII=$WORKSPACE
             <command>#!/bin/sh -x
 $WORKSPACE/adm/bin/killXServer</command>
           </hudson.tasks.Shell>
-          <hudson.tasks.Shell>
-            <command>#!/bin/sh -x
-cd $PTII/adm/gen-9.0
-make -k USER=hudson PTIIHOME=/var/lib/hudson/jobs/ptII/workspace PTIIADM=/var/lib/hudson/jobs/ptII/workspace/adm JAR=/usr/bin/jar hudson</command>
-          </hudson.tasks.Shell>
+          <hudson.tasks.Ant>
+            <targets>installers</targets>
+            <antName>ant1.8.2</antName>
+          </hudson.tasks.Ant>
         </originalValue>
         <propertyOverridden>false</propertyOverridden>
       </describable-list-property>
