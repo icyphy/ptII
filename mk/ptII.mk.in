@@ -346,6 +346,9 @@ MATLAB_64LIBDIR =	@MATLAB_64LIBDIR@
 # Used in org/ptolemy/makefile.
 PTANGO_DIR = @PTANGO_DIR@
 
+# PTANGO_PACKAGES is used in ptII/doc/makefile
+PTANGO_PACKAGES = @PTANGO_PACKAGES@
+
 # Set to the BSH jar file and used to compile org/mlc
 PTBSH_JAR = @PTBSH_JAR@
 
@@ -597,6 +600,9 @@ PTJAVAMAIL_JARS = 	@PTJAVAMAIL_JARS@
 # PTJMF_PACKAGES is used in ptII/doc/makefile.
 PTJAVAMAIL_PACKAGES =	@PTJAVAMAIL_PACKAGES@
 
+# Jetty jar files used by Ptango and ptserver.
+PTJETTY_JAR =		@PTJETTY_JAR@
+
 # PTJMF_DIR is set to jmf if the JMF directory is found
 PTJMF_DIR =     @PTJMF_DIR@
 
@@ -797,6 +803,9 @@ PTSERVER_PACKAGES = @PTSERVER_PACKAGES@
 
 # PTSERVER_JARS includes hessian, jetty, servlet and mqtt jars and is used by $PTII/ptserver
 PTSERVER_JARS =	@PTSERVER_JARS@
+
+# javax.servlet-api*.jar used by Ptango and ptserver.
+PTSERVLET_JAR =	@PTSERVLET_JAR@
 
 # PTSPACE_DIR is set to space and used in
 # $PTII/ptolemy/domains/makefile if ojdbc6.jar was found.

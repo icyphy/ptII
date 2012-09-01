@@ -36,7 +36,7 @@ DIRS =		img
 # Root of the Ptolemy II directory
 ROOT =		../../../..
 
-CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(PTSERVER_JARS)
+CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(PTJETTY_JAR)$(CLASSPATHSEPARATOR)$(PTSERVLET_JAR)
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk

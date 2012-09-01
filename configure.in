@@ -2297,6 +2297,9 @@ fi
 # Jetty jar files used by Ptango and ptserver.
 PTJETTY_JAR=
 
+# javax.servlet-api*.jar used by Ptango and ptserver.
+PTSERVLET_JAR=
+
 # We only need to look for Jetty if $PTANGO_USER_DIR is present
 # We only need to look for Jetty if $PTSERVER_USER_DIR is present
 PTANGO_USER_DIR="$PTII/org/ptolemy/ptango"
@@ -4129,7 +4132,7 @@ fi
 PTANGO_DIR=
 
 # We only enable Ptango if $PTANGO_USER_DIR is present
-PTANGO_USER_DIR="$PTII/org/ptolemy/ptango"
+PTANGO_USER_DIR="org/ptolemy/ptango"
 if test ! -d "$PTANGO_USER_DIR"; then
     PT_MSG_STATUS([$PTANGO_USER_DIR is not present])
 else
@@ -5439,6 +5442,9 @@ AC_SUBST(PSDF_DIR)
 # Used in org/ptolemy/makefile.
 AC_SUBST(PTANGO_DIR)
 
+# PTANGO_PACKAGES is used in ptII/doc/makefile
+AC_SUBST(PTANGO_PACKAGES)
+
 # Set to backtrack if Java 1.5 or later is present
 AC_SUBST(PTBACKTRACK_DIR)
 
@@ -5663,6 +5669,9 @@ AC_SUBST(PTJAVAMAIL_JARS)
 # PTJMF_PACKAGES is used in ptII/doc/makefile.
 AC_SUBST(PTJAVAMAIL_PACKAGES)
 
+# Jetty jar files used by Ptango and ptserver.
+AC_SUBST(PTJETTY_JAR)
+
 # Set to jmf if jmf.jar was found
 AC_SUBST(PTJMF_DIR)
 
@@ -5871,6 +5880,9 @@ AC_SUBST(PTSERVER_PACKAGES)
 
 # PTSERVER_JARS includes hessian, jetty, servlet and mqtt jars and is used by $PTII/ptserver
 AC_SUBST(PTSERVER_JARS)
+
+# javax.servlet-api*.jar used by Ptango and ptserver.
+AC_SUBST(PTSERVLET_JAR)
 
 # PTSPACE_DIR is set to space and used in
 # $PTII/ptolemy/domains/makefile if ojdbc6.jar was found.

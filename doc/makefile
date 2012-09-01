@@ -539,6 +539,7 @@ ALLPACKAGES = \
 	$(PTEXCEL_PACKAGES) \
 	$(PTGR_PACKAGES) \
 	$(PTHOMER_PACKAGES) \
+	$(PTANGO_PACKAGES) \
 	$(PTIDES_PACKAGES) \
 	$(PTITEXTPDF_PACKAGES) \
 	$(PTINYPACKAGES) \
@@ -563,7 +564,6 @@ ALLPACKAGES = \
 	$(PTPTALON_PACKAGES) \
 	$(USER_PACKAGES) \
 	doc.doclets \
-	org.ptolemy.ptango.lib \
 	ptolemy.actor.process \
 	ptolemy.actor.lib.net \
 	ptolemy.actor.lib.qm \
