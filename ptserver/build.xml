@@ -34,8 +34,8 @@
 		<pathelement location="ptolemy/actor/ptalon/antlr/antlr.jar" />
 		<pathelement location="lib/PDFRenderer.jar" />
 		<pathelement location="ptserver/lib/hessian-4.0.7.jar" />
-		<pathelement location="ptserver/lib/jetty-all-7.4.1.v20110513.jar" />
-		<pathelement location="ptserver/lib/servlet-api-2.5.jar" />
+		<pathelement location="lib/jetty-all-8.1.5-v20120716.jar" /> 
+		<pathelement location="lib/javax.servlet-api-3.0.1.jar" />
 		<pathelement location="ptserver/lib/wmqtt.jar" />
 		<pathelement location="lib/org-netbeans-api-visual.jar" />
 		<pathelement location="lib/org-openide-util-lookup.jar" />

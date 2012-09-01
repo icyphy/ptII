@@ -342,6 +342,10 @@ MATLAB_LIBDIR =	@MATLAB_LIBDIR@
 # Location of Matlab's engine libraries (libeng.so, libmx.so) (64 bit)
 MATLAB_64LIBDIR =	@MATLAB_64LIBDIR@
 
+# Set to ptango if jetty and javax.servlet jar files are found.
+# Used in org/ptolemy/makefile.
+PTANGO_DIR = @PTANGO_DIR@
+
 # Set to the BSH jar file and used to compile org/mlc
 PTBSH_JAR = @PTBSH_JAR@
 

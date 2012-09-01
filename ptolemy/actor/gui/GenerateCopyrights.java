@@ -113,11 +113,17 @@ public class GenerateCopyrights {
         _addIfPresent(copyrightsMap, "interfaces.util.ChicUI",
                 "lib/chic-license.htm");
 
+        _addIfPresent(copyrightsMap, "javax.servlet.http.HttpServlet",
+                "lib/javax.servlet-api-license.htm");
+ 
         _addIfPresent(copyrightsMap, "jni.GenericJNIActor",
                 "jni/launcher/launcher-copyright.htm");
 
         _addIfPresent(copyrightsMap, "mescal.domains.mescalPE.kernel.parser",
                 "mescal/configs/doc/cup-copyright.htm");
+
+        _addIfPresent(copyrightsMap, "org.eclipse.jetty.server.Server",
+                "lib/jetty-all-license.htm");
 
         _addIfPresent(copyrightsMap, "org.json.JSONObject",
                 "org/json/json-license.htm");

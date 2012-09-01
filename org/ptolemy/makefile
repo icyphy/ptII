@@ -29,7 +29,8 @@
 # 						COPYRIGHTENDKEY
 ##########################################################################
 
-DIRS = fmi ptango
+# PTANGO_DIR is set by configure in $PTII/mk if jetty and javax.servlet are found.
+DIRS = fmi $(PTANGO_DIR)
 
 # Root of Ptolemy II directory
 ROOT =		../..
