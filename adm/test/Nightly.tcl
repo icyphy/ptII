@@ -113,18 +113,22 @@ test nightly-1.3 {jnlp} {
 
 test nightly-1.4 {src.jar} {
     set matches [nightlyMake jnlp]
-    list $matches [file exists $gendir/ptII$version.src.jar]
+    set filename $gendir/ptII$version.src.jar
+    puts "nightly-1.4: $filename"
+    list $matches [file exists $filename]
 } {{} 1}
 
 test nightly-1.5 {setup} {
     set matches [nightlyMake setup]
-    list $matches [file exists $gendir/$ptsetup.exe]
+    set filename $gendir/$ptsetup.exe
+    puts "nightly-1.5: $filename"
+    list $matches [file exists $filename]
 } {{} 1}
 
 test nightly-1.6 {test_setup} {
     set matches [nightlyMake test_setup {.*\*\*\*.*|^Failed: [1-9].*}]
     list $matches
-} {}
+} {{}}
 
 test nightly-1.7 {update_andrews} {
     set matches [nightlyMake update_andrews]
@@ -160,4 +164,5 @@ test nightly-1.8 {updateDOPCenterImage} {
     list $matches [file exists $PTII/ptolemy/domains/space/demo/DOPCenter/DOPCenter.png]
 } {{} 1}
 
+set VERBOSE 0
 cd $startingDirectory
