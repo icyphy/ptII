@@ -3523,16 +3523,18 @@ else
            ;;
     esac
 
-	AC_PATH_PROG(JAVAH, javah)
+    AC_PATH_PROG(JAVAH, javah)
     # Under MacOS X, JAVAH might be a link
     if test ! -e "$JAVAH"; then
         AC_MSG_WARN([ Failed to find javah at '$JAVAH', perhaps Java is not installed?])
     fi
 	
+    AC_MSG_CHECKING([for the cc for JNI])
     if test "${PTCCJNI:-none}" != "none"; then
-        PT_MSG_RESULT([$PTJNICC])
+        # PT_MSG_RESULT([$PTJNICC])
         PTJNI_DIR=jni
 
+        AC_MSG_CHECKING([for that the pieces for JNI have been found])
         if test ! -z $PTJNI_DIR; then 
             PT_MSG_RESULT(['$PTJNI_ARCHITECTURE'])
 
@@ -4133,11 +4135,8 @@ if test ! -d "$PTANGO_USER_DIR"; then
 else
     # We checked for Jetty above.	
     if test  -f "$PTJETTY_JAR"; then
-	PT_MSG_RESULT([$PTJETTY_JAR])
-
 	# We checked for Servlet above.
         if test  -f "$PTSERVLET_JAR"; then
-	    PT_MSG_RESULT([$PTSERVLET_JAR])
 	    PTANGO_DIR=ptango
             # PTANGO_PACKAGES is used in ptII/doc/makefile
 	    PTANGO_PACKAGES=`find $PTANGO_USER_DIR -name "*.java" | grep -v /test | awk -F / '{printf("%s", $1); for (i = 2; i < NF; i++) printf(".%s", $i); printf("\n")}' | sort | uniq | awk '{printf("%s ", $0)}'`
@@ -4183,8 +4182,6 @@ if test ! -d "$PTSERVER_USER_DIR"; then
 else
     # We checked for Jetty above.	
     if test  -f "$PTJETTY_JAR"; then
-	PT_MSG_RESULT([$PTJETTY_JAR])
-
 	# We checked for Servlet above.
         if test  -f "$PTSERVLET_JAR"; then
 	    AC_MSG_CHECKING([for Hessian, used by ptserver ])
@@ -5005,7 +5002,6 @@ else
 	else
 	   GIOTTO_CLASSES=no
         fi
-	PT_MSG_RESULT([$GIOTTO_CLASSES])
     fi
     if test "$GIOTTO_CLASSES" = "no"; then
         AC_MSG_WARN([Failed to find giotto/gdk.jar
