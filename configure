@@ -743,6 +743,7 @@ PTBACKTRACK_ECLIPSE_JARS
 PTBACKTRACK_ECLIPSE_DOC_JARS
 PTBACKTRACK_ECLIPSE_DIR
 PTBACKTRACK_DIR
+PTANGO_DIR
 PSDF_DIR
 ORACLE_OJDBC_JAR
 OPENCV_JAR
@@ -884,8 +885,6 @@ enable_verbose
 with_find
 with_gawk
 with_java
-with_jetty
-with_servlet
 with_cmkit
 with_cal
 with_chic
@@ -899,6 +898,8 @@ with_itextpdf
 with_openideutil
 with_openideutillookup
 with_netbeansapivisual
+with_jetty
+with_servlet
 with_javamail
 with_joystick_jar
 with_ptjacl_jar
@@ -1564,10 +1565,6 @@ Optional Packages:
   --with-java=DIR         use Java binaries from DIR,
                            defaults to the value of the
                            PTJAVA_DIR environment variable
-  --with-jetty=JAR       use jetty.jar from JAR,
-                          defaults to \$PTII/ptserver/lib/jetty-all-8.1.2.v20120308.jar
-  --with-servlet=JAR       use servlet.jar from JAR,
-                          defaults to \$PTII/ptserver/lib/javax.servlet-api-3.0.1.jar
   --with-cmkit=DIR       use CaffeineMark from DIR,
                           defaults to \$PTII/vendors/cm
   --with-cal=DIR       use ptCal.jar from DIR,
@@ -1598,6 +1595,10 @@ Optional Packages:
                           defaults to \$PTII/lib/org-openide-util-lookup.jar
   --with-netbeansapivisual=JAR       use org-netbeans-api-visual.jar from JAR,
                               defaults to \$PTII/lib/org-netbeans-api-visual.jar
+  --with-jetty=JAR       use jetty.jar from JAR,
+                          defaults to \$PTII/lib/jetty-all-8.1.5-v20120716.jar
+  --with-servlet=JAR       use servlet.jar from JAR,
+                          defaults to \$PTII/lib/javax.servlet-api-3.0.1.jar
   --with-javamail=DIRECTORY       use JavaMail interface from DIRECTORY,
                           defaults to \$PTII/vendors/oracle/javamail
   --with-joystick-jar=JARFILE       use JOYSTICK from JARFILE,
@@ -4341,81 +4342,6 @@ $as_echo "$as_me: WARNING: The ant and/or mvn binaries could not be found,
     so we will not build in $PTII/ptolemy/apps/websensor." >&2;}
 fi
 
-
-#--------------------------------------------------------------------
-#       Ptango is the Ptolemy Internet of Things project
-#	See http://chess.eecs.berkeley.edu/ptango
-#--------------------------------------------------------------------
-
-# PTANGO_DIR is set to ptango if ptango is found.
-PTANGO_DIR=
-
-# Jetty and Servlet jar files used by Ptango.  Also used by ptserver.
-PTJETTY_JAR=
-PTSERVLET_JAR=
-
-# We only need to look for Hessian if $PTANGO_USER_DIR is present
-PTANGO_USER_DIR="$PTII/org/ptolemy/ptango"
-if test ! -d "$PTANGO_USER_DIR"; then
-    if test "${PTVERBOSE:-none}" != "none"; then { $as_echo "$as_me:${as_lineno-$LINENO}: result: $PTANGO_USER_DIR is not present,
-    so we need not find the Jetty and Servlet." >&5
-$as_echo "$PTANGO_USER_DIR is not present,
-    so we need not find the Jetty and Servlet." >&6; }; fi
-else
-    { $as_echo "$as_me:${as_lineno-$LINENO}: checking for Jetty, used by ptango " >&5
-$as_echo_n "checking for Jetty, used by ptango ... " >&6; }
-
-# Check whether --with-jetty was given.
-if test "${with_jetty+set}" = set; then :
-  withval=$with_jetty; PTJETTY_JAR=$withval
-else
-  PTJETTY_JAR=$PTII/ptserver/lib/jetty-all-8.1.2.v20120308.jar
-fi
-
-    if test  -f "$PTJETTY_JAR"; then
-	if test "${PTVERBOSE:-none}" = "none"; then { $as_echo "$as_me:${as_lineno-$LINENO}: result: ok" >&5
-$as_echo "ok" >&6; }; else { $as_echo "$as_me:${as_lineno-$LINENO}: result: $PTJETTY_JAR" >&5
-$as_echo "$PTJETTY_JAR" >&6; }; fi
-
-        { $as_echo "$as_me:${as_lineno-$LINENO}: checking for Servlet, used by ptango " >&5
-$as_echo_n "checking for Servlet, used by ptango ... " >&6; }
-
-# Check whether --with-servlet was given.
-if test "${with_servlet+set}" = set; then :
-  withval=$with_servlet; PTSERVLET_JAR=$withval
-else
-  PTSERVLET_JAR=$PTII/ptserver/lib/javax.servlet-api-3.0.1.jar
-fi
-
-
-        if test  -f "$PTSERVLET_JAR"; then
-	    if test "${PTVERBOSE:-none}" = "none"; then { $as_echo "$as_me:${as_lineno-$LINENO}: result: ok" >&5
-$as_echo "ok" >&6; }; else { $as_echo "$as_me:${as_lineno-$LINENO}: result: $PTSERVLET_JAR" >&5
-$as_echo "$PTSERVLET_JAR" >&6; }; fi
-	    PTANGO_DIR=ptango
-            # PTANGO_PACKAGES is used in ptII/doc/makefile
-	    PTANGO_PACKAGES=`find $PTANGO_USER_DIR -name "*.java" | grep -v /test | awk -F / '{printf("%s", $1); for (i = 2; i < NF; i++) printf(".%s", $i); printf("\n")}' | sort | uniq | awk '{printf("%s ", $0)}'`
-        fi
-    fi
-
-    if test "$PTANGO_DIR" = ""; then
-        { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Failed to find the jar files necessary to compile ptango.
-    Ptango is the Ptolemy Internet of Things project.
-    For further instructions, see http://chess.eecs.berkeley.edu/ptango." >&5
-$as_echo "$as_me: WARNING: Failed to find the jar files necessary to compile ptango.
-    Ptango is the Ptolemy Internet of Things project.
-    For further instructions, see http://chess.eecs.berkeley.edu/ptango." >&2;}
-    else
-        PTANGO_JARS="${CLASSPATHSEPARATOR}${PTJETTY_JAR}${CLASSPATHSEPARATOR}${PTSERVLET_JAR}"
-    fi
-fi
-
-if test -z "$PTANGO_JARS"; then
-   updateExcludes "org/ptolemy/ptango/"
-else
-   updateClasspath "$PTJETTY_JAR"
-   updateClasspath "$PTSERVLET_JAR"
-fi
 
 #--------------------------------------------------------------------
 #       Boost is used by Mescal, which is not shipped with
@@ -7791,6 +7717,83 @@ if test -z "$PTJAI_DIR"; then
    updateExcludes "ptolemy/actor/lib/jai/"
 fi
 
+
+#--------------------------------------------------------------------
+#       "Jetty is a pure Java-based HTTP server and Java Servlet container."
+#	See http://www.eclipse.org/jetty/
+#       Jetty is used by Ptango and Ptserver
+#--------------------------------------------------------------------
+
+# Jetty jar files used by Ptango and ptserver.
+PTJETTY_JAR=
+
+# We only need to look for Jetty if $PTANGO_USER_DIR is present
+# We only need to look for Jetty if $PTSERVER_USER_DIR is present
+PTANGO_USER_DIR="$PTII/org/ptolemy/ptango"
+PTSERVER_USER_DIR="$PTII/ptserver"
+
+if test ! -d "$PTANGO_USER_DIR" -a ! -d "$PTSERVER_USER_DIR"; then
+    if test "${PTVERBOSE:-none}" != "none"; then { $as_echo "$as_me:${as_lineno-$LINENO}: result: $PTANGO_USER_DIR and $PTSERVER_USER_DIR are not present,
+    so we need not find the Jetty." >&5
+$as_echo "$PTANGO_USER_DIR and $PTSERVER_USER_DIR are not present,
+    so we need not find the Jetty." >&6; }; fi
+else
+    { $as_echo "$as_me:${as_lineno-$LINENO}: checking for Jetty, used by ptango and ptserver " >&5
+$as_echo_n "checking for Jetty, used by ptango and ptserver ... " >&6; }
+
+# Check whether --with-jetty was given.
+if test "${with_jetty+set}" = set; then :
+  withval=$with_jetty; PTJETTY_JAR=$withval
+else
+  PTJETTY_JAR=$PTII/lib/jetty-all-8.1.5-v20120716.jar
+fi
+
+    if test  -f "$PTJETTY_JAR"; then
+	if test "${PTVERBOSE:-none}" = "none"; then { $as_echo "$as_me:${as_lineno-$LINENO}: result: ok" >&5
+$as_echo "ok" >&6; }; else { $as_echo "$as_me:${as_lineno-$LINENO}: result: $PTJETTY_JAR" >&5
+$as_echo "$PTJETTY_JAR" >&6; }; fi
+
+        { $as_echo "$as_me:${as_lineno-$LINENO}: checking for Servlet, used by ptango and ptserver" >&5
+$as_echo_n "checking for Servlet, used by ptango and ptserver... " >&6; }
+
+# Check whether --with-servlet was given.
+if test "${with_servlet+set}" = set; then :
+  withval=$with_servlet; PTSERVLET_JAR=$withval
+else
+  PTSERVLET_JAR=$PTII/lib/javax.servlet-api-3.0.1.jar
+fi
+
+
+        if test  -f "$PTSERVLET_JAR"; then
+	    if test "${PTVERBOSE:-none}" = "none"; then { $as_echo "$as_me:${as_lineno-$LINENO}: result: ok" >&5
+$as_echo "ok" >&6; }; else { $as_echo "$as_me:${as_lineno-$LINENO}: result: $PTSERVLET_JAR" >&5
+$as_echo "$PTSERVLET_JAR" >&6; }; fi
+        fi
+    fi
+
+    if ! test -f "$PTJETTY_JAR"; then
+        { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Failed to find the Jetty jar files necessary to compile ptango.
+    Ptango is the Ptolemy Internet of Things project.
+    For further instructions, see http://chess.eecs.berkeley.edu/ptango." >&5
+$as_echo "$as_me: WARNING: Failed to find the Jetty jar files necessary to compile ptango.
+    Ptango is the Ptolemy Internet of Things project.
+    For further instructions, see http://chess.eecs.berkeley.edu/ptango." >&2;}
+    else
+       updateClasspath "$PTJETTY_JAR"
+    fi
+
+    if ! test -f "$PTSERVLET_JAR"; then
+        { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Failed to find the Servlet jar files necessary to compile ptango.
+    Ptango is the Ptolemy Internet of Things project.
+    For further instructions, see http://chess.eecs.berkeley.edu/ptango." >&5
+$as_echo "$as_me: WARNING: Failed to find the Servlet jar files necessary to compile ptango.
+    Ptango is the Ptolemy Internet of Things project.
+    For further instructions, see http://chess.eecs.berkeley.edu/ptango." >&2;}
+    else
+       updateClasspath "$PTSERVLET_JAR"
+    fi
+fi
+
 #--------------------------------------------------------------------
 #       JavaMail is a Java interface that sends email
 #	http://www.oracle.com/technetwork/java/index-138643.html
@@ -10600,6 +10603,54 @@ fi
 
 
 #--------------------------------------------------------------------
+#       Ptango is the Ptolemy Internet of Things project
+#	See http://chess.eecs.berkeley.edu/ptango
+#--------------------------------------------------------------------
+
+# PTANGO_DIR is set to ptango if ptango is found.
+PTANGO_DIR=
+
+# We only enable Ptango if $PTANGO_USER_DIR is present
+PTANGO_USER_DIR="$PTII/org/ptolemy/ptango"
+if test ! -d "$PTANGO_USER_DIR"; then
+    if test "${PTVERBOSE:-none}" != "none"; then { $as_echo "$as_me:${as_lineno-$LINENO}: result: $PTANGO_USER_DIR is not present" >&5
+$as_echo "$PTANGO_USER_DIR is not present" >&6; }; fi
+else
+    # We checked for Jetty above.
+    if test  -f "$PTJETTY_JAR"; then
+	if test "${PTVERBOSE:-none}" = "none"; then { $as_echo "$as_me:${as_lineno-$LINENO}: result: ok" >&5
+$as_echo "ok" >&6; }; else { $as_echo "$as_me:${as_lineno-$LINENO}: result: $PTJETTY_JAR" >&5
+$as_echo "$PTJETTY_JAR" >&6; }; fi
+
+	# We checked for Servlet above.
+        if test  -f "$PTSERVLET_JAR"; then
+	    if test "${PTVERBOSE:-none}" = "none"; then { $as_echo "$as_me:${as_lineno-$LINENO}: result: ok" >&5
+$as_echo "ok" >&6; }; else { $as_echo "$as_me:${as_lineno-$LINENO}: result: $PTSERVLET_JAR" >&5
+$as_echo "$PTSERVLET_JAR" >&6; }; fi
+	    PTANGO_DIR=ptango
+            # PTANGO_PACKAGES is used in ptII/doc/makefile
+	    PTANGO_PACKAGES=`find $PTANGO_USER_DIR -name "*.java" | grep -v /test | awk -F / '{printf("%s", $1); for (i = 2; i < NF; i++) printf(".%s", $i); printf("\n")}' | sort | uniq | awk '{printf("%s ", $0)}'`
+        fi
+    fi
+
+    if test "$PTANGO_DIR" = ""; then
+        { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Failed to find the Jetty or Servlet jar files necessary to compile ptango.
+    Ptango is the Ptolemy Internet of Things project.
+    For further instructions, see http://chess.eecs.berkeley.edu/ptango." >&5
+$as_echo "$as_me: WARNING: Failed to find the Jetty or Servlet jar files necessary to compile ptango.
+    Ptango is the Ptolemy Internet of Things project.
+    For further instructions, see http://chess.eecs.berkeley.edu/ptango." >&2;}
+    else
+        PTANGO_JARS="${CLASSPATHSEPARATOR}${PTJETTY_JAR}${CLASSPATHSEPARATOR}${PTSERVLET_JAR}"
+    fi
+fi
+
+if test -z "$PTANGO_JARS"; then
+   updateExcludes "org/ptolemy/ptango/"
+fi
+
+
+#--------------------------------------------------------------------
 #       ptserver is the Ptolemy server interface to the Android client
 #	http://chess.eecs.berkeley.edu
 #
@@ -10611,9 +10662,6 @@ PTSERVER_DIR=
 
 # Jar files used by ptserver.
 PTHESSIAN_JAR=
-# PTJETTY and PTSERVLET_JAR may be defined above.
-# PTJETTY_JAR=
-# PTSERVLET_JAR=
 PTWMQTT_JAR=
 
 # Jar files necessary for compilation of ptserver.
@@ -10627,7 +10675,15 @@ if test ! -d "$PTSERVER_USER_DIR"; then
 $as_echo "$PTSERVER_USER_DIR is not present,
     so we need not find the Hessian, Jetty, Servlet and WMQTT interfaces." >&6; }; fi
 else
-    { $as_echo "$as_me:${as_lineno-$LINENO}: checking for Hessian, used by ptserver " >&5
+    # We checked for Jetty above.
+    if test  -f "$PTJETTY_JAR"; then
+	if test "${PTVERBOSE:-none}" = "none"; then { $as_echo "$as_me:${as_lineno-$LINENO}: result: ok" >&5
+$as_echo "ok" >&6; }; else { $as_echo "$as_me:${as_lineno-$LINENO}: result: $PTJETTY_JAR" >&5
+$as_echo "$PTJETTY_JAR" >&6; }; fi
+
+	# We checked for Servlet above.
+        if test  -f "$PTSERVLET_JAR"; then
+	    { $as_echo "$as_me:${as_lineno-$LINENO}: checking for Hessian, used by ptserver " >&5
 $as_echo_n "checking for Hessian, used by ptserver ... " >&6; }
 
 # Check whether --with-hessian was given.
@@ -10637,51 +10693,13 @@ else
   PTHESSIAN_JAR=$PTII/ptserver/lib/hessian-4.0.7.jar
 fi
 
-
-    if test  -f "$PTHESSIAN_JAR"; then
-	if test "${PTVERBOSE:-none}" = "none"; then { $as_echo "$as_me:${as_lineno-$LINENO}: result: ok" >&5
+            if test  -f "$PTHESSIAN_JAR"; then
+   	        if test "${PTVERBOSE:-none}" = "none"; then { $as_echo "$as_me:${as_lineno-$LINENO}: result: ok" >&5
 $as_echo "ok" >&6; }; else { $as_echo "$as_me:${as_lineno-$LINENO}: result: $PTHESSIAN_JAR" >&5
 $as_echo "$PTHESSIAN_JAR" >&6; }; fi
 
-	if test -z $PTJETTY; then
-	    { $as_echo "$as_me:${as_lineno-$LINENO}: checking for Jetty, used by ptserver " >&5
-$as_echo_n "checking for Jetty, used by ptserver ... " >&6; }
-
-# Check whether --with-jetty was given.
-if test "${with_jetty+set}" = set; then :
-  withval=$with_jetty; PTJETTY_JAR=$withval
-else
-  PTJETTY_JAR=$PTII/ptserver/lib/jetty-all-8.1.2.v20120308.jar
-fi
-
-            if test  -f "$PTJETTY_JAR"; then
-	        if test "${PTVERBOSE:-none}" = "none"; then { $as_echo "$as_me:${as_lineno-$LINENO}: result: ok" >&5
-$as_echo "ok" >&6; }; else { $as_echo "$as_me:${as_lineno-$LINENO}: result: $PTJETTY_JAR" >&5
-$as_echo "$PTJETTY_JAR" >&6; }; fi
-	    fi
-        fi
-
-        if test -z $PTSERVLET_JAR; then
-            { $as_echo "$as_me:${as_lineno-$LINENO}: checking for Servlet, used by ptserver " >&5
-$as_echo_n "checking for Servlet, used by ptserver ... " >&6; }
-
-# Check whether --with-servlet was given.
-if test "${with_servlet+set}" = set; then :
-  withval=$with_servlet; PTSERVLET_JAR=$withval
-else
-  PTSERVLET_JAR=$PTII/ptserver/lib/javax.servlet-api-3.0.1.jar
-fi
-
-
-            if test  -f "$PTSERVLET_JAR"; then
-	        if test "${PTVERBOSE:-none}" = "none"; then { $as_echo "$as_me:${as_lineno-$LINENO}: result: ok" >&5
-$as_echo "ok" >&6; }; else { $as_echo "$as_me:${as_lineno-$LINENO}: result: $PTSERVLET_JAR" >&5
-$as_echo "$PTSERVLET_JAR" >&6; }; fi
-            fi
-        fi
-
-	{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for WMQTT, used by pserver " >&5
-$as_echo_n "checking for WMQTT, used by pserver ... " >&6; }
+		{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for WMQTT, used by ptserver " >&5
+$as_echo_n "checking for WMQTT, used by ptserver ... " >&6; }
 
 # Check whether --with-wmqtt was given.
 if test "${with_wmqtt+set}" = set; then :
@@ -10691,16 +10709,18 @@ else
 fi
 
 
-        if test  -f "$PTWMQTT_JAR"; then
-	     if test "${PTVERBOSE:-none}" = "none"; then { $as_echo "$as_me:${as_lineno-$LINENO}: result: ok" >&5
+		if test  -f "$PTWMQTT_JAR"; then
+	     	    if test "${PTVERBOSE:-none}" = "none"; then { $as_echo "$as_me:${as_lineno-$LINENO}: result: ok" >&5
 $as_echo "ok" >&6; }; else { $as_echo "$as_me:${as_lineno-$LINENO}: result: $PTWMQTT_JAR" >&5
 $as_echo "$PTWMQTT_JAR" >&6; }; fi
 
-	     # Set to ptserver and used in
-	     # $PTII/makefile
-	     PTSERVER_DIR=ptserver
-             # PTSERVER_PACKAGES is used in ptII/doc/makefile
-	     PTSERVER_PACKAGES=`find ptserver -name "*.java" | grep -v /test | awk -F / '{printf("%s", $1); for (i = 2; i < NF; i++) printf(".%s", $i); printf("\n")}' | sort | uniq | awk '{printf("%s ", $0)}'`
+	            # Set to ptserver and used in
+	            # $PTII/makefile
+	            PTSERVER_DIR=ptserver
+                    # PTSERVER_PACKAGES is used in ptII/doc/makefile
+	            PTSERVER_PACKAGES=`find ptserver -name "*.java" | grep -v /test | awk -F / '{printf("%s", $1); for (i = 2; i < NF; i++) printf(".%s", $i); printf("\n")}' | sort | uniq | awk '{printf("%s ", $0)}'`
+                fi
+             fi
          fi
     fi
 
@@ -10721,10 +10741,6 @@ if test -z "$PTSERVER_JARS"; then
    updateExcludes "ptolemy/homer/"
 else
    updateClasspath "$PTHESSIAN_JAR"
-   if test -z "$PTANGO_DIR"; then
-      updateClasspath "$PTJETTY_JAR"
-      updateClasspath "$PTSERVLET_JAR"
-   fi
    updateClasspath "$PTWMQTT_JAR"
 fi
 
@@ -12307,6 +12323,10 @@ ANT_JAVADOC_EXCLUDEPACKAGENAMES=`echo "$ANT_ALWAYS_EXCLUDE $ANT_EXCLUDE"| sed 's
 
 # Set to $PTII/lib if $PTII/lib/mapss.jar was found and used
 # in $PTII/bin/ptinvoke.in
+
+
+# Set to ptango if jetty and javax.servlet jar files are found.
+# Used in org/ptolemy/makefile.
 
 
 # Set to backtrack if Java 1.5 or later is present
