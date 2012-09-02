@@ -1291,7 +1291,11 @@ public class TableauFrame extends Top {
             // 4. When the "Ok to overwrite" window comes up, hit Yes.
             // 5. The vergil process exits.
             // So, we only call dispose if the tableaus are different.
-            if (!_tableau.equals(newTableau)) {
+
+            // Check that _tableau is not null because running
+            // ptolemy/actor/gt/demo/ConstOptimization/ConstOptimization.xml
+            // and saving BaseOptimization.xml could result in an NPE.
+            if (_tableau != null && !_tableau.equals(newTableau)) {
                 dispose();
             }
             return newURL;
