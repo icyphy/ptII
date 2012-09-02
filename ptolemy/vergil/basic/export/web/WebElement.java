@@ -39,7 +39,7 @@ import ptolemy.kernel.util.StringAttribute;
 /**
  * Attribute containing information and methods for web elements, 
  * for example, HTML tags and content, as in 
- * <div> This is some HTML content </div> 
+ * &lt;div&gt; This is some HTML content &lt;/div&gt; 
  * 
  * The full name including the _elementName is used as WebElement's web id.  
  * In an HTML page, elements that have ids are required to have globally 
@@ -119,7 +119,7 @@ public class WebElement extends StringAttribute {
      * 
      * @return The name of the desired parent element, or the empty string if
      * none.
-     * @see setParent(String)
+     * @see #setParent(String)
      */
     public String getParent() {
         return _parent;
@@ -127,33 +127,33 @@ public class WebElement extends StringAttribute {
     
 
     /** Return the web name of this element; for example, "myElement" in 
-     * <div name="myElement"/> in HTML.
+     * &lt;div name="myElement"/&gt; in HTML.
      * 
      * @return The web name of this element; for example, "myElement" in 
-     * <div name="myElement"/> in HTML.
-     * @see setWebName(String)
+     * &lt;div name="myElement"/&gt; in HTML.
+     * @see #setWebName(String)
      */
     public String getWebName() {
         return _webName;
     }
     
     /** Set the name of the desired parent element.  Can also be a special 
-     * constant for tags that do not typically have names, like <head/> and 
-     * <body/>.
+     * constant for tags that do not typically have names, like &lt;head/&gt; and 
+     * &lt;body/&gt;.
      * 
      * @param parent  The name or special constant of the parent element.
-     * @see getParent()
+     * @see #getParent()
      */
     public void setParent(String parent) {
         _parent = parent;
     }
     
     /** Set the web name of this element; for example, "myElement" in 
-     * <div name="myElement"/> in HTML.
+     * &lt;div name="myElement"/&gt; in HTML.
      * 
      * @param webName The web name of this element; for example, "myElement" in 
-     * <div name="myElement"/> in HTML.
-     * @see setWebName()
+     * &lt;div name="myElement"/&gt; in HTML.
+     * @see #getWebName()
      */
     public void setWebName(String webName) {
         _webName = webName;
@@ -162,20 +162,20 @@ public class WebElement extends StringAttribute {
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
     
-    /** A special constant indicating that the <body/> element should
+    /** A special constant indicating that the &lt;body/&gt; element should
      *  be the parent.
-     *  The <head/> and <body/> tags of an HTML document do not typically
-     *  have names.  For example, almost no one writes <head name="head">, 
-     *  it's only <head/>.  Therefore, the WebExporter will not be able to use
+     *  The &lt;head/&gt; and &lt;body/&gt; tags of an HTML document do not typically
+     *  have names.  For example, almost no one writes &lt;head name="head"&gt;, 
+     *  it's only &lt;head/&gt;.  Therefore, the WebExporter will not be able to use
      *  the name to find the parent element.  
      */
     public static final String BODY = "body";
     
-    /** A special constant indicating that the <head/> element should
+    /** A special constant indicating that the &lt;head/&gt; element should
      *  be the parent.
-     *  The <head/> and <body/> tags of an HTML document do not typically
-     *  have names.  For example, almost no one writes <head name="head">, 
-     *  it's only <head/>.  Therefore, the WebExporter will not be able to use
+     *  The &lt;head/&gt; and &lt;body/&gt; tags of an HTML document do not typically
+     *  have names.  For example, almost no one writes &lt;head name="head"&gt;, 
+     *  it's only &lt;head/&gt;.  Therefore, the WebExporter will not be able to use
      *  the name to find the parent element.  
      */
     public static final String HEAD = "head";
@@ -208,8 +208,8 @@ public class WebElement extends StringAttribute {
    
     /** The name of the desired parent element of this element, if any.
      * For example, if we have the element name "result"
-     * <div name="result"> </div> that we want as the parent:
-     * <div name="result"> <div name="thisElement"> </div> </div>
+     * &lt;div name="result"&gt; &lt;/div&gt; that we want as the parent:
+     * &lt;div name="result"&gt; &lt;div name="thisElement"&gt; &lt;/div&gt; &lt;/div&gt;
      * Please see {@link ptolemy.vergil.basic.export.web.HTMLTextPosition} for some
      * more examples.  If there is no parent element, _position is set to 
      * the empty string.
@@ -217,7 +217,7 @@ public class WebElement extends StringAttribute {
     private String _parent;
     
     /** The desired name of this element in the web file, for example, 
-     * "myElement" in <div name="myElement"></div>.
+     * "myElement" in &lt;div name="myElement"&gt;&lt;/div&gt;.
      */
     private String _webName;
     
