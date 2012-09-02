@@ -221,8 +221,9 @@ For example:
       <doclet name="com.sun.tools.doclets.doccheck.DocCheck" path="vendors/sun/doccheck1.2b2/doccheck.jar" />
       <packageset dir="${basedir}" defaultexcludes="yes">
 	<patternset refid="ptII.excludes" />
+	<exclude name="org/ptolemy/websensor/controller/" />
+	<exclude name="ptolemy/apps/websensor/src/main/java/org/ptolemy/websensor/controller/" />
       </packageset>	
-      @ANT_WEBSENSOR_FILESET@
     </javadoc>
   </target>
 
