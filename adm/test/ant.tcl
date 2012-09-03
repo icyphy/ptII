@@ -43,29 +43,25 @@ if {[string compare test [info procs test]] == 1} then {
 set dir [pwd]
 test ant-1.1 {Check the build.default.xml file} {
     cd $PTII
-    if {[file exists build.xml]} {
-	puts "# Copying build.xml to build.xml.bak"
-	exec cp build.xml build.xml.bak
-    }
     puts "# Copying build.default.xml to build.xml"
     exec cp build.default.xml build.xml
     puts "# Running ant clean"
     puts [exec ant clean]
+    set result1 [file exists ptolemy/kernel/util/NamedObj.class]
     puts "# Running ant" 
     puts [exec ant]
-
-} {}
+    list $result1 [file exists ptolemy/kernel/util/NamedObj.class]
+} {0 1}
 
 cd $dir
 
 test ant-1.2 {Rebuild using build.xml file} {
     cd $PTII
-    if {[file exists build.xml.bak]} {
-	puts "# Moving build.xml.bak to build.xml"
-	exec mv build.xml.bak build.xml
-	puts "# Running ant" 
-	puts [exec ant]
-    }
-} {}
+    puts "# Running ./configure" 
+    puts [exec -stderrok ./configure]
+    puts "# Running ant" 
+    puts [exec ant]
+    list [file exists build.xml] [file exists ptolemy/kernel/util/NamedObj.class]
+} {1 1}
 
 cd $dir
