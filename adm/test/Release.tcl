@@ -125,7 +125,10 @@ test release-3.1 {Run svn status and look for files that should be checked in.  
 		lappend $result $line
 	    }
 	} else {
-	    lappend result "\n$line"
+	    # Skip junit3213853918795049946.properties
+	    if {![regexp {junit.*.properties} $line]} {
+	        lappend result "\n$line"
+   	    }
 	}
     }
 
@@ -145,10 +148,38 @@ test release-3.1 {Run svn status and look for files that should be checked in.  
 ?       reports}}
     if { $result == $result1 } {
 	puts "Result was:\n$result\nWhich is ok"
-        set result {}
+        set resultMessage {}
     } else {
-	puts "Result was:\n<$result>\nWhich is not\n<$result1>"        
+	set result2 \
+{{
+!       adm/dists/README.txt} {
+!       ptolemy/vergil/basic/layout/kieler/test/layoutPerformance.xml} {
+!       ptolemy/vergil/basic/layout/kieler/test/layoutPerformance2.xml} {
+?       .maven} {
+?       cobertura.ser} {
+?       ptolemy/actor/lib/jai/test/auto/PtolemyII.bmp} {
+?       ptolemy/actor/lib/jai/test/auto/PtolemyII.jpg} {
+?       ptolemy/actor/lib/jai/test/auto/PtolemyII.pgm} {
+?       ptolemy/actor/lib/jai/test/auto/PtolemyII.tif} {
+?       ptolemy/actor/lib/test/cobertura.ser} {
+?       ptolemy/configs/doc/ClassesIllustrated} {
+?       ptolemy/matlab/META-INF} {
+?       ptolemy/moml/test/NoPackageActor.java} {
+?       ptolemy/vergil/basic/export/html/test/Butterfly.gif} {
+?       ptserver/test/PtolemyServer.log} {
+?       reports} {
+M       lbnl/lib/matlab/bcvtb.m} {
+M       lib/diva.jar}}
+        if { $result == $result2 } {
+	    puts "Result was:\n$result\nWhich is ok"
+            set resultMessage {}
+        } else {
+	    puts "Result was:\n $result \
+                \nWhich is not\n $result1 \nHere's the diff:\n [diffText $result $result1] \
+                or\n $result2 Here's the diff:\n [diffText $result $result2]"
+	    set resultMessage $result
+        }
     }
-    list $result
+    list $resultMessage
 } {{}}
 cd "$currentDirectory"
