@@ -3685,24 +3685,6 @@
       </fileset>
     </jar>
 
-    <!-- ptolemy/actor/lib/jni/demo/demo.jar -->
-    <jar defaultexcludes="yes"
-	 destfile="${basedir}/ptolemy/actor/lib/jni/demo/demo.jar"
-	 >
-      <fileset dir="${basedir}">
-	<include name="ptolemy/actor/lib/jni/demo/Scale/*.c"/>
-      </fileset>
-      <fileset dir="${basedir}">
-	<include name="ptolemy/actor/lib/jni/demo/Scale/*.xml"/>
-      </fileset>
-      <fileset dir="${basedir}">
-	<include name="ptolemy/actor/lib/jni/demo/SimplePassPointer/*.c"/>
-      </fileset>
-      <fileset dir="${basedir}">
-	<include name="ptolemy/actor/lib/jni/demo/SimplePassPointer/*.xml"/>
-      </fileset>
-    </jar>
-
     <!-- ptolemy/actor/lib/python/python.jar -->
     <jar defaultexcludes="yes"
 	 destfile="${basedir}/ptolemy/actor/lib/python/python.jar"
