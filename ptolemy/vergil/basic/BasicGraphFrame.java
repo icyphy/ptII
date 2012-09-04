@@ -3240,9 +3240,10 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
                 "_vergilZoomFactor", Parameter.class);
 
         boolean updateValue = false;
-        if (zoom == null) {
+        if (zoom == null || zoom.getToken() == null) {
             // NOTE: This will not propagate.
             zoom = new ExpertParameter(getModel(), "_vergilZoomFactor");
+            zoom.setToken("1.0");
             updateValue = true;
         } else {
             double oldZoom = ((DoubleToken)zoom.getToken()).doubleValue();
@@ -3277,9 +3278,11 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
                 "_vergilCenter", Parameter.class);
 
         updateValue = false;
-        if (pan == null) {
+        if (pan == null || pan.getToken() == null) {
             // NOTE: This will not propagate.
             pan = new ExpertParameter(getModel(), "_vergilCenter");
+            pan.setToken("{" + center.getX()
+                + ", " + center.getY() + "}");
             updateValue = true;
         } else {
             Token[] oldCenter = ((ArrayToken)pan.getToken()).arrayValue();
