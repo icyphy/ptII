@@ -10,7 +10,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="{115.0, 75.0}">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={233, 132, 862, 634}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={69, 22, 862, 634}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[628, 524]">
     </property>
@@ -385,7 +385,7 @@
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[95.0, 65.0]">
                 </property>
             </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={35, 415, 934, 634}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={115, 361, 934, 634}, maximized=false}">
             </property>
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 524]">
             </property>
@@ -502,14 +502,6 @@
             <link port="TimeDelay.output" relation="relation5"/>
         </entity>
     </entity>
-    <entity name="Display" class="ptolemy.actor.lib.gui.Display">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={33, 520, 484, 208}, maximized=false}">
-        </property>
-        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{350, 195}">
-        </property>
-    </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
@@ -545,12 +537,12 @@
     <link port="Test2.input" relation="relation5"/>
     <link port="CurrentTime.output" relation="relation5"/>
     <link port="CurrentTime.trigger" relation="relation3"/>
+    <link port="Test3.input" relation="relation2"/>
     <link port="Test4.input" relation="relation6"/>
     <link port="CurrentTime2.output" relation="relation6"/>
     <link port="CurrentTime2.trigger" relation="relation2"/>
     <link port="DiscreteClock.output" relation="relation3"/>
-    <link port="PtidesPlatform.SensorPort" relation="relation2"/>
-    <link port="PtidesPlatform.SensorPort2" relation="relation3"/>
+    <link port="PtidesPlatform.SensorPort" relation="relation3"/>
+    <link port="PtidesPlatform.SensorPort2" relation="relation2"/>
     <link port="PtidesPlatform.ActuatorPort" relation="relation7"/>
-    <link port="Display.input" relation="relation2"/>
 </entity>
