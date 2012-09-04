@@ -203,8 +203,6 @@ The Ptiny pack is required.
                   targetdir="$INSTALL_PATH/ptolemy/actor/lib/hoc/demo"/>
             <file src="../../jar_dist/ptolemy/actor/lib/javasound/demo/demo.jar"
                   targetdir="$INSTALL_PATH/ptolemy/actor/lib/javasound/demo"/>
-            <file src="../../jar_dist/ptolemy/actor/lib/jni/demo/demo.jar"
-                  targetdir="$INSTALL_PATH/ptolemy/actor/lib/jni/demo"/>
             <file src="../../jar_dist/ptolemy/actor/lib/python/python.jar"
                   targetdir="$INSTALL_PATH/ptolemy/actor/lib/python"/>
             <file src="../../jar_dist/ptolemy/actor/lib/python/demo/demo.jar"
@@ -339,8 +337,6 @@ The Ptiny pack is required.
                   targetdir="$INSTALL_PATH/ptolemy/actor/lib/joystick"/>
             <file src="../../jar_dist/vendors/misc/joystick/Joystick.jar"
                   targetdir="$INSTALL_PATH/vendors/misc/joystick"/>
-            <file src="../../jar_dist/ptolemy/actor/lib/jxta/jxta.jar"
-                  targetdir="$INSTALL_PATH/ptolemy/actor/lib/jxta"/>
             <file src="../../jar_dist/ptolemy/actor/lib/mail/mail.jar"
                   targetdir="$INSTALL_PATH/ptolemy/actor/lib/mail"/>
             <file src="../../jar_dist/ptolemy/actor/lib/mail/demo/demo.jar"
