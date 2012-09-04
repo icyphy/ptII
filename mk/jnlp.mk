@@ -334,7 +334,6 @@ PTINY_ONLY_JNLP_JARS = \
 	lib/ptcolt.jar \
 	ptolemy/actor/lib/colt/colt.jar \
 	ptolemy/actor/lib/colt/demo/demo.jar \
-	ptolemy/actor/lib/jni/demo/demo.jar \
         ptolemy/actor/lib/python/python.jar \
         ptolemy/actor/lib/python/demo/demo.jar \
         ptolemy/actor/lib/security/demo/demo.jar \
@@ -461,7 +460,6 @@ FULL_ONLY_JNLP_JARS = \
 	ptolemy/actor/lib/jmf/demo/demo.jar \
 	ptolemy/actor/lib/joystick/joystick.jar \
 	vendors/misc/joystick/Joystick.jar \
-	ptolemy/actor/lib/jxta/jxta.jar \
 	ptolemy/actor/lib/mail/mail.jar \
 	ptolemy/actor/lib/mail/demo/demo.jar \
 	$(PTJAVAMAIL_JARS) \
@@ -1075,14 +1073,14 @@ vergil.jnlp: vergil.jnlp.in $(SIGNED_DIR) $(KEYSTORE)
 # problems with cvs and applets.
 jnlp_sign: jnlp_sign1 $(JNLPS) $(KEYSTORE)
 jnlp_sign1: $(SIGNED_DIR) $(NATIVE_SIGNED_LIB_JARS)
-	# Remove $PTII/ for files like /var/lib/hudson/jobs/ptII/workspace/vendors/oracle/javamail/mail.jar
+	# Remove $(PTII)/ for files like /var/lib/hudson/jobs/ptII/workspace/vendors/oracle/javamail/mail.jar
 	@set $(ALL_NON_APPLICATION_JNLP_JARS); \
 	for x do \
 		if [ ! -f $$x ]; then \
 			echo "Warning: $$x does not exist, skipping."; \
 			continue; \
 		fi; \
-		jarfile=`echo $$x | sed "s@$$PTII/@@"`; \
+		jarfile=`echo $$x | sed "s@$(PTII)/@@"`; \
 		if [ ! -f $(SIGNED_DIR)/$$jarfile ]; then \
 			echo "#  Copying $$jarfile to $(SIGNED_DIR)/"; \
 			mkdir -p $(SIGNED_DIR)/`dirname $$jarfile`; \
@@ -1118,10 +1116,10 @@ $(JAR_DIST_DIR): $(NATIVE_SIGNED_LIB_JARS)
 	if [ ! -d $(JAR_DIST_DIR) ]; then \
 		mkdir -p $(JAR_DIST_DIR); \
 	fi
-	# Remove $PTII/ for files like /var/lib/hudson/jobs/ptII/workspace/vendors/oracle/javamail/mail.jar
+	# Remove $(PTII)/ for files like /var/lib/hudson/jobs/ptII/workspace/vendors/oracle/javamail/mail.jar
 	set $(ALL_NON_APPLICATION_JNLP_JARS); \
 	for x do \
-		jarfile=`echo $$x | sed "s@$$PTII/@@"`; \
+		jarfile=`echo $$x | sed "s@$(PTII)/@@"`; \
 		if [ ! -f $(JAR_DIST_DIR)/$$jarfile ]; then \
 			echo "#  Copying $$jarfile to $(JAR_DIST_DIR)/"; \
 			mkdir -p $(JAR_DIST_DIR)/`dirname $$jarfile`; \
@@ -1570,8 +1568,7 @@ OSGI_PTINY_JARS = \
 	$(OSGI_PTOLEMY_JARS) \
 	$(OSGI_PTINY_DOMAINS_JARS) \
 	$(OSGI_VERGIL_JARS) \
-	$(PTINY_ONLY_JNLP_JARS) \
-	ptolemy/actor/lib/jni/jni.jar
+	$(PTINY_ONLY_JNLP_JARS)
 
 osgi_ptiny_test:
 	rm -rf $(OSGI_TARGET_DIRECTORY)/*
@@ -1624,7 +1621,6 @@ osgi_codegen_test:
 	ptolemy/actor/lib/gui/gui.jar \
 	ptolemy/actor/lib/libKore.jar \
 	ptolemy/actor/lib/javasound/javasound.jar \
-	ptolemy/actor/lib/jni/jni.jar \
 	ptolemy/data/data.jar \
 	ptolemy/domains/hdf/hdf.jar \
 	ptolemy/domains/pn/pn.jar \
