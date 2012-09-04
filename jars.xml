@@ -353,9 +353,6 @@
 	<include name="ptolemy/actor/lib/javasound/*.xml"/>
       </fileset>
       <fileset dir="${basedir}">
-	<include name="ptolemy/actor/lib/jni/*.class"/>
-      </fileset>
-      <fileset dir="${basedir}">
 	<include name="ptolemy/actor/lib/jopio/*.class"/>
       </fileset>
       <fileset dir="${basedir}">
@@ -483,12 +480,6 @@
       </fileset>
       <fileset dir="${basedir}">
 	<include name="ptolemy/configs/hyvisual/*.xml"/>
-      </fileset>
-      <fileset dir="${basedir}">
-	<include name="ptolemy/configs/jxta/*.htm"/>
-      </fileset>
-      <fileset dir="${basedir}">
-	<include name="ptolemy/configs/jxta/*.xml"/>
       </fileset>
       <fileset dir="${basedir}">
 	<include name="ptolemy/configs/luminary/*.htm"/>
@@ -1236,24 +1227,6 @@
     </jar>
 
     <!-- vendors/misc/joystick/Joystick.jar -->
-
-    <!-- ptolemy/actor/lib/jxta/jxta.jar -->
-    <jar defaultexcludes="yes"
-	 destfile="${basedir}/ptolemy/actor/lib/jxta/jxta.jar"
-	 >
-      <fileset dir="${basedir}">
-	<include name="ptolemy/actor/lib/jxta/*.adv"/>
-      </fileset>
-      <fileset dir="${basedir}">
-	<include name="ptolemy/actor/lib/jxta/*.class"/>
-      </fileset>
-      <fileset dir="${basedir}">
-	<include name="ptolemy/actor/lib/jxta/*.properties"/>
-      </fileset>
-      <fileset dir="${basedir}">
-	<include name="ptolemy/actor/lib/jxta/*.xml"/>
-      </fileset>
-    </jar>
 
     <!-- ptolemy/actor/lib/mail/mail.jar -->
     <jar defaultexcludes="yes"
