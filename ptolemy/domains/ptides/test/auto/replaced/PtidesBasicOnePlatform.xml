@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="PtidesBasicOnePlatform" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.0.devel">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="10.0">
@@ -17,7 +17,7 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Authors: Edward A. Lee, Slobodan Matic, and Jia Zou">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 370.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[200.0, 510.0]">
         </property>
     </property>
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -27,12 +27,12 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="A &quot;Hello World&quot; Ptides program. The top level of this model shows a physical&#10;environment in which two clocks provide stimulus to a compute platform, which,&#10;after some time, responds to the stimulus with output events that are plotted.&#10;At the top level of the model, &quot;time&quot; (in the DE director) represents physical time.&#10;The time-stamp of an event from the clock actors represents the physical time&#10;at which the stimulus is presented to the compute platform. The time stamp of&#10;the response event represents the physical time of the response.&#10;&#10;Look inside the PtidesPlatform actor to see what the compute platform does.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 220.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[200.0, 360.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={179, 41, 726, 515}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1946, -345, 876, 634}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[513, 405]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[642, 524]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.8521594684385">
     </property>
@@ -41,9 +41,9 @@
     <entity name="PtidesPlatform" class="ptolemy.actor.TypedCompositeActor">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[250.0, 130.0]">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={127, 34, 709, 692}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1385, -144, 1060, 692}, maximized=false}">
         </property>
-        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[496, 582]">
+        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[826, 582]">
         </property>
         <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
         </property>
@@ -54,9 +54,9 @@
             </property>
             <property name="italic" class="ptolemy.data.expr.Parameter" value="false">
             </property>
-            <property name="center" class="ptolemy.data.expr.Parameter" value="true">
-            </property>
             <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Ptides is a programming model that is based on Discrete Event (DE) semantics. In&#10;fact, if the PtidesBasicDirector is replaced with a DEDirector, this model would&#10;exhibit the same behavior. Unlike DE, Ptides relates physical time of the physical&#10;world to the model time (timestamp of events). This is done through sensors and&#10;actuators, which are abstracted with input/output ports in the Ptides level. See&#10;&quot;Execution Strategies for PTIDES, a Programming Model for Distributed, Embedded&#10;Systems&quot;.&#10;&#10;The values of incoming events on both paths are first multiplied by 2, and then&#10;their time stamps are delayed (incremented). Two event streams are then&#10;merged in time stamp order, and the resulting event stream is produced at the&#10;output response port.&#10;&#10;We allow users to visually see the execution of actors under the Ptides environment&#10;by highlighting current actors that are executing. To enable this highlighting,&#10;check animateExecution as well as synchronizeToRealTime parameters. Also, &#10;animateModelTimeDelay parameter can be checked to indicate which actors in the&#10;graph introduce model time delay in the Ptides model.">
+            </property>
+            <property name="center" class="ptolemy.data.expr.Parameter" value="true">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[255.0, 435.0]">
             </property>
@@ -117,7 +117,7 @@
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[135.0, 255.0]">
             </property>
-            <property name="WCET" class="ptolemy.data.expr.Parameter" value="0.4">
+            <property name="WCET" class="ptolemy.data.expr.Parameter" value="0.0">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.EditorIcon">
                 <property name="rectangle" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
@@ -227,9 +227,9 @@
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[10.0, 100.0]">
                 </property>
             </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={100, 127, 594, 491}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={100, 127, 605, 634}, maximized=false}">
             </property>
-            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[371, 377]">
+            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[371, 524]">
             </property>
             <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
             </property>
@@ -309,7 +309,7 @@
             </port>
         </entity>
         <entity name="Test2" class="ptolemy.actor.lib.Test">
-            <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{3.0, 3.0, 2.0, 3.0, 2.0, 3.0, 2.0, 3.0, 2.0, 3.0, 2.0, 3.0, 2.0, 3.0, 2.0, 3.0, 2.0}">
+            <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{3.0, 2.0, 3.0, 2.0, 3.0, 2.0, 3.0, 2.0, 3.0, 2.0, 3.0, 2.0, 3.0, 2.0, 3.0, 2.0, 3.0}">
             </property>
             <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
             </property>
@@ -394,7 +394,7 @@
         </property>
     </entity>
     <entity name="Test" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{3.0, 3.0, 2.0, 3.0, 2.0, 3.0, 2.0, 3.0, 2.0, 3.0, 2.0, 3.0, 2.0, 3.0, 2.0, 3.0, 2.0}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{3.0, 2.0, 3.0, 2.0, 3.0, 2.0, 3.0, 2.0, 3.0, 2.0, 3.0, 2.0, 3.0, 2.0, 3.0, 2.0, 3.0}">
         </property>
         <property name="requireAllCorrectValues" class="ptolemy.actor.parameters.SharedParameter" value="true">
         </property>
