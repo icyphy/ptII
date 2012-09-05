@@ -21,7 +21,9 @@
     <entity name="TimeDelay" class="ptolemy.actor.lib.TimeDelay">
         <property name="delay" class="ptolemy.actor.parameters.PortParameter" value="2.0">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[275.0, 130.0]">
+        <property name="minimumDelay" class="ptolemy.data.expr.Parameter" value="0.0">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{275.0, 130.0}">
         </property>
     </entity>
     <entity name="SingleEvent" class="ptolemy.actor.lib.SingleEvent">

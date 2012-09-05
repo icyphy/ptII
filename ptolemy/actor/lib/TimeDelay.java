@@ -62,8 +62,7 @@ import ptolemy.kernel.util.Workspace;
  <i>delay</i> port is connected (and hence the delay will be variable
  at run time), then the values provided at the port are required to be
  greater than or equal <i>minimumDelay</i>,
- which defaults to 0.0. Setting the <i>minimumDelay</i> to something greater
- than 0.0 is helpful in specials domains such as Ptides.
+ which defaults to the value of <i>delay</i>.  
  The input and output types are unconstrained, except that the output type
  must be the same as that of the input. 
  <p>
@@ -142,7 +141,7 @@ public class TimeDelay extends Transformer {
 
         minimumDelay = new Parameter(this, "minimumDelay");
         minimumDelay.setTypeEquals(BaseType.DOUBLE);
-        minimumDelay.setExpression("0.0");
+        minimumDelay.setExpression("delay");
 
         // Put the delay input on the bottom of the actor.
         StringAttribute controlCardinal = new StringAttribute(delay.getPort(), "_cardinal");
@@ -171,7 +170,7 @@ public class TimeDelay extends Transformer {
     public PortParameter delay;
     
     /** Minimum delay to impose if the <i>delay</i>
-     *  port is connected. This is a double that defaults to 0.0.
+     *  port is connected. This is a double that defaults to the value of the delay.
      */
     public Parameter minimumDelay;
 
@@ -193,7 +192,7 @@ public class TimeDelay extends Transformer {
             double minimumDelayValue = _minimumDelay();
             if (newDelay < minimumDelayValue) {
                 throw new IllegalActionException(this,
-                        "Cannot have delay less than "
+                        "Cannot have delay less than minimumDelay of "
                         + minimumDelayValue
                         + ". Attempt to set it to "
                         + newDelay);
@@ -447,18 +446,14 @@ public class TimeDelay extends Transformer {
         return (comparison == 0 && microstep >= event.microstep);
     }
     
-    /** Return 0.0 unless the <i>delay</i> port is connected,
-     *  in which case, return the value of <i>minimumDelay</i>.
+    /** Return the value of <i>minimumDelay</i>.
      *  @return The minimum delay from the input to the output.
      *  @throws IllegalActionException If the <i>minimumDelay</i>
      *   parameter cannot be evaluated.
      */
     protected double _minimumDelay() throws IllegalActionException {
-        double minimumDelayValue = _minimumDelay;
-        if (delay.getPort().sourcePortList().size() > 0) {
-            minimumDelayValue
-                    = ((DoubleToken) (minimumDelay.getToken())).doubleValue();
-        }
+        double minimumDelayValue = _minimumDelay; 
+        minimumDelayValue = ((DoubleToken) (minimumDelay.getToken())).doubleValue(); 
         return minimumDelayValue;
     }
 
