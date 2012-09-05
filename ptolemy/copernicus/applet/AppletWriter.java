@@ -1980,16 +1980,27 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
                                 + temporaryJarFileName + " to " + jarFile
                                 + ".");
                     }
-                    throw new IOException("Attempt #2: Failed to rename \""
-                            + temporaryJarFileName + "\" to \"" + jarFile
+		    File jarFileDirectory = jarFile.getParentFile();
+		    if (!jarFileDirectory.isDirectory()) {
+			if (!jarFileDirectory.mkdirs()) {
+			    throw new IOException("Could not create directory \""
+						  + jarFileDirectory + "\"");
+			}
+		    }
+		    if (!temporaryJarFileName.renameTo(jarFile)) {
+			throw new IOException("Attempt #2: Failed to rename \""
+  		            + temporaryJarFileName + "\" to \"" + jarFile
                             + "\", source file "
                             + (temporaryJarFileName.exists() ? "exists" : "does not exist")
                             + ", destination file "
                             + (jarFile.exists() ? "exists" : "does not exist")
                             + ", destination file "
                             + (jarFile.canWrite() ? "can" : "cannot")
-                            + " be written."
-                                          );
+                            + " be written.  "
+			    + "The directory " + jarFileDirectory
+			    + (jarFileDirectory.isDirectory() ? "is" : "is not")
+			    + " a directory.");
+		    }
                 }
             }
         }
