@@ -37,18 +37,27 @@ import java.util.List;
 import ptolemy.actor.Actor;
 import ptolemy.actor.AtomicActor;
 import ptolemy.actor.CompositeActor;
+import ptolemy.actor.Executable;
+import ptolemy.actor.IOPort;
+import ptolemy.actor.Initializable;
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.util.Time;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.ObjectToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
+import ptolemy.domains.ptides.kernel.PtidesPlatform;
 import ptolemy.graph.Inequality;
 import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.util.Attribute;
+import ptolemy.kernel.util.ChangeRequest;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
+import ptolemy.kernel.util.StringAttribute;
 import ptolemy.kernel.util.Workspace;
+import ptolemy.vergil.actor.lib.MonitorReceiverAttribute;
 
 /** This is a resource scheduler.
  * 
@@ -75,7 +84,36 @@ public abstract class ResourceScheduler extends TypedAtomicActor {
      */
     public ResourceScheduler(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
-        super(container, name);
+        super(container, name); 
+        if (container != null
+                && container instanceof PtidesPlatform.PtidesPlatformContents) {  
+            // Also, remove all _showInfo attributes in the ports of the previous container.
+            List<Actor> entities = ((PtidesPlatform.PtidesPlatformContents) container)
+                    .deepEntityList();
+            for (Actor entity : entities) {
+                if (!(entity instanceof ResourceScheduler)) {
+                    if (((NamedObj)entity).getAttribute("scheduler") == null) {
+                        Parameter schedulerParameter = new Parameter((NamedObj)entity, "scheduler");
+                    }
+                    if (((NamedObj)entity).getAttribute("executionTime") == null) {
+                        Parameter executionTime = new Parameter((NamedObj)entity, "executionTime");
+                    }
+                }
+            }  
+            ChangeRequest request = new ChangeRequest(this,
+                    "SetVariable change request", true) {
+                protected void _execute()
+                    throws IllegalActionException {
+                }
+            };
+            // To prevent prompting for saving the model, mark this
+            // change as non-persistent.
+            request.setPersistent(false);
+            requestChange(request); 
+                        
+        }
+
+        
         try {
             _schedulePlotterEditorFactory = new SchedulePlotterEditorFactory(
                     this, this.uniqueName("_editorFactory"));
@@ -266,7 +304,7 @@ public abstract class ResourceScheduler extends TypedAtomicActor {
     protected static Double _getDoubleParameterValue(NamedObj object,
             String parameterName) throws IllegalActionException {
         Parameter parameter = (Parameter) object.getAttribute(parameterName);
-        if (parameter != null) {
+        if (parameter != null && parameter.getToken() != null) {
             return Double.valueOf(((DoubleToken) parameter.getToken())
                     .doubleValue());
         }

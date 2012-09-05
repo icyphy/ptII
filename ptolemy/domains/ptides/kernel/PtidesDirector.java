@@ -846,7 +846,7 @@ public class PtidesDirector extends DEDirector {
     protected static Double _getDoubleParameterValue(NamedObj object,
             String parameterName) throws IllegalActionException {
         Parameter parameter = (Parameter) object.getAttribute(parameterName);
-        if (parameter != null) {
+        if (parameter != null && parameter.getToken() != null) {
             return Double.valueOf(((DoubleToken) parameter.getToken())
                     .doubleValue());
         }
