@@ -83,6 +83,9 @@ public class TokenReader extends FileReader {
         errorHandlingStrategy = new StringParameter(this, "errorHandlingStrategy");
         errorHandlingStrategy.addChoice("Throw Exception");
         errorHandlingStrategy.addChoice("Do Nothing");
+        
+        // Show the firingCountLimit parameter last.
+        firingCountLimit.moveToLast();
     }
 
     ///////////////////////////////////////////////////////////////////

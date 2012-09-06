@@ -80,6 +80,9 @@ public class FileReader extends LimitedFiringSource {
         newline = new Parameter(this, "newline");
         newline.setExpression("property(\"line.separator\")");
 
+        // Show the firingCountLimit parameter last.
+        firingCountLimit.moveToLast();
+
         _attachText("_iconDescription", "<svg>\n"
                 + "<rect x=\"-25\" y=\"-20\" " + "width=\"50\" height=\"40\" "
                 + "style=\"fill:white\"/>\n"
