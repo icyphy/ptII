@@ -85,6 +85,9 @@ public class ExecutionTime extends LimitedFiringSource {
         granularity.setExpression("400000L");
 
         output.setTypeEquals(BaseType.LONG);
+        
+        // Show the firingCountLimit parameter last.
+        firingCountLimit.moveToLast();
     }
 
     ///////////////////////////////////////////////////////////////////
