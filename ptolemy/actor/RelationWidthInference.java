@@ -396,20 +396,32 @@ public class RelationWidthInference {
                             portDetails.append(((IOPort)deepPorts.next()).getFullName());
                         }
 
+                        String message1 = "The width of relation "
+                            + relation.getFullName()
+                            + " can not be uniquely inferred.\n";
+                        String message2 = "One possible solution is to create a toplevel parameter "
+                            + "named \"_defaultInferredWidthTo1\" with the boolean "
+                            + "value true.\n"
+                            + "Please make the width inference deterministic by"
+                            + " explicitly specifying the width of this relation."
+                            + " In the user interface, right click on the "
+                            + "relation, select Configure and change the width. "
+                            + " Note that some actors may need to have their "
+                            + " Java code updated to call setDefaultWidth(1) "
+                            + "on the output port. "
+                            + "The relation is deeply connected to these ports:\n"
+                            + portDetails.toString();
+                        Manager manager = ((CompositeActor) relation.toplevel()).getManager();
+                        if (manager != null && manager.getState() != Manager.IDLE) {
+                            throw new IllegalActionException(
+                                    relation,
+                                    message1
+                                    + "The model is not idle, so stopping the model "
+                                    + "might help.\n" + message2);
+                        }
                         throw new IllegalActionException(
                                 relation,
-                                "The width of relation "
-                                        + relation.getFullName()
-                                        + " can not be uniquely inferred.\n"
-                                        + "Please make the width inference deterministic by"
-                                        + " explicitly specifying the width of this relation."
-                                        + " In the user interface, right click on the "
-                                        + "relation, select Configure and change the width. "
-                                        + " Note that some actors may need to have their "
-                                        + " Java code updated to call setDefaultWidth(1) "
-                                        + "on the output port. "
-                                        + "The relation is deeply connected to these ports:\n"
-                                        + portDetails.toString());
+                                message1 + message2);
                     }
                 }
 
