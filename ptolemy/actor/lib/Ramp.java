@@ -98,6 +98,9 @@ public class Ramp extends SequenceSource {
                 + "<polygon points=\"-20,10 20,-10 20,10\" "
                 + "style=\"fill:grey\"/>\n" + "</svg>\n");
         _resultArray = new Token[1];
+        
+        // Show the firingCountLimit parameter last.
+        firingCountLimit.moveToLast();
     }
 
     ///////////////////////////////////////////////////////////////////
