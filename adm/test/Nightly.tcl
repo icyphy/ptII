@@ -32,7 +32,7 @@
 
 # Ptolemy II test bed, see $PTII/doc/coding/testing.html for more information.
 
-set VERBOSE 1
+#set VERBOSE 1
 # Get rid of any previous lists of .java files etc.
 exec make clean
 
