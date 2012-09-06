@@ -91,7 +91,11 @@ public abstract class WithIconGraphController extends BasicGraphController {
             BasicGraphFrame frame, IOPort _prototype) {
         Point2D center = frame.getCenter();
 
-        Rectangle2D visiblePart = frame.getVisibleRectangle();
+        // If we are zoomed in, then place the ports in the canvas
+        // view, not way off yonder.
+        //Rectangle2D visiblePart = frame.getVisibleRectangle();
+        BasicGraphFrame basicGraphFrame = (BasicGraphFrame)frame;
+        Rectangle2D visiblePart = basicGraphFrame.getVisibleCanvasRectangle();
 
         double[] p;
         if (_prototype.isInput() && _prototype.isOutput()) {
