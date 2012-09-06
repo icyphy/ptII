@@ -49,6 +49,7 @@ import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.lib.TimeDelay;
 import ptolemy.actor.parameters.ParameterPort;
 import ptolemy.actor.parameters.SharedParameter;
+import ptolemy.actor.util.BooleanDependency;
 import ptolemy.actor.util.CausalityInterface;
 import ptolemy.actor.util.Dependency;
 import ptolemy.actor.util.SuperdenseDependency;
@@ -59,7 +60,12 @@ import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.domains.de.kernel.DEDirector;
+import ptolemy.domains.ptides.kernel.PtidesBasicDirector.RealTimeClock;
+import ptolemy.domains.ptides.lib.ActuatorSetup;
+import ptolemy.domains.ptides.lib.NetworkReceiver;
+import ptolemy.domains.ptides.lib.NetworkTransmitter;
 import ptolemy.domains.ptides.lib.ResourceScheduler;
+import ptolemy.domains.ptides.lib.SensorHandler;
 import ptolemy.domains.ptides.lib.io.ActuatorPort;
 import ptolemy.domains.ptides.lib.io.NetworkReceiverPort;
 import ptolemy.domains.ptides.lib.io.NetworkTransmitterPort;
@@ -72,6 +78,93 @@ import ptolemy.kernel.util.NamedObj;
 
 /** This director implements the Ptides programming model,
  *  which is used for the design of distributed real-time systems. 
+ *  
+ *  <p> This director can only be used inside the PtidesPlatform 
+ *  and if the PtidesPlatform is dragged and dropped from the library, 
+ *  it already contains a PtidesDirector. A PtidesPlatform must be
+ *  embedded in a timed director such as DE or Continuous. The time of
+ *  this enclosing director simulates physical time. 
+ *  The localClock of this PtidesDirector simulates platformTime. 
+ *  
+ *  <p> The Ptides director is based on the DE director. Like the DE
+ *  director, this director maintains a totally ordered set of events.
+ *  Event timestamps are given in logical time. The logical time is decoupled
+ *  from the platformTime. The model time of the director is the 
+ *  platformTime unless an actor is fired; then the model time is
+ *  the timestamp of the event that caused the actor firing.
+ *  
+ *  Unlike the DE Director, this director can process events out of timestamp order
+ *  if they are not causally related. Whether events can be processed
+ *  is checked in a safe-to-process analysis.
+ *  This analysis returns a boolean to indicate whether an event
+ *  can be processed without violating Ptides
+ *  semantics, based on information such as events currently in the
+ *  event queue, their model time relationship with each other, as
+ *  well as the current platform physical time. In this particular version of
+ *  the Ptides scheduler, the director takes all events
+ *   from the event queue, and compares their timestamp
+ *  with the current platform time + a pre-computed offset (call this
+ *  the delayOffset). If the platform time is larger, than this event
+ *  is safe to process. Otherwise, we wait for platform time to pass
+ *  until this event becomes safe, at which point it is processed. 
+ *  Other, smarter kinds of safe-to-process analysis can be 
+ *  implemented in future versions. </p>
+ *  
+ *  Currently, only
+ *  the DE director can be used as the enclosing director. One reason
+ *  for using the DE director is that time cannot go backwards in DE,
+ *  which is an important physical time property. More importantly,
+ *  the fire method of this director changes the persistent state of
+ *  actors, which means this director cannot be used inside of an
+ *  actor that performs fix point iteration, which includes (currently),
+ *  Continuous, CT and SR. For more details, please refer
+ *  to Edward A. Lee, Haiyang Zheng. <a
+ *  href="http://chess.eecs.berkeley.edu/pubs/430.html">Leveraging
+ *  Synchronous Language Principles for Heterogeneous Modeling
+ *  and Design of Embedded Systems</a>, Proceedings of the
+ *  7th ACM & IEEE international conference on Embedded
+ *  software, ACM, 114-123, 2007.</p>
+ *
+ *  <p> This director provides a set of features to address both
+ *  the distributed and the real-time aspects of system design.
+ *  To address the distributed aspect, each PtidesPlatform simulates 
+ *  a computation platform
+ *  (e.g., a microprocessor), while the enclosing director simulates
+ *  the physical world. Actors under the Ptides director then communicate
+ *  to the outside via SensorPorts, ActuatorPorts, or network ports 
+ *  (NetworkReceivers, NetworkTransmitters). 
+ *  </p>
+ *
+ *  <p> This director allows for simulation of execution time. If the PtidesPlatform
+ *  contains ResourceSchedulers, the scheduling of actors is performed by these. 
+ *  Actors must specify in parameters which ResourceSchedulers they are assigned
+ *  to and the executionTime. The passage of execution time equals the passage
+ *  of platformTime. Execution time has no influence on the event timestamps.
+ *
+ *  <p> In a Ptides environment, all platforms are assumed to be synchronized
+ *  within a bounded error. 
+ *  
+ *
+ *  <p> The platform time is used in the following
+ *  situations: generating timestamps for sensor events, enforcing deadlines
+ *  for actuation events, and to setup the wake-up time for timed interrupts.
+ *  Also, the Ptides operational semantics assumes
+ *  a bound in the time synchronization error. This error is captured in the
+ *  parameter {@link #assumedPlatformTimeSynchronizationErrorBound}. If
+ *  the actual error exceeds this bound, the safe-to-process analysis could
+ *  produce an incorrect result. The demo PtidesNetworkLatencyTest illustrates
+ *  this error.</p>
+ *
+ *
+ *  <p> The implementation is based on the operational semantics
+ *  of Ptides, as described in: Jia Zou, Slobodan Matic, Edward
+ *  A. Lee, Thomas Huining Feng, Patricia Derler.  <a
+ *  href="http://chess.eecs.berkeley.edu/pubs/529.html">Execution
+ *  Strategies for Ptides, a Programming Model for Distributed
+ *  Embedded Systems</a>, 15th IEEE Real-Time and Embedded Technology
+ *  and Applications Symposium, 2009, IEEE Computer Society, 77-86,
+ *  April, 2009.</p>
+ *
  * 
  * @author Patricia Derler, Edward A. Lee, Slobodan Matic, Mike Zimmer, Jia Zou
    @version $Id$
@@ -159,6 +252,7 @@ public class PtidesDirector extends DEDirector {
             for (PtidesEvent event : list) {
                 if (event.ioPort() != null) {
                     _currentLogicalTime = event.timeStamp();
+                    _currentLocialIndex = event.microstep();
                     event.receiver().put(event.token());
                     _currentLogicalTime = null;
                 }
@@ -173,6 +267,7 @@ public class PtidesDirector extends DEDirector {
         if (list != null) {
             for (PtidesEvent event : list) {
                 _currentLogicalTime = event.timeStamp();
+                _currentLocialIndex = event.microstep();
                 if (event.ioPort() instanceof PtidesPort) {
                     double deviceDelay = _getDoubleParameterValue(
                             event.ioPort(), "deviceDelay");
@@ -208,6 +303,7 @@ public class PtidesDirector extends DEDirector {
                 PtidesEvent event = ptidesOutputPortList.peek();
                 if (event.absoluteDeadline().equals(localClock.getLocalTime())) {
                     _currentLogicalTime = event.timeStamp();
+                    _currentLocialIndex = event.microstep();
                     event.ioPort().send(0, event.token());
                     _currentLogicalTime = null;
                     ptidesOutputPortList.poll();
@@ -227,6 +323,14 @@ public class PtidesDirector extends DEDirector {
         }
         return super.getModelTime();
     }
+    
+    @Override
+    public int getMicrostep() {
+        if (_currentLogicalTime != null) {
+            return _currentLocialIndex;
+        }
+        return super.getMicrostep();
+    }
 
     /** Add a pure event to the queue of pure events.
      *  @param actor Actor to fire.
@@ -244,7 +348,7 @@ public class PtidesDirector extends DEDirector {
             return time;
         }
  
-        _pureEvents.add(new PtidesEvent(actor, null, time, 0, 0,
+        _pureEvents.add(new PtidesEvent(actor, null, time, index, 0,
                 _zeroTime)); 
         
         Time environmentTime = super.getEnvironmentTime();
@@ -898,6 +1002,7 @@ public class PtidesDirector extends DEDirector {
             if (_isSafeToProcess(event)) { 
                 if (_schedule(event, _getExecutionTime(false, event.actor()))) {
                     _currentLogicalTime = event.timeStamp();
+                    _currentLocialIndex = event.microstep();
                     _pureEvents.remove(event);
                     return event.actor();
                 }
@@ -908,6 +1013,7 @@ public class PtidesDirector extends DEDirector {
                 PtidesEvent ptidesEvent = ((PtidesEvent) event); 
                 if (_schedule(ptidesEvent, _getExecutionTime(ptidesEvent.actor() instanceof TimeDelay, ptidesEvent.actor()))) {
                     _currentLogicalTime = ptidesEvent.timeStamp();
+                    _currentLocialIndex = ptidesEvent.microstep();
                     _removeEventsFromQueue(ptidesEvent);
                     return ptidesEvent.actor();
                 }
@@ -1178,6 +1284,7 @@ public class PtidesDirector extends DEDirector {
     ////                         private variables                 ////
 
     private Time _currentLogicalTime;
+    private int _currentLocialIndex;
 
     /** The execution times of actors.
      */

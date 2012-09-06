@@ -97,6 +97,9 @@ import ptolemy.kernel.util.Workspace;
  *  A NetworkReceiverPort extracts the timestamp of the
  *  Ptides event in the RecordToken and creates a new event on the
  *  event queue on the PtidesDirector with this timestamp.
+ *  
+ *  FIXME: The base class seems to have some support for 
+ *  ParameterPorts but nothing that really works?
  * 
  * @author Patricia Derler
    @version $Id$
@@ -185,7 +188,10 @@ public class PtidesPlatform extends MirrorComposite {
         return result;
     }
     
-    /** Override the base class to return a specialized port.
+    /** FIXME: Return SensorPort or ActuatorPort. How do i know if
+     *  the port is an input or an output?
+     *  
+     *  Override the base class to return a specialized port.
      *  @param name The name of the port to create.
      *  @return A new instance of PtidesMirrorPort, an inner class.
      *  @exception NameDuplicationException If the container already has a port
@@ -194,14 +200,7 @@ public class PtidesPlatform extends MirrorComposite {
     public Port newPort(String name) throws NameDuplicationException {
         try {
             PtidesMirrorPort result = new PtidesMirrorPort(this, name);
-
-            // NOTE: We would like prevent deletion via MoML
-            // (or name changes, for that matter), but the following
-            // also prevents making it an input, which makes
-            // adding ports via the port dialog fail.
-            // result.setDerivedLevel(1);
-            // Force the port to be persistent despite being derived.
-            // result.setPersistent(true);
+            
             return result;
         } catch (IllegalActionException ex) {
             // This exception should not occur, so we throw a runtime
