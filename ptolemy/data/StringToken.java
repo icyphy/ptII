@@ -174,7 +174,8 @@ public class StringToken extends AbstractConvertibleToken {
         }
 
         if (token instanceof MatrixToken || token instanceof ScalarToken
-                || token instanceof BooleanToken || token instanceof FixToken) {
+                || token instanceof BooleanToken || token instanceof FixToken
+                || token instanceof RecordToken) {
             String str = token.toString();
             return new StringToken(str);
         }
