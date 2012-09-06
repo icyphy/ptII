@@ -29,7 +29,6 @@ package ptolemy.domains.modal.modal;
 import java.lang.reflect.Constructor;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
 
 import ptolemy.actor.Actor;
@@ -412,7 +411,7 @@ public class ModalModel extends TypedCompositeActor implements ChangeListener {
      *  @return True if the error has been handled, or false if the
      *   error is not handled.
      *  @exception IllegalActionException If the handler handles the
-     *   error by throwing an exception.///
+     *   error by throwing an exception.
      */
     public boolean handleModelError(NamedObj context,
             IllegalActionException exception) throws IllegalActionException {
@@ -420,30 +419,10 @@ public class ModalModel extends TypedCompositeActor implements ChangeListener {
             _debug("handleModelError called for the ModalModel "
                     + this.getDisplayName());
         }
-
-        // check to see if your current state has an errorTransition
-        State currentState = getController().currentState();
-        if (currentState != null) {
-            List errorTransitionList = currentState.errorTransitionList();
-
-            if (errorTransitionList.size() > 0) {
-                // if it does have an error transition, then handle the error
-                getController().setModelError();
-                if (_debugging) {
-                    _debug("I've set the model error in ModalModel");
-                }
-            } else { // there is no error transition
-                // if not then pass the model error up the hierarchy
-                // need to figure out how to pass the error up to a modal model if you're contained in one..
-
-                NamedObj parentContainer = getContainer().getContainer();
-
-                if (parentContainer != null) {
-                    return parentContainer.handleModelError(context, exception);
-                } else {
-                    getContainer().handleModelError(context, exception);
-                }
-            }
+        // If the controller FSM can handle the error, let it.
+        // Otherwise, delegate to the superclass.
+        if (!getController().handleModelError(context,  exception)) {
+            return super.handleModelError(context, exception);
         }
         return true;
     }

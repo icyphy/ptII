@@ -237,6 +237,7 @@ public class Transition extends ComponentRelation {
                     .booleanValue();
             // FIXME: The following needs to be rethought.
             // Discarding user data here. Undo will not work. This is bogus.
+            /*
             if (_errorTransition == true) {
                 guardExpression.setExpression("");
                 annotation.setExpression("");
@@ -250,6 +251,7 @@ public class Transition extends ComponentRelation {
                 defaultTransition.setToken(BooleanToken.FALSE);
                 nondeterministic.setToken(BooleanToken.FALSE);
             }
+            */
         } else if (attribute == guardExpression) {
             // The guard expression can only be evaluated at run
             // time, because the input variables it can reference are created

@@ -327,19 +327,6 @@ public class FSMActor extends CompositeEntity implements TypedActor,
         _initializables.add(initializable);
     }
 
-    /** Clear the model error flag of this FSMActor.
-     * This method is called when the FSMActor handles a
-     * timing error.
-     */
-    public void clearModelError() {
-        if (_modelError) {
-            if (_debugging) {
-                _debug("I've cleared the model error");
-            }
-            _modelError = false;
-        }
-    }
-
     /** Clone the actor into the specified workspace. This calls the
      *  base class and then sets the attribute public members to refer
      *  to the attributes of the new actor.
@@ -460,7 +447,7 @@ public class FSMActor extends CompositeEntity implements TypedActor,
                 // it is an error transition and the model error flag is set.
                 if (_modelError) {
                     enabledTransitions.add(transition);
-                    clearModelError();
+                    _modelError = false;
                 }
             } else {
                 if (_isTransitionEnabled(transition)) {
@@ -665,6 +652,20 @@ public class FSMActor extends CompositeEntity implements TypedActor,
                             stateRefinements[i].fire();
                             _stateRefinementsToPostfire.add(stateRefinements[i]);
                         }
+                    }
+                }
+                List<Transition> errorTransitionList = _currentState.errorTransitionList();
+                if (errorTransitionList.size() > 0) {
+                    if (_debugging) {
+                        _debug("** Checking error transitions.");
+                    }
+                    _chooseTransitions(errorTransitionList, false);
+                    if (_lastChosenTransitions.size() > 0) {
+                        // An error transition was chosen. We are done.
+                        if (inModalModel) {
+                            director.setModelTime(environmentTime);
+                        }
+                        return;
                     }
                 }
                 if (inModalModel) {
@@ -1003,6 +1004,7 @@ public class FSMActor extends CompositeEntity implements TypedActor,
 
         _reachedFinalState = false;
         _newIteration = true;
+        _modelError = false;
 
         // Even though reset() is called in preinitialize(),
         // we have to call it again because if a reset transition is
@@ -1470,20 +1472,34 @@ public class FSMActor extends CompositeEntity implements TypedActor,
             _lastChosenTransitions.put(currentState(), transition);
         }
     }
-
-    /** Set the model error parameter of this FSMActor to true.
-     * This method is called when the timing manager makes the
-     * FSMActor aware of a timing error.
+    
+    /** Handle a model error.
+     *  @param context The object in which the error occurred.
+     *  @param exception An exception that represents the error.
+     *  @return True if the error has been handled, or false if the
+     *   error is not handled.
+     *  @exception IllegalActionException If the handler handles the
+     *   error by throwing an exception.
      */
-    public void setModelError() {
-        if (_modelError == false) {
-
-            if (_debugging) {
-                _debug("I've set the model error");
-            }
-            _modelError = true;
-
+    public boolean handleModelError(NamedObj context,
+            IllegalActionException exception) throws IllegalActionException {
+        if (_debugging) {
+            _debug("handleModelError called for the FSMActor "
+                    + this.getDisplayName());
         }
+        // check to see if your current state has an errorTransition.
+        // FIXME: Not enough. Also need to evaluate the guards on error transitions.
+        State currentState = currentState();
+        if (currentState != null) {
+            List errorTransitionList = currentState.errorTransitionList();
+
+            if (errorTransitionList.size() > 0) {
+                // if it does have an error transition, then handle the error
+                _modelError = true;
+                return true;
+            }
+        }
+        return false;
     }
 
     /** Set the flag indicating whether we are at the start of
