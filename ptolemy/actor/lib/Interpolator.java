@@ -122,6 +122,9 @@ public class Interpolator extends SequenceSource {
         period.setTypeEquals(BaseType.INT);
 
         output.setTypeEquals(BaseType.DOUBLE);
+        
+        // Show the firingCountLimit parameter last.
+        firingCountLimit.moveToLast();
     }
 
     ///////////////////////////////////////////////////////////////////

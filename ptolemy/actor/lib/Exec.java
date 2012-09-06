@@ -170,6 +170,9 @@ public class Exec extends LimitedFiringSource {
         waitForProcess = new Parameter(this, "waitForProcess",
                 BooleanToken.TRUE);
         waitForProcess.setTypeEquals(BaseType.BOOLEAN);
+        
+        // Show the firingCountLimit parameter last.
+        firingCountLimit.moveToLast();
     }
 
     ///////////////////////////////////////////////////////////////////
