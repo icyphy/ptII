@@ -1748,11 +1748,9 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
         if (container != null) {
             container.requestChange(change);
         } else {
-            // Have to ensure that
-            // the collection of change listeners doesn't change during
-            // this execution.  But we don't want to hold a lock on the
-            // this NamedObj during execution of the change because this
-            // could lead to deadlock.  So we synchronize to _changeLock.
+            // Synchronize to make sure we don't modify
+            // the list of change requests while some other
+            // thread is also trying to read or modify it.
             synchronized (_changeLock) {
                 // Queue the request.
                 // Create the list of requests if it doesn't already exist
