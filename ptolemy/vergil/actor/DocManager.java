@@ -803,14 +803,20 @@ public class DocManager extends HandlerBase {
             URL toRead = docClassNameToURL(_configuration, className, true,
                     true, true, false);
             if (toRead != null) {
-                result.append("<li><a href=\"" + toRead.toExternalForm()
-                        + "\">");
+                result.append("<li><a href=\"" + toRead.toExternalForm());
                 if (toRead.toExternalForm().endsWith(".html")) {
-                    result.append("Javadoc Documentation");
+                    // Sadly, Javadoc from Java 1.7 cannot be
+                    // displayed using a JEditorPane, so we open
+                    // javadoc in an external browser.  To test this
+                    // out, see
+                    // http://docs.oracle.com/javase/tutorial/uiswing/components/editorpane.html#editorpane
+                    // and modify the example so that it tries to view
+                    // the Javadoc for Object.
+                    result.append("#in_browser\">Javadoc Documentation");
                 } else if (toRead.toExternalForm().endsWith(".java")) {
-                    result.append("Java Source");
+                    result.append("\">Java Source");
                 } else if (toRead.toExternalForm().endsWith(".xml")) {
-                    result.append("Class Documentation");
+                    result.append("\">Class Documentation");
                 }
                 result.append("</a></li>");
             }
@@ -824,7 +830,14 @@ public class DocManager extends HandlerBase {
                 if (toRead != null) {
                     docURL = toRead;
                     result.append("<li><a href=\"" + toRead.toExternalForm()
-                            + "\">Javadoc documentation</a></li>");
+                            // Sadly, Javadoc from Java 1.7 cannot be
+                            // displayed using a JEditorPane, so we open
+                            // javadoc in an external browser.  To test this
+                            // out, see
+                            // http://docs.oracle.com/javase/tutorial/uiswing/components/editorpane.html#editorpane
+                            // and modify the example so that it tries to view
+                            // the Javadoc for Object.
+                            + "#in_browser\">Javadoc Documentation</a></li>");
                 } else {
                     // FIXME: Make this a hyperlink to a doc on how
                     // to create the javadocs.
