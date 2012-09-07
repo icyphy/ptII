@@ -1753,7 +1753,6 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
             // this execution.  But we don't want to hold a lock on the
             // this NamedObj during execution of the change because this
             // could lead to deadlock.  So we synchronize to _changeLock.
-            List<ChangeRequest> copy = null;
             synchronized (_changeLock) {
                 // Queue the request.
                 // Create the list of requests if it doesn't already exist
@@ -1762,16 +1761,9 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
                 }
 
                 _changeRequests.add(change);
-                if (!_deferChangeRequests) {
-                    copy = _copyChangeRequestList();
-                }
             }
-
-            // Do not want to hold the _changeLock while
-            // executing change requests. See comments inside
-            // executeChangeRequests().
-            if (copy != null) {
-                _executeChangeRequests(copy);
+            if (!_deferChangeRequests) {
+                executeChangeRequests();
             }
         }
     }
