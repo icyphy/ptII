@@ -52,8 +52,11 @@ import ptolemy.kernel.util.NamedObj;
  */
 public class ActorGraphicalMessageHandler extends GraphicalMessageHandler {
 
-    /** If the throwable is a KernelException, then add
-     *  "Go To Actor" to the options array.
+    /** Under certain circumstances, add a "Go To Actor" button to the
+     *  options array.  The button is added to the array if the
+     *  throwable is a KernelException or a KernelRuntimeException
+     *  with a non-null Nameable and the Nameable is not at the
+     *  toplevel.
      *  @param options An array of Strings, suitable for passing to
      *  JOptionPane.showOptionDialog().
      *  @param throwable The throwable.
@@ -64,27 +67,14 @@ public class ActorGraphicalMessageHandler extends GraphicalMessageHandler {
      */
     protected Object[] _checkThrowableNameable(Object[] options,
             Throwable throwable) {
-        // If the throwable has a Nameable, then add a button
-        boolean addButton = false;
+
         Object[] result = options;
-        if (throwable instanceof KernelException) {
-            Nameable nameable1 = ((KernelException) throwable).getNameable1();
-            if (nameable1 instanceof NamedObj) {
-                addButton = true;
-            }
-        }
-        if (throwable instanceof KernelRuntimeException) {
-            // SDFDirector throws a KRE if the graph is disconnected.
-            Iterator nameables = ((KernelRuntimeException) throwable)
-                    .getNameables().iterator();
-            while (nameables.hasNext()) {
-                if (nameables.next() instanceof NamedObj) {
-                    addButton = true;
-                    break;
-                }
-            }
-        }
-        if (addButton) {
+        Nameable nameable1 = _getNameable(throwable);
+        // If the throwable has a Nameable, and is not the top level,
+        // then add a button
+        if (nameable1 != null
+                && nameable1 instanceof NamedObj
+                && ((NamedObj)nameable1).toplevel() != nameable1) {
             result = new Object[options.length + 1];
             System.arraycopy(options, 0, result, 0, options.length);
             result[options.length] = "Go To Actor";
@@ -92,12 +82,13 @@ public class ActorGraphicalMessageHandler extends GraphicalMessageHandler {
         return result;
     }
 
-    /** Open the level of hierarchy of the model that contains the
-     *  Nameable referred to by the KernelException or KernelRuntimeException.
-     *  @param throwable The throwable that may be a KernelException
-     *  or KernelRuntimeException.
-     */
-    protected void _showNameable(Throwable throwable) {
+    /** Given a throwable, return the first Nameable (if any).
+     *  @param throwable The throwable that may or may not
+     *  be an instance of KernelException or KernelRuntimeException.
+     *  @return The first Nameable or null if the throwable
+     *  is not a KernelException or KernelRuntimeException.
+     */   
+    protected Nameable _getNameable(Throwable throwable) {
         Nameable nameable1 = null;
         if (throwable instanceof KernelException) {
             nameable1 = ((KernelException) throwable).getNameable1();
@@ -113,6 +104,16 @@ public class ActorGraphicalMessageHandler extends GraphicalMessageHandler {
             }
 
         }
+        return nameable1;
+    }
+
+    /** Open the level of hierarchy of the model that contains the
+     *  Nameable referred to by the KernelException or KernelRuntimeException.
+     *  @param throwable The throwable that may be a KernelException
+     *  or KernelRuntimeException.
+     */
+    protected void _showNameable(Throwable throwable) {
+        Nameable nameable1 = _getNameable(throwable);
         if (nameable1 != null) {
             Effigy effigy = Configuration.findEffigy(((NamedObj) nameable1)
                     .toplevel());

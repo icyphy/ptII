@@ -61,21 +61,7 @@ public class VergilGraphicalMessageHandler extends ActorGraphicalMessageHandler 
      *  or KernelRuntimeException.
      */
     protected void _showNameable(Throwable throwable) {
-        Nameable nameable1 = null;
-        if (throwable instanceof KernelException) {
-            nameable1 = ((KernelException) throwable).getNameable1();
-        } else if (throwable instanceof KernelRuntimeException) {
-            Iterator nameables = ((KernelRuntimeException) throwable)
-                    .getNameables().iterator();
-            while (nameables.hasNext()) {
-                Object object = nameables.next();
-                if (object instanceof NamedObj) {
-                    nameable1 = (NamedObj) object;
-                    break;
-                }
-            }
-
-        }
+        Nameable nameable1 = _getNameable(throwable);
         if (nameable1 != null) {
             BasicGraphFrame.openComposite(null, (NamedObj)nameable1);
             return;
