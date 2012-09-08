@@ -121,7 +121,7 @@ public class View extends GTEvent {
 
         isPersistent = new Parameter(this, "isPersistent");
         isPersistent.setTypeEquals(BaseType.BOOLEAN);
-        isPersistent.setToken(BooleanToken.TRUE);
+        isPersistent.setToken(BooleanToken.FALSE);
         
         _init();
     }
@@ -133,8 +133,8 @@ public class View extends GTEvent {
      *  be prompted to save the model upon closing.  Models in the
      *  test suite might want to have this parameter set to false so
      *  as to avoid a dialog asking if the user wants to save the
-     *  model.  The default is a boolean with a value of true,
-     *  indicating that the user will be prompted to save the model if
+     *  model.  The default is a boolean with a value of false,
+     *  indicating that the user will be not prompted to save the model if
      *  the model has changed.
      */
     public Parameter isPersistent;

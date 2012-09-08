@@ -119,7 +119,7 @@ public class ModelView extends TypedAtomicActor implements WindowListener {
 
         isPersistent = new Parameter(this, "isPersistent");
         isPersistent.setTypeEquals(BaseType.BOOLEAN);
-        isPersistent.setToken(BooleanToken.TRUE);
+        isPersistent.setToken(BooleanToken.FALSE);
 
     }
 
@@ -138,8 +138,8 @@ public class ModelView extends TypedAtomicActor implements WindowListener {
      *  be prompted to save the model upon closing.  Models in the
      *  test suite might want to have this parameter set to false so
      *  as to avoid a dialog asking if the user wants to save the
-     *  model.  The default is a boolean with a value of true,
-     *  indicating that the user will be prompted to save the model if
+     *  model.  The default is a boolean with a value of false,
+     *  indicating that the user will not be prompted to save the model if
      *  the model has changed.
      */
     public Parameter isPersistent;
