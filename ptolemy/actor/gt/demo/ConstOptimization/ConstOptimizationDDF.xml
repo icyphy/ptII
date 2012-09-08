@@ -14,15 +14,15 @@
         <property name="_renderFirst" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
     </property>
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.0.beta">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.0.devel">
     </property>
     <property name="DDF Director" class="ptolemy.domains.ddf.kernel.DDFDirector">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[75.0, 45.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={43, 71, 973, 613}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={43, 71, 992, 634}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[758, 506]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[758, 524]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
@@ -70,6 +70,8 @@
         <property name="title" class="ptolemy.actor.parameters.PortParameter" value="">
         </property>
         <property name="screenLocation" class="ptolemy.data.expr.Parameter" value="[0, 0]">
+        </property>
+        <property name="isPersistent" class="ptolemy.data.expr.Parameter" value="false">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[620.0, 135.0]">
         </property>
@@ -253,6 +255,8 @@
     <entity name="OptimizedModel" class="ptolemy.actor.gt.ModelView">
         <property name="screenLocation" class="ptolemy.data.expr.Parameter" value="[700, 0]">
         </property>
+        <property name="isPersistent" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[620.0, 215.0]">
         </property>
     </entity>
@@ -279,9 +283,9 @@
         </property>
     </entity>
     <entity name="Const2" class="ptolemy.actor.lib.Const">
-        <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="NONE">
-        </property>
         <property name="value" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="NONE">
         </property>
         <doc>Create a constant sequence</doc>
         <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
