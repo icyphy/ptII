@@ -200,7 +200,7 @@ public class WindowPropertiesAttribute extends Parameter implements
             // opens Kepler and closes, they are not prompted to save
             // a blank model.
             if (updateValue
-                    &&  ((CompositeEntity)toplevel()).getEntities().hasMoreElements()) {
+                    && WindowPropertiesAttribute.isModelNonEmpty((CompositeEntity)toplevel())) {
                 // Construct values for the record token.
                 String values = "{bounds={" + bounds.x + ", " + bounds.y + ", "
                     + bounds.width + ", " + bounds.height + "}, maximized="
@@ -354,6 +354,23 @@ public class WindowPropertiesAttribute extends Parameter implements
         } catch (Exception ex) {
             return false;
         }
+    }
+
+    /** Return true if the top level contains 1 or more entities.
+     *  This method is used to determine if the
+     *  WindowPropertiesAttribute or the _vergil* properties should be
+     *  updated.
+     *  @param toplevel The model to be be checked.  
+     *  @return true if the top level is persistent and the
+     *  top level contains 1 or more Entities.
+     */
+    public static boolean isModelNonEmpty(CompositeEntity toplevel) {
+        // Check that the toplevel is non-empty so that if a user
+        // opens Kepler and closes, they are not prompted to save
+        // a blank model.
+
+        // We could check here to see if the Effigy is persistent.
+        return toplevel.getEntities().hasMoreElements();
     }
 
     ///////////////////////////////////////////////////////////////////

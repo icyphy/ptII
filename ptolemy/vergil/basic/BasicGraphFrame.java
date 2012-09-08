@@ -3255,7 +3255,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
         boolean toplevelHasEntities = false;
 
         if (updateValue) {
-            if (((CompositeEntity)getModel().toplevel()).getEntities().hasMoreElements()) {
+            if (WindowPropertiesAttribute.isModelNonEmpty((CompositeEntity)getModel().toplevel())) {
                 toplevelHasEntities = true;
                 // Don't call setToken(), instead use a MoMLChangeRequest so that
                 // the model is marked modified so that any changes are preserved.
