@@ -160,25 +160,35 @@ public class LinkToOpenTableaux extends DefaultIconLink {
             new HashMap<NamedObj, PtolemyEffigy>();
         if (openEffigies.size() > 0) {
             for (NamedObj component : openEffigies.keySet()) {
-                NamedObj container = component.getContainer();
-                while (container != null) {
-                    if (openEffigies.get(container) != null) {
-                        // The container of a plotter (say) has
-                        // an open effigy, so there will be a link
-                        // to the plot.
-                        // Exporting
-                        // ptolemy/data/ontologies/demo/CarTracking/CarTracking.xml
-                        // was hanging in a tight loop here.
-                        container = container.getContainer();
-                        continue;
-                    }
-                    // The container of the plotter (say) does
-                    // not have an open effigy.  Associate this
-                    // container and then try the container's container.
-                    containerAssociations.put(container, 
-                            openEffigies.get(component));
-                    container = container.getContainer();
-                }
+		if (component == null) {
+		    // This is caused by $PTII/bin/ptinvoke
+		    // ptolemy.vergil.basic.export.ExportModel -force
+		    // htm -run -openComposites -whiteBackground
+		    // ptolemy/actor/gt/demo/ModelExecution/ModelExecution.xml
+		    // $PTII/ptolemy/actor/gt/demo/ModelExecution/ModelExecution
+		    System.out.println("Warning: LinkToOpenTableaux._provideEachAttribute() "
+				       + object.getFullName() + ", an open effigy was null?");
+		} else {
+		    NamedObj container = component.getContainer();
+		    while (container != null) {
+			if (openEffigies.get(container) != null) {
+			    // The container of a plotter (say) has
+			    // an open effigy, so there will be a link
+			    // to the plot.
+			    // Exporting
+			    // ptolemy/data/ontologies/demo/CarTracking/CarTracking.xml
+			    // was hanging in a tight loop here.
+			    container = container.getContainer();
+			    continue;
+			}
+			// The container of the plotter (say) does
+			// not have an open effigy.  Associate this
+			// container and then try the container's container.
+			containerAssociations.put(container, 
+						  openEffigies.get(component));
+			container = container.getContainer();
+		    }
+		}
             }
         }
         openEffigies.putAll(containerAssociations);
