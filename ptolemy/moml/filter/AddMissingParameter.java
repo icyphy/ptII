@@ -157,15 +157,16 @@ public class AddMissingParameter extends MoMLFilterSimple {
     public void filterEndElement(NamedObj container, String elementName,
             StringBuffer currentCharData, String xmlFile, MoMLParser parser)
             throws Exception {
-//         System.out.println("AddMissingParameter: filterEndElement: "
-//                 + _currentlyProcessingActorThatMayNeedUpdating
-//                 + " elementName: " + (elementName == null? "null" : elementName)
-//                 + "\n            container: " + (container == null ? "null" : container.getFullName())
-//                 + "\n currentActorFullName: " + _currentActorFullName);
+//          System.out.println("AddMissingParameter: filterEndElement: "
+//                  + _currentlyProcessingActorThatMayNeedUpdating
+//                  + " elementName: " + (elementName == null? "null" : elementName)
+//                  + "\n            container: " + (container == null ? "null" : container.getFullName())
+//                  + "\n currentActorFullName: " + _currentActorFullName);
 
         if (!_currentlyProcessingActorThatMayNeedUpdating) {
             return;
-        } else if (((_addProperty.onlyAddIfPresent != null && _currentAttributeHasValue)
+        } else if (_addProperty != null
+                && ((_addProperty.onlyAddIfPresent != null && _currentAttributeHasValue)
                         || _addProperty.onlyAddIfPresent == null)
                 && (elementName != null) && elementName.equals("property")
                 && (container != null) && container.getFullName().equals(_currentActorFullName)) {
