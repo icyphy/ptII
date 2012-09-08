@@ -116,7 +116,53 @@ public class ModelView extends TypedAtomicActor implements WindowListener {
         reopenWindow = new Parameter(this, "reopenWindow");
         reopenWindow.setTypeEquals(BaseType.BOOLEAN);
         reopenWindow.setToken(BooleanToken.FALSE);
+
+        isPersistent = new Parameter(this, "isPersistent");
+        isPersistent.setTypeEquals(BaseType.BOOLEAN);
+        isPersistent.setToken(BooleanToken.TRUE);
+
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                     ports and parameters                  ////
+
+    /** The input port to receive models to be viewed.
+     */
+    public TypedIOPort input;
+
+    /** The output port to send the input models unchanged.
+     */
+    public TypedIOPort output;
+
+    /** If the isPersistent parameter is false, then the user will not
+     *  be prompted to save the model upon closing.  Models in the
+     *  test suite might want to have this parameter set to false so
+     *  as to avoid a dialog asking if the user wants to save the
+     *  model.  The default is a boolean with a value of true,
+     *  indicating that the user will be prompted to save the model if
+     *  the model has changed.
+     */
+    public Parameter isPersistent;
+
+    /** Whether the window should be reopened each time a new model is received
+     *  in a token.
+     */
+    public Parameter reopenWindow;
+
+    /** Location of the window, or [-1, -1] if the location is to be determined
+     *  automatically.
+     */
+    public Parameter screenLocation;
+
+    /** Size of the window, or [-1, -1] if the size is to be determined
+     *  automatically.
+     */
+    public Parameter screenSize;
+
+    /** Title of the window, or empty if the title is to be determined
+     *  automatically.
+     */
+    public PortParameter title;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -243,6 +289,16 @@ public class ModelView extends TypedAtomicActor implements WindowListener {
                             titleString = titleValue;
                         }
                         tableau.setTitle(titleString);
+                        boolean isPersistentValue = ((BooleanToken)isPersistent.getToken()).booleanValue();
+                        // Mark the Effigy as not persistent so that when the
+                        // Tableau is closed we don't prompt the user for
+                        // saving.
+                        
+                        // To replicate, run $PTII/bin/vergil
+                        // ~/ptII/ptolemy/actor/gt/demo/ConstOptimization/ConstOptimizationDDF.xml
+                        // and then close the optimized model.  You should not be
+                        // prompted for save.
+                        ((Effigy) tableau.getContainer()).setPersistent(isPersistentValue);
                         model.setDeferringChangeRequests(false);
                         output.send(i, token);
                     } catch (NameDuplicationException e) {
@@ -338,34 +394,6 @@ public class ModelView extends TypedAtomicActor implements WindowListener {
      */
     public void windowOpened(WindowEvent e) {
     }
-
-    /** The input port to receive models to be viewed.
-     */
-    public TypedIOPort input;
-
-    /** The output port to send the input models unchanged.
-     */
-    public TypedIOPort output;
-
-    /** Whether the window should be reopened each time a new model is received
-     *  in a token.
-     */
-    public Parameter reopenWindow;
-
-    /** Location of the window, or [-1, -1] if the location is to be determined
-     *  automatically.
-     */
-    public Parameter screenLocation;
-
-    /** Size of the window, or [-1, -1] if the size is to be determined
-     *  automatically.
-     */
-    public Parameter screenSize;
-
-    /** Title of the window, or empty if the title is to be determined
-     *  automatically.
-     */
-    public PortParameter title;
 
     /** The opened tableaus.
      */
