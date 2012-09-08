@@ -3,9 +3,9 @@
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="GameOfLife" class="ptolemy.actor.gt.controller.ModelBasedTransformation">
     <entity name="_Controller" class="ptolemy.domains.ptera.kernel.PteraController">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={313, 149, 879, 603}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={390, 207, 900, 635}, maximized=false}">
         </property>
-        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[666, 492]">
+        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[666, 524]">
         </property>
         <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
         </property>
@@ -1524,6 +1524,34 @@
                                     </property>
                                 </property>
                             </property>
+                            <port name="n" class="ptolemy.actor.gt.PortMatcher">
+                                <property name="output"/>
+                                <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="NORTH">
+                                </property>
+                                <property name="_hide" class="ptolemy.data.expr.SingletonParameter" value="true">
+                                </property>
+                            </port>
+                            <port name="e" class="ptolemy.actor.gt.PortMatcher">
+                                <property name="output"/>
+                                <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="EAST">
+                                </property>
+                                <property name="_hide" class="ptolemy.data.expr.SingletonParameter" value="true">
+                                </property>
+                            </port>
+                            <port name="s" class="ptolemy.actor.gt.PortMatcher">
+                                <property name="input"/>
+                                <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="SOUTH">
+                                </property>
+                                <property name="_hide" class="ptolemy.data.expr.SingletonParameter" value="true">
+                                </property>
+                            </port>
+                            <port name="w" class="ptolemy.actor.gt.PortMatcher">
+                                <property name="input"/>
+                                <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="WEST">
+                                </property>
+                                <property name="_hide" class="ptolemy.data.expr.SingletonParameter" value="true">
+                                </property>
+                            </port>
                             <port name="n">
                                 <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="NORTH">
                                 </property>
@@ -1572,6 +1600,34 @@
                                     </property>
                                 </property>
                             </property>
+                            <port name="n" class="ptolemy.actor.gt.PortMatcher">
+                                <property name="output"/>
+                                <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="NORTH">
+                                </property>
+                                <property name="_hide" class="ptolemy.data.expr.SingletonParameter" value="true">
+                                </property>
+                            </port>
+                            <port name="e" class="ptolemy.actor.gt.PortMatcher">
+                                <property name="output"/>
+                                <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="EAST">
+                                </property>
+                                <property name="_hide" class="ptolemy.data.expr.SingletonParameter" value="true">
+                                </property>
+                            </port>
+                            <port name="s" class="ptolemy.actor.gt.PortMatcher">
+                                <property name="input"/>
+                                <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="SOUTH">
+                                </property>
+                                <property name="_hide" class="ptolemy.data.expr.SingletonParameter" value="true">
+                                </property>
+                            </port>
+                            <port name="w" class="ptolemy.actor.gt.PortMatcher">
+                                <property name="input"/>
+                                <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="WEST">
+                                </property>
+                                <property name="_hide" class="ptolemy.data.expr.SingletonParameter" value="true">
+                                </property>
+                            </port>
                             <port name="n">
                                 <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="NORTH">
                                 </property>
@@ -1602,6 +1658,8 @@
             </configure>
         </entity>
         <entity name="Compute" class="ptolemy.actor.gt.controller.Transform">
+            <property name="matched" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
             <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[245.0, 185.0]">
@@ -2788,6 +2846,8 @@
             </configure>
         </entity>
         <entity name="UpdateAllCells" class="ptolemy.actor.gt.controller.Transform">
+            <property name="matched" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
             <property name="mode" class="ptolemy.actor.gt.TransformationMode" value="replace all">
             </property>
             <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
