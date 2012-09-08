@@ -126,9 +126,14 @@ public class PlotterBaseJavaSE implements PlotterBaseInterface {
                 .toplevel());
 
         if (containerEffigy == null) {
-            throw new IllegalActionException(_plotterBase,
-                    "Cannot find effigy for top level: "
-                            + _plotterBase.toplevel().getFullName());
+            try { 
+                containerEffigy = new PlotEffigy(_plotterBase.workspace());
+                //containerEffigy.setModel(_plotterBase.toplevel());
+            } catch (Exception ex) {
+                throw new IllegalActionException(_plotterBase, ex,
+                        "Cannot find effigy for top level: "
+                        + _plotterBase.toplevel().getFullName());
+            }
         }
 
         try {
@@ -286,7 +291,9 @@ public class PlotterBaseJavaSE implements PlotterBaseInterface {
             _plotSize.setSize((Component) _plotterBase.plot);
         }
 
-        _frame.pack();
+        if (_frame != null) {
+            _frame.pack();
+        }
     }
 
     /**
