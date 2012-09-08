@@ -104,6 +104,7 @@ public class ExportModelJUnitTest {
                 + "ptolemy.vergil.basic.export.ExportModel -force htm "
 			   + (run ? "-run " : " ")
 			   + (openComposites ? "-openComposites " : " ")
+			   + " -save"
 			   + " -whiteBackground " + modelPath
 			   + " $PTII/" + modelDirectory + "/" + modelName);
 
@@ -121,7 +122,7 @@ public class ExportModelJUnitTest {
 				    openComposites,
 				    false /* open results */,
 				    outputDirectory,
-				    false /* save */,
+				    true /* save */,
 				    true /* whitebackground */);
 	    System.out.println(Manager.timeAndMemory(startTime));
 	} catch (Throwable throwable) {
