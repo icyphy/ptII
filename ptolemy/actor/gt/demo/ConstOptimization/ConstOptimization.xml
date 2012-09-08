@@ -279,6 +279,8 @@
         <entity name="ViewOptimizedModel" class="ptolemy.actor.gt.controller.View">
             <property name="screenLocation" class="ptolemy.data.expr.Parameter" value="[700, 0]">
             </property>
+            <property name="isPersistent" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
             <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[360.0, 310.0]">
@@ -286,6 +288,8 @@
         </entity>
         <entity name="ViewOriginalModel" class="ptolemy.actor.gt.controller.View">
             <property name="screenLocation" class="ptolemy.data.expr.Parameter" value="[0, 0]">
+            </property>
+            <property name="isPersistent" class="ptolemy.data.expr.Parameter" value="false">
             </property>
             <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>

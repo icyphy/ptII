@@ -437,7 +437,7 @@ public class Effigy extends CompositeEntity {
      */
     public void setModified(boolean modified) {
         // NOTE: To see who is setting this true, uncomment this:
-        //if (modified == true) (new Exception("Effigy.setModified()")).printStackTrace();
+        //if (modified == true) (new Exception("Effigy.setModified()" + this)).printStackTrace();
         masterEffigy()._modified = modified;
     }
 

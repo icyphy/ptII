@@ -668,6 +668,20 @@ public class TableauFrame extends Top {
             // windowClosed events rather than overriding the
             // windowClosing behavior given here.
             if (isModified()) {
+                
+                Effigy effigy = getEffigy();
+                if (!effigy.isPersistent()) {
+                    if (_debugClosing) {
+                        NamedObj model = ((PtolemyEffigy) effigy).getModel();
+                        System.out.println("TableauFrame._close(): model "
+                                + model.getFullName()
+                                + " has Effigy " + effigy
+                                + ", which is not persistent, so it will not be saved.");
+                    }
+                    dispose();
+                    return true;
+                }
+
                 int reply = _queryForSave();
 
                 if ((reply == _DISCARDED) || (reply == _FAILED)) {
@@ -711,7 +725,7 @@ public class TableauFrame extends Top {
         	_clearPlaceable();
         }
         return result;
-    }
+        }
 
     /** Dispose of this frame.
      *

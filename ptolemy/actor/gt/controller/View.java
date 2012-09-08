@@ -50,6 +50,7 @@ import ptolemy.domains.ptera.lib.EventUtils;
 import ptolemy.domains.ptera.lib.TableauParameter;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.attributes.URIAttribute;
+import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Settable;
@@ -118,8 +119,29 @@ public class View extends GTEvent {
         tableau.setPersistent(false);
         tableau.setVisibility(Settable.EXPERT);
 
+        isPersistent = new Parameter(this, "isPersistent");
+        isPersistent.setTypeEquals(BaseType.BOOLEAN);
+        isPersistent.setToken(BooleanToken.TRUE);
+        
         _init();
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                     ports and parameters                  ////
+
+    /** If the isPersistent parameter is false, then the user will not
+     *  be prompted to save the model upon closing.  Models in the
+     *  test suite might want to have this parameter set to false so
+     *  as to avoid a dialog asking if the user wants to save the
+     *  model.  The default is a boolean with a value of true,
+     *  indicating that the user will be prompted to save the model if
+     *  the model has changed.
+     */
+    public Parameter isPersistent;
+
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
     /** Clone the event into the specified workspace. This calls the
      *  base class and then sets the attribute and port public members
@@ -155,7 +177,6 @@ public class View extends GTEvent {
             // The effigy may be null if the model is closed.
             return data;
         }
-
         _parser.reset();
         CompositeEntity entity = (CompositeEntity) GTTools.cleanupModel(
                 getModelParameter().getModel(), _parser);
@@ -181,8 +202,10 @@ public class View extends GTEvent {
                     .booleanValue();
             Tableau tableau = EventUtils.getTableau(this, referredTableau,
                     this.tableau);
+            
             if (tableau != null
                     && !(tableau.getFrame() instanceof ExtendedGraphFrame)) {
+
                 EventUtils
                         .setTableau(this, referredTableau, this.tableau, null);
                 EventUtils.closeTableau(tableau);
@@ -258,6 +281,16 @@ public class View extends GTEvent {
                 titleString = titleValue;
             }
             tableau.setTitle(titleString);
+            boolean isPersistentValue = ((BooleanToken)isPersistent.getToken()).booleanValue();
+            // Mark the Effigy as not persistent so that when the
+            // Tableau is closed we don't prompt the user for
+            // saving.
+
+            // To replicate, run $PTII/bin/vergil
+            // ~/ptII/ptolemy/actor/gt/demo/ConstOptimization/ConstOptimization.xml
+            // and then close the optimized model.  You should not be
+            // prompted for save.
+            ((Effigy) tableau.getContainer()).setPersistent(isPersistentValue);
             entity.setDeferringChangeRequests(false);
         } catch (NameDuplicationException e) {
             throw new IllegalActionException(this, e, "Cannot open model.");
