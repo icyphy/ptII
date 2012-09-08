@@ -1223,6 +1223,10 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
                 report(owner, "Opening " + container.getFullName());
             }
             Effigy effigy = Configuration.findEffigy(target.toplevel());
+            if (effigy == null) {
+                throw new IllegalActionException(target, "Failed to find an "
+                        + "effigy for the toplevel " + target.toplevel().getFullName());
+            }
             Configuration configuration = (Configuration)effigy.toplevel();
             Tableau tableau = configuration.openInstance(container);
             
@@ -2143,15 +2147,19 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
         // Have to also record the size of the JGraph because
         // setting the size of the frame is ignored if we don't
         // also set the size of the JGraph. Why? Who knows. Swing.
-        SizeAttribute size = (SizeAttribute) getModel().getAttribute(
-                "_vergilSize", SizeAttribute.class);
+        NamedObj model = getModel();
+        if (model != null) {
+            SizeAttribute size = (SizeAttribute) model.getAttribute(
+                    "_vergilSize", SizeAttribute.class);
 
-        if (size == null) {
-            size = new SizeAttribute(getModel(), "_vergilSize");
+            if (size == null) {
+                size = new SizeAttribute(getModel(), "_vergilSize");
+            }
+
+            size.recordSize(_getRightComponent());
+            return size;
         }
-
-        size.recordSize(_getRightComponent());
-        return size;
+        return null;
     }
 
     /** Export the model into the writer with the given name. If
@@ -3211,106 +3219,115 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
             parent = component.getParent();
         }
 
-        // If there is no parent that is a Frame, do nothing.
-        // We know that: (parent == null) || (parent instanceof Frame)
-        if (parent != null) {
-            WindowPropertiesAttribute properties = (WindowPropertiesAttribute) getModel()
-                .getAttribute("_windowProperties",
-                        WindowPropertiesAttribute.class);
+        // Oddly, sometimes getModel returns null?  $PTII/bin/ptinvoke
+        // ptolemy.vergil.basic.export.ExportModel -force htm -run
+        // -openComposites -whiteBackground
+        // ptolemy/actor/gt/demo/MapReduce/MapReduce.xml
+        // $PTII/ptolemy/actor/gt/demo/MapReduce/MapReduce
+        NamedObj model = getModel();
+        if (model != null) {
+
+            // If there is no parent that is a Frame, do nothing.
+            // We know that: (parent == null) || (parent instanceof Frame)
+            if (parent != null) {
+                WindowPropertiesAttribute properties = (WindowPropertiesAttribute) model
+                    .getAttribute("_windowProperties",
+                            WindowPropertiesAttribute.class);
             
-            if (properties == null) {
-                properties = new WindowPropertiesAttribute(getModel(),
-                        "_windowProperties");
+                if (properties == null) {
+                    properties = new WindowPropertiesAttribute(model,
+                            "_windowProperties");
+                }
+            
+                // This method uses MoMLChangeRequest
+                properties.recordProperties((Frame) parent);
             }
-            
-            // This method uses MoMLChangeRequest
-            properties.recordProperties((Frame) parent);
-        }
 
-        _createSizeAttribute();
+            _createSizeAttribute();
 
-        // Also record zoom and pan state.
-        JCanvas canvas = getJGraph().getGraphPane().getCanvas();
-        AffineTransform current = canvas.getCanvasPane()
-            .getTransformContext().getTransform();
+            // Also record zoom and pan state.
+            JCanvas canvas = getJGraph().getGraphPane().getCanvas();
+            AffineTransform current = canvas.getCanvasPane()
+                .getTransformContext().getTransform();
 
-        // We assume the scaling in the X and Y directions are the same.
-        double scale = current.getScaleX();
-        Parameter zoom = (Parameter) getModel().getAttribute(
+            // We assume the scaling in the X and Y directions are the same.
+            double scale = current.getScaleX();
+            Parameter zoom = (Parameter) model.getAttribute(
                 "_vergilZoomFactor", Parameter.class);
 
-        boolean updateValue = false;
-        if (zoom == null || zoom.getToken() == null) {
-            // NOTE: This will not propagate.
-            zoom = new ExpertParameter(getModel(), "_vergilZoomFactor");
-            zoom.setToken("1.0");
-            updateValue = true;
-        } else {
-            double oldZoom = ((DoubleToken)zoom.getToken()).doubleValue();
-            if (oldZoom != scale) {
+            boolean updateValue = false;
+            if (zoom == null || zoom.getToken() == null) {
+                // NOTE: This will not propagate.
+                zoom = new ExpertParameter(model, "_vergilZoomFactor");
+                zoom.setToken("1.0");
                 updateValue = true;
+            } else {
+                double oldZoom = ((DoubleToken)zoom.getToken()).doubleValue();
+                if (oldZoom != scale) {
+                    updateValue = true;
+                }
             }
-        }
 
-        boolean toplevelHasEntities = false;
+            boolean toplevelHasEntities = false;
 
-        if (updateValue) {
-            if (WindowPropertiesAttribute.isModelNonEmpty((CompositeEntity)getModel().toplevel())) {
-                toplevelHasEntities = true;
-                // Don't call setToken(), instead use a MoMLChangeRequest so that
-                // the model is marked modified so that any changes are preserved.
-                //zoom.setToken(new DoubleToken(scale));
-                String moml = "<property name=\"_vergilZoomFactor\" "
+            if (updateValue) {
+                if (WindowPropertiesAttribute.isModelNonEmpty((CompositeEntity)model.toplevel())) {
+                    toplevelHasEntities = true;
+                    // Don't call setToken(), instead use a MoMLChangeRequest so that
+                    // the model is marked modified so that any changes are preserved.
+                    //zoom.setToken(new DoubleToken(scale));
+                    String moml = "<property name=\"_vergilZoomFactor\" "
                     + " value=\"" + scale + "\"/>";
+                    MoMLChangeRequest request = new MoMLChangeRequest(this,
+                            model, moml);
+                    request.setUndoable(true);
+                    model.requestChange(request);
+
+                    // Make sure the visibility is only expert.
+                    zoom.setVisibility(Settable.EXPERT);
+                }
+            }
+
+            // Save the center, to record the pan state.
+            Point2D center = getCenter();
+            Parameter pan = (Parameter) model.getAttribute(
+                "_vergilCenter", Parameter.class);
+
+            updateValue = false;
+            if (pan == null || pan.getToken() == null) {
+                // NOTE: This will not propagate.
+                pan = new ExpertParameter(model, "_vergilCenter");
+                pan.setToken("{" + center.getX()
+                        + ", " + center.getY() + "}");
+                updateValue = true;
+            } else {
+                Token[] oldCenter = ((ArrayToken)pan.getToken()).arrayValue();
+                double oldCenterX = ((DoubleToken)oldCenter[0]).doubleValue();
+                double oldCenterY = ((DoubleToken)oldCenter[1]).doubleValue();
+                if (center.getX() != oldCenterX
+                        || center.getY() != oldCenterY) {
+                    updateValue = true;
+                }
+            }
+
+            if (updateValue && toplevelHasEntities) {
+                //Token[] centerArray = new Token[2];
+                //centerArray[0] = new DoubleToken(center.getX());
+                //centerArray[1] = new DoubleToken(center.getY());
+                //pan.setToken(new ArrayToken(centerArray));
+
+                String moml = "<property name=\"_vergilCenter\" "
+                    + " value=\"{" + center.getX()
+                    + ", " + center.getY() + "}\"/>";
                 MoMLChangeRequest request = new MoMLChangeRequest(this,
-                        getModel(), moml);
+                        model, moml);
                 request.setUndoable(true);
                 getModel().requestChange(request);
 
                 // Make sure the visibility is only expert.
-                zoom.setVisibility(Settable.EXPERT);
+                pan.setVisibility(Settable.EXPERT);
             }
-        }
-
-        // Save the center, to record the pan state.
-        Point2D center = getCenter();
-        Parameter pan = (Parameter) getModel().getAttribute(
-                "_vergilCenter", Parameter.class);
-
-        updateValue = false;
-        if (pan == null || pan.getToken() == null) {
-            // NOTE: This will not propagate.
-            pan = new ExpertParameter(getModel(), "_vergilCenter");
-            pan.setToken("{" + center.getX()
-                + ", " + center.getY() + "}");
-            updateValue = true;
-        } else {
-            Token[] oldCenter = ((ArrayToken)pan.getToken()).arrayValue();
-            double oldCenterX = ((DoubleToken)oldCenter[0]).doubleValue();
-            double oldCenterY = ((DoubleToken)oldCenter[1]).doubleValue();
-            if (center.getX() != oldCenterX
-                    || center.getY() != oldCenterY) {
-                updateValue = true;
-            }
-        }
-
-        if (updateValue && toplevelHasEntities) {
-            //Token[] centerArray = new Token[2];
-            //centerArray[0] = new DoubleToken(center.getX());
-            //centerArray[1] = new DoubleToken(center.getY());
-            //pan.setToken(new ArrayToken(centerArray));
-
-            String moml = "<property name=\"_vergilCenter\" "
-                + " value=\"{" + center.getX()
-                + ", " + center.getY() + "}\"/>";
-            MoMLChangeRequest request = new MoMLChangeRequest(this,
-                    getModel(), moml);
-            request.setUndoable(true);
-            getModel().requestChange(request);
-
-            // Make sure the visibility is only expert.
-            pan.setVisibility(Settable.EXPERT);
-        }
+        } // model == null
     }
 
     ///////////////////////////////////////////////////////////////////
