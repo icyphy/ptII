@@ -1444,6 +1444,9 @@ public class TransformationEditor extends GTFrame implements ActionListener,
 
     private void _refreshTable() {
         TransformationEditor frame = _getToplevelFrame();
+        if (frame == null) {
+            return;
+        }
         DefaultTableModel tableModel = frame._tableModel;
         if (tableModel == null) {
             return;
