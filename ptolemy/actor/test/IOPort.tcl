@@ -1052,10 +1052,7 @@ test IOPort-11.3 {Check liberalLink multi-*-relation from inside } {
     $p0 link $r2
     catch {$r2 getWidth} msg1    
     #puts $msg1
-    set widthInferenceNotDeterministic "ptolemy.kernel.util.IllegalActionException: The width of relation * can not be uniquely inferred.
-Please make the width inference deterministic by explicitly specifying the width of this relation. In the user interface, right click on the relation, select Configure and change the width.  Note that some actors may need to have their  Java code updated to call setDefaultWidth(1) on the output port. The relation is deeply connected to these ports:
-*
-  in *"
+    set widthInferenceNotDeterministic "ptolemy.kernel.util.IllegalActionException: The width of relation * can not be uniquely inferred.*"
     string match $widthInferenceNotDeterministic $msg1
 } {1}
 
