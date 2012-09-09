@@ -421,21 +421,21 @@ test BackwardCompatibility-7.2 {Expression: Property Class Change} {
         </property>
     </property>
     <entity name="slow" class="ptolemy.actor.lib.Ramp">
-        <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="0">
-        </property>
         <property name="init" class="ptolemy.actor.parameters.PortParameter" value="0.0">
         </property>
         <property name="step" class="ptolemy.actor.parameters.PortParameter" value="PI/100.0">
+        </property>
+        <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="0">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="63.0, 113.0">
         </property>
     </entity>
     <entity name="fast" class="ptolemy.actor.lib.Ramp">
-        <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="0">
-        </property>
         <property name="init" class="ptolemy.actor.parameters.PortParameter" value="0.0">
         </property>
         <property name="step" class="ptolemy.actor.parameters.PortParameter" value="PI/10.0">
+        </property>
+        <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="0">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="63.0, 200.0">
         </property>
