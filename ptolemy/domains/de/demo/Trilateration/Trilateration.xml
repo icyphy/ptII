@@ -1,7 +1,7 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="trilateration-final2" class="ptolemy.actor.TypedCompositeActor">
+<entity name="Trilateration" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.0.devel">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
@@ -12,7 +12,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[-70.0, -50.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={5, 0, 1021, 699}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={5, 22, 1040, 692}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[806, 582]">
     </property>
@@ -423,6 +423,8 @@
                 </property>
             </entity>
             <entity name="Discrete TimeDelay" class="ptolemy.actor.lib.TimeDelay">
+                <property name="delay" class="ptolemy.actor.parameters.PortParameter" value="15.6204993518133">
+                </property>
                 <property name="minimumDelay" class="ptolemy.data.expr.Parameter" value="0.000000000000001">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[480.0, 290.0]">
@@ -642,6 +644,8 @@
                 </property>
             </entity>
             <entity name="Discrete TimeDelay" class="ptolemy.actor.lib.TimeDelay">
+                <property name="delay" class="ptolemy.actor.parameters.PortParameter" value="10.088497300281">
+                </property>
                 <property name="minimumDelay" class="ptolemy.data.expr.Parameter" value="0.000000000000001">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[480.0, 290.0]">
@@ -861,6 +865,8 @@
                 </property>
             </entity>
             <entity name="Discrete TimeDelay" class="ptolemy.actor.lib.TimeDelay">
+                <property name="delay" class="ptolemy.actor.parameters.PortParameter" value="12.0">
+                </property>
                 <property name="minimumDelay" class="ptolemy.data.expr.Parameter" value="0.000000000000001">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[480.0, 290.0]">
@@ -3689,7 +3695,7 @@ Then delete this annotation.</text>
         <entity name="XYPlotPath" class="ptolemy.actor.lib.gui.XYPlotter">
             <property name="legend" class="ptolemy.kernel.util.StringAttribute" value="actual, detected, sensors">
             </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={298, 65, 719, 424}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={298, 65, 711, 413}, maximized=false}">
             </property>
             <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[711, 369]">
             </property>
@@ -3702,8 +3708,8 @@ Then delete this annotation.</text>
 <title>Actual and Detected Target Positions:</title>
 <xLabel>Target X Position (meters)</xLabel>
 <yLabel>Target Y Position (meters)</yLabel>
-<xRange min="0.0" max="3000.0000013712097"/>
-<yRange min="0.0" max="4000.0"/>
+<xRange min="0.0" max="3000.0"/>
+<yRange min="-1.3921437785029412E-6" max="4000.0"/>
 <default connected="no" marks="dots"/>
 </plot>?>
             </configure>
@@ -3807,7 +3813,7 @@ Then delete this annotation.</text>
             </port>
         </entity>
         <entity name="ErrorStats" class="ptolemy.actor.lib.gui.Display">
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={171, 334, 779, 386}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={171, 334, 771, 375}, maximized=false}">
             </property>
             <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[771, 331]">
             </property>
@@ -4069,13 +4075,13 @@ Then delete this annotation.</text>
         <display name="System Parameters"/>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[265.0, -40.0]">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 109, 1014, 621}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 109, 1033, 634}, maximized=false}">
         </property>
-        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[799, 504]">
+        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[799, 524]">
         </property>
-        <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.8045848565636">
+        <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.8">
         </property>
-        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{555.8648648648648, -211.2702702702703}">
+        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{530.5555555555557, -195.0}">
         </property>
         <property name="sound" class="ptolemy.data.expr.Parameter" value="true">
         </property>
@@ -5082,7 +5088,7 @@ Then delete this annotation.</text>
             <display name="description"/>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[1165.0, -210.0]">
             </property>
-            <port name=" " class="ptolemy.actor.TypedIOPort">
+            <port name="-Title" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
                 <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 </property>
@@ -5144,7 +5150,7 @@ Then delete this annotation.</text>
             <display name="description2"/>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[1165.0, -75.0]">
             </property>
-            <port name=" " class="ptolemy.actor.TypedIOPort">
+            <port name="-Title" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
                 <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 </property>
@@ -5175,26 +5181,6 @@ Then delete this annotation.</text>
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[1070.0, -85.0]">
             </property>
-        </entity>
-        <entity name="RecordAssembler3" class="ptolemy.actor.lib.RecordAssembler">
-            <display name="description3"/>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[1255.0, 220.0]">
-            </property>
-            <port name=" " class="ptolemy.actor.TypedIOPort">
-                <property name="input"/>
-                <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-                </property>
-            </port>
-            <port name="Status" class="ptolemy.actor.TypedIOPort">
-                <property name="input"/>
-                <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-                </property>
-            </port>
-            <port name="Quality" class="ptolemy.actor.TypedIOPort">
-                <property name="input"/>
-                <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-                </property>
-            </port>
         </entity>
         <entity name="StringConst12" class="ptolemy.actor.lib.StringConst">
             <display name="Description3 Title"/>
@@ -5227,6 +5213,26 @@ Then delete this annotation.</text>
                 </property>
             </port>
             <port name="3" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                </property>
+            </port>
+        </entity>
+        <entity name="RecordAssembler3" class="ptolemy.actor.lib.RecordAssembler">
+            <display name="description3"/>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[1255.0, 220.0]">
+            </property>
+            <port name="-Title" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                </property>
+            </port>
+            <port name="Status" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                </property>
+            </port>
+            <port name="Quality" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
                 <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 </property>
@@ -5410,23 +5416,23 @@ Then delete this annotation.</text>
             <vertex name="vertex1" value="{980.0, -30.0}">
             </vertex>
         </relation>
-        <relation name="relation63" class="ptolemy.actor.TypedIORelation">
-        </relation>
         <relation name="relation67" class="ptolemy.actor.TypedIORelation">
             <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
             </property>
             <vertex name="vertex1" value="[1060.0, 210.0]">
             </vertex>
         </relation>
-        <relation name="relation66" class="ptolemy.actor.TypedIORelation">
-        </relation>
         <relation name="relation41" class="ptolemy.actor.TypedIORelation">
         </relation>
         <relation name="relation61" class="ptolemy.actor.TypedIORelation">
         </relation>
-        <relation name="relation65" class="ptolemy.actor.TypedIORelation">
-        </relation>
         <relation name="relation68" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation63" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation66" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation65" class="ptolemy.actor.TypedIORelation">
         </relation>
         <link port="port" relation="relation68"/>
         <link port="SingleEvent.output" relation="relation3"/>
@@ -5569,7 +5575,7 @@ Then delete this annotation.</text>
         <link port="Merge8.input" relation="relation56"/>
         <link port="Merge8.output" relation="relation64"/>
         <link port="RecordAssembler.output" relation="relation41"/>
-        <link port="RecordAssembler. " relation="relation58"/>
+        <link port="RecordAssembler.-Title" relation="relation58"/>
         <link port="RecordAssembler.a" relation="relation59"/>
         <link port="RecordAssembler.b" relation="relation60"/>
         <link port="StringConst10.output" relation="relation58"/>
@@ -5579,21 +5585,21 @@ Then delete this annotation.</text>
         <link port="Const22.output" relation="relation60"/>
         <link port="Const22.trigger" relation="relation3"/>
         <link port="RecordAssembler2.output" relation="relation61"/>
-        <link port="RecordAssembler2. " relation="relation57"/>
+        <link port="RecordAssembler2.-Title" relation="relation57"/>
         <link port="RecordAssembler2.Target emission" relation="relation62"/>
         <link port="RecordAssembler2.Target is" relation="relation64"/>
         <link port="StringConst11.output" relation="relation57"/>
         <link port="StringConst11.trigger" relation="relation64"/>
-        <link port="RecordAssembler3.output" relation="relation65"/>
-        <link port="RecordAssembler3. " relation="relation63"/>
-        <link port="RecordAssembler3.Status" relation="relation67"/>
-        <link port="RecordAssembler3.Quality" relation="relation66"/>
         <link port="StringConst12.output" relation="relation63"/>
         <link port="StringConst12.trigger" relation="relation67"/>
         <link port="RecordAssembler4.output" relation="relation68"/>
         <link port="RecordAssembler4.1" relation="relation41"/>
         <link port="RecordAssembler4.2" relation="relation61"/>
         <link port="RecordAssembler4.3" relation="relation65"/>
+        <link port="RecordAssembler3.output" relation="relation65"/>
+        <link port="RecordAssembler3.-Title" relation="relation63"/>
+        <link port="RecordAssembler3.Status" relation="relation67"/>
+        <link port="RecordAssembler3.Quality" relation="relation66"/>
     </entity>
     <entity name="CompositeActor10" class="ptolemy.actor.TypedCompositeActor">
         <display name="..............Target Signal Detector 1 (0,0)"/>
@@ -6356,7 +6362,7 @@ Then delete this annotation.</text>
                 <display name="proxy clock"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[-340.0, 110.0]">
                 </property>
-<property name="clockRate" class="ptolemy.actor.parameters.PortParameter" value="1.0">
+                <property name="clockRate" class="ptolemy.actor.parameters.PortParameter" value="1.00000016">
                     <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
                     </property>
                     <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -7564,7 +7570,7 @@ the connection patterns to the clockRate generation actors.</text></svg></config
             <display name="Detector 1"/>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[430.0, 135.0]">
             </property>
-<property name="clockRate" class="ptolemy.actor.parameters.PortParameter" value="1.0">
+            <property name="clockRate" class="ptolemy.actor.parameters.PortParameter" value="0.99999984">
                 <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
                 </property>
                 <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -8527,7 +8533,7 @@ the connection patterns to the clockRate generation actors.</text></svg></config
                 <display name="proxy clock"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[-340.0, 110.0]">
                 </property>
-<property name="clockRate" class="ptolemy.actor.parameters.PortParameter" value="1.0">
+                <property name="clockRate" class="ptolemy.actor.parameters.PortParameter" value="1.0000000616482">
                     <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
                     </property>
                     <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -8554,7 +8560,6 @@ the connection patterns to the clockRate generation actors.</text></svg></config
                     <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                     </property>
                 </property>
-
                 <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
                     <property name="localClock" class="ptolemy.actor.LocalClock">
                         <property name="clockRate" class="ptolemy.data.expr.Parameter" value="clockRate">
@@ -9734,7 +9739,7 @@ the connection patterns to the clockRate generation actors.</text></svg></config
             <display name="Detector 2"/>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[340.0, 45.0]">
             </property>
-<property name="clockRate" class="ptolemy.actor.parameters.PortParameter" value="1.0">
+            <property name="clockRate" class="ptolemy.actor.parameters.PortParameter" value="1.0000000559702">
                 <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
                 </property>
                 <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -10623,7 +10628,7 @@ the connection patterns to the clockRate generation actors.</text></svg></config
                 <display name="proxy clock"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[-340.0, 110.0]">
                 </property>
- <property name="clockRate" class="ptolemy.actor.parameters.PortParameter" value="1.0">
+                <property name="clockRate" class="ptolemy.actor.parameters.PortParameter" value="1.0000002755041">
                     <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
                     </property>
                     <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -10670,7 +10675,6 @@ the connection patterns to the clockRate generation actors.</text></svg></config
                 </property>
                 <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{197.9687500000001, -290.6875}">
                 </property>
-               
                 <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
                     <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The clockRate parameter port sets the clockRate attribute of the DE director.&#10;This in turn is the rate parameter used by the director in computing the advancment&#10;of the local clock with respect to its environment. A clockRate of 1.0 indicates&#10;that the local and environment clocks run at the same rate, i.e. have the same &#10;definition of the second.&#10;&#10;The purpose of this clock is to provide a proxy for the actual controlled clock. &#10;In particular this proxy is driven by the same rate signal as the controlled clock&#10;and therefore provides the same local time as the controlled clock which can be &#10;used internally by the controller during tracking of time from the master.">
                     </property>
@@ -11830,7 +11834,7 @@ the connection patterns to the clockRate generation actors.</text></svg></config
             <display name="Detector 3"/>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[305.0, 45.0]">
             </property>
-<property name="clockRate" class="ptolemy.actor.parameters.PortParameter" value="1.0">
+            <property name="clockRate" class="ptolemy.actor.parameters.PortParameter" value="1.0000002785902">
                 <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
                 </property>
                 <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -11877,7 +11881,6 @@ the connection patterns to the clockRate generation actors.</text></svg></config
             </property>
             <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{141.265625, -328.4895833333333}">
             </property>
-            
             <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
                 <property name="text" class="ptolemy.kernel.util.StringAttribute" value="When an event is received on the eventTrigger port the receipt time is sent to the&#10;eventTime port.&#10;&#10;The clockRate parameter port sets the clockRate attribute of the DE director.&#10;This in turn is the rate parameter used by the director in computing the advancment&#10;of the local clock with respect to its environment. A clockRate of 1.0 indicates&#10;that the local and environment clocks run at the same rate, i.e. have the same &#10;definition of the second.">
                 </property>
@@ -12062,7 +12065,7 @@ the connection patterns to the clockRate generation actors.</text></svg></config
         <entity name="DetectorClockTimes" class="ptolemy.actor.lib.gui.TimedPlotter">
             <property name="legend" class="ptolemy.kernel.util.StringAttribute" value="Clock 1, Clock 2, Clock 3">
             </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={34, 286, 682, 450}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={34, 286, 674, 439}, maximized=false}">
             </property>
             <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[674, 395]">
             </property>
@@ -12076,7 +12079,7 @@ the connection patterns to the clockRate generation actors.</text></svg></config
 <xLabel>Oracle Time</xLabel>
 <yLabel>Synchronization Error (uniform, periodic, zero mean impairments)</yLabel>
 <xRange min="0.0" max="940.0"/>
-<yRange min="-3.003699999837295E-6" max="2.9961000000966465E-6"/>
+<yRange min="-3.0024999997380064E-6" max="3.006400000060694E-6"/>
 </plot>?>
             </configure>
         </entity>
