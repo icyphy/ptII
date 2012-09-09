@@ -1961,6 +1961,10 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
                     System.out.println("Warning: could not remove \""
                             + jarFile.getCanonicalPath() + "\"");
                 }
+                if (!jarFile.delete()) {
+                    System.out.println("Warning: could not remove \""
+                            + jarFile.getCanonicalPath() + "\"");
+                }
                 if (!temporaryJarFileName.renameTo(jarFile)) {
                     System.out.println("Attempt #1: Failed to rename \""
                             + temporaryJarFileName + "\" to \"" + jarFile
@@ -1987,6 +1991,16 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
 						  + jarFileDirectory + "\"");
 			}
 		    }
+
+                    if (!jarFile.createNewFile()) {
+                        System.out.println("Warning: could not create \""
+                                + jarFile.getCanonicalPath() + "\"");
+                    }
+                    if (!jarFile.delete()) {
+                        System.out.println("Warning: could not remove \""
+                                + jarFile.getCanonicalPath() + "\" after test creation.");
+                    }
+
 		    if (!temporaryJarFileName.renameTo(jarFile)) {
 			throw new IOException("Attempt #2: Failed to rename \""
   		            + temporaryJarFileName + "\" to \"" + jarFile
@@ -1998,7 +2012,7 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
                             + (jarFile.canWrite() ? "can" : "cannot")
                             + " be written.  "
 			    + "The directory " + jarFileDirectory
-			    + (jarFileDirectory.isDirectory() ? "is" : "is not")
+			    + (jarFileDirectory.isDirectory() ? " is" : " is not")
 			    + " a directory.");
 		    }
                 }
