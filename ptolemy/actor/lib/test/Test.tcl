@@ -214,13 +214,13 @@ test Test-1.5 {Export} {
         </property>
     </property>
     <entity name="ramp" class="ptolemy.actor.lib.Ramp">
-        <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="NONE">
-        </property>
         <property name="NONE" class="ptolemy.data.expr.Parameter" value="0">
         </property>
         <property name="init" class="ptolemy.actor.parameters.PortParameter" value="0">
         </property>
         <property name="step" class="ptolemy.actor.parameters.PortParameter" value="1.0">
+        </property>
+        <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="NONE">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
