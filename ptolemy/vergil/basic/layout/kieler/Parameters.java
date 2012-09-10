@@ -56,7 +56,7 @@ import diva.graph.GraphModel;
  * which is attached to composite entities when the configuration dialog is opened.
  * 
  * @see LayoutConfiguration
- * @author Miro Spoenemann
+ * @author Miro Spoenemann, Christoph Daniel Schulze
  * @version $Id$
  * @since Ptolemy II 8.1
  * @Pt.ProposedRating Red (msp)
@@ -93,23 +93,40 @@ public class Parameters {
         if (!configAttributes.isEmpty()) {
             LayoutConfiguration configuration = configAttributes.get(0);
             
+            // Whether decorations are to be laid out or left as they are
             BooleanToken decorationsToken = BooleanToken.convert(
                     configuration.includeDecorations.getToken());
             parentLayout.setProperty(DECORATIONS, decorationsToken.booleanValue());
             
+            // Whether to route edges or to leave that to Ptolemy's Manhattan routing
             BooleanToken routeToken = BooleanToken.convert(
                     configuration.routeEdges.getToken());
             parentLayout.setProperty(ROUTE_EDGES, routeToken.booleanValue());
             
+            // The node placement algorithm to use
+            BooleanToken minimizeBendsToken = BooleanToken.convert(
+                    configuration.minimizeBends.getToken());
+            if (minimizeBendsToken.booleanValue()) {
+                parentLayout.setProperty(Properties.NODEPLACE,
+                        NodePlacementStrategy.BRANDES_KOEPF);
+            } else {
+                parentLayout.setProperty(Properties.NODEPLACE,
+                        NodePlacementStrategy.LINEAR_SEGMENTS);
+            }
+            
+            // Spacing between diagram elements
             DoubleToken spacingToken = DoubleToken.convert(
                     configuration.spacing.getToken());
             parentLayout.setProperty(SPACING, (float) spacingToken.doubleValue());
             
+            // Target aspect ratio for the diagram
             DoubleToken logAspectToken = DoubleToken.convert(
                     configuration.logAspectRatio.getToken());
             parentLayout.setProperty(ASPECT_RATIO, (float) Math.pow(
                     10, logAspectToken.doubleValue()));
             
+            // The interaction mode (constraints the layout according to what the
+            // diagram currently looks like)
             InteractionMode interactionMode = (InteractionMode) configuration
                     .interactionMode.getChosenValue();
             if (interactionMode != null) {
@@ -124,6 +141,8 @@ public class Parameters {
                 case Cycles:
                     parentLayout.setProperty(Properties.CYCLE_BREAKING,
                             CycleBreakingStrategy.INTERACTIVE);
+                default:
+                    // Don't change the configuration in all other cases
                 }
             }
             

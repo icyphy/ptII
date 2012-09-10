@@ -41,7 +41,7 @@ import ptolemy.kernel.util.NamedObj;
  * layout action to generate a configuration for the layout algorithm.
  *
  * @see ptolemy.vergil.basic.layout.kieler.KielerLayoutAction
- * @author Miro Spoenemann
+ * @author Miro Spoenemann, Christoph Daniel Schulze
  * @version $Id$
  * @since Ptolemy II 8.1
  * @Pt.ProposedRating Red (msp)
@@ -85,6 +85,11 @@ public class LayoutConfiguration extends Attribute {
         routeEdges.setTypeEquals(BaseType.BOOLEAN);
         routeEdges.setExpression(Boolean.toString(DEF_ROUTE_EDGES));
         
+        minimizeBends = new Parameter(this, "minimizeBends");
+        minimizeBends.setDisplayName("Minimize edge bends");
+        minimizeBends.setTypeEquals(BaseType.BOOLEAN);
+        minimizeBends.setExpression(Boolean.toString(DEF_MINIMIZE_BENDS));
+        
         spacing = new DoubleRangeParameter(this, "spacing");
         spacing.setDisplayName("Object spacing");
         spacing.min.setExpression("2.0");
@@ -111,6 +116,9 @@ public class LayoutConfiguration extends Attribute {
     /** Whether to apply edge routing or to use the standard router. */
     public Parameter routeEdges;
     
+    /** Whether to optimize for edge bends or for space. */
+    public Parameter minimizeBends;
+    
     /** The overall spacing between graph elements. */
     public DoubleRangeParameter spacing;
     
@@ -126,6 +134,9 @@ public class LayoutConfiguration extends Attribute {
     
     /** Default value for routeEdges. */
     public static final boolean DEF_ROUTE_EDGES = true;
+    
+    /** Default value for minimizeBends. */
+    public static final boolean DEF_MINIMIZE_BENDS = true;
     
     /** Default value for spacing. */
     public static final double DEF_SPACING = 10.0;
