@@ -4,7 +4,7 @@
 <entity name="DCMotorTol" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.0.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={115, 155, 841, 634}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={115, 132, 841, 634}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[607, 524]">
     </property>
@@ -454,6 +454,14 @@
         <display name="Delay"/>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[20.0, 30.0]">
         </property>
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={173, 83, 934, 634}, maximized=false}">
+        </property>
+        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 524]">
+        </property>
+        <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+        </property>
+        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{350.0, 262.0}">
+        </property>
         <port name="port" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[100.0, 60.0]">
@@ -481,6 +489,8 @@
         </entity>
         <entity name="TimeDelay" class="ptolemy.actor.lib.TimeDelay">
             <property name="delay" class="ptolemy.actor.parameters.PortParameter" value="0.0380512266166">
+            </property>
+            <property name="minimumDelay" class="ptolemy.data.expr.Parameter" value="0.0">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[275.0, 60.0]">
             </property>
@@ -512,7 +522,7 @@
         </property>
         <property name="_flipPortsHorizontal" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={373, 208, 934, 634}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={346, 132, 934, 634}, maximized=false}">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 524]">
         </property>
@@ -553,6 +563,8 @@
         </entity>
         <entity name="TimeDelay" class="ptolemy.actor.lib.TimeDelay">
             <property name="delay" class="ptolemy.actor.parameters.PortParameter" value="0.0025297519888">
+            </property>
+            <property name="minimumDelay" class="ptolemy.data.expr.Parameter" value="0.0">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[345.0, 120.0]">
             </property>
