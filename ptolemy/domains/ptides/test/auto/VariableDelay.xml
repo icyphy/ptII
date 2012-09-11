@@ -228,7 +228,7 @@
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[-95.0, -170.0]">
                 </property>
             </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={135, 202, 934, 634}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={135, 132, 934, 634}, maximized=false}">
             </property>
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 524]">
             </property>
@@ -283,7 +283,9 @@
                 </port>
             </entity>
             <entity name="TimeDelay" class="ptolemy.actor.lib.TimeDelay">
-                <property name="delay" class="ptolemy.actor.parameters.PortParameter" value="8.2061493976344">
+                <property name="delay" class="ptolemy.actor.parameters.PortParameter" value="3.6487111564711">
+                </property>
+                <property name="minimumDelay" class="ptolemy.data.expr.Parameter" value="0.0">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[90.0, -105.0]">
                 </property>
@@ -343,7 +345,7 @@
         </property>
     </entity>
     <entity name="Test" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{4.4982273616, 5.6076036633, 7.3053166886, 7.6967821241, 9.8939067387}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{4.2942930051, 4.7525037272, 5.2628878737, 6.398390263, 7.844574078, 7.9414003779, 9.4193380645}">
         </property>
         <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>
@@ -351,9 +353,11 @@
         </property>
     </entity>
     <entity name="Test2" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{4.4982273615776, 7.6967821241327, 9.8939067386607, 12.6414895966122, 5.6076036632879, 7.3053166885823, 12.9114146779115, 12.4410614301391, 17.408499940207, 11.5728122569437, 18.2061493976344}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{4.2942930051097, 7.9414003779175, 5.2628878736536, 6.3983902630333, 4.7525037272239, 9.4193380644931, 11.1507353627803, 7.8445740780244, 10.7144170864049, 18.3699404066997, 13.6487111564711}">
         </property>
         <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.264148959661223E-8">
+        </property>
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[380.0, 30.0]">
         </property>

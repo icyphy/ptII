@@ -561,10 +561,10 @@
                     </property>
                 </port>
             </entity>
-            <entity name="EDFScheduler" class="ptolemy.domains.ptides.lib.EDFScheduler">
+            <property name="EDFScheduler" class="ptolemy.domains.ptides.lib.PEDFCore">
                 <property name="_location" class="ptolemy.kernel.util.Location" value="{245, 80}">
                 </property>
-            </entity>
+            </property>
             <relation name="relation4" class="ptolemy.actor.TypedIORelation">
                 <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
                     <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">

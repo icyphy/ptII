@@ -1,7 +1,7 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="FCFSScheduler" class="ptolemy.actor.TypedCompositeActor">
+<entity name="DCASwith2FCFSSchedulers" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.0.devel">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
@@ -10,7 +10,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[-250.0, 60.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={132, 36, 625, 634}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={132, 34, 625, 634}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[391, 524]">
     </property>
@@ -23,7 +23,7 @@
         </property>
         <property name="_tableauFactory" class="ptolemy.actor.gui.LevelSkippingTableauFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{-255.0, 165.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-255.0, 165.0]">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.EditorIcon">
             <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={195, 129, 934, 634}, maximized=false}">
@@ -235,7 +235,7 @@
                 </property>
                 <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.1">
                 </property>
-                <property name="scheduler" class="ptolemy.data.expr.Parameter" value="FCFSScheduler">
+                <property name="scheduler" class="ptolemy.data.expr.Parameter" value="DynamicCoreAssignmentScheduler">
                 </property>
                 <property name="priority" class="ptolemy.data.expr.Parameter" value="4">
                 </property>
@@ -258,7 +258,7 @@
                 </property>
                 <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.4">
                 </property>
-                <property name="scheduler" class="ptolemy.data.expr.Parameter" value="FCFSScheduler">
+                <property name="scheduler" class="ptolemy.data.expr.Parameter" value="DynamicCoreAssignmentScheduler">
                 </property>
                 <property name="priority" class="ptolemy.data.expr.Parameter" value="5">
                 </property>
@@ -296,7 +296,7 @@
                 </property>
                 <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.1">
                 </property>
-                <property name="scheduler" class="ptolemy.data.expr.Parameter" value="FCFSScheduler">
+                <property name="scheduler" class="ptolemy.data.expr.Parameter" value="DynamicCoreAssignmentScheduler">
                 </property>
                 <property name="priority" class="ptolemy.data.expr.Parameter" value="1">
                 </property>
@@ -319,7 +319,7 @@
                 </property>
                 <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.1">
                 </property>
-                <property name="scheduler" class="ptolemy.data.expr.Parameter" value="FCFSScheduler">
+                <property name="scheduler" class="ptolemy.data.expr.Parameter" value="DynamicCoreAssignmentScheduler">
                 </property>
                 <property name="priority" class="ptolemy.data.expr.Parameter" value="3">
                 </property>
@@ -409,7 +409,7 @@
                 </property>
                 <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
                 </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="{391.453125, 166.78125}">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[390.0, 170.0]">
                 </property>
                 <property name="scheduler" class="ptolemy.data.expr.Parameter">
                 </property>
@@ -445,7 +445,7 @@
                 </port>
             </entity>
             <entity name="Test4" class="ptolemy.actor.lib.Test">
-                <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.7, 1.7, 2.7}">
+                <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.5, 1.5, 2.5}">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[455.0, 335.0]">
                 </property>
@@ -463,7 +463,19 @@
                 </port>
             </entity>
             <property name="FCFSScheduler" class="ptolemy.domains.ptides.lib.NPFCFSCore">
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[225.0, 75.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[175.0, 75.0]">
+                </property>
+            </property>
+            <property name="DynamicCoreAssignmentScheduler" class="ptolemy.domains.ptides.lib.DynamicCoreAssignmentScheduler">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[160.0, 380.0]">
+                </property>
+                <property name="core1" class="ptolemy.data.expr.Parameter" value="FCFSScheduler">
+                </property>
+                <property name="core2" class="ptolemy.data.expr.Parameter" value="FCFSScheduler2">
+                </property>
+            </property>
+            <property name="FCFSScheduler2" class="ptolemy.domains.ptides.lib.NPFCFSCore">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{270.0, 75.0}">
                 </property>
             </property>
             <relation name="relation2" class="ptolemy.actor.TypedIORelation">

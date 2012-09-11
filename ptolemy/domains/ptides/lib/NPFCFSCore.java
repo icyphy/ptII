@@ -36,6 +36,7 @@ import ptolemy.domains.ptides.lib.ResourceScheduler.ExecutionEventType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.NamedObj;
 
 
 /** This is a first come first serve scheduler.
@@ -47,7 +48,7 @@ import ptolemy.kernel.util.NameDuplicationException;
    @Pt.ProposedRating Red (derler)
    @Pt.AcceptedRating Red (derler)
  */ 
-public class FCFSScheduler extends ResourceScheduler {
+public class NPFCFSCore extends ResourceScheduler {
 
     /** Create a new actor in the specified container with the specified
      *  name.  The name must be unique within the container or an exception
@@ -61,7 +62,7 @@ public class FCFSScheduler extends ResourceScheduler {
      *  @exception NameDuplicationException If the name coincides with
      *   an entity already in the container.
      */
-    public FCFSScheduler(CompositeEntity container, String name)
+    public NPFCFSCore(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);   
     } 
@@ -82,13 +83,11 @@ public class FCFSScheduler extends ResourceScheduler {
      */
     @Override 
     public Time schedule(Actor actor, Time currentPlatformTime, Double deadline, Time executionTime) throws IllegalActionException {
+        super.schedule(actor, currentPlatformTime, deadline, executionTime);
         _lastActorFinished = false;
-        event(this, currentPlatformTime.getDoubleValue(), ExecutionEventType.START);
-        event(this, currentPlatformTime.getDoubleValue(), ExecutionEventType.STOP);
-        
         if (currentlyExecuting == null) {
             currentlyExecuting = actor;
-            event(currentlyExecuting, currentPlatformTime.getDoubleValue(),ExecutionEventType.START);
+            event((NamedObj) currentlyExecuting, currentPlatformTime.getDoubleValue(),ExecutionEventType.START);
         } 
         
         Time remainingTime = null;
@@ -105,7 +104,7 @@ public class FCFSScheduler extends ResourceScheduler {
         _lastTimeScheduled.put(currentlyExecuting, currentPlatformTime);
         
         if (remainingTime.getDoubleValue() == 0.0) { 
-            event(currentlyExecuting, currentPlatformTime.getDoubleValue(), ExecutionEventType.STOP);
+            event((NamedObj) currentlyExecuting, currentPlatformTime.getDoubleValue(), ExecutionEventType.STOP);
             
             _remainingTimes.put(currentlyExecuting, null);
             currentlyExecuting = null;

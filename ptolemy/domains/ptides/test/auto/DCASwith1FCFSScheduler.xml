@@ -1,7 +1,7 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="FCFSScheduler" class="ptolemy.actor.TypedCompositeActor">
+<entity name="DCASwith1FCFSScheduler" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.0.devel">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
@@ -23,7 +23,7 @@
         </property>
         <property name="_tableauFactory" class="ptolemy.actor.gui.LevelSkippingTableauFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{-255.0, 165.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-255.0, 165.0]">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.EditorIcon">
             <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={195, 129, 934, 634}, maximized=false}">
@@ -224,6 +224,16 @@
             </property>
             <property name="scheduler" class="ptolemy.data.expr.Parameter" value="FCFSScheduler">
             </property>
+            <property name="FCFSScheduler" class="ptolemy.domains.ptides.lib.NPFCFSCore">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[225.0, 75.0]">
+                </property>
+            </property>
+            <property name="DynamicCoreAssignmentScheduler" class="ptolemy.domains.ptides.lib.DynamicCoreAssignmentScheduler">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[160.0, 380.0]">
+                </property>
+                <property name="core1" class="ptolemy.data.expr.Parameter" value="FCFSScheduler">
+                </property>
+            </property>
             <entity name="Spectrum" class="ptolemy.actor.lib.Scale">
                 <property name="factor" class="ptolemy.data.expr.Parameter" value="2">
                 </property>
@@ -235,7 +245,7 @@
                 </property>
                 <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.1">
                 </property>
-                <property name="scheduler" class="ptolemy.data.expr.Parameter" value="FCFSScheduler">
+                <property name="scheduler" class="ptolemy.data.expr.Parameter" value="DynamicCoreAssignmentScheduler">
                 </property>
                 <property name="priority" class="ptolemy.data.expr.Parameter" value="4">
                 </property>
@@ -258,7 +268,7 @@
                 </property>
                 <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.4">
                 </property>
-                <property name="scheduler" class="ptolemy.data.expr.Parameter" value="FCFSScheduler">
+                <property name="scheduler" class="ptolemy.data.expr.Parameter" value="DynamicCoreAssignmentScheduler">
                 </property>
                 <property name="priority" class="ptolemy.data.expr.Parameter" value="5">
                 </property>
@@ -296,7 +306,7 @@
                 </property>
                 <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.1">
                 </property>
-                <property name="scheduler" class="ptolemy.data.expr.Parameter" value="FCFSScheduler">
+                <property name="scheduler" class="ptolemy.data.expr.Parameter" value="DynamicCoreAssignmentScheduler">
                 </property>
                 <property name="priority" class="ptolemy.data.expr.Parameter" value="1">
                 </property>
@@ -319,7 +329,7 @@
                 </property>
                 <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.1">
                 </property>
-                <property name="scheduler" class="ptolemy.data.expr.Parameter" value="FCFSScheduler">
+                <property name="scheduler" class="ptolemy.data.expr.Parameter" value="DynamicCoreAssignmentScheduler">
                 </property>
                 <property name="priority" class="ptolemy.data.expr.Parameter" value="3">
                 </property>
@@ -462,10 +472,6 @@
                     </property>
                 </port>
             </entity>
-            <property name="FCFSScheduler" class="ptolemy.domains.ptides.lib.NPFCFSCore">
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[225.0, 75.0]">
-                </property>
-            </property>
             <relation name="relation2" class="ptolemy.actor.TypedIORelation">
             </relation>
             <relation name="relation" class="ptolemy.actor.TypedIORelation">

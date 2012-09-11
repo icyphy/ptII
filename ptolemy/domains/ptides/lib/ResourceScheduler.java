@@ -49,8 +49,11 @@ import ptolemy.data.expr.Parameter;
 import ptolemy.domains.ptides.kernel.PtidesPlatform;
 import ptolemy.graph.Inequality;
 import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.DecoratedAttributesImplementation;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.ChangeRequest;
+import ptolemy.kernel.util.DecoratedAttributes;
+import ptolemy.kernel.util.Decorator;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -68,7 +71,7 @@ import ptolemy.vergil.actor.lib.MonitorReceiverAttribute;
    @Pt.ProposedRating Red (derler)
    @Pt.AcceptedRating Red (derler)
  */
-public abstract class ResourceScheduler extends TypedAtomicActor {
+public abstract class ResourceScheduler extends Attribute implements Decorator {
 
     /** Create a new actor in the specified container with the specified
      *  name.  The name must be unique within the container or an exception
@@ -85,42 +88,15 @@ public abstract class ResourceScheduler extends TypedAtomicActor {
     public ResourceScheduler(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name); 
-        if (container != null
-                && container instanceof PtidesPlatform.PtidesPlatformContents) {  
-            // Also, remove all _showInfo attributes in the ports of the previous container.
-            List<Actor> entities = ((PtidesPlatform.PtidesPlatformContents) container)
-                    .deepEntityList();
-            for (Actor entity : entities) {
-                if (!(entity instanceof ResourceScheduler)) {
-                    if (((NamedObj)entity).getAttribute("scheduler") == null) {
-                        Parameter schedulerParameter = new Parameter((NamedObj)entity, "scheduler");
-                    }
-                    if (((NamedObj)entity).getAttribute("executionTime") == null) {
-                        Parameter executionTime = new Parameter((NamedObj)entity, "executionTime");
-                    }
-                }
-            }  
-            ChangeRequest request = new ChangeRequest(this,
-                    "SetVariable change request", true) {
-                protected void _execute()
-                    throws IllegalActionException {
-                }
-            };
-            // To prevent prompting for saving the model, mark this
-            // change as non-persistent.
-            request.setPersistent(false);
-            requestChange(request); 
-                        
-        }
 
-        
         try {
             _schedulePlotterEditorFactory = new SchedulePlotterEditorFactory(
                     this, this.uniqueName("_editorFactory"));
         } catch (NameDuplicationException e) {
             // Do nothing, we made sure that there cannot be a name duplication
             // exception.
-        }
+        } 
+        
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -138,6 +114,45 @@ public abstract class ResourceScheduler extends TypedAtomicActor {
 
     ///////////////////////////////////////////////////////////////////
     //                           public methods                      //
+    
+    /** Return the decorated attributes for the target NamedObj.
+     *  @param target The NamedObj that will be decorated.
+     *  @return The decorated attributes for the target NamedObj.
+     *  @exception IllegalActionException If the attribute is not of an
+     *   acceptable class for the container, or if the name contains a period.
+     *  @exception NameDuplicationException If the name coincides with
+     *   an attribute already in the container.
+     */
+    public DecoratedAttributes createDecoratedAttributes(NamedObj target)
+            throws IllegalActionException, NameDuplicationException { 
+        DecoratedAttributesImplementation decoratedAttributes = new DecoratedAttributesImplementation(target, this);
+        if (target.getAttribute("scheduler") == null) {
+            Parameter schedulerParameter = new Parameter(
+                  target, "scheduler");
+            schedulerParameter.setExpression("");
+        }
+        if (target.getAttribute("executionTime") == null) { 
+            Parameter executionTime = new Parameter(
+                    target, "executionTime");  
+            executionTime.setExpression("0.0");
+        }
+        return decoratedAttributes;
+    }
+
+    /** Set the current type of the decorated attributes.
+     *  The type information of the parameters are not saved in the
+     *  model hand hence this has to be reset when reading the model
+     *  again.
+     *  @param decoratedAttributes The decorated attributes.
+     *  @exception IllegalActionException If the attribute is not of an
+     *   acceptable class for the container, or if the name contains a period.
+     */
+    public void setTypesOfDecoratedVariables(
+            DecoratedAttributes decoratedAttributes)
+            throws IllegalActionException {
+        // FIXME: What has to be done here? 
+        
+    }
 
     /** Clone the actor into the specified workspace.
      *  @param workspace The workspace for the new object.
@@ -152,7 +167,7 @@ public abstract class ResourceScheduler extends TypedAtomicActor {
         try {
             newObject._schedulePlotterEditorFactory = new SchedulePlotterEditorFactory(
                     newObject, this.uniqueName("_editorFactory"));
-            newObject._previousY = new HashMap<Actor, Double>();
+            newObject._previousY = new HashMap<NamedObj, Double>();
         } catch (NameDuplicationException e) {
             // Do nothing, we made sure that there cannot be a name duplication
             // exception.
@@ -163,34 +178,6 @@ public abstract class ResourceScheduler extends TypedAtomicActor {
         return newObject;
     }
 
-    /** Initialize local variables and the schedule plotter.
-     *  @throws IllegalActionException Thrown if list of actors to
-     *  schedule cannot be initialized.
-     */
-    @Override
-    public void initialize() throws IllegalActionException {
-        super.initialize();
-
-        _remainingTimes = new HashMap<Actor, Time>(); 
-        _lastTimeScheduled = new HashMap<Actor, Time>();
-        _actors = new ArrayList<Actor>();
-
-        _getActorsToSchedule((CompositeActor) getContainer());
-        _actors.add(this);
-
-        if (_schedulePlotterEditorFactory.plot != null) {
-            _schedulePlotterEditorFactory.plot.clear(false);
-            _schedulePlotterEditorFactory.plot.clearLegends();
-
-            for (Actor actor : _actors) {
-                _schedulePlotterEditorFactory.plot.addLegend(
-                        _actors.indexOf(actor), actor.getName());
-                event(actor, 0.0, null);
-            }
-            _schedulePlotterEditorFactory.plot.doLayout();
-        }
-    }
-
     /** If the last actor that was scheduled finished execution 
      *  then this method returns true.
      *  @return True if last actor that was scheduled finished
@@ -199,9 +186,37 @@ public abstract class ResourceScheduler extends TypedAtomicActor {
     public boolean lastScheduledActorFinished() {
         return _lastActorFinished;
     }
+    
+    /** Initialize local variables.
+     * @throws IllegalActionException Thrown if list of actors 
+     *   scheduled by this scheduler cannot be retrieved.
+     */
+    public void initialize() throws IllegalActionException {
+        _remainingTimes = new HashMap<Actor, Time>();
+        _lastTimeScheduled = new HashMap<Actor, Time>();
+        _actors = new ArrayList<NamedObj>();
+
+        _getActorsToSchedule((CompositeActor) getContainer());
+        _actors.add(this);
+
+        if (_schedulePlotterEditorFactory.plot != null) {
+            _schedulePlotterEditorFactory.plot.clear(false);
+            _schedulePlotterEditorFactory.plot.clearLegends();
+
+            for (NamedObj actor : _actors) {
+                _schedulePlotterEditorFactory.plot.addLegend(
+                        _actors.indexOf(actor), actor.getName());
+                event(actor, 0.0, null);
+            }
+            _schedulePlotterEditorFactory.plot.doLayout();
+        }
+    }
 
     /** Schedule a new actor for execution and return the next time
-     *  this scheduler has to perform a reschedule.
+     *  this scheduler has to perform a reschedule. Derived classes
+     *  must implement this method to actually schedule actors, this
+     *  base class implementation just creates events for scheduler
+     *  activity that is displayed in the plotter.
      *  @param actor The actor to be scheduled.
      *  @param currentPlatformTime The current platform time.
      *  @param deadline. The deadline of the event.
@@ -211,9 +226,15 @@ public abstract class ResourceScheduler extends TypedAtomicActor {
      *  @throws IllegalActionException Thrown if actor paramaters such
      *    as execution time or priority cannot be read.
      */
-    public abstract Time schedule(Actor actor, Time currentPlatformTime,
-            Double deadline, Time executionTime)
-            throws IllegalActionException;
+    public Time schedule(Actor actor, Time currentPlatformTime,
+            Double deadline, Time executionTime) throws IllegalActionException {
+        event(this, currentPlatformTime.getDoubleValue(),
+                ExecutionEventType.START);
+        event(this, currentPlatformTime.getDoubleValue(),
+                ExecutionEventType.STOP);
+
+        return null;
+    }
 
     /** Return a new time object using the enclosing director. 
      *  @param time Double value of the new time object.
@@ -230,7 +251,7 @@ public abstract class ResourceScheduler extends TypedAtomicActor {
      * @param physicalTime The physical time when this scheduling event occurred.
      * @param scheduleEvent The scheduling event.
      */
-    public void event(final Actor actor, double physicalTime,
+    public void event(final NamedObj actor, double physicalTime,
             ExecutionEventType scheduleEvent) {
         if (_schedulePlotterEditorFactory.plot == null) {
             return;
@@ -273,12 +294,9 @@ public abstract class ResourceScheduler extends TypedAtomicActor {
 
     /** Create end events for the plotter.
      *  @throws IllegalActionException Thrown by super class.
-     */
-    @Override
+     */ 
     public void wrapup() throws IllegalActionException {
-        super.wrapup();
-
-        for (Actor actor : _actors) {
+        for (NamedObj actor : _actors) {
             event(actor, ((CompositeActor) getContainer()).getDirector()
                     .getEnvironmentTime().getDoubleValue(), null);
         }
@@ -286,6 +304,31 @@ public abstract class ResourceScheduler extends TypedAtomicActor {
 
     ///////////////////////////////////////////////////////////////////
     //                          protected methods                    // 
+
+    /** Iterate through all actors in the container and find those
+     *  that are scheduled by this ResourceScheduler. 
+     *  @param compositeActor The container.
+     *  @throws IllegalActionException If actor parameters that describe
+     *  the schedulers cannot be read. 
+     */
+    protected void _getActorsToSchedule(CompositeActor compositeActor)
+            throws IllegalActionException {
+        for (Object entity : compositeActor.entityList()) {
+            if (entity instanceof CompositeActor) {
+                Double executionTime = ResourceScheduler
+                        ._getDoubleParameterValue((NamedObj) entity,
+                                "executionTime");
+                if (executionTime == null) {
+                    _getActorsToSchedule((CompositeActor) entity);
+                } else {
+                    _readActorParameters((Actor) entity);
+                }
+            } else if (entity instanceof AtomicActor) {
+                _readActorParameters((Actor) entity);
+            }
+
+        }
+    }
 
     /** Return the value stored in a parameter associated with
      *  the input port.
@@ -332,25 +375,6 @@ public abstract class ResourceScheduler extends TypedAtomicActor {
     ///////////////////////////////////////////////////////////////////
     //                        private methods                        //
 
-    private void _getActorsToSchedule(CompositeActor compositeActor)
-            throws IllegalActionException {
-        for (Object entity : compositeActor.entityList()) {
-            if (entity instanceof CompositeActor) {
-                Double executionTime = ResourceScheduler
-                        ._getDoubleParameterValue((NamedObj) entity,
-                                "executionTime");
-                if (executionTime == null) {
-                    _getActorsToSchedule((CompositeActor) entity);
-                } else {
-                    _readActorParameters((Actor) entity);
-                }
-            } else if (entity instanceof AtomicActor) {
-                _readActorParameters((Actor) entity);
-            }
-
-        }
-    }
-
     /** Read actor parameters such as 
      *  - which resource scheduler the actor is assigned to
      *  - the execution time
@@ -361,6 +385,9 @@ public abstract class ResourceScheduler extends TypedAtomicActor {
      */
     private void _readActorParameters(Actor actor)
             throws IllegalActionException {
+        if (actor instanceof DynamicCoreAssignmentScheduler) {
+            return;
+        }
         List attributeList = ((NamedObj) actor).attributeList();
         if (attributeList.size() > 0) {
             for (int i = 0; i < attributeList.size(); i++) {
@@ -372,17 +399,18 @@ public abstract class ResourceScheduler extends TypedAtomicActor {
                                 .getValue();
                         if (paramObject instanceof ResourceScheduler) {
                             ResourceScheduler scheduler = (ResourceScheduler) paramObject;
-                            if (scheduler == this) {
+                            if (scheduler == this
+                                    || (scheduler instanceof DynamicCoreAssignmentScheduler && !(actor instanceof ResourceScheduler))) {
                                 Double executionTime = ResourceScheduler
                                         ._getDoubleParameterValue(
                                                 (NamedObj) actor,
                                                 "executionTime");
 
                                 if (executionTime != null) {
-                                    _remainingTimes.put(actor, null); 
+                                    _remainingTimes.put(actor, null);
                                 }
-                                _actors.add(actor);
-                                event(actor, 0.0, null);
+                                _actors.add((NamedObj) actor);
+                                event((NamedObj) actor, 0.0, null);
                             }
                         }
                     }
@@ -395,10 +423,10 @@ public abstract class ResourceScheduler extends TypedAtomicActor {
     //                      private variables                        //
 
     /** Contains the actors inside a ptides platform (=platforms). */
-    private List<Actor> _actors;
+    protected List<NamedObj> _actors;
 
     /** Previous positions of the actor data set. */
-    private HashMap<Actor, Double> _previousY = new HashMap<Actor, Double>();
+    private HashMap<NamedObj, Double> _previousY = new HashMap<NamedObj, Double>();
 
     private SchedulePlotterEditorFactory _schedulePlotterEditorFactory;
 

@@ -434,10 +434,10 @@
                     </property>
                 </port>
             </entity>
-            <entity name="EDFScheduler" class="ptolemy.domains.ptides.lib.EDFScheduler">
+            <property name="EDFScheduler" class="ptolemy.domains.ptides.lib.PEDFCore">
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[195.0, 65.0]">
                 </property>
-            </entity>
+            </property>
             <entity name="TimeDelay" class="ptolemy.actor.lib.TimeDelay">
                 <property name="delay" class="ptolemy.actor.parameters.PortParameter" value="2.0">
                 </property>

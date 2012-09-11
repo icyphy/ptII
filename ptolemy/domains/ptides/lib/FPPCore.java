@@ -50,7 +50,7 @@ import ptolemy.kernel.util.NamedObj;
    @Pt.ProposedRating Red (derler)
    @Pt.AcceptedRating Red (derler)
  */
-public class FPScheduler extends ResourceScheduler {
+public class FPPCore extends ResourceScheduler {
 
     /** Create a new actor in the specified container with the specified
      *  name.  The name must be unique within the container or an exception
@@ -64,7 +64,7 @@ public class FPScheduler extends ResourceScheduler {
      *  @exception NameDuplicationException If the name coincides with
      *   an entity already in the container.
      */
-    public FPScheduler(CompositeEntity container, String name)
+    public FPPCore(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
@@ -96,12 +96,8 @@ public class FPScheduler extends ResourceScheduler {
     public Time schedule(Actor actor, Time currentPlatformTime,
             Double deadline, Time executionTime)
             throws IllegalActionException {
+        super.schedule(actor, currentPlatformTime, deadline, executionTime);
         _lastActorFinished = false;
-        event(this, currentPlatformTime.getDoubleValue(),
-                ExecutionEventType.START);
-        event(this, currentPlatformTime.getDoubleValue(),
-                ExecutionEventType.STOP); 
-
         Time remainingTime = null;
         if (_currentlyExecuting.size() == 0) {
             scheduleNewActor(actor, currentPlatformTime, executionTime);
@@ -117,7 +113,7 @@ public class FPScheduler extends ResourceScheduler {
                 double newActorPriority = _getPriority(actor);
                 if (newActorPriority < executingPriority) {
                     remainingTime = executionTime;
-                    event(executing, currentPlatformTime.getDoubleValue(),
+                    event((NamedObj) executing, currentPlatformTime.getDoubleValue(),
                             ExecutionEventType.PREEMPTED);
                     scheduleNewActor(actor, currentPlatformTime, executionTime);
                 }
@@ -129,7 +125,7 @@ public class FPScheduler extends ResourceScheduler {
 
         if (remainingTime.getDoubleValue() == 0.0
                 && _currentlyExecuting.peek() == actor) {
-            event(_currentlyExecuting.peek(),
+            event((NamedObj) _currentlyExecuting.peek(),
                     currentPlatformTime.getDoubleValue(),
                     ExecutionEventType.STOP);
             _remainingTimes.put(_currentlyExecuting.peek(), null);
@@ -137,7 +133,7 @@ public class FPScheduler extends ResourceScheduler {
             _currentlyExecuting.pop();
             if (_currentlyExecuting.size() > 0) {
                 remainingTime = _remainingTimes.get(_currentlyExecuting.peek());
-                event(_currentlyExecuting.peek(),
+                event((NamedObj) _currentlyExecuting.peek(),
                         currentPlatformTime.getDoubleValue(),
                         ExecutionEventType.START);
             }
@@ -184,7 +180,7 @@ public class FPScheduler extends ResourceScheduler {
     private void scheduleNewActor(Actor actor, Time currentPlatformTime,
             Time executionTime) {
         _currentlyExecuting.push(actor);
-        event(actor, currentPlatformTime.getDoubleValue(),
+        event((NamedObj) actor, currentPlatformTime.getDoubleValue(),
                 ExecutionEventType.START);
         _remainingTimes.put(actor, executionTime);
         _lastTimeScheduled.put(actor, currentPlatformTime);

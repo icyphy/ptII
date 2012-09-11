@@ -448,10 +448,10 @@
                     </property>
                 </port>
             </entity>
-            <entity name="FCFSScheduler" class="ptolemy.domains.ptides.lib.FCFSScheduler">
+            <property name="FCFSScheduler" class="ptolemy.domains.ptides.lib.NPFCFSCore">
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[225.0, 60.0]">
                 </property>
-            </entity>
+            </property>
             <entity name="TimeDelay" class="ptolemy.actor.lib.TimeDelay">
                 <property name="delay" class="ptolemy.actor.parameters.PortParameter" value="3.0">
                 </property>

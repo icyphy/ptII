@@ -330,10 +330,10 @@
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[59.5, 265.0]">
                 </property>
             </entity>
-            <entity name="FPScheduler" class="ptolemy.domains.ptides.lib.FPScheduler">
+            <property name="FPScheduler" class="ptolemy.domains.ptides.lib.FPPCore">
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[255.0, 55.0]">
                 </property>
-            </entity>
+            </property>
             <entity name="CurrentTime" class="ptolemy.actor.lib.CurrentTime">
                 <property name="useLocalTime" class="ptolemy.data.expr.Parameter" value="false">
                 </property>

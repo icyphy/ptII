@@ -49,7 +49,6 @@ import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.lib.TimeDelay;
 import ptolemy.actor.parameters.ParameterPort;
 import ptolemy.actor.parameters.SharedParameter;
-import ptolemy.actor.util.BooleanDependency;
 import ptolemy.actor.util.CausalityInterface;
 import ptolemy.actor.util.Dependency;
 import ptolemy.actor.util.SuperdenseDependency;
@@ -60,12 +59,7 @@ import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.domains.de.kernel.DEDirector;
-import ptolemy.domains.ptides.kernel.PtidesBasicDirector.RealTimeClock;
-import ptolemy.domains.ptides.lib.ActuatorSetup;
-import ptolemy.domains.ptides.lib.NetworkReceiver;
-import ptolemy.domains.ptides.lib.NetworkTransmitter;
 import ptolemy.domains.ptides.lib.ResourceScheduler;
-import ptolemy.domains.ptides.lib.SensorHandler;
 import ptolemy.domains.ptides.lib.io.ActuatorPort;
 import ptolemy.domains.ptides.lib.io.NetworkReceiverPort;
 import ptolemy.domains.ptides.lib.io.NetworkTransmitterPort;
@@ -317,6 +311,7 @@ public class PtidesDirector extends DEDirector {
      *  execution or (ii) the timestamp of the input event. 
      *  @return The local time or the semantic
      */
+    @Override
     public Time getModelTime() {
         if (_currentLogicalTime != null) {
             return _currentLogicalTime;
@@ -324,6 +319,9 @@ public class PtidesDirector extends DEDirector {
         return super.getModelTime();
     }
     
+    /** Return the current microstep or the microstep of the event, if
+     *  an actor is currently executing.
+     */
     @Override
     public int getMicrostep() {
         if (_currentLogicalTime != null) {
@@ -379,9 +377,11 @@ public class PtidesDirector extends DEDirector {
 
         _resourceSchedulers = new ArrayList();
         _schedulerForActor = null;
-        for (Object entity : ((CompositeActor) getContainer()).entityList()) {
+        for (Object entity : ((CompositeActor) getContainer()).attributeList()) {
             if (entity instanceof ResourceScheduler) {
-                _resourceSchedulers.add((ResourceScheduler) entity);
+                ResourceScheduler scheduler = (ResourceScheduler) entity;
+                _resourceSchedulers.add(scheduler);
+                scheduler.initialize();
             }
         }
 
@@ -512,6 +512,14 @@ public class PtidesDirector extends DEDirector {
     public boolean actorFinished(Actor actor) {
         return (_schedulerForActor.get(actor) != null && _schedulerForActor
                 .get(actor).lastScheduledActorFinished());
+    }
+    
+    @Override
+    public void wrapup() throws IllegalActionException { 
+        super.wrapup();
+        for (ResourceScheduler scheduler : _resourceSchedulers) {
+            scheduler.wrapup();
+        }
     }
 
     ///////////////////////////////////////////////////////////////////

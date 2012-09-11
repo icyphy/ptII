@@ -53,7 +53,7 @@ import ptolemy.kernel.util.NamedObj;
    @Pt.ProposedRating Red (derler)
    @Pt.AcceptedRating Red (derler)
  */
-public class EDFScheduler extends FPScheduler {
+public class PEDFCore extends FPPCore {
 
     /** Create a new actor in the specified container with the specified
      *  name.  The name must be unique within the container or an exception
@@ -67,7 +67,7 @@ public class EDFScheduler extends FPScheduler {
      *  @exception NameDuplicationException If the name coincides with
      *   an entity already in the container.
      */
-    public EDFScheduler(CompositeEntity container, String name)
+    public PEDFCore(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
