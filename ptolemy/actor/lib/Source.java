@@ -27,12 +27,16 @@
  */
 package ptolemy.actor.lib;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import ptolemy.actor.TypedAtomicActor;
-import ptolemy.actor.TypedCompositeActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.expr.SingletonParameter;
 import ptolemy.data.type.BaseType;
+import ptolemy.data.type.TypeConstant;
+import ptolemy.graph.Inequality;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -51,9 +55,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  for a token and return false from prefire() if there is no token.
  each channel of the trigger input, if any, and then discards the
  token.
-
  <p>
-
  Some derived classes may attach additional significance to an input
  on the trigger port. For example, they might fix the type and attach
  some significance to the value.  Note that it is not recommend to
@@ -63,7 +65,17 @@ import ptolemy.kernel.util.NameDuplicationException;
  is connected to the inside of a port of an opaque composite actor, and
  there is nothing connected to the outside of that port. It is not
  recommended to make the behavior of an actor dependent on a global
- property such as whether there is ultimately a source of data.
+ property such as whether there is ultimately a source of data.</p>
+ <p>
+ Any type of data on is accepted on the trigger port, therefore no
+ type is declared. Instead, the type resolution algorithm finds
+ the least fixed point. If backward type inference is enabled, and
+ no type has been declared for the trigger, it is constrained to be
+ equal to <code>BaseType.GENERAL</code>. This will result in upstream
+ ports resolving to the most general type rather than the most specific.
+ </p>
+ 
+ 
  @author Edward A. Lee
  @version $Id$
  @since Ptolemy II 0.3
@@ -162,21 +174,23 @@ public abstract class Source extends TypedAtomicActor {
 
         return super.prefire();
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                      protected methods                    ////
     
-    /** Override the base class to declare the trigger input type to be
-     *  general if backward type inference is enabled. This will
-     *  result in upstream ports resolving to the most general
-     *  type rather than the most specific. We don't want the trigger
-     *  type to always be general because code generation works
-     *  much better with the most specific types rather than the
-     *  most general.
-     *  @exception IllegalActionException Not thrown in this base class.
+    /** Set the input port greater than or equal to 
+     *  <code>BaseType.GENERAL</code> in case backward type inference is 
+     *  enabled and the input port has no type declared. 
+     * 
+     *  @return A set of inequalities.
      */
-    public void preinitialize() throws IllegalActionException {
-        TypedCompositeActor container = (TypedCompositeActor)getContainer();
-        if (container.isBackwardTypeInferenceEnabled()) {
-            trigger.setTypeEquals(BaseType.GENERAL);
+    @Override
+    protected Set<Inequality> _customTypeConstraints() {
+        HashSet<Inequality> result = new HashSet<Inequality>();
+        if (isBackwardTypeInferenceEnabled() && trigger.getTypeTerm().isSettable()) {
+            result.add(new Inequality(new TypeConstant(BaseType.GENERAL), trigger.getTypeTerm()));
         }
-        super.preinitialize();
+        return result;     
     }
+    
 }

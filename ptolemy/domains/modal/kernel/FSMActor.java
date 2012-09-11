@@ -47,6 +47,7 @@ import ptolemy.actor.Initializable;
 import ptolemy.actor.Manager;
 import ptolemy.actor.Receiver;
 import ptolemy.actor.TypedActor;
+import ptolemy.actor.TypedCompositeActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.util.BooleanDependency;
 import ptolemy.actor.util.CausalityInterface;
@@ -327,6 +328,14 @@ public class FSMActor extends CompositeEntity implements TypedActor,
         _initializables.add(initializable);
     }
 
+    /** Return false because backward type inference is not implemented 
+     *  for this actor.
+     *  @return false
+     */
+    public boolean isBackwardTypeInferenceEnabled() {
+        return false;
+    }
+    
     /** Clone the actor into the specified workspace. This calls the
      *  base class and then sets the attribute public members to refer
      *  to the attributes of the new actor.

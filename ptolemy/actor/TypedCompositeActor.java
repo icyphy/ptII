@@ -194,45 +194,45 @@ public class TypedCompositeActor extends CompositeActor implements TypedActor {
         }
     }
 
-    /** Return true if backward type inference is enabled.
-     *  This looks for an attribute in this composite actor
-     *  named "enableBackwardTypeInference", and if it exists,
-     *  returns its boolean value. If it does not exist,
-     *  the look up the hierarchy until the top-level for such
-     *  an attribute, and if it exists,
-     *  returns its boolean value. If it does not exist,
-     *  then return false. For backward compatibility,
-     *  if it does not exist, then look for a parameter
-     *  named "disableBackwardTypeInference" at the top
-     *  level and return its value, if it exists.
+    /** Return true if backward type inference is enabled. 
+     *  If this composite actor is opaque, then it looks for an attribute 
+     *  named "enableBackwardTypeInference" inside of it, and if it exists, 
+     *  returns its boolean value. If it does not exist, it looks up the 
+     *  hierarchy until the top-level for such an attribute, and if it exists,
+     *  again given that the container is opaque, returns its boolean value. 
+     *  If it does not exist, then return false. 
+     *  For backward compatibility, if it does not exist, then look for a 
+     *  parameter named "disableBackwardTypeInference" at the top level and 
+     *  return its value, if it exists.
      *  @return True if backward type inference is enabled.
      */
     public boolean isBackwardTypeInferenceEnabled() {
         try {
-            Parameter onlyForward = (Parameter)getAttribute(
-                    "enableBackwardTypeInference",
-                    Parameter.class);
-            if (onlyForward == null) {
+            Parameter backwardTypeInf = (Parameter) getAttribute(
+                    "enableBackwardTypeInference", Parameter.class);
+            if (!isOpaque() || backwardTypeInf == null) {
                 // Look up the hierarchy.
                 NamedObj container = getContainer();
-                if (container instanceof TypedCompositeActor) {
-                    return ((TypedCompositeActor)container).isBackwardTypeInferenceEnabled();
-                } else {
-                    // At the top level, presumably, and there is no such parameter.
-                    return false;
+                if (container instanceof CompositeEntity
+                        && container instanceof TypedActor
+                        && ((CompositeEntity) container).isOpaque()) {
+                    return ((TypedActor) container)
+                            .isBackwardTypeInferenceEnabled();
                 }
-            } else {
+            } else if (isOpaque()) {
                 // Parameter exists.
-                return ((BooleanToken) onlyForward.getToken())
-                            .booleanValue();
-
+                return ((BooleanToken) backwardTypeInf.getToken())
+                        .booleanValue();
             }
+
+            return false;
+
         } catch (IllegalActionException e) {
             // This should not happen
             throw new InternalErrorException(e);
         }
     }
-    
+
     /** Create a new TypedIOPort with the specified name.
      *  The container of the port is set to this actor.
      *  This method is write-synchronized on the workspace.
@@ -619,7 +619,8 @@ public class TypedCompositeActor extends CompositeActor implements TypedActor {
         if (!isUndeclared) {
             // sourcePort has a declared type.
             Type srcDeclared = sourcePort.getType();
-            Iterator<TypedIOPort> destinationPorts = destinationPortList.iterator();
+            Iterator<TypedIOPort> destinationPorts = destinationPortList
+                    .iterator();
 
             while (destinationPorts.hasNext()) {
                 TypedIOPort destinationPort = (TypedIOPort) destinationPorts
@@ -694,9 +695,8 @@ public class TypedCompositeActor extends CompositeActor implements TypedActor {
                 // 2) only setup type constraint if bidirectional type 
                 // inference is enabled.
                 if (isBackwardTypeInferenceEnabled()) {
-                    result.add(new Inequality(
-                            new GLBFunction(source),
-                            source.getTypeTerm()));
+                    result.add(new Inequality(new GLBFunction(source), source
+                            .getTypeTerm()));
                 }
             }
         }
@@ -746,7 +746,8 @@ public class TypedCompositeActor extends CompositeActor implements TypedActor {
 
             // Type check from all the ports on the contained actor.
             // to the ports that the actor can send data to.
-            Iterator<TypedIOPort> ports = ((Entity<TypedIOPort>) actor).portList().iterator();
+            Iterator<TypedIOPort> ports = ((Entity<TypedIOPort>) actor)
+                    .portList().iterator();
 
             while (ports.hasNext()) {
                 TypedIOPort sourcePort = (TypedIOPort) ports.next();

@@ -28,8 +28,10 @@
 
 package ptolemy.actor.lib.gui;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import ptolemy.actor.TypedAtomicActor;
-import ptolemy.actor.TypedCompositeActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.injection.ActorModuleInitializer;
 import ptolemy.actor.injection.PortableContainer;
@@ -42,6 +44,8 @@ import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.StringParameter;
 import ptolemy.data.type.BaseType;
+import ptolemy.data.type.TypeConstant;
+import ptolemy.graph.Inequality;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
@@ -66,6 +70,13 @@ import ptolemy.kernel.util.Workspace;
  Tokens are read from the input only in
  the postfire() method, to allow them to settle in domains where they
  converge to a fixed point.
+ </p><p>
+  This actor accepts any type of data on its input port, therefore it
+ doesn't declare a type, but lets the type resolution algorithm find
+ the least fixed point. If backward type inference is enabled, and
+ no input type has been declared, the input is constrained to be
+ equal to <code>BaseType.GENERAL</code>. This will result in upstream 
+ ports resolving to the most general type rather than the most specific.
  </p><p>
  This actor has a <i>suppressBlankLines</i> parameter, whose default value
  is false. If this parameter is configured to be true, this actor does not
@@ -294,23 +305,6 @@ public class Display extends TypedAtomicActor implements PortablePlaceable {
         return super.postfire();
     }
 
-    /** Override the base class to declare the input type to be
-     *  general if backward type inference is enabled. This will
-     *  result in upstream ports resolving to the most general
-     *  type rather than the most specific. We don't want the input
-     *  type to always be general because code generation works
-     *  much better with the most specific types rather than the
-     *  most general.
-     *  @exception IllegalActionException Not thrown in this base class.
-     */
-    public void preinitialize() throws IllegalActionException {
-        TypedCompositeActor container = (TypedCompositeActor)getContainer();
-        if (container.isBackwardTypeInferenceEnabled()) {
-            input.setTypeEquals(BaseType.GENERAL);
-        }
-        super.preinitialize();
-    }
-
     /** Override the base class to remove the display from its graphical
      *  container if the argument is null.
      *  @param container The proposed container.
@@ -368,6 +362,22 @@ public class Display extends TypedAtomicActor implements PortablePlaceable {
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
+    /** Set the input port greater than or equal to 
+     *  <code>BaseType.GENERAL</code> in case backward type inference is 
+     *  enabled and the input port has no type declared. 
+     * 
+     *  @return A set of inequalities.
+     */
+    @Override
+    protected Set<Inequality> _customTypeConstraints() {
+        HashSet<Inequality> result = new HashSet<Inequality>();
+        if (isBackwardTypeInferenceEnabled()
+                && input.getTypeTerm().isSettable()) {
+            result.add(new Inequality(new TypeConstant(BaseType.GENERAL), input
+                    .getTypeTerm()));
+        }
+        return result;
+    }
 
     /** Get the right instance of the implementation depending upon the
      *  of the dependency specified through dependency injection.
@@ -386,12 +396,12 @@ public class Display extends TypedAtomicActor implements PortablePlaceable {
      */
     protected DisplayInterface _getImplementation() {
         if (_implementation == null) {
-	    if (PtolemyInjector.getInjector() == null) {
-		System.err.println("Warning: main() did not call "
-			       + "ActorModuleInitializer.initializeInjector(), "
-			       + "so Display is calling it for you.");
-		ActorModuleInitializer.initializeInjector();
-	    }
+            if (PtolemyInjector.getInjector() == null) {
+                System.err.println("Warning: main() did not call "
+                        + "ActorModuleInitializer.initializeInjector(), "
+                        + "so Display is calling it for you.");
+                ActorModuleInitializer.initializeInjector();
+            }
             _implementation = PtolemyInjector.getInjector().getInstance(
                     DisplayInterface.class);
             try {

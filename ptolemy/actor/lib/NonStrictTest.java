@@ -28,11 +28,11 @@
 package ptolemy.actor.lib;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
-import ptolemy.actor.TypedCompositeActor;
 import ptolemy.actor.parameters.SharedParameter;
 import ptolemy.data.ArrayToken;
 import ptolemy.data.BooleanToken;
@@ -42,6 +42,8 @@ import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.ArrayType;
 import ptolemy.data.type.BaseType;
+import ptolemy.data.type.TypeConstant;
+import ptolemy.graph.Inequality;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
@@ -70,8 +72,14 @@ import ptolemy.util.StringUtilities;
  from Test in that it ignores absent inputs, and it checks the inputs
  in the postfire() method rather than the fire() method.</p>
  <p>
- The  input data type is general, so any input is acceptable.
- If the input is a DoubleToken or ComplexToken, then the comparison
+ This actor accepts any type of data on its input port, therefore it
+ doesn't declare a type, but lets the type resolution algorithm find
+ the least fixed point. If backward type inference is enabled, and
+ no input type has been declared, the input is constrained to be
+ equal to <code>BaseType.GENERAL</code>. This will result in upstream 
+ ports resolving to the most general type rather than the most specific.
+ </p><p>
+  If the input is a DoubleToken or ComplexToken, then the comparison
  passes if the value is close to what it should be, within the
  specified <i>tolerance</i> (which defaults to 10<sup>-9</sup>).
  During training, if a correct value is
@@ -331,23 +339,6 @@ public class NonStrictTest extends Sink {
         return true;
     }
     
-    /** Override the base class to declare the input type to be
-     *  general if backward type inference is enabled. This will
-     *  result in upstream ports resolving to the most general
-     *  type rather than the most specific. We don't want the input
-     *  type to always be general because code generation works
-     *  much better with the most specific types rather than the
-     *  most general.
-     *  @exception IllegalActionException Not thrown in this base class.
-     */
-    public void preinitialize() throws IllegalActionException {
-        TypedCompositeActor container = (TypedCompositeActor)getContainer();
-        if (container.isBackwardTypeInferenceEnabled()) {
-            input.setTypeEquals(BaseType.GENERAL);
-        }
-        super.preinitialize();
-    }
-    
     /** If <i>trainingMode</i> is <i>true</i>, then take the collected
      *  training tokens and store them as an array in <i>correctValues</i>.
      *  @exception IllegalActionException If initialized() was called
@@ -518,6 +509,23 @@ public class NonStrictTest extends Sink {
         }
     }
 
+    /** Set the input port to be greater than or equal to 
+     *  <code>BaseType.GENERAL</code> in case backward type inference is 
+     *  enabled and the input port has no type declared. 
+     * 
+     *  @return A set of inequalities.
+     */
+    @Override
+    protected Set<Inequality> _customTypeConstraints() {
+        HashSet<Inequality> result = new HashSet<Inequality>();
+        if (isBackwardTypeInferenceEnabled()
+                && input.getTypeTerm().isSettable()) {
+            result.add(new Inequality(new TypeConstant(BaseType.GENERAL), input
+                    .getTypeTerm()));
+        }
+        return result;
+    }
+    
     /** Test whether the value of this token is close to the first argument,
      *  where "close" means that the distance between them is less than
      *  or equal to the second argument.  This method only makes sense

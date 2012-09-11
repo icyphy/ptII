@@ -41,7 +41,7 @@ import ptolemy.kernel.util.IllegalActionException;
  This interface defines the method to get type constraints from
  an actor.  The ports on a TypedActor are constrained to be TypedIOPorts.
 
- @author Yuhong Xiong
+ @author Yuhong Xiong, Marten Lohstroh
  @version $Id$
  @since Ptolemy II 0.2
  @Pt.ProposedRating Green (yuhong)
@@ -62,4 +62,12 @@ public interface TypedActor extends Actor {
      *  @see ptolemy.graph.Inequality
      */
     public Set<Inequality> typeConstraints() throws IllegalActionException;
+    
+    /** Look up the hierarchy to find the parameter 
+     * <code>enableBackwardTypeInference</code> and return its value.
+     *  @return True if backward type inference is enabled, return false 
+     *  otherwise.
+     */
+    public boolean isBackwardTypeInferenceEnabled();
+    
 }

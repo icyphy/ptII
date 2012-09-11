@@ -27,9 +27,13 @@
  */
 package ptolemy.actor.lib.conversions;
 
-import ptolemy.actor.TypedCompositeActor;
+import java.util.HashSet;
+import java.util.Set;
+
 import ptolemy.data.StringToken;
 import ptolemy.data.type.BaseType;
+import ptolemy.data.type.TypeConstant;
+import ptolemy.graph.Inequality;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -44,8 +48,15 @@ import ptolemy.kernel.util.NameDuplicationException;
  new string token whose value is the value of the input string token surrounded
  by double quotation marks. The input data type is undeclared, so this actor
  can accept any input. If the input known to be absent, this actor outputs
- a string "absent".
-
+ a string "absent".<p>
+ This actor accepts any type of data on its input port, therefore it
+ doesn't declare a type, but lets the type resolution algorithm find
+ the least fixed point. If backward type inference is enabled, and
+ no input type has been declared, the input is constrained to be
+ equal to <code>BaseType.GENERAL</code>. This will result in upstream 
+ ports resolving to the most general type rather than the most specific.
+ </p>
+ 
  @author  Steve Neuendorffer, Haiyang Zheng
  @version $Id$
  @since Ptolemy II 2.1
@@ -86,21 +97,26 @@ public class TokenToExpression extends Converter {
             output.broadcast(new StringToken("absent"));
         }
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                      protected methods                    ////
     
-    /** Override the base class to declare the input type to be
-     *  general if backward type inference is enabled. This will
-     *  result in upstream ports resolving to the most general
-     *  type rather than the most specific. We don't want the input
-     *  type to always be general because code generation works
-     *  much better with the most specific types rather than the
-     *  most general.
-     *  @exception IllegalActionException Not thrown in this base class.
+    
+    /** Set the input port greater than or equal to 
+     *  <code>BaseType.GENERAL</code> in case backward type inference is 
+     *  enabled and the input port has no type declared. 
+     * 
+     *  @return A set of inequalities.
      */
-    public void preinitialize() throws IllegalActionException {
-        TypedCompositeActor container = (TypedCompositeActor)getContainer();
-        if (container.isBackwardTypeInferenceEnabled()) {
-            input.setTypeEquals(BaseType.GENERAL);
+    @Override
+    protected Set<Inequality> _customTypeConstraints() {
+        HashSet<Inequality> result = new HashSet<Inequality>();
+        if (isBackwardTypeInferenceEnabled()
+                && input.getTypeTerm().isSettable()) {
+            result.add(new Inequality(new TypeConstant(BaseType.GENERAL), input
+                    .getTypeTerm()));
         }
-        super.preinitialize();
+        return result;
     }
+    
 }

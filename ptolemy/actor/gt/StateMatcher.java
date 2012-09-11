@@ -250,6 +250,14 @@ public class StateMatcher extends State implements GTEntity, TypedActor,
         return _EMPTY_LIST;
     }
 
+    /** Return false because backward type inference is not implemented 
+     *  for this actor.
+     *  @return false
+     */
+    public boolean isBackwardTypeInferenceEnabled() {
+        return false;
+    }
+    
     /** Return true because prefire and fire do nothing.
      *
      *  @return true.

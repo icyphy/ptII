@@ -42,6 +42,7 @@ import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Workspace;
 
 ///////////////////////////////////////////////////////////////////
@@ -178,6 +179,18 @@ public class TypedAtomicActor extends AtomicActor<TypedIOPort> implements
         return newObject;
     }
 
+    /** Return true if backward type inference is enabled in the first opaque 
+     *  composite actor up the hierarchy, or false otherwise.
+     * @return true If backward type inference is enabled, or false otherwise.
+     */
+    public boolean isBackwardTypeInferenceEnabled() {
+        NamedObj container = getContainer();
+        if (container != null && container instanceof TypedActor) {
+            return ((TypedActor)container).isBackwardTypeInferenceEnabled();
+        }
+        return false;
+    }
+    
     /** Create a new TypedIOPort with the specified name.
      *  The container of the port is set to this actor.
      *  This method is write-synchronized on the workspace.

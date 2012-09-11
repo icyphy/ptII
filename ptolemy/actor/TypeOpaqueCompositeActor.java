@@ -105,6 +105,15 @@ public class TypeOpaqueCompositeActor extends CompositeActor implements
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    /** Return false because backward type inference is not implemented 
+     *  for this actor.
+     *  @return false
+     */
+    public boolean isBackwardTypeInferenceEnabled() {
+        return false;
+    }
+
+    
     /** Create a new TypedIOPort with the specified name.
      *  The container of the port is set to this actor.
      *  This method is write-synchronized on the workspace.
