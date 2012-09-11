@@ -222,14 +222,14 @@
 </port>
 <port name="NetworkTransmitterPort" class="ptolemy.domains.ptides.lib.io.NetworkTransmitterPort">
 </port>
-<entity name="PEDFCore" class="ptolemy.domains.ptides.lib.PEDFCore"> 
-</entity>
-<entity name="NPFCFSCore" class="ptolemy.domains.ptides.lib.NPFCFSCore"> 
-</entity>
-<entity name="FPPCore" class="ptolemy.domains.ptides.lib.FPPCore"> 
-</entity>
-<entity name="DynamicCoreAssignmentScheduler" class="ptolemy.domains.ptides.lib.DynamicCoreAssignmentScheduler"> 
-</entity>
+<property name="PEDFCore" class="ptolemy.domains.ptides.lib.PEDFCore"> 
+</property>
+<property name="NPFCFSCore" class="ptolemy.domains.ptides.lib.NPFCFSCore"> 
+</property>
+<property name="FPPCore" class="ptolemy.domains.ptides.lib.FPPCore"> 
+</property>
+<property name="DynamicCoreAssignmentScheduler" class="ptolemy.domains.ptides.lib.DynamicCoreAssignmentScheduler"> 
+</property>
 
 
       </group>
