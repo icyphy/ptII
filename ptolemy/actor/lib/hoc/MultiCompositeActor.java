@@ -27,7 +27,9 @@
 package ptolemy.actor.lib.hoc;
 
 import java.util.Iterator;
+import java.util.Set;
 
+import ptolemy.actor.IOPort;
 import ptolemy.actor.TypedCompositeActor;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Port;
@@ -84,6 +86,48 @@ public class MultiCompositeActor extends TypedCompositeActor {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+
+    /** Mirror a set of container ports in the refinement.
+     *  @param refinement The refinement in which to create ports.
+     *  @param portsToMirror The ports to mirror in the refinement.
+     */
+    public static void mirrorContainerPortsInRefinement(Refinement refinement, Set<Port> portsToMirror)
+        throws IllegalActionException, NameDuplicationException {
+
+        for(Port port : portsToMirror) {
+            try {
+                refinement.setMirrorDisable(true);
+                Port newPort = refinement.newPort(port.getName());
+                if (newPort instanceof RefinementPort
+                        && port instanceof IOPort) {
+                    try {
+                        ((RefinementPort) newPort)
+                                .setMirrorDisable(true);
+
+                        if (((IOPort) port).isInput()) {
+                            ((RefinementPort) newPort)
+                                    .setInput(true);
+                        }
+
+                        if (((IOPort) port).isOutput()) {
+                            ((RefinementPort) newPort)
+                                    .setOutput(true);
+                        }
+
+                        if (((IOPort) port).isMultiport()) {
+                            ((RefinementPort) newPort)
+                                    .setMultiport(true);
+                        }
+                    } finally {
+                        ((RefinementPort) newPort)
+                                .setMirrorDisable(false);
+                    }
+                }
+            } finally {
+                refinement.setMirrorDisable(false);
+            }
+        }
+    }
 
     /** Create a new port with the specified name in this entity
      *  and all the refinements.  Link these ports so that

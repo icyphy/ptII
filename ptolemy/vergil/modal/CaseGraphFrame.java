@@ -30,8 +30,10 @@ package ptolemy.vergil.modal;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 import javax.swing.JComponent;
 import javax.swing.JMenu;
@@ -39,12 +41,11 @@ import javax.swing.JTabbedPane;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
-import ptolemy.actor.IOPort;
 import ptolemy.actor.gui.Configuration;
 import ptolemy.actor.gui.Tableau;
 import ptolemy.actor.lib.hoc.Case;
+import ptolemy.actor.lib.hoc.MultiCompositeActor;
 import ptolemy.actor.lib.hoc.Refinement;
-import ptolemy.actor.lib.hoc.RefinementPort;
 import ptolemy.gui.ComponentDialog;
 import ptolemy.gui.Query;
 import ptolemy.kernel.Port;
@@ -336,46 +337,18 @@ public class CaseGraphFrame extends ActorGraphFrame implements ChangeListener {
                         // Get the initial port configuration from the container.
                         Iterator<?> ports = _case.portList().iterator();
 
+                        Set<Port> portsToMirror = new HashSet<Port>();
                         while (ports.hasNext()) {
                             Port port = (Port) ports.next();
-                            // No need to mirror the control port, as it's a PortParameter.
-                            // Hence, its value is available as a parameter.
-                            if (port == _case.control.getPort()) {
-                                continue;
-                            }
-
-                            try {
-                                entity.setMirrorDisable(true);
-                                Port newPort = entity.newPort(port.getName());
-                                if (newPort instanceof RefinementPort
-                                        && port instanceof IOPort) {
-                                    try {
-                                        ((RefinementPort) newPort)
-                                                .setMirrorDisable(true);
-
-                                        if (((IOPort) port).isInput()) {
-                                            ((RefinementPort) newPort)
-                                                    .setInput(true);
-                                        }
-
-                                        if (((IOPort) port).isOutput()) {
-                                            ((RefinementPort) newPort)
-                                                    .setOutput(true);
-                                        }
-
-                                        if (((IOPort) port).isMultiport()) {
-                                            ((RefinementPort) newPort)
-                                                    .setMultiport(true);
-                                        }
-                                    } finally {
-                                        ((RefinementPort) newPort)
-                                                .setMirrorDisable(false);
-                                    }
-                                }
-                            } finally {
-                                entity.setMirrorDisable(false);
+                            
+                            // see if we should mirror the port
+                            if(port != _case.control.getPort()) {
+                                portsToMirror.add(port);
                             }
                         }
+                        
+                        MultiCompositeActor.mirrorContainerPortsInRefinement(entity, portsToMirror);
+                        
                         JGraph jgraph = _addTabbedPane(entity, true);
                         ((CaseGraphController) _controller)._addHotKeys(jgraph);
                     }
