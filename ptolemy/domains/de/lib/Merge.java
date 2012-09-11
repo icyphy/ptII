@@ -195,8 +195,13 @@ public class Merge extends DETransformer {
         if (director instanceof SuperdenseTimeDirector) {
             return ((SuperdenseTimeDirector) director).getIndex();
         }
-        throw new IllegalActionException(this,
-                "This actor can only be used with a SuperdenseTimeDirector");
+//        throw new IllegalActionException(this,
+//                "This actor can only be used with a SuperdenseTimeDirector");
+        // FIXME: Is the following assumption correct?
+        // The TMDirector uses Merge, so we should probably not 
+        // throw an exception here but return a default
+        // value for the microstep. 
+        return 0;
     }
     
     ///////////////////////////////////////////////////////////////////
