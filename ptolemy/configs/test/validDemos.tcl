@@ -85,7 +85,15 @@ proc validateModels {models} {
 
 	test validDemos-$count "Validating parse of $modelPath after removing configure" {
 	    set errMsg {}
-	    catch {java::call ptolemy.configs.test.ValidatingXMLParser parse $filename} errMsg
+	    if [catch {java::call ptolemy.configs.test.ValidatingXMLParser parse $filename} errMsg] {
+		puts "Could not parse $modelPath, file $filename was"
+		# Print out the contents of the failed file.
+		# A common failure is a version control system conflict.
+		set fp [open $filename r]
+		puts [read $fp]
+		close $fp
+	    }
+
 	    list $errMsg
 	} {{}}
     }
