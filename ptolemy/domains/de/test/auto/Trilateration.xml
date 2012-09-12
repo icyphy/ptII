@@ -3876,25 +3876,29 @@ Then delete this annotation.</text>
             </property>
         </entity>
         <entity name="NonStrictTest8" class="ptolemy.actor.lib.NonStrictTest">
-            <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{{-Title = &quot;Sensors at (0,0),(a,0),(0,b) where&quot;, a = 3000.0, b = 4000.0}}">
+            <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{{Title = &quot;Sensors at (0,0),(a,0),(0,b) where&quot;, a = 3000.0, b = 4000.0}}">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="{925.2522153514487, -185.99238128590707}">
             </property>
         </entity>
         <entity name="NonStrictTest9" class="ptolemy.actor.lib.NonStrictTest">
-            <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{{-Title = &quot;Target at X,Y.&quot;, Target emission = &quot;sound&quot;, Target is = &quot;moving&quot;}}">
+            <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{{TargeEmission = &quot;sound&quot;, TargetIs = &quot;moving&quot;, Title = &quot;Target at X,Y.&quot;}}">
+            </property>
+            <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="{991.9796460630557, -154.38465094883009}">
             </property>
         </entity>
         <entity name="NonStrictTest10" class="ptolemy.actor.lib.NonStrictTest">
-            <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{{-Title = &quot;Clock&quot;, Quality = &quot;good clock&quot;, Status = &quot;Synchronized: 1(master,free run)=&gt;2=&gt;3&quot;}}">
+            <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{{Quality = &quot;good clock&quot;, Status = &quot;Synchronized: 1(master,free run)=&gt;2=&gt;3&quot;, Title = &quot;Clock&quot;}}">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="{1022.8849823926421, -98.19313034958225}">
             </property>
         </entity>
         <entity name="NonStrictTest11" class="ptolemy.actor.lib.NonStrictTest">
             <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{&quot;\nComputed vs Actual Position Error Statistics (meters)&quot;}">
+            </property>
+            <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="{1001.813162167924, -19.525001510635207}">
             </property>
@@ -3924,13 +3928,15 @@ Then delete this annotation.</text>
             </property>
         </entity>
         <entity name="NonStrictTest16" class="ptolemy.actor.lib.NonStrictTest">
-            <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{{Clock2 Mean = -3.17999517089144E-9, StdDev = 8.348918523506722E-9}}">
+            <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{{Clock2Mean = -3.17999517089144E-9, StdDev = 8.348918523506722E-9}}">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="{1090.5333544535445, 287.4872586653973}">
+            <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[1090.0, 285.0]">
             </property>
         </entity>
         <entity name="NonStrictTest17" class="ptolemy.actor.lib.NonStrictTest">
-            <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{{Clock3 Mean = -5.133316941889158E-9, StdDev = 1.024907805063509E-8}}">
+            <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{{Clock3Mean = -5.133316941889158E-9, StdDev = 1.024907805063509E-8}}">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="{1002.031709509729, 49.37569012608435}">
             </property>
@@ -4169,9 +4175,9 @@ Then delete this annotation.</text>
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[799, 524]">
         </property>
-        <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.8">
+        <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
         </property>
-        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{530.5555555555557, -195.0}">
+        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{1165.0, -75.0}">
         </property>
         <property name="sound" class="ptolemy.data.expr.Parameter" value="true">
         </property>
@@ -5178,7 +5184,7 @@ Then delete this annotation.</text>
             <display name="description"/>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[1165.0, -210.0]">
             </property>
-            <port name="-Title" class="ptolemy.actor.TypedIOPort">
+            <port name="Title" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
                 <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 </property>
@@ -5240,17 +5246,17 @@ Then delete this annotation.</text>
             <display name="description2"/>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[1165.0, -75.0]">
             </property>
-            <port name="-Title" class="ptolemy.actor.TypedIOPort">
+            <port name="Title" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
                 <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 </property>
             </port>
-            <port name="Target emission" class="ptolemy.actor.TypedIOPort">
+            <port name="TargeEmission" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
                 <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 </property>
             </port>
-            <port name="Target is" class="ptolemy.actor.TypedIOPort">
+            <port name="TargetIs" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
                 <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 </property>
@@ -5312,7 +5318,7 @@ Then delete this annotation.</text>
             <display name="description3"/>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[1255.0, 220.0]">
             </property>
-            <port name="-Title" class="ptolemy.actor.TypedIOPort">
+            <port name="Title" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
                 <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 </property>
@@ -5665,7 +5671,7 @@ Then delete this annotation.</text>
         <link port="Merge8.input" relation="relation56"/>
         <link port="Merge8.output" relation="relation64"/>
         <link port="RecordAssembler.output" relation="relation41"/>
-        <link port="RecordAssembler.-Title" relation="relation58"/>
+        <link port="RecordAssembler.Title" relation="relation58"/>
         <link port="RecordAssembler.a" relation="relation59"/>
         <link port="RecordAssembler.b" relation="relation60"/>
         <link port="StringConst10.output" relation="relation58"/>
@@ -5675,9 +5681,9 @@ Then delete this annotation.</text>
         <link port="Const22.output" relation="relation60"/>
         <link port="Const22.trigger" relation="relation3"/>
         <link port="RecordAssembler2.output" relation="relation61"/>
-        <link port="RecordAssembler2.-Title" relation="relation57"/>
-        <link port="RecordAssembler2.Target emission" relation="relation62"/>
-        <link port="RecordAssembler2.Target is" relation="relation64"/>
+        <link port="RecordAssembler2.Title" relation="relation57"/>
+        <link port="RecordAssembler2.TargeEmission" relation="relation62"/>
+        <link port="RecordAssembler2.TargetIs" relation="relation64"/>
         <link port="StringConst11.output" relation="relation57"/>
         <link port="StringConst11.trigger" relation="relation64"/>
         <link port="StringConst12.output" relation="relation63"/>
@@ -5687,7 +5693,7 @@ Then delete this annotation.</text>
         <link port="RecordAssembler4.2" relation="relation61"/>
         <link port="RecordAssembler4.3" relation="relation65"/>
         <link port="RecordAssembler3.output" relation="relation65"/>
-        <link port="RecordAssembler3.-Title" relation="relation63"/>
+        <link port="RecordAssembler3.Title" relation="relation63"/>
         <link port="RecordAssembler3.Status" relation="relation67"/>
         <link port="RecordAssembler3.Quality" relation="relation66"/>
     </entity>
@@ -12222,13 +12228,13 @@ the connection patterns to the clockRate generation actors.</text></svg></config
         <display name="Event Clock Error Stats"/>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[190.0, -90.0]">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={95, 52, 898, 517}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={95, 52, 917, 634}, maximized=false}">
         </property>
-        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[683, 400]">
+        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[683, 524]">
         </property>
-        <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.7937738364702">
+        <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
         </property>
-        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{452.22330078125, 279.2265625}">
+        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{535.0, 90.0}">
         </property>
         <property name="pathPoints" class="ptolemy.actor.parameters.SharedParameter" value="15">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -13285,7 +13291,7 @@ and the state machine reset.</text></svg></configure>
             </property>
             <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
-            <port name="Clock2 Mean" class="ptolemy.actor.TypedIOPort">
+            <port name="Clock2Mean" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
                 <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 </property>
@@ -13301,7 +13307,7 @@ and the state machine reset.</text></svg></configure>
             </property>
             <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
-            <port name="Clock3 Mean" class="ptolemy.actor.TypedIOPort">
+            <port name="Clock3Mean" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
                 <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 </property>
@@ -13424,10 +13430,10 @@ and the state machine reset.</text></svg></configure>
         <link port="CompositeActor2.port2" relation="relation15"/>
         <link port="CompositeActor2.port3" relation="relation16"/>
         <link port="RecordAssembler.output" relation="relation17"/>
-        <link port="RecordAssembler.Clock2 Mean" relation="relation13"/>
+        <link port="RecordAssembler.Clock2Mean" relation="relation13"/>
         <link port="RecordAssembler.StdDev" relation="relation14"/>
         <link port="RecordAssembler2.output" relation="relation11"/>
-        <link port="RecordAssembler2.Clock3 Mean" relation="relation15"/>
+        <link port="RecordAssembler2.Clock3Mean" relation="relation15"/>
         <link port="RecordAssembler2.StdDev" relation="relation16"/>
         <link port="RecordAssembler3.output" relation="relation19"/>
         <link port="RecordAssembler3.Clock2" relation="relation17"/>
