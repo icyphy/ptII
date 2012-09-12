@@ -37,6 +37,7 @@ import ptolemy.data.type.MonotonicFunction;
 import ptolemy.data.type.Type;
 import ptolemy.graph.InequalityTerm;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.Nameable;
 
 /** A function that, given a list of ports, returns a <code>StructuredType</code>
  *  of which the fields names and field types correspond with the given ports. 
@@ -97,8 +98,7 @@ public class ConstructAssociativeType extends MonotonicFunction {
             return _type.getConstructor(String[].class, Type[].class)
                     .newInstance(arglist);
         } catch (Exception e) {
-            throw new IllegalActionException(
-                    "Unable to instantiate new AssociativeType.");
+            throw new IllegalActionException(e.getCause().getMessage());
         }
     }
 

@@ -96,11 +96,28 @@ public class RecordType extends AssociativeType implements Cloneable {
         }
 
         for (int i = 0; i < labels.length; i++) {
-            FieldType fieldType = new FieldType(types[i]);
-            _fields.put(labels[i], fieldType);
+            if (labels[i] == null) {
+                throw new IllegalArgumentException("RecordType: the " + i
+                        + "'th element of the labels array is null.");
+            }
+            // check for ill-formatted field names 
+            if (!labels[i].matches("^[a-zA-Z0-9_]*$")) {
+                throw new IllegalArgumentException("RecordType: the label "
+                        + "named '" + labels[i] + "' is ill-formatted."
+                        + "\n Only alphanumeric characters and underscores "
+                        + "are allowed.");
+            }
+            if (!_fields.containsKey(labels[i])) {
+                FieldType fieldType = new FieldType(types[i]);
+                _fields.put(labels[i], fieldType);
+            } else {
+                throw new IllegalArgumentException("RecordType: The "
+                        + "labels array contain duplicate element: "
+                        + labels[i]);
+            }
         }
     }
-
+    
     /** Construct a RecordType with the labels and values specified by
      *  a given Map object. The object cannot contain any null keys or
      *  values.

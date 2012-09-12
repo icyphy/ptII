@@ -744,7 +744,13 @@ public class RecordToken extends AbstractNotConvertibleToken {
                 throw new IllegalActionException("RecordToken: the " + i
                         + "'th element of the labels or values array is null");
             }
-
+            // check for ill-formatted field names 
+            if (!labels[i].matches("^[a-zA-Z0-9_]*$")) {
+                throw new IllegalActionException("RecordToken: the label "
+                        + "named '" + labels[i] + "' is ill-formatted."
+                        + "\n Only alphanumeric characters and underscores "
+                        + "are allowed.");
+            }
             if (!_fields.containsKey(labels[i])) {
                 _fields.put(labels[i], values[i]);
             } else {
