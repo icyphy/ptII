@@ -327,6 +327,10 @@ public class HTMLModelExporter extends VisualModelReference {
             }
         };
         try {
+            // FIXME: No, this can't work. If the model runs and wants
+            // to perform GUI actions, such as generate plots, in other
+            // threads, such as PN threads, then those GUI actions will block.
+            // We need to run the model outside the GUI thread.
             SwingUtilities.invokeAndWait(doExport);
         } catch (Exception ex) {
             throw new IllegalActionException(this, null, ex,
