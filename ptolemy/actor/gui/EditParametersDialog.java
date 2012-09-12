@@ -34,6 +34,7 @@ import java.util.List;
 import javax.swing.SwingUtilities;
 
 import ptolemy.actor.gui.style.StyleConfigurer;
+import ptolemy.data.expr.StringParameter;
 import ptolemy.gui.ComponentDialog;
 import ptolemy.gui.Query;
 import ptolemy.kernel.util.Attribute;
@@ -116,14 +117,14 @@ public class EditParametersDialog extends ComponentDialog implements
             // EditParametersDialog.
             // First, create a string array with the names of all the
             // parameters.
-            List attributeList = _target.attributeList(Settable.class);
+            List<Settable> attributeList = _target.attributeList(Settable.class);
 
             // Count visible attributes
-            Iterator parameters = attributeList.iterator();
+            Iterator<Settable> parameters = attributeList.iterator();
             int count = 0;
 
             while (parameters.hasNext()) {
-                Settable parameter = (Settable) parameters.next();
+                Settable parameter = parameters.next();
 
                 if (Configurer.isVisible(target, parameter)) {
                     count++;
@@ -136,7 +137,7 @@ public class EditParametersDialog extends ComponentDialog implements
             int index = 0;
 
             while (parameters.hasNext()) {
-                Settable parameter = (Settable) parameters.next();
+                Settable parameter = parameters.next();
 
                 if (Configurer.isVisible(target, parameter)) {
                     attributeNames[index++] = ((Attribute) parameter).getName();
@@ -195,9 +196,10 @@ public class EditParametersDialog extends ComponentDialog implements
                 MessageHandler.error("Edit Parameter Styles failed", ex);
             }
         } else if (buttonPressed().equals("Help")) {
+            String helpURL = _getHelpURL();
+            
             try {
-                URL doc = getClass().getClassLoader().getResource(
-                        "doc/expressions.htm");
+                URL doc = getClass().getClassLoader().getResource(helpURL);
 
                 // Try to use the configuration, if we can.
                 boolean success = false;
@@ -227,7 +229,7 @@ public class EditParametersDialog extends ComponentDialog implements
                 }
             } catch (Exception ex) {
                 try {
-                    MessageHandler.warning("Cannot open help page.", ex);
+                    MessageHandler.warning("Cannot open help page \"" + helpURL + "\".", ex);
                 } catch (CancelException exception) {
                     // Ignore the cancel.
                 }
@@ -302,6 +304,54 @@ public class EditParametersDialog extends ComponentDialog implements
         }
     }
 
+    /** Open a dialog to add a new parameter.
+     *  @param message A message to place at the top, or null if none.
+     *  @param name The default name.
+     *  @param defValue The default value.
+     *  @param className The default class name.
+     *  @return The dialog that is created.
+     */
+    protected ComponentDialog _openAddDialog(String message, String name,
+            String defValue, String className) {
+        // Create a new dialog to add a parameter, then open a new
+        // EditParametersDialog.
+        _query = new Query();
+
+        if (message != null) {
+            _query.setMessage(message);
+        }
+
+        _query.addLine("name", "Name", name);
+        _query.addLine("default", "Default value", defValue);
+        _query.addLine("class", "Class", className);
+
+        ComponentDialog dialog = new ComponentDialog(_owner,
+                "Add a new parameter to " + _target.getFullName(), _query, null);
+
+        // If the OK button was pressed, then queue a mutation
+        // to create the parameter.
+        // A blank property name is interpreted as a cancel.
+        String newName = _query.getStringValue("name");
+
+        // Need to escape quotes in default value.
+        String newDefValue = StringUtilities.escapeForXML(_query
+                .getStringValue("default"));
+
+        if (dialog.buttonPressed().equals("OK") && !newName.equals("")) {
+            String moml = "<property name=\"" + newName + "\" value=\""
+                    + newDefValue + "\" class=\""
+                    + _query.getStringValue("class") + "\"/>";
+            _target.addChangeListener(this);
+
+            MoMLChangeRequest request = new MoMLChangeRequest(this, _target,
+                    moml);
+            request.setUndoable(true);
+            _target.requestChange(request);
+        }
+
+        return dialog;
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
 
@@ -361,53 +411,34 @@ public class EditParametersDialog extends ComponentDialog implements
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
-
-    /** Open a dialog to add a new parameter.
-     *  @param message A message to place at the top, or null if none.
-     *  @param name The default name.
-     *  @param defValue The default value.
-     *  @param className The default class name.
-     *  @return The dialog that is created.
+    
+    /** Returns the URL of the help file to be displayed when the user
+     *  clicks the Help button. The help file defaults to the expression
+     *  language documentation, but can be overriden by attaching a
+     *  parameter {@code _helpURL} to the target object.
+     *  @return URL of the help file to be displayed, parsable by the
+     *          Ptolemy class loader.
      */
-    protected ComponentDialog _openAddDialog(String message, String name,
-            String defValue, String className) {
-        // Create a new dialog to add a parameter, then open a new
-        // EditParametersDialog.
-        _query = new Query();
-
-        if (message != null) {
-            _query.setMessage(message);
+    private String _getHelpURL() {
+        // Look for a _helpURL parameter attached to the target object
+        List<StringParameter> attributeList = _target.attributeList(StringParameter.class);
+        for (StringParameter attribute : attributeList) {
+            if (attribute.getName().equals("_helpURL")) {
+                try {
+                    return attribute.stringValue();
+                } catch (IllegalActionException ex) {
+                    try {
+                        MessageHandler.warning("Couldn't access help URL parameter.", ex);
+                    } catch (CancelException exception) {
+                        // Ignore the cancel.
+                    }
+                }
+            }
         }
-
-        _query.addLine("name", "Name", name);
-        _query.addLine("default", "Default value", defValue);
-        _query.addLine("class", "Class", className);
-
-        ComponentDialog dialog = new ComponentDialog(_owner,
-                "Add a new parameter to " + _target.getFullName(), _query, null);
-
-        // If the OK button was pressed, then queue a mutation
-        // to create the parameter.
-        // A blank property name is interpreted as a cancel.
-        String newName = _query.getStringValue("name");
-
-        // Need to escape quotes in default value.
-        String newDefValue = StringUtilities.escapeForXML(_query
-                .getStringValue("default"));
-
-        if (dialog.buttonPressed().equals("OK") && !newName.equals("")) {
-            String moml = "<property name=\"" + newName + "\" value=\""
-                    + newDefValue + "\" class=\""
-                    + _query.getStringValue("class") + "\"/>";
-            _target.addChangeListener(this);
-
-            MoMLChangeRequest request = new MoMLChangeRequest(this, _target,
-                    moml);
-            request.setUndoable(true);
-            _target.requestChange(request);
-        }
-
-        return dialog;
+        
+        // We couldn't find one, so return the default path to the
+        // expression language help
+        return "doc/expressions.htm";
     }
 
     /** Open a new dialog in a change request that defers
@@ -429,6 +460,7 @@ public class EditParametersDialog extends ComponentDialog implements
     //
     //        _target.requestChange(reOpen);
     //    }
+    
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
     // Button labels.

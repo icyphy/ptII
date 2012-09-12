@@ -30,6 +30,7 @@ package ptolemy.vergil.basic.layout;
 import ptolemy.actor.parameters.DoubleRangeParameter;
 import ptolemy.data.expr.ChoiceParameter;
 import ptolemy.data.expr.Parameter;
+import ptolemy.data.expr.StringParameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
@@ -125,6 +126,11 @@ public class LayoutConfiguration extends Attribute {
         interactionMode = new ChoiceParameter(this, "interactionMode", InteractionMode.class);
         interactionMode.setDisplayName("Interaction mode");
         interactionMode.setExpression(DEF_INTERACTION_MODE.toString());
+        
+        helpURL = new StringParameter(this, "_helpURL");
+        // TODO Change to actual layout documentation once that is written
+        helpURL.setExpression("doc/authors.htm");
+        helpURL.setVisibility(Settable.NONE);
     }
     
     ///////////////////////////////////////////////////////////////////
@@ -150,6 +156,9 @@ public class LayoutConfiguration extends Attribute {
     
     /** Mode of user interaction: whether user positioning is allowed to affect the layout. */
     public ChoiceParameter interactionMode;
+    
+    /** Customized help file to be displayed by the layout configuration dialog. */
+    public StringParameter helpURL;
     
     
     /** Default value for useOldAlgorithm. */
