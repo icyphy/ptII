@@ -112,6 +112,10 @@ public class NodeRandomizer extends TypedAtomicActor {
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
+        isPersistent = new Parameter(this, "isPersistent");
+        isPersistent.setTypeEquals(BaseType.BOOLEAN);
+        isPersistent.setToken(BooleanToken.FALSE);
+
         maxPrecision = new Parameter(this, "maxPrecision");
         maxPrecision.setExpression("0");
         maxPrecision.setTypeEquals(BaseType.INT);
@@ -138,6 +142,16 @@ public class NodeRandomizer extends TypedAtomicActor {
 
     ///////////////////////////////////////////////////////////////////
     ////                         parameters                        ////
+
+    /** If the isPersistent parameter is false, then the MoMLChangeRequest
+     *  that places the nodes will not be persistent so the user will not
+     *  be prompted to save the model upon closing.  Models in the
+     *  test suite might want to have this parameter set to false so
+     *  as to avoid a dialog asking if the user wants to save the
+     *  model.  The default is a boolean with a value of false,
+     *  indicating that change will not be persistent.
+     */
+    public Parameter isPersistent;
 
     /** The maximum precision (number of digits to be used, results
      *  are rounded to this precision) of the generated locations.  If
@@ -228,7 +242,6 @@ public class NodeRandomizer extends TypedAtomicActor {
      */
     public void fire() throws IllegalActionException {
         super.fire();
-
         ChangeRequest doRandomize = new ChangeRequest(this, "randomize nodes") {
             protected void _execute() throws IllegalActionException {
                 _randomize();
@@ -281,6 +294,10 @@ public class NodeRandomizer extends TypedAtomicActor {
      *  to perform some other randomization.  This delegates to the
      *  method _setLocationOfNode() to actually set the location of the
      *  actor.
+     *  <p>If the <i>isPersistent</i> parameter is true, then
+     *  the change is marked as a persistent change, which will
+     *  cause the model to be modified, which means the user will
+     *  be prompted to save the model upon exiting.</p>
      *  @exception IllegalActionException If the range parameter is malformed.
      */
     protected void _randomize() throws IllegalActionException {
@@ -355,6 +372,13 @@ public class NodeRandomizer extends TypedAtomicActor {
 
         MoMLChangeRequest request = new MoMLChangeRequest(this, container,
                 changeMoML.toString());
+
+        // If the isPersistent parameter is false, then don't marke
+        // the model as modified in BasicGraphFrame.changeExecuted().
+        // Ptalon needs this to avoid prompting for save upon close.
+        boolean isPersistentValue = ((BooleanToken)isPersistent.getToken()).booleanValue();
+        request.setPersistent(isPersistentValue);
+
         container.requestChange(request);
 
         // Increment the workspace version number, since the wireless
