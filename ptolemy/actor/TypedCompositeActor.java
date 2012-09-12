@@ -173,6 +173,25 @@ public class TypedCompositeActor extends CompositeActor implements TypedActor {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    /** React to a change in an attribute.  If the name of the attribute
+     *  is "enableBackwardTypeInference" then invalidate resolved types.
+     *  @param attribute The attribute that changed.
+     *  @exception IllegalActionException Not thrown in this base class.
+     *   Derived classes can throw this exception if type change is not allowed.
+     */
+    public void attributeChanged(Attribute attribute)
+            throws IllegalActionException {
+        if (attribute.getName().equals("enableBackwardTypeInference")) {
+            Director director = getDirector();
+
+            if (director != null) {
+                director.invalidateResolvedTypes();
+            }
+        } else {
+            super.attributeChanged(attribute);
+        }
+    }
+
     /** React to a change in the type of an attribute.  This method is
      *  called by a contained attribute when its type changes.
      *  In this base class, the method informs the director to invalidate
