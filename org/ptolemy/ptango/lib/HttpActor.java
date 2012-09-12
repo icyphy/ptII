@@ -359,24 +359,28 @@ public class HttpActor extends TypedAtomicActor implements HttpService {
             // If there is a pending request, produce outputs for that request.
             if (_requestURI != null) {
                 if (_requestType == 0) {
-                    getRequestURI.send(0, new StringToken(_requestURI));
-                    getParameters.send(0, _parameters);
+                    if (getRequestURI.getWidth() > 0) {
+                        getRequestURI.send(0, new StringToken(_requestURI));
+                    }
+                    if (getParameters.getWidth() > 0) {
+                        getParameters.send(0, _parameters);
+                    }
                 } else {
-                    postRequestURI.send(0, new StringToken(_requestURI));     
-                    postParameters.send(0, _parameters);
-                   
+                    if (postRequestURI.getWidth() > 0) {
+                        postRequestURI.send(0, new StringToken(_requestURI));     
+                    }
+                    if (postParameters.getWidth() > 0) {
+                        postParameters.send(0, _parameters);
+                    }
                 }
-               
-                
-                
                 _requestURI = null;
                 
-               /**
-                * ROXANA: send the values in the cookiesCollection parameters to the cookie output port     
-                */
-                for (RecordToken cookie: _cookiesCollectionList)
-                    cookies.send(0, cookie);
-                
+                // Send the values in the cookiesCollection parameters to the cookie output port.
+                if (cookies.getWidth() > 0) {
+                    for (RecordToken cookie: _cookiesCollectionList) {
+                        cookies.send(0, cookie);
+                    }
+                }
                     
                 /* FIXME: Omitting cookies for now.
                  * In any case, when we put this back in,
