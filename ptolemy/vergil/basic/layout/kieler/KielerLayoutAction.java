@@ -28,6 +28,7 @@
 package ptolemy.vergil.basic.layout.kieler;
 
 import java.util.Iterator;
+import java.util.List;
 
 import javax.swing.JFrame;
 
@@ -35,14 +36,18 @@ import ptolemy.actor.CompositeActor;
 import ptolemy.actor.gui.Configuration;
 import ptolemy.actor.gui.Effigy;
 import ptolemy.actor.gui.Tableau;
+import ptolemy.data.BooleanToken;
 import ptolemy.domains.modal.kernel.FSMActor;
 import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.util.MessageHandler;
 import ptolemy.vergil.actor.ActorGraphFrame;
 import ptolemy.vergil.basic.BasicGraphFrame;
 import ptolemy.vergil.basic.IGuiAction;
+import ptolemy.vergil.basic.PtolemyLayoutAction;
+import ptolemy.vergil.basic.layout.LayoutConfiguration;
 import ptolemy.vergil.modal.FSMGraphFrame;
 import diva.graph.GraphController;
 import diva.graph.GraphModel;
@@ -129,21 +134,26 @@ public class KielerLayoutAction extends Object implements IGuiAction, Filter {
                                 + message);
             } else {
                 BasicGraphFrame graphFrame = (BasicGraphFrame) frame;
-
-                // Fetch everything needed to build the LayoutTarget.
-                GraphController graphController = graphFrame.getJGraph()
-                        .getGraphPane().getGraphController();
-                GraphModel graphModel = graphFrame.getJGraph().getGraphPane()
-                        .getGraphController().getGraphModel();
-                BasicLayoutTarget layoutTarget = new BasicLayoutTarget(
-                        graphController);
-
-                // Create KIELER layouter for this layout target.
-                KielerLayout layout = new KielerLayout(layoutTarget);
-                layout.setModel((CompositeEntity) model);
-                layout.setTop(graphFrame);
-
-                layout.layout(graphModel.getRoot());
+                
+                // Check if the old layout algorithm should be used
+                if (_useOldAlgorithm(model)) {
+                    new PtolemyLayoutAction().doAction(model);
+                } else {
+                    // Fetch everything needed to build the LayoutTarget.
+                    GraphController graphController = graphFrame.getJGraph()
+                            .getGraphPane().getGraphController();
+                    GraphModel graphModel = graphFrame.getJGraph().getGraphPane()
+                            .getGraphController().getGraphModel();
+                    BasicLayoutTarget layoutTarget = new BasicLayoutTarget(
+                            graphController);
+    
+                    // Create KIELER layouter for this layout target.
+                    KielerLayout layout = new KielerLayout(layoutTarget);
+                    layout.setModel((CompositeEntity) model);
+                    layout.setTop(graphFrame);
+    
+                    layout.layout(graphModel.getRoot());
+                }
             }
         } catch (Exception ex) {
             // If we do not catch exceptions here, then they
@@ -164,6 +174,41 @@ public class KielerLayoutAction extends Object implements IGuiAction, Filter {
      */
     public boolean accept(Object o) {
         return o instanceof CompositeActor || o instanceof FSMActor;
+    }
+
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
+    
+    /**
+     * Checks if the given model is configured to use Ptolemy's old layout algorithm.
+     * 
+     * @param model the model to check.
+     * @return {@code true} if the model has a layout configuration that explicitly
+     *         instructs us to use the old layout algorithm.
+     */
+    private boolean _useOldAlgorithm(NamedObj model) {
+        try {
+            // Find the model's LayoutConfiguration element
+            List<LayoutConfiguration> configAttributes = model.attributeList(
+                    LayoutConfiguration.class);
+            
+            // If there is such an element, check if the old algorithm is to be used
+            if (!configAttributes.isEmpty()) {
+                LayoutConfiguration configuration = configAttributes.get(0);
+                
+                BooleanToken useOldAlgorithm = BooleanToken.convert(
+                        configuration.useOldAlgorithm.getToken());
+                if (useOldAlgorithm.booleanValue()) {
+                    return true;
+                }
+            }
+        } catch (IllegalActionException e) {
+            // Ignore exception -- we'll return false
+        }
+        
+        // Default to false
+        return false;
     }
 
 }

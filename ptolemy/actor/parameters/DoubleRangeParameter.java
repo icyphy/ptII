@@ -30,6 +30,7 @@ package ptolemy.actor.parameters;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
+import ptolemy.data.expr.StringParameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
@@ -48,11 +49,15 @@ import ptolemy.kernel.util.NamedObj;
  are quantized so that there are exactly <i>precision</i>
  values, uniformly spaced in the range.
  A user interface will typically use this
- information to represent the parameter value using a slider.
+ information to represent the parameter value using a slider
+ which can be decorated by labels indicating the minimum and
+ maximum values. The actual text displayed by the labels can
+ be set using the <i>minLabel</i> and <i>maxLabel</i> parameters
+ which default to showing the actual minimum and maximum double value.
  The default values for <i>min</i> and <i>max</i> are 0.0 and 1.0,
  with a default value of 0.5.  The default <i>precision</i> is 100.
  <p>
- @author Edward A. Lee
+ @author Edward A. Lee, Christoph Daniel Schulze
  @version $Id$
  @since Ptolemy II 4.1
  @Pt.ProposedRating Yellow (eal)
@@ -87,7 +92,13 @@ public class DoubleRangeParameter extends Parameter {
         precision = new Parameter(this, "precision");
         precision.setExpression("100");
         precision.setTypeEquals(BaseType.INT);
-
+        
+        minLabel = new StringParameter(this, "minLabel");
+        minLabel.setExpression("$min");
+        
+        maxLabel = new StringParameter(this, "maxLabel");
+        maxLabel.setExpression("$max");
+        
         // We can't set a default value because then
         // restore defaults will restore to this value,
         // but this may be out of range for a particular
@@ -114,6 +125,18 @@ public class DoubleRangeParameter extends Parameter {
      *  This is has an integer value, and defaults to 100.
      */
     public Parameter precision;
+    
+    /** The label text displayed for the maximum end of the slider. This is a String,
+     *  and defaults to {@code $max}, which is expanded to the value of the {@code max}
+     *  parameter in the user interface. 
+     */
+    public StringParameter maxLabel;
+    
+    /** The label text displayed for the minimum end of the slider. This is a String,
+     *  and defaults to {@code $min}, which is expanded to the value of the {@code min}
+     *  parameter in the user interface. 
+     */
+    public StringParameter minLabel;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////

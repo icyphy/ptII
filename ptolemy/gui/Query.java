@@ -50,6 +50,7 @@ import java.net.URI;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.NoSuchElementException;
@@ -102,7 +103,7 @@ import javax.swing.plaf.basic.BasicComboBoxEditor;
  query.addRadioButtons("radio", "Radio buttons", options, "water");
  </pre>
 
- @author  Edward A. Lee, Manda Sutijono, Elaine Cheong, Contributor:  Peter Reutemann
+ @author  Edward A. Lee, Manda Sutijono, Elaine Cheong, Contributor:  Peter Reutemann, Christoh Daniel Schulze
  @version $Id$
  @since Ptolemy II 0.3
  @Pt.ProposedRating Yellow (eal)
@@ -706,6 +707,30 @@ public class Query extends JPanel {
      */
     public JSlider addSlider(String name, String label, int defaultValue,
             int minimum, int maximum) throws IllegalArgumentException {
+        return addSlider(name, label, defaultValue, minimum, maximum, null, null);
+    }
+    
+    /** Create a slider with the specified name, label, default value,
+     *  maximum, minimum, and label texts for the maximum and minimum
+     *  slider positions.
+     *  @param name The name used to identify the slider.
+     *  @param label The label to attach to the slider.
+     *  @param defaultValue Initial position of slider.
+     *  @param maximum Maximum value of slider.
+     *  @param minimum Minimum value of slider.
+     *  @param minLabelText Text to be displayed at the slider's minimum
+     *                      setting. Set to {@code null} or the empty
+     *                      String to hide the minimum label.
+     *  @param maxLabelText Text to be displayed at the slider's maximum
+     *                      setting. Set to {@code null} or the empty
+     *                      String to hide the maximum label.
+     *  @return The slider.
+     *  @exception IllegalArgumentException If the desired default value
+     *   is not between the minimum and maximum.
+     */
+    public JSlider addSlider(String name, String label, int defaultValue,
+            int minimum, int maximum, String minLabelText,
+            String maxLabelText) throws IllegalArgumentException {
         JLabel lbl = new JLabel(label + ": ");
 
         if (minimum > maximum) {
@@ -721,7 +746,60 @@ public class Query extends JPanel {
         }
 
         JSlider slider = new JSlider(minimum, maximum, defaultValue);
-        _addPair(name, lbl, slider, slider);
+        
+        // Determine if minimum and maximum labels have to be created
+        if ((minLabelText == null || minLabelText.isEmpty())
+                || (maxLabelText == null || maxLabelText.isEmpty())) {
+            _addPair(name, lbl, slider, slider);
+        } else {
+            // Add labels to the slider and put everything into a panel
+            JPanel panel = new JPanel();
+            panel.setLayout(new GridBagLayout());
+            
+            // Configure and add the slider
+            GridBagConstraints c = new GridBagConstraints();
+            c.fill = GridBagConstraints.HORIZONTAL;
+            c.gridx = 0;
+            c.gridy = 0;
+            c.gridwidth = 2;
+            c.weightx = 1.0;
+
+            slider.setPaintTicks(true);
+            slider.setMajorTickSpacing(maximum - minimum);
+            panel.add(slider, c);
+            
+            // Insets to leave some space below the slider's labels, if any
+            Insets labelInsets = new Insets(0, 0, 10, 0);
+            
+            // Minimum label
+            if (minLabelText != null && minLabelText.length() > 0) {
+                JLabel minLabel = new JLabel(minLabelText);
+
+                c = new GridBagConstraints();
+                c.anchor = GridBagConstraints.LINE_START;
+                c.gridx = 0;
+                c.gridy = 1;
+                c.insets = labelInsets;
+                
+                panel.add(minLabel, c);
+            }
+            
+            // Maximum label
+            if (maxLabelText != null && maxLabelText.length() > 0) {
+                JLabel maxLabel = new JLabel(maxLabelText);
+
+                c = new GridBagConstraints();
+                c.anchor = GridBagConstraints.LINE_END;
+                c.gridx = 1;
+                c.gridy = 1;
+                c.insets = labelInsets;
+                
+                panel.add(maxLabel, c);
+            }
+            
+            _addPair(name, lbl, panel, slider);
+        }
+        
         slider.addChangeListener(new SliderListener(this, name));
         return slider;
     }

@@ -68,6 +68,7 @@ import ptolemy.actor.parameters.IntRangeParameter;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.IntToken;
+import ptolemy.data.StringToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.FileParameter;
 import ptolemy.data.expr.Parameter;
@@ -115,7 +116,7 @@ import ptolemy.util.StringUtilities;
  <p>
  To use this class, add an entry to the query using addStyledEntry().
 
- @author Brian K. Vogel and Edward A. Lee
+ @author Brian K. Vogel and Edward A. Lee, Contributor: Christoph Daniel Schulze
  @version $Id$
  @since Ptolemy II 0.4
  @Pt.ProposedRating Yellow (eal)
@@ -210,9 +211,16 @@ public class PtolemyQuery extends Query implements QueryListener,
                                 .getCurrentValue();
                         int min = ((IntRangeParameter) attribute).getMinValue();
                         int max = ((IntRangeParameter) attribute).getMaxValue();
+                        String minLabel = ((DoubleRangeParameter) attribute).minLabel.stringValue();
+                        String maxLabel = ((DoubleRangeParameter) attribute).maxLabel.stringValue();
+                        
+                        // minLabel and maxLabel can contain the special placeholders $min and
+                        // $max, which must be replaced by the actual limits of the range
+                        minLabel = minLabel.replace("$min", Double.toString(min));
+                        maxLabel = maxLabel.replace("$max", Double.toString(max));
 
                         component = addSlider(name, displayName, current, min,
-                                max);
+                                max, minLabel, maxLabel);
                         attachParameter(attribute, name);
                         foundStyle = true;
                         _addSubmitAction(component, attribute.getName(),
@@ -226,13 +234,20 @@ public class PtolemyQuery extends Query implements QueryListener,
                                 .getToken()).doubleValue();
                         int precision = ((IntToken) ((DoubleRangeParameter) attribute).precision
                                 .getToken()).intValue();
+                        String minLabel = ((DoubleRangeParameter) attribute).minLabel.stringValue();
+                        String maxLabel = ((DoubleRangeParameter) attribute).maxLabel.stringValue();
+                        
+                        // minLabel and maxLabel can contain the special placeholders $min and
+                        // $max, which must be replaced by the actual limits of the range
+                        minLabel = minLabel.replace("$min", Double.toString(min));
+                        maxLabel = maxLabel.replace("$max", Double.toString(max));
 
                         // Get the quantized integer for the current value.
                         int quantized = ((int) Math
                                 .round(((current - min) * precision)
                                         / (max - min)));
                         component = addSlider(name, displayName, quantized, 0,
-                                precision);
+                                precision, minLabel, maxLabel);
                         attachParameter(attribute, name);
                         foundStyle = true;
                         _addSubmitAction(component, attribute.getName(),

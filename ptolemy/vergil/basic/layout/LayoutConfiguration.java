@@ -35,6 +35,7 @@ import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
+import ptolemy.kernel.util.Settable;
 
 /**
  * An attribute for parameters of automatic layout. This is read by the KIELER
@@ -75,6 +76,12 @@ public class LayoutConfiguration extends Attribute {
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
         
+        useOldAlgorithm = new Parameter(this, "useOldAlgorithm");
+        useOldAlgorithm.setDisplayName("Use old algorithm");
+        useOldAlgorithm.setTypeEquals(BaseType.BOOLEAN);
+        useOldAlgorithm.setExpression(Boolean.toString(DEF_OLD_ALGORITHM));
+        useOldAlgorithm.setVisibility(Settable.EXPERT);
+        
         includeDecorations = new Parameter(this, "includeDecorations");
         includeDecorations.setDisplayName("Include decorations");
         includeDecorations.setTypeEquals(BaseType.BOOLEAN);
@@ -89,18 +96,31 @@ public class LayoutConfiguration extends Attribute {
         minimizeBends.setDisplayName("Minimize edge bends");
         minimizeBends.setTypeEquals(BaseType.BOOLEAN);
         minimizeBends.setExpression(Boolean.toString(DEF_MINIMIZE_BENDS));
+        minimizeBends.setVisibility(Settable.EXPERT);
         
         spacing = new DoubleRangeParameter(this, "spacing");
         spacing.setDisplayName("Object spacing");
         spacing.min.setExpression("2.0");
         spacing.max.setExpression("50.0");
         spacing.setExpression(Double.toString(DEF_SPACING));
+        spacing.min.setVisibility(Settable.NONE);
+        spacing.max.setVisibility(Settable.NONE);
+        spacing.minLabel.setVisibility(Settable.NONE);
+        spacing.maxLabel.setVisibility(Settable.NONE);
+        spacing.precision.setVisibility(Settable.NONE);
         
         logAspectRatio = new DoubleRangeParameter(this, "logAspectRatio");
         logAspectRatio.setDisplayName("Aspect ratio");
         logAspectRatio.min.setExpression("-1.0");
         logAspectRatio.max.setExpression("1.0");
         logAspectRatio.setExpression(Double.toString(Math.log10(DEF_ASPECT_RATIO)));
+        logAspectRatio.minLabel.setExpression("Narrow");
+        logAspectRatio.maxLabel.setExpression("Wide");
+        logAspectRatio.min.setVisibility(Settable.NONE);
+        logAspectRatio.max.setVisibility(Settable.NONE);
+        logAspectRatio.minLabel.setVisibility(Settable.NONE);
+        logAspectRatio.maxLabel.setVisibility(Settable.NONE);
+        logAspectRatio.precision.setVisibility(Settable.NONE);
         
         interactionMode = new ChoiceParameter(this, "interactionMode", InteractionMode.class);
         interactionMode.setDisplayName("Interaction mode");
@@ -109,6 +129,9 @@ public class LayoutConfiguration extends Attribute {
     
     ///////////////////////////////////////////////////////////////////
     ////                       public parameters                   ////
+    
+    /** Whether to use Ptolemy's original layout algorithm. */
+    public Parameter useOldAlgorithm;
 
     /** Whether to include unconnected nodes such as comments. */
     public Parameter includeDecorations;
@@ -128,6 +151,9 @@ public class LayoutConfiguration extends Attribute {
     /** Mode of user interaction: whether user positioning is allowed to affect the layout. */
     public ChoiceParameter interactionMode;
     
+    
+    /** Default value for useOldAlgorithm. */
+    public static final boolean DEF_OLD_ALGORITHM = false;
     
     /** Default value for includeDecorations. */
     public static final boolean DEF_DECORATIONS = true;

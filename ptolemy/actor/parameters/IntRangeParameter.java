@@ -30,6 +30,7 @@ package ptolemy.actor.parameters;
 import ptolemy.data.IntToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
+import ptolemy.data.expr.StringParameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
@@ -45,12 +46,16 @@ import ptolemy.kernel.util.NamedObj;
  within the boundaries specified by its two parameters,
  <i>min</i> and <i>max</i>.  These specify the minimum and maximum values.
  A user interface will typically use this
- information to represent the parameter value using a slider.
+ information to represent the parameter value using a slider
+ which can be decorated by labels indicating the minimum and
+ maximum values. The actual text displayed by the labels can
+ be set using the <i>minLabel</i> and <i>maxLabel</i> parameters
+ which default to showing the actual minimum and maximum int value.
  The default values for <i>min</i> and <i>max</i> are 0 and 100,
  respectively, and the default value for this parameter is 50.
  </p>
 
- @author Edward A. Lee
+ @author Edward A. Lee, Christoph Daniel Schulze
  @version $Id$
  @since Ptolemy II 3.0
  @Pt.ProposedRating Yellow (eal)
@@ -81,6 +86,12 @@ public class IntRangeParameter extends Parameter {
         max = new Parameter(this, "max");
         max.setExpression("100");
         max.setTypeEquals(BaseType.INT);
+        
+        minLabel = new StringParameter(this, "minLabel");
+        minLabel.setExpression("$min");
+        
+        maxLabel = new StringParameter(this, "maxLabel");
+        maxLabel.setExpression("$max");
 
         setExpression("50");
         setTypeEquals(BaseType.INT);
@@ -99,6 +110,18 @@ public class IntRangeParameter extends Parameter {
 
     /** The minimum value. This is has an integer value, and defaults to 0. */
     public Parameter min;
+    
+    /** The label text displayed for the maximum end of the slider. This is a String,
+     *  and defaults to {@code $max}, which is expanded to the value of the {@code max}
+     *  parameter in the user interface. 
+     */
+    public StringParameter maxLabel;
+    
+    /** The label text displayed for the minimum end of the slider. This is a String,
+     *  and defaults to {@code $min}, which is expanded to the value of the {@code min}
+     *  parameter in the user interface. 
+     */
+    public StringParameter minLabel;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
