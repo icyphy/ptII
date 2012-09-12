@@ -136,9 +136,10 @@ public class StyleConfigurer extends Query implements QueryListener {
             // The index of the default;
             int defaultIndex = 0;
 
-            if (param.getVisibility() == Settable.NOT_EDITABLE) {
-                // If the parameter is set to NOT_EDITABLE visibility,
-                // then only a fixed style is possible.
+            _originalExpertMode = _object.getAttribute("_expertMode") != null;
+            if (param.getVisibility() == Settable.NOT_EDITABLE && !_originalExpertMode) {
+                // If the parameter is set to NOT_EDITABLE visibility and not expert mode
+                // then only a fixed style is possible. 
                 styleList.add("Fixed");
                 defaultIndex = 0;
             } else {
@@ -171,7 +172,6 @@ public class StyleConfigurer extends Query implements QueryListener {
         }
 
         // Add the expert mode box.
-        _originalExpertMode = _object.getAttribute("_expertMode") != null;
         addCheckBox("expertMode", "expert mode", _originalExpertMode);
     }
 
