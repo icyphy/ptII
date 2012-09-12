@@ -348,15 +348,15 @@ public class Configurer extends JPanel implements CloseListener {
         // Add parameter enableBackwardTypeInference to top level container
         if (object.equals(object.toplevel())) {
             try {
-                Parameter onlyForward = (Parameter) object.getAttribute(
+                Parameter backwardTypeInf = (Parameter) object.getAttribute(
                         "enableBackwardTypeInference", Parameter.class);
-                if (onlyForward == null) {
-                    onlyForward = new Parameter(object,
+                if (backwardTypeInf == null) {
+                    backwardTypeInf = new Parameter(object,
                             "enableBackwardTypeInference");
-                    onlyForward.setExpression("false");
-                    attributes.add((Settable) onlyForward);
+                    backwardTypeInf.setExpression("false");
+                    attributes.add((Settable) backwardTypeInf);
                 }
-                onlyForward.setTypeEquals(BaseType.BOOLEAN);
+                backwardTypeInf.setTypeEquals(BaseType.BOOLEAN);
             } catch (KernelException e) {
                 // This should not happen
                 throw new InternalErrorException(e);

@@ -177,7 +177,7 @@ public abstract class Source extends TypedAtomicActor {
 
     ///////////////////////////////////////////////////////////////////
     ////                      protected methods                    ////
-    
+
     /** Set the input port greater than or equal to 
      *  <code>BaseType.GENERAL</code> in case backward type inference is 
      *  enabled and the input port has no type declared. 
@@ -187,10 +187,12 @@ public abstract class Source extends TypedAtomicActor {
     @Override
     protected Set<Inequality> _customTypeConstraints() {
         HashSet<Inequality> result = new HashSet<Inequality>();
-        if (isBackwardTypeInferenceEnabled() && trigger.getTypeTerm().isSettable()) {
-            result.add(new Inequality(new TypeConstant(BaseType.GENERAL), trigger.getTypeTerm()));
+        if (isBackwardTypeInferenceEnabled()
+                && trigger.getTypeTerm().isSettable()) {
+            result.add(new Inequality(new TypeConstant(BaseType.GENERAL),
+                    trigger.getTypeTerm()));
         }
-        return result;     
+        return result;
     }
-    
+
 }

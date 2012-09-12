@@ -12,7 +12,7 @@ import ptolemy.kernel.util.IllegalActionException;
 
 /** This class implements a monotonic function that returns an array type
  *  with the element type equal to its argument.
- * @author Edward A. Lee
+ * @author Edward A. Lee, Marten Lohstroh
  * @version $Id: ArrayOfTypesFunction.java$
  * @since Ptolemy II 9.0
  * @Pt.ProposedRating Red (eal)
@@ -20,12 +20,24 @@ import ptolemy.kernel.util.IllegalActionException;
  */
 public class ArrayOfTypesFunction extends MonotonicFunction {
 
+    
     /** Construct a ArrayElementTypeFunction whose argument is the
      *  type of the specified object.  
      *  @param typeable A Typeable object.
      */
     public ArrayOfTypesFunction(Typeable typeable) {
         _typeable = typeable;
+        _arrayLength = -1;
+    }
+
+    /** Construct a ArrayElementTypeFunction whose argument is the
+     *  type of the specified object.  
+     *  @param typeable A Typeable object.
+     *  @param arrayLength The length of the array.
+     */
+    public ArrayOfTypesFunction(Typeable typeable, int arrayLength) {
+        _typeable = typeable;
+        _arrayLength = arrayLength;
     }
     
     ///////////////////////////////////////////////////////////////
@@ -38,7 +50,12 @@ public class ArrayOfTypesFunction extends MonotonicFunction {
      */
     public Object getValue()  throws IllegalActionException {
         Type type = _typeable.getType();
-        return new ArrayType(type);
+        if (_arrayLength > 0) {
+            return new ArrayType(type, _arrayLength);
+        }
+        else {
+            return new ArrayType(type);
+        }
     }
 
     /** Return the type variables for this function, which is
@@ -62,6 +79,9 @@ public class ArrayOfTypesFunction extends MonotonicFunction {
 
     /** The argument. */
     private Typeable _typeable;
+    
+    /** The length of the array */
+    private int _arrayLength;
         
     private static InequalityTerm[] EMPTY_TERM_ARRAY = new InequalityTerm[0];
 }

@@ -27,6 +27,7 @@
  */
 package ptolemy.domains.sdf.lib;
 
+import java.util.HashSet;
 import java.util.Set;
 
 import ptolemy.actor.util.ArrayOfTypesFunction;
@@ -64,7 +65,7 @@ import ptolemy.kernel.util.Workspace;
  type and send out tokens corresponding to that type.
  </p>
 
- @author Yuhong Xiong
+ @author Yuhong Xiong, Marten Lohstroh
  @version $Id$
  @since Ptolemy II 0.4
  @Pt.ProposedRating Yellow (yuhong)
@@ -85,8 +86,6 @@ public class ArrayToSequence extends SDFTransformer {
 
         // Set type constraints.
         output.setTypeAtLeast(ArrayType.elementType(input));
-        // For backward type inference.
-        input.setTypeAtLeast(new ArrayOfTypesFunction(output));
 
         // Set parameters.
         arrayLength = new Parameter(this, "arrayLength");
@@ -151,7 +150,6 @@ public class ArrayToSequence extends SDFTransformer {
         try {
             newObject.output.setTypeAtLeast(ArrayType
                     .elementType(newObject.input));
-            newObject.input.setTypeAtLeast(new ArrayOfTypesFunction(newObject.output));
         } catch (IllegalActionException e) {
             throw new InternalErrorException(e);
         }
@@ -189,14 +187,55 @@ public class ArrayToSequence extends SDFTransformer {
 
     ///////////////////////////////////////////////////////////////////
     ////                     protected methods                     ////
-    
-    /**
-     * Do not establish the usual default type constraints. Instead, the type 
-     * of the output port is constrained to be no less than the type of the 
-     * elements of the input array (set in the constructor of this class).
+
+    /** Do not establish the usual default type constraints. Instead, the type 
+     *  of the output port is constrained to be no less than the type of the 
+     *  elements of the input array (set in the constructor of this class).
      */
     @Override
     protected Set<Inequality> _defaultTypeConstraints() {
         return null;
     }
+
+    /** Add a type constraint for backward type inference that forces
+     *  the input to be an array of which the elements have a type
+     *  greater than or equal to the output port. If the 
+     *  <i>enforceArrayLength</i> parameter is set to true, the input 
+     *  is also forced to have a length equal to the <i>arrayLength</i>
+     *  parameter. 
+     *  If backward type inference is disabled, this method returns
+     *  an empty set.
+     *  @see ArrayOfTypesFunction
+     *  @return A set of inequalities.
+     */
+    @Override
+    protected Set<Inequality> _customTypeConstraints() {
+        Set<Inequality> result = new HashSet<Inequality>();
+
+        if (isBackwardTypeInferenceEnabled()) {
+            boolean enforceLength = false;
+            int length = 1;
+            try {
+                enforceLength = ((BooleanToken) enforceArrayLength.getToken())
+                        .booleanValue();
+                length = ((IntToken) arrayLength.getToken()).intValue();
+            } catch (IllegalActionException e) {
+                // this should not happen
+                e.printStackTrace();
+            }
+            // constrain the input to be an array of a type greater 
+            // than or equal to the type of the output (for backward
+            // type inference)
+            if (enforceLength) {
+                result.add(new Inequality(input.getTypeTerm(),
+                        new ArrayOfTypesFunction(output, length)));
+            } else {
+                result.add(new Inequality(input.getTypeTerm(),
+                        new ArrayOfTypesFunction(output)));
+            }
+        }
+
+        return result;
+    }
+
 }
