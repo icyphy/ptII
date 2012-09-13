@@ -1912,13 +1912,24 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
             System.out.println("BasicGraphFrame._close() : " + this.getName());
         }
 
-        try {
-            _updateWindowAttributes();
-        } catch (KernelException ex) {
-            // Ignore problems here.  Errors simply result in a default
-            // size and location.
-            System.out.println("While closing, failed to update size, position or zoom factor: " + ex);
-        }
+        // See "composite window size & position not always saved"
+        // http://bugzilla.ecoinformatics.org/show_bug.cgi?id=5637
+
+        // Don't update the _windowProperties attribute during _close()
+        // For example, if the model is a large model and there is an
+        // error and the user clicks on "Go To Actor", then the model
+        // may be zoomed.  When the user closes the model, they will
+        // be prompted to save.  Even worse, it appears that the size
+        // and location of windows can be slightly different between
+        // different platforms.
+
+//         try {
+//             _updateWindowAttributes();
+//         } catch (KernelException ex) {
+//             // Ignore problems here.  Errors simply result in a default
+//             // size and location.
+//             System.out.println("While closing, failed to update size, position or zoom factor: " + ex);
+//         }
 
         boolean result = super._close();
 
