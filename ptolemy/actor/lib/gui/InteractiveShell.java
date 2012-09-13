@@ -111,11 +111,12 @@ public class InteractiveShell extends TypedAtomicActor implements Placeable,
         output = new TypedIOPort(this, "output", false, true);
         output.setTypeEquals(BaseType.STRING);
 
-        prompt = new PortParameter(this, "prompt", new StringToken(">> "));
+        prompt = new PortParameter(this, "prompt");
 
         // Make command be a StringParameter (no surrounding double quotes).
         prompt.setTypeEquals(BaseType.STRING);
         prompt.setStringMode(true);
+        prompt.setExpression(">> ");
 
         _windowProperties = new WindowPropertiesAttribute(this,
                 "_windowProperties");
