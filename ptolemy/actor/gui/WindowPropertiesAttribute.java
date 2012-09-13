@@ -210,14 +210,21 @@ public class WindowPropertiesAttribute extends Parameter implements
                 // the model is marked modified so that any changes are preserved.
                 // See "closing workflow does not save the location change of popup display windows."
                 // http://bugzilla.ecoinformatics.org/show_bug.cgi?id=5188
-                //setToken(values);
+                //
+                // The problem is that if the user opens a model and
+                // moves the Display actor and then closes it, they
+                // are prompted for saving.
+                //
+                // If the user wants to save the location of the
+                // Display actors, then they should explicitly save the model.
+                setToken(values);
 
-                String moml = "<property name=\"" + getName()
-                    + "\" value=\"" + values + "\"/>";
+//                 String moml = "<property name=\"" + getName()
+//                     + "\" value=\"" + values + "\"/>";
 
-                MoMLChangeRequest request = new MoMLChangeRequest(this,
-                        getContainer(), moml, false);
-                getContainer().requestChange(request);
+//                 MoMLChangeRequest request = new MoMLChangeRequest(this,
+//                         getContainer(), moml, false);
+//                 getContainer().requestChange(request);
                 // Not clear why the following is needed, but if it isn't there,
                 // then window properties may not be recorded.
                 propagateValue();
