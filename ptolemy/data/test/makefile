@@ -71,6 +71,7 @@ JSIMPLE_TESTS = \
 	ObjectToken.tcl \
 	PetiteToken.tcl \
 	RecordToken.tcl \
+	OrderedRecordToken.tcl \
 	ShortToken.tcl \
 	StringToken.tcl \
 	TokenUtilities.tcl \

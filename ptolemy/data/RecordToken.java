@@ -42,6 +42,7 @@ import ptolemy.data.type.RecordType;
 import ptolemy.data.type.Type;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
+import ptolemy.util.StringUtilities;
 
 ///////////////////////////////////////////////////////////////////
 //// RecordToken
@@ -54,6 +55,10 @@ import ptolemy.kernel.util.InternalErrorException;
  are added or subtracted, then common records
  (those with the same labels) will be added or subtracted,
  and the disjoint records will not appear in the result.
+
+ <p>Record labels are sanitized so that any non-Java identifier
+ characters are replaced with underscores, see 
+ {@linkptolemy.util.StringUtilities.sanitizeName(String)}</p>
 
  @author Yuhong Xiong, Steve Neuendorffer, Elaine Cheong, Edward Lee; contributor: J. S. Senecal
  @version $Id$
@@ -81,6 +86,11 @@ public class RecordToken extends AbstractNotConvertibleToken {
      *  to one correspondence with each other.  That is, the i'th entry in
      *  the labels array is the label for the i'th value in the values array.
      *  If both arrays are empty, this creates an empty record token.
+     *
+     *  <p>Record labels are sanitized so that any non-Java identifier
+     *  characters are replaced with underscores, see 
+     *  {@linkptolemy.util.StringUtilities.sanitizeName(String)}</p>
+     *
      *  @param labels An array of labels.
      *  @param values An array of Tokens.
      *  @exception IllegalActionException If the labels or the values array
@@ -94,6 +104,11 @@ public class RecordToken extends AbstractNotConvertibleToken {
     }
 
     /** Construct a RecordToken from the specified string.
+     *
+     *  <p>Record labels are sanitized so that any non-Java identifier
+     *  characters are replaced with underscores, see 
+     *  {@linkptolemy.util.StringUtilities.sanitizeName(String)}</p>
+     *
      *  @param init A string expression of a record.
      *  @exception IllegalActionException If the string does not
      *  contain a parsable record.
@@ -366,6 +381,11 @@ public class RecordToken extends AbstractNotConvertibleToken {
      *  <code>{<i>label</i> = <i>value</i>, <i>label</i> = <i>value</i>, ...}</code>
      *  The record fields are listed in the lexicographical order of the
      *  labels determined by the java.lang.String.compareTo() method.
+     *
+     *  <p>Record labels are sanitized so that any non-Java identifier
+     *  characters are replaced with underscores, see 
+     *  {@linkptolemy.util.StringUtilities.sanitizeName(String)}</p>
+     *
      *  @return A String beginning with "{" that contains label and value
      *  pairs separated by commas, ending with "}".
      */
@@ -399,7 +419,10 @@ public class RecordToken extends AbstractNotConvertibleToken {
                 stringRepresentation.append(", ");
             }
 
-            stringRepresentation.append(label + " = " + value);
+            // FIXME: It is not clear if we need to sanitize again,
+            // but doing so protects against labels being set to
+            // spaces and other characters.
+            stringRepresentation.append(StringUtilities.sanitizeName(label) + " = " + value);
         }
 
         return stringRepresentation.toString() + "}";
@@ -744,13 +767,7 @@ public class RecordToken extends AbstractNotConvertibleToken {
                 throw new IllegalActionException("RecordToken: the " + i
                         + "'th element of the labels or values array is null");
             }
-            // check for ill-formatted field names 
-            if (!labels[i].matches("^[a-zA-Z0-9_]*$")) {
-                throw new IllegalActionException("RecordToken: the label "
-                        + "named '" + labels[i] + "' is ill-formatted."
-                        + "\n Only alphanumeric characters and underscores "
-                        + "are allowed.");
-            }
+            labels[i] = StringUtilities.sanitizeName(labels[i]);
             if (!_fields.containsKey(labels[i])) {
                 _fields.put(labels[i], values[i]);
             } else {

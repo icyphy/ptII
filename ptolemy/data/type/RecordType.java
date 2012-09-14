@@ -39,6 +39,7 @@ import ptolemy.graph.CPO;
 import ptolemy.graph.InequalityTerm;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
+import ptolemy.util.StringUtilities;
 
 ///////////////////////////////////////////////////////////////////
 //// RecordType
@@ -83,6 +84,11 @@ public class RecordType extends AssociativeType implements Cloneable {
      *  one correspondence. That is, the i'th entry in the types array is
      *  the type for the i'th label in the labels array. To construct the
      *  empty record type, set the length of the argument arrays to 0.
+     *
+     *  <p>Record labels are sanitized so that any non-Java identifier
+     *  characters are replaced with underscores, see 
+     *  {@linkptolemy.util.StringUtilities.sanitizeName(String)}</p>
+     *
      *  @param labels An array of String.
      *  @param types An array of Type.
      *  @exception IllegalArgumentException If the two arrays do not have
@@ -100,13 +106,7 @@ public class RecordType extends AssociativeType implements Cloneable {
                 throw new IllegalArgumentException("RecordType: the " + i
                         + "'th element of the labels array is null.");
             }
-            // check for ill-formatted field names 
-            if (!labels[i].matches("^[a-zA-Z0-9_]*$")) {
-                throw new IllegalArgumentException("RecordType: the label "
-                        + "named '" + labels[i] + "' is ill-formatted."
-                        + "\n Only alphanumeric characters and underscores "
-                        + "are allowed.");
-            }
+            labels[i] = StringUtilities.sanitizeName(labels[i]);
             if (!_fields.containsKey(labels[i])) {
                 FieldType fieldType = new FieldType(types[i]);
                 _fields.put(labels[i], fieldType);
@@ -561,7 +561,10 @@ public class RecordType extends AssociativeType implements Cloneable {
                 results.append(", ");
             }
 
-            results.append(label + " = " + type);
+            // FIXME: It is not clear if we need to sanitize again,
+            // but doing so protects against labels being set to
+            // spaces and other characters.
+            results.append(StringUtilities.sanitizeName(label) + " = " + type);
         }
 
         return results.toString() + "}";

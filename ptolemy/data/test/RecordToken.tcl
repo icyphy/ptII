@@ -696,6 +696,23 @@ test RecordToken-subtract.5 {Test subtracting with empty record, reverse order} 
 ######################################################################
 ####
 # 
+test RecordToken-toString.2 {Test toString with spaces} {
+    set l [java::new {String[]} {2} {{with spaces} {value}}]
+
+    set nt [java::new {ptolemy.data.StringToken String} foo]
+    set vt [java::new {ptolemy.data.IntToken int} 5]
+    set v [java::new {ptolemy.data.Token[]} 2 [list $nt $vt]]
+
+    set r1 [java::new {ptolemy.data.RecordToken} $l $v]
+    set result1 [$r1 toString]
+    set r2 [java::new {ptolemy.data.RecordToken} $result1]
+    set result2 [$r2 toString]
+    list $result1 $result2 [$r1 equals $r2]
+} {{{value = 5, with_spaces = "foo"}} {{value = 5, with_spaces = "foo"}} 1}
+
+######################################################################
+####
+# 
 test RecordToken-zero.0 {Test zero} {
     # record is empty
     set l [java::new {String[]} {0} {}]

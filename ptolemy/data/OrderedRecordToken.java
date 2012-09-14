@@ -35,6 +35,7 @@ import java.util.Map;
 import java.util.Set;
 
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.util.StringUtilities;
 
 ///////////////////////////////////////////////////////////////////
 //// OrderedRecordToken
@@ -47,6 +48,10 @@ import ptolemy.kernel.util.IllegalActionException;
  are added or subtracted, then common records
  (those with the same labels) will be added or subtracted,
  and the disjoint records will not appear in the result.
+
+ <p>Record labels are sanitized so that any non-Java identifier
+ characters are replaced with underscores, see 
+ {@linkptolemy.util.StringUtilities.sanitizeName(String)}</p>
 
  <p>This implementation maintains the order of the entries as they were added.
 
@@ -69,6 +74,11 @@ public class OrderedRecordToken extends RecordToken {
     /** Construct an OrderedRecordToken with the labels and values specified
      *  by a given Map object. The object cannot contain any null keys
      *  or values.
+     *
+     *  <p>Record labels are sanitized so that any non-Java identifier
+     *  characters are replaced with underscores, see 
+     *  {@linkptolemy.util.StringUtilities.sanitizeName(String)}</p>
+     *
      *  @param fieldMap A Map that has keys of type String and
      *  values of type Token.
      *  @exception IllegalActionException If the map contains null
@@ -80,6 +90,11 @@ public class OrderedRecordToken extends RecordToken {
     }
 
     /** Construct a RecordToken from the specified string.
+     *
+     *  <p>Record labels are sanitized so that any non-Java identifier
+     *  characters are replaced with underscores, see 
+     *  {@linkptolemy.util.StringUtilities.sanitizeName(String)}</p>
+     *
      *  @param init A string expression of a record.
      *  @exception IllegalActionException If the string does not
      *  contain a parsable record.
@@ -93,6 +108,11 @@ public class OrderedRecordToken extends RecordToken {
      *  to one correspondence with each other.  That is, the i'th entry in
      *  the labels array is the label for the i'th value in the values array.
      *  If both arrays are empty, this creates an empty record token.
+     *
+     *  <p>Record labels are sanitized so that any non-Java identifier
+     *  characters are replaced with underscores, see 
+     *  {@linkptolemy.util.StringUtilities.sanitizeName(String)}</p>
+     *
      *  @param labels An array of labels.
      *  @param values An array of Tokens.
      *  @exception IllegalActionException If the labels or the values array
@@ -109,6 +129,11 @@ public class OrderedRecordToken extends RecordToken {
      *  instead of curly braces,
      *  <code>[<i>label</i> = <i>value</i>, <i>label</i> = <i>value</i>, ...]</code>
      *  The record fields are listed in the their original order
+     *
+     *  <p>Record labels are sanitized so that any non-Java identifier
+     *  characters are replaced with underscores, see 
+     *  {@linkptolemy.util.StringUtilities.sanitizeName(String)}</p>
+     *
      *  @return A String beginning with "[" that contains label and value
      *  pairs separated by commas, ending with "]".
      */
@@ -127,7 +152,10 @@ public class OrderedRecordToken extends RecordToken {
                 stringRepresentation.append(", ");
             }
 
-            stringRepresentation.append(label + " = " + value);
+            // FIXME: It is not clear if we need to sanitize again,
+            // but doing so protects against labels being set to
+            // spaces and other characters.
+            stringRepresentation.append(StringUtilities.sanitizeName(label) + " = " + value);
         }
 
         return stringRepresentation.toString() + "]";
