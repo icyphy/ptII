@@ -758,6 +758,9 @@
 	<include name="ptolemy/vergil/basic/layout/*.class"/>
       </fileset>
       <fileset dir="${basedir}">
+	<include name="ptolemy/vergil/basic/layout/*.htm"/>
+      </fileset>
+      <fileset dir="${basedir}">
 	<include name="ptolemy/vergil/basic/layout/img/*.gif"/>
       </fileset>
       <fileset dir="${basedir}">
