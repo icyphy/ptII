@@ -296,11 +296,14 @@ jQuery(document).ready((function() {
    // Use jQuery instead of $ to make sure it works with the ptolemy webpage actor
    // if this code is used as arguments for actor's parameters
    jQuery("#readTime").hide("fast");
-   //Execute if the online option was selected
+   
+   //Execute when the online/offline option is selected
    jQuery("input[@name=useOnlineData]").click(function(){
           var option = jQuery("input[@name=useOnlineData]:checked").val();
+          //if online option is selected
           if (option.trim() =="true")
                 jQuery("#readTime").show();	
+        //if offline option is selected
          else jQuery("#readTime").hide("fast");
    });
    
@@ -347,7 +350,6 @@ jQuery(document).ready((function() {
 	
 		jQuery("#startMSec").val(startMSec);
 		jQuery("#endMSec").val(endMSec);
-		alert(startMSec+"   "+endMSec+"  diference: "+(endMSec-startMSec));
 	   });
 }));
 
@@ -360,7 +362,7 @@ UCBPrefPowerForServer
 </h1>
 <form action="UCBPower" method="post">
 <div id="onlineOffline">
-<input type="radio" name="useOnlineData" checked="checked" value=false id="rbutton"/> Offline
+<input type="radio" name="useOnlineData" value=false id="rbutton"/> Offline
 <input type="radio" name="useOnlineData" value=true id="rbutton" /> Online<br />
 </div>
 <div class="readTime" id="readTime"> <p>Please select a: <br /></p>
@@ -673,8 +675,8 @@ UCBPrefPowerForServer
 </tr>
 </table>
 </div>
-<!--<button type="submit" id="submitBtn">Submit</button> -->
-<button type="button" id="submitBtn">Submit</button> 
+<button type="submit" id="submitBtn">Submit</button> 
+<!--<button type="button" id="submitBtn">Submit</button> -->
 
 </form>
 </body>
