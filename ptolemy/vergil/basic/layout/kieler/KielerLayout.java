@@ -1357,7 +1357,7 @@ public class KielerLayout extends AbstractGlobalLayout {
      * structure will be written to a file on hard disk in order to review the
      * graph later on.
      */
-    private static final boolean DEBUG = true;
+    private static final boolean DEBUG = false;
 
     /**
      * Default size of a port that will be used in KIELER layout if no explicit

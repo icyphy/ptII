@@ -92,6 +92,7 @@ public class LayoutConfiguration extends Attribute {
         routeEdges.setDisplayName("Route edges");
         routeEdges.setTypeEquals(BaseType.BOOLEAN);
         routeEdges.setExpression(Boolean.toString(DEF_ROUTE_EDGES));
+        routeEdges.setVisibility(Settable.EXPERT);
         
         minimizeBends = new Parameter(this, "minimizeBends");
         minimizeBends.setDisplayName("Minimize edge bends");
@@ -129,7 +130,7 @@ public class LayoutConfiguration extends Attribute {
         
         helpURL = new StringParameter(this, "_helpURL");
         // TODO Change to actual layout documentation once that is written
-        helpURL.setExpression("doc/authors.htm");
+        helpURL.setExpression("ptolemy/vergil/basic/layout/layout.htm");
         helpURL.setVisibility(Settable.NONE);
     }
     

@@ -1,0 +1,114 @@
+<html>
+<head>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+<!-- $Id$ -->
+<link href="../../../../doc/default.css" rel="stylesheet" type="text/css">
+<title>Automatic Layout Help</title>
+</head>
+<body>
+
+<h1>Automatic Layout</h1>
+<p>
+Automatic layout places your actors and routes your edges automatically
+to arrive at a pleasing diagram without the hassle of having to move actors around yourself.
+To invoke automatic layout,
+click <i>Graph</i> &rarr; <i>Automatic Layout</i>,
+or simply press <i>Control+T</i> (on Windows) or <i>Command+T</i> (on a Mac).
+</p>
+<p>
+Automatic layout is brought to you by the <i>KIELER</i> project,
+developed by the <i>Real-time and Embedded Systems Group</i>
+at the <i>University of Kiel</i>.
+To find out more,
+go to <i>http://informatik.uni-kiel.de/rtsys/kieler/</i>.
+</p>
+
+<h2>Configuring Automatic Layout</h2>
+<p>
+While the defaults should work well in most cases,
+there are some options you can configure to influence the results of automatic layout.
+To configure automatic layout,
+click <i>Graph</i> &rarr; <i>Configure Layout</i>.
+</p>
+<ul>
+  <li>
+  <b>Include decorations:</b>
+  When switched on,
+  objects not connected to anything (and thus probably not being part of the main graph) will be laid out as well.
+  When switched off,
+  those objects are left where they currently are.
+  This is switched on by default.
+  </li>
+  
+  <li>
+  <b>Object spacing:</b>
+  Determines the amount of space left between objects in the diagram.
+  Turn up if you find objects to be too close to one another.
+  The default is 10.
+  </li>
+  
+  <li>
+  <b>Aspect ratio:</b>
+  Influences the aspect ratio of the layout,
+  that is,
+  how narrow or wide it is going to be.
+  This is only taken into account if <i>include decorations</i> is switched on.
+  Choose a wider aspect ratio for layouts intended to be viewed on a computer screen,
+  and a narrower aspect ratio for layouts intended to be printed.
+  The default value is somewhat to the wide side.
+  </li>
+  
+  <li>
+  <b>Interaction mode:</b>
+  Determines how the current layout of a diagram influences the computation of the automatic layout.
+  <i>None</i> computes the automatic layout without regarding the current layout.
+  <i>Cycles</i> takes the current layout into account when determining where to break cycles in the graph.
+  This effectively determines which of the links in a cycle will point leftwards instead of rightwards.
+  <i>Columns</i> tries to place actors below one another that are currently placed that way too.
+  <i>Full</i> also takes the vertical order of such actors into account.
+  The default setting is <i>None</i>.
+  </li>
+</ul>
+
+<h2>Expert Options</h2>
+<p>
+The configuration dialog by default does not show all available options.
+To show them all,
+open the configuration dialog,
+click <i>Preferences</i>,
+switch on <i>expert mode</i>,
+and click <i>OK</i>.
+You should now see more options than before.
+</p>
+<ul>
+  <li>
+  <b>Use old algorithm:</b>
+  If switched on,
+  the old algorithm originally built into Ptolemy is used to do the automatic layout.
+  This is a good way to obfuscate your diagrams.
+  This is switched off by default.
+  </li>
+  
+  <li>
+  <b>Route edges:</b>
+  If switched on,
+  the layout algorithm will compute a routing for the edges
+  instead of relying on the interactive Manhattan edge routing algorithm.
+  Edges will revert back to the interactive edge routing once one of their incident objects is moved.
+  Switching this option off may degrade layout quality.
+  This is switched on by default.
+  </li>
+  
+  <li>
+  <b>Minimize edge bends:</b>
+  If switched on,
+  the layout algorithm will try to straighten edges as much as possible,
+  which will almost always increase the height of the diagram.
+  If switched off,
+  the layout algorithm will try to minimize the height at the expense of less straight edges.
+  This is switched on by default.
+  </li>
+</ul>
+
+</body>
+</html>
