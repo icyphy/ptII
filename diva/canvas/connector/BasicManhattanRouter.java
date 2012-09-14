@@ -39,9 +39,13 @@ import diva.util.java2d.Polyline2D;
  * A basic manhattan router.
  *
  * @version $Id$
- * @author  Steve Neuendorffer
+ * @author  Steve Neuendorffer, Contributor: Christoph Daniel Schulze
  */
 public class BasicManhattanRouter implements ManhattanRouter {
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
+    
     /** Reroute the given Shape, given that the head site moved.
      */
     public void rerouteHead(Connector c, Shape s) {
@@ -90,21 +94,34 @@ public class BasicManhattanRouter implements ManhattanRouter {
             tailPt = tailSite.getPoint();
             headPt = headSite.getPoint();
         }
+        
+        /* There's a problem to be dealt with here in the corner case where
+         * the tail and head connection points form a line close to a diagonal.
+         * When determining the diretion in which an edge leaves on of the
+         * connection points, the specific connection point might be changed to
+         * correspond to that new angle (think about where horizontal and
+         * vertical edges touch relation vertices). This may result in the angle
+         * flipping to the other side of that diagonal, thereby resulting in a
+         * different direction on the next method call.
+         * To fix this, we now allow a certain tolerance around the diagonals
+         * before we change the edge direction from the old direction, if any
+         * had already been determined previously.
+         */
+        
+        // Find the angle formed by the direct line connecting the tail
+        // point with the head point and the x axis
+        double radAngle = Math.atan2(
+                tailPt.getY() - headPt.getY(),
+                headPt.getX() - tailPt.getX());
+        double distance = tailPt.distance(headPt);
 
-        double xDiff = headPt.getX() - tailPt.getX();
-        double yDiff = headPt.getY() - tailPt.getY();
-
-        // Infer normals if there are none.  This needs to be
-        // smarter, and should depend on the normal at the other
-        // end if there is one.
-        int headDir = CanvasUtilities.reverseDirection(getManhattanDirection(
-                xDiff, yDiff));
-
-        // FIXME: Changing the normal here has the side effect
-        // of also changing the point on the head site!
-        // This means that on the next call, getManhattanDirection()
-        // above may return a different direction, resulting in an
-        // annoying flip-flopping of the direction.
+        // Infer direction in which the edge has to leave the head
+        // connection point
+        int headDir = _getManhattanDirection(
+                radAngle,
+                distance,
+                true,
+                headSite.hasNormal() ? CanvasUtilities.getDirection(headSite.getNormal()) : -1);
         headSite.setNormal(CanvasUtilities.getNormal(headDir));
 
         if (currentContext != null) {
@@ -113,7 +130,13 @@ public class BasicManhattanRouter implements ManhattanRouter {
             headPt = headSite.getPoint();
         }
 
-        int tailDir = getManhattanDirection(xDiff, yDiff);
+        // Infer direction in which the edge has to leave the tail
+        // connection point
+        int tailDir = _getManhattanDirection(
+                radAngle,
+                distance,
+                false,
+                tailSite.hasNormal() ? CanvasUtilities.getDirection(tailSite.getNormal()) : -1);
         tailSite.setNormal(CanvasUtilities.getNormal(tailDir));
 
         if (currentContext != null) {
@@ -162,7 +185,20 @@ public class BasicManhattanRouter implements ManhattanRouter {
 
          */
     }
-
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
+    
+    /** Return a polyline describing the routed edge from the head connection
+     *  point to the tail connection point.
+     *  @param head head connection point.
+     *  @param headDir direction from which the edge is to approach the head
+     *                 connection point.
+     *  @param tail tail connection point.
+     *  @param tailDir direction from which the edge is to approach the tail
+     *                 connection point.
+     *  @return polyline describing the routed edge.
+     */
     private Polyline2D _route(Point2D head, int headDir, Point2D tail,
             int tailDir) {
         double xDiff = head.getX() - tail.getX();
@@ -309,16 +345,23 @@ public class BasicManhattanRouter implements ManhattanRouter {
         return route;
     }
 
-    private double TOL = .1;
-
-    private double MINDIST = 7;
-
     /** Return the direction between two points who differ by the
      *  given amounts.  The direction returned is restricted to the
      *  closest orthogonal direction.  The integer returned is from
      *  SwingUtilities.
+     *  
+     *  <p>NOTE: This code is currently not used and replaced by an
+     *  implementation based on the edge angle.
+     *  @param xDiff difference between connection point x coordinates.
+     *  @param yDiff difference between connection point y coordinates.
+     *  @param head {@code true} if we're computing the direction of the
+     *         head connection point, {@code false} for the tail connection
+     *         point.
+     *  @return one of the constants in {@code SwingConstants} describing
+     *          the direction from which the edge should approach the
+     *          specified connection point. 
      */
-    private int getManhattanDirection(double xDiff, double yDiff) {
+    private int _getManhattanDirection(double xDiff, double yDiff, boolean head) {
         int dir;
 
         if ((xDiff > 0) && (yDiff > 0)) {
@@ -347,6 +390,93 @@ public class BasicManhattanRouter implements ManhattanRouter {
             }
         }
 
-        return dir;
+        return head ? CanvasUtilities.reverseDirection(dir) : dir;
     }
+
+
+    /** Return the direction of a line with the given angle to the x axis,
+     *  given in radians. If no previous direction has been computed, the
+     *  direction is restricted to the closest orthogonal direction. If a
+     *  direction was already computed previously, we allow a certain
+     *  tolerance around 45 degree angles before the direction is changed
+     *  to prevent edges flip-flopping around.
+     *  @param radAngle the angle between the edge, pointing from tail to
+     *                  head, and the x axis.
+     *  @param distance distance between the head and tail connectors.
+     *  @param head {@code true} if we're computing the direction of the
+     *         head connection point, {@code false} for the tail connection
+     *         point.
+     *  @param oldDirection the old direction at the connection point or
+     *                      {@code -1}Êif there was no old direction.
+     *  @return one of the constants in {@code SwingConstants} describing
+     *          the direction from which the edge should approach the
+     *          specified connection point. 
+     */
+    private int _getManhattanDirection(double radAngle, double distance, boolean head, int oldDirection) {
+        int dir;
+        boolean downwards = false;
+        
+        // Check if the edge is pointing downwards
+        if (radAngle < 0.0) {
+            downwards = true;
+            radAngle = -1.0 * radAngle;
+        }
+        
+        // We can now infer the edge direction from the angle
+        if (radAngle < PI_QUARTER) {
+            dir = SwingConstants.EAST;
+        } else if (radAngle > PI_THREE_QUARTERS) {
+            dir = SwingConstants.WEST;
+        } else {
+            dir = downwards ? SwingConstants.SOUTH : SwingConstants.NORTH;
+        }
+        
+        // Check if we have an old direction and might need to prevent edge flip-flopping
+        if (oldDirection != -1) {
+            // If we have a head direction, we must reverse it first
+            if (head) {
+                oldDirection = CanvasUtilities.reverseDirection(oldDirection);
+            }
+            
+            if (oldDirection != dir) {
+                // radAngle currently lies somewhere in the two top quadrants. To make
+                // things easier, transform it to the first quadrant
+                if (radAngle > PI_HALF) {
+                    radAngle -= PI_HALF;
+                }
+                
+                // Check if radAngle is close to 45 degrees. The definition of "close"
+                // should probably depend on the distance of the points, since we might
+                // have to allow a larger tolerance for close objects than for distant
+                // ones
+                if (Math.pow(radAngle - PI_QUARTER, 2) <= 1.0 / distance) {
+                    dir = oldDirection;
+                }
+            }
+        }
+        
+        return head ? CanvasUtilities.reverseDirection(dir) : dir;
+    }
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
+
+    private final double TOL = .1;
+
+    private final double MINDIST = 7;
+    
+    /**
+     * A quarter Pi. Defined as a constant for performance.
+     */
+    private final double PI_QUARTER = Math.PI * 0.25;
+    
+    /**
+     * Half Pi. Defines as a constant for performance.
+     */
+    private final double PI_HALF = Math.PI * 0.5;
+    
+    /**
+     * Three quarters Pi. Defined as a constant for performance.
+     */
+    private final double PI_THREE_QUARTERS = Math.PI * 0.75;
 }

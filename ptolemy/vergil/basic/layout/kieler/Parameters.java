@@ -149,6 +149,7 @@ public class Parameters {
         } else {
             parentLayout.setProperty(LayoutOptions.SPACING, SPACING.getDefault());
             parentLayout.setProperty(LayoutOptions.ASPECT_RATIO, ASPECT_RATIO.getDefault());
+            parentLayout.setProperty(Properties.NODEPLACE, NodePlacementStrategy.BRANDES_KOEPF);
         }
         
         if (graphModel instanceof ActorGraphModel) {

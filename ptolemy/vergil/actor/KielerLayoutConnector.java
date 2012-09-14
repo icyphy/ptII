@@ -33,6 +33,7 @@ import java.awt.geom.Point2D;
 import java.util.List;
 
 import ptolemy.kernel.Relation;
+import ptolemy.vergil.basic.layout.kieler.KielerLayout;
 import ptolemy.vergil.basic.layout.kieler.LayoutHint;
 import ptolemy.vergil.basic.layout.kieler.LayoutHint.LayoutHintItem;
 import ptolemy.vergil.kernel.Link;
@@ -102,7 +103,12 @@ public class KielerLayoutConnector extends LinkManhattanConnector {
                     layoutHintItem = layoutHint.getLayoutHintItem(
                             link.getHead(), link.getTail());
                     if (layoutHintItem != null) {
-                        considerBendPoints = layoutHintItem.revalidate();
+                        // Bend points are always considered while a layout operation is
+                        // in progress to keep them from being removed. This is not quite
+                        // thread-safe, but should work since no more than one MomlChangeRequest
+                        // is executed at a given time, and those are the only things that
+                        // could trigger a problem with this code.
+                        considerBendPoints = KielerLayout.isLayoutInProgress() || layoutHintItem.revalidate();
                         if (considerBendPoints) {
                             bendPointList = layoutHintItem.getBendPointList();
                         } else {
@@ -112,7 +118,7 @@ public class KielerLayoutConnector extends LinkManhattanConnector {
                 }
             }
         }
-
+        
         if (considerBendPoints) {
             repaint();
 
