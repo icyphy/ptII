@@ -235,7 +235,7 @@ a TokenMgrError, which is _not_ a ParseException } {
 	        $errmsg "\n" output
     set lines [split $output "\n"]
     list [lindex $lines 0] [lindex $lines 1] [lindex $lines 2]
-} {{ptolemy.kernel.util.IllegalActionException: Error parsing expression "\0"} Because: {Encountered "\\" at line 1, column 1.}}
+} {{ptolemy.kernel.util.IllegalActionException: Error parsing expression "\0"} Because: {Encountered "" at line 1, column 1.}}
 
 ######################################################################
 ####
@@ -842,7 +842,7 @@ test PtParser-15.0 {Test parsing to end of expression.} {
 	        $errmsg "\n" output
     set lines [split $output "\n"]
     list [lindex $lines 0] [lindex $lines 1] [lindex $lines 2]
-} {{ptolemy.kernel.util.IllegalActionException: Error parsing expression "1 + 2 foo"} Because: {Encountered "foo" at line 1, column 7.}}
+} {{ptolemy.kernel.util.IllegalActionException: Error parsing expression "1 + 2 foo"} Because: {Encountered " <ID> "foo "" at line 1, column 7.}}
 
 
 ######################################################################
@@ -1007,7 +1007,7 @@ test PtParser-18.6 {Test bad expression.} {
 	        $errmsg "\n" output
     set lines [split $output "\n"]
     list $lines
-} {{{ptolemy.kernel.util.IllegalActionException: Error parsing expression "\0"} Because: {Encountered "\\" at line 1, column 1.} {Was expecting one of:} {    "function" ...} {    "!" ...} {    "~" ...} {    <COMPLEX> ...} {    <DOUBLE> ...} {    "-" ...} {    <INTEGER> ...} {    <STRING> ...} {    <BOOLEAN> ...} {    "(" ...} {    "[" ...} \ \ \ \ \"\{\"\ ... \ \ \ \ \"\{|\"\ ... {    <ID> ...} {    <SMID> ...} {    <SMIDBRACE> ...} {    <SMIDPAREN> ...} {    }}}
+} {{{ptolemy.kernel.util.IllegalActionException: Error parsing expression "\0"} Because: {Encountered "" at line 1, column 1.} {Was expecting one of:} {    }}}
 
 test PtParser-18.7 {Test expression with comment.} {
     set p [java::new ptolemy.data.expr.PtParser]
