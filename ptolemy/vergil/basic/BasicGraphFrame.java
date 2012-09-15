@@ -3282,21 +3282,19 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
             boolean toplevelHasEntities = false;
 
             if (updateValue) {
-                if (WindowPropertiesAttribute.isModelNonEmpty((CompositeEntity)model.toplevel())) {
-                    toplevelHasEntities = true;
-                    // Don't call setToken(), instead use a MoMLChangeRequest so that
-                    // the model is marked modified so that any changes are preserved.
-                    //zoom.setToken(new DoubleToken(scale));
-                    String moml = "<property name=\"_vergilZoomFactor\" "
+                toplevelHasEntities = true;
+                // Don't call setToken(), instead use a MoMLChangeRequest so that
+                // the model is marked modified so that any changes are preserved.
+                //zoom.setToken(new DoubleToken(scale));
+                String moml = "<property name=\"_vergilZoomFactor\" "
                     + " value=\"" + scale + "\"/>";
-                    MoMLChangeRequest request = new MoMLChangeRequest(this,
-                            model, moml);
-                    request.setUndoable(true);
-                    model.requestChange(request);
+                MoMLChangeRequest request = new MoMLChangeRequest(this,
+                        model, moml);
+                request.setUndoable(true);
+                model.requestChange(request);
 
-                    // Make sure the visibility is only expert.
-                    zoom.setVisibility(Settable.EXPERT);
-                }
+                // Make sure the visibility is only expert.
+                zoom.setVisibility(Settable.EXPERT);
             }
 
             // Save the center, to record the pan state.
