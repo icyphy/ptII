@@ -367,22 +367,11 @@ public class PortConfigurerDialog extends PtolemyDialog implements
 
         // Do some basic checks on table for things that are obviously
         // incorrect. First, make sure all the new ports have names
-        // other than the empty string or a just white space
+        // other than the empty string.
         for (int i = 0; i < _portTableModel.getRowCount(); i++) {
             if (portNameInTable[i].equals("")) {
                 JOptionPane.showMessageDialog(this,
                         "All Ports need to have a name.");
-                return false;
-            }
-            if (portNameInTable[i].trim().equals("")) {
-                JOptionPane.showMessageDialog(this,
-                        "All Ports need to have a name that has characters other than whitespace.");
-                return false;
-            }
-
-            if (!portNameInTable[i].trim().equals(portNameInTable[i])) {
-                JOptionPane.showMessageDialog(this,
-                        "Port names cannot start or end with whitespace.");
                 return false;
             }
         }
@@ -2102,18 +2091,9 @@ public class PortConfigurerDialog extends PtolemyDialog implements
                                 + (index + 1));
                         return false;
                     }
+
                     if (cellValue.equals("")) {
                         setMessage("Ports cannot have the empty string "
-                                + "as a name.");
-                        return false;
-                    }
-                    if (!cellValue.trim().equals(cellValue)) {
-                        setMessage("Ports cannot have leading or trailing white space "
-                                + "as a name.");
-                        return false;
-                    }
-                    if (cellValue.trim().equals("")) {
-                        setMessage("Ports cannot have only white space "
                                 + "as a name.");
                         return false;
                     }
