@@ -491,7 +491,10 @@ JAVACC_DIR =	@JAVACC_DIR@
 # JAVACC = 	$(JAVA) COM.sun.labs.javacc.Main
 
 JJTREE =	"@JJTREE@"
+JJTREE_OPTIONS = @JJTREE_OPTIONS@
+
 JAVACC =	"@JAVACC@"
+JAVACC_OPTIONS = @JAVACC_OPTIONS@
 
 # The JavaCV jar file, used in actor/lib/opencv/javacv for computer vision
 JAVACV_JAR =	@JAVACV_JAR@

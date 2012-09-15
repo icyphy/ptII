@@ -199,49 +199,49 @@ $(OPTIONAL_JSRCS): PtParser.java MatrixParser.java
 # Uncomment this to work on the parser.
 PtParser.java: PtParser.jj
 	@echo "This command runs JavaCC, which can be downloaded from"
-	@echo "https://javacc.dev.java.net/"
+	@echo "http://java.net/projects/javacc"
 	@echo "See \$$PTII/doc/install.htm for details."
 	@echo "You only need install JavaCC if you modify PtParser.jjt"
 	@echo "PtParser.java is derived from PtParser.jj, which is in turn"
 	@echo "derived from PtParser.jjt"
 	@echo "If you don't have JavaCC, you can workaround this with"
 	@echo "   touch PtParser.jj PtParser.java"
-	CLASSPATH="$(CLASSPATH)" $(JAVACC) PtParser.jj
+	CLASSPATH="$(CLASSPATH)" $(JAVACC) $(JAVACC_OPTIONS) PtParser.jj
 
 PtParser.jj: PtParser.jjt
 	@echo "This command runs JJTree, which is part of JavaCC"
 	@echo "JavaCC can be downloaded from"
-	@echo "https://javacc.dev.java.net/"
+	@echo "http://java.net/projects/javacc"
 	@echo "See \$$PTII/doc/install.htm for details."
 	@echo "You only need install JavaCC if you modify PtParser.jjt"
 	@echo "PtParser.java is derived from PtParser.jj, which is in turn"
 	@echo "derived from PtParser.jjt"
 	@echo "If you don't have JavaCC, you can workaround this with"
 	@echo "   touch PtParser.jj PtParser.java"
-	CLASSPATH="$(CLASSPATH)" $(JJTREE) PtParser.jjt
+	CLASSPATH="$(CLASSPATH)" $(JJTREE) $(JJTREE_OPTIONS) PtParser.jjt
 
 MatrixParser.java: MatrixParser.jj
 	@echo "This command runs JavaCC, which can be downloaded from"
-	@echo "http://javacc.dev.java.net"
+	@echo "http://java.net/projects/javacc"
 	@echo "See \$$PTII/doc/install.htm for details."
 	@echo "You only need install JavaCC if you modify MatrixParser.jjt"
 	@echo "MatrixParser.java is derived from MatrixParser.jj, which is in turn"
 	@echo "derived from MatrixParser.jjt"
 	@echo "If you don't have JavaCC, you can workaround this with"
 	@echo "   touch MatrixParser.jj MatrixParser.java"
-	CLASSPATH="$(CLASSPATH)" $(JAVACC) MatrixParser.jj
+	CLASSPATH="$(CLASSPATH)" $(JAVACC) $(JAVACC_OPTIONS) MatrixParser.jj
 
 MatrixParser.jj: MatrixParser.jjt
 	@echo "This command runs JJTree, which is part of JavaCC"
 	@echo "JavaCC can be downloaded from"
-	@echo "http://javacc.dev.java.net"
+	@echo "http://java.net/projects/javacc"
 	@echo "See \$PTII/doc/install.htm for details."
 	@echo "You only need install JavaCC if you modify MatrixParser.jjt"
 	@echo "MatrixParser.java is derived from MatrixParser.jj, which is in turn"
 	@echo "derived from MatrixParser.jjt"
 	@echo "If you don't have JavaCC, you can workaround this with"
 	@echo "   touch MatrixParser.jj MatrixParser.java"
-	CLASSPATH="$(CLASSPATH)" $(JJTREE) MatrixParser.jjt
+	CLASSPATH="$(CLASSPATH)" $(JJTREE) $(JJTREE_OPTIONS) MatrixParser.jjt
 
 # This rule is useful for cvs committing the derived files
 # For example:

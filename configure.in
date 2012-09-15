@@ -3267,14 +3267,14 @@ fi
 if test ! -d "$PTII/ptolemy/data/expr"; then
     PT_MSG_STATUS([$PTII/ptolemy/data/expr is not present,
     so we need not find JavaCC.])
-    JAVACC_DIR=$PTII/vendors/sun/javacc-4.0
+    JAVACC_DIR=$PTII/vendors/sun/javacc-5.0
     JAVACC=javacc
     JJTREE=jjtree
 else
     AC_MSG_CHECKING([for JavaCC])
     AC_ARG_WITH(javacc, [  --with-javacc=DIR       use JavaCC.zip from DIR,
-                           defaults to \$PTII/vendors/sun/javacc-4.0],
-	JAVACC_DIR=$withval, JAVACC_DIR=$PTII/vendors/sun/javacc-4.0)
+                           defaults to \$PTII/vendors/sun/javacc-5.0],
+	JAVACC_DIR=$withval, JAVACC_DIR=$PTII/vendors/sun/javacc-5.0)
 
     if test "`uname -s`" = "CYGWIN_NT-4.0" -o \
 		"`uname -s`" = "CYGWIN_NT-5.0" ; then
@@ -3303,6 +3303,7 @@ Be sure that your CLASSPATH includes JavaCC.zip, which is located in]);
 		# Note that we don't substitute in the $(JAVACC_DIR) here
 		JJTREE='$(JAVACC_DIR)/bin/jjtree'
 		PT_MSG_RESULT([$JJTREE])
+		JJTREE_OPTIONS=-STATIC=false
 	    else
 		AC_MSG_WARN([Failed to find jjtree in '$JAVACC_DIR/bin']);
 	    fi
@@ -3311,6 +3312,7 @@ Be sure that your CLASSPATH includes JavaCC.zip, which is located in]);
 		# Note that we don't substitute in the $(JAVACC_DIR) here
 		JAVACC='$(JAVACC_DIR)/bin/javacc'
 		PT_MSG_RESULT([$JAVACC])
+		JAVACC_OPTIONS=-STATIC=false
 	    else
 		AC_MSG_WARN([Failed to find javacc in '$JAVACC_DIR/bin']);
 	    fi
@@ -5314,6 +5316,9 @@ AC_SUBST(JAVAC)
 # javacc binary
 AC_SUBST(JAVACC)
 
+# javacc command line arguments, -STATIC=false if javacc is 5.0 or later.
+AC_SUBST(JAVACC_OPTIONS)
+
 # Directory that contains JavaCC, which is used in ptolemy/data/expr
 AC_SUBST(JAVACC_DIR)
 
@@ -5363,8 +5368,12 @@ AC_SUBST(JOYSTICK_JAR)
 # jtclsh script, used for test suites
 AC_SUBST(JTCLSH)
 
-# jtree binary
-AC_SUBST(JTREE)
+# jjtree binary
+AC_SUBST(JJTREE)
+
+# jjtree command line arguments, -STATIC=false if javacc is 5.0 or later.
+AC_SUBST(JJTREE_OPTIONS)
+
 
 # JDK Version determined by running confTest.class and getting java.version
 AC_SUBST(JVERSION)

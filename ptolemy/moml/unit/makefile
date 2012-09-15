@@ -123,8 +123,7 @@ UParser.java: UParser.jjt
 	@echo "UParser.java is derived from UParser.jj"
 	@echo "If you don't have JavaCC, you can workaround this with"
 	@echo "   touch UParser.jj UParser.java"
-	CLASSPATH="$(CLASSPATH)" 
-	$(JAVACC) UParser.jjt
+	CLASSPATH="$(CLASSPATH)" $(JAVACC) $(JAVACC_OPTIONS) UParser.jjt
 
 # This rule is useful for cvs committing the derived files
 # For example:
