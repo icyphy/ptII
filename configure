@@ -767,7 +767,7 @@ JODE_CLASSES
 JNA_JAR
 JMF_JARS
 JVERSION
-JTREE
+JJTREE_OPTIONS
 JTCLSH
 JOYSTICK_JAR
 JINI_PRESENT
@@ -779,6 +779,7 @@ JDOCBREAKITERATOR
 JAVAX_CRYPTO_JAR
 JAVACV_JAR
 JAVACC_DIR
+JAVACC_OPTIONS
 JAVACC
 JAVA3D_JARS
 JAVA_SYSTEM_JAR
@@ -1628,7 +1629,7 @@ Optional Packages:
   --with-lejos=DIR       use Java lejos from DIR,
                           defaults to \$PTII/vendors/lejos/lejosBeta3
   --with-javacc=DIR       use JavaCC.zip from DIR,
-                           defaults to \$PTII/vendors/sun/javacc-4.0
+                           defaults to \$PTII/vendors/sun/javacc-5.0
   --with-java3D=DIR       use j3dcore.jar, j3dutils.jar,
                           and vecmath.jar from DIR.  Usually Java 3D is
 			  installed in the JDK in jre/lib/ext
@@ -9088,7 +9089,7 @@ if test ! -d "$PTII/ptolemy/data/expr"; then
     so we need not find JavaCC." >&5
 $as_echo "$PTII/ptolemy/data/expr is not present,
     so we need not find JavaCC." >&6; }; fi
-    JAVACC_DIR=$PTII/vendors/sun/javacc-4.0
+    JAVACC_DIR=$PTII/vendors/sun/javacc-5.0
     JAVACC=javacc
     JJTREE=jjtree
 else
@@ -9099,7 +9100,7 @@ $as_echo_n "checking for JavaCC... " >&6; }
 if test "${with_javacc+set}" = set; then :
   withval=$with_javacc; JAVACC_DIR=$withval
 else
-  JAVACC_DIR=$PTII/vendors/sun/javacc-4.0
+  JAVACC_DIR=$PTII/vendors/sun/javacc-5.0
 fi
 
 
@@ -9182,6 +9183,7 @@ $as_echo_n "checking for jjtree... " >&6; }
 		if test "${PTVERBOSE:-none}" = "none"; then { $as_echo "$as_me:${as_lineno-$LINENO}: result: ok" >&5
 $as_echo "ok" >&6; }; else { $as_echo "$as_me:${as_lineno-$LINENO}: result: $JJTREE" >&5
 $as_echo "$JJTREE" >&6; }; fi
+		JJTREE_OPTIONS=-STATIC=false
 	    else
 		{ $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Failed to find jjtree in '$JAVACC_DIR/bin'" >&5
 $as_echo "$as_me: WARNING: Failed to find jjtree in '$JAVACC_DIR/bin'" >&2;};
@@ -9194,6 +9196,7 @@ $as_echo_n "checking for javacc... " >&6; }
 		if test "${PTVERBOSE:-none}" = "none"; then { $as_echo "$as_me:${as_lineno-$LINENO}: result: ok" >&5
 $as_echo "ok" >&6; }; else { $as_echo "$as_me:${as_lineno-$LINENO}: result: $JAVACC" >&5
 $as_echo "$JAVACC" >&6; }; fi
+		JAVACC_OPTIONS=-STATIC=false
 	    else
 		{ $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Failed to find javacc in '$JAVACC_DIR/bin'" >&5
 $as_echo "$as_me: WARNING: Failed to find javacc in '$JAVACC_DIR/bin'" >&2;};
@@ -12195,6 +12198,9 @@ ANT_JAVADOC_EXCLUDEPACKAGENAMES=`echo "$ANT_ALWAYS_EXCLUDE $ANT_EXCLUDE"| sed 's
 # javacc binary
 
 
+# javacc command line arguments, -STATIC=false if javacc is 5.0 or later.
+
+
 # Directory that contains JavaCC, which is used in ptolemy/data/expr
 
 
@@ -12244,7 +12250,11 @@ ANT_JAVADOC_EXCLUDEPACKAGENAMES=`echo "$ANT_ALWAYS_EXCLUDE $ANT_EXCLUDE"| sed 's
 # jtclsh script, used for test suites
 
 
-# jtree binary
+# jjtree binary
+
+
+# jjtree command line arguments, -STATIC=false if javacc is 5.0 or later.
+
 
 
 # JDK Version determined by running confTest.class and getting java.version
