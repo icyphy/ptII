@@ -231,7 +231,12 @@ public class JSONToToken extends Converter {
             values.add(_mapValueToToken(value));
         }
 
-        return new ArrayToken(values.toArray(new Token[values.size()]));
+        // If there are no values, ArrayToken() requires a special constructor
+        if (values.isEmpty()) {
+            return new ArrayToken(BaseType.UNKNOWN);
+        } else {
+            return new ArrayToken(values.toArray(new Token[values.size()]));
+        }
     }
 
     /** Iterate over the elements inside a JSONObject and put them inside a 

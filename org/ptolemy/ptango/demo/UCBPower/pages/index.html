@@ -259,63 +259,66 @@ Generic ThemeRoller Classes
 
 /* Note: for resizable styles, use the styles listed above in the dialog section */
 
-.vehicleDetail > td:first-child
-{
-	border-left: solid 1px black;
-	border-bottom: solid 1px black;
-}
-
-.vehicleDetail > td:last-child 
-{
-	border-right: solid 1px black;
-	border-bottom: solid 1px black;
-}
-
-.vehicleDetail > td:last-child > table > tbody > tr > td:last-child
-{
-	color: White;
-}
-
 .showWhenSelected
 {	
 	visibility: hidden;
 }
 </style>
+
+
 <script type="text/javascript" src="http://ptolemy.org/javascript/jquery-1.4.3.min.js"></script>
 <script type="text/javascript" src="http://ptolemy.org/javascript/jquery.fancybox-1.3.4.pack.js"></script>
 <script type="text/javascript" src="http://ptolemy.org/javascript/pt-1.0.0.js"></script>
+
 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.2.6/jquery.min.js"></script>  	
-<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.5.3/jquery-ui.min.js"></script> 	
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.5.3/jquery-ui.min.js"></script>
+
+	
 
 <script type="text/javascript">
 function writeText(text) {
     document.getElementById("afterImage").innerHTML = text;
 };
 
+// Validate fields.  
+// Called after submitBtn onclick(), but before form is sumbitted
+function validateForm() {
+	var startMSec = jQuery("#startMSec").val();
+	var endMSec = jQuery("#endMSec").val();
+	
+	// If start date/time is greater than end date/time, 
+	// tell user to pick different dates/times
+	if (startMSec > endMSec) {
+		alert("Please pick a start date/time combination that occurs before the end date/time combination.");
+		return false;
+	}
+	
+	return true;
+};
+
 jQuery(document).ready((function() {
    // Use jQuery instead of $ to make sure it works with the ptolemy webpage actor
    // if this code is used as arguments for actor's parameters
    jQuery("#readTime").hide("fast");
-   
-   //Execute when the online/offline option is selected
+   //Execute if the online option was selected
    jQuery("input[@name=useOnlineData]").click(function(){
           var option = jQuery("input[@name=useOnlineData]:checked").val();
-          //if online option is selected
           if (option.trim() =="true")
                 jQuery("#readTime").show();	
-        //if offline option is selected
          else jQuery("#readTime").hide("fast");
    });
    
-   jQuery("#dateStartPicker").datepicker();
-   jQuery("#dateEndPicker").datepicker();
-   
+   // Create date pickers.  The date pickers should not allow future dates
+   jQuery("#dateStartPicker").datepicker({ maxDate: "+0d" });
+   jQuery("#dateEndPicker").datepicker({ maxDate: "+0d" });
+
    //Execute when Submit button is clicked.
    jQuery("#submitBtn").click(function()
    {
 		var startDate =new Date(jQuery("#dateStartPicker").val());
 		var endDate =new Date(jQuery("#dateEndPicker").val());
-		var timeStartMsec, timeEndMsec;
+		var timeStartMsec, timeEndMsec;		
+		var useOnlineData = jQuery("input[@name=useOnlineData]:checked").val().trim();
 		
 		//transform the start time in milliseconds
 		var ampm =jQuery("#am_pm_start").val(jQuery(this).find(":selected").val());
@@ -350,7 +353,9 @@ jQuery(document).ready((function() {
 	
 		jQuery("#startMSec").val(startMSec);
 		jQuery("#endMSec").val(endMSec);
-	   });
+		//alert(startMSec+"   "+endMSec+"  diference: "+(endMSec-startMSec));	
+		
+	    });
 }));
 
 
@@ -358,12 +363,13 @@ jQuery(document).ready((function() {
 
 </head><body>
 <h1>
-UCBPrefPowerForServer
+UCBPowerForServer
 </h1>
-<form action="UCBPower" method="post">
+<form action="UCBPower" action="UCBPower" method="post" 
+	onsubmit="return validateForm()">
 <div id="onlineOffline">
-<input type="radio" name="useOnlineData" value=false id="rbutton"/> Offline
-<input type="radio" name="useOnlineData" value=true id="rbutton" /> Online<br />
+<input type="radio" name="useOnlineData" checked="checked" value=false id="offlineOption"/> Offline data
+<input type="radio" name="useOnlineData" value=true id="onlineOption" /> Online data <br />
 </div>
 <div class="readTime" id="readTime"> <p>Please select a: <br /></p>
 <table width="400">
@@ -675,8 +681,7 @@ UCBPrefPowerForServer
 </tr>
 </table>
 </div>
-<button type="submit" id="submitBtn">Submit</button> 
-<!--<button type="button" id="submitBtn">Submit</button> -->
+<button type="submit" id="submitBtn">Submit</button>
 
 </form>
 </body>

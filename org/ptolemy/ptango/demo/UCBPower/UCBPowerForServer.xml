@@ -8,47 +8,51 @@
         <property name="backgroundColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,1.0,1.0,1.0}">
             <display name="Background Color"/>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[895.0, 1030.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[585.0, 1010.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={69, 22, 1151, 785}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1, 0, 1209, 760}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[917, 675]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[981, 644]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.8115095913261051">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.7706397426733381">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{539.9964028776978, 474.89157245632066}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{649.9839572192514, 460.5080213903743}">
     </property>
     <property name="Title" class="ptolemy.vergil.basic.export.web.Title" value="UC Berkeley Power Consumption">
-        <property name="showTitleInHTML" class="ptolemy.data.expr.Parameter" value="true">
-        </property>
-        <property name="textSize" class="ptolemy.data.expr.Parameter" value="30">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-20.0, 55.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[40.0, 60.0]">
         </property>
     </property>
     <property name="_defaultWebExportParameters" class="ptolemy.vergil.basic.export.web.WebExportParameters">
-        <property name="directoryToExportTo" class="ptolemy.data.expr.FileParameter" value="/Users/eal/Tmp/Power">
+        <property name="directoryToExportTo" class="ptolemy.data.expr.FileParameter" value="">
             <property name="allowFiles" class="ptolemy.data.expr.Parameter" value="false">
             </property>
             <property name="allowDirectories" class="ptolemy.data.expr.Parameter" value="true">
             </property>
         </property>
-        <property name="backgroundColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,1.0,1.0,1.0}">
+        <property name="openCompositesBeforeExport" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="openCompositesBeforeExport" class="ptolemy.data.expr.Parameter" value="false">
-        </property>
-        <property name="runBeforeExport" class="ptolemy.data.expr.Parameter" value="false">
+        <property name="runBeforeExport" class="ptolemy.data.expr.Parameter" value="true">
         </property>
         <property name="showInBrowser" class="ptolemy.data.expr.Parameter" value="true">
         </property>
         <property name="copyJavaScriptFiles" class="ptolemy.data.expr.Parameter" value="false">
         </property>
     </property>
-    <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="TODO:&#10;Add other buildings.">
+    <property name="DefaultIconScript" class="ptolemy.vergil.basic.export.web.DefaultIconScript" value="writeText('')">
+        <property name="script" class="ptolemy.data.expr.StringParameter" value="function writeText(text) {&#10;    document.getElementById(&quot;afterImage&quot;).innerHTML = text;&#10;};&#10;&#10;// Validate fields.  &#10;// Called after submitBtn onclick(), but before form is sumbitted&#10;function validateForm() {&#10;	var startMSec = jQuery(&quot;#startMSec&quot;).val();&#10;	var endMSec = jQuery(&quot;#endMSec&quot;).val();&#10;	&#10;	// If start date/time is greater than end date/time, &#10;	// tell user to pick different dates/times&#10;	if (startMSec &gt; endMSec) {&#10;		alert(&quot;Please pick a start date/time combination that occurs before the end date/time combination.&quot;);&#10;		return false;&#10;	}&#10;	&#10;	return true;&#10;};&#10;&#10;jQuery(document).ready((function() {&#10;   jQuery(&quot;#readTime&quot;).hide(&quot;fast&quot;);&#10;   jQuery(&quot;input[@name=useOnlineData]&quot;).click(function(){&#10;          var option = jQuery(&quot;input[@name=useOnlineData]:checked&quot;).val();&#10;          if (option.trim() ==&quot;true&quot;)&#10;                jQuery(&quot;#readTime&quot;).show();	&#10;         else jQuery(&quot;#readTime&quot;).hide(&quot;fast&quot;);&#10;   });&#10;   &#10;   // Create date pickers.  The date pickers should not allow future dates&#10;   jQuery(&quot;#dateStartPicker&quot;).datepicker({ maxDate: &quot;+0d&quot; });&#10;   jQuery(&quot;#dateEndPicker&quot;).datepicker({ maxDate: &quot;+0d&quot; });&#10;&#10;   jQuery(&quot;#submitBtn&quot;).click(function()&#10;   {&#10;	var startDate =new Date(jQuery(&quot;#dateStartPicker&quot;).val());&#10;	var endDate =new Date(jQuery(&quot;#dateEndPicker&quot;).val());&#10;	var timeStartMsec, timeEndMsec;&#10;	&#10;	//transform the start time in milliseconds&#10;	var hours = jQuery(&quot;#hourMenuStart&quot;).val(jQuery(this).find(&quot;:selected&quot;).val());&#10;	timeStartMsec =hours*60*60*1000;&#10;&#10;	var minutes = jQuery(&quot;#minuteMenuStart&quot;).val(jQuery(this).find(&quot;:selected&quot;).val());&#10;        timeStartMsec =timeStartMsec + minutes*60*1000;&#10;&#10;	var seconds =jQuery(&quot;#secondMenuStart&quot;).val(jQuery(this).find(&quot;:selected&quot;).val());&#10;	timeStartMsec =timeStartMsec+seconds*1000;&#10;&#10;	//alert (&quot; time in msec: &quot;+timeStartMsec);&#10;&#10;	//transform the end time in milliseconds&#10;	hours = jQuery(&quot;#hourMenuEnd&quot;).val(jQuery(this).find(&quot;:selected&quot;).val());&#10;	timeEndMsec =hours*60*60*1000;&#10;&#10;	minutes = jQuery(&quot;#minuteMenuEnd&quot;).val(jQuery(this).find(&quot;:selected&quot;).val());&#10;        timeEndMsec =timeEndMsec + minutes*60*1000;&#10;&#10;	seconds =jQuery(&quot;#secondMenuEnd&quot;).val(jQuery(this).find(&quot;:selected&quot;).val());&#10;	timeEndMsec =timeEndMsec+seconds*1000;&#10;&#10;&#10;	//alert (&quot; time in msec: &quot;+timeEndMsec);&#10;&#10;	var startMSec=startDate.getTime()+timeStartMsec;&#10;	var endMSec=endDate.getTime()+timeEndMsec;&#10;&#10;	jQuery(&quot;#startMSec&quot;).val(startMSec);&#10;	jQuery(&quot;#endMSec&quot;).val(endMSec);&#10;   });&#10;}));&#10;&#10;">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[830.0, 910.0]">
+        <property name="evaluateScript" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="startText" class="ptolemy.data.expr.StringParameter" value="&lt;form action=&quot;UCBPower&quot; action=&quot;UCBPower&quot; method=&quot;post&quot; &#10;	onsubmit=&quot;return validateForm()&quot;&gt;&#10;&lt;div id=&quot;onlineOffline&quot;&gt;&#10;&lt;input type=&quot;radio&quot; name=&quot;useOnlineData&quot; checked=&quot;checked&quot; value=false id=&quot;offlineOption&quot;/&gt; Offline data&#10;&lt;input type=&quot;radio&quot; name=&quot;useOnlineData&quot; value=true id=&quot;onlineOption&quot; /&gt; Online data &lt;br /&gt;&#10;&lt;/div&gt;&#10;&lt;div class=&quot;readTime&quot; id=&quot;readTime&quot;&gt; &lt;p&gt;Please select a: &lt;br /&gt;&lt;/p&gt;&#10;&lt;table width=&quot;400&quot;&gt;&#10;&lt;tr&gt;&#10; &lt;td width=&quot;100&quot;&gt; start date: &lt;/td&gt;&#10; &lt;td&gt; &lt;input type=&quot;text&quot; id=&quot;dateStartPicker&quot; /&gt; &lt;/td&gt; &#10; &lt;td&gt; start time: &lt;/td&gt;&#10; &lt;td&gt;&#10; &lt;select name=&quot;hourMenuStart&quot; id=&quot;hourMenuStart&quot;&gt;&#10;	&lt;option value=1&gt;01&lt;/option&gt;&#10;	&lt;option value=2&gt;02&lt;/option&gt;&#10;	&lt;option value=3&gt;03&lt;/option&gt;&#10;	&lt;option value=4&gt;04&lt;/option&gt;&#10;	&lt;option value=5&gt;05&lt;/option&gt;&#10;	&lt;option value=6&gt;06&lt;/option&gt;&#10;	&lt;option value=7&gt;07&lt;/option&gt;&#10;	&lt;option value=8&gt;08&lt;/option&gt;&#10;	&lt;option value=9&gt;09&lt;/option&gt;&#10;	&lt;option value=10&gt;10&lt;/option&gt;&#10;	&lt;option value=11&gt;11&lt;/option&gt;&#10;	&lt;option value=12&gt;12&lt;/option&gt;&#10;&lt;/select&gt;&lt;/td&gt;&#10; &lt;td&gt;&#10; &lt;select name=&quot;minuteMenuStart&quot; id=&quot;minuteMenuStart&quot;&gt;&#10;&lt;option value=0&gt;00&lt;/option&gt;&#10;&lt;option value=1&gt;01&lt;/option&gt;&#10;&lt;option value=2&gt;02&lt;/option&gt;&#10;&lt;option value=3&gt;03&lt;/option&gt;&#10;&lt;option value=4&gt;04&lt;/option&gt;&#10;&lt;option value=5&gt;05&lt;/option&gt;&#10;&lt;option value=6&gt;06&lt;/option&gt;&#10;&lt;option value=7&gt;07&lt;/option&gt;&#10;&lt;option value=8&gt;08&lt;/option&gt;&#10;&lt;option value=9&gt;09&lt;/option&gt;&#10;&lt;option value=10&gt;10&lt;/option&gt;&#10;&lt;option value=11&gt;11&lt;/option&gt;&#10;&lt;option value=12&gt;12&lt;/option&gt;&#10;&lt;option value=13&gt;13&lt;/option&gt;&#10;&lt;option value=14&gt;14&lt;/option&gt;&#10;&lt;option value=15&gt;15&lt;/option&gt;&#10;&lt;option value=16&gt;16&lt;/option&gt;&#10;&lt;option value=17&gt;17&lt;/option&gt;&#10;&lt;option value=18&gt;18&lt;/option&gt;&#10;&lt;option value=19&gt;19&lt;/option&gt;&#10;&lt;option value=20&gt;20&lt;/option&gt;&#10;&lt;option value=21&gt;21&lt;/option&gt;&#10;&lt;option value=22&gt;22&lt;/option&gt;&#10;&lt;option value=23&gt;23&lt;/option&gt;&#10;&lt;option value=24&gt;24&lt;/option&gt;&#10;&lt;option value=25&gt;25&lt;/option&gt;&#10;&lt;option value=26&gt;26&lt;/option&gt;&#10;&lt;option value=27&gt;27&lt;/option&gt;&#10;&lt;option value=28&gt;28&lt;/option&gt;&#10;&lt;option value=29&gt;29&lt;/option&gt;&#10;&lt;option value=30&gt;30&lt;/option&gt;&#10;&lt;option value=31&gt;31&lt;/option&gt;&#10;&lt;option value=32&gt;32&lt;/option&gt;&#10;&lt;option value=33&gt;33&lt;/option&gt;&#10;&lt;option value=34&gt;34&lt;/option&gt;&#10;&lt;option value=35&gt;35&lt;/option&gt;&#10;&lt;option value=36&gt;36&lt;/option&gt;&#10;&lt;option value=37&gt;37&lt;/option&gt;&#10;&lt;option value=38&gt;38&lt;/option&gt;&#10;&lt;option value=39&gt;39&lt;/option&gt;&#10;&lt;option value=40&gt;40&lt;/option&gt;&#10;&lt;option value=41&gt;41&lt;/option&gt;&#10;&lt;option value=42&gt;42&lt;/option&gt;&#10;&lt;option value=43&gt;43&lt;/option&gt;&#10;&lt;option value=44&gt;44&lt;/option&gt;&#10;&lt;option value=45&gt;45&lt;/option&gt;&#10;&lt;option value=46&gt;46&lt;/option&gt;&#10;&lt;option value=47&gt;47&lt;/option&gt;&#10;&lt;option value=48&gt;48&lt;/option&gt;&#10;&lt;option value=49&gt;49&lt;/option&gt;&#10;&lt;option value=50&gt;50&lt;/option&gt;&#10;&lt;option value=51&gt;51&lt;/option&gt;&#10;&lt;option value=52&gt;52&lt;/option&gt;&#10;&lt;option value=53&gt;53&lt;/option&gt;&#10;&lt;option value=54&gt;54&lt;/option&gt;&#10;&lt;option value=55&gt;55&lt;/option&gt;&#10;&lt;option value=56&gt;56&lt;/option&gt;&#10;&lt;option value=57&gt;57&lt;/option&gt;&#10;&lt;option value=58&gt;58&lt;/option&gt;&#10;&lt;option value=59&gt;59&lt;/option&gt;&#10;&lt;/select&gt;&lt;/td&gt;&#10; &lt;td&gt;&#10; &lt;select name=&quot;secondMenuStart&quot; id=&quot;secondMenuStart&quot;&gt;&#10;&lt;option value=0&gt;00&lt;/option&gt;&#10;&lt;option value=1&gt;01&lt;/option&gt;&#10;&lt;option value=2&gt;02&lt;/option&gt;&#10;&lt;option value=3&gt;03&lt;/option&gt;&#10;&lt;option value=4&gt;04&lt;/option&gt;&#10;&lt;option value=5&gt;05&lt;/option&gt;&#10;&lt;option value=6&gt;06&lt;/option&gt;&#10;&lt;option value=7&gt;07&lt;/option&gt;&#10;&lt;option value=8&gt;08&lt;/option&gt;&#10;&lt;option value=9&gt;09&lt;/option&gt;&#10;&lt;option value=10&gt;10&lt;/option&gt;&#10;&lt;option value=11&gt;11&lt;/option&gt;&#10;&lt;option value=12&gt;12&lt;/option&gt;&#10;&lt;option value=13&gt;13&lt;/option&gt;&#10;&lt;option value=14&gt;14&lt;/option&gt;&#10;&lt;option value=15&gt;15&lt;/option&gt;&#10;&lt;option value=16&gt;16&lt;/option&gt;&#10;&lt;option value=17&gt;17&lt;/option&gt;&#10;&lt;option value=18&gt;18&lt;/option&gt;&#10;&lt;option value=19&gt;19&lt;/option&gt;&#10;&lt;option value=20&gt;20&lt;/option&gt;&#10;&lt;option value=21&gt;21&lt;/option&gt;&#10;&lt;option value=22&gt;22&lt;/option&gt;&#10;&lt;option value=23&gt;23&lt;/option&gt;&#10;&lt;option value=24&gt;24&lt;/option&gt;&#10;&lt;option value=25&gt;25&lt;/option&gt;&#10;&lt;option value=26&gt;26&lt;/option&gt;&#10;&lt;option value=27&gt;27&lt;/option&gt;&#10;&lt;option value=28&gt;28&lt;/option&gt;&#10;&lt;option value=29&gt;29&lt;/option&gt;&#10;&lt;option value=30&gt;30&lt;/option&gt;&#10;&lt;option value=31&gt;31&lt;/option&gt;&#10;&lt;option value=32&gt;32&lt;/option&gt;&#10;&lt;option value=33&gt;33&lt;/option&gt;&#10;&lt;option value=34&gt;34&lt;/option&gt;&#10;&lt;option value=35&gt;35&lt;/option&gt;&#10;&lt;option value=36&gt;36&lt;/option&gt;&#10;&lt;option value=37&gt;37&lt;/option&gt;&#10;&lt;option value=38&gt;38&lt;/option&gt;&#10;&lt;option value=39&gt;39&lt;/option&gt;&#10;&lt;option value=40&gt;40&lt;/option&gt;&#10;&lt;option value=41&gt;41&lt;/option&gt;&#10;&lt;option value=42&gt;42&lt;/option&gt;&#10;&lt;option value=43&gt;43&lt;/option&gt;&#10;&lt;option value=44&gt;44&lt;/option&gt;&#10;&lt;option value=45&gt;45&lt;/option&gt;&#10;&lt;option value=46&gt;46&lt;/option&gt;&#10;&lt;option value=47&gt;47&lt;/option&gt;&#10;&lt;option value=48&gt;48&lt;/option&gt;&#10;&lt;option value=49&gt;49&lt;/option&gt;&#10;&lt;option value=50&gt;50&lt;/option&gt;&#10;&lt;option value=51&gt;51&lt;/option&gt;&#10;&lt;option value=52&gt;52&lt;/option&gt;&#10;&lt;option value=53&gt;53&lt;/option&gt;&#10;&lt;option value=54&gt;54&lt;/option&gt;&#10;&lt;option value=55&gt;55&lt;/option&gt;&#10;&lt;option value=56&gt;56&lt;/option&gt;&#10;&lt;option value=57&gt;57&lt;/option&gt;&#10;&lt;option value=58&gt;58&lt;/option&gt;&#10;&lt;option value=59&gt;59&lt;/option&gt;&#10;&lt;/select&gt;&lt;/td&gt;&#10; &lt;td&gt;&#10; &lt;select name=&quot;AMPM&quot; id=&quot;am_pm_start&quot;&gt;&#10; &lt;option value=0&gt;AM&lt;/option&gt;&#10; &lt;option value=1&gt;PM&lt;/option&gt;&#10; &lt;/select&gt;&#10; &lt;/td&gt;&#10;&lt;td&gt;(millisec:)&lt;/td&gt;&lt;td&gt; &lt;input type=&quot;text&quot; name=&quot;dateStart&quot;  id=&quot;startMSec&quot;&gt;&lt;/td&gt;&#10;&lt;/tr&gt;&#10;&lt;tr&gt;&#10;&lt;td&gt; end date: &lt;/td&gt;&#10;&lt;td&gt; &lt;input type=&quot;text&quot; id=&quot;dateEndPicker&quot;&gt; &lt;/td&gt; &lt;td&gt; end time: &lt;/td&gt;&#10;&lt;td&gt;&#10;&lt;select name=&quot;hourMenuEnd&quot; id=&quot;hourMenuEnd&quot;&gt;&#10;&lt;option value=1&gt;01&lt;/option&gt;&#10;&lt;option value=2&gt;02&lt;/option&gt;&#10;&lt;option value=3&gt;03&lt;/option&gt;&#10;&lt;option value=4&gt;04&lt;/option&gt;&#10;&lt;option value=5&gt;05&lt;/option&gt;&#10;&lt;option value=6&gt;06&lt;/option&gt;&#10;&lt;option value=7&gt;07&lt;/option&gt;&#10;&lt;option value=8&gt;08&lt;/option&gt;&#10;&lt;option value=9&gt;09&lt;/option&gt;&#10;&lt;option value=10&gt;10&lt;/option&gt;&#10;&lt;option value=11&gt;11&lt;/option&gt;&#10;&lt;option value=12&gt;12&lt;/option&gt;&#10;&lt;/select&gt;&lt;/td&gt;&#10;&lt;td&gt;&#10;&lt;select name=&quot;minuteMenuEnd&quot; id=&quot;minuteMenuEnd&quot;&gt;&#10;&lt;option value=0&gt;00&lt;/option&gt;&#10;&lt;option value=1&gt;01&lt;/option&gt;&#10;&lt;option value=2&gt;02&lt;/option&gt;&#10;&lt;option value=3&gt;03&lt;/option&gt;&#10;&lt;option value=4&gt;04&lt;/option&gt;&#10;&lt;option value=5&gt;05&lt;/option&gt;&#10;&lt;option value=6&gt;06&lt;/option&gt;&#10;&lt;option value=7&gt;07&lt;/option&gt;&#10;&lt;option value=8&gt;08&lt;/option&gt;&#10;&lt;option value=9&gt;09&lt;/option&gt;&#10;&lt;option value=10&gt;10&lt;/option&gt;&#10;&lt;option value=11&gt;11&lt;/option&gt;&#10;&lt;option value=12&gt;12&lt;/option&gt;&#10;&lt;option value=13&gt;13&lt;/option&gt;&#10;&lt;option value=14&gt;14&lt;/option&gt;&#10;&lt;option value=15&gt;15&lt;/option&gt;&#10;&lt;option value=16&gt;16&lt;/option&gt;&#10;&lt;option value=17&gt;17&lt;/option&gt;&#10;&lt;option value=18&gt;18&lt;/option&gt;&#10;&lt;option value=19&gt;19&lt;/option&gt;&#10;&lt;option value=20&gt;20&lt;/option&gt;&#10;&lt;option value=21&gt;21&lt;/option&gt;&#10;&lt;option value=22&gt;22&lt;/option&gt;&#10;&lt;option value=23&gt;23&lt;/option&gt;&#10;&lt;option value=24&gt;24&lt;/option&gt;&#10;&lt;option value=25&gt;25&lt;/option&gt;&#10;&lt;option value=26&gt;26&lt;/option&gt;&#10;&lt;option value=27&gt;27&lt;/option&gt;&#10;&lt;option value=28&gt;28&lt;/option&gt;&#10;&lt;option value=29&gt;29&lt;/option&gt;&#10;&lt;option value=30&gt;30&lt;/option&gt;&#10;&lt;option value=31&gt;31&lt;/option&gt;&#10;&lt;option value=32&gt;32&lt;/option&gt;&#10;&lt;option value=33&gt;33&lt;/option&gt;&#10;&lt;option value=34&gt;34&lt;/option&gt;&#10;&lt;option value=35&gt;35&lt;/option&gt;&#10;&lt;option value=36&gt;36&lt;/option&gt;&#10;&lt;option value=37&gt;37&lt;/option&gt;&#10;&lt;option value=38&gt;38&lt;/option&gt;&#10;&lt;option value=39&gt;39&lt;/option&gt;&#10;&lt;option value=40&gt;40&lt;/option&gt;&#10;&lt;option value=41&gt;41&lt;/option&gt;&#10;&lt;option value=42&gt;42&lt;/option&gt;&#10;&lt;option value=43&gt;43&lt;/option&gt;&#10;&lt;option value=44&gt;44&lt;/option&gt;&#10;&lt;option value=45&gt;45&lt;/option&gt;&#10;&lt;option value=46&gt;46&lt;/option&gt;&#10;&lt;option value=47&gt;47&lt;/option&gt;&#10;&lt;option value=48&gt;48&lt;/option&gt;&#10;&lt;option value=49&gt;49&lt;/option&gt;&#10;&lt;option value=50&gt;50&lt;/option&gt;&#10;&lt;option value=51&gt;51&lt;/option&gt;&#10;&lt;option value=52&gt;52&lt;/option&gt;&#10;&lt;option value=53&gt;53&lt;/option&gt;&#10;&lt;option value=54&gt;54&lt;/option&gt;&#10;&lt;option value=55&gt;55&lt;/option&gt;&#10;&lt;option value=56&gt;56&lt;/option&gt;&#10;&lt;option value=57&gt;57&lt;/option&gt;&#10;&lt;option value=58&gt;58&lt;/option&gt;&#10;&lt;option value=59&gt;59&lt;/option&gt;&#10;&lt;/select&gt;&lt;/td&gt;&#10;&lt;td&gt;&#10;&lt;select name=&quot;secondMenuEnd&quot; id=&quot;secondMenuEnd&quot;&gt;&#10;&lt;option value=0&gt;00&lt;/option&gt;&#10;&lt;option value=1&gt;01&lt;/option&gt;&#10;&lt;option value=2&gt;02&lt;/option&gt;&#10;&lt;option value=3&gt;03&lt;/option&gt;&#10;&lt;option value=4&gt;04&lt;/option&gt;&#10;&lt;option value=5&gt;05&lt;/option&gt;&#10;&lt;option value=6&gt;06&lt;/option&gt;&#10;&lt;option value=7&gt;07&lt;/option&gt;&#10;&lt;option value=8&gt;08&lt;/option&gt;&#10;&lt;option value=9&gt;09&lt;/option&gt;&#10;&lt;option value=10&gt;10&lt;/option&gt;&#10;&lt;option value=11&gt;11&lt;/option&gt;&#10;&lt;option value=12&gt;12&lt;/option&gt;&#10;&lt;option value=13&gt;13&lt;/option&gt;&#10;&lt;option value=14&gt;14&lt;/option&gt;&#10;&lt;option value=15&gt;15&lt;/option&gt;&#10;&lt;option value=16&gt;16&lt;/option&gt;&#10;&lt;option value=17&gt;17&lt;/option&gt;&#10;&lt;option value=18&gt;18&lt;/option&gt;&#10;&lt;option value=19&gt;19&lt;/option&gt;&#10;&lt;option value=20&gt;20&lt;/option&gt;&#10;&lt;option value=21&gt;21&lt;/option&gt;&#10;&lt;option value=22&gt;22&lt;/option&gt;&#10;&lt;option value=23&gt;23&lt;/option&gt;&#10;&lt;option value=24&gt;24&lt;/option&gt;&#10;&lt;option value=25&gt;25&lt;/option&gt;&#10;&lt;option value=26&gt;26&lt;/option&gt;&#10;&lt;option value=27&gt;27&lt;/option&gt;&#10;&lt;option value=28&gt;28&lt;/option&gt;&#10;&lt;option value=29&gt;29&lt;/option&gt;&#10;&lt;option value=30&gt;30&lt;/option&gt;&#10;&lt;option value=31&gt;31&lt;/option&gt;&#10;&lt;option value=32&gt;32&lt;/option&gt;&#10;&lt;option value=33&gt;33&lt;/option&gt;&#10;&lt;option value=34&gt;34&lt;/option&gt;&#10;&lt;option value=35&gt;35&lt;/option&gt;&#10;&lt;option value=36&gt;36&lt;/option&gt;&#10;&lt;option value=37&gt;37&lt;/option&gt;&#10;&lt;option value=38&gt;38&lt;/option&gt;&#10;&lt;option value=39&gt;39&lt;/option&gt;&#10;&lt;option value=40&gt;40&lt;/option&gt;&#10;&lt;option value=41&gt;41&lt;/option&gt;&#10;&lt;option value=42&gt;42&lt;/option&gt;&#10;&lt;option value=43&gt;43&lt;/option&gt;&#10;&lt;option value=44&gt;44&lt;/option&gt;&#10;&lt;option value=45&gt;45&lt;/option&gt;&#10;&lt;option value=46&gt;46&lt;/option&gt;&#10;&lt;option value=47&gt;47&lt;/option&gt;&#10;&lt;option value=48&gt;48&lt;/option&gt;&#10;&lt;option value=49&gt;49&lt;/option&gt;&#10;&lt;option value=50&gt;50&lt;/option&gt;&#10;&lt;option value=51&gt;51&lt;/option&gt;&#10;&lt;option value=52&gt;52&lt;/option&gt;&#10;&lt;option value=53&gt;53&lt;/option&gt;&#10;&lt;option value=54&gt;54&lt;/option&gt;&#10;&lt;option value=55&gt;55&lt;/option&gt;&#10;&lt;option value=56&gt;56&lt;/option&gt;&#10;&lt;option value=57&gt;57&lt;/option&gt;&#10;&lt;option value=58&gt;58&lt;/option&gt;&#10;&lt;option value=59&gt;59&lt;/option&gt;&#10;&lt;/select&gt;&lt;/td&gt;&#10;&lt;td&gt;&#10; &lt;select name=&quot;AMPM&quot; id=&quot;am_pm_end&quot;&gt;&#10; &lt;option value=0&gt;AM&lt;/option&gt;&#10; &lt;option value=1&gt;PM&lt;/option&gt;&#10; &lt;/select&gt;&#10; &lt;/td&gt;&#10;&lt;td&gt;&#10;(millisec:) &lt;/td&gt; &lt;td&gt; &lt;input type=&quot;text&quot; name=&quot;dateEnd&quot; id=&quot;endMSec&quot; /&gt; &lt;/td&gt;&#10;&lt;/tr&gt;&#10;&lt;/table&gt;&#10;&lt;/div&gt;&#10;&lt;button type=&quot;submit&quot; id=&quot;submitBtn&quot;&gt;Submit&lt;/button&gt;&#10;&#10;&lt;/form&gt;">
+        </property>
+        <property name="endText" class="ptolemy.data.expr.StringParameter" value="&lt;p id=&quot;afterImage&quot;&gt;&lt;/p&gt;">
+        </property>
+        <property name="jQueryLibraries" class="ptolemy.data.expr.StringParameter" value="&lt;link rel=&quot;stylesheet&quot; type=&quot;text/css&quot; href=&quot;http://ptolemy.org/javascript/jquery.fancybox-1.3.4.css&quot; media=&quot;screen&quot;/&gt;&#10;&lt;style media=&quot;screen&quot; type=&quot;text/css&quot;&gt;&#10;#ui-datepicker-div, .ui-datepicker-div, .ui-datepicker-inline {&#10;	/*resets*/margin: 0; padding: 0; border: 0; outline: 0; line-height: 0.8; text-decoration: none; font-size: 100%; list-style: none;&#10;	font-family: Trebuchet MS, Arial, sans-serif;&#10;	background-color: #3e3d3d;&#10;	font-size: 1em;&#10;	border: 1px solid #777777;&#10;	width: 15.9em;&#10;	padding: 2.3em .3em .3em .3em;&#10;	position: relative;&#10;}&#10;#ui-datepicker-div,&#10;.ui-datepicker-div {&#10;	z-index: 9999; /*must have*/&#10;	display: none;&#10;	background: #3e3d3d;&#10;}&#10;.ui-datepicker-inline {&#10;	float: left;&#10;	display: block;	&#10;}&#10;.ui-datepicker-control {&#10;	display: none;&#10;}&#10;.ui-datepicker-current {&#10;	display: none;&#10;}&#10;.ui-datepicker-next, .ui-datepicker-prev {&#10;	position: absolute;&#10;	left: .5em;&#10;	top: .5em;&#10;	background: #444444 url(images/444444_40x100_textures_02_glass_25.png) 0 50% repeat-x;&#10;}&#10;.ui-datepicker-next {&#10;	left: 14.6em;&#10;}&#10;.ui-datepicker-next:hover, .ui-datepicker-prev:hover {&#10;	background: #333333 url(images/333333_40x100_textures_02_glass_25.png) 0 50% repeat-x;&#10;}&#10;.ui-datepicker-next a,&#10;.ui-datepicker-next label,&#10;.ui-datepicker-prev label,&#10;.ui-datepicker-prev a {&#10;	text-indent: -999999px;&#10;	width: 1.3em;&#10;	height: 1.4em;&#10;	display: block;&#10;	font-size: 1em;&#10;	background: url(images/eeeeee_7x7_arrow_left.gif) 50% 50% no-repeat;&#10;	border: 1px solid #777777;&#10;	cursor: pointer;&#10;}&#10;.ui-datepicker-next label,&#10;.ui-datepicker-next a {&#10;	background: url(images/eeeeee_7x7_arrow_right.gif) 50% 50% no-repeat;&#10;}&#10;.ui-datepicker-prev a:hover {&#10;	background: url(images/ffd40f_7x7_arrow_left.gif) 50% 50% no-repeat;&#10;}&#10;.ui-datepicker-next a:hover {&#10;	background: url(images/ffd40f_7x7_arrow_right.gif) 50% 50% no-repeat;&#10;}&#10;.ui-datepicker-prev a:active {&#10;	background: url(images/ffffff_7x7_arrow_left.gif) 50% 50% no-repeat;&#10;}&#10;.ui-datepicker-next a:active {&#10;	background: url(images/ffffff_7x7_arrow_right.gif) 50% 50% no-repeat;&#10;}&#10;.ui-datepicker-header select {&#10;	border: 1px solid #777777;&#10;	color: #cfcfcf;&#10;	background: #444444;&#10;	font-size: 1em;&#10;	line-height: 1.4em;&#10;	position: absolute;&#10;	top: .5em;&#10;	margin: 0 !important;&#10;	&#10;}&#10;.ui-datepicker-header select.ui-datepicker-new-month {&#10;width: 7em;&#10;left: 2.2em;&#10;}&#10;.ui-datepicker-header select.ui-datepicker-new-year {&#10;width: 5em;&#10;left: 9.4em;&#10;}&#10;table.ui-datepicker {&#10;	width: 15.5em;&#10;	text-align: right;&#10;}&#10;table.ui-datepicker td.ui-datepicker-unselectable&#10;{&#10;	padding: .1em .3em .1em 0;&#10;	border: 1px solid transparent;&#10;}&#10;table.ui-datepicker td a {&#10;	padding: .1em .3em .1em 0;&#10;	display: block;&#10;	color: #cfcfcf;&#10;	background: #444444 url(images/444444_40x100_textures_02_glass_25.png) 0 50% repeat-x;&#10;	cursor: pointer;&#10;	border: 1px solid #3e3d3d;&#10;}&#10;table.ui-datepicker td a:hover {&#10;	border: 1px solid #444444;&#10;	color: #ffffff;&#10;	background: #333333 url(images/333333_40x100_textures_02_glass_25.png) 0 50% repeat-x;&#10;}&#10;table.ui-datepicker td a:active {&#10;	border: 1px solid #841515;&#10;	color: #ffffff;&#10;	background: #841515 url(images/841515_40x100_textures_02_glass_35.png) 0 50% repeat-x;&#10;}&#10;table.ui-datepicker .ui-datepicker-title-row td {&#10;	padding: .3em 0;&#10;	text-align: center;&#10;	font-size: .9em;&#10;	color: #cfcfcf;&#10;	text-transform: uppercase;&#10;	/*border-bottom: 1px solid #777777;*/&#10;}&#10;&#10;table.ui-datepicker .ui-datepicker-title-row td a {&#10;	color: #cfcfcf;&#10;}&#10;&#10;table.ui-datepicker td.ui-datepicker-current-day a,&#10;table.ui-datepicker td.selected a&#10;{&#10;	color: black;&#10;	background: #999999 url(images/999999_40x100_textures_02_glass_25.png) 0 50% repeat-x;&#10;}&#10;&#10;table.ui-datepicker td.ui-datepicker-today a&#10;{&#10;	color: black;&#10;	background: #a21111 url(images/a21111_40x100_textures_02_glass_35.png) 0 50% repeat-x;&#10;}&#10;&#10;&#10;&#10;&#10;&#10;&#10;&#10;&#10;&#10;&#10;/*&#10;Generic ThemeRoller Classes&#10;&gt;&gt; Make your jQuery Components ThemeRoller-Compatible!&#10;*/&#10;&#10;/*component global class*/&#10;.ui-component {&#10;	/*resets*/margin: 0; padding: 0; border: 0; outline: 0; line-height: 1.3; text-decoration: none; font-size: 100%; list-style: none;&#10;	font-family: Trebuchet MS, Arial, sans-serif;&#10;	font-size: 1.1em;&#10;}&#10;/*component content styles*/&#10;.ui-component-content {&#10;	border: 1px solid #777777;&#10;	background: #3e3d3d;&#10;	color: #cfcfcf;&#10;}&#10;.ui-component-content a {&#10;	color: #cfcfcf;&#10;	text-decoration: underline;&#10;}&#10;/*component states*/&#10;.ui-default-state {&#10;	border: 1px solid #777777;&#10;	background: #444444 url(images/444444_40x100_textures_02_glass_25.png) 0 50% repeat-x;&#10;	font-weight: bold;&#10;	color: #cfcfcf !important;&#10;}&#10;.ui-default-state a {&#10;	color: #cfcfcf;&#10;}&#10;.ui-default-state:hover, .ui-hover-state {&#10;	border: 1px solid #444444;&#10;	background: #333333 url(images/333333_40x100_textures_02_glass_25.png) 0 50% repeat-x;&#10;	font-weight: bold;&#10;	color: #ffffff !important;&#10;}&#10;.ui-hover-state a {&#10;	color: #ffffff;&#10;}&#10;.ui-default-state:active, .ui-active-state {&#10;	border: 1px solid #841515;&#10;	background: #841515 url(images/841515_40x100_textures_02_glass_35.png) 0 50% repeat-x;&#10;	font-weight: bold;&#10;	color: #ffffff !important;&#10;	outline: none;&#10;}&#10;.ui-active-state a {&#10;	color: #ffffff;&#10;	outline: none;&#10;}&#10;/*icons*/&#10;.ui-arrow-right-default {background: url(images/eeeeee_7x7_arrow_right.gif) no-repeat 50% 50%;}&#10;.ui-arrow-right-default:hover, .ui-arrow-right-hover {background: url(images/ffd40f_7x7_arrow_right.gif) no-repeat 50% 50%;}&#10;.ui-arrow-right-default:active, .ui-arrow-right-active {background: url(images/ffffff_7x7_arrow_right.gif) no-repeat 50% 50%;}&#10;.ui-arrow-left-default {background: url(images/eeeeee_7x7_arrow_left.gif) no-repeat 50% 50%;}&#10;.ui-arrow-left-default:hover, .ui-arrow-left-hover {background: url(images/ffd40f_7x7_arrow_left.gif) no-repeat 50% 50%;}&#10;.ui-arrow-left-default:active, .ui-arrow-left-active {background: url(images/ffffff_7x7_arrow_left.gif) no-repeat 50% 50%;}&#10;.ui-arrow-down-default {background: url(images/eeeeee_7x7_arrow_down.gif) no-repeat 50% 50%;}&#10;.ui-arrow-down-default:hover, .ui-arrow-down-hover {background: url(images/ffd40f_7x7_arrow_down.gif) no-repeat 50% 50%;}&#10;.ui-arrow-down-default:active, .ui-arrow-down-active {background: url(images/ffffff_7x7_arrow_down.gif) no-repeat 50% 50%;}&#10;.ui-arrow-up-default {background: url(images/eeeeee_7x7_arrow_up.gif) no-repeat 50% 50%;}&#10;.ui-arrow-up-default:hover, .ui-arrow-up-hover {background: url(images/ffd40f_7x7_arrow_up.gif) no-repeat 50% 50%;}&#10;.ui-arrow-up-default:active, .ui-arrow-up-active {background: url(images/ffffff_7x7_arrow_up.gif) no-repeat 50% 50%;}&#10;.ui-close-default {background: url(images/eeeeee_11x11_icon_close.gif) no-repeat 50% 50%;}&#10;.ui-close-default:hover, .ui-close-hover {background: url(images/ffd40f_11x11_icon_close.gif) no-repeat 50% 50%;}&#10;.ui-close-default:active, .ui-close-active {background: url(images/ffffff_11x11_icon_close.gif) no-repeat 50% 50%;}&#10;.ui-folder-closed-default {background: url(images/eeeeee_11x11_icon_folder_closed.gif) no-repeat 50% 50%;}&#10;.ui-folder-closed-default:hover, .ui-folder-closed-hover {background: url(images/ffd40f_11x11_icon_folder_closed.gif) no-repeat 50% 50%;}&#10;.ui-folder-closed-default:active, .ui-folder-closed-active {background: url(images/ffffff_11x11_icon_folder_closed.gif) no-repeat 50% 50%;}&#10;.ui-folder-open-default {background: url(images/eeeeee_11x11_icon_folder_open.gif) no-repeat 50% 50%;}&#10;.ui-folder-open-default:hover, .ui-folder-open-hover {background: url(images/ffd40f_11x11_icon_folder_open.gif) no-repeat 50% 50%;}&#10;.ui-folder-open-default:active, .ui-folder-open-active {background: url(images/ffffff_11x11_icon_folder_open.gif) no-repeat 50% 50%;}&#10;.ui-doc-default {background: url(images/eeeeee_11x11_icon_doc.gif) no-repeat 50% 50%;}&#10;.ui-doc-default:hover, .ui-doc-hover {background: url(images/ffd40f_11x11_icon_doc.gif) no-repeat 50% 50%;}&#10;.ui-doc-default:active, .ui-doc-active {background: url(images/ffffff_11x11_icon_doc.gif) no-repeat 50% 50%;}&#10;.ui-arrows-leftright-default {background: url(images/eeeeee_11x11_icon_arrows_leftright.gif) no-repeat 50% 50%;}&#10;.ui-arrows-leftright-default:hover, .ui-arrows-leftright-hover {background: url(images/ffd40f_11x11_icon_arrows_leftright.gif) no-repeat 50% 50%;}&#10;.ui-arrows-leftright-default:active, .ui-arrows-leftright-active {background: url(images/ffffff_11x11_icon_arrows_leftright.gif) no-repeat 50% 50%;}&#10;.ui-arrows-updown-default {background: url(images/eeeeee_11x11_icon_arrows_updown.gif) no-repeat 50% 50%;}&#10;.ui-arrows-updown-default:hover, .ui-arrows-updown-hover {background: url(images/ffd40f_11x11_icon_arrows_updown.gif) no-repeat 50% 50%;}&#10;.ui-arrows-updown-default:active, .ui-arrows-updown-active {background: url(images/ffffff_11x11_icon_arrows_updown.gif) no-repeat 50% 50%;}&#10;.ui-minus-default {background: url(images/eeeeee_11x11_icon_minus.gif) no-repeat 50% 50%;}&#10;.ui-minus-default:hover, .ui-minus-hover {background: url(images/ffd40f_11x11_icon_minus.gif) no-repeat 50% 50%;}&#10;.ui-minus-default:active, .ui-minus-active {background: url(images/ffffff_11x11_icon_minus.gif) no-repeat 50% 50%;}&#10;.ui-plus-default {background: url(images/eeeeee_11x11_icon_plus.gif) no-repeat 50% 50%;}&#10;.ui-plus-default:hover, .ui-plus-hover {background: url(images/ffd40f_11x11_icon_plus.gif) no-repeat 50% 50%;}&#10;.ui-plus-default:active, .ui-plus-active {background: url(images/ffffff_11x11_icon_plus.gif) no-repeat 50% 50%;}&#10;/*hidden elements*/&#10;.ui-hidden {&#10;	display: none;/* for accessible hiding: position: absolute; left: -99999999px*/&#10;}&#10;.ui-accessible-hidden {&#10;	 position: absolute; left: -99999999px;&#10;}&#10;/*reset styles*/&#10;.ui-reset {&#10;	/*resets*/margin: 0; padding: 0; border: 0; outline: 0; line-height: 1.3; text-decoration: none; font-size: 100%; list-style: none;&#10;}&#10;/*clearfix class*/&#10;.ui-clearfix:after {&#10;    content: &quot;.&quot;; &#10;    display: block; &#10;    height: 0; &#10;    clear: both; &#10;    visibility: hidden;&#10;}&#10;.ui-clearfix {display: inline-block;}&#10;/* Hides from IE-mac \*/&#10;* html .ui-clearfix {height: 1%;}&#10;.ui-clearfix {display: block;}&#10;/* End hide from IE-mac */&#10;&#10;/* Note: for resizable styles, use the styles listed above in the dialog section */&#10;&#10;.vehicleDetail &gt; td:first-child&#10;{&#10;	border-left: solid 1px black;&#10;	border-bottom: solid 1px black;&#10;}&#10;&#10;.vehicleDetail &gt; td:last-child &#10;{&#10;	border-right: solid 1px black;&#10;	border-bottom: solid 1px black;&#10;}&#10;&#10;.vehicleDetail &gt; td:last-child &gt; table &gt; tbody &gt; tr &gt; td:last-child&#10;{&#10;	color: White;&#10;}&#10;&#10;.showWhenSelected&#10;{	&#10;	visibility: hidden;&#10;}&#10;&lt;/style&gt;&#10;&lt;script type=&quot;text/javascript&quot; src=&quot;http://ptolemy.org/javascript/jquery-1.4.3.min.js&quot;&gt;&lt;/script&gt;&#10;&lt;script type=&quot;text/javascript&quot; src=&quot;http://ptolemy.org/javascript/jquery.fancybox-1.3.4.pack.js&quot;&gt;&lt;/script&gt;&#10;&lt;script type=&quot;text/javascript&quot; src=&quot;http://ptolemy.org/javascript/pt-1.0.0.js&quot;&gt;&lt;/script&gt;&#10;&lt;script type=&quot;text/javascript&quot; src=&quot;http://ajax.googleapis.com/ajax/libs/jquery/1.2.6/jquery.min.js&quot;&gt;&lt;/script&gt;  	&#10;&lt;script type=&quot;text/javascript&quot; src=&quot;http://ajax.googleapis.com/ajax/libs/jqueryui/1.5.3/jquery-ui.min.js&quot;&gt;&lt;/script&gt; 	&#10;">
+        </property>
+        <property name="include" class="ptolemy.data.expr.StringParameter" value="Entities">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{170.0, 995.0}">
         </property>
     </property>
     <property name="Image" class="ptolemy.vergil.kernel.attributes.ImageAttribute">
@@ -56,7 +60,7 @@
         </property>
         <property name="scale" class="ptolemy.data.expr.Parameter" value="100">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-95.0, 105.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{50.0, 100.0}">
         </property>
         <property name="_renderFirst" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
@@ -68,7 +72,19 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model reads data on power consumption per square foot for three building on the Berkeley campus&#10;from a web service (or optionally from local files that cache the data) and renders a visualization&#10;of the power consumption over time as color changes on the buildings. The color is more red for larger&#10;power consumption per square foot, and more green for less.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-25.0, 790.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[45.0, 790.0]">
+        </property>
+    </property>
+    <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
+        <property name="iterations" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <property name="allowDisconnectedGraphs" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="period" class="ptolemy.data.expr.Parameter" value="0.0">
+        </property>
+        <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[105.0, 1015.0]">
         </property>
     </property>
     <property name="uuid_donner" class="ptolemy.data.expr.Parameter" value="&quot;888da9eb-5b39-5636-b495-94c1d1b57f35&quot;">
@@ -87,7 +103,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 990.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[180.0, 1115.0]">
         </property>
     </property>
     <property name="uuid_cory" class="ptolemy.data.expr.Parameter" value="&quot;8737f287-14df-5ccd-82df-e66ca7374b63&quot;">
@@ -106,26 +122,82 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 1015.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[180.0, 1140.0]">
         </property>
     </property>
-    <property name="uuid_brige" class="ptolemy.data.expr.Parameter" value="&quot;18866fbe-53ff-5511-86c7-95d1cea0a061&quot;">
+    <property name="dateStart" class="ptolemy.actor.parameters.PortParameter" value="&quot;1346648400000&quot;">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
-            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
-            </property>
+        </property>
+        <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+	<polyline points="-15,-15, -3,-5, -16,5" style="stroke:black"></polyline>
+	<polygon points="-22,-1, -22,4, -10,-5, -22,-14, -22,-9, -30,-9, -30, -1" style="fill:lightGray"></polygon>
+      </svg>
+    </configure>
         </property>
         <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
             <configure>
       <svg>
-        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:black" y="20">-P-</text>
       </svg>
     </configure>
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 1040.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[205.0, 1245.0]">
+        </property>
+    </property>
+    <property name="dateEnd" class="ptolemy.actor.parameters.PortParameter" value="&quot;1346821200000&quot;">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+        </property>
+        <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+	<polyline points="-15,-15, -3,-5, -16,5" style="stroke:black"></polyline>
+	<polygon points="-22,-1, -22,4, -10,-5, -22,-14, -22,-9, -30,-9, -30, -1" style="fill:lightGray"></polygon>
+      </svg>
+    </configure>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:black" y="20">-P-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[205.0, 1270.0]">
+        </property>
+    </property>
+    <property name="displayOption" class="ptolemy.actor.parameters.PortParameter" value="&quot;1&quot;">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+        </property>
+        <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+	<polyline points="-15,-15, -3,-5, -16,5" style="stroke:black"></polyline>
+	<polygon points="-22,-1, -22,4, -10,-5, -22,-14, -22,-9, -30,-9, -30, -1" style="fill:lightGray"></polygon>
+      </svg>
+    </configure>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:black" y="20">-P-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[205.0, 1295.0]">
         </property>
     </property>
     <property name="useOnlineData" class="ptolemy.data.expr.Parameter" value="true">
@@ -144,81 +216,64 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 965.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[185.0, 1055.0]">
         </property>
     </property>
-    <property name="enableBackwardTypeInference" class="ptolemy.data.expr.Parameter" value="false">
+    <property name="uuid_birge" class="ptolemy.data.expr.Parameter" value="&quot;8737f287-14df-5ccd-82df-e66ca7374b63&quot;">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+            </property>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[180.0, 1165.0]">
+        </property>
     </property>
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="SingleReaderClass">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Default start and end dates for the query, in standard Unix milliseonds.&#10;These default dates correspond to May 16, 2012 and May 17, 2012.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[515.0, 955.0]">
-        </property>
-    </property>
-    <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
-        <property name="iterations" class="ptolemy.data.expr.Parameter" value="1">
-        </property>
-        <property name="allowDisconnectedGraphs" class="ptolemy.data.expr.Parameter" value="true">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[885.0, 985.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[395.0, 1230.0]">
         </property>
     </property>
-    <property name="dateStart" class="ptolemy.data.expr.StringParameter" value="1344409200000">
-        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+    <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="In the future, want to add capability to show data in different formats&#10;(e.g. graph, text).  We can use a parameter as input to a Switch so that&#10;the model only fires one of the sink actors.  The value of this parameter&#10;will be input from the web page.  Currently, the web page does not &#10;offer a way to set this (creating an input element is easy, but it &#10;requires some work to generate the correct response page).">
         </property>
-        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
-            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
-            </property>
-        </property>
-        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-            <configure>
-      <svg>
-        <text x="20" style="font-size:14; font-family:SansSerif; fill:red" y="20">-S-</text>
-      </svg>
-    </configure>
-        </property>
-        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 915.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[395.0, 1280.0]">
         </property>
     </property>
-    <property name="dateEnd" class="ptolemy.data.expr.StringParameter" value="1345014000000">
-        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+    <port name="dateStart" class="ptolemy.actor.parameters.ParameterPort">
+        <property name="input"/>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{185.0, 1240.0}">
         </property>
-        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
-            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
-            </property>
+    </port>
+    <port name="dateEnd" class="ptolemy.actor.parameters.ParameterPort">
+        <property name="input"/>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{185.0, 1265.0}">
         </property>
-        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-            <configure>
-      <svg>
-        <text x="20" style="font-size:14; font-family:SansSerif; fill:red" y="20">-S-</text>
-      </svg>
-    </configure>
+    </port>
+    <port name="displayOption" class="ptolemy.actor.parameters.ParameterPort">
+        <property name="input"/>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{185.0, 1290.0}">
         </property>
-        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+    </port>
+    <port name="online" class="ptolemy.actor.TypedIOPort">
+        <property name="input"/>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[200.0, 1445.0]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 940.0]">
+        <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
         </property>
-    </property>
-    <property name="Annotation4" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Left are start and end dates for the query, in standard Unix milliseonds.&#10;These default dates correspond to May 16, 2012 and May 17, 2012.">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[265.0, 905.0]">
-        </property>
-    </property>
-    <property name="DefaultIconScript" class="ptolemy.vergil.basic.export.web.DefaultIconScript" value="writeText('')">
-        <property name="displayText" class="ptolemy.data.expr.StringParameter" value="Web page script to run on containers icon. Override the default to display nothing.">
-        </property>
-        <property name="script" class="ptolemy.data.expr.StringParameter" value="function writeText(text) {&#10;    document.getElementById(&quot;afterImage&quot;).innerHTML = text;&#10;};">
-        </property>
-        <property name="endText" class="ptolemy.data.expr.StringParameter" value="&lt;p id=&quot;afterImage&quot;&gt;&lt;/p&gt;">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[60.0, 1050.0]">
-        </property>
-    </property>
+    </port>
     <class name="SingleReaderClass" extends="ptolemy.actor.TypedCompositeActor">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[550.0, 1015.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{475.0, 1025.0}">
         </property>
         <property name="iconColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.7643769650755, 0.0, 0.2356230349245, 0.25}">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -236,20 +291,18 @@
             </property>
             <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[-15.0, -10.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[210.0, -15.0]">
             </property>
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={220, 26, 1152, 634}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 26, 1413, 640}, maximized=false}">
         </property>
-        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[918, 524]">
+        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1185, 524]">
         </property>
-        <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.4973431028990125">
+        <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.088856970764">
         </property>
-        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{285.54296875, 158.72464341639434}">
+        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{400.54296875, 219.3673449414488}">
         </property>
         <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
-            <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
-            </property>
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.EditorIcon">
             <property name="ellipse" class="ptolemy.vergil.kernel.attributes.EllipseAttribute">
@@ -308,7 +361,7 @@
         <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
             <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This class models a temperature sensor from new.openbms.org&#10;Originally created by Edward Lee &#10;Modified to be able to read from a web page&#10;Changes based on Michael Wetter's BCVTB demos &#10;ptolemy-room/systemVisual and www-weather&#10;&#10;">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[105.0, 240.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[110.0, 330.0]">
             </property>
         </property>
         <property name="file" class="ptolemy.data.expr.FileParameter" value="">
@@ -339,7 +392,7 @@
             </property>
             <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="false">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="{40.0, 290.0}">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[40.0, 345.0]">
             </property>
         </property>
         <property name="buildingName" class="ptolemy.data.expr.StringParameter" value="">
@@ -361,11 +414,49 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="[-15.0, 85.0]">
             </property>
         </property>
+        <property name="option" class="ptolemy.data.expr.Parameter" value="displayOption">
+            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+                </property>
+            </property>
+            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+            </property>
+            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[-15.0, 110.0]">
+            </property>
+        </property>
+        <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+            <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Since the start and end times are longs, Ptolemy inserts an L following each number&#10;Unfortunately the L causes an error for the new.openbms.org website.  Remove these Ls in the URI.  &#10;The URI does not contain any other Ls, so we can remove all Ls&#10;&#10;">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[305.0, 215.0]">
+            </property>
+        </property>
+        <entity name="Const" class="ptolemy.actor.lib.Const">
+            <property name="value" class="ptolemy.data.expr.Parameter" value="true">
+            </property>
+            <doc>Create a constant sequence.</doc>
+            <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+                </property>
+                <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+                </property>
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 160.0]">
+            </property>
+        </entity>
         <entity name="CompositeActor" class="ptolemy.actor.TypedCompositeActor">
             <display name="Select online or&#10;offline data"/>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[20.0, 185.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[330.0, 170.0]">
             </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={193, 396, 934, 634}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={176, 92, 928, 640}, maximized=false}">
             </property>
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 524]">
             </property>
@@ -373,25 +464,39 @@
             </property>
             <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{350.0, 262.0}">
             </property>
+            <port name="trigger" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{40.0, 160.0}">
+                </property>
+            </port>
             <port name="reading" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
                 <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[336.5, 172.5]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{555.0, 170.0}">
+                </property>
+            </port>
+            <port name="InputURI" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[235.0, 160.0]">
                 </property>
             </port>
             <entity name="LocalDataFileReader" class="ptolemy.actor.lib.io.FileReader">
                 <property name="fileOrURL" class="ptolemy.data.expr.FileParameter" value="$file">
                 </property>
                 <doc>Read an entire file and output as a string</doc>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[71.5, 202.5]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[330.0, 200.0]">
                 </property>
             </entity>
             <entity name="OnlineDataFileReader" class="ptolemy.actor.lib.io.FileReader">
                 <property name="fileOrURL" class="ptolemy.data.expr.FileParameter" value="$URI">
                 </property>
                 <doc>Read an entire file and output as a string</doc>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 135.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[330.0, 135.0]">
                 </property>
             </entity>
             <entity name="ConfigurationSelect" class="ptolemy.actor.lib.ConfigurationSelect">
@@ -403,7 +508,7 @@
                         </property>
                     </property>
                 </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[221.5, 172.5]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{440.0, 170.0}">
                 </property>
                 <port name="trueInput" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
@@ -418,23 +523,63 @@
                     </property>
                 </port>
             </entity>
+            <entity name="ConfigurationSwitch" class="ptolemy.actor.lib.ConfigurationSwitch">
+                <property name="selector" class="ptolemy.actor.parameters.PortParameter" value="useOnlineData">
+                    <property name="style" class="ptolemy.actor.gui.style.TextStyle">
+                        <property name="height" class="ptolemy.data.expr.Parameter" value="10">
+                        </property>
+                        <property name="width" class="ptolemy.data.expr.Parameter" value="30">
+                        </property>
+                    </property>
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{110.0, 160.0}">
+                </property>
+                <port name="trueOutput" class="ptolemy.actor.TypedIOPort">
+                    <property name="output"/>
+                    <property name="multiport"/>
+                    <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="1">
+                    </property>
+                </port>
+                <port name="falseOutput" class="ptolemy.actor.TypedIOPort">
+                    <property name="output"/>
+                    <property name="multiport"/>
+                    <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="0">
+                    </property>
+                </port>
+            </entity>
+            <relation name="relation7" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <relation name="relation" class="ptolemy.actor.TypedIORelation">
+            </relation>
             <relation name="relation2" class="ptolemy.actor.TypedIORelation">
             </relation>
             <relation name="relation4" class="ptolemy.actor.TypedIORelation">
             </relation>
             <relation name="relation3" class="ptolemy.actor.TypedIORelation">
             </relation>
+            <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <link port="trigger" relation="relation5"/>
             <link port="reading" relation="relation3"/>
+            <link port="InputURI" relation="relation6"/>
             <link port="LocalDataFileReader.output" relation="relation2"/>
+            <link port="LocalDataFileReader.trigger" relation="relation"/>
             <link port="OnlineDataFileReader.output" relation="relation4"/>
+            <link port="OnlineDataFileReader.trigger" relation="relation7"/>
+            <link port="OnlineDataFileReader.fileOrURL" relation="relation6"/>
             <link port="ConfigurationSelect.trueInput" relation="relation4"/>
             <link port="ConfigurationSelect.falseInput" relation="relation2"/>
             <link port="ConfigurationSelect.output" relation="relation3"/>
+            <link port="ConfigurationSwitch.input" relation="relation5"/>
+            <link port="ConfigurationSwitch.trueOutput" relation="relation7"/>
+            <link port="ConfigurationSwitch.falseOutput" relation="relation"/>
         </entity>
         <entity name="JSONToToken" class="ptolemy.actor.lib.conversions.json.JSONToToken">
             <property name="bidirectionalTypeInference" class="ptolemy.actor.parameters.SharedParameter" value="true">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[130.0, 185.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[470.0, 170.0]">
             </property>
             <property name="_expertMode" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
@@ -447,11 +592,11 @@
         <entity name="ArrayToSequence" class="ptolemy.domains.sdf.lib.ArrayToSequence">
             <property name="enforceArrayLength" class="ptolemy.data.expr.Parameter" value="false">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[245.0, 185.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[605.0, 170.0]">
             </property>
         </entity>
         <entity name="RecordDisassembler" class="ptolemy.actor.lib.RecordDisassembler">
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[340.0, 165.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[705.0, 150.0]">
             </property>
             <port name="Readings" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
@@ -472,7 +617,7 @@
             </property>
             <property name="_tableauFactory" class="ptolemy.actor.gui.LevelSkippingTableauFactory">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="{535.0, 175.0}">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{875.0, 160.0}">
             </property>
             <port name="Readings" class="ptolemy.actor.lib.hoc.IterateOverArray$IteratePort">
                 <property name="input"/>
@@ -480,10 +625,30 @@
                 </property>
             </port>
             <entity name="IterateComposite" class="ptolemy.actor.lib.hoc.IterateOverArray$IterateComposite">
-                <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
-                    <property name="iterations" class="ptolemy.data.expr.Parameter" value="AUTO">
+                <property name="annotation" class="ptolemy.kernel.util.Attribute">
+                    <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
                     </property>
-                    <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 55.0]">
+                    <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                        <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">Make sure there is a director here!</text></svg></configure>
+                    </property>
+                    <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                        <configure>
+                <svg> 
+                    <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text>
+                </svg>
+              </configure>
+                    </property>
+                    <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
+                    </property>
+                    <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
+                    </property>
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="-5.0, 5.0">
+                    </property>
+                </property>
+                <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
+                    <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
+                    </property>
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 65.0]">
                     </property>
                 </property>
                 <property name="annotation2" class="ptolemy.kernel.util.Attribute">
@@ -506,7 +671,7 @@ The first is the time.</text></svg></configure>
                     </property>
                     <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
                     </property>
-                    <property name="_location" class="ptolemy.kernel.util.Location" value="[5.0, 100.0]">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="[0.0, 100.0]">
                     </property>
                 </property>
                 <property name="annotation4" class="ptolemy.kernel.util.Attribute">
@@ -550,7 +715,7 @@ icon color.</text></svg></configure>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[290.0, 300.0]">
                     </property>
                 </property>
-                <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={51, 437, 1127, 634}, maximized=false}">
+                <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={129, 51, 1121, 640}, maximized=false}">
                 </property>
                 <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[893, 524]">
                 </property>
@@ -558,7 +723,7 @@ icon color.</text></svg></configure>
                 </property>
                 <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{383.15283203125, 229.4668788931271}">
                 </property>
-                <property name="scaling" class="ptolemy.data.expr.Parameter" value="500.0">
+                <property name="scaling" class="ptolemy.data.expr.Parameter" value="1.0/0.008">
                     <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
                     </property>
                     <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -577,7 +742,7 @@ icon color.</text></svg></configure>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[360.0, 45.0]">
                     </property>
                 </property>
-                <property name="offset" class="ptolemy.data.expr.Parameter" value="100.0">
+                <property name="offset" class="ptolemy.data.expr.Parameter" value="300.0">
                     <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
                     </property>
                     <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -596,25 +761,23 @@ icon color.</text></svg></configure>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[360.0, 70.0]">
                     </property>
                 </property>
-                <property name="annotation" class="ptolemy.kernel.util.Attribute">
+                <property name="timeBetweenReadings" class="ptolemy.data.expr.Parameter" value="100L">
                     <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
                     </property>
-                    <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-                        <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">Heuristics for
-setting the colors.</text></svg></configure>
+                    <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                        <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+                        </property>
                     </property>
                     <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
                         <configure>
-                <svg> 
-                    <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text>
-                </svg>
-              </configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
                     </property>
-                    <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
+                    <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
                     </property>
-                    <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
-                    </property>
-                    <property name="_location" class="ptolemy.kernel.util.Location" value="[460.0, 30.0]">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="[360.0, 95.0]">
                     </property>
                 </property>
                 <port name="Readings" class="ptolemy.actor.lib.hoc.IterateOverArray$IteratePort">
@@ -625,7 +788,7 @@ setting the colors.</text></svg></configure>
                 <entity name="ArrayElement" class="ptolemy.actor.lib.ArrayElement">
                     <property name="index" class="ptolemy.actor.parameters.PortParameter" value="1">
                     </property>
-                    <property name="_location" class="ptolemy.kernel.util.Location" value="[120.0, 220.0]">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="[150.0, 220.0]">
                     </property>
                 </entity>
                 <entity name="Expression" class="ptolemy.actor.lib.Expression">
@@ -639,7 +802,7 @@ setting the colors.</text></svg></configure>
                         <property name="displayHeight" class="ptolemy.data.expr.Parameter" value="10">
                         </property>
                     </property>
-                    <property name="_location" class="ptolemy.kernel.util.Location" value="[410.0, 220.0]">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="[470.0, 210.0]">
                     </property>
                     <port name="reading" class="ptolemy.actor.TypedIOPort">
                         <property name="input"/>
@@ -672,7 +835,7 @@ setting the colors.</text></svg></configure>
                         <property name="displayHeight" class="ptolemy.data.expr.Parameter" value="10">
                         </property>
                     </property>
-                    <property name="_location" class="ptolemy.kernel.util.Location" value="[440.0, 290.0]">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="[465.0, 290.0]">
                     </property>
                     <port name="reading" class="ptolemy.actor.TypedIOPort">
                         <property name="input"/>
@@ -680,58 +843,241 @@ setting the colors.</text></svg></configure>
                         </property>
                     </port>
                 </entity>
-                <entity name="SequencePlotter" class="ptolemy.actor.lib.gui.SequencePlotter">
-                    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute">
+                <entity name="SelectDisplayType" class="ptolemy.actor.TypedCompositeActor">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="[220.0, 390.0]">
                     </property>
-                    <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute">
+                    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={352, 128, 928, 640}, maximized=false}">
                     </property>
-                    <property name="_location" class="ptolemy.kernel.util.Location" value="[235.0, 370.0]">
+                    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 524]">
+                    </property>
+                    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+                    </property>
+                    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{350.0, 262.0}">
+                    </property>
+                    <port name="data" class="ptolemy.actor.TypedIOPort">
+                        <property name="input"/>
+                        <property name="_location" class="ptolemy.kernel.util.Location" value="[40.0, 115.0]">
+                        </property>
+                    </port>
+                    <port name="option" class="ptolemy.actor.TypedIOPort">
+                        <property name="input"/>
+                        <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                        </property>
+                        <property name="_location" class="ptolemy.kernel.util.Location" value="[45.0, 210.0]">
+                        </property>
+                    </port>
+                    <entity name="SequencePlotter" class="ptolemy.actor.lib.gui.SequencePlotter">
+                        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute">
+                        </property>
+                        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute">
+                        </property>
+                        <property name="_location" class="ptolemy.kernel.util.Location" value="[570.0, 165.0]">
+                        </property>
+                    </entity>
+                    <entity name="ExpressionToToken" class="ptolemy.actor.lib.conversions.ExpressionToToken">
+                        <property name="_location" class="ptolemy.kernel.util.Location" value="[185.0, 210.0]">
+                        </property>
+                        <port name="input" class="ptolemy.actor.TypedIOPort">
+                            <property name="input"/>
+                            <property name="_type" class="ptolemy.actor.TypeAttribute" value="string">
+                            </property>
+                        </port>
+                        <port name="output" class="ptolemy.actor.TypedIOPort">
+                            <property name="output"/>
+                            <property name="_type" class="ptolemy.actor.TypeAttribute" value="int">
+                            </property>
+                        </port>
+                    </entity>
+                    <entity name="DisplayText" class="ptolemy.actor.lib.gui.Display">
+                        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute">
+                        </property>
+                        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
+                        </property>
+                        <property name="_location" class="ptolemy.kernel.util.Location" value="[565.0, 70.0]">
+                        </property>
+                    </entity>
+                    <entity name="Switch" class="ptolemy.actor.lib.Switch">
+                        <property name="_location" class="ptolemy.kernel.util.Location" value="[375.0, 70.0]">
+                        </property>
+                    </entity>
+                    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+                        <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
+                        </property>
+                        <vertex name="vertex1" value="[165.0, 115.0]">
+                        </vertex>
+                    </relation>
+                    <relation name="relation8" class="ptolemy.actor.TypedIORelation">
+                        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+                        </property>
+                        <vertex name="vertex1" value="{115.0, 210.0}">
+                        </vertex>
+                    </relation>
+                    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+                        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+                        </property>
+                        <vertex name="vertex1" value="[255.0, 210.0]">
+                        </vertex>
+                    </relation>
+                    <relation name="relation7" class="ptolemy.actor.TypedIORelation">
+                        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+                        </property>
+                    </relation>
+                    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+                        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+                        </property>
+                    </relation>
+                    <link port="data" relation="relation3"/>
+                    <link port="option" relation="relation8"/>
+                    <link port="SequencePlotter.input" relation="relation2"/>
+                    <link port="ExpressionToToken.input" relation="relation8"/>
+                    <link port="ExpressionToToken.output" relation="relation"/>
+                    <link port="DisplayText.input" relation="relation7"/>
+                    <link port="Switch.input" relation="relation3"/>
+                    <link port="Switch.output" relation="relation7"/>
+                    <link port="Switch.output" relation="relation2"/>
+                    <link port="Switch.control" relation="relation"/>
+                </entity>
+                <entity name="Const" class="ptolemy.actor.lib.Const">
+                    <property name="value" class="ptolemy.data.expr.Parameter" value="option">
+                    </property>
+                    <doc>Create a constant sequence.</doc>
+                    <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                        <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+                        </property>
+                        <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+                        </property>
+                    </property>
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="[105.0, 400.0]">
                     </property>
                 </entity>
+                <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+                </relation>
                 <relation name="relation5" class="ptolemy.actor.TypedIORelation">
                 </relation>
                 <relation name="relation6" class="ptolemy.actor.TypedIORelation">
                     <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
                     </property>
-                    <vertex name="vertex1" value="[180.0, 220.0]">
+                    <vertex name="vertex1" value="[205.0, 220.0]">
                     </vertex>
                 </relation>
                 <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+                    <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+                    </property>
+                    <vertex name="vertex1" value="{90.0, 215.0}">
+                    </vertex>
                 </relation>
                 <relation name="relation" class="ptolemy.actor.TypedIORelation">
                 </relation>
                 <link port="Readings" relation="relation2"/>
                 <link port="ArrayElement.input" relation="relation2"/>
                 <link port="ArrayElement.output" relation="relation6"/>
-                <link port="Expression.output" relation="relation"/>
+                <link port="Expression.output" relation="relation3"/>
                 <link port="Expression.reading" relation="relation6"/>
                 <link port="SetVariable.input" relation="relation5"/>
                 <link port="Expression2.output" relation="relation5"/>
-                <link port="Expression2.reading" relation="relation"/>
-                <link port="SequencePlotter.input" relation="relation6"/>
+                <link port="Expression2.reading" relation="relation3"/>
+                <link port="SelectDisplayType.data" relation="relation6"/>
+                <link port="SelectDisplayType.option" relation="relation"/>
+                <link port="Const.output" relation="relation"/>
             </entity>
+        </entity>
+        <entity name="StringReplace" class="ptolemy.actor.lib.string.StringReplace">
+            <doc>Replace the patterns that match a regular expression</doc>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{200.0, 230.0}">
+            </property>
+        </entity>
+        <entity name="Const2" class="ptolemy.actor.lib.Const">
+            <property name="value" class="ptolemy.data.expr.Parameter" value="&quot;L&quot;">
+            </property>
+            <doc>Create a constant sequence.</doc>
+            <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+                </property>
+                <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+                </property>
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{65.0, 210.0}">
+            </property>
+        </entity>
+        <entity name="Const3" class="ptolemy.actor.lib.Const">
+            <property name="value" class="ptolemy.data.expr.Parameter" value="&quot;&quot;">
+            </property>
+            <doc>Create a constant sequence.</doc>
+            <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+                </property>
+                <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+                </property>
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 240.0]">
+            </property>
+        </entity>
+        <entity name="Const4" class="ptolemy.actor.lib.Const">
+            <property name="value" class="ptolemy.data.expr.Parameter" value="URI">
+            </property>
+            <doc>Create a constant sequence.</doc>
+            <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+                </property>
+                <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+                </property>
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{65.0, 270.0}">
+            </property>
         </entity>
         <relation name="relation4" class="ptolemy.actor.TypedIORelation">
         </relation>
         <relation name="relation5" class="ptolemy.actor.TypedIORelation">
         </relation>
+        <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+            <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+            </property>
+            <vertex name="vertex1" value="[540.0, 170.0]">
+            </vertex>
+        </relation>
+        <relation name="relation7" class="ptolemy.actor.TypedIORelation">
+            <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+            </property>
+            <vertex name="vertex1" value="[210.0, 160.0]">
+            </vertex>
+        </relation>
         <relation name="relation" class="ptolemy.actor.TypedIORelation">
+            <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+            </property>
+            <vertex name="vertex1" value="[405.0, 170.0]">
+            </vertex>
         </relation>
         <relation name="relation2" class="ptolemy.actor.TypedIORelation">
         </relation>
+        <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation8" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation9" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <link port="Const.output" relation="relation7"/>
+        <link port="CompositeActor.trigger" relation="relation7"/>
         <link port="CompositeActor.reading" relation="relation"/>
+        <link port="CompositeActor.InputURI" relation="relation9"/>
         <link port="JSONToToken.input" relation="relation"/>
-        <link port="JSONToToken.output" relation="relation2"/>
-        <link port="ArrayToSequence.input" relation="relation2"/>
+        <link port="JSONToToken.output" relation="relation6"/>
+        <link port="ArrayToSequence.input" relation="relation6"/>
         <link port="ArrayToSequence.output" relation="relation4"/>
         <link port="RecordDisassembler.input" relation="relation4"/>
         <link port="RecordDisassembler.Readings" relation="relation5"/>
         <link port="IterateOverArray.Readings" relation="relation5"/>
+        <link port="StringReplace.pattern" relation="relation2"/>
+        <link port="StringReplace.replacement" relation="relation3"/>
+        <link port="StringReplace.stringToEdit" relation="relation8"/>
+        <link port="StringReplace.output" relation="relation9"/>
+        <link port="Const2.output" relation="relation2"/>
+        <link port="Const3.output" relation="relation3"/>
+        <link port="Const4.output" relation="relation8"/>
     </class>
     <entity name="InstanceOfCompositeActor2" class="SingleReaderClass">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[280.0, 380.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[425.0, 375.0]">
         </property>
-        <property name="iconColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 0.6}">
+        <property name="iconColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.1601521931144, 0.8398478068856, 0.0, 0.6}">
         </property>
         <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={31, 123, 1152, 634}, maximized=false}">
         </property>
@@ -747,7 +1093,7 @@ setting the colors.</text></svg></configure>
         </property>
         <entity name="CompositeActor" class="ptolemy.actor.TypedCompositeActor">
             <display name="Select online or&#10;offline data"/>
-            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 524]">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={176, 92, 934, 634}, maximized=false}">
             </property>
             <entity name="ConfigurationSelect" class="ptolemy.actor.lib.ConfigurationSelect">
                 <port name="trueInput" class="ptolemy.actor.TypedIOPort">
@@ -763,35 +1109,65 @@ setting the colors.</text></svg></configure>
                     </property>
                 </port>
             </entity>
+            <entity name="ConfigurationSwitch" class="ptolemy.actor.lib.ConfigurationSwitch">
+                <port name="trueOutput" class="ptolemy.actor.TypedIOPort">
+                    <property name="output"/>
+                    <property name="multiport"/>
+                    <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="1">
+                    </property>
+                </port>
+                <port name="falseOutput" class="ptolemy.actor.TypedIOPort">
+                    <property name="output"/>
+                    <property name="multiport"/>
+                    <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="0">
+                    </property>
+                </port>
+            </entity>
         </entity>
         <entity name="IterateOverArray" class="ptolemy.actor.lib.hoc.IterateOverArray">
             <entity name="IterateComposite" class="ptolemy.actor.lib.hoc.IterateOverArray$IterateComposite">
                 <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={365, 412, 1127, 634}, maximized=false}">
                 </property>
-                <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[893, 524]">
-                </property>
-                <entity name="SequencePlotter" class="ptolemy.actor.lib.gui.SequencePlotter">
-                    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1114, 702, 500, 344}, maximized=false}">
-                    </property>
-                    <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
-                    </property>
-                    <configure>
+                <entity name="SelectDisplayType" class="ptolemy.actor.TypedCompositeActor">
+                    <entity name="SequencePlotter" class="ptolemy.actor.lib.gui.SequencePlotter">
+                        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={764, 39, 516, 359}, maximized=false}">
+                        </property>
+                        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
+                        </property>
+                        <configure>
 <?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
 "http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
 <plot>
-<title>SequencePlotter</title>
-<xRange min="0.0" max="651.0"/>
-<yRange min="495.0" max="757.0"/>
+<title>Cory Hall</title>
+<xLabel>Time Units</xLabel>
+<yLabel>Kw/h</yLabel>
+<xRange min="0.0" max="187.0"/>
+<yRange min="484.0" max="723.0"/>
 </plot>?>
-                    </configure>
+                        </configure>
+                    </entity>
+                    <entity name="DisplayText" class="ptolemy.actor.lib.gui.Display">
+                        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={512, 261, 342, 245}, maximized=false}">
+                        </property>
+                        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[326, 186]">
+                        </property>
+                    </entity>
                 </entity>
             </entity>
         </entity>
+        <entity name="StringReplace" class="ptolemy.actor.lib.string.StringReplace">
+            <property name="pattern" class="ptolemy.actor.parameters.PortParameter" value="L">
+            </property>
+            <property name="replacement" class="ptolemy.actor.parameters.PortParameter" value="">
+            </property>
+            <property name="stringToEdit" class="ptolemy.actor.parameters.PortParameter" value="http://new.openbms.org/backend/api/data/uuid/8737f287-14df-5ccd-82df-e66ca7374b63?starttime=1346648400000&amp;endtime=1346821200000">
+            </property>
+        </entity>
     </entity>
     <entity name="InstanceOfCompositeActor" class="SingleReaderClass">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[405.0, 250.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[550.0, 245.0]">
         </property>
-        <property name="iconColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.2160273509411, 0.7839726490589, 0.0, 0.6}">
+        <property name="iconColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 1.0, 0.0, 0.6}">
         </property>
         <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={59, 300, 1152, 634}, maximized=false}">
         </property>
@@ -805,7 +1181,7 @@ setting the colors.</text></svg></configure>
         </property>
         <entity name="CompositeActor" class="ptolemy.actor.TypedCompositeActor">
             <display name="Select online or&#10;offline data"/>
-            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 524]">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={176, 92, 934, 634}, maximized=false}">
             </property>
             <entity name="ConfigurationSelect" class="ptolemy.actor.lib.ConfigurationSelect">
                 <port name="trueInput" class="ptolemy.actor.TypedIOPort">
@@ -821,41 +1197,73 @@ setting the colors.</text></svg></configure>
                     </property>
                 </port>
             </entity>
+            <entity name="ConfigurationSwitch" class="ptolemy.actor.lib.ConfigurationSwitch">
+                <port name="trueOutput" class="ptolemy.actor.TypedIOPort">
+                    <property name="output"/>
+                    <property name="multiport"/>
+                    <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="1">
+                    </property>
+                </port>
+                <port name="falseOutput" class="ptolemy.actor.TypedIOPort">
+                    <property name="output"/>
+                    <property name="multiport"/>
+                    <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="0">
+                    </property>
+                </port>
+            </entity>
         </entity>
         <entity name="IterateOverArray" class="ptolemy.actor.lib.hoc.IterateOverArray">
             <entity name="IterateComposite" class="ptolemy.actor.lib.hoc.IterateOverArray$IterateComposite">
                 <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={365, 412, 1127, 634}, maximized=false}">
                 </property>
-                <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[893, 524]">
-                </property>
-                <entity name="SequencePlotter" class="ptolemy.actor.lib.gui.SequencePlotter">
-                    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1111, 372, 500, 344}, maximized=false}">
-                    </property>
-                    <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
-                    </property>
-                    <configure>
+                <entity name="SelectDisplayType" class="ptolemy.actor.TypedCompositeActor">
+                    <entity name="SequencePlotter" class="ptolemy.actor.lib.gui.SequencePlotter">
+                        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={206, 352, 1074, 416}, maximized=false}">
+                        </property>
+                        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[1058, 357]">
+                        </property>
+                        <configure>
 <?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
 "http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
 <plot>
-<title>SequencePlotter</title>
-<xRange min="0.0" max="671.0"/>
-<yRange min="105.0" max="189.0"/>
+<title>Donner Hall</title>
+<xLabel>Time Units</xLabel>
+<yLabel>Kw/h</yLabel>
+<xRange min="0.0" max="191.0"/>
+<yRange min="105.0" max="177.0"/>
 </plot>?>
-                    </configure>
+                        </configure>
+                    </entity>
+                    <entity name="DisplayText" class="ptolemy.actor.lib.gui.Display">
+                        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={512, 261, 342, 245}, maximized=false}">
+                        </property>
+                        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[326, 186]">
+                        </property>
+                    </entity>
                 </entity>
             </entity>
         </entity>
+        <entity name="StringReplace" class="ptolemy.actor.lib.string.StringReplace">
+            <property name="pattern" class="ptolemy.actor.parameters.PortParameter" value="L">
+            </property>
+            <property name="replacement" class="ptolemy.actor.parameters.PortParameter" value="">
+            </property>
+            <property name="stringToEdit" class="ptolemy.actor.parameters.PortParameter" value="http://new.openbms.org/backend/api/data/uuid/888da9eb-5b39-5636-b495-94c1d1b57f35?starttime=1346648400000&amp;endtime=1346821200000">
+            </property>
+        </entity>
     </entity>
     <entity name="InstanceOfCompositeActor4" class="SingleReaderClass">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[830.0, 430.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{975.0, 425.0}">
         </property>
-        <property name="iconColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 0.6}">
+        <property name="iconColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.3504114680117, 0.6495885319883, 0.0, 0.6}">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={31, 254, 1152, 634}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={31, 254, 1146, 640}, maximized=false}">
+        </property>
+        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[918, 524]">
         </property>
         <property name="size" class="ptolemy.data.expr.Parameter" value="100">
         </property>
-        <property name="URI" class="ptolemy.data.expr.Parameter" value="(&quot;http://new.openbms.org/backend/api/data/uuid/&quot;+uuid_brige+&quot;?starttime=&quot;+dateStart+&quot;&amp;endtime=&quot;+dateEnd)">
+        <property name="URI" class="ptolemy.data.expr.Parameter" value="(&quot;http://new.openbms.org/backend/api/data/uuid/&quot;+uuid_birge+&quot;?starttime=&quot;+dateStart+&quot;&amp;endtime=&quot;+dateEnd)">
         </property>
         <property name="file" class="ptolemy.data.expr.FileParameter" value="data/BirgeHallMay16toMay17.txt">
         </property>
@@ -863,7 +1271,7 @@ setting the colors.</text></svg></configure>
         </property>
         <entity name="CompositeActor" class="ptolemy.actor.TypedCompositeActor">
             <display name="Select online or&#10;offline data"/>
-            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 524]">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={176, 92, 934, 634}, maximized=false}">
             </property>
             <entity name="ConfigurationSelect" class="ptolemy.actor.lib.ConfigurationSelect">
                 <port name="trueInput" class="ptolemy.actor.TypedIOPort">
@@ -879,29 +1287,93 @@ setting the colors.</text></svg></configure>
                     </property>
                 </port>
             </entity>
+            <entity name="ConfigurationSwitch" class="ptolemy.actor.lib.ConfigurationSwitch">
+                <port name="trueOutput" class="ptolemy.actor.TypedIOPort">
+                    <property name="output"/>
+                    <property name="multiport"/>
+                    <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="1">
+                    </property>
+                </port>
+                <port name="falseOutput" class="ptolemy.actor.TypedIOPort">
+                    <property name="output"/>
+                    <property name="multiport"/>
+                    <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="0">
+                    </property>
+                </port>
+            </entity>
         </entity>
         <entity name="IterateOverArray" class="ptolemy.actor.lib.hoc.IterateOverArray">
             <entity name="IterateComposite" class="ptolemy.actor.lib.hoc.IterateOverArray$IterateComposite">
-                <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={365, 412, 1127, 634}, maximized=false}">
+                <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={365, 412, 1121, 640}, maximized=false}">
                 </property>
                 <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[893, 524]">
                 </property>
-                <entity name="SequencePlotter" class="ptolemy.actor.lib.gui.SequencePlotter">
-                    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1113, 22, 500, 344}, maximized=false}">
+                <entity name="SelectDisplayType" class="ptolemy.actor.TypedCompositeActor">
+                    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 524]">
                     </property>
-                    <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
-                    </property>
-                    <configure>
+                    <entity name="SequencePlotter" class="ptolemy.actor.lib.gui.SequencePlotter">
+                        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={764, 409, 516, 359}, maximized=false}">
+                        </property>
+                        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
+                        </property>
+                        <configure>
 <?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
 "http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
 <plot>
-<title>SequencePlotter</title>
-<xRange min="0.0" max="511.0"/>
-<yRange min="278.8" max="476.4"/>
+<title>Birge Hall</title>
+<xLabel></xLabel>
+<yLabel></yLabel>
+<xRange min="0.0" max="187.0"/>
+<yRange min="484.0" max="723.0"/>
 </plot>?>
-                    </configure>
+                        </configure>
+                    </entity>
+                    <entity name="DisplayText" class="ptolemy.actor.lib.gui.Display">
+                        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={503, 261, 359, 245}, maximized=false}">
+                        </property>
+                        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[343, 186]">
+                        </property>
+                    </entity>
                 </entity>
             </entity>
         </entity>
+        <entity name="StringReplace" class="ptolemy.actor.lib.string.StringReplace">
+            <property name="pattern" class="ptolemy.actor.parameters.PortParameter" value="L">
+            </property>
+            <property name="replacement" class="ptolemy.actor.parameters.PortParameter" value="">
+            </property>
+            <property name="stringToEdit" class="ptolemy.actor.parameters.PortParameter" value="http://new.openbms.org/backend/api/data/uuid/8737f287-14df-5ccd-82df-e66ca7374b63?starttime=1346648400000&amp;endtime=1346821200000">
+            </property>
+        </entity>
     </entity>
+    <entity name="SetVariable" class="ptolemy.actor.lib.SetVariable">
+        <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="useOnlineData">
+        </property>
+        <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="variableName">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[385.0, 1445.0]">
+        </property>
+    </entity>
+    <entity name="Display" class="ptolemy.actor.lib.gui.Display">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[590.0, 1445.0]">
+        </property>
+    </entity>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="online" relation="relation3"/>
+    <link port="SetVariable.input" relation="relation3"/>
+    <link port="SetVariable.output" relation="relation2"/>
+    <link port="Display.input" relation="relation2"/>
 </entity>

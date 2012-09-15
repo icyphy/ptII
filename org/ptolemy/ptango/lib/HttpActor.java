@@ -31,9 +31,9 @@ package org.ptolemy.ptango.lib;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.URI;
+import java.util.ArrayList;
+import java.util.Hashtable;
 import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -56,6 +56,7 @@ import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.StringParameter;
 import ptolemy.data.type.BaseType;
+import ptolemy.domains.dde.kernel.NullToken;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
@@ -124,8 +125,9 @@ public class HttpActor extends TypedAtomicActor implements HttpService {
         response.setMultiport(true);
         new Parameter(response, "_showName").setExpression("true");           
 
-        cookies = new TypedIOPort(this, "cookies", false, true);
-        new Parameter(cookies, "_showName").setExpression("true");           
+        receivedCookies = new TypedIOPort(this, "receivedCookies", false, true);
+        new Parameter(receivedCookies, "_showName").setExpression("true");
+        receivedCookies.setTypeEquals(BaseType.RECORD);
         
         getRequestURI = new TypedIOPort(this, "getRequestURI", false, true);
         getRequestURI.setTypeEquals(BaseType.STRING);
@@ -145,38 +147,40 @@ public class HttpActor extends TypedAtomicActor implements HttpService {
         
         setCookies = new TypedIOPort(this,"setCookies", true, false);   
         new Parameter(setCookies, "_showName").setExpression("true");
+        // For now, only allow RecordTokens.  In future, expand to other types
+        // of tokens such as StringTokens representing JSON data.
+        setCookies.setTypeEquals(BaseType.RECORD);
         
         // Parameters
         timeout = new Parameter(this, "timeout");
         timeout.setExpression("10000L");
         timeout.setTypeEquals(BaseType.LONG);
-        
-        // Parameter names should match the name of the field or
-        // else actor oriented classes will have clone problems.
-        cookiesCollection = new Parameter(this, "cookiesCollection");
 
         pathCookies = new Parameter(this, "pathCookies");
         pathCookies.setExpression("false");
         
         // Internal variables
-        _cookiesCollectionList = new LinkedList<RecordToken>();
+        _cookieCollection = new Hashtable<String, Token>();
+        _hasNewCookies = false;
   }
     
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 
-    /** An output that sends the cookies provided by a request.
+    /** An output that sends the cookies provided by the HttpRequest
      *  If there are any cookies, then the output provided by this
-     *  port will be a record of the form {cookieName = value, ...}.
+     *  port will be an ArrayToken of RecordTokens of the form 
+     *  {cookieName = value, ...}.
      */
+    
     // FIXME: Cookies have many other fields. Do we need to include them?
     // Leave out altogether for now.
-     public TypedIOPort cookies;
+     public TypedIOPort receivedCookies;
      
      /**
       * A parameter to store the cookie values. 
       */
-     public Parameter cookiesCollection;
+     //public Parameter cookiesCollection;
     
     /** An output port that sends parameters included in a get request.
      *  These are values appended to the URL in the form
@@ -245,8 +249,9 @@ public class HttpActor extends TypedAtomicActor implements HttpService {
     public TypedIOPort response;
     
     /**
-     * An input port on which to provide the possible attributes for cookies.
-     * 
+     * An input port on which to provide new cookies and/or new cookie values.
+     * These will be set in the HttpResponse.  
+     * The token should be a RecordToken or an ArrayToken of RecordTokens
      */
     public TypedIOPort setCookies;
     
@@ -294,8 +299,9 @@ public class HttpActor extends TypedAtomicActor implements HttpService {
      */
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         HttpActor newObject = (HttpActor) super.clone(workspace);
-        //newObject._cookies = null;
-        newObject._cookiesCollectionList =null;
+        // FIXME:  Need to copy the _cookiesCollectionList from the old object?
+        newObject._cookieCollection = new Hashtable<String, Token>();
+        newObject._hasNewCookies = false;
         newObject._initializeModelTime = null;
         newObject._initializeRealTime = 0L;
         newObject._parameters = null;
@@ -345,43 +351,100 @@ public class HttpActor extends TypedAtomicActor implements HttpService {
         synchronized(this) {
             super.fire();
            
+            boolean handledCookies = false;
+            
             for (int i = 0; i < response.getWidth(); i++) {
                 if (response.hasToken(i)) {
                     _response = ((StringToken)response.get(i)).stringValue();
                     if (_debugging) {
-                        _debug("Received response on the input port: " + _response);
+                        _debug("Received response on the input port: " 
+                                + _response);
                     }
                     
-                  // If there is a pending request, notify it.
+                    // Check for new cookies on the setCookies port
+                    // Only check this when the actor is ready to produce a 
+                    // response.  This will ensure at most one token is consumed 
+                    // from the setCookies port per response
+                    // If there are multiple tokens on the response port (since
+                    // it is a multiport), read at most one token from the
+                    // setCookies port per firing
+                    if (!handledCookies && setCookies.getWidth() > 0 
+                            && setCookies.hasToken(0)) {
+                        RecordToken cookieToken = 
+                            (RecordToken) setCookies.get(0);
+                        _hasNewCookies = true;
+                        _updateCookieCollection(cookieToken);
+                        handledCookies = true;
+                    }
+                           
+                    // If there is a pending request, notify it.
                     notifyAll();
                 }
             }
             // If there is a pending request, produce outputs for that request.
             if (_requestURI != null) {
                 if (_requestType == 0) {
-                    if (getRequestURI.getWidth() > 0) {
-                        getRequestURI.send(0, new StringToken(_requestURI));
-                    }
-                    if (getParameters.getWidth() > 0) {
-                        getParameters.send(0, _parameters);
-                    }
+                    getRequestURI.send(0, new StringToken(_requestURI));
+                    getParameters.send(0, _parameters);
                 } else {
-                    if (postRequestURI.getWidth() > 0) {
-                        postRequestURI.send(0, new StringToken(_requestURI));     
-                    }
-                    if (postParameters.getWidth() > 0) {
-                        postParameters.send(0, _parameters);
-                    }
+                    postRequestURI.send(0, new StringToken(_requestURI));     
+                    postParameters.send(0, _parameters);
+                   
                 }
+               
+                // TODO:  Why is this set to null?
                 _requestURI = null;
                 
-                // Send the values in the cookiesCollection parameters to the cookie output port.
-                if (cookies.getWidth() > 0) {
-                    for (RecordToken cookie: _cookiesCollectionList) {
-                        cookies.send(0, cookie);
-                    }
-                }
+                // Roxana: Send the values in the cookieCollection to the 
+                // receivedCookies output port
+                // Cookies are sent for both get and post requests
+                RecordToken cookies;
+                
+                if (_cookieCollection != null && 
+                        !_cookieCollection.isEmpty()) {
+                    ArrayList<String> labels = new ArrayList<String>();
+                    ArrayList<Token> values = new ArrayList<Token>();
+                    String label;
                     
+                    while (_cookieCollection.keys().hasMoreElements()) 
+                    {
+                        label = _cookieCollection.keys().nextElement();
+                        labels.add(label);
+                        values.add(_cookieCollection.get(label));   
+                    }
+                    
+                    if (labels.isEmpty()) {
+                        cookies = new RecordToken();
+                    } else {
+                        cookies = new RecordToken(
+                                labels.toArray(new String[labels.size()]),
+                                values.toArray(new Token[values.size()]));
+                    }
+                } else {
+                    cookies = new RecordToken();
+                }
+                
+                receivedCookies.send(0, cookies);
+                
+                /*
+                ArrayToken cookiesArrayToken;
+                
+             
+                if (_cookiesCollection != null && 
+                        !_cookiesCollection.isEmpty()) {
+                     cookiesArrayToken = 
+                            new ArrayToken(_cookiesCollection
+                                    .toArray(new RecordToken[
+                                        _cookiesCollection.size()]));
+                     
+                } else {
+                    cookiesArrayToken = new ArrayToken(BaseType.RECORD);
+                }
+              
+                
+                receivedCookies.send(0, cookiesArrayToken);
+                  */
+                
                 /* FIXME: Omitting cookies for now.
                  * In any case, when we put this back in,
                  * this work should be done in the servlet.*/
@@ -411,59 +474,9 @@ public class HttpActor extends TypedAtomicActor implements HttpService {
         _requestURI = null;
         _initializeModelTime = getDirector().getModelTime();
         _initializeRealTime = System.currentTimeMillis();
-        
-        /*
-         * get the values provided in the parameter.
-         * This is a list of pairs{name, value} like: { {name="roxana"}, {time="2:23"} }
-         * Extract all labels (before =) and all values (after =)
-         * @author: Roxana Gheorghiu
-         */
-        //System.out.println(cookiesCollection);
-        
-        
-        if (!cookiesCollection.getValueAsString().equals("null"))
-        {
-            String param =cookiesCollection.getValueAsString();
-            String temp =param;
-            int commaIndx =temp.indexOf(",");
-            int count=0;
-            while(commaIndx !=-1)
-            {
-                count++;
-                temp=temp.substring(commaIndx+1);
-                commaIndx =temp.indexOf(",");
-            }
-            
-            String labels[] =new String[count+1];
-            StringToken values[] =new StringToken[count+1];
-            
-            for(int indx =0; indx <count+1; indx++)
-            {
-                commaIndx =param.indexOf(",");
-                String cookie;
-                
-                if (commaIndx !=-1)
-                {
-                    cookie =param.substring(1,commaIndx);
-                    param =param.substring(param.indexOf(",")+1);
-                }
-                else cookie =param.substring(0, param.length()-1);
-                
-                cookie =(cookie.replace("{","")).replace("}","");
-                cookie =cookie.replace("\"","");
-                
-                labels[indx] =cookie.substring(0, cookie.indexOf("=")).trim();
-                values[indx] =new StringToken(cookie.substring(cookie.indexOf("=")+2));
-                //System.out.println("Value: "+values[indx].stringValue()+" Label: "+labels[indx]);
-                
-            }
-            /*
-             * Create a new recordToken with the lables and values extracted in the above code.
-             * @author: Roxana Gheorghiu
-             */
-            _cookiesCollectionList.add(new RecordToken(labels, values));
-        }
-             
+        _cookieCollection = new Hashtable<String, Token>();
+        _hasNewCookies = false;
+       
     }
         
     /** Set the relative path that this HttpService is mapped to.
@@ -484,12 +497,27 @@ public class HttpActor extends TypedAtomicActor implements HttpService {
     public void setWebServer(WebServer server) {
         // Ignore. This actor doesn't need to know.
     }
+    
 
     ///////////////////////////////////////////////////////////////////
     ////                     private variables                     ////
     
-    /** Cookies provided as part of a get request. */
-    private Cookie[] _cookies;
+    /** All cookies from the setCookies port plus the Cookies from the 
+     *  HttpRequest.  Values provided on the setCookies port override values
+     *  from the HttpRequest for cookies with the same name.  (I.e., the model
+     *  developer wants to replace the cookie on the client with the cookie
+     *  provided on the input port.)
+     */
+    private Hashtable<String, Token> _cookieCollection;
+    
+    
+    /** A variable indicating that new cookies have been received on the 
+     * setCookies port, and that all cookies should be written to the 
+     * HttpServletResponse in the doGet() or doPost() method.
+     * It would not be wrong to always write the cookies to every 
+     * HttpServletResponse, but it would be inefficient. 
+     */
+    private boolean _hasNewCookies;
     
     /** The model time at which this actor was last initialized. */
     private Time _initializeModelTime;
@@ -514,11 +542,25 @@ public class HttpActor extends TypedAtomicActor implements HttpService {
      *  all of the URI naming conventions. 
      */
     private URI _URIpath;
+   
+    ///////////////////////////////////////////////////////////////////
+    ////                     private methods                       ////
     
-    /** All cookies from get and port request plus the ones in the Cookies provided as part of a get request. */
-    private List<RecordToken> _cookiesCollectionList;
-    
-    
+    /** Take the list of name, value pairs from the cookies RecordToken and
+     *  update the _cookieCollection Hashtable.
+     *  
+     * @param cookies The RecordToken containing name, value pairs to 
+     * add to _cookieCollection or update _cookieCollection with
+     */
+    private void _updateCookieCollection(RecordToken cookies) {
+        if (cookies != null) {
+            Iterator iterator = cookies.labelSet().iterator();
+            while (iterator.hasNext()) {
+                String label = (String) iterator.next();
+                _cookieCollection.put(label, cookies.get(label));
+            }
+        }
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                     inner classes                         ////    
@@ -599,20 +641,20 @@ public class HttpActor extends TypedAtomicActor implements HttpService {
             synchronized(HttpActor.this) {
                 _requestURI = request.getRequestURI();
                 _requestType = type;
-                _cookies = request.getCookies();
-                if (_debugging) {
-                    _debug("Received get request with URI: " + _requestURI);
-                    _debug("Number of Cookies: " + _cookies.length);
-                    for(int i=0; i<_cookies.length; i++) {
-                        HttpActor.this._debug(_cookies[i].getValue());
-                    }
-                    _debug("Requesting firing at the current time.");
-                }
+    
+                // Read cookies from the request and store in _cookiesCollection
+                _readCookies(request);
                     
                 // Get the parameters that have been either posted or included
                 // as assignments in a get using the URL syntax ...?name=value.
                 // Note that each parameter name may have more than one value,
                 // hence the array of strings.
+                
+                // FIXME:  This currently treats all values as StringTokens,
+                // which they may not be.  How to either 1) correctly determine
+                // the type of the token, or 2) create a token of unspecified
+                // type but still be able to set its expression?  Class
+                // Token does not have the setExpression() method
                 Map<String, String[]> parameterMap = request.getParameterMap();
                 // Convert these parameters to a record token to send to
                 // the appropriate output.
@@ -631,7 +673,7 @@ public class HttpActor extends TypedAtomicActor implements HttpService {
                         // More than one value. Use an array.
                         StringToken[] arrayEntries = new StringToken[values.length];
                         for (int j = 0; j < values.length; j++) {
-                            arrayEntries[i] = new StringToken(values[j]);
+                            arrayEntries[j] = new StringToken(values[j]);
                         }
                         try {
                             ArrayToken array = new ArrayToken(arrayEntries);
@@ -654,17 +696,17 @@ public class HttpActor extends TypedAtomicActor implements HttpService {
                      */
                    
                     
+                    /*
                     if (pathCookies.getExpression().equals("true") && _parameters.length() >0)
                     {
                         _cookiesCollectionList.add(_parameters);
                     }
+                    */
                     
                 } catch (IllegalActionException e1) {
                     _writeError(response, HttpServletResponse.SC_BAD_REQUEST, e1.getMessage());
                 }
                 
-                // FIXME: Other information? E.g.
-                // response.getWriter().println("session=" + request.getSession(true).getId());
                 try {
                     long elapsedRealTime = System.currentTimeMillis() - _initializeRealTime;
                     Time timeOfRequest = _initializeModelTime.add(elapsedRealTime);
@@ -701,34 +743,16 @@ public class HttpActor extends TypedAtomicActor implements HttpService {
                     } catch (InterruptedException e) {
                         break;
                     }
-                }
-                 
-                /**
-                 * Use the values stored in the _cookiesCollection as cokies for any request
-                 * @author Ghr1pi (Roxana Gheorghiu)
-                 */
-                
-                for(RecordToken cookie:_cookiesCollectionList)
-                {
-                    Set<String> labels =cookie.labelSet();
-                    String label="", value ="";
-                    Iterator<String> it =labels.iterator();
-                    
-                    if (it.hasNext())
-                    {
-                        label =(String)it.next();
-                        value =String.valueOf(cookie.get(label));
-                        
-                        if (value.indexOf("\"")!=-1)
-                            value =value.replace("\"", "");
-                        
-                        response.addCookie(new Cookie(label, value));
-                    }
-                }
-                
+                }               
                 
                 response.setContentType("text/html");
                 response.setStatus(HttpServletResponse.SC_OK);
+                
+                // Write all cookies to the response, if there are some new 
+                // cookies to write
+                if (_hasNewCookies) {
+                    _writeCookies(response);
+                }
                 if (timeoutOccurred) {
                     if (_debugging) {
                         _debug("Get request timed out.");
@@ -747,6 +771,66 @@ public class HttpActor extends TypedAtomicActor implements HttpService {
                 }
                 _response = null;
             }
+        }
+        
+        /** Read the Cookies from the HttpServletRequest, and store them in 
+         * the _cookiesCollectionList as an array of RecordTokens, overwriting
+         * any the values of any current Cookies with the same name.
+         * 
+         * @param request  The HttpServletRequest to read Cookies from.  The 
+         * HttpServletRequest can be of any type - i.e. both GET and POST 
+         * requests are allowed to have Cookies.
+         */
+        private void _readCookies(HttpServletRequest request) {
+            
+            if (request.getCookies().length > 0) {
+                for (Cookie cookie : request.getCookies()) {
+                    // Cookie must have a name
+                    if (cookie.getName() != null && !cookie.getName().isEmpty())
+                    {
+                        // FIXME:  Determine the correct data type of the value
+                        // Possible to re-use JSONToToken code?
+                        // Right now, generate StringToken for all cookies
+                        // Or, NullToken if value is null
+                        // FIXME:  Can cookies contain an array?  If so, is 
+                        // there a standard representation for the array?
+                        // Have seen inconsistent formats on the internet...
+                        if (cookie.getValue() == null) {
+                           _cookieCollection.put(cookie.getName(), 
+                                   new StringToken(cookie.getValue()));
+                        } else {
+                            _cookieCollection.put(cookie.getName(), 
+                                    new NullToken());
+                        }
+                    }
+                }
+            }
+        }       
+        
+        /** Write all cookies in _cookiesCollection to the HttpResponse.
+         * 
+         * @param response The HttpServletResponse to write the cookies to.
+         */
+        private void _writeCookies(HttpServletResponse response){
+
+            // TODO:  Always add cookies to the request? Or, only if
+            // something was received on the setCookies port?  Probably 
+            // the latter.  Otherwise there aren't any new cookies to write.
+            
+            while (_cookieCollection.keys().hasMoreElements()) {
+                String label = _cookieCollection.keys().nextElement();
+                String value = 
+                    ((Token) _cookieCollection.get(label)).toString();
+                
+                // FIXME:  Special character handling?  Copied from previous 
+                // code.
+                if (value != null && value.indexOf("\"")!=-1)
+                    value =value.replace("\"", "");
+                
+                response.addCookie(new Cookie(label, value));
+            }
+            
+            _hasNewCookies = false;
         }
         
         /** Write an error message to the given HttpServletResponse.
