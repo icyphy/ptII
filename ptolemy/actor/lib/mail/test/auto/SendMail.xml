@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="SendMail" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.0.devel">
     </property>
     <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
         <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
@@ -18,9 +18,9 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="{85.0, 55.0}">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1, 24, 1018, 585}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1, 24, 1039, 634}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[805, 475]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[805, 524]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0394028535577">
     </property>
@@ -47,15 +47,19 @@
         </property>
     </property>
     <entity name="SendMail" class="ptolemy.actor.lib.mail.SendMail">
-        <property name="to" class="ptolemy.actor.parameters.PortParameter" value="nobody@nowhere.org">
+        <property name="to" class="ptolemy.actor.parameters.PortParameter" value="tycho@ptolemy.org">
         </property>
         <property name="subject" class="ptolemy.actor.parameters.PortParameter" value="How to actually send email">
         </property>
-        <property name="message" class="ptolemy.actor.parameters.PortParameter" value="">
+        <property name="message" class="ptolemy.actor.parameters.PortParameter" value="&#10;Dear Tycho,&#10;&#10;If you really want to send email using this Ptolemy II model,&#10;you have to change the reallySendMail parameter in the&#10;SendMail actor to true. Please do not use this to send spam.&#10;&#10;With best regards,&#10;The Ptolemy Pteam">
         </property>
         <property name="SMTPHostName" class="ptolemy.actor.parameters.PortParameter" value="gateway.nowhere.org">
         </property>
         <property name="SMTPUserName" class="ptolemy.actor.parameters.PortParameter" value="nobody">
+        </property>
+        <property name="enableSSL" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="reallySendMail" class="ptolemy.data.expr.Parameter" value="false">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[500.0, 307.5]">
         </property>
@@ -71,17 +75,17 @@
     <entity name="RecordDisassembler" class="ptolemy.actor.lib.RecordDisassembler">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[185.0, 257.5]">
         </property>
-        <port name="First Name" class="ptolemy.actor.TypedIOPort">
+        <port name="First_Name" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
         </port>
-        <port name="Last Name" class="ptolemy.actor.TypedIOPort">
+        <port name="Last_Name" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
         </port>
-        <port name="Work Email" class="ptolemy.actor.TypedIOPort">
+        <port name="Work_Email" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
@@ -90,7 +94,7 @@
     <entity name="StringReplace" class="ptolemy.actor.lib.string.StringReplace">
         <property name="pattern" class="ptolemy.actor.parameters.PortParameter" value="Colleague">
         </property>
-        <property name="replacement" class="ptolemy.actor.parameters.PortParameter" value="Colleague">
+        <property name="replacement" class="ptolemy.actor.parameters.PortParameter" value="Tycho">
         </property>
         <property name="stringToEdit" class="ptolemy.actor.parameters.PortParameter" value="&#10;Dear Colleague,&#10;&#10;If you really want to send email using this Ptolemy II model,&#10;you have to change the reallySendMail parameter in the&#10;SendMail actor to true. Please do not use this to send spam.&#10;&#10;With best regards,&#10;The Ptolemy Pteam">
             <property name="style" class="ptolemy.actor.gui.style.TextStyle">
@@ -136,8 +140,8 @@
     <link port="CSVReader.output" relation="relation"/>
     <link port="CSVReader.endOfFile" relation="relation5"/>
     <link port="RecordDisassembler.input" relation="relation"/>
-    <link port="RecordDisassembler.First Name" relation="relation3"/>
-    <link port="RecordDisassembler.Work Email" relation="relation2"/>
+    <link port="RecordDisassembler.First_Name" relation="relation3"/>
+    <link port="RecordDisassembler.Work_Email" relation="relation2"/>
     <link port="StringReplace.replacement" relation="relation3"/>
     <link port="StringReplace.output" relation="relation4"/>
     <link port="Stop.input" relation="relation5"/>
