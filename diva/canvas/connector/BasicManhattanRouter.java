@@ -401,16 +401,16 @@ public class BasicManhattanRouter implements ManhattanRouter {
      *  tolerance around 45 degree angles before the direction is changed
      *  to prevent edges flip-flopping around.
      *  @param radAngle the angle between the edge, pointing from tail to
-     *                  head, and the x axis.
+     *  head, and the x axis.
      *  @param distance distance between the head and tail connectors.
-     *  @param head {@code true} if we're computing the direction of the
-     *         head connection point, {@code false} for the tail connection
-     *         point.
-     *  @param oldDirection the old direction at the connection point or
-     *                      {@code -1}Êif there was no old direction.
-     *  @return one of the constants in {@code SwingConstants} describing
-     *          the direction from which the edge should approach the
-     *          specified connection point. 
+     *  @param head {@code true} if we're computing the direction of
+     *  the head connection point, {@code false} for the tail
+     *  connection point.
+     *  @param oldDirection the old direction at the connection point
+     *  or {@code -1} if there was no old direction.
+     *  @return one of the constants in {@code SwingConstants}
+     *  describing the direction from which the edge should approach
+     *  the specified connection point.
      */
     private int _getManhattanDirection(double radAngle, double distance, boolean head, int oldDirection) {
         int dir;
