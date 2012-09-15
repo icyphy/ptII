@@ -70,9 +70,9 @@ do
 	# indent as the ODESolver line
 	cat $tmpfile2 |
 	awk '{
-                 if ($0 ~ /<property name="ODESolver"/ && $0 ~ /ExplicitRK23Solver/) {
+                 if ($0 ~ /<property/ && $0 ~ /name="ODESolver"/ && $0 ~ /ExplicitRK23Solver/) {
                      noPrint = 1
-                     indentLength = index($0, "<property name=\"ODESolver\"")
+                     indentLength = index($0, "<property")
                  } 
                  if (noPrint == 0) {
                      print $0
@@ -102,16 +102,49 @@ do
 	# Now, remove the input and output ports for Integrator
 	cat $tmpfile2 |
 	awk '{
-                 if ($0 ~ /class="ptolemy.domains.continuous.lib.Integrator">/) {
+                 if ($0 ~ /class="ptolemy.domains.continuous.lib.Integrator"/) {
                      inIntegrator = 1
-                     indentLength = index($0, "<entity name=")
+                     indentLength = index($0, "<entity")
+                     for (i=1;i<=NF;i++) {
+                         if ($i ~ /name=/) {
+                             name = substr($i, 7, length($i)-8)
+                             names[name] = name
+                             inputs[name] = "port=\"" name  ".input\""
+                             outputs[name] = "port=\"" name  ".output\""
+                             #print "#### name:", $i, "}", length($i), " {",  name, inputs[name], outputs[name]
+                         }
+                     }
                  } 
-                 if (inIntegrator && ($0 ~ /<port name="input"/ || $0 ~ /<port name="output"/)) {
+                 if (inIntegrator && ($0 ~ /<port/ && ($0 ~  /name="input"/ || $0 ~ /name="output"/))) {
                      noPrint = 1
-                     portIndentLength = index($0, "<port name=")
+                     portIndentLength = index($0, "<port")
                  } 
                  if (noPrint == 0) {
-                     print $0
+                     # Update any connections
+                     printed = 0
+                     for(name in names) {
+                         if ($1 == "<link" && ( $2 == inputs[name] || $2 == outputs[name])) {
+                             #print "##", $1, name, inputs[name], outputs[name]
+                             linkIndentLength = index($0, "<link")
+                             for(i=1;i<linkIndentLength;i++) {
+                                 printf(" ");
+                             }
+                             if ($2 == inputs[name]) {
+                                 inputs[name] = ""
+                                 print "<link port=\"" name ".derivative\"", $3
+                                 printed = 1
+                             } else { 
+                                 if ($2 == outputs[name]) {
+                                     outputs[name] = ""
+                                     print "<link port=\"" name ".state\"", $3
+                                     printed = 1
+                                 }
+                             } 
+                         }
+                     }
+                     if (printed == 0) {
+                         print $0
+                     }
                  } else {
                      if ($1 == "</port>" && index($0, "</port") == portIndentLength) {
                          noPrint = 0
