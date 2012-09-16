@@ -4,7 +4,7 @@
 <entity name="UCBPowerServer" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.0.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={19, 0, 1199, 760}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={22, 51, 1199, 760}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[971, 644]">
     </property>
@@ -13,7 +13,7 @@
     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{383.5528074866311, 332.2489137700535}">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model launches a web server and provides a service&#10;available at http://localhost:8080/UCBPower.&#10;Run the model and navigate to that location&#10;(or run the model and double click on this comment).">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model launches a web server and provides a service&#10;available at http://localhost:8080/UCBPower&#10;Please run the model and navigate to that location&#10;(or run the model and double click on this comment).">
         </property>
         <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="http://localhost:8080/UCBPower#in_browser">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -48,7 +48,7 @@
     <property name="WebServer" class="org.ptolemy.ptango.lib.WebServer">
         <property name="resourcePath" class="ptolemy.data.expr.StringParameter" value="/">
         </property>
-        <property name="resourceLocation" class="ptolemy.data.expr.FileParameter" value="$PTII/org/ptolemy/ptango/demo/UCBPrefPower">
+        <property name="resourceLocation" class="ptolemy.data.expr.FileParameter" value="$PTII/org/ptolemy/ptango/demo/UCBPower">
         </property>
         <property name="temporaryFileLocation" class="ptolemy.data.expr.FileParameter" value="$TMPDIR">
         </property>
