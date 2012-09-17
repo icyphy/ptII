@@ -43,6 +43,7 @@ import ptolemy.graph.Inequality;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.util.StringUtilities;
 
 ///////////////////////////////////////////////////////////////////
 //// RecordAssembler
@@ -73,6 +74,19 @@ import ptolemy.kernel.util.NameDuplicationException;
  is that the type of each record field is no less than the type of the
  corresponding input port.
  </p>
+ <p>Note that while port names may have spaces in them, record labels
+ may not because record labels that have spaces in them are not 
+ parseable by the expression language.  Spaces in record labels
+ are converted to underscores in the RecordToken constructors an
+ toString() method.  If this actor has ports that have a space 
+ or other character that is substituted, then at runtime the port
+ may resolve to an unknown type with a message like:</p>
+ <pre>
+Caused by: ptolemy.actor.TypeConflictException: Types resolved
+  to unacceptable types in .Router due to the following objects:
+  (port .Router.Record Disassembler.sequence number: unknown)
+ </pre>  
+ 
  @author Yuhong Xiong, Marten Lohstroh 
  @version $Id$
  @since Ptolemy II 1.0
@@ -125,7 +139,7 @@ public class RecordAssembler extends TypedAtomicActor {
 
         for (int i = 0; i < size; i++) {
             IOPort port = (IOPort) portArray[i];
-            labels[i] = port.getName();
+            labels[i] = StringUtilities.sanitizeName(port.getName());
             values[i] = port.get(0);
         }
 
