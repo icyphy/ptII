@@ -7,26 +7,23 @@
 Classes used to place entities and relations and to route connections in Vergil.
 Graph layout support using
 <a href="http://www.informatik.uni-kiel.de/rtsys/kieler/#in_browser">KIELER</a>, from the University of Kiel.
-
+For more detailed information,
+see the layout help file,
+accessible by clicking the <i>Help</i> button in the layout configuration dialog (see below).
 
 <h4>Graph &rarr; Automatic Layout [Ctrl/Cmd-T]</h4>
 <p>Automatic placement of nodes and routing of edges.
-</p>
-<p>Only connected nodes are placed by default, others are not moved. This can be used to place unconnected nodes like Director, text attributes, etc.
-manually. The nodes are placed starting at the top left corner of the former bounding box of the nodes.
 </p>
 <p>This option uses a new feature of explicitly routing edges by specifying bend points in layoutHints attributes at relations. The additional routing information will be deleted automatically when
 nodes are moved manually afterwards to allow manual editing. Therefore manual editing always only uses the standard Manhattan router.
 </p>
 
-<h4>Graph &rarr; Advanced Layout Dialog</h4>
-<p>The advanced layout dialog allows to configure the layout algorithm by setting various parameters.
-</p>
-<p>More information coming soon...
+<h4>Graph &rarr; Configure Layout...</h4>
+<p>The layout configuration dialog allows customizing the layout algorithm's results.
 </p>
 
 <p>
    @since Ptolemy II 8.0
-   @author Miro Spoenemann (University of Kiel), Hauke Fuhrmann (University of Kiel)
+   @author Miro Spoenemann (University of Kiel), Hauke Fuhrmann (University of Kiel), Christoph Daniel Schulze (University of Kiel)
 </body>
 </html>

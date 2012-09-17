@@ -213,7 +213,7 @@ public class KielerLayout extends AbstractGlobalLayout {
      */
     @Override
     public void layout(Object composite) {
-        _layoutInProgress = true;
+        KielerLayoutConnector.setLayoutInProgress(true);
         
         // some variables for time statistics
         long overallTime = System.currentTimeMillis();
@@ -279,7 +279,7 @@ public class KielerLayout extends AbstractGlobalLayout {
             throw new InternalErrorException(exception);
         }
 
-        _layoutInProgress = false;
+        KielerLayoutConnector.setLayoutInProgress(false);
     }
 
     /**
@@ -302,21 +302,7 @@ public class KielerLayout extends AbstractGlobalLayout {
     public void setTop(Top top) {
         this._top = top;
     }
-    
-    /**
-     * Checks whether there's a layout operation currently in progress. Not that
-     * this is not thread-safe, but probably doesn't need to be in the context
-     * it's used, which is to stop {@code KielerLayoutConnection} from removing
-     * {@code LayoutHint}s due to node position changes while a layout is being
-     * applied.
-     * 
-     * @return {@code true} if we're currently in the middle of automatic layout,
-     *         {@code false} otherwise.
-     */
-    public static boolean isLayoutInProgress() {
-        return _layoutInProgress;
-    }
-    
+
     
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
@@ -1423,13 +1409,5 @@ public class KielerLayout extends AbstractGlobalLayout {
      * Pointer to Top in order to report the current status.
      */
     private Top _top;
-    
-    /**
-     * Whether we're currently computing a layout. If we are, that tells
-     * {@code KielerLayoutConnector} not to remove {@code LayoutHint}s
-     * when node position changes are detected while the layout is being
-     * applied.
-     */
-    private static boolean _layoutInProgress = false;
 
 }

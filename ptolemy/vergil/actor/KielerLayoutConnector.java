@@ -33,7 +33,6 @@ import java.awt.geom.Point2D;
 import java.util.List;
 
 import ptolemy.kernel.Relation;
-import ptolemy.vergil.basic.layout.kieler.KielerLayout;
 import ptolemy.vergil.basic.layout.kieler.LayoutHint;
 import ptolemy.vergil.basic.layout.kieler.LayoutHint.LayoutHintItem;
 import ptolemy.vergil.kernel.Link;
@@ -108,7 +107,7 @@ public class KielerLayoutConnector extends LinkManhattanConnector {
                         // thread-safe, but should work since no more than one MomlChangeRequest
                         // is executed at a given time, and those are the only things that
                         // could trigger a problem with this code.
-                        considerBendPoints = KielerLayout.isLayoutInProgress() || layoutHintItem.revalidate();
+                        considerBendPoints = _layoutInProgress || layoutHintItem.revalidate();
                         if (considerBendPoints) {
                             bendPointList = layoutHintItem.getBendPointList();
                         } else {
@@ -220,6 +219,29 @@ public class KielerLayoutConnector extends LinkManhattanConnector {
             super.route();
         }
     }
+    
+    /**
+     * Notifies layout connections that a layout is in progress, which stops them
+     * from deciding to remove layout hints from relations. Without this mechanism,
+     * it can happen that layout hints get removed seemingly at random. This is
+     * caused by layout connectors thinking that one actor in a relation is moved
+     * during the application of the layout results. This in turn triggers the
+     * corresponding layout hint to be viewed as being invalid, and consequently to
+     * be removed.
+     * <p>
+     * A call to this method with the parameter value {@code true} must always be
+     * followed by a call with the parameter value {@code false}.</p>
+     * <p>
+     * <b>Note:</b> This mechanism is not thread-safe! However, since the problem
+     * only occurs while a layout result is being applied through a
+     * {@code MoMLChangeRequest} (of which only one is ever being executed at a
+     * given time), this shouldn't be a problem.</p>
+     * 
+     * @param inProgress {@code true} if a layout result is currently being applied.
+     */
+    public static void setLayoutInProgress(boolean inProgress) {
+        _layoutInProgress = inProgress;
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
@@ -305,5 +327,11 @@ public class KielerLayoutConnector extends LinkManhattanConnector {
      * The radius for filleting the corners of the connector.
      */
     private double _bendRadius = 10;
+    
+    /**
+     * Whether automatic layout is currently in progress. If so, no layout hints
+     * are removed.
+     */
+    private static boolean _layoutInProgress = false;
 
 }
