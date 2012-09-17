@@ -58,15 +58,16 @@ PTCLASSALLJAR = $(PTPACKAGE).jar
 JSRCS = \
 	ActuationDevice.java \
 	ActuatorSetup.java \
-	EDFScheduler.java \
-	FCFSScheduler.java \
-	FPScheduler.java \
+	DynamicCoreAssignmentScheduler.java \
+	FPPCore.java \
 	InputDevice.java \
 	MasterClock.java \
 	MulticoreExecutionTimeMonitor.java \
 	NetworkReceiver.java \
 	NetworkTransmitter.java \
+	NPFCFSCore.java \
 	OutputDevice.java \
+	PEDFCore.java \
 	RealisticSlaveClock.java \
 	SensorHandler.java \
 	SimulatedPlatformPhysicalTime.java \
@@ -78,7 +79,11 @@ JSRCS = \
 	SchedulePlotterEditorFactory.java
 
 OTHER_FILES_TO_BE_JARED = \
-	ptidesentities.xml
+	ptidesentities.xml \
+	DynamicCoreAssignmentSchedulerIcon.xml \
+	FPPCoreIcon.xml \
+	NPFCFSCoreIcon.xml \
+	PEDFCoreIcon.xml
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
@@ -100,6 +105,7 @@ OPTIONAL_FILES = \
 	'NetworkReceiver$$1.class' \
 	'NetworkReceiver$$PortFunction.class' \
 	'PlatformTimeMonitor$$PlatformTimePlotterEditorFactory.class' \
+	'ResourceScheduler$$ExecutionEventType.class' \
 	'ScheduleListener$$ScheduleEventType.class' \
 	'SchedulePlotter$$SchedulePlotterEditorFactory.class'
 
