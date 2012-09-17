@@ -2665,8 +2665,12 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
         _initBasicGraphFrameToolBarZoomButtons();
 
         GUIUtilities.addToolBarButton(_toolbar, _openContainerAction);
-        if (getModel() == getModel().toplevel()) {
-            // If we are at the top level, disable
+        if (getModel() == getModel().toplevel()
+                || getModel().getClass().getName().equals("ptolemy.domains.modal.modal.ModalController")) {
+            // If we are at the top level, disable.  If we are in a
+            // ModalModel, disable.  See "Up button does not work in
+            // modal models"
+            // https://chess.eecs.berkeley.edu/bugzilla/show_bug.cgi?id=323
             _openContainerAction.setEnabled(false);
         }
 
