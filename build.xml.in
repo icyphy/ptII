@@ -272,7 +272,11 @@ For example:
   </target>
 
   <target name="installers" depends="initReports,build,jars"
-	  description="Build installers by running a test.  See adm/gen-9.0/." >
+	  description="Build installers by running a test, output goes to stdout." >
+    <echo>
+     Target to be invoked by users that create installers in the adm/gen-X.Y subdirectory.
+     This target sends its output to stdout.  The test.installers target sends its output to repo
+    </echo>
     <!-- printsummary takes one of One of on, off, and withOutAndErr.  Off is the default-->
     <junit fork="yes"
 	   jvm="ptolemy/util/test/junit/javachdir"
@@ -685,6 +689,28 @@ For example:
     <cobertura-report format="xml" destdir="${coveragereport.dir}" srcdir="${basedir}" />
   </target>
 
+
+  <target name="test.installers" depends="initReports,build,jars"
+	  description="Build installers by running a test, output goes to reports/junit." >
+    <echo>
+     Target to be invoked by the nightly build that create installers in the adm/gen-X.Y subdirectory.
+     This test generates .xml files in reports/junit.  The installers target sends its output to stdout.
+    </echo>
+    <!-- printsummary takes one of One of on, off, and withOutAndErr.  Off is the default-->
+    <junit fork="yes"
+	   jvm="ptolemy/util/test/junit/javachdir"
+	   printsummary="withOutAndErr"
+	   showoutput="yes"
+	   timeout="${timeout.longest}">
+      <classpath>
+	<path refid="ptII.classpath" />
+	<pathelement location="lib/JUnitParams-0.3.0.jar"/>
+      </classpath>
+      <formatter type="${junit.formatter}" usefile="true"/>
+      <jvmarg value="-Dptolemy.ptII.dir=${basedir}" />
+      <test  name="adm.test.junit.JUnitTclTest" />
+    </junit>
+  </target>
 
   <target name="test.long"
 	  description="Run the long-running junit tests in a directory or directories.">
