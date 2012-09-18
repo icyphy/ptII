@@ -396,7 +396,7 @@ public class ExportModel {
                     OutputStream out = null;
 
                     try {
-                        if (formatName.toLowerCase().equals("htm")) {
+                        if (formatName.toLowerCase().startsWith("htm")) {
                             if (!htmlDirectory.isDirectory()) {
                                 if (!htmlDirectory.mkdirs()) {
                                     throw new Exception("Failed to create \""
