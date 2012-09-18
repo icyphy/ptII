@@ -397,6 +397,19 @@ public class ConfigurationApplication implements ExecutionListener {
 
     /** Create a new instance of this application, passing it the
      *  command-line arguments.
+     *
+     *  <p>For example to use the full configuration to open a model:</p>
+     *  <pre>
+     *  java -classpath $PTII ptolemy.actor.gui.ConfigurationApplication \
+     *     $PTII ptolemy/configs/full/configuration.xml \ 
+     *     $PTII/ptolemy/moml/demo/modulation.xml
+     *  </pre>
+     *
+     *  <p>However, it better to use {@link ptolemy.actor.gui.MoMLApplication},
+     *  which sets the native Java look and feel and uses a better error
+     *  handler, or to use {@link ptolemy.moml.MoMLSimpleApplication},
+     *  with non-graphical models. </p>
+     *
      *  @param args The command-line arguments.
      */
     public static void main(String[] args) {
