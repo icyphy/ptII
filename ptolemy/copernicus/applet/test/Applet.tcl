@@ -51,6 +51,17 @@ if {[info procs sootCodeGeneration] == "" } then {
 ####
 #
 
+# Oddly, running this test using junit needs to delete IIR.jar under Linux first.
+if {[file exists ../cg]} { 
+    puts "Deleting ../cg"
+    file delete -force ../cg
+    if {[file exists ../cg]} { 
+	puts "??? ../cg still exists after deletion???"
+    } {
+	puts "../cg successfully deleted."
+    }
+}
+
 test Applet-1.1 {Compile and run the SDF IIR test} {
     set result [sootCodeGeneration $PTII \
 		    [file join $relativePathToPTII ptolemy actor lib test auto IIR.xml] \
