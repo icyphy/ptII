@@ -471,7 +471,7 @@ export PTII=$WORKSPACE
 $WORKSPACE/adm/bin/killXServer</command>
           </hudson.tasks.Shell>
           <hudson.tasks.Ant>
-            <targets>installers</targets>
+            <targets>test.installers</targets>
             <antName>ant1.8.2</antName>
           </hudson.tasks.Ant>
         </originalValue>
