@@ -2608,7 +2608,7 @@ test_setup_XvfbStart:
 	Xvfb :8 -screen 0 1024x768x24 &
 
 test_setup_make:
-	(cd test/installerTest; chmod a+x ./configure; export DISPLAY=localhost:8.0; echo "DISPLAY=$$DISPLAY"; PTII=`pwd` ./configure; PTII=`pwd` make -k PTII=`pwd` fast install tests)
+	(cd test/installerTest; chmod a+x ./configure; export DISPLAY=localhost:8.0; echo "DISPLAY=$$DISPLAY"; PTII=`pwd` ./configure --enable-verbose; cat mk/ptII.mk; PTII=`pwd` make -k PTII=`pwd` fast install tests)
 
 test_setup_ant:
 	(cd test/installerTest; chmod a+x ./configure; export DISPLAY=localhost:8.0; echo "DISPLAY=$$DISPLAY"; PTII=`pwd` ./configure; PTII=`pwd` ant build) 
