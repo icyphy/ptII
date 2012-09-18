@@ -215,11 +215,16 @@ test StreamExec-3.0 {Test for pattern matching} {
     jdkCapture {    
 	jdkCaptureErr {
 	    $streamExec start
+	    # Sleep so that we are sure to get stderr and stdout.
+	    # Sleep is defined in $PTII/util/testsuite/testDefs.tcl
+	    # Sleep for 2 seconds, don't print dots.
+	    sleep 2 0
         } stderr
     } stdout
     # puts "StreamExec-3.0: stdout: $stdout"
     # puts "StreamExec-3.0: stderr: $stderr"
     set result [$streamExec getPatternLog]
+
     regsub -all {make\[.*]} $result {make} result2
     regsub -all {.  Stop.} $result2 {.} result3
     list $result3
