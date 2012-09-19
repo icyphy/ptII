@@ -66,6 +66,7 @@ import ptolemy.vergil.actor.KielerLayoutConnector;
 import ptolemy.vergil.actor.PortTerminal;
 import ptolemy.vergil.basic.RelativeLocatable;
 import ptolemy.vergil.kernel.Link;
+import ptolemy.vergil.kernel.RelativeLinkFigure;
 import ptolemy.vergil.modal.FSMGraphModel;
 import ptolemy.vergil.toolbox.SnapConstraint;
 
@@ -568,6 +569,35 @@ public class KielerLayout extends AbstractGlobalLayout {
                     // Regard a relation vertex as a KIELER KNode.
                     knode = _createKNodeForVertex((Vertex) node);
                     portIter = Iterators.singletonIterator(node);
+                    
+                    // DEBUG Start
+//                    System.out.println("===================");
+//                    
+//                    Vertex vertex = (Vertex) node;
+//                    Relation relation = (Relation) semanticNode;
+//                    
+//                    if (vertex.linkedPorts() != null) {
+//                        System.out.println("Vertex linked ports:");
+//                        for (Object po : vertex.linkedPorts()) {
+//                            System.out.println("   " + ((Port) po).getFullName());
+//                        }
+//                    }
+//                    
+//                    if (vertex.getLinkedVertex() != null) {
+//                        System.out.println("Vertex linked vertex:");
+//                        System.out.println("   " + vertex.getLinkedVertex().getFullName());
+//                    }
+//                    
+//                    System.out.println("Relation connected ports:");
+//                    for (Object po : relation.linkedPortList()) {
+//                        System.out.println("   " + ((Port) po).getFullName());
+//                    }
+//                    
+//                    System.out.println("Relation group members:");
+//                    for (Object ro : relation.relationGroupList()) {
+//                        System.out.println("   " + ((Relation) ro).getFullName());
+//                    }
+                    // DEBUG End
                 }
 
                 // Handle internal ports.
@@ -775,11 +805,34 @@ public class KielerLayout extends AbstractGlobalLayout {
     private KNode _createKNode(Object node, NamedObj semanticNode) {
         Rectangle2D bounds;
         if (semanticNode instanceof RelativeLocatable) {
-            // Consider only the background figure of a composite figure
-            // if the node is relative locatable, otherwise the link would also
-            // be included in the bounds.
+            // RelativeLocatables may have a dashed line to show which actor
+            // they are attached to. This line must not be part of the size
+            // calculation, so we calculate the size of the object manually
+            // without taking the line into account
             Figure figure = (Figure) getLayoutTarget().getVisualObject(node);
-            bounds = figure.getShape().getBounds2D();
+            
+            // The figure should be a composite figure, but let's be sure
+            if (figure instanceof CompositeFigure) {
+                CompositeFigure compFigure = (CompositeFigure) figure;
+                
+                bounds = new Rectangle2D.Double();
+                bounds.add(compFigure.getBackgroundFigure().getBounds());
+                
+                // Iterate over the composite figure's component, adding the
+                // bounds of each to arrive at the final bounds without dashed
+                // line (RelativeLinkFigure)
+                Iterator parts = compFigure.figures();
+                while (parts.hasNext()) {
+                    Figure part = (Figure) parts.next();
+                    
+                    if (!(part instanceof RelativeLinkFigure)) {
+                        bounds.add(part.getBounds());
+                    }
+                }
+            } else {
+                // It's not a composite figure, so use figure's bounds
+                bounds = getLayoutTarget().getBounds(node);
+            }
         } else {
             bounds = getLayoutTarget().getBounds(node);
         }
