@@ -47,7 +47,6 @@ import ptolemy.actor.Initializable;
 import ptolemy.actor.Manager;
 import ptolemy.actor.Receiver;
 import ptolemy.actor.TypedActor;
-import ptolemy.actor.TypedCompositeActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.util.BooleanDependency;
 import ptolemy.actor.util.CausalityInterface;
@@ -367,6 +366,7 @@ public class FSMActor extends CompositeEntity implements TypedActor,
         newObject._identifierToPort = new HashMap<String, Port>();
         newObject._inputTokenMap = new HashMap();
         newObject._lastChosenTransitions = new HashMap<State, Transition>();
+        newObject._lastChosenTransition = null;
         newObject._stateRefinementsToPostfire = new LinkedList<Actor>();
         newObject._transitionsPreviouslyChosenInIteration = new HashSet<Transition>();
         newObject._transitionRefinementsToPostfire = new LinkedList<Actor>();
@@ -575,6 +575,7 @@ public class FSMActor extends CompositeEntity implements TypedActor,
         // still enabled, then the same transitions will be
         // chosen again.
         _lastChosenTransitions.clear();
+        _lastChosenTransition = null;
 
         // Keep track during firing of all refinements
         // that are fired so that they can later be postfired.
@@ -592,7 +593,7 @@ public class FSMActor extends CompositeEntity implements TypedActor,
         // The last argument ensures that we look at all transitions
         // not just those that are marked immediate.
         // The following has the side effect of putting the chosen
-        // transition into the _lastChosenTransition map of the controller.
+        // transitions into the _lastChosenTransition map of the controller.
         _chooseTransitions(preemptiveTransitionList, false);
 
         // If there is an enabled preemptive transition, then we know
@@ -1037,6 +1038,7 @@ public class FSMActor extends CompositeEntity implements TypedActor,
         // we need to clear it here as well before we potentially
         // choose immediate transitions.
         _lastChosenTransitions.clear();
+        _lastChosenTransition = null;
 
         // Clear the list of refinements whose postfire() methods
         // have returned false.
@@ -1356,10 +1358,6 @@ public class FSMActor extends CompositeEntity implements TypedActor,
         // Commit transitions on the _lastChosenTransitions map.
         _commitLastChosenTransition();
         
-        //FIXME: cmot, it seems that we should also 
-        // postfire every state refinement traversed when following
-        // chains of immediate (weak) transitions
-
         // Postfire any transition refinements that were fired in fire().
         for (Actor transitionRefinement : _transitionRefinementsToPostfire) {
             if (_debugging) {
@@ -1490,8 +1488,10 @@ public class FSMActor extends CompositeEntity implements TypedActor,
      */
     public void setLastChosenTransition(Transition transition) {
         _lastChosenTransitions.clear();
+        _lastChosenTransition = null;
         if (transition != null) {
             _lastChosenTransitions.put(currentState(), transition);
+            _lastChosenTransition = transition;
         }
     }
 
@@ -1758,7 +1758,8 @@ public class FSMActor extends CompositeEntity implements TypedActor,
      *  and return it if the output actions can be evaluated.
      *  Execute the output actions contained by the returned
      *  transition before returning. Also, fire the transition
-     *  refinements, if any.
+     *  refinements, if any, and the refinements of any transient
+     *  states.
      *  <p>
      *  After calling this method, you can call foundUnknown()
      *  to determine whether any guard expressions or output value
@@ -1856,9 +1857,19 @@ public class FSMActor extends CompositeEntity implements TypedActor,
             }
             
             // cmot:
-            // If non-preemtive and immediate transition, fire source 
+            // If non-preemptive and immediate transition, fire source 
             // state refinement.
             if (!chosenTransition.isPreemptive() && chosenTransition.isImmediate()) {
+                // If the transition into the current state is a reset transition,
+                // then initialize the current state refinements. Note that this is safe to do
+                // in the fire() method because a transition cannot be unchosen later.
+                if (_lastChosenTransition != null) {
+                    BooleanToken resetToken = (BooleanToken) _lastChosenTransition.reset.getToken();
+                    if (resetToken.booleanValue()) {
+                        _initializeRefinements(currentState);
+                    }
+                }
+
                 _fireStateRefinements(currentState);
             }
 
@@ -1920,7 +1931,7 @@ public class FSMActor extends CompositeEntity implements TypedActor,
             // Commit to this transition, if it is != null.
             _lastChosenTransitions.put(currentState, chosenTransition);
         }
-
+        _lastChosenTransition = chosenTransition;
         return chosenTransition;
     }
 
@@ -1955,6 +1966,8 @@ public class FSMActor extends CompositeEntity implements TypedActor,
         // once a normal transition is taken? Maybe a fire method is called twice and that
         // would hide an immediate cycle (because visitedStates is reset for the second call). Both
         // calls and consecutive ones may happen in the same fixed point iteration.
+        // NOTE: eal, No, this seems OK to me. A repeated firing will choose at least
+        // the same transitions. The repeated firing also starts from the same _currentState.
         HashSet<State> visitedStates = new HashSet<State>();
         while (chosenTransition != null) {
             State nextState = chosenTransition.destinationState();
@@ -2050,7 +2063,6 @@ public class FSMActor extends CompositeEntity implements TypedActor,
         }
 
         // If the chosen transition is a reset transition, initialize the destination
-        // refinement. Otherwise, set the current time and index in the destination
         // refinement. Note that initializing the director will normally also have
         // the side effect of setting its time and time to match the enclosing
         // director. This is done before invoking the set actions because (1)
@@ -2059,41 +2071,18 @@ public class FSMActor extends CompositeEntity implements TypedActor,
         // the current time or index.
         BooleanToken resetToken = (BooleanToken) currentTransition.reset
                 .getToken();
-        // that where passed
-        Actor[] actors = currentTransition.destinationState().getRefinement();
-        if (actors != null) {
-            Director executiveDirector = getExecutiveDirector();
-            for (int i = 0; i < actors.length; ++i) {
-                // If this is a reset transition, then we also need to initialize
-                // the destination refinement.
-                if (resetToken.booleanValue()) {
-                    if (_debugging) {
-                        _debug(getFullName() + " initialize refinement: "
-                                + ((NamedObj) actors[i]).getName());
-                    }
-                    // NOTE: For a modal model, the executive director will normally
-                    // be an FSMDirector. Here we communicate with that director
-                    // to ensure that it reports the correct superdense time index
-                    // during initialization, which is one greater than the current
-                    // superdense index of its context. If the enclosing director
-                    // is not an FSMDirector, then the initialize() method below
-                    // will likely set the index to one less than it should be.
-                    // I don't have a solution for this, but this situation is
-                    // unlikely to arise except in very weird models, since the
-                    // standard pattern is for FSMDirector and FSMActor to work
-                    // together.
-                    if (executiveDirector instanceof FSMDirector) {
-                        try {
-                            ((FSMDirector) executiveDirector)._indexOffset = 1;
-                            actors[i].initialize();
-                        } finally {
-                            ((FSMDirector) executiveDirector)._indexOffset = 0;
-                        }
-                        _disabledRefinements.remove(actors[i]);
-                    } else {
-                        actors[i].initialize();
-                    }
-                }
+        // If the currentTransition is the last in the chain of chosen
+        // transitions and the transition is a reset transition, then
+        // initialize the destination refinement.
+        State nextState = currentTransition.destinationState();
+        // NOTE: This is too late to initialize refinements
+        // of transient states, as those have already executed!!
+        // So we only initialize if this is the last transition.
+        if (_lastChosenTransitions.get(nextState) == null) {
+            // If this is a reset transition, then we also need to initialize
+            // the destination refinement.
+            if (resetToken.booleanValue()) {
+                _initializeRefinements(nextState);
             }
         }
 
@@ -2263,6 +2252,46 @@ public class FSMActor extends CompositeEntity implements TypedActor,
      */
     protected List<Actor> _getTransitionRefinementsToPostfire() {
         return _transitionRefinementsToPostfire;
+    }
+
+    /** Initialize the refinements of the specified state.
+     *  @param state The state.
+     *  @throws IllegalActionException If initialization fails.
+     */
+    protected void _initializeRefinements(State state)
+            throws IllegalActionException {
+        Actor[] actors = state.getRefinement();
+        if (actors != null) {
+            Director executiveDirector = getExecutiveDirector();
+            for (int i = 0; i < actors.length; ++i) {
+                if (_debugging) {
+                    _debug(getFullName() + " initialize refinement: "
+                            + ((NamedObj) actors[i]).getName());
+                }
+                // NOTE: For a modal model, the executive director will normally
+                // be an FSMDirector. Here we communicate with that director
+                // to ensure that it reports the correct superdense time index
+                // during initialization, which is one greater than the current
+                // superdense index of its context. If the enclosing director
+                // is not an FSMDirector, then the initialize() method below
+                // will likely set the index to one less than it should be.
+                // I don't have a solution for this, but this situation is
+                // unlikely to arise except in very weird models, since the
+                // standard pattern is for FSMDirector and FSMActor to work
+                // together.
+                if (executiveDirector instanceof FSMDirector) {
+                    try {
+                        ((FSMDirector) executiveDirector)._indexOffset = 1;
+                        actors[i].initialize();
+                    } finally {
+                        ((FSMDirector) executiveDirector)._indexOffset = 0;
+                    }
+                    _disabledRefinements.remove(actors[i]);
+                } else {
+                    actors[i].initialize();
+                }
+            }
+        }
     }
 
     /** Return true if the channel of the port is connected to an output
@@ -2564,6 +2593,9 @@ public class FSMActor extends CompositeEntity implements TypedActor,
 
     /** A map from ports to corresponding input variables. */
     protected Map _inputTokenMap = new HashMap();
+    
+    /** The most recently chosen transition. */
+    protected Transition _lastChosenTransition;
 
     /** The last chosen transitions, by state from which these transitions emerge. */
     protected HashMap<State, Transition> _lastChosenTransitions = new HashMap<State, Transition>();
