@@ -134,20 +134,23 @@ public class LibraryAttribute extends ConfigurableAttribute {
 
         MoMLParser parser = ParserAttribute.getParser(this);
         parser.reset();
+        
+        String value = value();
 
-        NamedObj library = parser.parse(value());
+        NamedObj library = null;
+        if (!value.trim().equals("")) {
+            library = parser.parse(value);
+            if (!(library instanceof CompositeEntity)) {
+                throw new IllegalActionException(this,
+                        "Expected library to be in an instance of CompositeEntity,"
+                                + " but it is: " + library.getClass().getName());
+            }
+            // Ensure that the library is marked as a library.
+            Attribute marker = library.getAttribute("_libraryMarker");
 
-        if (!(library instanceof CompositeEntity)) {
-            throw new IllegalActionException(this,
-                    "Expected library to be in an instance of CompositeEntity,"
-                            + " but it is: " + library.getClass().getName());
-        }
-
-        // Ensure that the library is marked as a library.
-        Attribute marker = library.getAttribute("_libraryMarker");
-
-        if (marker == null) {
-            new SingletonAttribute(library, "_libraryMarker");
+            if (marker == null) {
+                new SingletonAttribute(library, "_libraryMarker");
+            }
         }
 
         return (CompositeEntity) library;

@@ -97,7 +97,6 @@ import javax.swing.filechooser.FileFilter;
 import javax.swing.tree.DefaultTreeCellRenderer;
 import javax.swing.tree.TreePath;
 
-import ptolemy.actor.CompositeActor;
 import ptolemy.actor.DesignPatternGetMoMLAction;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.IORelation;
@@ -185,8 +184,8 @@ import diva.gui.GUIUtilities;
 import diva.gui.toolbox.JCanvasPanner;
 import diva.gui.toolbox.JContextMenu;
 import diva.util.Filter;
-import diva.util.java2d.ShapeUtilities;
 import diva.util.UserObjectContainer;
+import diva.util.java2d.ShapeUtilities;
 
 ///////////////////////////////////////////////////////////////////
 //// BasicGraphFrame
@@ -2471,7 +2470,9 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
                 // The model contains a library.
                 try {
                     _topLibrary = libraryAttribute.getLibrary();
-                    gotLibrary = true;
+                    if (_topLibrary != null) {
+                        gotLibrary = true;
+                    }
                 } catch (SecurityException ex) {
                     System.out.println("Warning: failed to parse "
                             + "_library attribute (running in an applet "
