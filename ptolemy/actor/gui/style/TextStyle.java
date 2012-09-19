@@ -28,6 +28,8 @@
  */
 package ptolemy.actor.gui.style;
 
+import javax.swing.JTextArea;
+
 import ptolemy.actor.gui.PtolemyQuery;
 import ptolemy.data.IntToken;
 import ptolemy.data.expr.Parameter;
@@ -128,11 +130,17 @@ public class TextStyle extends ParameterEditorStyle {
         try {
             int heightValue = ((IntToken) height.getToken()).intValue();
             int widthValue = ((IntToken) width.getToken()).intValue();
-            query.addTextArea(name, container.getDisplayName(), defaultValue,
+            JTextArea area = query.addTextArea(name, container.getDisplayName(), defaultValue,
                     PtolemyQuery.preferredBackgroundColor(container),
                     PtolemyQuery.preferredForegroundColor(container),
                     heightValue, widthValue);
             query.attachParameter(container, name);
+            if (container.getVisibility() == Settable.NOT_EDITABLE) {
+                // If the user has selected expert mode, then they can
+                // set the editor of a NOT_EDITABLE to be a TextStyle.
+                // However, we still don't let them edit it.
+                area.setEditable(false);
+            }
         } catch (IllegalActionException e) {
             throw new InternalErrorException(e);
         }
