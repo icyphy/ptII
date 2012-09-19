@@ -441,11 +441,8 @@ public class PtolemyQuery extends Query implements QueryListener,
                             foundStyle = true;
                             _addSubmitAction(component, attribute.getName(),
                                     attribute);
-                        } else if (component instanceof JTextComponent) {
-                            component.setBackground(_background);
-                            ((JTextComponent) component).setEditable(false);
                         } else {
-                            component.setEnabled(false);
+                            adjustEditable(attribute, component);
                         }
                     }
                 } catch (IllegalActionException ex) {
@@ -504,6 +501,38 @@ public class PtolemyQuery extends Query implements QueryListener,
         } finally {
             _addingStyledEntryFor = null;
         }
+    }
+
+    /** Adjust the editability of the component depending on
+     *  whether the attribute has Settable.NOT_EDITABLE
+     *  visibility and if the _exportMode attribute is set
+     *  in the container.
+     *  @param settable The attribute to be tested
+     *  @param component The component to disabled if
+     *  the attribute has Settable.NOT_VISIBILITY and
+     *  _expertMode is not present in the container of the attribute.
+     *  @return true if the component should be editable,
+     *  false otherwise.
+     */
+    public boolean adjustEditable(Settable settable, Component component) { 
+        if (settable.getVisibility() == Settable.NOT_EDITABLE) {
+            NamedObj container = (NamedObj)settable.getContainer();
+            Attribute expertMode = container.getAttribute("_expertMode");
+            if (expertMode == null) {
+                // If the user has selected expert mode, then they can
+                // set the editor and edit the value.
+                if (component instanceof JTextComponent) {
+                    component.setBackground(_background);
+                    ((JTextComponent) component).setEditable(false);
+                } else {
+                    if (component != null) {
+                        component.setEnabled(false);
+                    }
+                }
+                return false;
+            }
+        }
+        return true;
     }
 
     /** Attach an attribute to an entry with name <i>entryName</i>,

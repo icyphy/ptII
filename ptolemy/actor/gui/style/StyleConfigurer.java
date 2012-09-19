@@ -137,7 +137,7 @@ public class StyleConfigurer extends Query implements QueryListener {
             int defaultIndex = 0;
 
             _originalExpertMode = _object.getAttribute("_expertMode") != null;
-            if (param.getVisibility() == Settable.NOT_EDITABLE && !_originalExpertMode) {
+            if (param.getVisibility() == Settable.NOT_EDITABLE && !_originalExpertMode && !foundOne) {
                 // If the parameter is set to NOT_EDITABLE visibility and not expert mode
                 // then only a fixed style is possible. 
                 styleList.add("Fixed");

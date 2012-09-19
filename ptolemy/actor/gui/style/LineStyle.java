@@ -109,9 +109,16 @@ public class LineStyle extends ParameterEditorStyle {
         String name = container.getName();
         String defaultValue = "";
         defaultValue = container.getExpression();
-        query.addLine(name, container.getDisplayName(), defaultValue,
-                PtolemyQuery.preferredBackgroundColor(container),
-                PtolemyQuery.preferredForegroundColor(container));
+        // Adjust the editability if the container is NOT_EDITABLE
+        // and _expertMode is not set.
+        if (query.adjustEditable(container, null)) {
+            query.addLine(name, container.getDisplayName(), defaultValue,
+                    PtolemyQuery.preferredBackgroundColor(container),
+                    PtolemyQuery.preferredForegroundColor(container));
+        } else {
+            // Treat this like a NotEditableLineDisplay
+            query.addDisplay(name, container.getDisplayName(), defaultValue);
+        }
         query.attachParameter(container, name);
     }
 }

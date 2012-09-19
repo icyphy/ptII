@@ -134,6 +134,9 @@ public class TextStyle extends ParameterEditorStyle {
                     PtolemyQuery.preferredBackgroundColor(container),
                     PtolemyQuery.preferredForegroundColor(container),
                     heightValue, widthValue);
+            // Adjust the editability if the container is NOT_EDITABLE
+            // and _expertMode is not set.
+            query.adjustEditable(container, area);
             query.attachParameter(container, name);
             if (container.getVisibility() == Settable.NOT_EDITABLE) {
                 // If the user has selected expert mode, then they can
