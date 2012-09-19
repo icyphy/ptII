@@ -52,7 +52,6 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
-import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.Workspace;
@@ -648,6 +647,13 @@ public class SDFDirector extends StaticSchedulingDirector implements
         // time is not a multiple of the period.
         if (_periodicDirectorHelper != null
                 && !_periodicDirectorHelper.prefire()) {
+            if (_debugging) {
+                _debug("Current time is not a multiple of the period or the microstep is 0. Returning false.\n"
+                        + "Current time: "
+                        + getModelTime()
+                        + "  Period: "
+                        + periodValue);
+            }
             return false;
         }
 
