@@ -12,7 +12,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="{-155.0, -100.0}">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 8, 920, 607}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 22, 934, 634}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 500]">
     </property>
@@ -58,13 +58,13 @@
             <property name="input"/>
         </port>
         <entity name="_Controller" class="ptolemy.domains.modal.modal.ModalController">
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={284, 148, 872, 604}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={397, 207, 886, 635}, maximized=false}">
             </property>
-            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[652, 495]">
+            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[652, 524]">
             </property>
-            <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+            <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.198404438270254">
             </property>
-            <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{287.756438442211, 213.59092336683415}">
+            <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{35.848952198756535, 228.9169921875}">
             </property>
             <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
                 <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The OuterSignal value is immediately overwritten &#10;twice, by the state B refinement and by the &#10;transition action of the immediate outgoing &#10;transition from state B to state C. &#10;So it ends up in having the value 3.&#10;&#10;Note that the modal model is still monotonic&#10;from an outside (black box) perspective. Once&#10;it commits (non strictly) to a value, this&#10;value potentially cannot be changed any more,&#10;e.g., in the context of an SR model.">
@@ -186,13 +186,13 @@
                 <property name="_location" class="ptolemy.kernel.util.Location" value="{-230.0, -110.0}">
                 </property>
             </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={101, 118, 576, 602}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={815, 137, 592, 634}, maximized=false}">
             </property>
-            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[356, 495]">
+            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[358, 524]">
             </property>
-            <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+            <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.3537370753323488">
             </property>
-            <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{113.87923994974875, 90.1368561557789}">
+            <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{-203.71874999999997, -15.121802985335194}">
             </property>
             <port name="InnerSignal" class="ptolemy.domains.modal.modal.RefinementPort">
                 <property name="output"/>
@@ -228,6 +228,16 @@
                 <property name="_location" class="ptolemy.kernel.util.Location" value="{-245.0, -20.0}">
                 </property>
             </entity>
+            <entity name="NonStrictTest" class="ptolemy.actor.lib.NonStrictTest">
+                <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{2}">
+                </property>
+                <property name="requireAllCorrectValues" class="ptolemy.actor.parameters.SharedParameter" value="true">
+                </property>
+                <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{-213.32179643854744, 80.1699655202514}">
+                </property>
+            </entity>
             <relation name="relation2" class="ptolemy.actor.TypedIORelation">
                 <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
                 </property>
@@ -239,6 +249,7 @@
             <link port="InnerSignal" relation="relation2"/>
             <link port="OuterSignal" relation="relation2"/>
             <link port="Const.output" relation="relation2"/>
+            <link port="NonStrictTest.input" relation="relation2"/>
         </entity>
         <relation name="InnerSignalRelation" class="ptolemy.actor.TypedIORelation">
             <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">

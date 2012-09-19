@@ -1,10 +1,10 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="ModalModel" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
+<entity name="ModalModelFromMemo" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.0.devel">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[596, 350]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[596, 524]">
     </property>
     <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[104, 127]">
     </property>
@@ -84,7 +84,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[235.0, 85.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={41, 114, 809, 460}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={41, 114, 830, 634}, maximized=false}">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
@@ -97,7 +97,7 @@
         <property name="_showParameters" class="ptolemy.data.expr.StringParameter" value="Overridden parameters only">
             <display name="Show parameters"/>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[480.0, 325.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[440.0, 265.0]">
         </property>
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
@@ -106,8 +106,14 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="{60, 35}">
         </property>
     </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Note: This test used to have the period parameter set to&#10;1.0/sampleRate in the SDF director inside the noisy mode.&#10;But with that parameter set, under the new modal model semantics,&#10;it will not produce outputs in that mode because the time it&#10;takes the transition to the noisy state is not a multiple of&#10;the period. Thus, when the refinement fires at multiple&#10;of the period, there will be no input data, and when it fires&#10;in response to input data, it will not be a multiple of the period&#10;(so it will refuse to fire). The fix is that the refinement should&#10;not specify a period. It should react to inputs when available.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[40.0, 340.0]">
+        </property>
+    </property>
     <entity name="Modal Model" class="ptolemy.domains.modal.modal.ModalModel">
-        <property name="_tableauFactory" class="ptolemy.vergil.fsm.modal.ModalTableauFactory">
+        <property name="_tableauFactory" class="ptolemy.vergil.modal.modal.ModalTableauFactory">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[165.0, 160.0]">
         </property>
@@ -136,7 +142,7 @@
             </property>
             <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[104, 127]">
             </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={313, 194, 813, 511}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={423, 207, 834, 635}, maximized=false}">
             </property>
             <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
             </property>
@@ -165,7 +171,7 @@
                 </property>
                 <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 </property>
-                <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
+                <property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[106.89966201782227, 62.935022354125934]">
                 </property>
@@ -175,7 +181,7 @@
                 </property>
                 <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 </property>
-                <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
+                <property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[231.89966201782227, 57.935022354125934]">
                 </property>
@@ -218,7 +224,7 @@
             </property>
             <property name="sampleRate" class="ptolemy.data.expr.Parameter" value="24000.0">
             </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={540, 435, 789, 300}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={540, 412, 810, 634}, maximized=false}">
             </property>
             <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
             </property>
@@ -232,9 +238,9 @@
                 </property>
             </property>
             <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
-               <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
-               </property>
-                <property name="period" class="ptolemy.data.expr.Parameter" value="1.0/sampleRate">
+                <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
+                </property>
+                <property name="period" class="ptolemy.data.expr.Parameter" value="0.0">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[60.0, 40.0]">
                 </property>
@@ -272,7 +278,7 @@
             </property>
             <property name="initialPhase" class="ptolemy.data.expr.Parameter" value="5462.978297177959">
             </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={92, 330, 813, 510}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={92, 330, 834, 634}, maximized=false}">
             </property>
             <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
             </property>
@@ -288,9 +294,9 @@
                 </property>
             </property>
             <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
-               <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
-               </property>
-                <property name="period" class="ptolemy.data.expr.Parameter" value="1.0/sampleRate">
+                <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
+                </property>
+                <property name="period" class="ptolemy.data.expr.Parameter" value="0.0">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[60.0, 35.0]">
                 </property>
@@ -376,8 +382,8 @@
             </property>
         </property>
         <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
-           <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
-           </property>
+            <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
+            </property>
             <property name="period" class="ptolemy.data.expr.Parameter" value="1/sampleRate">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[60.0, 40.0]">
@@ -431,7 +437,7 @@
         </property>
     </entity>
     <entity name="Test" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.0, 0.1149371504929, 0.2283508701107, 0.3387379202453, 0.4446351791849, 0.544639035015, 0.6374239897487, 0.7217602280984, 0.7965299180242, 0.8607420270039, 0.9135454576426, 0.9542403285163, 0.9822872507287, 0.9689327372287, 0.9468980969868, 1.0225158791214, 0.8252031848998, 1.042126450199, 1.0104972877291, 0.7204465784643, 0.4729648962944, 0.4153964208052, 0.5758165812072, 0.2243881818309, 0.1423475881082, 0.2868055572725, 0.1054924078712, 0.0722644304428}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.0, 0.1149371504929, 0.2283508701107, 0.3387379202453, 0.4446351791849, 0.544639035015, 0.6374239897487, 0.7217602280984, 0.7965299180242, 0.8607420270039, 0.9135454576426, 0.9542403285163, 0.9822872507287, 0.6837653033388, 0.9117176697382, 0.7065920972835, 1.2985670645419, 0.6879012089812, 1.146466373492, 0.8627978665886, 0.7792777857632, 0.8688052591314, 0.6619393401158, 0.4592817389133, 0.5120523804242, 0.4196649332929, 0.0963128702112, -0.2655959673634}">
         </property>
         <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>
