@@ -246,7 +246,13 @@ public class PeriodicDirectorHelper {
                         && _director.isEmbedded()) {
                     int index = ((SuperdenseTimeDirector) executiveDirector)
                             .getIndex();
-                    if (index != 1) {
+                    // NOTE: Normally, we expect the index to be 1 for a discrete
+                    // event, but it could be greater than 1.
+                    // E.g., if a destination mode contains a DE system with the period
+                    // parameter set to something non-zero, then it will want to fire
+                    // at the time that the transition is taken, but the microstep will
+                    // be 2, not 1, because the transition is taken in microstep 1.
+                    if (index < 1) {
                         // No need to call fireContainerAt() because
                         // presumably we already did that.
                         return false;
@@ -264,6 +270,9 @@ public class PeriodicDirectorHelper {
                 // full support for fireAt(). The enclosing director
                 // could be another periodic director. In this case,
                 // we should just increase the next firing time.
+                // Or alternatively, we might actually have been prefired
+                // at the expected firing time but refused to fire, e.g.,
+                // if there were not sufficient input tokens avaialble.
                 while (comparison < 0) {
                     _nextFiringTime = _nextFiringTime.add(periodValue);
                     comparison = _nextFiringTime.compareTo(enclosingTime);
@@ -271,12 +280,7 @@ public class PeriodicDirectorHelper {
                 if (comparison == 0) {
                     return true;
                 } else {
-                    Director executive = ((Actor) _director.getContainer())
-                            .getExecutiveDirector();
-                    if (executive != null) {
-                        executive.fireAt((Actor) _director.getContainer(),
-                                _nextFiringTime);
-                    }
+                    _fireContainerAt(_nextFiringTime);
                     return false;
                 }
                 // An alternative would be to throw an exception.
