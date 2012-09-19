@@ -784,13 +784,18 @@ public class TypedIOPort extends IOPort implements Typeable {
     }
 
     /** Check that the specified token is compatible with the
-     *  resolved type of this port.
+     *  resolved type of this port. If the resolved type is unknown,
+     *  then we have to assume unknown is acceptable (e.g. the port
+     *  is not connected to anything), so we accept any token type.
      *  @param token The token to check.
      *  @exception IllegalActionException If the specified token is
      *   either incomparable to the resolved type or higher in the
      *   type lattice.
      */
     protected void _checkType(Token token) throws IllegalActionException {
+        if (_resolvedType.equals(BaseType.UNKNOWN)) {
+            return;
+        }
         int compare = TypeLattice.compare(token.getType(), _resolvedType);
 
         if ((compare == CPO.HIGHER) || (compare == CPO.INCOMPARABLE)) {
