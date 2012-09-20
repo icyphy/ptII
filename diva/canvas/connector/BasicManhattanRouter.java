@@ -94,16 +94,25 @@ public class BasicManhattanRouter implements ManhattanRouter {
          * edges connected to relation vertices.
          */
         if (currentContext == null) {
-            return new Polyline2D.Double();
+            // Coordinates are not final, so return a direct line to avoid
+            // problems with code that expects the polyline to not be empty
+            tailPt = tailSite.getPoint();
+            headPt = headSite.getPoint();
+            
+            Polyline2D.Double polyline = new Polyline2D.Double();
+            polyline.moveTo(tailPt.getX(), tailPt.getY());
+            polyline.lineTo(headPt.getX(), headPt.getY());
+            
+            return polyline;
+        } else {
+            // Get the transformed head and tail points
+            tailPt = tailSite.getPoint(currentContext);
+            headPt = headSite.getPoint(currentContext);
         }
-
-        // Get the transformed head and tail points
-        tailPt = tailSite.getPoint(currentContext);
-        headPt = headSite.getPoint(currentContext);
         
         /* There's a problem to be dealt with here in the corner case where
          * the tail and head connection points form a line close to a diagonal.
-         * When determining the diretion in which an edge leaves one of the
+         * When determining the direction in which an edge leaves one of the
          * connection points, the specific connection point might be changed to
          * correspond to that new angle (think about where horizontal and
          * vertical edges touch relation vertices). This may result in the angle
