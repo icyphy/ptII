@@ -83,21 +83,27 @@ public class BasicManhattanRouter implements ManhattanRouter {
         Site tailSite = c.getTailSite();
         Point2D headPt;
         Point2D tailPt;
-
-        // Get the transformed head and tail points. Sometimes
-        // people will call this before the connector is added
-        // to a container, so deal with it
-        if (currentContext != null) {
-            tailPt = tailSite.getPoint(currentContext);
-            headPt = headSite.getPoint(currentContext);
-        } else {
-            tailPt = tailSite.getPoint();
-            headPt = headSite.getPoint();
+        
+        /* Sometimes people will call this method before the connector is
+         * even added to a container. If that's the case, we don't know
+         * the final coordinates of the head and tail points yet, which
+         * makes all of the work below useless. In particular, the code
+         * below would calculate wrong directions from which the connector
+         * approaches the head and tail points, which the next call would
+         * base its calculations on. This leads to strange quirks with
+         * edges connected to relation vertices.
+         */
+        if (currentContext == null) {
+            return new Polyline2D.Double();
         }
+
+        // Get the transformed head and tail points
+        tailPt = tailSite.getPoint(currentContext);
+        headPt = headSite.getPoint(currentContext);
         
         /* There's a problem to be dealt with here in the corner case where
          * the tail and head connection points form a line close to a diagonal.
-         * When determining the diretion in which an edge leaves on of the
+         * When determining the diretion in which an edge leaves one of the
          * connection points, the specific connection point might be changed to
          * correspond to that new angle (think about where horizontal and
          * vertical edges touch relation vertices). This may result in the angle
@@ -123,12 +129,7 @@ public class BasicManhattanRouter implements ManhattanRouter {
                 true,
                 headSite.hasNormal() ? CanvasUtilities.getDirection(headSite.getNormal()) : -1);
         headSite.setNormal(CanvasUtilities.getNormal(headDir));
-
-        if (currentContext != null) {
-            headPt = headSite.getPoint(currentContext);
-        } else {
-            headPt = headSite.getPoint();
-        }
+        headPt = headSite.getPoint(currentContext);
 
         // Infer direction in which the edge has to leave the tail
         // connection point
@@ -138,12 +139,7 @@ public class BasicManhattanRouter implements ManhattanRouter {
                 false,
                 tailSite.hasNormal() ? CanvasUtilities.getDirection(tailSite.getNormal()) : -1);
         tailSite.setNormal(CanvasUtilities.getNormal(tailDir));
-
-        if (currentContext != null) {
-            tailPt = tailSite.getPoint(currentContext);
-        } else {
-            tailPt = tailSite.getPoint();
-        }
+        tailPt = tailSite.getPoint(currentContext);
 
         // The site may not allow it's normal to be changed.  In
         // which case, we have to ask it for its site again.
@@ -344,55 +340,6 @@ public class BasicManhattanRouter implements ManhattanRouter {
         //System.out.println("route = " + route);
         return route;
     }
-
-    /** Return the direction between two points who differ by the
-     *  given amounts.  The direction returned is restricted to the
-     *  closest orthogonal direction.  The integer returned is from
-     *  SwingUtilities.
-     *  
-     *  <p>NOTE: This code is currently not used and replaced by an
-     *  implementation based on the edge angle.
-     *  @param xDiff difference between connection point x coordinates.
-     *  @param yDiff difference between connection point y coordinates.
-     *  @param head {@code true} if we're computing the direction of the
-     *         head connection point, {@code false} for the tail connection
-     *         point.
-     *  @return one of the constants in {@code SwingConstants} describing
-     *          the direction from which the edge should approach the
-     *          specified connection point. 
-     */
-    private int _getManhattanDirection(double xDiff, double yDiff, boolean head) {
-        int dir;
-
-        if ((xDiff > 0) && (yDiff > 0)) {
-            if (xDiff > yDiff) {
-                dir = SwingConstants.EAST;
-            } else {
-                dir = SwingConstants.SOUTH;
-            }
-        } else if ((xDiff < 0) && (yDiff < 0)) {
-            if (xDiff > yDiff) {
-                dir = SwingConstants.NORTH;
-            } else {
-                dir = SwingConstants.WEST;
-            }
-        } else if (xDiff > 0) {
-            if (xDiff > -yDiff) {
-                dir = SwingConstants.EAST;
-            } else {
-                dir = SwingConstants.NORTH;
-            }
-        } else {
-            if (-xDiff > yDiff) {
-                dir = SwingConstants.WEST;
-            } else {
-                dir = SwingConstants.SOUTH;
-            }
-        }
-
-        return head ? CanvasUtilities.reverseDirection(dir) : dir;
-    }
-
 
     /** Return the direction of a line with the given angle to the x axis,
      *  given in radians. If no previous direction has been computed, the
