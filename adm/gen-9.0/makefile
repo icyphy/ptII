@@ -254,7 +254,8 @@ clean:	full_clean_setup
 	rm -rf $(PTIIDIST) src installshield/*
 	rm -rf $(HYVISUAL_SRC_JAR)
 	rm -rf $(VIPTOS_SRC_JAR)
-	rm -rf $(PTSETUP).jar $(PTSETUP).exe test/installerTest test/ptII$(VERSION)
+	rm -rf $(PTSETUP)_64.xml $(PTSETUP).jar $(PTSETUP).exe test/installerTest test/ptII$(VERSION)
+	rm -rf $(PTSETUP_MAC).xml $(PTSETUP_MAC).jar $(PTSETUP_MAC).app $(PTSETUP_MAC).dmg
 
 FINDCLEAN = $(GENDIR)/findclean
 
@@ -1116,6 +1117,13 @@ hudson:
 	PTIIADM=/var/lib/hudson/jobs/ptII/workspace/adm \
 	JAR=/usr/bin/jar \
 	clean all jnlp src.jar setup test_setup update_andrews updateDOPCenterImage
+
+hudson_notest: 
+	$(MAKE) -k USER=hudson \
+	PTIIHOME=/var/lib/hudson/jobs/ptII/workspace \
+	PTIIADM=/var/lib/hudson/jobs/ptII/workspace/adm \
+	JAR=/usr/bin/jar \
+	clean all jnlp src.jar setup update_andrews
 
 hudson_start: 
 	$(MAKE) -k USER=hudson \
@@ -2608,6 +2616,11 @@ test_setup_XvfbStart:
 	Xvfb :8 -screen 0 1024x768x24 &
 
 test_setup_make:
+	@echo "#"
+	@echo "# Now configuring and running make" 
+	@echo "#"
+	@echo "$@ `date`"
+	@echo "`uptime`"
 	(cd test/installerTest; chmod a+x ./configure; export DISPLAY=localhost:8.0; echo "DISPLAY=$$DISPLAY"; PTII=`pwd` ./configure --enable-verbose; cat mk/ptII.mk; PTII=`pwd` make -k PTII=`pwd` fast install tests)
 
 test_setup_ant:
@@ -2616,6 +2629,11 @@ test_setup_ant:
 test_setup_end: test_setup_XvfbStop
 
 test_setup_XvfbStop:
+	@echo "#"
+	@echo "# Now stopping Xvfb"
+	@echo "#"
+	@echo "$@ `date`"
+	@echo "`uptime`"
 	-pkill Xvfb
 	-pkill -9 Xvfb
 	rm -f /tmp/.X8-lock
