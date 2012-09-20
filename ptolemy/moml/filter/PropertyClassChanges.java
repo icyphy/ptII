@@ -630,5 +630,14 @@ public class PropertyClassChanges extends MoMLFilterSimple {
                 "ptolemy.kernel.util.StringAttribute");
         _actorsWithPropertyClassChanges.put(
                 "ptolemy.vergil.basic.DocAttribute", DocAttributeClassChanges);
+        
+        // Repeat actor
+        // Change its numberOfTimes from Parameter to be PortParameter.
+        HashMap RepeatAttributeClassChanges = new HashMap();
+        RepeatAttributeClassChanges.put("numberOfTimes",
+                "ptolemy.actor.parameters.PortParameter");
+        _actorsWithPropertyClassChanges.put(
+                "ptolemy.domains.sdf.lib.Repeat", RepeatAttributeClassChanges);
+        
     }
 }
