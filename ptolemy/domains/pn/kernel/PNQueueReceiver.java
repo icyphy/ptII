@@ -31,6 +31,8 @@ package ptolemy.domains.pn.kernel;
 import ptolemy.actor.Actor;
 import ptolemy.actor.Director;
 import ptolemy.actor.IOPort;
+import ptolemy.actor.Manager;
+import ptolemy.actor.NoRoomException;
 import ptolemy.actor.QueueReceiver;
 import ptolemy.actor.process.BoundaryDetector;
 import ptolemy.actor.process.ProcessReceiver;
@@ -38,6 +40,7 @@ import ptolemy.actor.process.TerminateProcessException;
 import ptolemy.data.Token;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InvalidStateException;
+import ptolemy.kernel.util.Nameable;
 import ptolemy.kernel.util.Workspace;
 
 ///////////////////////////////////////////////////////////////////
@@ -379,8 +382,10 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
      *  on a read from this receiver. If a process is indeed blocked, then
      *  unblock the process, and inform the director of the same.
      *  @param token The token to be put in the receiver, or null to not put anything.
+     *  @throws NoRoomException If during initialization, capacity cannot be increased
+     *   enough to accomodate initial tokens.
      */
-    public void put(Token token) {
+    public void put(Token token) throws NoRoomException {
         IOPort port = getContainer();
         if (port == null || token == null) {
             return; // Nothing to do.
@@ -398,6 +403,25 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
                     // notification has occurred.
                     if (_terminate) {
                         break;
+                    }
+                    // If we are in the initialization phase, then we may have
+                    // to increase the queue capacity before proceeding. This
+                    // may be needed to support PublisherPorts that produce
+                    // initial tokens (or, I suppose, any actor that produces
+                    // initial tokens during initialize()?).
+                    if (!super.hasRoom()) {
+                        Nameable container = getContainer().getContainer();
+                        if (container instanceof Actor) {
+                            Manager manager = ((Actor) container).getManager();
+                            if (manager.getState().equals(Manager.INITIALIZING)) {
+                                try {
+                                    _queue.setCapacity(_queue.getCapacity() + 1);
+                                } catch (IllegalActionException e) {
+                                    throw new NoRoomException(getContainer(),
+                                            "Failed to increase queue capacity enough to accomodate initial tokens");
+                                }
+                            }
+                        }
                     }
                     // Try to write.
                     if (super.hasRoom()) {
