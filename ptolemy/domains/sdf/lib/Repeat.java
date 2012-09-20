@@ -27,6 +27,7 @@
  */
 package ptolemy.domains.sdf.lib;
 
+import ptolemy.actor.parameters.PortParameter;
 import ptolemy.data.IntToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
@@ -68,7 +69,7 @@ public class Repeat extends SDFTransformer {
         super(container, name);
 
         // parameters
-        numberOfTimes = new Parameter(this, "numberOfTimes", new IntToken(2));
+        numberOfTimes = new PortParameter(this, "numberOfTimes", new IntToken(2));
         numberOfTimes.setTypeEquals(BaseType.INT);
 
         blockSize = new Parameter(this, "blockSize", new IntToken(1));
@@ -84,7 +85,7 @@ public class Repeat extends SDFTransformer {
     /** The repetition factor.  It is of type integer and has a default
      *  value of 2.  It must be greater than zero.
      */
-    public Parameter numberOfTimes;
+    public PortParameter numberOfTimes;
 
     /** The number of tokens in a block.  It is of type integer and has a
      *  default value of 1.  It must be greater than zero.
@@ -101,6 +102,7 @@ public class Repeat extends SDFTransformer {
      */
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
+    	
         if ((attribute == numberOfTimes) || (attribute == blockSize)) {
             int repetitions = ((IntToken) numberOfTimes.getToken()).intValue();
             int count = ((IntToken) blockSize.getToken()).intValue();
@@ -134,6 +136,7 @@ public class Repeat extends SDFTransformer {
     public void fire() throws IllegalActionException {
         super.fire();
 
+        numberOfTimes.update();
         int repetitions = ((IntToken) numberOfTimes.getToken()).intValue();
         int count = ((IntToken) blockSize.getToken()).intValue();
         Token[] inputBlock = input.get(0, count);
