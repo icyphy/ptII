@@ -95,7 +95,7 @@ import ptolemy.kernel.util.NamedObj;
  */
 public class PublisherPort extends PubSubPort {
 
-    /** Construct publisher port with the specified name and container.
+    /** Construct a publisher port with the specified name and container.
      *  @param container The container actor.
      *  @param name The name of the port.
      *  @exception IllegalActionException If the port is not of an acceptable
@@ -347,6 +347,7 @@ public class PublisherPort extends PubSubPort {
 
     /** If {@link #initialTokens} has been set, then produce the
      *  outputs specified by its array value.
+     *  @throws IllegalActionException If initialTokens is invalid.
      */
     @Override
     public void initialize() throws IllegalActionException {

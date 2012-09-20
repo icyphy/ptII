@@ -1,0 +1,148 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="ConstantPublisherPort4" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.0.devel">
+    </property>
+    <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
+        <property name="iterations" class="ptolemy.data.expr.Parameter" value="5">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{90, 40}">
+        </property>
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={66, 124, 934, 634}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 524]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.953125">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{139.79379611545122, 129.37315538194466}">
+    </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This tests PublisherPort in an opaque composite actor,&#10;and a SubscriberPort in an transparent composite actor.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[35.0, 280.0]">
+        </property>
+    </property>
+    <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Both composites&#10;are transparent.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[170.0, 70.0]">
+        </property>
+    </property>
+    <entity name="A" class="ptolemy.actor.TypedCompositeActor">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[80.0, 110.0]">
+        </property>
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={550, 192, 934, 634}, maximized=false}">
+        </property>
+        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 524]">
+        </property>
+        <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.4361621132099667">
+        </property>
+        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{284.705078125, 293.3251897321428}">
+        </property>
+        <port name="SubscriberPort" class="ptolemy.actor.SubscriberPort">
+            <property name="input"/>
+            <property name="channel" class="ptolemy.data.expr.StringParameter" value="bar">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 235.0]">
+            </property>
+        </port>
+        <port name="ConstantPublisherPort" class="ptolemy.actor.ConstantPublisherPort">
+            <property name="output"/>
+            <property name="constantValue" class="ptolemy.data.expr.Parameter" value="-1">
+            </property>
+            <property name="channel" class="ptolemy.data.expr.StringParameter" value="foo">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[415.0, 225.0]">
+            </property>
+        </port>
+        <entity name="Ramp" class="ptolemy.actor.lib.Ramp">
+            <property name="step" class="ptolemy.actor.parameters.PortParameter" value="1">
+            </property>
+            <doc>Create a sequence of tokens with increasing value</doc>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[260.0, 225.0]">
+            </property>
+        </entity>
+        <entity name="Test" class="ptolemy.actor.lib.Test">
+            <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0, 2, 1, 1, 1}">
+            </property>
+            <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{192.0971484375, 299.5918917410714}">
+            </property>
+        </entity>
+        <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation" class="ptolemy.actor.TypedIORelation">
+            <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+            </property>
+            <vertex name="vertex1" value="[140.0, 235.0]">
+            </vertex>
+        </relation>
+        <link port="SubscriberPort" relation="relation"/>
+        <link port="ConstantPublisherPort" relation="relation3"/>
+        <link port="Ramp.output" relation="relation3"/>
+        <link port="Ramp.step" relation="relation"/>
+        <link port="Test.input" relation="relation"/>
+    </entity>
+    <entity name="B" class="ptolemy.actor.TypedCompositeActor">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{80.0, 180.0}">
+        </property>
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={341, 412, 934, 634}, maximized=false}">
+        </property>
+        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 524]">
+        </property>
+        <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+        </property>
+        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{350.0, 262.0}">
+        </property>
+        <port name="SubscriberPort" class="ptolemy.actor.SubscriberPort">
+            <property name="input"/>
+            <property name="channel" class="ptolemy.data.expr.StringParameter" value="foo">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[85.0, 190.0]">
+            </property>
+        </port>
+        <port name="PublisherPort" class="ptolemy.actor.PublisherPort">
+            <property name="output"/>
+            <property name="channel" class="ptolemy.data.expr.StringParameter" value="bar">
+            </property>
+            <property name="initialTokens" class="ptolemy.actor.PubSubPort$1" value="{0, 2}">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[415.0, 190.0]">
+            </property>
+        </port>
+        <entity name="Test" class="ptolemy.actor.lib.Test">
+            <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{-1, -1, -1, -1, -1}">
+            </property>
+            <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[200.0, 190.0]">
+            </property>
+        </entity>
+        <entity name="Const" class="ptolemy.actor.lib.Const">
+            <doc>Create a constant sequence.</doc>
+            <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+                </property>
+                <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+                </property>
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[315.0, 190.0]">
+            </property>
+        </entity>
+        <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <link port="SubscriberPort" relation="relation"/>
+        <link port="PublisherPort" relation="relation3"/>
+        <link port="Test.input" relation="relation"/>
+        <link port="Test.output" relation="relation2"/>
+        <link port="Const.output" relation="relation3"/>
+        <link port="Const.trigger" relation="relation2"/>
+    </entity>
+</entity>

@@ -924,7 +924,7 @@ public class IOPort extends ComponentPort {
         if (token == null) {
             throw new NoTokenException(this, "No token to return.");
         }
-
+        
         if (_debugging) {
             _debug("get from channel " + channelIndex + ": " + token);
         }
@@ -1019,7 +1019,7 @@ public class IOPort extends ComponentPort {
             _debug("get vector from channel " + channelIndex + " of length "
                     + vectorLength);
         }
-
+        
         return retArray;
     }
 
@@ -1746,85 +1746,11 @@ public class IOPort extends ComponentPort {
         return _getWidth(createReceivers);
     }
 
-    /** Return the width of the port.  The width is the sum of the
-     *  widths of the relations that the port is linked to (on the outside).
-     *  Note that this method cannot be used to determine whether a port
-     *  is connected (deeply) to another port that can either supply it with
-     *  data or consume data it produces.  The correct methods to use to
-     *  determine that are numberOfSinks() and numberOfSources().
-     *  This method is read-synchronized on the workspace.
-     *  This method will trigger the width inference algorithm if necessary.
-     *  @param createReceivers True if {@link #getReceivers()} should be called
-     *  if the cached width of the port is not the same as the sum of the width
-     *  of the linked relations.
-     *  @return The width of the port.
-     *  @exception IllegalActionException
-     *  @see #numberOfSinks()
-     *  @see #numberOfSources()
-     */
-    private int _getWidth(boolean createReceivers)
-            throws IllegalActionException {
-        try {
-            _workspace.getReadAccess();
-
-            long version = _workspace.getVersion();
-
-            if (_widthVersion != version) {
-
-                // If this is not a multiport, the width is always zero or one.
-                int sum = 0;
-                Iterator<?> relations = linkedRelationList().iterator();
-
-                while (relations.hasNext()) {
-                    IORelation relation = (IORelation) relations.next();
-
-                    // A null link (supported since indexed links) might
-                    // yield a null relation here. EAL 7/19/00.
-                    if (relation != null) {
-
-                        // Calling getWidth on a relation for which the width has to be
-                        // inferred will trigger the width inference algorithm here.
-                        sum += relation.getWidth();
-                    }
-                }
-
-                if (!isMultiport()) {
-                    if (sum > 0) {
-                        _width = 1;
-                    } else {
-                        _width = 0;
-                    }
-                } else {
-                    if (_width != sum) {
-                        // Need to re-create receivers for Pub/Sub in Opaques
-                        // See getWidthInside() for a similar piece of code.
-                        // Need to check to see if there is a director, otherwise
-                        // _description will fail on MaximumEntropySpectrum, see
-                        // ptolemy/domains/sdf/lib/test/MaximumEntropySpectrum.tcl
-                        if (createReceivers
-                                && isOpaque()
-                                && ((Actor) getContainer()).getDirector() != null) {
-                            // FIXME: maybe we should only call createReceivers()
-                            // if the sum is less than the _width (see below).
-                            createReceivers();
-                        }
-                        _width = sum;
-                    }
-                }
-                _widthVersion = version;
-            }
-
-            return _width;
-        } finally {
-            _workspace.doneReading();
-        }
-    }
-
     /** Get the width from the constraints put on the width
-     *  of this port if the width is fully determined yet.
+     *  of this port if the width is fully determined.
      *  If it is not possible to determine the width yet
      *  (for example because dependent relations also don't have
-     *  there width inferred), -1 is returned
+     *  their width inferred), -1 is returned
      *  @return The width.
      */
     public int getWidthFromConstraints() {
@@ -4355,8 +4281,23 @@ public class IOPort extends ComponentPort {
                 listener.portEvent(event);
             }
         }
-    } 
+    }
     
+    /** Set a constant token so that every call to {@link #get(int)}
+     *  or {@link #get(int,int)} replaces the returned token(s) with
+     *  this specified token. This is a rather specialized piece
+     *  of functionality added to be able to support
+     *  {@link ConstantPublisherPort}.
+     *  @param token The token to return instead of received tokens,
+     *   or null to cancel this functionality.
+     *  @param limit If a non-negative number is given here, then
+     *   limit the number of constant tokens provided.
+     */
+    protected void _setConstant(Token token, int limit) {
+        _constantToken = token;
+        _constantLimit = limit;
+        _constantTokensSent = 0;
+    }
 
     /** If this port has parameters whose values are tokens that contain
      *  an object implementing {@link QuantityManager}, then wrap the
@@ -4434,6 +4375,23 @@ public class IOPort extends ComponentPort {
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
+
+    /** The limit of the number of constant values to return instead 
+     * of the received tokens. This is protected so that AbstractReceiver
+     * can access it.
+     */
+    protected int _constantLimit = -1;
+
+    /** The constant value to return instead of the received tokens.
+     *  This is protected so that AbstractReceiver can access it.
+     */
+    protected Token _constantToken;
+    
+    /** The number of constant tokens that have been sent since the last
+     *  call to _setConstant(). This is protected so that AbstractReceiver
+     * can access it.
+     */
+    protected int _constantTokensSent = 0;
 
     /** Flag that is true if there are port event listeners. */
     protected boolean _hasPortEventListeners = false;
@@ -4691,6 +4649,80 @@ public class IOPort extends ComponentPort {
         }
     }
 
+    /** Return the width of the port.  The width is the sum of the
+     *  widths of the relations that the port is linked to (on the outside).
+     *  Note that this method cannot be used to determine whether a port
+     *  is connected (deeply) to another port that can either supply it with
+     *  data or consume data it produces.  The correct methods to use to
+     *  determine that are numberOfSinks() and numberOfSources().
+     *  This method is read-synchronized on the workspace.
+     *  This method will trigger the width inference algorithm if necessary.
+     *  @param createReceivers True if {@link #getReceivers()} should be called
+     *  if the cached width of the port is not the same as the sum of the width
+     *  of the linked relations.
+     *  @return The width of the port.
+     *  @exception IllegalActionException
+     *  @see #numberOfSinks()
+     *  @see #numberOfSources()
+     */
+    private int _getWidth(boolean createReceivers)
+            throws IllegalActionException {
+        try {
+            _workspace.getReadAccess();
+
+            long version = _workspace.getVersion();
+
+            if (_widthVersion != version) {
+
+                // If this is not a multiport, the width is always zero or one.
+                int sum = 0;
+                Iterator<?> relations = linkedRelationList().iterator();
+
+                while (relations.hasNext()) {
+                    IORelation relation = (IORelation) relations.next();
+
+                    // A null link (supported since indexed links) might
+                    // yield a null relation here. EAL 7/19/00.
+                    if (relation != null) {
+
+                        // Calling getWidth on a relation for which the width has to be
+                        // inferred will trigger the width inference algorithm here.
+                        sum += relation.getWidth();
+                    }
+                }
+
+                if (!isMultiport()) {
+                    if (sum > 0) {
+                        _width = 1;
+                    } else {
+                        _width = 0;
+                    }
+                } else {
+                    if (_width != sum) {
+                        // Need to re-create receivers for Pub/Sub in Opaques
+                        // See getWidthInside() for a similar piece of code.
+                        // Need to check to see if there is a director, otherwise
+                        // _description will fail on MaximumEntropySpectrum, see
+                        // ptolemy/domains/sdf/lib/test/MaximumEntropySpectrum.tcl
+                        if (createReceivers
+                                && isOpaque()
+                                && ((Actor) getContainer()).getDirector() != null) {
+                            // FIXME: maybe we should only call createReceivers()
+                            // if the sum is less than the _width (see below).
+                            createReceivers();
+                        }
+                        _width = sum;
+                    }
+                }
+                _widthVersion = version;
+            }
+
+            return _width;
+        } finally {
+            _workspace.doneReading();
+        }
+    }
+
     // Invalidate schedule and type resolution and width inference of the director
     // of the container, if there is one.
     private void _invalidate() {
@@ -4720,7 +4752,7 @@ public class IOPort extends ComponentPort {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
+    
     /** The default width. In case there is no unique solution for a relation
      *  connected to this port the default width will be used.
      */

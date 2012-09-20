@@ -78,6 +78,7 @@ JSRCS = \
 	CausalityMarker.java \
 	CustomRenderedPort.java \
 	CompositeActor.java \
+	ConstantPublisherPort.java \
 	DesignPatternGetMoMLAction.java \
 	Director.java \
 	DoNothingDirector.java \

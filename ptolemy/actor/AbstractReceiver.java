@@ -303,6 +303,17 @@ public abstract class AbstractReceiver implements Receiver {
     /** Put a sequence of tokens to all receivers in the specified array.
      *  Implementers will assume that all such receivers
      *  are of the same class.
+     *  This method simply calls {@link #putArray(Token[], int)}
+     *  on each receiver in the specified array, after appropriate
+     *  type conversion. It also implements the functionality of
+     *  ConstantPublisherPort in that it will replace the specified
+     *  token with a constant value if the destination is marked to
+     *  receive a constant value, and it will drop the token
+     *  altogether if the destination has already received all the
+     *  constant tokens it expects to receive.
+     *  Note that subclasses that override this method will also
+     *  have to implement this if they wish to support
+     *  ConstantPublisherPort.
      *  @param tokens The sequence of token to put.
      *  @param numberOfTokens The number of tokens to put (the array might
      *   be longer).
@@ -322,13 +333,40 @@ public abstract class AbstractReceiver implements Receiver {
         }
 
         for (int j = 0; j < receivers.length; j++) {
-            receivers[j].putArray(tokens, numberOfTokens);
+            IOPort container = receivers[j].getContainer();
+            // For each receiver, check to see whether the destination port
+            // is marked to receive constant data from a ConstantPublisherPort,
+            // and whether it has already received as many tokens as it expects.
+            if (container != null && container._constantToken != null) {
+                for (int i = 0; i < numberOfTokens; i++) {
+                    if (container._constantLimit >= 0 
+                            && container._constantTokensSent >= container._constantLimit) {
+                        // Do not put the token. The finite number has been reached.
+                        break;
+                    } else {
+                        receivers[j].put(container.convert(container._constantToken));
+                        container._constantTokensSent++;
+                    }
+                }
+            } else {
+                // The following will do the conversion.
+                receivers[j].putArray(tokens, numberOfTokens);
+            }
         }
     }
 
     /** Put to all receivers in the specified array.
      *  This method simply calls {@link #put(Token)}
-     *  on each receiver in the specified array.
+     *  on each receiver in the specified array, after appropriate
+     *  type conversion. It also implements the functionality of
+     *  ConstantPublisherPort in that it will replace the specified
+     *  token with a constant value if the destination is marked to
+     *  receive a constant value, and it will drop the token
+     *  altogether if the destination has already received all the
+     *  constant tokens it expects to receive.
+     *  Note that subclasses that override this method will also
+     *  have to implement this if they wish to support
+     *  ConstantPublisherPort.
      *  @param token The token to put, or null to put no token.
      *  @param receivers The receivers.
      *  @exception NoRoomException If there is no room for the token.
@@ -339,12 +377,25 @@ public abstract class AbstractReceiver implements Receiver {
             throws NoRoomException, IllegalActionException {
         for (int j = 0; j < receivers.length; j++) {
             IOPort container = receivers[j].getContainer();
-
-            // If there is no container, then perform no conversion.
-            if (container == null || token == null) {
-                receivers[j].put(token);
+            // For each receiver, check to see whether the destination port
+            // is marked to receive constant data from a ConstantPublisherPort,
+            // and whether it has already received as many tokens as it expects.
+            if (container != null && container._constantToken != null) {
+                if (container._constantLimit >= 0 
+                        && container._constantTokensSent >= container._constantLimit) {
+                    // Do not put the token. The finite number has been reached.
+                    continue;
+                } else {
+                    receivers[j].put(container.convert(container._constantToken));
+                    container._constantTokensSent++;
+                }
             } else {
-                receivers[j].put(container.convert(token));
+                // If there is no container, then perform no conversion.
+                if (container == null || token == null) {
+                    receivers[j].put(token);
+                } else {
+                    receivers[j].put(container.convert(token));
+                }
             }
         }
     }

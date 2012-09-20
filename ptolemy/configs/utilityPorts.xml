@@ -8,6 +8,7 @@
   <doc>Parameters</doc>
 <input source="ptolemy/configs/utilityPortParameter.xml"/>
 <port name="PublisherPort" class="ptolemy.actor.PublisherPort"/>
+<port name="ConstantPublisherPort" class="ptolemy.actor.ConstantPublisherPort"/>
 <port name="SubscriberPort" class="ptolemy.actor.SubscriberPort"/>
 <port name="SubscriptionAggregatorPort" class="ptolemy.actor.SubscriptionAggregatorPort"/>
       </group>

@@ -27,12 +27,15 @@
 package ptolemy.actor;
 
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
 import ptolemy.actor.util.DFUtilities;
 import ptolemy.data.ArrayToken;
 import ptolemy.data.BooleanToken;
+import ptolemy.data.IntToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.StringParameter;
 import ptolemy.data.expr.Variable;
@@ -235,8 +238,45 @@ public class SubscriberPort extends PubSubPort {
     public void initialize() throws IllegalActionException {
         if (((InstantiableNamedObj)getContainer()).isWithinClassDefinition()) {
             // Don't initialize Class Definitions.
+            // FIXME: Probably shouldn't even be a registered Initializable.
             // See $PTII/ptolemy/actor/lib/test/auto/PublisherToplevelSubscriberPortAOC.xml 
             return;
+        }
+        // If the publisher port is not opaque and is an instance of
+        // ConstantPublisherPort, then we have some work to do. If
+        // this port is opaque, we set it to return a constant value
+        // provided by the ConstantPublisherPort. If not, then we have
+        // set the inside destination ports to return constant values.
+        if (_publisherPort instanceof ConstantPublisherPort) {
+            Token constantToken = ((ConstantPublisherPort)_publisherPort).constantValue.getToken();
+            Token limitToken = ((ConstantPublisherPort)_publisherPort).numberOfTokens.getToken();
+            int limit = ((IntToken)limitToken).intValue();
+            if (isOpaque()) {
+                _setConstant(constantToken, limit);
+            } else {
+                // NOTE: insideSinkPortList() doesn't work here if the
+                // port is transparent. The returned list is empty,
+                // unfortunately, so we have duplicate that functionality
+                // here.
+                Director dir = ((Actor)getContainer()).getDirector();
+                int depthOfDirector = dir.depthInHierarchy();
+                LinkedList<IOPort> insidePorts = new LinkedList<IOPort>();
+                Iterator<?> ports = deepInsidePortList().iterator();
+
+                while (ports.hasNext()) {
+                    IOPort port = (IOPort) ports.next();
+                    int depth = port.getContainer().depthInHierarchy();
+
+                    if (port.isInput() && (depth >= depthOfDirector)) {
+                        insidePorts.addLast(port);
+                    } else if (port.isOutput() && (depth < depthOfDirector)) {
+                        insidePorts.addLast(port);
+                    }
+                }
+                for (IOPort insidePort : insidePorts) {
+                    insidePort._setConstant(constantToken, limit);
+                }
+            }
         }
  
         Token initialOutputsValue = initialTokens.getToken();
@@ -382,6 +422,7 @@ public class SubscriberPort extends PubSubPort {
                     if (!publisherPort.isOpaque()) {
                         length += DFUtilities.getTokenInitProduction(publisherPort);
                     }
+                    _publisherPort = publisherPort;
                          
                     if (length > 0) {
                         if (isOpaque()) {
@@ -443,6 +484,9 @@ public class SubscriberPort extends PubSubPort {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
+    /** The associated publisherPort, found during preinitialize(). */
+    private IOPort _publisherPort;
+    
     /** Set of ports whose tokenInitConsumption variable has been set
      *  in preinitialize to something other than 0. This is needed so
      *  that these variables can be unset if the hierarchy changes.
