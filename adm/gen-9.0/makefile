@@ -255,7 +255,7 @@ clean:	full_clean_setup
 	rm -rf $(HYVISUAL_SRC_JAR)
 	rm -rf $(VIPTOS_SRC_JAR)
 	rm -rf $(PTSETUP)_64.xml $(PTSETUP).jar $(PTSETUP).exe test/installerTest test/ptII$(VERSION)
-	rm -rf $(PTSETUP_MAC).xml $(PTSETUP_MAC).jar $(PTSETUP_MAC).app $(PTSETUP_MAC).dmg
+	rm -rf $(PTSETUP_MAC).xml $(PTSETUP_MAC).jar $(PTSETUP_MAC).app $(PTSETUP_MAC).dmg $(PTSETUP_MAC).app.tar.gz
 
 FINDCLEAN = $(GENDIR)/findclean
 
@@ -2584,7 +2584,7 @@ jre:
 		echo "JRE Directory" > jre/README.txt; \
 	fi
 
-setup: $(PTSETUP).exe $(PTSETUP)_64.exe
+setup: $(PTSETUP).exe $(PTSETUP)_64.exe $(PTSETUP_MAC).app.tar.gz
 
 clean_setup: 
 	rm -f $(PTSETUP).jar $(PTSETUP).exe
