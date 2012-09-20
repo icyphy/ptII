@@ -365,20 +365,18 @@ public class KielerLayout extends AbstractGlobalLayout {
             }
         }
 
-        if (parentNode.getData(KShapeLayout.class).getProperty(Parameters.ROUTE_EDGES)) {
-            GraphModel graphModel = getLayoutTarget().getGraphModel(); 
-            if (graphModel instanceof ActorGraphModel) {
-                // apply edge layout - bend points with layout hints
-                for (Pair<KEdge, Link> entry : _edgeList) {
-                    _applyEdgeLayoutBendPointAnnotation(entry.getFirst(),
-                            entry.getSecond(), layoutRequest);
-                }
-            } else if (graphModel instanceof FSMGraphModel) {
-                // apply edge layout - one single point for specifying a curve
-                for (Pair<KEdge, Link> entry : _edgeList) {
-                    _applyEdgeLayoutCurve(entry.getFirst(), entry.getSecond(),
-                            layoutRequest);
-                }
+        GraphModel graphModel = getLayoutTarget().getGraphModel(); 
+        if (graphModel instanceof ActorGraphModel) {
+            // apply edge layout - bend points with layout hints
+            for (Pair<KEdge, Link> entry : _edgeList) {
+                _applyEdgeLayoutBendPointAnnotation(entry.getFirst(),
+                        entry.getSecond(), layoutRequest);
+            }
+        } else if (graphModel instanceof FSMGraphModel) {
+            // apply edge layout - one single point for specifying a curve
+            for (Pair<KEdge, Link> entry : _edgeList) {
+                _applyEdgeLayoutCurve(entry.getFirst(), entry.getSecond(),
+                        layoutRequest);
             }
         }
         
@@ -569,35 +567,6 @@ public class KielerLayout extends AbstractGlobalLayout {
                     // Regard a relation vertex as a KIELER KNode.
                     knode = _createKNodeForVertex((Vertex) node);
                     portIter = Iterators.singletonIterator(node);
-                    
-                    // DEBUG Start
-//                    System.out.println("===================");
-//                    
-//                    Vertex vertex = (Vertex) node;
-//                    Relation relation = (Relation) semanticNode;
-//                    
-//                    if (vertex.linkedPorts() != null) {
-//                        System.out.println("Vertex linked ports:");
-//                        for (Object po : vertex.linkedPorts()) {
-//                            System.out.println("   " + ((Port) po).getFullName());
-//                        }
-//                    }
-//                    
-//                    if (vertex.getLinkedVertex() != null) {
-//                        System.out.println("Vertex linked vertex:");
-//                        System.out.println("   " + vertex.getLinkedVertex().getFullName());
-//                    }
-//                    
-//                    System.out.println("Relation connected ports:");
-//                    for (Object po : relation.linkedPortList()) {
-//                        System.out.println("   " + ((Port) po).getFullName());
-//                    }
-//                    
-//                    System.out.println("Relation group members:");
-//                    for (Object ro : relation.relationGroupList()) {
-//                        System.out.println("   " + ((Relation) ro).getFullName());
-//                    }
-                    // DEBUG End
                 }
 
                 // Handle internal ports.

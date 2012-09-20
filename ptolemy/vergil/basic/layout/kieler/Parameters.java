@@ -98,10 +98,11 @@ public class Parameters {
                     configuration.includeDecorations.getToken());
             parentLayout.setProperty(DECORATIONS, decorationsToken.booleanValue());
             
-            // Whether to route edges or to leave that to Ptolemy's Manhattan routing
-            BooleanToken routeToken = BooleanToken.convert(
-                    configuration.routeEdges.getToken());
-            parentLayout.setProperty(ROUTE_EDGES, routeToken.booleanValue());
+//            // Whether to optimize relation vertices
+//            BooleanToken optimizeRelationsToken = BooleanToken.convert(
+//                    configuration.optimizeRelations.getToken());
+//            parentLayout.setProperty(OPTIMIZE_RELATIONS,
+//                    optimizeRelationsToken.booleanValue());
             
             // The node placement algorithm to use
             BooleanToken minimizeBendsToken = BooleanToken.convert(
@@ -167,9 +168,9 @@ public class Parameters {
     public static final IProperty<Boolean> DECORATIONS = new Property<Boolean>(
             "ptolemy.vergil.basic.layout.decorations", LayoutConfiguration.DEF_DECORATIONS);
     
-    /** Layout option that determines whether edges are routed. */
-    public static final IProperty<Boolean> ROUTE_EDGES = new Property<Boolean>(
-            "ptolemy.vergil.basic.layout.routeEdges", LayoutConfiguration.DEF_ROUTE_EDGES);
+//    /** Layout option for optimizing away superfluous relation vertices. */
+//    public static final IProperty<Boolean> OPTIMIZE_RELATIONS = new Property<Boolean>(
+//            "ptolemy.vergil.basic.layout.optimizeRelations", LayoutConfiguration.DEF_OPTIMIZE_RELATIONS);
     
     /** Layout option for the overall spacing between elements. */
     public static final IProperty<Float> SPACING = new Property<Float>(

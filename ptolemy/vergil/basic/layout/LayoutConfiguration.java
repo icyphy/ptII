@@ -88,17 +88,20 @@ public class LayoutConfiguration extends Attribute {
         includeDecorations.setTypeEquals(BaseType.BOOLEAN);
         includeDecorations.setExpression(Boolean.toString(DEF_DECORATIONS));
         
-        routeEdges = new Parameter(this, "routeEdges");
-        routeEdges.setDisplayName("Route edges");
-        routeEdges.setTypeEquals(BaseType.BOOLEAN);
-        routeEdges.setExpression(Boolean.toString(DEF_ROUTE_EDGES));
-        routeEdges.setVisibility(Settable.EXPERT);
-        
         minimizeBends = new Parameter(this, "minimizeBends");
         minimizeBends.setDisplayName("Minimize edge bends");
         minimizeBends.setTypeEquals(BaseType.BOOLEAN);
         minimizeBends.setExpression(Boolean.toString(DEF_MINIMIZE_BENDS));
         minimizeBends.setVisibility(Settable.EXPERT);
+        
+//        optimizeRelations = new Parameter(this, "optimizeRelations");
+//        optimizeRelations.setDisplayName("Optimize relations");
+//        optimizeRelations.setTypeEquals(BaseType.BOOLEAN);
+//        optimizeRelations.setExpression(Boolean.toString(DEF_OPTIMIZE_RELATIONS));
+        // DEBUG Start
+        // This should be commented back in once the feature is finished.
+//        optimizeRelations.setVisibility(Settable.EXPERT);
+        // DEBUG End
         
         spacing = new DoubleRangeParameter(this, "spacing");
         spacing.setDisplayName("Object spacing");
@@ -129,7 +132,6 @@ public class LayoutConfiguration extends Attribute {
         interactionMode.setExpression(DEF_INTERACTION_MODE.toString());
         
         helpURL = new StringParameter(this, "_helpURL");
-        // TODO Change to actual layout documentation once that is written
         helpURL.setExpression("ptolemy/vergil/basic/layout/layout.htm");
         helpURL.setVisibility(Settable.NONE);
     }
@@ -143,11 +145,10 @@ public class LayoutConfiguration extends Attribute {
     /** Whether to include unconnected nodes such as comments. */
     public Parameter includeDecorations;
     
-    /** Whether to apply edge routing or to use the standard router. */
-    public Parameter routeEdges;
-    
-    /** Whether to optimize for edge bends or for space. */
     public Parameter minimizeBends;
+    
+//    /** Whether to try to optimize relation vertices or not. */
+//    public Parameter optimizeRelations;
     
     /** The overall spacing between graph elements. */
     public DoubleRangeParameter spacing;
@@ -168,11 +169,11 @@ public class LayoutConfiguration extends Attribute {
     /** Default value for includeDecorations. */
     public static final boolean DEF_DECORATIONS = true;
     
-    /** Default value for routeEdges. */
-    public static final boolean DEF_ROUTE_EDGES = true;
-    
     /** Default value for minimizeBends. */
     public static final boolean DEF_MINIMIZE_BENDS = true;
+    
+//    /** Default value for optimizeRelations. */
+//    public static final boolean DEF_OPTIMIZE_RELATIONS = true;
     
     /** Default value for spacing. */
     public static final double DEF_SPACING = 10.0;
