@@ -31,36 +31,25 @@ package ptolemy.domains.ptides.lib;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 
 import ptolemy.actor.Actor;
 import ptolemy.actor.AtomicActor;
 import ptolemy.actor.CompositeActor;
-import ptolemy.actor.Executable;
-import ptolemy.actor.IOPort;
-import ptolemy.actor.Initializable;
-import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.util.Time;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.ObjectToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
-import ptolemy.domains.ptides.kernel.PtidesPlatform;
-import ptolemy.graph.Inequality;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.DecoratedAttributesImplementation;
-import ptolemy.kernel.util.Attribute;
-import ptolemy.kernel.util.ChangeRequest;
 import ptolemy.kernel.util.DecoratedAttributes;
 import ptolemy.kernel.util.Decorator;
 import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
-import ptolemy.kernel.util.StringAttribute;
 import ptolemy.kernel.util.Workspace;
-import ptolemy.vergil.actor.lib.MonitorReceiverAttribute;
+import ptolemy.moml.MoMLModelAttribute;
 
 /** This is a resource scheduler.
  * 
@@ -71,7 +60,7 @@ import ptolemy.vergil.actor.lib.MonitorReceiverAttribute;
    @Pt.ProposedRating Red (derler)
    @Pt.AcceptedRating Red (derler)
  */
-public abstract class ResourceScheduler extends Attribute implements Decorator {
+public abstract class ResourceScheduler extends MoMLModelAttribute implements Decorator {
 
     /** Create a new actor in the specified container with the specified
      *  name.  The name must be unique within the container or an exception

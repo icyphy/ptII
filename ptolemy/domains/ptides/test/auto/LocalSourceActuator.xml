@@ -248,7 +248,7 @@
             </property>
             <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{350.0, 262.0}">
             </property>
-            <port name="ActuatorPort" class="ptolemy.domains.ptides.lib.io.ActuatorPort">
+            <port name="ActuatorPort" class="ptolemy.domains.ptides.lib.PtidesPort">
                 <property name="output"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[325.0, 165.0]">
                 </property>

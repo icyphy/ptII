@@ -214,14 +214,6 @@
                 </entity>
             </entity>
 
-<port name="SensorPort" class="ptolemy.domains.ptides.lib.io.SensorPort">
-</port>
-<port name="ActuatorPort" class="ptolemy.domains.ptides.lib.io.ActuatorPort">
-</port>
-<port name="NetworkReceiverPort" class="ptolemy.domains.ptides.lib.io.NetworkReceiverPort">
-</port>
-<port name="NetworkTransmitterPort" class="ptolemy.domains.ptides.lib.io.NetworkTransmitterPort">
-</port>
 <property name="PEDFCore" class="ptolemy.domains.ptides.lib.PEDFCore"> 
 </property>
 <property name="NPFCFSCore" class="ptolemy.domains.ptides.lib.NPFCFSCore"> 

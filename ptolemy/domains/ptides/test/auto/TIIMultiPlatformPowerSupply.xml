@@ -916,32 +916,35 @@
                 </property>
                 <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{350.0, 262.0}">
                 </property>
-                <port name="SensorPort" class="ptolemy.domains.ptides.lib.io.SensorPort">
+                <port name="SensorPort" class="ptolemy.domains.ptides.lib.PtidesPort">
                     <property name="input"/>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[85.0, 225.0]">
                     </property>
                 </port>
-                <port name="SensorPort2" class="ptolemy.domains.ptides.lib.io.SensorPort">
+                <port name="SensorPort2" class="ptolemy.domains.ptides.lib.PtidesPort">
                     <property name="input"/>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="{85.0, 260.0}">
                     </property>
                 </port>
-                <port name="NetworkReceiverPort" class="ptolemy.domains.ptides.lib.io.NetworkReceiverPort">
+                <port name="NetworkReceiverPort" class="ptolemy.domains.ptides.lib.PtidesPort">
                     <property name="input"/>
+<property name="isNetworkPort" value="true"/>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[85.0, 120.0]">
                     </property>
                 </port>
-                <port name="NetworkReceiverPort2" class="ptolemy.domains.ptides.lib.io.NetworkReceiverPort">
+                <port name="NetworkReceiverPort2" class="ptolemy.domains.ptides.lib.PtidesPort">
                     <property name="input"/>
+<property name="isNetworkPort" value="true"/>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[85.0, 155.0]">
                     </property>
                 </port>
-                <port name="NetworkReceiverPort3" class="ptolemy.domains.ptides.lib.io.NetworkReceiverPort">
+                <port name="NetworkReceiverPort3" class="ptolemy.domains.ptides.lib.PtidesPort">
                     <property name="input"/>
+<property name="isNetworkPort" value="true"/>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[85.0, 190.0]">
                     </property>
                 </port>
-                <port name="ActuatorPort" class="ptolemy.domains.ptides.lib.io.ActuatorPort">
+                <port name="ActuatorPort" class="ptolemy.domains.ptides.lib.PtidesPort">
                     <property name="output"/>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="{445, 100}">
                     </property>
@@ -950,7 +953,7 @@
                     <property name="relativeDeadline" class="ptolemy.data.expr.Parameter" value="0.0">
                     </property>
                 </port>
-                <port name="ActuatorPort2" class="ptolemy.domains.ptides.lib.io.ActuatorPort">
+                <port name="ActuatorPort2" class="ptolemy.domains.ptides.lib.PtidesPort">
                     <property name="output"/>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[445.0, 155.0]">
                     </property>
@@ -959,7 +962,7 @@
                     <property name="relativeDeadline" class="ptolemy.data.expr.Parameter" value="0.0">
                     </property>
                 </port>
-                <port name="NetworkTransmitterPort" class="ptolemy.domains.ptides.lib.io.NetworkTransmitterPort">
+                <port name="NetworkTransmitterPort" class="ptolemy.domains.ptides.lib.PtidesPort"><property name="isNetworkPort" value="true"/>
                     <property name="output"/>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[450.0, 260.0]">
                     </property>
@@ -3158,32 +3161,33 @@ actors to enable timed sequencing of a set of power supplies.</text></svg></conf
                 </property>
                 <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{350.0, 262.0}">
                 </property>
-                <port name="SensorPort" class="ptolemy.domains.ptides.lib.io.SensorPort">
+                <port name="SensorPort" class="ptolemy.domains.ptides.lib.PtidesPort">
                     <property name="input"/>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[85.0, 225.0]">
                     </property>
                 </port>
-                <port name="SensorPort2" class="ptolemy.domains.ptides.lib.io.SensorPort">
+                <port name="SensorPort2" class="ptolemy.domains.ptides.lib.PtidesPort">
                     <property name="input"/>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="{85.0, 260.0}">
                     </property>
                 </port>
-                <port name="NetworkReceiverPort" class="ptolemy.domains.ptides.lib.io.NetworkReceiverPort">
+                <port name="NetworkReceiverPort" class="ptolemy.domains.ptides.lib.PtidesPort"><property name="isNetworkPort" value="true"/>
                     <property name="input"/>
+<property name="isNetworkPort" value="true"/>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[85.0, 120.0]">
                     </property>
                 </port>
-                <port name="NetworkReceiverPort2" class="ptolemy.domains.ptides.lib.io.NetworkReceiverPort">
+                <port name="NetworkReceiverPort2" class="ptolemy.domains.ptides.lib.PtidesPort"><property name="isNetworkPort" value="true"/>
                     <property name="input"/>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[85.0, 155.0]">
                     </property>
                 </port>
-                <port name="NetworkReceiverPort3" class="ptolemy.domains.ptides.lib.io.NetworkReceiverPort">
+                <port name="NetworkReceiverPort3" class="ptolemy.domains.ptides.lib.PtidesPort"><property name="isNetworkPort" value="true"/>
                     <property name="input"/>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[85.0, 190.0]">
                     </property>
                 </port>
-                <port name="ActuatorPort" class="ptolemy.domains.ptides.lib.io.ActuatorPort">
+                <port name="ActuatorPort" class="ptolemy.domains.ptides.lib.PtidesPort">
                     <property name="output"/>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="{445, 100}">
                     </property>
@@ -3192,7 +3196,7 @@ actors to enable timed sequencing of a set of power supplies.</text></svg></conf
                     <property name="relativeDeadline" class="ptolemy.data.expr.Parameter" value="0.0">
                     </property>
                 </port>
-                <port name="ActuatorPort2" class="ptolemy.domains.ptides.lib.io.ActuatorPort">
+                <port name="ActuatorPort2" class="ptolemy.domains.ptides.lib.PtidesPort">
                     <property name="output"/>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[445.0, 155.0]">
                     </property>
@@ -3201,7 +3205,7 @@ actors to enable timed sequencing of a set of power supplies.</text></svg></conf
                     <property name="relativeDeadline" class="ptolemy.data.expr.Parameter" value="0.0">
                     </property>
                 </port>
-                <port name="NetworkTransmitterPort" class="ptolemy.domains.ptides.lib.io.NetworkTransmitterPort">
+                <port name="NetworkTransmitterPort" class="ptolemy.domains.ptides.lib.PtidesPort"><property name="isNetworkPort" value="true"/>
                     <property name="output"/>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[450.0, 260.0]">
                     </property>
@@ -4851,32 +4855,32 @@ actors to enable timed sequencing of a set of power supplies.</text></svg></conf
                 </property>
                 <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{350.0, 262.0}">
                 </property>
-                <port name="SensorPort" class="ptolemy.domains.ptides.lib.io.SensorPort">
+                <port name="SensorPort" class="ptolemy.domains.ptides.lib.PtidesPort">
                     <property name="input"/>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[85.0, 225.0]">
                     </property>
                 </port>
-                <port name="SensorPort2" class="ptolemy.domains.ptides.lib.io.SensorPort">
+                <port name="SensorPort2" class="ptolemy.domains.ptides.lib.PtidesPort">
                     <property name="input"/>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="{85.0, 260.0}">
                     </property>
                 </port>
-                <port name="NetworkReceiverPort" class="ptolemy.domains.ptides.lib.io.NetworkReceiverPort">
+                <port name="NetworkReceiverPort" class="ptolemy.domains.ptides.lib.PtidesPort"><property name="isNetworkPort" value="true"/>
                     <property name="input"/>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[85.0, 120.0]">
                     </property>
                 </port>
-                <port name="NetworkReceiverPort2" class="ptolemy.domains.ptides.lib.io.NetworkReceiverPort">
+                <port name="NetworkReceiverPort2" class="ptolemy.domains.ptides.lib.PtidesPort"><property name="isNetworkPort" value="true"/>
                     <property name="input"/>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[85.0, 155.0]">
                     </property>
                 </port>
-                <port name="NetworkReceiverPort3" class="ptolemy.domains.ptides.lib.io.NetworkReceiverPort">
+                <port name="NetworkReceiverPort3" class="ptolemy.domains.ptides.lib.PtidesPort"><property name="isNetworkPort" value="true"/>
                     <property name="input"/>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[85.0, 190.0]">
                     </property>
                 </port>
-                <port name="ActuatorPort" class="ptolemy.domains.ptides.lib.io.ActuatorPort">
+                <port name="ActuatorPort" class="ptolemy.domains.ptides.lib.PtidesPort">
                     <property name="output"/>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="{445, 100}">
                     </property>
@@ -4885,7 +4889,7 @@ actors to enable timed sequencing of a set of power supplies.</text></svg></conf
                     <property name="relativeDeadline" class="ptolemy.data.expr.Parameter" value="0.0">
                     </property>
                 </port>
-                <port name="ActuatorPort2" class="ptolemy.domains.ptides.lib.io.ActuatorPort">
+                <port name="ActuatorPort2" class="ptolemy.domains.ptides.lib.PtidesPort">
                     <property name="output"/>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[445.0, 155.0]">
                     </property>
@@ -4894,7 +4898,7 @@ actors to enable timed sequencing of a set of power supplies.</text></svg></conf
                     <property name="relativeDeadline" class="ptolemy.data.expr.Parameter" value="0.0">
                     </property>
                 </port>
-                <port name="NetworkTransmitterPort" class="ptolemy.domains.ptides.lib.io.NetworkTransmitterPort">
+                <port name="NetworkTransmitterPort" class="ptolemy.domains.ptides.lib.PtidesPort"><property name="isNetworkPort" value="true"/>
                     <property name="output"/>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[450.0, 260.0]">
                     </property>
@@ -6545,7 +6549,7 @@ actors to enable timed sequencing of a set of power supplies.</text></svg></conf
             </property>
             <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{350.0, 262.0}">
             </property>
-            <port name="NetworkTransmitterPort" class="ptolemy.domains.ptides.lib.io.NetworkTransmitterPort">
+            <port name="NetworkTransmitterPort" class="ptolemy.domains.ptides.lib.PtidesPort"><property name="isNetworkPort" value="true"/>
                 <property name="output"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="{540, 205}">
                 </property>
@@ -6554,7 +6558,7 @@ actors to enable timed sequencing of a set of power supplies.</text></svg></conf
                 <property name="relativeDeadline" class="ptolemy.data.expr.Parameter" value="0.0">
                 </property>
             </port>
-            <port name="NetworkTransmitterPort2" class="ptolemy.domains.ptides.lib.io.NetworkTransmitterPort">
+            <port name="NetworkTransmitterPort2" class="ptolemy.domains.ptides.lib.PtidesPort"><property name="isNetworkPort" value="true"/>
                 <property name="output"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="{570, 265}">
                 </property>
@@ -6563,7 +6567,7 @@ actors to enable timed sequencing of a set of power supplies.</text></svg></conf
                 <property name="relativeDeadline" class="ptolemy.data.expr.Parameter" value="0.0">
                 </property>
             </port>
-            <port name="NetworkTransmitterPort3" class="ptolemy.domains.ptides.lib.io.NetworkTransmitterPort">
+            <port name="NetworkTransmitterPort3" class="ptolemy.domains.ptides.lib.PtidesPort"><property name="isNetworkPort" value="true"/>
                 <property name="output"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="{535, 370}">
                 </property>
@@ -6858,22 +6862,22 @@ actors to enable timed sequencing of a set of power supplies.</text></svg></conf
             </property>
             <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{350.0, 262.0}">
             </property>
-            <port name="SensorPort" class="ptolemy.domains.ptides.lib.io.SensorPort">
+            <port name="SensorPort" class="ptolemy.domains.ptides.lib.PtidesPort">
                 <property name="input"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="{105, 160}">
                 </property>
             </port>
-            <port name="NetworkReceiverPort" class="ptolemy.domains.ptides.lib.io.NetworkReceiverPort">
+            <port name="NetworkReceiverPort" class="ptolemy.domains.ptides.lib.PtidesPort"><property name="isNetworkPort" value="true"/>
                 <property name="input"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="{95, 250}">
                 </property>
             </port>
-            <port name="NetworkReceiverPort2" class="ptolemy.domains.ptides.lib.io.NetworkReceiverPort">
+            <port name="NetworkReceiverPort2" class="ptolemy.domains.ptides.lib.PtidesPort"><property name="isNetworkPort" value="true"/>
                 <property name="input"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="{80, 320}">
                 </property>
             </port>
-            <port name="NetworkReceiverPort3" class="ptolemy.domains.ptides.lib.io.NetworkReceiverPort">
+            <port name="NetworkReceiverPort3" class="ptolemy.domains.ptides.lib.PtidesPort"><property name="isNetworkPort" value="true"/>
                 <property name="input"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="{110, 390}">
                 </property>

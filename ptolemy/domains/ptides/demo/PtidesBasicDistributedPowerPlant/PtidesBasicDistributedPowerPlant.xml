@@ -785,27 +785,27 @@
             </property>
             <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{350.0, 262.0}">
             </property>
-            <port name="measuredOutput" class="ptolemy.domains.ptides.lib.io.SensorPort">
+            <port name="measuredOutput" class="ptolemy.domains.ptides.lib.PtidesPort">
                 <property name="input"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[30.0, 160.0]">
                 </property>
             </port>
-            <port name="targetOutput" class="ptolemy.domains.ptides.lib.io.SensorPort">
+            <port name="targetOutput" class="ptolemy.domains.ptides.lib.PtidesPort">
                 <property name="input"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[30.0, 205.0]">
                 </property>
             </port>
-            <port name="startup" class="ptolemy.domains.ptides.lib.io.SensorPort">
+            <port name="startup" class="ptolemy.domains.ptides.lib.PtidesPort">
                 <property name="input"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[30.0, 250.0]">
                 </property>
             </port>
-            <port name="sensorInput" class="ptolemy.domains.ptides.lib.io.SensorPort">
+            <port name="sensorInput" class="ptolemy.domains.ptides.lib.PtidesPort">
                 <property name="input"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[30.0, 295.0]">
                 </property>
             </port>
-            <port name="fuel" class="ptolemy.domains.ptides.lib.io.ActuatorPort">
+            <port name="fuel" class="ptolemy.domains.ptides.lib.PtidesPort">
                 <property name="output"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[480.0, 205.0]">
                 </property>
@@ -814,7 +814,7 @@
                 <property name="relativeDeadline" class="ptolemy.data.expr.Parameter" value="0.0">
                 </property>
             </port>
-            <port name="warning" class="ptolemy.domains.ptides.lib.io.ActuatorPort">
+            <port name="warning" class="ptolemy.domains.ptides.lib.PtidesPort">
                 <property name="output"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[460.0, 350.0]">
                 </property>
@@ -823,7 +823,7 @@
                 <property name="relativeDeadline" class="ptolemy.data.expr.Parameter" value="0.0">
                 </property>
             </port>
-            <port name="emergency" class="ptolemy.domains.ptides.lib.io.ActuatorPort">
+            <port name="emergency" class="ptolemy.domains.ptides.lib.PtidesPort">
                 <property name="output"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[510.0, 370.0]">
                 </property>

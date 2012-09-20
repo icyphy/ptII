@@ -245,7 +245,7 @@
             </property>
             <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{350.0, 262.0}">
             </property>
-            <port name="blue" class="ptolemy.domains.ptides.lib.io.SensorPort">
+            <port name="blue" class="ptolemy.domains.ptides.lib.PtidesPort">
                 <property name="input"/>
                 <property name="deviceDelay" class="ptolemy.data.expr.Parameter" value="0.5">
                 </property>
@@ -254,7 +254,7 @@
                 <property name="_location" class="ptolemy.kernel.util.Location" value="{60.0, 135.0}">
                 </property>
             </port>
-            <port name="red" class="ptolemy.domains.ptides.lib.io.SensorPort">
+            <port name="red" class="ptolemy.domains.ptides.lib.PtidesPort">
                 <property name="input"/>
                 <property name="deviceDelay" class="ptolemy.data.expr.Parameter" value="1.0">
                 </property>
@@ -263,7 +263,7 @@
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[60.0, 200.0]">
                 </property>
             </port>
-            <port name="ActuatorPort" class="ptolemy.domains.ptides.lib.io.ActuatorPort">
+            <port name="ActuatorPort" class="ptolemy.domains.ptides.lib.PtidesPort">
                 <property name="output"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[445.0, 165.0]">
                 </property>

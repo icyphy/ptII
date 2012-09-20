@@ -234,27 +234,29 @@
             </property>
             <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{350.0, 262.0}">
             </property>
-            <port name="SensorPort" class="ptolemy.domains.ptides.lib.io.SensorPort">
+            <port name="SensorPort" class="ptolemy.domains.ptides.lib.PtidesPort">
                 <property name="input"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="{85, 250}">
                 </property>
             </port>
-            <port name="ActuatorPort" class="ptolemy.domains.ptides.lib.io.ActuatorPort">
+            <port name="ActuatorPort" class="ptolemy.domains.ptides.lib.PtidesPort">
                 <property name="output"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="{460, 250}">
                 </property>
                 <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="Infinity">
                 </property>
             </port>
-            <port name="NetworkTransmitterPort" class="ptolemy.domains.ptides.lib.io.NetworkTransmitterPort">
+            <port name="NetworkTransmitterPort" class="ptolemy.domains.ptides.lib.PtidesPort">
                 <property name="output"/>
+<property name="isNetworkPort" value="true"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[210.0, 355.0]">
                 </property>
                 <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="Infinity">
                 </property>
             </port>
-            <port name="NetworkTransmitterPort2" class="ptolemy.domains.ptides.lib.io.NetworkTransmitterPort">
+            <port name="NetworkTransmitterPort2" class="ptolemy.domains.ptides.lib.PtidesPort">
                 <property name="output"/>
+<property name="isNetworkPort" value="true"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[450.0, 355.0]">
                 </property>
                 <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="Infinity">
@@ -515,36 +517,39 @@
             </property>
             <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{350.0, 262.0}">
             </property>
-            <port name="NetworkReceiverPort" class="ptolemy.domains.ptides.lib.io.NetworkReceiverPort">
+            <port name="NetworkReceiverPort" class="ptolemy.domains.ptides.lib.PtidesPort">
                 <property name="input"/>
+<property name="isNetworkPort" value="true"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="{65, 205}">
                 </property>
             </port>
-            <port name="NetworkReceiverPort2" class="ptolemy.domains.ptides.lib.io.NetworkReceiverPort">
+            <port name="NetworkReceiverPort2" class="ptolemy.domains.ptides.lib.PtidesPort">
                 <property name="input"/>
+<property name="isNetworkPort" value="true"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="{65, 315}">
                 </property>
             </port>
-            <port name="ActuatorPort" class="ptolemy.domains.ptides.lib.io.ActuatorPort">
+            <port name="ActuatorPort" class="ptolemy.domains.ptides.lib.PtidesPort">
                 <property name="output"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[390.0, 205.0]">
                 </property>
                 <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="Infinity">
                 </property>
             </port>
-            <port name="ActuatorPort2" class="ptolemy.domains.ptides.lib.io.ActuatorPort">
+            <port name="ActuatorPort2" class="ptolemy.domains.ptides.lib.PtidesPort">
                 <property name="output"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[400.0, 315.0]">
                 </property>
                 <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="Infinity">
                 </property>
             </port>
-            <port name="NetworkReceiverPort3" class="ptolemy.domains.ptides.lib.io.NetworkReceiverPort">
+            <port name="NetworkReceiverPort3" class="ptolemy.domains.ptides.lib.PtidesPort">
                 <property name="input"/>
+<property name="isNetworkPort" value="true"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="{65, 410}">
                 </property>
             </port>
-            <port name="ActuatorPort3" class="ptolemy.domains.ptides.lib.io.ActuatorPort">
+            <port name="ActuatorPort3" class="ptolemy.domains.ptides.lib.PtidesPort">
                 <property name="output"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[400.0, 410.0]">
                 </property>

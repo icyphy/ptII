@@ -1174,27 +1174,27 @@ easy detection of simultaneous events.</text></svg></configure>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[45.0, 105.0]">
                 </property>
             </property>
-            <port name="startup" class="ptolemy.domains.ptides.lib.io.SensorPort">
+            <port name="startup" class="ptolemy.domains.ptides.lib.PtidesPort">
                 <property name="input"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[76.0, 140.0]">
                 </property>
             </port>
-            <port name="pause" class="ptolemy.domains.ptides.lib.io.SensorPort">
+            <port name="pause" class="ptolemy.domains.ptides.lib.PtidesPort">
                 <property name="input"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[56.0, 175.0]">
                 </property>
             </port>
-            <port name="resume" class="ptolemy.domains.ptides.lib.io.SensorPort">
+            <port name="resume" class="ptolemy.domains.ptides.lib.PtidesPort">
                 <property name="input"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[56.0, 210.0]">
                 </property>
             </port>
-            <port name="UTCClock" class="ptolemy.domains.ptides.lib.io.SensorPort">
+            <port name="UTCClock" class="ptolemy.domains.ptides.lib.PtidesPort">
                 <property name="input"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[81.0, 240.0]">
                 </property>
             </port>
-            <port name="DiscreteSample" class="ptolemy.domains.ptides.lib.io.ActuatorPort">
+            <port name="DiscreteSample" class="ptolemy.domains.ptides.lib.PtidesPort">
                 <property name="output"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[331.0, 180.0]">
                 </property>
@@ -1203,7 +1203,7 @@ easy detection of simultaneous events.</text></svg></configure>
                 <property name="relativeDeadline" class="ptolemy.data.expr.Parameter" value="0.0">
                 </property>
             </port>
-            <port name="UTCSample" class="ptolemy.domains.ptides.lib.io.ActuatorPort">
+            <port name="UTCSample" class="ptolemy.domains.ptides.lib.PtidesPort">
                 <property name="output"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[331.0, 220.0]">
                 </property>

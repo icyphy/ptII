@@ -230,7 +230,7 @@
             </property>
             <property name="scheduler" class="ptolemy.data.expr.Parameter" value="FCFSScheduler">
             </property>
-            <port name="ActuatorPort" class="ptolemy.domains.ptides.lib.io.ActuatorPort">
+            <port name="ActuatorPort" class="ptolemy.domains.ptides.lib.PtidesPort">
                 <property name="output"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[425.0, 170.0]">
                 </property>
@@ -239,7 +239,7 @@
                 <property name="relativeDeadline" class="ptolemy.data.expr.Parameter" value="0.0">
                 </property>
             </port>
-            <port name="ActuatorPort2" class="ptolemy.domains.ptides.lib.io.ActuatorPort">
+            <port name="ActuatorPort2" class="ptolemy.domains.ptides.lib.PtidesPort">
                 <property name="output"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[425.0, 250.0]">
                 </property>

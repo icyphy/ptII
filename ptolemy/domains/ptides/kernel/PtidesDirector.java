@@ -59,12 +59,9 @@ import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.domains.de.kernel.DEDirector;
-import ptolemy.domains.ptides.lib.ResourceScheduler;
-import ptolemy.domains.ptides.lib.io.ActuatorPort;
-import ptolemy.domains.ptides.lib.io.NetworkReceiverPort;
-import ptolemy.domains.ptides.lib.io.NetworkTransmitterPort;
-import ptolemy.domains.ptides.lib.io.PtidesPort;
-import ptolemy.domains.ptides.lib.io.SensorPort;
+import ptolemy.domains.de.kernel.DEEventQueue;
+import ptolemy.domains.ptides.lib.PtidesPort;
+import ptolemy.domains.ptides.lib.ResourceScheduler; 
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -329,6 +326,16 @@ public class PtidesDirector extends DEDirector {
         }
         return super.getMicrostep();
     }
+    
+    /** Return a superdense time index for the current time,
+     *  where the index is equal to the microstep.
+     *  @return A superdense time index.
+     *  @see #setIndex(int)
+     *  @see ptolemy.actor.SuperdenseTimeDirector
+     */
+    public int getIndex() {
+        return getMicrostep();
+    }
 
     /** Add a pure event to the queue of pure events.
      *  @param actor Actor to fire.
@@ -345,8 +352,12 @@ public class PtidesDirector extends DEDirector {
             fireContainerAt(time);
             return time;
         }
- 
-        _pureEvents.add(new PtidesEvent(actor, null, time, index, 0,
+        int newIndex = index;
+        if (index <= getIndex()) {
+            newIndex = Math.max(getIndex(), index) + 1;
+        }
+            
+        _pureEvents.put(new PtidesEvent(actor, null, time, newIndex, 0,
                 _zeroTime)); 
         
         Time environmentTime = super.getEnvironmentTime();
@@ -423,7 +434,8 @@ public class PtidesDirector extends DEDirector {
         if (deliveryTimes.size() > 0) {
             TreeSet<Time> set = new TreeSet<Time>(deliveryTimes);
             for (PtidesEvent event : _outputEventQueue.get(set.first())) { 
-                if (event.ioPort() instanceof ActuatorPort
+                if (event.ioPort() instanceof PtidesPort 
+                        && ((PtidesPort)event.ioPort()).isActuatorPort()
                         && getEnvironmentTime().compareTo(
                                 event.timeStamp()) > 0) {
                     throw new IllegalActionException(event.ioPort(), "Missed Deadline at "
@@ -445,7 +457,8 @@ public class PtidesDirector extends DEDirector {
             if (ptidesOutputPortList != null && ptidesOutputPortList.size() > 0) {
                 PtidesEvent event = ptidesOutputPortList.peek();
 
-                if (port instanceof ActuatorPort
+                if (port instanceof PtidesPort 
+                        && ((PtidesPort)port).isActuatorPort()
                         && getEnvironmentTime().compareTo(
                                 event.absoluteDeadline()) > 0) {
                     throw new IllegalActionException(port, "Missed Deadline at "
@@ -499,7 +512,7 @@ public class PtidesDirector extends DEDirector {
         _outputEventQueue = new HashMap<Time, List<PtidesEvent>>();
         _ptidesOutputPortEventQueue = new HashMap<PtidesPort, Queue<PtidesEvent>>();
         _nextFireTime = Time.POSITIVE_INFINITY;
-        _pureEvents = new LinkedList<PtidesEvent>();
+        _pureEvents = new PtidesListEventQueue();
         _currentLogicalTime = null;
     }
 
@@ -539,8 +552,8 @@ public class PtidesDirector extends DEDirector {
         for (TypedIOPort port : _inputPorts) {
 
             // Disallow SensorPort and NetworkReceiverPort.
-            if (port instanceof SensorPort
-                    || port instanceof NetworkReceiverPort) {
+            if (port instanceof PtidesPort && (((PtidesPort)port).isSensorPort()|| 
+                    ((PtidesPort)port).isNetworkReceiverPort())) {
                 continue;
             }
 
@@ -549,12 +562,14 @@ public class PtidesDirector extends DEDirector {
             double delayOffset = Double.POSITIVE_INFINITY;
             for (TypedIOPort inputPort : _inputPorts) {
                 // Only allow SensorPort and NetworkReceiverPort.
-                if (!(inputPort instanceof SensorPort || inputPort instanceof NetworkReceiverPort)) {
+                if (!((inputPort instanceof PtidesPort) && 
+                        (((PtidesPort)inputPort).isSensorPort()|| 
+                        ((PtidesPort)inputPort).isNetworkReceiverPort()))) {
                     continue;
                 }
                 double deviceDelayBound = _getDoubleParameterValue(inputPort,
                         "deviceDelayBound");
-                if (inputPort instanceof NetworkReceiverPort) {
+                if (((PtidesPort)inputPort).isNetworkReceiverPort()) {
                     deviceDelayBound += _getDoubleParameterValue(inputPort,
                             "networkDelayBound");
                     deviceDelayBound += _getDoubleParameterValue(inputPort,
@@ -605,8 +620,8 @@ public class PtidesDirector extends DEDirector {
         for (TypedIOPort port : _inputPorts) {
 
             // Disallow SensorPort and NetworkReceiverPort.
-            if (port instanceof SensorPort
-                    || port instanceof NetworkReceiverPort) {
+            if (port instanceof PtidesPort && (((PtidesPort)port).isSensorPort()|| 
+                    ((PtidesPort)port).isNetworkReceiverPort())) {
                 continue;
             }
 
@@ -615,7 +630,9 @@ public class PtidesDirector extends DEDirector {
             double relativeDeadline = Double.POSITIVE_INFINITY;
             for (TypedIOPort outputPort : _inputPorts) {
                 // Only allow ActuatorPort and NetworkTransmitterPort.
-                if (!(outputPort instanceof ActuatorPort || outputPort instanceof NetworkTransmitterPort)) {
+                if (!((outputPort instanceof PtidesPort) &&
+                        (((PtidesPort)outputPort).isActuatorPort() || 
+                        ((PtidesPort)outputPort).isNetworkTransmitterPort()))) {
                     continue;
                 }
                 double deviceDelayBound = _getDoubleParameterValue(outputPort,
@@ -700,8 +717,8 @@ public class PtidesDirector extends DEDirector {
 
             // Add path from sensor or network input port to connected 
             // input ports. These connections have a weight of 0.
-            if (port instanceof SensorPort
-                    || port instanceof NetworkReceiverPort) {
+            if (((PtidesPort)port).isSensorPort()
+                    || ((PtidesPort)port).isNetworkReceiverPort()) {
 
                 for (IOPort connectedPort : (List<IOPort>) (port
                         .insideSinkPortList())) {
@@ -908,8 +925,8 @@ public class PtidesDirector extends DEDirector {
         if (ioPort.isOutput()) {
 
             Time deliveryTime;
-            if (ioPort instanceof ActuatorPort) {
-                if (((ActuatorPort) ioPort).actuateAtEventTimestamp()) {
+            if (((PtidesPort)ioPort).isActuatorPort()) {
+                if (((PtidesPort)ioPort).actuateAtEventTimestamp()) {
                     deliveryTime = getModelTime().subtract(
                             _getDoubleParameterValue(ioPort, "deviceDelay"));
                 } else {
@@ -998,7 +1015,74 @@ public class PtidesDirector extends DEDirector {
         return executionTime;
     }
     
-    
+    /** Get the next actor that can be fired from a specified event queue. 
+     *  Check whether the event is safe to process, the actors prefire
+     *  returns true and the event can be scheduled. Because Ptides does
+     *  not store tokens in receivers but keeps them in the event until
+     *  the actor is really fired, we have to temporarily put tokens into
+     *  receivers and then remove them in order for the prefire to give
+     *  correct results. 
+     *  @param queue The event queue.
+     *  @return The next actor to fire or null. 
+     *  @throws IllegalActionException Thrown by safeToProcess, prefire
+     *    or schedule.
+     */
+    private Actor _getNextActorFrom(DEEventQueue queue) throws IllegalActionException {  
+        Object[] eventArray = queue.toArray();
+        for (Object event : eventArray) {
+            if (_isSafeToProcess((PtidesEvent) event)) { 
+                PtidesEvent ptidesEvent = ((PtidesEvent) event);
+                
+                // Check if actor can be fired by putting token into receiver 
+                // and accling prefire. 
+                
+                List<PtidesEvent> sameTagEvents = new ArrayList<PtidesEvent>();
+                int i = 0;
+                while (i < queue.size()) {
+                    PtidesEvent eventInQueue = ((PtidesListEventQueue) queue)
+                            .get(i);
+                    // If event has same tag and destined to same actor, remove from
+                    // queue.
+                    // TODO: or input port group?
+                    if (eventInQueue.hasTheSameTagAs(ptidesEvent)
+                            && eventInQueue.actor().equals(ptidesEvent.actor())) {
+                        sameTagEvents.add(eventInQueue);
+                        if (eventInQueue.receiver() != null) {
+                            if (eventInQueue.receiver() instanceof PtidesReceiver) {
+                                ((PtidesReceiver) eventInQueue.receiver())
+                                        .putToReceiver(eventInQueue.token());
+                            } 
+                        } 
+                    }
+                    i++;
+                }
+                
+                _currentLogicalTime = ptidesEvent.timeStamp();
+                _currentLocialIndex = ptidesEvent.microstep();
+                boolean prefire = ptidesEvent.actor().prefire(); 
+                _currentLogicalTime = null;
+                
+                // Remove tokens again.
+                for (PtidesEvent sameTagEvent : sameTagEvents) {
+                    if (sameTagEvent.receiver() != null) {
+                        if (sameTagEvent.receiver() instanceof PtidesReceiver) {
+                            ((PtidesReceiver) sameTagEvent.receiver())
+                                    .remove(sameTagEvent.token());
+                        } 
+                    }
+                }
+                
+                if (prefire && _schedule(ptidesEvent, _getExecutionTime(queue != _pureEvents && 
+                            ptidesEvent.actor() instanceof TimeDelay, ptidesEvent.actor()))) { 
+                    _currentLogicalTime = ptidesEvent.timeStamp();
+                    _currentLocialIndex = ptidesEvent.microstep();
+                    _removeEventsFromQueue(queue, ptidesEvent);
+                    return ptidesEvent.actor(); 
+                } 
+            }
+        }
+        return null;
+    }
 
     /** Return the actor to fire in this iteration, or null if no actor should
      * be fired. Since _checkForNextEvent() always
@@ -1006,27 +1090,14 @@ public class PtidesDirector extends DEDirector {
      * @exception IllegalActionException If _isSafeToProcess() throws it.
      */
     protected Actor _getNextActorToFire() throws IllegalActionException {
-        for (PtidesEvent event : _pureEvents) {
-            if (_isSafeToProcess(event)) { 
-                if (_schedule(event, _getExecutionTime(false, event.actor()))) {
-                    _currentLogicalTime = event.timeStamp();
-                    _currentLocialIndex = event.microstep();
-                    _pureEvents.remove(event);
-                    return event.actor();
-                }
-            }
-        }
-        for (Object event : _eventQueue.toArray()) {
-            if (_isSafeToProcess((PtidesEvent) event)) {
-                PtidesEvent ptidesEvent = ((PtidesEvent) event); 
-                if (_schedule(ptidesEvent, _getExecutionTime(ptidesEvent.actor() instanceof TimeDelay, ptidesEvent.actor()))) {
-                    _currentLogicalTime = ptidesEvent.timeStamp();
-                    _currentLocialIndex = ptidesEvent.microstep();
-                    _removeEventsFromQueue(ptidesEvent);
-                    return ptidesEvent.actor();
-                }
-            }
-        }
+        Actor actor = _getNextActorFrom(_pureEvents);
+        if (actor != null) {
+            return actor;
+        } 
+        actor = _getNextActorFrom(_eventQueue);
+        if (actor != null) {
+            return actor;
+        } 
         _currentLogicalTime = null;
         return null;
     }
@@ -1039,7 +1110,8 @@ public class PtidesDirector extends DEDirector {
      */
     protected boolean _isSafeToProcess(PtidesEvent event)
             throws IllegalActionException {
-        Time eventTimestamp = event.timeStamp();
+        Time eventTimestamp = event.timeStamp(); 
+        
         IOPort port = event.ioPort();
         Double delayOffset;
         if (port != null) {
@@ -1080,12 +1152,11 @@ public class PtidesDirector extends DEDirector {
      * @return A list of all events with same tag and at the same actor as the
      * event.
      */
-    protected List<PtidesEvent> _removeEventsFromQueue(PtidesEvent event) {
-        // FIXME: Move to PtidesListEventQueue?
+    protected List<PtidesEvent> _removeEventsFromQueue(DEEventQueue queue, PtidesEvent event) {
         List<PtidesEvent> eventList = new ArrayList<PtidesEvent>();
         int i = 0;
-        while (i < _eventQueue.size()) {
-            PtidesEvent eventInQueue = ((PtidesListEventQueue) _eventQueue)
+        while (i < queue.size()) {
+            PtidesEvent eventInQueue = ((PtidesListEventQueue) queue)
                     .get(i);
             // If event has same tag and destined to same actor, remove from
             // queue.
@@ -1093,7 +1164,7 @@ public class PtidesDirector extends DEDirector {
             if (eventInQueue.hasTheSameTagAs(event)
                     && eventInQueue.actor().equals(event.actor())) {
                 eventList.add(eventInQueue);
-                ((PtidesListEventQueue) _eventQueue).take(i);
+                ((PtidesListEventQueue) queue).take(i);
                 continue;
             }
             i++;
@@ -1274,10 +1345,19 @@ public class PtidesDirector extends DEDirector {
         Time time = null;
         Boolean finished = true;
         if (scheduler != null) {
+            Time relativeDeadline = Time.POSITIVE_INFINITY;
+            for (int i = 0; i < event.actor().outputPortList().size(); i++) {
+                for (int j = 0; j < ((IOPort) event.actor().outputPortList().get(i)).sinkPortList().size(); j++) {
+                    double newRelativeDeadline = _getRelativeDeadline(((TypedIOPort) ((IOPort) event
+                            .actor().outputPortList().get(i)).sinkPortList().get(j)));
+                    if (newRelativeDeadline < relativeDeadline.getDoubleValue()) {
+                        relativeDeadline = new Time(this, newRelativeDeadline);
+                    }
+                }
+            }
+            
             double deadline = event.timeStamp()
-                    .add(_getRelativeDeadline(((TypedIOPort) ((IOPort) event
-                    .actor().outputPortList().get(0))
-                    .sinkPortList().get(0)))).getDoubleValue();
+                    .add(relativeDeadline).getDoubleValue();
             time = (scheduler).schedule((Actor)event.actor(),
                     getEnvironmentTime(), deadline, executionTime);
             finished = actorFinished(event.actor());
@@ -1314,7 +1394,7 @@ public class PtidesDirector extends DEDirector {
 
     private HashMap<PtidesPort, Queue<PtidesEvent>> _ptidesOutputPortEventQueue;
 
-    private Queue<PtidesEvent> _pureEvents;
+    private DEEventQueue _pureEvents;
 
     private List<ResourceScheduler> _resourceSchedulers;
 

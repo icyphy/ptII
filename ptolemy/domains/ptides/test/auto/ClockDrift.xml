@@ -267,13 +267,14 @@
                 <property name="_location" class="ptolemy.kernel.util.Location" value="{55.0, 150.0}">
                 </property>
             </port>
-            <port name="SensorPort" class="ptolemy.domains.ptides.lib.io.SensorPort">
+            <port name="SensorPort" class="ptolemy.domains.ptides.lib.PtidesPort">
                 <property name="input"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="{70, 225}">
                 </property>
             </port>
-            <port name="NetworkTransmitterPort" class="ptolemy.domains.ptides.lib.io.NetworkTransmitterPort">
+            <port name="NetworkTransmitterPort" class="ptolemy.domains.ptides.lib.PtidesPort">
                 <property name="output"/>
+		<property name="isNetworkPort" value="true"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[270.0, 215.0]">
                 </property>
                 <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="Infinity">

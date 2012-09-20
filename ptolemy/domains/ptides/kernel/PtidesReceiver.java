@@ -113,6 +113,15 @@ public class PtidesReceiver extends DEReceiver {
             _tokens.add(token);
         }
     }
+    
+    /** Remove the token from the list of stored tokens. This is only used
+     *  to remove tokens that were stored temporarily in the receiver to 
+     *  check whether the actor's prefire returns true.
+     * @param token The token to be removed.
+     */
+    public void remove(Token token) {
+        _tokens.remove(token);
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
