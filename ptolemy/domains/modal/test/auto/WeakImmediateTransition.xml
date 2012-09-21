@@ -9,10 +9,10 @@
         </property>
         <property name="statesignals" class="ptolemy.kernel.util.StringAttribute" value="[Olocal_ImmediateTransitions_1893289564, O2local_ImmediateTransitions_1893289564]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{-155.0, -100.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{-160.0, -100.0}">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 22, 934, 634}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 22, 920, 607}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 500]">
     </property>
@@ -23,7 +23,7 @@
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This hierarchical model is performing one synchronous tick. &#10;It contains a ModalModel that does two state transitions of&#10;which one is immediate. The immediate transition is weak &#10;and should let the InnerSignal being produced by the state&#10;refinement. ">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{-215.0, 105.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{-215.0, -65.0}">
         </property>
     </property>
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -31,22 +31,42 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author: Christian Motika">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{-75.0, -130.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{-80.0, -130.0}">
         </property>
     </property>
-    <entity name="ImmediateTransitions_1893289564_region_1" class="ptolemy.domains.modal.modal.ModalModel">
-        <display name="ModalModel"/>
+    <entity name="NonStrictTest" class="ptolemy.actor.lib.NonStrictTest">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{2}">
+        </property>
+        <property name="requireAllCorrectValues" class="ptolemy.actor.parameters.SharedParameter" value="true">
+        </property>
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{-40.0, 140.0}">
+        </property>
+    </entity>
+    <entity name="NonStrictTest2" class="ptolemy.actor.lib.NonStrictTest">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{3}">
+        </property>
+        <property name="requireAllCorrectValues" class="ptolemy.actor.parameters.SharedParameter" value="true">
+        </property>
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{-155.0, 70.0}">
+        </property>
+    </entity>
+    <entity name="ModalModel" class="ptolemy.domains.modal.modal.ModalModel">
         <property name="_tableauFactory" class="ptolemy.vergil.modal.modal.ModalTableauFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{-140.0, 35.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{-150.0, 150.0}">
         </property>
-        <port name="InnerSignal" class="ptolemy.domains.modal.modal.ModalPort">
-            <property name="output"/>
-            <property name="environment_output" class="ptolemy.kernel.util.StringAttribute">
-            </property>
+        <port name="Input" class="ptolemy.domains.modal.modal.ModalPort">
+            <property name="input"/>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="int">
             </property>
-            <property name="2" class="ptolemy.kernel.util.StringAttribute">
+        </port>
+        <port name="InnerSignal" class="ptolemy.domains.modal.modal.ModalPort">
+            <property name="output"/>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="int">
             </property>
         </port>
         <port name="OuterSignal" class="ptolemy.domains.modal.modal.ModalPort">
@@ -54,70 +74,51 @@
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="int">
             </property>
         </port>
-        <port name="Input" class="ptolemy.domains.modal.modal.ModalPort">
-            <property name="input"/>
-        </port>
         <entity name="_Controller" class="ptolemy.domains.modal.modal.ModalController">
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={397, 207, 886, 635}, maximized=false}">
-            </property>
-            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[652, 524]">
-            </property>
-            <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.198404438270254">
-            </property>
-            <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{35.848952198756535, 228.9169921875}">
+            <property name="_library" class="ptolemy.moml.LibraryAttribute">
+                <configure>
+      <entity name="state library" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/configs/basicUtilities.xml"></input><entity name="state" class="ptolemy.domains.modal.kernel.State"><property name="_centerName" class="ptolemy.kernel.util.Attribute"></property><property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory"></property></entity></entity>
+    </configure>
             </property>
             <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
                 <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The OuterSignal value is immediately overwritten &#10;twice, by the state B refinement and by the &#10;transition action of the immediate outgoing &#10;transition from state B to state C. &#10;So it ends up in having the value 3.&#10;&#10;Note that the modal model is still monotonic&#10;from an outside (black box) perspective. Once&#10;it commits (non strictly) to a value, this&#10;value potentially cannot be changed any more,&#10;e.g., in the context of an SR model.">
                 </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[-235.0, 265.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[90.0, 315.0]">
                 </property>
             </property>
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={260, 145, 920, 609}, maximized=false}">
+            </property>
+            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 500]">
+            </property>
+            <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+            </property>
+            <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{355.08314066919786, 270.01605603448274}">
+            </property>
+            <port name="Input" class="ptolemy.domains.modal.modal.RefinementPort">
+                <property name="input"/>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[100.0, 135.0]">
+                </property>
+            </port>
             <port name="InnerSignal" class="ptolemy.domains.modal.modal.RefinementPort">
                 <property name="input"/>
                 <property name="output"/>
-                <property name="environment_output" class="ptolemy.kernel.util.StringAttribute">
-                </property>
-                <property name="_type" class="ptolemy.actor.TypeAttribute" value="int">
-                </property>
-                <property name="2" class="ptolemy.kernel.util.StringAttribute">
-                </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[150.0, 35.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[450.0, 95.0]">
                 </property>
             </port>
             <port name="OuterSignal" class="ptolemy.domains.modal.modal.RefinementPort">
                 <property name="input"/>
                 <property name="output"/>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[150.0, 85.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[450.0, 135.0]">
                 </property>
             </port>
-            <port name="Input" class="ptolemy.domains.modal.modal.RefinementPort">
-                <property name="input"/>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[-200.0, 65.0]">
-                </property>
-            </port>
-            <entity name="C" class="ptolemy.domains.modal.kernel.State">
-                <property name="isInitialState" class="ptolemy.data.expr.Parameter" value="false">
+            <entity name="B" class="ptolemy.domains.modal.kernel.State">
+                <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="B">
                 </property>
                 <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 </property>
-                <property name="elementURIFragment" class="ptolemy.kernel.util.StringAttribute" value="//@states.0/@regions.0/@states.3">
+                <property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory">
                 </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[140.0, 150.0]">
-                </property>
-            </entity>
-            <entity name="B_733279298" class="ptolemy.domains.modal.kernel.State">
-                <display name="B"/>
-                <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="B_733279298">
-                </property>
-                <property name="isInitialState" class="ptolemy.data.expr.Parameter" value="false">
-                </property>
-                <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
-                </property>
-                <property name="originalName" class="ptolemy.kernel.util.StringAttribute" value="B (B)">
-                </property>
-                <property name="elementURIFragment" class="ptolemy.kernel.util.StringAttribute" value="//@states.0/@regions.0/@states.1">
-                </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[-20.0, 205.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[290.0, 270.0]">
                 </property>
             </entity>
             <entity name="A" class="ptolemy.domains.modal.kernel.State">
@@ -125,94 +126,76 @@
                 </property>
                 <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="{-180.0, 150.0}">
+                <property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[105.0, 180.0]">
                 </property>
             </entity>
-            <relation name="C_733279299_transition_1" class="ptolemy.domains.modal.kernel.Transition">
-                <property name="outputActions" class="ptolemy.domains.modal.kernel.OutputActionsAttribute" value="OuterSignal=3">
+            <entity name="C" class="ptolemy.domains.modal.kernel.State">
+                <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 </property>
-                <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.6283185307179586">
+                <property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory">
                 </property>
-                <property name="gamma" class="ptolemy.data.expr.Parameter" value="0.13289046045124225">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[450.0, 175.0]">
                 </property>
-                <property name="reset" class="ptolemy.data.expr.Parameter" value="true">
-                </property>
-                <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
-                </property>
-                <property name="immediate" class="ptolemy.data.expr.Parameter" value="true">
-                </property>
-                <property name="defaultTransition" class="ptolemy.data.expr.Parameter" value="false">
-                </property>
-                <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
-                </property>
-                <property name="elementURIFragment" class="ptolemy.kernel.util.StringAttribute" value="//@states.0/@regions.0/@states.2/@outgoingTransitions.0">
-                </property>
-                <property name="priority" class="ptolemy.kernel.util.StringAttribute" value="1">
-                </property>
-            </relation>
-            <relation name="A_733279297_transition_1" class="ptolemy.domains.modal.kernel.Transition">
+            </entity>
+            <relation name="relation" class="ptolemy.domains.modal.kernel.Transition">
                 <property name="outputActions" class="ptolemy.domains.modal.kernel.OutputActionsAttribute" value="OuterSignal = 1">
                 </property>
                 <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.6283185307179586">
                 </property>
-                <property name="gamma" class="ptolemy.data.expr.Parameter" value="1.5709984256146106">
+                <property name="gamma" class="ptolemy.data.expr.Parameter" value="0.5062835485241268">
                 </property>
                 <property name="reset" class="ptolemy.data.expr.Parameter" value="true">
                 </property>
-                <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
+            </relation>
+            <relation name="relation2" class="ptolemy.domains.modal.kernel.Transition">
+                <property name="outputActions" class="ptolemy.domains.modal.kernel.OutputActionsAttribute" value="OuterSignal = 3">
                 </property>
-                <property name="immediate" class="ptolemy.data.expr.Parameter" value="false">
+                <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.6467575554006462">
                 </property>
-                <property name="defaultTransition" class="ptolemy.data.expr.Parameter" value="false">
+                <property name="gamma" class="ptolemy.data.expr.Parameter" value="-0.5663321752531731">
                 </property>
-                <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
+                <property name="reset" class="ptolemy.data.expr.Parameter" value="true">
                 </property>
-                <property name="elementURIFragment" class="ptolemy.kernel.util.StringAttribute" value="//@states.0/@regions.0/@states.0/@outgoingTransitions.0">
-                </property>
-                <property name="priority" class="ptolemy.kernel.util.StringAttribute" value="1">
+                <property name="immediate" class="ptolemy.data.expr.Parameter" value="true">
                 </property>
             </relation>
-            <link port="C.incomingPort" relation="C_733279299_transition_1"/>
-            <link port="B_733279298.incomingPort" relation="A_733279297_transition_1"/>
-            <link port="B_733279298.outgoingPort" relation="C_733279299_transition_1"/>
-            <link port="A.outgoingPort" relation="A_733279297_transition_1"/>
+            <link port="B.incomingPort" relation="relation"/>
+            <link port="B.outgoingPort" relation="relation2"/>
+            <link port="A.outgoingPort" relation="relation"/>
+            <link port="C.incomingPort" relation="relation2"/>
         </entity>
-        <entity name="B_733279298" class="ptolemy.domains.modal.modal.Refinement">
+        <entity name="B" class="ptolemy.domains.modal.modal.Refinement">
             <property name="SR Director" class="ptolemy.domains.sr.kernel.SRDirector">
                 <property name="iterations" class="ptolemy.data.expr.Parameter" value="1">
                 </property>
                 <property name="statesignals" class="ptolemy.kernel.util.StringAttribute" value="[]">
                 </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="{-230.0, -110.0}">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[330.0, 255.0]">
                 </property>
             </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={815, 137, 592, 634}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={260, 146, 920, 607}, maximized=false}">
             </property>
-            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[358, 524]">
+            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 500]">
             </property>
-            <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.3537370753323488">
+            <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
             </property>
-            <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{-203.71874999999997, -15.121802985335194}">
+            <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{350.0, 250.0}">
             </property>
+            <port name="Input" class="ptolemy.domains.modal.modal.RefinementPort">
+                <property name="input"/>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[295.0, 320.0]">
+                </property>
+            </port>
             <port name="InnerSignal" class="ptolemy.domains.modal.modal.RefinementPort">
                 <property name="output"/>
-                <property name="environment_output" class="ptolemy.kernel.util.StringAttribute">
-                </property>
-                <property name="_type" class="ptolemy.actor.TypeAttribute" value="int">
-                </property>
-                <property name="2" class="ptolemy.kernel.util.StringAttribute">
-                </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="{-175.0, 10.0}">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[510.0, 305.0]">
                 </property>
             </port>
             <port name="OuterSignal" class="ptolemy.domains.modal.modal.RefinementPort">
                 <property name="output"/>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="{-175.0, -45.0}">
-                </property>
-            </port>
-            <port name="Input" class="ptolemy.domains.modal.modal.RefinementPort">
-                <property name="input"/>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="{-135.0, -115.0}">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[510.0, 345.0]">
                 </property>
             </port>
             <entity name="Const" class="ptolemy.actor.lib.Const">
@@ -225,7 +208,7 @@
                     <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
                     </property>
                 </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="{-245.0, -20.0}">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{387.0, 322.0}">
                 </property>
             </entity>
             <entity name="NonStrictTest" class="ptolemy.actor.lib.NonStrictTest">
@@ -235,22 +218,26 @@
                 </property>
                 <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
                 </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="{-213.32179643854744, 80.1699655202514}">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{418.67820356145256, 422.16996552025137}">
                 </property>
             </entity>
-            <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+            <relation name="relation" class="ptolemy.actor.TypedIORelation">
                 <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
                 </property>
-                <vertex name="vertex1" value="{-200.0, -20.0}">
+                <vertex name="vertex1" value="{432.0, 322.0}">
                 </vertex>
                 <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;relation2.vertex1&quot;,x=-200.0,y=-20.0}, tail={id=&quot;OuterSignal._location&quot;,x=-175.0,y=-45.0}, points={-200.0,-45.0} },{ head={id=&quot;Const.output&quot;,x=-245.0,y=-20.0}, tail={id=&quot;relation2.vertex1&quot;,x=-200.0,y=-20.0}, points={} },{ head={id=&quot;InnerSignal._location&quot;,x=-175.0,y=10.0}, tail={id=&quot;relation2.vertex1&quot;,x=-200.0,y=-20.0}, points={-200.0,10.0} } }">
                 </property>
             </relation>
-            <link port="InnerSignal" relation="relation2"/>
-            <link port="OuterSignal" relation="relation2"/>
-            <link port="Const.output" relation="relation2"/>
-            <link port="NonStrictTest.input" relation="relation2"/>
+            <link port="InnerSignal" relation="relation"/>
+            <link port="OuterSignal" relation="relation"/>
+            <link port="Const.output" relation="relation"/>
+            <link port="NonStrictTest.input" relation="relation"/>
         </entity>
+        <relation name="InputRelation" class="ptolemy.actor.TypedIORelation">
+            <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
+            </property>
+        </relation>
         <relation name="InnerSignalRelation" class="ptolemy.actor.TypedIORelation">
             <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
             </property>
@@ -259,53 +246,31 @@
             <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
             </property>
         </relation>
-        <relation name="InputRelation" class="ptolemy.actor.TypedIORelation">
-            <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
-            </property>
-        </relation>
+        <link port="Input" relation="InputRelation"/>
         <link port="InnerSignal" relation="InnerSignalRelation"/>
         <link port="OuterSignal" relation="OuterSignalRelation"/>
-        <link port="Input" relation="InputRelation"/>
+        <link port="_Controller.Input" relation="InputRelation"/>
         <link port="_Controller.InnerSignal" relation="InnerSignalRelation"/>
         <link port="_Controller.OuterSignal" relation="OuterSignalRelation"/>
-        <link port="_Controller.Input" relation="InputRelation"/>
-        <link port="B_733279298.InnerSignal" relation="InnerSignalRelation"/>
-        <link port="B_733279298.OuterSignal" relation="OuterSignalRelation"/>
-        <link port="B_733279298.Input" relation="InputRelation"/>
+        <link port="B.Input" relation="InputRelation"/>
+        <link port="B.InnerSignal" relation="InnerSignalRelation"/>
+        <link port="B.OuterSignal" relation="OuterSignalRelation"/>
     </entity>
-    <entity name="NonStrictTest" class="ptolemy.actor.lib.NonStrictTest">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{2}">
-        </property>
-        <property name="requireAllCorrectValues" class="ptolemy.actor.parameters.SharedParameter" value="true">
-        </property>
-        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{-25.0, 25.0}">
-        </property>
-    </entity>
-    <entity name="NonStrictTest2" class="ptolemy.actor.lib.NonStrictTest">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{3}">
-        </property>
-        <property name="requireAllCorrectValues" class="ptolemy.actor.parameters.SharedParameter" value="true">
-        </property>
-        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{-140.0, -30.0}">
-        </property>
-    </entity>
-    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
-        </property>
-        <vertex name="vertex1" value="{-200.0, 35.0}">
-        </vertex>
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;.OuterSignal.input&quot;,x=-15.0,y=-70.0}, tail={id=&quot;relation3.vertex1&quot;,x=-60.0,y=-5.0}, points={-60.0,-70.0} },{ head={id=&quot;relation3.vertex1&quot;,x=-200.0,y=35.0}, tail={id=&quot;NonStrictTest2.input&quot;,x=-140.0,y=-30.0}, points={-200.0,-30.0} },{ head={id=&quot;ImmediateTransitions_1893289564_region_1.Input&quot;,x=-140.0,y=35.0}, tail={id=&quot;relation3.vertex1&quot;,x=-200.0,y=35.0}, points={} },{ head={id=&quot;ImmediateTransitions_1893289564_region_1.OuterSignal&quot;,x=-140.0,y=35.0}, tail={id=&quot;relation3.vertex1&quot;,x=-200.0,y=35.0}, points={-80.0,45.0,-80.0,75.0,-200.0,75.0} } }">
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;ModalModel.InnerSignal&quot;,x=-150.0,y=150.0}, tail={id=&quot;NonStrictTest.input&quot;,x=-40.0,y=140.0}, points={} } }">
         </property>
     </relation>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="vertex1" value="{-205.0, 190.0}">
+        </vertex>
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;ModalModel.OuterSignal&quot;,x=-150.0,y=150.0}, tail={id=&quot;relation.vertex1&quot;,x=-205.0,y=190.0}, points={-90.0,160.0,-90.0,190.0} },{ head={id=&quot;ModalModel.Input&quot;,x=-150.0,y=150.0}, tail={id=&quot;relation.vertex1&quot;,x=-205.0,y=190.0}, points={-205.0,150.0} },{ head={id=&quot;relation.vertex1&quot;,x=-205.0,y=190.0}, tail={id=&quot;NonStrictTest2.input&quot;,x=-155.0,y=70.0}, points={-205.0,70.0} } }">
+        </property>
     </relation>
-    <link port="ImmediateTransitions_1893289564_region_1.InnerSignal" relation="relation"/>
-    <link port="ImmediateTransitions_1893289564_region_1.OuterSignal" relation="relation3"/>
-    <link port="ImmediateTransitions_1893289564_region_1.Input" relation="relation3"/>
-    <link port="NonStrictTest.input" relation="relation"/>
-    <link port="NonStrictTest2.input" relation="relation3"/>
+    <link port="NonStrictTest.input" relation="relation2"/>
+    <link port="NonStrictTest2.input" relation="relation"/>
+    <link port="ModalModel.Input" relation="relation"/>
+    <link port="ModalModel.InnerSignal" relation="relation2"/>
+    <link port="ModalModel.OuterSignal" relation="relation"/>
 </entity>
