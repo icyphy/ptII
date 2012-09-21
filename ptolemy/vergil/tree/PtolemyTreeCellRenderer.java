@@ -111,7 +111,10 @@ public class PtolemyTreeCellRenderer extends DefaultTreeCellRenderer {
                 }
                 component.setText(buffer.toString());
             } else {
-                component.setText(object.getName());
+                // Use the display name not the name so that what is
+                // shown to the user in the tree view matches what is
+                // shown in the regular canvas.
+                component.setText(object.getDisplayName());
             }
 
             // Render an icon, if one has been defined.
