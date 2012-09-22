@@ -12,9 +12,9 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="{-365.0, -230.0}">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={387, 159, 920, 607}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={387, 159, 934, 634}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 500]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 524]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
@@ -47,7 +47,7 @@
         </property>
         <property name="requireAllCorrectValues" class="ptolemy.actor.parameters.SharedParameter" value="true">
         </property>
-        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="true">
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{90.0, 30.0}">
         </property>
@@ -233,8 +233,6 @@
                 </property>
             </entity>
             <relation name="relation3" class="ptolemy.domains.modal.kernel.Transition">
-                <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute">
-                </property>
                 <property name="outputActions" class="ptolemy.domains.modal.kernel.OutputActionsAttribute" value="Output = 1">
                 </property>
                 <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.6283185307179586">
