@@ -76,9 +76,10 @@ public class FPPCore extends ResourceScheduler {
      *  @throws IllegalActionException Thrown in super class.
      */
     @Override
-    public void initialize() throws IllegalActionException {
+    public Time initialize() throws IllegalActionException {
         super.initialize();
         _currentlyExecuting = new Stack();
+        return null;
     }
 
     /** Schedule a new actor for execution and return the next time

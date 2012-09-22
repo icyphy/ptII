@@ -31,19 +31,9 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 package ptolemy.domains.ptides.lib.io;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import ptolemy.data.DoubleToken;
-import ptolemy.data.expr.FileParameter;
-import ptolemy.data.expr.Parameter;
-import ptolemy.data.expr.StringParameter;
-import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.vergil.icon.PolygonIcon;
 
 /**
  *  This port provides a specialized TypedIOPort for sensors
@@ -68,9 +58,7 @@ public class SensorPort extends PtidesPort {
         super(container, name);
         
         this.setInput(true); 
-        
-        PolygonIcon icon = new PolygonIcon(this, "_icon");
-        icon.setPolygonCoordinates(new Integer[]{-8, 8, 8, 8, 8, 4, 12, 0, 8, -4, 8, -8, -8, -8});
+          
     } 
     
     /** FIXME: additional parameters:

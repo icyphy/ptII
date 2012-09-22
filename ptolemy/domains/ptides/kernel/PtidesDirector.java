@@ -53,6 +53,7 @@ import ptolemy.actor.util.CausalityInterface;
 import ptolemy.actor.util.Dependency;
 import ptolemy.actor.util.SuperdenseDependency;
 import ptolemy.actor.util.Time;
+import ptolemy.data.BooleanToken;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.ObjectToken;
 import ptolemy.data.Token;
@@ -60,10 +61,13 @@ import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.domains.de.kernel.DEDirector;
 import ptolemy.domains.de.kernel.DEEventQueue;
+import ptolemy.domains.modal.modal.ModalModel;
 import ptolemy.domains.ptides.lib.PtidesPort;
 import ptolemy.domains.ptides.lib.ResourceScheduler; 
 import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.ModelErrorHandler;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 
@@ -186,6 +190,11 @@ public class PtidesDirector extends DEDirector {
                 "clockSynchronizationErrorBound");
         clockSynchronizationErrorBound.setTypeEquals(BaseType.DOUBLE);
         clockSynchronizationErrorBound.setExpression("0.0");
+        
+        enableErrorHandling = new Parameter(this, "enableErrorHandling");
+        enableErrorHandling.setTypeEquals(BaseType.BOOLEAN);
+        enableErrorHandling.setExpression("false");
+        
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -196,6 +205,11 @@ public class PtidesDirector extends DEDirector {
      *  platforms.
      */
     public SharedParameter clockSynchronizationErrorBound;
+    
+    /** Show Error Handling component if parameter value is true. 
+     *  The default value is false.
+     */
+    public Parameter enableErrorHandling;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -217,6 +231,41 @@ public class PtidesDirector extends DEDirector {
         }
         list.add(event);
         _inputEventQueue.put(inputReady, list);
+    }
+    
+    /** Update the director parameters when attributes are changed.
+     *  Changes to <i>enableErrorHandling</i> will show a modal
+     *  model that allows for handling model errors.
+     *  @param attribute The changed parameter.
+     *  @exception IllegalActionException If the modal model cannot be created.
+     */
+    @Override
+    public void attributeChanged(Attribute attribute)
+            throws IllegalActionException {
+        if (attribute == enableErrorHandling) {
+            try {
+                ModelErrorHandler handler = getModelErrorHandler();
+                if (((BooleanToken)enableErrorHandling.getToken()).booleanValue()) {
+                    for (Object object : ((CompositeActor)getContainer()).entityList()) {
+                        if (object instanceof CompositeActor && ((CompositeActor)object).getName().equals("ErrorHandler")) {
+                            setModelErrorHandler((ModelErrorHandler) object);
+                            handler = (ModelErrorHandler) object;
+                            break;
+                        }
+                    }
+                    if (handler == null) {
+                        ModalModel model = new ModalModel((CompositeEntity) this.getContainer(), "ErrorHandler");
+                        setModelErrorHandler(model);
+                    } 
+                } else {
+                    setModelErrorHandler(null);
+                }
+            } catch (NameDuplicationException e) {
+                throw new IllegalActionException(this, e.getMessage());
+            }
+        } else {
+            super.attributeChanged(attribute);
+        }
     }
 
     /**
@@ -303,40 +352,6 @@ public class PtidesDirector extends DEDirector {
         }
     }
 
-    /** Return the local time or, (i) if an actor is executing or (ii) an input
-     *  token is read, (i) the timestamp of the event that caused the actor
-     *  execution or (ii) the timestamp of the input event. 
-     *  @return The local time or the semantic
-     */
-    @Override
-    public Time getModelTime() {
-        if (_currentLogicalTime != null) {
-            return _currentLogicalTime;
-        }
-        return super.getModelTime();
-    }
-    
-    /** Return the current microstep or the microstep of the event, if
-     *  an actor is currently executing.
-     */
-    @Override
-    public int getMicrostep() {
-        if (_currentLogicalTime != null) {
-            return _currentLocialIndex;
-        }
-        return super.getMicrostep();
-    }
-    
-    /** Return a superdense time index for the current time,
-     *  where the index is equal to the microstep.
-     *  @return A superdense time index.
-     *  @see #setIndex(int)
-     *  @see ptolemy.actor.SuperdenseTimeDirector
-     */
-    public int getIndex() {
-        return getMicrostep();
-    }
-
     /** Add a pure event to the queue of pure events.
      *  @param actor Actor to fire.
      *  @param time Time the actor should be fired at.
@@ -365,11 +380,76 @@ public class PtidesDirector extends DEDirector {
             fireContainerAt(time);
         }
         if (_isInitializing) {
-
+    
         }
         return time;
     }
 
+    /** Return a superdense time index for the current time,
+     *  where the index is equal to the microstep.
+     *  @return A superdense time index.
+     *  @see #setIndex(int)
+     *  @see ptolemy.actor.SuperdenseTimeDirector
+     */
+    public int getIndex() {
+        return getMicrostep();
+    }
+
+    /** Return the local time or, (i) if an actor is executing or (ii) an input
+     *  token is read, (i) the timestamp of the event that caused the actor
+     *  execution or (ii) the timestamp of the input event. 
+     *  @return The local time or the semantic
+     */
+    @Override
+    public Time getModelTime() {
+        if (_currentLogicalTime != null) {
+            return _currentLogicalTime;
+        }
+        return super.getModelTime();
+    }
+    
+    /** Return the current microstep or the microstep of the event, if
+     *  an actor is currently executing.
+     */
+    @Override
+    public int getMicrostep() {
+        if (_currentLogicalTime != null) {
+            return _currentLocialIndex;
+        }
+        return super.getMicrostep();
+    }
+    
+    private IOPort _getPort(CompositeActor actor, String name) {
+        for (Object object : actor.portList()) {
+            if (((IOPort)object).getName().equals(name)) {
+                return (IOPort)object;
+            }
+        }
+        return null;
+    }
+    
+    @Override
+    public boolean handleModelError(NamedObj context,
+            IllegalActionException exception) throws IllegalActionException { 
+        ModelErrorHandler handler = getModelErrorHandler();
+        if (handler != null) {
+            ModalModel model = (ModalModel) handler;
+            IOPort port = (IOPort) context;
+            IOPort modalPort = _getPort(model, port.getName());
+            if (modalPort != null) { 
+                port.send(0, new DoubleToken(0.0));
+                model.prefire(); 
+                model.fire();
+                model.postfire();
+                IOPort drop = _getPort(model, "drop");
+                return true;
+            }
+            return false;
+        } else {
+            return super.handleModelError(context, exception);
+        }
+    }
+    
     /** Initialize all the actors and variables. Perform static analysis on 
      *  superdense dependencies between input ports in the topology.
      *  @exception IllegalActionException If any of the methods contained
@@ -392,7 +472,10 @@ public class PtidesDirector extends DEDirector {
             if (entity instanceof ResourceScheduler) {
                 ResourceScheduler scheduler = (ResourceScheduler) entity;
                 _resourceSchedulers.add(scheduler);
-                scheduler.initialize();
+                Time time = scheduler.initialize();
+                if (time != null) {
+                    fireContainerAt(time);
+                }
             }
         }
 
@@ -438,8 +521,8 @@ public class PtidesDirector extends DEDirector {
                         && ((PtidesPort)event.ioPort()).isActuatorPort()
                         && getEnvironmentTime().compareTo(
                                 event.timeStamp()) > 0) {
-                    throw new IllegalActionException(event.ioPort(), "Missed Deadline at "
-                            + event.ioPort() + "!");
+                    handleModelError(event.ioPort(), new IllegalActionException(event.ioPort(), "Missed Deadline at "
+                            + event.ioPort() + "!"));
                 }
             }
             _setNextFireTime(set.first());
@@ -461,8 +544,8 @@ public class PtidesDirector extends DEDirector {
                         && ((PtidesPort)port).isActuatorPort()
                         && getEnvironmentTime().compareTo(
                                 event.absoluteDeadline()) > 0) {
-                    throw new IllegalActionException(port, "Missed Deadline at "
-                            + port + "!");
+                    handleModelError(event.ioPort(), new IllegalActionException(port, "Missed Deadline at "
+                            + port + "!"));
                 }
 
                 _setNextFireTime(event.absoluteDeadline());

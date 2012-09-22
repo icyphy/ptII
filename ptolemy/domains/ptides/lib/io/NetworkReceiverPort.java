@@ -31,16 +31,11 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 package ptolemy.domains.ptides.lib.io;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import ptolemy.data.DoubleToken; 
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.vergil.icon.PolygonIcon;
 
 /**
  *  This port provides a specialized TypedIOPort for network receivers
@@ -71,10 +66,7 @@ public class NetworkReceiverPort extends PtidesPort {
         
         networkDelayBound = new Parameter(this, "networkDelayBound");
         networkDelayBound.setExpression("0.0");
-        networkDelayBound.setTypeEquals(BaseType.DOUBLE); 
-        
-        PolygonIcon icon = new PolygonIcon(this, "_icon");
-        icon.setPolygonCoordinates(new Integer[]{-8, 8, 8, 8, 8, 4, 12, 4, 12, -4, 8, -4, 8, -8, -8, -8});
+        networkDelayBound.setTypeEquals(BaseType.DOUBLE);  
     } 
     
     /** Network delay bound parameter that defaults to the double value 0.0. */

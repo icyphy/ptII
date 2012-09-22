@@ -29,16 +29,13 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 package ptolemy.domains.ptides.lib.io;
 
-import ptolemy.actor.CustomRenderedPort;
 import ptolemy.actor.lib.hoc.MirrorPort;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
-import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.Entity;
+import ptolemy.kernel.CompositeEntity; 
 import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.vergil.icon.PolygonIcon;
+import ptolemy.kernel.util.NameDuplicationException; 
 
 /**
  *  This abstract class implements common functionality for ptides

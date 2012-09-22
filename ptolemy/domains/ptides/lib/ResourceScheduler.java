@@ -177,10 +177,11 @@ public abstract class ResourceScheduler extends MoMLModelAttribute implements De
     }
     
     /** Initialize local variables.
+     * @returns Next time this scheduler requests a firing.
      * @throws IllegalActionException Thrown if list of actors 
      *   scheduled by this scheduler cannot be retrieved.
      */
-    public void initialize() throws IllegalActionException {
+    public Time initialize() throws IllegalActionException {
         _remainingTimes = new HashMap<Actor, Time>();
         _lastTimeScheduled = new HashMap<Actor, Time>();
         _actors = new ArrayList<NamedObj>();
@@ -199,6 +200,7 @@ public abstract class ResourceScheduler extends MoMLModelAttribute implements De
             }
             _schedulePlotterEditorFactory.plot.doLayout();
         }
+        return null;
     }
 
     /** Schedule a new actor for execution and return the next time

@@ -30,19 +30,13 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 package ptolemy.domains.ptides.lib.io;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import ptolemy.actor.TypeAttribute;
 import ptolemy.data.BooleanToken;
-import ptolemy.data.DoubleToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.vergil.icon.PolygonIcon;
 
 
 /**
@@ -72,9 +66,7 @@ public class ActuatorPort extends PtidesPort {
         actuateAtEventTimestamp.setTypeEquals(BaseType.BOOLEAN);
         actuateAtEventTimestamp.setExpression("true");
         _actuateAtEventTimestamp = true;
-        
-        PolygonIcon icon = new PolygonIcon(this, "_icon");
-        icon.setPolygonCoordinates(new Integer[]{-8, 8, 8, 8, 8, -8, -8, -8, -8, -4, -12, 0, -8, 4});
+         
     }
     
     /** Actuate at event timestamp parameter that defaults to the boolean value TRUE. 

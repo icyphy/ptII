@@ -31,22 +31,17 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 package ptolemy.domains.ptides.lib.io;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.NoRoomException;
 import ptolemy.actor.util.Time;
-import ptolemy.data.DoubleToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
-import ptolemy.data.expr.StringParameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.vergil.icon.PolygonIcon;
 
 /**
  *  This port provides a specialized TypedIOPort for network transmitters
@@ -75,9 +70,7 @@ public class NetworkTransmitterPort extends PtidesPort {
         platformDelayBound = new Parameter(this, "platformDelayBound");
         platformDelayBound.setExpression("0.0");
         platformDelayBound.setTypeEquals(BaseType.DOUBLE);  
-        
-        PolygonIcon icon = new PolygonIcon(this, "_icon");
-        icon.setPolygonCoordinates(new Integer[]{-8, 8, 8, 8, 8, -8, -8, -8, -8, -4, -12, -4, -12, 4, -8, 4});
+         
     }
      
     

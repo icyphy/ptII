@@ -90,10 +90,11 @@ public class DynamicCoreAssignmentScheduler extends ResourceScheduler {
      *   scheduled by this scheduler cannot be retrieved.
      */
     @Override
-    public void initialize() throws IllegalActionException {
+    public Time initialize() throws IllegalActionException {
         // TODO Auto-generated method stub
         super.initialize();
         _remainingTimeOnCore = new HashMap<ResourceScheduler, Time>();
+        return null;
     }
     
 

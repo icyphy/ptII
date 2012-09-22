@@ -32,29 +32,20 @@ package ptolemy.domains.ptides.lib;
 import java.util.HashMap;
 
 import ptolemy.actor.CompositeActor;
-import ptolemy.actor.CustomRenderedPort;
 import ptolemy.actor.NoRoomException;
-import ptolemy.actor.TypedCompositeActor;
 import ptolemy.actor.lib.hoc.MirrorPort;
 import ptolemy.actor.util.Time;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.DoubleToken;
-import ptolemy.data.StringToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.Entity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Settable;
-import ptolemy.kernel.util.Settable.Visibility;
 import ptolemy.kernel.util.SingletonConfigurableAttribute;
-import ptolemy.moml.MoMLChangeRequest;
-import ptolemy.vergil.icon.EditorIcon;
-import ptolemy.vergil.icon.PolygonIcon;
-import ptolemy.vergil.kernel.attributes.ResizablePolygonAttribute;
 
 /**
  *  This abstract class implements common functionality for ptides

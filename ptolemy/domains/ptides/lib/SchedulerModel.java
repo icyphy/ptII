@@ -40,6 +40,7 @@ import ptolemy.actor.TypedCompositeActor;
 import ptolemy.actor.util.Time;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.expr.Parameter;
+import ptolemy.domains.de.kernel.DEDirector;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -85,7 +86,7 @@ public class SchedulerModel extends ResourceScheduler {
      *   scheduled by this scheduler cannot be retrieved.
      */
     @Override
-    public void initialize() throws IllegalActionException { 
+    public Time initialize() throws IllegalActionException { 
         super.initialize();
         ((TypedCompositeActor)_model).preinitialize();
         ((TypedCompositeActor)_model).initialize();
@@ -106,6 +107,7 @@ public class SchedulerModel extends ResourceScheduler {
 //            throw new IllegalActionException(this, e.getMessage());
 //        }
         _currentlyExecuting = new ArrayList();
+        return ((CompositeActor)_model).getDirector().getModelNextIterationTime();
     }
     
     /** Schedule a new actor for execution. Find the const 
@@ -138,10 +140,10 @@ public class SchedulerModel extends ResourceScheduler {
             if (mappedActor != null) {
                 ((CompositeActor)_model).getDirector().setModelTime(currentPlatformTime);
                 ((CompositeActor)_model).getDirector().fireAtCurrentTime(mappedActor);
-            }
+            } 
         }
         ((CompositeActor)_model).getDirector().setModelTime(currentPlatformTime); 
-        _fireModel();
+        _fireModel(currentPlatformTime);
         
         Parameter parameter = (Parameter)((CompositeActor)_model).getAttribute("resume" + actor.getName());
         finished = ((BooleanToken)parameter.getToken()).booleanValue();
@@ -159,6 +161,12 @@ public class SchedulerModel extends ResourceScheduler {
         return time;
     }
     
+    @Override
+    public void wrapup() throws IllegalActionException {
+        super.wrapup();
+        ((CompositeActor)_model).wrapup();
+    }
+    
     /** List of currently executing actors. */
     protected List<Actor> _currentlyExecuting;
 
@@ -172,10 +180,17 @@ public class SchedulerModel extends ResourceScheduler {
         return null;
     }
     
-    private void _fireModel() throws IllegalActionException {
-        //((CompositeActor)_model).prefire(); 
-        ((CompositeActor)_model).fire(); 
-        ((CompositeActor)_model).postfire();
+    private void _fireModel(Time currentPlatformTime) throws IllegalActionException {
+        Time time = currentPlatformTime;
+        int index = 1;
+        while (time.equals(currentPlatformTime)) {
+            ((DEDirector)((CompositeActor)_model).getDirector()).setIndex(index);
+            ((CompositeActor)_model).prefire(); 
+            ((CompositeActor)_model).fire(); 
+            ((CompositeActor)_model).postfire();
+            time = ((CompositeActor)_model).getDirector().getModelNextIterationTime();
+            index++;
+        }
     }
     
     private Actor _getActor(Actor actor, String suffix) { 
