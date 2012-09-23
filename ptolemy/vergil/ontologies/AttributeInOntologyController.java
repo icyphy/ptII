@@ -30,7 +30,7 @@ package ptolemy.vergil.ontologies;
 
 import java.util.List;
 
-import ptolemy.vergil.kernel.AttributeController;
+import ptolemy.vergil.kernel.AttributeWithIconController;
 import ptolemy.vergil.toolbox.MenuActionFactory;
 import diva.graph.GraphController;
 
@@ -48,7 +48,7 @@ import diva.graph.GraphController;
  *  @Pt.ProposedRating Red (cshelton)
  *  @Pt.AcceptedRating Red (cshelton)
  */
-public class AttributeInOntologyController extends AttributeController {
+public class AttributeInOntologyController extends AttributeWithIconController {
 
     /** Create an attribute controller associated with the specified graph
      *  controller.  The attribute controller is given full access.

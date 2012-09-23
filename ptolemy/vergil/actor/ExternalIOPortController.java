@@ -35,14 +35,15 @@ import java.awt.geom.Line2D;
 import java.awt.geom.Rectangle2D;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
+import javax.swing.Action;
 import javax.swing.SwingConstants;
 
 import ptolemy.actor.IOPort;
 import ptolemy.actor.PubSubPort;
 import ptolemy.actor.PublisherPort;
 import ptolemy.actor.SubscriberPort;
+import ptolemy.actor.gui.Configuration;
 import ptolemy.actor.parameters.ParameterPort;
 import ptolemy.data.type.Typeable;
 import ptolemy.kernel.InstantiableNamedObj;
@@ -58,6 +59,8 @@ import ptolemy.vergil.basic.BasicGraphFrame;
 import ptolemy.vergil.basic.WithIconGraphController;
 import ptolemy.vergil.icon.EditorIcon;
 import ptolemy.vergil.kernel.AttributeController;
+import ptolemy.vergil.toolbox.EditIconAction;
+import ptolemy.vergil.toolbox.RemoveIconAction;
 import ptolemy.vergil.toolbox.SnapConstraint;
 import diva.canvas.CanvasUtilities;
 import diva.canvas.CompositeFigure;
@@ -297,6 +300,22 @@ public class ExternalIOPortController extends AttributeController {
         }
     }
 
+    /** Set the configuration.  This is used in derived classes to
+     *  to open files (such as documentation).  The configuration is
+     *  is important because it keeps track of which files are already
+     *  open and ensures that there is only one editor operating on the
+     *  file at any one time.
+     *  @param configuration The configuration.
+     */
+    public void setConfiguration(Configuration configuration) {
+        super.setConfiguration(configuration);
+        
+        if (_configuration != null) {
+            // Create an Appearance submenu.
+            _createAppearanceSubmenu();
+        }
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
@@ -358,8 +377,27 @@ public class ExternalIOPortController extends AttributeController {
     ///////////////////////////////////////////////////////////////////
     ////                         protected members                 ////
 
+    /** The action that handles edit custom icon. */
+    protected EditIconAction _editIconAction = new EditIconAction();
+
     /** The font used to label a port. */
     protected static Font _labelFont = new Font("SansSerif", Font.PLAIN, 12);
+
+    /** The action that handles removing a custom icon. */
+    protected RemoveIconAction _removeIconAction = new RemoveIconAction();
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
+
+    /**
+     * Create an Appearance submenu.
+     */
+    private void _createAppearanceSubmenu() {
+        _editIconAction.setConfiguration(_configuration);
+        _removeIconAction.setConfiguration(_configuration);
+        Action[] actions = { _editIconAction, _removeIconAction};
+        _appearanceMenuActionFactory.addActions(actions, "Appearance");
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
@@ -465,7 +503,6 @@ public class ExternalIOPortController extends AttributeController {
                         } else {
                             fill = Color.black;
                         }
-                        Integer[] coordinates;
                         if (ioport.isOutput() && ioport.isInput()) {
                             polygon = _createPolygon(IOPORT_COORDINATES,
                                     polygon);
@@ -527,13 +564,17 @@ public class ExternalIOPortController extends AttributeController {
 
             if ((name != null) && !name.equals("")
                     && !(port instanceof ParameterPort)) {
-                LabelFigure label = new LabelFigure(name, _labelFont, 1.0,
-                        SwingConstants.SOUTH_WEST);
+                // Do not create a label if there is a custom icon.
+                List<EditorIcon> icons = port.attributeList(EditorIcon.class);
+                if (icons.size() == 0) {
+                    LabelFigure label = new LabelFigure(name, _labelFont, 1.0,
+                            SwingConstants.SOUTH_WEST);
 
-                // Shift the label slightly right so it doesn't
-                // collide with ports.
-                label.translateTo(backBounds.getX(), backBounds.getY());
-                ((CompositeFigure) figure).add(label);
+                    // Shift the label slightly right so it doesn't
+                    // collide with ports.
+                    label.translateTo(backBounds.getX(), backBounds.getY());
+                    ((CompositeFigure) figure).add(label);
+                }
             }
 
             if (port instanceof IOPort) {
@@ -678,11 +719,6 @@ public class ExternalIOPortController extends AttributeController {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private members                   ////
-
-    /** Map used to keep track of icons that have been created
-     *  but not yet assigned to a container.
-     */
-    private static Map _iconsPendingContainer = new HashMap();
 
     /** Color for publish and subscribe labels. */
     private static Color _pubSubLabelColor = new Color(0.0f, 0.4f, 0.4f, 1.0f);

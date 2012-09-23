@@ -57,6 +57,7 @@ JSRCS = \
 	AnimationRenderer.java \
 	AttributeNodeModel.java \
 	AttributeController.java \
+	AttributeWithIconController \
 	CompositePtolemyModel.java \
 	DebugRenderer.java \
 	Link.java \

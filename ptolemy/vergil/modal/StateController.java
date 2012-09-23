@@ -37,20 +37,18 @@ import java.util.Map;
 import javax.swing.KeyStroke;
 
 import ptolemy.actor.TypedActor;
-import ptolemy.data.BooleanToken;
-import ptolemy.data.expr.Parameter;
 import ptolemy.domains.modal.kernel.State;
 import ptolemy.kernel.util.ChangeRequest;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.Locatable;
 import ptolemy.kernel.util.NamedObj;
-import ptolemy.moml.MoMLChangeRequest;
 import ptolemy.util.MessageHandler;
 import ptolemy.util.StringUtilities;
 import ptolemy.vergil.icon.EditorIcon;
 import ptolemy.vergil.icon.XMLIcon;
 import ptolemy.vergil.kernel.AttributeController;
+import ptolemy.vergil.kernel.AttributeWithIconController;
 import ptolemy.vergil.toolbox.FigureAction;
 import diva.canvas.Figure;
 import diva.graph.GraphController;
@@ -74,7 +72,7 @@ import diva.gui.GUIUtilities;
  @Pt.ProposedRating Red (eal)
  @Pt.AcceptedRating Red (johnr)
  */
-public class StateController extends AttributeController {
+public class StateController extends AttributeWithIconController {
 
     /** Create a state controller associated with the specified graph
      *  controller.
@@ -93,20 +91,75 @@ public class StateController extends AttributeController {
         super(controller, access);
 
         setNodeRenderer(new StateRenderer(controller.getGraphModel()));
-
-        _appearanceMenuActionFactory.addAction(_editIconAction);
-        _appearanceMenuActionFactory.addAction(_removeIconAction);
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
+
+    /** Map used to keep track of icons that have been created
+     *  but not yet assigned to a container.
+     */
+    private static Map _iconsPendingContainer = new HashMap();
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
 
-    /**
-     Render the state as a circle.
+    /** An action to look inside a state at its refinement, if it has one.
+     *  NOTE: This requires that the configuration be non null, or it
+     *  will report an error with a fairly cryptic message.
+     */
+    protected class LookInsideAction extends FigureAction {
+        public LookInsideAction() {
+            super("Look Inside");
 
-     @version $Id$
+            // If we are in an applet, so Control-L or Command-L will
+            // be caught by the browser as "Open Location", so we don't
+            // supply Control-L or Command-L as a shortcut under applets.
+            if (!StringUtilities.inApplet()) {
+                // For some inexplicable reason, the I key doesn't work here.
+                // So we use L.
+                putValue(GUIUtilities.ACCELERATOR_KEY, KeyStroke.getKeyStroke(
+                        KeyEvent.VK_L, Toolkit.getDefaultToolkit()
+                                .getMenuShortcutKeyMask()));
+            }
+        }
+
+        public void actionPerformed(ActionEvent e) {
+            if (_configuration == null) {
+                MessageHandler
+                        .error("Cannot look inside without a configuration.");
+                return;
+            }
+
+            super.actionPerformed(e);
+
+            NamedObj target = getTarget();
+
+            // If the target is not an instance of State, do nothing.
+            if (target instanceof State) {
+                try {
+                    TypedActor[] refinements = ((State) target).getRefinement();
+
+                    if ((refinements != null) && (refinements.length > 0)) {
+                        for (int i = 0; i < refinements.length; i++) {
+                            // Open each refinement.
+                            _configuration
+                                    .openInstance((NamedObj) refinements[i]);
+                        }
+                    } else {
+                        MessageHandler.error("State has no refinement.");
+                    }
+                } catch (Exception ex) {
+                    MessageHandler.error("Look inside failed: ", ex);
+                }
+            }
+        }
+    }
+
+    /** Render the state as a circle, unless it has a custom icon.
      */
     public static class StateRenderer implements NodeRenderer {
+
         /** Construct a state renderer.
          *  @param model The GraphModel.
          */
@@ -215,178 +268,5 @@ public class StateController extends AttributeController {
         }
 
         private GraphModel _model;
-    }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         protected variables               ////
-
-    /** The edit custom icon action. */
-    protected EditIconAction _editIconAction = new EditIconAction();
-
-    /** The remove custom icon action. */
-    protected RemoveIconAction _removeIconAction = new RemoveIconAction();
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         inner classes                     ////
-
-    /** An action to look inside a state at its refinement, if it has one.
-     *  NOTE: This requires that the configuration be non null, or it
-     *  will report an error with a fairly cryptic message.
-     */
-    protected class LookInsideAction extends FigureAction {
-        public LookInsideAction() {
-            super("Look Inside");
-
-            // If we are in an applet, so Control-L or Command-L will
-            // be caught by the browser as "Open Location", so we don't
-            // supply Control-L or Command-L as a shortcut under applets.
-            if (!StringUtilities.inApplet()) {
-                // For some inexplicable reason, the I key doesn't work here.
-                // So we use L.
-                putValue(GUIUtilities.ACCELERATOR_KEY, KeyStroke.getKeyStroke(
-                        KeyEvent.VK_L, Toolkit.getDefaultToolkit()
-                                .getMenuShortcutKeyMask()));
-            }
-        }
-
-        public void actionPerformed(ActionEvent e) {
-            if (_configuration == null) {
-                MessageHandler
-                        .error("Cannot look inside without a configuration.");
-                return;
-            }
-
-            super.actionPerformed(e);
-
-            NamedObj target = getTarget();
-
-            // If the target is not an instance of State, do nothing.
-            if (target instanceof State) {
-                try {
-                    TypedActor[] refinements = ((State) target).getRefinement();
-
-                    if ((refinements != null) && (refinements.length > 0)) {
-                        for (int i = 0; i < refinements.length; i++) {
-                            // Open each refinement.
-                            _configuration
-                                    .openInstance((NamedObj) refinements[i]);
-                        }
-                    } else {
-                        MessageHandler.error("State has no refinement.");
-                    }
-                } catch (Exception ex) {
-                    MessageHandler.error("Look inside failed: ", ex);
-                }
-            }
-        }
-    }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         private variables                 ////
-
-    /** Map used to keep track of icons that have been created
-     *  but not yet assigned to a container.
-     */
-    private static Map _iconsPendingContainer = new HashMap();
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         inner classes                     ////
-
-    /**
-     Customize the icon of the state.
-
-     @version $Id$
-     */
-    private class EditIconAction extends FigureAction {
-
-        /** Create an action to edit an icon. */
-        public EditIconAction() {
-            super("Edit Custom Icon");
-        }
-
-        ///////////////////////////////////////////////////////////////////
-        ////                         public methods                    ////
-
-        /** Process the edit icon command.
-         *  @param e The event.
-         */
-        public void actionPerformed(ActionEvent e) {
-            if (_configuration == null) {
-                MessageHandler.error("Cannot edit icon without a "
-                        + "configuration.");
-                return;
-            }
-
-            // Determine which entity was selected for the action.
-            super.actionPerformed(e);
-
-            final NamedObj object = getTarget();
-
-            // Do this as a change request since it may add a new icon.
-            ChangeRequest request = new ChangeRequest(this, "Edit Custom Icon") {
-                protected void _execute() throws Exception {
-                    EditorIcon icon = null;
-                    List<EditorIcon> iconList = object
-                            .attributeList(EditorIcon.class);
-                    for (EditorIcon oldIcon : iconList) {
-                        if (oldIcon.getClass().equals(EditorIcon.class)) {
-                            icon = oldIcon;
-                            break;
-                        }
-                    }
-
-                    if (icon == null) {
-                        icon = new EditorIcon(object, "_icon");
-                        Parameter hideName = (Parameter) object
-                                .getAttribute("_hideName");
-                        if (((BooleanToken) hideName.getToken()).booleanValue()) {
-                            hideName.setToken(BooleanToken.FALSE);
-                        }
-                    }
-
-                    _configuration.openModel(icon);
-                }
-            };
-
-            object.requestChange(request);
-        }
-    }
-
-    /** Action to remove a custom icon.
-
-    @version $Id$
-    */
-    private static class RemoveIconAction extends FigureAction {
-        public RemoveIconAction() {
-            super("Remove Custom Icon");
-        }
-
-        ///////////////////////////////////////////////////////////////////
-        ////                         public methods                    ////
-
-        /** Process the remove icon command.
-         *  @param e The event.
-         */
-        public void actionPerformed(ActionEvent e) {
-            super.actionPerformed(e);
-
-            NamedObj object = getTarget();
-            EditorIcon icon = null;
-            List<EditorIcon> iconList = object.attributeList(EditorIcon.class);
-            for (EditorIcon oldIcon : iconList) {
-                if (oldIcon.getClass().equals(EditorIcon.class)) {
-                    icon = oldIcon;
-                    break;
-                }
-            }
-
-            if (icon != null) {
-                String moml = "<deleteProperty name=\"" + icon.getName()
-                        + "\"/>";
-                MoMLChangeRequest request = new MoMLChangeRequest(this, object,
-                        moml);
-                object.requestChange(request);
-            }
-        }
     }
 }
