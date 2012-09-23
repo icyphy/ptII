@@ -1,0 +1,297 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="HierarchicalFSMTypeInference" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.0.devel">
+    </property>
+    <property name="SR Director" class="ptolemy.domains.sr.kernel.SRDirector">
+        <property name="iterations" class="ptolemy.data.expr.Parameter" value="2">
+        </property>
+        <property name="statesignals" class="ptolemy.kernel.util.StringAttribute" value="[Olocal_ImmediateTransitions_1893289564, O2local_ImmediateTransitions_1893289564]">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{-160.0, -100.0}">
+        </property>
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 22, 934, 634}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 524]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.6267963472756157">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{2.146782562022935, 32.947265625}">
+    </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This hierarchical model is performing two synchronous ticks. &#10;It checks that reset transitions to transient states work. ">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{-215.0, -65.0}">
+        </property>
+    </property>
+    <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.6,0.6,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author: Christian Motika, Edward A. Lee">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{-80.0, -130.0}">
+        </property>
+    </property>
+    <entity name="NonStrictTest" class="ptolemy.actor.lib.NonStrictTest">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{1}">
+        </property>
+        <property name="requireAllCorrectValues" class="ptolemy.actor.parameters.SharedParameter" value="true">
+        </property>
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{-40.0, 85.0}">
+        </property>
+    </entity>
+    <entity name="NonStrictTest2" class="ptolemy.actor.lib.NonStrictTest">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{1}">
+        </property>
+        <property name="requireAllCorrectValues" class="ptolemy.actor.parameters.SharedParameter" value="true">
+        </property>
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{-155.0, 20.0}">
+        </property>
+    </entity>
+    <entity name="ModalModel" class="ptolemy.domains.modal.modal.ModalModel">
+        <property name="_tableauFactory" class="ptolemy.vergil.modal.modal.ModalTableauFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{-150.0, 95.0}">
+        </property>
+        <port name="trigger" class="ptolemy.domains.modal.modal.ModalPort">
+            <property name="input"/>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="int">
+            </property>
+        </port>
+        <port name="inner" class="ptolemy.domains.modal.modal.ModalPort">
+            <property name="output"/>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="int">
+            </property>
+        </port>
+        <port name="outer" class="ptolemy.domains.modal.modal.ModalPort">
+            <property name="output"/>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="int">
+            </property>
+        </port>
+        <entity name="_Controller" class="ptolemy.domains.modal.modal.ModalController">
+            <property name="_library" class="ptolemy.moml.LibraryAttribute">
+                <configure>
+      <entity name="state library" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/configs/basicUtilities.xml"></input><entity name="state" class="ptolemy.domains.modal.kernel.State"><property name="_centerName" class="ptolemy.kernel.util.Attribute"></property><property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory"></property></entity></entity>
+    </configure>
+            </property>
+            <port name="trigger" class="ptolemy.domains.modal.modal.RefinementPort">
+                <property name="input"/>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{20.0, 260.0}">
+                </property>
+            </port>
+            <port name="inner" class="ptolemy.domains.modal.modal.RefinementPort">
+                <property name="input"/>
+                <property name="output"/>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[500.0, 240.0]">
+                </property>
+            </port>
+            <port name="outer" class="ptolemy.domains.modal.modal.RefinementPort">
+                <property name="input"/>
+                <property name="output"/>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[500.0, 280.0]">
+                </property>
+            </port>
+            <entity name="state" class="ptolemy.domains.modal.kernel.State">
+                <property name="isInitialState" class="ptolemy.data.expr.Parameter" value="true">
+                </property>
+                <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                </property>
+                <property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{140, 215}">
+                </property>
+            </entity>
+            <entity name="state2" class="ptolemy.domains.modal.kernel.State">
+                <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="state">
+                </property>
+                <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                </property>
+                <property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{250.0, 220.0}">
+                </property>
+            </entity>
+            <entity name="state3" class="ptolemy.domains.modal.kernel.State">
+                <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                </property>
+                <property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{400, 215}">
+                </property>
+            </entity>
+            <relation name="relation" class="ptolemy.domains.modal.kernel.Transition">
+                <property name="outputActions" class="ptolemy.domains.modal.kernel.OutputActionsAttribute" value="outer = 1">
+                </property>
+                <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.6283185307179586">
+                </property>
+                <property name="gamma" class="ptolemy.data.expr.Parameter" value="0.15918315812903552">
+                </property>
+                <property name="reset" class="ptolemy.data.expr.Parameter" value="true">
+                </property>
+            </relation>
+            <relation name="relation2" class="ptolemy.domains.modal.kernel.Transition">
+                <property name="outputActions" class="ptolemy.domains.modal.kernel.OutputActionsAttribute" value="outer = 3">
+                </property>
+                <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.6283185307179586">
+                </property>
+                <property name="gamma" class="ptolemy.data.expr.Parameter" value="0.021011987415180462">
+                </property>
+            </relation>
+            <link port="state.outgoingPort" relation="relation"/>
+            <link port="state2.incomingPort" relation="relation"/>
+            <link port="state2.outgoingPort" relation="relation2"/>
+            <link port="state3.incomingPort" relation="relation2"/>
+        </entity>
+        <entity name="state" class="ptolemy.domains.modal.modal.ModalRefinement">
+            <property name="_tableauFactory" class="ptolemy.vergil.modal.modal.ModalTableauFactory">
+            </property>
+            <port name="trigger" class="ptolemy.domains.modal.modal.ModalRefinementPort">
+                <property name="input"/>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{20.0, 260.0}">
+                </property>
+            </port>
+            <port name="inner" class="ptolemy.domains.modal.modal.ModalRefinementPort">
+                <property name="output"/>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[500.0, 240.0]">
+                </property>
+            </port>
+            <port name="outer" class="ptolemy.domains.modal.modal.ModalRefinementPort">
+                <property name="output"/>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[500.0, 280.0]">
+                </property>
+            </port>
+            <entity name="_Controller" class="ptolemy.domains.modal.modal.ModalController">
+                <property name="_library" class="ptolemy.moml.LibraryAttribute">
+                    <configure>
+            <entity name="state library" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/configs/basicUtilities.xml"></input><entity name="state" class="ptolemy.domains.modal.kernel.State"><property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory"></property></entity></entity>
+          </configure>
+                </property>
+                <port name="trigger" class="ptolemy.domains.modal.modal.RefinementPort">
+                    <property name="input"/>
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="{20.0, 200.0}">
+                    </property>
+                </port>
+                <port name="inner" class="ptolemy.domains.modal.modal.RefinementPort">
+                    <property name="input"/>
+                    <property name="output"/>
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="{300.0, 380.0}">
+                    </property>
+                </port>
+                <port name="outer" class="ptolemy.domains.modal.modal.RefinementPort">
+                    <property name="input"/>
+                    <property name="output"/>
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="{340.0, 380.0}">
+                    </property>
+                </port>
+                <entity name="state" class="ptolemy.domains.modal.kernel.State">
+                    <property name="isInitialState" class="ptolemy.data.expr.Parameter" value="true">
+                    </property>
+                    <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                    </property>
+                    <property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory">
+                    </property>
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="{170, 160}">
+                    </property>
+                </entity>
+                <entity name="state2" class="ptolemy.domains.modal.kernel.State">
+                    <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                    </property>
+                    <property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory">
+                    </property>
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="{315, 160}">
+                    </property>
+                </entity>
+                <entity name="state3" class="ptolemy.domains.modal.kernel.State">
+                    <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                    </property>
+                    <property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory">
+                    </property>
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="{450, 160}">
+                    </property>
+                </entity>
+                <relation name="relation" class="ptolemy.domains.modal.kernel.Transition">
+                    <property name="outputActions" class="ptolemy.domains.modal.kernel.OutputActionsAttribute" value="inner = 1">
+                    </property>
+                    <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.6283185307179586">
+                    </property>
+                    <property name="gamma" class="ptolemy.data.expr.Parameter" value="0.0653591756626523">
+                    </property>
+                </relation>
+                <relation name="relation2" class="ptolemy.domains.modal.kernel.Transition">
+                    <property name="outputActions" class="ptolemy.domains.modal.kernel.OutputActionsAttribute" value="inner = 2">
+                    </property>
+                    <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.6283185307179586">
+                    </property>
+                    <property name="gamma" class="ptolemy.data.expr.Parameter" value="0.07202253903107575">
+                    </property>
+                </relation>
+                <link port="state.outgoingPort" relation="relation"/>
+                <link port="state2.incomingPort" relation="relation"/>
+                <link port="state2.outgoingPort" relation="relation2"/>
+                <link port="state3.incomingPort" relation="relation2"/>
+            </entity>
+            <relation name="triggerRelation" class="ptolemy.actor.TypedIORelation">
+                <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
+                </property>
+            </relation>
+            <relation name="innerRelation" class="ptolemy.actor.TypedIORelation">
+                <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
+                </property>
+            </relation>
+            <relation name="outerRelation" class="ptolemy.actor.TypedIORelation">
+                <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
+                </property>
+            </relation>
+            <link port="trigger" relation="triggerRelation"/>
+            <link port="inner" relation="innerRelation"/>
+            <link port="outer" relation="outerRelation"/>
+            <link port="_Controller.trigger" relation="triggerRelation"/>
+            <link port="_Controller.inner" relation="innerRelation"/>
+            <link port="_Controller.outer" relation="outerRelation"/>
+        </entity>
+        <relation name="triggerRelation" class="ptolemy.actor.TypedIORelation">
+            <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
+            </property>
+        </relation>
+        <relation name="innerRelation" class="ptolemy.actor.TypedIORelation">
+            <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
+            </property>
+        </relation>
+        <relation name="outerRelation" class="ptolemy.actor.TypedIORelation">
+            <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
+            </property>
+        </relation>
+        <link port="trigger" relation="triggerRelation"/>
+        <link port="inner" relation="innerRelation"/>
+        <link port="outer" relation="outerRelation"/>
+        <link port="_Controller.trigger" relation="triggerRelation"/>
+        <link port="_Controller.inner" relation="innerRelation"/>
+        <link port="_Controller.outer" relation="outerRelation"/>
+        <link port="state.trigger" relation="triggerRelation"/>
+        <link port="state.inner" relation="innerRelation"/>
+        <link port="state.outer" relation="outerRelation"/>
+    </entity>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="vertex1" value="{-205.0, 135.0}">
+        </vertex>
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;NonStrictTest2.input&quot;,x=-155.0,y=20.0}, tail={id=&quot;relation3.vertex1&quot;,x=-205.0,y=135.0}, points={-205.0,20.0} },{ head={id=&quot;.ImmediateTransitions_1893289564_region_1.OuterSignal&quot;,x=-140.0,y=35.0}, tail={id=&quot;relation3.vertex1&quot;,x=-200.0,y=35.0}, points={-80.0,45.0,-80.0,75.0,-200.0,75.0} },{ head={id=&quot;relation3.vertex1&quot;,x=-205.0,y=135.0}, tail={id=&quot;ModalModel.trigger&quot;,x=-150.0,y=95.0}, points={-205.0,95.0} },{ head={id=&quot;ModalModel.outer&quot;,x=-150.0,y=95.0}, tail={id=&quot;relation3.vertex1&quot;,x=-205.0,y=135.0}, points={-90.0,105.0,-90.0,135.0} } }">
+        </property>
+    </relation>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;ModalModel.inner&quot;,x=-150.0,y=95.0}, tail={id=&quot;NonStrictTest.input&quot;,x=-40.0,y=85.0}, points={} } }">
+        </property>
+    </relation>
+    <link port="NonStrictTest.input" relation="relation2"/>
+    <link port="NonStrictTest2.input" relation="relation3"/>
+    <link port="ModalModel.trigger" relation="relation3"/>
+    <link port="ModalModel.inner" relation="relation2"/>
+    <link port="ModalModel.outer" relation="relation3"/>
+</entity>

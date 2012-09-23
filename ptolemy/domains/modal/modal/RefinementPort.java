@@ -27,9 +27,12 @@
  */
 package ptolemy.domains.modal.modal;
 
+import java.util.Set;
+
 import ptolemy.actor.IOPort;
 import ptolemy.actor.IORelation;
 import ptolemy.actor.TypedIOPort;
+import ptolemy.graph.Inequality;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.Port;
@@ -656,6 +659,25 @@ public class RefinementPort extends TypedIOPort {
             _mirrorDisable = disableStatus;
             _workspace.doneWriting();
         }
+    }
+
+    /** Return the type constraints of this port in the form of a
+     *  set of inequalities.
+     *  @return A set of inequalities.
+     *  @see ptolemy.graph.Inequality
+     */
+    public Set<Inequality> typeConstraints() {
+        Nameable container = getContainer();
+        if (container != null) {
+            Nameable modal = container.getContainer();
+            if (modal instanceof ModalModel) {
+                Port port = ((ModalModel) modal).getPort(getName());
+                if (port instanceof TypedIOPort) {
+                    setTypeSameAs((TypedIOPort)port);
+                }
+            }
+        }
+        return super.typeConstraints();
     }
 
     ///////////////////////////////////////////////////////////////////

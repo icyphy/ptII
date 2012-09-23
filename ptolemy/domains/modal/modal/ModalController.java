@@ -561,6 +561,7 @@ public class ModalController extends FSMActor implements DropTargetHandler,
 
                                 /* No longer needed since Yuhong modified
                                  * the type system to allow UNKNOWN. EAL
+                                 * 
                                  if (port instanceof TypedIOPort
                                  && newPort instanceof TypedIOPort) {
                                  ((TypedIOPort)newPort).setTypeSameAs(

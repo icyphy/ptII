@@ -1869,7 +1869,15 @@ public class FSMActor extends CompositeEntity implements TypedActor,
                         _initializeRefinements(currentState);
                     }
                 }
-
+                if (((BooleanToken) currentState.isInitialState.getToken()).booleanValue()) {
+                    Actor[] stateRefinements = currentState.getRefinement();
+                    if (stateRefinements != null && stateRefinements.length > 0) {
+                        throw new IllegalActionException(this,
+                                "Initial state with a refinement and an enabled " +
+                                "immediate transition is not allowed, " +
+                                "because the refinement would have to execute during the initialize phase.");
+                    }
+                }
                 _fireStateRefinements(currentState);
             }
 
