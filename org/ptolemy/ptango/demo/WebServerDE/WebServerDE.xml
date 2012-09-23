@@ -4,9 +4,9 @@
 <entity name="WebServerDE" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.0.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={330, 146, 1235, 848}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={51, 14, 1229, 696}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1001, 738]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1001, 580]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.9345716248096">
     </property>
@@ -83,6 +83,8 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[555.0, 270.0]">
         </property>
     </property>
+    <property name="enableBackwardTypeInference" class="ptolemy.data.expr.Parameter" value="false">
+    </property>
     <entity name="HttpActor" class="org.ptolemy.ptango.lib.HttpActor">
         <property name="path" class="ptolemy.data.expr.StringParameter" value="/ptolemnizer/*">
         </property>
@@ -93,9 +95,19 @@
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="general">
             </property>
         </port>
+        <port name="getCookies" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="general">
+            </property>
+        </port>
         <port name="postParameters" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="{text=string}">
+            </property>
+        </port>
+        <port name="postCookies" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="general">
             </property>
         </port>
     </entity>

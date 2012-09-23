@@ -4,9 +4,9 @@
 <entity name="ErrorHandler" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.0.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={5, 87, 1022, 939}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={25, 34, 1016, 732}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[788, 829]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[788, 616]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.4011468033763688">
     </property>
@@ -48,7 +48,7 @@
     <property name="WebServer" class="org.ptolemy.ptango.lib.WebServer">
         <property name="resourcePath" class="ptolemy.data.expr.StringParameter" value="/">
         </property>
-        <property name="resourceLocation" class="ptolemy.data.expr.FileParameter" value="$PTII/org/ptolemy/ptango/demo/UCBPrefPower">
+        <property name="resourceLocation" class="ptolemy.data.expr.FileParameter" value="$PTII/org/ptolemy/ptango/demo/UCBPower">
         </property>
         <property name="temporaryFileLocation" class="ptolemy.data.expr.FileParameter" value="$TMPDIR">
         </property>
@@ -291,10 +291,6 @@ Then delete this annotation.</text>
         </property>
         <property name="timeout" class="ptolemy.data.expr.Parameter" value="60000L">
         </property>
-        <property name="pathCookies" class="ptolemy.data.expr.Parameter" value="false">
-        </property>
-        <property name="cookies" class="ptolemy.data.expr.Parameter" value="{firstname=&quot;roxana&quot;,lastname=&quot;gheorghiu&quot;}">
-        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[115.0, 250.0]">
         </property>
         <port name="response" class="ptolemy.actor.TypedIOPort">
@@ -306,6 +302,21 @@ Then delete this annotation.</text>
             </property>
         </port>
         <port name="getParameters" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="general">
+            </property>
+        </port>
+        <port name="getCookies" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="general">
+            </property>
+        </port>
+        <port name="postParameters" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="general">
+            </property>
+        </port>
+        <port name="postCookies" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="general">
             </property>

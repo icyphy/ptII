@@ -4,9 +4,9 @@
 <entity name="UCBPowerServer" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.0.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={22, 51, 1199, 760}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={29, 101, 1199, 616}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[971, 644]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[971, 500]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.9112660550458881">
     </property>
@@ -103,9 +103,7 @@
     <entity name="HttpActor" class="org.ptolemy.ptango.lib.HttpActor">
         <property name="path" class="ptolemy.data.expr.StringParameter" value="/UCBPower/*">
         </property>
-        <property name="timeout" class="ptolemy.data.expr.Parameter" value="30000L">
-        </property>
-        <property name="pathCookies" class="ptolemy.data.expr.Parameter" value="false">
+        <property name="timeout" class="ptolemy.data.expr.Parameter" value="10000L">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{125.0, 265.0}">
         </property>
@@ -118,6 +116,16 @@
             </property>
         </port>
         <port name="getParameters" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="general">
+            </property>
+        </port>
+        <port name="getCookies" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="general">
+            </property>
+        </port>
+        <port name="postCookies" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="general">
             </property>
