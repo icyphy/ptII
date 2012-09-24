@@ -134,6 +134,8 @@ public class ArrayPlotterXY extends Plotter implements SequenceActor {
     public void initialize() throws IllegalActionException {
         super.initialize();
         _iteration = 0;
+        _xtokens = null;
+        _ytokens = null;
     }
 
     /** Read at most one token from each input channel on <i>x</i> and

@@ -144,9 +144,17 @@ public class Plotter extends PlotterBase {
             _getImplementation().updateSize();
         } else {
             if (plot instanceof PlotInterface) {
+                // FIXME: super.preinitialize() calls PlotBoxInterface.clear(), which
+                // in Plot.java is likely to set the the number of datasets to 0.
+                // This, this code is likely to not actually clear the datasets as
+                // the clearing has already been done.
+                // Another issue is that this super.preinitialize() calls clear in
+                // the Swing event thread, but so the clear might not have happened
+                // when we read the value of the number of datasets.  Thus, we could
+                // get the value, preinitialize() could clear it and then we call
+                // clear again below.
                 int width = ((PlotInterface) plot).getNumDataSets();
                 int offset = ((IntToken) startingDataset.getToken()).intValue();
-
                 for (int i = width - 1; i >= 0; i--) {
                     ((PlotInterface) plot).clear(i + offset);
                 }

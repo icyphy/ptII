@@ -158,6 +158,9 @@ public class ArrayPlotter extends Plotter implements SequenceActor {
     public void initialize() throws IllegalActionException {
         super.initialize();
         _iteration = 0;
+        // If the model is run, changed and run again but this actor is
+        // not fired, then be sure not to plot the old data
+        _tokens = null;
     }
 
     /** Read at most one token from each input channel and plot it as
