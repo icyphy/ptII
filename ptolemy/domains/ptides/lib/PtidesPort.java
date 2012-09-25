@@ -45,11 +45,10 @@ import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Settable;
-import ptolemy.kernel.util.SingletonConfigurableAttribute;
+import ptolemy.kernel.util.SingletonConfigurableAttribute; 
 
-/**
- *  This abstract class implements common functionality for ptides
- *  ports such as sensors, actuators and network ports.
+/** A specialized port for Ptides platform I/O implementing 
+ *  functionality for sensors, actuators and network ports.
  *
  *  @author Patricia Derler
  *  @version $Id$
@@ -95,11 +94,7 @@ public class PtidesPort extends MirrorPort {
         
         networkDelayBound = new Parameter(this, "networkDelayBound");
         networkDelayBound.setExpression("0.0");
-        networkDelayBound.setTypeEquals(BaseType.DOUBLE); 
-        
-        _attachText("_smallIconDescription", "<svg>\n"
-                + "<polygon points=\"-8,9 -2,4 12,4 12,-4 -2,-4 -8,-9\" "
-                + "style=\"fill:cyan\"/>\n" + "</svg>\n");
+        networkDelayBound.setTypeEquals(BaseType.DOUBLE);  
         
         _iconDescription = new SingletonConfigurableAttribute(this, "_iconDescription");
         _iconDescription.setPersistent(false); 
@@ -223,42 +218,44 @@ public class PtidesPort extends MirrorPort {
      *  @throws IllegalActionException Thrown if icon cannot be changed.
      */
     private void _setIconAndParameterVisibility() throws IllegalActionException {
-        if (isSensorPort()) {
-            actuateAtEventTimestamp.setVisibility(Settable.NONE);
-            networkDelayBound.setVisibility(Settable.NONE);
-            platformDelayBound.setVisibility(Settable.NONE);
-            sourcePlatformDelayBound.setVisibility(Settable.NONE);
-        } else if (isActuatorPort()) {
-            actuateAtEventTimestamp.setVisibility(Settable.FULL);
-            networkDelayBound.setVisibility(Settable.NONE);
-            platformDelayBound.setVisibility(Settable.NONE);
-            sourcePlatformDelayBound.setVisibility(Settable.NONE);
-        } else if (isNetworkReceiverPort()) {
-            actuateAtEventTimestamp.setVisibility(Settable.NONE);
-            networkDelayBound.setVisibility(Settable.FULL);
-            platformDelayBound.setVisibility(Settable.NONE);
-            sourcePlatformDelayBound.setVisibility(Settable.FULL);
-        } else if (isNetworkTransmitterPort()) {
-            actuateAtEventTimestamp.setVisibility(Settable.NONE);
-            networkDelayBound.setVisibility(Settable.NONE);
-            platformDelayBound.setVisibility(Settable.FULL);
-            sourcePlatformDelayBound.setVisibility(Settable.NONE);
-        } else {
-            //throw new IllegalActionException(this, "Not a legal PtidesPort");
-        }
-        
         try {
-            _iconDescription.configure(null, null, "<svg>\n"
-                    + "<polygon points=\"-8,9 -2,4 12,4 12,-4 -2,-4 -8,-9\" "
-                    + "style=\"fill:cyan\"/>\n" + "</svg>\n");
-        } catch (Exception e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-    //        MoMLChangeRequest request = new MoMLChangeRequest(this.getContainer(), this, _iconDescription.description());
-    //        request.setPersistent(false);
-    //        ((TypedCompositeActor) getContainer()).requestChange(request);
-        }
+            if (isSensorPort()) {
+                actuateAtEventTimestamp.setVisibility(Settable.NONE);
+                networkDelayBound.setVisibility(Settable.NONE);
+                platformDelayBound.setVisibility(Settable.NONE);
+                sourcePlatformDelayBound.setVisibility(Settable.NONE);
+                _iconDescription.configure(null, null, "<svg>\n"
+                        + "<polygon points=\"0, 0, 0, 16, 16, 16, 16, 12, 20, 8, 16, 4, 16, 0\" "
+                        + "style=\"fill:black\"/>\n" + "</svg>\n");
+            } else if (isActuatorPort()) {
+                actuateAtEventTimestamp.setVisibility(Settable.FULL);
+                networkDelayBound.setVisibility(Settable.NONE);
+                platformDelayBound.setVisibility(Settable.NONE);
+                sourcePlatformDelayBound.setVisibility(Settable.NONE);
+                _iconDescription.configure(null, null, "<svg>\n"
+                        + "<polygon points=\"0, 0, 0, 4, -4, 8, 0, 12, 0, 16, 16, 16, 16, 0\" "
+                        + "style=\"fill:black\"/>\n" + "</svg>\n");
+            } else if (isNetworkReceiverPort()) {
+                actuateAtEventTimestamp.setVisibility(Settable.NONE);
+                networkDelayBound.setVisibility(Settable.FULL);
+                platformDelayBound.setVisibility(Settable.NONE);
+                sourcePlatformDelayBound.setVisibility(Settable.FULL);
+                _iconDescription.configure(null, null, "<svg>\n"
+                        + "<polygon points=\"0, 0, 0, 16, 16, 16, 16, 12, 20, 12, 20, 4, 16, 4, 16, 0\" "
+                        + "style=\"fill:black\"/>\n" + "</svg>\n");
+            } else if (isNetworkTransmitterPort()) {
+                actuateAtEventTimestamp.setVisibility(Settable.NONE);
+                networkDelayBound.setVisibility(Settable.NONE);
+                platformDelayBound.setVisibility(Settable.FULL);
+                sourcePlatformDelayBound.setVisibility(Settable.NONE);
+                _iconDescription.configure(null, null, "<svg>\n"
+                        + "<polygon points=\"0, 0, 0, 4, -4, 4, -4, 12, 0, 12, 0, 16, 16, 16, 16, 0\" "
+                        + "style=\"fill:black\"/>\n" + "</svg>\n");
+            } 
+        } catch (Exception e) { 
+            throw new IllegalActionException(this, e.getMessage());
+        } 
+    }
 
     private boolean _actuateAtEventTimestamp;
 
