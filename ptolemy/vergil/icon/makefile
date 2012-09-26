@@ -60,7 +60,7 @@ JSRCS = \
 	EditIconTableau.java \
 	EditorIcon.java \
 	ImageIcon.java \
-	NameIcon.java \ 
+	NameIcon.java \
 	ResizableAttributeControllerFactory.java \
 	ShapeIcon.java \
 	SVGIcon.java \
