@@ -48,6 +48,7 @@ import ptolemy.actor.parameters.ParameterPort;
 import ptolemy.data.type.Typeable;
 import ptolemy.kernel.InstantiableNamedObj;
 import ptolemy.kernel.Port;
+import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.KernelException;
@@ -73,7 +74,6 @@ import diva.canvas.toolbox.BasicFigure;
 import diva.canvas.toolbox.LabelFigure;
 import diva.graph.GraphController;
 import diva.graph.GraphPane;
-import diva.graph.NodeRenderer;
 import diva.util.java2d.Polygon2D;
 
 ///////////////////////////////////////////////////////////////////
@@ -407,7 +407,7 @@ public class ExternalIOPortController extends AttributeController {
      *  while single ports are rendered filled.
      *  Publisher and subscriber ports are rendered specially.
      */
-    public class PortRenderer implements NodeRenderer {
+    public class PortRenderer extends IconRenderer {
 
         /** Render a port.  If the argument implements Locatable,
          *  then render the port that is the container of that locatable.
@@ -444,6 +444,11 @@ public class ExternalIOPortController extends AttributeController {
                 EditorIcon icon = (EditorIcon) iconList
                         .get(iconList.size() - 1);
                 figure = icon.createFigure();
+            } else {
+                Attribute iconDescription = port.getAttribute("_iconDescription");
+                if (iconDescription != null) {
+                    figure = super.render(n);
+                }
             }
 
             // Wrap the figure in a TerminalFigure to set the direction that
