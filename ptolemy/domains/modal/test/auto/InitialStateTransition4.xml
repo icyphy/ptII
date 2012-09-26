@@ -202,7 +202,7 @@
                 </property>
                 <property name="requireAllCorrectValues" class="ptolemy.actor.parameters.SharedParameter" value="true">
                 </property>
-                <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="true">
+                <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="{418.67820356145256, 422.16996552025137}">
                 </property>
@@ -305,7 +305,7 @@
         </property>
         <property name="requireAllCorrectValues" class="ptolemy.actor.parameters.SharedParameter" value="true">
         </property>
-        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="true">
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{-40.0, 105.0}">
         </property>
@@ -315,7 +315,7 @@
         </property>
         <property name="requireAllCorrectValues" class="ptolemy.actor.parameters.SharedParameter" value="true">
         </property>
-        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="true">
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{-155.0, 40.0}">
         </property>
