@@ -105,7 +105,7 @@ public class FMIScalarVariable {
                         + " in " + name + ", " + description);
             }
         }
-
+        
         causality = Causality.internal;
         if (element.hasAttribute("causality")) {
             String attribute = element.getAttribute("causality");
@@ -172,6 +172,26 @@ public class FMIScalarVariable {
                     type = new FMIRealType(name, description, childElement);
                 } else if (typeName.equals("String")) {
                     type = new FMIStringType(name, description, childElement);
+                } else if (typeName.equals("DirectDependency")) {
+                    // Iterate over the children of this element to find the
+                    // names of the dependents.
+                    // FIXME: In FMI 2.0, DirectDependency will be replaced by
+                    // "InputDependency" or "inputDependency", depending on which
+                    // page of the standard you go by, and its value will be a space-
+                    // separated list of indexes of the input.
+                    directDependency = new HashSet<String>();
+                    NodeList names = childElement.getChildNodes();
+                    for (int j = 0; j < names.getLength(); j++) {
+                        Node name = element.getChildNodes().item(i);
+                        if (name instanceof Element) {
+                            String childType = ((Element)name).getNodeName();
+                            if (childType.equals("Name")) {
+                                // FIXME: Is getNodeValue() the way to get "foo"
+                                // from <Name>foo</Name>?
+                                directDependency.add(((Element)child).getNodeValue());
+                            }
+                        }
+                    }
                 } else {
                     if (!_errorElements.contains(typeName)) {
                         _errorElements.add(typeName);
@@ -388,6 +408,9 @@ public class FMIScalarVariable {
 
     /** The value of the description xml attribute. */
     public String description;
+    
+    /** The input ports on which an output has a direct dependence. */
+    public Set<String> directDependency;
 
     /** The FMI .c function that gets the value of this variable. 
      *  The name of the function depends on the value of the
