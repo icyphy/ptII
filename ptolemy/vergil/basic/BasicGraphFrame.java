@@ -2782,7 +2782,8 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
             double centerX = visible.getCenterX() - (visible.getX() - bounds.getX());
             double centerY = visible.getCenterY() - (visible.getY() - bounds.getY());
             
-            setCenter(new Point2D.Double(centerX, centerY));
+            // Set the new center point, but add a little free space between model and border
+            setCenter(new Point2D.Double(centerX - 10.0, centerY - 10.0));
         }
     }
 
