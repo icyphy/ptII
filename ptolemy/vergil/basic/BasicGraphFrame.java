@@ -1608,7 +1608,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
             }
         }
     }
-
+    
     /** Zoom in or out to magnify by the specified factor, from the current
      *  magnification.
      *  @param factor The magnification factor (relative to 1.0).
@@ -2745,6 +2745,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
      */
     protected void _initBasicGraphFrameSetZoomAndPan()
             throws IllegalActionException {
+	
         // Set the zoom factor.
         Parameter zoom = (Parameter) getModel().getAttribute(
                 "_vergilZoomFactor", Parameter.class);
@@ -2767,6 +2768,21 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
 
             // Make sure the visibility is only expert.
             pan.setVisibility(Settable.EXPERT);
+        }
+        
+        // If we have neither zooming or panning info...
+        if (zoom == null && pan == null) {
+            // ...set the top left corner of the view to the top left corner of the model.
+            // Note: This code only works for a zoom factor of 1.0, which is no problem at
+            // this stage since that's the default and no zooming info was found in the model.
+            GraphPane pane = getJGraph().getGraphPane();
+            Rectangle2D bounds = pane.getForegroundLayer().getLayerBounds();
+            Rectangle2D visible = getVisibleRectangle();
+            
+            double centerX = visible.getCenterX() - (visible.getX() - bounds.getX());
+            double centerY = visible.getCenterY() - (visible.getY() - bounds.getY());
+            
+            setCenter(new Point2D.Double(centerX, centerY));
         }
     }
 
