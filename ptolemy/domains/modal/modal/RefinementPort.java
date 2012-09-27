@@ -673,7 +673,15 @@ public class RefinementPort extends TypedIOPort {
             if (modal instanceof ModalModel) {
                 Port port = ((ModalModel) modal).getPort(getName());
                 if (port instanceof TypedIOPort) {
-                    setTypeSameAs((TypedIOPort)port);
+                    // Whether this port is an input or output,
+                    // ensure that its type is at least that
+                    // the container's port. The reason this makes sense
+                    // if its an output is that the output will also
+                    // be an input to the controller.
+                    setTypeAtLeast((TypedIOPort)port);
+                    if (isOutput()) {
+                        ((TypedIOPort)port).setTypeAtLeast(this);
+                    }
                 }
             }
         }

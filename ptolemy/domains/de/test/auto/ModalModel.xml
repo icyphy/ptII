@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="ModalModel" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.0.devel">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="15.0/440.0">
@@ -10,9 +10,9 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="{110, 40}">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 22, 813, 510}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 22, 834, 634}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 524]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
@@ -357,28 +357,10 @@
             <link port="noisy.incomingPort" relation="relation2"/>
             <link port="noisy.outgoingPort" relation="relation"/>
         </entity>
-        <entity name="state" class="ptolemy.domains.modal.modal.Refinement">
-            <port name="event" class="ptolemy.domains.modal.modal.RefinementPort">
-                <property name="input"/>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="{20.0, 200.0}">
-                </property>
-            </port>
-            <port name="input" class="ptolemy.domains.modal.modal.RefinementPort">
-                <property name="input"/>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="{20.0, 240.0}">
-                </property>
-            </port>
-            <port name="output" class="ptolemy.domains.modal.modal.RefinementPort">
-                <property name="output"/>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="{580.0, 200.0}">
-                </property>
-            </port>
-        </entity>
         <entity name="clean" class="ptolemy.domains.modal.modal.Refinement">
             <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
-                    <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
-                    </property>
-
+                <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
+                </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[60.0, 135.0]">
                 </property>
             </property>
@@ -430,9 +412,8 @@
         </entity>
         <entity name="noisy" class="ptolemy.domains.modal.modal.Refinement">
             <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
-                    <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
-                    </property>
-
+                <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
+                </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 80.0]">
                 </property>
             </property>
@@ -531,9 +512,6 @@
         <link port="_Controller.event" relation="eventRelation"/>
         <link port="_Controller.input" relation="inputRelation"/>
         <link port="_Controller.output" relation="outputRelation"/>
-        <link port="state.event" relation="eventRelation"/>
-        <link port="state.input" relation="inputRelation"/>
-        <link port="state.output" relation="outputRelation"/>
         <link port="clean.event" relation="eventRelation"/>
         <link port="clean.input" relation="inputRelation"/>
         <link port="clean.output" relation="outputRelation"/>
@@ -545,9 +523,8 @@
         <property name="samplingFrequency" class="ptolemy.data.expr.Parameter" value="sampleRate">
         </property>
         <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
-                    <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
-                    </property>
-
+            <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
+            </property>
             <property name="period" class="ptolemy.data.expr.Parameter" value="1.0/sampleRate">
             </property>
         </property>
