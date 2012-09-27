@@ -29,6 +29,10 @@ package ptolemy.actor.lib.fmi;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Set;
 
 import org.ptolemy.fmi.FMICallbackFunctions;
 import org.ptolemy.fmi.FMILibrary;
@@ -44,6 +48,8 @@ import org.ptolemy.fmi.type.FMIRealType;
 import org.ptolemy.fmi.type.FMIStringType;
 import org.ptolemy.fmi.type.FMIType;
 
+import ptolemy.actor.Director;
+import ptolemy.actor.IOPort;
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.data.BooleanToken;
@@ -53,6 +59,8 @@ import ptolemy.data.StringToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.FileParameter;
 import ptolemy.data.expr.Parameter;
+import ptolemy.domains.continuous.kernel.ContinuousDirector;
+import ptolemy.domains.continuous.kernel.ContinuousStepSizeController;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
@@ -97,7 +105,7 @@ import com.sun.jna.Pointer;
  * @Pt.ProposedRating Red (cxh)
  * @Pt.AcceptedRating Red (cxh)
  */
-public class FMUImport extends TypedAtomicActor {
+public class FMUImport extends TypedAtomicActor implements ContinuousStepSizeController {
     // FIXME: For FMI Co-simulation, we want to extend TypedAtomicActor.
     // For model exchange, we want to extend TypedCompositeActor.
 
@@ -149,6 +157,37 @@ public class FMUImport extends TypedAtomicActor {
         super.attributeChanged(attribute);
     }
 
+    /** Set the dependency between all output ports and all input
+     *  ports of this actor. By default, each
+     *  output port is assumed to have a dependency on all input
+     *  ports. If the FMU explicitly declares input dependencies
+     *  for a particular output, then then it only depends on those
+     *  inputs that it declares.
+     *  @exception IllegalActionException Not thrown in this base
+     *  class, derived classes should throw this exception if the
+     *  delay dependency cannot be computed.
+     *  @see #getCausalityInterface()
+     *  @see #_declareDelayDependency(IOPort, IOPort, double)
+     */
+    public void declareDelayDependency() throws IllegalActionException {
+        // Iterate through the outputs, and for any output that declares
+        // dependencies, indicate a delay dependency for any inputs that
+        // it does not mention.
+        for (Output output : _getOutputs()) {
+            if (output.dependencies == null) {
+                // There are no dependencies declared for this output,
+                // so the output depends on all inputs.
+                continue;
+            }
+            List<TypedIOPort> inputs = inputPortList();
+            for (TypedIOPort input : inputs) {
+                if (!output.dependencies.contains(input)) {
+                    _declareDelayDependency(input, output.port, 0.0);
+                }
+            }
+        }
+    }
+
     /** Read data from output ports, set the input ports and invoke
      * fmiDoStep() of the slave fmu.
      *   
@@ -177,36 +216,128 @@ public class FMUImport extends TypedAtomicActor {
         // Ptolemy parameters are read in initialize() because the fmi
         // version of the parameters must be written before
         // fmiInitializeSlave() is called.
+        
+        boolean foundUnknownInputOrOutput = false;
 
         ////////////////
-        // Iterate through the scalarVariables and get all the outputs.
-        // See the method comment for why we do this before calling fmiDoStep()
+        // Iterate through the scalarVariables and set all the inputs
+        // that are known.
+        // FIXME: Here, we are iterating over a potentially very large number
+        // of scalar variables to find a few that are relevant (the input
+        // ports with some connection). It would be better to construct _once_
+        // a list of such input ports, and then use that list here.
         for (FMIScalarVariable scalarVariable : _fmiModelDescription.modelVariables) {
-            if (_debugging) {
-                _debug("FMUImport.fire(): " + scalarVariable.name);
-            }
+            // If this variable has an alias, then we operate
+            // only on the real version, not the alias.
+            // In bouncingBall.fmu, g has an alias, so it is skipped.
             if (scalarVariable.alias != null
                     && scalarVariable.alias != Alias.noAlias) {
-                // If the scalarVariable has an alias, then skip it.
-                // In bouncingBall.fmu, g has an alias, so it is skipped.
                 continue;
             }
-
-            if (scalarVariable.variability != FMIScalarVariable.Variability.parameter) {
+            // NOTE: Page 27 of the FMI-1.0 CS spec says that for
+            // variability==parameter and causality==input, we can
+            // only call fmiSet* between fmiInstantiateSlave() and
+            // fmiInitializeSlave(). Same for inputs that have
+            // variability==constant.
+            if (scalarVariable.variability != FMIScalarVariable.Variability.parameter
+                    && scalarVariable.variability != FMIScalarVariable.Variability.constant
+                    && scalarVariable.causality == Causality.input) {
                 TypedIOPort port = (TypedIOPort) getPort(scalarVariable.name);
-
-                if (port == null || port.getWidth() <= 0) {
-                    // Either it is not a port or not connected.
-                    // Check to see if we should update the parameter.
-                    String sanitizedName = StringUtilities.sanitizeName(scalarVariable.name);
-                    Parameter parameter = (Parameter)getAttribute(sanitizedName, Parameter.class);
-                    if (parameter != null) {
-                        _setParameter(parameter, scalarVariable);
+                if (port != null) {
+                    if (port.isKnown(0)) {
+                        if (port.hasToken(0)) {
+                            Token token = port.get(0);
+                            _setScalarVariable(scalarVariable, token);
+                            if (_debugging) {
+                                _debug("FMUImport.fire(): set input variable "
+                                        + scalarVariable.name + " to " + token);
+                            }
+                        } else {
+                            // Port is known to be absent, but FMI
+                            // does not support absent values.
+                            throw new IllegalActionException(this,
+                                    "Input "
+                                    + scalarVariable.name
+                                    + " has value 'absent', but FMI does not "
+                                    + "support a notion of absent inputs.");
+                        }
+                    } else {
+                        // Port value is not known.
+                        foundUnknownInputOrOutput = true;
                     }
-                    continue;
+                } else {
+                    throw new IllegalActionException(this,
+                            "Expected an input port named "
+                            + scalarVariable.name
+                            + ", but there is no such port.");
                 }
+            }
+        }
 
+        ////////////////
+        // Iterate through the outputs.
+        // See the method comment for why we do this before calling fmiDoStep()
+        for (Output output : _getOutputs()) {
+
+            TypedIOPort port = output.port;
+
+            // If the output port has already been set, then
+            // skip it.
+            // FIXME: This will not work with SDF because the port
+            // will likely be known but not have a token in it.
+            // We have to also check to make sure that the destination
+            // ports have a token.
+            // Even better, we should keep track locally of whether
+            // we've produced an output in this iteration.
+            if (port.isKnown(0)) {
+                continue;
+            }
+                            
+            // Next, we need to check whether the input ports that
+            // the output depends on are known. By default, an
+            // output depends on _all_ inputs, but if there is
+            // a DirectDependency element in the XML file, then
+            // the output may depend on only _some_ inputs.
+            boolean foundUnknownInputOnWhichOutputDepends = false;
+            if (output.dependencies != null) {
+                // The output port has some declared dependencies.
+                // Check only those ports.
+                for (TypedIOPort inputPort : output.dependencies) {
+                    if (!inputPort.isKnown(0)) {
+                        // Skip this output port. It depends on
+                        // unknown inputs.
+                        if (_debugging) {
+                            _debug("FMUImport.fire(): "
+                                    + "FMU declares that output port "
+                                    + port.getName()
+                                    + " depends directly on input port "
+                                    + inputPort.getName()
+                                    + ", but the input is not yet known.");
+                        }
+                        foundUnknownInputOrOutput = true;
+                        foundUnknownInputOnWhichOutputDepends = true;
+                        break;
+                    }
+                }
+            } else {
+                // No directDependency is given.
+                // This means that the output depends on all
+                // inputs, so all inputs must be known.
+                List<TypedIOPort> inputPorts = inputPortList();
+                for (TypedIOPort inputPort : inputPorts) {
+                    if (inputPort.getWidth() < 0 || !inputPort.isKnown(0)) {
+                        // Input port value is not known.
+                        foundUnknownInputOrOutput = true;
+                        foundUnknownInputOnWhichOutputDepends = true;
+                        break;
+                    }
+                }
+            }
+            if (!foundUnknownInputOnWhichOutputDepends) {
+                // Ok to get the output. All the inputs on which
+                // it depends are known.
                 Token token = null;
+                FMIScalarVariable scalarVariable = output.scalarVariable;
 
                 if (scalarVariable.type instanceof FMIBooleanType) {
                     boolean result = scalarVariable.getBoolean(_fmiComponent);
@@ -227,79 +358,50 @@ public class FMUImport extends TypedAtomicActor {
                 }
 
                 if (_debugging) {
-                    _debug("FMUImport.fire(): " + scalarVariable.name + " "
-                            + token + " " + scalarVariable.causality + " "
-                            + Causality.output);
+                    _debug("FMUImport.fire(): Output " + scalarVariable.name
+                            + " sends value "
+                            + token);
                 }
                 port.send(0, token);
             }
         }
 
         ////////////////
-        // Iterate through the scalarVariables and set all the inputs.
-        for (FMIScalarVariable scalarVariable : _fmiModelDescription.modelVariables) {
-            // FIXME: Page 27 of the FMI-1.0 CS spec says that for
-            // variability==parameter and causality==input, we can
-            // only call fmiSet* between fmiInstantiateSlave() and
-            // fmiInitializeSlave()
+        // Call fmiDoStep() with the current data.
+        // But only call it once all inputs are known and all outputs
+        // for the current time step have been produced.
+        // FIXME: Some FMUs may not allow fmuDoStep to be called
+        // again if it has previously succeeded.
+        // Check the Capabilities part of the XML file.
+        // Some FMUs may not be compatible with some directors.
+        if (!foundUnknownInputOrOutput) {
+            // NOTE: FMI-1.0 uses doubles for time.
+            double time = getDirector().getModelTime().getDoubleValue();
 
-            // However, the example on p32 has fmiSetReal called
-            // inside the while() loop?
+            // FIXME: depending on ContinuousDirector here.
+            double stepSize = ((ContinuousDirector) getDirector()).getCurrentStepSize();
 
             if (_debugging) {
-                _debug("FMUImport.fire(): " + scalarVariable.name);
-            }
-            if (scalarVariable.alias != null
-                    && scalarVariable.alias != Alias.noAlias) {
-                // If the scalarVariable has an alias, then skip it.
-                // In bouncingBall.fmu, g has an alias, so it is skipped.
-                continue;
+                _debug("FMIImport.fire(): about to call " + modelIdentifier
+                        + "_fmiDoStep(Component, /* time */ " + time
+                        + ", /* stepSize */" + stepSize + ", 1)");
+
             }
 
-            if (scalarVariable.variability != FMIScalarVariable.Variability.parameter) {
-                if (scalarVariable.causality != Causality.input) {
-                    continue;
-                }
-                TypedIOPort port = (TypedIOPort) getPort(scalarVariable.name);
+            int fmiFlag = ((Integer) _fmiDoStep.invokeInt(new Object[] {
+                    _fmiComponent, time, stepSize, (byte) 1 })).intValue();
 
-                if (port != null && port.hasToken(0)) {
-                    Token token = port.get(0);
-                    _setScalarVariable(scalarVariable, token);
-                }
+            if (fmiFlag != FMILibrary.FMIStatus.fmiOK) {
+                throw new IllegalActionException(this, "Could not simulate, "
+                        + modelIdentifier + "_fmiDoStep(Component, /* time */ "
+                        + time + ", /* stepSize */" + stepSize + ", 1) returned "
+                        + fmiFlag);
+            }
+
+            if (_debugging) {
+                _debug("FMUImport done calling " + modelIdentifier + "_fmiDoStep()");
             }
         }
-
-        ////////////////
-        // Call fmiDoStep() with the current data.
-
-        // FIXME: FMI-1.0 uses doubles for time.
-        double time = getDirector().getModelTime().getDoubleValue();
-
-        // FIXME: depending on SDFDirector here.
-        double stepSize = ((ptolemy.domains.sdf.kernel.SDFDirector) getDirector())
-                .periodValue();
-
-        if (_debugging) {
-            _debug("FMIImport.fire(): about to call " + modelIdentifier
-                    + "_fmiDoStep(Component, /* time */ " + time
-                    + ", /* stepSize */" + stepSize + ", 1)");
-
-        }
-
-        int fmiFlag = ((Integer) _fmiDoStep.invokeInt(new Object[] {
-                _fmiComponent, time, stepSize, (byte) 1 })).intValue();
-
-        if (fmiFlag != FMILibrary.FMIStatus.fmiOK) {
-            throw new IllegalActionException(this, "Could not simulate, "
-                    + modelIdentifier + "_fmiDoStep(Component, /* time */ "
-                    + time + ", /* stepSize */" + stepSize + ", 1) returned "
-                    + fmiFlag);
-        }
-
-        if (_debugging) {
-            _debug("FMUImport done calling " + modelIdentifier + "_fmiDoStep()");
-        }
-
     }
 
    /** Initialize the slave FMU.
@@ -483,6 +585,17 @@ public class FMUImport extends TypedAtomicActor {
         context.requestChange(request);
     }
 
+    /** Implementations of this method should return
+     *  true if the current integration step size
+     *  is sufficiently small for this actor to give accurate
+     *  results.
+     *  @return True if the current step is accurate.
+     */
+    public boolean isStepSizeAccurate() {
+        // FIXME: Do something smarter depending on what fmiDoStep() returns;
+        return true;
+    }
+
     /** Instantiate the slave FMU component.
      *  @exception IllegalActionException if it cannot be instantiated.
      */
@@ -537,6 +650,38 @@ public class FMUImport extends TypedAtomicActor {
                     "Could not instantiate Functional Mock-up Unit (FMU).");
         }
     }
+    
+    /** Implementations of this method should return
+     *  the suggested refined step size for restarting the current integration.
+     *  If any actor returns false when isStepSizeAccurate() is called,
+     *  then this method will be called on all actors that implement this
+     *  interface. The minimum of their returned value will be the new step size.
+     *  If the actor does not need a smaller step size, then
+     *  this method should return the current step size.
+     *  @return The suggested refined step size.
+     *  @exception IllegalActionException If the step size cannot be further refined.
+     */
+    public double refinedStepSize() throws IllegalActionException {
+        // FIXME: Do something smarter.
+        Director director = getDirector();
+        if (director instanceof ContinuousDirector) {
+            return ((ContinuousDirector)director).getCurrentStepSize();
+        }
+        return Double.MAX_VALUE;
+    }
+
+    /** Implementations of this method should return
+     *  the suggested next step size. If the current integration
+     *  step is accurate, each actor will be asked for its suggestion
+     *  for the next step size. If the actor that implements this interface
+     *  does not care what the next step size is, it should
+     *  return java.lang.Double.MAX_VALUE.
+     *  @return The suggested next step size.
+     *  @exception IllegalActionException If an actor suggests an illegal step size.
+     */
+    public double suggestedStepSize() throws IllegalActionException {
+        return java.lang.Double.MAX_VALUE;
+    }
 
     /** Terminate and free the slave fmu.
      *  @exception IllegalActionException If the slave fmu cannot be
@@ -588,6 +733,93 @@ public class FMUImport extends TypedAtomicActor {
         } else {
             throw new IllegalActionException("Type " + type + " not supported.");
         }
+    }
+    
+    /** Return a collection of scalar variables for which there is
+     *  a connected output port, and for each such variable,
+     *  a set of input ports on which it declares it depends,
+     *  if any.
+     *  @return A map, where the keys consist of all the scalar
+     *   variables of the FMU corresponding to a connected output
+     *   port, and the value of the map is the collection of input
+     *   ports that the output declares it depends on (if any).
+     *  @throws IllegalActionException If an expected output is not
+     *   found, or if the width of the output cannot be determined.
+     */
+    private List<Output> _getOutputs() throws IllegalActionException {
+        if (workspace().getVersion() == _outputsVersion) {
+            return _outputs;
+        }
+        // The _outputs variable is out of date. Reconstruct it.
+        _outputs = new LinkedList<Output>();
+        for (FMIScalarVariable scalarVariable : _fmiModelDescription.modelVariables) {
+            // If this variable has an alias, then we operate
+            // only on the real version, not the alias.
+            // In bouncingBall.fmu, g has an alias, so it is skipped.
+            if (scalarVariable.alias != null
+                    && scalarVariable.alias != Alias.noAlias) {
+                continue;
+            }
+
+            // An "output" may be an internal variable in the FMU.
+            // FMI seems to have the odd notion of being able to "observe"
+            // an internal variable but not call it an output.
+            if (scalarVariable.causality == FMIScalarVariable.Causality.output
+                    || scalarVariable.causality == FMIScalarVariable.Causality.internal) {
+                TypedIOPort port = (TypedIOPort) getPort(scalarVariable.name);
+
+                if (port == null || port.getWidth() <= 0) {
+                    // Either it is not a port or not connected.
+                    // Check to see if we should update the parameter.
+                    // FIXME: Huh? What parameter? Does it make sense for
+                    // the output of an FMU to go to a parameter?
+                    /*
+                    String sanitizedName = StringUtilities.sanitizeName(scalarVariable.name);
+                    Parameter parameter = (Parameter)getAttribute(sanitizedName, Parameter.class);
+                    if (parameter != null) {
+                        _setParameter(parameter, scalarVariable);
+                    } else {
+                        throw new IllegalActionException(this,
+                                "Expected an output named "
+                                + scalarVariable.name
+                                + " or a parameter named "
+                                + sanitizedName
+                                + ", but this actor has neither.");
+                    }
+                    */
+                    continue;
+                }
+                Output output = new Output();
+                output.scalarVariable = scalarVariable;
+                output.port = port;
+                
+                // Next, we need to find the dependencies that the
+                // FMU XML file says the port depends on. By default, an
+                // output depends on _all_ inputs, but if there is
+                // a DirectDependency element in the XML file, then
+                // the output may depend on only _some_ inputs.
+                if (scalarVariable.directDependency != null) {
+                    // The output has declared direct dependence on some
+                    // inputs. Make sure those are known before retrieving
+                    // output values.
+                    Set<TypedIOPort> dependencies = new HashSet<TypedIOPort>();
+                    for (String inputName : scalarVariable.directDependency) {
+                        TypedIOPort inputPort = (TypedIOPort) getPort(inputName);
+                        if (inputPort == null) {
+                            throw new IllegalActionException(this,
+                                    "FMU declares that output port "
+                                    + port.getName()
+                                    + " depends directly on input port "
+                                    + inputName
+                                    + ", but there is no such input port.");
+                        }
+                        dependencies.add(inputPort);
+                    }
+                }
+                _outputs.add(output);
+            }
+        }
+        return _outputs;
     }
 
     /** Set a Ptolemy II Parameter to the value of a FMI
@@ -740,4 +972,29 @@ public class FMUImport extends TypedAtomicActor {
      *  Functional Mock-up Unit (FMU) file.
      */
     private FMIModelDescription _fmiModelDescription;
+    
+    /** A collection of scalar variables for which there is
+     *  a connected output port, and for each such variable,
+     *  a set of input ports on which it declares it depends,
+     *  if any.
+     */
+    private List<Output> _outputs;
+    
+    /** The workspace version at which the _outputs variable was last updated. */
+    private long _outputsVersion = -1;
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                      inner classes                        ////
+
+    /** A data structure representing an output from the FMU. */
+    private class Output {
+        /** The FMI scalar variable for this output. */
+        public FMIScalarVariable scalarVariable;
+        
+        /** The Ptolemy output port for this output. */
+        public TypedIOPort port;
+        
+        /** The set of input ports on which the output declares it depends. */
+        public Set<TypedIOPort> dependencies;
+    }
 }
