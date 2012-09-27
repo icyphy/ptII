@@ -200,7 +200,12 @@ public class FMIScalarVariable {
                     }
                     typeName = "skip";
                 }
-                if (!typeName.equals("skip")) {
+                // fmiModelDescription.nativeLibrary will be null if
+                // we tried to load the fmu and there is no shared library
+                // for our current platform.  The FMUFile.parseFMUFile()
+                // method controls whether we ignore this.
+                if (fmiModelDescription.nativeLibrary != null
+                        && typeName.equals("skip")) {
                     // The fmi .c function used to get the value of this
                     // variable
                     fmiGetFunction = fmiModelDescription.nativeLibrary

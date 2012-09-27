@@ -138,6 +138,25 @@ public class FMUFile {
      */
     public static FMIModelDescription parseFMUFile(String fmuFileName)
             throws IOException {
+        return FMUFile.parseFMUFile(fmuFileName, false);
+    }
+
+    /** Read in a .fmu file and parse the modelDescription.xml file,
+     *  optionally ignore problems loading the shared library.   
+     *  @param fmuFileName the .fmu file
+     *  @param ignoreSharedLibraryErrors True if errors that occur
+     *  during the loading of the shared library should be ignored.
+     *  This is useful for loading FMUs that do not have shared
+     *  libraries for the current platform.  
+     *  @return An object that represents the structure of the
+     *  modelDescriptionFile.xml file.
+     *  @exception IOException If the file cannot be unzipped or the
+     *  modelDescription.xml file contained by the fmuFileName zip
+     *  file cannot be parsed.
+     */
+    public static FMIModelDescription parseFMUFile(String fmuFileName,
+            boolean ignoreSharedLibraryErrors)
+            throws IOException {
 
         // Unzip the file.
         List<File> files = null;
@@ -254,7 +273,9 @@ public class FMUFile {
             System.out.println(message + "\n Original error:\n " + throwable);
             // Note that Variable.propagate() will handle this error and
             // hide it.
-            throw new IOException(message, throwable);
+            if (!ignoreSharedLibraryErrors) {
+                throw new IOException(message, throwable);
+            }
         }
 
         // ModelVariables
