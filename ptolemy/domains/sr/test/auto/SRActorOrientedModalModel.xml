@@ -490,23 +490,6 @@
             <link port="noisy.incomingPort" relation="relation2"/>
             <link port="noisy.outgoingPort" relation="relation"/>
         </entity>
-        <entity name="state" class="ptolemy.domains.modal.modal.Refinement">
-            <port name="event" class="ptolemy.domains.modal.modal.RefinementPort">
-                <property name="input"/>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="{20.0, 200.0}">
-                </property>
-            </port>
-            <port name="input" class="ptolemy.domains.modal.modal.RefinementPort">
-                <property name="input"/>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="{20.0, 240.0}">
-                </property>
-            </port>
-            <port name="output" class="ptolemy.domains.modal.modal.RefinementPort">
-                <property name="output"/>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="{580.0, 200.0}">
-                </property>
-            </port>
-        </entity>
         <entity name="clean" class="ptolemy.domains.modal.modal.Refinement">
             <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
                     <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
@@ -663,9 +646,6 @@
         <link port="_Controller.event" relation="eventRelation"/>
         <link port="_Controller.input" relation="inputRelation"/>
         <link port="_Controller.output" relation="outputRelation"/>
-        <link port="state.event" relation="eventRelation"/>
-        <link port="state.input" relation="inputRelation"/>
-        <link port="state.output" relation="outputRelation"/>
         <link port="clean.event" relation="eventRelation"/>
         <link port="clean.input" relation="inputRelation"/>
         <link port="clean.output" relation="outputRelation"/>
