@@ -107,4 +107,18 @@ public class FMIModelDescription {
      * defined type name.
      */
     public Map<String, String> typeDefinitions = new HashMap<String, String>();
+
+    /** An Implementation element may have either
+     *  a CoSimulation_StandAlone element or
+     *  a CoSimulationTool element.  These
+     *  elements have a capabilities element.
+     */
+    public FMICoSimulationCapabilities capabilities;
+
+    /** Return the value of the FMI modelName element.
+     *  @return The model name.
+     */
+    public String toString() {
+        return modelName;
+    }
 }

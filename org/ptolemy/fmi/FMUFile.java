@@ -271,9 +271,9 @@ public class FMUFile {
                     + "following files with 'binaries' in the path:\n"
                     + binariesFiles;
             System.out.println(message + "\n Original error:\n " + throwable);
-            // Note that Variable.propagate() will handle this error and
-            // hide it.
             if (!ignoreSharedLibraryErrors) {
+                // Note that Variable.propagate() will handle this error and
+                // hide it.
                 throw new IOException(message, throwable);
             }
         }
@@ -288,6 +288,26 @@ public class FMUFile {
             fmiModelDescription.modelVariables.add(new FMIScalarVariable(
                     fmiModelDescription, element));
         }
+
+        // Implementation
+        // NodeList is not a list, it only has getLength() and item(). #fail.
+        NodeList implementation = document
+                .getElementsByTagName("CoSimulation_StandAlone");
+        if (implementation.getLength() > 1) {
+            System.out.println("Warning, CoSimulation_StandAlone can "
+                    + "only have one element, a Capability");
+        }
+        for (int i = 0; i < implementation.getLength(); i++) {
+            Element element = (Element) implementation.item(i);
+            NodeList capabilities = element
+                .getElementsByTagName("Capabilities");
+            for (int j = 0; j < capabilities.getLength(); j++) {
+                Element capabilitiesElement = (Element) capabilities.item(j);
+                fmiModelDescription.capabilities = new FMICoSimulationCapabilities(capabilitiesElement);
+            }
+        }
+
+        // FIXME: handle CoSimulation_Tool 
 
         return fmiModelDescription;
     }
@@ -336,7 +356,7 @@ public class FMUFile {
         }
         topDirectoryFile.deleteOnExit();
         String topDirectory = topDirectoryFile.getCanonicalPath();
-        System.out.println("Extracting to " + topDirectory);
+        System.out.println("FMUFile: Extracting to " + topDirectory);
         List<File> files = new LinkedList<File>();
         FileInputStream fileInputStream = null;
         ZipInputStream zipInputStream = null;

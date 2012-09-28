@@ -58,6 +58,7 @@ PTCLASSALLJAR = 	fmi.jar
 # Java Sources, keep these alphabetical,
 JSRCS = \
 	FMICallbackFunctions.java \
+	FMICoSimulationCapabilities.java \
 	FMIEventInfo.java \
 	FMILibrary.java \
 	FMIModelDescription.java \
