@@ -77,7 +77,7 @@ import com.sun.jna.Pointer;
 //// FMUImport
 
 /**
- * Invoke a Functional Mock-up Interface (FMI) 1.0 Model Exchange 
+ * Invoke a Functional Mock-up Interface (FMI) 1.0 Co-Simulation 
  * Functional Mock-up Unit (FMU).
  * 
  * <p>Read in a <code>.fmu</code> file named by the 
@@ -88,7 +88,7 @@ import com.sun.jna.Pointer;
  * included in shared libraries included in the <code>.fmu</code>
  * file.</p>
  * 
- * <p>To use this actor from within Vergil, use Import -&gt; Import
+ * <p>To use this actor from within Vergil, use File -&gt; Import -&gt; Import
  * FMU, which will prompt for a .fmu file. This actor is <b>not</b>
  * available from the actor pane via drag and drop. The problem is
  * that dragging and dropping this actor ends up trying to read
