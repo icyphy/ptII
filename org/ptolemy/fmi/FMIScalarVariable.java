@@ -205,7 +205,7 @@ public class FMIScalarVariable {
                 // for our current platform.  The FMUFile.parseFMUFile()
                 // method controls whether we ignore this.
                 if (fmiModelDescription.nativeLibrary != null
-                        && typeName.equals("skip")) {
+                        && !typeName.equals("skip")) {
                     // The fmi .c function used to get the value of this
                     // variable
                     fmiGetFunction = fmiModelDescription.nativeLibrary
@@ -214,7 +214,6 @@ public class FMIScalarVariable {
                     fmiSetFunction = fmiModelDescription.nativeLibrary
                             .getFunction(fmiModelDescription.modelIdentifier
                                     + "_fmiSet" + typeName);
-
                 }
             }
         }
