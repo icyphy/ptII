@@ -61,6 +61,7 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.StringAttribute;
 import ptolemy.kernel.util.Workspace;
 
 
@@ -162,7 +163,6 @@ public class HttpActor extends TypedAtomicActor implements HttpService {
         // Special constructor for ArrayToken of length 0
         requestedCookies.setToken(new ArrayToken(BaseType.STRING));
         requestedCookies.setTypeEquals(new ArrayType(BaseType.STRING));
-        
         
         // Internal variables
         _cookieCollection = new Hashtable<String, Token>();
