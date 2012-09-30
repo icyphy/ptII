@@ -318,7 +318,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[710.0, 290.0]">
         </property>
     </property>
-    <property name="x1" class="ptolemy.data.expr.Parameter" value="&quot;33&quot;">
+    <property name="x1" class="ptolemy.data.expr.Parameter" value="&quot;0&quot;">
         <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="false">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -337,7 +337,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[910.0, 150.0]">
         </property>
     </property>
-    <property name="x2" class="ptolemy.data.expr.Parameter" value="&quot;333&quot;">
+    <property name="x2" class="ptolemy.data.expr.Parameter" value="&quot;0&quot;">
         <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="false">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -356,7 +356,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[910.0, 185.0]">
         </property>
     </property>
-    <property name="x3" class="ptolemy.data.expr.Parameter" value="&quot;344&quot;">
+    <property name="x3" class="ptolemy.data.expr.Parameter" value="&quot;0&quot;">
         <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="false">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -375,7 +375,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[910.0, 220.0]">
         </property>
     </property>
-    <property name="x4" class="ptolemy.data.expr.Parameter" value="&quot;555&quot;">
+    <property name="x4" class="ptolemy.data.expr.Parameter" value="&quot;0&quot;">
         <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="false">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -394,7 +394,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[910.0, 260.0]">
         </property>
     </property>
-    <property name="x5" class="ptolemy.data.expr.Parameter" value="&quot;255&quot;">
+    <property name="x5" class="ptolemy.data.expr.Parameter" value="&quot;0&quot;">
         <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="false">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -413,7 +413,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[910.0, 300.0]">
         </property>
     </property>
-    <property name="y1" class="ptolemy.data.expr.Parameter" value="&quot;44&quot;">
+    <property name="y1" class="ptolemy.data.expr.Parameter" value="&quot;0&quot;">
         <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="false">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -432,7 +432,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[910.0, 165.0]">
         </property>
     </property>
-    <property name="y2" class="ptolemy.data.expr.Parameter" value="&quot;444&quot;">
+    <property name="y2" class="ptolemy.data.expr.Parameter" value="&quot;0&quot;">
         <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="false">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -451,7 +451,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[910.0, 200.0]">
         </property>
     </property>
-    <property name="y3" class="ptolemy.data.expr.Parameter" value="&quot;2&quot;">
+    <property name="y3" class="ptolemy.data.expr.Parameter" value="&quot;0&quot;">
         <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="false">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -470,7 +470,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[910.0, 235.0]">
         </property>
     </property>
-    <property name="y4" class="ptolemy.data.expr.Parameter" value="&quot;555&quot;">
+    <property name="y4" class="ptolemy.data.expr.Parameter" value="&quot;0&quot;">
         <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="false">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -489,7 +489,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[910.0, 275.0]">
         </property>
     </property>
-    <property name="y5" class="ptolemy.data.expr.Parameter" value="&quot;155&quot;">
+    <property name="y5" class="ptolemy.data.expr.Parameter" value="&quot;0&quot;">
         <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="false">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -957,7 +957,7 @@
             </property>
         </entity>
         <entity name="StringMatches" class="ptolemy.actor.lib.string.StringMatches">
-            <property name="pattern" class="ptolemy.actor.parameters.PortParameter" value="1">
+            <property name="pattern" class="ptolemy.actor.parameters.PortParameter" value="5">
             </property>
             <property name="matchString" class="ptolemy.actor.parameters.PortParameter" value="1">
             </property>
@@ -987,7 +987,7 @@
             </port>
         </entity>
         <entity name="StringMatches2" class="ptolemy.actor.lib.string.StringMatches">
-            <property name="pattern" class="ptolemy.actor.parameters.PortParameter" value="1">
+            <property name="pattern" class="ptolemy.actor.parameters.PortParameter" value="5">
             </property>
             <property name="matchString" class="ptolemy.actor.parameters.PortParameter" value="2">
             </property>
@@ -996,7 +996,7 @@
             </property>
         </entity>
         <entity name="StringMatches3" class="ptolemy.actor.lib.string.StringMatches">
-            <property name="pattern" class="ptolemy.actor.parameters.PortParameter" value="1">
+            <property name="pattern" class="ptolemy.actor.parameters.PortParameter" value="5">
             </property>
             <property name="matchString" class="ptolemy.actor.parameters.PortParameter" value="3">
             </property>
@@ -1005,7 +1005,7 @@
             </property>
         </entity>
         <entity name="StringMatches4" class="ptolemy.actor.lib.string.StringMatches">
-            <property name="pattern" class="ptolemy.actor.parameters.PortParameter" value="1">
+            <property name="pattern" class="ptolemy.actor.parameters.PortParameter" value="5">
             </property>
             <property name="matchString" class="ptolemy.actor.parameters.PortParameter" value="4">
             </property>
@@ -1014,7 +1014,7 @@
             </property>
         </entity>
         <entity name="StringMatches5" class="ptolemy.actor.lib.string.StringMatches">
-            <property name="pattern" class="ptolemy.actor.parameters.PortParameter" value="1">
+            <property name="pattern" class="ptolemy.actor.parameters.PortParameter" value="5">
             </property>
             <property name="matchString" class="ptolemy.actor.parameters.PortParameter" value="5">
             </property>

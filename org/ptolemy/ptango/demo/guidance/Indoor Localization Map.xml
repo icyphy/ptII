@@ -14,9 +14,9 @@
     </property>
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.0.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={5, 12, 760, 733}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={5, 12, 765, 733}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[532, 617]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[537, 617]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.952015711978059">
     </property>
@@ -62,15 +62,15 @@
     <property name="DefaultIconScript" class="ptolemy.vergil.basic.export.web.DefaultIconScript" value="writeText('')">
         <property name="displayText" class="ptolemy.data.expr.StringParameter" value="Javascript for icons is entered here.  Right click this text -&gt; Customize -&gt; Configure">
         </property>
-        <property name="script" class="ptolemy.data.expr.StringParameter" value="function writeText(text) {&#10;    document.getElementById(&quot;afterImage&quot;).innerHTML = text;&#10;};&#10;&#10;function refresh(period) {&#10;	if (period &gt; 0) {&#10;		setTimeout(&quot;location.reload(true);&quot;, period);&#10;	}&#10;}&#10;">
+        <property name="script" class="ptolemy.data.expr.StringParameter" value="function writeText(text) {&#10;    document.getElementById(&quot;afterImage&quot;).innerHTML = text;&#10;};&#10;&#10;function refresh(period) {&#10;	if (period &gt; 0) {&#10;		setTimeout(&quot;location.reload(true);&quot;, period);&#10;	}&#10;}&#10;&#10;">
         </property>
         <property name="evaluateScript" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="startText" class="ptolemy.data.expr.StringParameter" value="&lt;div id=&quot;welcomeMessage&quot;&gt; &lt;/div&gt;">
+        <property name="startText" class="ptolemy.data.expr.StringParameter" value="&#10;&#10;&lt;div id=&quot;welcomeMessage&quot;&gt; &lt;/div&gt;">
         </property>
-        <property name="endText" class="ptolemy.data.expr.StringParameter" value="&lt;p id=&quot;afterImage&quot;&gt;&lt;/p&gt;&#10;&lt;form accept-charset=&quot;UTF-8&quot; action=&quot;guidance&quot; method=&quot;post&quot;&gt;&#10;	&lt;p&gt; New location? &lt;/p&gt;&#10;	&lt;p&gt; ID:  &lt;input type=&quot;text&quot; name=&quot;ID&quot; id=&quot;ID&quot;/&gt;&#10;	X: &lt;input type=&quot;text&quot; name=&quot;xCoord&quot; id=&quot;xCoord&quot;/&gt;&#10;	Y: &lt;input type=&quot;text&quot; name=&quot;yCoord&quot; id=&quot;yCoord&quot;/&gt;&#10;	&lt;input type=&quot;submit&quot; value=&quot;Calculate location&quot; /&gt;&#10;	&lt;/p&gt;		&#10;&lt;/form&gt;">
+        <property name="endText" class="ptolemy.data.expr.StringParameter" value="&lt;p id=&quot;afterImage&quot;&gt;&lt;/p&gt;&#10;&lt;form accept-charset=&quot;UTF-8&quot; action=&quot;guidance&quot; method=&quot;post&quot;&gt;&#10;	&lt;p&gt; New location? &lt;/p&gt;&#10;	&lt;p&gt; ID:  &lt;input type=&quot;text&quot; name=&quot;ID&quot; id=&quot;ID&quot;/&gt;&#10;	&lt;br&gt; &#10;	X: &lt;input type=&quot;text&quot; name=&quot;xCoord&quot; id=&quot;xCoord&quot;/&gt;&#10;	&lt;br&gt;&#10;	Y: &lt;input type=&quot;text&quot; name=&quot;yCoord&quot; id=&quot;yCoord&quot;/&gt;&#10;	&lt;br&gt;&#10;	&lt;input type=&quot;submit&quot; value=&quot;Submit&quot; /&gt;&#10;	&lt;/p&gt;		&#10;&lt;/form&gt;&#10;">
         </property>
-        <property name="jQueryLibraries" class="ptolemy.data.expr.StringParameter" value="&lt;link rel=&quot;stylesheet&quot; type=&quot;text/css&quot; href=&quot;http://ptolemy.org/javascript/jquery.fancybox-1.3.4.css&quot; media=&quot;screen&quot;/&gt;&#10;&lt;script type=&quot;text/javascript&quot; src=&quot;http://ptolemy.org/javascript/jquery-1.4.3.min.js&quot;&gt;&lt;/script&gt;&#10;&lt;script type=&quot;text/javascript&quot; src=&quot;http://ptolemy.org/javascript/jquery.fancybox-1.3.4.pack.js&quot;&gt;&lt;/script&gt;&#10;&lt;script type=&quot;text/javascript&quot; src=&quot;http://ptolemy.org/javascript/pt-1.0.0.js&quot;&gt;&lt;/script&gt;&#10;	&#10;">
+        <property name="jQueryLibraries" class="ptolemy.data.expr.StringParameter" value="&lt;link rel=&quot;stylesheet&quot; type=&quot;text/css&quot; href=&quot;http://ptolemy.org/javascript/jquery.fancybox-1.3.4.css&quot; media=&quot;screen&quot;/&gt;&#10;&lt;script src=&quot;http://code.jquery.com/jquery-1.7.1.min.js&quot;&gt;&lt;/script&gt;&#10;&lt;script type=&quot;text/javascript&quot; src=&quot;http://ptolemy.org/javascript/jquery.fancybox-1.3.4.pack.js&quot;&gt;&lt;/script&gt;&#10;&lt;script type=&quot;text/javascript&quot; src=&quot;http://ptolemy.org/javascript/pt-1.0.0.js&quot;&gt;&lt;/script&gt;&#10;&#10;&#10;&#10;&#10;&#10;	&#10;">
         </property>
         <property name="include" class="ptolemy.data.expr.StringParameter" value="Entities">
         </property>
@@ -130,7 +130,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[1150.0, 465.0]">
         </property>
     </property>
-    <property name="x1" class="ptolemy.actor.parameters.PortParameter" value="&quot;22&quot;">
+    <property name="x1" class="ptolemy.actor.parameters.PortParameter" value="&quot;0&quot;">
         <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="false">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -235,7 +235,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[305.0, 370.0]">
         </property>
     </property>
-    <property name="y1" class="ptolemy.actor.parameters.PortParameter" value="&quot;33&quot;">
+    <property name="y1" class="ptolemy.actor.parameters.PortParameter" value="&quot;0&quot;">
         <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="false">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -366,7 +366,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[1150.0, 580.0]">
         </property>
     </property>
-    <property name="x2" class="ptolemy.actor.parameters.PortParameter" value="&quot;333&quot;">
+    <property name="x2" class="ptolemy.actor.parameters.PortParameter" value="&quot;0&quot;">
         <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="false">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -391,7 +391,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[1150.0, 175.0]">
         </property>
     </property>
-    <property name="y2" class="ptolemy.actor.parameters.PortParameter" value="&quot;444&quot;">
+    <property name="y2" class="ptolemy.actor.parameters.PortParameter" value="&quot;0&quot;">
         <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="false">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -416,7 +416,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[1150.0, 205.0]">
         </property>
     </property>
-    <property name="x3" class="ptolemy.actor.parameters.PortParameter" value="&quot;344&quot;">
+    <property name="x3" class="ptolemy.actor.parameters.PortParameter" value="&quot;0&quot;">
         <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="false">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -441,7 +441,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[1150.0, 250.0]">
         </property>
     </property>
-    <property name="x4" class="ptolemy.actor.parameters.PortParameter" value="&quot;555&quot;">
+    <property name="x4" class="ptolemy.actor.parameters.PortParameter" value="&quot;0&quot;">
         <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="false">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -466,7 +466,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[1150.0, 320.0]">
         </property>
     </property>
-    <property name="y3" class="ptolemy.actor.parameters.PortParameter" value="&quot;2&quot;">
+    <property name="y3" class="ptolemy.actor.parameters.PortParameter" value="&quot;0&quot;">
         <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="false">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -491,7 +491,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[1150.0, 280.0]">
         </property>
     </property>
-    <property name="x5" class="ptolemy.actor.parameters.PortParameter" value="&quot;255&quot;">
+    <property name="x5" class="ptolemy.actor.parameters.PortParameter" value="&quot;200&quot;">
         <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="false">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -516,7 +516,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[1150.0, 385.0]">
         </property>
     </property>
-    <property name="y4" class="ptolemy.actor.parameters.PortParameter" value="&quot;555&quot;">
+    <property name="y4" class="ptolemy.actor.parameters.PortParameter" value="&quot;0&quot;">
         <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="false">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -541,7 +541,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[1150.0, 345.0]">
         </property>
     </property>
-    <property name="y5" class="ptolemy.actor.parameters.PortParameter" value="&quot;155&quot;">
+    <property name="y5" class="ptolemy.actor.parameters.PortParameter" value="&quot;300&quot;">
         <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="false">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -874,7 +874,7 @@
         <link port="ExpressionToToken2.output" relation="relation5"/>
     </class>
     <entity name="MarkerInstance2" class="MarkerClassDefinition">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[333.0, 444.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[0.0, 0.0]">
         </property>
         <property name="markerName" class="ptolemy.data.expr.Parameter" value="name2">
         </property>
@@ -888,7 +888,7 @@
         </property>
     </entity>
     <entity name="MarkerInstance1" class="MarkerClassDefinition">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[22.0, 33.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[0.0, 0.0]">
         </property>
         <property name="markerName" class="ptolemy.data.expr.Parameter" value="name1">
         </property>
@@ -902,7 +902,7 @@
         </property>
     </entity>
     <entity name="MarkerInstance3" class="MarkerClassDefinition">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[344.0, 2.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[0.0, 0.0]">
         </property>
         <property name="markerName" class="ptolemy.data.expr.Parameter" value="name3">
         </property>
@@ -916,7 +916,7 @@
         </property>
     </entity>
     <entity name="MarkerInstance4" class="MarkerClassDefinition">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[290.0, 345.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[0.0, 0.0]">
         </property>
         <property name="markerName" class="ptolemy.data.expr.Parameter" value="name4">
         </property>
@@ -928,7 +928,7 @@
         </property>
     </entity>
     <entity name="MarkerInstance" class="MarkerClassDefinition">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[255.0, 155.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[200.0, 300.0]">
         </property>
         <property name="markerName" class="ptolemy.data.expr.Parameter" value="name5">
         </property>
