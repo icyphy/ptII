@@ -67,7 +67,7 @@ import ptolemy.kernel.util.NamedObj;
  * </p>
  *
  * @author Baobing (Brian) Wang
- * @version $Id: DyGraphsJSPlotter.java 28323 2012-07-12 11:32:07Z briankw $
+ * @version $Id$
  * @since Ptolemy II 9
  * @Pt.ProposedRating Red (cxh)
  * @Pt.AcceptedRating Red (cxh)

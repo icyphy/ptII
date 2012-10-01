@@ -92,7 +92,7 @@ For more information, please refer to "Manual for Creating Web Pages" in Ptolemy
 </p>
 
 @author Baobing (Brian) Wang
-@version $Id: HTMLPageAssembler.java 2012-08-08 09:18:20Z bwang $
+@version $Id$
 @since Ptolemy II 9.0
 @Pt.ProposedRating Yellow (bwang)
 @Pt.AcceptedRating Yellow (bwang)

@@ -50,7 +50,7 @@ import ptolemy.kernel.util.NamedObj;
  * provided to modify the contents of these parts. 
  * 
  * @author Baobing (Brian) Wang
- * @version $Id: BasicJSPlotter.java 2012-07-12 10:30:25Z briankw $
+ * @version $Id$
  * @since Ptolemy II 9
  * @Pt.ProposedRating Red (cxh)
  * @Pt.AcceptedRating Red (cxh)
