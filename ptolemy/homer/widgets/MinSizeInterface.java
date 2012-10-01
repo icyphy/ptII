@@ -31,9 +31,9 @@ package ptolemy.homer.widgets;
 //// MinSizeInterface
 
 /**
- * This interface defines minimal size that a widget can have. 
+ * This interface defines minimal size that a widget can have.
  * @author Anar Huseynov
- * @version $Id$ 
+ * @version $Id$
  * @since Ptolemy II 8.1
  * @Pt.ProposedRating Red (ahuseyno)
  * @Pt.AcceptedRating Red (ahuseyno)

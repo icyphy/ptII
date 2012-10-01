@@ -224,7 +224,7 @@ public class Director extends Attribute implements Executable {
             } else {
                 _stopTime = null;
             }
-        } 
+        }
 
         super.attributeChanged(attribute);
     }
@@ -691,7 +691,7 @@ public class Director extends Attribute implements Executable {
     /** Return the stop time parameter value, if it has been set,
      *  and otherwise, return a time with value Double.POSITIVE_INFINITY.
      *  @return the stop time parameter value.
-     * @throws IllegalActionException 
+     * @throws IllegalActionException
      */
     public final Time getModelStopTime() throws IllegalActionException {
         if (_stopTime != null) {
@@ -1038,7 +1038,7 @@ public class Director extends Attribute implements Executable {
      *  call prefire() on the contained actors.
      *  If this director is not at the top level of the hierarchy,
      *  then this base class synchronizes to environment time, making
-     *  any necessary adjustments for drift or offset of the local clock. 
+     *  any necessary adjustments for drift or offset of the local clock.
      *  <p>
      *  In this base class, assume that the director is always ready to
      *  be fired, and so return true. Domain directors should probably
@@ -1083,12 +1083,12 @@ public class Director extends Attribute implements Executable {
         if (_debugging) {
             _debug(getFullName(), "Preinitializing ...");
         }
-        
+
         // Support old models that set time resolution in director.
         Attribute timeResolution = getAttribute("timeResolution");
         if (timeResolution != null) {
             double timeResolutionDouble = ((DoubleToken) ((Parameter)timeResolution)
-                    .getToken()).doubleValue(); 
+                    .getToken()).doubleValue();
             try {
                 timeResolution.setContainer(null);
             } catch (NameDuplicationException e) {
@@ -1116,7 +1116,7 @@ public class Director extends Attribute implements Executable {
         // In case the preinitialize() method of any actor
         // access current time, set the start time. This is required
         // for instance in DDF.
-        // The following will be repeated in initialize(). 
+        // The following will be repeated in initialize().
         localClock.resetLocalTime(getModelStartTime());
         localClock.start();
 
@@ -1435,7 +1435,7 @@ public class Director extends Attribute implements Executable {
         return false;
     }
 
-    /** Suspend the actor at the specified time. This will stop the local 
+    /** Suspend the actor at the specified time. This will stop the local
      *  clock.
      *  @exception IllegalActionException If the suspend cannot be completed.
      */
@@ -1804,7 +1804,7 @@ public class Director extends Attribute implements Executable {
      *  as if it were at the top level.
      */
     private transient boolean _notEmbeddedForced = false;
-    
+
     /** Start time. */
     private transient Time _startTime;
 

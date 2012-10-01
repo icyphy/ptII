@@ -37,7 +37,7 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
 /**
- *  This port provides a specialized TypedIOPort for sensors that 
+ *  This port provides a specialized TypedIOPort for sensors that
  *  periodically sample data
  *  used in Ptides. This port just specializes parameters.
  *
@@ -48,24 +48,24 @@ import ptolemy.kernel.util.NameDuplicationException;
  *  @Pt.AcceptedRating
  */
 public class PeriodicSamplingSensorPort extends SensorPort {
-    
-    public Parameter samplingTime; 
+
+    public Parameter samplingTime;
 
     /** Create a new PeriodicSamplingSensorPort with a given container and a name.
-     * @param container The container of the port. 
+     * @param container The container of the port.
      * @param name The name of the port.
      * @throws IllegalActionException If parameters cannot be set.
      * @throws NameDuplicationException If name already exists.
      */
     public PeriodicSamplingSensorPort(CompositeEntity container, String name) throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        
+
         samplingTime = new Parameter(this, "samplingTime");
         samplingTime.setToken(new DoubleToken(1.0));
-        samplingTime.setTypeEquals(BaseType.DOUBLE); 
+        samplingTime.setTypeEquals(BaseType.DOUBLE);
     }
-    
-    
-    
-    
+
+
+
+
 }

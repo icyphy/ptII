@@ -211,7 +211,7 @@ public class NondeterministicMerge extends TypedCompositeActor {
             while (mergeDirectors.hasNext()) {
                 MergeDirector oldMergeDirector = (MergeDirector)mergeDirectors.next();
                 if (mergeDirectorName == null) {
-                    mergeDirectorName = oldMergeDirector.getName();                
+                    mergeDirectorName = oldMergeDirector.getName();
                 }
                 oldMergeDirector.setContainer(null);
             }

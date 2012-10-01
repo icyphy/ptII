@@ -39,7 +39,7 @@ import ptolemy.data.Token;
 
 /** Encapsulate tokens that were received within one iteration.
  *  <p>Note: Kahn process networks are not being handled right now.</p>
- *  
+ *
  *  @author Anar Huseynov
  *  @version $Id$
  *  @since Ptolemy II 8.0
@@ -102,8 +102,8 @@ public class CommunicationToken extends Token {
             return false;
         }
 
-        // portChannelTokenMap.equals(other.portChannelTokenMap) would not work 
-        // because the maps contain array objects, and equals method on the array 
+        // portChannelTokenMap.equals(other.portChannelTokenMap) would not work
+        // because the maps contain array objects, and equals method on the array
         // objects checks equality of a reference but in our case we need to check
         // equality of each token within the array objects.
         if (_portChannelTokenMap == null) {

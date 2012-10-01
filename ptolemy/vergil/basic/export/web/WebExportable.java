@@ -48,37 +48,37 @@ public interface WebExportable extends Nameable {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Return the Mime type of the content (for example, text/html).  
+    /** Return the Mime type of the content (for example, text/html).
      * The Mime type is used by browsers to determine how to render the content.
      * The Mime type is set using HttpResponse's setContentType() method.
      * Please see the list of Mime types here, in the Media type and subtype(s)
      * field of the table:
      * http://reference.sitepoint.com/html/mime-types-full
-     * 
+     *
      * @return The Mime type of the content (for example, text/html)
      */
     public String getMimeType();
-    
+
     /** Returns true if the content in the WebExporter for this object should
      *  be overwritten; false if the original content should be kept.
      *  Note that all objects from the WebExportable are treated in a uniform
      *  manner.  For example, it's not possible to overwrite some objects'
      *  values but keep other objects' values from the same WebExportable.
-     * 
+     *
      * @return True if the content in the WebExporter for this object should
      *  be overwritten; false if the original content should be kept
      */
     public boolean isOverwriteable();
-    
+
     /** Provide content to the specified web exporter.
-     *  This may include, for example, HTML pages and fragments, Javascript 
-     *  function definitions and calls, CSS styling, and more. Throw an 
+     *  This may include, for example, HTML pages and fragments, Javascript
+     *  function definitions and calls, CSS styling, and more. Throw an
      *  IllegalActionException if something is wrong with the web content.
-     * 
+     *
      *  @param exporter The web exporter to be used
      *  @exception IllegalActionException If something is wrong with the web
      *  content.
      */
-    public void provideContent(WebExporter exporter) throws 
+    public void provideContent(WebExporter exporter) throws
         IllegalActionException;
 }

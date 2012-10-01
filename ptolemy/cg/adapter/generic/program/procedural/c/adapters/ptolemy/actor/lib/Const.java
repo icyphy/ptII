@@ -49,11 +49,11 @@ public class Const
     public Const(ptolemy.actor.lib.Const actor) {
         super(actor);
     }
-    
+
     /** Return the name of the port that is the time source.
      *  @return The string "trigger".
      */
-    public String getTimeSourcePortName() { 
+    public String getTimeSourcePortName() {
         return "trigger";
     }
 }

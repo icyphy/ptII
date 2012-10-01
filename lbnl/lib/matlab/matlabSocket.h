@@ -5,7 +5,7 @@
 ///         using BSD sockets.
 ///
 /// \author Michael Wetter,
-///         Simulation Research Group, 
+///         Simulation Research Group,
 ///         LBNL,
 ///         MWetter@lbl.gov
 ///
@@ -59,14 +59,14 @@ int sendclienterror(const int *sockfd, const int *flaWri);
 ///\param dblValRea Double values read from socket.
 ///\sa int establishclientsocket(uint16_t *portNo)
 ///\return The exit value of \c send or \c read, or a negative value if an error occured.
-int exchangedoubleswithsocket(const int *sockfd, 
-			      const int *flaWri, int *flaRea,
-			      const int *nDblWri,
-			      int *nDblRea,
-			      double *simTimWri,
-			      double dblValWri[],
-			      double *simTimRea,
-			      double dblValRea[]);
+int exchangedoubleswithsocket(const int *sockfd,
+                              const int *flaWri, int *flaRea,
+                              const int *nDblWri,
+                              int *nDblRea,
+                              double *simTimWri,
+                              double dblValWri[],
+                              double *simTimRea,
+                              double dblValRea[]);
 
 ///////////////////////////////////////////////////////////
 /// Closes the inter process communication socket.
@@ -125,7 +125,7 @@ modification, are permitted provided that the following conditions are met:
    3. Neither the name of the University of California, Lawrence
       Berkeley National Laboratory, U.S. Dept. of Energy nor the names
       of its contributors may be used to endorse or promote products
-      derived from this software without specific prior written permission. 
+      derived from this software without specific prior written permission.
 
 THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS
 IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED

@@ -241,7 +241,7 @@ public class FunctionType extends StructuredType implements Cloneable {
     }
 
     /** Return a hash code value for this object.
-     *  @return The hash code value for this object.   
+     *  @return The hash code value for this object.
      */
     public int hashCode() {
         // See http://www.technofundo.com/tech/java/equalhash.html
@@ -714,7 +714,7 @@ public class FunctionType extends StructuredType implements Cloneable {
         }
 
         /** Return a hash code value for this object.
-         *  @return The hash code value for this object.   
+         *  @return The hash code value for this object.
          */
         public int hashCode() {
             // See http://www.technofundo.com/tech/java/equalhash.html

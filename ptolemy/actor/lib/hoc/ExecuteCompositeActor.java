@@ -157,7 +157,7 @@ public class ExecuteCompositeActor extends LifeCycleManager {
         super(container, name);
         _init();
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         parameters                        ////
 
@@ -168,7 +168,7 @@ public class ExecuteCompositeActor extends LifeCycleManager {
      *  defaults to 0.
      */
     public Parameter firingCountLimit;
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -195,7 +195,7 @@ public class ExecuteCompositeActor extends LifeCycleManager {
 
         _executeInsideModel();
     }
-    
+
     /** Initialize this actor, which in this case, does nothing.  The
      *  initialization of the submodel is accomplished in fire().  The
      *  subclass of this can set the
@@ -210,7 +210,7 @@ public class ExecuteCompositeActor extends LifeCycleManager {
         }
         _iteration = 0;
     }
-    
+
     /** Return true, indicating that execution can continue.  The
      *  subclass of this can set the
      *  <i>_isSubclassOfExecuteCompositeActor</i> to be true to call the
@@ -315,7 +315,7 @@ public class ExecuteCompositeActor extends LifeCycleManager {
             _debug("Called wrapup(), which does nothing.");
         }
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
@@ -335,12 +335,12 @@ public class ExecuteCompositeActor extends LifeCycleManager {
         // derived class Java definition. Thus, we force the class name
         // here to be ExecuteCompositeActor.
         setClassName("ptolemy.actor.lib.hoc.ExecuteCompositeActor");
-        
+
         firingCountLimit = new Parameter(this, "firingCountLimit");
         firingCountLimit.setTypeEquals(BaseType.INT);
         firingCountLimit.setExpression("0");
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 

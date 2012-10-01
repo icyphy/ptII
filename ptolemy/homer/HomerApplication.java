@@ -45,9 +45,9 @@ import ptolemy.vergil.VergilErrorHandler;
 
 /** The UI designer application responsible for handling configuration and
  *  opening the main frame container.
- *  
+ *
  *  @author Justin Killian
- *  @version $Id$ 
+ *  @version $Id$
  *  @since Ptolemy II 8.1
  *  @Pt.ProposedRating Red (jkillian)
  *  @Pt.AcceptedRating Red (jkillian)
@@ -109,7 +109,7 @@ public class HomerApplication extends MoMLApplication {
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                       ////
 
-    /** Return the full default application configuration.  
+    /** Return the full default application configuration.
      *  @return The default application configuration.
      *  @exception Exception If the configuration cannot be opened.
      */

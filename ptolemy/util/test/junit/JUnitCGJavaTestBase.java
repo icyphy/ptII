@@ -34,8 +34,8 @@ import org.junit.runners.Suite;
 ///////////////////////////////////////////////////////////////////
 //// JUnitCGJavaTestBase
 /**
- *  Run the auto/ tests using java cg. 
- * 
+ *  Run the auto/ tests using java cg.
+ *
  * @author Christopher Brooks
  * @version $Id$
  * @since Ptolemy II 8.1
@@ -45,7 +45,7 @@ import org.junit.runners.Suite;
 @RunWith(Suite.class)
 @Suite.SuiteClasses({
             ptolemy.util.test.junit.AutoCGJavaKnownFailedTests.class,
-		ptolemy.util.test.junit.AutoCGJavaTests.class
+                ptolemy.util.test.junit.AutoCGJavaTests.class
 })
 public class JUnitCGJavaTestBase {
 }

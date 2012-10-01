@@ -75,7 +75,7 @@ public class IconLink extends WebContent implements WebExportable {
     public IconLink(NamedObj container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        
+
         _icon.setIconText("L");
         displayText.setExpression("http://ptolemy.org");
         height.setExpression("1");
@@ -83,13 +83,13 @@ public class IconLink extends WebContent implements WebExportable {
         linkTarget = new LinkTarget(this, "linkTarget");
         // Note that the default value and choices are set
         // in the above constructor call.
-        
+
         setExpression("http://ptolemy.org");
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         parameters                        ////
-    
+
     /** Parameter specifying the target for the link.
      *  The possibilities are:
      *  <ul>
@@ -108,7 +108,7 @@ public class IconLink extends WebContent implements WebExportable {
     ////                         public methods                    ////
 
     /** A link is of type text/html.
-     * 
+     *
      * @return The string text/html
      */
     public String getMimeType() {
@@ -116,7 +116,7 @@ public class IconLink extends WebContent implements WebExportable {
     }
 
     /** Return true, since new content should overwrite old.
-     * 
+     *
      * @return True, since new content should overwrite old
      */
     public boolean isOverwriteable() {
@@ -125,54 +125,54 @@ public class IconLink extends WebContent implements WebExportable {
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                ////
-    
+
     /** Provide content to the specified web exporter to be
      *  included in a web page for the container of this object.
      *  This class defines an href attribute to associate with
      *  the area of the image map corresponding to its container.
-     *  
+     *
      *  @param exporter  The web exporter to write content to
      *  @throws IllegalActionException If evaluating the value
      *   of this parameter fails, or creating a web attribute fails.
      */
-    protected void _provideAttributes(WebExporter exporter) 
+    protected void _provideAttributes(WebExporter exporter)
         throws IllegalActionException{
-        
+
         WebAttribute webAttribute;
-        
+
         NamedObj container = getContainer();
         if (container != null) {
             // Last argument specifies to overwrite any previous value defined.
             if (!stringValue().trim().equals("")) {
 
-                // Create link attribute and add to exporter.  
+                // Create link attribute and add to exporter.
                 // Content should only be added once (onceOnly -> true).
-                webAttribute = 
-                    WebAttribute.createWebAttribute(getContainer(), 
+                webAttribute =
+                    WebAttribute.createWebAttribute(getContainer(),
                             "hrefWebAttribute", "href");
                 webAttribute.setExpression(stringValue());
                 exporter.defineAttribute(webAttribute, true);
             }
-            
+
             String targetValue = linkTarget.stringValue();
             if (!targetValue.trim().equals("")) {
                 if (targetValue.equals("_lightbox")) {
                     // Strangely, the class has to be "iframe".
                     // I don't understand why it can't be "lightbox".
 
-                    // Create class attribute and add to exporter.  
+                    // Create class attribute and add to exporter.
                     // Content should only be added once (onceOnly -> true).
-                    webAttribute = 
-                       WebAttribute.createWebAttribute(getContainer(), 
+                    webAttribute =
+                       WebAttribute.createWebAttribute(getContainer(),
                                "classWebAttribute", "class");
                     webAttribute.setExpression("iframe");
                     exporter.defineAttribute(webAttribute, true);
                 } else {
 
-                    // Create target attribute and add to exporter.  
+                    // Create target attribute and add to exporter.
                     // Content should only be added once (onceOnly -> true).
-                    webAttribute = 
-                      WebAttribute.createWebAttribute(getContainer(), 
+                    webAttribute =
+                      WebAttribute.createWebAttribute(getContainer(),
                               "targetWebAttribute", "target");
                     webAttribute.setExpression(targetValue);
                     exporter.defineAttribute(webAttribute, true);

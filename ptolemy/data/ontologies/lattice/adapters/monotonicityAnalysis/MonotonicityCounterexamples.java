@@ -81,8 +81,8 @@ public class MonotonicityCounterexamples {
         for (Token insideToken : ((ArrayToken)token).arrayValue()) {
             if (!(insideToken instanceof TupleToken)) {
                 throw new IllegalActionException("Invalid token structure" +
-                		"for creating MonotonicityCounterexamples:" +
-                		"ArrayToken must contain TupleTokens.");
+                                "for creating MonotonicityCounterexamples:" +
+                                "ArrayToken must contain TupleTokens.");
             }
             TupleToken tupleToken = (TupleToken) insideToken;
             if (tupleToken.length() != 2) {
@@ -174,8 +174,8 @@ public class MonotonicityCounterexamples {
     }
 
     public int hashCode() {
-		return _counterexamples.hashCode();
-	}
+                return _counterexamples.hashCode();
+        }
 
     /** Return the string representation of the counterexample set.
      *  @return The string representation of this set.
@@ -204,7 +204,7 @@ public class MonotonicityCounterexamples {
      *  @see #fromToken(Token)
      */
     public ArrayToken toToken() throws IllegalActionException {
-        
+
         TupleToken[] array = new TupleToken[entrySet().size()];
         int i = 0;
         for (Entry<Concept, Concept> pair : entryArraySorted()) {
@@ -216,17 +216,17 @@ public class MonotonicityCounterexamples {
             array[i] = pairTuple;
             i++;
         }
-        
+
         return new ArrayToken(array);
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                        private methods                    ////
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                       private variables                   ////
 
-	/** A multimap to keep track of the mapping of lesser concepts
+        /** A multimap to keep track of the mapping of lesser concepts
      *  to greater concepts.  This must be a multimap, because there
      *  could be multiple counterexamples with the same lesser concept.
      *

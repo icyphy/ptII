@@ -46,14 +46,14 @@ import ptolemy.kernel.util.NamedObj;
 *  @since Ptolemy II 8.1
 *  @Pt.ProposedRating Red (pdf)
 *  @Pt.AcceptedRating Red (pdf)
-*  
+*
 *  @param <T> The class implementing a ContentPrototype. It represents a tab
 *  that can create one similar to itself using the prototype pattern.
 */
 public class MultiContent<T extends ContentPrototype> {
 
     /** Create a new multi-content frame based on a content prototype.
-     *  
+     *
      *  @param contentPrototype A prototype of the content area. This
      *  prototype is used to create multiple content areas on demand.
      */
@@ -64,8 +64,8 @@ public class MultiContent<T extends ContentPrototype> {
     /** The constructor takes a model that is parsed for elements with
      *  location attributes. All that should be represented are parsed
      *  and placed in multiple content areas depending on their parameters.
-     *  
-     *  @param model The model to be parsed. 
+     *
+     *  @param model The model to be parsed.
      *  @param contentPrototype A prototype of the content area. This
      *  prototype is used to create multiple content areas on demand.
      *  @exception IllegalActionException If any of the elements can't be places
@@ -150,7 +150,7 @@ public class MultiContent<T extends ContentPrototype> {
      *  @return The newly generated tab identifier.
      *  @exception NameDuplicationException If the name coincides with an
      *  attribute already in the container.
-     *  @exception IllegalActionException If the tab could not be created in the model. 
+     *  @exception IllegalActionException If the tab could not be created in the model.
      */
     public String addTab(ComponentEntity topLevel, String tabName,
             ContentPrototype content) throws NameDuplicationException,
@@ -168,7 +168,7 @@ public class MultiContent<T extends ContentPrototype> {
      *  @return The newly generated tab identifier.
      *  @exception NameDuplicationException If the name coincides with an
      *  attribute already in the container.
-     *  @exception IllegalActionException If the tab could not be created in the model. 
+     *  @exception IllegalActionException If the tab could not be created in the model.
      */
     public String addTab(ComponentEntity topLevel, String tabName)
             throws NameDuplicationException, IllegalActionException {
@@ -176,7 +176,7 @@ public class MultiContent<T extends ContentPrototype> {
     }
 
     /** Add an element to a specific content area.
-     * 
+     *
      *  @param tabTag The tag identifying the content area.
      *  @param element The element to be added to the content area.
      *  @exception IllegalActionException If the content area is not set.
@@ -187,7 +187,7 @@ public class MultiContent<T extends ContentPrototype> {
     }
 
     /** Remove an element from all content areas.
-     * 
+     *
      *  @param element The element to be removed.
      */
     public void removeElement(PositionableElement element) {
@@ -205,7 +205,7 @@ public class MultiContent<T extends ContentPrototype> {
     }
 
     /** Get a content area based on a unique tag value.
-     * 
+     *
      *  @param tabTag The tag that identifies a content area.
      *  @return The content area object.
      */
@@ -215,7 +215,7 @@ public class MultiContent<T extends ContentPrototype> {
 
     /** Get all content areas as a list. This list is ordered based in the
      *  ordering in the original model.
-     *  
+     *
      *  @return The ordered list of content areas.
      */
     public ArrayList<TabDefinition> getAllTabs() {
@@ -229,7 +229,7 @@ public class MultiContent<T extends ContentPrototype> {
     }
 
     /** Remove a content area from the contents.
-     * 
+     *
      *  @param tag The identifier of the tab to be removed.
      */
     public void removeTab(String tag) {
@@ -238,7 +238,7 @@ public class MultiContent<T extends ContentPrototype> {
         } catch (IllegalActionException e) {
             // This can't happen since we are removing the tab.
         } catch (NameDuplicationException e) {
-            // This can't happen since we are removing the tab.            
+            // This can't happen since we are removing the tab.
         }
         _order.remove(tag);
         _contents.remove(tag);
@@ -246,7 +246,7 @@ public class MultiContent<T extends ContentPrototype> {
     }
 
     /** Rename a content area at a given position.
-     * 
+     *
      *  @param position The position of the tab.
      *  @param text The new title of the tab.
      *  @exception IllegalActionException If the new name is not accepted by the model.
@@ -266,7 +266,7 @@ public class MultiContent<T extends ContentPrototype> {
     }
 
     /** Return a positionable element if the named object is in any of the tabs.
-     * 
+     *
      *  @param object The named object to check.
      *  @return The positionable element wrapping the named object if it's contained,
      *  null otherwise.
@@ -286,7 +286,7 @@ public class MultiContent<T extends ContentPrototype> {
     ////                protected methods                          ////
 
     /** Return the content mapping.
-     * 
+     *
      *  @return The mapping of tag identifiers to tab definitions.
      */
     protected HashMap<String, TabDefinition> _getContents() {
@@ -294,7 +294,7 @@ public class MultiContent<T extends ContentPrototype> {
     }
 
     /** Return the order of the contents.
-     * 
+     *
      *  @return The ordered list of tag identifiers.
      */
     protected ArrayList<String> _getOrder() {
@@ -307,7 +307,7 @@ public class MultiContent<T extends ContentPrototype> {
     /** Parse the model and create the multiple content areas. All elements that
      *  have positions defined are placed into a content area defined by the elements
      *  parameters.
-     *   
+     *
      *  @param contentPrototype A prototype of the content area. This
      *  prototype is used to create multiple content areas on demand.
      *  @param model The model to be parsed.

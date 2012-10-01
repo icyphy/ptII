@@ -1,6 +1,6 @@
 /*
  The PongToken holds a timestamp of the PingToken.
- 
+
  Copyright (c) 2011 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
@@ -35,7 +35,7 @@ import ptolemy.data.Token;
 /**
  * The PongToken holds a timestamp of the PingToken.  It's used for measuring the roundtrip latency.
  * @author Anar Huseynov
- * @version $Id$ 
+ * @version $Id$
  * @since Ptolemy II 8.0
  * @Pt.ProposedRating Red (ahuseyno)
  * @Pt.AcceptedRating Red (ahuseyno)

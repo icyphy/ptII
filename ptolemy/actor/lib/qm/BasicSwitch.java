@@ -153,7 +153,7 @@ public class BasicSwitch extends MonitoredQuantityManager {
                 this, receiver);
         return intermediateReceiver;
     }
-    
+
     /** Create a receiver to mediate a communication via the specified receiver. This
      *  receiver is linked to a specific port of the quantity manager.
      *  @param receiver Receiver whose communication is to be mediated.

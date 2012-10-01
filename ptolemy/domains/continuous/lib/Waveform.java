@@ -96,7 +96,7 @@ import ptolemy.math.DoubleMatrixMath;
  is provided at the same time (including the
  microstep) that the current cycle starts,
  or after the current cycle completes otherwise.
- 
+
  @author Sarah Packman, Yuhong Xiong, Edward A. Lee
  @version $Id$
  @since Ptolemy II 0.3
@@ -122,19 +122,19 @@ public class Waveform extends DiscreteClock {
         interpolation.addChoice("linear");
         interpolation.addChoice("hermite");
         attributeChanged(interpolation);
-        
+
         // Constrain the values to be doubles and change defaults.
         values.setExpression("{1.0, -1.0}");
         values.setTypeEquals(new ArrayType(BaseType.DOUBLE));
 
         period.setExpression("2.0");
-        
+
         offsets.setExpression("{0.0, 1.0}");
-        
+
         // Trigger is not supported.
         Parameter hide = new SingletonParameter(trigger, "_hide");
         hide.setExpression("true");
-        
+
         _attachText("_iconDescription", "<svg>\n"
                 + "<rect x=\"-20\" y=\"-20\" " + "width=\"40\" height=\"40\" "
                 + "style=\"fill:lightGrey\"/>\n"
@@ -150,7 +150,7 @@ public class Waveform extends DiscreteClock {
 
     /** The interpolation method, which must be "linear" or "hermite". */
     public StringParameter interpolation;
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -195,7 +195,7 @@ public class Waveform extends DiscreteClock {
         super.initialize();
         _nextOutputIndex = 0;
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
@@ -253,7 +253,7 @@ public class Waveform extends DiscreteClock {
         return (coef[0] * indexSqr * index) + (coef[1] * indexSqr)
                 + (coef[2] * index) + coef[3];
     }
-    
+
     /** Return the interpolation result for the current model time.
      *  @return A double.
      *  @throws IllegalActionException If the values parameter is malformed.
@@ -271,11 +271,11 @@ public class Waveform extends DiscreteClock {
         if (numRefPoints == 1) {
             return _getValue(0);
         }
-        
+
         // Time into the current cycle.
         Time currentTime = getDirector().getModelTime();
         double time = (currentTime.subtract(_cycleStartTime)).getDoubleValue();
-        
+
         // indexIndexStart is the index to _offsets whose entry is the
         // index to the left of the interpolation point.
         int indexIndexStart = _phase - 1;
@@ -404,10 +404,10 @@ public class Waveform extends DiscreteClock {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    
+
     /** Indicator for third order interpolation. */
     private static final int _HERMITE = 1;
-    
+
     /** The value of the interpolation parameter. */
     private int _interpolation = _LINEAR;
 

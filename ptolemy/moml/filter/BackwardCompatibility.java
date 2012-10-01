@@ -75,7 +75,7 @@ public class BackwardCompatibility {
         //  cd moml/filter/test
         //  $PTII/bin/ptjacl
         //  source ActorIndex.tcl
-        //  source GRColorChanges.tcl 
+        //  source GRColorChanges.tcl
         return (List)((LinkedList)_filterList).clone();
     }
 

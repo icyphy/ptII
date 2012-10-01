@@ -513,7 +513,7 @@ public class ThreadedComposite extends MirrorComposite {
      *  will return false, requesting a halt to execution of the model.
      */
     private class ThreadedDirector extends Director {
-        
+
         /** Construct a new instance of the director for ThreadedComposite.
          *  The director is created in the specified workspace with
          *  no container and an empty string as a name. You can then change

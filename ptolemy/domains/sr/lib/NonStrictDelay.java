@@ -169,9 +169,9 @@ public class NonStrictDelay extends Transformer {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         protected methods                 ////    
+    ////                         protected methods                 ////
 
-    /** Return the a type constraint that requires the initial value to 
+    /** Return the a type constraint that requires the initial value to
      *  be less than or equal to the type of the output.
      */
     @Override

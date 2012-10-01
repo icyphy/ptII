@@ -115,7 +115,7 @@ public class Bus extends MonitoredQuantityManager {
                 this, receiver);
         return intermediateReceiver;
     }
-    
+
     /** Create a receiver to mediate a communication via the specified receiver. This
      *  receiver is linked to a specific port of the quantity manager.
      *  @param receiver Receiver whose communication is to be mediated.
@@ -308,8 +308,8 @@ public class Bus extends MonitoredQuantityManager {
         // FIXME: wrong, more than one token can be received at a time instant! if (_tokens.size() == 1) {
         if (_tokens.size() > 0
                 && (_nextTimeFree == null || currentTime
-                        .compareTo(_nextTimeFree) >= 0)) { 
-            _scheduleRefire(); 
+                        .compareTo(_nextTimeFree) >= 0)) {
+            _scheduleRefire();
             // FIXME:
             // Not only does this bus need to be fired
             // at the _nextTimeFree, but so does the destination
@@ -321,7 +321,7 @@ public class Bus extends MonitoredQuantityManager {
             // a good idea, but we really do want to be able
             // to share a QuantityManager across modes of a
             // modal model. How to fix???
-        } 
+        }
 
         return super.postfire();
     }

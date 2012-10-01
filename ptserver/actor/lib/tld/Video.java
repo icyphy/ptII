@@ -1,11 +1,11 @@
 /*
  This class output a video frame as ByteArrayToken via its output port
  from a camera.
- 
+
  The interface implementation contains logic how to do this.  It also
- accepts bounding box coordinates that need to be overlayed on top 
+ accepts bounding box coordinates that need to be overlayed on top
  of the video.
- 
+
  Copyright (c) 2011 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
@@ -51,10 +51,10 @@ import ptolemy.kernel.util.NameDuplicationException;
  * from a camera.
  *
  * The interface implementation contains logic how to do this.  It also
- * accepts bounding box coordinates that need to be overlayed on top 
+ * accepts bounding box coordinates that need to be overlayed on top
  * of the video.
  * @author Anar Huseynov
- * @version $Id$ 
+ * @version $Id$
  * @since Ptolemy II 8.1
  * @Pt.ProposedRating Red (ahuseyno)
  * @Pt.AcceptedRating Red (ahuseyno)

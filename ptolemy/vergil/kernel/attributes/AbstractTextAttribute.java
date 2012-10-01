@@ -132,12 +132,12 @@ public class AbstractTextAttribute extends VisibleAttribute {
     ////                         parameters                        ////
 
     /** Indication of which point of the text should be aligned to the
-     *  grid. The possible values are "center", "east", "north", 
+     *  grid. The possible values are "center", "east", "north",
      *  "northeast", "northwest" (the default), "south", "sountheast",
      *  "southwest", or "west".
      */
     public StringParameter anchor;
-    
+
     /** A boolean indicating whether the font should be bold.
      *  This defaults to false.
      */

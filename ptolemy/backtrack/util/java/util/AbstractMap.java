@@ -47,7 +47,7 @@ import ptolemy.backtrack.Rollbackable;
 import ptolemy.backtrack.util.CheckpointRecord;
 import ptolemy.backtrack.util.FieldRecord;
 
-/** 
+/**
  * An abstract implementation of Map to make it easier to create your own
  * implementations. In order to create an unmodifiable Map, subclass
  * AbstractMap and implement the <code>entrySet</code> (usually via an
@@ -75,19 +75,19 @@ public abstract class AbstractMap implements Map, Rollbackable {
 
     protected transient Checkpoint $CHECKPOINT = new Checkpoint(this);
 
-    /**     
-     * An "enum" of iterator types. 
+    /**
+     * An "enum" of iterator types.
      */
     static final int KEYS = 0, VALUES = 1, ENTRIES = 2;
 
-    /**     
+    /**
      * The cache for {
     @link #keySet()    }
     .
      */
     private Set keys;
 
-    /**     
+    /**
      * The cache for {
     @link #values()    }
     .
@@ -106,7 +106,7 @@ public abstract class AbstractMap implements Map, Rollbackable {
     // Package visible for use by subclasses.
     // XXX - FIXME Use fully qualified implements as gcj 3.1 workaround.
     //       Bug still exists in 3.4.1
-    /**     
+    /**
      * A class which implements Map.Entry. It is shared by HashMap, TreeMap,
      * Hashtable, and Collections. It is not specified by the JDK, but makes
      * life much easier.
@@ -117,17 +117,17 @@ public abstract class AbstractMap implements Map, Rollbackable {
 
         protected transient Checkpoint $CHECKPOINT = new Checkpoint(this);
 
-        /**         
+        /**
          * The key. Package visible for direct manipulation.
          */
         private Object key;
 
-        /**         
+        /**
          * The value. Package visible for direct manipulation.
          */
         private Object value;
 
-        /**         
+        /**
          * Basic constructor initializes the fields.
          * @param newKey the key
          * @param newValue the value
@@ -137,7 +137,7 @@ public abstract class AbstractMap implements Map, Rollbackable {
             setValueField(newValue);
         }
 
-        /**         
+        /**
          * Compares the specified object with this entry. Returns true only if
          * the object is a mapping of identical key and value. In other words,
          * this must be:<br>
@@ -164,7 +164,7 @@ public abstract class AbstractMap implements Map, Rollbackable {
                     .equals(getValueField(), e.getValue()));
         }
 
-        /**         
+        /**
          * Get the key corresponding to this entry.
          * @return the key
          */
@@ -172,7 +172,7 @@ public abstract class AbstractMap implements Map, Rollbackable {
             return getKeyField();
         }
 
-        /**         
+        /**
          * Get the value corresponding to this entry. If you already called
          * Iterator.remove(), the behavior undefined, but in this case it works.
          * @return the value
@@ -181,7 +181,7 @@ public abstract class AbstractMap implements Map, Rollbackable {
             return getValueField();
         }
 
-        /**         
+        /**
          * Returns the hash code of the entry.  This is defined as the exclusive-or
          * of the hashcodes of the key and value (using 0 for null). In other
          * words, this must be:<br>
@@ -194,7 +194,7 @@ public abstract class AbstractMap implements Map, Rollbackable {
                     .hashCode(getValueField()));
         }
 
-        /**         
+        /**
          * Replaces the value with the specified object. This writes through
          * to the map, unless you have already called Iterator.remove(). It
          * may be overridden to restrict a null value.
@@ -214,7 +214,7 @@ public abstract class AbstractMap implements Map, Rollbackable {
             return r;
         }
 
-        /**         
+        /**
          * This provides a string representation of the entry. It is of the form
          * "key=value", where string concatenation is used on key and value.
          * @return the string representation
@@ -301,13 +301,13 @@ public abstract class AbstractMap implements Map, Rollbackable {
     }
 
     // class BasicMapEntry
-    /**     
+    /**
      * The main constructor, for use by subclasses.
      */
     protected AbstractMap() {
     }
 
-    /**     
+    /**
      * Returns a set view of the mappings in this Map.  Each element in the
      * set must be an implementation of Map.Entry.  The set is backed by
      * the map, so that changes in one show up in the other.  Modifications
@@ -321,7 +321,7 @@ public abstract class AbstractMap implements Map, Rollbackable {
      */
     public abstract Set entrySet();
 
-    /**     
+    /**
      * Remove all entries from this Map (optional operation). This default
      * implementation calls entrySet().clear(). NOTE: If the entry set does
      * not permit clearing, then this will fail, too. Subclasses often
@@ -335,7 +335,7 @@ public abstract class AbstractMap implements Map, Rollbackable {
         entrySet().clear();
     }
 
-    /**     
+    /**
      * Create a shallow copy of this Map, no keys or values are copied. The
      * default implementation simply calls <code>super.clone()</code>.
      * @return the shallow clone
@@ -350,7 +350,7 @@ public abstract class AbstractMap implements Map, Rollbackable {
         return copy;
     }
 
-    /**     
+    /**
      * Returns true if this contains a mapping for the given key. This
      * implementation does a linear search, O(n), over the
      * <code>entrySet()</code>, returning <code>true</code> if a match
@@ -373,7 +373,7 @@ public abstract class AbstractMap implements Map, Rollbackable {
         return false;
     }
 
-    /**     
+    /**
      * Returns true if this contains at least one mapping with the given value.
      * This implementation does a linear search, O(n), over the
      * <code>entrySet()</code>, returning <code>true</code> if a match
@@ -396,7 +396,7 @@ public abstract class AbstractMap implements Map, Rollbackable {
         return false;
     }
 
-    /**     
+    /**
      * Compares the specified object with this map for equality. Returns
      * <code>true</code> if the other object is a Map with the same mappings,
      * that is,<br>
@@ -410,7 +410,7 @@ public abstract class AbstractMap implements Map, Rollbackable {
                 ((Map) o).entrySet())));
     }
 
-    /**     
+    /**
      * Returns the value mapped by the given key. Returns <code>null</code> if
      * there is no mapping.  However, in Maps that accept null values, you
      * must rely on <code>containsKey</code> to determine if a mapping exists.
@@ -433,7 +433,7 @@ public abstract class AbstractMap implements Map, Rollbackable {
         return null;
     }
 
-    /**     
+    /**
      * Returns the hash code for this map. As defined in Map, this is the sum
      * of all hashcodes for each Map.Entry object in entrySet, or basically
      * entrySet().hashCode().
@@ -445,7 +445,7 @@ public abstract class AbstractMap implements Map, Rollbackable {
         return entrySet().hashCode();
     }
 
-    /**     
+    /**
      * Returns true if the map contains no mappings. This is implemented by
      * <code>size() == 0</code>.
      * @return true if the map is empty
@@ -455,7 +455,7 @@ public abstract class AbstractMap implements Map, Rollbackable {
         return size() == 0;
     }
 
-    /**     
+    /**
      * Returns a set view of this map's keys. The set is backed by the map,
      * so changes in one show up in the other. Modifications while an iteration
      * is in progress produce undefined behavior. The set supports removal
@@ -475,7 +475,7 @@ public abstract class AbstractMap implements Map, Rollbackable {
     public Set keySet() {
         if (getKeys() == null) {
             setKeys(new AbstractSet() {
-                /**                 
+                /**
                  * Retrieves the number of keys in the backing map.
                  * @return The number of keys.
                  */
@@ -483,7 +483,7 @@ public abstract class AbstractMap implements Map, Rollbackable {
                     return AbstractMap.this.size();
                 }
 
-                /**                 
+                /**
                  * Returns true if the backing map contains the
                  * supplied key.
                  * @param key The key to search for.
@@ -493,7 +493,7 @@ public abstract class AbstractMap implements Map, Rollbackable {
                     return containsKey(key);
                 }
 
-                /**                 
+                /**
                  * Returns an iterator which iterates over the keys
                  * in the backing map, using a wrapper around the
                  * iterator returned by <code>entrySet()</code>.
@@ -501,13 +501,13 @@ public abstract class AbstractMap implements Map, Rollbackable {
                  */
                 public Iterator iterator() {
                     return new Iterator() {
-                        /**                         
+                        /**
                          * The iterator returned by <code>entrySet()</code>.
                          */
                         private final Iterator map_iterator = entrySet()
                                 .iterator();
 
-                        /**                         
+                        /**
                          * Returns true if a call to <code>next()</code> will
                          * return another key.
                          * @return True if the iterator has not yet reached
@@ -517,7 +517,7 @@ public abstract class AbstractMap implements Map, Rollbackable {
                             return map_iterator.hasNext();
                         }
 
-                        /**                         
+                        /**
                          * Returns the key from the next entry retrieved
                          * by the underlying <code>entrySet()</code> iterator.
                          * @return The next key.
@@ -526,7 +526,7 @@ public abstract class AbstractMap implements Map, Rollbackable {
                             return ((Map.Entry) map_iterator.next()).getKey();
                         }
 
-                        /**                         
+                        /**
                          * Removes the map entry which has a key equal
                          * to that returned by the last call to
                          * <code>next()</code>.
@@ -674,7 +674,7 @@ public abstract class AbstractMap implements Map, Rollbackable {
         return getKeys();
     }
 
-    /**     
+    /**
      * Associates the given key to the given value (optional operation). If the
      * map already contains the key, its value is replaced. This implementation
      * simply throws an UnsupportedOperationException. Be aware that in a map
@@ -694,7 +694,7 @@ public abstract class AbstractMap implements Map, Rollbackable {
         throw new UnsupportedOperationException();
     }
 
-    /**     
+    /**
      * Copies all entries of the given map to this one (optional operation). If
      * the map already contains a key, its value is replaced. This implementation
      * simply iterates over the map's entrySet(), calling <code>put</code>,
@@ -719,7 +719,7 @@ public abstract class AbstractMap implements Map, Rollbackable {
         }
     }
 
-    /**     
+    /**
      * Removes the mapping for this key if present (optional operation). This
      * implementation iterates over the entrySet searching for a matching
      * key, at which point it calls the iterator's <code>remove</code> method.
@@ -749,7 +749,7 @@ public abstract class AbstractMap implements Map, Rollbackable {
         return null;
     }
 
-    /**     
+    /**
      * Returns the number of key-value mappings in the map. If there are more
      * than Integer.MAX_VALUE mappings, return Integer.MAX_VALUE. This is
      * implemented as <code>entrySet().size()</code>.
@@ -760,7 +760,7 @@ public abstract class AbstractMap implements Map, Rollbackable {
         return entrySet().size();
     }
 
-    /**     
+    /**
      * Returns a String representation of this map. This is a listing of the
      * map entries (which are specified in Map.Entry as being
      * <code>getKey() + "=" + getValue()</code>), separated by a comma and
@@ -786,7 +786,7 @@ public abstract class AbstractMap implements Map, Rollbackable {
         return r.toString();
     }
 
-    /**     
+    /**
      * Returns a collection or bag view of this map's values. The collection
      * is backed by the map, so changes in one show up in the other.
      * Modifications while an iteration is in progress produce undefined
@@ -807,7 +807,7 @@ public abstract class AbstractMap implements Map, Rollbackable {
     public Collection values() {
         if (getValues() == null) {
             setValues(new AbstractCollection() {
-                /**                 
+                /**
                  * Returns the number of values stored in
                  * the backing map.
                  * @return The number of values.
@@ -816,7 +816,7 @@ public abstract class AbstractMap implements Map, Rollbackable {
                     return AbstractMap.this.size();
                 }
 
-                /**                 
+                /**
                  * Returns true if the backing map contains
                  * the supplied value.
                  * @param value The value to search for.
@@ -826,7 +826,7 @@ public abstract class AbstractMap implements Map, Rollbackable {
                     return containsValue(value);
                 }
 
-                /**                 
+                /**
                  * Returns an iterator which iterates over the
                  * values in the backing map, by using a wrapper
                  * around the iterator returned by <code>entrySet()</code>.
@@ -834,13 +834,13 @@ public abstract class AbstractMap implements Map, Rollbackable {
                  */
                 public Iterator iterator() {
                     return new Iterator() {
-                        /**                         
+                        /**
                          * The iterator returned by <code>entrySet()</code>.
                          */
                         private final Iterator map_iterator = entrySet()
                                 .iterator();
 
-                        /**                         
+                        /**
                          * Returns true if a call to <code>next()</call> will
                          * return another value.
                          * @return True if the iterator has not yet reached
@@ -850,7 +850,7 @@ public abstract class AbstractMap implements Map, Rollbackable {
                             return map_iterator.hasNext();
                         }
 
-                        /**                         
+                        /**
                          * Returns the value from the next entry retrieved
                          * by the underlying <code>entrySet()</code> iterator.
                          * @return The next value.
@@ -859,7 +859,7 @@ public abstract class AbstractMap implements Map, Rollbackable {
                             return ((Map.Entry) map_iterator.next()).getValue();
                         }
 
-                        /**                         
+                        /**
                          * Removes the map entry which has a key equal
                          * to that returned by the last call to
                          * <code>next()</code>.
@@ -1007,7 +1007,7 @@ public abstract class AbstractMap implements Map, Rollbackable {
         return getValues();
     }
 
-    /**     
+    /**
      * Compare two objects according to Collection semantics.
      * @param o1 the first object
      * @param o2 the second object
@@ -1017,7 +1017,7 @@ public abstract class AbstractMap implements Map, Rollbackable {
         return o1 == o2 || (o1 != null && o1.equals(o2));
     }
 
-    /**     
+    /**
      * Hash an object according to Collection semantics.
      * @param o the object to hash
      * @return o1 == null ? 0 : o1.hashCode()

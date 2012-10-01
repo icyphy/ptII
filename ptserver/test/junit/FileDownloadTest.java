@@ -1,5 +1,5 @@
 /*
- Test cases for the file query and download functionality of the servlet. 
+ Test cases for the file query and download functionality of the servlet.
 
  Copyright (c) 2011 The Regents of the University of California.
  All rights reserved.
@@ -86,7 +86,7 @@ public class FileDownloadTest {
     }
 
     /** Get the listing of models available on the server.
-     *  @exception Exception If there was an error retrieving the 
+     *  @exception Exception If there was an error retrieving the
      *  model files on the server.
      */
     @Test
@@ -101,7 +101,7 @@ public class FileDownloadTest {
     }
 
     /** Download a model from the Ptolemy server.
-     *  @exception Exception If there was an error downloading the 
+     *  @exception Exception If there was an error downloading the
      *  model XML data from the server.
      */
     @Test

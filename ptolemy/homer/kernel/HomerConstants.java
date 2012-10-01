@@ -26,14 +26,14 @@
  */
 
 /**
- * 
+ *
  */
 package ptolemy.homer.kernel;
 
 ///////////////////////////////////////////////////////////////////
 //// HomerConstants
 
-/** Constants used in the layout file. 
+/** Constants used in the layout file.
 *
 *  @author Peter Foldes
 *  @version $Id$

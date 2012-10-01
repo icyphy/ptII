@@ -107,7 +107,7 @@ import ptolemy.util.StringUtilities;
  7.      t = self.input.get(0)
  8.      self.output.broadcast(s.multiply(t))
  </pre>
- 
+
  <p>Line 1 defines a Python class Main, which matches the value of the
  <i>jythonClassName</i> parameter. An instance of this class is created when the
  actor is initialized. Line 2 is a description of the purpose of the
@@ -152,7 +152,7 @@ class Main :
     token = self.input.get(0)
     self.output.broadcast(token.multiply(token))
     return
- </pre> 
+ </pre>
 
  <p>Then set <i>jythonClassName</i> to the name of the <b>Jython</b>
  class, for example <code>PtPythonSquare.Main</code>.  (Note that the
@@ -163,9 +163,9 @@ class Main :
  <p>Then set <i>script</i> to  to:</p>
  <pre>
  import PtPythonSquare
- PtPythonSquare = reload(PtPythonSquare) 
+ PtPythonSquare = reload(PtPythonSquare)
  </pre>
-  
+
 
  <p>This class relies on <a href="http://jython.org">Jython</a>, which
  is a Java implementation of Python.
@@ -246,7 +246,7 @@ public class PythonScript extends TypedAtomicActor {
      *  parameter should be set to the value of the Jython class name
      *  before changing the <i>script</i> parameter to import a Jython
      *  module.
-     */ 
+     */
     public StringAttribute jythonClassName;
 
     /** The script that specifies the function of this actor.
@@ -461,7 +461,7 @@ public class PythonScript extends TypedAtomicActor {
         if (object == null) {
             throw new IllegalActionException(this,
                     "Error in creating an instance of the "
-                    + jythonClassName.getExpression() 
+                    + jythonClassName.getExpression()
                     + "defined in the script.");
         }
 
@@ -483,7 +483,7 @@ public class PythonScript extends TypedAtomicActor {
                         + "\" as \"" + mangledName + "\"");
             }
 
-            object.__setattr__(new PyString(mangledName), 
+            object.__setattr__(new PyString(mangledName),
                     PyJavaType.wrapJavaObject(attribute)
                                );
         }

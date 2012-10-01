@@ -1,7 +1,7 @@
 /*
  The tab scene onto which widgets can be dropped, resized, and
  arranged in order to suite the needs of the handheld consumer.
- 
+
  Copyright (c) 2011 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
@@ -100,7 +100,7 @@ import ptolemy.vergil.toolbox.PtolemyTransferable;
  *  arranged in order to suite the needs of the handheld consumer.
  *
  *  @author Anar Huseynov
- *  @version $Id$ 
+ *  @version $Id$
  *  @since Ptolemy II 8.1
  *  @Pt.ProposedRating Red (ahuseyno)
  *  @Pt.AcceptedRating Red (ahuseyno)
@@ -255,7 +255,7 @@ public class TabScenePanel implements ContentPrototype {
                 }
             }
 
-            /** Perform the drop of the item onto the scene and 
+            /** Perform the drop of the item onto the scene and
              *  load the appropriate graphical widget.
              */
             public void drop(DropTargetDropEvent dropEvent) {

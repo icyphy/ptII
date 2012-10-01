@@ -1,6 +1,6 @@
 /*
  The widget visualizes only named objects that implement {@link PortablePlaceable} interface.
- It requests the named object to place itself into a provided container. 
+ It requests the named object to place itself into a provided container.
  Copyright (c) 2011 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
@@ -43,9 +43,9 @@ import ptolemy.kernel.util.NamedObj;
 /** The widget visualizes only named objects that implement {@link PortablePlaceable} interface.
  * It requests the named object to place itself into a provided container.  The container is then covered
  * with glass pane in order to prevent event propagation.
- * 
+ *
  * @author Anar Huseynov
- * @version $Id$ 
+ * @version $Id$
  * @since Ptolemy II 8.1
  * @Pt.ProposedRating Red (ahuseyno)
  * @Pt.AcceptedRating Red (ahuseyno)
@@ -95,14 +95,14 @@ public class PortablePlaceableWidget extends GlassPaneWidget implements
         super.place(component);
     }
 
-    /** 
+    /**
      * The minimal width for this width is _MIN_DIMENSION.
      */
     public Integer getMinWidth() {
         return _MIN_DIMENSION;
     }
 
-    /** 
+    /**
      * The minimal width for this height is _MIN_DIMENSION.
      */
     public Integer getMinHeight() {
@@ -110,7 +110,7 @@ public class PortablePlaceableWidget extends GlassPaneWidget implements
     }
 
     /**
-     * The minimal dimension a widget can have. 
+     * The minimal dimension a widget can have.
      */
     private static final int _MIN_DIMENSION = 20;
 }

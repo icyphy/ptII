@@ -51,7 +51,7 @@ import ptolemy.backtrack.Checkpoint;
 import ptolemy.backtrack.Rollbackable;
 import ptolemy.backtrack.util.FieldRecord;
 
-/** 
+/**
  * The <code>Vector</code> classes implements growable arrays of Objects.
  * You can access elements in a Vector with an index, just as you
  * can in a built in array, but Vectors can grow and shrink to accommodate
@@ -93,19 +93,19 @@ import ptolemy.backtrack.util.FieldRecord;
 public class Vector extends AbstractList implements List, RandomAccess,
         Cloneable, Serializable, Rollbackable {
 
-    /**     
+    /**
      * Compatible with JDK 1.0+.
      */
     private static final long serialVersionUID = -2767605614048989439L;
 
-    /**     
+    /**
      * The internal array used to hold members of a Vector. The elements are
      * in positions 0 through elementCount - 1, and all remaining slots are null.
      * @serial the elements
      */
     private Object[] elementData;
 
-    /**     
+    /**
      * The number of elements currently in the vector, also returned by{
     @link #size    }
     .
@@ -113,7 +113,7 @@ public class Vector extends AbstractList implements List, RandomAccess,
      */
     private int elementCount;
 
-    /**     
+    /**
      * The amount the Vector's internal array should be increased in size when
      * a new element is added that exceeds the current size of the array,
      * or when {
@@ -124,7 +124,7 @@ public class Vector extends AbstractList implements List, RandomAccess,
      */
     private int capacityIncrement;
 
-    /**     
+    /**
      * Constructs an empty vector with an initial size of 10, and
      * a capacity increment of 0
      */
@@ -132,7 +132,7 @@ public class Vector extends AbstractList implements List, RandomAccess,
         this(10, 0);
     }
 
-    /**     
+    /**
      * Constructs a vector containing the contents of Collection, in the
      * order given by the collection.
      * @param c collection of elements to add to the new vector
@@ -144,7 +144,7 @@ public class Vector extends AbstractList implements List, RandomAccess,
         setElementData(c.toArray(new Object[getElementCount()]));
     }
 
-    /**     
+    /**
      * Constructs a Vector with the initial capacity and capacity
      * increment specified.
      * @param initialCapacity the initial size of the Vector's internal array
@@ -160,7 +160,7 @@ public class Vector extends AbstractList implements List, RandomAccess,
         this.setCapacityIncrement(capacityIncrement);
     }
 
-    /**     
+    /**
      * Constructs a Vector with the initial capacity specified, and a capacity
      * increment of 0 (double in size).
      * @param initialCapacity the initial size of the Vector's internal array
@@ -170,11 +170,11 @@ public class Vector extends AbstractList implements List, RandomAccess,
         this(initialCapacity, 0);
     }
 
-    /**     
+    /**
      * Copies the contents of the Vector into the provided array.  If the
      * array is too small to fit all the elements in the Vector, an {
     @link IndexOutOfBoundsException    }
-    is thrown without modifying the array.  
+    is thrown without modifying the array.
      * Old elements in the array are overwritten by the new elements.
      * @param a target array for the copy
      * @throws IndexOutOfBoundsException the array is not large enough
@@ -185,7 +185,7 @@ public class Vector extends AbstractList implements List, RandomAccess,
         System.arraycopy(getElementData(), 0, a, 0, getElementCount());
     }
 
-    /**     
+    /**
      * Trims the Vector down to size.  If the internal data array is larger
      * than the number of Objects its holding, a new array is constructed
      * that precisely holds the elements. Otherwise this does nothing.
@@ -199,7 +199,7 @@ public class Vector extends AbstractList implements List, RandomAccess,
         setElementData(newArray);
     }
 
-    /**     
+    /**
      * Ensures that <code>minCapacity</code> elements can fit within this Vector.
      * If <code>elementData</code> is too small, it is expanded as follows:
      * If the <code>elementCount + capacityIncrement</code> is adequate, that
@@ -223,7 +223,7 @@ public class Vector extends AbstractList implements List, RandomAccess,
         setElementData(newArray);
     }
 
-    /**     
+    /**
      * Explicitly sets the size of the vector (but not necessarily the size of
      * the internal data array). If the new size is smaller than the old one,
      * old values that don't fit are lost. If the new size is larger than the
@@ -243,7 +243,7 @@ public class Vector extends AbstractList implements List, RandomAccess,
         setElementCount(newSize);
     }
 
-    /**     
+    /**
      * Returns the size of the internal data array (not the amount of elements
      * contained in the Vector).
      * @return capacity of the internal data array
@@ -252,7 +252,7 @@ public class Vector extends AbstractList implements List, RandomAccess,
         return getElementData().length;
     }
 
-    /**     
+    /**
      * Returns the number of elements stored in this Vector.
      * @return the number of elements in this Vector
      */
@@ -260,7 +260,7 @@ public class Vector extends AbstractList implements List, RandomAccess,
         return getElementCount();
     }
 
-    /**     
+    /**
      * Returns true if this Vector is empty, false otherwise
      * @return true if the Vector is empty, false otherwise
      */
@@ -268,7 +268,7 @@ public class Vector extends AbstractList implements List, RandomAccess,
         return getElementCount() == 0;
     }
 
-    /**     
+    /**
      * Returns an Enumeration of the elements of this Vector. The enumeration
      * visits the elements in increasing index order, but is NOT thread-safe.
      * @return an Enumeration
@@ -397,7 +397,7 @@ public class Vector extends AbstractList implements List, RandomAccess,
         };
     }
 
-    /**     
+    /**
      * Returns true when <code>elem</code> is contained in this Vector.
      * @param elem the element to check
      * @return true if the object is contained in this Vector, false otherwise
@@ -406,7 +406,7 @@ public class Vector extends AbstractList implements List, RandomAccess,
         return indexOf(elem, 0) >= 0;
     }
 
-    /**     
+    /**
      * Returns the first occurrence of <code>elem</code> in the Vector, or -1 if
      * <code>elem</code> is not found.
      * @param elem the object to search for
@@ -416,7 +416,7 @@ public class Vector extends AbstractList implements List, RandomAccess,
         return indexOf(elem, 0);
     }
 
-    /**     
+    /**
      * Searches the vector starting at <code>index</code> for object
      * <code>elem</code> and returns the index of the first occurrence of this
      * Object.  If the object is not found, or index is larger than the size
@@ -435,7 +435,7 @@ public class Vector extends AbstractList implements List, RandomAccess,
         return -1;
     }
 
-    /**     
+    /**
      * Returns the last index of <code>elem</code> within this Vector, or -1
      * if the object is not within the Vector.
      * @param elem the object to search for
@@ -445,7 +445,7 @@ public class Vector extends AbstractList implements List, RandomAccess,
         return lastIndexOf(elem, getElementCount() - 1);
     }
 
-    /**     
+    /**
      * Returns the index of the first occurrence of <code>elem</code>, when
      * searching backwards from <code>index</code>.  If the object does not
      * occur in this Vector, or index is less than 0, -1 is returned.
@@ -464,7 +464,7 @@ public class Vector extends AbstractList implements List, RandomAccess,
         return -1;
     }
 
-    /**     
+    /**
      * Returns the Object stored at <code>index</code>.
      * @param index the index of the Object to retrieve
      * @return the object at <code>index</code>
@@ -476,7 +476,7 @@ public class Vector extends AbstractList implements List, RandomAccess,
         return getElementData()[index];
     }
 
-    /**     
+    /**
      * Returns the first element (index 0) in the Vector.
      * @return the first Object in the Vector
      * @throws NoSuchElementException the Vector is empty
@@ -488,7 +488,7 @@ public class Vector extends AbstractList implements List, RandomAccess,
         return getElementData()[0];
     }
 
-    /**     
+    /**
      * Returns the last element in the Vector.
      * @return the last Object in the Vector
      * @throws NoSuchElementException the Vector is empty
@@ -500,7 +500,7 @@ public class Vector extends AbstractList implements List, RandomAccess,
         return getElementData()[getElementCount() - 1];
     }
 
-    /**     
+    /**
      * Changes the element at <code>index</code> to be <code>obj</code>
      * @param obj the object to store
      * @param index the position in the Vector to store the object
@@ -511,7 +511,7 @@ public class Vector extends AbstractList implements List, RandomAccess,
         set(index, obj);
     }
 
-    /**     
+    /**
      * Removes the element at <code>index</code>, and shifts all elements at
      * positions greater than index to their index - 1.
      * @param index the index of the element to remove
@@ -522,7 +522,7 @@ public class Vector extends AbstractList implements List, RandomAccess,
         remove(index);
     }
 
-    /**     
+    /**
      * Inserts a new element into the Vector at <code>index</code>.  Any elements
      * at or greater than index are shifted up one position.
      * @param obj the object to insert
@@ -542,7 +542,7 @@ public class Vector extends AbstractList implements List, RandomAccess,
         getElementData()[index] = obj;
     }
 
-    /**     
+    /**
      * Adds an element to the Vector at the end of the Vector.  The vector
      * is increased by ensureCapacity(size() + 1) if needed.
      * @param obj the object to add to the Vector
@@ -555,7 +555,7 @@ public class Vector extends AbstractList implements List, RandomAccess,
         getElementData()[$ASSIGN$SPECIAL$elementCount(11, elementCount)] = obj;
     }
 
-    /**     
+    /**
      * Removes the first (the lowestindex) occurance of the given object from
      * the Vector. If such a remove was performed (the object was found), true
      * is returned. If there was no such object, false is returned.
@@ -572,7 +572,7 @@ public class Vector extends AbstractList implements List, RandomAccess,
         return false;
     }
 
-    /**     
+    /**
      * Removes all elements from the Vector.  Note that this does not
      * resize the internal data array.
      * @see #clear()
@@ -586,7 +586,7 @@ public class Vector extends AbstractList implements List, RandomAccess,
         setElementCount(0);
     }
 
-    /**     
+    /**
      * Creates a new Vector with the same contents as this one. The clone is
      * shallow; elements are not cloned.
      * @return the clone of this vector
@@ -602,7 +602,7 @@ public class Vector extends AbstractList implements List, RandomAccess,
         }
     }
 
-    /**     
+    /**
      * Returns an Object array with the contents of this Vector, in the order
      * they are stored within this Vector.  Note that the Object array returned
      * is not the internal data array, and that it holds only the elements
@@ -617,7 +617,7 @@ public class Vector extends AbstractList implements List, RandomAccess,
         return newArray;
     }
 
-    /**     
+    /**
      * Returns an array containing the contents of this Vector.
      * If the provided array is large enough, the contents are copied
      * into that array, and a null is placed in the position size().
@@ -643,7 +643,7 @@ public class Vector extends AbstractList implements List, RandomAccess,
         return a;
     }
 
-    /**     
+    /**
      * Returns the element at position <code>index</code>.
      * @param index the position from which an element will be retrieved
      * @return the element at that position
@@ -654,7 +654,7 @@ public class Vector extends AbstractList implements List, RandomAccess,
         return elementAt(index);
     }
 
-    /**     
+    /**
      * Puts <code>element</code> into the Vector at position <code>index</code>
      * and returns the Object that previously occupied that position.
      * @param index the index within the Vector to place the Object
@@ -670,7 +670,7 @@ public class Vector extends AbstractList implements List, RandomAccess,
         return temp;
     }
 
-    /**     
+    /**
      * Adds an object to the Vector.
      * @param o the element to add to the Vector
      * @return true, as specified by List
@@ -681,7 +681,7 @@ public class Vector extends AbstractList implements List, RandomAccess,
         return true;
     }
 
-    /**     
+    /**
      * Removes the given Object from the Vector.  If it exists, true
      * is returned, if not, false is returned.
      * @param o the object to remove from the Vector
@@ -692,7 +692,7 @@ public class Vector extends AbstractList implements List, RandomAccess,
         return removeElement(o);
     }
 
-    /**     
+    /**
      * Adds an object at the specified index.  Elements at or above
      * index are shifted up one position.
      * @param index the index at which to add the element
@@ -704,7 +704,7 @@ public class Vector extends AbstractList implements List, RandomAccess,
         insertElementAt(element, index);
     }
 
-    /**     
+    /**
      * Removes the element at the specified index, and returns it.
      * @param index the position from which to remove the element
      * @return the object removed
@@ -724,14 +724,14 @@ public class Vector extends AbstractList implements List, RandomAccess,
         return temp;
     }
 
-    /**     
+    /**
      * Clears all elements in the Vector and sets its size to 0.
      */
     public void clear() {
         removeAllElements();
     }
 
-    /**     
+    /**
      * Returns true if this Vector contains all the elements in c.
      * @param c the collection to compare to
      * @return true if this vector contains all elements of c
@@ -743,7 +743,7 @@ public class Vector extends AbstractList implements List, RandomAccess,
         return super.containsAll(c);
     }
 
-    /**     
+    /**
      * Appends all elements of the given collection to the end of this Vector.
      * Behavior is undefined if the collection is modified during this operation
      * (for example, if this == c).
@@ -756,7 +756,7 @@ public class Vector extends AbstractList implements List, RandomAccess,
         return addAll(getElementCount(), c);
     }
 
-    /**     
+    /**
      * Remove from this vector all elements contained in the given collection.
      * @param c the collection to filter out
      * @return true if this vector changed
@@ -787,7 +787,7 @@ public class Vector extends AbstractList implements List, RandomAccess,
         return true;
     }
 
-    /**     
+    /**
      * Retain in this vector only the elements contained in the given collection.
      * @param c the collection to filter by
      * @return true if this vector changed
@@ -818,7 +818,7 @@ public class Vector extends AbstractList implements List, RandomAccess,
         return true;
     }
 
-    /**     
+    /**
      * Inserts all elements of the given collection at the given index of
      * this Vector. Behavior is undefined if the collection is modified during
      * this operation (for example, if this == c).
@@ -846,7 +846,7 @@ public class Vector extends AbstractList implements List, RandomAccess,
         return (csize > 0);
     }
 
-    /**     
+    /**
      * Compares this to the given object.
      * @param o the object to compare to
      * @return true if the two are equal
@@ -857,7 +857,7 @@ public class Vector extends AbstractList implements List, RandomAccess,
         return super.equals(o);
     }
 
-    /**     
+    /**
      * Computes the hashcode of this object.
      * @return the hashcode
      * @since 1.2
@@ -867,7 +867,7 @@ public class Vector extends AbstractList implements List, RandomAccess,
         return super.hashCode();
     }
 
-    /**     
+    /**
      * Returns a string representation of this Vector in the form
      * "[element0, element1, ... elementN]".
      * @return the String representation of this Vector
@@ -877,7 +877,7 @@ public class Vector extends AbstractList implements List, RandomAccess,
         return super.toString();
     }
 
-    /**     
+    /**
      * Obtain a List view of a subsection of this list, from fromIndex
      * (inclusive) to toIndex (exclusive). If the two indices are equal, the
      * sublist is empty. The returned list is modifiable, and changes in one
@@ -902,7 +902,7 @@ public class Vector extends AbstractList implements List, RandomAccess,
         return new Collections.SynchronizedList(this, sub);
     }
 
-    /**     
+    /**
      * Removes a range of elements from this list.
      * Does nothing when toIndex is equal to fromIndex.
      * @param fromIndex the index to start deleting from (inclusive)
@@ -925,7 +925,7 @@ public class Vector extends AbstractList implements List, RandomAccess,
         }
     }
 
-    /**     
+    /**
      * Checks that the index is in the range of possible elements (inclusive).
      * @param index the index to check
      * @throws ArrayIndexOutOfBoundsException if index &gt; size
@@ -940,7 +940,7 @@ public class Vector extends AbstractList implements List, RandomAccess,
         }
     }
 
-    /**     
+    /**
      * Checks that the index is in the range of existing elements (exclusive).
      * @param index the index to check
      * @throws ArrayIndexOutOfBoundsException if index &gt;= size
@@ -955,7 +955,7 @@ public class Vector extends AbstractList implements List, RandomAccess,
         }
     }
 
-    /**     
+    /**
      * Serializes this object to the given stream.
      * @param s the stream to write to
      * @throws IOException if the underlying stream fails

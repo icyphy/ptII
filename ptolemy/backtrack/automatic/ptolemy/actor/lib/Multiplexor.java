@@ -45,7 +45,7 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.StringAttribute;
 
-/** 
+/**
  * This actor selects from the channels on the
  * <i>input</i> port, copying the input from one channel to the output,
  * based on the most recently received value on the <i>select</i> input.
@@ -74,8 +74,8 @@ public class Multiplexor extends Transformer implements Rollbackable {
     ////                     ports and parameters                  ////
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-    /**     
-     * Input for the index of the port to select. The type is IntToken. 
+    /**
+     * Input for the index of the port to select. The type is IntToken.
      */
     public TypedIOPort select;
 
@@ -95,12 +95,12 @@ public class Multiplexor extends Transformer implements Rollbackable {
     // safe if the select input is known.
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    /**     
-     * The most recently read select input. 
+    /**
+     * The most recently read select input.
      */
     private IntToken _selectChannel;
 
-    /**     
+    /**
      * Construct an actor in the specified container with the specified
      * name.
      * @param container The container.
@@ -118,7 +118,7 @@ public class Multiplexor extends Transformer implements Rollbackable {
         new StringAttribute(select, "_cardinal").setExpression("SOUTH");
     }
 
-    /**     
+    /**
      * Read a token from the <i>select</i> port and from each channel
      * of the <i>input</i> port, and output a token on the selected
      * channel.  This method will throw a NoTokenException if any
@@ -153,15 +153,15 @@ public class Multiplexor extends Transformer implements Rollbackable {
         }
     }
 
-    /**     
-     * Initialize to the default, which is to use channel zero. 
+    /**
+     * Initialize to the default, which is to use channel zero.
      */
     public void initialize() {
         $ASSIGN$_selectChannel(null);
     }
 
-    /**     
-     * Return false. 
+    /**
+     * Return false.
      * @return False.
      */
     public boolean isStrict() {

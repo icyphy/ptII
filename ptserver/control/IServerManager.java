@@ -90,7 +90,7 @@ public interface IServerManager {
      *  user to request the execution of the simulation.
      *  @param modelUrl The path to the model file
      *  @param layoutUrl The path to a model's layout file
-     *  @return The user's reference to the simulation task along with 
+     *  @return The user's reference to the simulation task along with
      *  specifically formatted for the client model XML and its inferred types
      *  @exception IllegalActionException If the model fails to load
      *  from the provided URL.

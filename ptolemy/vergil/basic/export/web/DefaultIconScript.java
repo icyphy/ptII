@@ -73,19 +73,19 @@ public class DefaultIconScript extends IconScript {
     public DefaultIconScript(NamedObj container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        
+
         include = new StringParameter(this, "include");
         include.addChoice("Entities");
         include.addChoice("Attributes");
         include.addChoice("All");
         include.setExpression("Entities");
-        
+
         instancesOf = new StringParameter(this, "instancesOf");
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         parameters                        ////
-    
+
     /** If non-empty (the default), specifies a class name.
      *  Only entities or attributes (depending on <i>include</i>)
      *  implementing the specified
@@ -99,22 +99,22 @@ public class DefaultIconScript extends IconScript {
      *  default), "Attributes", or "All".
      */
     public StringParameter include;
-  
+
     ///////////////////////////////////////////////////////////////////
     ////                       protected methods                   ////
-    
+
     /** Provide content to the specified web exporter to be
      *  included in a web page for the container of this object.
      *  This class provides default content for each object
      *  as specified by <i>include</i> and <i>instancesOf</i>.
-     *  
+     *
      *  @param exporter The web exporter to add content to
      *  @throws IllegalActionException If a subclass throws it.
      */
-    protected void _provideAttributes(WebExporter exporter) 
+    protected void _provideAttributes(WebExporter exporter)
         throws IllegalActionException {
         WebAttribute webAttribute;
-        
+
         boolean entities = false, attributes = false;
         String includeValue = include.stringValue().toLowerCase();
         if (includeValue.equals("all")) {
@@ -145,14 +145,14 @@ public class DefaultIconScript extends IconScript {
                     // TODO:  Enable multiple eventTypes
                     String eventTypeValue = eventType.stringValue();
                     if (!eventTypeValue.trim().equals("")) {
-                        // Create WebAttribute for event and add to exporter.  
+                        // Create WebAttribute for event and add to exporter.
                         // Content should only be added once (onceOnly -> true).
                         webAttribute = WebAttribute.
-                            createWebAttribute(getContainer(), eventTypeValue 
+                            createWebAttribute(getContainer(), eventTypeValue
                                     + "WebAttribute", eventTypeValue);
                         webAttribute.setExpression(stringValue());
-                        exporter.defineAttribute(webAttribute, true); 
-                        
+                        exporter.defineAttribute(webAttribute, true);
+
                         _provideDefaultAttributes(object, exporter);
                                            }
                 }
@@ -177,32 +177,32 @@ public class DefaultIconScript extends IconScript {
                     // TODO:  Enable multiple eventTypes
                     String eventTypeValue = eventType.stringValue();
                     if (!eventTypeValue.trim().equals("")) {
-                        // Create WebAttribute for event and add to exporter.  
+                        // Create WebAttribute for event and add to exporter.
                         // Content should only be added once (onceOnly -> true).
                         webAttribute = WebAttribute.
-                            createWebAttribute(getContainer(), eventTypeValue 
+                            createWebAttribute(getContainer(), eventTypeValue
                                     + "WebAttribute", eventTypeValue);
                         webAttribute.setExpression(stringValue());
-                        exporter.defineAttribute(webAttribute, true); 
-                        
+                        exporter.defineAttribute(webAttribute, true);
+
                         _provideDefaultAttributes(object, exporter);
                   }
                 }
             }
-        } 
+        }
     }
-    
-    /** Return attributes for default events, e.g. onmouseover().  If an 
-     *  attribute is already defined for this event, do nothing.  
+
+    /** Return attributes for default events, e.g. onmouseover().  If an
+     *  attribute is already defined for this event, do nothing.
      *  Returns null in this class.  Derived classes should override.
-     *  
-     * @param exporter The WebExporter to add content to 
+     *
+     * @param exporter The WebExporter to add content to
      * @param object  The NamedObj to generate default events for
      * @throws IllegalActionException If there is a problem creating the content
      * or if there is a name duplication with the created attributes
      */
-    protected void _provideDefaultAttributes(NamedObj object, 
+    protected void _provideDefaultAttributes(NamedObj object,
                 WebExporter exporter) throws IllegalActionException{
     }
-    
+
 }

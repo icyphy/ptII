@@ -120,8 +120,8 @@ public class ProxyModelInfrastructure {
     public static final int QOS_LEVEL = 2;
 
     /** Create a new instance of the proxy model infrastructure for the specified model type
-     *  from the plain model. The model must contain markings indicating which sinks, 
-     *  sources or attributes are remote. The infrastructure would use ProxyModelBuilder to 
+     *  from the plain model. The model must contain markings indicating which sinks,
+     *  sources or attributes are remote. The infrastructure would use ProxyModelBuilder to
      *  convert the plain model to the one that supports distributed execution.
      *  @param modelType the type of the model which must be either client or server
      *  @param plainTopLevelActor The topLevelActor that has attributes indicating remote objects
@@ -144,13 +144,13 @@ public class ProxyModelInfrastructure {
     }
 
     /** Create a new instance of the ProxyModelInfrastructure of the specified type from the model
-     *  that was previously converted to the one supporting distributed execution by replacing certain 
+     *  that was previously converted to the one supporting distributed execution by replacing certain
      *  named objects with proxy counterparts.
      *  @param modelType The type of the model which must be either client or server
      *  @param preprocessedTopLevelActor the model that was previosly processed with ProxyModelBuider
      *  and converted to the one supporting distributed execution.
      *  @param modelTypes The map from the Typeable's full name to its type.
-     *  @exception IllegalActionException if there is a problem parsing model types or 
+     *  @exception IllegalActionException if there is a problem parsing model types or
      *  setting types on Typeable objects.
      */
     public ProxyModelInfrastructure(ProxyModelType modelType,
@@ -486,7 +486,7 @@ public class ProxyModelInfrastructure {
      *  <p>This method is indented to be used on the Android to avoid
      *  loading unneeded actors.</p>
      *
-     * @exception IllegalActionException if there is a problem parsing model types or 
+     * @exception IllegalActionException if there is a problem parsing model types or
      * setting types on Typeable objects.
      */
     private void _loadPreprocessedModel() throws IllegalActionException {
@@ -791,7 +791,7 @@ public class ProxyModelInfrastructure {
     private ScheduledFuture<?> _pingPongFuture;
 
     /**
-     * The logger used by the ptserver. 
+     * The logger used by the ptserver.
      */
     private static final Logger _LOGGER = Logger.getLogger("PtolemyServer");
 

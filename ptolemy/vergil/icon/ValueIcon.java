@@ -76,7 +76,7 @@ public class ValueIcon extends XMLIcon {
     public ValueIcon(NamedObj container, String name)
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
-        
+
         displayWidth = new Parameter(this, "displayWidth");
         displayWidth.setExpression("60");
         displayWidth.setTypeEquals(BaseType.INT);

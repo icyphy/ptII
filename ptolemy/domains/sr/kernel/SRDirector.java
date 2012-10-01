@@ -217,7 +217,7 @@ public class SRDirector extends FixedPointDirector implements PeriodicDirector {
      *  (by returning false in prefire()).
      */
     public Parameter period;
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -298,7 +298,7 @@ public class SRDirector extends FixedPointDirector implements PeriodicDirector {
     public void initialize() throws IllegalActionException {
         super.initialize();
         _periodicDirectorHelper.initialize();
-        
+
         // In preinitialize(), _startTime was set to the start time of
         // the executive director. However, this invocation of initialize()
         // may be occurring later in the execution of a model, as a result
@@ -336,7 +336,7 @@ public class SRDirector extends FixedPointDirector implements PeriodicDirector {
     }
 
     /** Return true if we are ready to fire, meaning that either (1) we are
-     *  at the top level, (2) the <i>period</i> parameter is zero (in which case we 
+     *  at the top level, (2) the <i>period</i> parameter is zero (in which case we
      *  are always ready to fire, or (3) the <i>period</i> parameter is nonzero,
      *  the current time matches the next expected execution time, and the
      *  current microstep is 1. If this actor is enclosed within a director
@@ -351,7 +351,7 @@ public class SRDirector extends FixedPointDirector implements PeriodicDirector {
         // time. The second call, _periodicDirectorHelper.prefire(), checks
         // to see whether current time is the next expected firing time.
         boolean result = super.prefire() && _periodicDirectorHelper.prefire();
-        
+
         // If we are going to fire, then set the microstep to match that
         // of the enclosing director, or set it to 1 if the enclosing
         // director does not understand superdense time.
@@ -422,7 +422,7 @@ public class SRDirector extends FixedPointDirector implements PeriodicDirector {
         period.setExpression("0.0");
 
         _periodicDirectorHelper = new PeriodicDirectorHelper(this);
-        
+
         // Put the stopTime at the end parameters, to encourage use
         // of iterations instead.
         stopTime.moveToLast();

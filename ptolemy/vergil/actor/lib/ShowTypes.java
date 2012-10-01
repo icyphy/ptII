@@ -126,7 +126,7 @@ public class ShowTypes extends AbstractInitializableAttribute implements Executi
     @Override
     public void preinitialize() throws IllegalActionException {
         super.preinitialize();
-        
+
         NamedObj container = getContainer();
         if (container instanceof Actor) {
             _manager = ((Actor)container).getManager();
@@ -168,7 +168,7 @@ public class ShowTypes extends AbstractInitializableAttribute implements Executi
         super.setContainer(container);
         _showTypes();
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
@@ -212,7 +212,7 @@ public class ShowTypes extends AbstractInitializableAttribute implements Executi
             requestChange(request);
         }
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 

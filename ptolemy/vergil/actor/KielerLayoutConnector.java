@@ -117,7 +117,7 @@ public class KielerLayoutConnector extends LinkManhattanConnector {
                 }
             }
         }
-        
+
         if (considerBendPoints) {
             repaint();
 
@@ -219,7 +219,7 @@ public class KielerLayoutConnector extends LinkManhattanConnector {
             super.route();
         }
     }
-    
+
     /**
      * Notifies layout connections that a layout is in progress, which stops them
      * from deciding to remove layout hints from relations. Without this mechanism,
@@ -236,7 +236,7 @@ public class KielerLayoutConnector extends LinkManhattanConnector {
      * only occurs while a layout result is being applied through a
      * {@code MoMLChangeRequest} (of which only one is ever being executed at a
      * given time), this shouldn't be a problem.</p>
-     * 
+     *
      * @param inProgress {@code true} if a layout result is currently being applied.
      */
     public static void setLayoutInProgress(boolean inProgress) {
@@ -266,7 +266,7 @@ public class KielerLayoutConnector extends LinkManhattanConnector {
         Rectangle bounds = figure.getShape().getBounds();
         return new Point2D.Double(bounds.getCenterX(), bounds.getCenterY());
     }
-    
+
     /**
      * Get the starting and ending points of a connector. Copied some code from
      * {@link BasicManhattanRouter#routeManhattan(diva.canvas.connector.ManhattanConnector)}.
@@ -327,7 +327,7 @@ public class KielerLayoutConnector extends LinkManhattanConnector {
      * The radius for filleting the corners of the connector.
      */
     private double _bendRadius = 10;
-    
+
     /**
      * Whether automatic layout is currently in progress. If so, no layout hints
      * are removed.

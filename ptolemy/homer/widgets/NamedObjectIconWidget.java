@@ -1,5 +1,5 @@
 /* This widget visualizes a named object by displaying its icon.
- * 
+ *
  Copyright (c) 2011 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
@@ -45,7 +45,7 @@ import diva.gui.toolbox.FigureIcon;
 
 /** This widget visualizes a named object by displaying its icon.
  *  @author Anar Huseynov
- *  @version $Id$ 
+ *  @version $Id$
  *  @since Ptolemy II 8.1
  *  @Pt.ProposedRating Red (ahuseyno)
  *  @Pt.AcceptedRating Red (ahuseyno)
@@ -105,7 +105,7 @@ public class NamedObjectIconWidget extends ResizableImageWidget implements
      */
     private final PositionableElement _element;
 
-    /** Icon window width. 
+    /** Icon window width.
      */
     private static int _ICON_HEIGHT = 200;
 

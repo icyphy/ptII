@@ -45,9 +45,9 @@ import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Settable;
-import ptolemy.kernel.util.SingletonConfigurableAttribute; 
+import ptolemy.kernel.util.SingletonConfigurableAttribute;
 
-/** A specialized port for Ptides platform I/O implementing 
+/** A specialized port for Ptides platform I/O implementing
  *  functionality for sensors, actuators and network ports.
  *
  *  @author Patricia Derler
@@ -57,82 +57,82 @@ import ptolemy.kernel.util.SingletonConfigurableAttribute;
  *  @Pt.AcceptedRating
  */
 public class PtidesPort extends MirrorPort {
-    
+
     /** Create a new PtidesPort with a given container and a name.
-     * @param container The container of the port. 
+     * @param container The container of the port.
      * @param name The name of the port.
      * @throws IllegalActionException If parameters cannot be set.
      * @throws NameDuplicationException If name already exists.
      */
     public PtidesPort(CompositeEntity container, String name) throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        
+
         deviceDelay = new Parameter(this, "deviceDelay");
         deviceDelay.setToken(new DoubleToken(0.0));
         deviceDelay.setTypeEquals(BaseType.DOUBLE);
-        
+
         deviceDelayBound = new Parameter(this, "deviceDelayBound");
-        deviceDelayBound.setExpression("0.0"); 
-        deviceDelayBound.setTypeEquals(BaseType.DOUBLE); 
-        
+        deviceDelayBound.setExpression("0.0");
+        deviceDelayBound.setTypeEquals(BaseType.DOUBLE);
+
         isNetworkPort = new Parameter(this, "isNetworkPort");
         isNetworkPort.setTypeEquals(BaseType.BOOLEAN);
         isNetworkPort.setExpression("false");
-        
-        actuateAtEventTimestamp = new Parameter(this, "actuateAtEventTimestamp"); 
+
+        actuateAtEventTimestamp = new Parameter(this, "actuateAtEventTimestamp");
         actuateAtEventTimestamp.setTypeEquals(BaseType.BOOLEAN);
         actuateAtEventTimestamp.setExpression("true");
         _actuateAtEventTimestamp = true;
-        
+
         platformDelayBound = new Parameter(this, "platformDelayBound");
         platformDelayBound.setExpression("0.0");
-        platformDelayBound.setTypeEquals(BaseType.DOUBLE); 
-        
+        platformDelayBound.setTypeEquals(BaseType.DOUBLE);
+
         sourcePlatformDelayBound = new Parameter(this, "sourcePlatformDelayBound");
         sourcePlatformDelayBound.setExpression("0.0");
-        sourcePlatformDelayBound.setTypeEquals(BaseType.DOUBLE); 
-        
+        sourcePlatformDelayBound.setTypeEquals(BaseType.DOUBLE);
+
         networkDelayBound = new Parameter(this, "networkDelayBound");
         networkDelayBound.setExpression("0.0");
-        networkDelayBound.setTypeEquals(BaseType.DOUBLE);  
-        
+        networkDelayBound.setTypeEquals(BaseType.DOUBLE);
+
         _iconDescription = new SingletonConfigurableAttribute(this, "_iconDescription");
-        _iconDescription.setPersistent(false); 
-        _setIconAndParameterVisibility();        
+        _iconDescription.setPersistent(false);
+        _setIconAndParameterVisibility();
     }
-    
-    /** Actuate at event timestamp parameter that defaults to the boolean value TRUE. 
-     *  If this parameter is set to FALSE, an actuator can produce outputs as soon 
+
+    /** Actuate at event timestamp parameter that defaults to the boolean value TRUE.
+     *  If this parameter is set to FALSE, an actuator can produce outputs as soon
      *  as they are available.
      */
-    public Parameter actuateAtEventTimestamp; 
-    
+    public Parameter actuateAtEventTimestamp;
+
     /** Device delay parameter that defaults to the double value 0.0. */
     public Parameter deviceDelay;
-    
-    
-    
+
+
+
     /** Device delay bound parameter that defaults to the double value 0.0. */
     public Parameter deviceDelayBound;
-    
+
     public Parameter isNetworkPort;
-    
+
     /** Network delay bound parameter that defaults to the double value 0.0. */
-    public Parameter networkDelayBound; 
-    
+    public Parameter networkDelayBound;
+
     /** Platform delay bound parameter that defaults to the double value 0.0. */
     public Parameter platformDelayBound;
 
     /** Source platform delay bound parameter that defaults to the double value 0.0. */
     public Parameter sourcePlatformDelayBound;
-    
+
     public boolean actuateAtEventTimestamp() {
         return _actuateAtEventTimestamp;
     }
 
     @Override
     public void attributeChanged(Attribute attribute)
-            throws IllegalActionException { 
+            throws IllegalActionException {
         if (attribute == isNetworkPort) {
             _isNetworkPort = ((BooleanToken)isNetworkPort.getToken()).booleanValue();
             _setIconAndParameterVisibility();
@@ -143,11 +143,11 @@ public class PtidesPort extends MirrorPort {
             super.attributeChanged(attribute);
         }
     }
-    
+
     /** Return the timestamp for a specific token.
      *  @param t The token.
      *  @return The timestamp.
-     */ 
+     */
     public Time getTimeStampForToken(Token t) {
         Time time = _transmittedTokens.get(t);
         _transmittedTokenCnt.put(t, _transmittedTokenCnt.get(t).intValue() - 1);
@@ -165,28 +165,28 @@ public class PtidesPort extends MirrorPort {
     public boolean isSensorPort() {
         return isInput() && !_isNetworkPort;
     }
-    
+
     public boolean isNetworkReceiverPort() {
         return isInput() && _isNetworkPort;
     }
-    
+
     public boolean isNetworkTransmitterPort() {
         return isOutput() && _isNetworkPort;
     }
-    
+
     @Override
-    public void setInput(boolean isInput) throws IllegalActionException { 
+    public void setInput(boolean isInput) throws IllegalActionException {
         super.setInput(isInput);
-        
+
         _setIconAndParameterVisibility();
     }
 
     @Override
-    public void setOutput(boolean isInput) throws IllegalActionException { 
+    public void setOutput(boolean isInput) throws IllegalActionException {
         super.setOutput(isInput);
-        
+
         _setIconAndParameterVisibility();
-    
+
     }
 
     /** Save token and remember timestamp of the token. Then call send of
@@ -211,10 +211,10 @@ public class PtidesPort extends MirrorPort {
         _transmittedTokens.put(token, timestamp);
         _transmittedTokenCnt.put(token, _transmittedTokenCnt.get(token).intValue() + 1);
         super.send(channelIndex, token);
-    } 
-    
+    }
+
     /** Change visibility of parameters depending on the type of
-     *  port. FIXME: change icon! 
+     *  port. FIXME: change icon!
      *  @throws IllegalActionException Thrown if icon cannot be changed.
      */
     private void _setIconAndParameterVisibility() throws IllegalActionException {
@@ -251,10 +251,10 @@ public class PtidesPort extends MirrorPort {
                 _iconDescription.configure(null, null, "<svg>\n"
                         + "<polygon points=\"0, 0, 0, 4, -4, 4, -4, 12, 0, 12, 0, 16, 16, 16, 16, 0\" "
                         + "style=\"fill:black\"/>\n" + "</svg>\n");
-            } 
-        } catch (Exception e) { 
+            }
+        } catch (Exception e) {
             throw new IllegalActionException(this, e.getMessage());
-        } 
+        }
     }
 
     private boolean _actuateAtEventTimestamp;
@@ -265,5 +265,5 @@ public class PtidesPort extends MirrorPort {
 
     private HashMap<Token, Time> _transmittedTokens;
     private HashMap<Token, Integer> _transmittedTokenCnt;
-    
+
 }

@@ -300,9 +300,9 @@ public class TextEditor extends TableauFrame implements DocumentListener,
      *  document and associated placeable.  After constructing this,
      *  it is necessary to call setVisible(true) to make the frame
      *  appear.
-     *  
+     *
      *  @param title The title to put in the title bar.
-     *  @param document The document containing text. 
+     *  @param document The document containing text.
      */
     protected void _init(String title, Document document) {
         setTitle(title);

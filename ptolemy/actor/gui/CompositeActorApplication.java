@@ -93,7 +93,7 @@ public class CompositeActorApplication {
     ////                         public methods                    ////
 
     /** Close any ModeFrames opened in processArgs().
-     */   
+     */
     public void close() {
         // Mainly used for testing.
         for (ModelFrame frame : _frames) {
@@ -128,7 +128,7 @@ public class CompositeActorApplication {
     }
 
     /** Return the list of models.
-     *  @return The list of models passed in as arguments.   
+     *  @return The list of models passed in as arguments.
      */
     public List<CompositeActor> models() {
         // Used primarily for testing.

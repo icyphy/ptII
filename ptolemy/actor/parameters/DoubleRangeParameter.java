@@ -92,13 +92,13 @@ public class DoubleRangeParameter extends Parameter {
         precision = new Parameter(this, "precision");
         precision.setExpression("100");
         precision.setTypeEquals(BaseType.INT);
-        
+
         minLabel = new StringParameter(this, "minLabel");
         minLabel.setExpression("$min");
-        
+
         maxLabel = new StringParameter(this, "maxLabel");
         maxLabel.setExpression("$max");
-        
+
         // We can't set a default value because then
         // restore defaults will restore to this value,
         // but this may be out of range for a particular
@@ -125,16 +125,16 @@ public class DoubleRangeParameter extends Parameter {
      *  This is has an integer value, and defaults to 100.
      */
     public Parameter precision;
-    
+
     /** The label text displayed for the maximum end of the slider. This is a String,
      *  and defaults to {@code $max}, which is expanded to the value of the {@code max}
-     *  parameter in the user interface. 
+     *  parameter in the user interface.
      */
     public StringParameter maxLabel;
-    
+
     /** The label text displayed for the minimum end of the slider. This is a String,
      *  and defaults to {@code $min}, which is expanded to the value of the {@code min}
-     *  parameter in the user interface. 
+     *  parameter in the user interface.
      */
     public StringParameter minLabel;
 

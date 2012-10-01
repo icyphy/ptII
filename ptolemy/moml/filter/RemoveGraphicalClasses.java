@@ -53,11 +53,11 @@ import ptolemy.util.StringUtilities;
  */
 public class RemoveGraphicalClasses extends MoMLFilterSimple {
     /** Construct a filter that removes graphical classes.
-     */	
+     */
     public RemoveGraphicalClasses() {
-	if (_graphicalClasses == null) {
-	    initialize();
-	}
+        if (_graphicalClasses == null) {
+            initialize();
+        }
     }
 
     /** Clear the map of graphical classes to be removed.
@@ -92,9 +92,9 @@ public class RemoveGraphicalClasses extends MoMLFilterSimple {
      */
     public String filterAttributeValue(NamedObj container, String element,
             String attributeName, String attributeValue, String xmlFile) {
-	if (_graphicalClasses == null) {
-	    initialize();
-	}
+        if (_graphicalClasses == null) {
+            initialize();
+        }
         // If the nightly build is failing with messages like:
         // " X connection to foo:0 broken (explicit kill or server shutdown)."
         // Try uncommenting the next lines to see what is being
@@ -236,11 +236,11 @@ public class RemoveGraphicalClasses extends MoMLFilterSimple {
         _graphicalClasses.put("ptolemy.vergil.kernel.attributes.TextAttribute",
                 null);
 
-	// Classes that import ptolemy.vergil.icon.ValueIcon
+        // Classes that import ptolemy.vergil.icon.ValueIcon
         _graphicalClasses.put("ptolemy.vergil.basic.export.html.DefaultIconLink", null);
         _graphicalClasses.put("ptolemy.vergil.basic.export.html.DefaultIconScript", null);
         _graphicalClasses.put("ptolemy.vergil.basic.export.html.DefaultTitle", null);
-	// HTMLText extends WebContent which imports ValueIcon
+        // HTMLText extends WebContent which imports ValueIcon
         _graphicalClasses.put("ptolemy.vergil.basic.export.html.HTMLText", null);
         _graphicalClasses.put("ptolemy.vergil.basic.export.html.IconLink", null);
         _graphicalClasses.put("ptolemy.vergil.basic.export.html.IconScript", null);

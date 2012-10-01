@@ -685,7 +685,7 @@ public class CompositeActor extends CompositeEntity implements Actor,
                             message.append(" port: " + pubSubPort + "name: " + pubSubPort.getName() + " channel: " + pubSubPort.channel + "\n");
                         }
                     }
-                } 
+                }
                 if (publishedPorts.size() != 1) {
                  throw new NameDuplicationException(this,
                          "We have " + publishedPorts.size() + " ports with the name \"" + name
@@ -870,7 +870,7 @@ public class CompositeActor extends CompositeEntity implements Actor,
                     }
                 }
             }
-            
+
             // Next invoke initializable methods.
             // This should be done _after_ clearing the receivers above
             // because an initializable or piggyback may produce outputs.
@@ -1196,7 +1196,7 @@ public class CompositeActor extends CompositeEntity implements Actor,
      *   the same channel by name.  If set to false, then only values
      *   published by publishers that are fired by the same director
      *   are seen by this subscriber.
-     *  @return The publisher port. 
+     *  @return The publisher port.
      *  @exception NameDuplicationException If there are name conflicts
      *   as a result of the added relations or ports.
      *  @exception IllegalActionException If the published port cannot be found.
@@ -1799,7 +1799,7 @@ public class CompositeActor extends CompositeEntity implements Actor,
      *  will look for publishers during the preinitialization phase.
      *  This call is ignored if this composite is a class definition
      *  or is within a class definition.
-     *  
+     *
      *  @param name The name is being used in the matching process
      *          to match publisher and subscriber.
      *  @param port The published port.
@@ -1961,7 +1961,7 @@ public class CompositeActor extends CompositeEntity implements Actor,
             stopFire();
         }
     }
-    
+
     /** Specify whether this object is a class definition.
      *  If the argument is true and this entity is not a class
      *  definition, then the cache of published and subscribed ports
@@ -1977,12 +1977,12 @@ public class CompositeActor extends CompositeEntity implements Actor,
 //             _subscribedPorts = null;
 //             _publisherRelations = null;
 //             NamedObj immediateContainer = getContainer();
-//             if (immediateContainer != null 
+//             if (immediateContainer != null
 //                     && immediateContainer instanceof CompositeActor) {
 //                 CompositeActor container = (CompositeActor)immediateContainer;
 //                 List<Port> portList = portList();
 //                 for (Port port: portList) {
-//                     if (port instanceof PublisherPort) {                      
+//                     if (port instanceof PublisherPort) {
 //                         PublisherPort publisherPort = (PublisherPort)port;
 //                         try {
 //                             container.unregisterPublisherPort(publisherPort.channel.stringValue(), publisherPort, ((BooleanToken) publisherPort.global.getToken())
@@ -2807,10 +2807,10 @@ public class CompositeActor extends CompositeEntity implements Actor,
             }
         }
     }
-    
+
     /** Read inputs from ParameterPorts and update.
      *  @throws IllegalActionException If reading from parameter associated
-     *  with port fails. 
+     *  with port fails.
      */
     protected void _transferPortParameterInputs() throws IllegalActionException {
      // Need to read from port parameters

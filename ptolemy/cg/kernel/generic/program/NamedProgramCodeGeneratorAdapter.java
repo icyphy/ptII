@@ -317,10 +317,10 @@ public class NamedProgramCodeGeneratorAdapter extends
     public static String[] getDefaultBlocks() {
         return _defaultBlocks;
     }
-    
+
     /** Return a string that represents the additional time.
-     *  @return In this base class, return the empty string. 
-     *  derived classes may want to return the value of the 
+     *  @return In this base class, return the empty string.
+     *  derived classes may want to return the value of the
      *  <i>delay</i> parameter in the target language.
      *  @exception IllegalActionException Not thrown in this baseclass.
      *  Derived classes may throw it if there is a problem accessing
@@ -329,7 +329,7 @@ public class NamedProgramCodeGeneratorAdapter extends
     public String getAddTimeString() throws IllegalActionException {
         return "";
     }
-    
+
     /** Return a string that represents the source time.
      *  @param timeVariable The variable to be set in the generated
      *  code.
@@ -352,7 +352,7 @@ public class NamedProgramCodeGeneratorAdapter extends
     public String getTimeSourcePortName() {
         return "";
     }
-    
+
     /** Return the parameters for the fire function.
      *  @return In this base class, return the empty string.
      */
@@ -1378,5 +1378,5 @@ public class NamedProgramCodeGeneratorAdapter extends
      */
     private Hashtable<ProgramCodeGeneratorAdapter.Channel, List<ProgramCodeGeneratorAdapter.Channel>> _portConversions = new Hashtable<ProgramCodeGeneratorAdapter.Channel, List<ProgramCodeGeneratorAdapter.Channel>>();
 
-    
+
 }

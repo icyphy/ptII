@@ -339,7 +339,7 @@ public abstract class AbstractReceiver implements Receiver {
             // and whether it has already received as many tokens as it expects.
             if (container != null && container._constantToken != null) {
                 for (int i = 0; i < numberOfTokens; i++) {
-                    if (container._constantLimit >= 0 
+                    if (container._constantLimit >= 0
                             && container._constantTokensSent >= container._constantLimit) {
                         // Do not put the token. The finite number has been reached.
                         break;
@@ -381,7 +381,7 @@ public abstract class AbstractReceiver implements Receiver {
             // is marked to receive constant data from a ConstantPublisherPort,
             // and whether it has already received as many tokens as it expects.
             if (container != null && container._constantToken != null) {
-                if (container._constantLimit >= 0 
+                if (container._constantLimit >= 0
                         && container._constantTokensSent >= container._constantLimit) {
                     // Do not put the token. The finite number has been reached.
                     continue;

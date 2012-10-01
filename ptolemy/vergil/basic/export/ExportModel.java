@@ -1,4 +1,4 @@
-/* Export a model as an image or set of html files. 
+/* Export a model as an image or set of html files.
 
  Copyright (c) 2011-2012 The Regents of the University of California.
  All rights reserved.
@@ -68,7 +68,7 @@ import ptolemy.vergil.basic.export.html.ExportHTMLAction;
  *
  * <p>The default is to export a .gif file with the same name as the model.
  * See {@link #main(String[])} for usage.</p>
- * 
+ *
  * <p> See <a href="http://chess.eecs.berkeley.edu/ptexternal/wiki/Main/HTMLExport">http://chess.eecs.berkeley.edu/ptexternal/wiki/Main/HTMLExport</a>
  * for detailed instructions about how to create web pages on the
  * Ptolemy website for models.</p>
@@ -197,24 +197,24 @@ public class ExportModel {
         // The name of the index.html file or image file.
         final File imageFile = temporaryImageFile;
 
-        // We optionally delete the directory containing the .html file or 
+        // We optionally delete the directory containing the .html file or
         // delete the image file.  Do this after loading the model so that
         // we can get the directory in which the model resides
         if (force) {
-            // Delete the directory containing the .html file or 
+            // Delete the directory containing the .html file or
             // delete the image file.
             if (isHTM) {
-		if (htmlDirectory.exists() 
-		    && !FileUtilities.deleteDirectory(htmlDirectory)) {
-		    System.err.println("Could not delete \""
-				       + htmlDirectory + "\".");
-		}
+                if (htmlDirectory.exists()
+                    && !FileUtilities.deleteDirectory(htmlDirectory)) {
+                    System.err.println("Could not delete \""
+                                       + htmlDirectory + "\".");
+                }
             } else {
                 // A gif/jpg/png file
                 if (imageFile.exists()
-		    && !imageFile.delete()) {
+                    && !imageFile.delete()) {
                     System.err.println("Could not delete \""
-				       + imageFile + "\".");
+                                       + imageFile + "\".");
                 }
             }
         }
@@ -242,20 +242,20 @@ public class ExportModel {
                             .setModelErrorHandler(new BasicModelErrorHandler());
                         _timer = new Timer(true);
                         final Manager finalManager = manager;
-                        TimerTask doTimeToDie = new TimerTask() {                            
+                        TimerTask doTimeToDie = new TimerTask() {
                                 public void run() {
-                                    System.out.println("ExportHTMLTimer went off after " 
+                                    System.out.println("ExportHTMLTimer went off after "
                                             + _timeToDie + " ms., calling manager.stop()");
 
                                     finalManager.stop();
                                 }
                             };
                         _timer.schedule(doTimeToDie, _timeToDie);
-			try {
-			    manager.execute();
-			} finally {
-			    _timer.cancel();
-			}
+                        try {
+                            manager.execute();
+                        } finally {
+                            _timer.cancel();
+                        }
                     } catch (Exception ex) {
                         ex.printStackTrace();
                         throw new RuntimeException(ex);
@@ -358,7 +358,7 @@ public class ExportModel {
                                             // we have to set the
                                             // frame background by
                                             // hand.
-                                            
+
 //                                             PtolemyPreferences.setDefaultPreferences(configuration);
 //                                             PtolemyPreferences preferences = PtolemyPreferences
 //                                                 .getPtolemyPreferencesWithinConfiguration(configuration);
@@ -561,7 +561,7 @@ public class ExportModel {
      *
      *  <p>To set the background to white, invoke with
      *  <code>-whiteBackground</code>.</p>
-     * 
+     *
      *  <p>To export an html version in a format suitable for the
      *  Ptolemy website, set the
      *  "ptolemy.ptII.exportHTML.usePtWebsite" property to true,
@@ -586,7 +586,7 @@ public class ExportModel {
      *  <p>Include a link to the a
      *  <code><i>sanitizedModelName</i>.jnlp</code> file, set the
      *  "ptolemy.ptII.exportHTML.linkToJNLP" property to true.</p>
-     *  
+     *
      *  @param args The arguments for the export image operation.
      *  The arguments should be in the format:
      *  [-help|-h|--help] | [-copyJavaScriptFiles] [-force] [-open] [-openComposites] [-run] [-save]
@@ -734,7 +734,7 @@ public class ExportModel {
      */
     protected static void _sleep() {
         // FIXME: The problem is that we need to wait for all the
-        // images to load before getting the images. 
+        // images to load before getting the images.
 
         // FIXME: we should be able to call
         // Toolkit.getDefaultToolkit().sync(); but that does not do

@@ -1,4 +1,4 @@
-/* 
+/*
  All widgets that visualize positionable named object  must implement this interface.
  The implementation must return positionable element the instance is wrapping.
  Copyright (c) 2011 The Regents of the University of California.
@@ -36,7 +36,7 @@ import ptolemy.homer.kernel.PositionableElement;
 * All widgets that visualize positionable named object  must implement this interface.
 * The implementation must return positionable element the instance is wrapping.
 * @author Anar Huseynov
-* @version $Id$ 
+* @version $Id$
 * @since Ptolemy II 8.1
 * @Pt.ProposedRating Red (ahuseyno)
 * @Pt.AcceptedRating Red (ahuseyno)

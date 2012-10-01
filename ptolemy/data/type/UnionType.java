@@ -49,11 +49,11 @@ import ptolemy.kernel.util.InternalErrorException;
  class and call setTypeEquals() with that instance as an argument.
  <p>
  The depth subtyping is similar to that of <code>RecordTypes</code>. However,
- the width subtyping for <code>UnionType</code> is opposite compared to 
- <code>RecordType</code> i.e., a <code>UnionType</code> with more fields 
- is a supertype of a <code>UnionType</code> with a subset of the fields.  
+ the width subtyping for <code>UnionType</code> is opposite compared to
+ <code>RecordType</code> i.e., a <code>UnionType</code> with more fields
+ is a supertype of a <code>UnionType</code> with a subset of the fields.
  For example, {|x = double, y = int} is a supertype of {|x = double}.
- 
+
  @author Yuhong Xiong, Elaine Cheong and Steve Neuendorffer
  @version $Id$
  @since Ptolemy II 5.2

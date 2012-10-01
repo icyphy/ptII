@@ -401,7 +401,7 @@ public class LatticeOntologySolver extends OntologySolver {
         // because the model structure can changed.
         // (i.e. adding or removing connections.)
         toplevelAdapter._setConnectionConstraintType(_getConstraintType());
-        
+
         toplevelAdapter._addDefaultConstraints(_getConstraintType());
 
         _initialConstraintList = toplevelAdapter.constraintList();
@@ -428,12 +428,12 @@ public class LatticeOntologySolver extends OntologySolver {
      */
     public boolean isLeastFixedPoint() throws IllegalActionException {
         if (solvingFixedPoint.stringValue().equals("least")) {
-        	return true;
+                return true;
         } else if (solvingFixedPoint.stringValue().equals("greatest")) {
-        	return false;
+                return false;
         } else {
-        	throw new IllegalActionException("Invalid fixed point type.\n" +
-        			"Must be one of 'least' or 'greatest'.");
+                throw new IllegalActionException("Invalid fixed point type.\n" +
+                                "Must be one of 'least' or 'greatest'.");
         }
     }
 

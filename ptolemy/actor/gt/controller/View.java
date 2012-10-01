@@ -122,7 +122,7 @@ public class View extends GTEvent {
         isPersistent = new Parameter(this, "isPersistent");
         isPersistent.setTypeEquals(BaseType.BOOLEAN);
         isPersistent.setToken(BooleanToken.FALSE);
-        
+
         _init();
     }
 
@@ -139,7 +139,7 @@ public class View extends GTEvent {
      */
     public Parameter isPersistent;
 
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -202,7 +202,7 @@ public class View extends GTEvent {
                     .booleanValue();
             Tableau tableau = EventUtils.getTableau(this, referredTableau,
                     this.tableau);
-            
+
             if (tableau != null
                     && !(tableau.getFrame() instanceof ExtendedGraphFrame)) {
 

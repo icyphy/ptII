@@ -83,12 +83,12 @@ public class ASTPtLeafNode extends LatticeOntologyASTNodeAdapter {
                         .getAllContainedOntologies());
 
         ConceptFunctionInequalityTerm constraint =
-        	new ConceptFunctionInequalityTerm(astRelationFunction,
-        			_getChildNodeTerms());
+                new ConceptFunctionInequalityTerm(astRelationFunction,
+                                _getChildNodeTerms());
         if (((LatticeOntologySolver)_solver).isLeastFixedPoint()) {
             setAtLeast(_getNode(), constraint);
         } else {
-        	setAtMost(_getNode(), constraint);
+                setAtMost(_getNode(), constraint);
         }
 
         return super.constraintList();
@@ -141,7 +141,7 @@ public class ASTPtLeafNode extends LatticeOntologyASTNodeAdapter {
                     && _leafNode.jjtGetParent().jjtGetChild(0) == _leafNode) {
                 return result;
             }
-            
+
             // Check if the leaf is a constant.
             if (_leafNode.isConstant()) {
                 return result;

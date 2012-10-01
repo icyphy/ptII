@@ -53,15 +53,15 @@ import ptolemy.vergil.basic.ExportParameters;
 //// HTMLImage
 /**
  * Attribute for inserting an image into a web page.  Drag this attribute onto an
- * actor that produces a BasicGraphFrame (for example, 
+ * actor that produces a BasicGraphFrame (for example,
  * ptolemy.actor.lib.gui.XYPlotter) and specify the caption for this image.
  *
- * By default, this image will be placed at the end of the HTML page, 
+ * By default, this image will be placed at the end of the HTML page,
  * but you can change the position by setting the
  * <i>imagePosition</i> parameter. You can also separately control what
  * text is displayed in the model, or make the attribute disappear altogether
  * in the model (for this, just set <i>displayText</i> to an empty string).
- * 
+ *
  * Based on ptolemy.vergil.basic.export.web.HTMLText
  *
  * @author Beth Latronico
@@ -106,47 +106,47 @@ public class HTMLImage extends WebContent {
     // the responsibility of the WebContent class, or the WebExporter?  I think
     // the WebExporter.
     public HTMLTextPosition imagePosition;
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-    
+
     /** Return image plus the appropriate file extension, e.g. image/gif
-     * 
+     *
      * @return image plus the appropriate file extension, e.g. image/gif
      */
     // FIXME: Implement other file extensions (do we use any?)
-    // How to determine which file extension should be used?  If file has not 
+    // How to determine which file extension should be used?  If file has not
     // been created yet?
     public String getMimeType() {
         return "image/gif";
     }
 
     /** Return true, since old images should be overwritten with new.
-     * 
+     *
      * @return True, since old images should be overwritten with new
      */
     public boolean isOverwriteable() {
         return true;
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
-   
-     /** Generate the image file and a <table/> element holding an <img/> 
-      *  element and a caption for the image. 
-     *  
+
+     /** Generate the image file and a <table/> element holding an <img/>
+      *  element and a caption for the image.
+     *
      *  @param exporter The WebExporter to add content to
-     *  @throws IllegalActionException If something is wrong generating the 
-     *  image file or generating the additional web content 
+     *  @throws IllegalActionException If something is wrong generating the
+     *  image file or generating the additional web content
      */
     public void _provideElements(WebExporter exporter)
         throws IllegalActionException {
-        
+
         // Copied from LinkToOpenTableau
         // Create a table of effigies associated with any
         // open submodel or plot.
-        Map<NamedObj, PtolemyEffigy> openEffigies = new HashMap<NamedObj, 
-            PtolemyEffigy>();      
+        Map<NamedObj, PtolemyEffigy> openEffigies = new HashMap<NamedObj,
+            PtolemyEffigy>();
         Tableau myTableau = exporter.getFrame().getTableau();
         Effigy myEffigy = (Effigy) myTableau.getContainer();
         List<PtolemyEffigy> effigies = myEffigy.entityList(PtolemyEffigy.class);
@@ -157,10 +157,10 @@ public class HTMLImage extends WebContent {
         // Beth updated
         // Get the effigy that goes with this attribute's container
         PtolemyEffigy effigy = openEffigies.get(getContainer());
-        
+
         // The hierarchy of effigies does not always follow the model hierarchy
         // (e.g., a PlotEffigy will be contained by the top-level effigy for the
-        // model for some reason), so if the effigy is null, we search 
+        // model for some reason), so if the effigy is null, we search
         // nonetheless for an effigy.
         if (effigy == null) {
             Effigy candidate = Configuration.findEffigy(getContainer());
@@ -172,20 +172,20 @@ public class HTMLImage extends WebContent {
             // _linkTo calls addContent()
             if (effigy != null) {
                 // _linkTo() recursively calls writeHTML();
-                _linkTo(exporter, effigy, getContainer(), getContainer(), 
+                _linkTo(exporter, effigy, getContainer(), getContainer(),
                     exporter.getExportParameters());
             }
         } catch (Throwable throwable) {
             throw new IllegalActionException(this, throwable,
             "Failed to generate HTMLImage. ");
-        }   
+        }
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                    ////
-    
-    private void _linkTo(WebExporter exporter, 
-            PtolemyEffigy effigy, NamedObj sourceObject, 
+
+    private void _linkTo(WebExporter exporter,
+            PtolemyEffigy effigy, NamedObj sourceObject,
             NamedObj destinationObject, ExportParameters parameters)
             throws IOException, PrinterException, IllegalActionException {
         File gifFile;
@@ -197,9 +197,9 @@ public class HTMLImage extends WebContent {
             String name = destinationObject.getName();
             Frame frame = tableaux.get(0).getFrame();
             // If it's a composite actor, export HTML.
-            if (frame instanceof ImageExportable) {             
-                
-                gifFile = 
+            if (frame instanceof ImageExportable) {
+
+                gifFile =
                     new File(parameters.directoryToExportTo, name + ".gif");
                 OutputStream gifOut = new FileOutputStream(gifFile);
                 try {
@@ -207,10 +207,10 @@ public class HTMLImage extends WebContent {
                 } finally {
                     gifOut.close();
                 }
-                
+
                 // Check the exporter for the path to use here
                 // This can differ depending on the exporter
-                // For example, an HttpService uses a URL as a path since the 
+                // For example, an HttpService uses a URL as a path since the
                 // WebServer has a resource handler to serve files
                 // ExportToHTML will use a directory since the files are
                 // stored locally and located relative to the main web page
@@ -222,20 +222,20 @@ public class HTMLImage extends WebContent {
                         path = path + "/";
                     }
                 }
-                
-                String content = "<table> <caption align=\"bottom\">" 
+
+                String content = "<table> <caption align=\"bottom\">"
                     + this.displayText.getExpression()
-                    + "</caption> <tr> <td> <img src=\"" 
+                    + "</caption> <tr> <td> <img src=\""
                     + path
                     + name + ".gif\"> </td></tr></table>";
-                
-                webElement = WebElement.createWebElement(getContainer(), 
+
+                webElement = WebElement.createWebElement(getContainer(),
                       getName() + "WebElement", getName() + "WebElement");
                 webElement.setExpression(content);
                 webElement.setParent(imagePosition.stringValue());
-                
+
                 //Add image. Image should only be added once (onceOnly -> true).
-                exporter.defineElement(webElement, true);             
+                exporter.defineElement(webElement, true);
             }
         }
     }

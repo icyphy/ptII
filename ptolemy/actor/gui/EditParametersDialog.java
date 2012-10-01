@@ -197,7 +197,7 @@ public class EditParametersDialog extends ComponentDialog implements
             }
         } else if (buttonPressed().equals("Help")) {
             String helpURL = _getHelpURL();
-            
+
             try {
                 URL doc = getClass().getClassLoader().getResource(helpURL);
 
@@ -411,7 +411,7 @@ public class EditParametersDialog extends ComponentDialog implements
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
-    
+
     /** Returns the URL of the help file to be displayed when the user
      *  clicks the Help button. The help file defaults to the expression
      *  language documentation, but can be overriden by attaching a
@@ -435,7 +435,7 @@ public class EditParametersDialog extends ComponentDialog implements
                 }
             }
         }
-        
+
         // We couldn't find one, so return the default path to the
         // expression language help
         return "doc/expressions.htm";
@@ -460,7 +460,7 @@ public class EditParametersDialog extends ComponentDialog implements
     //
     //        _target.requestChange(reOpen);
     //    }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
     // Button labels.

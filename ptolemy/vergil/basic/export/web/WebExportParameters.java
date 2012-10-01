@@ -55,7 +55,7 @@ import ptolemy.vergil.basic.ExportParameters;
  * @Pt.AcceptedRating Red (cxh)
  */
 public class WebExportParameters extends Attribute {
-    
+
     /** Construct an attribute with the given name contained by the specified
      *  entity.
      *  @param container The container.
@@ -80,23 +80,23 @@ public class WebExportParameters extends Attribute {
         allowDirectories.setVisibility(Settable.NONE);
 
         backgroundColor = new ColorAttribute(this, "backgroundColor");
-        
+
         openCompositesBeforeExport = new Parameter(this, "openCompositesBeforeExport");
         openCompositesBeforeExport.setTypeEquals(BaseType.BOOLEAN);
         openCompositesBeforeExport.setExpression("false");
-        
+
         runBeforeExport = new Parameter(this, "runBeforeExport");
         runBeforeExport.setTypeEquals(BaseType.BOOLEAN);
         runBeforeExport.setExpression("false");
-        
+
         showInBrowser = new Parameter(this, "showInBrowser");
         showInBrowser.setTypeEquals(BaseType.BOOLEAN);
         showInBrowser.setExpression("true");
-        
+
         copyJavaScriptFiles = new Parameter(this, "copyJavaScriptFiles");
         copyJavaScriptFiles.setTypeEquals(BaseType.BOOLEAN);
         copyJavaScriptFiles.setExpression("false");
-        
+
         usePtWebsite = new Parameter(this, "usePtWebsite");
         usePtWebsite.setTypeEquals(BaseType.BOOLEAN);
         usePtWebsite.setExpression("false");
@@ -110,7 +110,7 @@ public class WebExportParameters extends Attribute {
      *  to use the background color of the model.
      */
     public ColorAttribute backgroundColor;
-    
+
     /** If true, then make an exported web page stand alone.
      *  Instead of referencing JavaScript and image files on the
      *  ptolemy.org website, if this parameter is true, then the
@@ -118,7 +118,7 @@ public class WebExportParameters extends Attribute {
      *  This is a boolean that defaults to false.
      */
     public Parameter copyJavaScriptFiles;
-    
+
     /** The directory to export to. If a relative name is given,
      *  then it is relative to the location of the model file.
      *  By default, this is blank,
@@ -128,7 +128,7 @@ public class WebExportParameters extends Attribute {
      *  where the model that contains this attribute is stored.
      */
     public FileParameter directoryToExportTo;
-    
+
     /** If true, hierarchically open all composite actors
      *  in the model before exporting (so that these also
      *  get exported, and hyperlinks to them are created).
@@ -142,22 +142,22 @@ public class WebExportParameters extends Attribute {
      *  boolean that defaults to false.
      */
     public Parameter runBeforeExport;
-    
+
     /** If true, open a web browser to display the resulting
      *  export. This is a boolean that defaults to true.
      */
     public Parameter showInBrowser;
-    
+
     /** If true, use the server-side includes of the Ptolemy website.
      *  This is a boolean that defaults to false. This parameter
      *  is marked as an expert parameter, so by default, it is not
      *  visible.
      */
     public Parameter usePtWebsite;
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-    
+
     /** React to a change in an attribute.  This method updates the
      *  local data structure provided by {@link #getExportParameters()}.
      *  @param attribute The attribute that changed.
@@ -197,7 +197,7 @@ public class WebExportParameters extends Attribute {
     public ExportParameters getExportParameters() {
         if (_parameters.directoryToExportTo == null) {
             _parameters.directoryToExportTo = FileUtilities.nameToFile(
-                    StringUtilities.sanitizeName(getContainer().getName()), 
+                    StringUtilities.sanitizeName(getContainer().getName()),
                     directoryToExportTo.getBaseDirectory());
         }
         return _parameters;
@@ -209,7 +209,7 @@ public class WebExportParameters extends Attribute {
     public boolean parametersChanged() {
         return !_isMoMLSuppressed(1);
     }
-        
+
     ///////////////////////////////////////////////////////////////////
     ////                         private fields                    ////
 

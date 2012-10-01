@@ -41,10 +41,10 @@ package ptolemy.data.ontologies.lattice.unit;
 @Pt.AcceptedRating Red (cshelton)
 */
 public enum SIUnitPrefixes {
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         public enumeration values         ////
-    
+
     YOTTA (1e24, "yotta", "Y"),
     ZETTA (1e21, "zetta", "Z"),
     EXA (1e18, "exa", "E"),
@@ -65,7 +65,7 @@ public enum SIUnitPrefixes {
     ATTO (1e-18, "atto", "a"),
     ZEPTO (1e-21, "zepto", "z"),
     YOCTO (1e-24, "yocto", "y");
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private enumeration constructor   ////
 
@@ -80,40 +80,40 @@ public enum SIUnitPrefixes {
         this._prefixName = new String(prefixName);
         this._prefixSymbol = new String(prefixSymbol);
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-    
+
     /** Return the unit factor associated with the given unit prefix.
      *  @return The unit factor as a double value.
      */
     public double unitFactor() {
         return _unitFactor;
     }
-    
+
     /** Return the name of the given unit prefix as a string.
      *  @return The name of the unit prefix as a string.
      */
     public String prefixName() {
         return _prefixName;
     }
-    
-    /** Return the short symbol representing the given unit prefix as a string. 
+
+    /** Return the short symbol representing the given unit prefix as a string.
      *  @return The short symbol for the unit prefix as a string.
      */
     public String prefixSymbol() {
         return _prefixSymbol;
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    
+
     /** The unit conversion factor as a double value for the unit prefix. */
     private final double _unitFactor;
-    
+
     /** The name of the unit prefix as a string. */
     private final String _prefixName;
-    
+
     /** The short symbol that represents the unit prefix as a string. */
     private final String _prefixSymbol;
 }

@@ -158,9 +158,9 @@ public class Previous extends DETransformer {
         return typeConstraints;
     }
 */
-    
+
     /**
-     * Adds to the set of inequalities returned by the overridden method 
+     * Adds to the set of inequalities returned by the overridden method
      * a constraint that requires the initial value to be less than or
      * equal to the type of the output.
      */
@@ -182,7 +182,7 @@ public class Previous extends DETransformer {
 
         return result;
     }
-    
+
     /** Reset the state variables.
      *  @exception IllegalActionException If the base class throws it.
      */

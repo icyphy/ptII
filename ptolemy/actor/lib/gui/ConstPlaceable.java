@@ -1,4 +1,4 @@
-/* A constant source that is placeable. 
+/* A constant source that is placeable.
 
  Copyright (c) 1998-2010 The Regents of the University of California.
  All rights reserved.
@@ -100,9 +100,9 @@ public class ConstPlaceable extends Const implements PortablePlaceable {
     /** Get the right instance of the implementation depending upon the
      *  of the dependency specified through dependency injection.
      *  If the instance has not been created, then it is created.
-     *  If the instance already exists then return the same. 
+     *  If the instance already exists then return the same.
      *
-     *	<p>This code is used as part of the dependency injection needed for the
+     *        <p>This code is used as part of the dependency injection needed for the
      *  HandSimDroid project, see $PTII/ptserver.  This code uses dependency
      *  inject to determine what implementation to use at runtime.
      *  This method eventually reads ptolemy/actor/ActorModule.properties.
@@ -113,12 +113,12 @@ public class ConstPlaceable extends Const implements PortablePlaceable {
      */
     private TextFieldContainerInterface _getImplementation() {
         if (_implementation == null) {
-	    if (PtolemyInjector.getInjector() == null) {
-		System.err.println("Warning: main() did not call "
-			       + "ActorModuleInitializer.initializeInjector(), "
-			       + "so Const is calling it for you.");
-		ActorModuleInitializer.initializeInjector();
-	    }
+            if (PtolemyInjector.getInjector() == null) {
+                System.err.println("Warning: main() did not call "
+                               + "ActorModuleInitializer.initializeInjector(), "
+                               + "so Const is calling it for you.");
+                ActorModuleInitializer.initializeInjector();
+            }
             _implementation = PtolemyInjector.getInjector().getInstance(
                     TextFieldContainerInterface.class);
         }

@@ -1,6 +1,6 @@
 /* Panel responsible for designating which actors/attributes are
    to be run remotely.
-   
+
  Copyright (c) 2011 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
@@ -73,8 +73,8 @@ import ptolemy.vergil.toolbox.PtolemyTransferable;
 //// RemoteObjectList
 
 /** A list of the model components that will be run remotely.
- * 
- *  @author Justin Killian  
+ *
+ *  @author Justin Killian
  *  @version $Id$
  *  @since Ptolemy II 8.1
  *  @Pt.ProposedRating Red (jkillian)
@@ -210,7 +210,7 @@ public class RemoteObjectList extends JPanel implements ActionListener {
                 }
             }
 
-            /** Perform the drop of the item onto the scene and 
+            /** Perform the drop of the item onto the scene and
              *  load the appropriate graphical widget.
              */
             public void drop(DropTargetDropEvent dropEvent) {

@@ -827,10 +827,10 @@ public class CachedMethod {
             // will throw an InternalErrorException.
             // One way to trigger this is to have an expression with
             // the value: "valueOf(input)".  What happens is that
-            // String.valueOf(char) and String.valueOf(char[]) will be 
-            // checked, which causes convertTypeTypeToTokenType() to 
+            // String.valueOf(char) and String.valueOf(char[]) will be
+            // checked, which causes convertTypeTypeToTokenType() to
             // throw the InternalErrorException.
-            //new Exception("formal: " + formal 
+            //new Exception("formal: " + formal
             //        + " formal.isPrimitive(): "
             //        + formal.isPrimitive()
             //        + " formal.isArray(): "

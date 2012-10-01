@@ -361,7 +361,7 @@ public class SetVariable extends TypedAtomicActor implements ChangeListener,
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         protected methods                 ////    
+    ////                         protected methods                 ////
 
     /**
      * Return a constraint requiring that if there is a specified variable to

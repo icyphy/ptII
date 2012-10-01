@@ -216,11 +216,11 @@ public class LatticeOntologyAdapter extends OntologyAdapter {
                 || !AtomicActor.class.isInstance(getComponent())) {
             return;
         }
-        
+
         if (interconnectConstraintType == null) {
             interconnectConstraintType = actorConstraintType;
         }
-                
+
         List<IOPort> inputPorts = ((AtomicActor) getComponent()).inputPortList();
         List<IOPort> outputPorts = ((AtomicActor) getComponent()).outputPortList();
 
@@ -334,10 +334,10 @@ public class LatticeOntologyAdapter extends OntologyAdapter {
                 _constrainSingleObject(constraintType, source, sink);
             }
         }
-        
+
     }
 
-    /** Set the default constraint between the given source and sink object 
+    /** Set the default constraint between the given source and sink object
      *  based on the given constraintType.
      *
      * @see ConstraintType
@@ -355,7 +355,7 @@ public class LatticeOntologyAdapter extends OntologyAdapter {
             case SOURCE_GE_SINK: setAtLeast(source, sink); break;
         }
     }
-    
+
 
     /**
      * Return the list of constrained ports given the flag whether source or

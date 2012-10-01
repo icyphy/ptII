@@ -51,17 +51,17 @@ import ptolemy.util.StringUtilities;
 /**
  On each firing, read one token from each input port and assemble them
  into a RecordToken. The labels for the RecordToken much match the names
- of the input ports. This is achieved using two type constraints:  
- 
+ of the input ports. This is achieved using two type constraints:
+
  <ul>
  <li><tt>output >= {x = typeOf(inputPortX), y = typeOf(inputPortY), ..}
  </tt>, which requires the types of the input ports to be compatible
  with the corresponding types in the output record.
  </li>
- <li><tt>each input <= the type of the corresponding field inside the 
- output record</tt>, which is similar to the usual default constraints, 
+ <li><tt>each input <= the type of the corresponding field inside the
+ output record</tt>, which is similar to the usual default constraints,
  however this constraint establishes a dependency between the inputs of
- this actor and the fields inside the output record, instead of just 
+ this actor and the fields inside the output record, instead of just
  between its inputs and outputs.
  </li>
  </ul>
@@ -75,19 +75,19 @@ import ptolemy.util.StringUtilities;
  corresponding input port.
  </p>
  <p>Note that while port names may have spaces in them, record labels
- may not because record labels that have spaces in them are not 
+ may not because record labels that have spaces in them are not
  parseable by the expression language.  Spaces in record labels
  are converted to underscores in the RecordToken constructors an
- toString() method.  If this actor has ports that have a space 
+ toString() method.  If this actor has ports that have a space
  or other character that is substituted, then at runtime the port
  may resolve to an unknown type with a message like:</p>
  <pre>
 Caused by: ptolemy.actor.TypeConflictException: Types resolved
   to unacceptable types in .Router due to the following objects:
   (port .Router.Record Disassembler.sequence number: unknown)
- </pre>  
- 
- @author Yuhong Xiong, Marten Lohstroh 
+ </pre>
+
+ @author Yuhong Xiong, Marten Lohstroh
  @version $Id$
  @since Ptolemy II 1.0
  @Pt.ProposedRating Yellow (yuhong)
@@ -95,7 +95,7 @@ Caused by: ptolemy.actor.TypeConflictException: Types resolved
  @see RecordDisassembler
  */
 public class RecordAssembler extends TypedAtomicActor {
-    
+
     /** Construct a RecordAssembler with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -170,18 +170,18 @@ public class RecordAssembler extends TypedAtomicActor {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                     protected methods                     ////    
-    
+    ////                     protected methods                     ////
+
     /** Set up and return two type constraints.
      *  <ul>
      *  <li><tt>output >= {x = typeOf(inputPortX), y = typeOf(inputPortY), ..}
      *  </tt>, which requires the types of the input ports to be compatible
      *  with the corresponding types in the output record.
      *  </li>
-     *  <li><tt>each input <= the type of the corresponding field inside the 
-     *  output record</tt>, which is similar to the usual default constraints, 
+     *  <li><tt>each input <= the type of the corresponding field inside the
+     *  output record</tt>, which is similar to the usual default constraints,
      *  however this constraint establishes a dependency between the inputs of
-     *  this actor and the fields inside the output record, instead of just 
+     *  this actor and the fields inside the output record, instead of just
      *  between its inputs and outputs.
      *  </li>
      *  </ul>
@@ -203,7 +203,7 @@ public class RecordAssembler extends TypedAtomicActor {
                     input.getTypeTerm()));
         }
 
-        // constrain the fields in the output record to be greater than or 
+        // constrain the fields in the output record to be greater than or
         // equal to the declared or resolved types of the input ports:
         // output >= {x = typeOf(outputPortX), y = typeOf(outputPortY), ..}
         result.add(new Inequality(new ConstructAssociativeType(inputPortList(),
@@ -213,7 +213,7 @@ public class RecordAssembler extends TypedAtomicActor {
     }
 
     /** Do not establish the usual default type constraints.
-     *  @return null 
+     *  @return null
      */
     @Override
     protected Set<Inequality> _defaultTypeConstraints() {

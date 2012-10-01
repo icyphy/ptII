@@ -122,7 +122,7 @@ public class SnapConstraint implements PointConstraint {
         result[1] = Math.round(y / _defaultResolution) * _defaultResolution;
         return result;
     }
-    
+
     /** Return the default resolution.
      *  @return The global default resolution.
      */

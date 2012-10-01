@@ -54,7 +54,7 @@ import diva.graph.GraphModel;
  * Responsible for translating layout configuration parameters into the KIELER format.
  * Parameters are read from an instance of the {@link LayoutConfiguration} attribute,
  * which is attached to composite entities when the configuration dialog is opened.
- * 
+ *
  * @see LayoutConfiguration
  * @author Miro Spoenemann, Christoph Daniel Schulze
  * @version $Id$
@@ -66,16 +66,16 @@ public class Parameters {
 
     /**
      * Create a parameters instance.
-     * 
+     *
      * @param compositeEntity the composite entity for which parameters are retrieved.
      */
     public Parameters(CompositeEntity compositeEntity) {
         _compositeEntity = compositeEntity;
     }
-    
+
     /**
      * Configure the KIELER layout using a property holder.
-     * 
+     *
      * @param parentLayout the layout of the parent node
      * @param graphModel the graph model of the current diagram
      * @throws IllegalActionException if one of the parameters has the wrong type
@@ -86,24 +86,24 @@ public class Parameters {
         parentLayout.setProperty(LayoutOptions.DIRECTION, Direction.RIGHT);
         parentLayout.setProperty(LayoutOptions.BORDER_SPACING, 5.0f);
         parentLayout.setProperty(Properties.EDGE_SPACING_FACTOR, 1.5f);
-        
+
         // Copy values specified by user.
         List<LayoutConfiguration> configAttributes = _compositeEntity
                 .attributeList(LayoutConfiguration.class);
         if (!configAttributes.isEmpty()) {
             LayoutConfiguration configuration = configAttributes.get(0);
-            
+
             // Whether decorations are to be laid out or left as they are
             BooleanToken decorationsToken = BooleanToken.convert(
                     configuration.includeDecorations.getToken());
             parentLayout.setProperty(DECORATIONS, decorationsToken.booleanValue());
-            
+
 //            // Whether to optimize relation vertices
 //            BooleanToken optimizeRelationsToken = BooleanToken.convert(
 //                    configuration.optimizeRelations.getToken());
 //            parentLayout.setProperty(OPTIMIZE_RELATIONS,
 //                    optimizeRelationsToken.booleanValue());
-            
+
             // The node placement algorithm to use
             BooleanToken minimizeBendsToken = BooleanToken.convert(
                     configuration.minimizeBends.getToken());
@@ -114,24 +114,24 @@ public class Parameters {
                 parentLayout.setProperty(Properties.NODEPLACE,
                         NodePlacementStrategy.LINEAR_SEGMENTS);
             }
-            
+
             // Spacing between diagram elements
             DoubleToken spacingToken = DoubleToken.convert(
                     configuration.spacing.getToken());
             parentLayout.setProperty(SPACING, (float) spacingToken.doubleValue());
-            
+
             // Target aspect ratio for the diagram
             DoubleToken logAspectToken = DoubleToken.convert(
                     configuration.logAspectRatio.getToken());
             parentLayout.setProperty(ASPECT_RATIO, (float) Math.pow(
                     10, logAspectToken.doubleValue()));
-            
+
             // The interaction mode (constraints the layout according to what the
             // diagram currently looks like)
             InteractionMode interactionMode = (InteractionMode) configuration
                     .interactionMode.getChosenValue();
             if (interactionMode != null) {
-                // The switch cases fall through on purpose! 
+                // The switch cases fall through on purpose!
                 switch (interactionMode) {
                 case Full:
                     parentLayout.setProperty(Properties.CROSSMIN,
@@ -146,13 +146,13 @@ public class Parameters {
                     // Don't change the configuration in all other cases
                 }
             }
-            
+
         } else {
             parentLayout.setProperty(LayoutOptions.SPACING, SPACING.getDefault());
             parentLayout.setProperty(LayoutOptions.ASPECT_RATIO, ASPECT_RATIO.getDefault());
             parentLayout.setProperty(Properties.NODEPLACE, NodePlacementStrategy.BRANDES_KOEPF);
         }
-        
+
         if (graphModel instanceof ActorGraphModel) {
             // Set default values for actor models.
             parentLayout.setProperty(LayoutOptions.EDGE_ROUTING, EdgeRouting.ORTHOGONAL);
@@ -163,15 +163,15 @@ public class Parameters {
             parentLayout.setProperty(SPACING, 2 * spacing);
         }
     }
-    
+
     /** Layout option that determines whether decoration nodes are included in layout. */
     public static final IProperty<Boolean> DECORATIONS = new Property<Boolean>(
             "ptolemy.vergil.basic.layout.decorations", LayoutConfiguration.DEF_DECORATIONS);
-    
+
 //    /** Layout option for optimizing away superfluous relation vertices. */
 //    public static final IProperty<Boolean> OPTIMIZE_RELATIONS = new Property<Boolean>(
 //            "ptolemy.vergil.basic.layout.optimizeRelations", LayoutConfiguration.DEF_OPTIMIZE_RELATIONS);
-    
+
     /** Layout option for the overall spacing between elements. */
     public static final IProperty<Float> SPACING = new Property<Float>(
             LayoutOptions.SPACING, (float) LayoutConfiguration.DEF_SPACING);

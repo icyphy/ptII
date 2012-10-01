@@ -456,7 +456,7 @@ public class ModalController extends NamedProgramCodeGeneratorAdapter {
             inputPort = inputPorts.get(i);
             if (!outputPorts.contains(inputPort)) {
                 int width = inputPort.getWidth();
-                // FIXME "static" is language-dependent, but we need it 
+                // FIXME "static" is language-dependent, but we need it
                 // generating code in small blocks, see:
                 // $PTII/bin/ptcg -language java -generateInSubdirectory true -inline false -maximumLinesPerBlock 1 -variablesAsArrays true $PTII/ptolemy/cg/adapter/generic/program/procedural/java/adapters/ptolemy/domains/modal/test/auto/Simple01.xml
                 code.append("static " + inputPort.getType() + " " + name + "_"
@@ -465,7 +465,7 @@ public class ModalController extends NamedProgramCodeGeneratorAdapter {
                     code.append("[" + width + "]");
                 }
                 code.append(";" + _eol);
-                // FIXME "static" is language-dependent, but we need it 
+                // FIXME "static" is language-dependent, but we need it
                 // generating code in small blocks.
                 code.append("static " + inputPort.getType() + " " + modalName + "_"
                         + inputPort.getName());
@@ -479,7 +479,7 @@ public class ModalController extends NamedProgramCodeGeneratorAdapter {
         for (int i = 0; i < outputPorts.size(); i++) {
             outputPort = outputPorts.get(i);
             int width = outputPort.getWidth();
-            // FIXME "static" is language-dependent, but we need it 
+            // FIXME "static" is language-dependent, but we need it
             // generating code in small blocks.
             code.append("static " + outputPort.getType() + " " + name + "_"
                     + outputPort.getName());
@@ -488,7 +488,7 @@ public class ModalController extends NamedProgramCodeGeneratorAdapter {
             }
             code.append(";" + _eol);
 
-            // FIXME "static" is language-dependent, but we need it 
+            // FIXME "static" is language-dependent, but we need it
             // generating code in small blocks.
             code.append("static " + outputPort.getType() + " " + modalName + "_"
                     + outputPort.getName());

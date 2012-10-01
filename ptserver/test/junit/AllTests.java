@@ -44,9 +44,9 @@ import ptolemy.util.StreamExec;
 //// AllTests
 /**
  * Test suite of the ptserver.
- * 
+ *
  * @author Anar Huseynov, contributor: Christopher Brooks
- * @version $Id$ 
+ * @version $Id$
  * @since Ptolemy II 8.0
  * @Pt.ProposedRating Red (ahuseyno)
  * @Pt.AcceptedRating Red (ahuseyno)
@@ -74,7 +74,7 @@ public class AllTests {
         FileUtilities.binaryCopyURLToFile(defaultConfigURL, configFile);
         System.out.println("AllTests.startMosquitto(): Copied "
                 + defaultConfigURL + " to " +  configFile);
-        
+
 
         _exec = new StreamExec();
         List<String> commands = new LinkedList<String>();

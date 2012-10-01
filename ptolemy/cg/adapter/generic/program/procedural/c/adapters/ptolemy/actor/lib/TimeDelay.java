@@ -69,7 +69,7 @@ public class TimeDelay extends NamedProgramCodeGeneratorAdapter {
         codeStream.appendCodeBlock("fireBlock", args);
         return processCode(codeStream.toString());
     }
-    
+
     /** Return the name of the port that is the time source.
      *  @return The string "trigger".
      */

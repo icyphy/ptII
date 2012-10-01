@@ -68,7 +68,7 @@ public class SIPrefixUnitConversionInfo extends UnitConversionInfo {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public static methods             ////
-    
+
     /** Create all the different unit info parameters that represent SI
      *  prefix-based units for the given dimension.
      *  @param dimension The given DimensionRepresentativeConcept.  It must
@@ -89,7 +89,7 @@ public class SIPrefixUnitConversionInfo extends UnitConversionInfo {
             DimensionRepresentativeConcept dimension, String unitName,
             boolean useSymbols, double baseUnitFactor,
             RecordToken baseUnitRecord) throws IllegalActionException {
-        
+
         if (dimension instanceof SIBaseDimensionRepresentativeConcept ||
                 dimension instanceof SIDerivedDimensionRepresentativeConcept) {
             removeAllSIPrefixConversionParameters(dimension);
@@ -111,16 +111,16 @@ public class SIPrefixUnitConversionInfo extends UnitConversionInfo {
             }
         } else {
             throw new IllegalActionException(dimension, "The given dimension " +
-            		dimension.getName() + "is not an " +
-            		"SIBaseDimensionRepresentativeConcept or an " +
-            		"SIDerivedDimensionRepresentativeConcept so no " +
-            		"SI prefix units can be created.");
+                            dimension.getName() + "is not an " +
+                            "SIBaseDimensionRepresentativeConcept or an " +
+                            "SIDerivedDimensionRepresentativeConcept so no " +
+                            "SI prefix units can be created.");
         }
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private static methods            ////
-    
+
     /** Create a new SIPrefixUnitConversionInfo parameter for the given
      *  DimensionRepresentativeConcept with the given unit name and
      *  conversion factor.
@@ -144,7 +144,7 @@ public class SIPrefixUnitConversionInfo extends UnitConversionInfo {
                     "Error creating SI unit factor: factor parameter " +
                             unitName + " already exists.");
         }
-        
+
         unitParameter.setToken(new RecordToken(new String[] { UnitConversionInfo.unitFactorLabel },
                                                new Token[] { new DoubleToken(unitFactor) }));
         if (dimension instanceof SIDerivedDimensionRepresentativeConcept) {
@@ -153,13 +153,13 @@ public class SIPrefixUnitConversionInfo extends UnitConversionInfo {
                         (RecordToken) unitParameter.getToken()));
             } else {
                 throw new IllegalActionException(dimension, "Error creating " +
-                		"SI unit factor: The dimension is an " +
-                		"SIDerivedDimensionRepresentativeConcept " +
-                		"but the base unitRecord is null.");
+                                "SI unit factor: The dimension is an " +
+                                "SIDerivedDimensionRepresentativeConcept " +
+                                "but the base unitRecord is null.");
             }
         }
     }
-    
+
     /** Remove all the existing SIPrefixUnitConversionInfo parameters
      *  from the given DimensionRepresentativeConcept.
      *  @param dimension The DimensionRepresentativeConcept from which to
@@ -169,7 +169,7 @@ public class SIPrefixUnitConversionInfo extends UnitConversionInfo {
      */
     private static void removeAllSIPrefixConversionParameters(
             DimensionRepresentativeConcept dimension) throws IllegalActionException {
-        for (SIPrefixUnitConversionInfo prefixUnitParameter : 
+        for (SIPrefixUnitConversionInfo prefixUnitParameter :
              dimension.attributeList(SIPrefixUnitConversionInfo.class)) {
             try {
                 prefixUnitParameter.setContainer(null);

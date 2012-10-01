@@ -3,9 +3,9 @@
  * All rights reserved.
  *
  * '$Author: koehler $'
- * '$Date: 2012-06-28 15:58:47 -0700 (Thu, 28 Jun 2012) $' 
+ * '$Date: 2012-06-28 15:58:47 -0700 (Thu, 28 Jun 2012) $'
  * '$Revision: 30089 $'
- * 
+ *
  * Permission is hereby granted, without written agreement and without
  * license or royalty fees, to use, copy, modify, and distribute this
  * software and its documentation for any purpose, provided that the above
@@ -38,7 +38,7 @@ import diva.graph.JGraph;
 /**
  * This class provides default extensions points which are overridden in the
  * Kepler Comad module.
- * 
+ *
  * @author Sven Koehler, Christopher Brooks.
  * @version $Id: BasicGraphFrame.java 64206 2012-08-06 05:39:20Z cxh $
  * @since Ptolemy II 9.0

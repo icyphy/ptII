@@ -61,11 +61,11 @@ classes.</p>
 */
 
 public class ImageDisplayJavaSE extends
-		ptolemy.actor.lib.image.ImageDisplayJavaSE implements ptolemy.domains.sdf.lib.vq.ImageDisplayInterface {
+                ptolemy.actor.lib.image.ImageDisplayJavaSE implements ptolemy.domains.sdf.lib.vq.ImageDisplayInterface {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-	
+
     /** Display the specified token. This must be called in the Swing
      *  event thread.
      *  @param in The token to display
@@ -80,8 +80,8 @@ public class ImageDisplayJavaSE extends
 
         SwingUtilities.invokeLater(doDisplay);
     }
-	
-	
+
+
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 

@@ -538,7 +538,7 @@ public class Copernicus {
             if (name.equals("codeGenerator") && value.equals("applet")) {
                 // We don't actually remove the graphical classes because PrintingPress
                 // sets the location of a LineAttribute. To reproduce:
-                // cd $PTII/ptolemy/domains/ptides/demo/PrintingPress 
+                // cd $PTII/ptolemy/domains/ptides/demo/PrintingPress
                 // $PTII/bin/copernicus -codeGenerator applet -targetPath ptolemy/domains/ptides/demo/PrintingPress PrintingPress.xml
                 removeGraphicalClasses.clear();
                 break;

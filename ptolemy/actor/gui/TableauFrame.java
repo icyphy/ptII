@@ -668,7 +668,7 @@ public class TableauFrame extends Top {
             // windowClosed events rather than overriding the
             // windowClosing behavior given here.
             if (isModified()) {
-                
+
                 Effigy effigy = getEffigy();
                 if (!effigy.isPersistent()) {
                     if (_debugClosing) {
@@ -721,8 +721,8 @@ public class TableauFrame extends Top {
             }
         }
         if (result == true ) {
-        	// If the user hit Cancel, do not clear the placeables.
-        	_clearPlaceable();
+                // If the user hit Cancel, do not clear the placeables.
+                _clearPlaceable();
         }
         return result;
         }
@@ -892,8 +892,8 @@ public class TableauFrame extends Top {
             Effigy effigy = (Effigy) effigies.next();
 
             if (!effigy.closeTableaux()) {
-            	// This is a hack because we don't want to change add a protected int _exit() method.
-            	_exitResult = _CANCELED;
+                    // This is a hack because we don't want to change add a protected int _exit() method.
+                    _exitResult = _CANCELED;
                 return;
             }
 
@@ -1447,7 +1447,7 @@ public class TableauFrame extends Top {
         }
     }
 
-    /** Clear  placeable or porablePlacable or by passing a null container to it.  
+    /** Clear  placeable or porablePlacable or by passing a null container to it.
      *
      */
     private void _clearPlaceable() {
@@ -1460,9 +1460,9 @@ public class TableauFrame extends Top {
     }
 
     /** Get the appropriate instance of intance of Placeable or PortablePlaceable,
-     *  depending upon what is initialized.  
+     *  depending upon what is initialized.
      *
-     *  @return Instance of Placeable or PortablePlaceable 
+     *  @return Instance of Placeable or PortablePlaceable
      */
     private Object _getPlaceable() {
         return _placeable != null ? _placeable : _portablePlaceable;

@@ -79,14 +79,14 @@ public class DynamicCoreAssignmentScheduler extends ResourceScheduler {
      */
     public DynamicCoreAssignmentScheduler(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
-        super(container, name); 
+        super(container, name);
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     //                           public methods                      //
-    
+
     /** Initialize local variables.
-     * @throws IllegalActionException Thrown if list of actors 
+     * @throws IllegalActionException Thrown if list of actors
      *   scheduled by this scheduler cannot be retrieved.
      */
     @Override
@@ -96,15 +96,15 @@ public class DynamicCoreAssignmentScheduler extends ResourceScheduler {
         _remainingTimeOnCore = new HashMap<ResourceScheduler, Time>();
         return null;
     }
-    
+
 
     /** Schedule a new actor for execution on the next available
      *  scheduler and return the next time
-     *  this scheduler has to perform a reschedule. 
+     *  this scheduler has to perform a reschedule.
      *  @param actor The actor to be scheduled.
      *  @param currentPlatformTime The current platform time.
      *  @param deadline. The deadline of the event.
-     *  @param executionTime The execution time of the actor. 
+     *  @param executionTime The execution time of the actor.
      *  @return Relative time when this Scheduler has to be executed
      *    again.
      *  @throws IllegalActionException Thrown if actor paramaters such
@@ -115,7 +115,7 @@ public class DynamicCoreAssignmentScheduler extends ResourceScheduler {
             Double deadline, Time executionTime) throws IllegalActionException {
         super.schedule(actor, currentPlatformTime, deadline, executionTime);
         Time minimumRemainingTime = null;
-        // Check if is already executing somewhere. 
+        // Check if is already executing somewhere.
         for (NamedObj schedulerActor : _actors) {
             ResourceScheduler scheduler = (ResourceScheduler) schedulerActor;
             if (scheduler._remainingTimes.get(actor) != null && scheduler._remainingTimes.get(actor).getDoubleValue() > 0.0) {
@@ -130,7 +130,7 @@ public class DynamicCoreAssignmentScheduler extends ResourceScheduler {
                 return time;
             }
         }
-        
+
         // Its not executing anywhere, find free core.
         for (NamedObj schedulerActor : _actors) {
             ResourceScheduler scheduler = (ResourceScheduler) schedulerActor;
@@ -148,7 +148,7 @@ public class DynamicCoreAssignmentScheduler extends ResourceScheduler {
                 _lastActorFinished = scheduler._lastActorFinished;
                 return time;
             } else {
-                if (minimumRemainingTime == null || 
+                if (minimumRemainingTime == null ||
                         minimumRemainingTime.compareTo(remainingTime) > 0) {
                     minimumRemainingTime = remainingTime;
                 }
@@ -156,11 +156,11 @@ public class DynamicCoreAssignmentScheduler extends ResourceScheduler {
         }
         return minimumRemainingTime;
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     //                        protected methods                      //
-    
-    /** Get Cores that are used by this ResourceScheduler to 
+
+    /** Get Cores that are used by this ResourceScheduler to
      *  schedule actor executions.
      *  @param container The container.
      *  @throws IllegalActionException Thrown if actor parameters
@@ -170,8 +170,8 @@ public class DynamicCoreAssignmentScheduler extends ResourceScheduler {
     protected void _getActorsToSchedule(CompositeActor container)
             throws IllegalActionException {
         _actors = new ArrayList<NamedObj>();
- 
-        for (Attribute attribute : (List<Attribute>) this.attributeList()) { 
+
+        for (Attribute attribute : (List<Attribute>) this.attributeList()) {
             if (attribute instanceof Parameter) {
                 Token paramToken = ((Parameter) attribute).getToken();
                 if (paramToken instanceof ObjectToken) {
@@ -181,13 +181,13 @@ public class DynamicCoreAssignmentScheduler extends ResourceScheduler {
                         _actors.add((ResourceScheduler)paramObject);
                     }
                 }
-            }      
+            }
         }
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     //                      private variables                        //
-    
+
     private HashMap<ResourceScheduler, Time> _remainingTimeOnCore;
 
 }

@@ -270,7 +270,7 @@ public class MoMLSimpleApplication implements ChangeListener, ExecutionListener 
     }
 
     /** Create an instance of each model file named in the arguments
-     *  and run it.   
+     *  and run it.
      *  @param args The command-line arguments naming the Ptolemy II
      *  model files (typically .xml files) to be invoked.
      */

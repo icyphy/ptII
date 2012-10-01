@@ -55,7 +55,7 @@ import org.ptolemy.fmi.driver.FMUModelExchange;
 public class FMUJUnitTest {
     /** Parse a Functional Mock-up Unit .fmu file, run it using co-simulation
      *  and compare the results against a known good file.
-     *  
+     *
      *  @param fmuFileName The absolute pathname of the .fmu file.  Absolute
      *  pathnames are used because this test could be run from anywhere.
      *  @param knownGoodFileName The absolute pathname of the known good results.
@@ -98,7 +98,7 @@ public class FMUJUnitTest {
 
     // /** Run the bouncing ball co-simulation functional mock-up unit test.
     //  *  @exception Exception If there is a problem reading or running the test.
-    //  */   
+    //  */
     //  @org.junit.Test
     //  public void cosimulateBouncingBall() throws Exception {
     //      cosimulate("bouncingBall");
@@ -106,7 +106,7 @@ public class FMUJUnitTest {
 
     // /** Run the dq co-simulation functional mock-up unit test.
     //  *  @exception Exception If there is a problem reading or running the test.
-    //  */   
+    //  */
     // @org.junit.Test
     // public void cosimulateDq() throws Exception {
     //     cosimulate("dq");
@@ -114,7 +114,7 @@ public class FMUJUnitTest {
 
     // /** Run the inc co-simulation functional mock-up unit test.
     //  *  @exception Exception If there is a problem reading or running the test.
-    //  */   
+    //  */
     // @org.junit.Test
     // public void cosimulateInc() throws Exception {
     //    cosimulate("inc");
@@ -122,7 +122,7 @@ public class FMUJUnitTest {
 
     /** Run the values co-simulation functional mock-up unit test.
      *  @exception Exception If there is a problem reading or running the test.
-     */   
+     */
     @org.junit.Test
     public void cosimulateValues() throws Exception {
        cosimulate("values");
@@ -130,7 +130,7 @@ public class FMUJUnitTest {
 
     /** Run the vanDerPol co-simulation functional mock-up unit test.
      *  @exception Exception If there is a problem reading or running the test.
-     */   
+     */
     @org.junit.Test
     public void cosimulateVanDerPol() throws Exception {
         cosimulate("vanDerPol");
@@ -138,7 +138,7 @@ public class FMUJUnitTest {
 
     /** Parse a Functional Mock-up Unit .fmu file, run it using model exchange
      *  and compare the results against a known good file.
-     *  
+     *
      *  @param fmuFileName The absolute pathname of the .fmu file.  Absolute
      *  pathnames are used because this test could be run from anywhere.
      *  @param knownGoodFileName The absolute pathname of the known good results.
@@ -181,7 +181,7 @@ public class FMUJUnitTest {
 
     /** Run the bouncing ball model exchange functional mock-up unit test.
      *  @exception Exception If there is a problem reading or running the test.
-     */   
+     */
      @org.junit.Test
      public void modelExchangeBouncingBall() throws Exception {
          modelExchange("bouncingBall");
@@ -189,7 +189,7 @@ public class FMUJUnitTest {
 
     /** Run the dq model exchange functional mock-up unit test.
      *  @exception Exception If there is a problem reading or running the test.
-     */   
+     */
     @org.junit.Test
     public void modelExchangeDq() throws Exception {
         modelExchange("dq");
@@ -197,7 +197,7 @@ public class FMUJUnitTest {
 
     /** Run the inc model exchange functional mock-up unit test.
      *  @exception Exception If there is a problem reading or running the test.
-     */   
+     */
     @org.junit.Test
     public void modelExchangeInc() throws Exception {
        modelExchange("inc");
@@ -205,7 +205,7 @@ public class FMUJUnitTest {
 
     /** Run the values model exchange functional mock-up unit test.
      *  @exception Exception If there is a problem reading or running the test.
-     */   
+     */
     @org.junit.Test
     public void modelExchangeValues() throws Exception {
        modelExchange("values");
@@ -213,14 +213,14 @@ public class FMUJUnitTest {
 
     /** Run the vanDerPol model exchange functional mock-up unit test.
      *  @exception Exception If there is a problem reading or running the test.
-     */   
+     */
     @org.junit.Test
     public void modelExchangeVanDerPol() throws Exception {
         modelExchange("vanDerPol");
     }
 
     /** Run FMI model exchange tests.
-     *  <p>To run these tests, either us <code>ant test</code> or run:   
+     *  <p>To run these tests, either us <code>ant test</code> or run:
      *  <code>(cd ../../..; java -classpath lib/jna.jar:lib/junit-4.8.2.jar:. org.ptolemy.fmi.driver.test.junit.FMUJUnitTest)</code></p>
      *
      *  @param args Not used.
@@ -234,9 +234,9 @@ public class FMUJUnitTest {
      *  @param fileName The name of the file to be read.
      *  @return The contents of the file.
      *  @exception IOException If there is a problem reading or closing file.
-     */   
+     */
     public static String readFile(String fileName) throws IOException {
-        FileInputStream fileInputStream = null; 
+        FileInputStream fileInputStream = null;
         DataInputStream dataInputStream = null;
         BufferedReader bufferedReader = null;
         StringBuffer results = new StringBuffer();
@@ -264,7 +264,7 @@ public class FMUJUnitTest {
         String userDir = System.getProperty("user.dir");
         // If the test was invoked with -Dptolemy.ptII.dir=${PTII}
         String ptolemyPtIIDir = System.getProperty("ptolemy.ptII.dir");
-        if (ptolemyPtIIDir != null) { 
+        if (ptolemyPtIIDir != null) {
             topDirectory = ptolemyPtIIDir;
         } else if (userDir.endsWith("org/ptolemy/fmi")) {
             topDirectory = new File(userDir).getParentFile().getParentFile().getParentFile().toString();

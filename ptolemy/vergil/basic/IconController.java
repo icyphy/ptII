@@ -217,7 +217,7 @@ public class IconController extends ParameterizedNodeController {
             } catch (IllegalActionException e) {
                 // Ignore
             }
-            
+
             // New way to specify a highlight color.
             AttributeController.renderHighlight(object, result);
 
@@ -269,7 +269,7 @@ public class IconController extends ParameterizedNodeController {
             } catch (IllegalActionException e) {
                 // Ignore.
             }
-            
+
             return result;
         }
     }

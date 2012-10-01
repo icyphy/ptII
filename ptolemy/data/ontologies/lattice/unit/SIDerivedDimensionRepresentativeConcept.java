@@ -84,17 +84,17 @@ public class SIDerivedDimensionRepresentativeConcept extends
         useAbbreviation.setTypeEquals(BaseType.BOOLEAN);
         baseUnitRecord = new Parameter(this, "baseUnitRecord");
         baseUnitRecord.setTypeAtMost(BaseType.RECORD);
-        
+
         // Default to using the unit abbreviation rather than the full name.
         useAbbreviation.setToken(BooleanToken.TRUE);
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 
     /** The name of the base SI unit for this dimension. */
     public StringAttribute unitFullName;
-    
+
     /** The abbreviated symbol for the base SI unit for this dimension. */
     public StringAttribute unitAbbreviation;
 
@@ -103,12 +103,12 @@ public class SIDerivedDimensionRepresentativeConcept extends
      *  or the full unit name and prefixes.
      */
     public Parameter useAbbreviation;
-    
+
     /** The parameter that holds the record describing the component units
      *  that specify this derived dimension's base unit.
      */
     public Parameter baseUnitRecord;
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -124,24 +124,24 @@ public class SIDerivedDimensionRepresentativeConcept extends
         boolean useUnitAbbreviation = ((BooleanToken) useAbbreviation.
                 getToken()).booleanValue();
         RecordToken baseUnitRecordToken = getUnitRecordToken();
-        
+
         // If not using unit abbreviations, react to a change in the
         // unitFullName parameter.
         if ((attribute.equals(useAbbreviation) || attribute.equals(unitFullName)
                 || attribute.equals(baseUnitRecord)) && !useUnitAbbreviation &&
                 baseUnitRecordToken != null) {
-            
+
             SIPrefixUnitConversionInfo.createAllSIPrefixConversionParameters(
                     this, unitFullName.getValueAsString(), useUnitAbbreviation,
                     1.0, baseUnitRecordToken);
-        
+
         // If using unit abbreviations, react to a change in the
         // unitAbbreviation parameter.
         } else if ((attribute.equals(useAbbreviation) ||
                 attribute.equals(unitAbbreviation) ||
                 attribute.equals(baseUnitRecord)) && useUnitAbbreviation &&
                 baseUnitRecordToken != null) {
-            
+
             SIPrefixUnitConversionInfo.createAllSIPrefixConversionParameters(
                     this, unitAbbreviation.getValueAsString(),
                     useUnitAbbreviation, 1.0, baseUnitRecordToken);
@@ -149,10 +149,10 @@ public class SIDerivedDimensionRepresentativeConcept extends
             super.attributeChanged(attribute);
         }
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
-    
+
     /** Return the RecordToken for the dimensions's base unit specification
      *  contained in the baseUnitRecord parameter.
      *  @return The base unit specification RecordToken.

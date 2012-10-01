@@ -442,7 +442,7 @@ public class DerivedUnitConcept extends UnitConcept {
             if (derivedDimensionExponent > 0) {
                 if (arrayOfBaseUnitsLists == null) {
                     arrayOfBaseUnitsLists = arrayOfBaseUnitsListsFromDerivedUnit;
-                } else {                
+                } else {
                     arrayOfBaseUnitsLists[POSITIVE_EXPONENT_INDEX]
                                           .addAll(arrayOfBaseUnitsListsFromDerivedUnit[POSITIVE_EXPONENT_INDEX]);
                     arrayOfBaseUnitsLists[NEGATIVE_EXPONENT_INDEX]
@@ -456,7 +456,7 @@ public class DerivedUnitConcept extends UnitConcept {
                     List<BaseUnitConcept> tempList = new ArrayList<BaseUnitConcept>(arrayOfBaseUnitsLists[NEGATIVE_EXPONENT_INDEX]);
                     arrayOfBaseUnitsLists[NEGATIVE_EXPONENT_INDEX] = arrayOfBaseUnitsLists[POSITIVE_EXPONENT_INDEX];
                     arrayOfBaseUnitsLists[POSITIVE_EXPONENT_INDEX] = tempList;
-                } else {                  
+                } else {
                     arrayOfBaseUnitsLists[NEGATIVE_EXPONENT_INDEX]
                                           .addAll(arrayOfBaseUnitsListsFromDerivedUnit[POSITIVE_EXPONENT_INDEX]);
                     arrayOfBaseUnitsLists[POSITIVE_EXPONENT_INDEX]
@@ -464,8 +464,8 @@ public class DerivedUnitConcept extends UnitConcept {
                 }
             } else {
                 throw new IllegalActionException("Dimension exponent value " +
-                		"should never be zero because then it would " +
-                		"not have an entry in the dimension map.");
+                                "should never be zero because then it would " +
+                                "not have an entry in the dimension map.");
             }
             baseUnitsMap.put(baseDimension, arrayOfBaseUnitsLists);
         }
@@ -625,7 +625,7 @@ public class DerivedUnitConcept extends UnitConcept {
     private static List<UnitConcept> _findEquivalentUnitConcepts(
             DimensionRepresentativeConcept dimension, ScalarToken newUnitFactor)
             throws IllegalActionException {
-        
+
         // Create an epsilon for testing unit factor closeness that is small
         // relative to the value of the unit factor.
         // It must be scaled to account for precision errors for very large
@@ -704,12 +704,12 @@ public class DerivedUnitConcept extends UnitConcept {
             List<BaseUnitConcept> unitList, BaseUnitConcept baseUnitToFind) {
         BaseDimensionRepresentativeConcept baseDimension =
                 (BaseDimensionRepresentativeConcept) baseUnitToFind.getDimension();
-        
+
         for (BaseUnitConcept unit : unitList) {
             BaseDimensionRepresentativeConcept dimension =
                     (BaseDimensionRepresentativeConcept) unit.getDimension();
             if (dimension.equals(baseDimension)) {
-               return unit; 
+               return unit;
             }
         }
         return null;
@@ -874,7 +874,7 @@ public class DerivedUnitConcept extends UnitConcept {
                 if (resultList.contains(unitToBeRemoved)) {
                     resultList.remove(unitToBeRemoved);
                 } else {
-                    
+
                     // If the unit is not found, but a unit from
                     // the same dimension is found, we still must remove
                     // it so that the final dimensions match.

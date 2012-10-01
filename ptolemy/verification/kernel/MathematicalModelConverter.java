@@ -397,7 +397,7 @@ public class MathematicalModelConverter extends Attribute {
      *   a contained Settable becomes invalid and the error handler
      *   throws it.
      *  @exception NameDuplicationException If the name of this entity
-     *   collides with a name already in the container.   
+     *   collides with a name already in the container.
      */
     public void setContainer(CompositeEntity container)
             throws IllegalActionException, NameDuplicationException {

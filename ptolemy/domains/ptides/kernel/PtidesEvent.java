@@ -152,7 +152,7 @@ public class PtidesEvent extends DEEvent {
      *  but its value cannot be obtained, which should be an integer.
      */
     public PtidesEvent(IOPort ioPort, int channel, Time timeStamp,
-            int microstep, int depth, Token token, Receiver receiver, Time deadline) 
+            int microstep, int depth, Token token, Receiver receiver, Time deadline)
             throws IllegalActionException {
         super(ioPort, timeStamp, microstep, depth);
         assert (token != null && receiver != null);

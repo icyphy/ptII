@@ -108,7 +108,7 @@ public class BooleanMultiplexor extends TypedAtomicActor {
         output = new TypedIOPort(this, "output", false, true);
         output.setTypeAtLeast(trueInput);
         output.setTypeAtLeast(falseInput);
-        
+
         new StringAttribute(select, "_cardinal").setExpression("SOUTH");
     }
 
@@ -201,13 +201,13 @@ public class BooleanMultiplexor extends TypedAtomicActor {
         _selectValue = null;
     }
 
-    /** Return false. 
+    /** Return false.
      *  @return False.
      */
     public boolean isStrict() {
         return false;
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private fields                    ////
 

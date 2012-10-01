@@ -34,9 +34,9 @@ import ptolemy.actor.gui.Placeable;
  * This interface is analogous to the {@link Placeable} interface.  However, this
  * interface is platform independent, and it's expected that implementers of the
  * interface are also platform independent.  By platform independent, we mean there is
- * no dependendency between java.awt or java.swing packages that are specific to Java SE 
+ * no dependendency between java.awt or java.swing packages that are specific to Java SE
  * version of the Java and not available on Android, for example.
- * 
+ *
  * <p>Interface for objects that have UI components that can be placed in containers.
  * These objects can be fairly tricky to write because of the fact that they
  * might be placed in a control panel, or be expected to create their own
@@ -60,7 +60,7 @@ import ptolemy.actor.gui.Placeable;
  * </ol>
  * </p>
  * @author Edward A. Lee Contributor: Anar Huseynov
- * @version $Id: Placeable.java 57040 2010-01-27 20:52:32Z cxh $
+ * @version $Id$
  * @since Ptolemy II 0.3
  * @Pt.ProposedRating Red (ahuseyno)
  * @Pt.AcceptedRating Red (ahuseyno)

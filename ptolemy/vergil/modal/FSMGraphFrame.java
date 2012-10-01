@@ -226,10 +226,10 @@ public class FSMGraphFrame extends ExtendedGraphFrame implements ActionListener 
      *  @return False if the user cancels on a save query.
      */
     protected boolean _close() {
-	// Running with a headless display (Xvfb) could result in the model being null.
-	if (getModel() != null) {
-	    getModel().removeDebugListener(_controller);
-	}
+        // Running with a headless display (Xvfb) could result in the model being null.
+        if (getModel() != null) {
+            getModel().removeDebugListener(_controller);
+        }
         return super._close();
     }
 

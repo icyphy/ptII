@@ -155,10 +155,10 @@ public class ZeroOrderHold extends Transformer {
 
     ///////////////////////////////////////////////////////////////////
     ////                     protected methods                     ////
-    
+
     /**
-     * Return a constraint that requires the type of the <i>defaultValue</i> 
-     * parameter to be less than or equal to the type of the <i>output</i> 
+     * Return a constraint that requires the type of the <i>defaultValue</i>
+     * parameter to be less than or equal to the type of the <i>output</i>
      * port.
      */
     @Override
@@ -179,7 +179,7 @@ public class ZeroOrderHold extends Transformer {
 
         return result;
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 

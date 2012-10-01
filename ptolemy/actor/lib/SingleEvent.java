@@ -170,7 +170,7 @@ public class SingleEvent extends TypedAtomicActor {
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
-        
+
         _outputProduced = -1;
 
         double eventTime = ((DoubleToken) time.getToken()).doubleValue();
@@ -179,7 +179,7 @@ public class SingleEvent extends TypedAtomicActor {
             _fireAt(eventTime);
         }
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 

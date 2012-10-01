@@ -39,8 +39,8 @@ import java.util.Comparator;
 //// ModelTests
 /**
  * Base class for tests that use models in the auto/ directory.
- * 
- * 
+ *
+ *
  * @author Christopher Brooks
  * @version $Id$
  * @since Ptolemy II 8.1
@@ -54,7 +54,7 @@ public class ModelTests {
      * to be executed. If auto/ does not exist, or does not contain files that
      * end with .xml or .moml, return a list with one element that contains
      * the value of the THERE_ARE_NO_AUTO_TESTS variable.
-     * 
+     *
      * @return The List of model names in auto/
      * @exception IOException If there is a problem accessing the auto/ directory.
      */
@@ -65,8 +65,8 @@ public class ModelTests {
     /**
      * Return a two dimensional array of arrays of strings that name the model
      * to be executed. If directory does not exist, or does not contain files that
-     * end with .xml or .moml, return a list with the value of the message parameter. 
-     * 
+     * end with .xml or .moml, return a list with the value of the message parameter.
+     *
      * @param directory The directory, which is usually either "auto/" or
      * "auto/knownFailedTests/".
      * @param message The message to use if the directory contains no
@@ -81,7 +81,7 @@ public class ModelTests {
             String[] modelFiles = auto.list(new FilenameFilter() {
                     /**
                      * Return true if the file name ends with .xml or .moml
-                     * 
+                     *
                      * @param directory
                      *            Ignored
                      * @param name

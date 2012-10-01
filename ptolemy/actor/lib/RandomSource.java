@@ -133,24 +133,24 @@ public abstract class RandomSource extends Source {
      *  This parameter contains a LongToken, initially with value 0.
      */
     public SharedParameter seed;
-    
-    /** This private seed overrides the shared seed parameter to specify a 
+
+    /** This private seed overrides the shared seed parameter to specify a
      *  particular seed rather than using System.currentTimeMillis() or
-     *  hashCode() to compute the seed value. 
-     *  
+     *  hashCode() to compute the seed value.
+     *
      *  By default, this parameter is empty, which means that the shared seed
      *  parameter is used.
-     *  
+     *
      *  WARNING: It is up to the user to make sure that different seed
      *  values are used in different random number generators.
      */
     public Parameter privateSeed;
-    
-    
+
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** If the attribute is <i>seed</i> or <i>useThisSeed</i> 
+    /** If the attribute is <i>seed</i> or <i>useThisSeed</i>
      *  then create the base random number generator.
      *  @param attribute The attribute that changed.
      *  @exception IllegalActionException If the change is not acceptable
@@ -171,7 +171,7 @@ public abstract class RandomSource extends Source {
             }
         } else {
             super.attributeChanged(attribute);
-        } 
+        }
     }
 
     /** Clone the actor into the specified workspace. This calls the
@@ -263,11 +263,11 @@ public abstract class RandomSource extends Source {
                 seedValue = seedValue + getFullName().hashCode();
             }
         }
-        
+
         _random = new Random(seedValue);
         _needNewGenerator = false;
         _needNew = true;
-    }   
+    }
 
     /** Generate a new random number.
      *  @exception IllegalActionException Not thrown in this base class.
@@ -291,5 +291,5 @@ public abstract class RandomSource extends Source {
 
     /** The Random object. */
     protected Random _random;
-    
+
 }

@@ -45,11 +45,11 @@ import com.sun.jna.ptr.ByteByReference;
 //// FMUModelExchange
 
 /** Read a Functional Mock-up Unit .fmu file and invoke it as a model exchange.
- *  
+ *
  * <p>This file is based on fmusdk/src/model_exchange/fmusim_me/main.c
  * by Jakob Mauss, which has the following license:</p>
  *
- * <p>FMU SDK license</p> 
+ * <p>FMU SDK license</p>
  *
  * <p>Copyright (c) 2008-2011, QTronic GmbH. All rights reserved.
  * The FmuSdk is licensed by the copyright holder under the BSD License
@@ -62,15 +62,15 @@ import com.sun.jna.ptr.ByteByReference;
  * this list of conditions and the following disclaimer in the documentation
  * and/or other materials provided with the distribution.</p>
  *
- * <p>THIS SOFTWARE IS PROVIDED BY QTRONIC GMBH "AS IS" AND ANY EXPRESS OR 
- * IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES 
- * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. 
- * IN NO EVENT SHALL QTRONIC GMBH BE LIABLE FOR ANY DIRECT, INDIRECT, 
+ * <p>THIS SOFTWARE IS PROVIDED BY QTRONIC GMBH "AS IS" AND ANY EXPRESS OR
+ * IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+ * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
+ * IN NO EVENT SHALL QTRONIC GMBH BE LIABLE FOR ANY DIRECT, INDIRECT,
  * INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
- * NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, 
- * DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY 
- * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT 
- * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF 
+ * NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+ * DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+ * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.</p>
  *
  * @author Christopher Brooks, based on fmusim_me/main.c by Jakob Mauss
@@ -81,7 +81,7 @@ import com.sun.jna.ptr.ByteByReference;
 public class FMUModelExchange extends FMUDriver {
 
     /** Perform model exchange using the named Functional Mock-up Unit (FMU) file.
-     *          
+     *
      * <p>Usage:</p>
      * <pre>
      * java -classpath ../../../lib/jna.jar:../../.. org.ptolemy.fmi.driver.FMUModelExchange \
@@ -113,7 +113,7 @@ public class FMUModelExchange extends FMUDriver {
      *  ',', If the separator is ',', columns are separated by ',' and
      *  '.' is used for floating-point numbers.  Otherwise, the given
      *  separator (e.g. ';' or '\t') is to separate columns, and ','
-     *  is used as decimal dot in floating-point numbers. 
+     *  is used as decimal dot in floating-point numbers.
      *  <dt>outputFile</dt>
      *  <dd>The name of the output file.  The default is results.csv</dd>
      *  </dl>
@@ -282,7 +282,7 @@ public class FMUModelExchange extends FMUDriver {
                     time = eventInfo.nextEventTime;
                 }
                 double dt = time - stepStartTime;
-                invoke(setTime, 
+                invoke(setTime,
                         new Object[] { fmiComponent, time },
                         "Could not set time, time was "
                         + time + ": ");
@@ -387,7 +387,7 @@ public class FMUModelExchange extends FMUDriver {
             }
             invoke("_fmiTerminate",
                     new Object[] { fmiComponent },
-                    "Could not terminate: "); 
+                    "Could not terminate: ");
         } finally {
             if (file != null) {
                 file.close();

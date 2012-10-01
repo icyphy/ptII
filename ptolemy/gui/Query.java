@@ -709,7 +709,7 @@ public class Query extends JPanel {
             int minimum, int maximum) throws IllegalArgumentException {
         return addSlider(name, label, defaultValue, minimum, maximum, null, null);
     }
-    
+
     /** Create a slider with the specified name, label, default value,
      *  maximum, minimum, and label texts for the maximum and minimum
      *  slider positions.
@@ -746,7 +746,7 @@ public class Query extends JPanel {
         }
 
         JSlider slider = new JSlider(minimum, maximum, defaultValue);
-        
+
         // Determine if minimum and maximum labels have to be created
         if ((minLabelText == null || minLabelText.isEmpty())
                 || (maxLabelText == null || maxLabelText.isEmpty())) {
@@ -755,7 +755,7 @@ public class Query extends JPanel {
             // Add labels to the slider and put everything into a panel
             JPanel panel = new JPanel();
             panel.setLayout(new GridBagLayout());
-            
+
             // Configure and add the slider
             GridBagConstraints c = new GridBagConstraints();
             c.fill = GridBagConstraints.HORIZONTAL;
@@ -767,10 +767,10 @@ public class Query extends JPanel {
             slider.setPaintTicks(true);
             slider.setMajorTickSpacing(maximum - minimum);
             panel.add(slider, c);
-            
+
             // Insets to leave some space below the slider's labels, if any
             Insets labelInsets = new Insets(0, 0, 10, 0);
-            
+
             // Minimum label
             if (minLabelText != null && minLabelText.length() > 0) {
                 JLabel minLabel = new JLabel(minLabelText);
@@ -780,10 +780,10 @@ public class Query extends JPanel {
                 c.gridx = 0;
                 c.gridy = 1;
                 c.insets = labelInsets;
-                
+
                 panel.add(minLabel, c);
             }
-            
+
             // Maximum label
             if (maxLabelText != null && maxLabelText.length() > 0) {
                 JLabel maxLabel = new JLabel(maxLabelText);
@@ -793,13 +793,13 @@ public class Query extends JPanel {
                 c.gridx = 1;
                 c.gridy = 1;
                 c.insets = labelInsets;
-                
+
                 panel.add(maxLabel, c);
             }
-            
+
             _addPair(name, lbl, panel, slider);
         }
-        
+
         slider.addChangeListener(new SliderListener(this, name));
         return slider;
     }
@@ -873,7 +873,7 @@ public class Query extends JPanel {
         JLabel lbl = new JLabel(label + ": ");
         lbl.setBackground(_background);
 
-        JTextArea textArea = new JTextArea(theValue, height, width); 
+        JTextArea textArea = new JTextArea(theValue, height, width);
         textArea.setEditable(true);
         textArea.setBackground(background);
         textArea.setForeground(foreground);

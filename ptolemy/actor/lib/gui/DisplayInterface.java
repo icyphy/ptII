@@ -49,18 +49,18 @@ public interface DisplayInterface {
     public void cleanUp();
 
     /** Append the string value of the token to the text area
-     *  on the screen.  Each value is terminated with a newline 
+     *  on the screen.  Each value is terminated with a newline
      *  character.
      *  @param tokenValue The string to be displayed
      */
     public void display(String tokenValue);
 
-    /** Return the object of the containing text area. 
-     *  @return the text area.   
+    /** Return the object of the containing text area.
+     *  @return the text area.
      */
     public Object getTextArea();
 
-    /** Set the number of rows for the text area. 
+    /** Set the number of rows for the text area.
      * @param display Object of the display actor.
      * @exception IllegalActionException If the entity cannot be contained
      * by the proposed container.
@@ -95,7 +95,7 @@ public interface DisplayInterface {
     public void remove();
 
     /** Set the desired number of columns of the textArea, if there is one.
-     *  
+     *
      *  @param numberOfColumns The new value of the attribute.
      *  @exception IllegalActionException If the specified attribute
      *   is <i>rowsDisplayed</i> and its value is not positive.
@@ -103,7 +103,7 @@ public interface DisplayInterface {
     public void setColumns(int numberOfColumns) throws IllegalActionException;
 
     /** Set the desired number of rows of the textArea, if there is one.
-     *  
+     *
      *  @param numberOfRows The new value of the attribute.
      *  @exception IllegalActionException If the specified attribute
      *   is <i>rowsDisplayed</i> and its value is not positive.
@@ -111,7 +111,7 @@ public interface DisplayInterface {
     public void setRows(int numberOfRows) throws IllegalActionException;
 
     /** Set the title of the window.
-     *   
+     *
      *  <p>If the <i>title</i> parameter is set to the empty string,
      *  and the Display window has been rendered, then the title of
      *  the Display window will be updated to the value of the name

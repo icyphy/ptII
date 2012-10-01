@@ -134,7 +134,7 @@ public class LibraryAttribute extends ConfigurableAttribute {
 
         MoMLParser parser = ParserAttribute.getParser(this);
         parser.reset();
-        
+
         String value = value();
 
         NamedObj library = null;

@@ -41,7 +41,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  * BoundingBox class is simple sink that accepts bounding coordinates from
  * the server and passes them to the video class.
  * @author Anar Huseynov
- * @version $Id$ 
+ * @version $Id$
  * @since Ptolemy II 8.1
  * @Pt.ProposedRating Red (ahuseyno)
  * @Pt.AcceptedRating Red (ahuseyno)
@@ -65,7 +65,7 @@ public class BoundingBox extends TypedAtomicActor {
     /**
      * Read matrix token from the port containing four coordinates
      * and pass them to the video actor.
-     * 
+     *
      * Note: the actor is hardcoded to find video actor within it's container.
      */
     @Override

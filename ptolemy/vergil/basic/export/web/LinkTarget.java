@@ -66,7 +66,7 @@ public class LinkTarget extends StringParameter {
     public LinkTarget(NamedObj container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        
+
         addChoice("_lightbox");
         addChoice("_blank");
         addChoice("_self");

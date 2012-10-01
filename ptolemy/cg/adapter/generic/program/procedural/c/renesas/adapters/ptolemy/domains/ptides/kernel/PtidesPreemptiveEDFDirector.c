@@ -26,21 +26,21 @@
 /**/
 
 /*** CommonTypeDefinitions ***/
-typedef unsigned long	uint32;
-typedef unsigned int	uint16;
-typedef unsigned char	uint8;
-typedef signed long		int32;
-typedef signed int		int16;
-typedef signed char		int8;
-//typedef boolean			uint8;
+typedef unsigned long        uint32;
+typedef unsigned int        uint16;
+typedef unsigned char        uint8;
+typedef signed long                int32;
+typedef signed int                int16;
+typedef signed char                int8;
+//typedef boolean                        uint8;
 
 typedef struct {
     uint32 secs;
     uint32 nsecs;
 } Time;
 typedef struct {
-	int32 secs;
-	int32 nsecs;
+        int32 secs;
+        int32 nsecs;
 } SignedTime;
 typedef struct {
     Time timestamp;
@@ -146,12 +146,12 @@ int16 subTime(const Time time1, const Time time2, Time* timeSub) {
 
 Event* newEvent(void) {
     Event* result;
-	set_imask(15);
+        set_imask(15);
 
     result = FREE_EVENT_LIST;
     FREE_EVENT_LIST = FREE_EVENT_LIST->nextEvent;
 
-	set_imask(0);
+        set_imask(0);
     return result;
 }
 
@@ -192,7 +192,7 @@ int16 compareEvent(const Event* event1, const Event* event2) {
 
 void addEvent(Event* newEvent) {
     Event* compareDeadline;
-	set_imask(15);
+        set_imask(15);
 
     compareDeadline = DEADLINE_QUEUE_HEAD;
     if (compareDeadline == NULL) {
@@ -207,12 +207,12 @@ void addEvent(Event* newEvent) {
             newEvent->prevEvent = NULL;
             DEADLINE_QUEUE_HEAD = newEvent;
         } else {
-			compareDeadline = DEADLINE_QUEUE_TAIL;
+                        compareDeadline = DEADLINE_QUEUE_TAIL;
             while (compareEvent(newEvent, compareDeadline) < 0) {
-				compareDeadline = compareDeadline->prevEvent;
+                                compareDeadline = compareDeadline->prevEvent;
                 if (compareDeadline == NULL) {
                     DBG(("compareDeadline == NULL!\r\n"));
-				}
+                                }
             }
             newEvent->prevEvent = compareDeadline;
             newEvent->nextEvent = compareDeadline->nextEvent;
@@ -225,27 +225,27 @@ void addEvent(Event* newEvent) {
         }
     }
 
-	set_imask(0);
+        set_imask(0);
 }
 
 void removeEvent(Event* event) {
-	if(event->prevEvent == NULL && event->nextEvent == NULL) {
-		DEADLINE_QUEUE_HEAD = NULL;
-		DEADLINE_QUEUE_TAIL = NULL;
-	} else {
-	    if (event->prevEvent != NULL) {
-	        event->prevEvent->nextEvent = event->nextEvent;
-	    } else {
-	        DEADLINE_QUEUE_HEAD = event->nextEvent;
-			DEADLINE_QUEUE_HEAD->prevEvent = NULL;
-	    }
-	    if (event->nextEvent != NULL) {
-	        event->nextEvent->prevEvent = event->prevEvent;
-	    } else {
-	        DEADLINE_QUEUE_TAIL = event->prevEvent;
-			DEADLINE_QUEUE_TAIL->nextEvent = NULL;
-	    }
-	}
+        if(event->prevEvent == NULL && event->nextEvent == NULL) {
+                DEADLINE_QUEUE_HEAD = NULL;
+                DEADLINE_QUEUE_TAIL = NULL;
+        } else {
+            if (event->prevEvent != NULL) {
+                event->prevEvent->nextEvent = event->nextEvent;
+            } else {
+                DEADLINE_QUEUE_HEAD = event->nextEvent;
+                        DEADLINE_QUEUE_HEAD->prevEvent = NULL;
+            }
+            if (event->nextEvent != NULL) {
+                event->nextEvent->prevEvent = event->prevEvent;
+            } else {
+                DEADLINE_QUEUE_TAIL = event->prevEvent;
+                        DEADLINE_QUEUE_TAIL->nextEvent = NULL;
+            }
+        }
 }
 
 // Remove this event from the event queue, as well as all other
@@ -257,12 +257,12 @@ void removeAndPropagateSameTagEvents(Event* thisEvent) {
     removeEvent(thisEvent);
     // Now find the next event see we should process it at the same time.
     while(nextEvent && (compareTime(nextEvent->tag.timestamp, thisEvent->tag.timestamp) == EQUAL)
-        		&& (nextEvent->tag.microstep == thisEvent->tag.microstep) && nextEvent->fireMethod == thisEvent->fireMethod) {
-    	*(nextEvent->sinkEvent) = (Event*)nextEvent;
-		removeEvent(nextEvent);
+                        && (nextEvent->tag.microstep == thisEvent->tag.microstep) && nextEvent->fireMethod == thisEvent->fireMethod) {
+            *(nextEvent->sinkEvent) = (Event*)nextEvent;
+                removeEvent(nextEvent);
         lastEvent = nextEvent;
         nextEvent = nextEvent->nextEvent;
-	}
+        }
     // Make this linked list semi-circular by pointing
     // the prevEvent of thisEvent to the end of the list.
     // This is used later in freeEvent().
@@ -317,26 +317,26 @@ uint16 higherPriority(const Event* const event) {
 
 void safeToProcess(const Event* const thisEvent, Time* safeTimestamp) {
     Time tempTime;
-	if (thisEvent->offsetTime.secs < 0 || (thisEvent->offsetTime.secs == 0
-			&& thisEvent->offsetTime.nsecs < 0)) {
-		tempTime.secs = (uint32) (-thisEvent->offsetTime.secs);
-		tempTime.nsecs = (uint32) (-thisEvent->offsetTime.nsecs);
-		addTime(thisEvent->tag.timestamp, tempTime, safeTimestamp);
-	} else {
-		int16 out;
-		tempTime.secs = (uint32) (thisEvent->offsetTime.secs);
-		tempTime.nsecs = (uint32) (thisEvent->offsetTime.nsecs);
-		out = subTime(thisEvent->tag.timestamp, tempTime, safeTimestamp);
-		if (out == -1) {
-			safeTimestamp->secs = 0;
-			safeTimestamp->nsecs = 0;
-		}
-	}
+        if (thisEvent->offsetTime.secs < 0 || (thisEvent->offsetTime.secs == 0
+                        && thisEvent->offsetTime.nsecs < 0)) {
+                tempTime.secs = (uint32) (-thisEvent->offsetTime.secs);
+                tempTime.nsecs = (uint32) (-thisEvent->offsetTime.nsecs);
+                addTime(thisEvent->tag.timestamp, tempTime, safeTimestamp);
+        } else {
+                int16 out;
+                tempTime.secs = (uint32) (thisEvent->offsetTime.secs);
+                tempTime.nsecs = (uint32) (thisEvent->offsetTime.nsecs);
+                out = subTime(thisEvent->tag.timestamp, tempTime, safeTimestamp);
+                if (out == -1) {
+                        safeTimestamp->secs = 0;
+                        safeTimestamp->nsecs = 0;
+                }
+        }
 }
 
 void getRealTime(Time * const physicalTime){
-	physicalTime->secs = Seconds;
-	physicalTime->nsecs = nanoSeconds + MTU23.TCNT*(4*divideByValue/2);
+        physicalTime->secs = Seconds;
+        physicalTime->nsecs = nanoSeconds + MTU23.TCNT*(4*divideByValue/2);
 }
 
 
@@ -344,19 +344,19 @@ void getRealTime(Time * const physicalTime){
 
 
 void setTimedInterrupt(const Time* safeToProcessTime) {
-	zzzS[0] = safeToProcessTime->secs - Seconds;
+        zzzS[0] = safeToProcessTime->secs - Seconds;
     if (safeToProcessTime->nsecs < nanoSeconds) {
         zzzS[0]--;
         zzz[0] = safeToProcessTime->nsecs + 1000000000 - nanoSeconds;
     } else {
-		zzz[0] = safeToProcessTime->nsecs - nanoSeconds;
+                zzz[0] = safeToProcessTime->nsecs - nanoSeconds;
     }
 
-	if((zzzS[0] == 0) && (zzz[0] < ((4*divideByValue/2)*(65536 + intDel)))){
-		MTU20.TGRE = zzz[0]/(4*divideByValue/2);
-		MTU20.TSR2.BIT.TGFE = 0;
-		MTU20.TIER2.BIT.TGIEE = 1;
-	}
+        if((zzzS[0] == 0) && (zzz[0] < ((4*divideByValue/2)*(65536 + intDel)))){
+                MTU20.TGRE = zzz[0]/(4*divideByValue/2);
+                MTU20.TSR2.BIT.TGFE = 0;
+                MTU20.TIER2.BIT.TGIEE = 1;
+        }
 }
 
 void processEvents() {
@@ -405,36 +405,36 @@ void processEvents() {
 
 /*** actuationBlock($actuationFunction, $Letter) ***/
 void $actuationFunction(void) {
-	while(MTU20.TSR.BIT.TGF$Letter != 1)
-		;
-	MTU20.TSR.BIT.TGF$Letter = 0;
-	set_imask(15);
-	actRd$Letter = actRd$Letter+1;
-	if (actRd$Letter == 10)
-		actRd$Letter = 0;
-	if(actSt$Letter == 0) {
-		actSt$Letter = 1;
-	}
-	else {
-		actSt$Letter = 0;
-	}
+        while(MTU20.TSR.BIT.TGF$Letter != 1)
+                ;
+        MTU20.TSR.BIT.TGF$Letter = 0;
+        set_imask(15);
+        actRd$Letter = actRd$Letter+1;
+        if (actRd$Letter == 10)
+                actRd$Letter = 0;
+        if(actSt$Letter == 0) {
+                actSt$Letter = 1;
+        }
+        else {
+                actSt$Letter = 0;
+        }
 
-	if((actWr$Letter != actRd$Letter) && (actNs$Letter[actRd$Letter] <
-			((4*divideByValue/2)*(65536 + intDel)))) {
-		MTU20.TGR$Letter = actNs$Letter[actRd$Letter]/(4*divideByValue/2);
-		MTU20.TSR.BIT.TGF$Letter = 0;
-		MTU20.TIER.BIT.TGIE$Letter = 1;
+        if((actWr$Letter != actRd$Letter) && (actNs$Letter[actRd$Letter] <
+                        ((4*divideByValue/2)*(65536 + intDel)))) {
+                MTU20.TGR$Letter = actNs$Letter[actRd$Letter]/(4*divideByValue/2);
+                MTU20.TSR.BIT.TGF$Letter = 0;
+                MTU20.TIER.BIT.TGIE$Letter = 1;
 
-		if(actSt$Letter == 0) {
-			MTU20.TIOR.BIT.IO$Letter = 2;
-		} else {
-			MTU20.TIOR.BIT.IO$Letter = 5;
-		}
-	} else {
-		MTU20.TIER.BIT.TGIE$Letter = 0;
-		MTU20.TIOR.BIT.IO$Letter = 0;
-	}
-	set_imask(0);
+                if(actSt$Letter == 0) {
+                        MTU20.TIOR.BIT.IO$Letter = 2;
+                } else {
+                        MTU20.TIOR.BIT.IO$Letter = 5;
+                }
+        } else {
+                MTU20.TIER.BIT.TGIE$Letter = 0;
+                MTU20.TIOR.BIT.IO$Letter = 0;
+        }
+        set_imask(0);
 }
 /**/
 
@@ -443,12 +443,12 @@ void CG_3_T_Rex_noNetwork_v1_ContactController_ContactControllerMicro_ActuatorSe
 //void xxxxx(void) {
     /* Fire CG_3_T_Rex_noNetwork_v1_ContactController_ContactControllerMicro_ActuatorSetup2 */
     set_imask(15);
-	actSA[actWrA] = currentModelTime.secs - Seconds;
+        actSA[actWrA] = currentModelTime.secs - Seconds;
     if (currentModelTime.nsecs < nanoSeconds) {
-		actSA[actWrA]--;
-		actNsA[actWrA] = currentModelTime.nsecs + 1000000000 - nanoSeconds;
+                actSA[actWrA]--;
+                actNsA[actWrA] = currentModelTime.nsecs + 1000000000 - nanoSeconds;
     } else {
-		actNsA[actWrA] = currentModelTime.nsecs - nanoSeconds;
+                actNsA[actWrA] = currentModelTime.nsecs - nanoSeconds;
     }
     set_imask(0);
 
@@ -461,20 +461,20 @@ void CG_3_T_Rex_noNetwork_v1_ContactController_ContactControllerMicro_ActuatorSe
         else
         MTU20.TIOR.BIT.IOA = 5;
     }
-	actWrA = actWrA+1;
-	if(actWrA == 10)
-		actWrA = 0;
+        actWrA = actWrA+1;
+        if(actWrA == 10)
+                actWrA = 0;
 
-	actSA[actWrA] = currentModelTime.secs - Seconds;
+        actSA[actWrA] = currentModelTime.secs - Seconds;
     if (currentModelTime.nsecs + actWidth < nanoSeconds) {
-		actSA[actWrA]--;
-		actNsA[actWrA] = currentModelTime.nsecs + actWidth + 1000000000 - nanoSeconds;
+                actSA[actWrA]--;
+                actNsA[actWrA] = currentModelTime.nsecs + actWidth + 1000000000 - nanoSeconds;
     } else {
-		actNsA[actWrA] = currentModelTime.nsecs + actWidth - nanoSeconds;
+                actNsA[actWrA] = currentModelTime.nsecs + actWidth - nanoSeconds;
     }
-	actWrA = actWrA+1;
-	if(actWrA == 10)
-		actWrA = 0;
+        actWrA = actWrA+1;
+        if(actWrA == 10)
+                actWrA = 0;
 
     /* generate code for clearing Event Head buffer. */
     Event_Head_CG_3_T_Rex_noNetwork_v1_ContactController_ContactControllerMicro_ActuatorSetup2_input[0] = NULL;
@@ -494,60 +494,60 @@ $emptyFunctions
 
 
 void SysTickHandler(void) {
-	unsigned char dummy;
+        unsigned char dummy;
 
-	while(MTU20.TSR.BIT.TCFV != 1)
-		;
+        while(MTU20.TSR.BIT.TCFV != 1)
+                ;
 
-	MTU20.TSR.BIT.TCFV = 0;
+        MTU20.TSR.BIT.TCFV = 0;
 
-	nanoSeconds += (4*divideByValue/2) << 16;
+        nanoSeconds += (4*divideByValue/2) << 16;
 
-	if(nanoSeconds >= 1000000000) {
-		Seconds++;
-		nanoSeconds -=  1000000000;
-	}
+        if(nanoSeconds >= 1000000000) {
+                Seconds++;
+                nanoSeconds -=  1000000000;
+        }
 
-	for(dummy = 0; dummy<10; dummy++) {
-		if(zzz[dummy] < ((4*divideByValue/2) << 16)) {
-			zzzS[dummy] = zzzS[dummy]-1;
-			zzz[dummy] = 1000000000+zzz[dummy]-((4*divideByValue/2) << 16);
-		}
-		else
-			zzz[dummy] = zzz[dummy] - ((4*divideByValue/2) << 16);
+        for(dummy = 0; dummy<10; dummy++) {
+                if(zzz[dummy] < ((4*divideByValue/2) << 16)) {
+                        zzzS[dummy] = zzzS[dummy]-1;
+                        zzz[dummy] = 1000000000+zzz[dummy]-((4*divideByValue/2) << 16);
+                }
+                else
+                        zzz[dummy] = zzz[dummy] - ((4*divideByValue/2) << 16);
 
-		$systick1
-	}
+                $systick1
+        }
 
-	if((MTU20.TIER2.BIT.TGIEE == 0) && (zzzS[0] == 0) && (zzz[0] < ((4*divideByValue/2)*(65536 + intDel)))){
-		MTU20.TGRE = zzz[0]/(4*divideByValue/2);
-		MTU20.TSR2.BIT.TGFE = 0;
-		MTU20.TIER2.BIT.TGIEE = 1;
-	}
+        if((MTU20.TIER2.BIT.TGIEE == 0) && (zzzS[0] == 0) && (zzz[0] < ((4*divideByValue/2)*(65536 + intDel)))){
+                MTU20.TGRE = zzz[0]/(4*divideByValue/2);
+                MTU20.TSR2.BIT.TGFE = 0;
+                MTU20.TIER2.BIT.TGIEE = 1;
+        }
 
-	$systick2
+        $systick2
 }
 
 
 
 void SafeToProcessInterruptHandler(void) {
 
-	while(MTU20.TSR2.BIT.TGFE != 1)
-		;
+        while(MTU20.TSR2.BIT.TGFE != 1)
+                ;
 
-	MTU20.TSR2.BIT.TGFE = 0;
+        MTU20.TSR2.BIT.TGFE = 0;
 
-	set_imask(15);
+        set_imask(15);
 
-	MTU20.TIER2.BIT.TGIEE = 0;
+        MTU20.TIER2.BIT.TGIEE = 0;
 
-	lastTimerInterruptTime.secs = (NS_UINT32)-1;
-	lastTimerInterruptTime.nsecs = (NS_UINT32)-1;
+        lastTimerInterruptTime.secs = (NS_UINT32)-1;
+        lastTimerInterruptTime.nsecs = (NS_UINT32)-1;
 
-	set_imask(0);
+        set_imask(0);
 
 
-	processEvents();
+        processEvents();
 }
 
 /**/
@@ -575,13 +575,13 @@ $externDeclarations
 void *RESET_Vectors[] = {
 //;<<VECTOR DATA START (POWER ON RESET)>>
 // 0 Power On Reset PC
-    (void*)	PowerON_Reset_PC,
+    (void*)        PowerON_Reset_PC,
 //;<<VECTOR DATA END (POWER ON RESET)>>
 // 1 Power On Reset SP
     __secend("S"),
 //;<<VECTOR DATA START (MANUAL RESET)>>
 // 2 Manual Reset PC
-    (void*)	Manual_Reset_PC,
+    (void*)        Manual_Reset_PC,
 //;<<VECTOR DATA END (MANUAL RESET)>>
 // 3 Manual Reset SP
     __secend("S")
@@ -594,23 +594,23 @@ void *INT_Vectors[] = {
 // 5 Reserved
     (void*) Dummy,
 // 6 Illegal slot
-	(void*) INT_Illegal_slot,
+        (void*) INT_Illegal_slot,
 // 7 Reserved
     (void*) Dummy,
 // 8 Reserved
     (void*) Dummy,
 // 9 CPU Address error
-	(void*) INT_CPU_Address,
+        (void*) INT_CPU_Address,
 // 10 DMAC Address error
-	(void*) INT_DMAC_Address,
+        (void*) INT_DMAC_Address,
 // 11 NMI
-	(void*) INT_NMI,
+        (void*) INT_NMI,
 // 12 User breakpoint trap
-	(void*) INT_User_Break,
+        (void*) INT_User_Break,
 // 13 Reserved
     (void*) Dummy,
 // 14 H-UDI
-	(void*) INT_HUDI,
+        (void*) INT_HUDI,
 // 15 Register bank over
     (void*) INT_Bank_Overflow,
 // 16 Register bank under
@@ -710,21 +710,21 @@ void *INT_Vectors[] = {
 // 63 TRAPA (User Vecter)
     (void*) INT_TRAPA63,
 // 64 Interrupt IRQ0
-	(void*) INT_IRQ0,
+        (void*) INT_IRQ0,
 // 65 Interrupt IRQ1
-	(void*) INT_IRQ1,
+        (void*) INT_IRQ1,
 // 66 Interrupt IRQ2
-	(void*) INT_IRQ2,
+        (void*) INT_IRQ2,
 // 67 Interrupt IRQ3
-	(void*) INT_IRQ3,
+        (void*) INT_IRQ3,
 // 68 Interrupt IRQ4
-	(void*) INT_IRQ4,
+        (void*) INT_IRQ4,
 // 69 Interrupt IRQ5
-	(void*) INT_IRQ5,
+        (void*) INT_IRQ5,
 // 70 Interrupt IRQ6
-	(void*) INT_IRQ6,
+        (void*) INT_IRQ6,
 // 71 Interrupt IRQ7
-	(void*) INT_IRQ7,
+        (void*) INT_IRQ7,
 // 72 Reserved
     (void*) Dummy,
 // 73 Reserved
@@ -742,21 +742,21 @@ void *INT_Vectors[] = {
 // 79 Reserved
     (void*) Dummy,
 // 80 Interrupt PINT0
-	(void*) INT_PINT0,
+        (void*) INT_PINT0,
 // 81 Interrupt PINT1
-	(void*) INT_PINT1,
+        (void*) INT_PINT1,
 // 82 Interrupt PINT2
-	(void*) INT_PINT2,
+        (void*) INT_PINT2,
 // 83 Interrupt PINT3
-	(void*) INT_PINT3,
+        (void*) INT_PINT3,
 // 84 Interrupt PINT4
-	(void*) INT_PINT4,
+        (void*) INT_PINT4,
 // 85 Interrupt PINT5
-	(void*) INT_PINT5,
+        (void*) INT_PINT5,
 // 86 Interrupt PINT6
-	(void*) INT_PINT6,
+        (void*) INT_PINT6,
 // 87 Interrupt PINT7
-	(void*) INT_PINT7,
+        (void*) INT_PINT7,
 // 88 Reserved
     (void*) Dummy,
 // 89 Reserved
@@ -766,7 +766,7 @@ void *INT_Vectors[] = {
 // 91 ROM FIFE
     (void*) INT_ROM_FIFE,
 // 92 A/D ADI0
-	(void*) INT_AD_ADI0,
+        (void*) INT_AD_ADI0,
 // 93 Reserved
     (void*) Dummy,
 // 94 Reserved
@@ -774,7 +774,7 @@ void *INT_Vectors[] = {
 // 95 Reserved
     (void*) Dummy,
 // 96 A/D ADI1
-	(void*) INT_AD_ADI1,
+        (void*) INT_AD_ADI1,
 // 97 Reserved
     (void*) Dummy,
 // 98 Reserved
@@ -798,71 +798,71 @@ void *INT_Vectors[] = {
 // 107 RCANET0 SLE_0
     (void*) INT_RCANET0_SLE_0,
 // 108 DMAC0 DEI0
-	(void*) INT_DMAC0_DEI0,
+        (void*) INT_DMAC0_DEI0,
 // 109 DMAC0 HEI0
-	(void*) INT_DMAC0_HEI0,
+        (void*) INT_DMAC0_HEI0,
 // 110 Reserved
     (void*) Dummy,
 // 111 Reserved
     (void*) Dummy,
 // 112 DMAC1 DEI1
-	(void*) INT_DMAC1_DEI1,
+        (void*) INT_DMAC1_DEI1,
 // 113 DMAC1 HEI1
-	(void*) INT_DMAC1_HEI1,
+        (void*) INT_DMAC1_HEI1,
 // 114 Reserved
     (void*) Dummy,
 // 115 Reserved
     (void*) Dummy,
 // 116 DMAC2 DEI2
-	(void*) INT_DMAC2_DEI2,
+        (void*) INT_DMAC2_DEI2,
 // 117 DMAC2 HEI2
-	(void*) INT_DMAC2_HEI2,
+        (void*) INT_DMAC2_HEI2,
 // 118 Reserved
     (void*) Dummy,
 // 119 Reserved
     (void*) Dummy,
 // 120 DMAC3 DEI3
-	(void*) INT_DMAC3_DEI3,
+        (void*) INT_DMAC3_DEI3,
 // 121 DMAC3 HEI3
-	(void*) INT_DMAC3_HEI3,
+        (void*) INT_DMAC3_HEI3,
 // 122 Reserved
     (void*) Dummy,
 // 123 Reserved
     (void*) Dummy,
 // 124 DMAC4 DEI4
-	(void*) INT_DMAC4_DEI4,
+        (void*) INT_DMAC4_DEI4,
 // 125 DMAC4 HEI4
-	(void*) INT_DMAC4_HEI4,
+        (void*) INT_DMAC4_HEI4,
 // 126 Reserved
     (void*) Dummy,
 // 127 Reserved
     (void*) Dummy,
 // 128 DMAC5 DEI5
-	(void*) INT_DMAC5_DEI5,
+        (void*) INT_DMAC5_DEI5,
 // 129 DMAC5 HEI5
-	(void*) INT_DMAC5_HEI5,
+        (void*) INT_DMAC5_HEI5,
 // 130 Reserved
     (void*) Dummy,
 // 131 Reserved
     (void*) Dummy,
 // 132 DMAC6 DEI6
-	(void*) INT_DMAC6_DEI6,
+        (void*) INT_DMAC6_DEI6,
 // 133 DMAC6 HEI6
-	(void*) INT_DMAC6_HEI6,
+        (void*) INT_DMAC6_HEI6,
 // 134 Reserved
     (void*) Dummy,
 // 135 Reserved
     (void*) Dummy,
 // 136 DMAC7 DEI7
-	(void*) INT_DMAC7_DEI7,
+        (void*) INT_DMAC7_DEI7,
 // 137 DMAC7 HEI7
-	(void*) INT_DMAC7_HEI7,
+        (void*) INT_DMAC7_HEI7,
 // 138 Reserved
     (void*) Dummy,
 // 139 Reserved
     (void*) Dummy,
 // 140 CMT CMI0
-	(void*) INT_CMT_CMI0,
+        (void*) INT_CMT_CMI0,
 // 141 Reserved
     (void*) Dummy,
 // 142 Reserved
@@ -870,7 +870,7 @@ void *INT_Vectors[] = {
 // 143 Reserved
     (void*) Dummy,
 // 144 CMT CMI1
-	(void*) INT_CMT_CMI1,
+        (void*) INT_CMT_CMI1,
 // 145 Reserved
     (void*) Dummy,
 // 146 Reserved
@@ -878,7 +878,7 @@ void *INT_Vectors[] = {
 // 147 Reserved
     (void*) Dummy,
 // 148 BSC CMTI
-	(void*) INT_BSC_CMTI,
+        (void*) INT_BSC_CMTI,
 // 149 Reserved
     (void*) Dummy,
 // 150 USB EP4FULL
@@ -886,7 +886,7 @@ void *INT_Vectors[] = {
 // 151 USB EP5EMPTY
     (void*) INT_USB_EP5EMPTY,
 // 152 WDT ITI
-	(void*) INT_WDT_ITI,
+        (void*) INT_WDT_ITI,
 // 153 E-DMAC EINT0
     (void*) INT_EDMAC_EINT0,
 // 154 USB EP1FULL
@@ -894,74 +894,74 @@ void *INT_Vectors[] = {
 // 155 USB EP2EMPTY
     (void*) INT_USB_EP2EMPTY,
 // 156 MTU2 MTU0 TGI0A
-	// (void*) INT_MTU2_MTU0_TGI0A,
+        // (void*) INT_MTU2_MTU0_TGI0A,
     (void*) $InterruptHandler156,
 // 157 MTU2 MTU0 TGI0B
-	// (void*) INT_MTU2_MTU0_TGI0B,
+        // (void*) INT_MTU2_MTU0_TGI0B,
     (void*) $InterruptHandler157,
 // 158 MTU2 MTU0 TGI0C
-	// (void*) INT_MTU2_MTU0_TGI0C,
+        // (void*) INT_MTU2_MTU0_TGI0C,
     (void*) $InterruptHandler158,
 // 159 MTU2 MTU0 TGI0D
-	// (void*) INT_MTU2_MTU0_TGI0D,
+        // (void*) INT_MTU2_MTU0_TGI0D,
     (void*) $InterruptHandler159,
 // 160 MTU2 MTU0 TGI0V
-	// (void*) INT_MTU2_MTU0_TGI0V,
+        // (void*) INT_MTU2_MTU0_TGI0V,
     (void*) SysTickHandler,
 // 161 MTU2 MTU0 TGI0E
-	// (void*) INT_MTU2_MTU0_TGI0E,
+        // (void*) INT_MTU2_MTU0_TGI0E,
     (void*) SafeToProcessInterruptHandler,
 // 162 MTU2 MTU0 TGI0F
-	// (void*) INT_MTU2_MTU0_TGI0F,
+        // (void*) INT_MTU2_MTU0_TGI0F,
     (void*) $InterruptHandler162,
 // 163 Reserved
     (void*) Dummy,
 // 164 MTU2 MTU1 TGI1A
     (void*) INT_MTU2_MTU1_TGI1A,
 // 165 MTU2 MTU1 TGI1B
-	(void*) INT_MTU2_MTU1_TGI1B,
+        (void*) INT_MTU2_MTU1_TGI1B,
 // 166 Reserved
     (void*) Dummy,
 // 167 Reserved
     (void*) Dummy,
 // 168 MTU2 MTU1 TGI1V
-	(void*) INT_MTU2_MTU1_TGI1V,
+        (void*) INT_MTU2_MTU1_TGI1V,
 // 169 MTU2 MTU1 TGI1U
-	(void*) INT_MTU2_MTU1_TGI1U,
+        (void*) INT_MTU2_MTU1_TGI1U,
 // 170 Reserved
     (void*) Dummy,
 // 171 Reserved
     (void*) Dummy,
 // 172 MTU2 MTU2 TGI2A
-	(void*) INT_MTU2_MTU2_TGI2A,
+        (void*) INT_MTU2_MTU2_TGI2A,
 // 173 MTU2 MTU2 TGI2B
-	(void*) INT_MTU2_MTU2_TGI2B,
+        (void*) INT_MTU2_MTU2_TGI2B,
 // 174 Reserved
     (void*) Dummy,
 // 175 Reserved
     (void*) Dummy,
 // 176 MTU2 MTU2 TGI2V
-	(void*) INT_MTU2_MTU2_TGI2V,
+        (void*) INT_MTU2_MTU2_TGI2V,
 // 177 MTU2 MTU2 TGI2U
-	(void*) INT_MTU2_MTU2_TGI2U,
+        (void*) INT_MTU2_MTU2_TGI2U,
 // 178 Reserved
     (void*) Dummy,
 // 179 Reserved
     (void*) Dummy,
 // 180 MTU2 MTU3 TGI3A
-	// (void*) INT_MTU2_MTU3_TGI3A,
+        // (void*) INT_MTU2_MTU3_TGI3A,
     (void*) $InterruptHandler180,
 // 181 MTU2 MTU3 TGI3B
-	// (void*) INT_MTU2_MTU3_TGI3B,
+        // (void*) INT_MTU2_MTU3_TGI3B,
     (void*) $InterruptHandler181,
 // 182 MTU2 MTU3 TGI3C
-	// (void*) INT_MTU2_MTU3_TGI3C,
+        // (void*) INT_MTU2_MTU3_TGI3C,
     (void*) $InterruptHandler182,
 // 183 MTU2 MTU3 TGI3D
-	// (void*) INT_MTU2_MTU3_TGI3D,
+        // (void*) INT_MTU2_MTU3_TGI3D,
     (void*) $InterruptHandler183,
 // 184 MTU2 MTU3 TGI3V
-	(void*) INT_MTU2_MTU3_TGI3V,
+        (void*) INT_MTU2_MTU3_TGI3V,
 // 185 Reserved
     (void*) Dummy,
 // 186 Reserved
@@ -969,15 +969,15 @@ void *INT_Vectors[] = {
 // 187 Reserved
     (void*) Dummy,
 // 188 MTU2 MTU4 TGI4A
-	(void*) INT_MTU2_MTU4_TGI4A,
+        (void*) INT_MTU2_MTU4_TGI4A,
 // 189 MTU2 MTU4 TGI4B
-	(void*) INT_MTU2_MTU4_TGI4B,
+        (void*) INT_MTU2_MTU4_TGI4B,
 // 190 MTU2 MTU4 TGI4C
-	(void*) INT_MTU2_MTU4_TGI4C,
+        (void*) INT_MTU2_MTU4_TGI4C,
 // 191 MTU2 MTU4 TGI4D
-	(void*) INT_MTU2_MTU4_TGI4D,
+        (void*) INT_MTU2_MTU4_TGI4D,
 // 192 MTU2 MTU4 TGI4V
-	(void*) INT_MTU2_MTU4_TGI4V,
+        (void*) INT_MTU2_MTU4_TGI4V,
 // 193 Reserved
     (void*) Dummy,
 // 194 Reserved
@@ -985,31 +985,31 @@ void *INT_Vectors[] = {
 // 195 Reserved
     (void*) Dummy,
 // 196 MTU2 MTU5 TGI5U
-	(void*) INT_MTU2_MTU5_TGI5U,
+        (void*) INT_MTU2_MTU5_TGI5U,
 // 197 MTU2 MTU5 TGI5V
-	(void*) INT_MTU2_MTU5_TGI5V,
+        (void*) INT_MTU2_MTU5_TGI5V,
 // 198 MTU2 MTU5 TGI5W
-	(void*) INT_MTU2_MTU5_TGI5W,
+        (void*) INT_MTU2_MTU5_TGI5W,
 // 199 Reserved
     (void*) Dummy,
 // 200 POE2 OEI1
-	(void*) INT_POE2_OEI1,
+        (void*) INT_POE2_OEI1,
 // 201 POE2 OEI2
-	(void*) INT_POE2_OEI2,
+        (void*) INT_POE2_OEI2,
 // 202 Reserved
     (void*) Dummy,
 // 203 Reserved
     (void*) Dummy,
 // 204 MTU2S MTU3S TGI3A
-	(void*) INT_MTU2S_MTU3S_TGI3A,
+        (void*) INT_MTU2S_MTU3S_TGI3A,
 // 205 MTU2S MTU3S TGI3B
-	(void*) INT_MTU2S_MTU3S_TGI3B,
+        (void*) INT_MTU2S_MTU3S_TGI3B,
 // 206 MTU2S MTU3S TGI3C
-	(void*) INT_MTU2S_MTU3S_TGI3C,
+        (void*) INT_MTU2S_MTU3S_TGI3C,
 // 207 MTU2S MTU3S TGI3D
-	(void*) INT_MTU2S_MTU3S_TGI3D,
+        (void*) INT_MTU2S_MTU3S_TGI3D,
 // 208 MTU2S MTU3S TGI3V
-	(void*) INT_MTU2S_MTU3S_TGI3V,
+        (void*) INT_MTU2S_MTU3S_TGI3V,
 // 209 Reserved
     (void*) Dummy,
 // 210 Reserved
@@ -1017,15 +1017,15 @@ void *INT_Vectors[] = {
 // 211 Reserved
     (void*) Dummy,
 // 212 MTU2S MTU4S TGI4A
-	(void*) INT_MTU2S_MTU4S_TGI4A,
+        (void*) INT_MTU2S_MTU4S_TGI4A,
 // 213 MTU2S MTU4S TGI4B
-	(void*) INT_MTU2S_MTU4S_TGI4B,
+        (void*) INT_MTU2S_MTU4S_TGI4B,
 // 214 MTU2S MTU4S TGI4C
-	(void*) INT_MTU2S_MTU4S_TGI4C,
+        (void*) INT_MTU2S_MTU4S_TGI4C,
 // 215 MTU2S MTU4S TGI4D
-	(void*) INT_MTU2S_MTU4S_TGI4D,
+        (void*) INT_MTU2S_MTU4S_TGI4D,
 // 216 MTU2S MTU4S TGI4V
-	(void*) INT_MTU2S_MTU4S_TGI4V,
+        (void*) INT_MTU2S_MTU4S_TGI4V,
 // 217 Reserved
     (void*) Dummy,
 // 218 Reserved
@@ -1033,15 +1033,15 @@ void *INT_Vectors[] = {
 // 219 Reserved
     (void*) Dummy,
 // 220 MTU2S MTU5S TGI5U
-	(void*) INT_MTU2S_MTU5S_TGI5U,
+        (void*) INT_MTU2S_MTU5S_TGI5U,
 // 221 MTU2S MTU5S TGI5V
-	(void*) INT_MTU2S_MTU5S_TGI5V,
+        (void*) INT_MTU2S_MTU5S_TGI5V,
 // 222 MTU2S MTU5S TGI5W
-	(void*) INT_MTU2S_MTU5S_TGI5W,
+        (void*) INT_MTU2S_MTU5S_TGI5W,
 // 223 Reserved
     (void*) Dummy,
 // 224 POE2 OEI3
-	(void*) INT_POE2_OEI3,
+        (void*) INT_POE2_OEI3,
 // 225 Reserved
     (void*) Dummy,
 // 226 USB USI0
@@ -1049,15 +1049,15 @@ void *INT_Vectors[] = {
 // 227 USB USI1
     (void*) INT_USB_USI1,
 // 228 IIC3 STPI
-	(void*) INT_IIC3_STPI,
+        (void*) INT_IIC3_STPI,
 // 229 IIC3 NAKI
-	(void*) INT_IIC3_NAKI,
+        (void*) INT_IIC3_NAKI,
 // 230 IIC3 RXI
-	(void*) INT_IIC3_RXI,
+        (void*) INT_IIC3_RXI,
 // 231 IIC3 TXI
-	(void*) INT_IIC3_TXI,
+        (void*) INT_IIC3_TXI,
 // 232 IIC3 TEI
-	(void*) INT_IIC3_TEI,
+        (void*) INT_IIC3_TEI,
 // 233 RSPI SPERI
     (void*) INT_RSPI_SPERI,
 // 234 RSPI SPRXI
@@ -1073,37 +1073,37 @@ void *INT_Vectors[] = {
 // 239 SCI SCI4 TEI4
     (void*) INT_SCI_SCI4_TEI4,
 // 240 SCI SCI0 ERI0
-	(void*) INT_SCI_SCI0_ERI0,
+        (void*) INT_SCI_SCI0_ERI0,
 // 241 SCI SCI0 RXI0
-	(void*) INT_SCI_SCI0_RXI0,
+        (void*) INT_SCI_SCI0_RXI0,
 // 242 SCI SCI0 TXI0
-	(void*) INT_SCI_SCI0_TXI0,
+        (void*) INT_SCI_SCI0_TXI0,
 // 243 SCI SCI0 TEI0
-	(void*) INT_SCI_SCI0_TEI0,
+        (void*) INT_SCI_SCI0_TEI0,
 // 244 SCI SCI1 ERI1
-	(void*) INT_SCI_SCI1_ERI1,
+        (void*) INT_SCI_SCI1_ERI1,
 // 245 SCI SCI1 RXI1
-	(void*) INT_SCI_SCI1_RXI1,
+        (void*) INT_SCI_SCI1_RXI1,
 // 246 SCI SCI1 TXI1
-	(void*) INT_SCI_SCI1_TXI1,
+        (void*) INT_SCI_SCI1_TXI1,
 // 247 SCI SCI1 TEI1
-	(void*) INT_SCI_SCI1_TEI1,
+        (void*) INT_SCI_SCI1_TEI1,
 // 248 SCI SCI2 ERI2
-	(void*) INT_SCI_SCI2_ERI2,
+        (void*) INT_SCI_SCI2_ERI2,
 // 249 SCI SCI2 RXI2
-	(void*) INT_SCI_SCI2_RXI2,
+        (void*) INT_SCI_SCI2_RXI2,
 // 250 SCI SCI2 TXI2
-	(void*) INT_SCI_SCI2_TXI2,
+        (void*) INT_SCI_SCI2_TXI2,
 // 251 SCI SCI2 TEI2
-	(void*) INT_SCI_SCI2_TEI2,
+        (void*) INT_SCI_SCI2_TEI2,
 // 252 SCIF SCIF3 BRI3
-	(void*) INT_SCIF_SCIF3_BRI3,
+        (void*) INT_SCIF_SCIF3_BRI3,
 // 253 SCIF SCIF3 ERI3
-	(void*) INT_SCIF_SCIF3_ERI3,
+        (void*) INT_SCIF_SCIF3_ERI3,
 // 254 SCIF SCIF3 RXI3
-	(void*) INT_SCIF_SCIF3_RXI3,
+        (void*) INT_SCIF_SCIF3_RXI3,
 // 255 SCIF SCIF3 TXI3
-	(void*) INT_SCIF_SCIF3_TXI3,
+        (void*) INT_SCIF_SCIF3_TXI3,
 // xx Reserved
     (void*) Dummy
 };
@@ -1112,42 +1112,42 @@ void *INT_Vectors[] = {
 
 /*** initPDBlock***/
 // the platform dependent initialization code goes here.
-	eth_init();
-	usb_init();
-	initTimer();
-	epl_test();
-	initEventMemory();
+        eth_init();
+        usb_init();
+        initTimer();
+        epl_test();
+        initEventMemory();
 /**/
 
 /*** initPDCodeBlock($initInterruptHandlers) ***/
 void initTimer(void) {
-	MTU2.TSTR.BIT.CST0 = 0;
-	MTU2.TSTR.BIT.CST3 = 0;
+        MTU2.TSTR.BIT.CST0 = 0;
+        MTU2.TSTR.BIT.CST3 = 0;
 
-	MTU20.TMDR.BYTE = 0x00; /// MTU20 ... timer 0 (actuaotrs), MTU23 ... timer 3 (sensors)
- 	MTU20.TCR.BYTE = 0x14;
+        MTU20.TMDR.BYTE = 0x00; /// MTU20 ... timer 0 (actuaotrs), MTU23 ... timer 3 (sensors)
+         MTU20.TCR.BYTE = 0x14;
 
- 	MTU20.TSR.BYTE = 0xC0;
-	MTU20.TSR2.BYTE = 0xC0;
+         MTU20.TSR.BYTE = 0xC0;
+        MTU20.TSR2.BYTE = 0xC0;
 
-	MTU20.TIER2.BYTE = 0x00;
-	MTU20.TCNT = 0;
-	INTC.IPR09.BIT._MTU20G = 2;
-	INTC.IPR09.BIT._MTU20C = 3;
+        MTU20.TIER2.BYTE = 0x00;
+        MTU20.TCNT = 0;
+        INTC.IPR09.BIT._MTU20G = 2;
+        INTC.IPR09.BIT._MTU20C = 3;
 
-	MTU23.TMDR.BYTE = 0x00;
-	MTU23.TCR.BYTE = 0x16;
+        MTU23.TMDR.BYTE = 0x00;
+        MTU23.TCR.BYTE = 0x16;
 
-	MTU23.TSR.BYTE = 0xC0;
+        MTU23.TSR.BYTE = 0xC0;
 
-	MTU23.TCNT = 0;
-	INTC.IPR10.BIT._MTU23G = 2;
+        MTU23.TCNT = 0;
+        INTC.IPR10.BIT._MTU23G = 2;
 
-	MTU2.TSTR.BIT.CST0 = 1;
-	MTU2.TSTR.BIT.CST3 = 1;
+        MTU2.TSTR.BIT.CST0 = 1;
+        MTU2.TSTR.BIT.CST3 = 1;
 
-	$initInterruptHandlers
-	MTU20.TIER.BIT.TCIEV = 1; // systickhandler
+        $initInterruptHandlers
+        MTU20.TIER.BIT.TCIEV = 1; // systickhandler
 }
 
 void initEventMemory() {
@@ -1171,8 +1171,8 @@ void initEventMemory() {
 /*** mainLoopBlock ***/
 void execute(void) {
 
-	processEvents();
-  	while(1)
-		;
+        processEvents();
+          while(1)
+                ;
 }
 /**/

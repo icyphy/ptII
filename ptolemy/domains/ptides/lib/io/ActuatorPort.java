@@ -50,38 +50,38 @@ import ptolemy.kernel.util.NameDuplicationException;
  *  @Pt.AcceptedRating
  */
 public class ActuatorPort extends PtidesPort {
- 
+
     /** Create a new ActuatorPort with a given container and a name.
-     * @param container The container of the port. 
+     * @param container The container of the port.
      * @param name The name of the port.
      * @throws IllegalActionException If parameters cannot be set.
      * @throws NameDuplicationException If name already exists.
      */
     public ActuatorPort(CompositeEntity container, String name) throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        
+
         this.setOutput(true);
-        
-        actuateAtEventTimestamp = new Parameter(this, "actuateAtEventTimestamp"); 
+
+        actuateAtEventTimestamp = new Parameter(this, "actuateAtEventTimestamp");
         actuateAtEventTimestamp.setTypeEquals(BaseType.BOOLEAN);
         actuateAtEventTimestamp.setExpression("true");
         _actuateAtEventTimestamp = true;
-         
+
     }
-    
-    /** Actuate at event timestamp parameter that defaults to the boolean value TRUE. 
-     *  If this parameter is set to FALSE, an actuator can produce outputs as soon 
+
+    /** Actuate at event timestamp parameter that defaults to the boolean value TRUE.
+     *  If this parameter is set to FALSE, an actuator can produce outputs as soon
      *  as they are available.
      */
-    public Parameter actuateAtEventTimestamp; 
-    
+    public Parameter actuateAtEventTimestamp;
+
     /** Return true if actuation should happen exactly at event timestamp.
      * @return True if actuation should happen exactly at event timestamp.
      */
     public boolean actuateAtEventTimestamp() {
         return _actuateAtEventTimestamp;
     }
-    
+
     @Override
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
@@ -92,8 +92,8 @@ public class ActuatorPort extends PtidesPort {
             super.attributeChanged(attribute);
         }
     }
-    
-    
+
+
     private boolean _actuateAtEventTimestamp;
-    
+
 }

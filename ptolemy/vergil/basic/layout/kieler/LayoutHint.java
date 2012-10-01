@@ -966,10 +966,10 @@ public class LayoutHint extends SingletonAttribute implements Settable {
             }
             return obj.getName(parent);
         }
-        
+
         /**
          * Determine the correct location of a link endpoint.
-         * 
+         *
          * @param obj an endpoint of a link
          * @return the location for the given endpoint
          */

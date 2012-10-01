@@ -228,7 +228,7 @@ public abstract class ConceptGraph implements CPO<Concept> {
      */
     private Concept _getBoundForConceptSubset(Set<Concept> subset,
             BoundType boundType) {
-        
+
         if (subset != null && subset.size() > 0) {
             Iterator<Concept> itr = subset.iterator();
             Concept bound = itr.next();
@@ -263,7 +263,7 @@ public abstract class ConceptGraph implements CPO<Concept> {
      *    such concept exists.
      */
     private Concept _superlativeElement(Set<Concept> subset, int direction) {
-        
+
         if (subset != null && subset.size() > 0) {
             Iterator<Concept> itr = subset.iterator();
             Concept superlative = itr.next();

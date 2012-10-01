@@ -1,7 +1,7 @@
 /*
  The tabbed panel that contains the scenes onto which widgets can be dropped by the user
  in order to construct a layout for a particular model file.
- 
+
  Copyright (c) 2011 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
@@ -57,9 +57,9 @@ import ptolemy.homer.events.TabEvent;
 
 /** The tabbed panel that contains the scenes onto which widgets can be dropped by the user
  *  in order to construct a layout for a particular model file.
- * 
+ *
  *  @author Anar Huseynov
- *  @version $Id$ 
+ *  @version $Id$
  *  @since Ptolemy II 8.1
  *  @Pt.ProposedRating Red (ahuseyno)
  *  @Pt.AcceptedRating Red (ahuseyno)
@@ -241,7 +241,7 @@ public class TabbedLayoutScene extends JPanel implements ActionListener {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Process action performed event.  
+    /** Process action performed event.
      *  @param event The event object.
      *  @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */

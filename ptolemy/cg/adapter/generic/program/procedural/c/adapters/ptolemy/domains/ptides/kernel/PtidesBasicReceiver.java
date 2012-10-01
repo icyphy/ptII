@@ -191,8 +191,8 @@ public class PtidesBasicReceiver
         // output port.
         // Generate a new event.
         String sinkName = CodeGeneratorAdapter.generateName(sinkPort
-                .getContainer()); 
-        List<String> args = new ArrayList<String>(); 
+                .getContainer());
+        List<String> args = new ArrayList<String>();
         args.add(sinkPort.getType().toString());
         args.add(token);
         args.add(sinkName);

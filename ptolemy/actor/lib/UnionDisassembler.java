@@ -52,12 +52,12 @@ import ptolemy.kernel.util.NameDuplicationException;
  the value to the output port that matches the label name of the
  input token. This actor is polymorphic. The labels for the UnionToken must
  match the names of the output ports.
- 
- This is achieved using three type constraints: 
+
+ This is achieved using three type constraints:
  <ul>
  <li><tt>input &gt;= {|x = typeOf(outputPortX), y = typeOf(outputPortY), ..|}</tt>,
- which requires the types of the fields in the input union to be compatible 
- with the corresponding output ports. This constraint is set in the 
+ which requires the types of the fields in the input union to be compatible
+ with the corresponding output ports. This constraint is set in the
  constructor of this class.
  </li>
  <li><tt>each output &gt;= the type of the corresponding field inside the input
@@ -143,17 +143,17 @@ public class UnionDisassembler extends TypedAtomicActor {
      *  , ..|}</tt>, which requires the types of the fields in the input union
      *  to be compatible with the types of the corresponding output ports.</li>
      *
-     *  <li><tt>each output >= the type of the corresponding field inside the 
-     *  input union</tt>, which is similar to the usual default constraints, 
-     *  however this constraint establishes a dependency between fields inside 
+     *  <li><tt>each output >= the type of the corresponding field inside the
+     *  input union</tt>, which is similar to the usual default constraints,
+     *  however this constraint establishes a dependency between fields inside
      *  the input union and the outputs of this actor, instead of just between
      *  its inputs and outputs.</li>
      *  </ul>
      *
      *  <p>Note that the constraint <tt>input &lt;= {|x = GENERAL, y = GENERAL, ..|}
-     *  </tt>, which is used in RecordDisassembler to force the input to 
+     *  </tt>, which is used in RecordDisassembler to force the input to
      *  contain a corresponding field for each output port, is useless for
-     *  UnionDisassembler. This is due to the inverse width subtyping of 
+     *  UnionDisassembler. This is due to the inverse width subtyping of
      *  <code>UnionToken</code>.</p>
      *
      *  @return A set of Inequality instances
@@ -164,29 +164,29 @@ public class UnionDisassembler extends TypedAtomicActor {
     protected Set<Inequality> _customTypeConstraints() {
         Set<Inequality> result = new HashSet<Inequality>();
 
-        // constrain the fields in the input union to be greater than or 
+        // constrain the fields in the input union to be greater than or
         // equal to the declared or resolved types of the output ports:
         // input >= {| x = typeOf(outputPortX), y = typeOf(outputPortY), ..|}
         result.add(new Inequality(new ConstructAssociativeType(outputPortList(),
                 UnionType.class), input.getTypeTerm()));
 
         for (TypedIOPort output : outputPortList()) {
-            // constrain each output to be >= the type of the corresponding 
+            // constrain each output to be >= the type of the corresponding
             // field inside the input union
             result.add(new Inequality(new ExtractFieldType(input,
                     output.getName()), output.getTypeTerm()));
         }
 
-        // NOTE: refrain from using port.setTypeAtMost() or 
-        // port.setTypeAtLeast(), because after removing an output port, the 
-        // constraint referring to this removed port will remain to exist in 
+        // NOTE: refrain from using port.setTypeAtMost() or
+        // port.setTypeAtLeast(), because after removing an output port, the
+        // constraint referring to this removed port will remain to exist in
         // the input port, which will result in type errors.
 
         return result;
 
     }
 
-    /** Do not establish the usual default type constraints. 
+    /** Do not establish the usual default type constraints.
      *  @return null
      */
     @Override

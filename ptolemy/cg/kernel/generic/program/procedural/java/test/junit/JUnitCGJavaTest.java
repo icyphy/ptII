@@ -1,4 +1,4 @@
-/* Run the auto/ tests using java cg 
+/* Run the auto/ tests using java cg
 
  Copyright (c) 2011 The Regents of the University of California.
  All rights reserved.
@@ -33,7 +33,7 @@ import ptolemy.util.test.junit.JUnitCGJavaTestBase;
 ///////////////////////////////////////////////////////////////////
 //// JUnitCGJavaTest
 /**
- *  Run the auto/ tests using java cg. 
+ *  Run the auto/ tests using java cg.
  * <pre>
  * (cd $PTII/ptolemy/cg/kernel/generic/program/procedural/java/test/junit; java -classpath ${PTII}:${PTII}/lib/ptjacl.jar:${PTII}/lib/junit-4.8.2.jar:${PTII}/lib/JUnitParams-0.3.0.jar org.junit.runner.JUnitCore ptolemy.cg.kernel.generic.program.procedural.java.test.junit.JUnitJavaCGTest)
  * </pre>

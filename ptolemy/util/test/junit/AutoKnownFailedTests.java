@@ -40,16 +40,16 @@ import org.junit.runner.RunWith;
 /**
  * Run the Ptolemy model tests in the auto/knownFailedTest/ directory using
  * JUnit.
- * 
+ *
  * <p>
  * This test must be run from the directory that contains the
  * auto/knownFailedTests/ directory, for example:
  * </p>
- * 
+ *
  * <pre>
  * (cd $PTII/ptolemy/actor/lib/net/test; java -classpath ${PTII}:${PTII}/lib/junit-4.8.2.jar:${PTII}/lib/JUnitParams-0.3.0.jar org.junit.runner.JUnitCore ptolemy.util.test.junit.AutoKnownFailedTests)
  * </pre>
- * 
+ *
  * <p>
  * This test uses JUnitParams from <a
  * href="http://code.google.com/p/junitparams/#in_browser"
@@ -57,7 +57,7 @@ import org.junit.runner.RunWith;
  * href="http://www.apache.org/licenses/LICENSE-2.0#in_browser">Apache License
  * 2.0</a>.
  * </p>
- * 
+ *
  * @author Christopher Brooks
  * @version $Id$
  * @since Ptolemy II 8.1
@@ -70,7 +70,7 @@ public class AutoKnownFailedTests extends ModelKnownFailedTests {
     /**
      * Find the ptolemy.moml.MoMLSimpleApplication class and its constructor
      * that takes a String.
-     * 
+     *
      * @exception Throwable
      *                If the class or constructor cannot be found.
      */
@@ -83,7 +83,7 @@ public class AutoKnownFailedTests extends ModelKnownFailedTests {
 
     /**
      * Execute a model.
-     * 
+     *
      * @param fullPath
      *            The full path to the model file to be executed. If the
      *            fullPath ends with the value of the

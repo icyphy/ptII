@@ -328,7 +328,7 @@ public class IOPortController extends AttributeController {
 
     /** Color for publish and subscribe labels. */
     private static Color _pubSubLabelColor = new Color(0.0f, 0.4f, 0.4f, 1.0f);
-    
+
     /** Font for port labels. */
     private static Font _pubSubLabelFont = new Font("SansSerif", Font.PLAIN, 10);
 
@@ -454,21 +454,21 @@ public class IOPortController extends AttributeController {
                         if (qmList != _qmList && qmList.size() > 0) {
 
                             _qmList = qmList;
-                            
-                            Object object = null; 
+
+                            Object object = null;
                             if (((IOPort) port).isOutput()) {
                                 object = qmList.get(0);
                             } else {
                                 object = qmList.get(qmList.size() - 1);
-                            } 
-                            ColorAttribute color = null; 
+                            }
+                            ColorAttribute color = null;
                             if (object instanceof MonitoredQuantityManager) {
-                                color = ((MonitoredQuantityManager) qmList.get(0)).color; 
+                                color = ((MonitoredQuantityManager) qmList.get(0)).color;
                             } else if (object instanceof CompositeQuantityManager) {
                                 color = ((CompositeQuantityManager) qmList.get(0)).color;
                             } else if (object instanceof IOPort) {
-                                color = ((CompositeQuantityManager) ((IOPort)qmList.get(0)).getContainer()).color; 
-                            } 
+                                color = ((CompositeQuantityManager) ((IOPort)qmList.get(0)).getContainer()).color;
+                            }
                             fill = color.asColor();
 
                             StringAttribute info = (StringAttribute) port
@@ -672,14 +672,14 @@ public class IOPortController extends AttributeController {
                     path.moveTo(0.5*size, -size);
                     path.lineTo(2.5*size, 0);
                     path.lineTo(0.5*size, size);
-                    
+
                     path.moveTo(2*size, -size);
                     path.lineTo(4*size, 0);
                     path.lineTo(2*size, size);
 
                     Figure pathFigure = new BasicFigure(path);
                     compositeFigure.add(pathFigure);
-                    
+
                     String channel = "???";
                     try {
                         if (((InstantiableNamedObj)port.getContainer()).isWithinClassDefinition()) {
@@ -697,21 +697,21 @@ public class IOPortController extends AttributeController {
                     } catch (IllegalActionException e) {
                         // Ignore and display question marks.
                         e.printStackTrace();
-                    }                    
+                    }
                     // The anchor argument below is (sadly) ignored.
                     Figure label = new LabelFigure(
                             channel, _pubSubLabelFont, 0.0, SwingConstants.SOUTH_EAST, _pubSubLabelColor);
                     double labelHeight = label.getBounds().getHeight();
                     label.translate(5*size, 0.5 * labelHeight);
                     compositeFigure.add(label);
-                    
+
                     figure = compositeFigure;
                 } else if (port instanceof SubscriberPort) {
                     CompositeFigure compositeFigure = new CompositeFigure(figure);
                     Path2D path = new Path2D.Double();
                     path.moveTo(-2*size, -size);
                     path.lineTo(-2*size, size);
-                    
+
                     path.moveTo(-3*size, -size);
                     path.lineTo(-3*size, size);
 
@@ -720,7 +720,7 @@ public class IOPortController extends AttributeController {
 
                     Figure pathFigure = new BasicFigure(path);
                     compositeFigure.add(pathFigure);
-                    
+
                     String channel = "???";
                     try {
                         if (((InstantiableNamedObj)port.getContainer()).isWithinClassDefinition()) {
@@ -746,7 +746,7 @@ public class IOPortController extends AttributeController {
                     double labelWidth = label.getBounds().getWidth();
                     label.translate(-labelWidth - 5 * size, 0.5 * labelHeight);
                     compositeFigure.add(label);
-                    
+
                     figure = compositeFigure;
                 }
                 figure = _decoratePortFigure(n, figure);

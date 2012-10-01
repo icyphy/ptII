@@ -42,7 +42,7 @@ import java.io.Serializable;
 import ptolemy.backtrack.Rollbackable;
 import ptolemy.backtrack.util.FieldRecord;
 
-/** 
+/**
  * This class provides a hashtable-backed implementation of the
  * Set interface, with predictable traversal order.
  * <p>
@@ -60,7 +60,7 @@ import ptolemy.backtrack.util.FieldRecord;
  * produce the same results when iterating over the copy.  This is possible
  * without needing the overhead of <code>TreeSet</code>.
  * <p>
- * Under ideal circumstances (no collisions), LinkedHashSet offers O(1) 
+ * Under ideal circumstances (no collisions), LinkedHashSet offers O(1)
  * performance on most operations.  In the worst case (all elements map
  * to the same hash code -- very unlikely), most operations are O(n).
  * <p>
@@ -87,12 +87,12 @@ import ptolemy.backtrack.util.FieldRecord;
 public class LinkedHashSet extends HashSet implements Set, Cloneable,
         Serializable, Rollbackable {
 
-    /**     
+    /**
      * Compatible with JDK 1.4.
      */
     private static final long serialVersionUID = -2851667679971038690L;
 
-    /**     
+    /**
      * Construct a new, empty HashSet whose backing HashMap has the default
      * capacity (11) and loadFacor (0.75).
      */
@@ -100,7 +100,7 @@ public class LinkedHashSet extends HashSet implements Set, Cloneable,
         super();
     }
 
-    /**     
+    /**
      * Construct a new, empty HashSet whose backing HashMap has the supplied
      * capacity and the default load factor (0.75).
      * @param initialCapacity the initial capacity of the backing HashMap
@@ -110,7 +110,7 @@ public class LinkedHashSet extends HashSet implements Set, Cloneable,
         super(initialCapacity);
     }
 
-    /**     
+    /**
      * Construct a new, empty HashSet whose backing HashMap has the supplied
      * capacity and load factor.
      * @param initialCapacity the initial capacity of the backing HashMap
@@ -122,7 +122,7 @@ public class LinkedHashSet extends HashSet implements Set, Cloneable,
         super(initialCapacity, loadFactor);
     }
 
-    /**     
+    /**
      * Construct a new HashSet with the same elements as are in the supplied
      * collection (eliminating any duplicates, of course). The backing storage
      * has twice the size of the collection, or the default size of 11,
@@ -134,7 +134,7 @@ public class LinkedHashSet extends HashSet implements Set, Cloneable,
         super(c);
     }
 
-    /**     
+    /**
      * Helper method which initializes the backing Map.
      * @param capacity the initial capacity
      * @param load the initial load factor

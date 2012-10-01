@@ -70,7 +70,7 @@ public class EllipseAttribute extends FilledShapeAttribute {
         // does not take effect when the icon is created.
         centered.setToken("true");
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                 ////
 

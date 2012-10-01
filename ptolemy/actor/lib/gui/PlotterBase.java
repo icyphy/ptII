@@ -202,12 +202,12 @@ public class PlotterBase extends TypedAtomicActor implements Configurable,
             newObject.configure(newObject._base, _source, _text);
 
             // See _getImplementation():
-	    if (PtolemyInjector.getInjector() == null) {
-		System.err.println("Warning: main() did not call "
-			       + "ActorModuleInitializer.initializeInjector(), "
-			       + "so PlotterBase.clone() is calling it for you.");
-		ActorModuleInitializer.initializeInjector();
-	    }
+            if (PtolemyInjector.getInjector() == null) {
+                System.err.println("Warning: main() did not call "
+                               + "ActorModuleInitializer.initializeInjector(), "
+                               + "so PlotterBase.clone() is calling it for you.");
+                ActorModuleInitializer.initializeInjector();
+            }
             newObject._implementation = PtolemyInjector.getInjector().getInstance(
                     PlotterBaseInterface.class);
             newObject._implementation.init(newObject);
@@ -554,9 +554,9 @@ public class PlotterBase extends TypedAtomicActor implements Configurable,
     /** Get the right instance of the implementation depending upon the
      *  of the dependency specified through dependency injection.
      *  If the instance has not been created, then it is created.
-     *  If the instance already exists then return the same. 
+     *  If the instance already exists then return the same.
      *
-     *	<p>This code is used as part of the dependency injection needed for the
+     *        <p>This code is used as part of the dependency injection needed for the
      *  HandSimDroid project, see $PTII/ptserver.  This code uses dependency
      *  inject to determine what implementation to use at runtime.
      *  This method eventually reads ptolemy/actor/ActorModule.properties.
@@ -567,12 +567,12 @@ public class PlotterBase extends TypedAtomicActor implements Configurable,
      */
     protected PlotterBaseInterface _getImplementation() {
         if (_implementation == null) {
-	    if (PtolemyInjector.getInjector() == null) {
-		System.err.println("Warning: main() did not call "
-			       + "ActorModuleInitializer.initializeInjector(), "
-			       + "so PlotterBase is calling it for you.");
-		ActorModuleInitializer.initializeInjector();
-	    }
+            if (PtolemyInjector.getInjector() == null) {
+                System.err.println("Warning: main() did not call "
+                               + "ActorModuleInitializer.initializeInjector(), "
+                               + "so PlotterBase is calling it for you.");
+                ActorModuleInitializer.initializeInjector();
+            }
             _implementation = PtolemyInjector.getInjector().getInstance(
                     PlotterBaseInterface.class);
             _implementation.init(this);
@@ -627,7 +627,7 @@ public class PlotterBase extends TypedAtomicActor implements Configurable,
         }
         return super._isMoMLSuppressed(depth);
     }
-    
+
     /** Create a new plot. In this base class, it is an instance of Plot.
      *  In derived classes, it can be classes derived from Plot.
      *  @return A new plot object.

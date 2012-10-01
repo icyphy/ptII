@@ -56,7 +56,7 @@ import ptserver.data.handler.TokenHandler;
  *
  *  <p>Similarly, the token would be converted to a byte stream by selecting
  *  a TokenHandler mapped to its class and using it to do the conversion.</p>
- * 
+ *
  *  @author ahuseyno
  *  @version $Id$
  *  @since Ptolemy II 8.0
@@ -73,7 +73,7 @@ public final class TokenParser {
     private TokenParser() throws IllegalActionException {
         // Key is the token class name.
         // Value is the token handler class name.
-        // We have to use ResourceBundle.getKeys() method because Android does not 
+        // We have to use ResourceBundle.getKeys() method because Android does not
         // support .keySet() method.
         LinkedHashMap<String, String> tokenHandlerMap = new LinkedHashMap<String, String>();
         Enumeration<String> keys = _tokenHandlersBundle.getKeys();
@@ -90,7 +90,7 @@ public final class TokenParser {
     ////                         public methods                    ////
 
     /** Convert the token to a byte stream by first finding its TokenHandler and
-     *  writing its position to the stream (first 2 bytes) followed by the conversion 
+     *  writing its position to the stream (first 2 bytes) followed by the conversion
      *  produced TokenHandler.
      *  @param <T> Type of the target token
      *  @param token Token to be converted
@@ -113,7 +113,7 @@ public final class TokenParser {
     }
 
     /** Convert the token to a byte stream by first finding its TokenHandler and
-     *  writing its position to the stream (first 2 bytes) followed by the conversion 
+     *  writing its position to the stream (first 2 bytes) followed by the conversion
      *  produced TokenHandler.
      *  @param <T> Type of the target token
      *  @param token Token to be converted
@@ -170,8 +170,8 @@ public final class TokenParser {
         return _handlerList;
     }
 
-    /** Return singleton instance of the TokenParser.  The TokenParser is singleton 
-     *  to simplify operations with it since there is no need to pass the instance 
+    /** Return singleton instance of the TokenParser.  The TokenParser is singleton
+     *  to simplify operations with it since there is no need to pass the instance
      *  around.  Also instantiation of the instance is costly since it relies on reflection.
      *  @return instance of the TokenParser
      *  @exception IllegalActionException if there is a problem loading the mapping from TokenHandlers.properties file.

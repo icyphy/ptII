@@ -1,7 +1,7 @@
 /*
  This class initialized the PtolemyInjector with Java SE specific interface to
  implementation mappings that are within Ptolemy package.
- 
+
  Copyright (c) 2011 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
@@ -40,7 +40,7 @@ import java.util.ResourceBundle;
  * implementation mappings.  This class reads the ptolemy.actor.ActorModule.properties
  * file to initialize the PtolemyModule.
  * @author Anar Huseynov
- * @version $Id$ 
+ * @version $Id$
  * @since Ptolemy II 8.0
  * @Pt.ProposedRating Red (ahuseyno)
  * @Pt.AcceptedRating Red (ahuseyno)
@@ -102,7 +102,7 @@ public class ActorModuleInitializer {
     }
 
     /**
-     * The default initializer used by the PtolemyInjector if one is not provided to 
+     * The default initializer used by the PtolemyInjector if one is not provided to
      * it.  The default initializer would initialize Java SE specific classes.
      */
     protected static Initializer _defaultInitializer = new Initializer() {
@@ -116,7 +116,7 @@ public class ActorModuleInitializer {
     /**
      * Initializer is responsible for initializing the PtolemyInjector with
      * modules specific to the platform it was developed for.
-     * 
+     *
      */
     public interface Initializer {
         /**

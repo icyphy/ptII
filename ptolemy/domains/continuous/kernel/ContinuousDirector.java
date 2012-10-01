@@ -657,7 +657,7 @@ public class ContinuousDirector extends FixedPointDirector implements
      */
     public void initialize() throws IllegalActionException {
         _isInitializing = true;
-        
+
         // In case we are being reinitialized by a reset transition,
         // clear the breakpoint table. This must be done before
         // actors are initialized because they may call fireAt(),
@@ -975,7 +975,7 @@ public class ContinuousDirector extends FixedPointDirector implements
             actor.rollBackToCommittedState();
         }
     }
-    
+
     /** Set a new value to the current time of the model. This overrides
      *  the base class to allow time to move backwards (to support rollback)
      *  and to discard any breakpoints in the breakpoint table that are
@@ -1732,7 +1732,7 @@ public class ContinuousDirector extends FixedPointDirector implements
         // Do not use setCommittedTime on the following line because we
         // are probably speculatively executing into the future.
         localClock.setLocalTime(localClock.getLocalTimeForCurrentEnvironmentTime());
-        
+
         if (_debugging) {
             _debug("-- Setting current time to " + currentTime
                     + ", which aligns with the enclosing director's time of "
@@ -1796,9 +1796,9 @@ public class ContinuousDirector extends FixedPointDirector implements
         // Check the enclosing model time against the local model time.
         // Note that time has already been automatically adjusted with the
         // accumulated suspend time.
-        Time outTime = localClock.getLocalTimeForCurrentEnvironmentTime(); 
+        Time outTime = localClock.getLocalTimeForCurrentEnvironmentTime();
                 executiveDirector.getModelTime();
-        
+
         int localTimeExceedsOutsideTime = currentTime.compareTo(outTime);
         if (localTimeExceedsOutsideTime > 0) {
             ///////////////////////////////////////////////////////////////

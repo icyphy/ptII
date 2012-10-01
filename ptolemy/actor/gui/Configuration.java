@@ -335,7 +335,7 @@ public class Configuration extends CompositeEntity implements
                     }
                 } else {
                     // Clone the composite and check that any inner
-                    // classes are properly cloned. 
+                    // classes are properly cloned.
                     String name = attribute.getName();
                     Attribute clonedAttribute = clonedComposite.getAttribute(name);
                     if (clonedAttribute == null) {
@@ -357,12 +357,12 @@ public class Configuration extends CompositeEntity implements
                             try {
                                 thisZeroField = attributeClass.getDeclaredField("this$0");
                             } catch (Throwable throwable) {
-                                results.append("Class " + attributeClass.getName() 
+                                results.append("Class " + attributeClass.getName()
                                         + " does not have a this$0 field?\n");
                             }
                             if (thisZeroField != null) {
                                 thisZeroField.setAccessible(true);
-                                
+
                                 Object outer = thisZeroField.get(attribute);
                                 if (Class.forName("ptolemy.kernel.util.NamedObj").isAssignableFrom(outer.getClass())) {
                                     NamedObj outerNamedObj = (NamedObj) outer;
@@ -589,7 +589,7 @@ public class Configuration extends CompositeEntity implements
             namedObjFields = clazz.getDeclaredFields();
             for (int i = 0; i < namedObjFields.length; i++) {
                 Field field = namedObjFields[i];
-                field.setAccessible(true);        
+                field.setAccessible(true);
                 results.append(_checkCloneField(namedObj, namedObjClone, field));
             }
         }
@@ -667,7 +667,7 @@ public class Configuration extends CompositeEntity implements
 
                     try {
                         Tableau tableau = factory.createTableau(effigy);
-                        
+
                         if (tableau != null) {
                             // The first tableau is a master if the container
                             // of the containing effigy is the model directory.
@@ -695,7 +695,7 @@ public class Configuration extends CompositeEntity implements
         // Defer to the configuration.
         // Create a tableau if there is a tableau factory.
         factory = (TableauFactory) getAttribute("tableauFactory");
-        
+
         if (factory != null) {
             // If this fails, we do not want the effigy to linger
             try {
@@ -852,7 +852,7 @@ public class Configuration extends CompositeEntity implements
      *  name.
      *  @exception ClassNotFoundException If the class named by
      *  parameterName cannot be found.
-     *  @exception IllegalAccessException If the constructor is not accessible. 
+     *  @exception IllegalAccessException If the constructor is not accessible.
      *  @exception IllegalActionException If thrown while reading the
      *  parameter named by parameterName.
      *  @exception InstantiationException If the object cannot be instantiated
@@ -862,7 +862,7 @@ public class Configuration extends CompositeEntity implements
      */
     public Object getStringParameterAsClass(String parameterName,
             Class [] constructorParameterTypes,
-            Object [] constructorParameterClass) 
+            Object [] constructorParameterClass)
             throws ClassNotFoundException, IllegalAccessException,
             IllegalActionException, InstantiationException,
             java.lang.reflect.InvocationTargetException, NoSuchMethodException {
@@ -1005,7 +1005,7 @@ public class Configuration extends CompositeEntity implements
                 // NOTE: This used to be handled only by HTMLViewer, but
                 // this limited where the #in_browser notation could be used.
                 // The following is adapted from HTMLViewer.
-                
+
                 // NOTE: It would be nice to use target="_browser" or some
                 // such, but this doesn't work. Targets aren't
                 // seen unless the link is inside a frame,
@@ -1030,7 +1030,7 @@ public class Configuration extends CompositeEntity implements
                         new BrowserEffigy.Factory(this, "browserEffigyFactory");
                     }
                     factory = BrowserEffigy.staticFactory;
-                } else {                
+                } else {
                     // Not a browser or mailto URL.
                     // Get an effigy factory from this configuration.
                     factory = (EffigyFactory) getEntity("effigyFactory");
@@ -1241,7 +1241,7 @@ public class Configuration extends CompositeEntity implements
      *  a field.
      *  @exception ClassNotFoundException If a class cannot be found.
      */
-    private static String _checkCloneField(NamedObj namedObj, NamedObj namedObjClone, Field field) 
+    private static String _checkCloneField(NamedObj namedObj, NamedObj namedObjClone, Field field)
             throws CloneNotSupportedException, IllegalAccessException,
             ClassNotFoundException {
         Class namedObjClass = namedObj.getClass();
@@ -1264,7 +1264,7 @@ public class Configuration extends CompositeEntity implements
                 && !(field.getName().indexOf("$RECORDS") != -1)
                 && !(field.getName().indexOf("$CHECKPOINT") != -1)
                 // Skip dependency injection fields
-                && !(field.getName().indexOf("_implementation")!= -1) 
+                && !(field.getName().indexOf("_implementation")!= -1)
                 // Skip immutables
                 && !fieldType.equals(java.net.InetAddress.class)
                 && !fieldType.equals(java.util.regex.Pattern.class)

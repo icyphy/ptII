@@ -85,7 +85,7 @@ public class TestLoadManager {
      */
     @BeforeClass
     public static void setUpBeforeClass() {
-	ActorModuleInitializer.initializeInjector();
+        ActorModuleInitializer.initializeInjector();
     }
 
     /**

@@ -1,7 +1,7 @@
 /*
  This class loads Netbeans Visual Library widgets for a provided named object
  and target type.
- 
+
  Copyright (c) 2011 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
@@ -46,10 +46,10 @@ import ptolemy.kernel.util.NameDuplicationException;
 
 /**
  * This class loads Netbeans Visual Library widgets for a provided named object
- * and target type.  It uses three strategies to load widgets for the target type: custom widget class, 
+ * and target type.  It uses three strategies to load widgets for the target type: custom widget class,
  *  widget consisting of an image of an actor, or widget consisting of a Ptolemy icon.
  * @author Anar Huseynov
- * @version $Id$ 
+ * @version $Id$
  * @since Ptolemy II 8.1
  * @Pt.ProposedRating Red (ahuseyno)
  * @Pt.AcceptedRating Red (ahuseyno)
@@ -66,16 +66,16 @@ public class WidgetLoader {
     /**
      * Load widget of the given PositionableElement and targetType.  If there is no widget mapped for the
      * the target type, it would look for a widget for the target type's parent recursively.
-     * The method would first try finding custom widget class for the targetType.  The mappings is 
-     * defined in the ObjectWidgets.properties file within widget package. If this fails, it would look for 
+     * The method would first try finding custom widget class for the targetType.  The mappings is
+     * defined in the ObjectWidgets.properties file within widget package. If this fails, it would look for
      * image of the targetType based on mapping in ImageWidgets.properties file within images package.  If this fails too,
      * it would try loading a Ptolemy icon for the provided NamedObject.
-     *  
+     *
      * @param scene The scene where the widget belongs.
      * @param element The element for which widget is loaded.
      * @param targetType The targetType used to finding appropriate widget mapped to it.
      * Usually targetType is the same as namedObject's type.
-     * @return A new widget instance for the targetType and namedObject.  The 
+     * @return A new widget instance for the targetType and namedObject.  The
      * returned instance implements {@link NamedObjectWidgetInterface}.
      * @throws IllegalActionException if there is a problem loading a object widget or icon.
      * @throws NameDuplicationException if there is a problem loading an icon.
@@ -105,7 +105,7 @@ public class WidgetLoader {
      * @param element The element for which widget is loaded.
      * @param targetType The targetType used to finding appropriate widget mapped to it.
      * Usually targetType is the same as namedObject's type.
-     * @return A new widget instance for the targetType and namedObject.  The 
+     * @return A new widget instance for the targetType and namedObject.  The
      * returned instance implements {@link NamedObjectWidgetInterface}.
      * @throws IllegalActionException if there is a problem loading a object widget.
      */
@@ -156,7 +156,7 @@ public class WidgetLoader {
      * @param element The element for which widget is loaded.
      * @param targetType The targetType used to finding appropriate widget mapped to it.
      * Usually targetType is the same as namedObject's type.
-     * @return A new widget instance for the targetType and namedObject.  The 
+     * @return A new widget instance for the targetType and namedObject.  The
      * returned instance implements {@link NamedObjectWidgetInterface}.
      */
     private static Widget _getImageWidget(Scene scene,

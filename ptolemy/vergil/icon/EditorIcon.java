@@ -308,7 +308,7 @@ public class EditorIcon extends Attribute {
         CompositeFigure figure = new CompositeFigure(background);
 
         NamedObj container = (NamedObj) getContainerOrContainerToBe();
-        
+
         // RelativeLocatables are drawn with a line that indicates to which object
         // they are connected. This line is drawn by RelativeLinkFigure.
         if (container instanceof RelativeLocatable) {

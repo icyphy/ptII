@@ -72,7 +72,7 @@ import ptserver.util.ServerUtility;
 //// LayoutFileOperations
 
 /** Utility class to handle model and layout file operations.
- * 
+ *
  *  @author Peter Foldes
  *  @version $Id$
  *  @since Ptolemy II 8.1
@@ -94,7 +94,7 @@ public final class LayoutFileOperations {
 
     /** Open a model and an existing layout on the given frame. The information from both
      *  will be merged into one model that is returned.
-     *  
+     *
      *  @param mainFrame The frame containing the contents infrastructure and the visual
      *  representations.
      *  @param modelURL The url to the original Ptolemy II model file to use.
@@ -128,7 +128,7 @@ public final class LayoutFileOperations {
 
     /** Given a frame containing a model, this method will parse the model and populate
      *  the contents defined in the frame.
-     * 
+     *
      *  @param mainFrame The frame containing the model to be parsed and the underlying contents
      *  infrastructure.
      *  @throws IllegalActionException If the parsing fails.
@@ -169,7 +169,7 @@ public final class LayoutFileOperations {
     }
 
     /** Open a MoML file, parse it, and return the parsed model.
-     * 
+     *
      *  @param url The url of the model.
      *  @return The parsed model.
      *  @exception IllegalActionException If the parsing failed.
@@ -194,7 +194,7 @@ public final class LayoutFileOperations {
     /** Save a layout to a MoML file. The layout file should contain all the
      *  information needed to create visual representations of elements and
      *  to communicate remotely.
-     *  
+     *
      *  @param mainFrame The object containing all the information about the
      *  elements to create the layout file, such as position information.
      *  @param layoutFile The file the layout is saved to.
@@ -365,7 +365,7 @@ public final class LayoutFileOperations {
 
     /** Strips the first part of a compound element name, including the
      *  "." at the beginning.
-     * 
+     *
      * @param fullName The compound name of an element.
      * @return The stripped name of the element, where the first part of
      * the compound name is removed, including the "." at the beginning.
@@ -378,7 +378,7 @@ public final class LayoutFileOperations {
     }
 
     /** Get the location from a widget in the form of an IntMatrixToken.
-     * 
+     *
      *  @param widget The widget from where to extract the location from.
      *  @return The IntMatrixToken representing the location of the widget.
      */
@@ -404,7 +404,7 @@ public final class LayoutFileOperations {
 
     /** Check if the entity is a sink or source. It checks based on the ports of
      *  connected relations.
-     *  
+     *
      *  @param entity The Ptolemy entity to check.
      *  @return SinkOrSource enumeration indicating whether the entity is a sink, a
      *  source, both, or none.
@@ -468,7 +468,7 @@ public final class LayoutFileOperations {
     ////                private methods                            ////
 
     /** Mark the given element as a proxy element in the given model.
-     * 
+     *
      *  @param model The model where the similar element to the given element is
      *  marked as proxy.
      *  @param element The element defining which element in the model will be marked

@@ -142,7 +142,7 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
      *  @param value The value of the constant.
      *  @return A #define that defines the constant.
      */
-    public String generateConstantDefinition(String constant, 
+    public String generateConstantDefinition(String constant,
             String type, String value) {
         // Maybe we should keep track of these in a Set?
         return "#ifndef " + constant + _eol
@@ -1624,7 +1624,7 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
             if (name.startsWith("Array_")) {
                 // Array_xxx might need to have xxx added.
                 // See c/actor/lib/test/auto/MultiplyDivide5.xml
-            
+
                 // FIXME: this will add any function, which means that
                 // if the user has Array_foo, foo is added.  Is this right?
                 _tokenFuncUsed.add(name.substring(6));

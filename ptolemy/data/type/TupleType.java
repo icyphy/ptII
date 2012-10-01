@@ -166,7 +166,7 @@ public class TupleType extends StructuredType implements Cloneable {
     }
 
     /** Return the number of arguments in this type.
-     *  @return The number of arguments in this type.   
+     *  @return The number of arguments in this type.
      */
     public int getElementCount() {
         return _elementTypeTerms.length;

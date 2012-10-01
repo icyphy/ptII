@@ -42,7 +42,7 @@ import javax.swing.SpinnerNumberModel;
 
 /** Class that defines the screen size dialog.
  *  @author Justin Killian
- *  @version $Id$ 
+ *  @version $Id$
  *  @since Ptolemy II 8.1
  *  @Pt.ProposedRating Red (jkillian)
  *  @Pt.AcceptedRating Red (jkillian)

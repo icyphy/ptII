@@ -1,6 +1,6 @@
-/*  
+/*
  This widget visualizes attributes based on their style definition.
- 
+
  Copyright (c) 2011 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
@@ -67,7 +67,7 @@ import ptolemy.kernel.util.Settable;
 /**
 * This widget visualizes attributes based on their style definition.
 * @author Anar Huseynov
-* @version $Id$ 
+* @version $Id$
 * @since Ptolemy II 8.1
 * @Pt.ProposedRating Red (ahuseyno)
 * @Pt.AcceptedRating Red (ahuseyno)
@@ -192,7 +192,7 @@ public class AttributeStyleWidget extends GlassPaneWidget implements
      */
     private JComponent _attributeComponent;
 
-    /** 
+    /**
      * Return minimal width which is the preferred width of the widget if it's defined.
      */
     public Integer getMinWidth() {
@@ -200,7 +200,7 @@ public class AttributeStyleWidget extends GlassPaneWidget implements
         return preferredSize != null ? preferredSize.width : null;
     }
 
-    /** 
+    /**
      * Return minimal height which is the preferred height of the widget if it's defined.
      */
     public Integer getMinHeight() {

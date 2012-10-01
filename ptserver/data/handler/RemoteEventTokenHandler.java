@@ -1,6 +1,6 @@
 /* Convert a ServerEventToken into bytes and back for communication
    through the MQTT broker.
-   
+
  Copyright (c) 2011 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
@@ -40,7 +40,7 @@ import ptserver.data.RemoteEventToken.EventType;
 
 /** ServerEventTokenHandler converts ServerEventToken to/from byte form.
  *  @author Justin Killian
- *  @version $Id: ServerEventTokenHandler.java 61629 2011-07-28 02:17:45Z ahuseyno $ 
+ *  @version $Id$
  *  @since Ptolemy II 8.0
  *  @Pt.ProposedRating Red (jkillian)
  *  @Pt.AcceptedRating Red (jkillian)

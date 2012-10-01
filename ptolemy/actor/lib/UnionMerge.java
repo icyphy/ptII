@@ -47,13 +47,13 @@ import ptolemy.kernel.util.NameDuplicationException;
 
 /**
 On each firing, read all tokens from every input port and wrap each token
-into a UnionToken of which the label matches the name of the originating 
-input port. All produced UnionTypes are sent to the output port in a single 
+into a UnionToken of which the label matches the name of the originating
+input port. All produced UnionTypes are sent to the output port in a single
 firing.
 
 <p>
-The type of the output port is a UnionType of which the labels much match 
-the names of the input ports. This is achieved using two type constraints:  
+The type of the output port is a UnionType of which the labels much match
+the names of the input ports. This is achieved using two type constraints:
 The labels for the output UnionToken are the names of the input
 ports. This is achieved using two type constraints:
 
@@ -62,10 +62,10 @@ ports. This is achieved using two type constraints:
 </tt>, which requires the types of the input ports to be compatible
 with the corresponding types in the output union.
 </li>
-<li><tt>each input <= the type of the corresponding field inside the 
-output union</tt>, which is similar to the usual default constraints, 
+<li><tt>each input <= the type of the corresponding field inside the
+output union</tt>, which is similar to the usual default constraints,
 however this constraint establishes a dependency between the inputs of
-this actor and the fields inside the output union, instead of just 
+this actor and the fields inside the output union, instead of just
 between its inputs and outputs.
 </li>
 </ul>
@@ -73,8 +73,8 @@ between its inputs and outputs.
 Note that the output UnionType is required to contain a corresponding
 field for every input. However, due to the subtyping relation of UnionType
 that is opposite to the subtyping of RecordType, the type constraint
-that the output port of this actor must be greater than or equal to the GLB 
-of the types of its receivers (implied by the connections), is always 
+that the output port of this actor must be greater than or equal to the GLB
+of the types of its receivers (implied by the connections), is always
 satisfied.
 </p>
 <p>
@@ -122,8 +122,8 @@ public class UnionMerge extends TypedAtomicActor {
 
     /** Read all available tokens from each input port, wrap each of them into
      *  a UnionToken of which the label matches the name of the originating
-     *  input port. All produced UnionTypes are sent to the output port in a 
-     *  single firing. 
+     *  input port. All produced UnionTypes are sent to the output port in a
+     *  single firing.
      *  @exception IllegalActionException If there is no director, or
      *  the input can not be read, or the output can not be sent.
      */
@@ -139,17 +139,17 @@ public class UnionMerge extends TypedAtomicActor {
 
     ///////////////////////////////////////////////////////////////////
     ////                     protected methods                     ////
-    
+
     /** Set up and return two type constraints.
      *  <ul>
      *  <li><tt>output >= {x = typeOf(inputPortX), y = typeOf(inputPortY), ..}
      *  </tt>, which requires the types of the input ports to be compatible
      *  with the corresponding types in the output union.
      *  </li>
-     *  <li><tt>each input <= the type of the corresponding field inside the 
-     *  output union</tt>, which is similar to the usual default constraints, 
+     *  <li><tt>each input <= the type of the corresponding field inside the
+     *  output union</tt>, which is similar to the usual default constraints,
      *  however this constraint establishes a dependency between the inputs of
-     *  this actor and the fields inside the output union, instead of just 
+     *  this actor and the fields inside the output union, instead of just
      *  between its inputs and outputs.
      *  </li>
      *  </ul>
@@ -161,7 +161,7 @@ public class UnionMerge extends TypedAtomicActor {
     protected Set<Inequality> _customTypeConstraints() {
         Set<Inequality> result = new HashSet<Inequality>();
 
-        // constrain the fields in the output union to be greater than or 
+        // constrain the fields in the output union to be greater than or
         // equal to the declared or resolved types of the input ports:
         // output >= {x = typeOf(outputPortX), y = typeOf(outputPortY), ..|}
         result.add(new Inequality(new ConstructAssociativeType(inputPortList(),
@@ -174,16 +174,16 @@ public class UnionMerge extends TypedAtomicActor {
                     .getName()), input.getTypeTerm()));
         }
 
-        // NOTE: refrain from using port.setTypeAtMost() or 
-        // port.setTypeAtLeast(), because after removing an output port, the 
-        // constraint referring to this removed port will remain to exist in 
+        // NOTE: refrain from using port.setTypeAtMost() or
+        // port.setTypeAtLeast(), because after removing an output port, the
+        // constraint referring to this removed port will remain to exist in
         // the input port, which will result in type errors.
 
         return result;
     }
 
     /** Do not establish the usual default type constraints.
-     *  @return null 
+     *  @return null
      */
     protected Set<Inequality> _defaultTypeConstraints() {
         return null;

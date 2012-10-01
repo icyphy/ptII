@@ -42,7 +42,7 @@ A adapter class for ptolemy.domains.de.lib.Merge.
 @version $Id$
 @since Ptolemy II 8.0
 */
-public class Merge 
+public class Merge
 extends
 NamedProgramCodeGeneratorAdapter {
 
@@ -53,12 +53,12 @@ NamedProgramCodeGeneratorAdapter {
     public Merge(ptolemy.domains.de.lib.Merge actor) {
         super(actor);
     }
-    
+
     /**
      * Construct the fire block.
      */
     public String generateFireCode() throws IllegalActionException {
-        
+
         ptolemy.domains.de.lib.Merge actor = (ptolemy.domains.de.lib.Merge) getComponent();
         ArrayList<String> args = new ArrayList<String>();
         CodeStream codeStream = _templateParser.getCodeStream();
@@ -69,9 +69,9 @@ NamedProgramCodeGeneratorAdapter {
         }
         return processCode(codeStream.toString());
     }
-    
+
     /** Return a string that represents the source time.
-     *  @param timeVariable The variable to be set in the generated code   
+     *  @param timeVariable The variable to be set in the generated code
      *  @return A string sets the timeVariable to the timestamp of the
      *  last input channel.
      *  @exception IllegalActionException If there is a problme
@@ -86,7 +86,7 @@ NamedProgramCodeGeneratorAdapter {
             result.append("if (Event_Head_" + name + "_input[" + i +"] != NULL) {\n"
                     + timeVariable + " = &Event_Head_" + name + "_input[" + i +"]->tag.timestamp;\n" +
                     "}\n");
-        } 
+        }
         return result.toString();
     }
 }

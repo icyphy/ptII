@@ -507,13 +507,13 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
             _director.notifyAll();
         }
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                       protected variables                 ////
-    
+
     /** The director in charge of this receiver. */
     protected PNDirector _director;
-    
+
     /** Reference to a thread that is read blocked on this receiver. */
     protected Thread _readPending = null;
 

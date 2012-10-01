@@ -46,7 +46,7 @@ import ptolemy.backtrack.Checkpoint;
 import ptolemy.backtrack.Rollbackable;
 import ptolemy.backtrack.util.FieldRecord;
 
-/** 
+/**
  * A basic implementation of most of the methods in the List interface to make
  * it easier to create a List based on a random-access data structure. If
  * the list is sequential (such as a linked list), use AbstractSequentialList.
@@ -77,7 +77,7 @@ import ptolemy.backtrack.util.FieldRecord;
 public abstract class AbstractList extends AbstractCollection implements List,
         Rollbackable {
 
-    /**     
+    /**
      * A count of the number of structural modifications that have been made to
      * the list (that is, insertions and removals). Structural modifications
      * are ones which change the list size or affect how iterations would
@@ -100,7 +100,7 @@ public abstract class AbstractList extends AbstractCollection implements List,
     // This will get inlined, since it is private.
     // This follows the specification of AbstractList, but is inconsistent
     // with the one in List. Don't you love Sun's inconsistencies?
-    /**     
+    /**
      * This class follows the implementation requirements set forth in{
     @link AbstractList#subList(int, int)    }
     . It matches Sun's implementation
@@ -111,22 +111,22 @@ public abstract class AbstractList extends AbstractCollection implements List,
     private static class SubList extends AbstractList implements Rollbackable {
 
         // Package visible, for use by iterator.
-        /**         
-         * The original list. 
+        /**
+         * The original list.
          */
         final AbstractList backingList;
 
-        /**         
-         * The index of the first element of the sublist. 
+        /**
+         * The index of the first element of the sublist.
          */
         final int offset;
 
-        /**         
-         * The size of the sublist. 
+        /**
+         * The size of the sublist.
          */
         private int size;
 
-        /**         
+        /**
          * Construct the sublist.
          * @param backing the list this comes from
          * @param fromIndex the lower bound, inclusive
@@ -139,7 +139,7 @@ public abstract class AbstractList extends AbstractCollection implements List,
             setSize(toIndex - fromIndex);
         }
 
-        /**         
+        /**
          * This method checks the two modCount fields to ensure that there has
          * not been a concurrent modification, returning if all is okay.
          * @throws ConcurrentModificationException if the backing list has been
@@ -152,7 +152,7 @@ public abstract class AbstractList extends AbstractCollection implements List,
             }
         }
 
-        /**         
+        /**
          * This method checks that a value is between 0 and size (inclusive). If
          * it is not, an exception is thrown.
          * @param index the value to check
@@ -166,7 +166,7 @@ public abstract class AbstractList extends AbstractCollection implements List,
             }
         }
 
-        /**         
+        /**
          * This method checks that a value is between 0 (inclusive) and size
          * (exclusive). If it is not, an exception is thrown.
          * @param index the value to check
@@ -180,7 +180,7 @@ public abstract class AbstractList extends AbstractCollection implements List,
             }
         }
 
-        /**         
+        /**
          * Specified by AbstractList.subList to return the private field size.
          * @return the sublist size
          * @throws ConcurrentModificationException if the backing list has been
@@ -191,7 +191,7 @@ public abstract class AbstractList extends AbstractCollection implements List,
             return getSize();
         }
 
-        /**         
+        /**
          * Specified by AbstractList.subList to delegate to the backing list.
          * @param index the location to modify
          * @param o the new value
@@ -212,7 +212,7 @@ public abstract class AbstractList extends AbstractCollection implements List,
             return backingList.set(index + offset, o);
         }
 
-        /**         
+        /**
          * Specified by AbstractList.subList to delegate to the backing list.
          * @param index the location to get from
          * @return the object at that location
@@ -226,7 +226,7 @@ public abstract class AbstractList extends AbstractCollection implements List,
             return backingList.get(index + offset);
         }
 
-        /**         
+        /**
          * Specified by AbstractList.subList to delegate to the backing list.
          * @param index the index to insert at
          * @param o the object to add
@@ -248,7 +248,7 @@ public abstract class AbstractList extends AbstractCollection implements List,
             setModCount(backingList.getModCount());
         }
 
-        /**         
+        /**
          * Specified by AbstractList.subList to delegate to the backing list.
          * @param index the index to remove
          * @return the removed object
@@ -267,7 +267,7 @@ public abstract class AbstractList extends AbstractCollection implements List,
             return o;
         }
 
-        /**         
+        /**
          * Specified by AbstractList.subList to delegate to the backing list.
          * This does no bounds checking, as it assumes it will only be called
          * by trusted code like clear() which has already checked the bounds.
@@ -285,7 +285,7 @@ public abstract class AbstractList extends AbstractCollection implements List,
             setModCount(backingList.getModCount());
         }
 
-        /**         
+        /**
          * Specified by AbstractList.subList to delegate to the backing list.
          * @param index the location to insert at
          * @param c the collection to insert
@@ -311,7 +311,7 @@ public abstract class AbstractList extends AbstractCollection implements List,
             return result;
         }
 
-        /**         
+        /**
          * Specified by AbstractList.subList to return addAll(size, c).
          * @param c the collection to insert
          * @return true if this list was modified, in other words, c is non-empty
@@ -329,7 +329,7 @@ public abstract class AbstractList extends AbstractCollection implements List,
             return addAll(getSize(), c);
         }
 
-        /**         
+        /**
          * Specified by AbstractList.subList to return listIterator().
          * @return an iterator over the sublist
          */
@@ -337,7 +337,7 @@ public abstract class AbstractList extends AbstractCollection implements List,
             return listIterator();
         }
 
-        /**         
+        /**
          * Specified by AbstractList.subList to return a wrapper around the
          * backing list's iterator.
          * @param index the start location of the iterator
@@ -355,7 +355,7 @@ public abstract class AbstractList extends AbstractCollection implements List,
 
                 private int position = index;
 
-                /**                 
+                /**
                  * Tests to see if there are any more objects to
                  * return.
                  * @return True if the end of the list has not yet been
@@ -365,7 +365,7 @@ public abstract class AbstractList extends AbstractCollection implements List,
                     return position < getSize();
                 }
 
-                /**                 
+                /**
                  * Tests to see if there are objects prior to the
                  * current position in the list.
                  * @return True if objects exist prior to the current
@@ -375,7 +375,7 @@ public abstract class AbstractList extends AbstractCollection implements List,
                     return position > 0;
                 }
 
-                /**                 
+                /**
                  * Retrieves the next object from the list.
                  * @return The next object.
                  * @throws NoSuchElementException if there are no
@@ -391,7 +391,7 @@ public abstract class AbstractList extends AbstractCollection implements List,
                     return i.next();
                 }
 
-                /**                 
+                /**
                  * Retrieves the previous object from the list.
                  * @return The next object.
                  * @throws NoSuchElementException if there are no
@@ -407,7 +407,7 @@ public abstract class AbstractList extends AbstractCollection implements List,
                     return i.previous();
                 }
 
-                /**                 
+                /**
                  * Returns the index of the next element in the
                  * list, which will be retrieved by <code>next()</code>
                  * @return The index of the next element.
@@ -416,7 +416,7 @@ public abstract class AbstractList extends AbstractCollection implements List,
                     return i.nextIndex() - offset;
                 }
 
-                /**                 
+                /**
                  * Returns the index of the previous element in the
                  * list, which will be retrieved by <code>previous()</code>
                  * @return The index of the previous element.
@@ -425,7 +425,7 @@ public abstract class AbstractList extends AbstractCollection implements List,
                     return i.previousIndex() - offset;
                 }
 
-                /**                 
+                /**
                  * Removes the last object retrieved by <code>next()</code>
                  * from the list, if the list supports object removal.
                  * @throws IllegalStateException if the iterator is positioned
@@ -441,7 +441,7 @@ public abstract class AbstractList extends AbstractCollection implements List,
                     setModCount(backingList.getModCount());
                 }
 
-                /**                 
+                /**
                  * Replaces the last object retrieved by <code>next()</code>
                  * or <code>previous</code> with o, if the list supports object
                  * replacement and an add or remove operation has not already
@@ -462,7 +462,7 @@ public abstract class AbstractList extends AbstractCollection implements List,
                     i.set(o);
                 }
 
-                /**                 
+                /**
                  * Adds the supplied object before the element that would be returned
                  * by a call to <code>next()</code>, if the list supports addition.
                  * @param o The object to add to the list.
@@ -660,7 +660,7 @@ public abstract class AbstractList extends AbstractCollection implements List,
 
     }
 
-    /**     
+    /**
      * This class is a RandomAccess version of SubList, as required by{
     @link AbstractList#subList(int, int)    }
     .
@@ -669,7 +669,7 @@ public abstract class AbstractList extends AbstractCollection implements List,
     private static final class RandomAccessSubList extends SubList implements
             RandomAccess, Rollbackable {
 
-        /**         
+        /**
          * Construct the sublist.
          * @param backing the list this comes from
          * @param fromIndex the lower bound, inclusive
@@ -693,13 +693,13 @@ public abstract class AbstractList extends AbstractCollection implements List,
 
     }
 
-    /**     
+    /**
      * The main constructor, for use by subclasses.
      */
     protected AbstractList() {
     }
 
-    /**     
+    /**
      * Returns the elements at the specified position in the list.
      * @param index the element to return
      * @return the element at that position
@@ -707,7 +707,7 @@ public abstract class AbstractList extends AbstractCollection implements List,
      */
     public abstract Object get(int index);
 
-    /**     
+    /**
      * Insert an element into the list at a given position (optional operation).
      * This shifts all existing elements from that position to the end one
      * index to the right.  This version of add has no return, since it is
@@ -730,7 +730,7 @@ public abstract class AbstractList extends AbstractCollection implements List,
         throw new UnsupportedOperationException();
     }
 
-    /**     
+    /**
      * Add an element to the end of the list (optional operation). If the list
      * imposes restraints on what can be inserted, such as no null elements,
      * this should be documented. This implementation calls
@@ -750,7 +750,7 @@ public abstract class AbstractList extends AbstractCollection implements List,
         return true;
     }
 
-    /**     
+    /**
      * Insert the contents of a collection into the list at a given position
      * (optional operation). Shift all elements at that position to the right
      * by the number of elements inserted. This operation is undefined if
@@ -781,7 +781,7 @@ public abstract class AbstractList extends AbstractCollection implements List,
         return size > 0;
     }
 
-    /**     
+    /**
      * Clear the list, such that a subsequent call to isEmpty() would return
      * true (optional operation). This implementation calls
      * <code>removeRange(0, size())</code>, so it will fail unless remove
@@ -795,7 +795,7 @@ public abstract class AbstractList extends AbstractCollection implements List,
         removeRange(0, size());
     }
 
-    /**     
+    /**
      * Test whether this list is equal to another object. A List is defined to be
      * equal to an object if and only if that object is also a List, and the two
      * lists have the same sequence. Two lists l1 and l2 are equal if and only
@@ -833,7 +833,7 @@ public abstract class AbstractList extends AbstractCollection implements List,
         return true;
     }
 
-    /**     
+    /**
      * Obtains a hash code for this list. In order to obey the general
      * contract of the hashCode method of class Object, this value is
      * calculated as follows:
@@ -859,7 +859,7 @@ public abstract class AbstractList extends AbstractCollection implements List,
         return hashCode;
     }
 
-    /**     
+    /**
      * Obtain the first index at which a given object is to be found in this
      * list. This implementation follows a listIterator() until a match is found,
      * or returns -1 if the list end is reached.
@@ -878,7 +878,7 @@ public abstract class AbstractList extends AbstractCollection implements List,
         return -1;
     }
 
-    /**     
+    /**
      * Obtain an Iterator over this list, whose sequence is the list order.
      * This implementation uses size(), get(int), and remove(int) of the
      * backing list, and does not support remove unless the list does. This
@@ -899,7 +899,7 @@ public abstract class AbstractList extends AbstractCollection implements List,
 
             private int knownMod = getModCount();
 
-            /**             
+            /**
              * Checks for modifications made to the list from
              * elsewhere while iteration is in progress.
              * @throws ConcurrentModificationException if the
@@ -911,7 +911,7 @@ public abstract class AbstractList extends AbstractCollection implements List,
                 }
             }
 
-            /**             
+            /**
              * Tests to see if there are any more objects to
              * return.
              * @return True if the end of the list has not yet been
@@ -921,7 +921,7 @@ public abstract class AbstractList extends AbstractCollection implements List,
                 return pos < size;
             }
 
-            /**             
+            /**
              * Retrieves the next object from the list.
              * @return The next object.
              * @throws NoSuchElementException if there are
@@ -938,7 +938,7 @@ public abstract class AbstractList extends AbstractCollection implements List,
                 return get($ASSIGN$SPECIAL$pos(11, pos));
             }
 
-            /**             
+            /**
              * Removes the last object retrieved by <code>next()</code>
              * from the list, if the list supports object removal.
              * @throws ConcurrentModificationException if the list
@@ -1133,7 +1133,7 @@ public abstract class AbstractList extends AbstractCollection implements List,
         };
     }
 
-    /**     
+    /**
      * Obtain the last index at which a given object is to be found in this
      * list. This implementation grabs listIterator(size()), then searches
      * backwards for a match or returns -1.
@@ -1151,7 +1151,7 @@ public abstract class AbstractList extends AbstractCollection implements List,
         return -1;
     }
 
-    /**     
+    /**
      * Obtain a ListIterator over this list, starting at the beginning. This
      * implementation returns listIterator(0).
      * @return a ListIterator over the elements of this list, in order, starting
@@ -1161,7 +1161,7 @@ public abstract class AbstractList extends AbstractCollection implements List,
         return listIterator(0);
     }
 
-    /**     
+    /**
      * Obtain a ListIterator over this list, starting at a given position.
      * A first call to next() would return the same as get(index), and a
      * first call to previous() would return the same as get(index - 1).
@@ -1191,7 +1191,7 @@ public abstract class AbstractList extends AbstractCollection implements List,
 
             private int size = size();
 
-            /**             
+            /**
              * Checks for modifications made to the list from
              * elsewhere while iteration is in progress.
              * @throws ConcurrentModificationException if the
@@ -1203,7 +1203,7 @@ public abstract class AbstractList extends AbstractCollection implements List,
                 }
             }
 
-            /**             
+            /**
              * Tests to see if there are any more objects to
              * return.
              * @return True if the end of the list has not yet been
@@ -1213,7 +1213,7 @@ public abstract class AbstractList extends AbstractCollection implements List,
                 return position < size;
             }
 
-            /**             
+            /**
              * Tests to see if there are objects prior to the
              * current position in the list.
              * @return True if objects exist prior to the current
@@ -1223,7 +1223,7 @@ public abstract class AbstractList extends AbstractCollection implements List,
                 return position > 0;
             }
 
-            /**             
+            /**
              * Retrieves the next object from the list.
              * @return The next object.
              * @throws NoSuchElementException if there are no
@@ -1240,7 +1240,7 @@ public abstract class AbstractList extends AbstractCollection implements List,
                 return get($ASSIGN$SPECIAL$position(11, position));
             }
 
-            /**             
+            /**
              * Retrieves the previous object from the list.
              * @return The next object.
              * @throws NoSuchElementException if there are no
@@ -1257,7 +1257,7 @@ public abstract class AbstractList extends AbstractCollection implements List,
                 return get(lastReturned);
             }
 
-            /**             
+            /**
              * Returns the index of the next element in the
              * list, which will be retrieved by <code>next()</code>
              * @return The index of the next element.
@@ -1266,7 +1266,7 @@ public abstract class AbstractList extends AbstractCollection implements List,
                 return position;
             }
 
-            /**             
+            /**
              * Returns the index of the previous element in the
              * list, which will be retrieved by <code>previous()</code>
              * @return The index of the previous element.
@@ -1275,7 +1275,7 @@ public abstract class AbstractList extends AbstractCollection implements List,
                 return position - 1;
             }
 
-            /**             
+            /**
              * Removes the last object retrieved by <code>next()</code>
              * or <code>previous()</code> from the list, if the list
              * supports object removal.
@@ -1299,7 +1299,7 @@ public abstract class AbstractList extends AbstractCollection implements List,
                 $ASSIGN$knownMod(getModCount());
             }
 
-            /**             
+            /**
              * Replaces the last object retrieved by <code>next()</code>
              * or <code>previous</code> with o, if the list supports object
              * replacement and an add or remove operation has not already
@@ -1324,7 +1324,7 @@ public abstract class AbstractList extends AbstractCollection implements List,
                 AbstractList.this.set(lastReturned, o);
             }
 
-            /**             
+            /**
              * Adds the supplied object before the element that would be returned
              * by a call to <code>next()</code>, if the list supports addition.
              * @param o The object to add to the list.
@@ -1532,7 +1532,7 @@ public abstract class AbstractList extends AbstractCollection implements List,
         };
     }
 
-    /**     
+    /**
      * Remove the element at a given position in this list (optional operation).
      * Shifts all remaining elements to the left to fill the gap. This
      * implementation always throws an UnsupportedOperationException.
@@ -1549,7 +1549,7 @@ public abstract class AbstractList extends AbstractCollection implements List,
         throw new UnsupportedOperationException();
     }
 
-    /**     
+    /**
      * Remove a subsection of the list. This is called by the clear and
      * removeRange methods of the class which implements subList, which are
      * difficult for subclasses to override directly. Therefore, this method
@@ -1574,7 +1574,7 @@ public abstract class AbstractList extends AbstractCollection implements List,
         }
     }
 
-    /**     
+    /**
      * Replace an element of this list with another object (optional operation).
      * This implementation always throws an UnsupportedOperationException.
      * @param index the position within this list of the element to be replaced
@@ -1592,7 +1592,7 @@ public abstract class AbstractList extends AbstractCollection implements List,
         throw new UnsupportedOperationException();
     }
 
-    /**     
+    /**
      * Obtain a List view of a subsection of this list, from fromIndex
      * (inclusive) to toIndex (exclusive). If the two indices are equal, the
      * sublist is empty. The returned list should be modifiable if and only
@@ -1621,7 +1621,7 @@ public abstract class AbstractList extends AbstractCollection implements List,
      * <p>
      * All methods first check to see if the actual modCount of the backing
      * list is equal to its expected value, and throw a
-     * ConcurrentModificationException if it is not. 
+     * ConcurrentModificationException if it is not.
      * @param fromIndex the index that the returned list should start from
      * (inclusive)
      * @param toIndex the index that the returned list should go to (exclusive)

@@ -1,6 +1,6 @@
 /*
  StringTokenHandler converts StringToken to/from byte stream
- 
+
  Copyright (c) 2011 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
@@ -37,9 +37,9 @@ import ptolemy.data.StringToken;
 //// StringTokenHandler
 
 /** StringTokenHandler converts StringToken to/from byte stream.
- * 
+ *
  *  @author ishwinde
- *  @version $Id$ 
+ *  @version $Id$
  *  @since Ptolemy II 8.1
  *  @Pt.ProposedRating Red (ishwinde)
  *  @Pt.AcceptedRating Red (ishwinde)
@@ -50,7 +50,7 @@ public class StringTokenHandler implements TokenHandler<StringToken> {
 
     /** Convert StringToken to a byte stream using an algorithm defined in the DataOutputStream.
      *  @see ptserver.data.handler.TokenHandler#convertToBytes(ptolemy.data.Token, java.io.DataOutputStream)
-     *  
+     *
      *  @param token The token to be converted to the byte stream.
      *  @param outputStream The byte stream to write the token to.
      *  @exception IOException If cannot write to the stream.
@@ -62,13 +62,13 @@ public class StringTokenHandler implements TokenHandler<StringToken> {
 
     /** Reads from the inputStream and converts it to the StringToken.
      *  @see ptserver.data.handler.TokenHandler#convertToToken(java.io.DataInputStream, Class)
-     *  
+     *
      *  @param inputStream The stream that contains the token.
-     *  @param tokenType The type of the token. Should be StringToken or it's derivatives. 
+     *  @param tokenType The type of the token. Should be StringToken or it's derivatives.
      *  @return The token that arrived on the stream.
      *  @exception IOException If the stream cannot be read.
      */
-    
+
     public StringToken convertToToken(DataInputStream inputStream,
             Class<? extends StringToken> tokenType)
             throws IOException {

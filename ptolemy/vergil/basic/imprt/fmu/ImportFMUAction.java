@@ -87,7 +87,7 @@ public class ImportFMUAction extends AbstractAction {
     // This package is called "imprt" because "import" is a Java keyword.
 
     /** Create a new action to import a Functional Mock-up Unit (FMU)
-     *  .fmu file.   
+     *  .fmu file.
      *  @param frame The Frame which to which this action is added.
      */
     public ImportFMUAction(Top frame) {
@@ -150,7 +150,7 @@ public class ImportFMUAction extends AbstractAction {
                 String fmuFileName = null;
 
                 // FIXME: Use URLs, not files so that we can work from JarZip files.
-            
+
                 // Only read the file if the name has changed from the last time we
                 // read the file or if the modification time has changed.
                 //fmuFileName = fmuFile.asFile().getCanonicalPath();
@@ -159,7 +159,7 @@ public class ImportFMUAction extends AbstractAction {
                     return;
                 }
                 _fmuFileName = fmuFileName;
-                
+
                 long modificationTime = new File(fmuFileName).lastModified();
                 if (_fmuFileModificationTime == modificationTime) {
                     return;
@@ -181,11 +181,11 @@ public class ImportFMUAction extends AbstractAction {
      *  The _fmuFileName field is set the first time we read
      *  the file named by the <i>fmuFile</i> parameter.  The
      *  file named by the <i>fmuFile</i> parameter is only read
-     *  if the name has changed or if the modification time of 
+     *  if the name has changed or if the modification time of
      *  the file is later than the time the file was last read.
      */
     private String _fmuFileName = null;
-    
+
     /** The modification time of the file named by the
      *  <i>fmuFile</i> parameter the last time the file was read.
      */

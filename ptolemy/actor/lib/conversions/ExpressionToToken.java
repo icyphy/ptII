@@ -50,7 +50,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  This actor reads a string expression from the input port and outputs
  the token resulting from the evaluation.  The type of the output port
  is by default undeclared. To use this actor, you may need to declare
- the output type. Depending on how the output is used, if 
+ the output type. Depending on how the output is used, if
  backward type resolution is enabled in the model
  (the default, see the parameters of the top-level model), then
  the type will resolve to the most general type acceptable to
@@ -214,7 +214,7 @@ public class ExpressionToToken extends Converter {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private members                   ////
-    
+
     /** The parser to use. */
     private PtParser _parser = null;
 

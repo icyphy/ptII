@@ -1,4 +1,4 @@
-/* An event notifying about changes in the visual content. 
+/* An event notifying about changes in the visual content.
 
 Copyright (c) 2000-2010 The Regents of the University of California.
 All rights reserved.
@@ -35,9 +35,9 @@ import ptolemy.homer.kernel.PositionableElement;
 //// VisualContentEvent
 
 /** An event notifying about changes in the visual content.
- * 
+ *
  *  @author Peter Foldes
- *  @version $Id$ 
+ *  @version $Id$
  *  @since Ptolemy II 8.1
  *  @Pt.ProposedRating Red (pdf)
  *  @Pt.AcceptedRating Red (pdf)

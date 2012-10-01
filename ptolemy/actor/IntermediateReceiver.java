@@ -66,7 +66,7 @@ public class IntermediateReceiver extends AbstractReceiver {
         _receiver = receiver;
         quantityManager = qm;
     }
-    
+
     /** Construct an intermediate receiver with no container that wraps the
      *  specified receiver using the specified quantity manager.
      *  @param qm The quantity manager that receives tokens received by this receiver.
@@ -78,10 +78,10 @@ public class IntermediateReceiver extends AbstractReceiver {
         quantityManager = qm;
         _port = port;
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
-    
+
     /** Quantity manager that receives tokens from this receiver. */
     public QuantityManager quantityManager;
 
@@ -155,7 +155,7 @@ public class IntermediateReceiver extends AbstractReceiver {
      *  the constructor.
      */
     public void put(Token token) throws NoRoomException, IllegalActionException {
-        if (_port != null) { 
+        if (_port != null) {
             ((CompositeQuantityManager)quantityManager)
                     .sendToken(this, _receiver, token, _port);
         } else {
@@ -173,13 +173,13 @@ public class IntermediateReceiver extends AbstractReceiver {
     public void setContainer(IOPort port) throws IllegalActionException {
         _receiver.setContainer(port);
     }
-     
+
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
 
     /** Target receiver that is wrapped by this intermediate receiver.  */
     protected Receiver _receiver;
-    
+
     /** The port. */
     protected IOPort _port;
 }

@@ -151,10 +151,10 @@ public class SequenceAttribute extends Parameter implements Comparable {
     }
 
     /** Return true if this SequenceAttribute has the same sequence
-     *  number as the given SequenceAttribute.  
+     *  number as the given SequenceAttribute.
      *  @param sequenceAttribute The SequenceAttribute object that this
      *  SequenceAttribute object is compared to.
-     *  @return True if the two SequenceAttribute objects have the same 
+     *  @return True if the two SequenceAttribute objects have the same
      *  sequence number, name and workspace
      */
     public boolean equals(Object sequenceAttribute) {

@@ -72,7 +72,7 @@ import ptolemy.util.MessageHandler;
  be interepreted this way. Without this suffix, Vergil
  will be used to open the URL. Note that Vergil's HTML
  viewer does not handle many modern pages well.
- 
+
  @author Edward A. Lee
  @version $Id$
  @since Ptolemy II 5.2
@@ -92,13 +92,13 @@ public class LiveLink extends FileParameter implements Editable {
     public LiveLink(NamedObj container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        
+
         setExpression("http://ptolemy.org#in_browser");
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-    
+
     /** Create an editor.
      *  This editor will have no parent window.
      */

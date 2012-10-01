@@ -138,8 +138,8 @@ public class Pre extends Transformer {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         protected methods                 ////    
-    
+    ////                         protected methods                 ////
+
     /** Return a constraint that requires the initial value to be less than or
      *  equal to the type of the output.
      */
@@ -164,7 +164,7 @@ public class Pre extends Transformer {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    
+
     /** The most recent token received on the current iteration to be
         output on the next iteration. */
     private Token _currentToken;

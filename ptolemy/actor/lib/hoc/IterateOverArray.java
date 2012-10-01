@@ -242,7 +242,7 @@ public class IterateOverArray extends MirrorComposite {
             while (iterateDirectors.hasNext()) {
                 IterateDirector oldIterateDirector = (IterateDirector)iterateDirectors.next();
                 if (iterateDirectorName == null) {
-                    iterateDirectorName = oldIterateDirector.getName();                
+                    iterateDirectorName = oldIterateDirector.getName();
                 }
                 oldIterateDirector.setContainer(null);
             }
@@ -396,7 +396,7 @@ public class IterateOverArray extends MirrorComposite {
         Iterator<IOPort> destinationPorts;
         List<Inequality> result = new LinkedList<Inequality>();
         boolean srcUndeclared = sourcePort.getTypeTerm().isSettable();
-        
+
         if (sourcePort.isInput()) {
             destinationPorts = sourcePort.insideSinkPortList().iterator();
         } else {
@@ -425,7 +425,7 @@ public class IterateOverArray extends MirrorComposite {
                         InequalityTerm typeTerm = sourcePort.getTypeTerm();
                         if (typeTerm.isSettable()) {
                             result.add(new Inequality(
-                                    new GLBArrayFunction(sourcePort), 
+                                    new GLBArrayFunction(sourcePort),
                                     typeTerm));
                         }
                     }
@@ -451,7 +451,7 @@ public class IterateOverArray extends MirrorComposite {
                                 ArrayType.elementType(sourcePort),
                                 destinationPort.getTypeTerm());
                         result.add(ineq);
-                        
+
                         // Finally, if backward type inference is enabled,
                         // require that the source array element type be greater
                         // than or equal to the GLB of all the destination ports.
@@ -459,14 +459,14 @@ public class IterateOverArray extends MirrorComposite {
                             InequalityTerm typeTerm = sourcePort.getTypeTerm();
                             if (typeTerm.isSettable()) {
                                 result.add(new Inequality(
-                                        new GLBArrayFunction(sourcePort), 
+                                        new GLBArrayFunction(sourcePort),
                                         typeTerm));
                             }
                         }
                     } catch (IllegalActionException e) {
                         throw new InternalErrorException(e);
                     }
-                    
+
                 } else if (destinationPort.getContainer().equals(this)) {
                     // Require that the destination port type be an array
                     // with elements compatible with the source port.
@@ -475,7 +475,7 @@ public class IterateOverArray extends MirrorComposite {
                                 ArrayType.arrayOf(sourcePort),
                                 destinationPort.getTypeTerm());
                         result.add(ineq);
-                        
+
                         // Also require that the source port type
                         // be greater than or equal to the GLB of all
                         // its destination ports (or array element types
@@ -486,7 +486,7 @@ public class IterateOverArray extends MirrorComposite {
                             InequalityTerm typeTerm = sourcePort.getTypeTerm();
                             if (typeTerm.isSettable()) {
                                 result.add(new Inequality(
-                                        new GLBArrayElementFunction(sourcePort), 
+                                        new GLBArrayElementFunction(sourcePort),
                                         typeTerm));
                             }
                         }
@@ -526,12 +526,12 @@ public class IterateOverArray extends MirrorComposite {
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
-    
+
     ///////////////////////////////////////////////////////////////////
     //// GLBArrayFunction
 
     /** This class implements a monotonic function that returns an array
-     *  type with element type equal to the greatest 
+     *  type with element type equal to the greatest
      *  lower bound (GLB) of its arguments, or if any
      *  of its arguments is itself a port belonging to
      *  this IterateOverArray actor, then its array element type.
@@ -554,7 +554,7 @@ public class IterateOverArray extends MirrorComposite {
     ///////////////////////////////////////////////////////////////////
     //// GLBArrayElementFunction
 
-    /** This class implements a monotonic function that returns the greatest 
+    /** This class implements a monotonic function that returns the greatest
      *  lower bound (GLB) of its arguments or the array element type
      *  of its arguments. Specifically, if one of the arguments is a port
      *  belonging to the enclosing task, then it references the array element

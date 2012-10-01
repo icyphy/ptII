@@ -182,11 +182,11 @@ public class StreamExec implements ExecuteCommands {
      *  @see #stdout(String)
      */
     public String getPatternLog() {
-	String patternOutLog = _patternOutLog.toString();
-	String patternErrorLog = _patternErrorLog.toString();
-	_patternOutLog = new StringBuffer();
-	_patternErrorLog = new StringBuffer();
-	return patternOutLog + patternErrorLog;
+        String patternOutLog = _patternOutLog.toString();
+        String patternErrorLog = _patternErrorLog.toString();
+        _patternOutLog = new StringBuffer();
+        _patternErrorLog = new StringBuffer();
+        return patternOutLog + patternErrorLog;
     }
 
     /** Return the return code of the last subprocess that was executed.
@@ -205,7 +205,7 @@ public class StreamExec implements ExecuteCommands {
 
     /** Set the pattern that is used to search data sent to stdout.
      *  <p>If the value of the pattern argument is non-null, then
-     *  each time {@link #stdout(String)} is called, the value of 
+     *  each time {@link #stdout(String)} is called, the value of
      *  the argument to stdout is compared with the pattern
      *  regex.  If there is a match, then the value is appended
      *  to a StringBuffer that whose value may be obtained with
@@ -216,10 +216,10 @@ public class StreamExec implements ExecuteCommands {
      *  @see #getPatternLog()
      */
     public void setPattern(String pattern) {
-	_eol = StringUtilities.getProperty("line.separator");
-	_pattern = Pattern.compile(pattern);
-	_patternOutLog = new StringBuffer();
-	_patternErrorLog = new StringBuffer();
+        _eol = StringUtilities.getProperty("line.separator");
+        _pattern = Pattern.compile(pattern);
+        _patternOutLog = new StringBuffer();
+        _patternErrorLog = new StringBuffer();
     }
     /** Determine whether the last subprocess is waited for or not.
      *  @param waitForLastSubprocess True if the {@link #start()}
@@ -255,10 +255,10 @@ public class StreamExec implements ExecuteCommands {
      *  @param text The text to append to standard error.
      */
     public void stderr(final String text) {
-	if (_pattern != null 
-	    && _pattern.matcher(text).matches()) {
-	    _patternErrorLog.append(text + _eol);
-	}
+        if (_pattern != null
+            && _pattern.matcher(text).matches()) {
+            _patternErrorLog.append(text + _eol);
+        }
         System.err.println(text);
         System.err.flush();
     }
@@ -267,17 +267,17 @@ public class StreamExec implements ExecuteCommands {
      *  append to a StringBuffer.  {@link ptolemy.gui.JTextAreaExec} appends to a
      *  JTextArea.
      *  The output automatically gets a trailing newline appended.
-     *  <p>If {@link #setPattern(String)} has been called with a 
+     *  <p>If {@link #setPattern(String)} has been called with a
      *  non-null argument, then any text that matches the pattern
      *  regex will be appended to a log file.  The log file
      *  may be read with {@link #getPatternLog()}.</p>
      *  @param text The text to append to standard out.
      */
     public void stdout(final String text) {
-	if (_pattern != null 
-	    && _pattern.matcher(text).matches()) {
-	    _patternOutLog.append(text + _eol);
-	}
+        if (_pattern != null
+            && _pattern.matcher(text).matches()) {
+            _patternOutLog.append(text + _eol);
+        }
         System.out.println(text);
         System.out.flush();
     }
@@ -515,7 +515,7 @@ public class StreamExec implements ExecuteCommands {
      */
     private String[] _envp;
 
-    /** The regex pattern used to match against the output of 
+    /** The regex pattern used to match against the output of
      *  the subprocess.
      */
     private Pattern _pattern;
@@ -525,7 +525,7 @@ public class StreamExec implements ExecuteCommands {
 
     /** The StringBuffer that contains matches to calls to stderr(). */
     private StringBuffer _patternOutLog;
-	
+
     /** The Process that we are running. */
     private Process _process;
 

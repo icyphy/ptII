@@ -340,15 +340,15 @@ public class CaseGraphFrame extends ActorGraphFrame implements ChangeListener {
                         Set<Port> portsToMirror = new HashSet<Port>();
                         while (ports.hasNext()) {
                             Port port = (Port) ports.next();
-                            
+
                             // see if we should mirror the port
                             if(port != _case.control.getPort()) {
                                 portsToMirror.add(port);
                             }
                         }
-                        
+
                         MultiCompositeActor.mirrorContainerPortsInRefinement(entity, portsToMirror);
-                        
+
                         JGraph jgraph = _addTabbedPane(entity, true);
                         ((CaseGraphController) _controller)._addHotKeys(jgraph);
                     }

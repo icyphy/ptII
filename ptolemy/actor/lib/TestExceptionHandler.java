@@ -105,7 +105,7 @@ public class TestExceptionHandler extends TypedAtomicActor implements
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-    
+
     /** Initialize. */
     public void initialize() throws IllegalActionException {
         super.initialize();

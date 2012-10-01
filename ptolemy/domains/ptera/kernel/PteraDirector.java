@@ -537,9 +537,9 @@ public class PteraDirector extends Director implements ValueListener {
         }
         return super.getModelTime();
     }
-    
+
     /** Return the exception (if any) that occured when the refinement was fired.
-     *  @return The exception.   
+     *  @return The exception.
      */
     public IllegalActionException getModelException() {
         return _refinementException;
@@ -1089,7 +1089,7 @@ public class PteraDirector extends Director implements ValueListener {
                         if (!event._isActiveRefinement(refinement)) {
                             continue;
                         }
-                        
+
                         try {
                             _refinementException = null;
                             _initializeAndFireRefinement(refinement,
@@ -1098,8 +1098,8 @@ public class PteraDirector extends Director implements ValueListener {
                         } catch (IllegalActionException ex) {   //FIXME: Dai
                             _refinementException = ex;
                         }
-                        
-                        
+
+
                     }
                 }
             }
@@ -1153,7 +1153,7 @@ public class PteraDirector extends Director implements ValueListener {
 
             actor.fire();
             boolean postfire = actor.postfire();
-            
+
             boolean ending = false;
             if (postfire && actor instanceof PteraController) {
                 PteraDirector director = (PteraDirector) ((PteraController) actor)
@@ -1365,8 +1365,8 @@ public class PteraDirector extends Director implements ValueListener {
 
     /** The real time at which the execution started. */
     private long _realStartTime;
-    
+
     /** The exception (if any) that occured when the refinement was fired. */
     private IllegalActionException _refinementException = null;
-    
+
 }

@@ -99,8 +99,8 @@ public class AttributeChangeToken extends Token {
     }
 
     /** The hashCode method generates an identifier based on the stored
-     *  expression and the target settable object. Used to check equality. 
-     *  @return The hashcode of the instance. 
+     *  expression and the target settable object. Used to check equality.
+     *  @return The hashcode of the instance.
      */
     @Override
     public int hashCode() {

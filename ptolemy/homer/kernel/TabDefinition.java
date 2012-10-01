@@ -1,5 +1,5 @@
-/* Define tab properties and content. 
- 
+/* Define tab properties and content.
+
  Copyright (c) 2011 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
@@ -39,7 +39,7 @@ import ptolemy.kernel.util.StringAttribute;
 ///////////////////////////////////////////////////////////////////
 //// TabDefinition
 
-/** Define tab properties and content. 
+/** Define tab properties and content.
  *
  *  @author Peter Foldes
  *  @version $Id$
@@ -53,7 +53,7 @@ public class TabDefinition {
     ////                constructor                                ////
 
     /** Tab element to hold the content for visual representation.
-     * 
+     *
      *  @param tag The tag used to identify this tab.
      *  @param name The name of the tab. This will used in the user
      *  interface.
@@ -95,7 +95,7 @@ public class TabDefinition {
 
     /** Add an element to the contents of this tab. The element has to have
      *  at least the location defined.
-     * 
+     *
      *  @param element Ptolemy element with location defined.
      *  @throws IllegalActionException If the element cannot be added to the
      *  tab content area, or if the tab content area has not been set.
@@ -113,7 +113,7 @@ public class TabDefinition {
 
     /** Remove an element to the contents of this tab.
     /** Return the content area of the tab.
-     * 
+     *
      * @return The content area of the tab, or null if it has not been set.
      * @see #setContent(ContentPrototype)
      */
@@ -133,7 +133,7 @@ public class TabDefinition {
     }
 
     /** Get the underlying Ptolemy object representing the tab.
-     * 
+     *
      *  @return The Ptolemy object representing the tab.
      */
     public StringAttribute getTabAttribute() {
@@ -148,7 +148,7 @@ public class TabDefinition {
     }
 
     /** Set the content area of the tab.
-     * 
+     *
      *  @param content The content to be used in the tab.
      *  @see #getContent()
      */
@@ -157,7 +157,7 @@ public class TabDefinition {
     }
 
     /** Set the name of the tab.
-     * 
+     *
      *  @param name The new name of the tab.
      *  @exception IllegalActionException If the new name is not accepted by the model.
      *  @see #getName()
@@ -167,9 +167,9 @@ public class TabDefinition {
     }
 
     /** Remove an element to the contents of this tab.
-     * 
+     *
      *  @param element Ptolemy element with location defined.
-     *  @throws IllegalActionException If the element cannot be removed from 
+     *  @throws IllegalActionException If the element cannot be removed from
      *  the tab content area, or if the tab content area has not been set.
      */
     public void removeContent(PositionableElement element)
@@ -183,7 +183,7 @@ public class TabDefinition {
     }
 
     /** Get all the elements on this tab.
-     * 
+     *
      *  @return List of all elements kept on this tab.
      */
     public ArrayList<PositionableElement> getElements() {
@@ -201,7 +201,7 @@ public class TabDefinition {
      */
     private StringAttribute _tabElement;
 
-    /** List of elements on the tab. 
+    /** List of elements on the tab.
      */
     private ArrayList<PositionableElement> _elements = new ArrayList<PositionableElement>();
 }

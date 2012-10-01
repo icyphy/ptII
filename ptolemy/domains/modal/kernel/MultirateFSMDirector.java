@@ -58,7 +58,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 /**
  This director extends FSMDirector by supporting production and consumption
  of multiple tokens on a port in a firing. This director assumes that every
- state has exactly one refinement, with one exception. 
+ state has exactly one refinement, with one exception.
  <p>
  A state may have no
  refinement if upon being entered, it has an outgoing transition with a guard
@@ -483,7 +483,7 @@ public class MultirateFSMDirector extends FSMDirector {
         if ((currentRefinements == null) || (currentRefinements.length != 1)) {
             throw new IllegalActionException(this,
                     "The initial state is required to have exactly one refinement: \""
-                    + initialState.getName() 
+                    + initialState.getName()
                     + "\".  The getRefinement() method on the \""
                     + initialState.getName()
                     + "\" state returned "

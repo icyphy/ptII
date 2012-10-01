@@ -48,7 +48,7 @@ import com.ibm.mqtt.MqttSimpleCallback;
  *  converting back to tokens and putting those tokens into appropriate queues.
  *
  *  @author Anar Huseynov
- *  @version $Id: TokenListener.java 61629 2011-07-28 02:17:45Z ahuseyno $
+ *  @version $Id$
  *  @since Ptolemy II 8.0
  *  @Pt.ProposedRating Red (ahuseyno)
  *  @Pt.AcceptedRating Red (ahuseyno)
@@ -118,7 +118,7 @@ public class TokenListener implements MqttSimpleCallback {
                     try {
                         listener.setEnabled(false);
                         // Note: obtaining the write access breaks this functionality.
-                        // Disabled for now since documentation does not say that 
+                        // Disabled for now since documentation does not say that
                         // write access needs to be obtained for setting the expression.
                         //                        ((Attribute) remoteAttribute).workspace()
                         //                                .getWriteAccess();
@@ -158,14 +158,14 @@ public class TokenListener implements MqttSimpleCallback {
      */
     private int _batchCount;
     /**
-     * The logger used by the ptserver. 
+     * The logger used by the ptserver.
      */
     private static final Logger _LOGGER = Logger.getLogger("PtolemyServer");
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
 
-    /** The task that sends the pong back. 
+    /** The task that sends the pong back.
      */
     private class PongTask implements Runnable {
 

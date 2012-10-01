@@ -1723,19 +1723,19 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
 
         String keystorePropertiesFileName = null;
 
-	// If called with -Dptolemy.ptII.ptKeystore=/Users/hudson/ptKeystore.properties
-	// then use that file as the property file, otherwise use $PTII/ptKeystore.properties
-	// We do this so that we don't accidentally check in the ptKeystore.properties file.
-	String ptKeystoreProperty = StringUtilities.getProperty("ptolemy.ptII.ptKeystore"); 
-	System.out.println("ptKeystoreProperty: " + ptKeystoreProperty);
-	if (!ptKeystoreProperty.equals("")) {
-	    keystorePropertiesFileName = ptKeystoreProperty;
-	} else {
-	    keystorePropertiesFileName = StringUtilities
+        // If called with -Dptolemy.ptII.ptKeystore=/Users/hudson/ptKeystore.properties
+        // then use that file as the property file, otherwise use $PTII/ptKeystore.properties
+        // We do this so that we don't accidentally check in the ptKeystore.properties file.
+        String ptKeystoreProperty = StringUtilities.getProperty("ptolemy.ptII.ptKeystore");
+        System.out.println("ptKeystoreProperty: " + ptKeystoreProperty);
+        if (!ptKeystoreProperty.equals("")) {
+            keystorePropertiesFileName = ptKeystoreProperty;
+        } else {
+            keystorePropertiesFileName = StringUtilities
                 .getProperty("ptolemy.ptII.dir")
                 + File.separator
                 + "ptKeystore.properties";
-	}
+        }
         Properties properties = new Properties();
         try {
             FileInputStream fileInputStream = null;
@@ -1984,13 +1984,13 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
                                 + temporaryJarFileName + " to " + jarFile
                                 + ".");
                     }
-		    File jarFileDirectory = jarFile.getParentFile();
-		    if (!jarFileDirectory.isDirectory()) {
-			if (!jarFileDirectory.mkdirs()) {
-			    throw new IOException("Could not create directory \""
-						  + jarFileDirectory + "\"");
-			}
-		    }
+                    File jarFileDirectory = jarFile.getParentFile();
+                    if (!jarFileDirectory.isDirectory()) {
+                        if (!jarFileDirectory.mkdirs()) {
+                            throw new IOException("Could not create directory \""
+                                                  + jarFileDirectory + "\"");
+                        }
+                    }
 
                     if (!jarFile.createNewFile()) {
                         System.out.println("Warning: could not create \""
@@ -2001,9 +2001,9 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
                                 + jarFile.getCanonicalPath() + "\" after test creation.");
                     }
 
-		    if (!temporaryJarFileName.renameTo(jarFile)) {
-			throw new IOException("Attempt #2: Failed to rename \""
-  		            + temporaryJarFileName + "\" to \"" + jarFile
+                    if (!temporaryJarFileName.renameTo(jarFile)) {
+                        throw new IOException("Attempt #2: Failed to rename \""
+                              + temporaryJarFileName + "\" to \"" + jarFile
                             + "\", source file "
                             + (temporaryJarFileName.exists() ? "exists" : "does not exist")
                             + ", destination file "
@@ -2011,10 +2011,10 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
                             + ", destination file "
                             + (jarFile.canWrite() ? "can" : "cannot")
                             + " be written.  "
-			    + "The directory " + jarFileDirectory
-			    + (jarFileDirectory.isDirectory() ? " is" : " is not")
-			    + " a directory.");
-		    }
+                            + "The directory " + jarFileDirectory
+                            + (jarFileDirectory.isDirectory() ? " is" : " is not")
+                            + " a directory.");
+                    }
                 }
             }
         }

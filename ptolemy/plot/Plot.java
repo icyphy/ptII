@@ -204,7 +204,7 @@ import ptolemy.util.RunnableExceptionCatcher;
  };
  synchronized (plot) {
      plot.deferIfNecessary(doAction);
- } 
+ }
  </pre>
  Note that deferIfNecessary() is not synchronized, but the caller of
  deferIfNecessary() should be synchronized on the Plot object.
@@ -467,7 +467,7 @@ public class Plot extends PlotBox implements PlotInterface {
     public boolean getLineStyles() {
         // FIXME: should this be syncronized?
         // FindBugs reports "Unsynchronize get method, synchronized
-        // set method".  
+        // set method".
         return _lineStyles;
     }
 
@@ -536,7 +536,7 @@ public class Plot extends PlotBox implements PlotInterface {
     }
 
     /** Mark the disconnections with a Dot in case value equals true, otherwise these
-     *  points are not marked. 
+     *  points are not marked.
      *  @param value True when disconnections should be marked.
      */
     public void markDisconnections(boolean value) {

@@ -45,7 +45,7 @@ import ptolemy.backtrack.Checkpoint;
 import ptolemy.backtrack.Rollbackable;
 import ptolemy.backtrack.util.FieldRecord;
 
-/** 
+/**
  * This class provides a hashtable-backed implementation of the
  * Map interface, with predictable traversal order.
  * <p>
@@ -81,9 +81,9 @@ import ptolemy.backtrack.util.FieldRecord;
  * you can also control the removal of the oldest entry, and thereby do
  * things like keep the map at a fixed size.
  * <p>
- * Under ideal circumstances (no collisions), LinkedHashMap offers O(1) 
+ * Under ideal circumstances (no collisions), LinkedHashMap offers O(1)
  * performance on most operations (<code>containsValue()</code> is,
- * of course, O(n)).  In the worst case (all keys map to the same 
+ * of course, O(n)).  In the worst case (all keys map to the same
  * hash code -- very unlikely), most operations are O(n).  Traversal is
  * faster than in HashMap (proportional to the map size, and not the space
  * allocated for the map), but other operations may be slower because of the
@@ -111,41 +111,41 @@ import ptolemy.backtrack.util.FieldRecord;
  */
 public class LinkedHashMap extends HashMap implements Rollbackable {
 
-    /**     
+    /**
      * Compatible with JDK 1.4.
      */
     private static final long serialVersionUID = 3801124242820219131L;
 
-    /**     
+    /**
      * The oldest Entry to begin iteration at.
      */
     private transient LinkedHashEntry root;
 
-    /**     
+    /**
      * The iteration order of this linked hash map: <code>true</code> for
      * access-order, <code>false</code> for insertion-order.
      * @serial true for access order traversal
      */
     final boolean accessOrder;
 
-    /**     
+    /**
      * Class to represent an entry in the hash table. Holds a single key-value
      * pair and the doubly-linked insertion order list.
      */
     class LinkedHashEntry extends HashEntry implements Rollbackable {
 
-        /**         
+        /**
          * The predecessor in the iteration list. If this entry is the root
          * (eldest), pred points to the newest entry.
          */
         private LinkedHashEntry pred;
 
-        /**         
-         * The successor in the iteration list, null if this is the newest. 
+        /**
+         * The successor in the iteration list, null if this is the newest.
          */
         private LinkedHashEntry succ;
 
-        /**         
+        /**
          * Simple constructor.
          * @param key the key
          * @param value the value
@@ -162,7 +162,7 @@ public class LinkedHashMap extends HashMap implements Rollbackable {
             }
         }
 
-        /**         
+        /**
          * Called when this entry is accessed via put or get. This version does
          * the necessary bookkeeping to keep the doubly-linked list in order,
          * after moving this element to the newest position in access order.
@@ -185,7 +185,7 @@ public class LinkedHashMap extends HashMap implements Rollbackable {
             }
         }
 
-        /**         
+        /**
          * Called when this entry is removed from the map. This version does
          * the necessary bookkeeping to keep the doubly-linked list in order.
          * @return the value of this key as it is removed
@@ -266,7 +266,7 @@ public class LinkedHashMap extends HashMap implements Rollbackable {
     }
 
     // class LinkedHashEntry
-    /**     
+    /**
      * Construct a new insertion-ordered LinkedHashMap with the default
      * capacity (11) and the default load factor (0.75).
      */
@@ -275,7 +275,7 @@ public class LinkedHashMap extends HashMap implements Rollbackable {
         accessOrder = false;
     }
 
-    /**     
+    /**
      * Construct a new insertion-ordered LinkedHashMap from the given Map,
      * with initial capacity the greater of the size of <code>m</code> or
      * the default of 11.
@@ -292,7 +292,7 @@ public class LinkedHashMap extends HashMap implements Rollbackable {
         accessOrder = false;
     }
 
-    /**     
+    /**
      * Construct a new insertion-ordered LinkedHashMap with a specific
      * inital capacity and default load factor of 0.75.
      * @param initialCapacity the initial capacity of this HashMap (&gt;= 0)
@@ -303,7 +303,7 @@ public class LinkedHashMap extends HashMap implements Rollbackable {
         accessOrder = false;
     }
 
-    /**     
+    /**
      * Construct a new insertion-orderd LinkedHashMap with a specific
      * inital capacity and load factor.
      * @param initialCapacity the initial capacity (&gt;= 0)
@@ -316,7 +316,7 @@ public class LinkedHashMap extends HashMap implements Rollbackable {
         accessOrder = false;
     }
 
-    /**     
+    /**
      * Construct a new LinkedHashMap with a specific inital capacity, load
      * factor, and ordering mode.
      * @param initialCapacity the initial capacity (&gt;=0)
@@ -331,7 +331,7 @@ public class LinkedHashMap extends HashMap implements Rollbackable {
         this.accessOrder = accessOrder;
     }
 
-    /**     
+    /**
      * Clears the Map so it has no keys. This is O(1).
      */
     public void clear() {
@@ -339,7 +339,7 @@ public class LinkedHashMap extends HashMap implements Rollbackable {
         setRoot(null);
     }
 
-    /**     
+    /**
      * Returns <code>true</code> if this HashMap contains a value
      * <code>o</code>, such that <code>o.equals(value)</code>.
      * @param value the value to search for in this HashMap
@@ -356,7 +356,7 @@ public class LinkedHashMap extends HashMap implements Rollbackable {
         return false;
     }
 
-    /**     
+    /**
      * Return the value in this Map associated with the supplied key,
      * or <code>null</code> if the key maps to nothing.  If this is an
      * access-ordered Map and the key is found, this performs structural
@@ -381,7 +381,7 @@ public class LinkedHashMap extends HashMap implements Rollbackable {
         return null;
     }
 
-    /**     
+    /**
      * Returns <code>true</code> if this map should remove the eldest entry.
      * This method is invoked by all calls to <code>put</code> and
      * <code>putAll</code> which place a new entry in the map, providing
@@ -420,7 +420,7 @@ public class LinkedHashMap extends HashMap implements Rollbackable {
         return false;
     }
 
-    /**     
+    /**
      * Helper method called by <code>put</code>, which creates and adds a
      * new Entry, followed by performing bookkeeping (like removeEldestEntry).
      * @param key the key of the new Entry
@@ -440,7 +440,7 @@ public class LinkedHashMap extends HashMap implements Rollbackable {
         }
     }
 
-    /**     
+    /**
      * Helper method, called by clone() to reset the doubly-linked list.
      * @param m the map to add entries from
      * @see #clone()
@@ -450,7 +450,7 @@ public class LinkedHashMap extends HashMap implements Rollbackable {
         super.putAllInternal(m);
     }
 
-    /**     
+    /**
      * Generates a parameterized iterator. This allows traversal to follow
      * the doubly-linked list instead of the random bin order of HashMap.
      * @param type {
@@ -464,22 +464,22 @@ public class LinkedHashMap extends HashMap implements Rollbackable {
      */
     Iterator iterator(final int type) {
         return new Iterator() {
-            /**             
-             * The current Entry. 
+            /**
+             * The current Entry.
              */
             private LinkedHashEntry current = getRoot();
 
-            /**             
-             * The previous Entry returned by next(). 
+            /**
+             * The previous Entry returned by next().
              */
             private LinkedHashEntry last;
 
-            /**             
-             * The number of known modifications to the backing Map. 
+            /**
+             * The number of known modifications to the backing Map.
              */
             private int knownMod = getModCount();
 
-            /**             
+            /**
              * Returns true if the Iterator has more elements.
              * @return true if there are more elements
              */
@@ -487,7 +487,7 @@ public class LinkedHashMap extends HashMap implements Rollbackable {
                 return getCurrent() != null;
             }
 
-            /**             
+            /**
              * Returns the next element in the Iterator's sequential view.
              * @return the next element
              * @throws ConcurrentModificationException if the HashMap was modified
@@ -506,7 +506,7 @@ public class LinkedHashMap extends HashMap implements Rollbackable {
                         : type == KEYS ? getLast().getKeyField() : getLast();
             }
 
-            /**             
+            /**
              * Removes from the backing HashMap the last element which was fetched
              * with the <code>next()</code> method.
              * @throws ConcurrentModificationException if the HashMap was modified

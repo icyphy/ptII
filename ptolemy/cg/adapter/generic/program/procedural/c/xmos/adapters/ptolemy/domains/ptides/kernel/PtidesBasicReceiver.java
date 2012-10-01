@@ -67,13 +67,13 @@ public class PtidesBasicReceiver
             throws IllegalActionException {
         super(receiver);
     }
-    
-    
-    
+
+
+
     public String generatePutCode(IOPort sourcePort, String offset, String token)
             throws IllegalActionException {
         TypedIOPort sinkPort = (TypedIOPort) getComponent().getContainer();
-        
+
         if (sinkPort.isOutput()) {
             StringBuffer code = new StringBuffer();
             // This should only occur if the we have an actor governed
@@ -95,23 +95,23 @@ public class PtidesBasicReceiver
             }
             return code.toString();
         }
-        
+
         int sinkChannel = sinkPort.getChannelForReceiver(getComponent());
-        
+
         Channel source = new Channel(sourcePort, 0);
         Channel sink = new Channel(sinkPort, sinkChannel);
-        
+
         token = ((NamedProgramCodeGeneratorAdapter) getAdapter(getComponent()
                 .getContainer().getContainer())).getTemplateParser()
                 .generateTypeConvertStatement(source, sink, 0, token);
-        
+
         token = _removeSink(token);
-        
+
         Actor actor = (Actor) sinkPort.getContainer();
-        Director director = actor.getDirector(); 
+        Director director = actor.getDirector();
         String depth = Integer
                 .toString(((CausalityInterfaceForComposites) director
-                        .getCausalityInterface()).getDepthOfActor(actor)); 
+                        .getCausalityInterface()).getDepthOfActor(actor));
         Parameter relativeDeadline = (Parameter) sinkPort
                 .getAttribute("relativeDeadline");
         String deadlineSecsString = null;
@@ -130,7 +130,7 @@ public class PtidesBasicReceiver
             throw new IllegalActionException(sinkPort,
             "Cannot get the deadline Parameter.");
         }
-        
+
         // Getting offsetTime.
         Parameter offsetTime = (Parameter) sinkPort.getAttribute("delayOffset");
         String offsetSecsString = null;
@@ -146,24 +146,24 @@ public class PtidesBasicReceiver
             throw new IllegalActionException(sinkPort,
                     "Cannot get the delayOffset Parameter.");
         }
-        
-        String sourceTime;  
-        
+
+        String sourceTime;
+
         NamedProgramCodeGeneratorAdapter adapter = (NamedProgramCodeGeneratorAdapter) getAdapter(sourcePort.getContainer());
 
         sourceTime = adapter.getSourceTimeString("sourceTime");
-        if (sourceTime.equals("")) { // use default input output actor 
+        if (sourceTime.equals("")) { // use default input output actor
             sourceTime = "sourceTime = &Event_Head_" + CodeGeneratorAdapter.generateName(sourcePort.getContainer()) + "_" + adapter.getTimeSourcePortName() + "[0]->tag.timestamp";
         }
-        
+
         // FIXME: not sure whether we should check if we are putting into an input port or
         // output port.
         // Generate a new event.
         String sinkName = CodeGeneratorAdapter.generateName(sinkPort
                 .getContainer());
         List<String> args = new ArrayList<String>();
-        
-        args.add(sourceTime); 
+
+        args.add(sourceTime);
         args.add(sinkPort.getType().toString());
         args.add(token);
         args.add(sinkName);
@@ -176,5 +176,5 @@ public class PtidesBasicReceiver
         args.add(offsetNsecsString);
         return _templateParser.generateBlockCode("createEvent", args);
     }
-    
+
 }

@@ -178,10 +178,10 @@ public class ProcessAttribute extends SequenceAttribute {
     }
 
     /** Return true if this ProcessAttribute has the same sequence
-     *  number as the given ProcessAttribute.  
+     *  number as the given ProcessAttribute.
      *  @param processAttribute The ProcessAttribute object that this
      *  ProcessAttribute object is compared to.
-     *  @return True if the two ProcessAttribute objects have the same 
+     *  @return True if the two ProcessAttribute objects have the same
      *  sequence number, methodName and processName.
      */
     public boolean equals(Object processAttribute) {

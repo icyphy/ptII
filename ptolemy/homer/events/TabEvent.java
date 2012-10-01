@@ -32,9 +32,9 @@ import java.awt.event.ActionEvent;
 import ptolemy.homer.kernel.ContentPrototype;
 
 /** An event notifying about changed in the tabs.
- * 
+ *
  *  @author Peter Foldes
- *  @version $Id$ 
+ *  @version $Id$
  *  @since Ptolemy II 8.1
  *  @Pt.ProposedRating Red (pdf)
  *  @Pt.AcceptedRating Red (pdf)

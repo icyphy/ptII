@@ -56,12 +56,12 @@ public class TimeGap
     public TimeGap(ptolemy.domains.de.lib.TimeGap actor) {
         super(actor);
     }
-    
+
     public String generateFireCode() throws IllegalActionException {
         CodeStream codeStream = _templateParser.getCodeStream();
         codeStream.clear();
         List<String> args = new ArrayList<String>();
-        args.add(CodeGeneratorAdapter.generateName((NamedObj) _component)); 
+        args.add(CodeGeneratorAdapter.generateName((NamedObj) _component));
         codeStream.appendCodeBlock("fireBlock", args);
         return processCode(codeStream.toString());
     }

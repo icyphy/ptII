@@ -54,15 +54,15 @@ import ptolemy.kernel.util.NameDuplicationException;
 
 /**
 An actor that converts a string containing JSON-formatted data into a Token.
-Depending on the top level structure found in the JSON string, it produces 
+Depending on the top level structure found in the JSON string, it produces
 either a RecordToken or an ArrayToken on its output port. Nested structures
 in the JSON data will translate to correspondingly nested structures in the
 Token.
-<p>The JSONObject parser processes values as follows: 
+<p>The JSONObject parser processes values as follows:
 Delimited values are always parsed as a String. Values that are not delimited
-are tested in the order noted below. The first test that succeeds determines 
+are tested in the order noted below. The first test that succeeds determines
 the type.
-<ul>  
+<ul>
   <li>'true' | 'false' => Boolean (case insensitive)</li>
   <li>'null' => JSONObject.NULL (case insensitive)</li>
   <li>'0x..' => Integer (hexadecimal)</li>
@@ -70,9 +70,9 @@ the type.
   <li>x => Long, or Integer if value remains the same after conversion</li>
 </ul>
 If non of the above apply, the value is interpreted as a String.</p>
-<p>Note that JSON allows array elements to have different types, whereas the 
+<p>Note that JSON allows array elements to have different types, whereas the
 <code>ArrayToken</code> does not. Conversion of such mixed array will result
-in an <code>ArrayToken</code> of which the types of all elements are cast to 
+in an <code>ArrayToken</code> of which the types of all elements are cast to
 the least upper bound of the entire collection.</p>
 
 <p><a href="http://www.json.org/">http://www.json.org/</a>
@@ -104,9 +104,9 @@ public class JSONToToken extends Converter {
     ///////////////////////////////////////////////////////////////////
     ////                      public methods                       ////
 
-    /** Read a JSON-formatted String of name/value pairs from the input 
-     *  and produce a corresponding array or record on the output.   
-     *  @exception IllegalActionException If the input string does not 
+    /** Read a JSON-formatted String of name/value pairs from the input
+     *  and produce a corresponding array or record on the output.
+     *  @exception IllegalActionException If the input string does not
      *  contain properly formatted JSON.
      */
     public void fire() throws IllegalActionException {
@@ -159,19 +159,19 @@ public class JSONToToken extends Converter {
     ///////////////////////////////////////////////////////////////////
     ////                      private methods                      ////
 
-    /** Map an given value to the appropriate Token class and return the 
-     *  new Token.  
+    /** Map an given value to the appropriate Token class and return the
+     *  new Token.
      *  @param value An Object representing some value
      *  @return A Token representing the given value
      *  @exception JSONException If a non-existent value is requested from the
      *  given object or array.
-     *  @exception IllegalActionException Upon failing to instantiate a new 
+     *  @exception IllegalActionException Upon failing to instantiate a new
      *  Token.
      */
     private Token _mapValueToToken(Object value) throws IllegalActionException,
             JSONException {
 
-        // The value can be any of these types: 
+        // The value can be any of these types:
         // Boolean, Number, String, or the JSONObject.NULL
         if (value instanceof JSONArray)
             return _scanJSONArray((JSONArray) value);
@@ -207,17 +207,17 @@ public class JSONToToken extends Converter {
 
     }
 
-    /** Iterate over the elements inside a JSONArray and put them inside a 
+    /** Iterate over the elements inside a JSONArray and put them inside a
      *  new ArrayToken. Apply recursion for JSONObjects and JSONArrays.
      *  When a new ArrayToken is instantiated, all elements are converted to
-     *  the least upper bound of the types found in the JSONArray. If the 
+     *  the least upper bound of the types found in the JSONArray. If the
      *  conversion fails, an IllegalActionException is thrown.
      *  @param object A JSONArray
      *  @return An ArrayToken containing the values that corresponding to those
      *  found in the given array
      *  @exception JSONException If a non-existent value is requested from the
      *  given array.
-     *  @exception IllegalActionException Upon failing to instantiate a new 
+     *  @exception IllegalActionException Upon failing to instantiate a new
      *  ArrayToken.
      */
     private ArrayToken _scanJSONArray(JSONArray array) throws JSONException,
@@ -239,15 +239,15 @@ public class JSONToToken extends Converter {
         }
     }
 
-    /** Iterate over the elements inside a JSONObject and put them inside a 
+    /** Iterate over the elements inside a JSONObject and put them inside a
      *  new RecordToken. Apply recursion for JSONObjects and JSONArrays.
-     * 
+     *
      *  @param object A JSONObject
      *  @return A RecordToken containing fields and values that correspond
      *  with those found in the given object
      *  @exception JSONException If a non-existent value is requested from the
      *  given object.
-     *  @exception IllegalActionException Upon failing to instantiate a new 
+     *  @exception IllegalActionException Upon failing to instantiate a new
      *  RecordToken.
      */
     private RecordToken _scanJSONObject(JSONObject object)

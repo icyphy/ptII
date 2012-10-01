@@ -48,11 +48,11 @@ import ptolemy.kernel.util.Workspace;
  to produce the just received token on the corresponding output channel in
  the next microstep at the same time stamp.
  <p>
- When this actor is used in the Continuous domain, it requires that its 
+ When this actor is used in the Continuous domain, it requires that its
  input be purely  discrete (specifically that it be absent at microstep 0).
  The reason for rejecting continuous inputs is that a continuous input
  would cause a stuttering Zeno condition, where time cannot advance.
- 
+
  @author Edward A. Lee
  @version $Id$
  @since Ptolemy II 8.0
@@ -130,7 +130,7 @@ public class MicrostepDelay extends Transformer {
     public void initialize() throws IllegalActionException {
         super.initialize();
         _pendingOutput = null;
-        
+
         if (!(getDirector() instanceof SuperdenseTimeDirector)) {
             throw new IllegalActionException(this,
                     "MicrostepDelay can only be used with a director that implements " +
@@ -151,7 +151,7 @@ public class MicrostepDelay extends Transformer {
      *  be performed, or if there is input and the current microstep is
      *  zero, or if the superclass throws it.
      */
-    public boolean postfire() throws IllegalActionException {        
+    public boolean postfire() throws IllegalActionException {
         // No point in using the isTime() method here, since we need
         // all the intermediate values.
         Director director = getDirector();
@@ -166,11 +166,11 @@ public class MicrostepDelay extends Transformer {
                 _debug("Read input with value = " + _pendingOutput);
             }
         } else {
-            _pendingOutput = null;        
+            _pendingOutput = null;
         }
         return super.postfire();
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
 

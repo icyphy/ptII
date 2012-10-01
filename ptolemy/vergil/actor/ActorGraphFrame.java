@@ -94,7 +94,7 @@ import diva.gui.GUIUtilities;
  * @Pt.AcceptedRating Red (johnr)
  */
 public class ActorGraphFrame extends ExtendedGraphFrame
-	/*implements ActionListener*/ {
+        /*implements ActionListener*/ {
     /**
      * Construct a frame associated with the specified Ptolemy II model. After
      * constructing this, it is necessary to call setVisible(true) to make the
@@ -145,9 +145,9 @@ public class ActorGraphFrame extends ExtendedGraphFrame
 //        } else if (actionCommand.equals(_EXPORT_DESIGN_PATTERN_LABEL)) {
 //            exportDesignPattern();
 //        } else if (actionCommand.equals(_IMPORT_LIBRARY_LABEL)) {
-//        	_importLibraryAction.actionPerformed(e);
+//                _importLibraryAction.actionPerformed(e);
 //        } else if (actionCommand.equals(_EXPORT_LIBRARY_LABEL)) {
-//        	_saveInLibraryAction.actionPerformed(e);
+//                _saveInLibraryAction.actionPerformed(e);
 //        }
 //    }
 
@@ -163,7 +163,7 @@ public class ActorGraphFrame extends ExtendedGraphFrame
         }
 
         if (_rightComponent != null) {
-            // A bug with Graph -> Save In Library resulted in creating a 
+            // A bug with Graph -> Save In Library resulted in creating a
             // Composite that would fail to open because dispose would throw
             // a NPE because _rightComponent was null.
             KeyStroke[] keyStroke = _rightComponent.getRegisteredKeyStrokes();
@@ -303,7 +303,7 @@ public class ActorGraphFrame extends ExtendedGraphFrame
 
         _graphMenu.addSeparator();
         _addLayoutMenu(_graphMenu);
-        
+
         // Only include the various actions if there is an actor library
         // The ptinyViewer configuration uses this.
         if (getConfiguration().getEntity("actor library") != null) {
@@ -401,26 +401,26 @@ public class ActorGraphFrame extends ExtendedGraphFrame
             //i++;
             // Only include the various actions if there is an actor library
             // The ptinyViewer configuration uses this.
-            if (configuration != null 
-            		&& configuration.getEntity("actor library") != null 
-                    	&& item != null) {
-            		if (item.getActionCommand().equals("Import")) {
-            			_importDesignPatternAction = new ImportDesignPatternAction();
-            			JMenuItem importItem = new JMenuItem(_importDesignPatternAction);
-            			item.add(importItem);
-            			_importLibraryAction = new ImportLibraryAction();
-            			JMenuItem importLibraryItem = new JMenuItem(_importLibraryAction);
-            			item.add(importLibraryItem);
-            		} else if (item.getActionCommand().equals("Export")) {
-            			_exportDesignPatternAction = new ExportDesignPatternAction();
-            			JMenuItem exportItem = new JMenuItem(_exportDesignPatternAction);
-            			item.add(exportItem);
-            			_saveInLibraryAction = new SaveInLibraryAction();
-            			JMenuItem exportLibraryItem = new JMenuItem(_saveInLibraryAction); 
-              			item.add(exportLibraryItem);
-            		}
-            	  // The code above inserts menus items in the the File->Export and
-            	  // File -> Import menu items.
+            if (configuration != null
+                            && configuration.getEntity("actor library") != null
+                            && item != null) {
+                            if (item.getActionCommand().equals("Import")) {
+                                    _importDesignPatternAction = new ImportDesignPatternAction();
+                                    JMenuItem importItem = new JMenuItem(_importDesignPatternAction);
+                                    item.add(importItem);
+                                    _importLibraryAction = new ImportLibraryAction();
+                                    JMenuItem importLibraryItem = new JMenuItem(_importLibraryAction);
+                                    item.add(importLibraryItem);
+                            } else if (item.getActionCommand().equals("Export")) {
+                                    _exportDesignPatternAction = new ExportDesignPatternAction();
+                                    JMenuItem exportItem = new JMenuItem(_exportDesignPatternAction);
+                                    item.add(exportItem);
+                                    _saveInLibraryAction = new SaveInLibraryAction();
+                                    JMenuItem exportLibraryItem = new JMenuItem(_saveInLibraryAction);
+                                      item.add(exportLibraryItem);
+                            }
+                      // The code above inserts menus items in the the File->Export and
+                      // File -> Import menu items.
                   // Here's how to insert a menu item into the File main menu.
 //                JMenuItem[] newItems = new JMenuItem[fileMenuItems.length + 4];
 //                System.arraycopy(fileMenuItems, 0, newItems, 0, i);
@@ -466,13 +466,13 @@ public class ActorGraphFrame extends ExtendedGraphFrame
 
     /** The action for creating a level of hierarchy. */
     protected Action _createHierarchyAction;
-    
+
     /** The action for exporting a design pattern. */
     protected Action _exportDesignPatternAction;
 
     /** The action for saving the current model in a library. */
     protected Action _saveInLibraryAction;
-    
+
     /** The action for importing a design pattern. */
     protected Action _importDesignPatternAction;
 
@@ -487,7 +487,7 @@ public class ActorGraphFrame extends ExtendedGraphFrame
 
     /** The action for instantiating a port. */
     protected Action _instantiatePortAction;
-    
+
     /** Listener for debug menu commands. */
     protected DebugMenuListener _debugMenuListener;
 
@@ -614,19 +614,19 @@ public class ActorGraphFrame extends ExtendedGraphFrame
 
         /** The delay time specified that last time animation was set. */
         private long _lastDelayTime = 0;
-        
+
         private Director _listeningTo;
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                  public static inner classes              ////
-    
+
     ///////////////////////////////////////////////////////////////////
     //// InstantiateAttributeAction
 
     /** An action to instantiate an attribute given a class name. */
     public static class InstantiateAttributeAction extends AbstractAction {
-        
+
         /** Create a new action to instantiate an attribute.
          *  @param graphFrame The graph frame that will contain this attribute.
          *  @param initialLastAttributeClassName The initial value of the class
@@ -644,7 +644,7 @@ public class ActorGraphFrame extends ExtendedGraphFrame
         /**
          * Instantiate a class by first opening a dialog to get a class name and
          * then issuing a change request.
-         * 
+         *
          * @param e The event that initiates the action.
          */
         public void actionPerformed(ActionEvent e) {
@@ -690,10 +690,10 @@ public class ActorGraphFrame extends ExtendedGraphFrame
                 context.requestChange(request);
             }
         }
-        
+
         /** The graph frame that contains this action. */
         private ExtendedGraphFrame _graphFrame;
-        
+
         /** The most recent class name for instantiating an attribute. */
         private String _lastAttributeClassName;
     }
@@ -720,7 +720,7 @@ public class ActorGraphFrame extends ExtendedGraphFrame
         /**
          * Instantiate a class by first opening a dialog to get a class name and
          * then issuing a change request.
-         * 
+         *
          * @param e The event that initiates the action.
          */
         public void actionPerformed(ActionEvent e) {
@@ -776,13 +776,13 @@ public class ActorGraphFrame extends ExtendedGraphFrame
                 context.requestChange(request);
             }
         }
-        
+
         /** The graph frame that contains this action. */
         private ExtendedGraphFrame _graphFrame;
-        
+
         /** The most recent class name for instantiating an entity. */
         private String _lastEntityClassName;
-        
+
         /** The most recent location for instantiating a class. */
         private String _lastLocation = "";
     }
@@ -818,50 +818,50 @@ public class ActorGraphFrame extends ExtendedGraphFrame
             createHierarchy();
         }
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     //// ExportDesignPatternAction
 
     /** An action to export a design pattern.
      */
     private class ExportDesignPatternAction extends AbstractAction {
-    	/** Create a new action to export a design pattern. */
-    	public ExportDesignPatternAction() {
-    		super(_EXPORT_DESIGN_PATTERN_LABEL);
-    		putValue("tooltip", "Export a design pattern into the Palette");
-    		putValue(GUIUtilities.MNEMONIC_KEY, Integer.valueOf(KeyEvent.VK_D));
-    	}
+            /** Create a new action to export a design pattern. */
+            public ExportDesignPatternAction() {
+                    super(_EXPORT_DESIGN_PATTERN_LABEL);
+                    putValue("tooltip", "Export a design pattern into the Palette");
+                    putValue(GUIUtilities.MNEMONIC_KEY, Integer.valueOf(KeyEvent.VK_D));
+            }
 
-    	/**
-    	 * Export a design pattern by first opening a file chooser dialog and then
-    	 * exporting the specified library.
-    	 */
-    	public void actionPerformed(ActionEvent e) {
-    		exportDesignPattern();
-    	}
+            /**
+             * Export a design pattern by first opening a file chooser dialog and then
+             * exporting the specified library.
+             */
+            public void actionPerformed(ActionEvent e) {
+                    exportDesignPattern();
+            }
     }
 
-    
+
     ///////////////////////////////////////////////////////////////////
     //// ImportDesignPatternAction
 
     /** An action to import a design pattern.
      */
     private class ImportDesignPatternAction extends AbstractAction {
-    	/** Create a new action to import a design pattern. */
-    	public ImportDesignPatternAction() {
-    		super(_IMPORT_DESIGN_PATTERN_LABEL);
-    		putValue("tooltip", "Import a design pattern into the Palette");
-    		putValue(GUIUtilities.MNEMONIC_KEY, Integer.valueOf(KeyEvent.VK_D));
-    	}
+            /** Create a new action to import a design pattern. */
+            public ImportDesignPatternAction() {
+                    super(_IMPORT_DESIGN_PATTERN_LABEL);
+                    putValue("tooltip", "Import a design pattern into the Palette");
+                    putValue(GUIUtilities.MNEMONIC_KEY, Integer.valueOf(KeyEvent.VK_D));
+            }
 
-    	/**
-    	 * Import a design pattern by first opening a file chooser dialog and then
-    	 * importing the specified design pattern.
-    	 */
-    	public void actionPerformed(ActionEvent e) {
-    		importDesignPattern();
-    	}
+            /**
+             * Import a design pattern by first opening a file chooser dialog and then
+             * importing the specified design pattern.
+             */
+            public void actionPerformed(ActionEvent e) {
+                    importDesignPattern();
+            }
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -954,16 +954,16 @@ public class ActorGraphFrame extends ExtendedGraphFrame
                         + "><property name=\"_location\" "
                         + "class=\"ptolemy.kernel.util.Location\" value=\"" + x
                         + ", " + y + "\"></property></port></group>";
-                
+
                 MoMLChangeRequest request = new MoMLChangeRequest(this,
                         context, moml);
                 context.requestChange(request);
             }
         }
-        
+
         /** The most recent location for instantiating a class. */
         private String _lastLocation = "";
-        
+
         /** The most recent class name for instantiating a port. */
         private String _lastPortClassName = "ptolemy.actor.TypedIOPort";
     }
@@ -1010,10 +1010,10 @@ public class ActorGraphFrame extends ExtendedGraphFrame
             }
         }
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ///                    private variables                       ////
-    
+
     private final static String _EXPORT_DESIGN_PATTERN_LABEL = "Export Design Pattern";
     private final static String _EXPORT_LIBRARY_LABEL = "Export Library";
     private final static String _IMPORT_DESIGN_PATTERN_LABEL = "Import Design Pattern";

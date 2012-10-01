@@ -36,7 +36,7 @@ package ptolemy.actor.injection;
  * for the given target platform.
  * The rationale for having a static reference is to avoid hurdle of passing
  * the injector to all needed parties.
- * 
+ *
  * @author Anar Huseynov
  * @version $Id$
  * @since Ptolemy II 8.0
@@ -74,7 +74,7 @@ public class PtolemyInjector {
     }
 
     /**
-     * Return the PtolemyInjector.  Note that {@link #createInjector(PtolemyModule...)} 
+     * Return the PtolemyInjector.  Note that {@link #createInjector(PtolemyModule...)}
      * must be called prior to using this method.
      * @return the PtolemyInjector that was created with the supplied modules.
      */

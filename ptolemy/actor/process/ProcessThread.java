@@ -337,20 +337,20 @@ public class ProcessThread extends PtolemyThread {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                       protected variables                 ////    
-    
+    ////                       protected variables                 ////
+
     /** The actor that to be executed. */
     protected Actor _actor;
-    
+
     /** The director responsible for the execution of the actor. */
     protected ProcessDirector _director;
 
     /** The Manager of the actor. */
     protected Manager _manager;
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    
+
 
     private String _name;
 }

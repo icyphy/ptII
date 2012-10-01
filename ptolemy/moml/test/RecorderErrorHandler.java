@@ -63,7 +63,7 @@ public class RecorderErrorHandler implements ErrorHandler {
     }
 
     /** Get the messages recorded so far.
-     *  @return The messages.   
+     *  @return The messages.
      */
     public String getMessages() {
         return _buffer.toString();

@@ -266,7 +266,7 @@ public class LevelCrossingDetector extends TypedAtomicActor implements
             }
             output.sendClear(0);
         }
-        
+
         // If the trigger input is available, record it.
         if (trigger.getWidth() > 0 && trigger.isKnown(0) && trigger.hasToken(0)) {
             _thisTrigger = ((DoubleToken) trigger.get(0)).doubleValue();

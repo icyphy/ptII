@@ -58,7 +58,7 @@ import ptserver.util.TypeParser;
  * and source proxy actors.  This actor is responsible for either
  * removing the target actor and putting itself as a proxy or removing
  * all actors connected to the target actor and putting itself instead
- * of all of connected actor connected to the target actor. 
+ * of all of connected actor connected to the target actor.
  * @author Anar Huseynov
  * @version $Id$
  * @since Ptolemy II 8.0
@@ -243,7 +243,7 @@ public abstract class ProxyActor extends TypedAtomicActor {
                         cloned.setName("tokenProductionRate");
                         cloned.setContainer(remotePort);
                     }
-                    // If the port is typed, save full name of the original port 
+                    // If the port is typed, save full name of the original port
                     // within an attribute.  This is needed for setting port type information
                     // when the spliced-up model is recreated from the XML.
                     if (remotePort instanceof TypedIOPort) {
@@ -255,7 +255,7 @@ public abstract class ProxyActor extends TypedAtomicActor {
                                 remotePort, "targetPortName");
                         targetPortName.setExpression(port.getFullName());
                     }
-                    // Remove all links of the port and connect the remote and 
+                    // Remove all links of the port and connect the remote and
                     // current port via the relation.
 
                     relation.unlinkAll();
@@ -302,7 +302,7 @@ public abstract class ProxyActor extends TypedAtomicActor {
             remotePort.setName(port.getName());
             remotePort.setContainer(this);
             remotePort.setPersistent(true);
-            // If the port is typed, save full name of the original port 
+            // If the port is typed, save full name of the original port
             // within an attribute.  This is needed for setting port type information
             // when the spliced-up model is recreated from the XML.
             if (remotePort instanceof TypedIOPort) {

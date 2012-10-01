@@ -49,10 +49,10 @@ import ptolemy.kernel.util.Workspace;
 //// TypedAtomicActor
 
 /**
- A TypedAtomicActor is an AtomicActor whose ports and parameters have types. 
+ A TypedAtomicActor is an AtomicActor whose ports and parameters have types.
  <p>
- The final method typeConstraints() returns the type constraints among the 
- contained ports and parameters. It gathers these constraints by invoking 
+ The final method typeConstraints() returns the type constraints among the
+ contained ports and parameters. It gathers these constraints by invoking
  three different protected methods (listed in order of execution):
  <ul>
    <li> _customTypeConstraints() </li>
@@ -175,11 +175,11 @@ public class TypedAtomicActor extends AtomicActor<TypedIOPort> implements
         newObject._cachedTypeConstraints = new HashSet<Inequality>();
         newObject._typeConstraintsVersion = -1;
         newObject._typesValid = false;
-        
+
         return newObject;
     }
 
-    /** Return true if backward type inference is enabled in the first opaque 
+    /** Return true if backward type inference is enabled in the first opaque
      *  composite actor up the hierarchy, or false otherwise.
      * @return true If backward type inference is enabled, or false otherwise.
      */
@@ -190,7 +190,7 @@ public class TypedAtomicActor extends AtomicActor<TypedIOPort> implements
         }
         return false;
     }
-    
+
     /** Create a new TypedIOPort with the specified name.
      *  The container of the port is set to this actor.
      *  This method is write-synchronized on the workspace.
@@ -216,21 +216,21 @@ public class TypedAtomicActor extends AtomicActor<TypedIOPort> implements
     }
 
     /** Return the type constraints of this actor.
-     *  The constraints have the form of a list of inequalities that are 
-     *  gathered by calling a set of protected non-final methods that can be 
+     *  The constraints have the form of a list of inequalities that are
+     *  gathered by calling a set of protected non-final methods that can be
      *  overridden for customization.
-     *  
+     *
      *  First, <code>_customTypeConstraints()</code> is called. This method is
-     *  defined as an empty stub in the base class, that is to be overridden by 
+     *  defined as an empty stub in the base class, that is to be overridden by
      *  subclasses that require a specific set of constraints to be setup.
      *  Second, <code>_defaultTypeConstraints()</code> is called. Its purpose is
      *  to setup type constraints between inputs and outputs that have no types
      *  declared. It ensures that outputs are greater than or equal to inputs,
      *  meaning that lossless conversion is possible on the tokens that pass
-     *  through the actor. 
+     *  through the actor.
      *  Finally, <code>_containedTypeConstraints()</code> is called to collect
      *  all type constraints that are stored in the contained Typeables.
-     *  
+     *
      *  Note that all constraints are cached and only recomputed if necessary.
      *  This method is read-synchronized on the workspace.
      *  @return A list of instances of Inequality.
@@ -240,7 +240,7 @@ public class TypedAtomicActor extends AtomicActor<TypedIOPort> implements
         // TODO: Rather disable type resolution completely if there where not topology or type changes
         // do not update if the cached constraints are still valid
         //if (_typesValid && _typeConstraintsVersion == workspace().getVersion()) {
-        //  return _cachedTypeConstraints; 
+        //  return _cachedTypeConstraints;
         //}
         // clear the cached typed constraints
         _cachedTypeConstraints.clear();
@@ -254,12 +254,12 @@ public class TypedAtomicActor extends AtomicActor<TypedIOPort> implements
             if ((cts = _customTypeConstraints()) != null) {
                 _cachedTypeConstraints.addAll(cts);
             }
-            
+
             // setup default constraints
             if ((cts = _defaultTypeConstraints()) != null) {
                 _cachedTypeConstraints.addAll(cts);
             }
-            
+
             // collect constraints from contained Typeables
             if ((cts = _containedTypeConstraints()) != null)
                 _cachedTypeConstraints.addAll(cts);
@@ -288,12 +288,12 @@ public class TypedAtomicActor extends AtomicActor<TypedIOPort> implements
         result.addAll(typeConstraints());
         return result;
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                      protected methods                    ////
 
     /**
-     * Collect all type constraints from contained Typeables (ports, 
+     * Collect all type constraints from contained Typeables (ports,
      * variables, and parameters).
      * @return A set of type constraints
      */
@@ -315,22 +315,22 @@ public class TypedAtomicActor extends AtomicActor<TypedIOPort> implements
     /**
      * Return the default type constraints which require undeclared inputs to be
      * of type greater than or equal to the type of every output port.
-     * 
-     * 
+     *
+     *
      * Override this method to eliminate the default type constraints, or to
      * specify different ones.
-     *  
+     *
      * @return A set of type constraints
      */
     protected Set<Inequality> _defaultTypeConstraints() {
         Set<Inequality> result = new HashSet<Inequality>();
-        
+
         for (TypedIOPort input : inputPortList()) {
             for (TypedIOPort output : outputPortList()) {
                 Set<Inequality> inPortConstraints = input.typeConstraints();
                 Set<Inequality> outPortConstraints = output.typeConstraints();
 
-                // 1) no default constraint if input port is output port, or 
+                // 1) no default constraint if input port is output port, or
                 //    if one of both ports have a declared type
                 if (input == output || !input.getTypeTerm().isSettable()
                         || !output.getTypeTerm().isSettable()) {
@@ -347,14 +347,14 @@ public class TypedAtomicActor extends AtomicActor<TypedIOPort> implements
     }
 
     /**
-     * Empty stub to be used for setting up custom type constraints for 
+     * Empty stub to be used for setting up custom type constraints for
      * subclasses of this actor.
      * @return null
      */
     protected Set<Inequality> _customTypeConstraints() {
         return null;
-    }    
-    
+    }
+
     /** Request a firing of this actor at the specified time
      *  and throw an exception if the director does not agree to
      *  do it at the requested time. This is a convenience method
@@ -398,12 +398,12 @@ public class TypedAtomicActor extends AtomicActor<TypedIOPort> implements
 
     /** Whether or not the resolved types are still valid. */
     protected boolean _typesValid;
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                       private methods                     ////
-    
+
     /**
-     * Initialize the variables that keep track of the validity of the cached 
+     * Initialize the variables that keep track of the validity of the cached
      * type constraints.
      */
     private void _init() {
@@ -413,7 +413,7 @@ public class TypedAtomicActor extends AtomicActor<TypedIOPort> implements
         _typesValid = false;
 
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                     private variables                     ////
 

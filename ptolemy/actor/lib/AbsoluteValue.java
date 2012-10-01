@@ -106,7 +106,7 @@ public class AbsoluteValue extends Transformer {
             output.send(0, _absoluteValue(input.get(0)));
         }
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
@@ -129,14 +129,14 @@ public class AbsoluteValue extends Transformer {
         } else if (input instanceof ScalarToken) {
             return ((ScalarToken)input).absolute();
         } else {
-            throw new IllegalActionException(this, 
+            throw new IllegalActionException(this,
                     "AbsoluteValue only accepts scalar inputs or arrays of scalars.");
         }
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
-    
+
     /** This class implements a monotonic function of the input port
      *  type. It returns the type of the absolute value of the input
      *  port type. If the input type is an array, then the function
@@ -188,7 +188,7 @@ public class AbsoluteValue extends Transformer {
                 return new InequalityTerm[0];
             }
         }
-        
+
         ///////////////////////////////////////////////////////////////
         ////                      private inner methods            ////
 

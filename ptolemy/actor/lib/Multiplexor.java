@@ -102,7 +102,7 @@ public class Multiplexor extends Transformer {
      */
     public void fire() throws IllegalActionException {
         super.fire();
-        
+
         // Be sure to not use _channel if the select input
         // is not known. That would be non-monotonic.
         if (select.isKnown(0)) {
@@ -120,7 +120,7 @@ public class Multiplexor extends Transformer {
             // Be sure to read all inputs that are present, even
             // if they aren't required in order to produce output.
             // Tokens need to be consumed in dataflow and DE domains.
-            for (int i = 0; i < input.getWidth(); i++) {                
+            for (int i = 0; i < input.getWidth(); i++) {
                 if (input.isKnown(i)) {
                     Token token = null;
                     if (input.hasToken(i)) {
@@ -134,16 +134,16 @@ public class Multiplexor extends Transformer {
                         // this as an assertion that the output is absent.
                         output.send(0, token);
                     }
-                }                
+                }
             }
-            
+
             // If no select value has been seen, then we can
             // assert that the output is empty. Note that this is only
             // safe if the select input is known.
             if (_selectChannel == null) {
                 output.send(0, null);
             }
-        }        
+        }
     }
 
     /** Initialize to the default, which is to use channel zero. */
@@ -151,13 +151,13 @@ public class Multiplexor extends Transformer {
         _selectChannel = null;
     }
 
-    /** Return false. 
+    /** Return false.
      *  @return False.
      */
     public boolean isStrict() {
         return false;
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 

@@ -114,8 +114,8 @@ public class RenameConfigurer extends Query implements ChangeListener,
             if (parent == null) {
                 // Hitting F2 in an empty model and renaming the canvas can result in a NPE.
                 // See https://chess.eecs.berkeley.edu/bugzilla/show_bug.cgi?id=355
-            	MessageHandler.message("Please save the model before changing the name.");
-            	return;
+                    MessageHandler.message("Please save the model before changing the name.");
+                    return;
             }
             String oldName = _object.getName();
             String oldDisplayName = StringUtilities.escapeForXML(_object

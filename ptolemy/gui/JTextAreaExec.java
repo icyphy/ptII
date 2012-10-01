@@ -568,17 +568,17 @@ public class JTextAreaExec extends JPanel implements ExecuteCommands {
                     _enableStartButton();
                     _cancelButton.setEnabled(false);
                     _updateProgressBar(0);
-		    try {
-			_statusBar.setText(get(1, TimeUnit.SECONDS).toString());
-		    } catch (CancellationException ex) {
+                    try {
+                        _statusBar.setText(get(1, TimeUnit.SECONDS).toString());
+                    } catch (CancellationException ex) {
                         _statusBar.setText("Cancelled.");
-		    } catch (ExecutionException ex1) {
-                        _statusBar.setText("The computation threw an exception: " + ex1.getCause()); 
-		    } catch (InterruptedException ex2) {
-                        _statusBar.setText("The worker thread was interrupted while waiting, which is probably not a problem."); 
+                    } catch (ExecutionException ex1) {
+                        _statusBar.setText("The computation threw an exception: " + ex1.getCause());
+                    } catch (InterruptedException ex2) {
+                        _statusBar.setText("The worker thread was interrupted while waiting, which is probably not a problem.");
                     } catch (TimeoutException ex3) {
                         _statusBar.setText("The wait to get the execution result timed out, which is unusual, but probably not a problem.");
-		    }
+                    }
                 }
             };
             _worker.execute();

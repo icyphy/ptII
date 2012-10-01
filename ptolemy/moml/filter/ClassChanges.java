@@ -97,8 +97,8 @@ public class ClassChanges extends MoMLFilterSimple {
                 // We found a class with a class change.
                 MoMLParser.setModified(true);
 
-		// Uncomment this to trace changes.
-		//System.out.println("ClassChanges: " + attributeValue  + " " + _classChanges.get(attributeValue));
+                // Uncomment this to trace changes.
+                //System.out.println("ClassChanges: " + attributeValue  + " " + _classChanges.get(attributeValue));
 
                 return (String) _classChanges.get(attributeValue);
             } else if (_classesToRemove.contains(attributeValue)) {
@@ -207,19 +207,19 @@ public class ClassChanges extends MoMLFilterSimple {
                 "ptolemy.domains.modal.kernel.RelationList");
 
         _classChanges.put("ptolemy.domains.fsm.kernel.CommitActionsAttribute",
-	        "ptolemy.domains.modal.kernel.CommitActionsAttribute");
+                "ptolemy.domains.modal.kernel.CommitActionsAttribute");
 
         _classChanges.put("ptolemy.domains.fsm.kernel.FSMDirector",
-			  "ptolemy.domains.modal.kernel.FSMDirector");
+                          "ptolemy.domains.modal.kernel.FSMDirector");
 
         _classChanges.put("ptolemy.domains.fsm.kernel.OutputActionsAttribute",
-	        "ptolemy.domains.modal.kernel.OutputActionsAttribute");
+                "ptolemy.domains.modal.kernel.OutputActionsAttribute");
 
         _classChanges.put("ptolemy.domains.fsm.kernel.State",
-	        "ptolemy.domains.modal.kernel.State");
+                "ptolemy.domains.modal.kernel.State");
 
         _classChanges.put("ptolemy.domains.fsm.kernel.Transition",
-	        "ptolemy.domains.modal.kernel.Transition");
+                "ptolemy.domains.modal.kernel.Transition");
 
         _classChanges.put("ptolemy.domains.fsm.modal.ModalModel",
                 "ptolemy.domains.modal.modal.ModalModel");
@@ -228,13 +228,13 @@ public class ClassChanges extends MoMLFilterSimple {
                 "ptolemy.domains.modal.modal.ModalPort");
 
         _classChanges.put("ptolemy.domains.fsm.modal.State",
-	        "ptolemy.domains.modal.modal.State");
+                "ptolemy.domains.modal.modal.State");
 
         _classChanges.put("ptolemy.domains.fsm.modal.Refinement",
-	        "ptolemy.domains.modal.modal.Refinement");
+                "ptolemy.domains.modal.modal.Refinement");
 
         _classChanges.put("ptolemy.domains.fsm.modal.RefinementPort",
-	        "ptolemy.domains.modal.modal.RefinementPort");
+                "ptolemy.domains.modal.modal.RefinementPort");
 
         _classChanges.put("ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory",
                 "ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory");
@@ -433,7 +433,7 @@ public class ClassChanges extends MoMLFilterSimple {
         // Renamed the DE Sampler to MostRecent.
         _classChanges.put("ptolemy.domains.de.lib.Sampler",
                 "ptolemy.domains.de.lib.MostRecent");
-        
+
         // Moved SingleEvent.
         _classChanges.put("ptolemy.domains.de.lib.SingleEvent",
                 "ptolemy.actor.lib.SingleEvent");

@@ -52,7 +52,7 @@ import ptolemy.kernel.util.Workspace;
  */
 public abstract class AbstractInitializableAttribute extends Attribute
         implements HierarchyListener, Initializable {
-    
+
     /** Construct an instance of the attribute.
      *  @param container The container.
      *  @param name The name.
@@ -63,10 +63,10 @@ public abstract class AbstractInitializableAttribute extends Attribute
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-    
+
     /** Add the specified object to the set of objects whose
      *  preinitialize(), initialize(), and wrapup()
      *  methods should be invoked upon invocation of the corresponding
@@ -80,7 +80,7 @@ public abstract class AbstractInitializableAttribute extends Attribute
         }
         _initializables.add(initializable);
     }
-    
+
     /** Clone the attribute.  This clears the list of initializable objects.
      *  @param workspace The workspace in which to place the cloned attribute.
      *  @exception CloneNotSupportedException Not thrown in this base class.
@@ -92,7 +92,7 @@ public abstract class AbstractInitializableAttribute extends Attribute
         newObject._initializables = null;
         return newObject;
     }
-    
+
     /** Notify this object that the containment hierarchy above it has
      *  changed. This method does nothing because instead we use
      *  {@link #preinitialize()} to handle re-establishing the connections.
@@ -120,7 +120,7 @@ public abstract class AbstractInitializableAttribute extends Attribute
             container.removeInitializable(this);
         }
     }
-    
+
     /** Invoke initialize() on registered initializables.
      *  @exception IllegalActionException If thrown by a subclass.
      */
@@ -162,7 +162,7 @@ public abstract class AbstractInitializableAttribute extends Attribute
         }
     }
 
-    /** Override the base class to register as an 
+    /** Override the base class to register as an
      *  {@link Initializable}
      *  so that preinitialize() is invoked, and as a
      *  {@link HierarchyListener}, so that we are notified of
@@ -210,7 +210,7 @@ public abstract class AbstractInitializableAttribute extends Attribute
              }
          }
      }
-     
+
      ///////////////////////////////////////////////////////////////////
      ////                         protected methods                 ////
 
@@ -239,9 +239,9 @@ public abstract class AbstractInitializableAttribute extends Attribute
 
      ///////////////////////////////////////////////////////////////////
      ////                         private variables                 ////
-     
+
      /** List of objects whose (pre)initialize() and wrapup() methods should be
       *  slaved to these.
       */
-     private transient Set<Initializable> _initializables;       
+     private transient Set<Initializable> _initializables;
 }

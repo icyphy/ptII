@@ -172,10 +172,10 @@ public class PtidesBasicReceiver extends DEReceiver {
                         dir = actor.getExecutiveDirector();
                     }
 
-                    if (dir != null) { 
+                    if (dir != null) {
                         _director =  (PtidesBasicDirector) dir;
                         _directorVersion = port.workspace().getVersion();
-                        return _director; 
+                        return _director;
                     }
                 }
             } finally {

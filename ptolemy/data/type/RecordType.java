@@ -86,7 +86,7 @@ public class RecordType extends AssociativeType implements Cloneable {
      *  empty record type, set the length of the argument arrays to 0.
      *
      *  <p>Record labels are sanitized so that any non-Java identifier
-     *  characters are replaced with underscores, see 
+     *  characters are replaced with underscores, see
      *  {@linkptolemy.util.StringUtilities.sanitizeName(String)}</p>
      *
      *  @param labels An array of String.
@@ -117,7 +117,7 @@ public class RecordType extends AssociativeType implements Cloneable {
             }
         }
     }
-    
+
     /** Construct a RecordType with the labels and values specified by
      *  a given Map object. The object cannot contain any null keys or
      *  values.

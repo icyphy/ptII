@@ -52,9 +52,9 @@ import ptolemy.vergil.basic.export.web.WebExportParameters;
  * @Pt.AcceptedRating Red (cxh)
  */
 public class ExportParameters {
-    
+
     /** Construct an instance of this data structure with
-     *  default values, which are 
+     *  default values, which are
      *  null for backgroundColor,
      *  false for copyJavaScriptFiles,
      *  null for directoryToExportTo,
@@ -67,18 +67,18 @@ public class ExportParameters {
     }
 
     /** Construct an instance of this data structure with
-     *  default values, which are 
+     *  default values, which are
      *  null for backgroundColor,
      *  false for copyJavaScriptFiles,
      *  false for openCompositesBeforeExport,
      *  false for runBeforeExport,
-     *  true for showInBrowser, 
+     *  true for showInBrowser,
      *  and empty String for HTMLPathForFiles.
      *  @param directoryToExportTo The directory to export to.
      */
     public ExportParameters(File directoryToExportTo) {
         this.directoryToExportTo = directoryToExportTo;
-        backgroundColor = null;        
+        backgroundColor = null;
         openCompositesBeforeExport = false;
         runBeforeExport = false;
         showInBrowser = true;
@@ -86,7 +86,7 @@ public class ExportParameters {
         _jsCopier = null;
         HTMLPathForFiles = "";
     }
-    
+
     /** Construct an instance of this data structure that is
      *  identical to the one given except for directoryToExportTo,
      *  which is as specified.
@@ -95,7 +95,7 @@ public class ExportParameters {
      */
     public ExportParameters(File directoryToExportTo, ExportParameters template) {
         this.directoryToExportTo = directoryToExportTo;
-        backgroundColor = template.backgroundColor;        
+        backgroundColor = template.backgroundColor;
         openCompositesBeforeExport = template.openCompositesBeforeExport;
         runBeforeExport = template.runBeforeExport;
         showInBrowser = template.showInBrowser;
@@ -144,7 +144,7 @@ public class ExportParameters {
      *  to use the background color of the model.
      */
     public Color backgroundColor;
-    
+
     /** If true, then make an exported web page stand alone.
      *  Instead of referencing JavaScript and image files on the
      *  ptolemy.org website, if this parameter is true, then the
@@ -152,24 +152,24 @@ public class ExportParameters {
      *  This is a boolean that defaults to false.
      */
     public boolean copyJavaScriptFiles;
-    
+
     /** The directory to export to.
      */
     public File directoryToExportTo;
-    
-    /** The path to use for accessing the file in the HTML code.  This can 
-     *  differ from the physical location of the file in the file system 
+
+    /** The path to use for accessing the file in the HTML code.  This can
+     *  differ from the physical location of the file in the file system
      *  depending on how the exporter accesses the files.  For example,
-     *  an HttpService uses a URL as a path since the WebServer has a 
-     *  resource handler to serve files.  The HTML to include e.g. an image 
+     *  an HttpService uses a URL as a path since the WebServer has a
+     *  resource handler to serve files.  The HTML to include e.g. an image
      *  would be:
      *  <img src="/files/imagename.gif"> </img>
-     *  
+     *
      *  even though the image is stored in $PTT/org/ptolemy/ptango/temp, since
      *  the resource handler is mapped to http://hostname:port/servicename/files.
      */
     public String HTMLPathForFiles;
-    
+
     /** If true, hierarchically open all composite actors
      *  in the model before exporting (so that these also
      *  get exported, and hyperlinks to them are created).
@@ -181,15 +181,15 @@ public class ExportParameters {
      *  it is important the model have a finite run.
      */
     public boolean runBeforeExport;
-    
+
     /** If true, open a web browser to display the resulting
      *  export.
      */
     public boolean showInBrowser;
-    
+
     /** If true, use the server-side includes of the Ptolemy website. */
     public boolean usePtWebsite;
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         protected fields                  ////
 

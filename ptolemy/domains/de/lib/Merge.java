@@ -160,7 +160,7 @@ public class Merge extends DETransformer {
                 }
             }
         }
-    } 
+    }
 
     /** Return false if there was a firing at the current time and
      *  microstep that produced an output token and there are more
@@ -180,11 +180,11 @@ public class Merge extends DETransformer {
         }
         return super.prefire();
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     //                        private methods                        //
 
-    /** Return the microstep of the director. 
+    /** Return the microstep of the director.
      *  @return The microstep.
      *  @throws IllegalActionException Thrown if the enclosing director
      *    is not a SuperdenseTimeDirector.
@@ -198,21 +198,21 @@ public class Merge extends DETransformer {
 //        throw new IllegalActionException(this,
 //                "This actor can only be used with a SuperdenseTimeDirector");
         // FIXME: Is the following assumption correct?
-        // The TMDirector uses Merge, so we should probably not 
+        // The TMDirector uses Merge, so we should probably not
         // throw an exception here but return a default
-        // value for the microstep. 
+        // value for the microstep.
         return 0;
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     //                        private variables                      //
-    
+
     // True if there are more tokens on other channels.
     private boolean _moreTokensOnOtherChannels = false;
-    
+
     // Last time this actor was fired.
     private Time _previousModelTime;
-    
+
     // Mircostep of director during last firing of this actor.
     private int _previousMicrostep;
 

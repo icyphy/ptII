@@ -34,7 +34,7 @@ import java.io.IOException;
 //// ModelKnownFailedTests
 /**
  * Base class for tests that use models in the auto/knownFailedTests directory.
- * 
+ *
  * @author Christopher Brooks
  * @version $Id$
  * @since Ptolemy II 8.1
@@ -48,7 +48,7 @@ public class ModelKnownFailedTests extends ModelTests {
      * the model to be executed. If auto/knownFailesTests/ does not
      * exist, or does not contain files that end with .xml or .moml,
      * return a list with one element that contains a special string.
-     * 
+     *
      * @return The List of model names in auto/
      * @exception IOException If there is a problem accessing the auto/ directory.
      */

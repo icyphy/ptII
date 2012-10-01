@@ -146,7 +146,7 @@ public abstract class MonotonicityConceptFunction extends ConceptFunction {
             throw new IllegalActionException(_monotonicityAnalysisOntology,
                     "Concept General not found in monotonicityAnalysis ontology.");
         }
-        
+
         _nonMonotonicRepresentative = (FlatTokenRepresentativeConcept) _monotonicityAnalysisOntology.getEntity("NonMonotonic");
         _nonAntimonotonicRepresentative = (FlatTokenRepresentativeConcept) _monotonicityAnalysisOntology.getEntity("NonAntimonotonic");
         if (_nonAntimonotonicRepresentative == null || null == _nonMonotonicRepresentative) {

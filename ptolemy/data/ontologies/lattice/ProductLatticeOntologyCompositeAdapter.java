@@ -92,10 +92,10 @@ public class ProductLatticeOntologyCompositeAdapter extends
         }
         return super.constraintList();
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
-    
+
     /** Add all the constraints between actors inside the composite actor
      *  referenced by this adapter.  In this derived class for ProductLatticeOntologies
      *  this method does nothing because the ProductLatticeOntologyAdapter's

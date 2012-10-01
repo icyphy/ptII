@@ -48,7 +48,7 @@ import antlr.TokenStreamIOException;
 import antlr.TokenStreamRecognitionException;
 import antlr.collections.impl.BitSet;
 
-/** 
+/**
   PtalonLexer.java generated from populator.g by ANTLR.
 
   @author Adam Cataldo, Elaine Cheong, Thomas Huining Feng

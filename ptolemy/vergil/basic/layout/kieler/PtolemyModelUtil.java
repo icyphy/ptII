@@ -67,13 +67,13 @@ import ptolemy.vergil.basic.RelativeLocatable;
  * @Pt.AcceptedRating Red (cxh)
  */
 public final class PtolemyModelUtil {
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
     /**
      * Find a location for the given object.
-     * 
+     *
      * @param namedObj a model object
      * @return the object's location, or {@code null} if there is no location
      */
@@ -82,7 +82,7 @@ public final class PtolemyModelUtil {
             return (Location) namedObj;
         } else {
             NamedObj object = namedObj;
-            
+
             // Search for the next entity in the hierarchy that has
             // a location attribute.
             while (object != null) {
@@ -105,7 +105,7 @@ public final class PtolemyModelUtil {
         }
         return null;
     }
-    
+
     /**
      * Get the location given by the location attribute of the given input
      * object. If the Ptolemy object has no location attribute, return double
@@ -123,10 +123,10 @@ public final class PtolemyModelUtil {
         }
         return point;
     }
-    
+
     /**
      * Retrieve the actual position from a locatable instance.
-     * 
+     *
      * @param locatable a locatable
      * @return the actual position, or null if none is found
      */
@@ -240,10 +240,10 @@ public final class PtolemyModelUtil {
         // default to false
         return false;
     }
-    
+
     /**
      * Find the reference object for the given relative location.
-     * 
+     *
      * @param location A relative location
      * @return The corresponding reference object, or null if there is none
      */
@@ -291,7 +291,7 @@ public final class PtolemyModelUtil {
         }
         return false;
     }
-    
+
     /**
      * Get the direction of the edge anchor point of an external port
      * inside a composite actor. It is given as a {@link SwingConstants}, like

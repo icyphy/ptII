@@ -1,6 +1,6 @@
 /*
  Parse a string into a type.
- 
+
  Copyright (c) 2011 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
@@ -41,11 +41,11 @@ import ptolemy.kernel.util.IllegalActionException;
 /**
  * This is a helper class that parses string into a type. The rationale
  * for this class is to have an ability to send type information over the network
- * as a string since Type instances are not serializable or their equals method (BaseType primarily) 
+ * as a string since Type instances are not serializable or their equals method (BaseType primarily)
  * checks for equality by reference which breaks after a new instance is deserialized.
- * 
+ *
  * @author Anar Huseynov
- * @version $Id$ 
+ * @version $Id$
  * @since Ptolemy II 8.0
  * @Pt.ProposedRating Red (ahuseyno)
  * @Pt.AcceptedRating Red (ahuseyno)
@@ -56,9 +56,9 @@ public class TypeParser {
     ////                         public methods                    ////
     /**
      * Return a Type instance by parsing the provided type string.
-     * 
+     *
      * <p> The type string must be created by calling toString() method on the Type.
-     * @param type the type string 
+     * @param type the type string
      * @return the Type instance identified by its type string.
      * @throws IllegalActionException if it was not possible to parse the type since it's not supported.
      */

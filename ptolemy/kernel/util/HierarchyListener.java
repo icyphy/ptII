@@ -49,7 +49,7 @@ package ptolemy.kernel.util;
  notifying the object that the hierarchy has changed.
  The notified object can prevent changes by throwing an exception when
  the first method is called.
- 
+
  @author Edward A. Lee
  @version $Id$
  @since Ptolemy II 1.0
@@ -57,11 +57,11 @@ package ptolemy.kernel.util;
  @Pt.AcceptedRating Red (eal    )
  */
 public interface HierarchyListener extends Nameable {
-    
+
     // Note: This extends Nameable to ensure that objects that implement
     // this interface have a container that is a NamedObj (or have no
     // container).
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 

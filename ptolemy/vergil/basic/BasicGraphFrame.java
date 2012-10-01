@@ -1054,7 +1054,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
     public JGraph getJGraph() {
         return _jgraph;
     }
-    
+
     /** Get the directory that was last accessed by this window.
      *  @return The directory last accessed.
      *  @see #setLastDirectory(File)
@@ -1228,7 +1228,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
             }
             Configuration configuration = (Configuration)effigy.toplevel();
             Tableau tableau = configuration.openInstance(container);
-            
+
             // Try to zoom and center on the target.
 
             // Get the _location attribute.  If it is null, then maybe
@@ -1270,7 +1270,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
                         outcode = canvasBounds.outcode(figureBounds.getX(), figureBounds.getY());
                         //basicGraphFrame.zoomFit(pane, figureBounds);
                         //basicGraphFrame.zoom(0.6);
-                    } 
+                    }
 
                     // Get the scale, assume that the scaling in the X
                     // and Y directions are the same.
@@ -1292,7 +1292,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
             MessageHandler.error("Failed to open container", throwable);
         }
     }
-    
+
 
     /** Assuming the contents of the clipboard is MoML code, paste it into
      *  the current model by issuing a change request.
@@ -1447,8 +1447,8 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
     /** Report a message to either the status bar or message handler.
      *  @param owner The frame that, per the user, is generating the
      *  dialog.
-     *  @param message The message.   
-     */   
+     *  @param message The message.
+     */
     public static void report(Frame owner, String message) {
         if (owner instanceof Top) {
             ((Top)owner).report(message);
@@ -1501,7 +1501,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
     public void setJGraph(JGraph jgraph) {
         _jgraph = jgraph;
     }
-    
+
     /** Set the directory that was last accessed by this window.
      *  @see #getLastDirectory()
      *  @param directory The directory last accessed.
@@ -1608,7 +1608,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
             }
         }
     }
-    
+
     /** Zoom in or out to magnify by the specified factor, from the current
      *  magnification.
      *  @param factor The magnification factor (relative to 1.0).
@@ -1646,7 +1646,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
 
     /** Zoom to fit the bounds.
      *  @param pane The pane.
-     *  @param bounds The bound to zoom to.   
+     *  @param bounds The bound to zoom to.
      */
     public void zoomFit(GraphPane pane, Rectangle2D bounds) {
         if (bounds.isEmpty()) {
@@ -1868,7 +1868,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
         GUIUtilities.addMenuItem(_viewMenu, _zoomFitAction);
         GUIUtilities.addHotKey(_getRightComponent(), _zoomOutAction);
         GUIUtilities.addMenuItem(_viewMenu, _zoomOutAction);
-        
+
         _graphMenu = new JMenu("Graph");
         _graphMenu.setMnemonic(KeyEvent.VK_G);
         _menubar.add(_graphMenu);
@@ -2034,7 +2034,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
 
 
             // Deal with the HTML Action next.
-            try { 
+            try {
                 _exportHTMLAction = (AbstractAction) configuration.getStringParameterAsClass("_exportHTMLActionClassName",
                         new Class [] {BasicGraphFrame.class},
                         new Object [] {this});
@@ -2369,7 +2369,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
         // WARNING: If you change this method, then Kepler will probably break.
         // kepler/gui/src/org/kepler/gui/KeplerGraphFrame.java extends BasicGraphFrame
         // and has an _initBasicGraphFrame() method.
-        
+
         // To build Kepler under Eclipse, see
         // https://kepler-project.org/developers/reference/kepler-and-eclipse
 
@@ -2547,10 +2547,10 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
             _palettePane = new JPanel();
             _palettePane.setBorder(null);
             _palettePane.setLayout(new GridBagLayout());
-            
+
             // create a query for search.
             JPanel findPanel = new JPanel(new GridBagLayout());
-            
+
             // Put in the label.
             GridBagConstraints labelConstraints = new GridBagConstraints();
             labelConstraints.gridx = 0;
@@ -2567,7 +2567,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
             entryBoxConstraints.fill = GridBagConstraints.HORIZONTAL;
             entryBoxConstraints.weightx = 1.0;
             findPanel.add(_findInLibraryEntryBox, entryBoxConstraints);
-            
+
             // Put in the find panel.
             GridBagConstraints findPanelConstraints = new GridBagConstraints();
             findPanelConstraints.gridx = 0;
@@ -2598,7 +2598,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
                 // Make the Ptolemy model visible in the tree.
                 TreePath modelTreePath = null;
                 {
-                    // Traverse the Ptolemy model hierarchy, create a list, reverse it, 
+                    // Traverse the Ptolemy model hierarchy, create a list, reverse it,
                     // create an array and then a TreePath.
                     List<CompositeEntity> compositeList = new LinkedList<CompositeEntity>();
                     CompositeEntity composite = (CompositeEntity) getModel();
@@ -2745,7 +2745,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
      */
     protected void _initBasicGraphFrameSetZoomAndPan()
             throws IllegalActionException {
-	
+
         // Set the zoom factor.
         Parameter zoom = (Parameter) getModel().getAttribute(
                 "_vergilZoomFactor", Parameter.class);
@@ -2758,7 +2758,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
         // Set the pan position.
         Parameter pan = (Parameter) getModel().getAttribute(
                 "_vergilCenter", Parameter.class);
-        
+
         if (pan != null) {
             ArrayToken panToken = (ArrayToken) pan.getToken();
             Point2D center = new Point2D.Double(
@@ -2769,7 +2769,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
             // Make sure the visibility is only expert.
             pan.setVisibility(Settable.EXPERT);
         }
-        
+
         // If we have neither zooming or panning info...
         if (zoom == null && pan == null) {
             // ...set the top left corner of the view to the top left corner of the model.
@@ -2778,10 +2778,10 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
             GraphPane pane = getJGraph().getGraphPane();
             Rectangle2D bounds = pane.getForegroundLayer().getLayerBounds();
             Rectangle2D visible = getVisibleRectangle();
-            
+
             double centerX = visible.getCenterX() - (visible.getX() - bounds.getX());
             double centerY = visible.getCenterY() - (visible.getY() - bounds.getY());
-            
+
             // Set the new center point, but add a little free space between model and border
             setCenter(new Point2D.Double(centerX - 10.0, centerY - 10.0));
         }
@@ -3089,7 +3089,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
 
     /** The export to PNG action. */
     protected Action _exportPNGAction;
-    
+
     /** The find action. */
     protected Action _findAction;
 
@@ -3110,7 +3110,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
 
     /** The action for automatically laying out the graph.
      *  This can be either an advanced layout or the simple Ptolemy layout,
-     *  depending on whether the better one is available. 
+     *  depending on whether the better one is available.
      */
     protected Action _layoutAction;
 
@@ -3185,7 +3185,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
     protected Action _zoomResetAction = new ZoomResetAction("Zoom Reset");
 
     /** True if we are inside zoom().  Used by derived classes with scrollbars.
-     */   
+     */
     protected boolean _zoomFlag = false;
 
     ///////////////////////////////////////////////////////////////////
@@ -3193,7 +3193,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
 
     /**
      * Create an action for advanced automatic layout, if possible.
-     * 
+     *
      * @return a layout action, or null if it cannot be created
      */
     private IGuiAction _createLayoutAction() {
@@ -3217,7 +3217,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
                             return null;
                         }
                     }
-                    
+
                     return (IGuiAction) object;
                 }
             }
@@ -3226,7 +3226,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
         }
         return null;
     }
-    
+
     /** Update the size, zoom and position of the window.
      *  This method is typically called when closing the window
      *  or writing the moml file out.
@@ -3266,12 +3266,12 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
                 WindowPropertiesAttribute properties = (WindowPropertiesAttribute) model
                     .getAttribute("_windowProperties",
                             WindowPropertiesAttribute.class);
-            
+
                 if (properties == null) {
                     properties = new WindowPropertiesAttribute(model,
                             "_windowProperties");
                 }
-            
+
                 // This method uses MoMLChangeRequest
                 properties.recordProperties((Frame) parent);
             }
@@ -3366,7 +3366,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
 
     /** The entry box for find in library. */
     JTextField _findInLibraryEntryBox;
-    
+
     /** A layer adapter to handle the mousePressed event. */
     private MousePressedLayerAdapter _mousePressedLayerAdapter;
 
@@ -3628,7 +3628,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
         ////                         public methods                   ////
 
         /** Export an image.
-         *   
+         *
          *  <p> Under Mac OS X, use java.awt.FileDialog.
          *  Under other OS's, use javax.swing.JFileChooser. Under Mac OS
          *  X, see {@link ptolemy.gui.PtGUIUtilities#useFileDialog()} for
@@ -3759,7 +3759,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
             }
         }
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     //// FindInLibraryAction
 
@@ -3796,11 +3796,11 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
                 // setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
                 _findInLibraryEntryBox.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
                 _library.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
-                
+
                 // Put a message in the progress bar at the bottom of the window.
                 // FIXME: Sadly, this doesn't work.
                 report("Opening Libraries ...");
-                
+
                 // Traverse the model until we get a match.
                 // _stack will be empty only when no further match is found.
                 boolean foundOne = false;
@@ -3839,12 +3839,12 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
                 // setCursor(Cursor.getDefaultCursor());
                 _findInLibraryEntryBox.setCursor(Cursor.getDefaultCursor());
                 _library.setCursor(Cursor.getDefaultCursor());
-                
+
                 // Clear the message in the progress bar at the bottom of the window.
                 report("");
             }
         }
-        
+
         /** Search the specified library for a name or class name that
          *  contains the specified text.
          *  @param text The text to search for.
@@ -3896,7 +3896,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
             }
             return false;
         }
-        
+
         private String _previousText;
         private Stack<NamedObj> _stack;
         private Stack<Integer> _indexes;
@@ -4118,7 +4118,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
 
     ///////////////////////////////////////////////////////////////////
     //// OpenContainerAction
-    
+
     /** An action to open the container of this entity. */
     private class OpenContainerAction extends AbstractAction {
         /** Construct an open container action.  This action opens
@@ -4494,7 +4494,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
             zoom(1.0 / 1.25);
         }
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     //// LayoutConfigDialogAction
 

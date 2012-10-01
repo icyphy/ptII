@@ -48,7 +48,7 @@ public interface WebExporter {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-    
+
     /** Add the given web content as a new attribute.
      *  If <i>onceOnly</i> is true, then if identical content has
      *  already been added, then it is not added again.
@@ -59,9 +59,9 @@ public interface WebExporter {
      *  @return True if the specified attribute and value was defined (i.e.,
      *   if there was a previous value, it was overwritten).
      */
-    public boolean defineAttribute(WebAttribute webAttribute, 
+    public boolean defineAttribute(WebAttribute webAttribute,
             boolean overwrite);
-    
+
     /** Add the given web content as a new element to the specified position.
      *  The position is expected to be one of "head", "start", or "end",
      *  where anything else is interpreted as equivalent to "end".
@@ -73,7 +73,7 @@ public interface WebExporter {
      *  @param onceOnly True to prevent duplicate content.
      */
     public void defineElement(WebElement webElement, boolean onceOnly);
-    
+
     /** During invocation an export, return
      *  the parameters of the export. If not currently doing an export, return null.
      *  @return The directory being written to.

@@ -119,7 +119,7 @@ public class ArrayAccumulate extends Transformer {
             output.send(0, new ArrayToken(elementType));
         }
     }
-    
+
     /** Initialize this actor to have an empty accumulating array.
      *  @exception IllegalActionException If the superclass throws it.
      */
@@ -128,7 +128,7 @@ public class ArrayAccumulate extends Transformer {
         _accumulating = null;
         _tentativeAccumulating = null;
     }
-    
+
     /** Record the accumulating array and return true.
      *  @return True.
      *  @exception IllegalActionException If the superclass throws it.
@@ -138,16 +138,16 @@ public class ArrayAccumulate extends Transformer {
         _accumulating = _tentativeAccumulating;
         return result;
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
     /** The accumulating array. */
     private ArrayToken _accumulating;
-    
+
     /** An array to use (repeatedly) to append arrays. */
     private ArrayToken[] _arrays = new ArrayToken[2];
-    
+
     /** The tentative accumulating array. */
     private ArrayToken _tentativeAccumulating;
 }

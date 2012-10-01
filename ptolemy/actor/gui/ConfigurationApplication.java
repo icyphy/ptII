@@ -356,16 +356,16 @@ public class ConfigurationApplication implements ExecutionListener {
         effigy.setModified(false);
 
         // Avoid calling System.exit().
-	String previousPropertyValue = StringUtilities.getProperty("ptolemy.ptII.doNotExit");
+        String previousPropertyValue = StringUtilities.getProperty("ptolemy.ptII.doNotExit");
         System.setProperty("ptolemy.ptII.doNotExit", "true");
-	try {
-	    // FIXME: are all these necessary?
-	    effigy.closeTableaux();
-	    model.setContainer(null);
-	    MoMLParser.purgeAllModelRecords();
-	} finally {
-	    System.setProperty("ptolemy.ptII.doNotExit", previousPropertyValue);
-	}
+        try {
+            // FIXME: are all these necessary?
+            effigy.closeTableaux();
+            model.setContainer(null);
+            MoMLParser.purgeAllModelRecords();
+        } finally {
+            System.setProperty("ptolemy.ptII.doNotExit", previousPropertyValue);
+        }
     }
 
     /** Reduce the count of executing models by one.  If the number of
@@ -401,7 +401,7 @@ public class ConfigurationApplication implements ExecutionListener {
      *  <p>For example to use the full configuration to open a model:</p>
      *  <pre>
      *  java -classpath $PTII ptolemy.actor.gui.ConfigurationApplication \
-     *     $PTII ptolemy/configs/full/configuration.xml \ 
+     *     $PTII ptolemy/configs/full/configuration.xml \
      *     $PTII/ptolemy/moml/demo/modulation.xml
      *  </pre>
      *
@@ -511,13 +511,13 @@ public class ConfigurationApplication implements ExecutionListener {
         CompositeEntity model = openModelOrEntity(modelFileName);
         if (!(model instanceof TypedCompositeActor)) {
             System.out.println("While trying to open \""
-			       + modelFileName
-			       + "\", openModelOrEntity() returned a "
-			       + (model == null ? "null" : model.getClass().getName())
+                               + modelFileName
+                               + "\", openModelOrEntity() returned a "
+                               + (model == null ? "null" : model.getClass().getName())
                     + ".  This can happen when opening a HTML or text file. ");
             return null;
         } else {
-            return (TypedCompositeActor)model; 
+            return (TypedCompositeActor)model;
         }
     }
 

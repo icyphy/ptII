@@ -101,7 +101,7 @@ public class NameIcon extends EditorIcon {
         SingletonParameter hide = new SingletonParameter(this, "_hideName");
         hide.setToken(BooleanToken.TRUE);
         hide.setVisibility(Settable.EXPERT);
-        
+
         color = new ColorAttribute(this, "color");
         color.setExpression("{1.0,1.0,1.0,1.0}");
 
@@ -121,7 +121,7 @@ public class NameIcon extends EditorIcon {
      *  This defaults to white.
      */
     public ColorAttribute color;
-    
+
     /** The amount of rounding of the corners.
      *  This is a double that defaults to 0.0, which indicates no rounding.
      */

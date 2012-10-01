@@ -102,7 +102,7 @@ missingMakefiles: $(JAVAFILENAMES)
 
 missingDocPackages: $(JAVAFILENAMES)
 	@cat $(JAVAFILENAMES) | xargs -n 1 dirname | sort | uniq | sed 's@/@.@g' | sed 's/^\.\.//' > /tmp/missingDocPackages.p
-	@(cd $(ROOT)/doc; $(MAKE) echo > /tmp/missingDocPackages.d)
+	@(cd $(ROOT)/doc; $(MAKE) echo | sort > /tmp/missingDocPackages.d)
 	@comm -23 /tmp/missingDocPackages.p /tmp/missingDocPackages.d | 2>&1 egrep -v "(\.apps\.|\.demo|\.test$$|Entering directory|Exiting directory|ptolemy\.actor\.lib\.opencv|test\.junit|vendors\.|\.jsoriginal)"
 
 KRUFT = \

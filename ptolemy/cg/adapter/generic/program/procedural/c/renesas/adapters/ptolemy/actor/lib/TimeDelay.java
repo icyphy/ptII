@@ -57,7 +57,7 @@ public class TimeDelay
     public TimeDelay(ptolemy.actor.lib.TimeDelay actor) {
         super(actor);
     }
-    
+
     public String generateFireCode() throws IllegalActionException {
         CodeStream codeStream = _templateParser.getCodeStream();
         codeStream.clear();
@@ -68,14 +68,14 @@ public class TimeDelay
         codeStream.appendCodeBlock("fireBlock", args);
         return processCode(codeStream.toString());
     }
-    
+
     /** Return the value of the delay parameter.
      *  @return the value of the delay parameter in the target
      *  language.
      *  @exception IllegalActionException If thrown while reading the
      *  <i>delay</i parameter.
      */
-    public String getAddTimeString() throws IllegalActionException { 
+    public String getAddTimeString() throws IllegalActionException {
         return getParameterValue("delay", (NamedObj) _component);
     }
 }

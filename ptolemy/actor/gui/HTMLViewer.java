@@ -289,7 +289,7 @@ public class HTMLViewer extends TableauFrame implements Printable,
                                     newURL.toExternalForm(),
                                     BrowserEffigy.staticFactory);
                         } else {
-                            try { 
+                            try {
                                 configuration.openModel(newURL, newURL,
                                         newURL.toExternalForm());
                             } catch (IOException ex) {
@@ -404,7 +404,7 @@ public class HTMLViewer extends TableauFrame implements Printable,
             // Under Java 1.7, JEditorPane.setPage() handles jar urls
             // differently.  In Java 1.6, setPage() would correctly open
             // jar:file:/Users/cxh/ptII/ptolemy/ptsupport.jar!/doc/mainVergilPtiny.htm
-            // even though doc/MainVergilPtiny.htm is in doc/docConfig.jar, 
+            // even though doc/MainVergilPtiny.htm is in doc/docConfig.jar,
             // not ptsupport.jar.  So, we look up the jar URL.
             // See http://bugzilla.ecoinformatics.org/show_bug.cgi?id=5508
             page = jarURL;

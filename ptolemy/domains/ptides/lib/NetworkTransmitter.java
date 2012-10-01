@@ -188,10 +188,10 @@ public class NetworkTransmitter extends OutputDevice {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                     protected methods                     ////    
+    ////                     protected methods                     ////
 
     /**
-     * Adds to the set of inequalities returned by the overridden method 
+     * Adds to the set of inequalities returned by the overridden method
      * a constraint that requires the input to be less than or
      * equal to the type of the payload field in the output record.
      */
@@ -204,7 +204,7 @@ public class NetworkTransmitter extends OutputDevice {
         return result;
     }
 
-    /** Do not establish the usual default type constraints. 
+    /** Do not establish the usual default type constraints.
      *  @return null
      */
     @Override

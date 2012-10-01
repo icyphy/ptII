@@ -234,7 +234,7 @@ public interface PlotInterface extends PlotBoxInterface {
     public void parseFile(String filespec, URL documentBase);
 
     /** Mark the disconnections with a Dot in case value equals true, otherwise these
-     *  points are not marked. 
+     *  points are not marked.
      *  @param value True when disconnections should be marked.
      */
     public void markDisconnections(boolean value);

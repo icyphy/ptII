@@ -50,7 +50,7 @@ import ptolemy.kernel.util.Settable;
  * @Pt.AcceptedRating Red (msp)
  */
 public class LayoutConfiguration extends Attribute {
-    
+
     /** Available modes of user interaction. */
     public enum InteractionMode {
         /** No user interaction: full automatic layout. */
@@ -62,10 +62,10 @@ public class LayoutConfiguration extends Attribute {
         /** User positioning affects cycle detection, node layering, and node order. */
         Full;
     }
-    
+
     /**
      * Create and initialize a layout configuration.
-     * 
+     *
      *  @param container The container.
      *  @param name The name of this attribute.
      *  @exception IllegalActionException If the attribute is not of an
@@ -76,24 +76,24 @@ public class LayoutConfiguration extends Attribute {
     public LayoutConfiguration(NamedObj container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        
+
         useOldAlgorithm = new Parameter(this, "useOldAlgorithm");
         useOldAlgorithm.setDisplayName("Use old algorithm");
         useOldAlgorithm.setTypeEquals(BaseType.BOOLEAN);
         useOldAlgorithm.setExpression(Boolean.toString(DEF_OLD_ALGORITHM));
         useOldAlgorithm.setVisibility(Settable.EXPERT);
-        
+
         includeDecorations = new Parameter(this, "includeDecorations");
         includeDecorations.setDisplayName("Include decorations");
         includeDecorations.setTypeEquals(BaseType.BOOLEAN);
         includeDecorations.setExpression(Boolean.toString(DEF_DECORATIONS));
-        
+
         minimizeBends = new Parameter(this, "minimizeBends");
         minimizeBends.setDisplayName("Minimize edge bends");
         minimizeBends.setTypeEquals(BaseType.BOOLEAN);
         minimizeBends.setExpression(Boolean.toString(DEF_MINIMIZE_BENDS));
         minimizeBends.setVisibility(Settable.EXPERT);
-        
+
 //        optimizeRelations = new Parameter(this, "optimizeRelations");
 //        optimizeRelations.setDisplayName("Optimize relations");
 //        optimizeRelations.setTypeEquals(BaseType.BOOLEAN);
@@ -102,7 +102,7 @@ public class LayoutConfiguration extends Attribute {
         // This should be commented back in once the feature is finished.
 //        optimizeRelations.setVisibility(Settable.EXPERT);
         // DEBUG End
-        
+
         spacing = new DoubleRangeParameter(this, "spacing");
         spacing.setDisplayName("Object spacing");
         spacing.min.setExpression("2.0");
@@ -113,7 +113,7 @@ public class LayoutConfiguration extends Attribute {
         spacing.minLabel.setVisibility(Settable.NONE);
         spacing.maxLabel.setVisibility(Settable.NONE);
         spacing.precision.setVisibility(Settable.NONE);
-        
+
         logAspectRatio = new DoubleRangeParameter(this, "logAspectRatio");
         logAspectRatio.setDisplayName("Aspect ratio");
         logAspectRatio.min.setExpression("-1.0");
@@ -126,61 +126,61 @@ public class LayoutConfiguration extends Attribute {
         logAspectRatio.minLabel.setVisibility(Settable.NONE);
         logAspectRatio.maxLabel.setVisibility(Settable.NONE);
         logAspectRatio.precision.setVisibility(Settable.NONE);
-        
+
         interactionMode = new ChoiceParameter(this, "interactionMode", InteractionMode.class);
         interactionMode.setDisplayName("Interaction mode");
         interactionMode.setExpression(DEF_INTERACTION_MODE.toString());
-        
+
         helpURL = new StringParameter(this, "_helpURL");
         helpURL.setExpression("ptolemy/vergil/basic/layout/layout.htm");
         helpURL.setVisibility(Settable.NONE);
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                       public parameters                   ////
-    
+
     /** Whether to use Ptolemy's original layout algorithm. */
     public Parameter useOldAlgorithm;
 
     /** Whether to include unconnected nodes such as comments. */
     public Parameter includeDecorations;
-    
+
     public Parameter minimizeBends;
-    
+
 //    /** Whether to try to optimize relation vertices or not. */
 //    public Parameter optimizeRelations;
-    
+
     /** The overall spacing between graph elements. */
     public DoubleRangeParameter spacing;
-    
+
     /** The aspect ratio for placement of connected components (logarithmic). */
     public DoubleRangeParameter logAspectRatio;
-    
+
     /** Mode of user interaction: whether user positioning is allowed to affect the layout. */
     public ChoiceParameter interactionMode;
-    
+
     /** Customized help file to be displayed by the layout configuration dialog. */
     public StringParameter helpURL;
-    
-    
+
+
     /** Default value for useOldAlgorithm. */
     public static final boolean DEF_OLD_ALGORITHM = false;
-    
+
     /** Default value for includeDecorations. */
     public static final boolean DEF_DECORATIONS = true;
-    
+
     /** Default value for minimizeBends. */
     public static final boolean DEF_MINIMIZE_BENDS = true;
-    
+
 //    /** Default value for optimizeRelations. */
 //    public static final boolean DEF_OPTIMIZE_RELATIONS = true;
-    
+
     /** Default value for spacing. */
     public static final double DEF_SPACING = 10.0;
-    
+
     /** Default value for aspectRatio (non-logarithmic). */
     public static final double DEF_ASPECT_RATIO = 1.6;
-    
+
     /** Default value for interaction mode. */
     public static final InteractionMode DEF_INTERACTION_MODE = InteractionMode.None;
 

@@ -84,14 +84,14 @@ public class Title extends StringParameter implements WebExportable {
     public Title(NamedObj container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        
+
         // Unfortunately, much of this class is copied from AbstractTextAttribute,
         // but we have no choice because we need it to be a StringParameter.
-        
+
         _icon = new TextIcon(this, "_icon");
         _icon.setPersistent(false);
         _icon.setIconText("T");
-        
+
         showTitleInHTML = new Parameter(this, "showTitleInHTML");
         showTitleInHTML.setExpression("false");
         showTitleInHTML.setTypeEquals(BaseType.BOOLEAN);
@@ -135,7 +135,7 @@ public class Title extends StringParameter implements WebExportable {
         center = new Parameter(this, "center");
         center.setToken(BooleanToken.FALSE);
         center.setTypeEquals(BaseType.BOOLEAN);
-        
+
         // Hide the name.
         SingletonParameter hide = new SingletonParameter(this, "_hideName");
         hide.setToken(BooleanToken.TRUE);
@@ -150,7 +150,7 @@ public class Title extends StringParameter implements WebExportable {
 
         // The following ensures that double click edits the text of the title.
         new VisibleParameterEditorFactory(this, "_editorFactory");
-        
+
         // Add a small icon.
         ConfigurableAttribute smallIcon = new ConfigurableAttribute(this, "_smallIconDescription");
         try {
@@ -183,7 +183,7 @@ public class Title extends StringParameter implements WebExportable {
      *  This defaults to false.
      */
     public Parameter italic;
-    
+
     /** If set to true, then the title given by this parameter
      *  will be shown in the HTML prior to the image of the model
      *  (as well as in the image of the model, if it is visible
@@ -267,17 +267,17 @@ public class Title extends StringParameter implements WebExportable {
         result._icon = (TextIcon) result.getAttribute("_icon");
         return result;
     }
-    
+
     /** A title is of type text/html.
-     * 
+     *
      * @return The string text/html
      */
     public String getMimeType() {
         return "text/html";
     }
-    
+
     /** Return true, since new title content should overwrite old title content.
-     * 
+     *
      * @return True, since new title content should overwrite old title content.
      */
     public boolean isOverwriteable() {
@@ -341,19 +341,19 @@ public class Title extends StringParameter implements WebExportable {
 
         return super.moveToLast();
     }
-    
+
     /** Return a title for the model.  The title can be returned as an attribute
      *  or an element, but not a document.
-     * 
+     *
      *  @param exporter  The web exporter to which to write content.
      *  @throws IllegalActionExeption If there is a problem creating
      *  the content or setting the attribute.
      */
-    public void provideContent(WebExporter exporter) 
+    public void provideContent(WebExporter exporter)
         throws IllegalActionException{
-        // Provide a WebElement containing the title.  Title does not 
+        // Provide a WebElement containing the title.  Title does not
         // provide any WebAttributes.
-        //_provideElements(exporter);   
+        //_provideElements(exporter);
         _provideAttributes(exporter);
     }
 
@@ -364,30 +364,30 @@ public class Title extends StringParameter implements WebExportable {
      *  @throws IllegalActionException If something is wrong with the
      *   specification of the content.
      */
-    protected void _provideAttributes(WebExporter exporter) 
+    protected void _provideAttributes(WebExporter exporter)
         throws IllegalActionException {
-        
-        // Create a WebAttribute for title and add to exporter.  
+
+        // Create a WebAttribute for title and add to exporter.
         // Content should only be added once (onceOnly -> true).
         WebAttribute webAttribute = WebAttribute.
             createWebAttribute(getContainer(), "titleWebAttribute", "title");
         webAttribute.setExpression(stringValue());
         exporter.defineAttribute(webAttribute, true);
     }
-    
-    /** Provide the <title> </title> element to the specified web exporter.  
-     *  This element should be included in the <head> section. 
-     * 
+
+    /** Provide the <title> </title> element to the specified web exporter.
+     *  This element should be included in the <head> section.
+     *
      *  @param exporter The WebExporter to add content to
      *  @throws IllegalActionException If something is wrong with the
      *   specification of the content.
      */
-    
+
     /*
-    protected void _provideElements(WebExporter exporter) 
+    protected void _provideElements(WebExporter exporter)
         throws IllegalActionException {
-        
-        // Create a WebElement for title and add to exporter.  
+
+        // Create a WebElement for title and add to exporter.
         // Content should only be added once (onceOnly -> true).
         WebElement webElement = WebElement.
             createWebElement(getContainer(), "titleWebElement", "title");
@@ -396,7 +396,7 @@ public class Title extends StringParameter implements WebExportable {
         exporter.defineElement(webElement, true);
     }
     */
-    
+
     /** Override the base class to set the text to be displayed
      *  in the icon.
      */

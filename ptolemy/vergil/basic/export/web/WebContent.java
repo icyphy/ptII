@@ -59,7 +59,7 @@ import ptolemy.vergil.toolbox.VisibleParameterEditorFactory;
  * @Pt.ProposedRating Red (cxh)
  * @Pt.AcceptedRating Red (cxh)
  */
-public abstract class WebContent extends StringParameter 
+public abstract class WebContent extends StringParameter
     implements WebExportable {
 
     /** Create an instance of this parameter.
@@ -71,18 +71,18 @@ public abstract class WebContent extends StringParameter
     public WebContent(NamedObj container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        
+
         _icon = new TextIcon(this, "_icon");
         _icon.setTextColor(Color.RED);
         _icon.setIconText("H");
-        
+
         displayText = new StringParameter(this, "displayText");
         displayText.setExpression("Content for Export to Web");
-        
+
         height = new Parameter(this, "height");
         height.setTypeEquals(BaseType.INT);
         height.setExpression("20");
-        
+
         width = new Parameter(this, "width");
         width.setTypeEquals(BaseType.INT);
         width.setExpression("60");
@@ -97,12 +97,12 @@ public abstract class WebContent extends StringParameter
 
     ///////////////////////////////////////////////////////////////////
     ////                         parameters                        ////
-    
+
     /** Parameter giving the text to display in the Ptolemy model.
      *  This defaults to "Content for Export to Web".
      */
     public StringParameter displayText;
-    
+
     /** Parameter specifying the height of the editing box.
      *  This is an int that defaults to 20.
      */
@@ -113,7 +113,7 @@ public abstract class WebContent extends StringParameter
      */
     public Parameter width;
 
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -129,7 +129,7 @@ public abstract class WebContent extends StringParameter
             super.attributeChanged(attribute);
         }
     }
-    
+
     /** Clone the object into the specified workspace.
      *  @param workspace The workspace for the new object.
      *  @return A new NamedObj.
@@ -148,65 +148,65 @@ public abstract class WebContent extends StringParameter
         }
         return newObject;
     }
-    
+
     /** Provide content to the specified web exporter.
-     *  This may include, for example, HTML pages and fragments, Javascript 
-     *  function definitions and calls, CSS styling, and more. Throw an 
+     *  This may include, for example, HTML pages and fragments, Javascript
+     *  function definitions and calls, CSS styling, and more. Throw an
      *  IllegalActionException if something is wrong with the web content.
-     * 
-     *  Calls two methods, _provideAttributes() for generating content that 
-     *  would be an attribute of an element and _provideElements() for 
-     *  generating standalone elements.  Note that attributes may refer to 
-     *  other elements; therefore, the provideContent() method always calls both 
+     *
+     *  Calls two methods, _provideAttributes() for generating content that
+     *  would be an attribute of an element and _provideElements() for
+     *  generating standalone elements.  Note that attributes may refer to
+     *  other elements; therefore, the provideContent() method always calls both
      *  _provideAttributes() and _provideElements().  For example, a HTML
      *  attribute for a Javascript method call:
      *  onclick="runMethod()"
-     *  requires that a 
+     *  requires that a
      *  <script> function runMethod() { } </script> element be defined.
-     *  Subclasses should override _provideAttributes() and _provideElements().   
-     *  
+     *  Subclasses should override _provideAttributes() and _provideElements().
+     *
      *  @param exporter The web exporter to be used
      *  @exception IllegalActionException If something is wrong with the web
      *  content.
      */
-    public void provideContent(WebExporter exporter) throws 
+    public void provideContent(WebExporter exporter) throws
         IllegalActionException {
         _provideAttributes(exporter);
         _provideElements(exporter);
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                       protected methods                   ////
-    
-    /** Generate attribute web content.  Should call WebExporter's 
+
+    /** Generate attribute web content.  Should call WebExporter's
      * defineAttribute() method.  Subclasses should override. Please also see
      * {@link ptolemy.vergil.basic.export.web.WebAttribute}
-     * 
+     *
      * @param  exporter  The WebExporter to write content to
      * @throws IllegalActionException If there is a problem creating the web
      * content.
      */
     protected void _provideAttributes(WebExporter exporter)
         throws IllegalActionException {
-        
+
     }
-    
-    /** Generate element web content.  Should call WebExporter's 
+
+    /** Generate element web content.  Should call WebExporter's
      * defineElement() method.  Subclasses should override. Please also see
      * {@link ptolemy.vergil.basic.export.web.WebElement}
-     * 
+     *
      * @param  exporter  The WebExporter to write content to
      * @throws IllegalActionException If there is a problem creating the web
      * content.
      */
-    protected void _provideElements(WebExporter exporter) 
+    protected void _provideElements(WebExporter exporter)
         throws IllegalActionException {
-        
+
     }
-    
+
     // Add createResource() method here that returns a URI?  Not every class
     // would need this.
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                       protected variables                 ////
 

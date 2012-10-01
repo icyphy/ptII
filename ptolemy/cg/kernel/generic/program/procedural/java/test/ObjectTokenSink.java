@@ -39,7 +39,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 //// ObjectTokenReader
 
 /**
- A simple custom actor that reads an ObjectToken that encapuslates 
+ A simple custom actor that reads an ObjectToken that encapuslates
  a Double with the value of 42.0.
 
  @author Christopher Brooks
@@ -85,7 +85,7 @@ public class ObjectTokenSink extends Sink {
                 // Ignore null ObjectTokens
                 if (token.getValue() != null) {
                     throw new IllegalActionException("Input was a "
-                            + token + ", which is a " + token.getClass() 
+                            + token + ", which is a " + token.getClass()
                             + " with a value " + token.getValue() + ", which was not null"
                             + ".  A Double was expected.");
                 }

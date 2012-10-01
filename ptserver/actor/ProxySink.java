@@ -45,7 +45,7 @@ import ptserver.data.CommunicationToken;
 ////ProxySink
 /**
  * A ProxySink acts as a proxy to some sink in the original model by publishing tokens it
- * receives as one CommunicationToken per fire to the queue of communication tokens.  
+ * receives as one CommunicationToken per fire to the queue of communication tokens.
  * The tokens are then send to the original sink using ProxyModelInfrastructure for distributed model
  * execution.
  * @author Anar Huseynov
@@ -218,7 +218,7 @@ public class ProxySink extends ProxyActor {
      */
     private TokenPublisher _tokenPublisher;
     /**
-     * The proxy model infrastructure that created the sink.  
+     * The proxy model infrastructure that created the sink.
      * The reference to it is needed in order to slow down the sink's thread
      * if the latency is above required number.
      */

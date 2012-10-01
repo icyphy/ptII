@@ -42,7 +42,7 @@ import javax.swing.JTextField;
 //// OpenLayoutDialog
 
 /** Customized dialog for opening models and their layouts.
- * 
+ *
  *  @author Peter Foldes
  *  @version $Id$
  *  @since Ptolemy II 8.1
@@ -73,7 +73,7 @@ public class OpenLayoutDialog implements ActionListener {
     ///////////////////////////////////////////////////////////////////
     ////                public methods                             ////
 
-    /** 
+    /**
      * Process action event on choose model and layout buttons.
      * @param event the event object.
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)

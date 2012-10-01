@@ -42,7 +42,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 
 /** This is a fixed priority scheduler.
- * 
+ *
  * @author Patricia Derler
    @version $Id$
    @since Ptolemy II 0.2
@@ -72,7 +72,7 @@ public class FPPCore extends ResourceScheduler {
     /** Lowest task priority. */
     public static int LOWEST_PRIORITY = Integer.MAX_VALUE;
 
-    /** Initialize local variables. 
+    /** Initialize local variables.
      *  @throws IllegalActionException Thrown in super class.
      */
     @Override
@@ -87,7 +87,7 @@ public class FPPCore extends ResourceScheduler {
      *  @param actor The actor to be scheduled.
      *  @param currentPlatformTime The current platform time.
      *  @param deadline The event deadline - not used here.
-     *  @param executionTime The execution time of the actor. 
+     *  @param executionTime The execution time of the actor.
      *  @return Relative time when this Scheduler has to be executed
      *    again.
      *  @throws IllegalActionException Thrown if actor paramaters such
@@ -150,7 +150,7 @@ public class FPPCore extends ResourceScheduler {
     /** Get the priority of the actor.
      *  @param actor The actor.
      *  @return The priority of the actor or, if the actor has no priority
-     *    assigned, the lowest priority. 
+     *    assigned, the lowest priority.
      *  @throws IllegalActionException Thrown if parameter cannot be read.
      */
     protected double _getPriority(Actor actor) throws IllegalActionException {

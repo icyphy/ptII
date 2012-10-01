@@ -406,7 +406,7 @@ public abstract class SequencedSharedMemoryActor extends SetVariable {
 
         // If initial variable does not have a value, then assign a default value
         // Subclasses should override getDefaultValue()
-        if (initialVar == null) { 
+        if (initialVar == null) {
             // FindBugs wants us to avoid dereferencing initialVar if it is null.
             _setValue(initialVar, _getDefaultValue());
         } else if (initialVar.getToken() == null

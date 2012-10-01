@@ -3,11 +3,11 @@
 
 
 /*** fireBlock($computeResult) ***/
-	double result = 1;
-	int i;
+        double result = 1;
+        int i;
 
-	$computeResult
+        $computeResult
 
-	$put(output, result);
+        $put(output, result);
 /**/
 

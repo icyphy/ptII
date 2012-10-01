@@ -40,14 +40,14 @@ import ptolemy.kernel.util.NamedObj;
 
 
 /** This is a first come first serve scheduler.
- * 
+ *
  * @author Patricia Derler
    @version $Id$
    @since Ptolemy II 0.2
 
    @Pt.ProposedRating Red (derler)
    @Pt.AcceptedRating Red (derler)
- */ 
+ */
 public class NPFCFSCore extends ResourceScheduler {
 
     /** Create a new actor in the specified container with the specified
@@ -64,32 +64,32 @@ public class NPFCFSCore extends ResourceScheduler {
      */
     public NPFCFSCore(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
-        super(container, name);   
-    } 
-    
+        super(container, name);
+    }
+
     ///////////////////////////////////////////////////////////////////
     //                      public methods                           //
-    
+
     /** Schedule a new actor for execution and return the next time
      *  this scheduler has to perform a reschedule.
      *  @param actor The actor to be scheduled.
      *  @param currentPlatformTime The current platform time.
      *  @param deadline The deadline - not used here.
-     *  @param executionTime The execution time of the actor. 
+     *  @param executionTime The execution time of the actor.
      *  @return Relative time when this Scheduler has to be executed
      *    again.
      *  @throws IllegalActionException Thrown if actor paramaters such
      *    as execution time or priority cannot be read.
      */
-    @Override 
+    @Override
     public Time schedule(Actor actor, Time currentPlatformTime, Double deadline, Time executionTime) throws IllegalActionException {
         super.schedule(actor, currentPlatformTime, deadline, executionTime);
         _lastActorFinished = false;
         if (currentlyExecuting == null) {
             currentlyExecuting = actor;
             event((NamedObj) currentlyExecuting, currentPlatformTime.getDoubleValue(),ExecutionEventType.START);
-        } 
-        
+        }
+
         Time remainingTime = null;
         if (_remainingTimes.get(currentlyExecuting) == null) { // hasn't been scheduled
             remainingTime = executionTime;
@@ -97,27 +97,27 @@ public class NPFCFSCore extends ResourceScheduler {
         } else { //has been scheduled
             Time lasttime = _lastTimeScheduled.get(currentlyExecuting);
             Time timePassed = currentPlatformTime.subtract(lasttime);
-            remainingTime = _remainingTimes.get(currentlyExecuting).subtract(timePassed); 
-            _remainingTimes.put(currentlyExecuting, remainingTime); 
+            remainingTime = _remainingTimes.get(currentlyExecuting).subtract(timePassed);
+            _remainingTimes.put(currentlyExecuting, remainingTime);
         }
-        
+
         _lastTimeScheduled.put(currentlyExecuting, currentPlatformTime);
-        
-        if (remainingTime.getDoubleValue() == 0.0) { 
+
+        if (remainingTime.getDoubleValue() == 0.0) {
             event((NamedObj) currentlyExecuting, currentPlatformTime.getDoubleValue(), ExecutionEventType.STOP);
-            
+
             _remainingTimes.put(currentlyExecuting, null);
             currentlyExecuting = null;
             _lastActorFinished = true;
         }
         return remainingTime;
     }
-    
-    
+
+
     ///////////////////////////////////////////////////////////////////
     //                      private variables                        //
-    
+
     /** Currently executing actor. */
     private Actor currentlyExecuting;
-    
+
 }

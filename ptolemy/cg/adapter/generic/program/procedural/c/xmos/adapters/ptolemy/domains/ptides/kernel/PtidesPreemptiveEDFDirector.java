@@ -89,7 +89,7 @@ public class PtidesPreemptiveEDFDirector
         list.put("xc", _generateXCFile());
         return list;
     }
-   
+
     /**
      * Generate the director fire code.
      * The code creates a new task for each actor according to
@@ -167,7 +167,7 @@ public class PtidesPreemptiveEDFDirector
      *   FIXME: Take care of platform dependent code.
      */
     public String generatePreinitializeCode() throws IllegalActionException {
-        StringBuffer code = new StringBuffer(); 
+        StringBuffer code = new StringBuffer();
 
         _modelStaticAnalysis();
 
@@ -205,12 +205,12 @@ public class PtidesPreemptiveEDFDirector
 
         code.append(_templateParser.getCodeStream().getCodeBlock("preinitPDBlock"));
 
-        
+
 //        List args = new ArrayList();
 //
 //        _templateParser.getCodeStream().append(
 //                _templateParser.getCodeStream().getCodeBlock("initPDCodeBlock",
-//                        args)); 
+//                        args));
 
         code.append(_generateInitializeHardwareCode());
 
@@ -230,7 +230,7 @@ public class PtidesPreemptiveEDFDirector
     }
 
     Map<Integer, String> _actuatorPins = new HashMap();
-    
+
     /**
      * Generate the shared code. This is the first generate method invoked out
      * of all, so any initialization of variables of this adapter should be done
@@ -264,10 +264,10 @@ public class PtidesPreemptiveEDFDirector
         _templateParser.getCodeStream().appendCodeBlocks("StructDefBlock");
         _templateParser.getCodeStream().appendCodeBlocks("FuncProtoBlock");
         _templateParser.getCodeStream().appendCodeBlocks("SchedulerBlock");
-        
+
         List args = new LinkedList();
-        
-        
+
+
 
         // prototypes for actor functions
         _templateParser.getCodeStream().append(_generateActorFuncProtoCode());
@@ -277,29 +277,29 @@ public class PtidesPreemptiveEDFDirector
                 _generateActuatorActuationFuncArrayCode());
 
         int actuatorIndex = 0;
-        int sensorIndex = 0; 
+        int sensorIndex = 0;
         String devicePortId = "";
         String deviceId = "";
         String actuatorIds = "";
-        String actuatorFunction = "";  
+        String actuatorFunction = "";
         for (Actor actor : (List<Actor>) ((CompositeActor) _director
                 .getContainer()).deepEntityList()) {
             if (actor instanceof ActuatorSetup) {
                 actuators.put(actor, Integer.valueOf(actuatorIndex));
                 actuatorIndex++;
-                
+
                 devicePortId = ((StringToken) ((Parameter) ((ActuatorSetup) actor)
                         .getAttribute("devicePortId")).getToken())
                         .stringValue();
                 _devicePortIds.put(actor, devicePortId);
-                
+
                 deviceId = ((StringToken) ((Parameter) ((ActuatorSetup) actor)
                         .getAttribute("deviceId")).getToken())
                         .stringValue();
                 _deviceIds.put(actor, deviceId);
             }
 
-            if (actor instanceof SensorHandler) {  
+            if (actor instanceof SensorHandler) {
                 sensors.put(actor, Integer.valueOf(sensorIndex));
                 sensorIndex++;
 
@@ -307,24 +307,24 @@ public class PtidesPreemptiveEDFDirector
                         .getAttribute("devicePortId")).getToken())
                         .stringValue();
                 _devicePortIds.put(actor, devicePortId);
-                
+
                 deviceId = ((StringToken) ((Parameter) ((SensorHandler) actor)
                         .getAttribute("deviceId")).getToken())
                         .stringValue();
                 _deviceIds.put(actor, deviceId);
-            } 
+            }
         }
-        
-        
+
+
 //        for (int i = 0; i < maxNumSensorInputs - sensors.size(); i++) {
 //            args.add("");
 //        }
 //        _templateParser.getCodeStream()
 //                .append(_templateParser.getCodeStream().getCodeBlock(
 //                        "FuncBlock", args));
-        
+
         args.clear();
-        
+
         String switchstatement = "switch(type) {\n";
         for (Actor actuator : actuators.keySet()) {
             String deviceName = CodeGeneratorAdapter.generateName((NamedObj) actuator);
@@ -335,16 +335,16 @@ public class PtidesPreemptiveEDFDirector
                 actuatorIds += ", ";
             }
             actuatorIds += _deviceIds.get(actuator);
-        } 
+        }
         switchstatement += "}";
         args.add(actuatorIds);
         args.add(switchstatement);
-        
+
         _templateParser.getCodeStream()
         .append(_templateParser.getCodeStream().getCodeBlock(
                 "ActuationBlock", args));
-        
-        
+
+
 
         if (!_templateParser.getCodeStream().isEmpty()) {
             sharedCode.add(processCode(_templateParser.getCodeStream()
@@ -353,11 +353,11 @@ public class PtidesPreemptiveEDFDirector
 
         return sharedCode;
     }
-    
+
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
-    
+
 
     /** Fire methods for each actor.
      * @return fire methods for each actor
@@ -396,7 +396,7 @@ public class PtidesPreemptiveEDFDirector
 
         return code.toString();
     }
-    
+
     /** Generate the initialization code for any hardware component that is used.
      *  @return code initialization code for hardware peripherals
      *  @exception IllegalActionException
@@ -431,8 +431,8 @@ public class PtidesPreemptiveEDFDirector
     }
 
     /** Generate the function prototype.
-     *  @return The function prototype.   
-     */   
+     *  @return The function prototype.
+     */
     protected String _generateSensorFuncProtoCode() {
         StringBuffer code = new StringBuffer();
 
@@ -441,9 +441,9 @@ public class PtidesPreemptiveEDFDirector
             if (actor instanceof SensorHandler) {
                 code.append("void "
                         + CodeGeneratorAdapter.generateName((NamedObj) actor)
-                        + "(streaming chanend schedulerChannel, const Time &timestamp);" + _eol); 
-            } 
-        }  
+                        + "(streaming chanend schedulerChannel, const Time &timestamp);" + _eol);
+            }
+        }
 
         return code.toString();
     }
@@ -451,64 +451,64 @@ public class PtidesPreemptiveEDFDirector
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
-    private String _generateXCFile() throws IllegalActionException { 
+    private String _generateXCFile() throws IllegalActionException {
         List<String> args = new ArrayList<String>();
         _templateParser.getCodeStream().clear();
-        
+
         String sensorDefinition = "", sensorReadyFlags = "", sensorSwitch = "while (1) {\n    select {\n";
         for (Actor sensor : sensors.keySet()) {
             String deviceName = CodeGeneratorAdapter.generateName((NamedObj) sensor) + "_device";
-            
-            sensorDefinition += "on stdcore[1]: in port " 
-                + deviceName + " = " 
+
+            sensorDefinition += "on stdcore[1]: in port "
+                + deviceName + " = "
                 + _devicePortIds.get(sensor) + ";\n";
-            
-            sensorReadyFlags += "uint8 " 
+
+            sensorReadyFlags += "uint8 "
                 + deviceName + "Ready = TRUE;\n";
-             
+
             sensorSwitch += "case " + deviceName + " when pinseq(" + deviceName + "Ready) :> void:\n"
-                + "if(" + deviceName + "Ready) {\n" 
-                + "getTimestamp(timestamp, platformClockChannel);\n" 
-                + CodeGeneratorAdapter.generateName((NamedObj) sensor) + "(schedulerChannel, timestamp);\n"  
+                + "if(" + deviceName + "Ready) {\n"
+                + "getTimestamp(timestamp, platformClockChannel);\n"
+                + CodeGeneratorAdapter.generateName((NamedObj) sensor) + "(schedulerChannel, timestamp);\n"
                 + deviceName + "Ready = FALSE;\n"
                 + "} else {\n"
-                + deviceName + "Ready = TRUE;\n" 
-                + "}\n break; \n"; 
+                + deviceName + "Ready = TRUE;\n"
+                + "}\n break; \n";
         }
-        sensorSwitch += "}\n}\n"; 
-        
+        sensorSwitch += "}\n}\n";
+
         String actuatorDefinition = "", doActuation = "", initActuatorString = "";
         for (Actor actuator : actuators.keySet()) {
             String deviceName = CodeGeneratorAdapter.generateName((NamedObj) actuator);
-            actuatorDefinition += "on stdcore[1]: out port " 
-                + deviceName + " = " 
+            actuatorDefinition += "on stdcore[1]: out port "
+                + deviceName + " = "
                 + _devicePortIds.get(actuator) + ";\n";
-            
-            doActuation += "void " + deviceName + "_Actuation() {\n" 
+
+            doActuation += "void " + deviceName + "_Actuation() {\n"
                 + "timer time;\n uint32 count;\n"
                 + deviceName + " <: 1;\n time :> count;\ntime when timerafter(count + 5000) :> void;"
-                + deviceName + " <: 0;\n}\n"; 
-            
-            initActuatorString += deviceName + " <: 0;\n"; 
+                + deviceName + " <: 0;\n}\n";
+
+            initActuatorString += deviceName + " <: 0;\n";
         }
-        
+
         String sensorProtoCode = _generateSensorFuncProtoCode();
-        args.add(sensorDefinition);  
+        args.add(sensorDefinition);
         args.add(sensorProtoCode);
-        args.add(actuatorDefinition); 
-        args.add(sensorReadyFlags);  
-        args.add(sensorSwitch);  
-        args.add(doActuation); 
+        args.add(actuatorDefinition);
+        args.add(sensorReadyFlags);
+        args.add(sensorSwitch);
+        args.add(doActuation);
         args.add(initActuatorString);
-        
+
         _templateParser.getCodeStream()
         .append(_templateParser.getCodeStream().getCodeBlock(
                 "XCCodeBlock", args));
-        
+
         return processCode(_templateParser.getCodeStream()
                 .toString());
     }
-    
+
     /** The maximum number of sensor inputs that is supported.
      */
     private static int maxNumSensorInputs = 8;

@@ -188,7 +188,7 @@ ActuationEvent* getFreeActuationEvent();
 /*** ActuationBlock($Actuators, $actuationCaseStatement) ***/
 enum {
     //ACT_CONTACT, ACT_CUT, ACT_RESERVE_PAPER_VELOCITY, TEST
-	$Actuators
+        $Actuators
 };
 
 
@@ -874,11 +874,11 @@ $en1, $en2, $en3, $en4, $en5, $en6, $en7, $en8) ***/
 
 /*** mainLoopBlock ***/
 void execute() {
-	// FIXME ADD XMOS CODE
+        // FIXME ADD XMOS CODE
 }
 
 void processEvents() {
-	// FIXME ADD XMOS CODE
+        // FIXME ADD XMOS CODE
 }
 /**/
 
@@ -1488,7 +1488,7 @@ $actuationFunctions
 
 
 void initializeActuators() {
-	$initActuators
+        $initActuators
 }
 
 

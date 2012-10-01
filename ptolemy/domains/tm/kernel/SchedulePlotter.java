@@ -103,7 +103,7 @@ public class SchedulePlotter extends Attribute implements ScheduleListener {
                             + "' is not a TMDirector, so adding a SchedulePlotter "
                             + "makes no sense");
                 }
-                
+
                 ((TMDirector) director).addScheduleListener(this);
             }
         }

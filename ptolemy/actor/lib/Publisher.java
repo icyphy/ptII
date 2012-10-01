@@ -108,11 +108,11 @@ public class Publisher extends TypedAtomicActor {
 
         input = new TypedIOPort(this, "input", true, false);
         input.setMultiport(true);
-        
+
         output = new PublisherPort(this, "output");
-        output.setMultiport(true);        
+        output.setMultiport(true);
         output.setTypeAtLeast(input);
-        
+
         // We only have constraints from the publisher on the subscriber
         // and the output of the subscriber and not the other way around
         // to not break any existing models.
@@ -215,7 +215,7 @@ public class Publisher extends TypedAtomicActor {
         // and the output of the subscriber and not the other way around
         // to not break any existing models.
         newObject.output.setWidthEquals(newObject.input, false);
-        
+
         newObject.output.setTypeAtLeast(newObject.input);
 
         return newObject;
@@ -262,5 +262,5 @@ public class Publisher extends TypedAtomicActor {
     public Set<AtomicActor> subscribers()
             throws KernelException {
         return ActorDependencies.dependents(this, Subscriber.class);
-    }   
+    }
 }

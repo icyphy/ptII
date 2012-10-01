@@ -284,7 +284,7 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
         // Private variables.
         newObject._controller = null;
         newObject._controllerVersion = -1;
-        newObject._localReceiverMapsVersion = -1; 
+        newObject._localReceiverMapsVersion = -1;
 
         return newObject;
     }
@@ -332,7 +332,7 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
         }
         controller.fire();
     }
-    
+
     /**
      * Schedule a firing of the given actor at the given time
      * and microstep. If there exists an executive
@@ -358,7 +358,7 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
      * @exception IllegalActionException If thrown by the executive director.
      */
     public Time fireAt(Actor actor, Time time, int microstep)
-            throws IllegalActionException { 
+            throws IllegalActionException {
         Actor container = (Actor) getContainer();
         if (container != null) {
             Director director = container.getExecutiveDirector();
@@ -370,12 +370,12 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
                 // Translate the local time into an environment time.
                 Time environmentTime = localClock.getEnvironmentTimeForLocalTime(time);
                 Time result = director.fireAt(container, environmentTime, microstep);
-                
+
                 // Translate the response from the environment into a local time.
                 return localClock.getLocalTimeForEnvironmentTime(result);
             }
-            
-        } 
+
+        }
         setModelTime(time);
         return time;
     }
@@ -794,7 +794,7 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
 
         // clear this runtime list of ports to remember that a token has passed thru
         _hadToken.clear();
-        
+
         return result && !_stopRequested && !_finishRequested;
     }
 
@@ -1076,7 +1076,7 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
             workspace().doneReading();
         }
     }
-    
+
     /**
      * Return the receivers contained by ports connected to the inside
      * of the given input port and on the mode controller or the
@@ -1096,7 +1096,7 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
 
         return (Receiver[][]) _currentLocalReceiverMap.get(port);
     }
-    
+
     /**
      * Return the last chosen transitions.
      *
@@ -1113,7 +1113,7 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
             return null;
         }
     }
-    
+
     /** Return the list used to keep track of refinements that have been
      *  fired. This is protected so that FSMDirector can mirror it with
      *  its own protected method so that subclasses of FSMDirector can
@@ -1290,7 +1290,7 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
      *  for the current state.
      */
     protected Map _currentLocalReceiverMap = null;
-    
+
     /** The _indexOffset is set by FSMActor during initialization of
      *  destination refinements upon committing to a reset transition
      *  in order to ensure that the destination refinement views its

@@ -86,10 +86,10 @@ public class IntRangeParameter extends Parameter {
         max = new Parameter(this, "max");
         max.setExpression("100");
         max.setTypeEquals(BaseType.INT);
-        
+
         minLabel = new StringParameter(this, "minLabel");
         minLabel.setExpression("$min");
-        
+
         maxLabel = new StringParameter(this, "maxLabel");
         maxLabel.setExpression("$max");
 
@@ -110,16 +110,16 @@ public class IntRangeParameter extends Parameter {
 
     /** The minimum value. This is has an integer value, and defaults to 0. */
     public Parameter min;
-    
+
     /** The label text displayed for the maximum end of the slider. This is a String,
      *  and defaults to {@code $max}, which is expanded to the value of the {@code max}
-     *  parameter in the user interface. 
+     *  parameter in the user interface.
      */
     public StringParameter maxLabel;
-    
+
     /** The label text displayed for the minimum end of the slider. This is a String,
      *  and defaults to {@code $min}, which is expanded to the value of the {@code min}
-     *  parameter in the user interface. 
+     *  parameter in the user interface.
      */
     public StringParameter minLabel;
 

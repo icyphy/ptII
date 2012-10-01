@@ -574,9 +574,9 @@ public class PortConfigurerDialog extends PtolemyDialog implements
 
                         String tableValue = (String) portInfo
                                 .get(ColumnNames.COL_TYPE);
-                        
+
                         // NOTE: bypassing the MoML parser and setting the type
-                        // directly, in order to propagate the type change 
+                        // directly, in order to propagate the type change
                         // required when the input field is set to blank.
                         // See bug #518 in Bugzilla
                         // This is no longer necessary as it is handled by TypeAttribute.

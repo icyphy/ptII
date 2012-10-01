@@ -213,15 +213,15 @@ public class TypedCompositeActor extends CompositeActor implements TypedActor {
         }
     }
 
-    /** Return true if backward type inference is enabled. 
-     *  If this composite actor is opaque, then it looks for an attribute 
-     *  named "enableBackwardTypeInference" inside of it, and if it exists, 
-     *  returns its boolean value. If it does not exist, it looks up the 
+    /** Return true if backward type inference is enabled.
+     *  If this composite actor is opaque, then it looks for an attribute
+     *  named "enableBackwardTypeInference" inside of it, and if it exists,
+     *  returns its boolean value. If it does not exist, it looks up the
      *  hierarchy until the top-level for such an attribute, and if it exists,
-     *  again given that the container is opaque, returns its boolean value. 
-     *  If it does not exist, then return false. 
-     *  For backward compatibility, if it does not exist, then look for a 
-     *  parameter named "disableBackwardTypeInference" at the top level and 
+     *  again given that the container is opaque, returns its boolean value.
+     *  If it does not exist, then return false.
+     *  For backward compatibility, if it does not exist, then look for a
+     *  parameter named "disableBackwardTypeInference" at the top level and
      *  return its value, if it exists.
      *  @return True if backward type inference is enabled.
      */
@@ -711,7 +711,7 @@ public class TypedCompositeActor extends CompositeActor implements TypedActor {
             // its destination ports.
             // 1) only setup type constraint if source has no type declared
             if (srcUndeclared) {
-                // 2) only setup type constraint if bidirectional type 
+                // 2) only setup type constraint if bidirectional type
                 // inference is enabled.
                 if (isBackwardTypeInferenceEnabled()) {
                     result.add(new Inequality(new GLBFunction(source), source

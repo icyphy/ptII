@@ -58,7 +58,7 @@ import ptolemy.backtrack.Rollbackable;
 import ptolemy.backtrack.util.CheckpointRecord;
 import ptolemy.backtrack.util.FieldRecord;
 
-/** 
+/**
  * A class which implements a hashtable data structure.
  * <p>
  * This implementation of Hashtable uses a hash-bucket approach. That is:
@@ -111,29 +111,29 @@ public class Hashtable extends Dictionary implements Map, Cloneable,
 
     // WARNING: Hashtable is a CORE class in the bootstrap cycle. See the
     // comments in vm/reference/java/lang/Runtime for implications of this fact.
-    /**     
+    /**
      * Default number of buckets. This is the value the JDK 1.3 uses. Some
      * early documentation specified this value as 101. That is incorrect.
      */
     private static final int DEFAULT_CAPACITY = 11;
 
-    /**     
-     * An "enum" of iterator types. 
+    /**
+     * An "enum" of iterator types.
      */
     // Package visible for use by nested classes.
     static final int KEYS = 0, VALUES = 1, ENTRIES = 2;
 
-    /**     
+    /**
      * The default load factor; this is explicitly specified by the spec.
      */
     private static final float DEFAULT_LOAD_FACTOR = 0.75f;
 
-    /**     
+    /**
      * Compatible with JDK 1.0+.
      */
     private static final long serialVersionUID = 1421746759512286392L;
 
-    /**     
+    /**
      * The rounded product of the capacity and the load factor; when the number
      * of elements exceeds the threshold, the Hashtable calls
      * <code>rehash()</code>.
@@ -141,53 +141,53 @@ public class Hashtable extends Dictionary implements Map, Cloneable,
      */
     private int threshold;
 
-    /**     
+    /**
      * Load factor of this Hashtable:  used in computing the threshold.
      * @serial
      */
     private final float loadFactor;
 
-    /**     
+    /**
      * Array containing the actual key-value mappings.
      */
     // Package visible for use by nested classes.
     private transient HashEntry[] buckets;
 
-    /**     
+    /**
      * Counts the number of modifications this Hashtable has undergone, used
      * by Iterators to know when to throw ConcurrentModificationExceptions.
      */
     // Package visible for use by nested classes.
     private transient int modCount;
 
-    /**     
+    /**
      * The size of this Hashtable:  denotes the number of key-value pairs.
      */
     // Package visible for use by nested classes.
     private transient int size;
 
-    /**     
+    /**
      * The cache for {
     @link #keySet()    }
     .
      */
     private transient Set keys;
 
-    /**     
+    /**
      * The cache for {
     @link #values()    }
     .
      */
     private transient Collection values;
 
-    /**     
+    /**
      * The cache for {
     @link #entrySet()    }
     .
      */
     private transient Set entries;
 
-    /**     
+    /**
      * Class to represent an entry in the hash table. Holds a single key-value
      * pair. A Hashtable Entry is identical to a HashMap Entry, except that
      * `null' is not allowed for keys and values.
@@ -195,12 +195,12 @@ public class Hashtable extends Dictionary implements Map, Cloneable,
     private static final class HashEntry extends AbstractMap.BasicMapEntry
             implements Rollbackable {
 
-        /**         
-         * The next entry in the linked list. 
+        /**
+         * The next entry in the linked list.
          */
         private HashEntry next;
 
-        /**         
+        /**
          * Simple constructor.
          * @param key the key, already guaranteed non-null
          * @param value the value, already guaranteed non-null
@@ -209,7 +209,7 @@ public class Hashtable extends Dictionary implements Map, Cloneable,
             super(key, value);
         }
 
-        /**         
+        /**
          * Resets the value.
          * @param newVal the new value
          * @return the prior value
@@ -258,7 +258,7 @@ public class Hashtable extends Dictionary implements Map, Cloneable,
     }
 
     // check for NaN too
-    // Delegate to older method to make sure code overriding it continues 
+    // Delegate to older method to make sure code overriding it continues
     // to work.
     // Check if value is null since it is not permitted.
     // Bypass e.setValue, since we already know value is non-null.
@@ -297,7 +297,7 @@ public class Hashtable extends Dictionary implements Map, Cloneable,
     // Read and use capacity.
     // Read and use key/value pairs.
     // TODO: should we be defensive programmers, and check for illegal nulls?
-    /**     
+    /**
      * A class which implements the Iterator interface and is used for
      * iterating over Hashtables.
      * This implementation is parameterized to give a sequential view of
@@ -311,7 +311,7 @@ public class Hashtable extends Dictionary implements Map, Cloneable,
 
         protected transient Checkpoint $CHECKPOINT = new Checkpoint(this);
 
-        /**         
+        /**
          * The type of this Iterator: {
         @link #KEYS        }
         , {
@@ -323,34 +323,34 @@ public class Hashtable extends Dictionary implements Map, Cloneable,
          */
         final int type;
 
-        /**         
+        /**
          * The number of modifications to the backing Hashtable that we know about.
          */
         private int knownMod = getModCount();
 
-        /**         
-         * The number of elements remaining to be returned by next(). 
+        /**
+         * The number of elements remaining to be returned by next().
          */
         private int count = getSize();
 
-        /**         
-         * Current index in the physical hash table. 
+        /**
+         * Current index in the physical hash table.
          */
         private int idx = getBuckets().length;
 
-        /**         
-         * The last Entry returned by a next() call. 
+        /**
+         * The last Entry returned by a next() call.
          */
         private HashEntry last;
 
-        /**         
+        /**
          * The next entry that should be returned by next(). It is set to something
          * if we're iterating through a bucket that contains multiple linked
          * entries. It is null if next() needs to find a new bucket.
          */
         private HashEntry next;
 
-        /**         
+        /**
          * Construct a new HashIterator with the supplied type.
          * @param type {
         @link #KEYS        }
@@ -364,7 +364,7 @@ public class Hashtable extends Dictionary implements Map, Cloneable,
             this.type = type;
         }
 
-        /**         
+        /**
          * Returns true if the Iterator has more elements.
          * @return true if there are more elements
          */
@@ -372,7 +372,7 @@ public class Hashtable extends Dictionary implements Map, Cloneable,
             return getCount() > 0;
         }
 
-        /**         
+        /**
          * Returns the next element in the Iterator's sequential view.
          * @return the next element
          * @throws ConcurrentModificationException if the hashtable was modified
@@ -401,7 +401,7 @@ public class Hashtable extends Dictionary implements Map, Cloneable,
             return e;
         }
 
-        /**         
+        /**
          * Removes from the backing Hashtable the last element which was fetched
          * with the <code>next()</code> method.
          * @throws ConcurrentModificationException if the hashtable was modified
@@ -559,7 +559,7 @@ public class Hashtable extends Dictionary implements Map, Cloneable,
     }
 
     // class HashIterator
-    /**     
+    /**
      * Enumeration view of this Hashtable, providing sequential access to its
      * elements; this implementation is parameterized to provide access either
      * to the keys or to the values in the Hashtable.
@@ -575,7 +575,7 @@ public class Hashtable extends Dictionary implements Map, Cloneable,
 
         protected transient Checkpoint $CHECKPOINT = new Checkpoint(this);
 
-        /**         
+        /**
          * The type of this Iterator: {
         @link #KEYS        }
         or {
@@ -584,24 +584,24 @@ public class Hashtable extends Dictionary implements Map, Cloneable,
          */
         final int type;
 
-        /**         
-         * The number of elements remaining to be returned by next(). 
+        /**
+         * The number of elements remaining to be returned by next().
          */
         private int count = getSize();
 
-        /**         
-         * Current index in the physical hash table. 
+        /**
+         * Current index in the physical hash table.
          */
         private int idx = getBuckets().length;
 
-        /**         
+        /**
          * Entry which will be returned by the next nextElement() call. It is
          * set if we are iterating through a bucket with multiple entries, or null
          * if we must look in the next bucket.
          */
         private HashEntry next;
 
-        /**         
+        /**
          * Construct the enumeration.
          * @param type either {
         @link #KEYS        }
@@ -613,7 +613,7 @@ public class Hashtable extends Dictionary implements Map, Cloneable,
             this.type = type;
         }
 
-        /**         
+        /**
          * Checks whether more elements remain in the enumeration.
          * @return true if nextElement() will not fail.
          */
@@ -621,7 +621,7 @@ public class Hashtable extends Dictionary implements Map, Cloneable,
             return getCount() > 0;
         }
 
-        /**         
+        /**
          * Returns the next element.
          * @return the next element
          * @throws NoSuchElementException if there is none.
@@ -738,7 +738,7 @@ public class Hashtable extends Dictionary implements Map, Cloneable,
     }
 
     // class Enumerator
-    /**     
+    /**
      * Construct a new Hashtable with the default capacity (11) and the default
      * load factor (0.75).
      */
@@ -746,7 +746,7 @@ public class Hashtable extends Dictionary implements Map, Cloneable,
         this(DEFAULT_CAPACITY, DEFAULT_LOAD_FACTOR);
     }
 
-    /**     
+    /**
      * Construct a new Hashtable from the given Map, with initial capacity
      * the greater of the size of <code>m</code> or the default of 11.
      * <p>
@@ -763,7 +763,7 @@ public class Hashtable extends Dictionary implements Map, Cloneable,
         putAll(m);
     }
 
-    /**     
+    /**
      * Construct a new Hashtable with a specific inital capacity and
      * default load factor of 0.75.
      * @param initialCapacity the initial capacity of this Hashtable (&gt;= 0)
@@ -773,7 +773,7 @@ public class Hashtable extends Dictionary implements Map, Cloneable,
         this(initialCapacity, DEFAULT_LOAD_FACTOR);
     }
 
-    /**     
+    /**
      * Construct a new Hashtable with a specific initial capacity and
      * load factor.
      * @param initialCapacity the initial capacity (&gt;= 0)
@@ -797,7 +797,7 @@ public class Hashtable extends Dictionary implements Map, Cloneable,
         $ASSIGN$threshold((int) (initialCapacity * loadFactor));
     }
 
-    /**     
+    /**
      * Returns the number of key-value mappings currently in this hashtable.
      * @return the size
      */
@@ -805,7 +805,7 @@ public class Hashtable extends Dictionary implements Map, Cloneable,
         return getSize();
     }
 
-    /**     
+    /**
      * Returns true if there are no key-value mappings currently in this table.
      * @return <code>size() == 0</code>
      */
@@ -813,7 +813,7 @@ public class Hashtable extends Dictionary implements Map, Cloneable,
         return getSize() == 0;
     }
 
-    /**     
+    /**
      * Return an enumeration of the keys of this table. There's no point
      * in synchronizing this, as you have already been warned that the
      * enumeration is not specified to be thread-safe.
@@ -825,7 +825,7 @@ public class Hashtable extends Dictionary implements Map, Cloneable,
         return new Enumerator(KEYS);
     }
 
-    /**     
+    /**
      * Return an enumeration of the values of this table. There's no point
      * in synchronizing this, as you have already been warned that the
      * enumeration is not specified to be thread-safe.
@@ -837,7 +837,7 @@ public class Hashtable extends Dictionary implements Map, Cloneable,
         return new Enumerator(VALUES);
     }
 
-    /**     
+    /**
      * Returns true if this Hashtable contains a value <code>o</code>,
      * such that <code>o.equals(value)</code>.  This is the same as
      * <code>containsValue()</code>, and is O(n).
@@ -864,7 +864,7 @@ public class Hashtable extends Dictionary implements Map, Cloneable,
         return false;
     }
 
-    /**     
+    /**
      * Returns true if this Hashtable contains a value <code>o</code>, such that
      * <code>o.equals(value)</code>. This is the new API for the old
      * <code>contains()</code>.
@@ -879,7 +879,7 @@ public class Hashtable extends Dictionary implements Map, Cloneable,
         return contains(value);
     }
 
-    /**     
+    /**
      * Returns true if the supplied object <code>equals()</code> a key
      * in this Hashtable.
      * @param key the key to search for in this Hashtable
@@ -899,7 +899,7 @@ public class Hashtable extends Dictionary implements Map, Cloneable,
         return false;
     }
 
-    /**     
+    /**
      * Return the value in this Hashtable associated with the supplied key,
      * or <code>null</code> if the key maps to nothing.
      * @param key the key for which to fetch an associated value
@@ -920,7 +920,7 @@ public class Hashtable extends Dictionary implements Map, Cloneable,
         return null;
     }
 
-    /**     
+    /**
      * Puts the supplied value into the Map, mapped by the supplied key.
      * Neither parameter may be null.  The value may be retrieved by any
      * object which <code>equals()</code> this key.
@@ -957,7 +957,7 @@ public class Hashtable extends Dictionary implements Map, Cloneable,
         return null;
     }
 
-    /**     
+    /**
      * Removes from the table and returns the value which is mapped by the
      * supplied key. If the key maps to nothing, then the table remains
      * unchanged, and <code>null</code> is returned.
@@ -985,7 +985,7 @@ public class Hashtable extends Dictionary implements Map, Cloneable,
         return null;
     }
 
-    /**     
+    /**
      * Copies all elements of the given map into this hashtable.  However, no
      * mapping can contain null as key or value.  If this table already has
      * a mapping for a key, the new mapping replaces the current one.
@@ -1005,7 +1005,7 @@ public class Hashtable extends Dictionary implements Map, Cloneable,
         }
     }
 
-    /**     
+    /**
      * Clears the hashtable so it has no keys.  This is O(1).
      */
     public synchronized void clear() {
@@ -1016,7 +1016,7 @@ public class Hashtable extends Dictionary implements Map, Cloneable,
         }
     }
 
-    /**     
+    /**
      * Returns a shallow clone of this Hashtable. The Map itself is cloned,
      * but its contents are not.  This is O(n).
      * @return the clone
@@ -1035,7 +1035,7 @@ public class Hashtable extends Dictionary implements Map, Cloneable,
         return copy;
     }
 
-    /**     
+    /**
      * Converts this Hashtable to a String, surrounded by braces, and with
      * key/value pairs listed with an equals sign between, separated by a
      * comma and space. For example, <code>"{a=1, b=2}"</code>.<p>
@@ -1056,7 +1056,7 @@ public class Hashtable extends Dictionary implements Map, Cloneable,
         return r.toString();
     }
 
-    /**     
+    /**
      * Returns a "set view" of this Hashtable's keys. The set is backed by
      * the hashtable, so changes in one show up in the other.  The set supports
      * element removal, but not element addition.  The set is properly
@@ -1161,7 +1161,7 @@ public class Hashtable extends Dictionary implements Map, Cloneable,
         return keys;
     }
 
-    /**     
+    /**
      * Returns a "collection view" (or "bag view") of this Hashtable's values.
      * The collection is backed by the hashtable, so changes in one show up
      * in the other.  The collection supports element removal, but not element
@@ -1255,7 +1255,7 @@ public class Hashtable extends Dictionary implements Map, Cloneable,
         return values;
     }
 
-    /**     
+    /**
      * Returns a "set view" of this Hashtable's entries. The set is backed by
      * the hashtable, so changes in one show up in the other.  The set supports
      * element removal, but not element addition.  The set is properly
@@ -1367,7 +1367,7 @@ public class Hashtable extends Dictionary implements Map, Cloneable,
         return entries;
     }
 
-    /**     
+    /**
      * Returns true if this Hashtable equals the supplied Object <code>o</code>.
      * As specified by Map, this is:
      * <code>
@@ -1387,7 +1387,7 @@ public class Hashtable extends Dictionary implements Map, Cloneable,
         return entrySet().equals(((Map) o).entrySet());
     }
 
-    /**     
+    /**
      * Returns the hashCode for this Hashtable.  As specified by Map, this is
      * the sum of the hashCodes of all of its Map.Entry objects
      * @return the sum of the hashcodes of the entries
@@ -1402,7 +1402,7 @@ public class Hashtable extends Dictionary implements Map, Cloneable,
         return hashcode;
     }
 
-    /**     
+    /**
      * Helper method that returns an index in the buckets array for `key'
      * based on its hashCode().
      * @param key the key
@@ -1414,7 +1414,7 @@ public class Hashtable extends Dictionary implements Map, Cloneable,
         return hash < 0 ? -hash : hash;
     }
 
-    /**     
+    /**
      * Helper method for entrySet(), which matches both key and value
      * simultaneously. Ignores null, as mentioned in entrySet().
      * @param o the entry to match
@@ -1440,9 +1440,9 @@ public class Hashtable extends Dictionary implements Map, Cloneable,
         return null;
     }
 
-    /**     
-     * A simplified, more efficient internal implementation of putAll(). clone() 
-     * should not call putAll or put, in order to be compatible with the JDK 
+    /**
+     * A simplified, more efficient internal implementation of putAll(). clone()
+     * should not call putAll or put, in order to be compatible with the JDK
      * implementation with respect to subclasses.
      * @param m the map to initialize this from
      */
@@ -1460,7 +1460,7 @@ public class Hashtable extends Dictionary implements Map, Cloneable,
         }
     }
 
-    /**     
+    /**
      * Increases the size of the Hashtable and rehashes all keys to new array
      * indices; this is called when the addition of a new value would cause
      * size() &gt; threshold. Note that the existing Entry objects are reused in
@@ -1495,7 +1495,7 @@ public class Hashtable extends Dictionary implements Map, Cloneable,
         }
     }
 
-    /**     
+    /**
      * Serializes this object to the given stream.
      * @param s the stream to write to
      * @throws IOException if the underlying stream fails
@@ -1517,7 +1517,7 @@ public class Hashtable extends Dictionary implements Map, Cloneable,
         }
     }
 
-    /**     
+    /**
      * Deserializes this object from the given stream.
      * @param s the stream to read from
      * @throws ClassNotFoundException if the underlying stream fails

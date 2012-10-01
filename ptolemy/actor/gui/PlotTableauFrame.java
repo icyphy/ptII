@@ -137,7 +137,7 @@ public class PlotTableauFrame extends TableauFrame implements Printable,
         getContentPane().add(plot, BorderLayout.CENTER);
         _initialSaveAsFileName = "plot.plt";
     }
-    
+
     /** Construct a plot frame with the specified title and by default
      *  contains an instance of Plot. After constructing this, it is necessary
      *  to call setVisible(true) to make the plot appear.

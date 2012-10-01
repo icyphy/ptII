@@ -244,7 +244,7 @@ public class Blob implements ConnectorEnd {
             polygon.closePath();
             _shape = polygon;
             break;
-            
+
         case BLOB_CIRCLE_DIAMOND:
             Path2D shape = new Path2D.Float();
             shape.moveTo(_originX, _originY);

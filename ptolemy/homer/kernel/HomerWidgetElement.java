@@ -1,5 +1,5 @@
 /* The definition of any named object that has a Netbeans widget representation.
- 
+
  Copyright (c) 2011 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
@@ -52,7 +52,7 @@ public class HomerWidgetElement extends PositionableElement {
     ////                constructor                                ////
 
     /** Create a new definition of an element.
-     * 
+     *
      *  @param element The Ptolemy named object to wrap.
      *  @param scene The graphical area where the widget representing the
      *  element will be added to.
@@ -68,7 +68,7 @@ public class HomerWidgetElement extends PositionableElement {
     /** It's normally used to add the visual representation of the element to the
      *  provided container. In this case getWidget() should be used to get the
      *  representation, and added to the container manually.
-     * 
+     *
      *  @param container The container to place the representation in. Not used.
      *  @exception IllegalActionException The method will always return the exception.
      *  Use getWidget() instead.
@@ -82,7 +82,7 @@ public class HomerWidgetElement extends PositionableElement {
 
     /** Return the Netbeans widget representing the element. If it's not yet created,
      *  this method will create it.
-     * 
+     *
      *  @return The Netbeans widget representing the element.
      */
     public Widget getWidget() {
@@ -107,7 +107,7 @@ public class HomerWidgetElement extends PositionableElement {
     /** The Netbeans widget representing the element.
      */
     private Widget _widget;
-    
+
     /** The scene where the widget will be placed on.
      */
     private Scene _scene;

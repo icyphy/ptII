@@ -367,7 +367,7 @@ public abstract class GenericCodeGenerator extends Attribute implements
                 toplevel.setManager(manager);
             }
 
-            try {                
+            try {
                 manager.preinitializeAndResolveTypes();
                 //System.out.println(((CompositeActor)container).toplevel().exportMoML());
                 //StringUtilities.exit(5);

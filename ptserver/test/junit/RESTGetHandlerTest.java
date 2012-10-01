@@ -39,8 +39,8 @@ import ptserver.actor.lib.io.RESTGetHandler;
 
 ///////////////////////////////////////////////////////////////////
 //// RESTGetHandler
-/** 
- * Test for RESTGetHandler.  This test creates and executes the actor 
+/**
+ * Test for RESTGetHandler.  This test creates and executes the actor
  * (preinitialize, initialize, prefire, fire, postfire) in order to achieve
  * code coverage.  However, the actor's results are not checked here.
  * For results checking, please run the model in ptserver.actor.lib.io.test

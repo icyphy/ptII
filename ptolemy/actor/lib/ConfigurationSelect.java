@@ -104,7 +104,7 @@ public class ConfigurationSelect extends TypedAtomicActor {
         // Default selector value to false
         selector = new Parameter(this, "selector", new BooleanToken(false));
         selector.setTypeEquals(BaseType.BOOLEAN);
-        
+
         output = new TypedIOPort(this, "output", false, true);
         output.setTypeAtLeast(trueInput);
         output.setTypeAtLeast(falseInput);
@@ -167,7 +167,7 @@ public class ConfigurationSelect extends TypedAtomicActor {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-    
+
     /** React to a change in an attribute.  This method is called by
      *  a contained attribute when its value changes.  In this base class,
      *  the method does nothing.  In derived classes, this method may
@@ -272,7 +272,7 @@ public class ConfigurationSelect extends TypedAtomicActor {
 
     /** Cached value of selector. */
     private boolean _selector = false;
-    
+
     /** A final static IntToken with value 0. */
     private final static IntToken _zero = new IntToken(0);
 

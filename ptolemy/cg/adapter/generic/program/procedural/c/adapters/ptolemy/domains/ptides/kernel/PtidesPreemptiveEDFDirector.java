@@ -384,12 +384,12 @@ public class PtidesPreemptiveEDFDirector extends Director {
 
     /** Generate actor function prototypes.
      *  @return actor function prototype methos for each entity.
-     * @throws IllegalActionException 
+     * @throws IllegalActionException
      */
     protected String _generateActorFuncProtoCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
 
-        
+
         for (Actor actor : (List<Actor>) ((CompositeActor) _director
                 .getContainer()).deepEntityList()) {
             NamedProgramCodeGeneratorAdapter adapter = (NamedProgramCodeGeneratorAdapter) getCodeGenerator().getAdapter(actor);
@@ -599,7 +599,7 @@ public class PtidesPreemptiveEDFDirector extends Director {
      *  @return a pointer to the event head
      *  @exception IllegalActionException If thrown while getting the inputs
      *  or reading the width of the inputs.
-     */ 
+     */
     protected String _generatePtrToEventHeadCodeInputs()
             throws IllegalActionException {
         StringBuffer code = new StringBuffer();

@@ -33,7 +33,7 @@ package ptolemy.data.type;
 
 /**
 This class represents structures that store (key, value) pairs. It prescribes
-a get() method that retrieves the type of the value associated with a given 
+a get() method that retrieves the type of the value associated with a given
 key.
 
 @author Marten Lohstroh

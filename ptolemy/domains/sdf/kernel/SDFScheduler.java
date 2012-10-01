@@ -1561,7 +1561,7 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
                                 readyToScheduleActorList);
                     }
                 }
-                
+
                 // Also simulate initially available tokens on input ports.
                 Iterator inputPorts = actor.inputPortList().iterator();
 

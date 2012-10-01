@@ -39,7 +39,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 //// ObjectTokenSource
 
 /**
- A simple custom actor that sends an ObjectToken that encapuslates 
+ A simple custom actor that sends an ObjectToken that encapuslates
  a Double with the value of 42.0.
 
  @author Christopher Brooks

@@ -48,11 +48,11 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Workspace;
 
-/** 
- * Scheduler actor that reads execution time information of actors and 
+/**
+ * Scheduler actor that reads execution time information of actors and
  * schedules execution. This basic scheduler only illustrates the concept
  * and schedules on a first come first serve basis.
- * 
+ *
  *  @author Patricia Derler
  *  @version $Id$
  *  @since Ptolemy II 8.0
@@ -96,7 +96,7 @@ public class Scheduler extends MonitoredQuantityManager {
         }
         return intermediateReceiver;
     }
-    
+
     /** Create a receiver to mediate a communication via the specified receiver. This
      *  receiver is linked to a specific port of the quantity manager.
      *  @param receiver Receiver whose communication is to be mediated.
@@ -126,15 +126,15 @@ public class Scheduler extends MonitoredQuantityManager {
         Scheduler newObject = (Scheduler) super.clone(workspace);
         newObject._nextReceiver = null;
         newObject._nextTimeFree = null;
-        newObject._receiversAndTokensToSendTo = new HashMap(); 
+        newObject._receiversAndTokensToSendTo = new HashMap();
         newObject._tokens = new FIFOQueue();
         return newObject;
     }
-    
+
     /** Return the value stored in a parameter associated with
      *  the input port.
-     *  Used for deviceDelay, deviceDelayBound, networkDelayBound, 
-     *  platformDelay and sourcePlatformDelay. 
+     *  Used for deviceDelay, deviceDelayBound, networkDelayBound,
+     *  platformDelay and sourcePlatformDelay.
      *  FIXME: specialized ports do contain the parameters, don't
      *  have to get the attribute with the string! For now leave it
      *  that way to support older models that do not use PtidesPorts.
@@ -154,7 +154,7 @@ public class Scheduler extends MonitoredQuantityManager {
                     .doubleValue());
         }
         return null;
-    } 
+    }
 
     /** Initialize the actor.
      *  @exception IllegalActionException If the superclass throws it.
@@ -178,8 +178,8 @@ public class Scheduler extends MonitoredQuantityManager {
                 && currentTime.compareTo(_nextTimeFree) == 0) {
             Object[] output = (Object[]) _tokens.get(0);
             Receiver receiver = (Receiver) output[0];
-            Token token = (Token) output[1]; 
-            _sendToReceiver(receiver, token); 
+            Token token = (Token) output[1];
+            _sendToReceiver(receiver, token);
 
             if (_debugging) {
                 _debug("At time " + currentTime + ", completing send to "
@@ -212,9 +212,9 @@ public class Scheduler extends MonitoredQuantityManager {
 
         if (_tokens.size() > 0
                 && (_nextTimeFree == null || currentTime
-                        .compareTo(_nextTimeFree) >= 0)) { 
-            _scheduleRefire(); 
-        } 
+                        .compareTo(_nextTimeFree) >= 0)) {
+            _scheduleRefire();
+        }
 
         return super.postfire();
     }
@@ -248,7 +248,7 @@ public class Scheduler extends MonitoredQuantityManager {
                                 + ", but now trying to send value " + token
                                 + " in the same iteration.");
             }
-        } else { 
+        } else {
             Double executionTime = _getDoubleParameterValue(receiver.getContainer().getContainer(), "executionTime");
             _tokens.put(new Object[] { receiver, token, executionTime });
             _tokenCount++;
@@ -288,12 +288,12 @@ public class Scheduler extends MonitoredQuantityManager {
      *  @exception IllegalActionException Thrown if the actor cannot be rescheduled
      */
     protected void _scheduleRefire() throws IllegalActionException {
-        Time currentTime = getDirector().getModelTime(); 
-        _nextReceiver = (Receiver) ((Object[]) _tokens.get(0))[0]; 
+        Time currentTime = getDirector().getModelTime();
+        _nextReceiver = (Receiver) ((Object[]) _tokens.get(0))[0];
         _nextTimeFree = currentTime.add((Double) ((Object[]) _tokens.get(0))[2]);
         System.out.println(currentTime +" fire at " + _nextTimeFree);
         _fireAt(_nextTimeFree);
-        
+
     }
 
     ///////////////////////////////////////////////////////////////////

@@ -187,7 +187,7 @@ public class WindowPropertiesAttribute extends Parameter implements
                 }
 
                 // If the new values are different, then do a MoMLChangeRequest.
-                if (maximizedToken.booleanValue() != maximized 
+                if (maximizedToken.booleanValue() != maximized
                         || x != bounds.x
                         || y != bounds.y
                         || width != bounds.width

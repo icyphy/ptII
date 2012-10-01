@@ -110,29 +110,29 @@ public class ConstantPublisherPort extends PublisherPort {
     public ConstantPublisherPort(ComponentEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        
+
         constantValue = new Parameter(this, "constantValue");
         constantValue.setExpression("0");
-        
+
         Parameter UNBOUNDED = new Parameter(this, "UNBOUNDED");
         UNBOUNDED.setTypeEquals(BaseType.INT);
         UNBOUNDED.setExpression("-1");
         UNBOUNDED.setPersistent(false);
         UNBOUNDED.setVisibility(Settable.NONE);
-        
+
         numberOfTokens = new Parameter(this, "numberOfTokens");
         numberOfTokens.setExpression("UNBOUNDED");
         numberOfTokens.setTypeEquals(BaseType.INT);
 
         numberOfTokens.moveToFirst();
         constantValue.moveToFirst();
-        
+
         // Hide the initial tokens, as they make no sense for this port.
         initialTokens.setVisibility(Settable.NONE);
-        
+
         setTypeSameAs(constantValue);
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         parameters                        ////
 
@@ -140,7 +140,7 @@ public class ConstantPublisherPort extends PublisherPort {
      *  It defaults to the integer 0.
      */
     public Parameter constantValue;
-    
+
     /** The number of constant tokens to publish. By default,
      *  this is UNBOUNDED, which means that there is no limit.
      */
@@ -171,7 +171,7 @@ public class ConstantPublisherPort extends PublisherPort {
             super.broadcast(constantValue.getToken());
         }
     }
-    
+
     /** Override the base class to replace the specified tokens with
      *  the value of <i>constantValue</i>.
      *  @param tokenArray The token array to replace.
@@ -195,7 +195,7 @@ public class ConstantPublisherPort extends PublisherPort {
         }
         super.broadcast(replacement, vectorLength);
     }
-    
+
     /** Override the base class to initialize the token count.
      *  @throws IllegalActionException If initialTokens is invalid.
      */
@@ -227,7 +227,7 @@ public class ConstantPublisherPort extends PublisherPort {
             super.send(channelIndex, constantValue.getToken());
         }
     }
-    
+
     /** Override the base class to replace the specified tokens with
      *  the value of <i>constantValue</i>.
      *  @param channelIndex The index of the channel, from 0 to width-1
@@ -252,7 +252,7 @@ public class ConstantPublisherPort extends PublisherPort {
         }
         super.send(channelIndex, replacement, vectorLength);
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 

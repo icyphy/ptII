@@ -1,5 +1,5 @@
-/* Convert a DoubleToken to/from byte stream format for communication 
-   over MQTT protocol with a remote model. 
+/* Convert a DoubleToken to/from byte stream format for communication
+   over MQTT protocol with a remote model.
 
  Copyright (c) 2011 The Regents of the University of California.
  All rights reserved.
@@ -36,7 +36,7 @@ import ptolemy.data.DoubleToken;
 ///////////////////////////////////////////////////////////////////
 //// DoubleTokenHandler
 
-/** Convert a DoubleToken to/from byte stream format for communication 
+/** Convert a DoubleToken to/from byte stream format for communication
  *  over MQTT protocol with a remote model.
  *  @author Anar Huseynov
  *  @version $Id$

@@ -54,7 +54,7 @@ import ptolemy.kernel.util.Workspace;
  period is <i>T</i>, then the output will have the value of the input
  at times <i>t</i> + <i>nT</i>, for all natural numbers <i>n</i>.
  By default, this sampler will send to the output the initial value of
- the input (the input value at microstep 0), but will send it one 
+ the input (the input value at microstep 0), but will send it one
  microstep later (at microstep 1).
  This ensures that the output at microstep 0 is always absent, thus
  ensuring continuity from the left. That is, the input is absent prior
@@ -375,7 +375,7 @@ public class PeriodicSampler extends Transformer {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    
+
     /** The next sampling time. */
     private Time _nextSamplingTime;
 
@@ -384,7 +384,7 @@ public class PeriodicSampler extends Transformer {
      *  the microstep was zero).
      */
     private Token[] _pendingOutputs;
-    
+
     /** Value of the microstep. */
     private int _microstep = 1;
 }

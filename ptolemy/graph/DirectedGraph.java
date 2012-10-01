@@ -906,7 +906,7 @@ public class DirectedGraph extends Graph {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    
+
     /** Return the list of input edges for a specified node. */
     private ArrayList _inputEdgeList(Node node) {
         return (ArrayList) _inputEdgeMap.get(node);

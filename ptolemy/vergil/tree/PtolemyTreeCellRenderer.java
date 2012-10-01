@@ -54,14 +54,14 @@ import ptolemy.vergil.icon.XMLIcon;
  @Pt.AcceptedRating Red (johnr)
  */
 public class PtolemyTreeCellRenderer extends DefaultTreeCellRenderer {
-    
+
     /** Construct a tree cell renderer that shows the expression value
      *  of any object that implements {@link Settable}.
      */
     public PtolemyTreeCellRenderer() {
         this(true);
     }
-    
+
     /** Construct a tree cell renderer that shows the expression value
      *  of any object that implements {@link Settable}.
      *  @param showSettableValues If true, show the expression value
@@ -193,7 +193,7 @@ public class PtolemyTreeCellRenderer extends DefaultTreeCellRenderer {
 
         return component;
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variable                  ////
 

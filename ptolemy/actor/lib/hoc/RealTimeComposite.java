@@ -229,7 +229,7 @@ public class RealTimeComposite extends MirrorComposite {
             while (realTimeDirectors.hasNext()) {
                 RealTimeDirector oldRealTimeDirector = (RealTimeDirector)realTimeDirectors.next();
                 if (realTimeDirectorName == null) {
-                    realTimeDirectorName = oldRealTimeDirector.getName();                
+                    realTimeDirectorName = oldRealTimeDirector.getName();
                 }
                 oldRealTimeDirector.setContainer(null);
             }

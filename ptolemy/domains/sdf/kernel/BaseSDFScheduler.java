@@ -256,7 +256,7 @@ public abstract class BaseSDFScheduler extends Scheduler {
                 if (_debugging && VERBOSE) {
                     _debug("Setting tokenConsumptionRate to " + rate.intValue());
                 }
-                
+
                 // External ports do not any initial consumption tokens
                 // that are caused by the inside model, so we set this
                 // parameter to zero.
@@ -310,7 +310,7 @@ public abstract class BaseSDFScheduler extends Scheduler {
                     foundOutputPort = connectedPort;
                     inferredRate = newRate;
                 }
-                
+
                 // If this output port has had its tokenInitConsumption
                 // parameter set to something other than zero, the this
                 // means that it will receive a token on the inside from

@@ -108,9 +108,9 @@ public class PtidesPreemptiveEDFDirector
 
         return code.toString();
     }
-    
-   
-    public void generateInterruptCode() throws IllegalActionException { 
+
+
+    public void generateInterruptCode() throws IllegalActionException {
         List args = new ArrayList();
         for (int key : _interruptHandlerNames.keySet()) {
             args.clear();
@@ -124,8 +124,8 @@ public class PtidesPreemptiveEDFDirector
                                 args));
             }
         }
-        
-       
+
+
         // Interrupts code has to be at the end.
         args.clear();
         StringBuffer emptyfunctions = new StringBuffer();
@@ -134,10 +134,10 @@ public class PtidesPreemptiveEDFDirector
             if (function.equals("")) {
                 emptyfunctions.append("void EmptyInterruptHandler_" + key + "() {}\n");
                 function = "EmptyInterruptHandler_" + key;
-            }  
+            }
         }
         args.add(emptyfunctions.toString());
-        
+
         StringBuffer systick1 = new StringBuffer();
         StringBuffer systick2 = new StringBuffer();
         for (Actor actuator : actuators.keySet()) {
@@ -148,7 +148,7 @@ public class PtidesPreemptiveEDFDirector
                     + "} else {\n"
                     + "    actNs" + letter + "[dummy] = actNs" + letter + "[dummy] - ((4*divideByValue/2) << 16);\n"
                     + "}\n");
-            
+
             systick2.append("if((MTU20.TIOR.BIT.IO" + letter + " == 0) && (actWr" + letter + " != actRd" + letter + ") && (actNs" + letter + "[actRd" + letter + "] < ((4*divideByValue/2)*(65536 + intDel)))) {\n"
                     + "    MTU20.TGR" + letter + " = actNs" + letter + "[actRd" + letter + "]/(4*divideByValue/2);\n"
                     + "    MTU20.TSR.BIT.TGF" + letter + " = 0;\n"
@@ -159,33 +159,33 @@ public class PtidesPreemptiveEDFDirector
                     + "             MTU20.TIOR.BIT.IO" + letter + " = 5;\n"
                     + "}");
         }
-        
-        args.add(systick1);  
+
+        args.add(systick1);
         args.add(systick2);
-        
+
         _templateParser.getCodeStream().append(
                 _templateParser.getCodeStream().getCodeBlock("InterruptBlock",
                         args));
 
     }
-    
+
     public String generateInterruptVectorTableCode() throws IllegalActionException {
         _templateParser.getCodeStream().clear();
-        List args = new ArrayList(); 
+        List args = new ArrayList();
         StringBuffer externDeclarations = new StringBuffer();
         for (int key : _interruptHandlerNames.keySet()) {
             String function = _interruptHandlerNames.get(key);
-            if (function.equals("")) { 
+            if (function.equals("")) {
                 function = "EmptyInterruptHandler_" + key;
-            } 
-            args.add(function); 
+            }
+            args.add(function);
             externDeclarations.append("extern void " + function + "(void);\n");
-        }  
+        }
         args.add(externDeclarations.toString());
         _templateParser.getCodeStream().append(
                 _templateParser.getCodeStream().getCodeBlock("InterruptVectorTable",
                         args));
-        
+
         return processCode(_templateParser.getCodeStream()
                 .toString());
     }
@@ -218,7 +218,7 @@ public class PtidesPreemptiveEDFDirector
     public String generateInitializeCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
 
-        
+
         // if the outside is already a Ptides director (this could only happen if
         // we have a EmbeddedCodeActor inside of a Ptides director. This case
         // the EmbeddedCodeActor would also have a Ptides director (in order to
@@ -233,10 +233,10 @@ public class PtidesPreemptiveEDFDirector
                 .comment(
                         "Platform dependent initializatoin code of the PtidesDirector."));
 
-        List args = new ArrayList(); 
+        List args = new ArrayList();
         _templateParser.getCodeStream().append(
                 _templateParser.getCodeStream().getCodeBlock("initPDBlock",
-                        args));  
+                        args));
 
         return _templateParser.getCodeStream().toString();
     }
@@ -248,7 +248,7 @@ public class PtidesPreemptiveEDFDirector
      *   FIXME: Take care of platform dependent code.
      */
     public String generatePreinitializeCode() throws IllegalActionException {
-        StringBuffer code = new StringBuffer(); 
+        StringBuffer code = new StringBuffer();
 
         _modelStaticAnalysis();
 
@@ -287,26 +287,26 @@ public class PtidesPreemptiveEDFDirector
         code.append(_templateParser.getCodeStream().getCodeBlock(
                 "preinitPDBlock"));
 
-        
+
         List args = new ArrayList();
         StringBuffer initIHs = new StringBuffer();
         for (Actor actuator : actuators.keySet()) {
             Character letter = RenesasUtilities.interruptHandlerLetters.get(actuators.get(actuator));
             int timerNumber = RenesasUtilities.timerNumbers.get(actuators.get(actuator));
             initIHs.append("MTU2" + timerNumber + ".TIOR.BIT.IO" + letter + " = 0;\n"
-                    + "MTU2" + timerNumber + ".TIER.BIT.TCIE" + letter + " = 1;\n"); 
-        } 
+                    + "MTU2" + timerNumber + ".TIER.BIT.TCIE" + letter + " = 1;\n");
+        }
         for (Actor sensor : sensors.keySet()) {
             Character letter = RenesasUtilities.interruptHandlerLetters.get(sensors.get(sensor));
             int timerNumber = RenesasUtilities.timerNumbers.get(sensors.get(sensor));
             initIHs.append("MTU2" + timerNumber + ".TIOR.BIT.IO" + letter + " = 8;\n"
-                    + "MTU2" + timerNumber + ".TIER.BIT.TCIE" + letter + " = 1;\n"); 
-        } 
-        
+                    + "MTU2" + timerNumber + ".TIER.BIT.TCIE" + letter + " = 1;\n");
+        }
+
         args.add(initIHs.toString());
         code.append(
                 _templateParser.getCodeStream().getCodeBlock("initPDCodeBlock",
-                        args)); 
+                        args));
 
         code.append(_generateInitializeHardwareCode());
 
@@ -325,22 +325,22 @@ public class PtidesPreemptiveEDFDirector
         return "";
     }
 
-    private Map<Integer, String> _interruptHandlerNames; 
-    
+    private Map<Integer, String> _interruptHandlerNames;
+
 
     /** Get sensors and actuators.
      *  @exception Thrown if parameters of sensors or actuators cannot be read.
      */
     protected void _modelStaticAnalysis() throws IllegalActionException {
-        _interruptHandlerNames = new HashMap(); 
+        _interruptHandlerNames = new HashMap();
         for (int key : RenesasUtilities.interruptHandlerLetters.keySet()) {
             _interruptHandlerNames.put(key, "");
-        } 
-        
+        }
+
         int id = -1;
         for (Actor actor : (List<Actor>) ((CompositeActor) _director
                 .getContainer()).deepEntityList()) {
-            if (actor instanceof ActuatorSetup) { 
+            if (actor instanceof ActuatorSetup) {
                 id = ((IntToken) ((Parameter) ((ActuatorSetup) actor)
                         .getAttribute("InterruptHandlerID")).getToken())
                         .intValue();
@@ -354,11 +354,11 @@ public class PtidesPreemptiveEDFDirector
                         CodeGeneratorAdapter.generateName((NamedObj) actor) + "_Handler");
             }
 
-            if (actor instanceof SensorHandler) {  
+            if (actor instanceof SensorHandler) {
                 id = ((IntToken) ((Parameter) ((SensorHandler) actor)
                         .getAttribute("InterruptHandlerID")).getToken())
                         .intValue();
-                sensors.put(actor, id); 
+                sensors.put(actor, id);
                 if (_interruptHandlerNames.get(id) == null) {
                     throw new IllegalActionException(actor,
                             "The interrupt handler" + " with id " + id
@@ -366,7 +366,7 @@ public class PtidesPreemptiveEDFDirector
                 }
                 _interruptHandlerNames.put(id,
                         CodeGeneratorAdapter.generateName((NamedObj) actor));
-            } 
+            }
         }
     }
 
@@ -399,46 +399,46 @@ public class PtidesPreemptiveEDFDirector
         _templateParser.getCodeStream().append(
                 "#define numActuators " + actuators.size() + _eol);
 
-        
+
         _templateParser.getCodeStream().append(
-                _templateParser.getCodeStream().getCodeBlock("StructDefBlock")); 
-        
+                _templateParser.getCodeStream().getCodeBlock("StructDefBlock"));
+
         _templateParser.getCodeStream().appendCodeBlocks(
                 "CommonTypeDefinitions");
-        
+
         StringBuffer actuatorPublicVariables = new StringBuffer();
         for (Actor actuator : actuators.keySet()) {
             Character letter = RenesasUtilities.interruptHandlerLetters.get(actuators.get(actuator));
             actuatorPublicVariables.append( "uint32 actS" + letter + "[10], actNs" + letter + "[10];\n"
                     + "uint32 actRd" + letter + " = 0, actWr" + letter + " = 0, actSt" + letter + " = 0;\n");
-        } 
+        }
         List<String> args = new ArrayList();
         args.add(actuatorPublicVariables.toString());
-        StringBuffer interruptPragmas = new StringBuffer("#pragma interrupt SysTickHandler(resbank)\n" 
+        StringBuffer interruptPragmas = new StringBuffer("#pragma interrupt SysTickHandler(resbank)\n"
                 + "#pragma interrupt SafeToProcessInterruptHandler(resbank)\n");
         for (Integer id : _interruptHandlerNames.keySet()) {
             String function = _interruptHandlerNames.get(id);
-            if (function.equals("")) { 
+            if (function.equals("")) {
                 function = "EmptyInterruptHandler_" + id;
-            } 
+            }
             interruptPragmas.append("#pragma interrupt" + function + "(resbank)\n");
-        } 
+        }
         args.add(interruptPragmas.toString());
         _templateParser.getCodeStream().append(
-                _templateParser.getCodeStream().getCodeBlock("globalVars", args));  
+                _templateParser.getCodeStream().getCodeBlock("globalVars", args));
 
-        _templateParser.getCodeStream().append(_generateActorFuncProtoCode()); 
+        _templateParser.getCodeStream().append(_generateActorFuncProtoCode());
 
         _templateParser.getCodeStream()
                 .append(_templateParser.getCodeStream().getCodeBlock(
                         "FuncBlock"));
 
         generateInterruptCode();
-        
+
         if (!_templateParser.getCodeStream().isEmpty()) {
             sharedCode.add(processCode(_templateParser.getCodeStream()
                     .toString()));
-        } 
+        }
 
         return sharedCode;
     }

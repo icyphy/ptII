@@ -86,7 +86,7 @@ public class DygraphsJSPlotter extends BasicJSPlotter {
         super(container, name);
         height.setExpression("2");
         setExpression("Customize by clicking \"Configure\". DyGraphsJSPlotter\n" +
-        		"is free under the MIT license: http://dygraphs.com/");
+                        "is free under the MIT license: http://dygraphs.com/");
         yAxisMode.addChoice("logarithmic");
         horizontalAlign.setVisibility(NONE);
         verticalAlign.setVisibility(NONE);

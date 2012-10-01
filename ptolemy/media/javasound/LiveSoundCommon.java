@@ -1,6 +1,6 @@
 /*
  Class containing the platform independent code of LiveSound.
- 
+
  Copyright (c) 2011 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
@@ -38,7 +38,7 @@ import java.util.List;
 /**
 Class containing the platform independent code of LiveSound actor.
 
-@author Brian K. Vogel and Neil E. Turner and Steve Neuendorffer, Edward A. Lee, Contributor: Dennis Geurts, Ishwinder Singh 
+@author Brian K. Vogel and Neil E. Turner and Steve Neuendorffer, Edward A. Lee, Contributor: Dennis Geurts, Ishwinder Singh
 @version $Id$
 @since Ptolemy II 1.0
 @Pt.ProposedRating Red (ishwinde)
@@ -62,7 +62,7 @@ public class LiveSoundCommon {
     /** Return the number of bits per sample.
      *  @return The number of bits per sample, which in this base
      *  class defaults to 16.
-     */   
+     */
     public int getBitsPerSample() {
         return _bitsPerSample;
     }
@@ -207,7 +207,7 @@ public class LiveSoundCommon {
                     result <<= 8;
                     // Dennis Geurts:
                     // Use & instead of | here.
-                    // Running ptolemy/actor/lib/javasound/test/auto/testAudioCapture_AudioPlayer.xml 
+                    // Running ptolemy/actor/lib/javasound/test/auto/testAudioCapture_AudioPlayer.xml
                     // results in a much better sound.
                     // See https://chess.eecs.berkeley.edu/bugzilla/show_bug.cgi?id=356
                     result += (byteArray[j++] & 0xff);

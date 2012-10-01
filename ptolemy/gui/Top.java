@@ -279,7 +279,7 @@ public abstract class Top extends JFrame {
 
         // Deal with help menu action listeners
         /*int c =*/MemoryCleaner.removeActionListeners(_historyMenu);
-        //System.out.println("_historyMenu: "+c);        
+        //System.out.println("_historyMenu: "+c);
         if(_historyMenu != null) {
             _historyMenusAndListeners.remove(_historyMenu);
         }
@@ -350,7 +350,7 @@ public abstract class Top extends JFrame {
                                     System.out.println("Warning: Failed set " + fields[i]
                                             + " accessible while disposing. "
                                             + "(applets and -sandbox always causes this)");
-                                }                                
+                                }
                             }
                             break;
                         }
@@ -728,7 +728,7 @@ public abstract class Top extends JFrame {
         fileMenuItems[12].setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Q,
                 Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
         // Sadly, the above doesn't actually work. Command-Q is not caught.
-        
+
         return fileMenuItems;
     }
 
@@ -1139,20 +1139,20 @@ public abstract class Top extends JFrame {
                 _historyMenusAndListeners.put(_historyMenu, _historyMenuListener);
             }
         }
-        
+
         //System.out.println("number of history menus: " + _historyMenus.size());
-        
+
         // Update the history menu in each Top
         for(Map.Entry<JMenu,HistoryMenuListener> entry : _historyMenusAndListeners.entrySet()) {
             //System.out.println("updating menu " + historyMenu);
 
             JMenu historyMenu = entry.getKey();
-            
+
             /*int c =*/MemoryCleaner.removeActionListeners(historyMenu);
             //System.out.println("_historyMenu: "+c);
-    
+
             historyMenu.removeAll();
-    
+
             for (int i = 0; i < historyList.size(); i++) {
                 String recentFileString = (String) historyList.get(i);
                 JMenuItem item = new JMenuItem(recentFileString);
@@ -1220,13 +1220,13 @@ public abstract class Top extends JFrame {
 
     /** The most recent directory used in a file dialog. */
     protected static File _directory = null;
-    
+
     /** The return value of the _exit() menu.
      *  We use a separate variable here for backward compatibility.
      *  The values of this variable are the values returned by _queryForSave.
      */
     protected int _exitResult = _CANCELED;
-    
+
     /** The FileFilter that determines what files are displayed by
      *  the Open dialog and the Save As dialog
      *  The initial default is null, which causes no FileFilter to be
@@ -2013,7 +2013,7 @@ public abstract class Top extends JFrame {
 
     /** A reference to the history menu. */
     private JMenu _historyMenu;
-    
+
     /** A mapping of history menu to history menu listener for all open Top
      *  windows.
      */

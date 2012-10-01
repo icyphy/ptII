@@ -99,7 +99,7 @@ public class PlatformTimeMonitor extends TypedAtomicActor implements
 
     /** The plotter. */
     public Plot plot;
-    
+
     ///////////////////////////////////////////////////////////////////
     //                           public methods                      //
 
@@ -118,8 +118,8 @@ public class PlatformTimeMonitor extends TypedAtomicActor implements
      */
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         PlatformTimeMonitor newObject = (PlatformTimeMonitor) super
-                .clone(workspace); 
-	newObject._platforms = new ArrayList();
+                .clone(workspace);
+        newObject._platforms = new ArrayList();
         return newObject;
     }
 
@@ -145,14 +145,14 @@ public class PlatformTimeMonitor extends TypedAtomicActor implements
         if (actorDataset == -1) {
             return; // platform is not being monitored
         }
-        
+
         plot.addPoint(actorDataset, physicalTime, modelTime, true);
-        
+
         plot.fillPlot();
         plot.repaint();
     }
 
-    
+
     /** The event is displayed (core is ignored).
      *  @param actor The actor where the event happened. This parameter can be
      *     null if the event is TRANSFEROUTPUT or TRANSFERINPUT.
@@ -162,7 +162,7 @@ public class PlatformTimeMonitor extends TypedAtomicActor implements
      */
     public void event(Actor actor, double time, ExecutionEventType event,
             int core) {
-        event(actor, time, event, 0);  
+        event(actor, time, event, 0);
     }
 
     /** Initialize the plot and the legend. The legend will be created for all
@@ -183,7 +183,7 @@ public class PlatformTimeMonitor extends TypedAtomicActor implements
                         ((PtidesBasicDirector) actor.getDirector())
                                 .registerExecutionTimeListener(this);
                         _platforms.add(actor);
-                    } 
+                    }
                 }
             }
         }
@@ -191,10 +191,10 @@ public class PlatformTimeMonitor extends TypedAtomicActor implements
             plot.clear(false);
             plot.clearLegends();
             for (Actor actor : _platforms) {
-                plot.addLegend(_platforms.indexOf(actor), actor.getName()); 
-                event(actor, 0.0, 0.0, 0.0, null); 
+                plot.addLegend(_platforms.indexOf(actor), actor.getName());
+                event(actor, 0.0, 0.0, 0.0, null);
             }
-            
+
             plot.doLayout();
         }
     }
@@ -252,7 +252,7 @@ public class PlatformTimeMonitor extends TypedAtomicActor implements
                 plot.setButtons(true);
                 plot.setMarksStyle("none");
                 plot.setXLabel("platform time");
-                plot.setYLabel("logical time"); 
+                plot.setYLabel("logical time");
 
                 // We put the plotter as a sub-effigy of the toplevel effigy,
                 // so that it closes when the model is closed.

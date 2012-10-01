@@ -50,7 +50,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  *  This actor produces double values at its output
  *  port, where the values are the times in its own clock. {@link SlaveClock}
  *  use this information to update their clocks to track that of the master clock.
- *  
+ *
  *  @author Jia Zou, Patricia Derler
  *  @version $Id$
  *  @since Ptolemy II 8.1
@@ -124,9 +124,9 @@ public class MasterClock extends TypedAtomicActor {
 
     ///////////////////////////////////////////////////////////////////
     ////                     protected methods                     ////
-    
+
     /**
-     * Do not establish the usual default type constraints. Instead, the type 
+     * Do not establish the usual default type constraints. Instead, the type
      * of the output port is constrained to be double (set in the constructor
      * of this class).
      */

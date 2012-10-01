@@ -65,10 +65,10 @@ public class DefaultTitle extends WebContent implements WebExportable {
     public DefaultTitle(NamedObj container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        
+
         _icon.setIconText("T");
         displayText.setExpression("Default title to give to icons in the model.");
-                
+
         showTitleInHTML = new Parameter(this, "showTitleInHTML");
         showTitleInHTML.setExpression("true");
         showTitleInHTML.setTypeEquals(BaseType.BOOLEAN);
@@ -79,13 +79,13 @@ public class DefaultTitle extends WebContent implements WebExportable {
         include.addChoice("All");
         include.addChoice("None");
         include.setExpression("Entities");
-        
+
         instancesOf = new StringParameter(this, "instancesOf");
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         parameters                        ////
-    
+
     /** If non-empty (the default), specifies a class name.
      *  Only entities or attributes (depending on <i>include</i>)
      *  implementing the specified
@@ -99,7 +99,7 @@ public class DefaultTitle extends WebContent implements WebExportable {
      *  default), "Attributes", "All", or "None".
      */
     public StringParameter include;
-    
+
     /** If set to true, then the title given by this parameter
      *  will be shown in the HTML prior to the image of the model
      *  (as well as in the image of the model, if it is visible
@@ -112,7 +112,7 @@ public class DefaultTitle extends WebContent implements WebExportable {
     ////                         public methods                    ////
 
     /** A title is of type text/html.
-     * 
+     *
      * @return The string text/html
      */
     public String getMimeType() {
@@ -120,49 +120,49 @@ public class DefaultTitle extends WebContent implements WebExportable {
     }
 
     /** Return true, since new title content should overwrite old title content.
-     * 
+     *
      * @return True, since new title content should overwrite old title content.
      */
     public boolean isOverwriteable() {
         return true;
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                       protected methods                   ////
 
     /** Provide content to the specified web exporter to be
-     *  included in a web page. This class provides a default title for the 
+     *  included in a web page. This class provides a default title for the
      *  web page and for each object
      *  as specified by <i>include</i> and <i>instancesOf</i>.
-     *  
+     *
      *  @param exporter  The web exporter to which to write content.
      *  @throws IllegalActionException If something is wrong with the web
      *  content or the object already has an attribute with the same name as the
      *  the created WebAttribute
      */
-    protected void _provideAttributes(WebExporter exporter) 
+    protected void _provideAttributes(WebExporter exporter)
         throws IllegalActionException {
-  
+
         WebAttribute webAttribute;
-        
+
         // Set the title for the model object.
         String titleValue = stringValue();
         if (titleValue == null || titleValue.equals("")) {
             // Use the model name as the default title.
             titleValue = toplevel().getName();
         }
-        
+
         // FIXME:  Refactor so we don't need this method
-        exporter.setTitle(titleValue, 
+        exporter.setTitle(titleValue,
                 ((BooleanToken)showTitleInHTML.getToken()).booleanValue());
-        
-        // Create a WebAttribute for title and add to exporter.  
+
+        // Create a WebAttribute for title and add to exporter.
         // Content should only be added once (onceOnly -> true).
-        webAttribute = WebAttribute.createWebAttribute(getContainer(), 
+        webAttribute = WebAttribute.createWebAttribute(getContainer(),
                 "titleWebAttribute", "title");
         webAttribute.setExpression(titleValue);
-        exporter.defineAttribute(webAttribute, true);      
-        
+        exporter.defineAttribute(webAttribute, true);
+
         boolean entities = false, attributes = false;
         String includeValue = include.stringValue().toLowerCase();
         if (includeValue.equals("all")) {
@@ -189,13 +189,13 @@ public class DefaultTitle extends WebContent implements WebExportable {
                 }
             }
             for (NamedObj object : objects) {
-                // Create a WebAttribute for each object's title and add to 
-                // exporter.   Content should only be added once 
+                // Create a WebAttribute for each object's title and add to
+                // exporter.   Content should only be added once
                 // (onceOnly -> true).
-                webAttribute = WebAttribute.createWebAttribute(object, 
+                webAttribute = WebAttribute.createWebAttribute(object,
                         "titleWebAttribute", "title");
                 webAttribute.setExpression(object.getName());
-                exporter.defineAttribute(webAttribute, true); 
+                exporter.defineAttribute(webAttribute, true);
             }
         }
         if (attributes) {
@@ -212,15 +212,15 @@ public class DefaultTitle extends WebContent implements WebExportable {
                 }
             }
             for (NamedObj object : objects) {
-                // Create a WebAttribute for each object's title and add to 
-                // exporter.   Content should only be added once 
+                // Create a WebAttribute for each object's title and add to
+                // exporter.   Content should only be added once
                 // (onceOnly -> true).
-                webAttribute = WebAttribute.createWebAttribute(object, 
+                webAttribute = WebAttribute.createWebAttribute(object,
                         "titleWebAttribute", "title");
                 webAttribute.setExpression(object.getName());
                 exporter.defineAttribute(webAttribute, true);
             }
         }
     }
-    
+
 }

@@ -232,7 +232,7 @@ public class PID extends DETransformer {
                     if (!((DoubleToken) Kd.getToken()).isCloseTo(
                             DoubleToken.ZERO, Complex.EPSILON).booleanValue()
                             && !currentToken.equals(lastToken)) {
-                        throw new IllegalActionException(this, 
+                        throw new IllegalActionException(this,
                                 "PID controller recevied discontinuous input.");
                     }
                 }

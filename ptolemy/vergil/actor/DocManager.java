@@ -902,11 +902,11 @@ public class DocManager extends HandlerBase {
                                     + new Date(docFile.lastModified())
                                     + ".<br/> To rebuild the documentation use the "
                                     + "Build menu choice.";
-                            } 
+                            }
                         }
                     } catch (Exception ex) {
                         // Ignore
-                    }                                    
+                    }
                     result.append("<li><a href=\"" + toRead.toExternalForm()
                             + "\">Source code</a>" + modificationMessage + "</li>");
                 }

@@ -1,5 +1,5 @@
 /* Test cases for the RemoteModel implementation.
- 
+
  Copyright (c) 2011 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
@@ -77,7 +77,7 @@ import com.caucho.hessian.client.HessianProxyFactory;
  */
 public class RemoteModelTest {
     static {
-        // FIXME remove PTServerModule after SysOutActor is deleted 
+        // FIXME remove PTServerModule after SysOutActor is deleted
         // or create a proper initializer for it
         ArrayList<PtolemyModule> modules = new ArrayList<PtolemyModule>();
         modules.addAll(ActorModuleInitializer.getModules());
@@ -164,7 +164,7 @@ public class RemoteModelTest {
             }
         }
 
-        // stop running processes. 
+        // stop running processes.
         _proxy.stop(response.getTicket());
         model.getManager().stop();
         // close the simulation
@@ -312,7 +312,7 @@ public class RemoteModelTest {
             }
         }
 
-        // stop running processes. 
+        // stop running processes.
         _proxy.stop(response.getTicket());
         clientModel.getManager().stop();
         // close the simulation

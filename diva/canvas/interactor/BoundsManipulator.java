@@ -186,7 +186,7 @@ public class BoundsManipulator extends Manipulator {
             super.mouseReleased(e);
             BoundsManipulator.this.mouseReleased(e);
         }
-        
+
         /** Override the base class to notify the enclosing BoundsInteractor.
          *  @param e The mouse event.
          */

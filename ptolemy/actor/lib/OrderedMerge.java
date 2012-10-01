@@ -382,7 +382,7 @@ public class OrderedMerge extends TypedAtomicActor {
     }
 
     /**
-     * The output must be greater than or equal to each of both inputs. Since 
+     * The output must be greater than or equal to each of both inputs. Since
      * inputA is set to be the same as inputB, the output is simply set to be
      * greater than or equal to inputA.
      * @return A set of type constraints
@@ -393,7 +393,7 @@ public class OrderedMerge extends TypedAtomicActor {
         result.add(new Inequality(inputA.getTypeTerm(), output.getTypeTerm()));
         return result;
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 

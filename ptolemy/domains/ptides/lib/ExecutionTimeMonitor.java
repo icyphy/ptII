@@ -147,7 +147,7 @@ public class ExecutionTimeMonitor extends TypedAtomicActor implements
         plot.fillPlot();
         plot.repaint();
     }
-    
+
     /** The event is displayed (core is ignored).
      *  @param actor The actor where the event happened. This parameter can be
      *     null if the event is TRANSFEROUTPUT or TRANSFERINPUT.
@@ -157,7 +157,7 @@ public class ExecutionTimeMonitor extends TypedAtomicActor implements
      */
     public void event(Actor actor, double time, ExecutionEventType event,
             int core) {
-        event(actor, time, event, 0);  
+        event(actor, time, event, 0);
     }
 
     /** Clone this actor into the specified workspace. The new actor is
@@ -304,7 +304,7 @@ public class ExecutionTimeMonitor extends TypedAtomicActor implements
                 plot.setButtons(true);
                 plot.setMarksStyle("none");
                 plot.setXLabel("platform time");
-                plot.setYLabel("actor ID"); 
+                plot.setYLabel("actor ID");
 
                 // We put the plotter as a sub-effigy of the toplevel effigy,
                 // so that it closes when the model is closed.

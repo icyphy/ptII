@@ -63,12 +63,12 @@ public class MultipleConceptIcon extends ConceptIcon {
     public MultipleConceptIcon(NamedObj container, String name)
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
-        
+
         translation = new Parameter(this, "translation");
         translation.setTypeEquals(BaseType.DOUBLE);
         translation.setExpression("10.0");
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         parameters                        ////
 

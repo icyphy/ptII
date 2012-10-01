@@ -293,7 +293,7 @@ public class ModelView extends TypedAtomicActor implements WindowListener {
                         // Mark the Effigy as not persistent so that when the
                         // Tableau is closed we don't prompt the user for
                         // saving.
-                        
+
                         // To replicate, run $PTII/bin/vergil
                         // ~/ptII/ptolemy/actor/gt/demo/ConstOptimization/ConstOptimizationDDF.xml
                         // and then close the optimized model.  You should not be

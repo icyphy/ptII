@@ -452,7 +452,7 @@ public class PublisherNonStrictTest extends Publisher {
     /** List to store tokens for training mode. */
     protected List _trainingTokens;
 
-    /** Check that the difference in exponents between the 
+    /** Check that the difference in exponents between the
      *  input and the tolerance is not greater than the precision
      *  of a Double.  If the exponent of newValue parameter is
      *  different by from the exponent of the <i>tolerance</i>
@@ -474,14 +474,14 @@ public class PublisherNonStrictTest extends Publisher {
             double log = Math.log10(((DoubleToken)newValue).doubleValue());
             if (Math.abs(log - Math.log10(_tolerance)) > 10) {
                 // Set the tolerance to something closer to the input so that
-                // we don't set it many times. 
+                // we don't set it many times.
                 double newTolerance = Math.pow(10, log-9);
                 if (newTolerance > _tolerance) {
                     // Only set the tolerance if it is greater than the old tolerance.
                     tolerance.setToken(new DoubleToken(newTolerance));
                     tolerance.setPersistent(true);
                     attributeChanged(tolerance);
-                    System.out.println("PublisherNonStrictTest: " + getFullName() + ": exponent of " 
+                    System.out.println("PublisherNonStrictTest: " + getFullName() + ": exponent of "
                             + newValue + " is " + log
                             + ", which cannot be compared with the previous tolerance."
                             + " The new tolerance is " + tolerance.getExpression() + ".");

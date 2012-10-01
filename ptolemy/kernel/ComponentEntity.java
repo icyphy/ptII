@@ -505,7 +505,7 @@ public class ComponentEntity<T extends ComponentPort> extends Entity<T> {
         }
 
         _notifyHierarchyListenersBeforeChange();
-        
+
         try {
             _workspace.getWriteAccess();
             _checkContainer(container);
@@ -588,7 +588,7 @@ public class ComponentEntity<T extends ComponentPort> extends Entity<T> {
                 // exceptions.
                 _notifyHierarchyListenersAfterChange();
             } finally {
-                _workspace.doneWriting();                
+                _workspace.doneWriting();
             }
         }
     }

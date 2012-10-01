@@ -87,7 +87,7 @@ public class ActorGraphicalMessageHandler extends GraphicalMessageHandler {
      *  be an instance of KernelException or KernelRuntimeException.
      *  @return The first Nameable or null if the throwable
      *  is not a KernelException or KernelRuntimeException.
-     */   
+     */
     protected Nameable _getNameable(Throwable throwable) {
         Nameable nameable1 = null;
         if (throwable instanceof KernelException) {

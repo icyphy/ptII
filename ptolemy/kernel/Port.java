@@ -614,7 +614,7 @@ public class Port extends NamedObj {
             }
 
             _notifyHierarchyListenersBeforeChange();
-            
+
             try {
                 _container = entity;
 

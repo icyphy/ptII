@@ -79,12 +79,12 @@ public class HTMLText extends WebContent {
      *  The default is "start".
      */
     public HTMLTextPosition textPosition;
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-    
+
     /** HTMLText is of type text/html.
-     * 
+     *
      * @return The string text/html
      */
     public String getMimeType() {
@@ -92,28 +92,28 @@ public class HTMLText extends WebContent {
     }
 
     /** Return true, since new content should overwrite old.
-     * 
+     *
      * @return true, since new content should overwrite old
      */
     public boolean isOverwriteable() {
         return true;
     }
-    
+
     /** Generate a <div/> element holding the text content.
-     * 
+     *
      *  @param exporter The WebExporter to add content to
      *  @throws IllegalActionException If something is wrong generating the
      *  web content
      */
-    protected void _provideElements(WebExporter exporter) 
-        throws IllegalActionException{ 
-        WebElement webElement = WebElement.createWebElement(getContainer(), 
+    protected void _provideElements(WebExporter exporter)
+        throws IllegalActionException{
+        WebElement webElement = WebElement.createWebElement(getContainer(),
                 getName() + "WebElement", getName() + "WebElement");
         webElement.setExpression("<div>" + stringValue() + "</div>");
         webElement.setParent(textPosition.stringValue());
-        
+
         // Add text content.  Text should only be added once (onceOnly -> true).
         exporter.defineElement(webElement, true);
-        
-    }  
+
+    }
 }

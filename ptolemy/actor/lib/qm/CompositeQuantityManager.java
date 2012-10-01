@@ -54,17 +54,17 @@ import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
-/** This class implements functionality of a composite quantity manager. 
- * 
+/** This class implements functionality of a composite quantity manager.
+ *
  *  This quantity manager has input ports and for every input port, there is
  *  an output port with the same name and the post fix "Out". When a relation
  *  should be interfered by this quantity manager, an input port of this
- *  quantity manager is specified. 
+ *  quantity manager is specified.
  *  <p>
  *  When an intermediate receiver sends a token to an input port of this
- *  quantity manager, the original receiver and the token are encoded in a 
+ *  quantity manager, the original receiver and the token are encoded in a
  *  RecordToken. When such a token arrives at an output port, the original token
- *  is extracted and sent to the original receiver. 
+ *  is extracted and sent to the original receiver.
  *  <p>
  *  A color parameter is used to perform highlighting on the ports that use this
  *  quantity manager.
@@ -72,7 +72,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  *  Listeners can register for events happening in this quantity manager. Events are
  *  created when, for instance, tokens are received or tokens are sent. These
  *  events are implemented in derived classes.
- *  
+ *
  *  @author Patricia Derler
  *  @version $Id$
  *  @since Ptolemy II 8.0
@@ -80,7 +80,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  *  @Pt.AcceptedRating Red (derler)
  */
 public class CompositeQuantityManager extends TypedCompositeActor implements QuantityManager {
-    
+
     /** Construct a TypedCompositeActor with a name and a container.
      *  The container argument must not be null, or a
      *  NullPointerException will be thrown.  This actor will use the
@@ -99,20 +99,20 @@ public class CompositeQuantityManager extends TypedCompositeActor implements Qua
      */
     public CompositeQuantityManager(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
-        super(container, name); 
+        super(container, name);
         _initialize();
     }
-    
+
     /** The color associated with this actor used to highlight other
      *  actors or connections that use this quantity manager. The default value
      *  is the color red described by the expression {1.0,0.0,0.0,1.0}.
      */
     public ColorAttribute color;
-    
-    
+
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-    
+
     /** If the attribute is <i>color</i>, then update the highlighting colors
      *  in the model.
      *  @param attribute The attribute that changed.
@@ -135,16 +135,16 @@ public class CompositeQuantityManager extends TypedCompositeActor implements Qua
      *  without specifying a port of a CompositeQuantityManager.
      */
     public Receiver getReceiver(Receiver receiver)
-            throws IllegalActionException { 
+            throws IllegalActionException {
         throw new IllegalActionException(receiver.getContainer(),
-					 "Cannot create receiver" +
-					 "without specifying a port of a CompositeQuantityManager.");
-    }    
-    
-    
-    
+                                         "Cannot create receiver" +
+                                         "without specifying a port of a CompositeQuantityManager.");
+    }
+
+
+
     private boolean _receiversInvalid = true;
-    
+
     /** Create a receiver to mediate a communication via the specified receiver. This
      *  receiver is linked to a specific port of the quantity manager.
      *  @param receiver Receiver whose communication is to be mediated.
@@ -159,10 +159,10 @@ public class CompositeQuantityManager extends TypedCompositeActor implements Qua
             _receiversInvalid = false;
         }
         IntermediateReceiver intermediateReceiver = new IntermediateReceiver(
-                this, receiver, port); 
-        
+                this, receiver, port);
+
         if (((IOPort)(receiver.getContainer())).isInput()) {
-            Receiver[][] result = new Receiver[1][1]; 
+            Receiver[][] result = new Receiver[1][1];
             List<Receiver[][]> occurrences = new LinkedList<Receiver[][]>();
             occurrences.add(result);
             HashMap<IORelation, List<Receiver[][]>> map = new HashMap<IORelation, List<Receiver[][]>>();
@@ -178,7 +178,7 @@ public class CompositeQuantityManager extends TypedCompositeActor implements Qua
                 list = new ArrayList();
             } else {
                 // Some receivers are removed in the IOPort class; remove 'dead'
-                // receivers here too. 
+                // receivers here too.
                 List<Receiver> copy = new ArrayList<Receiver>(list);
                 for (Receiver listReceiver : copy) {
                     if (listReceiver.getContainer() == null) {
@@ -190,23 +190,23 @@ public class CompositeQuantityManager extends TypedCompositeActor implements Qua
                 list.add(receiver);
             }
             _outputMappings.put(port, list);
-        } 
+        }
         return intermediateReceiver;
     }
-    
+
     /** Initialize the actor.
      *  @exception IllegalActionException Thrown by super class.
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
-        
+
         _tokenCount = 0;
     }
 
 
-   
+
     /** Override the fire and change the transferring of outputs
-     *  to transfer data from output ports to target receivers. 
+     *  to transfer data from output ports to target receivers.
      */
     public void fire() throws IllegalActionException {
         if (_debugging) {
@@ -267,16 +267,16 @@ public class CompositeQuantityManager extends TypedCompositeActor implements Qua
                         receiver.put(token);
                         sendQMTokenEvent((Actor) receiver.getContainer().getContainer(), 0,
                                 _tokenCount, EventType.SENT);
-                    } 
-                    
+                    }
+
                 }
-            } 
+            }
         } finally {
             _workspace.doneReading();
         }
- 
+
     }
-    
+
 
     /** Add a quantity manager monitor to the list of listeners.
      *  @param monitor The quantity manager monitor.
@@ -287,16 +287,16 @@ public class CompositeQuantityManager extends TypedCompositeActor implements Qua
         }
         _listeners.add(monitor);
     }
-    
+
     @Override
-    public void preinitialize() throws IllegalActionException { 
+    public void preinitialize() throws IllegalActionException {
         _receiversInvalid = true;
         super.preinitialize();
     }
 
     /** Reset.
      */
-    public void reset() {  
+    public void reset() {
         // FIXME what to do here?
     }
 
@@ -321,7 +321,7 @@ public class CompositeQuantityManager extends TypedCompositeActor implements Qua
             }
         }
     }
-    
+
 
     /** Use other sendToken method.
      *  @param source Receiver that sent the token.  Ignored in this method.
@@ -332,12 +332,12 @@ public class CompositeQuantityManager extends TypedCompositeActor implements Qua
      *  @exception IllegalActionException Always thrown because a port must be specified
      */
     public void sendToken(Receiver source, Receiver receiver, Token token)
-	throws IllegalActionException {
+        throws IllegalActionException {
         throw new IllegalActionException(this, "Port must be specified");
     }
-    
-    /** Intermediate Receiver sends token to this quantity manager which puts 
-     *  the token to the right port. 
+
+    /** Intermediate Receiver sends token to this quantity manager which puts
+     *  the token to the right port.
      *  @param source The source that sent the token.
      *  @param receiver The target receiver of this token.
      *  @param token Token that is sent.
@@ -348,47 +348,47 @@ public class CompositeQuantityManager extends TypedCompositeActor implements Qua
             throws IllegalActionException {
         if (port.isInput()) {
             prefire(); // has to be done such that the director gets the current time
-            for (int i = 0; i < port.insidePortList().size(); i++) { 
+            for (int i = 0; i < port.insidePortList().size(); i++) {
                 ((IOPort)port.insidePortList().get(i)).getReceivers()[0][0].put(token);
                 ((CompositeActor)getContainer()).getDirector().fireAtCurrentTime(this);
-            } 
+            }
             sendQMTokenEvent((Actor) source.getContainer().getContainer(),
-                    0, _tokenCount, EventType.RECEIVED); 
+                    0, _tokenCount, EventType.RECEIVED);
         } else {
-            throw new IllegalActionException(this, 
+            throw new IllegalActionException(this,
                     "Outputs should be sent to target receivers in the fire, not in this method!");
         }
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
-    
+
     /** Amount of tokens currently being processed by the qm. */
     protected int _tokenCount;
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                        private methods                    ////
 
-    /** Initialize color and private lists. 
+    /** Initialize color and private lists.
      * @throws IllegalActionException If color attribute cannot be initialized.
      * @throws NameDuplicationException If color attribute cannot be initialized.
      */
-    private void _initialize() throws IllegalActionException, NameDuplicationException { 
+    private void _initialize() throws IllegalActionException, NameDuplicationException {
         _listeners = new ArrayList();
         _outputMappings = new HashMap();
         color = new ColorAttribute(this, "_color");
         color.setExpression("{1.0,0.0,0.0,1.0}");
     }
-    
-    
+
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
     /** Store mapping of output port to target receivers. */
     private Map<IOPort, List<Receiver>> _outputMappings;
-    
+
     /** Listeners registered to receive events from this object. */
     private ArrayList<QuantityManagerListener> _listeners;
-    
+
 
 }

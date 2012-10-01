@@ -50,7 +50,7 @@ import ptolemy.media.javasound.LiveSound;
 public class LiveSines {
     /** Play a simple harmonic signal.
      *  @param args Ignored.
-     */  
+     */
     public static void main(String[] args) {
         ActorModuleInitializer.initializeInjector();
 

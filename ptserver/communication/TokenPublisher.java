@@ -94,7 +94,7 @@ public class TokenPublisher {
         try {
             if (_tokenCount != 0) {
                 _sendBatch();
-                // NOTE: for some reason, the last batch is not send out, 
+                // NOTE: for some reason, the last batch is not send out,
                 // if the mqtt connection is closed right after the publish method.
                 // By forcing the thread sleep, we give MQTT some time to send the last message.
                 Thread.sleep(_period);
@@ -133,7 +133,7 @@ public class TokenPublisher {
     /** Send the token via MQTT protocol.
      *  <p>The token will not be sent out immediately but would be batched for the specified period.</p>
      *  @param token The token to send
-     * @param sender The sink that produced the token.  If the parameter is null, 
+     * @param sender The sink that produced the token.  If the parameter is null,
      * then the token was not produced by the model but programmatically i.e. for monitoring purposes.
      *  @exception IllegalActionException if there is a problem with MQTT broker.
      */
@@ -237,7 +237,7 @@ public class TokenPublisher {
     private static final int _MAX_TOKENS_PER_PERIOD = 1000;
 
     /**
-     * The logger used by the ptserver. 
+     * The logger used by the ptserver.
      */
     private static final Logger _LOGGER = Logger.getLogger("PtolemyServer");
 }

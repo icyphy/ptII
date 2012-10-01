@@ -49,13 +49,13 @@ import ptolemy.vergil.basic.RelativeLocatable;
  @Pt.AcceptedRating Red (cxh)
  */
 public class TextAttribute extends AbstractTextAttribute implements RelativeLocatable {
-    
+
     // FIXME: It may be possible to make a base class implement
     // RelativeLocatable, but right now, if we do that, ShapeAttribute
     // gets messed up because it includes in its bounding box the line
     // that gets drawn to the relative object. So for now, we restrict
     // the relative locatable capability to text attributes.
-    
+
     /** Construct an attribute with the given name contained by the
      *  specified container. The container argument must not be null, or a
      *  NullPointerException will be thrown.  This attribute will use the

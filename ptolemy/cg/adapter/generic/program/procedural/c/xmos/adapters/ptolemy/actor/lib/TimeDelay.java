@@ -56,7 +56,7 @@ public class TimeDelay
     public TimeDelay(ptolemy.actor.lib.TimeDelay actor) {
         super(actor);
     }
-    
+
     public String generateFireCode() throws IllegalActionException {
         CodeStream codeStream = _templateParser.getCodeStream();
         codeStream.clear();

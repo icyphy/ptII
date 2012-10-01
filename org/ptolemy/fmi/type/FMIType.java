@@ -34,11 +34,11 @@ import org.w3c.dom.Element;
 
 /**
  * An base class for Functional Mock-up Interface types like Real.
- * 
+ *
  * <p>FMI documentation may be found at
  * <a href="http://www.modelisar.com/fmi.html">http://www.modelisar.com/fmi.html</a>.
  * </p>
- * 
+ *
  * @author Christopher Brooks
  * @version $Id$
  * @Pt.ProposedRating Red (cxh)

@@ -1,5 +1,5 @@
 /* The definition of attributes.
- 
+
  Copyright (c) 2011 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
@@ -40,7 +40,7 @@ import ptolemy.kernel.util.ValueListener;
 ///////////////////////////////////////////////////////////////////
 //// AttributeElement
 
-/** The definition of attributes. 
+/** The definition of attributes.
  *
  *  @author Peter Foldes
  *  @version $Id$
@@ -55,7 +55,7 @@ public class AttributeElement extends PositionableElement {
 
     /** Parse the Ptolemy attribute element.
      *  @param attribute The Ptolemy attribute element to be parsed.
-     *  @exception IllegalActionException If the attribute is not settable. 
+     *  @exception IllegalActionException If the attribute is not settable.
      */
     public AttributeElement(Attribute attribute) throws IllegalActionException {
         super(attribute);
@@ -70,7 +70,7 @@ public class AttributeElement extends PositionableElement {
     ////                public methods                             ////
 
     /** Attach a value listener to the underlying attribute.
-     * 
+     *
      *  @param listener The listener to attach.
      */
     public void addListener(ValueListener listener) {
@@ -79,10 +79,10 @@ public class AttributeElement extends PositionableElement {
 
     /** Add the visual representation of the element to the provided
      *  container.
-     *  
+     *
      *  @param container The container for the element to be placed in.
      *  @exception IllegalActionException If the element cannot be added
-     *  to the container. 
+     *  to the container.
      */
     @Override
     public void addToContainer(PortableContainer container)
@@ -92,10 +92,10 @@ public class AttributeElement extends PositionableElement {
     }
 
     /** Change the style of the parameter to a new style.
-     * 
+     *
      *  Note: It will remove the style of the element even if there is something
      *  wrong with the new style.
-     * 
+     *
      *  @param style The new style to be used by the attribute.
      *  @exception IllegalActionException If this attribute is not of the
      *  expected class for the container, or it has no name, or the attribute
@@ -121,7 +121,7 @@ public class AttributeElement extends PositionableElement {
     }
 
     /** Remove a value listener from the underlying attribute.
-     * 
+     *
      *  @param listener The listener to remove.
      *  @see #addListener(ValueListener)
      */

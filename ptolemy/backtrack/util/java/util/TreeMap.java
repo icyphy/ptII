@@ -51,7 +51,7 @@ import ptolemy.backtrack.Rollbackable;
 import ptolemy.backtrack.util.CheckpointRecord;
 import ptolemy.backtrack.util.FieldRecord;
 
-/** 
+/**
  * This class provides a red-black tree implementation of the SortedMap
  * interface.  Elements in the Map will be sorted by either a user-provided
  * Comparator object, or by the natural ordering of the keys.
@@ -101,17 +101,17 @@ public class TreeMap extends AbstractMap implements SortedMap, Cloneable,
     // and no red node has red children. To avoid some null-pointer checks,
     // we use the special node nil which is always black, has no relatives,
     // and has key and value of null (but is not equal to a mapping of null).
-    /**     
+    /**
      * Compatible with JDK 1.2.
      */
     private static final long serialVersionUID = 919286545866124006L;
 
-    /**     
+    /**
      * Color status of a node. Package visible for use by nested classes.
      */
     static final int RED = -1, BLACK = 1;
 
-    /**     
+    /**
      * Sentinal node, used to avoid null checks for corner cases and make the
      * delete rebalance code simpler. The rebalance code must never assign
      * the parent, left, or right of nil, but may safely reassign the color
@@ -121,38 +121,38 @@ public class TreeMap extends AbstractMap implements SortedMap, Cloneable,
     static final Node nil = new Node(null, null, BLACK);
 
     // Nil is self-referential, so we must initialize it after creation.
-    /**     
+    /**
      * The root node of this TreeMap.
      */
     private transient Node root;
 
-    /**     
+    /**
      * The size of this TreeMap. Package visible for use by nested classes.
      */
     private transient int size;
 
-    /**     
+    /**
      * The cache for {
     @link #entrySet()    }
     .
      */
     private transient Set entries;
 
-    /**     
+    /**
      * Counts the number of modifications this TreeMap has undergone, used
      * by Iterators to know when to throw ConcurrentModificationExceptions.
      * Package visible for use by nested classes.
      */
     private transient int modCount;
 
-    /**     
+    /**
      * This TreeMap's comparator, or null for natural ordering.
      * Package visible for use by nested classes.
      * @serial the comparator ordering this tree, or null
      */
     final Comparator comparator;
 
-    /**     
+    /**
      * Class to represent an entry in the tree. Holds a single key-value pair,
      * plus pointers to parent and child nodes.
      * @author Eric Blake (ebb9@email.byu.edu)
@@ -161,27 +161,27 @@ public class TreeMap extends AbstractMap implements SortedMap, Cloneable,
             Rollbackable {
 
         // All fields package visible for use by nested classes.
-        /**         
-         * The color of this node. 
+        /**
+         * The color of this node.
          */
         private int color;
 
-        /**         
-         * The left child node. 
+        /**
+         * The left child node.
          */
         private Node left = nil;
 
-        /**         
-         * The right child node. 
+        /**
+         * The right child node.
          */
         private Node right = nil;
 
-        /**         
-         * The parent node. 
+        /**
+         * The parent node.
          */
         private Node parent = nil;
 
-        /**         
+        /**
          * Simple constructor.
          * @param key the key
          * @param value the value
@@ -382,7 +382,7 @@ public class TreeMap extends AbstractMap implements SortedMap, Cloneable,
     // FIXME gcj cannot handle this. Bug java/4695
     // this(type, firstNode(), nil);
     // class TreeIterator
-    /**     
+    /**
      * Iterate over TreeMap's entries. This implementation is parameterized
      * to give a sequential view of keys, values, or entries.
      * @author Eric Blake (ebb9@email.byu.edu)
@@ -391,7 +391,7 @@ public class TreeMap extends AbstractMap implements SortedMap, Cloneable,
 
         protected transient Checkpoint $CHECKPOINT = new Checkpoint(this);
 
-        /**         
+        /**
          * The type of this Iterator: {
         @link #KEYS        }
         , {
@@ -403,28 +403,28 @@ public class TreeMap extends AbstractMap implements SortedMap, Cloneable,
          */
         private final int type;
 
-        /**         
-         * The number of modifications to the backing Map that we know about. 
+        /**
+         * The number of modifications to the backing Map that we know about.
          */
         private int knownMod = getModCount();
 
-        /**         
-         * The last Entry returned by a next() call. 
+        /**
+         * The last Entry returned by a next() call.
          */
         private Node last;
 
-        /**         
-         * The next entry that should be returned by next(). 
+        /**
+         * The next entry that should be returned by next().
          */
         private Node next;
 
-        /**         
+        /**
          * The last node visible to this iterator. This is used when iterating
          * on a SubMap.
          */
         private final Node max;
 
-        /**         
+        /**
          * Construct a new TreeIterator with the supplied type.
          * @param type {
         @link #KEYS        }
@@ -440,7 +440,7 @@ public class TreeMap extends AbstractMap implements SortedMap, Cloneable,
             this.max = nil;
         }
 
-        /**         
+        /**
          * Construct a new TreeIterator with the supplied type. Iteration will
          * be from "first" (inclusive) to "max" (exclusive).
          * @param type {
@@ -459,7 +459,7 @@ public class TreeMap extends AbstractMap implements SortedMap, Cloneable,
             this.max = max;
         }
 
-        /**         
+        /**
          * Returns true if the Iterator has more elements.
          * @return true if there are more elements
          */
@@ -467,7 +467,7 @@ public class TreeMap extends AbstractMap implements SortedMap, Cloneable,
             return next != max;
         }
 
-        /**         
+        /**
          * Returns the next element in the Iterator's sequential view.
          * @return the next element
          * @throws ConcurrentModificationException if the TreeMap was modified
@@ -490,7 +490,7 @@ public class TreeMap extends AbstractMap implements SortedMap, Cloneable,
             return last;
         }
 
-        /**         
+        /**
          * Removes from the backing TreeMap the last element which was fetched
          * with the <code>next()</code> method.
          * @throws ConcurrentModificationException if the TreeMap was modified
@@ -625,7 +625,7 @@ public class TreeMap extends AbstractMap implements SortedMap, Cloneable,
 
     }
 
-    /**     
+    /**
      * Implementation of {
     @link #subMap(Object, Object)    }
     and other map
@@ -639,26 +639,26 @@ public class TreeMap extends AbstractMap implements SortedMap, Cloneable,
     private final class SubMap extends AbstractMap implements SortedMap,
             Rollbackable {
 
-        /**         
+        /**
          * The lower range of this view, inclusive, or nil for unbounded.
          * Package visible for use by nested classes.
          */
         final Object minKey;
 
-        /**         
+        /**
          * The upper range of this view, exclusive, or nil for unbounded.
          * Package visible for use by nested classes.
          */
         final Object maxKey;
 
-        /**         
+        /**
          * The cache for {
         @link #entrySet()        }
         .
          */
         private Set entries;
 
-        /**         
+        /**
          * Create a SubMap representing the elements between minKey (inclusive)
          * and maxKey (exclusive). If minKey is nil, SubMap has no lower bound
          * (headMap). If maxKey is nil, the SubMap has no upper bound (tailMap).
@@ -674,7 +674,7 @@ public class TreeMap extends AbstractMap implements SortedMap, Cloneable,
             this.maxKey = maxKey;
         }
 
-        /**         
+        /**
          * Check if "key" is in within the range bounds for this SubMap. The
          * lower ("from") SubMap range is inclusive, and the upper ("to") bound
          * is exclusive. Package visible for use by nested classes.
@@ -1111,8 +1111,8 @@ public class TreeMap extends AbstractMap implements SortedMap, Cloneable,
 
     }
 
-    // class SubMap  
-    /**     
+    // class SubMap
+    /**
      * Instantiate a new TreeMap with no elements, using the keys' natural
      * ordering to sort. All entries in the map must have a key which implements
      * Comparable, and which are <i>mutually comparable</i>, otherwise map
@@ -1128,7 +1128,7 @@ public class TreeMap extends AbstractMap implements SortedMap, Cloneable,
         this((Comparator) null);
     }
 
-    /**     
+    /**
      * Instantiate a new TreeMap with no elements, using the provided comparator
      * to sort. All entries in the map must have keys which are mutually
      * comparable by the Comparator, otherwise map operations may throw a{
@@ -1142,7 +1142,7 @@ public class TreeMap extends AbstractMap implements SortedMap, Cloneable,
         fabricateTree(0);
     }
 
-    /**     
+    /**
      * Instantiate a new TreeMap, initializing it with all of the elements in
      * the provided Map.  The elements will be sorted using the natural
      * ordering of the keys. This algorithm runs in n*log(n) time. All entries
@@ -1161,7 +1161,7 @@ public class TreeMap extends AbstractMap implements SortedMap, Cloneable,
         putAll(map);
     }
 
-    /**     
+    /**
      * Instantiate a new TreeMap, initializing it with all of the elements in
      * the provided SortedMap.  The elements will be sorted using the same
      * comparator as in the provided SortedMap. This runs in linear time.
@@ -1182,7 +1182,7 @@ public class TreeMap extends AbstractMap implements SortedMap, Cloneable,
         }
     }
 
-    /**     
+    /**
      * Clears the Map so it has no keys. This is O(1).
      */
     public void clear() {
@@ -1193,7 +1193,7 @@ public class TreeMap extends AbstractMap implements SortedMap, Cloneable,
         }
     }
 
-    /**     
+    /**
      * Returns a shallow clone of this TreeMap. The Map itself is cloned,
      * but its contents are not.
      * @return the clone
@@ -1217,7 +1217,7 @@ public class TreeMap extends AbstractMap implements SortedMap, Cloneable,
         return copy;
     }
 
-    /**     
+    /**
      * Return the comparator used to sort this map, or null if it is by
      * natural order.
      * @return the map's comparator
@@ -1226,7 +1226,7 @@ public class TreeMap extends AbstractMap implements SortedMap, Cloneable,
         return comparator;
     }
 
-    /**     
+    /**
      * Returns true if the map contains a mapping for the given key.
      * @param key the key to look for
      * @return true if the key has a mapping
@@ -1238,7 +1238,7 @@ public class TreeMap extends AbstractMap implements SortedMap, Cloneable,
         return getNode(key) != nil;
     }
 
-    /**     
+    /**
      * Returns true if the map contains at least one mapping to the given value.
      * This requires linear time.
      * @param value the value to look for
@@ -1255,7 +1255,7 @@ public class TreeMap extends AbstractMap implements SortedMap, Cloneable,
         return false;
     }
 
-    /**     
+    /**
      * Returns a "set view" of this TreeMap's entries. The set is backed by
      * the TreeMap, so changes in one show up in the other.  The set supports
      * element removal, but not element addition.<p>
@@ -1369,7 +1369,7 @@ public class TreeMap extends AbstractMap implements SortedMap, Cloneable,
         return entries;
     }
 
-    /**     
+    /**
      * Returns the first (lowest) key in the map.
      * @return the first key
      * @throws NoSuchElementException if the map is empty
@@ -1381,7 +1381,7 @@ public class TreeMap extends AbstractMap implements SortedMap, Cloneable,
         return firstNode().getKeyField();
     }
 
-    /**     
+    /**
      * Return the value in this TreeMap associated with the supplied key,
      * or <code>null</code> if the key maps to nothing.  NOTE: Since the value
      * could also be null, you must use containsKey to see if this key
@@ -1398,7 +1398,7 @@ public class TreeMap extends AbstractMap implements SortedMap, Cloneable,
         return getNode(key).getValueField();
     }
 
-    /**     
+    /**
      * Returns a view of this Map including all entries with keys less than
      * <code>toKey</code>. The returned map is backed by the original, so changes
      * in one appear in the other. The submap will throw an{
@@ -1417,7 +1417,7 @@ public class TreeMap extends AbstractMap implements SortedMap, Cloneable,
         return new SubMap(nil, toKey);
     }
 
-    /**     
+    /**
      * Returns a "set view" of this TreeMap's keys. The set is backed by the
      * TreeMap, so changes in one show up in the other.  The set supports
      * element removal, but not element addition.
@@ -1515,7 +1515,7 @@ public class TreeMap extends AbstractMap implements SortedMap, Cloneable,
         return getKeys();
     }
 
-    /**     
+    /**
      * Returns the last (highest) key in the map.
      * @return the last key
      * @throws NoSuchElementException if the map is empty
@@ -1527,7 +1527,7 @@ public class TreeMap extends AbstractMap implements SortedMap, Cloneable,
         return lastNode().getKeyField();
     }
 
-    /**     
+    /**
      * Puts the supplied value into the Map, mapped by the supplied key.
      * The value may be retrieved by any object which <code>equals()</code>
      * this key. NOTE: Since the prior value could also be null, you must
@@ -1574,7 +1574,7 @@ public class TreeMap extends AbstractMap implements SortedMap, Cloneable,
         return null;
     }
 
-    /**     
+    /**
      * Copies all elements of the given map into this TreeMap.  If this map
      * already has a mapping for a key, the new mapping replaces the current
      * one.
@@ -1593,7 +1593,7 @@ public class TreeMap extends AbstractMap implements SortedMap, Cloneable,
         }
     }
 
-    /**     
+    /**
      * Removes from the TreeMap and returns the value which is mapped by the
      * supplied key. If the key maps to nothing, then the TreeMap remains
      * unchanged, and <code>null</code> is returned. NOTE: Since the value
@@ -1615,7 +1615,7 @@ public class TreeMap extends AbstractMap implements SortedMap, Cloneable,
         return result;
     }
 
-    /**     
+    /**
      * Returns the number of key-value mappings currently in this Map.
      * @return the size
      */
@@ -1623,7 +1623,7 @@ public class TreeMap extends AbstractMap implements SortedMap, Cloneable,
         return getSize();
     }
 
-    /**     
+    /**
      * Returns a view of this Map including all entries with keys greater or
      * equal to <code>fromKey</code> and less than <code>toKey</code> (a
      * half-open interval). The returned map is backed by the original, so
@@ -1646,7 +1646,7 @@ public class TreeMap extends AbstractMap implements SortedMap, Cloneable,
         return new SubMap(fromKey, toKey);
     }
 
-    /**     
+    /**
      * Returns a view of this Map including all entries with keys greater or
      * equal to <code>fromKey</code>. The returned map is backed by the
      * original, so changes in one appear in the other. The submap will throw an{
@@ -1665,7 +1665,7 @@ public class TreeMap extends AbstractMap implements SortedMap, Cloneable,
         return new SubMap(fromKey, nil);
     }
 
-    /**     
+    /**
      * Returns a "collection view" (or "bag view") of this TreeMap's values.
      * The collection is backed by the TreeMap, so changes in one show up
      * in the other.  The collection supports element removal, but not element
@@ -1751,7 +1751,7 @@ public class TreeMap extends AbstractMap implements SortedMap, Cloneable,
         return getValues();
     }
 
-    /**     
+    /**
      * Compares two elements by the set comparator, or by natural ordering.
      * Package visible for use by nested classes.
      * @param o1 the first object
@@ -1765,7 +1765,7 @@ public class TreeMap extends AbstractMap implements SortedMap, Cloneable,
                 : comparator.compare(o1, o2));
     }
 
-    /**     
+    /**
      * Maintain red-black balance after deleting a node.
      * @param node the child of the node just deleted, possibly nil
      * @param parent the parent of the node just deleted, never nil
@@ -1829,7 +1829,7 @@ public class TreeMap extends AbstractMap implements SortedMap, Cloneable,
         node.setColor(BLACK);
     }
 
-    /**     
+    /**
      * Construct a perfectly balanced tree consisting of n "blank" nodes. This
      * permits a tree to be generated from pre-sorted input in linear time.
      * @param count the number of blank nodes, non-negative
@@ -1891,7 +1891,7 @@ public class TreeMap extends AbstractMap implements SortedMap, Cloneable,
         }
     }
 
-    /**     
+    /**
      * Returns the first sorted node in the map, or nil if empty. Package
      * visible for use by nested classes.
      * @return the first node
@@ -1904,7 +1904,7 @@ public class TreeMap extends AbstractMap implements SortedMap, Cloneable,
         return node;
     }
 
-    /**     
+    /**
      * Return the TreeMap.Node associated with key, or the nil node if no such
      * node exists in the tree. Package visible for use by nested classes.
      * @param key the key to search for
@@ -1925,7 +1925,7 @@ public class TreeMap extends AbstractMap implements SortedMap, Cloneable,
         return current;
     }
 
-    /**     
+    /**
      * Find the "highest" node which is &lt; key. If key is nil, return last
      * node. Package visible for use by nested classes.
      * @param key the upper bound, exclusive
@@ -1952,7 +1952,7 @@ public class TreeMap extends AbstractMap implements SortedMap, Cloneable,
         return comparison <= 0 ? predecessor(last) : last;
     }
 
-    /**     
+    /**
      * Maintain red-black balance after inserting a new node.
      * @param n the newly inserted node
      */
@@ -1996,7 +1996,7 @@ public class TreeMap extends AbstractMap implements SortedMap, Cloneable,
         root.setColor(BLACK);
     }
 
-    /**     
+    /**
      * Returns the last sorted node in the map, or nil if empty.
      * @return the last node
      */
@@ -2008,7 +2008,7 @@ public class TreeMap extends AbstractMap implements SortedMap, Cloneable,
         return node;
     }
 
-    /**     
+    /**
      * Find the "lowest" node which is &gt;= key. If key is nil, return either
      * nil or the first node, depending on the parameter first.
      * Package visible for use by nested classes.
@@ -2037,7 +2037,7 @@ public class TreeMap extends AbstractMap implements SortedMap, Cloneable,
         return comparison > 0 ? successor(last) : last;
     }
 
-    /**     
+    /**
      * Return the node preceding the given one, or nil if there isn't one.
      * @param node the current node, not nil
      * @return the prior node in sorted order
@@ -2058,7 +2058,7 @@ public class TreeMap extends AbstractMap implements SortedMap, Cloneable,
         return parent;
     }
 
-    /**     
+    /**
      * Construct a tree from sorted keys in linear time. Package visible for
      * use by TreeSet.
      * @param s the stream to read from
@@ -2080,7 +2080,7 @@ public class TreeMap extends AbstractMap implements SortedMap, Cloneable,
         }
     }
 
-    /**     
+    /**
      * Construct a tree from sorted keys in linear time, with values of "".
      * Package visible for use by TreeSet.
      * @param keys the iterator over the sorted keys
@@ -2097,7 +2097,7 @@ public class TreeMap extends AbstractMap implements SortedMap, Cloneable,
         }
     }
 
-    /**     
+    /**
      * Deserializes this object from the given stream.
      * @param s the stream to read from
      * @throws ClassNotFoundException if the underlying stream fails
@@ -2112,7 +2112,7 @@ public class TreeMap extends AbstractMap implements SortedMap, Cloneable,
         putFromObjStream(s, size, true);
     }
 
-    /**     
+    /**
      * Remove node from tree. This will increment modCount and decrement size.
      * Node must exist in the tree. Package visible for use by nested classes.
      * @param node the node to remove
@@ -2155,7 +2155,7 @@ public class TreeMap extends AbstractMap implements SortedMap, Cloneable,
         }
     }
 
-    /**     
+    /**
      * Rotate node n to the left.
      * @param node the node to rotate
      */
@@ -2179,7 +2179,7 @@ public class TreeMap extends AbstractMap implements SortedMap, Cloneable,
         node.setParent(child);
     }
 
-    /**     
+    /**
      * Rotate node n to the right.
      * @param node the node to rotate
      */
@@ -2203,7 +2203,7 @@ public class TreeMap extends AbstractMap implements SortedMap, Cloneable,
         node.setParent(child);
     }
 
-    /**     
+    /**
      * Return the node following the given one, or nil if there isn't one.
      * Package visible for use by nested classes.
      * @param node the current node, not nil
@@ -2225,7 +2225,7 @@ public class TreeMap extends AbstractMap implements SortedMap, Cloneable,
         return parent;
     }
 
-    /**     
+    /**
      * Serializes this object to the given stream.
      * @param s the stream to write to
      * @throws IOException if the underlying stream fails

@@ -67,7 +67,7 @@ public class MatrixToArray extends Transformer {
         // Set type constraints.
         input.setTypeAtMost(BaseType.MATRIX);
         output.setTypeAtLeast(ArrayType.ARRAY_BOTTOM);
-        
+
         columnMajor = new Parameter(this, "columnMajor");
         columnMajor.setTypeEquals(BaseType.BOOLEAN);
         columnMajor.setExpression("false");
@@ -80,7 +80,7 @@ public class MatrixToArray extends Transformer {
 
     ///////////////////////////////////////////////////////////////////
     ////                         parameters                        ////
-    
+
     /** If true, then insert the first column into the array first,
      *  followed by the second column, etc. If false, then insert the
      *  first row first, followed by the second, etc.

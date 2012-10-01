@@ -48,16 +48,16 @@ import org.junit.runner.RunWith;
 //// TclTests
 /**
  * Run the Tcl tests under JUnit.
- * 
+ *
  * <p>
  * This test must be run from the directory that contains the auto/ directory,
  * for example:
  * </p>
- * 
+ *
  * <pre>
  * (cd ~/ptII/ptolemy/actor/lib/io/test; java -classpath ${PTII}:${PTII}/lib/ptjacl.jar:${PTII}/lib/junit-4.8.2.jar:${PTII}/lib/JUnitParams-0.3.0.jar org.junit.runner.JUnitCore ptolemy.util.test.junit.TclTests)
  * </pre>
- * 
+ *
  * <p>
  * This test uses JUnitParams from <a
  * href="http://code.google.com/p/junitparams/#in_browser"
@@ -65,7 +65,7 @@ import org.junit.runner.RunWith;
  * href="http://www.apache.org/licenses/LICENSE-2.0#in_browser">Apache License
  * 2.0</a>.
  * </p>
- * 
+ *
  * @author Christopher Brooks
  * @version $Id$
  * @since Ptolemy II 8.1
@@ -77,14 +77,14 @@ public class TclTests {
 
     /**
      * Call the Tcl doneTests command to print out the number of errors.
-     * 
+     *
      * @exception Throwable
      *                If the class, constructor or method cannot be found. or if
      *                the Interp cannot be instantiated.
      */
     @AfterClass
     public static void doneTests() throws Throwable {
-        
+
         if (_tclFileCount == 0) {
             // No .tcl files were found, so testDefs.tcl, which
             // defines the Tcl doneTests command has *not* been
@@ -110,7 +110,7 @@ public class TclTests {
                 throw throwable;
             } else {
                 Integer completionCode = (Integer)_getCompletionCodeMethod.invoke(throwable.getCause(), new Object [] {});
-                if (completionCode.intValue() == 1 /** TCL.ERROR */) { 
+                if (completionCode.intValue() == 1 /** TCL.ERROR */) {
                     // The completion code was 1, which means that the
                     // command could not be completed successfully.
 
@@ -133,7 +133,7 @@ public class TclTests {
      * Return a two dimensional array of arrays of strings that name the .tcl files
      * to be executed. If there are no .tcl files, return a list with one element that
      * has the value of the {@link #THERE_ARE_NO_TCL_TESTS} field.
-     * 
+     *
      * @return The List of tcl tests.
      * @exception IOException If there is a problem accessing the auto/ directory.
      */
@@ -142,7 +142,7 @@ public class TclTests {
                 /**
                  * Return true if the file name ends with .tcl and is not
                  * alljtests.tcl or testDefs.tcl
-                 * 
+                 *
                  * @param directory
                  *            Ignored
                  * @param name
@@ -180,17 +180,17 @@ public class TclTests {
             }
             // Sort the tcl files so that _Configuration.tcl is first
             // in ptolemy/actor/gui/test
-	    // File.list() returns files in a different order
-	    // on different platforms.  So much for write once, run everywhere.
-	    Arrays.sort(data, new Comparator<Object[]>() {
-		    @Override
-			public int compare(final Object[] entry1,
-					   final Object[] entry2) {
-			final String file1 = (String)entry1[0];
-			final String file2 = (String)entry2[0];
-			return file1.compareTo(file2);
-		    }
-		});
+            // File.list() returns files in a different order
+            // on different platforms.  So much for write once, run everywhere.
+            Arrays.sort(data, new Comparator<Object[]>() {
+                    @Override
+                        public int compare(final Object[] entry1,
+                                           final Object[] entry2) {
+                        final String file1 = (String)entry1[0];
+                        final String file2 = (String)entry2[0];
+                        return file1.compareTo(file2);
+                    }
+                });
             return data;
         } else {
             return new Object[][] { { THERE_ARE_NO_TCL_TESTS } };
@@ -199,7 +199,7 @@ public class TclTests {
 
     /**
      * Run a tclFile.
-     * 
+     *
      * @exception Throwable
      *                If thrown while executing the tclFile.
      * @param tclFile
@@ -229,31 +229,31 @@ public class TclTests {
                 throw throwable;
             } else {
                 Integer completionCode = (Integer)_getCompletionCodeMethod.invoke(throwable.getCause(), new Object [] {});
-                if (completionCode.intValue() == 1 /** TCL.ERROR */) { 
+                if (completionCode.intValue() == 1 /** TCL.ERROR */) {
                     // The completion code was 1, which means that the
                     // command could not be completed successfully.
 
                     // The Tcl errorInfo global variable will have information
                     // about what went wrong.
                     Object errorInfoTclObject = null;
-		    try {
-			errorInfoTclObject = _getVarMethod.invoke(_interp,
-								  new Object [] {
+                    try {
+                        errorInfoTclObject = _getVarMethod.invoke(_interp,
+                                                                  new Object [] {
                                 "errorInfo", (String) null, 1 /*TCL.GLOBAL_ONLY*/
                             });
-			throw new Exception ("Evaluating the Tcl file \""
-					     + tclFile
-					     + "\"resulted in a TclException being thrown.\nThe Tcl "
-					     + "errorInfo global variable has the value:\n"
-					     + errorInfoTclObject);
-		    } catch (Throwable throwable2) {
-			throwable2.printStackTrace();
-			throw new Exception ("Evaluating the Tcl file \""
-					     + tclFile
-					     + "\"resulted in a TclException being thrown.\n"
-					     + "The Tcl errorInfo variable could not be obtained.\n"
-					     + throwable2, throwable);
-		    }
+                        throw new Exception ("Evaluating the Tcl file \""
+                                             + tclFile
+                                             + "\"resulted in a TclException being thrown.\nThe Tcl "
+                                             + "errorInfo global variable has the value:\n"
+                                             + errorInfoTclObject);
+                    } catch (Throwable throwable2) {
+                        throwable2.printStackTrace();
+                        throw new Exception ("Evaluating the Tcl file \""
+                                             + tclFile
+                                             + "\"resulted in a TclException being thrown.\n"
+                                             + "The Tcl errorInfo variable could not be obtained.\n"
+                                             + throwable2, throwable);
+                    }
                 }
             }
         }
@@ -267,10 +267,10 @@ public class TclTests {
         int newFailed = Integer.parseInt(newFailedCountTclObject.toString());
         int lastFailed = Integer.parseInt(_failedTestCount.toString());
 
-	// We only report if the number of test failures has increased.
-	// this prevents us from reporting cascading errors if the
-	// first .tcl file has a failure.
-	_failedTestCount = _newInstanceTclIntegerMethod.invoke(null, 
+        // We only report if the number of test failures has increased.
+        // this prevents us from reporting cascading errors if the
+        // first .tcl file has a failure.
+        _failedTestCount = _newInstanceTclIntegerMethod.invoke(null,
                     new Object [] {Integer.valueOf(newFailed)});
 
         // If the Tcl FAILED global variable is not equal to the
@@ -322,7 +322,7 @@ public class TclTests {
 
     /** The newInstance() method of the tcl.lang.TclInteger class. */
     private static Method _newInstanceTclIntegerMethod;
-	
+
     /** The tcl.lang.Interp.setVar(String name1, String name2, int flags) method. */
     private static Method _setVarMethod;
 
@@ -383,10 +383,10 @@ public class TclTests {
             _getCompletionCodeMethod = _tclExceptionClass.getMethod("getCompletionCode",
                     new Class [] {});
 
-            _tclObjectZero = _newInstanceTclIntegerMethod.invoke(null, 
+            _tclObjectZero = _newInstanceTclIntegerMethod.invoke(null,
                     new Object [] {Integer.valueOf(0)});
 
-	    _failedTestCount = _newInstanceTclIntegerMethod.invoke(null, 
+            _failedTestCount = _newInstanceTclIntegerMethod.invoke(null,
                     new Object [] {Integer.valueOf(0)});
 
         } catch (Throwable throwable) {

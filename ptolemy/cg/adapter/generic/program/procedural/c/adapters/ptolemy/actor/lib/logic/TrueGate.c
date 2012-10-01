@@ -1,4 +1,4 @@
 /*** fireBlock ***/
 if ($get(input))
-	$put(output, 1);
+        $put(output, 1);
 /**/

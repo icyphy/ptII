@@ -39,7 +39,7 @@ import ptolemy.kernel.util.Workspace;
 public class IterateOverArrayCloneTest {
     /** Check the clone(Workspace) method of the IterateOverArray class.
      *  Instantiate an IterateOverArray actor and get the Workspace
-     *  of the inner IterateDirector.  Then clone the actor into a 
+     *  of the inner IterateDirector.  Then clone the actor into a
      *  new Workspace and get the Workspace of the inner IterateDirector
      *  of the *clone*.  The Workspaces should be different.
      *  <p>To run:</p>

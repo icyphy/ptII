@@ -314,7 +314,7 @@ public class VisualModelReference extends ModelReference {
 
                                 if (_tableau != null) {
                                     _tableau.show();
-                                    
+
                                     JFrame frame = _tableau.getFrame();
 
                                     if (frame != null) {

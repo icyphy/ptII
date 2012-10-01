@@ -240,7 +240,7 @@ public class Expression extends TypedAtomicActor {
         newObject._previousPath = null;
         return newObject;
     }
-    
+
     /** Open a matlab engine.
      *  @exception IllegalActionException If matlab engine not found.
      */
@@ -422,7 +422,7 @@ public class Expression extends TypedAtomicActor {
 
             while (outputPorts.hasNext()) {
                 IOPort port = (IOPort) (outputPorts.next());
-                
+
                 // FIXME: Handle multiports
                 if (port.isOutsideConnected()) {
                     port.send(0, matlabEngine.get(engine, port.getName(),
@@ -463,18 +463,18 @@ public class Expression extends TypedAtomicActor {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                     protected methods                     ////    
-    
-    /** Default type constraints do not apply in this case, since the input 
-     *  type may be totally unrelated to the output type and cannot be 
+    ////                     protected methods                     ////
+
+    /** Default type constraints do not apply in this case, since the input
+     *  type may be totally unrelated to the output type and cannot be
      *  inferred; return null.
-     *  @return null 
+     *  @return null
      */
     @Override
     protected Set<Inequality> _defaultTypeConstraints() {
         return null;
-    }    
-    
+    }
+
     private transient Engine matlabEngine = null;
 
     long[] engine = null;

@@ -590,7 +590,7 @@ public class TransformationRule extends MultiCompositeActor implements
          *  and initialize the local clock. This cannot be done earlier
          *  because the timeResolution might not be known. The base class
          *  implements this functionality and because this director
-         *  does not call the base class we need to replicate the 
+         *  does not call the base class we need to replicate the
          *  functionality here.
          *
          *  @exception IllegalActionException Not thrown in this class.

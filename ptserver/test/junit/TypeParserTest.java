@@ -1,6 +1,6 @@
 /*
  Tests of the TypeParser.
- 
+
  Copyright (c) 2011 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
@@ -43,7 +43,7 @@ import ptserver.util.TypeParser;
 /**
  * Tests of the TypeParser.
  * @author Anar Huseynov
- * @version $Id$ 
+ * @version $Id$
  * @since Ptolemy II 8.1
  * @Pt.ProposedRating Red (ahuseyno)
  * @Pt.AcceptedRating Red (ahuseyno)

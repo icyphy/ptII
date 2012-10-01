@@ -1,6 +1,6 @@
 /*
- Implementation of LiveSoundInterface actor that in dependent on javax. 
- 
+ Implementation of LiveSoundInterface actor that in dependent on javax.
+
  Copyright (c) 2011 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
@@ -41,7 +41,7 @@ import javax.sound.sampled.TargetDataLine;
 //// LiveSoundJavaSE
 
 /**
- Implementation of LiveSoundInterface that in dependent on javax. 
+ Implementation of LiveSoundInterface that in dependent on javax.
  This actor sequentially outputs audio samples that are captured
  from the audio input port of the computer. The audio input port
  typically corresponds to either the microphone input, line-in,
@@ -53,10 +53,10 @@ import javax.sound.sampled.TargetDataLine;
  data. Each captured audio sample is converted to a double that
  may range from -1.0 to 1.0. Thus, the output type of this actor
  is DoubleToken.
- 
- 
- @author Brian K. Vogel and Neil E. Turner and Steve Neuendorffer, Edward A. Lee, Contributor: Dennis Geurts, Ishwinder Singh 
- @version $Id: LiveSoundJavaSE.java 61635 2011-07-28 04:52:41Z ahuseyno $
+
+
+ @author Brian K. Vogel and Neil E. Turner and Steve Neuendorffer, Edward A. Lee, Contributor: Dennis Geurts, Ishwinder Singh
+ @version $Id$
  @since Ptolemy II 1.0
  @Pt.ProposedRating Red (ishwinde)
  @Pt.AcceptedRating Red (ishwinde)

@@ -471,7 +471,7 @@ public class TypeLattice {
 
                 Iterator<?> itr = subset.iterator();
                 Object glb = itr.next();
-                
+
                 // start looping from index 0 so that subset[0] is checked for
                 // possible exception, in case the subset has only one element.
                 while (itr.hasNext()) {
@@ -889,7 +889,7 @@ public class TypeLattice {
 
         ///////////////////////////////////////////////////////////////
         ////                      private methods                  ////
-        
+
         /** Return the result for the types that have the given two
          * indexes as hashes.
          */
@@ -920,9 +920,9 @@ public class TypeLattice {
 
         ///////////////////////////////////////////////////////////////
         ////                     private variables                 ////
-        
+
         private DirectedAcyclicGraph _basicLattice;
-        
+
         /** The result cache for parts of the type lattice. */
         private static int[][] _compareCache;
 

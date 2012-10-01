@@ -1,7 +1,7 @@
 /*
  ProxyModelGenerator splices up CompositeActor to support distribution execution.
  The splicing would be done slightly differently depending where the model runs, client or server.
- 
+
  Copyright (c) 2011 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
@@ -67,7 +67,7 @@ import ptserver.communication.ProxySourceData;
  * The builder would modify original model by injecting proxy actors that facilitate distributed communication
  * with another instance of proxy model running remotely.
  * @author Anar Huseynov
- * @version $Id$ 
+ * @version $Id$
  * @since Ptolemy II 8.1
  * @Pt.ProposedRating Red (ahuseyno)
  * @Pt.AcceptedRating Red (ahuseyno)
@@ -101,7 +101,7 @@ public class ProxyModelBuilder {
     }
 
     /**
-     * Build the ProxyModel that supports distributed execution.  
+     * Build the ProxyModel that supports distributed execution.
      * In the case of the server model type, sinks and sources marked to run on the client
      * would be replaced with a proxy sinks and sources that facilitate communication with
      * a remote instance of the proxy model.
@@ -132,7 +132,7 @@ public class ProxyModelBuilder {
             } else if (ServerUtility.isTargetProxySink(remoteAttribute)) {
                 sinks.add(actor);
             } else if (_modelType == ProxyModelType.CLIENT) {
-                // If the model is being created for the client, 
+                // If the model is being created for the client,
                 // keep track of actors that are unneeded for the
                 // model execution
                 // They are not removed immediately, because their links
@@ -179,7 +179,7 @@ public class ProxyModelBuilder {
             for (ComponentEntity entity : sinks) {
                 _createSource(entity, ProxyActor.REPLACE_CONNECTING_ENTITIES);
             }
-            // Create dummy parent attribute within toplevel actor for attributes that 
+            // Create dummy parent attribute within toplevel actor for attributes that
             // need to be synchronized with the model in the server.
             HashMap<NamedObj, StringAttribute> containerToDummyAttributeMap = new HashMap<NamedObj, StringAttribute>();
             for (Settable settable : getRemoteAttributesMap().values()) {
@@ -237,7 +237,7 @@ public class ProxyModelBuilder {
 
     /**
      * Return the mapping from the typeable named object's full name to its type string.
-     * The type string is obtained by calling .toString() method on the type instance. 
+     * The type string is obtained by calling .toString() method on the type instance.
      * @return Return the mapping from the typeable named object's full name to its type string.
      */
     public HashMap<String, String> getModelTypes() {

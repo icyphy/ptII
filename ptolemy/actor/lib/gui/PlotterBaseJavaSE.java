@@ -1,5 +1,5 @@
-/* 
- Interface encapsulating platform dependent code of the PlotterBase from the 
+/*
+ Interface encapsulating platform dependent code of the PlotterBase from the
  platform independent parts.
 
  @Copyright (c) 1998-2010 The Regents of the University of California.
@@ -58,7 +58,7 @@ import ptolemy.plot.PlotBoxInterface;
  * the original platform dependent version of the PlotterBase but was moved here
  * in order to support portability of the actor.
  * @author Edward A. Lee Contributors: Anar Huseynov
- * @version $Id$ 
+ * @version $Id$
  * @since Ptolemy II 8.1
  * @Pt.ProposedRating Red (ahuseyno)
  * @Pt.AcceptedRating Red (ahuseyno)
@@ -76,7 +76,7 @@ public class PlotterBaseJavaSE implements PlotterBaseInterface {
     }
 
     /**
-     * Free up memory when closing. 
+     * Free up memory when closing.
      */
     public void cleanUp() {
         _tableau = null;
@@ -126,7 +126,7 @@ public class PlotterBaseJavaSE implements PlotterBaseInterface {
                 .toplevel());
 
         if (containerEffigy == null) {
-            try { 
+            try {
                 containerEffigy = new PlotEffigy(_plotterBase.workspace());
                 //containerEffigy.setModel(_plotterBase.toplevel());
             } catch (Exception ex) {

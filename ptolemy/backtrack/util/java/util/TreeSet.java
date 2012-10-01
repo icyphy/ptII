@@ -49,7 +49,7 @@ import java.util.NoSuchElementException;
 import ptolemy.backtrack.Rollbackable;
 import ptolemy.backtrack.util.FieldRecord;
 
-/** 
+/**
  * This class provides a TreeMap-backed implementation of the SortedSet
  * interface. The elements will be sorted according to their <i>natural
  * order</i>, or according to the provided <code>Comparator</code>.<p>
@@ -84,17 +84,17 @@ import ptolemy.backtrack.util.FieldRecord;
 public class TreeSet extends AbstractSet implements SortedSet, Cloneable,
         Serializable, Rollbackable {
 
-    /**     
+    /**
      * Compatible with JDK 1.2.
      */
     private static final long serialVersionUID = -2479143000061671589L;
 
-    /**     
+    /**
      * The SortedMap which backs this Set.
      */
     private transient SortedMap map;
 
-    /**     
+    /**
      * Construct a new TreeSet whose backing TreeMap using the "natural"
      * ordering of keys. Elements that are not mutually comparable will cause
      * ClassCastExceptions down the road.
@@ -104,7 +104,7 @@ public class TreeSet extends AbstractSet implements SortedSet, Cloneable,
         $ASSIGN$map(new TreeMap());
     }
 
-    /**     
+    /**
      * Construct a new TreeSet whose backing TreeMap uses the supplied
      * Comparator. Elements that are not mutually comparable will cause
      * ClassCastExceptions down the road.
@@ -114,7 +114,7 @@ public class TreeSet extends AbstractSet implements SortedSet, Cloneable,
         $ASSIGN$map(new TreeMap(comparator));
     }
 
-    /**     
+    /**
      * Construct a new TreeSet whose backing TreeMap uses the "natural"
      * orering of the keys and which contains all of the elements in the
      * supplied Collection. This runs in n*log(n) time.
@@ -130,7 +130,7 @@ public class TreeSet extends AbstractSet implements SortedSet, Cloneable,
         addAll(collection);
     }
 
-    /**     
+    /**
      * Construct a new TreeSet, using the same key ordering as the supplied
      * SortedSet and containing all of the elements in the supplied SortedSet.
      * This constructor runs in linear time.
@@ -144,7 +144,7 @@ public class TreeSet extends AbstractSet implements SortedSet, Cloneable,
         ((TreeMap) map).putKeysLinear(itr, sortedSet.size());
     }
 
-    /**     
+    /**
      * This private constructor is used to implement the subSet() calls around
      * a backing TreeMap.SubMap.
      * @param backingMap the submap
@@ -153,7 +153,7 @@ public class TreeSet extends AbstractSet implements SortedSet, Cloneable,
         $ASSIGN$map(backingMap);
     }
 
-    /**     
+    /**
      * Adds the spplied Object to the Set if it is not already in the Set;
      * returns true if the element is added, false otherwise.
      * @param obj the Object to be added to this Set
@@ -164,7 +164,7 @@ public class TreeSet extends AbstractSet implements SortedSet, Cloneable,
         return map.put(obj, "") == null;
     }
 
-    /**     
+    /**
      * Adds all of the elements in the supplied Collection to this TreeSet.
      * @param c The collection to add
      * @return true if the Set is altered, false otherwise
@@ -182,14 +182,14 @@ public class TreeSet extends AbstractSet implements SortedSet, Cloneable,
         return result;
     }
 
-    /**     
+    /**
      * Removes all elements in this Set.
      */
     public void clear() {
         map.clear();
     }
 
-    /**     
+    /**
      * Returns a shallow copy of this Set. The elements are not cloned.
      * @return the cloned set
      */
@@ -205,7 +205,7 @@ public class TreeSet extends AbstractSet implements SortedSet, Cloneable,
         return copy;
     }
 
-    /**     
+    /**
      * Returns this Set's comparator.
      * @return the comparator, or null if the set uses natural ordering
      */
@@ -213,7 +213,7 @@ public class TreeSet extends AbstractSet implements SortedSet, Cloneable,
         return map.comparator();
     }
 
-    /**     
+    /**
      * Returns true if this Set contains the supplied Object, false otherwise.
      * @param obj the Object to check for
      * @return true if it is in the set
@@ -224,7 +224,7 @@ public class TreeSet extends AbstractSet implements SortedSet, Cloneable,
         return map.containsKey(obj);
     }
 
-    /**     
+    /**
      * Returns the first (by order) element in this Set.
      * @return the first element
      * @throws NoSuchElementException if the set is empty
@@ -233,7 +233,7 @@ public class TreeSet extends AbstractSet implements SortedSet, Cloneable,
         return map.firstKey();
     }
 
-    /**     
+    /**
      * Returns a view of this Set including all elements less than
      * <code>to</code>. The returned set is backed by the original, so changes
      * in one appear in the other. The subset will throw an{
@@ -252,7 +252,7 @@ public class TreeSet extends AbstractSet implements SortedSet, Cloneable,
         return new TreeSet(map.headMap(to));
     }
 
-    /**     
+    /**
      * Returns true if this Set has size 0, false otherwise.
      * @return true if the set is empty
      */
@@ -260,7 +260,7 @@ public class TreeSet extends AbstractSet implements SortedSet, Cloneable,
         return map.isEmpty();
     }
 
-    /**     
+    /**
      * Returns in Iterator over the elements in this TreeSet, which traverses
      * in ascending order.
      * @return an iterator
@@ -269,7 +269,7 @@ public class TreeSet extends AbstractSet implements SortedSet, Cloneable,
         return map.keySet().iterator();
     }
 
-    /**     
+    /**
      * Returns the last (by order) element in this Set.
      * @return the last element
      * @throws NoSuchElementException if the set is empty
@@ -278,7 +278,7 @@ public class TreeSet extends AbstractSet implements SortedSet, Cloneable,
         return map.lastKey();
     }
 
-    /**     
+    /**
      * If the supplied Object is in this Set, it is removed, and true is
      * returned; otherwise, false is returned.
      * @param obj the Object to remove from this Set
@@ -289,7 +289,7 @@ public class TreeSet extends AbstractSet implements SortedSet, Cloneable,
         return map.remove(obj) != null;
     }
 
-    /**     
+    /**
      * Returns the number of elements in this Set
      * @return the set size
      */
@@ -297,7 +297,7 @@ public class TreeSet extends AbstractSet implements SortedSet, Cloneable,
         return map.size();
     }
 
-    /**     
+    /**
      * Returns a view of this Set including all elements greater or equal to
      * <code>from</code> and less than <code>to</code> (a half-open interval).
      * The returned set is backed by the original, so changes in one appear in
@@ -319,7 +319,7 @@ public class TreeSet extends AbstractSet implements SortedSet, Cloneable,
         return new TreeSet(map.subMap(from, to));
     }
 
-    /**     
+    /**
      * Returns a view of this Set including all elements greater or equal to
      * <code>from</code>. The returned set is backed by the original, so
      * changes in one appear in the other. The subset will throw an{
@@ -338,7 +338,7 @@ public class TreeSet extends AbstractSet implements SortedSet, Cloneable,
         return new TreeSet(map.tailMap(from));
     }
 
-    /**     
+    /**
      * Serializes this object to the given stream.
      * @param s the stream to write to
      * @throws IOException if the underlying stream fails
@@ -356,7 +356,7 @@ public class TreeSet extends AbstractSet implements SortedSet, Cloneable,
         }
     }
 
-    /**     
+    /**
      * Deserializes this object from the given stream.
      * @param s the stream to read from
      * @throws ClassNotFoundException if the underlying stream fails

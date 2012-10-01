@@ -8,7 +8,7 @@ static double delayValue;
 lastModelTime = currentModelTime;
 
 if ($hasToken(delay)) {
-	delayValue = $get(delay);
+        delayValue = $get(delay);
 }
 currentModelTime.secs += (int) delayValue; // intPart
 fractPart = delayValue - (int) delayValue;
@@ -21,7 +21,7 @@ if (currentModelTime.nsecs >= 1000000000) {
 currentMicrostep = 0;
 
 if ($hasToken(input)) {
-	$put(output#0, $get(input));
+        $put(output#0, $get(input));
 }
 
 currentModelTime = lastModelTime;

@@ -37,12 +37,12 @@ import java.util.ResourceBundle;
 /**
  * PtolemyModule loads interface to implementation mappings from the provided
  * ResourceBundle.
- * 
- * The PtolemyModule is used for creating a PtolemyInjector that is responsible for 
+ *
+ * The PtolemyModule is used for creating a PtolemyInjector that is responsible for
  * dependency injection.  The rationale for this class is to promote portability of
  * the Ptolemy by providing different interface to implementation mappings for different
  * platforms such as Android and Java SE.
- * 
+ *
  * @author Anar Huseynov
  * @version $Id$
  * @since Ptolemy II 8.0
@@ -55,7 +55,7 @@ public class PtolemyModule {
      * Create a new intance of the PtolemyModule based on the provided moduleBundle.
      * @param moduleBundle The moduleBundle contains mappings from platform independent
      * interfaces to platform dependent implementations.  The bundle must have key value mappings
-     * from the fully specified interface name to the fully specified class name. 
+     * from the fully specified interface name to the fully specified class name.
      */
     public PtolemyModule(ResourceBundle moduleBundle) {
         // Key is the interface class name.

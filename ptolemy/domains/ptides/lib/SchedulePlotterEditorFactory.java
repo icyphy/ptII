@@ -1,5 +1,5 @@
 /* Factory that creates the schedule plotter.
- 
+
 @Copyright (c) 2008-2011 The Regents of the University of California.
 All rights reserved.
 
@@ -42,24 +42,24 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.plot.Plot;
 
-/** Factory that creates the schedule plotter. 
- * * 
+/** Factory that creates the schedule plotter.
+ * *
  * @author Patricia Derler
    @version $Id$
    @since Ptolemy II 0.2
 
    @Pt.ProposedRating Red (derler)
    @Pt.AcceptedRating Red (derler)
- */ 
+ */
 public class SchedulePlotterEditorFactory extends EditorFactory {
-    
+
     /**
      * Constructs a SchedulePlotter$SchedulePlotterEditorFactory object.
      *
      * @param container
      *                The container.
      * @param name
-     *                The name of the factory. 
+     *                The name of the factory.
      * @exception IllegalActionException
      *                    If the factory is not of an acceptable attribute
      *                    for the container.
@@ -69,9 +69,9 @@ public class SchedulePlotterEditorFactory extends EditorFactory {
      */
     public SchedulePlotterEditorFactory(NamedObj container, String name)
             throws IllegalActionException, NameDuplicationException {
-        super(container, name); 
+        super(container, name);
     }
-    
+
     /** The plot displayed by this ScheduleFactory. */
     public Plot plot;
 
@@ -103,7 +103,7 @@ public class SchedulePlotterEditorFactory extends EditorFactory {
             Effigy effigy = Configuration.findEffigy(toplevel());
             String name = "plotterEffigy" + String.valueOf(id++);
             PlotEffigy schedulePlotterEffigy = new PlotEffigy(effigy,
-                    name); 
+                    name);
             schedulePlotterEffigy.setPlot(plot);
             schedulePlotterEffigy.setModel(this.getContainer());
             schedulePlotterEffigy.identifier
@@ -117,8 +117,8 @@ public class SchedulePlotterEditorFactory extends EditorFactory {
                     "Cannot create Schedule Plotter");
         }
     }
-    
-    /** This static variable is increased by 1 every time a new 
+
+    /** This static variable is increased by 1 every time a new
      *  SchedulePlotter is generated. The id is assigned as a unique
      *  id to every schedule plotter.
      */

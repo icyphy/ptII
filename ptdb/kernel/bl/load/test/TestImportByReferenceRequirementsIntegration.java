@@ -55,7 +55,7 @@ public class TestImportByReferenceRequirementsIntegration {
      */
     @BeforeClass
     public static void setUpBeforeClass() {
-	ActorModuleInitializer.initializeInjector();
+        ActorModuleInitializer.initializeInjector();
     }
 
     /**

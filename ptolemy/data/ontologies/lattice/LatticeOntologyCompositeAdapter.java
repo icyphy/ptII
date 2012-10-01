@@ -115,7 +115,7 @@ public class LatticeOntologyCompositeAdapter extends LatticeOntologyAdapter {
         _addInterConnectionConstraints();
         return super.constraintList();
     }
-    
+
     /** Add all the constraints between actors inside the composite actor
      *  referenced by this adapter.
      *  @throws IllegalActionException Thrown if getAdapter() has an error
@@ -123,7 +123,7 @@ public class LatticeOntologyCompositeAdapter extends LatticeOntologyAdapter {
      */
     protected void _addInterConnectionConstraints() throws IllegalActionException {
         CompositeEntity actor = (CompositeEntity) getComponent();
-        
+
         // Set up inter-actor constraints.
         for (Entity entity : (List<Entity>) actor.entityList()) {
             LatticeOntologyAdapter adapter = (LatticeOntologyAdapter) _solver

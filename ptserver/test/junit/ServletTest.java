@@ -68,7 +68,7 @@ import com.caucho.hessian.client.HessianProxyFactory;
  */
 public class ServletTest {
     static {
-        // FIXME remove PTServerModule after SysOutActor is deleted 
+        // FIXME remove PTServerModule after SysOutActor is deleted
         // or create a proper initializer for it
         ArrayList<PtolemyModule> modules = new ArrayList<PtolemyModule>();
         modules.addAll(ActorModuleInitializer.getModules());
@@ -108,7 +108,7 @@ public class ServletTest {
     /** Test the ability to create a new simulation request and to ensure that
      *  a non-null ticket is returned, the returned ticket has an id, the number
      *  of simulations stored has increased by one, and the simulation is in Idle
-     *  state. 
+     *  state.
      *  @exception Exception If there is an problem opening the model URL or
      *  communicating with the command servlet.
      */
@@ -147,10 +147,10 @@ public class ServletTest {
 
     /** Test the ability to pause and resume a newly created and started simulation request
      *  and to ensure that the state of the execution changed to paused and back.
-     *  
+     *
      *  This test can fail if the execution cannot pause. For example, some models using the
      *  PN director cannot get into the paused state.
-     *  
+     *
      *  @exception Exception If there is an problem opening the model URL, starting, pausing,
      *  or resuming the simulation, or communicating with the command servlet.
      */

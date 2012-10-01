@@ -409,12 +409,12 @@ Token matrixToArray(Token thisToken) {
             case TYPE_Double:
                 result.payload.DoubleArray->elements[index] = element.payload.Double;
                 break;
-#endif                
+#endif
 #ifdef TYPE_IntArray
             case TYPE_Int:
                 result.payload.IntArray->elements[index] = element.payload.Int;
                 break;
-#endif                
+#endif
             default:
                 result.payload.Array->elements[index] = element;
                 break;

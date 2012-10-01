@@ -35,7 +35,7 @@ package ptolemy.moml;
 /**
  * A simple application that reads in a .xml file as a command line argument,
  * runs it and terminates the run after a time out.
- * 
+ *
  * @author Christopher Brooks
  * @version $Id: MoMLSimpleTimeoutApplication.java 61755 2011-08-08 20:17:11Z
  *          cxh $
@@ -45,38 +45,38 @@ package ptolemy.moml;
  */
 public class MoMLSimpleTimeoutApplication extends MoMLSimpleApplication {
 
-	/**
-	 * Parse the xml file and run it. After 5 seconds, call wrapup on the
-	 * manager.
-	 * 
-	 * @param xmlFileName
-	 *            A string that refers to an MoML file that contains a Ptolemy
-	 *            II model. The string should be a relative pathname.
-	 * @exception Throwable
-	 *                If there was a problem parsing or running the model.
-	 */
-	public MoMLSimpleTimeoutApplication(String xmlFileName) throws Throwable {
-		super(xmlFileName);
-	}
+        /**
+         * Parse the xml file and run it. After 5 seconds, call wrapup on the
+         * manager.
+         *
+         * @param xmlFileName
+         *            A string that refers to an MoML file that contains a Ptolemy
+         *            II model. The string should be a relative pathname.
+         * @exception Throwable
+         *                If there was a problem parsing or running the model.
+         */
+        public MoMLSimpleTimeoutApplication(String xmlFileName) throws Throwable {
+                super(xmlFileName);
+        }
 
-	// /////////////////////////////////////////////////////////////////
-	// // Public methods ////
+        // /////////////////////////////////////////////////////////////////
+        // // Public methods ////
 
-	/**
-	 * Wait for all executing runs to finish or 5 seconds to pass, then return.
-	 */
-	public synchronized void waitForFinish() {
-		long timeout = 5000;
-		try {
-			System.out.print("Waiting for " + timeout / 1000.0
-					+ " seconds. . .");
-			wait(timeout);
-			_toplevel.getDirector().finish();
-			_toplevel.getDirector().stopFire();
+        /**
+         * Wait for all executing runs to finish or 5 seconds to pass, then return.
+         */
+        public synchronized void waitForFinish() {
+                long timeout = 5000;
+                try {
+                        System.out.print("Waiting for " + timeout / 1000.0
+                                        + " seconds. . .");
+                        wait(timeout);
+                        _toplevel.getDirector().finish();
+                        _toplevel.getDirector().stopFire();
 
-			System.out.println(" Done.");
-		} catch (InterruptedException ex) {
-			// Ignore.
-		}
-	}
+                        System.out.println(" Done.");
+                } catch (InterruptedException ex) {
+                        // Ignore.
+                }
+        }
 }

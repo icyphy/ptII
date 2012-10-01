@@ -45,7 +45,7 @@ import diva.graph.GraphController;
 //// DeltaConstraintSolverDisplayActions
 
 /**
- This is an attribute that creates options to configure and run actions of 
+ This is an attribute that creates options to configure and run actions of
  the DeltaConstraintSolver.  It extends OntologyDisplayActions to provide
  some additional actions specific to the DeltaConstraintSolver and subclasses.
 
@@ -58,7 +58,7 @@ import diva.graph.GraphController;
 
 public class DeltaConstraintSolverDisplayActions extends OntologyDisplayActions {
 
-    /** Construct a DeltaConstraintSolverDisplayActions controller with the 
+    /** Construct a DeltaConstraintSolverDisplayActions controller with the
      *  specified container and name.
      *  @param container The container.
      *  @param name The name of the DeltaConstraintSolverDisplayActions.
@@ -72,7 +72,7 @@ public class DeltaConstraintSolverDisplayActions extends OntologyDisplayActions 
         super(container, name);
     }
 
-    /** Return a new node controller which supports additional menu options.  
+    /** Return a new node controller which supports additional menu options.
      *  @param controller The associated graph controller.
      *  @return A new node controller.
      */
@@ -122,23 +122,23 @@ public class DeltaConstraintSolverDisplayActions extends OntologyDisplayActions 
          *  handler to highlight conflicting concepts identified by
          *  the DeltaConstraintSolver.
          *  @param e The action event that is passed in when the action
-         *   is triggered. 
+         *   is triggered.
          */
         public void actionPerformed(ActionEvent e) {
             super.actionPerformed(e);
             NamedObj container = getContainer();
 
-            // Get the set of objects to highlight from the 
+            // Get the set of objects to highlight from the
             // DeltaConstraintSolver and highlight them
             if (container instanceof DeltaConstraintSolver) {
                 DeltaConstraintSolver solver = (DeltaConstraintSolver) container;
 
-                // Invoke the solver to identify conflicts.  
+                // Invoke the solver to identify conflicts.
                 // Catch and ignore any exceptions regarding unacceptable
                 // concepts (finding these is the point of this solver)
                 try {
-                    // Call resolveConflicts, which identifies the key 
-                    // constraints that are causing the problem 
+                    // Call resolveConflicts, which identifies the key
+                    // constraints that are causing the problem
                     solver.resolveConflicts();
                     if (solver.hasUnacceptableTerms()) {
                         solver.getMoMLHandler().clearDisplay(true, true);

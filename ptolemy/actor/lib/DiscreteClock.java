@@ -553,7 +553,7 @@ public class DiscreteClock extends TimedSource {
         }
         return val.getElement(index);
     }
-    
+
     /** Produce the output required at times between the specified times.
      *  This base class makes the output absent, but subclasses may
      *  interpolate the values.

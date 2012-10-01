@@ -75,18 +75,18 @@ public class UpdatedArrayToken extends ArrayToken {
         _baseToken = baseToken;
         _index = index;
         _newValue = newValue;
-        
+
         Type newValueType = newValue.getType();
         Type baseType = baseToken.getElementType();
         _elementType = TypeLattice.leastUpperBound(newValueType, baseType);
         _newValue = _elementType.convert(_newValue);
-        
+
         _depth = _baseToken._depth + 1;
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-    
+
     // FindBugs says "Class doesn't override equals in superclass," but
     // that's ok here.  See the tests in test/UpdatedArrayToken.tcl
 
@@ -108,7 +108,7 @@ public class UpdatedArrayToken extends ArrayToken {
             throw new InternalErrorException(e);
         }
     }
-    
+
     /** Return the length of the contained token array.
      *  @return The length of the contained token array.
      */
@@ -121,10 +121,10 @@ public class UpdatedArrayToken extends ArrayToken {
 
     /** The base array. */
     private ArrayToken _baseToken;
-    
+
     /** The index of the updated value. */
     private int _index;
-    
+
     /** The one updated value. */
     private Token _newValue;
 }

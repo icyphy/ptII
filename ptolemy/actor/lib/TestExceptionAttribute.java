@@ -83,7 +83,7 @@ public class TestExceptionAttribute extends AbstractInitializableAttribute
         correctExceptionMessage = new StringParameter(this,
                 "correctExceptionMessage");
         correctExceptionMessage.setExpression("");
-        
+
         matchPrefixOfLength = new Parameter(this, "matchPrefixOfLength");
         matchPrefixOfLength.setExpression("0");
         matchPrefixOfLength.setTypeEquals(BaseType.INT);
@@ -92,7 +92,7 @@ public class TestExceptionAttribute extends AbstractInitializableAttribute
                 "false");
         trainingMode.setTypeEquals(BaseType.BOOLEAN);
         _invoked = false;
-        
+
         // In order for this to show up in the vergil library, it has to have
         // an icon description.
         _attachText("_iconDescription", "<svg>\n"
@@ -104,7 +104,7 @@ public class TestExceptionAttribute extends AbstractInitializableAttribute
 
     ///////////////////////////////////////////////////////////////////
     ////                          parameters                       ////
-    
+
     /** The correct exception message to be compared against. */
     public StringParameter correctExceptionMessage;
 

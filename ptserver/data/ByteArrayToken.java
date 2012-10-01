@@ -1,6 +1,6 @@
 /*
  This token holds a byte array and was created for performance reasons only.
- 
+
  Copyright (c) 2011 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
@@ -68,7 +68,7 @@ public class ByteArrayToken extends Token {
     }
 
     /**
-     * The byte array the token wraps. 
+     * The byte array the token wraps.
      */
     private final byte[] _array;
 

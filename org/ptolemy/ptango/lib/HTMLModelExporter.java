@@ -62,7 +62,7 @@ import ptolemy.vergil.basic.export.html.ExportHTMLAction;
  * A subclass of ModelReference that produces on its output an HTML page for the contained model.
  *
  * FIXME: More
- * 
+ *
  * Running in a new thread is not supported by HTMLModelExporter.
  *
  * @author Edward A. Lee and Beth Latronico
@@ -85,7 +85,7 @@ public class HTMLModelExporter extends VisualModelReference {
     public HTMLModelExporter(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        
+
         _parameters = new ExportParameters();
 
         directoryToExportTo = new FileParameter(this, "directoryToExportTo");
@@ -97,32 +97,32 @@ public class HTMLModelExporter extends VisualModelReference {
         allowDirectories.setVisibility(Settable.NONE);
 
         backgroundColor = new ColorAttribute(this, "backgroundColor");
-        
+
         openCompositesBeforeExport = new Parameter(this, "openCompositesBeforeExport");
         openCompositesBeforeExport.setTypeEquals(BaseType.BOOLEAN);
         openCompositesBeforeExport.setExpression("false");
-        
+
         runBeforeExport = new Parameter(this, "runBeforeExport");
         runBeforeExport.setTypeEquals(BaseType.BOOLEAN);
         runBeforeExport.setExpression("false");
-        
+
         copyJavaScriptFiles = new Parameter(this, "copyJavaScriptFiles");
         copyJavaScriptFiles.setTypeEquals(BaseType.BOOLEAN);
         copyJavaScriptFiles.setExpression("false");
-        
+
         usePtWebsite = new Parameter(this, "usePtWebsite");
         usePtWebsite.setTypeEquals(BaseType.BOOLEAN);
         usePtWebsite.setExpression("false");
         usePtWebsite.setVisibility(Settable.EXPERT);
-        
+
         webPage = new TypedIOPort(this, "webPage", false, true);
         webPage.setTypeEquals(BaseType.STRING);
-        
+
         // Use runBeforeExport rather than the superclass parameter
         // executionOnFiring, which we hide.
         executionOnFiring.setExpression("do nothing");
         executionOnFiring.setVisibility(Settable.EXPERT);
-        
+
         // Control the opening and closing of the model.
         // FIXME: The options allow for the submodel to not have been
         // opened at all, in which case we want to export only the results
@@ -132,9 +132,9 @@ public class HTMLModelExporter extends VisualModelReference {
         closeOnPostfire.setExpression("do nothing");
         openOnFiring.setVisibility(Settable.EXPERT);
         closeOnPostfire.setVisibility(Settable.EXPERT);
-        
+
         postfireAction.setVisibility(Settable.EXPERT);
-        
+
         // Do not offer the option to show the result in a browser.
         // It is an output of this actor.
         _parameters.showInBrowser = false;
@@ -142,7 +142,7 @@ public class HTMLModelExporter extends VisualModelReference {
 
     ///////////////////////////////////////////////////////////////////
     ////                 ports and parameters                      ////
-    
+
     // Unfortunately, most of these parameters are direct copies
     // from WebExportParameters. I don't know of any way to avoid
     // this code duplication.
@@ -151,7 +151,7 @@ public class HTMLModelExporter extends VisualModelReference {
      *  to use the background color of the model.
      */
     public ColorAttribute backgroundColor;
-    
+
     /** If true, then make an exported web page stand alone.
      *  Instead of referencing JavaScript and image files on the
      *  ptolemy.org website, if this parameter is true, then the
@@ -159,7 +159,7 @@ public class HTMLModelExporter extends VisualModelReference {
      *  This is a boolean that defaults to false.
      */
     public Parameter copyJavaScriptFiles;
-    
+
     /** The directory to export files that the output HTML
      *  references, such as image files. If a relative name is given,
      *  then it is relative to the location of the model file.
@@ -170,7 +170,7 @@ public class HTMLModelExporter extends VisualModelReference {
      *  where the model that contains this attribute is stored.
      */
     public FileParameter directoryToExportTo;
-    
+
     /** If true, hierarchically open all composite actors
      *  in the model before exporting (so that these also
      *  get exported, and hyperlinks to them are created).
@@ -184,22 +184,22 @@ public class HTMLModelExporter extends VisualModelReference {
      *  boolean that defaults to false.
      */
     public Parameter runBeforeExport;
-        
+
     /** If true, use the server-side includes of the Ptolemy website.
      *  This is a boolean that defaults to false. This parameter
      *  is marked as an expert parameter, so by default, it is not
      *  visible.
      */
     public Parameter usePtWebsite;
-    
+
     /** The output port on which to produce HTML text for this
      *  web page. This has type string.
      */
     public TypedIOPort webPage;
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-    
+
     /** React to a change in an attribute.  This method updates the
      *  local data structure provided by {@link #getExportParameters()}.
      *  @param attribute The attribute that changed.
@@ -264,7 +264,7 @@ public class HTMLModelExporter extends VisualModelReference {
             if (_parameters.runBeforeExport) {
                 executionOnFiring.setExpression("run in calling thread");
             } else {
-                executionOnFiring.setExpression("do nothing");     
+                executionOnFiring.setExpression("do nothing");
             }
         } else if (attribute == usePtWebsite) {
             _parameters.usePtWebsite
@@ -281,7 +281,7 @@ public class HTMLModelExporter extends VisualModelReference {
             super.attributeChanged(attribute);
         }
     }
-    
+
     public void fire() throws IllegalActionException {
         super.fire();
         // NOTE: The opening must occur in the event thread.
@@ -340,16 +340,16 @@ public class HTMLModelExporter extends VisualModelReference {
             throw _exception;
         }
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private fields                    ////
-    
+
     /** The default background color. */
     private Color _defaultColor;
-    
+
     /** If an exception occurs in event thread activities, it will be stored here. */
     private IllegalActionException _exception = null;
-    
+
     /** The current parameter values. */
     private ExportParameters _parameters;
 }

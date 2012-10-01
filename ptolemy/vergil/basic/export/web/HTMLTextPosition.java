@@ -65,7 +65,7 @@ public class HTMLTextPosition extends StringParameter {
     public HTMLTextPosition(NamedObj container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-                
+
         addChoice("end");
         addChoice("head");
         addChoice("start");

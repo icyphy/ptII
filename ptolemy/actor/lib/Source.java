@@ -74,8 +74,8 @@ import ptolemy.kernel.util.NameDuplicationException;
  equal to <code>BaseType.GENERAL</code>. This will result in upstream
  ports resolving to the most general type rather than the most specific.
  </p>
- 
- 
+
+
  @author Edward A. Lee
  @version $Id$
  @since Ptolemy II 0.3
@@ -178,10 +178,10 @@ public abstract class Source extends TypedAtomicActor {
     ///////////////////////////////////////////////////////////////////
     ////                      protected methods                    ////
 
-    /** Set the input port greater than or equal to 
-     *  <code>BaseType.GENERAL</code> in case backward type inference is 
-     *  enabled and the input port has no type declared. 
-     * 
+    /** Set the input port greater than or equal to
+     *  <code>BaseType.GENERAL</code> in case backward type inference is
+     *  enabled and the input port has no type declared.
+     *
      *  @return A set of inequalities.
      */
     @Override

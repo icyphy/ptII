@@ -38,8 +38,8 @@ import ptolemy.util.StringUtilities;
 
 /**
  * Run the Ptolemy model tests in the auto/knownFailedTests/ directory using cg code generation
- * under JUnit.  
- * 
+ * under JUnit.
+ *
  * <p>
  * This class provides common facilities used by classes that generate
  * C and Java code.
@@ -57,7 +57,7 @@ public class AutoCGKnownFailedTests extends AutoCGTests {
      * the model to be executed. If auto/knownFailesTests/ does not
      * exist, or does not contain files that end with .xml or .moml,
      * return a list with one element that contains a special string.
-     * 
+     *
      * @return The List of model names in auto/
      * @exception IOException If there is a problem accessing the auto/ directory.
      */
@@ -65,15 +65,15 @@ public class AutoCGKnownFailedTests extends AutoCGTests {
         return modelValues("auto/knownFailedTests/", THERE_ARE_NO_KNOWN_FAILED_TESTS);
     }
 
-    /** 
+    /**
      *  Generate, compile and run code for a model known to fail.
-     *  @param fullPath  
+     *  @param fullPath
      *            The full path to the model file to be executed. If the
      *            fullPath ends with the value of the
      *            {@link #THERE_ARE_NO_AUTO_TESTS}, then the method returns
      *            immediately.
      *  @param language Either "c" or "java".
-     *  @param generateInSubdirectory If true, then generate the code in 
+     *  @param generateInSubdirectory If true, then generate the code in
      *  in a subdirectory of ~/cg/.
      *  @param inline If true, then generate inline code.
      *  @param maximumLinesPerBlock The maximum number of line of code generated
@@ -83,14 +83,14 @@ public class AutoCGKnownFailedTests extends AutoCGTests {
      *  @exception Throwable If thrown while generating, compiling or executing the compiled code.
      */
     public void runModel(String fullPath, String language, boolean generateInSubdirectory,
-            boolean inline, int maximumLinesPerBlock, boolean variablesAsArrays) 
+            boolean inline, int maximumLinesPerBlock, boolean variablesAsArrays)
             throws Throwable {
         if (fullPath.endsWith(THERE_ARE_NO_KNOWN_FAILED_TESTS)) {
             System.out.println("No auto/*.xml tests in "
                     + StringUtilities.getProperty("user.dir"));
             return;
         }
-   
+
         // Delete the ~/cg directory each time so that if the user generates code for
         // a model using -generateInSubdirectory, we can still have gcc generate an
         // executable with that name.

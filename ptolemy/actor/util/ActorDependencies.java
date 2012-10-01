@@ -55,7 +55,7 @@ import ptolemy.kernel.util.NamedObj;
 public class ActorDependencies {
 
     /** Construct an ActorDependencies object.
-     */   
+     */
     private ActorDependencies() {
         // This method is private because this class has only static
         // public methods.
@@ -65,7 +65,7 @@ public class ActorDependencies {
      *  target.  Opaque composite actors are searched. For output ports of the
      *  specified actor, these are downstream actors that are connected on the outside.
      *  For input ports of the specified actor, these are downstream actors connected
-     *  on the inside. 
+     *  on the inside.
      *  @param actor the Actor to be searched.
      *  @return A Set of dependent atomic actors.
      *  @exception KernelException If there is a problem with the receivers.
@@ -109,7 +109,7 @@ public class ActorDependencies {
         //System.out.println("ActorDependencies.dependents: END " + actor.getFullName() + " " + results);
         return results;
     }
-    
+
     /** Return a Set of dependent (downstream) actors of a particular
      *  class that are connected to a port.  Opaque composite
      *  actors are searched. For output ports of the specified actor,
@@ -223,12 +223,12 @@ public class ActorDependencies {
      *  If this is output port, these are downstream
      *  ports connected on the outside. If this is an input port, then these
      *  are downstream ports connected on the inside.
-     *  This method traverses opaque composites.   
-     *  @param port The port to be checked   
+     *  This method traverses opaque composites.
+     *  @param port The port to be checked
      *  @param filter The class of dependent actors to be returned.
      *  @return The Set of all AtomicActors connected to the port.
      */
-    private static Set<AtomicActor> _dependents(IOPort port, Class filter) 
+    private static Set<AtomicActor> _dependents(IOPort port, Class filter)
             throws IllegalActionException {
         //System.out.println("ActorDependencies._dependents: START" + remotePort.getFullName());
         Set<AtomicActor> results = new HashSet<AtomicActor>();
@@ -276,12 +276,12 @@ public class ActorDependencies {
      *  connected on the outside. If an upstream port is not an instance
      *  of the specified filter, then traverse it, looking for ports
      *  that are further upstream of it.
-     *  This method traverses opaque composites. 
-     *  @param port The port to be checked   
+     *  This method traverses opaque composites.
+     *  @param port The port to be checked
      *  @param filter The class of prerequisite actors to be returned.
      *  @return The Set of all AtomicActors connected to the port.
      */
-    private static Set<AtomicActor> _prerequisites(IOPort port, Class filter) 
+    private static Set<AtomicActor> _prerequisites(IOPort port, Class filter)
             throws IllegalActionException {
         //System.out.println("ActorDependencies._prerequisites: START " + remotePort.getFullName());
         Set<AtomicActor> results = new HashSet<AtomicActor>();

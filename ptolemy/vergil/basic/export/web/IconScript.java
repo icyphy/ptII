@@ -67,7 +67,7 @@ public class IconScript extends Script implements WebExportable {
     public IconScript(NamedObj container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        
+
         startText = new StringParameter(this, "startText");
         TextStyle style = new TextStyle(startText, "style");
         style.height.setExpression("5");
@@ -75,7 +75,7 @@ public class IconScript extends Script implements WebExportable {
         endText = new StringParameter(this, "endText");
         style = new TextStyle(endText, "style");
         style.height.setExpression("5");
-        
+
         jQueryLibraries =new StringParameter(this, "jQueryLibraries");
         style =new TextStyle(jQueryLibraries,"style");
         style.height.setExpression("5");
@@ -83,22 +83,22 @@ public class IconScript extends Script implements WebExportable {
 
     ///////////////////////////////////////////////////////////////////
     ////                         parameters                        ////
-    
+
     /** Text to insert in the end section of the
      *  web page. This text will be inserted exactly once.
      */
     public StringParameter endText;
-    
+
     /** Text to insert in the start section of the
      *  web page. This text will be inserted exactly once.
      */
     public StringParameter startText;
-    
+
     /** jQuery libraries to be included in the HEAD section of the html file
      * The path to the libraries will be copyed in the same order as given.
      */
     public StringParameter jQueryLibraries;
-    
+
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -116,20 +116,20 @@ public class IconScript extends Script implements WebExportable {
      *  @throws IllegalActionException If evaluating the value
      *   of this parameter fails.
      */
-    
+
     //FIXME:  From DefaultIconScript - what did previous file do?
     //*  If the <i>eventType</i> parameter is "default", then
     //*  remove all previously defined defaults and use the global
     //*  defaults.
-    protected void _provideElements(WebExporter exporter) 
+    protected void _provideElements(WebExporter exporter)
         throws IllegalActionException {
-        
+
         // All content covered?
         // 1) the script itself, and
         // 2) the method call to invoke the script
         // 3) data, and
         // 4) <divs> that the script will change the content of -> target <div>
-        
+
         WebElement webElement;
         String jQueryImports =jQueryLibraries.stringValue();
         if(!jQueryImports.trim().equals(""))
@@ -141,20 +141,20 @@ public class IconScript extends Script implements WebExportable {
             webElement.setExpression(jQueryImports);
             exporter.defineElement(webElement, true);
         }
-        
-        
+
+
         String scriptValue;
         // Check whether the user wants to insert the evaluated expression
-        // or the exact text for the script 
+        // or the exact text for the script
         if (evaluateScript.getToken()
                 .isEqualTo(BooleanToken.TRUE).booleanValue()) {
             scriptValue = script.stringValue();
         } else {
             scriptValue = script.getExpression();
         }
-        
+
         if (!scriptValue.trim().equals("")) {
-            // Create WebElement for script and add to exporter.  
+            // Create WebElement for script and add to exporter.
             // Content should only be added once (onceOnly -> true).
             webElement = WebElement.
                 createWebElement(getContainer(), "script", "script");
@@ -162,13 +162,13 @@ public class IconScript extends Script implements WebExportable {
             webElement.setExpression("<script type=\"" + getMimeType() + "\">\n"
                     + scriptValue
                     + "\n</script>\n");
-            exporter.defineElement(webElement, true); 
+            exporter.defineElement(webElement, true);
         }
-        
-        
+
+
         String startTextValue = startText.stringValue();
         if (!startTextValue.trim().equals("")) {
-            // Create WebElement for start text and add to exporter.  
+            // Create WebElement for start text and add to exporter.
             // Content should only be added once (onceOnly -> true).
             webElement = WebElement.
                 createWebElement(getContainer(), "startText", "startText");
@@ -179,42 +179,42 @@ public class IconScript extends Script implements WebExportable {
 
         String endTextValue = endText.stringValue();
         if (!endTextValue.trim().equals("")) {
-            // Create WebElement for end text and add to exporter.  
+            // Create WebElement for end text and add to exporter.
             // Content should only be added once (onceOnly -> true).
-            webElement = WebElement. 
+            webElement = WebElement.
                 createWebElement(getContainer(), "endText", "endText");
             webElement.setParent(WebElement.END);
             webElement.setExpression(endTextValue);
             exporter.defineElement(webElement, true);
         }
     }
-    
-    /** Provide method call to invoke script that can be included as an 
+
+    /** Provide method call to invoke script that can be included as an
      *  attribute of an HTML tag, e.g. onclick="runFunction()" in
      *  <button onclick="runFunction()"/>
-     *  
+     *
      *  @param exporter  The web exporter to which to write content.
      *  @throws IllegalActionException If the eventType cannot be obtained,
      *  the web attribute cannot be created or set.
      */
-    // FIXME:  Support multiple events in the future.  E.g. onclick() and 
-    // ontap() might call the same Javascript method.  
-    protected void _provideAttributes(WebExporter exporter) 
+    // FIXME:  Support multiple events in the future.  E.g. onclick() and
+    // ontap() might call the same Javascript method.
+    protected void _provideAttributes(WebExporter exporter)
         throws IllegalActionException {
-        
+
         WebAttribute webAttribute;
-        
+
         NamedObj container = getContainer();
         if (container != null) {
             String eventTypeValue = eventType.stringValue();
             if (!eventTypeValue.trim().equals("")) {
-                // Create WebAttribute for event and add to exporter.  
+                // Create WebAttribute for event and add to exporter.
                 // Content should only be added once (onceOnly -> true).
                 webAttribute = WebAttribute.
-                    createWebAttribute(getContainer(), 
+                    createWebAttribute(getContainer(),
                             eventTypeValue + "WebAttribute", eventTypeValue);
                 webAttribute.setExpression(stringValue());
-                exporter.defineAttribute(webAttribute, true);              
+                exporter.defineAttribute(webAttribute, true);
             }
         }
     }

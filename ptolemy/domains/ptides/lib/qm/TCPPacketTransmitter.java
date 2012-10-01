@@ -57,21 +57,21 @@ import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 
 /** Build a TCP Packet containing a user-defined number of PTIDES events.
- * 
- * 
+ *
+ *
  *  This actor should be directly connected to a network output port and be
  *  used with a PTIDES director.
- *  
+ *
  *  This actor is expected to be used in pairs with the {@link TCPPacketReceiver}.
- *  
+ *
  *  {@link TCPPacketTransmitter} builds TCP packets containing PTIDES events,
  *  where each PTIDES event itself is assigned a data length in bits by the user.
  *  The bits/event parameter is constant right now and is an actor Parameter.
  *  At the destination platform, {@link TCPPacketReceiver} consumes packages produced
  *  by this actor and releases PTIDES events into its enclosing director.
- *  
+ *
  *  </p><p>
- *  This actor consumes <i>frameSize</i> number of input tokens and creates a 
+ *  This actor consumes <i>frameSize</i> number of input tokens and creates a
  *  RecordToken with two fields labeled as TCPlabel and tokens. Here, tokens itself is
  *  an array of RecordTokens, where each of the entries is a PTIDES RecordToken with
  *  labels: timestamp, microstep and payload. Once the number of received tokens equals
@@ -81,7 +81,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  *  @author Ilge Akkaya
  *  @version $Id$
  *  @since Ptolemy II 8.1
- *  @Pt.ProposedRating 
+ *  @Pt.ProposedRating
  *  @Pt.AcceptedRating
  */
 public class TCPPacketTransmitter extends OutputDevice {
@@ -92,21 +92,21 @@ public class TCPPacketTransmitter extends OutputDevice {
         input = new TypedIOPort(this, "input", true, false);
         output = new TypedIOPort(this, "output", false, true);
         output.setTypeEquals(BaseType.RECORD);
-        
+
         frameSize = new PortParameter(this, "frameSize");
         frameSize.setExpression("5");
         frameSize.setTypeEquals(BaseType.INT);
-        
+
         defaultFrameSize = new Parameter(this, "Default Frame Size");
         defaultFrameSize.setExpression("5");
         defaultFrameSize.setTypeEquals(BaseType.INT);
         _frameSize = 5;
-        
+
         priority = new Parameter(this,"Packet Priority");
         priority.setExpression("1");
         priority.setTypeEquals(BaseType.INT);
         _priority = 1;
-        
+
         _completePayload = new RecordToken();
         _tokenLabels = new ArrayList<String>();
         _tokenValues = new ArrayList<Token>();
@@ -132,12 +132,12 @@ public class TCPPacketTransmitter extends OutputDevice {
                 }
                 _priority = value;
         }
-        
+
     super.attributeChanged(attribute);
-    
-   
+
+
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                     public variables                      ////
 
@@ -146,26 +146,26 @@ public class TCPPacketTransmitter extends OutputDevice {
 
     /* The data output port. */
     public TypedIOPort output;
-    
+
     /* Default TCP Packet size parameter. */
     public Parameter defaultFrameSize;
-    
+
     /* Default TCP Packet priority parameter. */
     public Parameter priority;
-    
+
     /* User-Defined frame size port parameter. */
     public PortParameter frameSize;
-    
-    
+
+
     /** Fill-in and return fields of the TCP header as a RecordToken
-     * 
+     *
      */
     public RecordToken getTCPHeader() throws IllegalActionException
     {
         String[] TCPHeaderLabels = new String[] {sourcePort, destinationPort,
                                                  sequenceNumber, acknowledgementNumber,
                                                  offsetControlBits, windowSize,
-                                                 checksum, urgentPointer,options}; 
+                                                 checksum, urgentPointer,options};
         short sourcePortContents = 0;
         short destinationPortContents = 0;
         int sequenceNumberContents = 0;
@@ -190,22 +190,22 @@ public class TCPPacketTransmitter extends OutputDevice {
         RecordToken TCPHeaderToken = new RecordToken(TCPHeaderLabels, TCPHeaderValues);
         return TCPHeaderToken;
     }
-    
+
     /** Create a RecordToken with two labels: TCPlabel and tokens
      *  tokens is a token array that contains the input tokens consumed
      *  TCPlabel is the TCP Header structure containing the fields defined
      *  in <i>getTCPHeader()</i>
-     *  Once the number of received tokens equals specified frame size, 
+     *  Once the number of received tokens equals specified frame size,
      *  an output packet is sent to the output port.
      *  @exception IllegalActionException Thrown in case of no director,
      *  input token cannot be read or output token cannot be
      *  sent.
      */
     public void fire() throws IllegalActionException {
-        
+
         super.fire();
         Director director = getDirector();
-        
+
 
         if (director == null || !(director instanceof PtidesBasicDirector)) {
             throw new IllegalActionException(this, "Director expected to"
@@ -216,25 +216,25 @@ public class TCPPacketTransmitter extends OutputDevice {
 
         // add input tokens into the incompletePacket as long as packet length < MAX_SIZE
         if (input.hasToken(0)) {
-            
+
             int _proposedFrameSize = _frameSize;
-            
+
             // get a new token from frameSize port
             try {
                 frameSize.update();
-                
+
                  _proposedFrameSize = ((IntToken)frameSize.getToken()).intValue();
                  if(_proposedFrameSize > _packetLength)
                  {
                      //safe to apply frame size;
                      _frameSize = _proposedFrameSize;
-                     
+
                  }
                  else
                  {
                      //cut the frame as it is.
                      _frameSize = _packetLength +1;
-                     
+
                  }
             } catch (IllegalActionException ex) {
                 throw new InternalErrorException(this, ex,
@@ -250,14 +250,14 @@ public class TCPPacketTransmitter extends OutputDevice {
                             .getDoubleValue()),
                     new IntToken(ptidesDirector.getMicrostep()),  input.get(0) };
             RecordToken record = new RecordToken(labels, values);
-            
+
             // add the token into packet values List
             _tokenLabels.add(Integer.toString(_packetLength));
             _tokenValues.add(record);
             _packetLength ++;
-            
-            
-            
+
+
+
             if( _packetLength >= _frameSize)
             {
                 RecordToken TCPHeader = getTCPHeader();
@@ -265,7 +265,7 @@ public class TCPPacketTransmitter extends OutputDevice {
                 _completePayload = new RecordToken((String[])(_tokenLabels.toArray(new String[0])), (Token[])(_tokenValues.toArray(new Token[0])));
                 String[] fullTCPlabels = new String[]{TCPlabel, tokens};
                 Token[] fullTCPvalues = new Token[]{ TCPHeader, _completePayload};
-                
+
                 RecordToken TCPFrame = new RecordToken(fullTCPlabels,fullTCPvalues);
                 // create packet to be sent;
                 output.send(0, TCPFrame);
@@ -280,25 +280,25 @@ public class TCPPacketTransmitter extends OutputDevice {
                 }
                 else
                 {
-                    
+
                     // ignore proposed frame size.
                 }
-                
-                
+
+
             }
             else
             {
-                
+
                 // keep saving.
             }
-                
+
         }
         else
         {
             _packetLength = 0;
         }
     }
-    
+
 
     /** Perform a check to see if this device is connected to a network
      *  port on the outside. If not, throw an exception. Also call
@@ -335,17 +335,17 @@ public class TCPPacketTransmitter extends OutputDevice {
      * run
      */
     public void wrapup() throws IllegalActionException {
-        
+
         // send last packet
         if( _packetLength > 0 ){
             _frameSize = _packetLength;
-            
+
             RecordToken TCPHeader = getTCPHeader();
             // form the packet that is ready to be sent
             _completePayload = new RecordToken((String[])(_tokenLabels.toArray(new String[0])), (Token[])(_tokenValues.toArray(new Token[0])));
             String[] fullTCPlabels = new String[]{TCPlabel, tokens};
             Token[] fullTCPvalues = new Token[]{ TCPHeader, _completePayload};
-            
+
             RecordToken TCPFrame = new RecordToken(fullTCPlabels,fullTCPvalues);
             // create packet to be sent;
             output.send(0, TCPFrame);
@@ -354,22 +354,22 @@ public class TCPPacketTransmitter extends OutputDevice {
             _tokenLabels.clear();
             _tokenValues.clear();
         }
-        
+
     }
-    
+
     ///////////////////////////////////////////////////////////////////
-    ////                     protected methods                     ////    
-    
+    ////                     protected methods                     ////
+
     /** Set up and return two type constraints.
      *  <ul>
      *  <li><tt>output >= {x = typeOf(inputPortX), y = typeOf(inputPortY), ..}
      *  </tt>, which requires the types of the input ports to be compatible
      *  with the corresponding types in the output record.
      *  </li>
-     *  <li><tt>each input <= the type of the corresponding field inside the 
-     *  output record</tt>, which is similar to the usual default constraints, 
+     *  <li><tt>each input <= the type of the corresponding field inside the
+     *  output record</tt>, which is similar to the usual default constraints,
      *  however this constraint establishes a dependency between the inputs of
-     *  this actor and the fields inside the output record, instead of just 
+     *  this actor and the fields inside the output record, instead of just
      *  between its inputs and outputs.
      *  </li>
      *  </ul>
@@ -380,17 +380,17 @@ public class TCPPacketTransmitter extends OutputDevice {
      *  @see ConstructCompositeTypeTerm
      *  @see ExtractFieldType
      */
-   
+
     /** Do not establish the usual default type constraints.
-     *  @return null 
+     *  @return null
      */
     @Override
     protected Set<Inequality> _defaultTypeConstraints() {
         return null;
     }
-    
+
 /*TCP Frame Field Labels */
-    
+
     /** label of the source port Field -- 16 bits.
      */
     private static final String sourcePort = "sourcePort";
@@ -398,11 +398,11 @@ public class TCPPacketTransmitter extends OutputDevice {
     /** label of the destination port Field -- 16 bits.
      */
     private static final String destinationPort = "destinationPort";
-    
+
     /** label of the sequenceNumber  Field -- 32 bits.
      */
     private static final String sequenceNumber = "sequenceNumber";
-    
+
     /** label of the acknowledgementNumber  Field -- 32 bits.
      */
     private static final String acknowledgementNumber = "ackNumber";
@@ -413,26 +413,26 @@ public class TCPPacketTransmitter extends OutputDevice {
      * ECN          (3 bits) ( Explicit Congestion Notification)
      * Control Bits ( 6 bits)
      */
-    
+
     private static final String offsetControlBits = "offsetControlBits";
 
     /** label of the window size  Field -- 16 bits.
      */
     private static final String windowSize = "windowSize";
-    
+
     /** label of the checksum   Field -- 16 bits.
      */
     private static final String checksum = "checksum";
-    
+
     /** label of the Urgent Pointer   Field -- 16 bits.
      */
     private static final String urgentPointer = "urgentPointer";
-    
+
     /** defining the options field but not including to the RecordToken as of now
      *  8 bytes --
      */
     private static final String options =  "options";
-    
+
     /** label of the timestamp that is transmitted within the RecordToken.
      */
     private static final String timestamp = "timestamp";
@@ -444,36 +444,36 @@ public class TCPPacketTransmitter extends OutputDevice {
     /** label of the payload that is transmitted within the RecordToken.
      */
     private static final String payload = "payload";
-    
+
     private static final String TCPlabel = "TCPlabel";
-    
+
     // data tokens
     private static final String tokens = "tokens";
-    
+
     private static final String TCPpriority = "priority";
-    
-    
+
+
 
     /* The TCP Packet Token To be sent to the network fabric*/
     private RecordToken _completePayload;
-    
+
     /* labels of the tokens to be included in the packet*/
     private List<String> _tokenLabels;
-    
+
     /* values of the tokens to be included in the packet*/
     private List<Token> _tokenValues;
-    
+
     /* current length of the packet*/
     private int _packetLength;
-    
+
     /* frame size */
     private int _frameSize;
-    
+
     /* assigned packet priority*/
     private int _priority;
-    
+
     /* Limit on Maximum Frame Size*/
     private static final int MAX_FRAME_SIZE = 20;
-    
-    
+
+
 }

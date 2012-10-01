@@ -292,7 +292,7 @@ public class MostRecent extends Transformer {
 */
     /**
      * Adds two inequalities to the set returned by the overridden method that
-     * together constrain the input to be equal to the type of the initial 
+     * together constrain the input to be equal to the type of the initial
      * value.
      */
     @Override

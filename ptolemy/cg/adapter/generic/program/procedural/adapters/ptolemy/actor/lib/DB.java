@@ -42,7 +42,7 @@ import ptolemy.cg.kernel.generic.program.NamedProgramCodeGeneratorAdapter;
  @Pt.AcceptedRating Red (cxh)
  */
 public class DB extends NamedProgramCodeGeneratorAdapter {
-        
+
     /**
      *  Construct a DB adapter.
      *  @param actor The given ptolemy.actor.lib.DB actor.

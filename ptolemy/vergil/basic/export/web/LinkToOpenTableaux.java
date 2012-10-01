@@ -99,7 +99,7 @@ public class LinkToOpenTableaux extends DefaultIconLink {
     public LinkToOpenTableaux(NamedObj container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        
+
         _exportedClassDefinitions = null;
     }
 
@@ -112,7 +112,7 @@ public class LinkToOpenTableaux extends DefaultIconLink {
      *  definition is exported only once.
      *  @throws IllegalActionException If a subclass throws it.
      */
-    public void provideContent(WebExporter exporter) 
+    public void provideContent(WebExporter exporter)
         throws IllegalActionException {
         try {
             _exportedClassDefinitions = new HashSet<NamedObj>();
@@ -121,7 +121,7 @@ public class LinkToOpenTableaux extends DefaultIconLink {
             _exportedClassDefinitions = null;
         }
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                       protected methods                   ////
 
@@ -137,10 +137,10 @@ public class LinkToOpenTableaux extends DefaultIconLink {
             throws IllegalActionException {
 
         WebAttribute webAttribute;
-        
+
         // Create a table of effigies associated with any
         // open submodel or plot.
-        Map<NamedObj, PtolemyEffigy> openEffigies = 
+        Map<NamedObj, PtolemyEffigy> openEffigies =
             new HashMap<NamedObj, PtolemyEffigy>();
         Tableau myTableau = exporter.getFrame().getTableau();
         Effigy myEffigy = (Effigy) myTableau.getContainer();
@@ -156,39 +156,39 @@ public class LinkToOpenTableaux extends DefaultIconLink {
         // with an open effigy, then we attempt to associate it with
         // the container instead, or the container's container, until
         // we get to the top level.
-        Map<NamedObj, PtolemyEffigy> containerAssociations = 
+        Map<NamedObj, PtolemyEffigy> containerAssociations =
             new HashMap<NamedObj, PtolemyEffigy>();
         if (openEffigies.size() > 0) {
             for (NamedObj component : openEffigies.keySet()) {
-		if (component == null) {
-		    // This is caused by $PTII/bin/ptinvoke
-		    // ptolemy.vergil.basic.export.ExportModel -force
-		    // htm -run -openComposites -whiteBackground
-		    // ptolemy/actor/gt/demo/ModelExecution/ModelExecution.xml
-		    // $PTII/ptolemy/actor/gt/demo/ModelExecution/ModelExecution
-		    System.out.println("Warning: LinkToOpenTableaux._provideEachAttribute() "
-				       + object.getFullName() + ", an open effigy was null?");
-		} else {
-		    NamedObj container = component.getContainer();
-		    while (container != null) {
-			if (openEffigies.get(container) != null) {
-			    // The container of a plotter (say) has
-			    // an open effigy, so there will be a link
-			    // to the plot.
-			    // Exporting
-			    // ptolemy/data/ontologies/demo/CarTracking/CarTracking.xml
-			    // was hanging in a tight loop here.
-			    container = container.getContainer();
-			    continue;
-			}
-			// The container of the plotter (say) does
-			// not have an open effigy.  Associate this
-			// container and then try the container's container.
-			containerAssociations.put(container, 
-						  openEffigies.get(component));
-			container = container.getContainer();
-		    }
-		}
+                if (component == null) {
+                    // This is caused by $PTII/bin/ptinvoke
+                    // ptolemy.vergil.basic.export.ExportModel -force
+                    // htm -run -openComposites -whiteBackground
+                    // ptolemy/actor/gt/demo/ModelExecution/ModelExecution.xml
+                    // $PTII/ptolemy/actor/gt/demo/ModelExecution/ModelExecution
+                    System.out.println("Warning: LinkToOpenTableaux._provideEachAttribute() "
+                                       + object.getFullName() + ", an open effigy was null?");
+                } else {
+                    NamedObj container = component.getContainer();
+                    while (container != null) {
+                        if (openEffigies.get(container) != null) {
+                            // The container of a plotter (say) has
+                            // an open effigy, so there will be a link
+                            // to the plot.
+                            // Exporting
+                            // ptolemy/data/ontologies/demo/CarTracking/CarTracking.xml
+                            // was hanging in a tight loop here.
+                            container = container.getContainer();
+                            continue;
+                        }
+                        // The container of the plotter (say) does
+                        // not have an open effigy.  Associate this
+                        // container and then try the container's container.
+                        containerAssociations.put(container,
+                                                  openEffigies.get(component));
+                        container = container.getContainer();
+                    }
+                }
             }
         }
         openEffigies.putAll(containerAssociations);
@@ -196,7 +196,7 @@ public class LinkToOpenTableaux extends DefaultIconLink {
         PtolemyEffigy effigy = openEffigies.get(object);
         // The hierarchy of effigies does not always follow the model hierarchy
         // (e.g., a PlotEffigy will be contained by the top-level effigy for the
-        // model for some reason), so if the effigy is null, we search 
+        // model for some reason), so if the effigy is null, we search
         // nonetheless for an effigy.
         if (effigy == null) {
             Effigy candidate = Configuration.findEffigy(object);
@@ -207,7 +207,7 @@ public class LinkToOpenTableaux extends DefaultIconLink {
         try {
             if (effigy != null) {
                 // _linkTo() recursively calls writeHTML();
-                _linkTo(exporter, effigy, object, object, 
+                _linkTo(exporter, effigy, object, object,
                         exporter.getExportParameters());
             } else {
                 // If the object is a State, we still have work to do.
@@ -217,19 +217,19 @@ public class LinkToOpenTableaux extends DefaultIconLink {
                     // under the refinements of that state, which have the
                     // same container as the _Controller.
                     try {
-                        TypedActor[] refinements = 
+                        TypedActor[] refinements =
                             ((State) object).getRefinement();
                         // FIXME: There may be more
                         // than one refinement. How to open all of them?
                         // We have only one link. For now, just open the first one.
                         if (refinements != null && refinements.length > 0) {
-                            effigy = 
+                            effigy =
                                 openEffigies.get((NamedObj) refinements[0]);
                             if (effigy != null) {
                                 // _linkTo() recursively calls writeHTML();
-                                _linkTo(exporter, effigy, 
+                                _linkTo(exporter, effigy,
                                         (NamedObj) refinements[0],
-                                        (NamedObj) refinements[0], 
+                                        (NamedObj) refinements[0],
                                         exporter.getExportParameters());
                             }
                         }
@@ -242,13 +242,13 @@ public class LinkToOpenTableaux extends DefaultIconLink {
                     // is open. Look for that.
                     Instantiable parent = ((Instantiable) object).getParent();
                     if (parent instanceof NamedObj) {
-                        // Avoid doing the export of a class definition 
+                        // Avoid doing the export of a class definition
                         // multiple times.
                         if (_exportedClassDefinitions.contains(parent)) {
                             // Have already exported the class definition. Just
                             // need to add the hyperlink.
-                            webAttribute = 
-                                WebAttribute.createWebAttribute(object, 
+                            webAttribute =
+                                WebAttribute.createWebAttribute(object,
                                         "hrefWebAttribute", "href");
                             webAttribute
                                .setExpression(parent.getName() + "/index.html");
@@ -260,8 +260,8 @@ public class LinkToOpenTableaux extends DefaultIconLink {
                                     .findEffigy((NamedObj) parent);
                             if (classEffigy instanceof PtolemyEffigy) {
                                 // _linkTo() recursively calls writeHTML();
-                                _linkTo(exporter, (PtolemyEffigy)classEffigy, 
-                                        object, (NamedObj) parent, 
+                                _linkTo(exporter, (PtolemyEffigy)classEffigy,
+                                        object, (NamedObj) parent,
                                         exporter.getExportParameters());
                             }
                         }
@@ -273,10 +273,10 @@ public class LinkToOpenTableaux extends DefaultIconLink {
                     "Failed to generate sub-web-page. ");
         }
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
-    
+
     /** Return the title of the specified object. If it contains a parameter
      *  of class {@link Title}, then return the title specified by that class.
      *  Otherwise, if the object is an instance of FSMActor contained by
@@ -287,9 +287,9 @@ public class LinkToOpenTableaux extends DefaultIconLink {
      *  @return A title for the object.
      *  @throws IllegalActionException If accessing the title attribute fails..
      */
-    private static String _getTitleText(NamedObj object) 
+    private static String _getTitleText(NamedObj object)
         throws IllegalActionException {
-        // If the object contains an IconLink parameter, then use that instead 
+        // If the object contains an IconLink parameter, then use that instead
         // of the default. If it has more than one, then just use the first one.
         List<Title> links = object.attributeList(Title.class);
         if (links != null && links.size() > 0) {
@@ -321,8 +321,8 @@ public class LinkToOpenTableaux extends DefaultIconLink {
      *  @exception PrinterException If unable to create required HTML files.
      *  @throws IllegalActionException If something goes wrong.
      */
-    private void _linkTo(WebExporter exporter, PtolemyEffigy effigy, 
-            NamedObj sourceObject, NamedObj destinationObject, 
+    private void _linkTo(WebExporter exporter, PtolemyEffigy effigy,
+            NamedObj sourceObject, NamedObj destinationObject,
             ExportParameters parameters)
             throws IOException, PrinterException, IllegalActionException {
         File gifFile;
@@ -345,47 +345,47 @@ public class LinkToOpenTableaux extends DefaultIconLink {
                         if (!subDirectory.renameTo(backupFile)) {
                             throw new IOException("Failed to rename \""
                                     + subDirectory + "\" to \""
-                                    + backupFile + "\""); 
+                                    + backupFile + "\"");
                         }
                     }
                 } else if (!subDirectory.mkdir()) {
                     throw new IOException("Unable to create directory "
                             + subDirectory);
                 }
-                ExportParameters newParameters = 
+                ExportParameters newParameters =
                     new ExportParameters(subDirectory, parameters);
-                // The null argument causes the write to occur to an index.html 
+                // The null argument causes the write to occur to an index.html
                 // file.
                 ((HTMLExportable) frame).writeHTML(newParameters, null);
-                webAttribute = 
-                    WebAttribute.createWebAttribute(sourceObject, 
+                webAttribute =
+                    WebAttribute.createWebAttribute(sourceObject,
                             "hrefWebAttribute", "href");
                 webAttribute.setExpression(name + "/index.html");
                 exporter.defineAttribute(webAttribute, true);
 
-                // Add to table of contents file if we are using the Ptolemy 
+                // Add to table of contents file if we are using the Ptolemy
                 // website infrastructure.
-                boolean usePtWebsite = 
+                boolean usePtWebsite =
                     Boolean.valueOf(StringUtilities
                           .getProperty("ptolemy.ptII.exportHTML.usePtWebsite"));
                 if (usePtWebsite) {
-                    String destinationTitle = 
+                    String destinationTitle =
                         LinkToOpenTableaux._getTitleText(destinationObject);
                     if (destinationTitle.length() > 16) {
                         //Truncate the text so that it does not overflow the toc.
-                        destinationTitle = 
+                        destinationTitle =
                             destinationTitle.substring(0,16) + ".";
                     }
-                    webElement = WebElement.createWebElement(destinationObject, 
+                    webElement = WebElement.createWebElement(destinationObject,
                             "tocContents", "tocContents");
-                    webElement.setExpression(" <li><a href=\"" 
+                    webElement.setExpression(" <li><a href=\""
                             + name + "/index.html" + "\">"
                             + destinationTitle
                             + "</a></li>");
                     exporter.defineElement(webElement, false);
                 }
             } else if (frame instanceof ImageExportable) {
-                gifFile = 
+                gifFile =
                     new File(parameters.directoryToExportTo, name + ".gif");
                 OutputStream gifOut = new FileOutputStream(gifFile);
                 try {
@@ -395,21 +395,21 @@ public class LinkToOpenTableaux extends DefaultIconLink {
                 }
                 // Strangely, the class has to be "iframe".
                 // I don't understand why it can't be "lightbox".
-                webAttribute = 
-                    WebAttribute.createWebAttribute(sourceObject, 
+                webAttribute =
+                    WebAttribute.createWebAttribute(sourceObject,
                             "hrefWebAttribute", "href");
                 webAttribute.setExpression(name + ".gif");
                 exporter.defineAttribute(webAttribute, true);
-                
+
                 webAttribute =
-                    WebAttribute.createWebAttribute(sourceObject, 
+                    WebAttribute.createWebAttribute(sourceObject,
                             "classWebAttribute", "class");
                 webAttribute.setExpression("iframe");
                 exporter.defineAttribute(webAttribute, true);
             }
         }
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 

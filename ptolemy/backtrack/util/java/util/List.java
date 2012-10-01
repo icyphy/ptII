@@ -43,7 +43,7 @@ import java.util.ListIterator;
 import ptolemy.backtrack.Checkpoint;
 import ptolemy.backtrack.Rollbackable;
 
-/** 
+/**
  * An ordered collection (also known as a list). This collection allows
  * access to elements by position, as well as control on where elements
  * are inserted. Unlike sets, duplicate elements are permitted by this
@@ -83,7 +83,7 @@ import ptolemy.backtrack.Rollbackable;
  */
 public interface List extends Collection, Rollbackable {
 
-    /**     
+    /**
      * Insert an element into the list at a given position (optional operation).
      * This shifts all existing elements from that position to the end one
      * index to the right. This version of add has no return, since it is
@@ -102,7 +102,7 @@ public interface List extends Collection, Rollbackable {
      */
     void add(int index, Object o);
 
-    /**     
+    /**
      * Add an element to the end of the list (optional operation). If the list
      * imposes restraints on what can be inserted, such as no null elements,
      * this should be documented.
@@ -119,7 +119,7 @@ public interface List extends Collection, Rollbackable {
      */
     boolean add(Object o);
 
-    /**     
+    /**
      * Insert the contents of a collection into the list at a given position
      * (optional operation). Shift all elements at that position to the right
      * by the number of elements inserted. This operation is undefined if
@@ -143,7 +143,7 @@ public interface List extends Collection, Rollbackable {
      */
     boolean addAll(int index, Collection c);
 
-    /**     
+    /**
      * Add the contents of a collection to the end of the list (optional
      * operation).  This operation is undefined if this list is modified
      * during the operation (for example, if you try to insert a list into
@@ -164,7 +164,7 @@ public interface List extends Collection, Rollbackable {
      */
     boolean addAll(Collection c);
 
-    /**     
+    /**
      * Clear the list, such that a subsequent call to isEmpty() would return
      * true (optional operation).
      * @throws UnsupportedOperationException if this list does not support the
@@ -172,7 +172,7 @@ public interface List extends Collection, Rollbackable {
      */
     void clear();
 
-    /**     
+    /**
      * Test whether this list contains a given object as one of its elements.
      * This is defined as the existence of an element e such that
      * <code>o == null ? e == null : o.equals(e)</code>.
@@ -185,7 +185,7 @@ public interface List extends Collection, Rollbackable {
      */
     boolean contains(Object o);
 
-    /**     
+    /**
      * Test whether this list contains every element in a given collection.
      * @param c the collection to test for
      * @return true if for every element o in c, contains(o) would return true
@@ -198,7 +198,7 @@ public interface List extends Collection, Rollbackable {
      */
     boolean containsAll(Collection c);
 
-    /**     
+    /**
      * Test whether this list is equal to another object. A List is defined to be
      * equal to an object if and only if that object is also a List, and the two
      * lists have the same sequence. Two lists l1 and l2 are equal if and only
@@ -212,7 +212,7 @@ public interface List extends Collection, Rollbackable {
      */
     boolean equals(Object o);
 
-    /**     
+    /**
      * Get the element at a given index in this list.
      * @param index the index of the element to be returned
      * @return the element at index index in this list
@@ -220,7 +220,7 @@ public interface List extends Collection, Rollbackable {
      */
     Object get(int index);
 
-    /**     
+    /**
      * Obtains a hash code for this list. In order to obey the general
      * contract of the hashCode method of class Object, this value is
      * calculated as follows:
@@ -239,7 +239,7 @@ public interface List extends Collection, Rollbackable {
      */
     int hashCode();
 
-    /**     
+    /**
      * Obtain the first index at which a given object is to be found in this
      * list.
      * @param o the object to search for
@@ -252,19 +252,19 @@ public interface List extends Collection, Rollbackable {
      */
     int indexOf(Object o);
 
-    /**     
+    /**
      * Test whether this list is empty, that is, if size() == 0.
      * @return true if this list contains no elements
      */
     boolean isEmpty();
 
-    /**     
+    /**
      * Obtain an Iterator over this list, whose sequence is the list order.
      * @return an Iterator over the elements of this list, in order
      */
     Iterator iterator();
 
-    /**     
+    /**
      * Obtain the last index at which a given object is to be found in this
      * list.
      * @return the greatest integer n such that <code>o == null ? get(n) == null
@@ -276,14 +276,14 @@ public interface List extends Collection, Rollbackable {
      */
     int lastIndexOf(Object o);
 
-    /**     
+    /**
      * Obtain a ListIterator over this list, starting at the beginning.
      * @return a ListIterator over the elements of this list, in order, starting
      * at the beginning
      */
     ListIterator listIterator();
 
-    /**     
+    /**
      * Obtain a ListIterator over this list, starting at a given position.
      * A first call to next() would return the same as get(index), and a
      * first call to previous() would return the same as get(index - 1).
@@ -295,7 +295,7 @@ public interface List extends Collection, Rollbackable {
      */
     ListIterator listIterator(int index);
 
-    /**     
+    /**
      * Remove the element at a given position in this list (optional operation).
      * Shifts all remaining elements to the left to fill the gap.
      * @param index the position within the list of the object to remove
@@ -306,7 +306,7 @@ public interface List extends Collection, Rollbackable {
      */
     Object remove(int index);
 
-    /**     
+    /**
      * Remove the first occurence of an object from this list (optional
      * operation). That is, remove the first element e such that
      * <code>o == null ? e == null : o.equals(e)</code>.
@@ -322,7 +322,7 @@ public interface List extends Collection, Rollbackable {
      */
     boolean remove(Object o);
 
-    /**     
+    /**
      * Remove all elements of a given collection from this list (optional
      * operation). That is, remove every element e such that c.contains(e).
      * @param c the collection to filter out
@@ -339,7 +339,7 @@ public interface List extends Collection, Rollbackable {
      */
     boolean removeAll(Collection c);
 
-    /**     
+    /**
      * Remove all elements of this list that are not contained in a given
      * collection (optional operation). That is, remove every element e such
      * that !c.contains(e).
@@ -357,7 +357,7 @@ public interface List extends Collection, Rollbackable {
      */
     boolean retainAll(Collection c);
 
-    /**     
+    /**
      * Replace an element of this list with another object (optional operation).
      * @param index the position within this list of the element to be replaced
      * @param o the object to replace it with
@@ -374,14 +374,14 @@ public interface List extends Collection, Rollbackable {
      */
     Object set(int index, Object o);
 
-    /**     
+    /**
      * Get the number of elements in this list. If the list contains more
      * than Integer.MAX_VALUE elements, return Integer.MAX_VALUE.
      * @return the number of elements in the list
      */
     int size();
 
-    /**     
+    /**
      * Obtain a List view of a subsection of this list, from fromIndex
      * (inclusive) to toIndex (exclusive). If the two indices are equal, the
      * sublist is empty. The returned list should be modifiable if and only
@@ -398,14 +398,14 @@ public interface List extends Collection, Rollbackable {
      */
     List subList(int fromIndex, int toIndex);
 
-    /**     
+    /**
      * Copy the current contents of this list into an array.
      * @return an array of type Object[] and length equal to the length of this
      * list, containing the elements currently in this list, in order
      */
     Object[] toArray();
 
-    /**     
+    /**
      * Copy the current contents of this list into an array. If the array passed
      * as an argument has length less than that of this list, an array of the
      * same run-time type as a, and length equal to the length of this list, is

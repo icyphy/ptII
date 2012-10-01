@@ -53,10 +53,10 @@ import ptolemy.kernel.util.NameDuplicationException;
  doesn't declare a type, but lets the type resolution algorithm find
  the least fixed point. If backward type inference is enabled, and
  no input type has been declared, the input is constrained to be
- equal to <code>BaseType.GENERAL</code>. This will result in upstream 
+ equal to <code>BaseType.GENERAL</code>. This will result in upstream
  ports resolving to the most general type rather than the most specific.
  </p>
- 
+
  @author  Steve Neuendorffer, Haiyang Zheng
  @version $Id$
  @since Ptolemy II 2.1
@@ -100,12 +100,12 @@ public class TokenToExpression extends Converter {
 
     ///////////////////////////////////////////////////////////////////
     ////                      protected methods                    ////
-    
-    
-    /** Set the input port greater than or equal to 
-     *  <code>BaseType.GENERAL</code> in case backward type inference is 
-     *  enabled and the input port has no type declared. 
-     * 
+
+
+    /** Set the input port greater than or equal to
+     *  <code>BaseType.GENERAL</code> in case backward type inference is
+     *  enabled and the input port has no type declared.
+     *
      *  @return A set of inequalities.
      */
     @Override
@@ -118,5 +118,5 @@ public class TokenToExpression extends Converter {
         }
         return result;
     }
-    
+
 }

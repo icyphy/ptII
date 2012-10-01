@@ -38,19 +38,19 @@ import ptolemy.kernel.util.IllegalActionException;
 ///////////////////////////////////////////////////////////////////
 ////ExtractFieldType
 
-/** 
- A partial monotonic function of the given port that returns a type 
+/**
+ A partial monotonic function of the given port that returns a type
  associated with the given field name, to be found in the type definition
  of the port.
  <p>
- The <code>getValue()</code> method is used to get the current value of the 
- function. If the port type is an <code>AssociateType</code> with a field for 
- the specified field name, then the function returns the type of that field. 
+ The <code>getValue()</code> method is used to get the current value of the
+ function. If the port type is an <code>AssociateType</code> with a field for
+ the specified field name, then the function returns the type of that field.
  If the port type is <code>BaseType.GENERAL</code>, then return <code>
- BaseType.GENERAL</code>. 
- If the port type is <code>BaseType.UNKNOWN</code> or it is an 
- <code>AssociateType</code> with no corresponding field, then return 
- <code>BaseType.UNKNOWN</code>. 
+ BaseType.GENERAL</code>.
+ If the port type is <code>BaseType.UNKNOWN</code> or it is an
+ <code>AssociateType</code> with no corresponding field, then return
+ <code>BaseType.UNKNOWN</code>.
  Otherwise, the getValue() method throws an exception, which makes the
  function partial.
  </p>
@@ -77,12 +77,12 @@ public class ExtractFieldType extends MonotonicFunction {
     /** Return the current value of this monotonic function.
      *  Specifically, this is a function of one variable, the type variable
      *  of the given port. If the port type is <code>BaseType.GENERAL</code>,
-     *  then return <code>BaseType.GENERAL</code>. If the input port type is 
+     *  then return <code>BaseType.GENERAL</code>. If the input port type is
      *  <code>BaseType.UNKNOWN</code>, return <code>BaseType.UNKNOWN</code>.
-     *  Otherwise, if the input port type is an <code>AssociateType</code> 
+     *  Otherwise, if the input port type is an <code>AssociateType</code>
      *  with a field corresponding to the specified name, then return the type
      *  of that field. If the port type is an <code>AssociateType</code> that
-     *  does not carry a field corresponding to the given name, then return 
+     *  does not carry a field corresponding to the given name, then return
      *  <code>BaseType.UNKNOWN</code>. Otherwise, throw an exception.
      *  @return A Type.
      *  @throws IllegalActionException If the port type is

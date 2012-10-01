@@ -6,7 +6,7 @@ import java.net.URI;
 
 import javax.servlet.http.HttpServlet;
 
-/* 
+/*
  Copyright (c) 1997-2011 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
@@ -34,18 +34,18 @@ import javax.servlet.http.HttpServlet;
  */
 
 /** An interface for actors that handle HTTP requests.  The interface
- *  allows the relative path for the HTTP request to be set and obtained, 
+ *  allows the relative path for the HTTP request to be set and obtained,
  *  and provides a servlet to handle requests. If this interface is
  *  implemented by an actor or attribute in a model that contains
  *  an instance of {@link WebServer}, then requests to that server
  *  that match the relative path set by the {@link #setRelativePath(URI)}
  *  method of this interface will be delegated to that actor or attribute.
  *  <p>
- *  Note that "HttpService" is also the name of an OSGi interface.  If OSGi is 
- *  incorporated in Ptolemy in the future, we might want to rename this 
+ *  Note that "HttpService" is also the name of an OSGi interface.  If OSGi is
+ *  incorporated in Ptolemy in the future, we might want to rename this
  *  interface. See
  *  {@link http://www.osgi.org/javadoc/r4v42/org/osgi/service/http/HttpService.html}.
- *  
+ *
  *  @see WebServer
  *  @author Elizabeth Latronico and Edward A. Lee
  *  @version $Id$
@@ -59,7 +59,7 @@ public interface HttpService {
 
     ///////////////////////////////////////////////////////////////////
     ////                     public methods                        ////
-    
+
     /** Returns the relative path that this HttpService is mapped to,
      *  which is the value set previously by a call to
      *  {@link #setRelativePath(URI)}.
@@ -67,19 +67,19 @@ public interface HttpService {
      *  @see #setRelativePath(URI)
      */
     public URI getRelativePath();
-    
+
     /** Returns an HttpServlet which is used to handle requests that
      *  arrive at the given relative path.
-     *  @return An HttpServlet to handle requests. 
+     *  @return An HttpServlet to handle requests.
      */
     public HttpServlet getServlet();
-    
+
     /** Set the relative path that this HttpService is mapped to.
      *  @param relativePath The relative path that this HttpService is mapped to.
      *  @see #getRelativePath()
      */
     public void setRelativePath(URI relativePath);
-    
+
     /** Specify the web server for this service. This will
      *  be called by the {@link WebServer} attribute of a model,
      *  if there is one, and will enable the service to access

@@ -924,7 +924,7 @@ public class IOPort extends ComponentPort {
         if (token == null) {
             throw new NoTokenException(this, "No token to return.");
         }
-        
+
         if (_debugging) {
             _debug("get from channel " + channelIndex + ": " + token);
         }
@@ -1019,7 +1019,7 @@ public class IOPort extends ComponentPort {
             _debug("get vector from channel " + channelIndex + " of length "
                     + vectorLength);
         }
-        
+
         return retArray;
     }
 
@@ -1364,8 +1364,8 @@ public class IOPort extends ComponentPort {
                             Object paramObject = ((ObjectToken) paramToken)
                                     .getValue();
                             if ((paramObject instanceof QuantityManager) ||
-                                (paramObject instanceof IOPort && 
-                                    ((IOPort)paramObject).getContainer() 
+                                (paramObject instanceof IOPort &&
+                                    ((IOPort)paramObject).getContainer()
                                     instanceof QuantityManager)) {
                                 _qmList.add(paramObject);
                             }
@@ -1374,7 +1374,7 @@ public class IOPort extends ComponentPort {
                 }
             }
             _qmListValid = true;
-        } 
+        }
         return _qmList;
     }
 
@@ -1593,13 +1593,13 @@ public class IOPort extends ComponentPort {
             if (isOpaque() && (_farReceiversVersion == _workspace.getVersion())) {
                 return _farReceivers;
             }
-            
+
             if (_intermediateFarReceiver != null) {
                 _farReceivers = new Receiver[width][];
                 for (int i = 0; i < width; i++) {
                     _farReceivers[i] = new Receiver[1];
                     _farReceivers[i][0] = _intermediateFarReceiver;
-                } 
+                }
                 return _farReceivers;
             }
 
@@ -3072,10 +3072,10 @@ public class IOPort extends ComponentPort {
         _invalidate();
         _workspace.doneWriting();
     }
-    
-    /** Set the local receivers table from outside. This is only used by the 
-     *  CompositeQuantityManager. FIXME: find a better solution. 
-     *  @param map The new local receivers table. 
+
+    /** Set the local receivers table from outside. This is only used by the
+     *  CompositeQuantityManager. FIXME: find a better solution.
+     *  @param map The new local receivers table.
      */
     public void setLocalReceiversTable(HashMap<IORelation, List<Receiver[][]>> map) {
         _localReceiversTable = map;
@@ -4282,7 +4282,7 @@ public class IOPort extends ComponentPort {
             }
         }
     }
-    
+
     /** Set a constant token so that every call to {@link #get(int)}
      *  or {@link #get(int,int)} replaces the returned token(s) with
      *  this specified token. This is a rather specialized piece
@@ -4356,27 +4356,27 @@ public class IOPort extends ComponentPort {
                 intermediateReceiver.source = (Actor) ((IOPort) this
                         .sourcePortList().get(channel)).getContainer();
             }
-        } else { 
+        } else {
             for (int i = 0; i < qmList.size(); i++) {
                 Object object = qmList.get(i);
                 if (object instanceof QuantityManager) {
                     result = ((QuantityManager)object).getReceiver(result);
-                } else if (object instanceof IOPort) {  
+                } else if (object instanceof IOPort) {
                     IntermediateReceiver ir = (IntermediateReceiver) ((QuantityManager)((IOPort)object).getContainer())
-                        .getReceiver(result, ((IOPort)object));  
+                        .getReceiver(result, ((IOPort)object));
                     _intermediateFarReceiver = ir;
-                } 
+                }
             }
         }
         // FIXME what if isInput && isOutput??
-        
+
         return result;
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
 
-    /** The limit of the number of constant values to return instead 
+    /** The limit of the number of constant values to return instead
      * of the received tokens. This is protected so that AbstractReceiver
      * can access it.
      */
@@ -4386,7 +4386,7 @@ public class IOPort extends ComponentPort {
      *  This is protected so that AbstractReceiver can access it.
      */
     protected Token _constantToken;
-    
+
     /** The number of constant tokens that have been sent since the last
      *  call to _setConstant(). This is protected so that AbstractReceiver
      * can access it.
@@ -4752,7 +4752,7 @@ public class IOPort extends ComponentPort {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    
+
     /** The default width. In case there is no unique solution for a relation
      *  connected to this port the default width will be used.
      */
@@ -4826,8 +4826,8 @@ public class IOPort extends ComponentPort {
     // A cache of the local Receivers, and the version.
     // 'transient' means that the variable will not be serialized.
     private transient Receiver[][] _localReceivers;
-    
-    // Lists of local receivers, indexed by relation. 
+
+    // Lists of local receivers, indexed by relation.
     private HashMap<IORelation, List<Receiver[][]>> _localReceiversTable;
 
     private transient long _localReceiversVersion = -1;
@@ -4842,8 +4842,8 @@ public class IOPort extends ComponentPort {
     private transient Receiver[][] _insideReceivers;
 
     private transient long _insideReceiversVersion = -1;
-    
-    // If port is linked to a quantity manager then all tokens 
+
+    // If port is linked to a quantity manager then all tokens
     // are sent to the quantity manager. Receivers and farreceivers
     // are replaced by this intermediate receiver.
     private IntermediateReceiver _intermediateFarReceiver;

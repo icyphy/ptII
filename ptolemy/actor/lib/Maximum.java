@@ -81,7 +81,7 @@ public class Maximum extends TypedAtomicActor {
          * models, so we leave it as is.
          */
         maximumValue.setMultiport(true);
-        
+
         maximumValue.setTypeAtLeast(input);
         maximumValue.setDefaultWidth(1);
 

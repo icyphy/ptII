@@ -27,23 +27,23 @@ public class SchedulerDirector extends DEDirector {
      */
     public SchedulerDirector(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
-        super(container, name); 
+        super(container, name);
     }
-    
+
     @Override
     protected Actor _getNextActorToFire() throws IllegalActionException {
-        if (_eventQueue.isEmpty()) { 
+        if (_eventQueue.isEmpty()) {
             return null;
-        } 
+        }
         DEEvent nextEvent = _eventQueue.get();
- 
+
         if ((nextEvent.timeStamp().compareTo(getModelTime()) > 0)) {
             return null;
         }
         return super._getNextActorToFire();
     }
-    
 
 
-    
+
+
 }

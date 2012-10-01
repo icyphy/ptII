@@ -1,5 +1,5 @@
-/* When there is a token combine it with current value, if there are no tokens at all send a clear. 
- 
+/* When there is a token combine it with current value, if there are no tokens at all send a clear.
+
  Copyright (c) 2010-2011 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
@@ -42,7 +42,7 @@ import ptolemy.kernel.util.StringAttribute;
 /**
  Combine actor for combining synchronous signals (ports with a token
  or no token) using a combine function.
- 
+
  @author Christian Motika
  @version $Id$
  @since Ptolemy II 8.1
@@ -80,7 +80,7 @@ public class Combine extends TypedAtomicActor {
         output.setTypeEquals(BaseType.INT);
         value.setTypeEquals(BaseType.INT);
 
-        // FIXME: add appropriate svg icon here 
+        // FIXME: add appropriate svg icon here
         _attachText("_iconDescription", "<svg>\n"
                 + "<rect x=\"-30\" y=\"-15\" " + "width=\"55\" height=\"40\" "
                 + "style=\"fill:red\"/>\n" + "</svg>\n");
@@ -112,7 +112,7 @@ public class Combine extends TypedAtomicActor {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Collect the integer tokens of all available inputs and combine them 
+    /** Collect the integer tokens of all available inputs and combine them
      *  using the combine function.
      *  Do this non-strict to take part in a fixed point iteration process.
      *  @exception IllegalActionException If calling send() or super.fire()
@@ -194,7 +194,7 @@ public class Combine extends TypedAtomicActor {
         resetValue();
     }
 
-    /** This should reset the value according to the current combine function. 
+    /** This should reset the value according to the current combine function.
      */
     private void resetValue() {
         if (_function == _MINIMUM) {

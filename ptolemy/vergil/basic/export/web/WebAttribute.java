@@ -1,6 +1,6 @@
-/* Attribute containing information and methods for properties for web content, 
- * for example, an HTML attribute that is part of an HTML element, as in the 
- * "href" attribute of <a href="http://www.w3schools.com">This is a link</a> 
+/* Attribute containing information and methods for properties for web content,
+ * for example, an HTML attribute that is part of an HTML element, as in the
+ * "href" attribute of <a href="http://www.w3schools.com">This is a link</a>
 
  Copyright (c) 2011 The Regents of the University of California.
  All rights reserved.
@@ -38,16 +38,16 @@ import ptolemy.kernel.util.StringAttribute;
 ///////////////////////////////////////////////////////////////////
 //// WebAttribute
 /**
- * Class containing information and methods for properties for web content, 
- * for example, an HTML attribute that is part of an HTML element, as in the 
- * "href" attribute of <a href="http://www.w3schools.com">This is a link</a> 
- * 
- * The _elementName is used as the name of the attribute, e.g. "href" in 
+ * Class containing information and methods for properties for web content,
+ * for example, an HTML attribute that is part of an HTML element, as in the
+ * "href" attribute of <a href="http://www.w3schools.com">This is a link</a>
+ *
+ * The _elementName is used as the name of the attribute, e.g. "href" in
  * <a href="http://www.w3schools.com">This is a link</a>.  An object is not
- * allowed to have two attributes with the same _elementName, since it is 
- * assumed that these attributes will belong to the same web element.  For 
+ * allowed to have two attributes with the same _elementName, since it is
+ * assumed that these attributes will belong to the same web element.  For
  * example, an HTML tag with two href elements should not be allowed, since
- * it is unclear what behavior occurs (first takes precedence?  second?  both?) 
+ * it is unclear what behavior occurs (first takes precedence?  second?  both?)
  * <a href="http://site1.com" href="http://site2.com">This is a link</a>
  *
  * @author Elizabeth Latronico
@@ -70,71 +70,71 @@ public class WebAttribute extends StringAttribute {
         super(container, name);
         setWebName("");
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-    
-    /** Return the web name of this element; for example, "myElement" in 
+
+    /** Return the web name of this element; for example, "myElement" in
      * <div name="myElement"> </div> in HTML.
-     * 
-     * @return The web name of this element; for example, "myElement" in 
+     *
+     * @return The web name of this element; for example, "myElement" in
      * <div name="myElement"> </div> in HTML.
      * @see #setWebName(String)
      */
     public String getWebName() {
         return _webName;
     }
-    
-    /** Set the web name of this element; for example, "myElement" in 
+
+    /** Set the web name of this element; for example, "myElement" in
      * <div name="myElement"> </div> in HTML.
-     * 
-     * @param webName The web name of this element; for example, "myElement" in 
+     *
+     * @param webName The web name of this element; for example, "myElement" in
      * <div name="myElement"> </div> in HTML.
      * @see #getWebName()
      */
     public void setWebName(String webName) {
         _webName = webName;
     }
-    
-    /** Factory method for creating WebAttributes.  Checks if there is an 
-     * existing WebAttribute with the same name.  If so, return it; if not 
+
+    /** Factory method for creating WebAttributes.  Checks if there is an
+     * existing WebAttribute with the same name.  If so, return it; if not
      * create a new one.  Sets persistent to false.  Static so that any
      * WebExportable may call it.
-     * 
+     *
      * @param container  The container object for the WebAttribute
      * @param id The Ptolemy name for the WebAttribute (needed to ensure a
      * unique Ptolemy name)
      * @param webName The web name of this WebAttribute
-     * @return The WebAttribute that was created (or that previously existed) 
+     * @return The WebAttribute that was created (or that previously existed)
      * with persistent set to false
      * @throws IllegalActionException if the WebAttribute cannot be created
      * (perhaps another Attribute exists with the requested name)
      */
-    public static WebAttribute createWebAttribute(NamedObj container, 
+    public static WebAttribute createWebAttribute(NamedObj container,
             String id, String webName)throws IllegalActionException{
        WebAttribute webAttribute;
-        
+
        try {
             if (id != null && container.getAttribute(id) == null)
             {
                 webAttribute = new WebAttribute(container, id);
                 webAttribute.setPersistent(false);
             }
-       } catch(NameDuplicationException e){ 
-              throw new IllegalActionException(container, 
+       } catch(NameDuplicationException e){
+              throw new IllegalActionException(container,
                "Cannot create web content.  Duplicate name for " +
                "WebAttribute: " + id);
        }
-        
-        webAttribute = 
+
+        webAttribute =
             (WebAttribute) container.getAttribute(id, WebAttribute.class);
         webAttribute.setWebName(webName);
         webAttribute.setPersistent(false);
         webAttribute.setVisibility(NONE);
         return webAttribute;
     }
-    
-    /** The desired name of this attribute in the web file, for example, 
+
+    /** The desired name of this attribute in the web file, for example,
      * "href" in <a href="http://ptolemy.org"></div>.
      */
     private String _webName;

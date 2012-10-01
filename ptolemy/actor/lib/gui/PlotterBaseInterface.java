@@ -1,5 +1,5 @@
-/* 
- Interface encapsulating platform dependent code of the PlotterBase from the 
+/*
+ Interface encapsulating platform dependent code of the PlotterBase from the
  platform independent parts.
 
  @Copyright (c) 1998-2010 The Regents of the University of California.
@@ -36,10 +36,10 @@ import ptolemy.plot.PlotBoxInterface;
 //////////////////////////////////////////////////////////////////////////
 //// PlotterBaseInterface
 /**
- * Interface encapsulating platform dependent code of the PlotterBase from the 
+ * Interface encapsulating platform dependent code of the PlotterBase from the
  * platform independent parts.
  * @author Anar Huseynov
- * @version $Id$ 
+ * @version $Id$
  * @since Ptolemy II 8.1
  * @Pt.ProposedRating Red (ahuseyno)
  * @Pt.AcceptedRating Red (ahuseyno)
@@ -47,7 +47,7 @@ import ptolemy.plot.PlotBoxInterface;
 public interface PlotterBaseInterface {
 
     /**
-     * Free up memory when closing. 
+     * Free up memory when closing.
      */
     public void cleanUp();
 

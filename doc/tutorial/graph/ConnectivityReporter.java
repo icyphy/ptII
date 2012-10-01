@@ -92,7 +92,7 @@ public class ConnectivityReporter extends Attribute {
         /**
          * Construct a DoubleClickHandler attribute.
          *
-         * @param container The container 
+         * @param container The container
          * @param name The name of the handler
          * @exception IllegalActionException If the factory is not of an
          *  acceptable attribute for the container.

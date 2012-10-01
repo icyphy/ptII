@@ -526,7 +526,7 @@ public class Event extends State implements Initializable {
         } else {
             relations.addAll(errorTransitionList());
         }
-       
+
 
         // Compute the scheduled times and priorities.
         final boolean lifo = ((BooleanToken) director.LIFO.getToken())

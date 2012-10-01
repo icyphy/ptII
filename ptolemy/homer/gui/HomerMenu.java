@@ -60,7 +60,7 @@ import ptolemy.util.MessageHandler;
 //// HomerMenu
 
 /** Menu for supporting the layout builder application.
- * 
+ *
  *  @author Peter Foldes
  *  @version $Id$
  *  @since Ptolemy II 8.1
@@ -259,7 +259,7 @@ public class HomerMenu {
     }
 
     /** Create and initialize menu items for the device screen size selection.
-     * @return The new menu. 
+     * @return The new menu.
      */
     private JMenu _initializeDeviceMenu() {
         JMenu screenMenu = new JMenu("Screen Size");

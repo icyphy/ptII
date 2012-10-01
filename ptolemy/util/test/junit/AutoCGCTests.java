@@ -41,16 +41,16 @@ import org.junit.runner.RunWith;
 /**
  * Run the Ptolemy model tests in the auto/ directory using cg code generation
  * under JUnit.
- * 
+ *
  * <p>
  * This test must be run from the directory that contains the auto/ directory,
  * for example:
  * </p>
- * 
+ *
  * <pre>
  * (cd ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/actor/lib/test; java -classpath ${PTII}:${PTII}/lib/junit-4.8.2.jar:${PTII}/lib/JUnitParams-0.3.0.jar org.junit.runner.JUnitCore ptolemy.util.test.junit.AutoCGCTests)
  * </pre>
- * 
+ *
  * <p>
  * This test uses JUnitParams from <a
  * href="http://code.google.com/p/junitparams/#in_browser"
@@ -68,49 +68,49 @@ import org.junit.runner.RunWith;
 @RunWith(JUnitParamsRunner.class)
 public class AutoCGCTests extends AutoCGTests {
 
-	/**
-	 * Find the ptolemy.cg.kernel.generic.GenericCodeGenerator class and its generateCode static
-	 * method that takes an array of strings.
-	 * 
-	 * @exception Throwable
-	 *                If the class or constructor cannot be found.
-	 */
-	@Before
-	public void setUp() throws Throwable {
+        /**
+         * Find the ptolemy.cg.kernel.generic.GenericCodeGenerator class and its generateCode static
+         * method that takes an array of strings.
+         *
+         * @exception Throwable
+         *                If the class or constructor cannot be found.
+         */
+        @Before
+        public void setUp() throws Throwable {
             super.setUp();
-	}
+        }
 
-	/**
-	 * Generate, compile and run inline code for a model.
-	 * 
-	 * @param fullPath The full path to the model file to be
-	 * executed. If the fullPath ends with the value of the {@link
-	 * #THERE_ARE_NO_AUTO_TESTS}, then the method returns
-	 * immediately.
-	 * @exception Throwable If thrown while executing the model.
-	 */
-	@Test
+        /**
+         * Generate, compile and run inline code for a model.
+         *
+         * @param fullPath The full path to the model file to be
+         * executed. If the fullPath ends with the value of the {@link
+         * #THERE_ARE_NO_AUTO_TESTS}, then the method returns
+         * immediately.
+         * @exception Throwable If thrown while executing the model.
+         */
+        @Test
         @Parameters(method = "modelValues")
-	public void runModelInline(String fullPath) throws Throwable {
+        public void runModelInline(String fullPath) throws Throwable {
             runModel(fullPath, "c",
                     false /* generateInSubdirectory */,
                     true /* inline */,
                     2500 /* maximumLinesPerBlock */,
                     false /*variablesAsArrays*/);
         }
-         
-	/**
-	 * Generate, compile and run non-inline code for a model.
-	 * 
-	 * @param fullPath The full path to the model file to be
-	 * executed. If the fullPath ends with the value of the {@link
-	 * #THERE_ARE_NO_AUTO_TESTS}, then the method returns
-	 * immediately.
-	 * @exception Throwable If thrown while executing the model.
-	 */
-	@Test
+
+        /**
+         * Generate, compile and run non-inline code for a model.
+         *
+         * @param fullPath The full path to the model file to be
+         * executed. If the fullPath ends with the value of the {@link
+         * #THERE_ARE_NO_AUTO_TESTS}, then the method returns
+         * immediately.
+         * @exception Throwable If thrown while executing the model.
+         */
+        @Test
         @Parameters(method = "modelValues")
-	public void runModelNoInline(String fullPath) throws Throwable {
+        public void runModelNoInline(String fullPath) throws Throwable {
             runModel(fullPath, "c",
                     false /* generateInSubdirectory */,
                     false /* inline */,

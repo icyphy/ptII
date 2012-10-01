@@ -14,7 +14,7 @@ import ptolemy.vergil.basic.LocatableNodeDragInteractor;
  *  In addition, the <i>relativeToElementName</i> specifies
  *  what kind of object this is relative to (an "entity",
  *  "property" (attribute), "port", or "relation").
- *  
+ *
  @author Edward A. Lee, Christian Motika, Miro Spoenemann
  @version $Id$
  @since Ptolemy II 2.1
@@ -38,27 +38,27 @@ public class RelativeLocation extends Location {
         relativeToElementName = new StringAttribute(this, "relativeToElementName");
         relativeToElementName.setExpression("entity");
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         parameters                        ////
 
     /** The name of the object this location is relative to. */
     public StringAttribute relativeTo;
-    
+
     /** The element name of the object this location is relative to.
      *  This defaults to "entity".
      */
     public StringAttribute relativeToElementName;
-    
+
     /** The initial offset for new relative locatable objects. */
     public static final double INITIAL_OFFSET = 40.0;
-    
+
     /** The maximal distance of the relative location. If this is exceeded
      *  after moving the relative locatable, the link is broken (see
      *  {@link LocatableNodeDragInteractor#mouseReleased(diva.canvas.event.LayerEvent)}).
      */
     public static final double BREAK_THRESHOLD = 300.0;
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -98,7 +98,7 @@ public class RelativeLocation extends Location {
         }
         return offset;
     }
-    
+
     /** Get the relative location, relative to the <i>relativeTo</i>
      *  object, if there is one, and otherwise return the absolute
      *  location.
@@ -151,7 +151,7 @@ public class RelativeLocation extends Location {
         }
         return result;
     }
-    
+
     /** Set the location in some cartesian coordinate system, and notify
      *  the container and any value listeners of the new location. Setting
      *  the location involves maintaining a local copy of the passed
@@ -185,10 +185,10 @@ public class RelativeLocation extends Location {
         _cachedReltoLoc = null;
         super.setLocation(location);
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
-    
+
     /** If the <i>relativeTo</i> object exists, return its location.
      *  Otherwise, return null.
      *  @param relativeToObject The relativeTo object.
@@ -203,7 +203,7 @@ public class RelativeLocation extends Location {
         }
         return null;
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
@@ -211,5 +211,5 @@ public class RelativeLocation extends Location {
      *  after the relativeTo object has been deleted.
      */
     private double[] _cachedReltoLoc;
-    
+
 }

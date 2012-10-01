@@ -98,7 +98,7 @@ public class BandlimitedNoise extends Gaussian {
         bandwidth = new Parameter(this, "bandwidth");
         bandwidth.setTypeEquals(BaseType.DOUBLE);
         bandwidth.setExpression("10.0");
-        
+
         // Move the mean port to first and hide the trigger port.
         // It makes no sense to trigger this actor.
         mean.getPort().moveToFirst();

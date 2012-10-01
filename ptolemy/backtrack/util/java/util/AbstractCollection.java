@@ -44,7 +44,7 @@ import ptolemy.backtrack.Rollbackable;
 import ptolemy.backtrack.util.CheckpointRecord;
 import ptolemy.backtrack.util.FieldRecord;
 
-/** 
+/**
  * A basic implementation of most of the methods in the Collection interface to
  * make it easier to create a collection. To create an unmodifiable Collection,
  * just subclass AbstractCollection and provide implementations of the
@@ -74,13 +74,13 @@ public abstract class AbstractCollection implements Collection, Rollbackable {
 
     protected transient Checkpoint $CHECKPOINT = new Checkpoint(this);
 
-    /**     
+    /**
      * The main constructor, for use by subclasses.
      */
     protected AbstractCollection() {
     }
 
-    /**     
+    /**
      * Return an Iterator over this collection. The iterator must provide the
      * hasNext and next methods and should in addition provide remove if the
      * collection is modifiable.
@@ -88,14 +88,14 @@ public abstract class AbstractCollection implements Collection, Rollbackable {
      */
     public abstract Iterator iterator();
 
-    /**     
+    /**
      * Return the number of elements in this collection. If there are more than
      * Integer.MAX_VALUE elements, return Integer.MAX_VALUE.
      * @return the size
      */
     public abstract int size();
 
-    /**     
+    /**
      * Add an object to the collection (optional operation). This implementation
      * always throws an UnsupportedOperationException - it should be
      * overridden if the collection is to be modifiable. If the collection
@@ -114,7 +114,7 @@ public abstract class AbstractCollection implements Collection, Rollbackable {
         throw new UnsupportedOperationException();
     }
 
-    /**     
+    /**
      * Add all the elements of a given collection to this collection (optional
      * operation). This implementation obtains an Iterator over the given
      * collection and iterates over it, adding each element with the
@@ -146,7 +146,7 @@ public abstract class AbstractCollection implements Collection, Rollbackable {
         return modified;
     }
 
-    /**     
+    /**
      * Remove all elements from the collection (optional operation). This
      * implementation obtains an iterator over the collection and calls next
      * and remove on it repeatedly (thus this method will fail with an
@@ -166,7 +166,7 @@ public abstract class AbstractCollection implements Collection, Rollbackable {
         }
     }
 
-    /**     
+    /**
      * Test whether this collection contains a given object. That is, if the
      * collection has an element e such that (o == null ? e == null :
      * o.equals(e)). This implementation obtains an iterator over the collection
@@ -187,7 +187,7 @@ public abstract class AbstractCollection implements Collection, Rollbackable {
         return false;
     }
 
-    /**     
+    /**
      * Tests whether this collection contains all the elements in a given
      * collection. This implementation iterates over the given collection,
      * testing whether each element is contained in this collection. If any one
@@ -209,7 +209,7 @@ public abstract class AbstractCollection implements Collection, Rollbackable {
         return true;
     }
 
-    /**     
+    /**
      * Test whether this collection is empty. This implementation returns
      * size() == 0.
      * @return true if this collection is empty.
@@ -219,7 +219,7 @@ public abstract class AbstractCollection implements Collection, Rollbackable {
         return size() == 0;
     }
 
-    /**     
+    /**
      * Remove a single instance of an object from this collection (optional
      * operation). That is, remove one element e such that
      * <code>(o == null ? e == null : o.equals(e))</code>, if such an element
@@ -249,7 +249,7 @@ public abstract class AbstractCollection implements Collection, Rollbackable {
         return false;
     }
 
-    /**     
+    /**
      * Remove from this collection all its elements that are contained in a given
      * collection (optional operation). This implementation iterates over this
      * collection, and for each element tests if it is contained in the given
@@ -267,7 +267,7 @@ public abstract class AbstractCollection implements Collection, Rollbackable {
         return removeAllInternal(c);
     }
 
-    /**     
+    /**
      * Remove from this collection all its elements that are contained in a given
      * collection (optional operation). This implementation iterates over this
      * collection, and for each element tests if it is contained in the given
@@ -296,7 +296,7 @@ public abstract class AbstractCollection implements Collection, Rollbackable {
         return modified;
     }
 
-    /**     
+    /**
      * Remove from this collection all its elements that are not contained in a
      * given collection (optional operation). This implementation iterates over
      * this collection, and for each element tests if it is contained in the
@@ -314,7 +314,7 @@ public abstract class AbstractCollection implements Collection, Rollbackable {
         return retainAllInternal(c);
     }
 
-    /**     
+    /**
      * Remove from this collection all its elements that are not contained in a
      * given collection (optional operation). This implementation iterates over
      * this collection, and for each element tests if it is contained in the
@@ -344,7 +344,7 @@ public abstract class AbstractCollection implements Collection, Rollbackable {
         return modified;
     }
 
-    /**     
+    /**
      * Return an array containing the elements of this collection. This
      * implementation creates an Object array of size size() and then iterates
      * over the collection, setting each element of the array from the value
@@ -362,7 +362,7 @@ public abstract class AbstractCollection implements Collection, Rollbackable {
         return a;
     }
 
-    /**     
+    /**
      * Copy the collection into a given array if it will fit, or into a
      * dynamically created array of the same run-time type as the given array if
      * not. If there is space remaining in the array, the first element after the
@@ -398,7 +398,7 @@ public abstract class AbstractCollection implements Collection, Rollbackable {
         return a;
     }
 
-    /**     
+    /**
      * Creates a String representation of the Collection. The string returned is
      * of the form "[a, b, ...]" where a and b etc are the results of calling
      * toString on the elements of the collection. This implementation obtains an
@@ -428,7 +428,7 @@ public abstract class AbstractCollection implements Collection, Rollbackable {
         return r.toString();
     }
 
-    /**     
+    /**
      * Compare two objects according to Collection semantics.
      * @param o1 the first object
      * @param o2 the second object
@@ -440,7 +440,7 @@ public abstract class AbstractCollection implements Collection, Rollbackable {
         return o1 == null ? o2 == null : o1.equals(o2);
     }
 
-    /**     
+    /**
      * Hash an object according to Collection semantics.
      * @param o the object to hash
      * @return o1 == null ? 0 : o1.hashCode()

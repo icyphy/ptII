@@ -43,27 +43,27 @@ import ptolemy.kernel.util.IllegalActionException;
 public interface ContentPrototype {
 
     /** Add an element to the content area.
-     * 
+     *
      *  @param element The element to be added to the content area.
      *  @exception IllegalActionException If the content area is not set.
      */
     void add(PositionableElement element) throws IllegalActionException;
 
     /** Remove an element from the content area.
-     * 
+     *
      *  @param element The element to be removed.
      *  @exception IllegalActionException If the content area is not set.
      */
     void remove(PositionableElement element) throws IllegalActionException;
 
     /** Get the content area.
-     * 
+     *
      *  @return The content area.
      */
     Object getContent();
-    
+
     /** Get a new instance of the prototype.
-     * 
+     *
      *  @return The new instance of the prototype.
      */
     ContentPrototype getNewInstance();

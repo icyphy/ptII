@@ -50,7 +50,7 @@ import ptolemy.util.StringUtilities;
  and the disjoint records will not appear in the result.
 
  <p>Record labels are sanitized so that any non-Java identifier
- characters are replaced with underscores, see 
+ characters are replaced with underscores, see
  {@linkptolemy.util.StringUtilities.sanitizeName(String)}</p>
 
  <p>This implementation maintains the order of the entries as they were added.
@@ -76,7 +76,7 @@ public class OrderedRecordToken extends RecordToken {
      *  or values.
      *
      *  <p>Record labels are sanitized so that any non-Java identifier
-     *  characters are replaced with underscores, see 
+     *  characters are replaced with underscores, see
      *  {@linkptolemy.util.StringUtilities.sanitizeName(String)}</p>
      *
      *  @param fieldMap A Map that has keys of type String and
@@ -92,7 +92,7 @@ public class OrderedRecordToken extends RecordToken {
     /** Construct a RecordToken from the specified string.
      *
      *  <p>Record labels are sanitized so that any non-Java identifier
-     *  characters are replaced with underscores, see 
+     *  characters are replaced with underscores, see
      *  {@linkptolemy.util.StringUtilities.sanitizeName(String)}</p>
      *
      *  @param init A string expression of a record.
@@ -110,7 +110,7 @@ public class OrderedRecordToken extends RecordToken {
      *  If both arrays are empty, this creates an empty record token.
      *
      *  <p>Record labels are sanitized so that any non-Java identifier
-     *  characters are replaced with underscores, see 
+     *  characters are replaced with underscores, see
      *  {@linkptolemy.util.StringUtilities.sanitizeName(String)}</p>
      *
      *  @param labels An array of labels.
@@ -131,7 +131,7 @@ public class OrderedRecordToken extends RecordToken {
      *  The record fields are listed in the their original order
      *
      *  <p>Record labels are sanitized so that any non-Java identifier
-     *  characters are replaced with underscores, see 
+     *  characters are replaced with underscores, see
      *  {@linkptolemy.util.StringUtilities.sanitizeName(String)}</p>
      *
      *  @return A String beginning with "[" that contains label and value

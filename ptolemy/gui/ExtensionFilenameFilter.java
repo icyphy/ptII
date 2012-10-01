@@ -247,7 +247,7 @@ public class ExtensionFilenameFilter extends PtFilenameFilter {
      * @return The default extension.
      */
     public String getDefaultExtension() {
-	// Added by Heloise Hse
+        // Added by Heloise Hse
         if (_filters.size() == 1) {
             return (String) _filters.keys().nextElement();
         } else {

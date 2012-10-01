@@ -47,11 +47,11 @@ JavaSE implementation of the TextFieldContainerInterface.
 */
 
 public class TextFieldContainerJavaSE implements TextFieldContainerInterface {
-	
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Initiate. Do nothing here. 
+    /** Initiate. Do nothing here.
      * @param sink Object of the Sink actor.
      * @exception IllegalActionException If the entity cannot be contained
      * by the proposed container.

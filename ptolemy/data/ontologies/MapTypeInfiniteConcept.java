@@ -159,7 +159,7 @@ public abstract class MapTypeInfiniteConcept<C extends Concept> extends
         }
         return commonKeys;
     }
-    
+
     /** Return the string keys in either this or the given map concept.
      *  @param otherConcept The other map concept.
      *  @return The combined keys, as a set of Strings.
@@ -168,7 +168,7 @@ public abstract class MapTypeInfiniteConcept<C extends Concept> extends
         Set<String> allKeys = new java.util.HashSet<String>();
         Set<String> theseKeys = this._keyToConcept.keySet();
         Set<String> otherKeys = otherConcept._keyToConcept.keySet();
-        
+
         allKeys.addAll(theseKeys);
         allKeys.addAll(otherKeys);
         return allKeys;

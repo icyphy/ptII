@@ -701,15 +701,15 @@ public class LazyTypedCompositeActor extends TypedCompositeActor implements
                     ((LazyTypedCompositeActor) getParent()).populate();
                 }
 
-		// We used to temporarily set the MoMLFilters to null
-		// for parsing here, but this fails when we are running
-		// in a headless environment and we want to filter out
-		// image icons.  To replicate this, run in a non-graphical
-		// environment, such a remote Linux box and do:
-		//   cd $PTII/ptolemy/actor/lib/colt/test; 
-		//   make JAVAFLAGS=-verbose test_auto
-		// Formerly, we got:
-		// "X connection to localhost:10.0 broken (explicit kill or server shutdown)."
+                // We used to temporarily set the MoMLFilters to null
+                // for parsing here, but this fails when we are running
+                // in a headless environment and we want to filter out
+                // image icons.  To replicate this, run in a non-graphical
+                // environment, such a remote Linux box and do:
+                //   cd $PTII/ptolemy/actor/lib/colt/test;
+                //   make JAVAFLAGS=-verbose test_auto
+                // Formerly, we got:
+                // "X connection to localhost:10.0 broken (explicit kill or server shutdown)."
 
                 // We were getting ConcurrentModifications because
                 // when we instantiate and call
@@ -730,37 +730,37 @@ public class LazyTypedCompositeActor extends TypedCompositeActor implements
 
                 parser.setContext(this);
 
-		if ((_configureSource != null)
-		    && !_configureSource.equals("")) {
-		    URL xmlFile = new URL(_base, _configureSource);
-		    parser.parse(xmlFile, xmlFile);
-		}
+                if ((_configureSource != null)
+                    && !_configureSource.equals("")) {
+                    URL xmlFile = new URL(_base, _configureSource);
+                    parser.parse(xmlFile, xmlFile);
+                }
 
-		if ((_configureText != null) && !_configureText.equals("")) {
-		    // NOTE: Regrettably, the XML parser we are using cannot
-		    // deal with having a single processing instruction at the
-		    // outer level.  Thus, we have to strip it.
-		    String trimmed = _configureText.trim();
+                if ((_configureText != null) && !_configureText.equals("")) {
+                    // NOTE: Regrettably, the XML parser we are using cannot
+                    // deal with having a single processing instruction at the
+                    // outer level.  Thus, we have to strip it.
+                    String trimmed = _configureText.trim();
 
-		    if (trimmed.startsWith("<?") && trimmed.endsWith("?>")) {
-			trimmed = trimmed
-			    .substring(2, trimmed.length() - 2).trim();
+                    if (trimmed.startsWith("<?") && trimmed.endsWith("?>")) {
+                        trimmed = trimmed
+                            .substring(2, trimmed.length() - 2).trim();
 
-			if (trimmed.startsWith("moml")) {
-			    trimmed = trimmed.substring(4).trim();
-			    parser.parse(_base, trimmed);
-			}
+                        if (trimmed.startsWith("moml")) {
+                            trimmed = trimmed.substring(4).trim();
+                            parser.parse(_base, trimmed);
+                        }
 
-			// If it's not a moml processing instruction, ignore.
-		    } else {
-			// Data is not enclosed in a processing instruction.
-			// Must have been given in a CDATA section.
-			parser.parse(_base, _configureText);
+                        // If it's not a moml processing instruction, ignore.
+                    } else {
+                        // Data is not enclosed in a processing instruction.
+                        // Must have been given in a CDATA section.
+                        parser.parse(_base, _configureText);
 
-			// Our work here is done, free this up.
-			_configureText = null;
-		    }
-		}
+                        // Our work here is done, free this up.
+                        _configureText = null;
+                    }
+                }
             }
         } catch (Exception ex) {
             // Oddly, under JDK1.3.1, we may see the line

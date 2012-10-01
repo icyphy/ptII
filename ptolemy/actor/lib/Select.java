@@ -67,7 +67,7 @@ import ptolemy.kernel.util.StringAttribute;
  a new value is given to the <i>control</i> port, then all previously
  unread input tokens on the specified input channel will be read at the
  same firing time, in the order in which they arrived.</p>
- 
+
  <p>Note further that this actor is subtly different from the
  {@link BooleanSelect} actor. In addition to the obvious difference
  that the latter accepts only two input streams, the latter also

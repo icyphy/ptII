@@ -1,6 +1,6 @@
 /* Specify an interface to access an attribute's visual representation
    based on its style.
-   
+
  Copyright (c) 2011 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
@@ -37,7 +37,7 @@ import ptolemy.kernel.util.IllegalActionException;
 
 /** Specify an interface to access an attribute's visual representation
  *  based on its style.
- *  
+ *
  *  @author Peter Foldes
  *  @version $Id$
  *  @since Ptolemy II 8.1
@@ -47,7 +47,7 @@ import ptolemy.kernel.util.IllegalActionException;
 public interface AttributeRepresentation {
 
     /** Get a representation that can be later placed into a container.
-     * 
+     *
      * @param element The element to be represented.
      * @param container The container to place the element's representation.
      * @exception IllegalActionException If the element's representation cannot be

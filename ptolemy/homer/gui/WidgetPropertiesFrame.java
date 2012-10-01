@@ -71,11 +71,11 @@ import ptolemy.kernel.util.Settable;
 import ptolemy.util.MessageHandler;
 
 //////////////////////////////////////////////////////////////////////////
-//// WidgetPropertiesFrame 
+//// WidgetPropertiesFrame
 
 /** The property window for setting widget position and size.
  *  @author Ishwinder Singh
- *  @version $Id$ 
+ *  @version $Id$
  *  @since Ptolemy II 8.1
  *  @Pt.ProposedRating Red (ahuseyno)
  *  @Pt.AcceptedRating Red (ahuseyno)

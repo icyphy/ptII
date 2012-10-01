@@ -523,7 +523,7 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
         // We will remove objects from this list as we discover
         // existing links to them, and then create links to any
         // remaining objects in the list.
-        
+
         List<?> linkedObjects = relation.linkedObjectsList();
         int linkedObjectsCount = linkedObjects.size();
 

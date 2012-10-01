@@ -55,14 +55,14 @@ import com.sun.jna.NativeLibrary;
 /**
  * Parse a Functional Mock-up Interface (FMI) 1.0 Functional Mock-up
  * Unit (FMU) file and create a FMIModelDescription for later use.
- * 
+ *
  * <p>The parseFMUFile() method in this class is the primary entry
  * point into this package.</p>
  *
  * <p>FMI documentation may be found at
  * <a href="http://www.modelisar.com/fmi.html">http://www.modelisar.com/fmi.html</a>.
  * </p>
- * 
+ *
  * @author Christopher Brooks
  * @version $Id$
  * @Pt.ProposedRating Red (cxh)
@@ -142,12 +142,12 @@ public class FMUFile {
     }
 
     /** Read in a .fmu file and parse the modelDescription.xml file,
-     *  optionally ignore problems loading the shared library.   
+     *  optionally ignore problems loading the shared library.
      *  @param fmuFileName the .fmu file
      *  @param ignoreSharedLibraryErrors True if errors that occur
      *  during the loading of the shared library should be ignored.
      *  This is useful for loading FMUs that do not have shared
-     *  libraries for the current platform.  
+     *  libraries for the current platform.
      *  @return An object that represents the structure of the
      *  modelDescriptionFile.xml file.
      *  @exception IOException If the file cannot be unzipped or the
@@ -307,7 +307,7 @@ public class FMUFile {
             }
         }
 
-        // FIXME: handle CoSimulation_Tool 
+        // FIXME: handle CoSimulation_Tool
 
         return fmiModelDescription;
     }

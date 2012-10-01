@@ -81,7 +81,7 @@ public class PtGUIUtilities {
         // However, calling getProperty will likely fail in applets
         // or within the sandbox, so we use this method instead.
         try {
-        	String macOSProperty = StringUtilities.getProperty("ptolemy.ptII.MacOS");
+                String macOSProperty = StringUtilities.getProperty("ptolemy.ptII.MacOS");
             if (macOSProperty.equals("true")) {
                 System.out.println("ptolemy.ptII.MacOS = "
                         + "true property detected");

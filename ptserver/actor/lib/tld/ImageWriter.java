@@ -1,7 +1,7 @@
 /*
- ImageWriter accepts ByteArrayTokens from its input stream, writes 
+ ImageWriter accepts ByteArrayTokens from its input stream, writes
  them as a temp file and passes absolute path to the file via its output to Matlab.
- 
+
  Copyright (c) 2011 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
@@ -47,10 +47,10 @@ import ptserver.data.ByteArrayToken;
 ///////////////////////////////////////////////////////////////////
 //// ImageWriter
 /**
- * ImageWriter accepts ByteArrayTokens from its input stream, writes 
+ * ImageWriter accepts ByteArrayTokens from its input stream, writes
  * them as a temp file and passes absolute path to the file via its output to Matlab.
  * @author Anar Huseynov
- * @version $Id$ 
+ * @version $Id$
  * @since Ptolemy II 8.1
  * @Pt.ProposedRating Red (ahuseyno)
  * @Pt.AcceptedRating Red (ahuseyno)
@@ -83,7 +83,7 @@ public class ImageWriter extends TypedAtomicActor {
     public TypedIOPort output;
 
     /**
-     * Read one ByteArrayToken from the input port, write the byte array to 
+     * Read one ByteArrayToken from the input port, write the byte array to
      * a temp file and send the file name via its output port.
      */
     @Override

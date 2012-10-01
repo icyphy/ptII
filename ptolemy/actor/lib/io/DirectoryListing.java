@@ -132,7 +132,7 @@ public class DirectoryListing extends SequenceSource implements FilenameFilter {
         allowEmptyDirectory = new Parameter(this, "allowEmptyDirectory");
         allowEmptyDirectory.setTypeEquals(BaseType.BOOLEAN);
         allowEmptyDirectory.setExpression("false");
-        
+
         // Show the firingCountLimit parameter last.
         firingCountLimit.moveToLast();
     }

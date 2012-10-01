@@ -30,48 +30,48 @@ public class Emit extends AtomicContinuationActor {
     }
 
     ///////////////////////////////////////////////////////
-    
+
     /* (non-Javadoc)
      * @see ptolemy.domains.coroutine.kernel.ContinuationActor#enter(ptolemy.domains.coroutine.kernel.ControlEntryToken)
      */
     @Override
     public ControlExitToken controlEnter(ControlEntryToken entry)
             throws IllegalActionException {
-        
-        int insize  = _inputs.getWidth(), 
+
+        int insize  = _inputs.getWidth(),
             outsize = _outputs.getWidth(),
             maxsize = insize < outsize ? insize : outsize;
-        
+
         try {
             for (int k = 0; k < maxsize; ++k) {
                 Token inToken = _inputs.get(k);
                 _outputs.send(k, inToken);
             }
-        } 
+        }
         catch (NoRoomException e) {
             e.printStackTrace();
-        } 
+        }
         catch (NoTokenException e) {
             e.printStackTrace();
-        } 
-        
+        }
+
         return ControlExitToken.Exit(nextExit);
     }
-    
+
     public TypedIOPort _inputs;
     public TypedIOPort _outputs;
-    
+
     ///////////////////////////////////////////////////////
 
-    protected void _init() throws 
+    protected void _init() throws
             IllegalActionException, NameDuplicationException {
-        
+
         addExitLocation(nextExit);
-        
+
         _inputs  = new TypedIOPort(this, "Inputs",  true, false);
         _outputs = new TypedIOPort(this, "Outputs", false, true);
     }
- 
+
     final public ExitLocation nextExit = new ExitLocation("next");
-    
+
 }

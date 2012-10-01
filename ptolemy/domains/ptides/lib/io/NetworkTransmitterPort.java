@@ -54,30 +54,30 @@ import ptolemy.kernel.util.NameDuplicationException;
  *  @Pt.AcceptedRating
  */
 public class NetworkTransmitterPort extends PtidesPort {
- 
-    
+
+
     /** Create a new NetworkTransmitterPort with a given container and a name.
-     * @param container The container of the port. 
+     * @param container The container of the port.
      * @param name The name of the port.
      * @throws IllegalActionException If parameters cannot be set.
      * @throws NameDuplicationException If name already exists.
      */
     public NetworkTransmitterPort(CompositeEntity container, String name) throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        
-        this.setOutput(true); 
-        
+
+        this.setOutput(true);
+
         platformDelayBound = new Parameter(this, "platformDelayBound");
         platformDelayBound.setExpression("0.0");
-        platformDelayBound.setTypeEquals(BaseType.DOUBLE);  
-         
+        platformDelayBound.setTypeEquals(BaseType.DOUBLE);
+
     }
-     
-    
+
+
     /** Return the timestamp for a specific token.
      *  @param t The token.
      *  @return The timestamp.
-     */ 
+     */
     public Time getTimeStampForToken(Token t) {
         Time time = _transmittedTokens.get(t);
         _transmittedTokenCnt.put(t, _transmittedTokenCnt.get(t).intValue() - 1);
@@ -87,7 +87,7 @@ public class NetworkTransmitterPort extends PtidesPort {
         }
         return time;
     }
-    
+
     /** Save token and remember timestamp of the token. Then call send of
      *  super class.
      *  @param channelIndex The index of the channel, from 0 to width-1.
@@ -110,14 +110,14 @@ public class NetworkTransmitterPort extends PtidesPort {
         _transmittedTokens.put(token, timestamp);
         _transmittedTokenCnt.put(token, _transmittedTokenCnt.get(token).intValue() + 1);
         super.send(channelIndex, token);
-    } 
-    
+    }
+
     /** Platform delay bound parameter that defaults to the double value 0.0. */
-    public Parameter platformDelayBound; 
-    
-    
+    public Parameter platformDelayBound;
+
+
     private HashMap<Token, Time> _transmittedTokens;
     private HashMap<Token, Integer> _transmittedTokenCnt;
 
-    
+
 }

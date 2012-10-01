@@ -76,7 +76,7 @@ public abstract class MonitoredQuantityManager extends TypedAtomicActor
     public MonitoredQuantityManager(Workspace workspace) {
         super(workspace);
     }
-    
+
     /** Construct a MonitoredQuantityManager with a name and a container.
      *  The container argument must not be null, or a
      *  NullPointerException will be thrown.  This actor will use the

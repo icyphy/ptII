@@ -71,20 +71,20 @@ public class ParameterDisplayIconScript extends DefaultIconScript {
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
     /** Override base class since content here should only be added if
      * it does not exist already.
-     * 
+     *
      * @return False, since default content should only be added if no content
      * already exists
      */
     public boolean isOverwriteable() {
         return false;
-    }  
-    
+    }
+
     /** Get an HTML table describing the parameters of the object.
      *  @param object The Ptolemy object to return a table for.
      *  @return An HTML table displaying the parameter values for the
@@ -140,7 +140,7 @@ public class ParameterDisplayIconScript extends DefaultIconScript {
         }
         return table.toString();
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
@@ -152,37 +152,37 @@ public class ParameterDisplayIconScript extends DefaultIconScript {
      *  This class provides an area attribute of type
      *  "onmouseover" that displays the parameter values
      *  of the object and one of type "onmouseout" that
-     *  clears that display.  
-     *  
+     *  clears that display.
+     *
      *  @param exporter The exporter to which to provide the content.
      *  @param object The object which provides the content.
      *  @throws IllegalActionException If there is a problem creating the content
      * or if there is a name duplication with the created attributes
      */
-    protected void _provideDefaultAttributes(NamedObj object, 
+    protected void _provideDefaultAttributes(NamedObj object,
             WebExporter exporter) throws IllegalActionException {
-    
+
         WebAttribute webAttribute;
-        
+
         String command = "writeText('<h2>"
             + object.getName()
             + "</h2>"
             + getParameterTable(object)
             + "')";
-        
+
         String clear = "writeText('Mouse over the icons to see their " +
                     "parameters.  Click on composites and plotters to " +
                     "reveal their contents (if provided).')";
-        
-        // Create WebAttribute for onmouseover event and add to exporter.  
+
+        // Create WebAttribute for onmouseover event and add to exporter.
         // Content should only be added once (onceOnly -> true).
         webAttribute = WebAttribute
-            .createWebAttribute(object, "onmouseoverWebAttribute", 
+            .createWebAttribute(object, "onmouseoverWebAttribute",
                     "onmouseover");
         webAttribute.setExpression(command);
         exporter.defineAttribute(webAttribute, true);
-        
-        // Create WebAttribute for onmouseout event and add to exporter.  
+
+        // Create WebAttribute for onmouseout event and add to exporter.
         // Content should only be added once (onceOnly -> true).
         webAttribute = WebAttribute
             .createWebAttribute(object, "onmouseoutWebAttribute",
@@ -190,14 +190,14 @@ public class ParameterDisplayIconScript extends DefaultIconScript {
         webAttribute.setExpression(clear);
         exporter.defineAttribute(webAttribute, true);
     }
-    
+
     /** Provide default content to the specified web exporter to be
      *  included in a web page for the container of this object for
      *  objects that do not override onmouseover.
      *  This class provides an HTML table containing parameter names and values,
-     *  plus a placeholder <div/> tag which the script writes information in 
-     *  upon onmouseover().  
-     *  
+     *  plus a placeholder <div/> tag which the script writes information in
+     *  upon onmouseover().
+     *
      *  @param exporter The exporter to which to provide the content.
      *  @throws IllegalActionException If evaluating the value
      *   of this parameter fails.
@@ -206,17 +206,17 @@ public class ParameterDisplayIconScript extends DefaultIconScript {
     //*  If the <i>eventType</i> parameter is "default", then
     //*  remove all previously defined defaults and use the global
     //*  defaults.
-    protected void _provideElements(WebExporter exporter) 
+    protected void _provideElements(WebExporter exporter)
         throws IllegalActionException {
         WebElement webElement;
-        
+
         // Add content from IconScript (DefaultIconScript does not override
         // _provideElements)
         super._provideElements(exporter);
-        
-        // Define the JavaScript command writeText.  Script with this name 
+
+        // Define the JavaScript command writeText.  Script with this name
         // should only be included once (onceOnly -> true)
-        webElement = WebElement.createWebElement(getContainer(), 
+        webElement = WebElement.createWebElement(getContainer(),
                 "writeTextScriptWebElement", "writeTextScript");
         webElement.setParent(WebElement.HEAD);
         webElement.setExpression("<script type=\"text/javascript\">\n"
@@ -225,9 +225,9 @@ public class ParameterDisplayIconScript extends DefaultIconScript {
                 + "};\n"
                 + "</script>");
         exporter.defineElement(webElement, true);
-        
+
         // Put a destination paragraph in the end section of the HTML.
-        webElement = WebElement.createWebElement(getContainer(), 
+        webElement = WebElement.createWebElement(getContainer(),
                 "afterImageWebElement", "afterImage");
         webElement.setParent(WebElement.END);
         webElement.setExpression( "<div id=\"afterImage\">\n"

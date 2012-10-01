@@ -271,8 +271,8 @@ public class ObjectType extends StructuredType implements Cloneable {
     public static final ObjectType BOTTOM = new ObjectType(BottomClass.class);
 
     /** The top element among all ObjectTypes.
-     *  The value of this variable is == to the   
-     *  {@link ptolemy.data.type.BaseType#OBJECT} so that 
+     *  The value of this variable is == to the
+     *  {@link ptolemy.data.type.BaseType#OBJECT} so that
      *  code generation can use "xxx == BaseType.OBJECT".
      */
     public static final ObjectType TOP = BaseType.OBJECT;
@@ -410,7 +410,7 @@ public class ObjectType extends StructuredType implements Cloneable {
             return class2.isAssignableFrom(class1);
         }
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private fields                    ////
 

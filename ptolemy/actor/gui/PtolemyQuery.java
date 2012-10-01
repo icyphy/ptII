@@ -213,7 +213,7 @@ public class PtolemyQuery extends Query implements QueryListener,
                         int max = ((IntRangeParameter) attribute).getMaxValue();
                         String minLabel = ((DoubleRangeParameter) attribute).minLabel.stringValue();
                         String maxLabel = ((DoubleRangeParameter) attribute).maxLabel.stringValue();
-                        
+
                         // minLabel and maxLabel can contain the special placeholders $min and
                         // $max, which must be replaced by the actual limits of the range
                         minLabel = minLabel.replace("$min", Double.toString(min));
@@ -236,7 +236,7 @@ public class PtolemyQuery extends Query implements QueryListener,
                                 .getToken()).intValue();
                         String minLabel = ((DoubleRangeParameter) attribute).minLabel.stringValue();
                         String maxLabel = ((DoubleRangeParameter) attribute).maxLabel.stringValue();
-                        
+
                         // minLabel and maxLabel can contain the special placeholders $min and
                         // $max, which must be replaced by the actual limits of the range
                         minLabel = minLabel.replace("$min", Double.toString(min));
@@ -514,7 +514,7 @@ public class PtolemyQuery extends Query implements QueryListener,
      *  @return true if the component should be editable,
      *  false otherwise.
      */
-    public boolean adjustEditable(Settable settable, Component component) { 
+    public boolean adjustEditable(Settable settable, Component component) {
         if (settable.getVisibility() == Settable.NOT_EDITABLE) {
             NamedObj container = (NamedObj)settable.getContainer();
             Attribute expertMode = container.getAttribute("_expertMode");
@@ -1084,7 +1084,7 @@ public class PtolemyQuery extends Query implements QueryListener,
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
-    /** Add submit action to component in dialogue. If parameter could be 
+    /** Add submit action to component in dialogue. If parameter could be
      *  validated close the dialogue after.
      *  @param component The component.
      *  @param attributeName The name of the attribute edited by the component.
@@ -1113,7 +1113,7 @@ public class PtolemyQuery extends Query implements QueryListener,
                         dialog._handleClosing();
                     }
                 } catch (IllegalActionException e1) {
-                    // Do not display errors here, just show error dialogue if attribute cannot be validated, 
+                    // Do not display errors here, just show error dialogue if attribute cannot be validated,
                     // do not update originalValues and do not close.
                 }
             }

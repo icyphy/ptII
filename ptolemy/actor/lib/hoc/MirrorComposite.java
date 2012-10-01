@@ -37,7 +37,7 @@ import ptolemy.actor.IOPort;
 import ptolemy.actor.TypedCompositeActor;
 import ptolemy.actor.parameters.ParameterMirrorPort;
 import ptolemy.actor.parameters.ParameterPort;
-import ptolemy.actor.parameters.PortParameter; 
+import ptolemy.actor.parameters.PortParameter;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.ComponentPort;
 import ptolemy.kernel.ComponentRelation;
@@ -128,7 +128,7 @@ public class MirrorComposite extends TypedCompositeActor implements
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-     
+
 
     /** Clone the object into the specified workspace. This overrides
      *  the base class to set up the associations in the mirror ports
@@ -187,7 +187,7 @@ public class MirrorComposite extends TypedCompositeActor implements
             throw new InternalErrorException(this, ex, null);
         }
     }
-    
+
     /** Create a new ParameterMirrorPort.
      *  @param name The name of the port to create.
      *  @return A new instance of PtidesMirrorPort, an inner class.
@@ -203,7 +203,7 @@ public class MirrorComposite extends TypedCompositeActor implements
             // exception.
             throw new InternalErrorException(this, ex, null);
         }
-    } 
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
@@ -348,13 +348,13 @@ public class MirrorComposite extends TypedCompositeActor implements
      */
     protected void _addPort(Port port) throws IllegalActionException,
             NameDuplicationException {
-        
+
         if (!(port instanceof MirrorPort || port instanceof ParameterMirrorPort)) {
             throw new IllegalActionException(this,
                     "MirrorComposite ports are required to be "
                             + "instances of MirrorPort");
-        } 
-        
+        }
+
         super._addPort(port);
 
         // Create and connect a matching inside port on contained entities.
@@ -644,7 +644,7 @@ public class MirrorComposite extends TypedCompositeActor implements
          */
         protected void _addPort(final Port port) throws IllegalActionException,
                 NameDuplicationException {
-            
+
             if (!(port instanceof MirrorPort || port instanceof ParameterMirrorPort)) {
                 throw new IllegalActionException(this,
                         "Ports in MirrorComposiMirrorCompositeContentsite must be MirrorPort.");
@@ -672,14 +672,14 @@ public class MirrorComposite extends TypedCompositeActor implements
                 protected void _execute() throws Exception {
                     try {
                         workspace().getWriteAccess();
-                        
+
                         if (port instanceof ParameterMirrorPort) {
                             ParameterMirrorPort newPort = (ParameterMirrorPort) container
                             .getPort(port.getName());
-    
+
                             if (newPort == null) {
                                 newPort = (ParameterMirrorPort) ((MirrorComposite)container).newParameterPort(port
-                                        .getName()); 
+                                        .getName());
                             }
                         } else { // MirrorPort
                             MirrorPort newPort = (MirrorPort) container
@@ -689,7 +689,7 @@ public class MirrorComposite extends TypedCompositeActor implements
                                 newPort = (MirrorPort) container.newPort(port
                                         .getName());
                             }
-    
+
                             if (port instanceof IOPort) {
                                 newPort.setInput(((IOPort) port).isInput());
                                 newPort.setOutput(((IOPort) port).isOutput());
@@ -703,6 +703,6 @@ public class MirrorComposite extends TypedCompositeActor implements
             };
 
             container.requestChange(request);
-        } 
-    } 
+        }
+    }
 }

@@ -204,7 +204,7 @@ public class Derivative extends TypedAtomicActor {
         if (_previousTime == null) {
             // First firing.
             derivative.send(0, DoubleToken.ZERO);
-            
+
             if (_debugging) {
                 _debug("fire: first firing. Sending zero.");
             }
@@ -258,7 +258,7 @@ public class Derivative extends TypedAtomicActor {
         _previousOutput = null;
         _previousInput = 0.0;
     }
-    
+
     /** Record the current input and time.
      *  @exception IllegalActionException If the superclass throws it.
      *  @return Whatever the superclass returns (true).

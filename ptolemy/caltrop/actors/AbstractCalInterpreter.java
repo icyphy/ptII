@@ -134,7 +134,7 @@ abstract public class AbstractCalInterpreter extends TypedAtomicActor {
         newObject._actor = null;
         newObject._ddi = null;
         newObject._env = null;
-            
+
         return newObject;
     }
 

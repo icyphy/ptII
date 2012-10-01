@@ -399,7 +399,7 @@ Token matrixToArray(Token thisToken) {
     for (i = 0, index = 0; i < ((Matrix)(thisToken.payload)).column; i++) {
         for (j = 0; j < ((Matrix)(thisToken.payload)).row; j++, index++) {
             element = Matrix_get(thisToken, j, i);
-	    Array_set(result, index, element);
+            Array_set(result, index, element);
         }
     }
     return result;

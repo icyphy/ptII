@@ -162,7 +162,7 @@ public class FSMActor extends NamedProgramCodeGeneratorAdapter {
 
         // States are numbered according to the order they are created,
         // i.e., the same order as in list returned by the method entityList().
-        codeBuffer.append("switch ($actorSymbol(currentState))" 
+        codeBuffer.append("switch ($actorSymbol(currentState))"
                 + _eol + "{" + _eol);
 
         for (State state : (List<State>) fsmActor.entityList()) {
@@ -289,7 +289,7 @@ public class FSMActor extends NamedProgramCodeGeneratorAdapter {
 //                         }
 //                         System.out.println("FSMActor: " + destinationNameWithoutController);
 
-                                                
+
                         int channel = -1;
                         if (channelNumber != null) {
                             channel = channelNumber.intValue();
@@ -351,7 +351,7 @@ public class FSMActor extends NamedProgramCodeGeneratorAdapter {
                                 //codeBuffer.append("$ref(" + destinationName
                                 //        + "#" + i + ") = ");
                                 codeBuffer.append("$put(" + destinationName + "#" + i + ", ");
-                               
+
 
                                 //sendCode.append("$send(" + destinationName
                                 //        + ", " + i + ")" + _eol);
@@ -467,7 +467,7 @@ public class FSMActor extends NamedProgramCodeGeneratorAdapter {
                                     //codeBuffer.append("$ref(" + destinationName
                                     //        + "#" + i + ") = ");
                                     codeBuffer.append("$put(" + destinationName
-                                            + "#" + i + ", " + scopeFireCode + ");"); 
+                                            + "#" + i + ", " + scopeFireCode + ");");
                                 }
                             }
                         } else if (destination instanceof Variable) {
@@ -516,7 +516,7 @@ public class FSMActor extends NamedProgramCodeGeneratorAdapter {
 
             if (!hasDefaultCase) {
                 if (transitionCount > 0) {
-                    codeBuffer.append("else" + _eol 
+                    codeBuffer.append("else" + _eol
                             + "{" + _eol);
                 } else {
                     codeBuffer.append(_eol);

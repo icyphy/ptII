@@ -239,7 +239,7 @@ public class TypeAttribute extends Parameter {
 
         }
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private fields                    ////
 

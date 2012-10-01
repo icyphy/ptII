@@ -45,11 +45,11 @@ import com.sun.jna.Pointer;
 //// FMUCoSimulation
 
 /** Read a Functional Mock-up Unit .fmu file and invoke it as a co-simulation.
- *  
+ *
  * <p>This file is based on fmusdk/src/model_exchange/fmusim_me/main.c
  * by Jakob Mauss, which has the following license:</p>
  *
- * <p>FMU SDK license</p> 
+ * <p>FMU SDK license</p>
  *
  * <p>Copyright (c) 2008-2011, QTronic GmbH. All rights reserved.
  * The FmuSdk is licensed by the copyright holder under the BSD License
@@ -62,15 +62,15 @@ import com.sun.jna.Pointer;
  * this list of conditions and the following disclaimer in the documentation
  * and/or other materials provided with the distribution.</p>
  *
- * <p>THIS SOFTWARE IS PROVIDED BY QTRONIC GMBH "AS IS" AND ANY EXPRESS OR 
- * IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES 
- * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. 
- * IN NO EVENT SHALL QTRONIC GMBH BE LIABLE FOR ANY DIRECT, INDIRECT, 
+ * <p>THIS SOFTWARE IS PROVIDED BY QTRONIC GMBH "AS IS" AND ANY EXPRESS OR
+ * IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+ * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
+ * IN NO EVENT SHALL QTRONIC GMBH BE LIABLE FOR ANY DIRECT, INDIRECT,
  * INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
- * NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, 
- * DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY 
- * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT 
- * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF 
+ * NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+ * DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+ * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.</p>
  *
  * @author Christopher Brooks, based on fmusim_cs/main.c by Jakob Mauss
@@ -81,7 +81,7 @@ import com.sun.jna.Pointer;
 public class FMUCoSimulation extends FMUDriver {
 
     /** Perform co-simulation using the named Functional Mock-up Unit (FMU) file.
-     *          
+     *
      *  <p>Usage:</p>
      *  <pre>
      *  java -classpath ../../../lib/jna.jar:../../.. org.ptolemy.fmi.driver.FMUCoSimulation \
@@ -97,7 +97,7 @@ public class FMUCoSimulation extends FMUDriver {
      *  <dl>
      *  <dt>file.fmu</dt>
      *  <dd>The co-simulation Functional Mock-up Unit (FMU) file.  In FMI-1.0,
-     *  co-simulation fmu files contain a modelDescription.xml file that 
+     *  co-simulation fmu files contain a modelDescription.xml file that
      *  has an &lt;Implementation&gt; element.  Model exchange fmu files do not
      *  have this element.</dd>
      *  <dt>endTime</dt>
@@ -111,7 +111,7 @@ public class FMUCoSimulation extends FMUDriver {
      *  ',', If the separator is ',', columns are separated by ',' and
      *  '.' is used for floating-point numbers.  Otherwise, the given
      *  separator (e.g. ';' or '\t') is to separate columns, and ','
-     *  is used as decimal dot in floating-point numbers. 
+     *  is used as decimal dot in floating-point numbers.
      *  <dt>outputFile</dt>
      *  <dd>The name of the output file.  The default is results.csv</dd>
      *  </dl>
@@ -194,7 +194,7 @@ public class FMUCoSimulation extends FMUDriver {
 
         double startTime = 0;
 
-        invoke("_fmiInitializeSlave", 
+        invoke("_fmiInitializeSlave",
                 new Object[] { fmiComponent, startTime, (byte) 1, endTime },
                 "Could not initialize slave: ");
 

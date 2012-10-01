@@ -312,7 +312,7 @@ public class LinkController extends BasicEdgeController {
          */
         public boolean acceptHead(Connector c, Figure f) {
             Object object = f.getUserObject();
-            
+
             boolean isPubSubPort = object instanceof PublisherPort || object instanceof SubscriberPort;
 
             if ((object instanceof Port && !isPubSubPort)

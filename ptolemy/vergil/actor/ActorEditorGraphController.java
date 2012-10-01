@@ -461,7 +461,7 @@ public class ActorEditorGraphController extends ActorViewerGraphController {
 
         if (_alternateActorInstanceClassName == null) {
             // Default to the normal ActorInstanceController.
-            _entityController = new ActorInstanceController(this);            
+            _entityController = new ActorInstanceController(this);
         } else {
             try {
                 // Try to load the alternate class.
@@ -484,7 +484,7 @@ public class ActorEditorGraphController extends ActorViewerGraphController {
                 e.printStackTrace();
             }
         }
-        
+
         // Set up a listener to lay out the ports when graph changes.
         // NOTE: It is imperative that there be no more than one such
         // listener!  If there is more than one instance, the

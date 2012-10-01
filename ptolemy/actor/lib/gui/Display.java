@@ -75,7 +75,7 @@ import ptolemy.kernel.util.Workspace;
  doesn't declare a type, but lets the type resolution algorithm find
  the least fixed point. If backward type inference is enabled, and
  no input type has been declared, the input is constrained to be
- equal to <code>BaseType.GENERAL</code>. This will result in upstream 
+ equal to <code>BaseType.GENERAL</code>. This will result in upstream
  ports resolving to the most general type rather than the most specific.
  </p><p>
  This actor has a <i>suppressBlankLines</i> parameter, whose default value
@@ -362,10 +362,10 @@ public class Display extends TypedAtomicActor implements PortablePlaceable {
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
-    /** Set the input port greater than or equal to 
-     *  <code>BaseType.GENERAL</code> in case backward type inference is 
-     *  enabled and the input port has no type declared. 
-     * 
+    /** Set the input port greater than or equal to
+     *  <code>BaseType.GENERAL</code> in case backward type inference is
+     *  enabled and the input port has no type declared.
+     *
      *  @return A set of inequalities.
      */
     @Override
@@ -382,9 +382,9 @@ public class Display extends TypedAtomicActor implements PortablePlaceable {
     /** Get the right instance of the implementation depending upon the
      *  of the dependency specified through dependency injection.
      *  If the instance has not been created, then it is created.
-     *  If the instance already exists then return the same. 
+     *  If the instance already exists then return the same.
      *
-     *	<p>This code is used as part of the dependency injection needed for the
+     *        <p>This code is used as part of the dependency injection needed for the
      *  HandSimDroid project, see $PTII/ptserver.  This code uses dependency
      *  inject to determine what implementation to use at runtime.
      *  This method eventually reads ptolemy/actor/ActorModule.properties.
@@ -419,7 +419,7 @@ public class Display extends TypedAtomicActor implements PortablePlaceable {
 
     /** Return a string describing the input on channel i.
      *  This is a protected method to allow subclasses to override
-     *  how inputs are observed. 
+     *  how inputs are observed.
      *  @param i The channel
      *  @return A string representation of the input, or null
      *   if there is nothing to display.

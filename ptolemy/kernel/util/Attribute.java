@@ -389,7 +389,7 @@ public class Attribute extends NamedObj {
         if (previousContainer == container) {
             return;
         }
-        
+
         _notifyHierarchyListenersBeforeChange();
 
         try {
@@ -440,7 +440,7 @@ public class Attribute extends NamedObj {
                 // exceptions.
                 _notifyHierarchyListenersAfterChange();
             } finally {
-                _workspace.doneWriting();                
+                _workspace.doneWriting();
             }
         }
     }

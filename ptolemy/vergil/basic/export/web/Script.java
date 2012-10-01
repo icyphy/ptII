@@ -42,7 +42,7 @@ import ptolemy.kernel.util.NamedObj;
 //// Script
 /**
  * A parameter for associating a script (such as Javascript) with an object in
- * a model.  
+ * a model.
  *
  * @author Edward A. Lee, Elizabeth Latronico
  * @version $Id$
@@ -61,34 +61,34 @@ public abstract class Script extends WebContent implements WebExportable {
     public Script(NamedObj container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        
+
         _icon.setIconText("S");
         displayText.setExpression("Web page script to run on containers icon.");
 
         eventType = new AreaEventType(this, "eventType");
-        
+
         script = new StringParameter(this, "script");
         TextStyle style = new TextStyle(script, "style");
         style.height.setExpression("5");
-        
+
         evaluateScript = new Parameter(this, "evaluateScript");
         evaluateScript.setTypeEquals(BaseType.BOOLEAN);
-        evaluateScript.setExpression("true");        
+        evaluateScript.setExpression("true");
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         parameters                        ////
-    
+
     /** Parameter indicating whether the script text's expression should be
      *  evaluated or not.  Ptolemy interprets the dollar sign to indicate that
-     *  the value of a parameter should be inserted; for example, $pi and 
-     *  a variable pi=3.14 would evaluate to 3.14.  However, many scripting 
+     *  the value of a parameter should be inserted; for example, $pi and
+     *  a variable pi=3.14 would evaluate to 3.14.  However, many scripting
      *  languages such as jQuery use a dollar sign as part of the script itself
      *  (to refer to jQuery variables).  In this case, we want to insert the
      *  exact plain text into the web page, not the evaluated text.
      */
     public Parameter evaluateScript;
-    
+
     /** Event type to respond to by executing the command given by
      *  the value of this Script parameter.
      *  The script will be run when the icon corresponding to the
@@ -111,7 +111,7 @@ public abstract class Script extends WebContent implements WebExportable {
      *  The default is "onmouseover".
      */
     public AreaEventType eventType;
-    
+
     /** Script to insert in the head section of the
      *  web page. This will normally define a JavaScript function that
      *  will be invoked when the UI event specified by <i>eventType</i>
@@ -127,10 +127,10 @@ function writeText(text) {
      * string 'hello world' when the UI action <i>eventType</i> occurs.
      */
     public StringParameter script;
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-    
+
     /** Script is of type text/javascript for backwards compatibility.
      *  return string text/javascript
      */
@@ -147,10 +147,10 @@ function writeText(text) {
     }
 
     /** Return true, since new scripts and method calls should overwrite old.
-     * 
+     *
      * @return True, since new scripts and method calls should overwrite old
      */
     public boolean isOverwriteable() {
         return true;
-    }  
+    }
 }

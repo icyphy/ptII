@@ -1,4 +1,4 @@
-/* An attribute that runs a Jetty web server and routes requests to objects 
+/* An attribute that runs a Jetty web server and routes requests to objects
  * in the model.
 
  Copyright (c) 1997-2012 The Regents of the University of California.
@@ -77,9 +77,9 @@ import ptolemy.kernel.util.Workspace;
  *  You can add additional resource bases by adding additional
  *  parameters of type ptolemy.data.expr.FileParameter to
  *  this WebServer (select Configure in the context menu).
- *  
+ *
  *  <p><a href="http://wiki.eclipse.org/Jetty/Tutorial">http://wiki.eclipse.org/Jetty/Tutorial</a>
- *  - The Jetty Tutorial</p> 
+ *  - The Jetty Tutorial</p>
  *
  *   @author Elizabeth Latronico and Edward A. Lee
  *   @version $Id$
@@ -88,7 +88,7 @@ import ptolemy.kernel.util.Workspace;
  *   @Pt.AcceptedRating Red (ltrnc)
  */
 public class WebServer extends AbstractInitializableAttribute {
-    
+
     /** Construct an instance of the attribute.
      * @param container The container.
      * @param name The name.
@@ -98,36 +98,36 @@ public class WebServer extends AbstractInitializableAttribute {
     public WebServer(NamedObj container, String name)
         throws IllegalActionException, NameDuplicationException {
         super(container, name);
-    
+
         /*
     public WebServer(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
         */
-        
+
         port = new Parameter(this, "port");
         port.setTypeEquals(BaseType.INT);
         port.setExpression("8080");
-        
+
         applicationPath = new StringParameter(this, "applicationPath");
         applicationPath.setExpression("/");
-        
+
         resourcePath = new StringParameter(this, "resourcePath");
         resourcePath.setExpression("/files");
-        
-        // Set up a parameter to specify the location for reading and writing 
+
+        // Set up a parameter to specify the location for reading and writing
         // resources (files).  This parameter defaults to the directory that
         // the current model is located in.
-        
-        // The Jetty web server supports searching multiple directories/URLs for 
-        // resources (files) to return as part of an HttpResponse.  However, if 
-        // there are two different files with the same names in different 
-        // directories, it is not clear which file will be served.  Right now, 
+
+        // The Jetty web server supports searching multiple directories/URLs for
+        // resources (files) to return as part of an HttpResponse.  However, if
+        // there are two different files with the same names in different
+        // directories, it is not clear which file will be served.  Right now,
         // the directories are searched in alphabetical order by parameter name.
-        // WebServer itself currently only contains a reader 
+        // WebServer itself currently only contains a reader
         // (the resourceHandler in setResourceHandlers()
-        // Other actors (e.g. HttpCompositeServiceActor) are writers, and 
-        // will look for a WebServer in the model to determine the directory 
+        // Other actors (e.g. HttpCompositeServiceActor) are writers, and
+        // will look for a WebServer in the model to determine the directory
         // to write to
         resourceLocation = new FileParameter(this, "resourceLocation");
         URI modelURI = URIAttribute.getModelURI(this);
@@ -137,7 +137,7 @@ public class WebServer extends AbstractInitializableAttribute {
         // FIXME:  Register an attributeChanged event for when a model is saved
         // to update this directory?
         String path;
-        if (modelURI != null && modelURI.getPath() != null 
+        if (modelURI != null && modelURI.getPath() != null
                 && !modelURI.getPath().isEmpty()) {
             path = modelURI.getPath().toString();
             int slash = path.lastIndexOf("/");
@@ -148,14 +148,14 @@ public class WebServer extends AbstractInitializableAttribute {
             path = "$TMPDIR";
         }
         resourceLocation.setExpression(path);
-        
+
         temporaryFileLocation = new FileParameter(this, "temporaryFileLocation");
         temporaryFileLocation.setExpression("$TMPDIR");
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         parameters                        ////
-    
+
     /** The URL prefix to map this application to.  This defaults to "/",
      *  which will cause the model to receive all URLs directed to this
      *  server. For example, if this WebServer is handling requests on
@@ -174,24 +174,24 @@ public class WebServer extends AbstractInitializableAttribute {
      * <p>
      * Other choices besides "/" are possible.  For example, for web applications, it's
      * common to host several applications on the same server.  It's typical
-     * to have each application use setContextPath("/appName") here, 
+     * to have each application use setContextPath("/appName") here,
      * (e.g. setContextPath("/myCalendarApp"), setContextPath("/tetris")
      * Each application can contain multiple servlets, which are registered
      * to URLs relative to this path, e.g.:
      * /myCalendarApp/view, /myCalendarApp/print, /tetris/view
-     * That way the separate applications have a separate URL namespaces and 
-     * don't interfere with each other.  A web server often offers some 
+     * That way the separate applications have a separate URL namespaces and
+     * don't interfere with each other.  A web server often offers some
      * default content at the root / then.  E.g. Tomcat provides the Tomcat
      * manager screen to load/unload web applications.
-     */ 
+     */
     public StringParameter applicationPath;
-    
+
     /** The port number to respond to. This is a integer that
      *  defaults to 8080.
      */
     public Parameter port;
-    
-    /** The URL prefix which web services (e.g. an HTML page) will use to 
+
+    /** The URL prefix which web services (e.g. an HTML page) will use to
      *  refer to resources (files, such as images).
      *  Used by the ResourceHandler. For example,
      *  a web page may refer to such a resource by an absolute URL
@@ -224,24 +224,24 @@ public class WebServer extends AbstractInitializableAttribute {
      *  (see #resourceLocation).
      *  </p>
      *  Note that ResourceHandler supports subdirectories, for example
-     *  http://localhost:8080/myAppName/files/img/PtolemyIcon.gif 
+     *  http://localhost:8080/myAppName/files/img/PtolemyIcon.gif
      *  and a resourceLocation of $PTII/org/ptolemy/ptango/demo
-     *  will tell the ResourceHandler to get the file at 
+     *  will tell the ResourceHandler to get the file at
      *  $PTII/org/ptolemy/ptango/demo/img/PtolemyIcon.gif
-     *  
-     *  The ResourceHandler can support multiple resourceLocations, in 
+     *
+     *  The ResourceHandler can support multiple resourceLocations, in
      *  which case they will be searched in some order (what order?)
      *  for the file
-     * 
+     *
      *  The resourcePath should be something other than "/", because then
-     *  all incoming requests will be passed to the ResourceHandler 
+     *  all incoming requests will be passed to the ResourceHandler
      *  (assuming the ResourceHandler is passed in first in the list of handlers
-     *  to the server.setHandler() method, which it needs to be, 
-     *  see _setHandlers() 
+     *  to the server.setHandler() method, which it needs to be,
+     *  see _setHandlers()
      */
     public StringParameter resourcePath;
-    
-    /** A directory or URL where the web server will look for resources 
+
+    /** A directory or URL where the web server will look for resources
      *  (like image files and the like).
      *  This defaults to the current model's directory.
      *  You can add additional resource bases by adding additional
@@ -253,8 +253,8 @@ public class WebServer extends AbstractInitializableAttribute {
      *  See the explanation of {@link #resourcePath}.
      */
     public FileParameter resourceLocation;
-    
-    /** A directory where the web server will look for resources 
+
+    /** A directory where the web server will look for resources
      *  (like image files and the like). This specifies an additional
      *  resource location after {@link resourceLocation}, but the
      *  directory specified here may be used by components implementing
@@ -268,7 +268,7 @@ public class WebServer extends AbstractInitializableAttribute {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-    
+
     /** React to a change in an attribute.  If the attribute is an
      *  instance of FileParameter and the server is running (initialize()
      *  has been called and wrapup() has not), then update the resource
@@ -278,21 +278,21 @@ public class WebServer extends AbstractInitializableAttribute {
      *   to this container (not thrown in this base class).
      */
     // FIXME:  Add checks for changes to applicationPath and resourcePath
-    // Make sure resourcePath is not / and that the user did not specify 
-    // overlapping URLs (e.g. /files for both the applicationPath and 
+    // Make sure resourcePath is not / and that the user did not specify
+    // overlapping URLs (e.g. /files for both the applicationPath and
     // the resourcePath, or common prefixes like /files and /files/images)
-    
+
     public void attributeChanged(Attribute attribute) throws IllegalActionException {
         if (attribute instanceof FileParameter) {
             // Resource handlers are being changed. If the
             // server is running, reset the resource handler.
             if (_server != null && _server.isRunning()) {
-                // FIXME:  Test this.  I think calling _setHandler() on the 
-                // server, as _setResourceHandlers() does, will throw an 
-                // exception if the server is running.  Therefore the server 
-                // needs to be stopped and restarted.  Test to see if it 
+                // FIXME:  Test this.  I think calling _setHandler() on the
+                // server, as _setResourceHandlers() does, will throw an
+                // exception if the server is running.  Therefore the server
+                // needs to be stopped and restarted.  Test to see if it
                 // restarts properly.
-               try { 
+               try {
                        _server.stop();
                        // FIXME: Does this need to be synchronized on the server?
                        // Sadly, Jetty is undocumented.
@@ -302,10 +302,10 @@ public class WebServer extends AbstractInitializableAttribute {
                    try {
                        _server.stop();
                    } catch(Exception e2){
-                       throw new IllegalActionException(this, 
+                       throw new IllegalActionException(this,
                        "Can't update resource handlers of the WebServer.");
                    }
-                   throw new IllegalActionException(this, 
+                   throw new IllegalActionException(this,
                        "Can't update resource handlers of the WebServer.  " +
                        "Stopping the server.");
                };
@@ -317,7 +317,7 @@ public class WebServer extends AbstractInitializableAttribute {
             super.attributeChanged(attribute);
         }
     }
-    
+
     /** Clone the attribute.
      *  @param workspace The workspace in which to place the cloned attribute.
      *  @exception CloneNotSupportedException Not thrown in this base class.
@@ -331,18 +331,18 @@ public class WebServer extends AbstractInitializableAttribute {
         return newObject;
     }
 
-    /** Collect servlets from all model objects implementing HttpService 
+    /** Collect servlets from all model objects implementing HttpService
      *  and start the web server in a new thread.
      *  <p>
      * In the current implementation, servlets must be registered before the
      * Jetty server starts.  Servlets are not allowed to be added to a running
-     * ContextHandler.  Currently, the Jetty server is started once and runs 
+     * ContextHandler.  Currently, the Jetty server is started once and runs
      * until the model finishes executing.  It would also be possible to pause
      * the server, add a servlet, and restart the server, which would allow
      * a model to dynamically add servlets.  This might cause strange behavior
-     * to an outside observer, however, since some HttpRequests could fail 
+     * to an outside observer, however, since some HttpRequests could fail
      * if a servlet has not been loaded yet.
-     * 
+     *
      *  References:
      *  <ul>
      *  <li> {@link http://wiki.eclipse.org/Jetty/Tutorial/Embedding_Jetty}
@@ -362,21 +362,21 @@ public class WebServer extends AbstractInitializableAttribute {
             connector.setMaxIdleTime(_maxIdleTime);
             _server.setConnectors(new Connector[] {connector});
         }
-        
+
         // Create a handler to map incoming requests to servlets registered by
         // other actors in this model (for example, HttpActor)
         ContextHandler servletHandler = _createServletHandler();
-        
+
         // Create a handler to serve files such as images, audio, etc.,
         // from parameters of type FileParameter contained by this WebServer.
         ContextHandler fileHandler = _createResourceHandler();
-        
+
         // Enable aliases so that we can use $TMPDIR under Mac OS X
         // because $TMPDIR is in /var, which is a symbolic link.
         // FIXME: this opens up a series of security holes.
         fileHandler.setAliases(true);
 
-        // Assign the newly created handlers to the server 
+        // Assign the newly created handlers to the server
         // The server passes requests to handlers in the same order as the array
         // in setHandlers()
         // Therefore, make sure fileHandler is first so that any request for a
@@ -385,12 +385,12 @@ public class WebServer extends AbstractInitializableAttribute {
         HandlerList handlers = new HandlerList();
         handlers.setHandlers(new Handler[] {fileHandler, servletHandler});
         _server.setHandler(handlers);
-        
+
         //Start the server in a new thread with our handlers
         _serverThread = new Thread(new RunnableServer());
         _serverThread.start();
     }
-    
+
     /** Instruct the thread running the web server to the stop the server and
      *  terminate itself.
      */
@@ -398,7 +398,7 @@ public class WebServer extends AbstractInitializableAttribute {
          _serverThread.interrupt();
          _serverThread = null;
      }
-     
+
      ///////////////////////////////////////////////////////////////////
      ////                         protected methods                 ////
 
@@ -408,17 +408,17 @@ public class WebServer extends AbstractInitializableAttribute {
       *  that is set up in initialize().  Note that this method is called
       *  in initialize() and may be called again during execution to change
       *  the resource handler.
-      *  
+      *
       *  @return A ContextHandler containing the created ResourceHandler
       *  @throws IllegalActionException If a FileParameter is found that is
       *   not a valid URI or references a resource that cannot be found.
       */
-     protected ContextHandler _createResourceHandler() 
+     protected ContextHandler _createResourceHandler()
          throws IllegalActionException {
          // Create a resource handler to serve files such as images, audio, ...
          // See also http://restlet-discuss.1400322.n2.nabble.com/Jetty-Webapp-td7313234.html
          ContextHandler fileHandler = new ContextHandler();
-         
+
          // Set the path which other web applications (e.g. an HTML page) would
          // use to request resources (files). This path needs to be a prefix
          // of any relative reference to a file such as an image.
@@ -426,14 +426,14 @@ public class WebServer extends AbstractInitializableAttribute {
          // $PTII/org/ptolemy/ptango/demo/WebServerDE/WebServerDE.xml
          // It is not clear why or whether both of these are needed.
          fileHandler.setContextPath(resourcePath.stringValue());
-         // Think this is not needed since we create a ContextHandler 
-         // fileHandler, set up our resourceHandler, then call 
+         // Think this is not needed since we create a ContextHandler
+         // fileHandler, set up our resourceHandler, then call
          // fileHandler.setHandler(resourceHandler)
-         // I think this is only needed if we directly add resourceHandler to 
+         // I think this is only needed if we directly add resourceHandler to
          // the server's handler list, since resourceHandler does not have
          // a setContextPath() method
          fileHandler.setResourceBase(resourcePath.stringValue());
-         
+
          ResourceHandler resourceHandler = new ResourceHandler();
          // Do not support listing of directories in the local resource locations.
          // FIXME: This should probably be a parameter of the server.
@@ -465,96 +465,96 @@ public class WebServer extends AbstractInitializableAttribute {
                  throw new IllegalActionException(this,
                          "Resource base is not a valid URI: " + base.stringValue());
              } catch(IOException e3){
-                 throw new IllegalActionException(this, 
+                 throw new IllegalActionException(this,
                          "Can't access resource base: " + base.stringValue());
              };
          }
          resourceHandler.setBaseResource(
-                 new ResourceCollection(resources.toArray(new FileResource[resources.size()])));    
+                 new ResourceCollection(resources.toArray(new FileResource[resources.size()])));
 
          fileHandler.setHandler(resourceHandler);
          return fileHandler;
-     }   
-     
+     }
+
      /** Create a ContextHandler to find and store all of the servlets
       *  registered by other actors (e.g. HttpCompositeActor).
-      *  
+      *
       *  @return A ContextHandler containing servlets from the WebServer's
       *  containing model
       */
-     
+
      protected ContextHandler _createServletHandler() {
-         
+
          // Create a new handler to hold servlets from the actors
-         ServletContextHandler servletHandler = 
+         ServletContextHandler servletHandler =
                  new ServletContextHandler(ServletContextHandler.SESSIONS);
-         
-         servletHandler.setContextPath(applicationPath.getExpression());          
-         
-         // Collect servlets from all model objects implementing HttpService   
+
+         servletHandler.setContextPath(applicationPath.getExpression());
+
+         // Collect servlets from all model objects implementing HttpService
          // FIXME:  Check for overlapping URLs
-         NamedObj topLevel = toplevel();      
+         NamedObj topLevel = toplevel();
          Iterator objects = topLevel.containedObjectsIterator();
-         while(objects.hasNext()) { 
-             Object object = objects.next(); 
-             if (object instanceof HttpService) {   
+         while(objects.hasNext()) {
+             Object object = objects.next();
+             if (object instanceof HttpService) {
                  HttpService service = (HttpService) object;
                  // Tell the HttpService that this is its WebServer,
                  // so that it can get, for example, critical information such
                  // as resourcePath.
                  service.setWebServer(this);
-                 
+
                  // Add the servlet to the handler with the required relative path.
                  String path = service.getRelativePath().getPath();
                  servletHandler
                      .addServlet(new ServletHolder(service.getServlet()), path);
              }
          }
-         
-         return servletHandler; 
+
+         return servletHandler;
      }
-     
-     ///////////////////////////////////////////////////////////////////
-     ////                         private variables                 ////
-     
-     /** The maximum idle time for a connection.
-      */
-     private int _maxIdleTime = 30000;
-     
-     /** The port number the server receives requests on.
-      */
-     private int _portNumber = 8080;
-     
-     /** The Jetty web server. */
-     private Server _server;
-     
-     /** The thread that runs the web server. */
-     private Thread _serverThread;   
 
      ///////////////////////////////////////////////////////////////////
      ////                         private variables                 ////
-     
+
+     /** The maximum idle time for a connection.
+      */
+     private int _maxIdleTime = 30000;
+
+     /** The port number the server receives requests on.
+      */
+     private int _portNumber = 8080;
+
+     /** The Jetty web server. */
+     private Server _server;
+
+     /** The thread that runs the web server. */
+     private Thread _serverThread;
+
+     ///////////////////////////////////////////////////////////////////
+     ////                         private variables                 ////
+
      /** A Runnable class to run a Jetty web server in a separate thread.
       */
      private class RunnableServer implements Runnable {
 
-        /** Run the Jetty web server.  Stop the server if this thread is 
-         *  interrupted (for example, when the model is finished executing, 
-         *  WebServer's wrapup() will interrupt this thread) or if an 
+        /** Run the Jetty web server.  Stop the server if this thread is
+         *  interrupted (for example, when the model is finished executing,
+         *  WebServer's wrapup() will interrupt this thread) or if an
          *  exception occurs.
          */
         public void run() {
 
             while(!Thread.interrupted()){
-                     
-            // Start the server.  The .join() method blocks the thread until the 
+
+            // Start the server.  The .join() method blocks the thread until the
             // server terminates.
              try {
                 _server.start();
                 _server.join();
-           
+
              } catch(Exception e){
-                 // Notify thread users and terminate the server and this thread 
+                 // Notify thread users and terminate the server and this thread
                  // if an exception occurs
                  try {
                      _server.stop();
@@ -573,6 +573,6 @@ public class WebServer extends AbstractInitializableAttribute {
             }
             return;
         }
-         
-     }        
+
+     }
 }

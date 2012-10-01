@@ -188,8 +188,8 @@ public class ArrayToSequence extends SDFTransformer {
     ///////////////////////////////////////////////////////////////////
     ////                     protected methods                     ////
 
-    /** Do not establish the usual default type constraints. Instead, the type 
-     *  of the output port is constrained to be no less than the type of the 
+    /** Do not establish the usual default type constraints. Instead, the type
+     *  of the output port is constrained to be no less than the type of the
      *  elements of the input array (set in the constructor of this class).
      */
     @Override
@@ -199,10 +199,10 @@ public class ArrayToSequence extends SDFTransformer {
 
     /** Add a type constraint for backward type inference that forces
      *  the input to be an array of which the elements have a type
-     *  greater than or equal to the output port. If the 
-     *  <i>enforceArrayLength</i> parameter is set to true, the input 
+     *  greater than or equal to the output port. If the
+     *  <i>enforceArrayLength</i> parameter is set to true, the input
      *  is also forced to have a length equal to the <i>arrayLength</i>
-     *  parameter. 
+     *  parameter.
      *  If backward type inference is disabled, this method returns
      *  an empty set.
      *  @see ArrayOfTypesFunction
@@ -223,7 +223,7 @@ public class ArrayToSequence extends SDFTransformer {
                 // this should not happen
                 e.printStackTrace();
             }
-            // constrain the input to be an array of a type greater 
+            // constrain the input to be an array of a type greater
             // than or equal to the type of the output (for backward
             // type inference)
             if (enforceLength) {

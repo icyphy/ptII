@@ -82,7 +82,7 @@ public class ArrowAttribute extends LineAttribute {
 
         _icon.setFillColor(lineColor.asColor());
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         parameters                        ////
 
@@ -91,7 +91,7 @@ public class ArrowAttribute extends LineAttribute {
 
     /** Width of the arrow head. Default to 10.0. */
     public Parameter arrowWidth;
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 

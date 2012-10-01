@@ -50,12 +50,12 @@ import com.sun.jna.Pointer;
 public class FMULog {
 
     /** Log a message.
-     *  Note that arguments after the message are currently ignored.   
+     *  Note that arguments after the message are currently ignored.
      *  @param fmiComponent The component that was instantiated.
      *  @param instanceName The name of the instance of the FMU.
      *  @param status The fmiStatus, see
      *  {@link org.ptolemy.fmi.FMILibrary.FMIStatus}
-     *  @param category The category of the message, 
+     *  @param category The category of the message,
      *  defined by the tool that created the fmu.  Typical
      *  values are "log" or "error".
      *  @param message The message in printf format
@@ -75,7 +75,7 @@ public class FMULog {
         // r, i, b or s. To print a #, use ##.
 
         if (parameters != null ) {
-            StringTokenizer tokenizer = new StringTokenizer(message, "%", false /* Return delimiters */); 
+            StringTokenizer tokenizer = new StringTokenizer(message, "%", false /* Return delimiters */);
             ArrayList <Object> parameterList = new ArrayList<Object>();
             //long nativeLong = Pointer.nativeValue(parameters);
             int offset = 0;
@@ -142,7 +142,7 @@ public class FMULog {
                         } else {
                             if (!_printedMessage) {
                                 _printedMessage = true;
-                                System.out.println("FIXME: logger: don't know how to get string other than the first string, using FIXME instead.");                                    
+                                System.out.println("FIXME: logger: don't know how to get string other than the first string, using FIXME instead.");
                             }
                             result = "FIXME";
                         }
@@ -155,7 +155,7 @@ public class FMULog {
                         //parameterList.add(parameters.getPointer(offset++).toString());
                         if (!_printedMessage) {
                             _printedMessage = true;
-                            System.out.println("FIXME: logger: don't know how to get long other than the first string, using 666 instead.");                                    
+                            System.out.println("FIXME: logger: don't know how to get long other than the first string, using 666 instead.");
                         }
                         parameterList.add(Long.valueOf(666));
                         break;
@@ -175,7 +175,7 @@ public class FMULog {
                         break;
                     default:
                         break;
-                    }                                
+                    }
                 }
             }
             // Java format does not handle %u.  Lamers.

@@ -35,7 +35,7 @@ import java.io.InputStreamReader;
 
 /**
  This is a message handler that reports errors in a graphical dialog box.
- 
+
  @see ptolemy.gui.GraphicalMessageHandler
 
  @author  Christopher Brooks

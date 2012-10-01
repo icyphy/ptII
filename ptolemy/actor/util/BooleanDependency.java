@@ -143,7 +143,7 @@ public class BooleanDependency implements Dependency {
      *   this one and the specified one.
      *  @exception ClassCastException if d is not a BooleanDependency.
      */
-    public Dependency oTimes(Dependency d) { 
+    public Dependency oTimes(Dependency d) {
      // FIXME: Findbugs reports this as an Unchecked/unconfirmed cast
         if (_value && ((BooleanDependency) d)._value) {
             return OTIMES_IDENTITY;

@@ -2,7 +2,7 @@
 static double delayValue = $delayInitValue;
 
 if ($hasToken(delay)) {
-	delayValue = $get(delay);
+        delayValue = $get(delay);
 }
 
 Timestamp addTime = delayValue;

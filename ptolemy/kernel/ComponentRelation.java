@@ -428,7 +428,7 @@ public class ComponentRelation extends Relation {
             }
 
             _notifyHierarchyListenersBeforeChange();
-            
+
             try {
                 _container = container;
 

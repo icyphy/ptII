@@ -62,12 +62,12 @@ public interface TypedActor extends Actor {
      *  @see ptolemy.graph.Inequality
      */
     public Set<Inequality> typeConstraints() throws IllegalActionException;
-    
-    /** Look up the hierarchy to find the parameter 
+
+    /** Look up the hierarchy to find the parameter
      * <code>enableBackwardTypeInference</code> and return its value.
-     *  @return True if backward type inference is enabled, return false 
+     *  @return True if backward type inference is enabled, return false
      *  otherwise.
      */
     public boolean isBackwardTypeInferenceEnabled();
-    
+
 }

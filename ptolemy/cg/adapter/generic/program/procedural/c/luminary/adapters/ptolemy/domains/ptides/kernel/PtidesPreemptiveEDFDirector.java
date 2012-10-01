@@ -90,10 +90,10 @@ public class PtidesPreemptiveEDFDirector
      *  @return The generated assembly file code.
      *  @exception IllegalActionException
      */
-    
+
     public Map<String, String> generateAdditionalCodeFiles() throws IllegalActionException {
         Map<String, String> list = new HashMap();
-        
+
         StringBuffer code = new StringBuffer();
 
         // if the outside is already a Ptides director (this could only happen if
@@ -172,7 +172,7 @@ public class PtidesPreemptiveEDFDirector
         // In the future if we add more devices, then it should be a derivation of the above code.
         code.append(_templateParser.getCodeStream().getCodeBlock(
                 "assemblyFileBlock", args));
-        
+
         list.put("s", code.toString());
         return list;
     }

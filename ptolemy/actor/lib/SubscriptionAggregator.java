@@ -61,7 +61,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  @Pt.AcceptedRating Red (cxh)
  */
 public class SubscriptionAggregator extends Subscriber {
-    
+
     // NOTE: This cannot extend Subscriber because it needs
     // a different kind of input port.
 
@@ -76,12 +76,12 @@ public class SubscriptionAggregator extends Subscriber {
     public SubscriptionAggregator(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        
+
         operation = new StringParameter(this, "operation");
         operation.addChoice("add");
         operation.addChoice("multiply");
         operation.setExpression("add");
-        
+
         // Set the operation attribute of the input port to inherit
         // the value of the operation parameter of this actor.
         ((SubscriptionAggregatorPort)input).operation.setExpression("$operation");
@@ -125,7 +125,7 @@ public class SubscriptionAggregator extends Subscriber {
             output.send(0, token);
         }
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                      protected methods                    ////
 

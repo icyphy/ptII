@@ -123,7 +123,7 @@ public class Pulse extends SequenceSource {
 
         // Call this so that we don't have to copy its code here...
         attributeChanged(values);
-        
+
         // Show the firingCountLimit parameter last.
         firingCountLimit.moveToLast();
     }

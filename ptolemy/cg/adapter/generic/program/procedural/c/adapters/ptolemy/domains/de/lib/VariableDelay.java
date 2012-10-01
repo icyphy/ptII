@@ -19,10 +19,10 @@ public class VariableDelay extends NamedProgramCodeGeneratorAdapter {
     public VariableDelay(ptolemy.domains.de.lib.VariableDelay actor) {
         super(actor);
     }
-    
+
     @Override
     public String generateFireCode() throws IllegalActionException {
-        
+
         String s = super.generateFireCode();
         return s;
     }

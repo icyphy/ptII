@@ -35,7 +35,7 @@ import ptolemy.kernel.util.IllegalActionException;
 ///////////////////////////////////////////////////////////////////
 //// EntityElement
 
-/** The definition of entities. 
+/** The definition of entities.
 *
 *  @author Peter Foldes
 *  @version $Id$
@@ -70,7 +70,7 @@ public class EntityElement extends PositionableElement {
     ////                public methods                             ////
 
     /** Create a representation and add it to the passed container.
-     * 
+     *
      *  @param container The container to place the representation into.
      */
     @Override

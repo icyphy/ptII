@@ -1,4 +1,4 @@
-/* An AWT and Swing implementation of the the DisplayInterface 
+/* An AWT and Swing implementation of the the DisplayInterface
  that displays input data in a text area on the screen.
 
  @Copyright (c) 1998-2010 The Regents of the University of California.
@@ -59,7 +59,7 @@ import ptolemy.util.MessageHandler;
 
 /**
 <p>
-DisplayJavaSE is the implementation of the DisplayInterface that uses AWT and Swing 
+DisplayJavaSE is the implementation of the DisplayInterface that uses AWT and Swing
 classes.  Values of the tokens arriving on the input channels in a
 text area on the screen.  Each input token is written on a
 separate line.  The input type can be of any type.
@@ -112,7 +112,7 @@ public class DisplayJavaSE extends AbstractPlaceableJavaSE implements
     }
 
     /** Append the string value of the token to the text area
-     *  on the screen.  Each value is terminated with a newline 
+     *  on the screen.  Each value is terminated with a newline
      *  character. This is executed in the Swing event thread.
      *  @param value The string to be displayed
      */
@@ -149,14 +149,14 @@ public class DisplayJavaSE extends AbstractPlaceableJavaSE implements
         Top.deferIfNecessary(doIt);
     }
 
-    /** Return the object of the containing text area. 
-     *  @return the text area.   
+    /** Return the object of the containing text area.
+     *  @return the text area.
      */
     public Object getTextArea() {
         return textArea;
     }
 
-    /** Set the number of rows for the text area. 
+    /** Set the number of rows for the text area.
      * @param displayActor The display actor to be initialized.
      * @exception IllegalActionException If the entity cannot be contained
      * by the proposed container.

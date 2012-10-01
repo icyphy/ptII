@@ -191,7 +191,7 @@ public class LookInsideAction extends FigureAction {
                         return containerEffigy.masterEffigy();
                     }
                 };
-                
+
                 // Third, the uri attribute and file properties
                 // of the effigy are not set to
                 // refer to the file that will actually save the model.

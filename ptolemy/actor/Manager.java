@@ -996,8 +996,8 @@ public class Manager extends NamedObj implements Runnable {
         }
     }
 
-    /** Invoke preinitialize() and wrapup(). 
-     *   
+    /** Invoke preinitialize() and wrapup().
+     *
      *  <p>If the model has not been preinitialized since the last
      *  change to its structure, that must be done now for the result
      *  to be accurate. This is because higher-order components

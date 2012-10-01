@@ -34,19 +34,19 @@ public class Conditional extends AtomicContinuationActor {
     }
 
     ///////////////////////////////////////////////////////
-    
+
     /* (non-Javadoc)
      * @see ptolemy.domains.coroutine.kernel.ContinuationActor#enter(ptolemy.domains.coroutine.kernel.ControlEntryToken)
      */
     @Override
     public ControlExitToken controlEnter(ControlEntryToken entry)
             throws IllegalActionException {
-        
+
         ControlExitToken extk = null;
         int insize = _inputs.getWidth();
-        
+
         Boolean val = true;
-        
+
         try {
             for (int k = 0; k < insize; ++k) {
                 Token inToken = _inputs.get(k);
@@ -55,23 +55,23 @@ public class Conditional extends AtomicContinuationActor {
                 }
             }
             extk = ControlExitToken.Exit(val ? trueExit : falseExit);
-        } 
+        }
         catch (NoRoomException e) {
             e.printStackTrace();
-        } 
+        }
         catch (NoTokenException e) {
             e.printStackTrace();
-        } 
-        
+        }
+
         if (extk != null) return extk;
         else return super.controlEnter(entry);
     }
-    
+
     public TypedIOPort _inputs;
-    
+
     ///////////////////////////////////////////////////////
-    
-    protected void _init() throws 
+
+    protected void _init() throws
         IllegalActionException, NameDuplicationException {
 
         addExitLocation(trueExit);
@@ -80,8 +80,8 @@ public class Conditional extends AtomicContinuationActor {
         _inputs = new TypedIOPort(this, "Inputs",  true, false);
         _inputs.setTypeEquals(BaseType.BOOLEAN);
     }
-    
+
     final public ExitLocation trueExit  = new ExitLocation("true");
     final public ExitLocation falseExit = new ExitLocation("false");
-        
+
 }

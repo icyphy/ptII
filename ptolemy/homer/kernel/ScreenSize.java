@@ -26,7 +26,7 @@
  */
 
 /**
- * 
+ *
  */
 package ptolemy.homer.kernel;
 
@@ -39,7 +39,7 @@ import ptolemy.kernel.util.Settable;
 ///////////////////////////////////////////////////////////////////
 //// ScreenSize
 
-/**  
+/**
  * A Parameter that contains the size of the screen.
  * @author Peter Foldes
  * @version $Id$
@@ -50,7 +50,7 @@ import ptolemy.kernel.util.Settable;
 public class ScreenSize extends Parameter {
 
     /** Create a new screen size parameter in a model.
-     * 
+     *
      *  @param container The model where the screen size is stored.
      *  @param name The name of the parameter representing the screen size.
      *  @throws IllegalActionException If the screen size parameter cannot be added

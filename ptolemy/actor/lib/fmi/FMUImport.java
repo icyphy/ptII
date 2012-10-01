@@ -77,17 +77,17 @@ import com.sun.jna.Pointer;
 //// FMUImport
 
 /**
- * Invoke a Functional Mock-up Interface (FMI) 1.0 Co-Simulation 
+ * Invoke a Functional Mock-up Interface (FMI) 1.0 Co-Simulation
  * Functional Mock-up Unit (FMU).
- * 
- * <p>Read in a <code>.fmu</code> file named by the 
+ *
+ * <p>Read in a <code>.fmu</code> file named by the
  * <i>fmuFile</i> parameter.  The <code>.fmu</code> file is a zipped
  * file that contains a file named <code>modelDescription.xml</code>
  * that describes the ports and parameters that are created.
  * At run time, method calls are made to C functions that are
  * included in shared libraries included in the <code>.fmu</code>
  * file.</p>
- * 
+ *
  * <p>To use this actor from within Vergil, use File -&gt; Import -&gt; Import
  * FMU, which will prompt for a .fmu file. This actor is <b>not</b>
  * available from the actor pane via drag and drop. The problem is
@@ -99,8 +99,8 @@ import com.sun.jna.Pointer;
  * <p>FMI documentation may be found at
  * <a href="http://www.modelisar.com/fmi.html">http://www.modelisar.com/fmi.html</a>.
  * </p>
- * 
- * @author Christopher Brooks, Michael Wetter, Edward A. Lee, 
+ *
+ * @author Christopher Brooks, Michael Wetter, Edward A. Lee,
  * @version $Id$
  * @Pt.ProposedRating Red (cxh)
  * @Pt.AcceptedRating Red (cxh)
@@ -190,7 +190,7 @@ public class FMUImport extends TypedAtomicActor implements ContinuousStepSizeCon
 
     /** Read data from output ports, set the input ports and invoke
      * fmiDoStep() of the slave fmu.
-     *   
+     *
      * <p>Note that we get the outputs <b>before</b> invoking
      * fmiDoStep() of the slave fmu so that we can get the data for
      * time 0.  This is done so that FMUs can share initialization
@@ -216,7 +216,7 @@ public class FMUImport extends TypedAtomicActor implements ContinuousStepSizeCon
         // Ptolemy parameters are read in initialize() because the fmi
         // version of the parameters must be written before
         // fmiInitializeSlave() is called.
-        
+
         boolean foundUnknownInputOrOutput = false;
 
         ////////////////
@@ -292,7 +292,7 @@ public class FMUImport extends TypedAtomicActor implements ContinuousStepSizeCon
             if (port.isKnown(0)) {
                 continue;
             }
-                            
+
             // Next, we need to check whether the input ports that
             // the output depends on are known. By default, an
             // output depends on _all_ inputs, but if there is
@@ -650,7 +650,7 @@ public class FMUImport extends TypedAtomicActor implements ContinuousStepSizeCon
                     "Could not instantiate Functional Mock-up Unit (FMU).");
         }
     }
-    
+
     /** Implementations of this method should return
      *  the suggested refined step size for restarting the current integration.
      *  If any actor returns false when isStepSizeAccurate() is called,
@@ -734,7 +734,7 @@ public class FMUImport extends TypedAtomicActor implements ContinuousStepSizeCon
             throw new IllegalActionException("Type " + type + " not supported.");
         }
     }
-    
+
     /** Return a collection of scalar variables for which there is
      *  a connected output port, and for each such variable,
      *  a set of input ports on which it declares it depends,
@@ -792,7 +792,7 @@ public class FMUImport extends TypedAtomicActor implements ContinuousStepSizeCon
                 Output output = new Output();
                 output.scalarVariable = scalarVariable;
                 output.port = port;
-                
+
                 // Next, we need to find the dependencies that the
                 // FMU XML file says the port depends on. By default, an
                 // output depends on _all_ inputs, but if there is
@@ -830,7 +830,7 @@ public class FMUImport extends TypedAtomicActor implements ContinuousStepSizeCon
      *  @exception IllegalActionException If the scalar is of a type
      *  that is not handled.
      */
-    private void _setParameter(Parameter parameter, FMIScalarVariable scalar) 
+    private void _setParameter(Parameter parameter, FMIScalarVariable scalar)
             throws IllegalActionException {
         // FIXME: What about arrays?
         if (scalar.type instanceof FMIBooleanType) {
@@ -855,7 +855,7 @@ public class FMUImport extends TypedAtomicActor implements ContinuousStepSizeCon
      *  that is not handled or if the type of the token does not match
      *  the type of the scalar.
      */
-    private void _setScalarVariable(FMIScalarVariable scalar, Token token) 
+    private void _setScalarVariable(FMIScalarVariable scalar, Token token)
         throws IllegalActionException {
         try {
             // FIXME: What about arrays?
@@ -879,7 +879,7 @@ public class FMUImport extends TypedAtomicActor implements ContinuousStepSizeCon
         } catch (ClassCastException ex) {
             throw new IllegalActionException(this, ex,
                     "Could not cast a token \"" + token
-                    + "\" of type " + token.getType() 
+                    + "\" of type " + token.getType()
                     + " to an FMI scalar variable of type "
                     + scalar.type);
         }
@@ -955,7 +955,7 @@ public class FMUImport extends TypedAtomicActor implements ContinuousStepSizeCon
      *  The _fmuFileName field is set the first time we read
      *  the file named by the <i>fmuFile</i> parameter.  The
      *  file named by the <i>fmuFile</i> parameter is only read
-     *  if the name has changed or if the modification time of 
+     *  if the name has changed or if the modification time of
      *  the file is later than the time the file was last read.
      */
     private String _fmuFileName = null;
@@ -972,17 +972,17 @@ public class FMUImport extends TypedAtomicActor implements ContinuousStepSizeCon
      *  Functional Mock-up Unit (FMU) file.
      */
     private FMIModelDescription _fmiModelDescription;
-    
+
     /** A collection of scalar variables for which there is
      *  a connected output port, and for each such variable,
      *  a set of input ports on which it declares it depends,
      *  if any.
      */
     private List<Output> _outputs;
-    
+
     /** The workspace version at which the _outputs variable was last updated. */
     private long _outputsVersion = -1;
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                      inner classes                        ////
 
@@ -990,10 +990,10 @@ public class FMUImport extends TypedAtomicActor implements ContinuousStepSizeCon
     private class Output {
         /** The FMI scalar variable for this output. */
         public FMIScalarVariable scalarVariable;
-        
+
         /** The Ptolemy output port for this output. */
         public TypedIOPort port;
-        
+
         /** The set of input ports on which the output declares it depends. */
         public Set<TypedIOPort> dependencies;
     }

@@ -357,7 +357,7 @@ public class ProgramCodeGenerator extends GenericCodeGenerator {
      *  In this base class, a comment with the values of the
      *  arguments is returned.
      */
-    public String generateConstantDefinition(String constant, 
+    public String generateConstantDefinition(String constant,
             String type, String value) {
         return comment(constant + " " + type + " " + value);
     }
@@ -749,7 +749,7 @@ public class ProgramCodeGenerator extends GenericCodeGenerator {
      *  @exception IllegalActionException If the variablesAsArrays parameter
      *  of the code generator cannot be read.
      */
-    public String generatePtTypedCompositeActorName(NamedObj container, String actorName) 
+    public String generatePtTypedCompositeActorName(NamedObj container, String actorName)
             throws IllegalActionException {
          if (!((BooleanToken) variablesAsArrays.getToken())
                  .booleanValue()) {

@@ -34,7 +34,7 @@ import org.w3c.dom.Element;
 
 /**
  * An Functional Mock-up Interface type that represents a Real.
- * 
+ *
  * <p>A Functional Mock-up Unit file is a .fmu file in zip format that
  * contains a .xml file named "modelDescription.xml".  In that file,
  * the ModelVariables element may contain elements such as
@@ -44,7 +44,7 @@ import org.w3c.dom.Element;
  * <p>FMI documentation may be found at
  * <a href="http://www.modelisar.com/fmi.html">http://www.modelisar.com/fmi.html</a>.
  * </p>
- * 
+ *
  * @author Christopher Brooks
  * @version $Id$
  * @Pt.ProposedRating Red (cxh)

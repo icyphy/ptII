@@ -485,7 +485,7 @@ public class InequalitySolver {
             }
 
             allSatisfied = true;
-            
+
             for (int i = 0; i < _Ilist.size(); i++) {
                 Info info = (Info) _Ilist.get(i);
 
@@ -499,7 +499,7 @@ public class InequalitySolver {
                     }
                 }
             }
-            
+
             // Avoid infinite loops.
             // The issue is that in feedback loops, we may have arrays of arrays or arrays,
             // forever.  We have to truncate the search at some point, so we limit the depth.
@@ -508,7 +508,7 @@ public class InequalitySolver {
             } else if (_NS.size() > 0 && prevNS.size() == _NS.size() && prevNS.containsAll(_NS) && loopCnt > _DEPTH_LIMIT) {
                 StringBuffer errorMessage = new StringBuffer();
                 for (Object o : _NS) {
-                    Integer i = (Integer) o; 
+                    Integer i = (Integer) o;
                     errorMessage.append(" (" + ((Info)_Ilist.get(i))._ineq.getGreaterTerm() + " >= " + ((Info)_Ilist.get(i))._ineq.getLesserTerm() + ") ");
                 }
                 throw new IllegalActionException("Cannot resolve types. Unsatisfied constraints: " + errorMessage);
@@ -545,7 +545,7 @@ public class InequalitySolver {
     // Each entry in _Clist is a vector of Integers containing the
     // index of inequalities in _Ilist.
     private Hashtable _Clist = new Hashtable();
-    
+
     /** Limit the depth of arrays of arrays tolerated by type inferences. */
     private static int _DEPTH_LIMIT = 1000;
 }

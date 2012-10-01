@@ -674,7 +674,7 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
     public synchronized void invalidate() {
         // This method is synchronized to prevent concurrent modification
         // of the _variablesDependentOn collection.
-        
+
         if (_currentExpression != null) {
             _needsEvaluation = true;
             _parseTreeValid = false;

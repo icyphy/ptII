@@ -77,9 +77,9 @@ import diva.gui.toolbox.JCanvasPanner;
 
 /** The container window for the UI designer that maintains the palette of
  *  placeable elements of the model, widget references, and the tabs/scene placement.
- *  
+ *
  *  @author Anar Huseynov
- *  @version $Id$ 
+ *  @version $Id$
  *  @since Ptolemy II 8.1
  *  @Pt.ProposedRating Red (ahuseyno)
  *  @Pt.AcceptedRating Red (ahuseyno)
@@ -113,10 +113,10 @@ public class HomerMainFrame extends JFrame {
      *  @param label The label text.
      *  @param dimension The dimensions of the label.
      *  @param point The position to place the label.
-     *  @exception IllegalActionException  If the attribute is not of an 
-     *  acceptable attribute for the container, or if the container is not 
+     *  @exception IllegalActionException  If the attribute is not of an
+     *  acceptable attribute for the container, or if the container is not
      *  an instance of Settable.
-     *  @exception NameDuplicationException If the name coincides with an 
+     *  @exception NameDuplicationException If the name coincides with an
      *  attribute already in the container.
      */
     public void addLabel(TabScenePanel panel, String label,

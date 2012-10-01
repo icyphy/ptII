@@ -194,7 +194,7 @@ public class ConceptRelationController extends BasicEdgeController {
                 throw new IllegalStateException(
                         "Cannot handle both ends of an edge being dragged.");
             }
-            
+
             // Make the arc rerender itself so that geometry is preserved
             Link link = (Link) edge;
             ConceptRelation transition = (ConceptRelation) link.getRelation();

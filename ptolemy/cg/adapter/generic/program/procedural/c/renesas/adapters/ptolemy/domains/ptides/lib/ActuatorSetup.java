@@ -48,7 +48,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  */
 
 public class ActuatorSetup extends OutputDevice {
-    
+
     /** Construct an adapter with the given
      *  ptolemy.domains.ptides.lib.GPOutputDevice actor.
      *  @param actor The given ptolemy.domains.ptides.lib.targets.luminary.GPOutputDevice actor.
@@ -57,31 +57,31 @@ public class ActuatorSetup extends OutputDevice {
      */
     public ActuatorSetup(ptolemy.domains.ptides.lib.ActuatorSetup actor)
             throws IllegalActionException, NameDuplicationException {
-        super(actor);  
+        super(actor);
         _number = ((IntToken) ((Parameter) actor
                 .getAttribute("InterruptHandlerID")).getToken())
                 .intValue();
-        _letter = RenesasUtilities.interruptHandlerLetters.get(_number); 
+        _letter = RenesasUtilities.interruptHandlerLetters.get(_number);
         _timerNumber = RenesasUtilities.timerNumbers.get(_number);
         if (_letter == null) {
             throw new IllegalActionException(actor, "The interrupt handler number is not supported.");
         }
     }
-    
+
     @Override
     public String generateFireCode() throws IllegalActionException {
         CodeStream codeStream = _templateParser.getCodeStream();
         codeStream.clear();
         List<String> args = new ArrayList<String>();
-        args.add(_letter + ""); 
+        args.add(_letter + "");
         args.add(_timerNumber + "");
         codeStream.appendCodeBlock("fireBlock", args);
         return processCode(codeStream.toString());
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
- 
+
     private int _number;
     private Character _letter;
     private int _timerNumber;

@@ -46,17 +46,17 @@ import java.util.Map;
 import java.util.Set;
 
 /** Create a searchable index.
- *   
+ *
  *  <p>This class has a method {@link #append(String, String)} takes a
  *  key and value and splits the value into alpha-numeric words that
  *  are then saved in a data structure for later searching.  Common
  *  words are filtered out.</p>
- *  
+ *
  *  <p>The {@link #write(String)} method saves the data structure to
  *  disk via serialization.</p>
- * 
+ *
  *  <p>The {@link #read(String)} method reads the data structure.</p>
- *  
+ *
  *  <p>The {@link #search(String)} returns a list of values that match a key</p>
  *
  *  @author Christopher Brooks, Contributor: Edward A. Lee
@@ -135,7 +135,7 @@ public class PtIndexer {
      *
      *  @param args The arguments, if any
      *  @exception IOException If thrown while reading the input files or dictionary.
-     *  @exception ClassNotFoundException If the file does not contain the 
+     *  @exception ClassNotFoundException If the file does not contain the
      *  dictionary class.
      */
     public static void main(String args[]) throws IOException, ClassNotFoundException {
@@ -206,9 +206,9 @@ public class PtIndexer {
     }
 
     /** Read the dictionary to a file or URL.
-     *  @param fileName the file or URL of the dictionary   
+     *  @param fileName the file or URL of the dictionary
      *  @exception IOException If the dictionary cannot be written.
-     *  @exception ClassNotFoundException If the file does not contain the 
+     *  @exception ClassNotFoundException If the file does not contain the
      *  dictionary class.
      */
     public void read(String fileName) throws IOException, ClassNotFoundException {
@@ -239,7 +239,7 @@ public class PtIndexer {
     }
 
     /** Search the dictionary for matches.
-     *   
+     *
      *  <p> The target is converted to lower case and then the
      *  dictionary is searched.</p>
      *
@@ -273,7 +273,7 @@ public class PtIndexer {
     }
 
     /** Return statistics about the dictionary.
-     *  @return Statistics about the dictionary  
+     *  @return Statistics about the dictionary
      */
     public String statistics() {
         // This is primarily useful for debugging.
@@ -296,12 +296,12 @@ public class PtIndexer {
             + "\nKey with the most definitions: \""
             + maximumKey + "\" with " + maximumDefinitions
             + " definitions."
-            + "\nAverage number of definitions: " 
+            + "\nAverage number of definitions: "
             + definitionsSum / dictionarySize ;
     }
 
     /** Write the dictionary to a file or URL.
-     *  @param fileName the file or URL of the dictionary   
+     *  @param fileName the file or URL of the dictionary
      *  @exception IOException If the dictionary cannot be written.
      */
     public void write(String fileName) throws IOException {
@@ -348,7 +348,7 @@ public class PtIndexer {
      * binary representation is 1001, which means that the key
      * is found in the 3rd and 1st elements in _compressedDefinitions.
      * Note that 0th element of _compressedDefintions is not
-     * used, as there is no way to specify the 0th element in 
+     * used, as there is no way to specify the 0th element in
      * the Integer.
      */
     private void _compress() {
@@ -427,14 +427,14 @@ public class PtIndexer {
      */
     private String[] _compressedDefinitions = new String[]{};
 
-    
+
     /** True if compression is used.
-     */   
+     */
     private static boolean _useCompression = false;
 
-    /** The set of common words that are not indexed. 
-     *  One way to update this is with: 
-     * find $PTII/doc/codeDoc -name "*.xml"  | xargs cat | tr -cs "[:alpha:]" "\n" | tr "[:upper:]" "[:lower:]" | sort | uniq -c | sort -nr | head -100 | awk '{printf("       \"%s\", // %d\n", $2, $1)}' 
+    /** The set of common words that are not indexed.
+     *  One way to update this is with:
+     * find $PTII/doc/codeDoc -name "*.xml"  | xargs cat | tr -cs "[:alpha:]" "\n" | tr "[:upper:]" "[:lower:]" | sort | uniq -c | sort -nr | head -100 | awk '{printf("       \"%s\", // %d\n", $2, $1)}'
      */
     static Set<String> _common = new HashSet(Arrays.asList(
        "the", // 20622

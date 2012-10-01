@@ -48,7 +48,7 @@ import ptolemy.util.MessageHandler;
 public class RecorderMessageHandler extends MessageHandler {
 
     /** Get the messages recorded so far.
-     *  @return The messages.   
+     *  @return The messages.
      */
     public String getMessages() {
         return _buffer.toString();

@@ -99,7 +99,7 @@ public class Configurer extends JPanel implements CloseListener {
         for (Settable parameter : parameters) {
             _originalValues.put(parameter, parameter.getExpression());
         }
-        
+
         boolean foundOne = false;
         Iterator<?> editors = object.attributeList(EditorPaneFactory.class)
                 .iterator();
@@ -362,7 +362,7 @@ public class Configurer extends JPanel implements CloseListener {
                 throw new InternalErrorException(e);
             }
         }
-        
+
         while (parameters.hasNext()) {
             Settable parameter = (Settable) parameters.next();
 
@@ -392,10 +392,10 @@ public class Configurer extends JPanel implements CloseListener {
         }
         return attributes;
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                       protected variables                 ////
-    
+
     /** A record of the original values. */
     protected HashMap<Settable, String> _originalValues;
 
@@ -408,7 +408,7 @@ public class Configurer extends JPanel implements CloseListener {
 
     // The object that this configurer configures.
     private NamedObj _object;
-    
+
     /** */
     private boolean _originalExpertMode = true;
 }

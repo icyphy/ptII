@@ -331,14 +331,14 @@ public class FSMActor extends CompositeEntity implements TypedActor,
         _initializables.add(initializable);
     }
 
-    /** Return false because backward type inference is not implemented 
+    /** Return false because backward type inference is not implemented
      *  for this actor.
      *  @return false
      */
     public boolean isBackwardTypeInferenceEnabled() {
         return false;
     }
-    
+
     /** Clone the actor into the specified workspace. This calls the
      *  base class and then sets the attribute public members to refer
      *  to the attributes of the new actor.
@@ -1357,7 +1357,7 @@ public class FSMActor extends CompositeEntity implements TypedActor,
 
         // Commit transitions on the _lastChosenTransitions map.
         _commitLastChosenTransition();
-        
+
         // Postfire any transition refinements that were fired in fire().
         for (Actor transitionRefinement : _transitionRefinementsToPostfire) {
             if (_debugging) {
@@ -1855,9 +1855,9 @@ public class FSMActor extends CompositeEntity implements TypedActor,
             if (_debugging) {
                 _debug("Choose transition: ", chosenTransition.getFullName());
             }
-            
+
             // cmot:
-            // If non-preemptive and immediate transition, fire source 
+            // If non-preemptive and immediate transition, fire source
             // state refinement.
             if (!chosenTransition.isPreemptive() && chosenTransition.isImmediate()) {
                 // If the transition into the current state is a reset transition,
@@ -1881,7 +1881,7 @@ public class FSMActor extends CompositeEntity implements TypedActor,
                 _fireStateRefinements(currentState);
             }
 
-            // Execute the choice actions. 
+            // Execute the choice actions.
             Iterator actions = chosenTransition.choiceActionList().iterator();
             while (actions.hasNext()) {
                 Action action = (Action) actions.next();
@@ -2554,7 +2554,7 @@ public class FSMActor extends CompositeEntity implements TypedActor,
         _currentConnectionMap = (Map) _connectionMaps.get(_currentState);
     }
 
-    /** Set the refinements current time equal to the matching environment, 
+    /** Set the refinements current time equal to the matching environment,
      *  or if there is no environment, do nothing.
      *  @param refinement The refinement.
      *  @exception IllegalActionException If setModelTime() throws it.
@@ -2601,7 +2601,7 @@ public class FSMActor extends CompositeEntity implements TypedActor,
 
     /** A map from ports to corresponding input variables. */
     protected Map _inputTokenMap = new HashMap();
-    
+
     /** The most recently chosen transition. */
     protected Transition _lastChosenTransition;
 
@@ -2637,7 +2637,7 @@ public class FSMActor extends CompositeEntity implements TypedActor,
      * FSMs, then return false. It is not safe to assert absent outputs
      * because we have no visibility into what those refinements do with
      * the outputs.
-     * 
+     *
      * This method first explores any FSM refinements of the current
      * state. If those refinements are all FSMs and they are all able
      * to assert that an output is absent, then explore this FSM
@@ -3035,7 +3035,7 @@ public class FSMActor extends CompositeEntity implements TypedActor,
     private boolean _referencedInputPortValuesByGuardPresent(
             Transition transition) throws IllegalActionException {
 
-        
+
         // If the port identifier does
         // not end with "_isPresent", then return false if port
         // identifier with "_isPresent" appended is false. There is no data on

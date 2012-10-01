@@ -436,7 +436,7 @@ public class Clock extends TimedSource {
             _debug("Requesting firing at time " + _nextOutputTime);
         }
         _fireAt(_nextOutputTime);
-        
+
         _initialized = true;
     }
 
@@ -483,7 +483,7 @@ public class Clock extends TimedSource {
         // for the trigger input.
         return true;
     }
-    
+
     /** Override the base class to indicate that the actor has not
      *  been initialized.
      *  @exception IllegalActionException If the superclass throws it.
@@ -663,7 +663,7 @@ public class Clock extends TimedSource {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    
+
     /** True if the actor has been initialized. */
     private transient boolean _initialized;
 

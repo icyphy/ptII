@@ -145,7 +145,7 @@ public class InstantaneousDialogGenerator extends TypedAtomicActor {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    
+
     /** The index number to output on the indexOutput port. */
     private int _index;
 }

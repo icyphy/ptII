@@ -170,7 +170,7 @@ public class AddMissingParameter extends MoMLFilterSimple {
                         || _addProperty.onlyAddIfPresent == null)
                 && (elementName != null) && elementName.equals("property")
                 && (container != null) && container.getFullName().equals(_currentActorFullName)) {
-            
+
             //System.out.println("AddMissingParameter: filterEndElement: Processing!!!");
             _currentlyProcessingActorThatMayNeedUpdating = false;
             _currentAttributeHasValue = false;
@@ -216,7 +216,7 @@ public class AddMissingParameter extends MoMLFilterSimple {
                     + addProperty.propertyName + "\t"
                     + (addProperty.onlyAddIfPresent == null ? "null" : addProperty.onlyAddIfPresent)
                     + "\n\t" + addProperty.moml + "\n");
-        } 
+        }
         return results.toString();
     }
 
@@ -243,7 +243,7 @@ public class AddMissingParameter extends MoMLFilterSimple {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    // Map of NamedObject names to an object of 
+    // Map of NamedObject names to an object of
     private static HashMap<String, AddProperty> _namedObjsWithMissingProperties;
 
     // Cache of parameters name to be added.
@@ -258,7 +258,7 @@ public class AddMissingParameter extends MoMLFilterSimple {
     private boolean _currentAttributeHasValue = false;
 
     // Set to true if we are currently processing an actor that may
-    // need an update, set to false when we are done. 
+    // need an update, set to false when we are done.
     private boolean _currentlyProcessingActorThatMayNeedUpdating = false;
 
     // Last "name" value seen, for use if we see a "class".
@@ -266,7 +266,7 @@ public class AddMissingParameter extends MoMLFilterSimple {
 
     static {
         _namedObjsWithMissingProperties = new HashMap<String, AddProperty>();
-        
+
         // SDFDirector
         AddProperty sdfDirectorChanges = new AddProperty("iterations",
                 "<property "

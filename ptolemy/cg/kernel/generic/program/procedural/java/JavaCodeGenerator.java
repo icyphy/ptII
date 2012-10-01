@@ -171,9 +171,9 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
 //                 System.out.println("System.identityHashCode(type): " + System.identityHashCode(type)
 //                         + " System.identityHashCode(BaseType.OBJECT) " + System.identityHashCode(BaseType.OBJECT));
 //             }
-            
+
             // It is not an error to resolve to general.  See
-            // $PTII/bin/ptcg -language java $PTII/ptolemy/cg/kernel/generic/program/procedural/java/test/auto/Display.xml 
+            // $PTII/bin/ptcg -language java $PTII/ptolemy/cg/kernel/generic/program/procedural/java/test/auto/Display.xml
             System.out.println("JavaCodeGenerator.codeGenType(): Cannot resolve codegen type from Ptolemy type: " + type
                     + ".  Maybe the type of a port needs to be set from the UI or backward type inference disabled?");
         }
@@ -361,7 +361,7 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
         return result;
     }
 
-    /** Generate code that defines a constant. 
+    /** Generate code that defines a constant.
      *  In Java, generate a static final.
      *  @param constant The name of the constant to be defined
      *  @param type A string representing the type.  In C, this
@@ -369,7 +369,7 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
      *  @param value The value of the constant.
      *  @return A static final that defines the constant.
      */
-    public String generateConstantDefinition(String constant, 
+    public String generateConstantDefinition(String constant,
             String type, String value) {
         // Maybe we should keep track of these in a Set?
         return "static final " + type + " " + constant + " = " + value + ";" + _eol;
@@ -1753,7 +1753,7 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
             // Object and Complex types are not primitive types.
             // $PTII/bin/ptcg -language java $PTII/ptolemy/cg/kernel/generic/program/procedural/java/test/auto/ObjectToken1.xml
             //: ptType.equals(BaseType.OBJECT) ? "Object"
-            //: ptType == BaseType.OBJECT ? "Object"            
+            //: ptType == BaseType.OBJECT ? "Object"
 
                                                         //: ptType == PointerToken.POINTER ? "void*"
                                                         : "Token";
@@ -2770,12 +2770,12 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
         return word;
     }
 
-    /** Return the base name of the file that defines methods for the type 
-     *  
+    /** Return the base name of the file that defines methods for the type
+     *
      *  @param typeName The name of the type to be checked.
      *  @return If the typeName is Complex or Object, then return ComplexCG or ObjectCG,
      *  otherwise, return the typeName;
-     */   
+     */
     private static String _typeNameCG(String typeName) {
         if (typeName.equals("Complex")) {
             typeName =  "ComplexCG";

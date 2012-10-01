@@ -40,9 +40,9 @@ import com.sun.jna.NativeLibrary;
 
 /**
  * An object that represents the fmiModelDescription element of a
- * modelDescription.xml file contained within a 
+ * modelDescription.xml file contained within a
  * Functional Mock-up Interface (.fmu) file.
- * 
+ *
  * <p>A Functional Mock-up Unit file is a .fmu file in zip format that
  * contains a .xml file named "modelDescription.xml".  This class is a
  * representation of the elements of that file.</p>
@@ -50,7 +50,7 @@ import com.sun.jna.NativeLibrary;
  * <p>FMI documentation may be found at
  * <a href="http://www.modelisar.com/fmi.html">http://www.modelisar.com/fmi.html</a>.
  * </p>
- * 
+ *
  * @author Christopher Brooks
  * @version $Id$
  * @Pt.ProposedRating Red (cxh)

@@ -107,11 +107,11 @@ public class PublisherPort extends PubSubPort {
     public PublisherPort(ComponentEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        
+
         propagateNameChanges = new Parameter(this, "propagateNameChanges");
         propagateNameChanges.setExpression("false");
         propagateNameChanges.setTypeEquals(BaseType.BOOLEAN);
-        
+
         setOutput(true);
         setInput(false);
 
@@ -121,7 +121,7 @@ public class PublisherPort extends PubSubPort {
                 + "<polygon points=\"-8,9 -2,4 12,4 12,-4 -2,-4 -8,-9\" "
                 + "style=\"fill:cyan\"/>\n" + "</svg>\n");
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         parameters                        ////
 
@@ -151,7 +151,7 @@ public class PublisherPort extends PubSubPort {
      *  will be updated.</p>
      */
     public Parameter propagateNameChanges;
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -216,7 +216,7 @@ public class PublisherPort extends PubSubPort {
                                 if (attribute == channel
                                         && (!(_channel == null || _channel.trim()
                                         .equals("")))) {
-                                    // Changing the channel from a previous channel name. 
+                                    // Changing the channel from a previous channel name.
                                     if (((BooleanToken) propagateNameChanges
                                             .getToken()).booleanValue()) {
                                         try {
@@ -266,7 +266,7 @@ public class PublisherPort extends PubSubPort {
             super.attributeChanged(attribute);
         }
     }
-        
+
     /** Notify this object that the containment hierarchy above it has
      *  changed. This registers the port as a publisher with the
      *  container of the container, if there is one.
@@ -353,10 +353,10 @@ public class PublisherPort extends PubSubPort {
     public void initialize() throws IllegalActionException {
         if (((InstantiableNamedObj)getContainer()).isWithinClassDefinition()) {
             // Don't initialize Class Definitions.
-            // See $PTII/ptolemy/actor/lib/test/auto/PublisherToplevelSubscriberPortAOC.xml 
+            // See $PTII/ptolemy/actor/lib/test/auto/PublisherToplevelSubscriberPortAOC.xml
             return;
         }
- 
+
         Token initialOutputsValue = initialTokens.getToken();
         if (initialOutputsValue instanceof ArrayToken) {
             // If this port has inside receivers, then it is an opaque port
@@ -382,7 +382,7 @@ public class PublisherPort extends PubSubPort {
             }
         }
     }
-    
+
     /** Override the base class to throw an exception if this port is at the top level.
      *  @exception IllegalActionException If the port is in
      *   the top level, or if the superclass throws it.
@@ -395,7 +395,7 @@ public class PublisherPort extends PubSubPort {
         }
         super.preinitialize();
     }
-    
+
     /** Override the base class to refuse to accept setting to be an input.
      *  @param isInput Required to be false.
      *  @exception IllegalActionException If the argument is true.
@@ -408,7 +408,7 @@ public class PublisherPort extends PubSubPort {
         }
         super.setInput(false);
     }
-    
+
     /** Override the base class to require the port to be an output.
      *  @param isOutput Required to be true.
      *  @exception IllegalActionException If the argument is false.
@@ -442,11 +442,11 @@ public class PublisherPort extends PubSubPort {
      *  {@link SubscriberPort}, then return a set containing it;
      *  otherwise, return a set of SubscriberPort instances that downstream
      *  of the specified port that subscribe to this publisher.
-     *  This method traverses opaque composites.   
-     *  @param port The port to be checked   
+     *  This method traverses opaque composites.
+     *  @param port The port to be checked
      *  @return The Set of all AtomicActors connected to the port.
      */
-    private Set<SubscriberPort> _dependents(IOPort port) 
+    private Set<SubscriberPort> _dependents(IOPort port)
             throws IllegalActionException {
         //System.out.println("ActorDependencies._dependents: START" + remotePort.getFullName());
         Set<SubscriberPort> results = new HashSet<SubscriberPort>();
@@ -481,7 +481,7 @@ public class PublisherPort extends PubSubPort {
         }
         return results;
     }
-    
+
     /** Update the channel name of any connected SubscriberPorts.
      *  Note that the channel name of connected SubscriptionAggregatorPorts
      *  are not updated.
@@ -508,7 +508,7 @@ public class PublisherPort extends PubSubPort {
                 if (port.channel.stringValue().equals(previousChannelName)) {
                     // Avoid updating SubscriptionAggregators that have regular
                     // expressions that are different than the Publisher channel name.
-                   
+
                     // Handle the case where the channel name is an expression
                     // that evaluates to the value of the enclosing Publisher actor's
                     // channel parameter. In that case, we want to change the value
@@ -534,10 +534,10 @@ public class PublisherPort extends PubSubPort {
             _inUpdateCall = false;
         }
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    
+
     /** Flag to prevent recursive call of subscribers() method. */
     private boolean _inUpdateCall = false;
 }

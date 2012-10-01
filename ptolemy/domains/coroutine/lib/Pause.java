@@ -33,17 +33,17 @@ public class Pause extends AtomicContinuationActor {
      * @see ptolemy.domains.coroutine.kernel.ContinuationActor#enter(ptolemy.domains.coroutine.kernel.ControlEntryToken)
      */
     @Override
-    public ControlExitToken controlEnter(ControlEntryToken entry) 
+    public ControlExitToken controlEnter(ControlEntryToken entry)
             throws IllegalActionException {
-        
+
         ControlEntryToken.EntryLocation loc = null;
         ControlExitToken extk = null;
-        
+
         /**/ if (entry.isInit())   { loc = pauseEntry; }
         else if (entry.isResume()) { loc = _resumeLoc; }
         else if (entry.isEntry())  { loc = entry.getLocation(); }
         else { super.controlEnter(entry); }
-        
+
         while (true) {
             if (loc == pauseEntry) {
                 _currentLoc = resumeEntry;
@@ -57,7 +57,7 @@ public class Pause extends AtomicContinuationActor {
             }
             break;
         }
-        
+
         if (extk != null) return extk;
         else return super.controlEnter(entry);
     }
@@ -73,17 +73,17 @@ public class Pause extends AtomicContinuationActor {
 
     ///////////////////////////////////////////////////////
 
-    protected void _init() throws 
+    protected void _init() throws
         IllegalActionException, NameDuplicationException {
-        
+
         addEntryLocation(pauseEntry);
         addEntryLocation(resumeEntry);
         addExitLocation(nextExit);
     }
 
-     
+
     final public EntryLocation pauseEntry  = new EntryLocation("pause");
     final public EntryLocation resumeEntry = new EntryLocation("resume");
-    final public ExitLocation  nextExit    = new ExitLocation("next");    
+    final public ExitLocation  nextExit    = new ExitLocation("next");
     private EntryLocation _resumeLoc, _currentLoc;
 }

@@ -100,17 +100,17 @@ public class SubscriberPort extends PubSubPort {
     public SubscriberPort(ComponentEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        
+
         setOutput(false);
         setInput(true);
-        
+
         // In order for this to show up in the vergil library, it has to have
         // an icon description.
         _attachText("_smallIconDescription", "<svg>\n"
                 + "<polygon points=\"0,4 0,9 12,0 0,-9 0,-4 -8,-4 -8,4\" "
                 + "style=\"fill:cyan\"/>\n" + "</svg>\n");
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -172,7 +172,7 @@ public class SubscriberPort extends PubSubPort {
             super.attributeChanged(attribute);
         }
     }
-    
+
     /** Notify this object that the containment hierarchy above it has
      *  changed. This restores the tokenInitConsumption parameters of
      *  any ports that had that parameter changed in a previous
@@ -181,7 +181,7 @@ public class SubscriberPort extends PubSubPort {
      *   acceptable.
      */
     @Override
-    public void hierarchyChanged() throws IllegalActionException {        
+    public void hierarchyChanged() throws IllegalActionException {
         // If we have previously set the tokenInitConsumption variable
         // of some port, restore it now to its original value.
         if (_tokenInitConsumptionSet != null) {
@@ -230,7 +230,7 @@ public class SubscriberPort extends PubSubPort {
         }
         super.hierarchyWillChange();
     }
-    
+
     /** If {@link #initialTokens} has been set, then make available the
      *  inputs specified by its array value.
      */
@@ -239,7 +239,7 @@ public class SubscriberPort extends PubSubPort {
         if (((InstantiableNamedObj)getContainer()).isWithinClassDefinition()) {
             // Don't initialize Class Definitions.
             // FIXME: Probably shouldn't even be a registered Initializable.
-            // See $PTII/ptolemy/actor/lib/test/auto/PublisherToplevelSubscriberPortAOC.xml 
+            // See $PTII/ptolemy/actor/lib/test/auto/PublisherToplevelSubscriberPortAOC.xml
             return;
         }
         // If the publisher port is not opaque and is an instance of
@@ -278,7 +278,7 @@ public class SubscriberPort extends PubSubPort {
                 }
             }
         }
- 
+
         Token initialOutputsValue = initialTokens.getToken();
         if (initialOutputsValue instanceof ArrayToken) {
             // If this port is opaque, put the tokens into the receivers.
@@ -303,7 +303,7 @@ public class SubscriberPort extends PubSubPort {
             }
         }
     }
-    
+
     /** Override the base class to ensure that there is a publisher.
      *  @exception IllegalActionException If there is no matching
      *   publisher, if the channel is not specified or if the port
@@ -321,7 +321,7 @@ public class SubscriberPort extends PubSubPort {
         }
         if (((InstantiableNamedObj)getContainer()).isWithinClassDefinition()) {
             // Don't preinitialize Class Definitions.
-            // See $PTII/ptolemy/actor/lib/test/auto/PublisherToplevelSubscriberPortAOC.xml 
+            // See $PTII/ptolemy/actor/lib/test/auto/PublisherToplevelSubscriberPortAOC.xml
             return;
         }
         _updateLinks();
@@ -339,7 +339,7 @@ public class SubscriberPort extends PubSubPort {
         }
         super.setInput(true);
     }
-    
+
     /** Override the base class to refuse to make the port an output.
      *  @param isOutput Required to be false.
      *  @exception IllegalActionException If the argument is true.
@@ -352,7 +352,7 @@ public class SubscriberPort extends PubSubPort {
         }
         super.setOutput(false);
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
@@ -373,7 +373,7 @@ public class SubscriberPort extends PubSubPort {
         if (_channel == null) {
             return;
         }
-        
+
         NamedObj immediateContainer = getContainer();
         if (immediateContainer != null) {
             NamedObj container = immediateContainer.getContainer();
@@ -409,7 +409,7 @@ public class SubscriberPort extends PubSubPort {
                     // by the publisher port if it is not opaque (if it is opaque, then
                     // its token init production parameter will be seen by the scheduler).
                     int length = 0;
-                    
+
                     Token initialOutputsValue = initialTokens.getToken();
                     if (initialOutputsValue != null) {
                         length = ((ArrayToken)initialOutputsValue).length();
@@ -423,7 +423,7 @@ public class SubscriberPort extends PubSubPort {
                         length += DFUtilities.getTokenInitProduction(publisherPort);
                     }
                     _publisherPort = publisherPort;
-                         
+
                     if (length > 0) {
                         if (isOpaque()) {
                             DFUtilities.setOrCreate(this, "tokenInitConsumption", length);
@@ -454,7 +454,7 @@ public class SubscriberPort extends PubSubPort {
             }
         }
     }
-    
+
     /** Traverse the model, starting at the specified object
      *  and examining objects below it in the hierarchy, to find
      *  all instances of PublisherPort and make sure that they have
@@ -480,13 +480,13 @@ public class SubscriberPort extends PubSubPort {
             }
         }
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
     /** The associated publisherPort, found during preinitialize(). */
     private IOPort _publisherPort;
-    
+
     /** Set of ports whose tokenInitConsumption variable has been set
      *  in preinitialize to something other than 0. This is needed so
      *  that these variables can be unset if the hierarchy changes.

@@ -49,7 +49,7 @@ public class TrueGate
     public TrueGate(ptolemy.actor.lib.logic.TrueGate actor) {
         super(actor);
     }
-    
+
     /** Return the name of the port that is the time source.
      *  @return The string "input".
      */

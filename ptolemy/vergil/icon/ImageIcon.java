@@ -260,22 +260,22 @@ public class ImageIcon extends DynamicEditorIcon implements ImageObserver {
                     int newHeight = (int) Math
                             .round((height * _scalePercentage) / 100.0);
 
-		    if (newWidth != 0 && newHeight != 0) {
-			// Avoid "Exception in thread "AWT-EventQueue-0" java.lang.IllegalArgumentException: Width (0) and height (0) must be non-zero"
-			// which is thrown by java.awt.Image.getScaledInstance() when the height or width is 0.
-			// This occurs when running 
-			// $PTII/bin/ptcg -language java $PTII/ptolemy/moml/filter/test/auto/modulation2.xml
-		        // Negative argument indicates to maintain aspect ratio.
-			_scaledImage = _image.getScaledInstance(newWidth,
-								-1, Image.SCALE_SMOOTH);
+                    if (newWidth != 0 && newHeight != 0) {
+                        // Avoid "Exception in thread "AWT-EventQueue-0" java.lang.IllegalArgumentException: Width (0) and height (0) must be non-zero"
+                        // which is thrown by java.awt.Image.getScaledInstance() when the height or width is 0.
+                        // This occurs when running
+                        // $PTII/bin/ptcg -language java $PTII/ptolemy/moml/filter/test/auto/modulation2.xml
+                        // Negative argument indicates to maintain aspect ratio.
+                        _scaledImage = _image.getScaledInstance(newWidth,
+                                                                -1, Image.SCALE_SMOOTH);
 
-			_scalePercentageImplemented = _scalePercentage;
+                        _scalePercentageImplemented = _scalePercentage;
 
-			if (tk.prepareImage(_scaledImage, width, height,
-					    ImageIcon.this)) {
-			    // Image is fully prepared. Request a re-rendering.
-			    _updateFigures();
-			}
+                        if (tk.prepareImage(_scaledImage, width, height,
+                                            ImageIcon.this)) {
+                            // Image is fully prepared. Request a re-rendering.
+                            _updateFigures();
+                        }
                     }
                 }
             }

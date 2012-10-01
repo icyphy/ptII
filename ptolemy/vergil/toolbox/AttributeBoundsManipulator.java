@@ -96,7 +96,7 @@ public class AttributeBoundsManipulator extends BoundsManipulator {
             // NOTE: Calling getBounds() on the child itself yields an
             // inaccurate bounds, for some reason. Use getShape().
             Rectangle2D bounds = child.getShape().getBounds2D();
-            
+
             double resolution = _resizer.getSnapResolution();
             // Check to see whether the size has changed by more than the
             // snap resolution.
@@ -140,8 +140,8 @@ public class AttributeBoundsManipulator extends BoundsManipulator {
                 } catch (IllegalActionException e1) {
                     // This should not occur.
                     e1.printStackTrace();
-                }              
-                
+                }
+
                 try {
                     Token previousHeight = ((Parameter)heightParameter).getToken();
                     if (previousHeight instanceof DoubleToken && _boundsOnMousePressed != null) {
@@ -152,7 +152,7 @@ public class AttributeBoundsManipulator extends BoundsManipulator {
                     // This should not occur.
                     e1.printStackTrace();
                 }
-                
+
                 // Create the MoML command to change the width and height.
                 StringBuffer command = new StringBuffer(
                         "<group><property name =\"width\" value=\"");
@@ -164,15 +164,15 @@ public class AttributeBoundsManipulator extends BoundsManipulator {
                 // Location may be the upper left corner. Hence,
                 // location needs to change too if dragged left or up.
                 if (locationParameter instanceof Locatable) {
-                    
+
                     double[] previousLocation = ((Locatable)locationParameter).getLocation();
-                    
+
                     // Use these defaults if for some reason _boundsOnMousePressed == null
                     // (which should not occur).
                     Rectangle2D childBounds = child.getBounds();
                     double newX = childBounds.getX();
                     double newY = childBounds.getY();
-                    
+
                     if (_boundsOnMousePressed != null) {
                         // Snap the new X and Y to the grid (not the new location!).
                         // The reason is that it is the new X and Y, not the location,
@@ -210,7 +210,7 @@ public class AttributeBoundsManipulator extends BoundsManipulator {
                             // Something went wrong. Use default.
                         }
                     }
-                    
+
                     command.append("<property name = \"_location\" value=\"");
 
                     command.append(newX);
@@ -287,10 +287,10 @@ public class AttributeBoundsManipulator extends BoundsManipulator {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private members                   ////
-    
+
     // Bounds of the child figure upon the mouse being pressed.
     private Rectangle2D _boundsOnMousePressed;
-    
+
     // FIXME: Instance used to work around Diva bug.
     private FigureDecorator _instanceDecorator;
 

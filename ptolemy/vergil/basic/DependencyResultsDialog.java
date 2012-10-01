@@ -86,7 +86,7 @@ public class DependencyResultsDialog extends SearchResultsDialog {
         _query.addCheckBox("dependents", "Dependents", true);
     }
 
-    
+
     /** Perform a search and update the results table.
      */
     protected void _search() {
@@ -134,7 +134,7 @@ public class DependencyResultsDialog extends SearchResultsDialog {
         }
         return result;
     }
-    
+
     /** Return a URL that points to the help page.
      *  @return A URL that points to the help page
      */

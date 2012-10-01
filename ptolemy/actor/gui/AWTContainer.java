@@ -1,6 +1,6 @@
 /*
  The portable container that wraps java.awt.Container.
- 
+
  Copyright (c) 2011 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
@@ -39,7 +39,7 @@ import ptolemy.actor.injection.PortableContainer;
 /**
  * The portable container that wraps java.awt.Container.
  * @author Anar Huseynov
- * @version $Id$ 
+ * @version $Id$
  * @since Ptolemy II 8.0
  * @Pt.ProposedRating Red (ahuseyno)
  * @Pt.AcceptedRating Red (ahuseyno)
@@ -57,7 +57,7 @@ public class AWTContainer implements PortableContainer {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** 
+    /**
      * Add the component to the container.
      * @param component the component to be added to the container.
      * @see ptolemy.actor.injection.PortableContainer#add(java.lang.Object)
@@ -67,7 +67,7 @@ public class AWTContainer implements PortableContainer {
     }
 
     /**
-     * Return the AWT container that this instance wraps. 
+     * Return the AWT container that this instance wraps.
      * @see ptolemy.actor.injection.PortableContainer#getPlatformContainer()
      * @return the AWT container that this instance wraps.
      */

@@ -1,6 +1,6 @@
 /* Class that wraps and uses MoMLParser to parse the customized
    user interface layout file.
- 
+
  Copyright (c) 2011 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
@@ -46,7 +46,7 @@ import ptserver.util.ServerUtility;
 ///////////////////////////////////////////////////////////////////
 //// LayoutParser
 
-/** Parse the layout XML file for tabs, screen orientation, and 
+/** Parse the layout XML file for tabs, screen orientation, and
  *  individual sink actor placement properties.
  *
  *  @author Justin Killian
@@ -140,7 +140,7 @@ public class LayoutParser {
     }
 
     /** Get the entities with positions defined.
-     * 
+     *
      *  @return All the entities with positions parsed.
      *  @exception IllegalActionException If an entity does not
      *  implement {@link ptolemy.actor.injection.PortablePlaceable} or if
@@ -164,7 +164,7 @@ public class LayoutParser {
     }
 
     /** Get the attributes with positions defined in the layout file.
-     * 
+     *
      *  @return All the attributes with locations parsed.
      *  @exception IllegalActionException If the location information is invalid
      *  for any of the attributes, or if the attribute is not Settable.
@@ -182,7 +182,7 @@ public class LayoutParser {
     }
 
     /** Return all the elements in the model marked as proxies.
-     * 
+     *
      *  @return The set of all named objects marked as proxies.
      */
     public HashSet<NamedObj> getProxyElements() {
@@ -192,7 +192,7 @@ public class LayoutParser {
     }
 
     /** Return all elements in the model that has its positions defined.
-     * 
+     *
      *  @return The set of all named objects with position information.
      */
     public HashSet<NamedObj> getPositionableElements() {
@@ -202,8 +202,8 @@ public class LayoutParser {
     }
 
     /** Get all the elements marked as proxies under the element and add them to
-     *  the container. 
-     * 
+     *  the container.
+     *
      *  @param element The element to search for proxy attribute and other elements
      *  that have proxy attributes.
      *  @param container The container to store the elements found.
@@ -227,8 +227,8 @@ public class LayoutParser {
     }
 
     /** Get all the elements that have position defined under the element and add
-     *  them to the container. 
-     * 
+     *  them to the container.
+     *
      *  @param element The element to search for location attribute and other elements
      *  that have location attributes.
      *  @param container The container to store the elements found.
@@ -281,10 +281,10 @@ public class LayoutParser {
 
     /** Find all positionable attributes of the model recursively and
      *  add them to the passed container parsed.
-     *  
+     *
      *  @param container The named object that contains the attributes to
      *  be parsed.
-     *  @param attributeContainer Container to hold the parsed positionable 
+     *  @param attributeContainer Container to hold the parsed positionable
      *  attributes.
      *  @exception IllegalActionException If a found attribute with the
      *  location definition is not settable.

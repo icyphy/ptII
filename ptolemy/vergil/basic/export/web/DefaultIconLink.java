@@ -44,7 +44,7 @@ import ptolemy.kernel.util.NamedObj;
  * with icons in model. Putting this attribute into a model causes
  * the icons of entities, attributes, or both, to be assigned a
  * default hyperlink to the URI given by <i>linkTarget</i>.
- * This will replace any configuration default link that 
+ * This will replace any configuration default link that
  * includes the same objects, and
  * targets the same instanceOf possibilities.
  *
@@ -65,19 +65,19 @@ public class DefaultIconLink extends IconLink {
     public DefaultIconLink(NamedObj container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        
+
         include = new StringParameter(this, "include");
         include.addChoice("Entities");
         include.addChoice("Attributes");
         include.addChoice("All");
         include.setExpression("Entities");
-        
+
         instancesOf = new StringParameter(this, "instancesOf");
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         parameters                        ////
-    
+
     /** If non-empty (the default), specifies a class name.
      *  Only entities or attributes (depending on <i>include</i>)
      *  implementing the specified
@@ -91,20 +91,20 @@ public class DefaultIconLink extends IconLink {
      *  default), "Attributes", or "All".
      */
     public StringParameter include;
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                       protected methods                   ////
 
     /** Override the base class to define an href attribute to associate with
      *  the area of the image map corresponding to its container.
-     *  
+     *
      *  @param exporter  The web exporter to which to write content.
      *  @throws IllegalActionException If evaluating the value
      *   of this parameter fails.
      */
-    protected void _provideAttributes(WebExporter exporter) 
+    protected void _provideAttributes(WebExporter exporter)
         throws IllegalActionException{
-        
+
         boolean entities = false, attributes = false;
         String includeValue = include.stringValue().toLowerCase();
         if (includeValue.equals("all")) {
@@ -151,12 +151,12 @@ public class DefaultIconLink extends IconLink {
             }
         }
     }
-    
+
     /** Provide content to the specified web exporter to be
      *  included in a web page for the container of this object.
      *  This class defines an href attribute to associate with
      *  the area of the image map corresponding to its container.
-     *  
+     *
      *  @param exporter The exporter.
      *  @param object The object.
      *  @throws IllegalActionException If evaluating the value
@@ -164,39 +164,39 @@ public class DefaultIconLink extends IconLink {
      */
     protected void _provideEachAttribute(WebExporter exporter, NamedObj object)
             throws IllegalActionException {
-        
+
         WebAttribute webAttribute;
-        
+
         if (object != null) {
             // Last argument specifies to overwrite any previous value defined.
             if (!stringValue().trim().equals("")) {
-                
-                // Create link attribute and add to exporter.  
+
+                // Create link attribute and add to exporter.
                 // Content should only be added once (onceOnly -> true).
-                webAttribute = 
-                    WebAttribute.createWebAttribute(getContainer(), 
+                webAttribute =
+                    WebAttribute.createWebAttribute(getContainer(),
                             "hrefWebAttribute", "href");
                 webAttribute.setExpression(stringValue());
                 exporter.defineAttribute(webAttribute, true);
-   
+
                 String targetValue = linkTarget.stringValue();
                 if (!targetValue.trim().equals("")) {
                     if (targetValue.equals("_lightbox")) {
                         // Strangely, the class has to be "iframe".
                         // I don't understand why it can't be "lightbox".
-                        
-                        // Create class attribute and add to exporter.  
+
+                        // Create class attribute and add to exporter.
                         // Content should only be added once (onceOnly -> true).
                         webAttribute = WebAttribute
-                             .createWebAttribute(getContainer(), 
+                             .createWebAttribute(getContainer(),
                                      "classWebAttribute", "class");
                         webAttribute.setExpression("iframe");
                         exporter.defineAttribute(webAttribute, true);
                     } else {
-                        // Create target attribute and add to exporter.  
+                        // Create target attribute and add to exporter.
                         // Content should only be added once (onceOnly -> true).
                         webAttribute = WebAttribute.
-                            createWebAttribute(getContainer(), 
+                            createWebAttribute(getContainer(),
                                     "targetWebAttribute", "target");
                         webAttribute.setExpression(targetValue);
                         exporter.defineAttribute(webAttribute, true);

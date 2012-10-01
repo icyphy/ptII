@@ -211,7 +211,7 @@ import ptolemy.kernel.util.Workspace;
  <b>Limitations</b>: According to [1], at each microstep, DE should
  perform a fixed point iteration. This implementation does not do that,
  and consequently, this director is not able to execute all correctly
- constructed DE models. For an example, see 
+ constructed DE models. For an example, see
  $PTII/ptolemy/domains/de/test/auto/DEFixedPointLimitation.xml.
  That example has a DE opaque composite actor in a feedback loop.
  In principle, there should be no causality loop. The actor output
@@ -228,7 +228,7 @@ import ptolemy.kernel.util.Workspace;
  [1] Lee, E. A. and H. Zheng (2007). Leveraging Synchronous Language
  Principles for Heterogeneous Modeling and Design of Embedded Systems.
  EMSOFT, Salzburg, Austria, October, ACM.
- 
+
  @author Lukito Muliadi, Edward A. Lee, Jie Liu, Haiyang Zheng
  @version $Id$
  @since Ptolemy II 0.2
@@ -286,7 +286,7 @@ public class DEDirector extends Director implements SuperdenseTimeDirector {
      *  The value defaults to 2.
      */
     public Parameter binCountFactor;
-    
+
     /** A flag indicating whether this director should enforce
      *  microstep semantics, throwing an exception when actors
      *  deliver events at microstep 0. Such events can arise from
@@ -380,11 +380,11 @@ public class DEDirector extends Director implements SuperdenseTimeDirector {
      *  @return The new Attribute.
      */
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        DEDirector newObject = (DEDirector) super.clone(workspace); 
+        DEDirector newObject = (DEDirector) super.clone(workspace);
         newObject._disabledActors = null;
         newObject._eventQueue = null;
         newObject._exceedStopTime = false;
-        newObject._isInitializing = false; 
+        newObject._isInitializing = false;
         newObject._microstep = 1;
         newObject._noMoreActorsToFire = false;
         newObject._realStartTime = 0;
@@ -707,8 +707,8 @@ public class DEDirector extends Director implements SuperdenseTimeDirector {
         // Some composites, such as RunCompositeActor want to be treated
         // as if they are at the top level even though they have an executive
         // director, so be sure to check _isTopLevel().
-        if (executiveDirector != null && !_isTopLevel()) { 
-            
+        if (executiveDirector != null && !_isTopLevel()) {
+
             Time aFutureTimeOfUpperLevel = localClock.getLocalTimeForEnvironmentTime(
                     executiveDirector.getModelNextIterationTime());
 
@@ -1006,10 +1006,10 @@ public class DEDirector extends Director implements SuperdenseTimeDirector {
      *  director.</p>
      */
     public boolean prefire() throws IllegalActionException {
-        
+
         // NOTE: super.prefire() is not of much use, because we want
         // to set current time adjusted for accumulated suspend time.
-        
+
         if (_debugging) {
             _debug("DEDirector: Called prefire().");
         }
@@ -1037,7 +1037,7 @@ public class DEDirector extends Director implements SuperdenseTimeDirector {
                 }
             }
         }
-        
+
         // A top-level DE director is always ready to fire.
         if (_isTopLevel()) {
             if (_debugging) {
@@ -1228,7 +1228,7 @@ public class DEDirector extends Director implements SuperdenseTimeDirector {
         }
         _microstep = index;
     }
-        
+
     /** Request the execution of the current iteration to stop.
      *  This is similar to stopFire(), except that the current iteration
      *  is not allowed to complete.  This is useful if there is actor
@@ -2293,7 +2293,7 @@ public class DEDirector extends Director implements SuperdenseTimeDirector {
             binCountFactor.setExpression("2");
             binCountFactor.setTypeEquals(BaseType.INT);
             binCountFactor.setVisibility(Settable.EXPERT);
-            
+
             enforceMicrostepSemantics = new Parameter(this, "enforceMicrostepSemantics");
             enforceMicrostepSemantics.setExpression("false");
             enforceMicrostepSemantics.setTypeEquals(BaseType.BOOLEAN);
@@ -2334,13 +2334,13 @@ public class DEDirector extends Director implements SuperdenseTimeDirector {
      *  to the executive director.
      */
     private boolean _delegateFireAt = false;
-    
+
     /** Cache for the enclosing superdense time director. */
     private SuperdenseTimeDirector _enclosingSuperdenseTimeDirector;
-    
+
     /** Cache version for the enclosing superdense time director. */
     private long _enclosingSuperdenseTimeDirectorVersion = -1;
-    
+
     /** Cached value of enforceMicrostepSemantics parameter. */
     private boolean _enforceMicrostepSemantics = false;
 
@@ -2364,7 +2364,7 @@ public class DEDirector extends Director implements SuperdenseTimeDirector {
      *  catch up with model time.
      */
     private boolean _synchronizeToRealTime;
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
 
@@ -2375,10 +2375,10 @@ public class DEDirector extends Director implements SuperdenseTimeDirector {
      *  of the container, it declares that all outputs depend on all inputs.
      *  This is necessary to ensure that if a DE opaque composite is fired
      *  only when all inputs at the current microstep are known. See
-     *  $PTII/ptolemy/domains/de/test/auto/DEFixedPointLimitation.xml. 
+     *  $PTII/ptolemy/domains/de/test/auto/DEFixedPointLimitation.xml.
      */
     private class DECausalityInterface extends CausalityInterfaceForComposites {
-        
+
         /** Construct a causality interface for the specified actor.
          *  @param actor The actor for which this is a causality interface.
          *   This is required to be an instance of CompositeEntity.
@@ -2391,7 +2391,7 @@ public class DEDirector extends Director implements SuperdenseTimeDirector {
                 Dependency defaultDependency) throws IllegalArgumentException {
             super(actor, defaultDependency);
         }
-        
+
         /** Return a collection of the ports in this actor that depend on
          *  or are depended on by the specified port. A port X depends
          *  on a port Y if X is an output and Y is an input and
@@ -2428,7 +2428,7 @@ public class DEDirector extends Director implements SuperdenseTimeDirector {
                 return _EMPTY_COLLECTION;
             }
         }
-        
+
         /** Return a collection of the input ports in this actor that are
          *  in the same equivalence class with the specified input
          *  port. This class returns a collection of all
@@ -2451,7 +2451,7 @@ public class DEDirector extends Director implements SuperdenseTimeDirector {
             }
             return _actor.inputPortList();
         }
-        
+
         /** Return the dependency between the specified input port
          *  and the specified output port.  This class returns
          *  the default dependency if the first port is an input

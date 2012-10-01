@@ -524,7 +524,7 @@ public class KeplerDocumentationAttribute extends Attribute implements
         }
         return retval;
     }
-    
+
     /** Set the author.
      *  @param author The author.
      *  @see #getAuthor()
@@ -633,20 +633,20 @@ public class KeplerDocumentationAttribute extends Attribute implements
     public void updateContent() throws InternalErrorException {
         //do nothing
     }
-    
+
     /** Update the documentation fields of this object from another
      * KeplerDocumentationAttribute. A documentation field in
      * this object is updated if it is empty and the corresponding field
      * in the given object is not empty. However, if a field does not
      * exist in this object, but is present in the given object, the
      * field is *not* created in this object.
-     * 
+     *
      * @param oldDoc
      *            The KeplerDocumentationAttribute from which to copy
      *            attributes.
      * @param printWhenReplacing
      *            If true, print when the values are overwritten.
-     * 
+     *
      * @throws Exception
      *             if there is an error updating the fields.
      */
@@ -744,7 +744,7 @@ public class KeplerDocumentationAttribute extends Attribute implements
             }
         }
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 

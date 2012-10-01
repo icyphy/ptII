@@ -40,13 +40,13 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.Nameable;
 
 /** A function that, given a list of ports, returns a <code>StructuredType</code>
- *  of which the fields names and field types correspond with the given ports. 
+ *  of which the fields names and field types correspond with the given ports.
  *  The arguments to this function (the array returned by getVariables())
- *  represent the types of the ports, in the same order as the ports 
+ *  represent the types of the ports, in the same order as the ports
  *  are defined. The concrete subclass of <code>StructuredType</code> that
  *  is to be instantiated by this function depends on the type parameter
- *  passed to the constructor. 
- *  
+ *  passed to the constructor.
+ *
  * @author Edward A. Lee, Marten Lohstroh
  * @version $Id: CompositeType.java $
  * @since Ptolemy II 9.0
@@ -68,13 +68,13 @@ public class ConstructAssociativeType extends MonotonicFunction {
     ///////////////////////////////////////////////////////////////
     ////                       public inner methods            ////
 
-    /** Return a RecordType with field names equal to the given port names, 
-     *  and field types equal to the current inferred or declared type of the 
+    /** Return a RecordType with field names equal to the given port names,
+     *  and field types equal to the current inferred or declared type of the
      *  corresponding ports.
      *  @return A RecordType.
      *  @exception IllegalActionException If thrown while getting the
      *  value of the typeTerm of the port or while instantiating a type.
-     *  
+     *
      */
     public Object getValue() throws IllegalActionException {
         Type[] types = new Type[_ports.size()];

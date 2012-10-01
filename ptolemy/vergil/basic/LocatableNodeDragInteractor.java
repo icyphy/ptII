@@ -195,7 +195,7 @@ public class LocatableNodeDragInteractor extends NodeDragInteractor {
             // The old relativeTo property of the relative location.
             String oldRelativeTo = "";
             String oldRelativeToElementName = "";
-            
+
             // If locatable is an instance of RelativeLocation,
             // then its getLocation() method returns the absolute
             // location, not the relative location.
@@ -280,7 +280,7 @@ public class LocatableNodeDragInteractor extends NodeDragInteractor {
             undoMoml.append("<" + locationElementName + " name=\"" + locationName
                     + "\" value=\"[" + oldLocation[0] + ", " + oldLocation[1]
                     + "]\" >\n");
-            
+
             if (changeRelativeTo) {
                 // Case 1: We have dragged onto another object. Create a reference to
                 // the drop target and store it as properties of the location.
@@ -296,7 +296,7 @@ public class LocatableNodeDragInteractor extends NodeDragInteractor {
                 undoMoml.append("<property name=\"relativeToElementName\" value=\""
                         + oldRelativeToElementName + "\"/>");
             }
-            
+
             moml.append("</" + locationElementName + ">\n");
             undoMoml.append("</" + locationElementName + ">\n");
             moml.append("</" + containingElementName + ">\n");
@@ -438,7 +438,7 @@ public class LocatableNodeDragInteractor extends NodeDragInteractor {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
-    
+
     // Returns a constrained point from the given event
     private double[] _getConstrainedPoint(LayerEvent e) {
         Iterator<?> targets = targets();
@@ -467,13 +467,13 @@ public class LocatableNodeDragInteractor extends NodeDragInteractor {
          */
         return result;
     }
-    
+
     /** Return the figure that is an icon of a NamedObj and is
      *  under the specified point, or null if there is none.
-     *  
+     *
      *  This code is copied from {@link EditorDropTargetListener#_getFigureUnder(Point2D)}
      *  and modified for the new context.
-     *  
+     *
      *  @param point The point in the graph pane.
      *  @param filteredFigures figures that are filtered from the object search
      *  @return The object under the specified point, or null if there
@@ -487,9 +487,9 @@ public class LocatableNodeDragInteractor extends NodeDragInteractor {
 
     /** Return the object under the specified point, or null if there
      *  is none.
-     *  
+     *
      *  This code is copied from {@link EditorDropTargetListener#_getObjectUnder(Point2D)}.
-     *  
+     *
      *  @param point The point in the graph pane.
      *  @param filteredFigures figures that are filtered from the object search
      *  @return The object under the specified point, or null if there
@@ -517,7 +517,7 @@ public class LocatableNodeDragInteractor extends NodeDragInteractor {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    
+
     private LocatableNodeController _controller;
 
     // Used to undo a locatable node movement

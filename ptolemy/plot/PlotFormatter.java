@@ -57,7 +57,7 @@ import ptolemy.gui.QueryListener;
  */
 public class PlotFormatter extends JPanel {
     /** Construct a plot formatter for the specified plot object.
-     *  @param plot The specified plot object.   
+     *  @param plot The specified plot object.
      */
     public PlotFormatter(PlotBox plot) {
         super();

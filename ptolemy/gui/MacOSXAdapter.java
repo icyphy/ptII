@@ -49,7 +49,7 @@ public class MacOSXAdapter implements InvocationHandler {
     ////                         public methods                    ////
 
     /** Invoke a method.  This method is part of the java.lang.reflect.InvocationHandler
-     *  interface.   
+     *  interface.
      *  @param proxy The object upon which the method is invoked.
      *  @param method The method to be invoked.
      *  @param args The arguments to the method, which must be non-null.
@@ -59,7 +59,7 @@ public class MacOSXAdapter implements InvocationHandler {
      *  the com.apple.eawt.ApplicationListener methods are all void.
      */
     public Object invoke(Object proxy, Method method, Object[] args)
-			throws Throwable {
+                        throws Throwable {
         if (_topMethod == null || ! _proxySignature.equals(method.getName()) || args.length != 1) {
             return null;
         }
@@ -101,7 +101,7 @@ public class MacOSXAdapter implements InvocationHandler {
                         new Class[] { boolean.class });
             enableAboutMethod.invoke(_macOSXApplication,
                     new Object[] { Boolean.TRUE });
-        } catch (SecurityException ex) {            
+        } catch (SecurityException ex) {
             if (!_printedSecurityExceptionMessage) {
                 _printedSecurityExceptionMessage = true;
                 System.out.println("Warning: Failed to enable "
@@ -127,7 +127,7 @@ public class MacOSXAdapter implements InvocationHandler {
     ////                         private methods                   ////
 
     /** Create an adapter that has the name of a method to be listened for,
-     *  the Top window that performs the task and the method in Top.   
+     *  the Top window that performs the task and the method in Top.
      *  @param proxySignature  A method name from com.apple.eawt.ApplicationListener,
      *  for example "handleQuit".
      *  @param top the Top level window to perform the operation.
@@ -205,7 +205,7 @@ public class MacOSXAdapter implements InvocationHandler {
             top.report("The a com.apple.eawt class was not found?", ex);
         } catch (Exception ex2) {
             top.report("There was a problem invoking the addApplicationListener method", ex2);
-	}
+        }
     }
 
 

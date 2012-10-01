@@ -42,10 +42,10 @@ import diva.util.java2d.Polyline2D;
  * @author  Steve Neuendorffer, Contributor: Christoph Daniel Schulze
  */
 public class BasicManhattanRouter implements ManhattanRouter {
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-    
+
     /** Reroute the given Shape, given that the head site moved.
      */
     public void rerouteHead(Connector c, Shape s) {
@@ -83,7 +83,7 @@ public class BasicManhattanRouter implements ManhattanRouter {
         Site tailSite = c.getTailSite();
         Point2D headPt;
         Point2D tailPt;
-        
+
         /* Sometimes people will call this method before the connector is
          * even added to a container. If that's the case, we don't know
          * the final coordinates of the head and tail points yet, which
@@ -98,18 +98,18 @@ public class BasicManhattanRouter implements ManhattanRouter {
             // problems with code that expects the polyline to not be empty
             tailPt = tailSite.getPoint();
             headPt = headSite.getPoint();
-            
+
             Polyline2D.Double polyline = new Polyline2D.Double();
             polyline.moveTo(tailPt.getX(), tailPt.getY());
             polyline.lineTo(headPt.getX(), headPt.getY());
-            
+
             return polyline;
         } else {
             // Get the transformed head and tail points
             tailPt = tailSite.getPoint(currentContext);
             headPt = headSite.getPoint(currentContext);
         }
-        
+
         /* There's a problem to be dealt with here in the corner case where
          * the tail and head connection points form a line close to a diagonal.
          * When determining the direction in which an edge leaves one of the
@@ -122,7 +122,7 @@ public class BasicManhattanRouter implements ManhattanRouter {
          * before we change the edge direction from the old direction, if any
          * had already been determined previously.
          */
-        
+
         // Find the angle formed by the direct line connecting the tail
         // point with the head point and the x axis
         double radAngle = Math.atan2(
@@ -190,10 +190,10 @@ public class BasicManhattanRouter implements ManhattanRouter {
 
          */
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
-    
+
     /** Return a polyline describing the routed edge from the head connection
      *  point to the tail connection point.
      *  @param head head connection point.
@@ -371,13 +371,13 @@ public class BasicManhattanRouter implements ManhattanRouter {
     private int _getManhattanDirection(double radAngle, double distance, boolean head, int oldDirection) {
         int dir;
         boolean downwards = false;
-        
+
         // Check if the edge is pointing downwards
         if (radAngle < 0.0) {
             downwards = true;
             radAngle = -1.0 * radAngle;
         }
-        
+
         // We can now infer the edge direction from the angle
         if (radAngle < PI_QUARTER) {
             dir = SwingConstants.EAST;
@@ -386,21 +386,21 @@ public class BasicManhattanRouter implements ManhattanRouter {
         } else {
             dir = downwards ? SwingConstants.SOUTH : SwingConstants.NORTH;
         }
-        
+
         // Check if we have an old direction and might need to prevent edge flip-flopping
         if (oldDirection != -1) {
             // If we have a head direction, we must reverse it first
             if (head) {
                 oldDirection = CanvasUtilities.reverseDirection(oldDirection);
             }
-            
+
             if (oldDirection != dir) {
                 // radAngle currently lies somewhere in the two top quadrants. To make
                 // things easier, transform it to the first quadrant
                 if (radAngle > PI_HALF) {
                     radAngle -= PI_HALF;
                 }
-                
+
                 // Check if radAngle is close to 45 degrees. The definition of "close"
                 // should probably depend on the distance of the points, since we might
                 // have to allow a larger tolerance for close objects than for distant
@@ -410,27 +410,27 @@ public class BasicManhattanRouter implements ManhattanRouter {
                 }
             }
         }
-        
+
         return head ? CanvasUtilities.reverseDirection(dir) : dir;
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
     private final double TOL = .1;
 
     private final double MINDIST = 7;
-    
+
     /**
      * A quarter Pi. Defined as a constant for performance.
      */
     private final double PI_QUARTER = Math.PI * 0.25;
-    
+
     /**
      * Half Pi. Defines as a constant for performance.
      */
     private final double PI_HALF = Math.PI * 0.5;
-    
+
     /**
      * Three quarters Pi. Defined as a constant for performance.
      */

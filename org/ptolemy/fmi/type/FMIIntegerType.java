@@ -34,11 +34,11 @@ import org.w3c.dom.Element;
 
 /**
  * An Functional Mock-up Interface type that represents an Integer.
- * 
+ *
  * <p>FMI documentation may be found at
  * <a href="http://www.modelisar.com/fmi.html">http://www.modelisar.com/fmi.html</a>.
  * </p>
- * 
+ *
  * @author Christopher Brooks
  * @version $Id$
  * @Pt.ProposedRating Red (cxh)

@@ -101,7 +101,7 @@ public abstract class FMUDriver {
 
     /** Perform co-simulation or model exchange using the named
      * Functional Mock-up Unit (FMU) file.
-     *  
+     *
      *  <p>Derived classes should implement this method.</p>
      *
      *  @param fmuFileName The pathname of the co-simulation .fmu file
@@ -122,8 +122,8 @@ public abstract class FMUDriver {
     ////                      protected fields                     ////
 
     /** Process command line arguments for co-simulation or model exchange of
-     *  Functional Mock-up Unit (.fmu) files.   
-     *          
+     *  Functional Mock-up Unit (.fmu) files.
+     *
      *  <p>The command line arguments have the following meaning:</p>
      *  <dl>
      *  <dt>file.fmu</dt>
@@ -182,7 +182,7 @@ public abstract class FMUDriver {
      *  @param enableLogging the value of the enable logging field.
      */
     protected static void _setEnableLogging(boolean enableLogging) {
-        // This method exists so as to avoid a warning from FindBugs.   
+        // This method exists so as to avoid a warning from FindBugs.
         _enableLogging = enableLogging;
         _enableLogging = true;
     }
@@ -205,13 +205,13 @@ public abstract class FMUDriver {
      */
     static boolean _enableLogging = false;
 
-    /** The end time, in seconds. 
-     *  The initial default is 1.0.   
+    /** The end time, in seconds.
+     *  The initial default is 1.0.
      */
     static double _endTime = 1.0;
 
     /** The name of the .fmu file.
-     *  The initial default is the empty string.   
+     *  The initial default is the empty string.
      */
     static String _fmuFileName = "";
 

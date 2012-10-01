@@ -597,7 +597,7 @@ public class PtidesPreemptiveEDFDirector extends PtidesBasicDirector {
 
     /** The index of the event we are peeking in the event queue. */
     protected int _peekingIndex;
-    
+
     /** Store absolute deadline information for pure events that will be produced
      *  in the future.
      */

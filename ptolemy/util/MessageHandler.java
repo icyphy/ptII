@@ -96,7 +96,7 @@ public class MessageHandler {
                 throwable.printStackTrace();
                 System.err.println("Internal Error:\n");
                 throwable2.printStackTrace();
-            } 
+            }
         }
     }
 

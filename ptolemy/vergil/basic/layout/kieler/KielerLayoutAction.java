@@ -65,7 +65,7 @@ import diva.util.Filter;
  * This action implements the {@link Filter} interface to check whether
  * a given model is supported.
  * </p>
- * 
+ *
  * @author  Christian Motika
  * @version $Id: IGuiAction.java 59288 2010-09-27 19:39:22Z cmot $
  * @since Ptolemy II 8.1
@@ -134,7 +134,7 @@ public class KielerLayoutAction extends Object implements IGuiAction, Filter {
                                 + message);
             } else {
                 BasicGraphFrame graphFrame = (BasicGraphFrame) frame;
-                
+
                 // Check if the old layout algorithm should be used
                 if (_useOldAlgorithm(model)) {
                     new PtolemyLayoutAction().doAction(model);
@@ -146,12 +146,12 @@ public class KielerLayoutAction extends Object implements IGuiAction, Filter {
                             .getGraphController().getGraphModel();
                     BasicLayoutTarget layoutTarget = new BasicLayoutTarget(
                             graphController);
-    
+
                     // Create KIELER layouter for this layout target.
                     KielerLayout layout = new KielerLayout(layoutTarget);
                     layout.setModel((CompositeEntity) model);
                     layout.setTop(graphFrame);
-    
+
                     layout.layout(graphModel.getRoot());
                 }
             }
@@ -168,7 +168,7 @@ public class KielerLayoutAction extends Object implements IGuiAction, Filter {
 
     /**
      * Check whether the given model is supported by this layout action.
-     * 
+     *
      * @param o The object to be be checked.
      * @return true if the model can be laid out with this action.
      */
@@ -179,10 +179,10 @@ public class KielerLayoutAction extends Object implements IGuiAction, Filter {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
-    
+
     /**
      * Checks if the given model is configured to use Ptolemy's old layout algorithm.
-     * 
+     *
      * @param model the model to check.
      * @return {@code true} if the model has a layout configuration that explicitly
      *         instructs us to use the old layout algorithm.
@@ -192,11 +192,11 @@ public class KielerLayoutAction extends Object implements IGuiAction, Filter {
             // Find the model's LayoutConfiguration element
             List<LayoutConfiguration> configAttributes = model.attributeList(
                     LayoutConfiguration.class);
-            
+
             // If there is such an element, check if the old algorithm is to be used
             if (!configAttributes.isEmpty()) {
                 LayoutConfiguration configuration = configAttributes.get(0);
-                
+
                 BooleanToken useOldAlgorithm = BooleanToken.convert(
                         configuration.useOldAlgorithm.getToken());
                 if (useOldAlgorithm.booleanValue()) {
@@ -206,7 +206,7 @@ public class KielerLayoutAction extends Object implements IGuiAction, Filter {
         } catch (IllegalActionException e) {
             // Ignore exception -- we'll return false
         }
-        
+
         // Default to false
         return false;
     }

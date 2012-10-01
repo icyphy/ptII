@@ -87,7 +87,7 @@ public class PTree extends JTree {
                 this, DnDConstants.ACTION_COPY_OR_MOVE,
                 new PTreeDragGestureListener());
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 

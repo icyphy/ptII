@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package ptolemy.domains.coroutine.lib;
 
@@ -24,7 +24,7 @@ import ptolemy.kernel.util.Workspace;
  *
  */
 public class Counter extends AtomicContinuationActor {
-    
+
     public Counter() {
         super();
     }
@@ -38,29 +38,29 @@ public class Counter extends AtomicContinuationActor {
     public Counter(Workspace workspace) {
         super(workspace);
     }
-    
+
     /////////////////////////////////////////////////////////////
-    
+
     /* (non-Javadoc)
      * @see ptolemy.domains.coroutine.kernel.ContinuationActor#enter(ptolemy.domains.coroutine.kernel.ControlEntryToken)
      */
     @Override
-    public ControlExitToken controlEnter(ControlEntryToken entry) 
+    public ControlExitToken controlEnter(ControlEntryToken entry)
         throws IllegalActionException {
-        
+
         ControlEntryToken.EntryLocation loc = null;
         ControlExitToken extk = null;
-        
+
         Token alarmPToken = alarmP.getToken();
         if (alarmPToken instanceof IntToken) {
             _alarm = ((IntToken)alarmPToken).intValue();
         }
-         
+
         /**/ if (entry.isInit())   { loc = resetEntry; }
         else if (entry.isResume()) { loc = _resumeLoc; }
         else if (entry.isEntry())  { loc = entry.getLocation(); }
         else { super.controlEnter(entry); }
-        
+
         _currentCount = _count;
         while (true) {
             if (loc == resetEntry) {
@@ -92,23 +92,23 @@ public class Counter extends AtomicContinuationActor {
                     }
                 } catch (NoTokenException e) {
                     e.printStackTrace();
-                } 
+                }
                 loc = tickEntry;
                 continue;
             }
             break;
         }
-        
+
         try {
             _countOut.send(0, new IntToken(_currentCount));
         } catch (NoRoomException e) {
             e.printStackTrace();
-        } 
-        
+        }
+
         if (extk != null) return extk;
         else return super.controlEnter(entry);
     }
-    
+
     /* (non-Javadoc)
      * @see ptolemy.actor.AtomicActor#initialize()
      */
@@ -130,43 +130,43 @@ public class Counter extends AtomicContinuationActor {
         return super.postfire();
     }
 
-    
+
     public TypedIOPort _alarmIn;
     public TypedIOPort _countOut;
 
     ///////////////////////////////////////////////////////
-    
-    protected void _init() throws 
+
+    protected void _init() throws
         IllegalActionException, NameDuplicationException {
         _alarm = 0;
         _count = _currentCount = 0;
-        
+
         addEntryLocation(resetEntry);
         addEntryLocation(setEntry);
         addEntryLocation(tickEntry);
         addExitLocation(alarmExit);
-        
+
         _alarmIn  = new TypedIOPort(this, "AlarmIn",  true,  false);
         _countOut = new TypedIOPort(this, "CountOut", false, true);
-        
+
         _resumeLoc = _currentLoc = resetEntry;
-        
+
         alarmP = new Parameter(this, "alarm");
-        
+
     }
-    
-    public Parameter alarmP; 
-    
+
+    public Parameter alarmP;
+
     private int _count, _currentCount;
     private int _alarm;
-    
+
     final public EntryLocation resetEntry = new EntryLocation("reset");
     final public EntryLocation tickEntry  = new EntryLocation("tick");
     final public EntryLocation setEntry   = new EntryLocation("set");
     final public ExitLocation  alarmExit  = new ExitLocation("alarm");
-    
+
     private EntryLocation _resumeLoc, _currentLoc;
-    
+
 }
 
 

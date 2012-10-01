@@ -310,7 +310,7 @@ public class ArrayToken extends AbstractNotConvertibleToken {
     public static ArrayToken append(ArrayToken[] tokens) throws IllegalActionException {
         // FIXME: This should probably create an instance of a subclass the
         // preserves and refers to the subarrays.
-        
+
         // First, figure out the length of the result array.
         boolean okToUseArrayCopy = true;
         int newLength = 0;
@@ -1053,7 +1053,7 @@ public class ArrayToken extends AbstractNotConvertibleToken {
 
         return new ArrayToken(dataArrayToken);
     }
-    
+
     /** Return a new array with all elements equal to those of this
      *  array except the one at position <i>index</i>, which has value
      *  given by <i>value</i>. If the index is out of range, then return
@@ -1489,7 +1489,7 @@ public class ArrayToken extends AbstractNotConvertibleToken {
             return new ArrayToken(result);
         }
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                       protected variables                 ////
 
@@ -1501,7 +1501,7 @@ public class ArrayToken extends AbstractNotConvertibleToken {
      *  to the an instance of this ArrayToken class.
      */
     protected int _depth = 0;
-    
+
     /** The type of this array. */
     protected Type _elementType;
 

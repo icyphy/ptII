@@ -44,7 +44,7 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.StringAttribute;
 
-/** 
+/**
  * <p>A polymorphic select, which routes specified input channels to the
  * output.  This actor has two input ports, the <i>input</i> port for
  * data, and the <i>control</i> port to select which input channel to
@@ -94,9 +94,9 @@ public class Select extends Transformer implements Rollbackable {
     ////                     ports and parameters                  ////
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-    /**     
+    /**
      * Input port for control tokens, which specify the output channel
-     * to produce data on.  The type is int. 
+     * to produce data on.  The type is int.
      */
     public TypedIOPort control;
 
@@ -106,7 +106,7 @@ public class Select extends Transformer implements Rollbackable {
     // The most recently read control token.
     private int _control = 0;
 
-    /**     
+    /**
      * Construct an actor in the specified container with the specified
      * name.
      * @param container The container.
@@ -125,7 +125,7 @@ public class Select extends Transformer implements Rollbackable {
         controlCardinal.setExpression("SOUTH");
     }
 
-    /**     
+    /**
      * Read an input token from the specified input channel and produce
      * it on the output.
      * @exception IllegalActionException If there is no director.
@@ -137,7 +137,7 @@ public class Select extends Transformer implements Rollbackable {
         }
     }
 
-    /**     
+    /**
      * Initialize this actor so that channel zero of <i>input</i> is read
      * from until a token arrives on the <i>control</i> input.
      * @exception IllegalActionException If the parent class throws it.
@@ -147,7 +147,7 @@ public class Select extends Transformer implements Rollbackable {
         $ASSIGN$_control(0);
     }
 
-    /**     
+    /**
      * Read a control token, if there is one, and check to see
      * whether an input is available on the input channel specified by
      * the most recent control token, if it is in range.

@@ -53,7 +53,7 @@ import org.w3c.dom.NodeList;
  * <p>FMI documentation may be found at
  * <a href="http://www.modelisar.com/fmi.html">http://www.modelisar.com/fmi.html</a>.
  * </p>
- * 
+ *
  * @author Christopher Brooks
  * @version $Id: FMIModelDescription.java 63521 2012-05-09 23:25:18Z cxh $
  * @Pt.ProposedRating Red (cxh)
@@ -104,7 +104,7 @@ public class FMICoSimulationCapabilities {
     /** Return a description of the fields that are true or
      *  non-zero.
      *  @return The true or non-zero fields
-     */   
+     */
     public String toString() {
         // We use reflection here so that if Capabilities attributes change,
         // and new fields are added, we don't have to update this method.

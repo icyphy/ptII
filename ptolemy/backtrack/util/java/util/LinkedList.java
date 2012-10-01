@@ -51,7 +51,7 @@ import ptolemy.backtrack.Rollbackable;
 import ptolemy.backtrack.util.CheckpointRecord;
 import ptolemy.backtrack.util.FieldRecord;
 
-/** 
+/**
  * Linked list implementation of the List interface. In addition to the
  * methods of the List interface, this class provides access to the first
  * and last list elements in O(1) time for easy stack, queue, or double-ended
@@ -80,49 +80,49 @@ import ptolemy.backtrack.util.FieldRecord;
 public class LinkedList extends AbstractSequentialList implements List,
         Cloneable, Serializable, Rollbackable {
 
-    /**     
+    /**
      * Compatible with JDK 1.2.
      */
     private static final long serialVersionUID = 876323262645176354L;
 
-    /**     
+    /**
      * The first element in the list.
      */
     private transient Entry first;
 
-    /**     
+    /**
      * The last element in the list.
      */
     private transient Entry last;
 
-    /**     
+    /**
      * The current length of the list.
      */
     private transient int size = 0;
 
-    /**     
+    /**
      * Class to represent an entry in the list. Holds a single element.
      */
     private static final class Entry implements Rollbackable {
 
         protected transient Checkpoint $CHECKPOINT = new Checkpoint(this);
 
-        /**         
-         * The element in the list. 
+        /**
+         * The element in the list.
          */
         private Object data;
 
-        /**         
-         * The next list entry, null if this is last. 
+        /**
+         * The next list entry, null if this is last.
          */
         private Entry next;
 
-        /**         
-         * The previous list entry, null if this is first. 
+        /**
+         * The previous list entry, null if this is first.
          */
         private Entry previous;
 
-        /**         
+        /**
          * Construct an entry.
          * @param data the list element
          */
@@ -247,7 +247,7 @@ public class LinkedList extends AbstractSequentialList implements List,
     // contract for addAll(), but Sun's implementation appears to.]
     // Create and link all the remaining entries.
     // Link the new chain of entries into the list.
-    /**     
+    /**
      * A ListIterator over the list. This class keeps track of its
      * position in the list and the two list entries it is between.
      * @author Original author unknown
@@ -257,32 +257,32 @@ public class LinkedList extends AbstractSequentialList implements List,
 
         protected transient Checkpoint $CHECKPOINT = new Checkpoint(this);
 
-        /**         
-         * Number of modifications we know about. 
+        /**
+         * Number of modifications we know about.
          */
         private int knownMod = getModCount();
 
-        /**         
-         * Entry that will be returned by next(). 
+        /**
+         * Entry that will be returned by next().
          */
         private Entry next;
 
-        /**         
-         * Entry that will be returned by previous(). 
+        /**
+         * Entry that will be returned by previous().
          */
         private Entry previous;
 
-        /**         
-         * Entry that will be affected by remove() or set(). 
+        /**
+         * Entry that will be affected by remove() or set().
          */
         private Entry lastReturned;
 
-        /**         
-         * Index of `next'. 
+        /**
+         * Index of `next'.
          */
         private int position;
 
-        /**         
+        /**
          * Initialize the iterator.
          * @param index the initial index
          */
@@ -297,7 +297,7 @@ public class LinkedList extends AbstractSequentialList implements List,
             $ASSIGN$position(index);
         }
 
-        /**         
+        /**
          * Checks for iterator consistency.
          * @throws ConcurrentModificationException if the list was modified
          */
@@ -307,7 +307,7 @@ public class LinkedList extends AbstractSequentialList implements List,
             }
         }
 
-        /**         
+        /**
          * Returns the index of the next element.
          * @return the next index
          */
@@ -315,7 +315,7 @@ public class LinkedList extends AbstractSequentialList implements List,
             return position;
         }
 
-        /**         
+        /**
          * Returns the index of the previous element.
          * @return the previous index
          */
@@ -323,7 +323,7 @@ public class LinkedList extends AbstractSequentialList implements List,
             return position - 1;
         }
 
-        /**         
+        /**
          * Returns true if more elements exist via next.
          * @return true if next will succeed
          */
@@ -331,7 +331,7 @@ public class LinkedList extends AbstractSequentialList implements List,
             return (next != null);
         }
 
-        /**         
+        /**
          * Returns true if more elements exist via previous.
          * @return true if previous will succeed
          */
@@ -339,7 +339,7 @@ public class LinkedList extends AbstractSequentialList implements List,
             return (previous != null);
         }
 
-        /**         
+        /**
          * Returns the next element.
          * @return the next element
          * @throws ConcurrentModificationException if the list was modified
@@ -356,7 +356,7 @@ public class LinkedList extends AbstractSequentialList implements List,
             return lastReturned.getData();
         }
 
-        /**         
+        /**
          * Returns the previous element.
          * @return the previous element
          * @throws ConcurrentModificationException if the list was modified
@@ -373,7 +373,7 @@ public class LinkedList extends AbstractSequentialList implements List,
             return lastReturned.getData();
         }
 
-        /**         
+        /**
          * Remove the most recently returned element from the list.
          * @throws ConcurrentModificationException if the list was modified
          * @throws IllegalStateException if there was no last element
@@ -395,7 +395,7 @@ public class LinkedList extends AbstractSequentialList implements List,
             $ASSIGN$lastReturned(null);
         }
 
-        /**         
+        /**
          * Adds an element between the previous and next, and advance to the next.
          * @param o the element to add
          * @throws ConcurrentModificationException if the list was modified
@@ -423,7 +423,7 @@ public class LinkedList extends AbstractSequentialList implements List,
             $ASSIGN$lastReturned(null);
         }
 
-        /**         
+        /**
          * Changes the contents of the element most recently returned.
          * @param o the new element
          * @throws ConcurrentModificationException if the list was modified
@@ -619,7 +619,7 @@ public class LinkedList extends AbstractSequentialList implements List,
     }
 
     // class LinkedListItr
-    /**     
+    /**
      * Obtain the Entry at a given position in a list. This method of course
      * takes linear time, but it is intelligent enough to take the shorter of the
      * paths to get to the Entry required. This implies that the first or last
@@ -646,7 +646,7 @@ public class LinkedList extends AbstractSequentialList implements List,
         return e;
     }
 
-    /**     
+    /**
      * Remove an entry from the list. This will adjust size and deal with
      * `first' and  `last' appropriatly.
      * @param e the entry to remove
@@ -670,7 +670,7 @@ public class LinkedList extends AbstractSequentialList implements List,
         }
     }
 
-    /**     
+    /**
      * Checks that the index is in the range of possible elements (inclusive).
      * @param index the index to check
      * @throws IndexOutOfBoundsException if index &lt; 0 || index &gt; size
@@ -682,7 +682,7 @@ public class LinkedList extends AbstractSequentialList implements List,
         }
     }
 
-    /**     
+    /**
      * Checks that the index is in the range of existing elements (exclusive).
      * @param index the index to check
      * @throws IndexOutOfBoundsException if index &lt; 0 || index &gt;= size
@@ -694,13 +694,13 @@ public class LinkedList extends AbstractSequentialList implements List,
         }
     }
 
-    /**     
+    /**
      * Create an empty linked list.
      */
     public LinkedList() {
     }
 
-    /**     
+    /**
      * Create a linked list containing the elements, in order, of a given
      * collection.
      * @param c the collection to populate this list from
@@ -710,7 +710,7 @@ public class LinkedList extends AbstractSequentialList implements List,
         addAll(c);
     }
 
-    /**     
+    /**
      * Returns the first element in the list.
      * @return the first list element
      * @throws NoSuchElementException if the list is empty
@@ -722,7 +722,7 @@ public class LinkedList extends AbstractSequentialList implements List,
         return getFirstField().getData();
     }
 
-    /**     
+    /**
      * Returns the last element in the list.
      * @return the last list element
      * @throws NoSuchElementException if the list is empty
@@ -734,7 +734,7 @@ public class LinkedList extends AbstractSequentialList implements List,
         return getLastField().getData();
     }
 
-    /**     
+    /**
      * Remove and return the first element in the list.
      * @return the former first element in the list
      * @throws NoSuchElementException if the list is empty
@@ -755,7 +755,7 @@ public class LinkedList extends AbstractSequentialList implements List,
         return r;
     }
 
-    /**     
+    /**
      * Remove and return the last element in the list.
      * @return the former last element in the list
      * @throws NoSuchElementException if the list is empty
@@ -776,7 +776,7 @@ public class LinkedList extends AbstractSequentialList implements List,
         return r;
     }
 
-    /**     
+    /**
      * Insert an element at the first of the list.
      * @param o the element to insert
      */
@@ -793,7 +793,7 @@ public class LinkedList extends AbstractSequentialList implements List,
         setSize(getSize() + 1);
     }
 
-    /**     
+    /**
      * Insert an element at the last of the list.
      * @param o the element to insert
      */
@@ -801,7 +801,7 @@ public class LinkedList extends AbstractSequentialList implements List,
         addLastEntry(new Entry(o));
     }
 
-    /**     
+    /**
      * Inserts an element at the end of the list.
      * @param e the entry to add
      */
@@ -817,7 +817,7 @@ public class LinkedList extends AbstractSequentialList implements List,
         setSize(getSize() + 1);
     }
 
-    /**     
+    /**
      * Returns true if the list contains the given object. Comparison is done by
      * <code>o == null ? e = null : o.equals(e)</code>.
      * @param o the element to look for
@@ -834,7 +834,7 @@ public class LinkedList extends AbstractSequentialList implements List,
         return false;
     }
 
-    /**     
+    /**
      * Returns the size of the list.
      * @return the list size
      */
@@ -842,7 +842,7 @@ public class LinkedList extends AbstractSequentialList implements List,
         return getSize();
     }
 
-    /**     
+    /**
      * Adds an element to the end of the list.
      * @param o the entry to add
      * @return true, as it always succeeds
@@ -852,7 +852,7 @@ public class LinkedList extends AbstractSequentialList implements List,
         return true;
     }
 
-    /**     
+    /**
      * Removes the entry at the lowest index in the list that matches the given
      * object, comparing by <code>o == null ? e = null : o.equals(e)</code>.
      * @param o the object to remove
@@ -870,7 +870,7 @@ public class LinkedList extends AbstractSequentialList implements List,
         return false;
     }
 
-    /**     
+    /**
      * Append the elements of the collection in iteration order to the end of
      * this list. If this list is modified externally (for example, if this
      * list is the collection), behavior is unspecified.
@@ -882,7 +882,7 @@ public class LinkedList extends AbstractSequentialList implements List,
         return addAll(getSize(), c);
     }
 
-    /**     
+    /**
      * Insert the elements of the collection in iteration order at the given
      * index of this list. If this list is modified externally (for example,
      * if this list is the collection), behavior is unspecified.
@@ -932,7 +932,7 @@ public class LinkedList extends AbstractSequentialList implements List,
         return true;
     }
 
-    /**     
+    /**
      * Remove all elements from this list.
      */
     public void clear() {
@@ -944,7 +944,7 @@ public class LinkedList extends AbstractSequentialList implements List,
         }
     }
 
-    /**     
+    /**
      * Return the element at index.
      * @param index the place to look
      * @return the element at index
@@ -955,7 +955,7 @@ public class LinkedList extends AbstractSequentialList implements List,
         return getEntry(index).getData();
     }
 
-    /**     
+    /**
      * Replace the element at the given location in the list.
      * @param index which index to change
      * @param o the new element
@@ -970,7 +970,7 @@ public class LinkedList extends AbstractSequentialList implements List,
         return old;
     }
 
-    /**     
+    /**
      * Inserts an element in the given position in the list.
      * @param index where to insert the element
      * @param o the element to insert
@@ -996,7 +996,7 @@ public class LinkedList extends AbstractSequentialList implements List,
         }
     }
 
-    /**     
+    /**
      * Removes the element at the given position from the list.
      * @param index the location of the element to remove
      * @return the removed element
@@ -1009,7 +1009,7 @@ public class LinkedList extends AbstractSequentialList implements List,
         return e.getData();
     }
 
-    /**     
+    /**
      * Returns the first index where the element is located in the list, or -1.
      * @param o the element to look for
      * @return its position, or -1 if not found
@@ -1027,7 +1027,7 @@ public class LinkedList extends AbstractSequentialList implements List,
         return -1;
     }
 
-    /**     
+    /**
      * Returns the last index where the element is located in the list, or -1.
      * @param o the element to look for
      * @return its position, or -1 if not found
@@ -1045,7 +1045,7 @@ public class LinkedList extends AbstractSequentialList implements List,
         return -1;
     }
 
-    /**     
+    /**
      * Obtain a ListIterator over this list, starting at a given index. The
      * ListIterator returned by this method supports the add, remove and set
      * methods.
@@ -1058,7 +1058,7 @@ public class LinkedList extends AbstractSequentialList implements List,
         return new LinkedListItr(index);
     }
 
-    /**     
+    /**
      * Create a shallow copy of this LinkedList (the elements are not cloned).
      * @return an object of the same class as this object, containing the
      * same elements in the same order
@@ -1074,7 +1074,7 @@ public class LinkedList extends AbstractSequentialList implements List,
         return copy;
     }
 
-    /**     
+    /**
      * Returns an array which contains the elements of the list in order.
      * @return an array containing the list elements
      */
@@ -1088,11 +1088,11 @@ public class LinkedList extends AbstractSequentialList implements List,
         return array;
     }
 
-    /**     
+    /**
      * Returns an Array whose component type is the runtime component type of
      * the passed-in Array.  The returned Array is populated with all of the
      * elements in this LinkedList.  If the passed-in Array is not large enough
-     * to store all of the elements in this List, a new Array will be created 
+     * to store all of the elements in this List, a new Array will be created
      * and returned; if the passed-in Array is <i>larger</i> than the size
      * of this List, then size() index will be set to null.
      * @param a the passed-in Array
@@ -1116,7 +1116,7 @@ public class LinkedList extends AbstractSequentialList implements List,
         return a;
     }
 
-    /**     
+    /**
      * Serializes this object to the given stream.
      * @param s the stream to write to
      * @throws IOException if the underlying stream fails
@@ -1133,7 +1133,7 @@ public class LinkedList extends AbstractSequentialList implements List,
         }
     }
 
-    /**     
+    /**
      * Deserializes this object from the given stream.
      * @param s the stream to read from
      * @throws ClassNotFoundException if the underlying stream fails

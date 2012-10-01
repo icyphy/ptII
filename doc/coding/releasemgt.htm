@@ -140,7 +140,17 @@ egrep '*.java$' /tmp/f | grep -v /vendors/ >& /tmp/j
 cd $PTII/adm/test
 make missingMakefiles
 </pre>
-
+Below are the missing makefiles that are ok to be missing:
+<pre>
+./config/makefile
+./doc/coding/templates/makefile
+./ptolemy/backtrack/automatic/ptolemy/actor/lib/makefile
+./ptolemy/backtrack/automatic/ptolemy/domains/sdf/lib/makefile
+./ptolemy/backtrack/automatic/ptolemy/math/makefile
+./ptolemy/backtrack/ui/makefile
+./ptolemy/backtrack/util/java/util/makefile
+./ptolemy/plot/servlet/makefile
+</pre>
 <li> Check for directories that have java files but are not listed in <code>doc/makefile</code>:
 <pre>
 cd $PTII/adm/test

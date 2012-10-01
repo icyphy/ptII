@@ -445,13 +445,13 @@ public class ActorViewerGraphController extends RunnableGraphController {
 
     /** The selection interactor for drag-selecting nodes. */
     private SelectionDragger _selectionDragger;
-    
+
     /** Font for port labels. */
     private static Font _portLabelFont = new Font("SansSerif", Font.PLAIN, 8);
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
-    
+
     ///////////////////////////////////////////////////////////////////
     //// EntityLayout
 
@@ -519,7 +519,7 @@ public class ActorViewerGraphController extends RunnableGraphController {
 
         ///////////////////////////////////////////////////////////////
         ////                     private methods                   ////
-        
+
         private LabelFigure _createPortLabelFigure(String string, Font font,
                 double x, double y, int direction) {
             LabelFigure label;
@@ -572,7 +572,7 @@ public class ActorViewerGraphController extends RunnableGraphController {
 
             return label;
         }
-        
+
         /** Return true if a property named "_hide" is set for
          *  the specified object. A property is specified if the specified
          *  object contains an attribute with the specified name and that

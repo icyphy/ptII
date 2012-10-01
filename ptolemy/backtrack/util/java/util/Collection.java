@@ -42,7 +42,7 @@ import java.util.Iterator;
 import ptolemy.backtrack.Checkpoint;
 import ptolemy.backtrack.Rollbackable;
 
-/** 
+/**
  * Interface that represents a collection of objects. This interface is the
  * root of the collection hierarchy, and does not provide any guarantees about
  * the order of its elements or whether or not duplicate elements are
@@ -88,7 +88,7 @@ import ptolemy.backtrack.Rollbackable;
  */
 public interface Collection extends Rollbackable {
 
-    /**     
+    /**
      * Add an element to this collection.
      * @param o the object to add.
      * @return true if the collection was modified as a result of this action.
@@ -103,7 +103,7 @@ public interface Collection extends Rollbackable {
      */
     boolean add(Object o);
 
-    /**     
+    /**
      * Add the contents of a given collection to this collection.
      * @param c the collection to add.
      * @return true if the collection was modified as a result of this action.
@@ -119,7 +119,7 @@ public interface Collection extends Rollbackable {
      */
     boolean addAll(Collection c);
 
-    /**     
+    /**
      * Clear the collection, such that a subsequent call to isEmpty() would
      * return true.
      * @throws UnsupportedOperationException if this collection does not
@@ -127,7 +127,7 @@ public interface Collection extends Rollbackable {
      */
     void clear();
 
-    /**     
+    /**
      * Test whether this collection contains a given object as one of its
      * elements.
      * @param o the element to look for.
@@ -140,7 +140,7 @@ public interface Collection extends Rollbackable {
      */
     boolean contains(Object o);
 
-    /**     
+    /**
      * Test whether this collection contains every element in a given collection.
      * @param c the collection to test for.
      * @return true if for every element o in c, contains(o) would return true.
@@ -152,7 +152,7 @@ public interface Collection extends Rollbackable {
      */
     boolean containsAll(Collection c);
 
-    /**     
+    /**
      * Test whether this collection is equal to some object. The Collection
      * interface does not explicitly require any behaviour from this method, and
      * it may be left to the default implementation provided by Object. The Set
@@ -169,7 +169,7 @@ public interface Collection extends Rollbackable {
      */
     boolean equals(Object o);
 
-    /**     
+    /**
      * Obtain a hash code for this collection. The Collection interface does not
      * explicitly require any behaviour from this method, and it may be left to
      * the default implementation provided by Object. The Set and List interfaces
@@ -184,19 +184,19 @@ public interface Collection extends Rollbackable {
      */
     int hashCode();
 
-    /**     
+    /**
      * Test whether this collection is empty, that is, if size() == 0.
      * @return true if this collection contains no elements.
      */
     boolean isEmpty();
 
-    /**     
+    /**
      * Obtain an Iterator over this collection.
      * @return an Iterator over the elements of this collection, in any order.
      */
     Iterator iterator();
 
-    /**     
+    /**
      * Remove a single occurrence of an object from this collection. That is,
      * remove an element e, if one exists, such that <code>o == null ? e == null
      * : o.equals(e)</code>.
@@ -212,7 +212,7 @@ public interface Collection extends Rollbackable {
      */
     boolean remove(Object o);
 
-    /**     
+    /**
      * Remove all elements of a given collection from this collection. That is,
      * remove every element e such that c.contains(e).
      * @param c The collection of objects to be removed.
@@ -227,7 +227,7 @@ public interface Collection extends Rollbackable {
      */
     boolean removeAll(Collection c);
 
-    /**     
+    /**
      * Remove all elements of this collection that are not contained in a given
      * collection. That is, remove every element e such that !c.contains(e).
      * @param c The collection of objects to be retained.
@@ -242,13 +242,13 @@ public interface Collection extends Rollbackable {
      */
     boolean retainAll(Collection c);
 
-    /**     
+    /**
      * Get the number of elements in this collection.
      * @return the number of elements in the collection.
      */
     int size();
 
-    /**     
+    /**
      * Copy the current contents of this collection into an array.
      * @return an array of type Object[] and length equal to the size of this
      * collection, containing the elements currently in this collection, in
@@ -256,7 +256,7 @@ public interface Collection extends Rollbackable {
      */
     Object[] toArray();
 
-    /**     
+    /**
      * Copy the current contents of this collection into an array. If the array
      * passed as an argument has length less than the size of this collection, an
      * array of the same run-time type as a, and length equal to the size of this

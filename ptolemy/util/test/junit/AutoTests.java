@@ -41,16 +41,16 @@ import ptolemy.util.StringUtilities;
 //// AutoTests
 /**
  * Run the Ptolemy model tests in the auto/ directory using JUnit.
- * 
+ *
  * <p>
  * This test must be run from the directory that contains the auto/ directory,
  * for example:
  * </p>
- * 
+ *
  * <pre>
  * (cd ~/ptII/ptolemy/actor/lib/io/test; java -classpath ${PTII}:${PTII}/lib/junit-4.8.2.jar:${PTII}/lib/JUnitParams-0.3.0.jar org.junit.runner.JUnitCore ptolemy.util.test.junit.AutoTests)
  * </pre>
- * 
+ *
  * <p>
  * This test uses JUnitParams from <a
  * href="http://code.google.com/p/junitparams/#in_browser"
@@ -58,7 +58,7 @@ import ptolemy.util.StringUtilities;
  * href="http://www.apache.org/licenses/LICENSE-2.0#in_browser">Apache License
  * 2.0</a>.
  * </p>
- * 
+ *
  * @author Christopher Brooks
  * @version $Id$
  * @since Ptolemy II 8.1
@@ -71,7 +71,7 @@ public class AutoTests extends ModelTests {
     /**
      * Find the ptolemy.moml.MoMLSimpleApplication class and its constructor
      * that takes a String.
-     * 
+     *
      * @exception Throwable
      *                If the class or constructor cannot be found.
      */
@@ -84,7 +84,7 @@ public class AutoTests extends ModelTests {
 
     /**
      * Execute a model.
-     * 
+     *
      * @param fullPath
      *            The full path to the model file to be executed. If the
      *            fullPath ends with the value of the
@@ -108,7 +108,7 @@ public class AutoTests extends ModelTests {
         } else {
             System.err.println("----------------- *** Skipping testing of " + fullPath);
             System.err.flush();
-            
+
         }
     }
 

@@ -406,7 +406,7 @@ public class SDFDirector extends StaticSchedulingDirector implements
      *
      *  <p>The number of iterations returned depends on the value of
      *  the <i>iterations</i> parameter and whether the container
-     *  of the director is at the top level. 
+     *  of the director is at the top level.
      *  See the {@link #iterations} documentation for details.</p>
      *
      *  <p>Code that uses SDFDirector should call getIterations()
@@ -424,16 +424,16 @@ public class SDFDirector extends StaticSchedulingDirector implements
         if (iterationsValue > 0) {
             return iterationsValue;
         }
-	// The director should call isEmbedded()
-	// instead of seeing whether the container's container is null.
-	// The reason for this is RunCompositeActor, where the container's
-	// container is not null, but you still want the model to behave
-	// as if it were at the top level... 
+        // The director should call isEmbedded()
+        // instead of seeing whether the container's container is null.
+        // The reason for this is RunCompositeActor, where the container's
+        // container is not null, but you still want the model to behave
+        // as if it were at the top level...
         if (!isEmbedded()) {
             // The container of this director is at the toplevel
             if (iterations.getToken().equals(_auto)) {
                 return 1;
-            } 
+            }
         }
         return 0;
     }
@@ -925,12 +925,12 @@ public class SDFDirector extends StaticSchedulingDirector implements
         Parameter AUTO = new Parameter(this, "AUTO");
         AUTO.setToken(_auto);
         AUTO.setVisibility(Settable.EXPERT);
-	AUTO.setPersistent(false);
+        AUTO.setPersistent(false);
 
         Parameter UNBOUNDED = new Parameter(this, "UNBOUNDED");
         UNBOUNDED.setToken(IntToken.ZERO);
         UNBOUNDED.setVisibility(Settable.EXPERT);
-	UNBOUNDED.setPersistent(false);
+        UNBOUNDED.setPersistent(false);
 
         iterations = new Parameter(this, "iterations");
         iterations.setTypeEquals(BaseType.INT);
@@ -963,7 +963,7 @@ public class SDFDirector extends StaticSchedulingDirector implements
         synchronizeToRealTime.setTypeEquals(BaseType.BOOLEAN);
 
         startTime.moveToLast();
-        stopTime.moveToLast(); 
+        stopTime.moveToLast();
 
         SDFScheduler scheduler = new SDFScheduler(this, uniqueName("Scheduler"));
         scheduler.constrainBufferSizes.setExpression("constrainBufferSizes");

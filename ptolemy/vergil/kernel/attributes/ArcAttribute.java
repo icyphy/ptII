@@ -71,17 +71,17 @@ public class ArcAttribute extends FilledShapeAttribute {
     public ArcAttribute(NamedObj container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        
+
         type = new StringParameter(this, "type");
         type.setExpression("pie");
         type.addChoice("chord");
         type.addChoice("open");
         type.addChoice("pie");
-        
+
         start = new Parameter(this, "start");
         start.setTypeEquals(BaseType.DOUBLE);
         start.setExpression("0.0");
-        
+
         extent = new Parameter(this, "extent");
         extent.setTypeEquals(BaseType.DOUBLE);
         extent.setExpression("90.0");
@@ -89,7 +89,7 @@ public class ArcAttribute extends FilledShapeAttribute {
 
     ///////////////////////////////////////////////////////////////////
     ////                         parameters                        ////
-    
+
     /** The angular extent of the angle of the arc in degrees. This is a double
      *  that defaults to 90.0.
      */
@@ -99,7 +99,7 @@ public class ArcAttribute extends FilledShapeAttribute {
      *  that defaults to 0.0.
      */
     public Parameter start;
-    
+
     /** The type of the arc, which should be one of "chord", "open", or "pie".
      *  The default is "pie".
      */
@@ -143,7 +143,7 @@ public class ArcAttribute extends FilledShapeAttribute {
             super.attributeChanged(attribute);
         }
     }
-    
+
     /** Clone the object into the specified workspace. The new object is
      *  <i>not</i> added to the directory of that workspace (you must do this
      *  yourself if you want it there).
@@ -160,7 +160,7 @@ public class ArcAttribute extends FilledShapeAttribute {
         newObject._icon.setShape(_newShape());
         return newObject;
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
@@ -186,7 +186,7 @@ public class ArcAttribute extends FilledShapeAttribute {
             return new Arc2D.Double(bounds, _start, _extent, _typeDesignator);
         }
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private fields                    ////
 
@@ -195,7 +195,7 @@ public class ArcAttribute extends FilledShapeAttribute {
 
     /** The value of the type parameter. */
     private double _start = 0.0;
-    
+
     /** The value of the type parameter. */
     private int _typeDesignator = Arc2D.PIE;
 }

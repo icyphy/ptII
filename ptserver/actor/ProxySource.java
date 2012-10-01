@@ -1,7 +1,7 @@
 /*
  ProxySource that acts as a proxy actor to a set of actors that were replaced.
  It could replace one source actor or all actors connected to the source actor.
- 
+
  Accepts communication token, unpackage as regular tokens
  and send them to the appropriate ports
 
@@ -178,8 +178,8 @@ public class ProxySource extends ProxyActor {
      */
     private ProxySourceData _proxySourceData;
     /**
-     * The proxy model infrastructure that created the source.  
-     * The reference to it is needed in order to unblock the thread when the 
+     * The proxy model infrastructure that created the source.
+     * The reference to it is needed in order to unblock the thread when the
      * execution is stopped/paused.
      */
     private ProxyModelInfrastructure _proxyModelInfrastructure;

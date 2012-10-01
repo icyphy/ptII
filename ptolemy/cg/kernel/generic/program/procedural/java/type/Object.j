@@ -106,7 +106,7 @@ static String ObjecttoString(Token thisToken) {
 #ifdef PTCG_TYPE_Object
     if (thisToken == null) {
         result = "object(null)";
-    } else {  
+    } else {
         result = ((ObjectCG)(thisToken.payload)).object.toString();
     }
 #endif

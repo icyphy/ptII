@@ -125,7 +125,7 @@ public class StringToken extends AbstractConvertibleToken {
             return new StringToken(_value + rightArgument.toString());
         }
     }
-    
+
     /** Override the base class to ensure that a string can be added
      *  to anything, even if the base class fails to convert the argument
      *  to a StringToken.
@@ -140,7 +140,7 @@ public class StringToken extends AbstractConvertibleToken {
             return new StringToken(leftArgument.toString() + _value);
         }
     }
-    
+
     /** Convert the specified token into an instance of StringToken.
      *  This method does lossless conversion.
      *  If the argument is already an instance of StringToken,

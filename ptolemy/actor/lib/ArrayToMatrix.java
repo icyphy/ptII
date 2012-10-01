@@ -82,7 +82,7 @@ public class ArrayToMatrix extends Transformer {
         // Set type constraints.
         input.setTypeAtLeast(ArrayType.ARRAY_BOTTOM);
         output.setTypeAtMost(BaseType.MATRIX);
-        
+
         rowVector = new Parameter(this, "rowVector");
         rowVector.setTypeEquals(BaseType.BOOLEAN);
         rowVector.setExpression("true");
@@ -95,7 +95,7 @@ public class ArrayToMatrix extends Transformer {
 
     ///////////////////////////////////////////////////////////////////
     ////                         parameters                        ////
-    
+
     /** If true, then convert the array to a matrix with one row
      *  and multiple columns (a row vector), and otherwise, convert
      *  the input to a matrix with one column and multiple rows

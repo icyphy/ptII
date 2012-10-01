@@ -52,9 +52,9 @@ import com.sun.jna.ptr.PointerByReference;
 
 /**
  * An object that represents the ScalarVariable element of a
- * modelDescription.xml file contained within a 
+ * modelDescription.xml file contained within a
  * Functional Mock-up Interface .fmu XML file.
- * 
+ *
  * <p>A Functional Mock-up Unit file is a .fmu file in zip format that
  * contains a .xml file named "modelDescription.xml".  In that file,
  * the ModelVariables element may contain elements such as
@@ -63,7 +63,7 @@ import com.sun.jna.ptr.PointerByReference;
  * <p>FMI documentation may be found at
  * <a href="http://www.modelisar.com/fmi.html">http://www.modelisar.com/fmi.html</a>.
  * </p>
- * 
+ *
  * @author Christopher Brooks
  * @version $Id$
  * @Pt.ProposedRating Red (cxh)
@@ -105,7 +105,7 @@ public class FMIScalarVariable {
                         + " in " + name + ", " + description);
             }
         }
-        
+
         causality = Causality.internal;
         if (element.hasAttribute("causality")) {
             String attribute = element.getAttribute("causality");
@@ -342,7 +342,7 @@ public class FMIScalarVariable {
     ////             inner classes                                 ////
 
     /** Acceptable values for the alias xml attribute.
-     *  Alias variables occur during assignment operations.   
+     *  Alias variables occur during assignment operations.
      */
     public enum Alias {
         /** This is an alias variable, use the valueReference handle
@@ -366,7 +366,7 @@ public class FMIScalarVariable {
          */
         input,
         /** After initialization, a result may be stored.
-         *  However, the value cannot be used in a connection.   
+         *  However, the value cannot be used in a connection.
          *  The default Causality is "internal".
          */
         internal,
@@ -381,7 +381,7 @@ public class FMIScalarVariable {
 
     /** Acceptable values for the variability xml attribute.
      *  The variablity attribute defines when a value changes,
-     *  which determines when the value should be read. 
+     *  which determines when the value should be read.
      */
     public enum Variability {
         /** The value does not change.
@@ -393,7 +393,7 @@ public class FMIScalarVariable {
          */
         continuous,
         /** The value only changes during initialization
-         *  and at event instances.   
+         *  and at event instances.
          */
         discrete,
         /** The value does not change after initailization.
@@ -412,11 +412,11 @@ public class FMIScalarVariable {
 
     /** The value of the description xml attribute. */
     public String description;
-    
+
     /** The input ports on which an output has a direct dependence. */
     public Set<String> directDependency;
 
-    /** The FMI .c function that gets the value of this variable. 
+    /** The FMI .c function that gets the value of this variable.
      *  The name of the function depends on the value of the
      *  fmiModelDescription.modelIdentifer field and the
      *  type name.  A typical value for the Bouncing Ball
@@ -427,7 +427,7 @@ public class FMIScalarVariable {
     /** The Model Description for this variable. */
     public FMIModelDescription fmiModelDescription;
 
-    /** The FMI .c function that sets the value of this variable. 
+    /** The FMI .c function that sets the value of this variable.
      *  The name of the function depends on the value of the
      *  fmiModelDescription.modelIdentifer field and the
      *  type name.  A typical value for the Bouncing Ball
@@ -454,7 +454,7 @@ public class FMIScalarVariable {
     ///////////////////////////////////////////////////////////////////
     ////             private methods                               ////
 
-    
+
     /** Get or set the value of this variable.
      *  @param fmiComponent The Functional Mock-up Interface (FMI)
      *  component that contains a reference to the variable.
@@ -462,7 +462,7 @@ public class FMIScalarVariable {
      *  For booleans, doubles and integeers, this is a Buffer, for
      *  String it is a PointerByReference
      *  @param typeClass The expected class of the type.
-     *  @param getOrSetFunction the fmiGet or fmiSet function. 
+     *  @param getOrSetFunction the fmiGet or fmiSet function.
      */
     private void _getOrSetValue(Pointer fmiComponent, Object valueBuffer, Class typeClass, Function getOrSetFunction) {
         // This is syntactic sugar that helps us avoid duplicated code.
@@ -510,7 +510,7 @@ public class FMIScalarVariable {
     ////             private fields                                ////
 
     /** The set of elements that we don't yet handle.
-     *  This is used for error messages.	
+     *  This is used for error messages.
      */
     private static Set<String> _errorElements = new HashSet<String>();
 }

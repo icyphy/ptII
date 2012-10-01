@@ -334,13 +334,13 @@ public class ModelReference extends TypedAtomicActor implements
                     // be the model that contains this ModelReference, which is an
                     // error. To prevent arcane stack overflow exceptions, catch this.
                     URI myURI = URIAttribute.getModelURI(this);
-                    
+
                     if (myURI != null && myURI.toURL().toExternalForm().equals(url.toExternalForm())) {
                         throw new IllegalActionException(this, "Cannot reference my own container.");
                     }
 
                     _model = parser.parse(null, url);
-                                        
+
                     // If we choose the option to spawn models of the same URL separately
                     // then get rid of the spawned model.
                     if (((BooleanToken) spawnSeparateModels.getToken())
@@ -479,7 +479,7 @@ public class ModelReference extends TypedAtomicActor implements
      */
     public void fire() throws IllegalActionException {
         super.fire();
-        
+
         if (_model == null) {
             throw new IllegalActionException(this, "No model to execute");
         }

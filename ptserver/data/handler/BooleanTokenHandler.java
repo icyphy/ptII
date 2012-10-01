@@ -1,5 +1,5 @@
 /* BooleanTokenHandler converts BooleanToken to/from byte stream.
- 
+
  Copyright (c) 2011 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
@@ -36,9 +36,9 @@ import ptolemy.data.BooleanToken;
 //// BooleanTokenHandler
 
 /** BooleanTokenHandler converts BooleanToken to/from byte stream.
- * 
+ *
  *  @author ishwinde
- *  @version $Id$ 
+ *  @version $Id$
  *  @since Ptolemy II 8.1
  *  @Pt.ProposedRating Red (ishwinde)
  *  @Pt.AcceptedRating Red (ishwinde)

@@ -113,9 +113,9 @@ public class PtidesReceiver extends DEReceiver {
             _tokens.add(token);
         }
     }
-    
+
     /** Remove the token from the list of stored tokens. This is only used
-     *  to remove tokens that were stored temporarily in the receiver to 
+     *  to remove tokens that were stored temporarily in the receiver to
      *  check whether the actor's prefire returns true.
      * @param token The token to be removed.
      */
@@ -164,10 +164,10 @@ public class PtidesReceiver extends DEReceiver {
                         dir = actor.getExecutiveDirector();
                     }
 
-                    if (dir != null) { 
+                    if (dir != null) {
                         _director =  (PtidesDirector) dir;
                         _directorVersion = port.workspace().getVersion();
-                        return _director; 
+                        return _director;
                     }
                 }
             } finally {

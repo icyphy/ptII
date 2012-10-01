@@ -53,7 +53,7 @@ import diva.graph.GraphController;
 /**
  * A figure for drawing a link between a relative locatable and its referenced object.
  * The link is represented by a straight thin line.
- * 
+ *
  * FIXME: Some artifacts are visible when the relative locatable object is dragged, because
  *        the clipping region seems not to be updated quickly enough.
  *
@@ -64,10 +64,10 @@ import diva.graph.GraphController;
  * @Pt.AcceptedRating Red (msp)
  */
 public class RelativeLinkFigure extends AbstractFigure {
-    
+
     /**
      * Construct a figure to draw the link of a relative locatable object.
-     * 
+     *
      * @param location The location of the relative locatable object.
      */
     public RelativeLinkFigure(RelativeLocation location) {
@@ -80,7 +80,7 @@ public class RelativeLinkFigure extends AbstractFigure {
     }
 
     /** Get the outline shape of this figure. This implementation returns a line.
-     * 
+     *
      * @return A line, which may have length 0 if the related object has no valid reference.
      */
     @Override
@@ -92,7 +92,7 @@ public class RelativeLinkFigure extends AbstractFigure {
      *  a valid reference, and it paints nothing if it hasn't. If the length of the
      *  line exceeds a specific threshold, it is drawn with a different color to
      *  highlight that the reference will eventually be broken.
-     * 
+     *
      * @param g The graphics context used for painting.
      */
     @Override
@@ -128,7 +128,7 @@ public class RelativeLinkFigure extends AbstractFigure {
     public void transform(AffineTransform at) {
         _transform = at;
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
@@ -155,7 +155,7 @@ public class RelativeLinkFigure extends AbstractFigure {
             double left1 = bounds1.getX() - xOffset1;
             double center1 = bounds1.getX() + bounds1.getWidth()*0.5 - xOffset1;
             double right1 = bounds1.getX() + bounds1.getWidth() - xOffset1;
-            
+
             double yOffset1 = origin1.getY();
             // FIXME: Diva is a complete mystery. Offset doesn't work here, but works below.
             yOffset1 = 0.0;
@@ -195,13 +195,13 @@ public class RelativeLinkFigure extends AbstractFigure {
                     // Weirdly, to get the size right, we need to use the shape.
                     // But to get the location right, we need the other!
                     Rectangle2D bounds2 = figure.getShape().getBounds2D();
-                    
+
                     Point2D origin2 = figure.getOrigin();
                     double xOffset2 = origin2.getX();
                     double left2 = -offset[0] + bounds2.getX() - xOffset2;
                     double center2 = -offset[0] + bounds2.getX() + bounds2.getWidth() * 0.5 - xOffset2;
                     double right2 = -offset[0] + bounds2.getX() + bounds2.getWidth() - xOffset2;
-                    
+
                     double yOffset2 = origin2.getY();
                     // FIXME: Diva is a complete mystery. Offset isn't right. Fudge it.
                     yOffset2 += 11;
@@ -211,7 +211,7 @@ public class RelativeLinkFigure extends AbstractFigure {
 
                     // We have all the information we need for optimal placement.
                     success = true;
-                    
+
                     // There are five possible x positions.
                     if (left1 > right2) {
                         _line.x1 = left1;
@@ -258,26 +258,26 @@ public class RelativeLinkFigure extends AbstractFigure {
             _line.y2 = -offset[1];
         }
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
     /** The relative location represented by this figure. */
     private RelativeLocation _relativeLocation;
-    
+
     /** The line used for drawing. */
     private Line2D.Double _line;
-    
+
     /** The current affine transformation. */
     private AffineTransform _transform;
-    
+
     /** The stroke used for drawing the line. */
     private static final Stroke STROKE = new BasicStroke(1.0f, BasicStroke.CAP_ROUND,
             BasicStroke.JOIN_ROUND, 1.0f, new float[] { 2.0f, 2.0f }, 0.0f);
-    
+
     /** The normal color of the line. */
     private static final Color NORMAL_COLOR = new Color(180, 180, 0);
-    
+
     /** The color used when the line is longer that a specific threshold. */
     private static final Color THRESHOLD_COLOR = new Color(250, 50, 0);
 

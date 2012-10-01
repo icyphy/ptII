@@ -75,7 +75,7 @@ public class AreaEventType extends StringParameter {
     public AreaEventType(NamedObj container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        
+
         addChoice("onblur");
         addChoice("onclick");
         addChoice("ondblclick");

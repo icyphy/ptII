@@ -57,24 +57,24 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
-/** 
- * 
+/**
+ *
  *  This actor receives RecordTokens from a network input port and decomposes the
  *  packet into several tokens that are contained within the packet.
  *  This actor should used with a PTIDES director and in pairswith the {@link TCPPacketReceiver},
  *  typically with a network fabric model in between.
- *  
+ *
  *  {@link TCPPacketReceiver} decomposes TCP packets containing PTIDES events
- *  
+ *
  *  </p><p>
  *  This actor consumes one input token and creates a stream of output tokens, each with
  *  the timestamp specified as a part of the token.
- *   
+ *
  *
  *  @author Ilge Akkaya
  *  @version $Id$
  *  @since Ptolemy II 8.1
- *  @Pt.ProposedRating 
+ *  @Pt.ProposedRating
  *  @Pt.AcceptedRating
 */
 public class TCPPacketReceiver extends InputDevice {
@@ -85,7 +85,7 @@ public class TCPPacketReceiver extends InputDevice {
         input = new TypedIOPort(this, "input", true, false);
         output = new TypedIOPort(this, "output", false, true);
         input.setTypeEquals(BaseType.RECORD);
-        
+
         //output.setTypeEquals(BaseType.DOUBLE);
     }
 
@@ -98,7 +98,7 @@ public class TCPPacketReceiver extends InputDevice {
 
     /** Decompose RecordToken into its components.
      *
-     * 
+     *
      */
 
     public void fire() throws IllegalActionException {
@@ -189,21 +189,21 @@ public class TCPPacketReceiver extends InputDevice {
                             + "(a port with the parameter networkPort).");
         }
     }
-    
-    
+
+
     ///////////////////////////////////////////////////////////////////
     ////                     protected methods                     ////
-   
-    
-    /** Do not establish the usual default type constraints. 
+
+
+    /** Do not establish the usual default type constraints.
     *  @return null
     */
     @Override
     protected Set<Inequality> _defaultTypeConstraints() {
         return null;
     }
-    
-    
+
+
 
     ///////////////////////////////////////////////////////////////////
     ////                     private variable                      ////

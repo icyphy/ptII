@@ -44,15 +44,15 @@ import ptolemy.kernel.util.NameDuplicationException;
 //// TokenReader
 
 /**
- An actor that reads a string expression from a file or URL upon receiving a 
- signal on its <i>trigger</i> input port, and outputs a token that is the 
- result of evaluating the read string. The file or URL is specified by the 
- <i>FileOrURL</i> parameter or set using the <i>FileOrURL</i> port. If the 
+ An actor that reads a string expression from a file or URL upon receiving a
+ signal on its <i>trigger</i> input port, and outputs a token that is the
+ result of evaluating the read string. The file or URL is specified by the
+ <i>FileOrURL</i> parameter or set using the <i>FileOrURL</i> port. If the
  file or URL cannot be read, the expression cannot be parsed successfully,
  or the resulting token does not match the type constraint of the output port,
- the value of the <i>errorHandlingStrategy</i> parameter determines the 
+ the value of the <i>errorHandlingStrategy</i> parameter determines the
  behavior of this actor.
- TODO: describe automatic port constraint setting 
+ TODO: describe automatic port constraint setting
  FIXME: More here. Particularly, document output type handling.
 
  @author Edward A. Lee, Marten Lohstroh
@@ -62,9 +62,9 @@ import ptolemy.kernel.util.NameDuplicationException;
  @Pt.AcceptedRating Red (reviewmoderator)
  */
 public class TokenReader extends FileReader {
-    
+
     /** Construct an actor with a name and a container.
-     *  The container argument must not be null, or a NullPointerException 
+     *  The container argument must not be null, or a NullPointerException
      *  will be thrown.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -79,11 +79,11 @@ public class TokenReader extends FileReader {
         outputType = new Parameter(this, "outputType");
         // must reset the output type to unknown (base class sets it to string)
         output.setTypeEquals(BaseType.UNKNOWN);
-        
+
         errorHandlingStrategy = new StringParameter(this, "errorHandlingStrategy");
         errorHandlingStrategy.addChoice("Throw Exception");
         errorHandlingStrategy.addChoice("Do Nothing");
-        
+
         // Show the firingCountLimit parameter last.
         firingCountLimit.moveToLast();
     }
@@ -117,7 +117,7 @@ public class TokenReader extends FileReader {
      *  output type will be set to match whatever is first read from the
      *  file or URL and will be updated on each subsequent firing if
      *  the data read from the file or URL cannot be converted to the
-     *  type determined by the first read. 
+     *  type determined by the first read.
      */
     public Parameter outputType;
 
@@ -137,25 +137,25 @@ public class TokenReader extends FileReader {
             }
         }
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                      protected methods                    ////
 
-    /** Do not establish the usual default type constraints. 
+    /** Do not establish the usual default type constraints.
      *  @return null
      */
     @Override
     protected Set<Inequality> _defaultTypeConstraints() {
         return null;
     }
-    
+
     /** FIXME: Send the specified string to the output.
      *  @param fileContents The contents of the file or URL that was read.
      *  @throws IllegalActionException If sending the data fails.
      */
     protected void _handleFileData(String fileContents)
             throws IllegalActionException {
-        
+
         if (_parser == null) {
             _parser = new PtParser();
         }
@@ -173,7 +173,7 @@ public class TokenReader extends FileReader {
             throw new IllegalActionException(this,
                     "Expression yields a null result: " + fileContents);
         }
-        
+
         if (!output.getType().isCompatible(result.getType())) {
             // Handle the error according to the error policy.
             // FIXME: Fall through to the broadcast, which will throw
@@ -181,14 +181,14 @@ public class TokenReader extends FileReader {
         }
         output.broadcast(result);
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private members                   ////
-  
+
     /** The parser to use. */
     private PtParser _parser = null;
 
     /** The parse tree evaluator to use. */
     private ParseTreeEvaluator _parseTreeEvaluator = null;
-    
+
  }

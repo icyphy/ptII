@@ -291,7 +291,7 @@ public abstract class RunnableGraphController extends WithIconGraphController
     private Manager.State _previousState;
 
     /** The Manager status message from the previous state.
-     */   
+     */
     private String _previousStatusMessage = "";
 
     /** Action for running the model. */

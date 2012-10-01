@@ -48,30 +48,30 @@ import ptolemy.kernel.util.NameDuplicationException;
  *  @Pt.AcceptedRating
  */
 public class NetworkReceiverPort extends PtidesPort {
-    
+
     /** Create a new NetworkReceiverPort with a given container and a name.
-     * @param container The container of the port. 
+     * @param container The container of the port.
      * @param name The name of the port.
      * @throws IllegalActionException If parameters cannot be set.
      * @throws NameDuplicationException If name already exists.
      */
     public NetworkReceiverPort(CompositeEntity container, String name) throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        
-        this.setInput(true);   
-        
+
+        this.setInput(true);
+
         sourcePlatformDelayBound = new Parameter(this, "sourcePlatformDelayBound");
         sourcePlatformDelayBound.setExpression("0.0");
-        sourcePlatformDelayBound.setTypeEquals(BaseType.DOUBLE); 
-        
+        sourcePlatformDelayBound.setTypeEquals(BaseType.DOUBLE);
+
         networkDelayBound = new Parameter(this, "networkDelayBound");
         networkDelayBound.setExpression("0.0");
-        networkDelayBound.setTypeEquals(BaseType.DOUBLE);  
-    } 
-    
+        networkDelayBound.setTypeEquals(BaseType.DOUBLE);
+    }
+
     /** Network delay bound parameter that defaults to the double value 0.0. */
-    public Parameter networkDelayBound; 
-    
+    public Parameter networkDelayBound;
+
     /** Source platform delay bound parameter that defaults to the double value 0.0. */
     public Parameter sourcePlatformDelayBound;
 

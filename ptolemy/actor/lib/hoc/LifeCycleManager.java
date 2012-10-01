@@ -283,7 +283,7 @@ public class LifeCycleManager extends TypedCompositeActor {
             // Make sure that change requests are not executed when requested,
             // but rather only executed when executeChangeRequests() is called.
             setDeferringChangeRequests(true);
-            
+
             Director insideDirector = getDirector();
             Director outsideDirector = getExecutiveDirector();
             if (insideDirector == outsideDirector) {
@@ -396,7 +396,7 @@ public class LifeCycleManager extends TypedCompositeActor {
                 // of the parameter, not just the current value, otherwise
                 // it will be reset when the model is initialized.
                 parameter.setExpression(parameter.getToken().toString());
-                
+
                 if (_debugging) {
                     _debug("** Updated PortParameter: " + port.getName()
                             + " to value "

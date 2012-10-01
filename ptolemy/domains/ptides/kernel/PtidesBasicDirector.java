@@ -423,7 +423,7 @@ public class PtidesBasicDirector extends DEDirector {
                 "schedulerExecutionTime");
         schedulerExecutionTimeBound.setTypeEquals(BaseType.DOUBLE);
         schedulerExecutionTimeBound.setExpression("0.0");
-        
+
         // Force isEmbedded() to always return false.
         setEmbedded(false);
     }
@@ -830,7 +830,7 @@ public class PtidesBasicDirector extends DEDirector {
         _eventQueue = new PtidesListEventQueue();
 
         _checkSensorActuatorNetworkConsistency();
-        
+
         _calculateDelayOffsets();
 
         // In Ptides, we should never stop when queue is empty.
@@ -838,8 +838,8 @@ public class PtidesBasicDirector extends DEDirector {
     }
 
 
-    
-    
+
+
     /** Add a new execution time listener to the list of listeners.
      *  @param listener New listener.
      */
@@ -924,7 +924,7 @@ public class PtidesBasicDirector extends DEDirector {
      *  timestamp) and their remaining execution times.
      */
     protected Stack<ExecutionTimedEvent> _currentlyExecutingStack;
-    
+
     /** List of listeners to be informed whenever an execution time
      *  event occurs.
      */
@@ -935,7 +935,7 @@ public class PtidesBasicDirector extends DEDirector {
      *  _pureEventSourcePorts that are associated with this actor should be removed.
      */
     protected Actor _lastActorFired;
-    
+
     /** Execution time of last actor fired. */
     protected Time _lastExecutionTime;
 
@@ -1044,9 +1044,9 @@ public class PtidesBasicDirector extends DEDirector {
                     Double deviceDelayBound = _getDoubleParameterValue(inputPort, "deviceDelayBound");
                     Double networkDelayBound = _getDoubleParameterValue(inputPort, "networkDelayBound");
                     Double sourcePlatformDelayBound = _getDoubleParameterValue(inputPort, "sourcePlatformDelayBound");
-                    
-                    start = ((deviceDelayBound != null) ? deviceDelayBound : 0) + 
-                            ((networkDelayBound != null) ? networkDelayBound : 0) + 
+
+                    start = ((deviceDelayBound != null) ? deviceDelayBound : 0) +
+                            ((networkDelayBound != null) ? networkDelayBound : 0) +
                             ((sourcePlatformDelayBound != null) ? sourcePlatformDelayBound : 0);
                     if (start != null) {
                         // FIXME: this is wrong, need to get the max between all
@@ -1196,41 +1196,41 @@ public class PtidesBasicDirector extends DEDirector {
 
         _networkInputPorts = new HashSet<IOPort>();
         _networkOutputPorts = new HashSet<IOPort>();
-        
+
         // Find all network input ports and put them into a list.
         for (TypedIOPort port : (List<TypedIOPort>) (((TypedCompositeActor) getContainer())
-                .inputPortList())) {  
+                .inputPortList())) {
             if (port instanceof NetworkReceiverPort) {
                 _networkInputPorts.add(port);
             } else if (port instanceof PeriodicSamplingSensorPort) {
-                
+
             } else {
                 for (IOPort sinkPort : (List<IOPort>) port.deepInsidePortList()) {
                     if (sinkPort.isInput()) {
-                        if (sinkPort.getContainer() instanceof NetworkReceiver) { 
+                        if (sinkPort.getContainer() instanceof NetworkReceiver) {
                             _networkInputPorts.add(port);
-                        }  
+                        }
                     }
-                } 
+                }
             }
-            _checkDeviceDelay(port); 
+            _checkDeviceDelay(port);
         }
-        
+
         // Find all network output ports and put them into a list.
         for (TypedIOPort port : (List<TypedIOPort>) (((TypedCompositeActor) getContainer())
-                .outputPortList())) {  
+                .outputPortList())) {
             if (port instanceof NetworkTransmitterPort) {
                 _networkOutputPorts.add(port);
-            } 
+            }
             for (IOPort sourcePort : port.sourcePortList()) {
                 if (sourcePort.getContainer() instanceof NetworkTransmitter) {
                     _networkOutputPorts.add(sourcePort);
-                } 
+                }
             }
-            _checkDeviceDelay(port); 
-        } 
+            _checkDeviceDelay(port);
+        }
     }
- 
+
 
     /** For each input port within the composite actor where this director
      *  resides. If the input port has a delayOffset parameter, set the value
@@ -1629,8 +1629,8 @@ public class PtidesBasicDirector extends DEDirector {
 
     /** Return the value stored in a parameter associated with
      *  the input port.
-     *  Used for deviceDelay, deviceDelayBound, networkDelayBound, 
-     *  platformDelay and sourcePlatformDelay. 
+     *  Used for deviceDelay, deviceDelayBound, networkDelayBound,
+     *  platformDelay and sourcePlatformDelay.
      *  FIXME: specialized ports do contain the parameters, don't
      *  have to get the attribute with the string! For now leave it
      *  that way to support older models that do not use PtidesPorts.
@@ -1650,8 +1650,8 @@ public class PtidesBasicDirector extends DEDirector {
                     .doubleValue());
         }
         return null;
-    } 
-    
+    }
+
     /** Return a MoML string describing the icon appearance for a Ptides
      *  director that is currently executing the specified actor.
      *  The returned MoML can include a sequence of instances of
@@ -1899,7 +1899,7 @@ public class PtidesBasicDirector extends DEDirector {
                         _getActorFromEventList((List<PtidesEvent>) currentEventList.contents),
                         false);
                 _sendExecutionTimeEvent(
-                        _getActorFromEventList((List<PtidesEvent>) currentEventList.contents), 
+                        _getActorFromEventList((List<PtidesEvent>) currentEventList.contents),
                         ExecutionEventType.STOP);
                 _lastExecutingActor = null;
 
@@ -2335,9 +2335,9 @@ public class PtidesBasicDirector extends DEDirector {
      */
     protected void _sendExecutionTimeEvent(Actor actor,
             ExecutionEventType event) throws IllegalActionException {
-        double oracleTime = _getOraclePhysicalTag().timestamp.getDoubleValue(); 
+        double oracleTime = _getOraclePhysicalTag().timestamp.getDoubleValue();
         double physicalTime = getPlatformPhysicalTag(platformTimeClock).timestamp
-        .getDoubleValue(); 
+        .getDoubleValue();
         double modelTime = getModelTime().getDoubleValue();
         if (_executionTimeListeners != null) {
             for (ExecutionTimeListener listener : _executionTimeListeners) {
@@ -2573,7 +2573,7 @@ public class PtidesBasicDirector extends DEDirector {
             }
         }
 
-        Double inputDelay = _getDoubleParameterValue(port, "deviceDelay"); 
+        Double inputDelay = _getDoubleParameterValue(port, "deviceDelay");
         if (inputDelay == null) {
             inputDelay = 0.0;
         }
@@ -2588,7 +2588,7 @@ public class PtidesBasicDirector extends DEDirector {
                 // a sensor event would have timestamp equal to the platform's
                 // physical time.
                 setTag(platformPhysicalTag.timestamp,
-                        platformPhysicalTag.microstep); 
+                        platformPhysicalTag.microstep);
             }
             result |= super._transferInputs(port);
             setTag(lastModelTime, lastMicrostep);
@@ -2620,7 +2620,7 @@ public class PtidesBasicDirector extends DEDirector {
                                 // exception because the downstream actor would have
                                 // received two events with the same timestamp and
                                 // microstep consecutively. This is not allowed by
-                                // DE semantics. 
+                                // DE semantics.
                                         platformPhysicalTag.microstep));
                         _realTimeInputEventQueue.add(realTimeEvent);
                         result = true;
@@ -2726,7 +2726,7 @@ public class PtidesBasicDirector extends DEDirector {
             }
         }
 
-        
+
         // Deadline of an actuation event is the timestamp subtracted by the
         // deviceDelay (d_a) at the actuators.
         Double actuatorDeviceDelay = _getDoubleParameterValue(port, "deviceDelay");
@@ -2848,7 +2848,7 @@ public class PtidesBasicDirector extends DEDirector {
         }
         return smallestDependency.timeValue();
     }
-    
+
     /** Check that actual deviceDelay is not bigger than the bound.
      *  @param port The Port to be checked.
      *  @exception IllegalActionException If the parameters of the port cannot be read.
@@ -2858,7 +2858,7 @@ public class PtidesBasicDirector extends DEDirector {
         Double deviceDelayBound = _getDoubleParameterValue(port, "deviceDelayBound");
         if (deviceDelay != null && deviceDelayBound != null &&
                 deviceDelay > deviceDelayBound) {
-            throw new IllegalActionException(port, 
+            throw new IllegalActionException(port,
                     "The deviceDelayBound must be >= deviceDelay.");
         }
     }
@@ -3135,7 +3135,7 @@ public class PtidesBasicDirector extends DEDirector {
                         + "or ignoreDeadline");
         throw up;
     }
-    
+
     /** Return whether the port is a networkPort. This method only checks
      *  for whether input ports are network ports. If port is an output
      *  port, then throw an exception.
@@ -3620,7 +3620,7 @@ public class PtidesBasicDirector extends DEDirector {
      *  input ports that are directly connected to NetworkReceivers.
      */
     private HashSet<IOPort> _networkInputPorts;
-    
+
     /** Keep track of a set of input ports to the composite actor governed by
      *  this director. These input ports are network input ports, which are
      *  input ports that are directly connected to NetworkReceivers.

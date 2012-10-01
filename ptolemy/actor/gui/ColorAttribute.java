@@ -55,10 +55,10 @@ import ptolemy.kernel.util.NamedObj;
  @Pt.AcceptedRating Red (cxh)
  */
 public class ColorAttribute extends Parameter {
-    
+
     /** Construct an attribute with the given name.
      *  If the name argument is null, then the name is set to the empty
-     *  string. Increment the version of the workspace. 
+     *  string. Increment the version of the workspace.
      *  @param name The name of this attribute.
      *  @exception IllegalActionException If the name contains a period.
      *  @exception NameDuplicationException If the name coincides with
@@ -69,7 +69,7 @@ public class ColorAttribute extends Parameter {
         super();
         setTypeEquals(new ArrayType(BaseType.DOUBLE));
     }
-    
+
     /** Construct an attribute with the given name contained by the
      *  specified container. The container argument must not be null, or a
      *  NullPointerException will be thrown.  This attribute will use the

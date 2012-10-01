@@ -53,40 +53,40 @@ import ptolemy.util.StringUtilities;
 ///////////////////////////////////////////////////////////////////
 //// RecordDisassembler
 
-/** 
+/**
  On each firing, read one RecordToken from the input port and send out
  the fields of the RecordToken to multiple output ports.
  The labels for the RecordToken must match the names of the output ports.
- This is achieved using three type constraints: 
+ This is achieved using three type constraints:
  <ul>
  <li><tt>input >= {x = typeOf(outputPortX), y = typeOf(outputPortY), ..}
- </tt>, which requires the types of the fields in the input record to be 
+ </tt>, which requires the types of the fields in the input record to be
  compatible with the types of the corresponding output ports.
  </li>
- <li><tt>input <= {x = GENERAL, y = GENERAL, ..}</tt>, which requires the 
+ <li><tt>input <= {x = GENERAL, y = GENERAL, ..}</tt>, which requires the
  input record to contain a corresponding field for each output port.
  </li>
  <li><tt>each output >= the type of the corresponding field inside the input
- record</tt>, which is similar to the usual default constraints, however 
- this constraint establishes a dependency between fields inside the input 
- record and the outputs of this actor, instead of just between its inputs 
+ record</tt>, which is similar to the usual default constraints, however
+ this constraint establishes a dependency between fields inside the input
+ record and the outputs of this actor, instead of just between its inputs
  and outputs.
  </li>
  </ul>
-  
- <p>If the received Token contains more fields than the output ports, the extra 
+
+ <p>If the received Token contains more fields than the output ports, the extra
  fields are ignored.</p>
-  
+
  <p>To use this class, instantiate it, and then add output ports (instances
  of TypedIOPort).  This actor is polymorphic. The type constraint is that
  the type of each output port is no less than the type of the corresponding
  record field.</p>
 
  <p>Note that while port names may have spaces in them, record labels
- may not because record labels that have spaces in them are not 
+ may not because record labels that have spaces in them are not
  parseable by the expression language.  Spaces in record labels
  are converted to underscores in the RecordToken constructors an
- toString() method.  If this actor has ports that have a space 
+ toString() method.  If this actor has ports that have a space
  or other character that is substituted, then at runtime the port
  may resolve to an unknown type with a message like:</p>
  <pre>
@@ -94,7 +94,7 @@ Caused by: ptolemy.actor.TypeConflictException: Types resolved
   to unacceptable types in .Router due to the following objects:
   (port .Router.Record Disassembler.sequence number: unknown)
  </pre>
-  
+
  @author Yuhong Xiong, Steve Neuendorffer, Edward A. Lee, Marten Lohstroh
  @version $Id$
  @since Ptolemy II 1.0
@@ -195,15 +195,15 @@ public class RecordDisassembler extends TypedAtomicActor {
     /** Set up and return three type constraints.
      *  <ul>
      *  <li><tt>input >= {x = typeOf(outputPortX), y = typeOf(outputPortY), ..}
-     *  </tt>, which requires the types of the fields in the input record to be 
+     *  </tt>, which requires the types of the fields in the input record to be
      *  compatible with the types of the corresponding output ports.
      *  </li>
-     *  <li><tt>input <= {x = GENERAL, y = GENERAL, ..}</tt>, which requires 
+     *  <li><tt>input <= {x = GENERAL, y = GENERAL, ..}</tt>, which requires
      *  the input record to contain a corresponding field for each output port.
      *  </li>
-     *  <li><tt>each output >= the type of the corresponding field inside the 
-     *  input record</tt>, which is similar to the usual default constraints, 
-     *  however this constraint establishes a dependency between fields inside 
+     *  <li><tt>each output >= the type of the corresponding field inside the
+     *  input record</tt>, which is similar to the usual default constraints,
+     *  however this constraint establishes a dependency between fields inside
      *  the input record and the outputs of this actor, instead of just between
      *  its inputs and outputs.
      *  </li>
@@ -218,7 +218,7 @@ public class RecordDisassembler extends TypedAtomicActor {
         ArrayList<String> labels = new ArrayList<String>();
         ArrayList<Type> types = new ArrayList<Type>();
 
-        // constrain the fields in the input record to be greater than or 
+        // constrain the fields in the input record to be greater than or
         // equal to the declared or resolved types of the output ports:
         // input >= {x = typeOf(outputPortX), y = typeOf(outputPortY), ..}
         result.add(new Inequality(new ConstructAssociativeType(outputPortList(),
@@ -229,7 +229,7 @@ public class RecordDisassembler extends TypedAtomicActor {
             labels.add(outputName);
             types.add(BaseType.GENERAL);
 
-            // constrain each output to be >= the type of the corresponding 
+            // constrain each output to be >= the type of the corresponding
             // field inside the input record
             result.add(new Inequality(new ExtractFieldType(input,
                     outputName), output.getTypeTerm()));
@@ -240,14 +240,14 @@ public class RecordDisassembler extends TypedAtomicActor {
                 new RecordType(labels.toArray(new String[0]), types
                         .toArray(new Type[0])))));
 
-        // NOTE: refrain from using port.setTypeAtMost() or 
-        // port.setTypeAtLeast(), because after removing an output port, the 
-        // constraint referring to this removed port will remain to exist in 
+        // NOTE: refrain from using port.setTypeAtMost() or
+        // port.setTypeAtLeast(), because after removing an output port, the
+        // constraint referring to this removed port will remain to exist in
         // the input port, which will result in type errors.
         return result;
     }
 
-    /** Do not establish the usual default type constraints. 
+    /** Do not establish the usual default type constraints.
      *  @return null
      */
     @Override

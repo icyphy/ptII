@@ -70,7 +70,7 @@ public interface PlotBoxInterface {
      *  on the axis at the position given by <i>position</i>. If this
      *  is called once or more, automatic generation of tick marks is
      *  disabled.  The tick mark will appear only if it is within the X
-     *  range. 
+     *  range.
      *  <p>Note that if {@link #setXLog(boolean)} has been called, then
      *  the position value should be in log units.
      *  So, addXTick("1K", 3) will display the string <pre>1K</pre>
@@ -129,7 +129,7 @@ public interface PlotBoxInterface {
      */
     public void deferIfNecessary(Runnable action);
 
-    /** Destroy the plotter.  This method is usually 
+    /** Destroy the plotter.  This method is usually
      *  called by PlotApplet.destroy().  It does
      *  various cleanups to reduce memory usage.
      */
@@ -342,7 +342,7 @@ public interface PlotBoxInterface {
     public void init();
 
     /** Syntactic sugar for parseFile(filespec, documentBase).
-     *  @param filespec The file to be read.   
+     *  @param filespec The file to be read.
      *  @deprecated  Use read() to read the old file
      *  format, or use one of the classes in the plotml package to
      *  read the XML-based file format.
@@ -351,8 +351,8 @@ public interface PlotBoxInterface {
     public void parseFile(String filespec);
 
     /** Open up the input file, which could be stdin, a URL, or a file.
-     *  @param filespec The file to be read.   
-     *  @param documentBase The base of the URL  
+     *  @param filespec The file to be read.
+     *  @param documentBase The base of the URL
      *  @deprecated Use read() instead.
      */
     @Deprecated
@@ -479,7 +479,7 @@ public interface PlotBoxInterface {
     public void setColors(Object[] colors);
 
     /** Set the file to read when init() is called.
-     *  @param filespec the file to be read   
+     *  @param filespec the file to be read
      *  @see #getDataurl()
      *  @deprecated Use read() instead.
      */
@@ -487,7 +487,7 @@ public interface PlotBoxInterface {
     public void setDataurl(String filespec);
 
     /** Set the document base to used when init() is called to read a URL.
-     *  @param documentBase The document base to be used.   
+     *  @param documentBase The document base to be used.
      *  @see #getDocumentBase()
      *  @deprecated   Use read() instead.
      */

@@ -244,7 +244,7 @@ public class EditorDropTargetListener implements DropTargetListener {
             StringBuffer moml = new StringBuffer();
 
             final NamedObj dropObj = (NamedObj) iterator.next();
-            
+
             // Figure out the destination container.
             NamedObj destinationContainer = targetContainer;
             boolean relativeLocation = false;
@@ -360,12 +360,12 @@ public class EditorDropTargetListener implements DropTargetListener {
                             + RelativeLocation.INITIAL_OFFSET + "}\">"
                             + "<property name=\"relativeTo\" value=\""
                             + targetContainer.getName()
-                            + "\"/>\n" 
+                            + "\"/>\n"
                             // Need to identify the targetContainer as an
                             // Entity, Port, Relation, or Attribute.
                             + "<property name=\"relativeToElementName\" value=\""
                             + targetContainer.getElementName()
-                            + "\"/></property>\n</" 
+                            + "\"/></property>\n</"
                             + dropObjElementType + ">\n");
 
                 } else {

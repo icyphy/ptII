@@ -43,7 +43,7 @@ import ptolemy.backtrack.Rollbackable;
 import ptolemy.backtrack.util.CheckpointRecord;
 import ptolemy.backtrack.util.FieldRecord;
 
-/** 
+/**
  * This class generates pseudorandom numbers.  It uses the same
  * algorithm as the original JDK-class, so that your programs behave
  * exactly the same way, if started with the same seed.
@@ -74,7 +74,7 @@ public class Random implements Serializable, Rollbackable {
 
     protected transient Checkpoint $CHECKPOINT = new Checkpoint(this);
 
-    /**     
+    /**
      * True if the next nextGaussian is available.  This is used by
      * nextGaussian, which generates two gaussian numbers by one call,
      * and returns the second on the second call.
@@ -84,7 +84,7 @@ public class Random implements Serializable, Rollbackable {
      */
     private boolean haveNextNextGaussian;
 
-    /**     
+    /**
      * The next nextGaussian, when available.  This is used by nextGaussian,
      * which generates two gaussian numbers by one call, and returns the
      * second on the second call.
@@ -94,7 +94,7 @@ public class Random implements Serializable, Rollbackable {
      */
     private double nextNextGaussian;
 
-    /**     
+    /**
      * The seed.  This is the number set by setSeed and which is used
      * in next.
      * @serial the internal state of this generator
@@ -102,12 +102,12 @@ public class Random implements Serializable, Rollbackable {
      */
     private long seed;
 
-    /**     
+    /**
      * Compatible with JDK 1.0+.
      */
     private static final long serialVersionUID = 3905348978240129619L;
 
-    /**     
+    /**
      * Creates a new pseudorandom number generator.  The seed is initialized
      * to the current time, as if by
      * <code>setSeed(System.currentTimeMillis());</code>.
@@ -117,7 +117,7 @@ public class Random implements Serializable, Rollbackable {
         this(System.currentTimeMillis());
     }
 
-    /**     
+    /**
      * Creates a new pseudorandom number generator, starting with the
      * specified seed, using <code>setSeed(seed);</code>.
      * @param seed the initial seed
@@ -126,7 +126,7 @@ public class Random implements Serializable, Rollbackable {
         setSeed(seed);
     }
 
-    /**     
+    /**
      * Sets the seed for this pseudorandom number generator.  As described
      * above, two instances of the same random class, starting with the
      * same seed, should produce the same results, if the same methods
@@ -143,7 +143,7 @@ public class Random implements Serializable, Rollbackable {
         $ASSIGN$haveNextNextGaussian(false);
     }
 
-    /**     
+    /**
      * Generates the next pseudorandom number.  This returns
      * an int value whose <code>bits</code> low order bits are
      * independent chosen random bits (0 and 1 are equally likely).
@@ -162,7 +162,7 @@ public class Random implements Serializable, Rollbackable {
         return (int) (seed >>> (48 - bits));
     }
 
-    /**     
+    /**
      * Fills an array of bytes with random numbers.  All possible values
      * are (approximately) equally likely.
      * The JDK documentation gives no implementation, but it seems to be:
@@ -202,7 +202,7 @@ public class Random implements Serializable, Rollbackable {
         }
     }
 
-    /**     
+    /**
      * Generates the next pseudorandom number.  This returns
      * an int value whose 32 bits are independent chosen random bits
      * (0 and 1 are equally likely).  The implementation for
@@ -217,7 +217,7 @@ public class Random implements Serializable, Rollbackable {
         return next(32);
     }
 
-    /**     
+    /**
      * Generates the next pseudorandom number.  This returns
      * a value between 0(inclusive) and <code>n</code>(exclusive), and
      * each value has the same likelihodd (1/<code>n</code>).
@@ -272,7 +272,7 @@ public class Random implements Serializable, Rollbackable {
         return val;
     }
 
-    /**     
+    /**
      * Generates the next pseudorandom long number.  All bits of this
      * long are independently chosen and 0 and 1 have equal likelihood.
      * The implementation for java.util.Random is:
@@ -286,7 +286,7 @@ public class Random implements Serializable, Rollbackable {
         return ((long) next(32) << 32) + next(32);
     }
 
-    /**     
+    /**
      * Generates the next pseudorandom boolean.  True and false have
      * the same probability.  The implementation is:
      * <pre>public boolean nextBoolean()
@@ -300,7 +300,7 @@ public class Random implements Serializable, Rollbackable {
         return next(1) != 0;
     }
 
-    /**     
+    /**
      * Generates the next pseudorandom float uniformly distributed
      * between 0.0f (inclusive) and 1.0f (exclusive).  The
      * implementation is as follows.
@@ -314,7 +314,7 @@ public class Random implements Serializable, Rollbackable {
         return next(24) / (float) (1 << 24);
     }
 
-    /**     
+    /**
      * Generates the next pseudorandom double uniformly distributed
      * between 0.0 (inclusive) and 1.0 (exclusive).  The
      * implementation is as follows.
@@ -328,7 +328,7 @@ public class Random implements Serializable, Rollbackable {
         return (((long) next(26) << 27) + next(27)) / (double) (1L << 53);
     }
 
-    /**     
+    /**
      * Generates the next pseudorandom, Gaussian (normally) distributed
      * double value, with mean 0.0 and standard deviation 1.0.
      * The algorithm is as follows.

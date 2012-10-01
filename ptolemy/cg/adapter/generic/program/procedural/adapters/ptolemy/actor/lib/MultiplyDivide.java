@@ -80,8 +80,8 @@ public class MultiplyDivide extends NamedProgramCodeGeneratorAdapter {
 
         ArrayList<String> initArgs = new ArrayList<String>();
 
-	// These lines are needed to handle
-	// $PTII/bin/ptcg -language java $PTII/ptolemy/moml/filter/test/auto/modulation2.xml
+        // These lines are needed to handle
+        // $PTII/bin/ptcg -language java $PTII/ptolemy/moml/filter/test/auto/modulation2.xml
         if (divideOnly) {
             initArgs.add(divideType);
         } else {

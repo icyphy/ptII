@@ -35,9 +35,9 @@ import ptolemy.kernel.util.NamedObj;
 //// NonVisualContentEvent
 
 /** Non-visual content event notifying about changes in non-visual object list.
- * 
+ *
  *  @author Peter Folder
- *  @version $Id$ 
+ *  @version $Id$
  *  @since Ptolemy II 8.1
  *  @Pt.ProposedRating Red (pdf)
  *  @Pt.AcceptedRating Red (pdf)

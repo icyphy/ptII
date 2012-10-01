@@ -91,7 +91,7 @@ public class SDFTestScheduler extends SDFScheduler {
     ////                         public methods                    ////
 
     /** Return the <i>_rateVariables</i> from the parent class.
-     *  @return the <i>_rateVariables</i> List.mk   
+     *  @return the <i>_rateVariables</i> List.mk
      */
     public List getRateVariables() {
         return _rateVariables;

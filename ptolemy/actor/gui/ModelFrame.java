@@ -304,6 +304,6 @@ public class ModelFrame extends PtolemyFrame implements ExecutionListener {
     private Manager.State _previousState;
 
     /** The Manager status message from the previous state.
-     */   
+     */
     private String _previousStatusMessage = "";
 }

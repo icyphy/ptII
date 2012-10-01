@@ -197,39 +197,39 @@ public class ClassUtilities {
             throws IOException {
         // FIXME: Maybe only allow relative paths?
 
-        // Hmm.  Might be Eclipse, where sadly the 
+        // Hmm.  Might be Eclipse, where sadly the
         // .class files are often in a separate directory
         // than the .java files.  So, we look at the CLASSPATH
         // and for each element that names a directory, traverse
         // the parents directories and look for adjacent directories
         // that contain a "src" directory.  For example if
         // the classpath contains "kepler/ptolemy/target/classes/",
-        // then we will find kepler/ptolemy/src and return it 
+        // then we will find kepler/ptolemy/src and return it
         // as a URL.
 
         // First time through, search each element of the CLASSPATH that names
         // a directory
-    	if (_sourceDirectories == null) {
-    		List<File> sourceDirectories = new LinkedList<File>();
-    		String classPath[] = StringUtilities.getProperty("java.class.path").split(StringUtilities.getProperty("path.separator"));
-    		for ( int i = 0; i < classPath.length; i++) {
-    			File directory = new File(classPath[i]);
-    			if (directory.isDirectory()) {
-    				// We have a potential winner.
-    				while (directory != null) {
-    					File sourceDirectory = new File(directory, "src");
-    					if (sourceDirectory.isDirectory()) {
-    						sourceDirectories.add(sourceDirectory);
-    						break;
-    					}
-    					directory = directory.getParentFile();
-    				}
-    			}
-    		}
-    		// Avoid FindBugs: LI: Incorrect lazy initialization and update of static field.
-    		_sourceDirectories = sourceDirectories;                
-    	}
-        
+            if (_sourceDirectories == null) {
+                    List<File> sourceDirectories = new LinkedList<File>();
+                    String classPath[] = StringUtilities.getProperty("java.class.path").split(StringUtilities.getProperty("path.separator"));
+                    for ( int i = 0; i < classPath.length; i++) {
+                            File directory = new File(classPath[i]);
+                            if (directory.isDirectory()) {
+                                    // We have a potential winner.
+                                    while (directory != null) {
+                                            File sourceDirectory = new File(directory, "src");
+                                            if (sourceDirectory.isDirectory()) {
+                                                    sourceDirectories.add(sourceDirectory);
+                                                    break;
+                                            }
+                                            directory = directory.getParentFile();
+                                    }
+                            }
+                    }
+                    // Avoid FindBugs: LI: Incorrect lazy initialization and update of static field.
+                    _sourceDirectories = sourceDirectories;
+            }
+
         // Search _sourceDirectories for sourceURLString
         for (File sourceDirectory : _sourceDirectories) {
             File sourceFile = new File(sourceDirectory, sourceURLString);

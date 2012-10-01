@@ -141,7 +141,7 @@ public class ImageDisplayJavaSE extends AbstractPlaceableJavaSE implements
             return _tableau;
     }
 
-    /** Initialize an object. 
+    /** Initialize an object.
      * @param imageDisplayActor The object to be initialized.
      * @exception IllegalActionException If the entity cannot be contained
      * by the proposed container.

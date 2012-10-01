@@ -72,7 +72,7 @@ public class TestLoadRequirementsIntegration {
      */
     @BeforeClass
     public static void setUpBeforeClass() {
-	ActorModuleInitializer.initializeInjector();
+        ActorModuleInitializer.initializeInjector();
     }
 
 

@@ -326,7 +326,7 @@ public class ModalModel extends TypedCompositeActor implements ChangeListener {
         }
         return newModel;
     }
-    
+
     /** Get the attribute with the given name. The name may be compound,
      *  with fields separated by periods, in which case the attribute
      *  returned is contained by a (deeply) contained attribute, port,

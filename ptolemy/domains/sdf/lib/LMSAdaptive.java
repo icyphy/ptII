@@ -131,7 +131,7 @@ public class LMSAdaptive extends FIR {
         stepSize.setTypeSameAs(input);
         tapValues.setTypeSameAs(taps);
         taps.setTypeAtLeast(initialTaps);
-        
+
         new StringAttribute(error, "_cardinal").setExpression("SOUTH");
     }
 

@@ -51,9 +51,9 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
 /**
-An actor that converts a Token into a StringToken containing JSON-formatted 
-data. Nested structures in ArrayToken or RecordToken translate into 
-correspondingly nested JSON output. If the input Token is not a structured 
+An actor that converts a Token into a StringToken containing JSON-formatted
+data. Nested structures in ArrayToken or RecordToken translate into
+correspondingly nested JSON output. If the input Token is not a structured
 type, the value of the Token is wrapped into an array of size one.
 
 <p><a href="http://www.json.org/">http://www.json.org/</a>
@@ -86,8 +86,8 @@ public class TokenToJSON extends Converter {
     ////                      public methods                       ////
 
     /** Read a Token from the input and produce a corresponding JSON-formatted
-     *  string on the output.   
-     *  @exception IllegalActionException If the input Token cannot be 
+     *  string on the output.
+     *  @exception IllegalActionException If the input Token cannot be
      *  converted to JSON.
      */
     public void fire() throws IllegalActionException {
@@ -108,7 +108,7 @@ public class TokenToJSON extends Converter {
 
     /** Construct a StringToken that represents the input in JSON format.
      *  Populate a JSONObject or JSONArray by recursively scanning the input.
-     *  If the input is not a structured type, wrap the the value in a 
+     *  If the input is not a structured type, wrap the the value in a
      *  JSONArray. Then convert the populated JSON structure into a StringToken
      *  and return it.
      *  @param input an arbitrary Token
@@ -139,7 +139,7 @@ public class TokenToJSON extends Converter {
 
     ///////////////////////////////////////////////////////////////////
     ////                      protected methods                    ////
-    
+
     /** Do not establish the usual default type constraints.
      */
     @Override
@@ -150,18 +150,18 @@ public class TokenToJSON extends Converter {
     ///////////////////////////////////////////////////////////////////
     ////                      private methods                      ////
 
-    /** Map an given Token to the corresponding Java Object and return it.  
+    /** Map an given Token to the corresponding Java Object and return it.
      *  @param token An arbitrary Token
      *  @return An Object representing the value of the given input Token
-     *  @exception JSONException If unable to instantiate a new JSONObject 
+     *  @exception JSONException If unable to instantiate a new JSONObject
      *  or JSONArray
-     *  @exception IllegalActionException If the given Token cannot be 
+     *  @exception IllegalActionException If the given Token cannot be
      *  expressed in JSON.
      */
     private Object _mapTokenToValue(Token token) throws IllegalActionException,
             JSONException {
 
-        // The value can be any of these types: 
+        // The value can be any of these types:
         // Boolean, Number, String, or the JSONObject.NULL
         if (token instanceof RecordToken)
             return _scanRecordToken((RecordToken) token);
@@ -190,22 +190,22 @@ public class TokenToJSON extends Converter {
         }
     }
 
-    /** Iterate over the elements inside an ArrayToken and put them inside a 
+    /** Iterate over the elements inside an ArrayToken and put them inside a
      *  new JSONArray. Apply recursion for ArrayTokens and RecordTokens.
-     * 
+     *
      *  @param token An ArrayToken
      *  @return An JSONArray containing the values corresponding to those found
      *  in the given ArrayToken
-     *  @exception JSONException If unable to instantiate a new JSONObject 
+     *  @exception JSONException If unable to instantiate a new JSONObject
      *  or JSONArray
-     *  @exception IllegalActionException If a value inside the given 
+     *  @exception IllegalActionException If a value inside the given
      *  ArrayToken cannot be expressed in JSON.
      */
     private JSONArray _scanArrayToken(ArrayToken token) throws JSONException,
             IllegalActionException {
         int i = 0;
         Object[] array = new Object[token.length()];
-        
+
         for (Token t : token.arrayValue()) {
             array[i] = _mapTokenToValue(t);
             i++;
@@ -213,15 +213,15 @@ public class TokenToJSON extends Converter {
         return new JSONArray(array);
     }
 
-    /** Iterate over the elements inside an RecordToken and put them inside a 
+    /** Iterate over the elements inside an RecordToken and put them inside a
      *  new JSONObject. Apply recursion for ArrayTokens and RecordTokens.
-     * 
+     *
      *  @param token An RecordToken
      *  @return An JSONArray containing the values corresponding to those found
      *  in the given RecordToken
-     *  @exception JSONException If unable to instantiate a new JSONObject 
+     *  @exception JSONException If unable to instantiate a new JSONObject
      *  or JSONArray
-     *  @exception IllegalActionException If a value inside the given 
+     *  @exception IllegalActionException If a value inside the given
      *  RecordToken cannot be expressed in JSON.
      */
     private JSONObject _scanRecordToken(RecordToken token)

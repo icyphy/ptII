@@ -49,7 +49,7 @@ public interface ExecutionTimeListener {
      *  @param modelTime The model time when the event happened.
      *  @param event The type of the event.
      */
-    public void event(Actor actor, double oracleTime, 
+    public void event(Actor actor, double oracleTime,
             double physicalTime, double modelTime, ExecutionEventType event);
 
     /** The event is displayed.
@@ -61,7 +61,7 @@ public interface ExecutionTimeListener {
      */
     public void event(Actor actor, double time, ExecutionEventType event,
             int core);
-    
+
     /** Execution time event type. */
     public static enum ExecutionEventType {
         /** Started the execution of an actor. */

@@ -69,7 +69,7 @@ public class Refinement extends TypedCompositeActor {
         // irrespective of the actual class name.  We override that here.
         setClassName("ptolemy.actor.lib.hoc.Refinement");
     }
-    
+
     /** Construct a Refinement in the specified workspace with
      *  no container and an empty string as a name. You can then change
      *  the name with setName(). If the workspace argument is null, then
@@ -78,7 +78,7 @@ public class Refinement extends TypedCompositeActor {
      */
     public Refinement(Workspace workspace) {
         super(workspace);
-        
+
         // The base class identifies the class name as TypedCompositeActor
         // irrespective of the actual class name.  We override that here.
         setClassName("ptolemy.actor.lib.hoc.Refinement");

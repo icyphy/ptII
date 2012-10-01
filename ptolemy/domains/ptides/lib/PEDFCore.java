@@ -45,7 +45,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 
 /** This is an earliest deadline first scheduler.
- * 
+ *
  * @author Patricia Derler
    @version $Id$
    @since Ptolemy II 0.2
@@ -72,7 +72,7 @@ public class PEDFCore extends FPPCore {
         super(container, name);
     }
 
-    /** Initialize local variables. 
+    /** Initialize local variables.
      *  @throws IllegalActionException Thrown in super class.
      */
     @Override
@@ -110,13 +110,13 @@ public class PEDFCore extends FPPCore {
     ///////////////////////////////////////////////////////////////////
     //                      protected methods                        //
 
-    /** Get the deadline of the actor and return it as the priority. 
+    /** Get the deadline of the actor and return it as the priority.
      *  The priority is treated equal to deadline in this scheduler:
      *  lower value for the priority means higher priority, lower
-     *  deadline means higher priority. 
+     *  deadline means higher priority.
      *  @param actor The actor.
      *  @return The priority of the actor or, if the actor has no priority
-     *    assigned, the lowest priority. 
+     *    assigned, the lowest priority.
      *  @throws IllegalActionException Thrown if parameter cannot be read.
      */
     protected double _getPriority(Actor actor) throws IllegalActionException {

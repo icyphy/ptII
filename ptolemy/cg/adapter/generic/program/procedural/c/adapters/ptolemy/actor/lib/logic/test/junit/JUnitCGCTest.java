@@ -33,7 +33,7 @@ import ptolemy.util.test.junit.JUnitCGCTestBase;
 ///////////////////////////////////////////////////////////////////
 //// JUnitCGCTest
 /**
- *  Run the auto/ tests using c cg. 
+ *  Run the auto/ tests using c cg.
  * <pre>
  * (cd $PTII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/actor/lib/logic/test/junit; java -classpath ${PTII}:${PTII}/lib/ptjacl.jar:${PTII}/lib/junit-4.8.2.jar:${PTII}/lib/JUnitParams-0.3.0.jar org.junit.runner.JUnitCore ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.actor.lib.logic.test.junit.JUnitCCGTest)
  * </pre>

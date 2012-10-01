@@ -157,10 +157,10 @@ public class TMEvent implements Comparable {
     }
 
     /** Return true if this TMEvent has the same sequence
-     *  number as the given TMEvent.  
+     *  number as the given TMEvent.
      *  @param tmEvent The TMEvent object that this
      *  TMEvent object is compared to.
-     *  @return True if the two TMEvent objects have the same 
+     *  @return True if the two TMEvent objects have the same
      *  sequence number, name and workspace
      */
     public boolean equals(Object tmEvent) {
@@ -200,7 +200,7 @@ public class TMEvent implements Comparable {
                     && (receiver() != null && receiver().equals(event.receiver()))
                     && (token() != null && token().equals(event.token()))
                     && priority() == event.priority()
-                    && processingTime() == event.processingTime()) {  
+                    && processingTime() == event.processingTime()) {
                 return true;
             }
         }

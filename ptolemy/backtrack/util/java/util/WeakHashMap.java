@@ -48,7 +48,7 @@ import ptolemy.backtrack.Rollbackable;
 import ptolemy.backtrack.util.CheckpointRecord;
 import ptolemy.backtrack.util.FieldRecord;
 
-/** 
+/**
  * A weak hash map has only weak references to the key. This means that it
  * allows the key to be garbage collected if it is not used otherwise. If
  * this happens, the entry will eventually disappear from the map,
@@ -89,25 +89,25 @@ public class WeakHashMap extends AbstractMap implements Map, Rollbackable {
 
     // WARNING: WeakHashMap is a CORE class in the bootstrap cycle. See the
     // comments in vm/reference/java/lang/Runtime for implications of this fact.
-    /**     
+    /**
      * The default capacity for an instance of HashMap.
      * Sun's documentation mildly suggests that this (11) is the correct
      * value.
      */
     private static final int DEFAULT_CAPACITY = 11;
 
-    /**     
+    /**
      * The default load factor of a HashMap.
      */
     private static final float DEFAULT_LOAD_FACTOR = 0.75F;
 
-    /**     
+    /**
      * This is used instead of the key value <i>null</i>.  It is needed
      * to distinguish between an null key and a removed key.
      */
     // Package visible for use by nested classes.
     static final Object NULL_KEY = new Object() {
-        /**         
+        /**
          * Sets the hashCode to 0, since that's what null would map to.
          * @return the hash code 0
          */
@@ -115,7 +115,7 @@ public class WeakHashMap extends AbstractMap implements Map, Rollbackable {
             return 0;
         }
 
-        /**         
+        /**
          * Compares this key to the given object. Normally, an object should
          * NEVER compare equal to null, but since we don't publicize NULL_VALUE,
          * it saves bytecode to do so here.
@@ -127,33 +127,33 @@ public class WeakHashMap extends AbstractMap implements Map, Rollbackable {
 
     };
 
-    /**     
+    /**
      * The reference queue where our buckets (which are WeakReferences) are
      * registered to.
      */
     private final ReferenceQueue queue;
 
-    /**     
+    /**
      * The number of entries in this hash map.
      */
     private// Package visible for use by nested classes.
     int size;
 
-    /**     
+    /**
      * The load factor of this WeakHashMap.  This is the maximum ratio of
      * size versus number of buckets.  If size grows the number of buckets
      * must grow, too.
      */
     private float loadFactor;
 
-    /**     
+    /**
      * The rounded product of the capacity (i.e. number of buckets) and
      * the load factor. When the number of elements exceeds the
      * threshold, the HashMap calls <code>rehash()</code>.
      */
     private int threshold;
 
-    /**     
+    /**
      * The number of structural modifications.  This is used by
      * iterators, to see if they should fail.  This doesn't count
      * the silent key removals, when a weak reference is cleared
@@ -167,18 +167,18 @@ public class WeakHashMap extends AbstractMap implements Map, Rollbackable {
     // This is the next entry.
     // Entry was cleared, try next.
     // No more buckets, we are through.
-    /**     
+    /**
      * The entry set returned by <code>entrySet()</code>.
      */
     private final WeakEntrySet theEntrySet;
 
-    /**     
+    /**
      * The hash buckets.  These are linked lists. Package visible for use in
      * nested classes.
      */
     private WeakBucket[] buckets;
 
-    /**     
+    /**
      * The entry set.  There is only one instance per hashmap, namely
      * theEntrySet.  Note that the entry set may silently shrink, just
      * like the WeakHashMap.
@@ -186,13 +186,13 @@ public class WeakHashMap extends AbstractMap implements Map, Rollbackable {
     private final class WeakEntrySet extends AbstractSet implements
             Rollbackable {
 
-        /**         
+        /**
          * Non-private constructor to reduce bytecode emitted.
          */
         WeakEntrySet() {
         }
 
-        /**         
+        /**
          * Returns the size of this set.
          * @return the set size
          */
@@ -200,13 +200,13 @@ public class WeakHashMap extends AbstractMap implements Map, Rollbackable {
             return getSize();
         }
 
-        /**         
+        /**
          * Returns an iterator for all entries.
          * @return an Entry iterator
          */
         public Iterator iterator() {
             return new Iterator() {
-                /**                 
+                /**
                  * The entry that was returned by the last
                  * <code>next()</code> call.  This is also the entry whose
                  * bucket should be removed by the <code>remove</code> call. <br>
@@ -218,7 +218,7 @@ public class WeakHashMap extends AbstractMap implements Map, Rollbackable {
                  */
                 private WeakBucket.WeakEntry lastEntry;
 
-                /**                 
+                /**
                  * The entry that will be returned by the next
                  * <code>next()</code> call.  It is <code>null</code> if there
                  * is no further entry. <br>
@@ -228,13 +228,13 @@ public class WeakHashMap extends AbstractMap implements Map, Rollbackable {
                  */
                 private WeakBucket.WeakEntry nextEntry = findNext(null);
 
-                /**                 
+                /**
                  * The known number of modification to the list, if it differs
                  * from the real number, we throw an exception.
                  */
                 private int knownMod = getModCount();
 
-                /**                 
+                /**
                  * Check the known number of modification to the number of
                  * modifications of the table.  If it differs from the real
                  * number, we throw an exception.
@@ -249,7 +249,7 @@ public class WeakHashMap extends AbstractMap implements Map, Rollbackable {
                     }
                 }
 
-                /**                 
+                /**
                  * Get a strong reference to the next entry after
                  * lastBucket.
                  * @param lastEntry the previous bucket, or null if we should
@@ -283,7 +283,7 @@ public class WeakHashMap extends AbstractMap implements Map, Rollbackable {
                     }
                 }
 
-                /**                 
+                /**
                  * Checks if there are more entries.
                  * @return true, iff there are more elements.
                  */
@@ -291,7 +291,7 @@ public class WeakHashMap extends AbstractMap implements Map, Rollbackable {
                     return getNextEntry() != null;
                 }
 
-                /**                 
+                /**
                  * Returns the next entry.
                  * @return the next entry.
                  * @throws ConcurrentModificationException if the hash map was
@@ -308,7 +308,7 @@ public class WeakHashMap extends AbstractMap implements Map, Rollbackable {
                     return getLastEntry();
                 }
 
-                /**                 
+                /**
                  * Removes the last returned entry from this set.  This will
                  * also remove the bucket of the underlying weak hash map.
                  * @throws ConcurrentModificationException if the hash map was
@@ -480,7 +480,7 @@ public class WeakHashMap extends AbstractMap implements Map, Rollbackable {
 
     }
 
-    /**     
+    /**
      * A bucket is a weak reference to the key, that contains a strong
      * reference to the value, a pointer to the next bucket and its slot
      * number. <br>
@@ -495,19 +495,19 @@ public class WeakHashMap extends AbstractMap implements Map, Rollbackable {
 
         protected transient Checkpoint $CHECKPOINT = new Checkpoint(this);
 
-        /**         
+        /**
          * The value of this entry.  The key is stored in the weak
          * reference that we extend.
          */
         private Object value;
 
-        /**         
+        /**
          * The next bucket describing another entry that uses the same
          * slot.
          */
         private WeakBucket next;
 
-        /**         
+        /**
          * The slot of this entry. This should be
          * <code>Math.abs(key.hashCode() % buckets.length)</code>.
          * But since the key may be silently removed we have to remember
@@ -517,7 +517,7 @@ public class WeakHashMap extends AbstractMap implements Map, Rollbackable {
          */
         private int slot;
 
-        /**         
+        /**
          * This class gives the <code>Entry</code> representation of the
          * current bucket.  It also keeps a strong reference to the
          * key; bad things may happen otherwise.
@@ -526,12 +526,12 @@ public class WeakHashMap extends AbstractMap implements Map, Rollbackable {
 
             protected transient Checkpoint $CHECKPOINT = new Checkpoint(this);
 
-            /**             
+            /**
              * The strong ref to the key.
              */
             private Object key;
 
-            /**             
+            /**
              * Creates a new entry for the key.
              * @param key the key
              */
@@ -539,7 +539,7 @@ public class WeakHashMap extends AbstractMap implements Map, Rollbackable {
                 this.setKeyField(key);
             }
 
-            /**             
+            /**
              * Returns the underlying bucket.
              * @return the owning bucket
              */
@@ -547,7 +547,7 @@ public class WeakHashMap extends AbstractMap implements Map, Rollbackable {
                 return WeakBucket.this;
             }
 
-            /**             
+            /**
              * Returns the key.
              * @return the key
              */
@@ -555,7 +555,7 @@ public class WeakHashMap extends AbstractMap implements Map, Rollbackable {
                 return getKeyField() == NULL_KEY ? null : getKeyField();
             }
 
-            /**             
+            /**
              * Returns the value.
              * @return the value
              */
@@ -563,7 +563,7 @@ public class WeakHashMap extends AbstractMap implements Map, Rollbackable {
                 return getValue();
             }
 
-            /**             
+            /**
              * This changes the value.  This change takes place in
              * the underlying hash map.
              * @param newVal the new value
@@ -575,7 +575,7 @@ public class WeakHashMap extends AbstractMap implements Map, Rollbackable {
                 return oldVal;
             }
 
-            /**             
+            /**
              * The hashCode as specified in the Entry interface.
              * @return the hash code
              */
@@ -584,7 +584,7 @@ public class WeakHashMap extends AbstractMap implements Map, Rollbackable {
                         ^ AbstractMap.hashCode(getValue());
             }
 
-            /**             
+            /**
              * The equals method as specified in the Entry interface.
              * @param o the object to compare to
              * @return true iff o represents the same key/value pair
@@ -660,7 +660,7 @@ public class WeakHashMap extends AbstractMap implements Map, Rollbackable {
 
         }
 
-        /**         
+        /**
          * Creates a new bucket for the given key/value pair and the specified
          * slot.
          * @param key the key
@@ -676,7 +676,7 @@ public class WeakHashMap extends AbstractMap implements Map, Rollbackable {
             this.setSlot(slot);
         }
 
-        /**         
+        /**
          * This returns the entry stored in this bucket, or null, if the
          * bucket got cleared in the mean time.
          * @return the Entry for this bucket, if it exists
@@ -783,7 +783,7 @@ public class WeakHashMap extends AbstractMap implements Map, Rollbackable {
 
     }
 
-    /**     
+    /**
      * Creates a new weak hash map with default load factor and default
      * capacity.
      */
@@ -791,7 +791,7 @@ public class WeakHashMap extends AbstractMap implements Map, Rollbackable {
         this(DEFAULT_CAPACITY, DEFAULT_LOAD_FACTOR);
     }
 
-    /**     
+    /**
      * Creates a new weak hash map with default load factor and the given
      * capacity.
      * @param initialCapacity the initial capacity
@@ -801,7 +801,7 @@ public class WeakHashMap extends AbstractMap implements Map, Rollbackable {
         this(initialCapacity, DEFAULT_LOAD_FACTOR);
     }
 
-    /**     
+    /**
      * Creates a new weak hash map with the given initial capacity and
      * load factor.
      * @param initialCapacity the initial capacity.
@@ -824,7 +824,7 @@ public class WeakHashMap extends AbstractMap implements Map, Rollbackable {
         setBuckets(new WeakBucket[initialCapacity]);
     }
 
-    /**     
+    /**
      * Construct a new WeakHashMap with the same mappings as the given map.
      * The WeakHashMap has a default load factor of 0.75.
      * @param m the map to copy
@@ -836,7 +836,7 @@ public class WeakHashMap extends AbstractMap implements Map, Rollbackable {
         putAll(m);
     }
 
-    /**     
+    /**
      * Simply hashes a non-null Object to its array index.
      * @param key the key to hash
      * @return its slot number
@@ -845,7 +845,7 @@ public class WeakHashMap extends AbstractMap implements Map, Rollbackable {
         return Math.abs(key.hashCode() % getBuckets().length);
     }
 
-    /**     
+    /**
      * Cleans the reference queue.  This will poll all references (which
      * are WeakBuckets) from the queue and remove them from this map.
      * This will not change modCount, even if it modifies the map.  The
@@ -862,7 +862,7 @@ public class WeakHashMap extends AbstractMap implements Map, Rollbackable {
         }
     }
 
-    /**     
+    /**
      * Rehashes this hashtable.  This will be called by the
      * <code>add()</code> method if the size grows beyond the threshold.
      * It will grow the bucket size at least by factor two and allocates
@@ -899,7 +899,7 @@ public class WeakHashMap extends AbstractMap implements Map, Rollbackable {
         }
     }
 
-    /**     
+    /**
      * Finds the entry corresponding to key.  Since it returns an Entry
      * it will also prevent the key from being removed under us.
      * @param key the key, may be null
@@ -921,7 +921,7 @@ public class WeakHashMap extends AbstractMap implements Map, Rollbackable {
         return null;
     }
 
-    /**     
+    /**
      * Adds a new key/value pair to the hash map.
      * @param key the key. This mustn't exists in the map. It may be null.
      * @param value the value.
@@ -937,7 +937,7 @@ public class WeakHashMap extends AbstractMap implements Map, Rollbackable {
         setSize(getSize() + 1);
     }
 
-    /**     
+    /**
      * Removes a bucket from this hash map, if it wasn't removed before
      * (e.g. one time through rehashing and one time through reference queue).
      * Package visible for use in nested classes.
@@ -970,7 +970,7 @@ public class WeakHashMap extends AbstractMap implements Map, Rollbackable {
         setSize(getSize() - 1);
     }
 
-    /**     
+    /**
      * Returns the size of this hash map.  Note that the size() may shrink
      * spontaneously, if the some of the keys were only weakly reachable.
      * @return the number of entries in this hash map.
@@ -980,7 +980,7 @@ public class WeakHashMap extends AbstractMap implements Map, Rollbackable {
         return getSize();
     }
 
-    /**     
+    /**
      * Tells if the map is empty.  Note that the result may change
      * spontanously, if all of the keys were only weakly reachable.
      * @return true, iff the map is empty.
@@ -990,7 +990,7 @@ public class WeakHashMap extends AbstractMap implements Map, Rollbackable {
         return getSize() == 0;
     }
 
-    /**     
+    /**
      * Tells if the map contains the given key.  Note that the result
      * may change spontanously, if the key was only weakly
      * reachable.
@@ -1002,7 +1002,7 @@ public class WeakHashMap extends AbstractMap implements Map, Rollbackable {
         return internalGet(key) != null;
     }
 
-    /**     
+    /**
      * Gets the value the key is mapped to.
      * @return the value the key was mapped to.  It returns null if
      * the key wasn't in this map, or if the mapped value was
@@ -1014,7 +1014,7 @@ public class WeakHashMap extends AbstractMap implements Map, Rollbackable {
         return entry == null ? null : entry.getValue();
     }
 
-    /**     
+    /**
      * Adds a new key/value mapping to this map.
      * @param key the key, may be null
      * @param value the value, may be null
@@ -1036,7 +1036,7 @@ public class WeakHashMap extends AbstractMap implements Map, Rollbackable {
         return null;
     }
 
-    /**     
+    /**
      * Removes the key and the corresponding value from this map.
      * @param key the key. This may be null.
      * @return the value the key was mapped to previously.  It returns
@@ -1054,7 +1054,7 @@ public class WeakHashMap extends AbstractMap implements Map, Rollbackable {
         return entry.getValue();
     }
 
-    /**     
+    /**
      * Returns a set representation of the entries in this map.  This
      * set will not have strong references to the keys, so they can be
      * silently removed.  The returned set has therefore the same
@@ -1067,14 +1067,14 @@ public class WeakHashMap extends AbstractMap implements Map, Rollbackable {
         return theEntrySet;
     }
 
-    /**     
+    /**
      * Clears all entries from this map.
      */
     public void clear() {
         super.clear();
     }
 
-    /**     
+    /**
      * Returns true if the map contains at least one key which points to
      * the specified object as a value.  Note that the result
      * may change spontanously, if its key was only weakly reachable.
@@ -1086,7 +1086,7 @@ public class WeakHashMap extends AbstractMap implements Map, Rollbackable {
         return super.containsValue(value);
     }
 
-    /**     
+    /**
      * Returns a set representation of the keys in this map.  This
      * set will not have strong references to the keys, so they can be
      * silently removed.  The returned set has therefore the same
@@ -1099,7 +1099,7 @@ public class WeakHashMap extends AbstractMap implements Map, Rollbackable {
         return super.keySet();
     }
 
-    /**     
+    /**
      * Puts all of the mappings from the given map into this one. If the
      * key already exists in this map, its value is replaced.
      * @param m the map to copy in
@@ -1108,7 +1108,7 @@ public class WeakHashMap extends AbstractMap implements Map, Rollbackable {
         super.putAll(m);
     }
 
-    /**     
+    /**
      * Returns a collection representation of the values in this map.  This
      * collection will not have strong references to the keys, so mappings
      * can be silently removed.  The returned collection has therefore the same

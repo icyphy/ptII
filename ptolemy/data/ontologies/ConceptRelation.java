@@ -194,12 +194,12 @@ public class ConceptRelation extends ComponentRelation {
         Variable textHighlightHint = new Variable(annotation, "_textHeightHint");
         textHighlightHint.setExpression("5");
         textHighlightHint.setPersistent(false);
-        
+
         exitAngle = new Parameter(this, "exitAngle");
         exitAngle.setVisibility(Settable.NONE);
         exitAngle.setExpression("0.0");
         exitAngle.setTypeEquals(BaseType.DOUBLE);
-        
+
         gamma = new Parameter(this, "gamma");
         gamma.setVisibility(Settable.NONE);
         gamma.setExpression("0.0");

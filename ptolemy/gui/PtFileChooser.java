@@ -54,7 +54,7 @@ import ptolemy.util.StringUtilities;
  * <p> Note that this class should be wrapped in a try/finally block,
  * otherwise, under Windows, white boxes will appear in the common pane.
  * See {@link ptolemy.gui.JFileChooserBugFix}.  Below is an example: </p>
- * <pre> 
+ * <pre>
  * // Swap backgrounds and avoid white boxes in "common places" dialog
  * JFileChooserBugFix jFileChooserBugFix = new JFileChooserBugFix();
  * Color background = null;
@@ -66,7 +66,7 @@ import ptolemy.util.StringUtilities;
  *     ptFileChooser.setCurrentDirectory(modelDirectory);
  *     ptFileChooser.addChoosableFileFilter(new DirectoryFilter());
  *     int returnVal = ptFileChooser.showDialog(_basicGraphFrame, "Export HTML");
- *           
+ *
  *     if (returnVal == JFileChooser.APPROVE_OPTION) {
  *         directory = ptFileChooser.getSelectedFile();
  *     }
@@ -79,7 +79,7 @@ import ptolemy.util.StringUtilities;
  *          jFileChooserBugFix.restoreBackground(background);
  *     }
  * }
- * </pre> 
+ * </pre>
  *
  * <p>Only a subset of the methods in JFileChooser are declared.
  * The method names follow the JFileChoose API because that API is more
@@ -97,8 +97,8 @@ public class PtFileChooser extends Container {
     // Maybe someday this should extend JFileChooser, but only if the
     // method implementations make sense when used with a FileDialog.
 
-    /** Construct a PtFileChooser.  
-     *   
+    /** Construct a PtFileChooser.
+     *
      *  <p>If {@link ptolemy.gui.PtGUIUtilities#useFileDialog()}
      *  returns true, then a java.awt.FileDialog is used.  Otherwise a
      *  javax.swing.JFileChooser is used.  The effect of the mode
@@ -128,7 +128,7 @@ public class PtFileChooser extends Container {
 
     /** Set the file name filter for the dialog.
      *  @param filter The FilenameFilter to be used.
-     */   
+     */
     public void addChoosableFileFilter(PtFilenameFilter filter) {
         if (_useFileDialog) {
             _fileDialog.setFilenameFilter(filter);
@@ -138,9 +138,9 @@ public class PtFileChooser extends Container {
     }
 
     /** Return the current directory.
-     *  @return The current directory.   
+     *  @return The current directory.
      *  @see #setCurrentDirectory(File)
-     */   
+     */
     public File getCurrentDirectory() {
         if (_useFileDialog) {
             return new File(_fileDialog.getDirectory());
@@ -161,9 +161,9 @@ public class PtFileChooser extends Container {
     }
 
     /** Set the current directory.
-     *  If the directory parameter is null, then the value of the "user.dir"   
+     *  If the directory parameter is null, then the value of the "user.dir"
      *  property is used.
-     *  @param directory The current directory. 
+     *  @param directory The current directory.
      *  @see #getCurrentDirectory()
      */
     public void setCurrentDirectory(File directory) {
@@ -200,8 +200,8 @@ public class PtFileChooser extends Container {
     }
 
     /** Set the file selection mode.
-     *   
-     *  <p>If FileDialog is being used, then 
+     *
+     *  <p>If FileDialog is being used, then
      *  DIRECTORIES_ONLY sets the apple.awt.fileDialogForDirectories parameter.
      *  See <a href="https://developer.apple.com/library/mac/#documentation/Java/Reference/Java_PropertiesRef/Articles/JavaSystemProperties.html">https://developer.apple.com/library/mac/#documentation/Java/Reference/Java_PropertiesRef/Articles/JavaSystemProperties.html</a>.</p>
      *
@@ -217,13 +217,13 @@ public class PtFileChooser extends Container {
      *  the constructor.</p>
 
      *  @param mode One of JFileChooser.FILES_ONLY, JFileChooser.DIRECTORIES_ONLY or
-     *  JFileChooser.FILES_AND_DIRECTORIES.  
-     */   
+     *  JFileChooser.FILES_AND_DIRECTORIES.
+     */
     public void setFileSelectionMode(int mode) {
         if (_useFileDialog) {
             if (mode == JFileChooser.DIRECTORIES_ONLY) {
                 if (_mode != 0) {
-                    if (!_printedDirectoryWarning) { 
+                    if (!_printedDirectoryWarning) {
                         _printedDirectoryWarning = true;
                         System.out.println("Warning: The PtFileChooser was instantiated with "
                             + "a mode other than 0, but setFileSelectionMode(DIRECTORIES_ONLY) "
@@ -264,7 +264,7 @@ public class PtFileChooser extends Container {
      *  JFileChooser.CANCEL_OPTION, JFileChooser.APPROVE_OPTION
      *  JFileChooser.ERROR_OPTION is returned.  If FileDialog is used, then either CANCEL_OPTION
      *  or APPROVE_OPTION is returned.
-     */     
+     */
     public int showDialog(Container parent, String approveButtonText) {
         if (_useFileDialog) {
             _fileDialog.show();
@@ -295,7 +295,7 @@ public class PtFileChooser extends Container {
 
     /** True if the directory warning was printed. */
     private static boolean _printedDirectoryWarning;
-    
+
     /** True if PtGUIUtilities.useFileDialog() returned true. */
     private boolean _useFileDialog;
 

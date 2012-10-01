@@ -46,7 +46,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  *  This actor assumes that it receives double values at its input
  *  port, where the values are the current times from a {@link MasterClock}.
  *  It then updates its own clock to track that of the master clock.
- *  
+ *
  *  @author Jia Zou, Patricia Derler
  *  @version $Id$
  *  @since Ptolemy II 8.1
@@ -72,7 +72,7 @@ public class SlaveClock extends TypedAtomicActor {
         super(container, name);
         input = new TypedIOPort(this, "input", true, false);
         output = new TypedIOPort(this, "output", false, true);
-        
+
         // set type constraints
         input.setTypeEquals(BaseType.DOUBLE);
         output.setTypeEquals(BaseType.DOUBLE);
@@ -133,5 +133,5 @@ public class SlaveClock extends TypedAtomicActor {
                     + "work under a Ptides director.");
         }
     }
-    
+
 }

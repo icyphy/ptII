@@ -32,12 +32,12 @@ package ptolemy.actor.parameters;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.NameDuplicationException; 
+import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 import ptolemy.moml.MoMLChangeRequest;
 
 /** This port mirrors properties of associated parameter ports.
- * 
+ *
  @author Patricia Derler
  @version $Id$
  @since Ptolemy II 9.0
@@ -61,7 +61,7 @@ public class ParameterMirrorPort extends ParameterPort {
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -87,7 +87,7 @@ public class ParameterMirrorPort extends ParameterPort {
     public ParameterMirrorPort getAssociatedPort() {
         return _associatedPort;
     }
-    
+
     /** Specify an associated port.  Once this is specified,
      *  then any changes made to this port (its name, whether it
      *  is an input or output, and whether it is a multiport) are
@@ -103,8 +103,8 @@ public class ParameterMirrorPort extends ParameterPort {
         // NOTE: The association is not propagated to derived
         // objects because we explicitly propagate all the changes.
     }
-    
-    
+
+
 
     /** Override the base class so that if the container is being
      *  set to null, then the associated port is also deleted
@@ -137,7 +137,7 @@ public class ParameterMirrorPort extends ParameterPort {
             _associatedPort.getContainer().requestChange(request);
         }
     }
-    
+
     /** Override the base class to also set the associated port,
      *  if there is one.
      *  @param isInput True to make this an input port.
@@ -160,7 +160,7 @@ public class ParameterMirrorPort extends ParameterPort {
             _associatedPort.getContainer().requestChange(request);
         }
     }
-    
+
     /** Override the base class to also set the associated port,
      *  if there is one.
      *  @param name The name of the port.
@@ -183,14 +183,14 @@ public class ParameterMirrorPort extends ParameterPort {
             _associatedPort.requestChange(request);
         }
     }
-    
+
     /** Set PortParameter of this ParameterPort.
      * @param parameter The PortParameter.
      */
     public void setParameter(PortParameter parameter) {
         _parameter = parameter;
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 

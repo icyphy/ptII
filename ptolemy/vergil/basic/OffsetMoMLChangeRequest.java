@@ -64,11 +64,11 @@ import diva.graph.GraphUtilities;
 /**
  A mutation request specified in MoML that offsets any objects
  that are created in the toplevel.
- 
+
  <p>This class is used by the paste action in Vergil so that the
  pasted icon does not overlap the original icon.
  If a BasicGraphFrame can be found, then the position of the mouse
- is used to determine the offsite.  Otherwise, a small offset is 
+ is used to determine the offsite.  Otherwise, a small offset is
  used.</p>
 
  <p>The pasted objects are selected so that the can be moved as a
@@ -109,7 +109,7 @@ public class OffsetMoMLChangeRequest extends MoMLChangeRequest {
     /** Offset the locations of top level objects that are created
      *  by the change request.
      *  If a BasicGraphFrame can be found, then the position of the mouse
-     *  is used to determine the offsite.  Otherwise, a small offset is 
+     *  is used to determine the offsite.  Otherwise, a small offset is
      *  used.
      *  @param parser The parser
      */
@@ -171,7 +171,7 @@ public class OffsetMoMLChangeRequest extends MoMLChangeRequest {
 
         NamedObj container = null;
         final Set _topObjects = new HashSet<NamedObj>();
-            
+
         // Update the locations.
         topObjects = parser.topObjectsCreated().iterator();
         while (topObjects.hasNext()) {
@@ -203,7 +203,7 @@ public class OffsetMoMLChangeRequest extends MoMLChangeRequest {
             }
         }
 
-        if (controller != null) { 
+        if (controller != null) {
             // Select the pasted objects so that they can be dragged.
             // http://bugzilla.ecoinformatics.org/show_bug.cgi?id=3003
 
@@ -224,7 +224,7 @@ public class OffsetMoMLChangeRequest extends MoMLChangeRequest {
                         SelectionModel selectionModel = controllerFinal.getSelectionModel();
                         selectionModel.clearSelection();
                         AbstractBasicGraphModel graphModel = (AbstractBasicGraphModel) controllerFinal.getGraphModel();
-            
+
                         if (graphModel != null) {
                             Iterator nodes = graphModel.nodes(containerFinal);
                             while (nodes.hasNext()) {

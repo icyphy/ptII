@@ -1,6 +1,6 @@
 /* The class responsible for display, in a tree, the model elements that
    can be added to the customized layout.
- 
+
  Copyright (c) 2011 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
@@ -56,10 +56,10 @@ import ptolemy.vergil.tree.PtolemyTreeCellRenderer;
 //// NamedObjectTree
 
 /** A side panel panel containing tree of named objects, filtering text field and
- *  draggable label. 
- *  
+ *  draggable label.
+ *
  *  @author Ishwinder Singh
- *  @version $Id$ 
+ *  @version $Id$
  *  @since Ptolemy II 8.1
  *  @Pt.ProposedRating Red (ishwinde)
  *  @Pt.AcceptedRating Red (ishwinde)

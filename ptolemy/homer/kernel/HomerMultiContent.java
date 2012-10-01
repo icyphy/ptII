@@ -1,6 +1,6 @@
 /* The class responsible for displaying the content area and managing
    the tab creation, removal, and event propagation.
- 
+
  Copyright (c) 2011 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
@@ -49,7 +49,7 @@ import ptolemy.kernel.util.NamedObj;
 /** The class responsible for displaying the content area and managing
  *  the tab creation, removal, and event propagation.
  *  @author Peter Foldes
- *  @version $Id$ 
+ *  @version $Id$
  *  @since Ptolemy II 8.1
  *  @Pt.ProposedRating Red (pdf)
  *  @Pt.AcceptedRating Red (pdf)
@@ -60,7 +60,7 @@ public class HomerMultiContent extends MultiContent<TabScenePanel> {
     ////                         constructor                       ////
 
     /** Create a content container.
-     *  @param contentPrototype A prototype of the content area. This 
+     *  @param contentPrototype A prototype of the content area. This
      *  prototype is used to create multiple content areas on demand.
      */
     public HomerMultiContent(TabScenePanel contentPrototype) {
@@ -68,12 +68,12 @@ public class HomerMultiContent extends MultiContent<TabScenePanel> {
     }
 
     /** Create a content container.
-     *  @param contentPrototype A prototype of the content area. 
+     *  @param contentPrototype A prototype of the content area.
      *  This prototype is used to create multiple content areas on demand.
-     *  @param model The model to be parsed. 
-     *  @exception IllegalActionException If any of the elements can't be 
+     *  @param model The model to be parsed.
+     *  @exception IllegalActionException If any of the elements can't be
      *  placed into a content area.
-     *  @exception NameDuplicationException If multiple elements exist with 
+     *  @exception NameDuplicationException If multiple elements exist with
      *  the same name. Element names within a workspace must be unique.
      */
     public HomerMultiContent(TabScenePanel contentPrototype,
@@ -117,14 +117,14 @@ public class HomerMultiContent extends MultiContent<TabScenePanel> {
     }
 
     /** Add a tab with the provided parameters.
-     *  @param topLevel The container containing all tab definitions. If the container 
+     *  @param topLevel The container containing all tab definitions. If the container
      *  does not have the attribute that contains all tab definition information, it will be created.
      *  @param tag The tag identifier used for the content area.
      *  @param name Name of the tab. Can be used for visualization.
      *  @param content The specific content for the new tab.
      *  @return The tag identifier of the tab.
      *  @exception IllegalActionException If the name coincides with an attribute already in the container.
-     *  @exception NameDuplicationException If the attribute is not of an acceptable class for the 
+     *  @exception NameDuplicationException If the attribute is not of an acceptable class for the
      *  container, if the name contains a period, or if a content area with the same tag already exist.
      */
     @Override
@@ -220,7 +220,7 @@ public class HomerMultiContent extends MultiContent<TabScenePanel> {
         super.removeTab(tag);
     }
 
-    /** Rename a content area at a given position. 
+    /** Rename a content area at a given position.
      *  @param position The position of the tab.
      *  @param text The new title of the tab.
      *  @exception IllegalActionException If the new name is not accepted by the model.

@@ -47,9 +47,9 @@ A tree model for Ptolemy II models.  Nodes in this tree contain
 the following Actors and their Attributes as child elements.
 
 The indexes of the attributes are 0 to a-1, where a is the
-number of attributes. 
+number of attributes.
 
-@author Steve Neuendorffer and Edward A. Lee Contributors: Ishwinder Singh  
+@author Steve Neuendorffer and Edward A. Lee Contributors: Ishwinder Singh
 @version $Id$
 @since Ptolemy II 1.0
 @Pt.ProposedRating Red (ishwinde)
@@ -166,7 +166,7 @@ public class AttributeTreeModel extends ClassAndEntityTreeModel {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         private variables                 ////    
+    ////                         private variables                 ////
 
     /** The string filter being applied to tree nodes.
      */

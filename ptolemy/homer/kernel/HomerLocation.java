@@ -1,5 +1,5 @@
 /* Stores location information for positionable elements.
- 
+
  Copyright (c) 2011 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
@@ -38,7 +38,7 @@ import ptolemy.kernel.util.Settable;
 //// HomerLocation
 
 /** Stores location information for positionable elements.
- * 
+ *
  *  @author Peter Foldes
  *  @version $Id$
  *  @since Ptolemy II 8.1
@@ -48,7 +48,7 @@ import ptolemy.kernel.util.Settable;
 public class HomerLocation extends Parameter {
 
     /** Create a new location parameter that stores x, y, width, and height.
-     * 
+     *
      *  @param container The container.
      *  @param name The name of the parameter.
      *  @exception IllegalActionException If the parameter is not of an
@@ -63,7 +63,7 @@ public class HomerLocation extends Parameter {
     }
 
     /** Create a new location parameter that stores x, y, width, and height.
-     * 
+     *
      *  @param container The container.
      *  @exception IllegalActionException If the parameter is not of an
      *  acceptable class for the container.
@@ -130,7 +130,7 @@ public class HomerLocation extends Parameter {
     }
 
     /** Set the underlying location based on the given values.
-     * 
+     *
      *  @param x The topleft points horizontal coordinate.
      *  @param y The topleft points vertical coordinate.
      *  @param width The width of the area.
@@ -147,7 +147,7 @@ public class HomerLocation extends Parameter {
 
     /** Validate the location. The location should have four parameters,
      *  the top left position (x and y), the width, and the height.
-     *  
+     *
      *  @exception IllegalActionException If the location is not valid.
      */
     public void validateLocation() throws IllegalActionException {

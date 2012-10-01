@@ -51,43 +51,43 @@ import ptolemy.vergil.basic.layout.kieler.ApplyLayoutRequest.LocationEntry;
  * @Pt.AcceptedRating Red (msp)
  */
 public class UndoLayoutAction implements UndoAction {
-    
+
     /**
      * Create an undo action for automatic layout.
-     * 
+     *
      * @param source The source object, which is typically the parent composite entity.
      */
     public UndoLayoutAction(NamedObj source) {
         this._source = source;
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-    
+
     /**
      * Add a location to the undo action. The action will set the location to the
      * coordinates stored in the given location entry.
-     * 
+     *
      * @param entry A location entry with all required data
      */
     public void addLocation(LocationEntry entry) {
         _locationEntries.add(entry);
     }
-    
+
     /**
      * Add a curve to the undo action. The action will set the exit angle to the
      * value stored in the given curve entry.
-     * 
+     *
      * @param entry A curve entry with stored exit value
      */
     public void addCurve(CurveEntry entry) {
         _curveEntries.add(entry);
     }
-    
+
     /**
      * Mark the given connection routing hint for removal. The action will remove
-     * the layout hint from its containing relation. 
-     * 
+     * the layout hint from its containing relation.
+     *
      * @param layoutHint A connection routing hint contained in a relation
      */
     public void removeConnection(LayoutHint layoutHint) {
@@ -111,7 +111,7 @@ public class UndoLayoutAction implements UndoAction {
                         container, layoutHint));
             }
         }
-        
+
         // Process locations.
         for (LocationEntry entry : this._locationEntries) {
             double[] oldLoc = entry._locatable.getLocation();
@@ -119,13 +119,13 @@ public class UndoLayoutAction implements UndoAction {
                     oldLoc[0], oldLoc[1]));
             entry._locatable.setLocation(new double[] { entry._x, entry._y } );
         }
-        
+
         // Process layout hints that shall be added.
         for (ConnectionHintEntry entry : this._connAddEntries) {
             entry._layoutHint.setContainer(entry._container);
             undoLayoutAction.removeConnection(entry._layoutHint);
         }
-        
+
         // Process transition curves.
         for (CurveEntry entry : this._curveEntries) {
             Parameter exitAngleParam = entry._transition.exitAngle;
@@ -133,11 +133,11 @@ public class UndoLayoutAction implements UndoAction {
             undoLayoutAction.addCurve(new CurveEntry(entry._transition, token.doubleValue()));
             exitAngleParam.setExpression(Double.toString(entry._exitAngle));
         }
-        
+
         UndoStackAttribute undoInfo = UndoStackAttribute.getUndoInfo(_source);
         undoInfo.push(undoLayoutAction);
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
@@ -151,7 +151,7 @@ public class UndoLayoutAction implements UndoAction {
     private List<ConnectionHintEntry> _connAddEntries = new LinkedList<ConnectionHintEntry>();
     /** The source object, which is typically the parent composite entity. */
     private NamedObj _source;
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
 
@@ -161,11 +161,11 @@ public class UndoLayoutAction implements UndoAction {
     private static class ConnectionHintEntry {
         NamedObj _container;
         LayoutHint _layoutHint;
-        
+
         ConnectionHintEntry(NamedObj container, LayoutHint layoutHint) {
             this._container = container;
             this._layoutHint = layoutHint;
         }
     }
-    
+
 }

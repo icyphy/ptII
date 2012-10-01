@@ -36,9 +36,9 @@ import ptserver.data.ByteArrayToken;
 //// ByteArrayTokenHandler
 
 /** ByteArrayTokenHandler converts ByteArrayToken to/from byte stream.
- * 
+ *
  *  @author Anar Huseynov
- *  @version $Id$ 
+ *  @version $Id$
  *  @since Ptolemy II 8.1
  *  @Pt.ProposedRating Red (ahuseyno)
  *  @Pt.AcceptedRating Red (ahuseyno)

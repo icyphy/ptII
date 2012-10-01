@@ -247,16 +247,16 @@ public class Constants {
         _types.put("string", new StringToken(""));
         _types.put("unknown", new UnknownToken());
         _types.put("unsignedByte", new UnsignedByteToken(0));
-        
+
         ptolemy.data.Token nil = ptolemy.data.Token.NIL;
         _types.put("niltype", nil);
 
         _table.putAll(_types);
 
         _table.put("nil", nil);
-                
+
         _table.put("null", ObjectToken.NULL);
-        
+
         // add "xmltoken" since that's returned by BaseType.XmlTokenType.toString()
         _table.put("xmltoken", xmltoken);
 

@@ -252,7 +252,7 @@ public class Test extends NonStrictTest {
             }
 
             Token token = input.get(i);
-            
+
             if (_debugging) {
                 _debug("-- Read input: " + token
                         + ", which is expected to match: "
@@ -297,7 +297,7 @@ public class Test extends NonStrictTest {
         }
 
         _numberOfInputTokensSeen++;
-        
+
         if (output.numberOfSinks() > 0) {
             if (_numberOfInputTokensSeen >= ((ArrayToken) (correctValues.getToken()))
                     .length()) {

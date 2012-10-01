@@ -335,7 +335,7 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
             _hierarchyListeners = new HashSet<HierarchyListener>();
         }
         _hierarchyListeners.add(listener);
-        
+
         // Add to the container.
         NamedObj container = getContainer();
         if (container != null) {
@@ -468,7 +468,7 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
             _workspace.getReadAccess();
 
             NamedObj newObject = (NamedObj) super.clone();
-            
+
             newObject._hierarchyListeners = null;
 
             newObject._changeLock = new SerializableObject();
@@ -1717,7 +1717,7 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
     public void removeHierarchyListener(HierarchyListener listener) {
         if (_hierarchyListeners != null) {
             _hierarchyListeners.remove(listener);
-        
+
             // Remove from the container.
             NamedObj container = getContainer();
             if (container != null) {
@@ -2304,7 +2304,7 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
                 // otherwise we could get stuck making changes that
                 // will continue to fail.
                 _changeRequests.clear();
-                
+
                 return copy;
             }
         }
@@ -2496,7 +2496,7 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
             _workspace.doneReading();
         }
     }
-    
+
     /** Execute the specified list of change requests.
      *  @param changeRequests The list of change requests to execute.
      */
@@ -2515,7 +2515,7 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
             // parameter values does not require write
             // access to the workspace.
             // _workspace.getWriteAccess();
-            
+
             // Defer change requests so that if changes are
             // requested during execution, they get queued.
             _deferChangeRequests = true;
@@ -2550,7 +2550,7 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
         } finally {
             // NOTE: See note above.
             // _workspace.doneWriting();
-            
+
             _deferChangeRequests = previousDeferStatus;
         }
     }
@@ -2748,7 +2748,7 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
             }
         }
     }
-    
+
     /** If any hierarchy listeners are registered, notify them
      *  that a change has occurred in the hierarchy.
      *  @throws IllegalActionException If the change to the
@@ -3035,7 +3035,7 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
-    
+
     /** Return a list of derived objects. If the <i>propagate</i>
      *  argument is true, then this list will contain only those derived
      *  objects whose values are not overridden and that are not
@@ -3370,7 +3370,7 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
 
     // Version of the workspace when cache last updated.
     private long _fullNameVersion = -1;
-    
+
     /** List of hierarchy listeners, if any. */
     private Set<HierarchyListener> _hierarchyListeners;
 

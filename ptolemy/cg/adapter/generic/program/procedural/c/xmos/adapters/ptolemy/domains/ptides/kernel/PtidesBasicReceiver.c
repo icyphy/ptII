@@ -2,12 +2,12 @@
  $depth, $relativeDeadlineSecs, $relativeDeadlineNsecs,
  $offsetTimeSecs, $offsetTimeNsecs) ***/
     {
-    	Time dummyTime, timestamp;
-    	Event event;
+            Time dummyTime, timestamp;
+            Event event;
 
-    	Time* sourceTime;
+            Time* sourceTime;
 
-    	$sourceTimeString;
+            $sourceTimeString;
         event.tag.timestamp = *sourceTime;
         //fixme
         event.tag.microstep = 0;

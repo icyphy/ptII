@@ -43,32 +43,32 @@ import tcl.lang.TclException;
  * proc that is defined in $PTII/util/testsuite/testDefs.tcl is invoked and then
  * any models in the auto/ directory are invoked.
  * </p>
- * 
+ *
  * <p>
  * To run one test file (NamedObj.tcl):
- * 
+ *
  * <pre>
  * cd $PTII/ptolemy/kernel/util/test
  * java -DfileName=NamedObj.tcl -classpath ${PTII}:${PTII}/lib/ptjacl.jar:${PTII}/lib/junit-4.8.2.jar:${PTII}/lib/JUnitParams-0.3.0.jar org.junit.runner.JUnitCore ptolemy.util.test.junit.JUnitTclTest
  * </pre>
- * 
+ *
  * </p>
- * 
+ *
  * <p>
  * To run all the .tcl files:
- * 
+ *
  * <pre>
  * cd $PTII/ptolemy/kernel/util/test
  * java -classpath ${PTII}:${PTII}/lib/ptjacl.jar:${PTII}/lib/junit-4.8.2.jar:${PTII}/lib/JUnitParams-0.3.0.jar org.junit.runner.JUnitCore ptolemy.kernel.util.test.JUnitTclTest
  * </pre>
- * 
+ *
  * </p>
- * 
+ *
  * <p>
  * A copy of this file appears in each test/ subdirectory so that it is easy for
  * developers to run tests. The master file is in
  * $PTII/util/testsuite/JUnitTclTest.java.in. To update all the files, run
- * 
+ *
  * @author Christopher Brooks
  * @version $Id$
  * @since Ptolemy II 8.1
@@ -76,35 +76,35 @@ import tcl.lang.TclException;
  * @Pt.AcceptedRating Green (cxh)
  */
 public class JUnitTclTestRun {
-	/**
-	 * Run a test.
-	 * <p>
-	 * If the fileName JVM property is set, then the file named by that property
-	 * is sourced. Otherwise, the testDefs.tcl file is sourced and the
-	 * doallTests Tcl proc that is defined in $PTII/util/testsuite/testDefs.tcl
-	 * is invoked and then any models in the auto/ directory are invoked.
-	 * 
-	 * @exception TclException
-	 *                If thrown while evaluating the Tcl test code.
-	 */
-	@org.junit.Test
-	public void run() throws TclException {
-		String fileName = System.getProperty("fileName");
-		Interp interp = new Interp();
-		if (fileName != null) {
-			interp.evalFile(fileName);
-		} else {
-			if (!new File("testDefs.tcl").exists()) {
-				// We might be running from a different directory
-				String directory = getClass().getPackage().getName()
-						.replace('.', '/');
-				if (new File(directory + "/testDefs.tcl").exists()) {
-					System.out.println(directory + "/testDefs.tcl exists");
-					interp.eval("cd " + directory);
-				}
-			}
-			interp.evalFile("testDefs.tcl");
-			interp.eval("doAllTests");
-		}
-	}
+        /**
+         * Run a test.
+         * <p>
+         * If the fileName JVM property is set, then the file named by that property
+         * is sourced. Otherwise, the testDefs.tcl file is sourced and the
+         * doallTests Tcl proc that is defined in $PTII/util/testsuite/testDefs.tcl
+         * is invoked and then any models in the auto/ directory are invoked.
+         *
+         * @exception TclException
+         *                If thrown while evaluating the Tcl test code.
+         */
+        @org.junit.Test
+        public void run() throws TclException {
+                String fileName = System.getProperty("fileName");
+                Interp interp = new Interp();
+                if (fileName != null) {
+                        interp.evalFile(fileName);
+                } else {
+                        if (!new File("testDefs.tcl").exists()) {
+                                // We might be running from a different directory
+                                String directory = getClass().getPackage().getName()
+                                                .replace('.', '/');
+                                if (new File(directory + "/testDefs.tcl").exists()) {
+                                        System.out.println(directory + "/testDefs.tcl exists");
+                                        interp.eval("cd " + directory);
+                                }
+                        }
+                        interp.evalFile("testDefs.tcl");
+                        interp.eval("doAllTests");
+                }
+        }
 }

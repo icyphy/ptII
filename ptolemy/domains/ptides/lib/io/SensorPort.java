@@ -47,20 +47,20 @@ import ptolemy.kernel.util.NameDuplicationException;
  */
 public class SensorPort extends PtidesPort {
 
-    
+
     /** Create a new SensorPort with a given container and a name.
-     * @param container The container of the port. 
+     * @param container The container of the port.
      * @param name The name of the port.
      * @throws IllegalActionException If parameters cannot be set.
      * @throws NameDuplicationException If name already exists.
      */
     public SensorPort(CompositeEntity container, String name) throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        
-        this.setInput(true); 
-          
-    } 
-    
+
+        this.setInput(true);
+
+    }
+
     /** FIXME: additional parameters:
      * - sporadic behavior/ minimum interarrival time
      * - enforce sporadic behavior
@@ -68,6 +68,6 @@ public class SensorPort extends PtidesPort {
      * - value correction
      * - timestamp correction
      */
-    
-    
+
+
 }

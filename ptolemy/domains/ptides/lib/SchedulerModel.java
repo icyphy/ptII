@@ -48,9 +48,9 @@ import ptolemy.kernel.util.NamedObj;
 
 
 /** This is a resource scheduler Ptolemy model. Special naming
- *  conventions are used to connect the functional model to the 
+ *  conventions are used to connect the functional model to the
  *  scheduler model.
- * 
+ *
  * @author Patricia Derler
    @version $Id$
    @since Ptolemy II 0.2
@@ -74,27 +74,27 @@ public class SchedulerModel extends ResourceScheduler {
      */
     public SchedulerModel(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
-        super(container, name); 
-        
+        super(container, name);
+
         _model = new TypedCompositeActor(workspace());
         // FIXME: How can i set the top level as a container for this model?
         //((TypedCompositeActor)_model).setContainer((CompositeEntity) container.getContainer());
     }
-    
+
     /** Initialize local variables.
-     * @throws IllegalActionException Thrown if list of actors 
+     * @throws IllegalActionException Thrown if list of actors
      *   scheduled by this scheduler cannot be retrieved.
      */
     @Override
-    public Time initialize() throws IllegalActionException { 
+    public Time initialize() throws IllegalActionException {
         super.initialize();
         ((TypedCompositeActor)_model).preinitialize();
         ((TypedCompositeActor)_model).initialize();
         ((TypedCompositeActor)_model).getDirector().setEmbedded(true);
-        
+
         // FIXME: How can I do automatic type checking?
         // This ((TypedCompositeActor)_model).resolveTypes((TypedCompositeActor) _model);
-        // works for simple cases, but when arrays are involved, 
+        // works for simple cases, but when arrays are involved,
         // the model asks for a manager. How can I give the model
         // a manager?
         //((CompositeActor)this.getContainer()).getManager().
@@ -109,17 +109,17 @@ public class SchedulerModel extends ResourceScheduler {
         _currentlyExecuting = new ArrayList();
         return ((CompositeActor)_model).getDirector().getModelNextIterationTime();
     }
-    
-    /** Schedule a new actor for execution. Find the const 
+
+    /** Schedule a new actor for execution. Find the const
      *  actor in the _model that is mapped to this actor and
      *  trigger a firing of that one, if the actor is not
-     *  already in execution. If the actor finished execution, 
+     *  already in execution. If the actor finished execution,
      *  return zero time, otherwise return the next time the
      *  model has something to do.
      *  @param actor The actor to be scheduled.
      *  @param currentPlatformTime The current platform time.
      *  @param deadline. The deadline of the event.
-     *  @param executionTime The execution time of the actor. 
+     *  @param executionTime The execution time of the actor.
      *  @return Relative time when this Scheduler has to be executed
      *    again.
      *  @throws IllegalActionException Thrown if actor paramaters such
@@ -131,20 +131,20 @@ public class SchedulerModel extends ResourceScheduler {
         super.schedule(actor, currentPlatformTime, deadline, executionTime);
         boolean finished = false;
         Time time = null;
-        
+
         if (!_currentlyExecuting.contains(actor)) {
-            _currentlyExecuting.add(actor); 
+            _currentlyExecuting.add(actor);
             event((NamedObj) actor, currentPlatformTime.getDoubleValue(),
-                    ExecutionEventType.START); 
+                    ExecutionEventType.START);
             Actor mappedActor = _getActor(actor, "");
             if (mappedActor != null) {
                 ((CompositeActor)_model).getDirector().setModelTime(currentPlatformTime);
                 ((CompositeActor)_model).getDirector().fireAtCurrentTime(mappedActor);
-            } 
+            }
         }
-        ((CompositeActor)_model).getDirector().setModelTime(currentPlatformTime); 
+        ((CompositeActor)_model).getDirector().setModelTime(currentPlatformTime);
         _fireModel(currentPlatformTime);
-        
+
         Parameter parameter = (Parameter)((CompositeActor)_model).getAttribute("resume" + actor.getName());
         finished = ((BooleanToken)parameter.getToken()).booleanValue();
         if (finished) {
@@ -160,13 +160,13 @@ public class SchedulerModel extends ResourceScheduler {
         }
         return time;
     }
-    
+
     @Override
     public void wrapup() throws IllegalActionException {
         super.wrapup();
         ((CompositeActor)_model).wrapup();
     }
-    
+
     /** List of currently executing actors. */
     protected List<Actor> _currentlyExecuting;
 
@@ -179,21 +179,21 @@ public class SchedulerModel extends ResourceScheduler {
         }
         return null;
     }
-    
+
     private void _fireModel(Time currentPlatformTime) throws IllegalActionException {
         Time time = currentPlatformTime;
         int index = 1;
         while (time.equals(currentPlatformTime)) {
             ((DEDirector)((CompositeActor)_model).getDirector()).setIndex(index);
-            ((CompositeActor)_model).prefire(); 
-            ((CompositeActor)_model).fire(); 
+            ((CompositeActor)_model).prefire();
+            ((CompositeActor)_model).fire();
             ((CompositeActor)_model).postfire();
             time = ((CompositeActor)_model).getDirector().getModelNextIterationTime();
             index++;
         }
     }
-    
-    private Actor _getActor(Actor actor, String suffix) { 
+
+    private Actor _getActor(Actor actor, String suffix) {
         for (int i = 0; i < ((CompositeActor)_model).entityList().size(); i++) {
             Actor mappedActor = (Actor)((CompositeActor)_model).entityList().get(i);
             if (mappedActor.getName().equals(actor.getName() + suffix)) {
@@ -202,5 +202,5 @@ public class SchedulerModel extends ResourceScheduler {
         }
         return null;
     }
-    
+
 }

@@ -172,7 +172,7 @@ public class AttributeController extends IconController {
     }
 
     /** The text used in the MoveAction.TO_FIRST action menu choice.
-     *  Derived classes like IOPortController change this.   
+     *  Derived classes like IOPortController change this.
      *  @return the text.
      */
     protected String _moveToFirstDescription() {

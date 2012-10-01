@@ -163,10 +163,10 @@ public class UserActorLibrary {
      *      &lt;group&gt;
      *         &lt;entity name="XY Plotter" class="ptolemy.actor.lib.gui.XYPlotter"/&gt;
      *      &lt;/group&gt;
-     *    &lt;/configure&gt;  
+     *    &lt;/configure&gt;
      *  &lt;/class&gt;
      *  </pre>
-     *  
+     *
      *  <p>Note that one restriction is to see the new library, one must
      *  open a new Graph viewer (New -&gt; Graph).</p>
      *

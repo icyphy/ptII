@@ -75,7 +75,7 @@ public class NonStrictDisplay extends Display {
 
     /** Return a string describing the input on channel i.
      *  This is a protected method to allow subclasses to override
-     *  how inputs are observed. 
+     *  how inputs are observed.
      *  @param i The channel
      *  @return A string representation of the input, or the string
      *   "absent" or "unknown" if the input is absent or unknown.
@@ -95,7 +95,7 @@ public class NonStrictDisplay extends Display {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-        
+
     private static final String _ABSENT_STRING = "absent";
 
     private static final String _UNDEFINED_STRING = "unknown";

@@ -18,18 +18,18 @@ import ptolemy.kernel.util.IllegalActionException;
 ///////////////////////////////////////////////////////////////////
 //// GLBFunction
 
-/** This class implements a monotonic function that returns the greatest 
- *  lower bound (GLB) of its arguments. These arguments are the port type 
- *  variables of the destination ports of the TypedIOPort passed to the 
+/** This class implements a monotonic function that returns the greatest
+ *  lower bound (GLB) of its arguments. These arguments are the port type
+ *  variables of the destination ports of the TypedIOPort passed to the
  *  constructor. This function is used to define a type constraint asserting
  *  that the type of the output of this port is greater than or equal to the
  *  GLB of its destinations.
  *  <p>
- *  NOTE: It may seem counterintuitive that the constraint is "greater than 
- *  or equal to" rather than "less than or equal to". But the latter 
+ *  NOTE: It may seem counterintuitive that the constraint is "greater than
+ *  or equal to" rather than "less than or equal to". But the latter
  *  constraint is already implied by the connections, since the output port
  *  type is required to be less than or equal to each destination port type.
- *  The combination of these constraints has the effect of setting the type 
+ *  The combination of these constraints has the effect of setting the type
  *  of the output equal to the GLB of the types of the destination ports.
  *  This resolved type is, in fact, the most general type that satisfies the
  *  constraints of all the downstream ports.
@@ -42,23 +42,23 @@ import ptolemy.kernel.util.IllegalActionException;
 public class GLBFunction extends MonotonicFunction {
 
     /** Construct a GLBFunction that finds the greatest lower bound of the
-     *  type variable of the destination ports connected to the TypedIOPort 
+     *  type variable of the destination ports connected to the TypedIOPort
      *  that is given as an argument. If the boolean argument inside is true
      *  then the port is required to be an input port and the arguments for
-     *  this <code>GLBFunction</code> will be the inside destination ports. 
+     *  this <code>GLBFunction</code> will be the inside destination ports.
      *  Otherwise, the port is required to be an output port and the arguments
-     *  for this <code>GLBFunction</code> will be the outside destination ports.  
-     *  
+     *  for this <code>GLBFunction</code> will be the outside destination ports.
+     *
      *  @param sourcePort The port connected to the ports of which their type
      *  variables are used to calculate the greatest lower bound.
-     *   
+     *
      */
     public GLBFunction(TypedIOPort sourcePort) {
         _sourcePort = sourcePort;
 
         _updateArguments();
     }
-    
+
     ///////////////////////////////////////////////////////////////
     ////                     public methods                    ////
 
@@ -111,13 +111,13 @@ public class GLBFunction extends MonotonicFunction {
     ///////////////////////////////////////////////////////////////////
     ////                       protected methods                   ////
 
-    /** Update the arguments used in <code>getValue()</code>, which are the 
+    /** Update the arguments used in <code>getValue()</code>, which are the
      *  InequalityTerms and Types of the destination ports. The arguments are
-     *  only updated if the workspace version has changed. 
+     *  only updated if the workspace version has changed.
      */
     protected void _updateArguments() {
         List<IOPort> destinations = null;
-        if (_sourcePort.getContainer().workspace().getVersion() 
+        if (_sourcePort.getContainer().workspace().getVersion()
                 == _cachedVariablesWorkspaceVersion) {
             return;
         }
@@ -137,7 +137,7 @@ public class GLBFunction extends MonotonicFunction {
         }
 
         for (IOPort destination : destinations) {
-            InequalityTerm destinationTypeTerm = 
+            InequalityTerm destinationTypeTerm =
                     ((TypedIOPort)destination).getTypeTerm();
             if (destinationTypeTerm.isSettable()) {
                 portTypeTermList.add(destinationTypeTerm);
@@ -152,10 +152,10 @@ public class GLBFunction extends MonotonicFunction {
 
 /*   @Override
     public String getVerboseString() {
-        return _sourcePort.getContainer().getName() + "$" +_sourcePort.getName();  
+        return _sourcePort.getContainer().getName() + "$" +_sourcePort.getName();
     }
 */ // FIXME
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                    protected variables                    ////
 

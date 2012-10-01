@@ -67,7 +67,7 @@ import ptolemy.kernel.util.NamedObj;
  For example, <code>channel.foo</code> does not mean the same thing as
  <code>channel\.foo</code>. The latter requires a dot between channel and
  foo, where the former does not.
- 
+
  <p>Note that although this is a multiport, calls to get() should only reference
  channel 0. An exception will be thrown otherwise. The result of the get will
  be the aggregate of what is received on all the input channels.
@@ -93,13 +93,13 @@ public class SubscriptionAggregatorPort extends SubscriberPort {
     public SubscriptionAggregatorPort(ComponentEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        
+
         operation = new StringParameter(this, "operation");
         operation.addChoice("add");
         operation.addChoice("multiply");
         operation.setExpression("add");
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         parameters                        ////
 
@@ -175,7 +175,7 @@ public class SubscriptionAggregatorPort extends SubscriberPort {
             super.attributeChanged(attribute);
         }
     }
-    
+
     /** Get a token from the specified channel.
      *  This overrides the base class to first ensure that
      *  the <i>channelIndex</i> is 0 (or an exception is
@@ -220,7 +220,7 @@ public class SubscriptionAggregatorPort extends SubscriberPort {
         }
         return result;
     }
-    
+
     /** Get an array of tokens from the specified channel.
      *  This overrides the base class to first ensure that
      *  the <i>channelIndex</i> is 0 (or an exception is
@@ -294,7 +294,7 @@ public class SubscriptionAggregatorPort extends SubscriberPort {
         }
         return false;
     }
-    
+
     /** Return true if every input channel that has tokens has enough tokens.
      *  @param channelIndex The channel index. This is required to be 0.
      *  @param vectorLength The number of tokens to query the channel for.
@@ -323,7 +323,7 @@ public class SubscriptionAggregatorPort extends SubscriberPort {
     }
 
     /** Check that the port is not in the top level, then
-     *  call preinitialize() in the super class.   
+     *  call preinitialize() in the super class.
      *  @exception IllegalActionException If the port is in
      *  the top level.
      */
@@ -346,7 +346,7 @@ public class SubscriptionAggregatorPort extends SubscriberPort {
     protected void _updateLinks() throws IllegalActionException {
         // This overrides the base class to Pattern version
         // rather than the String version of linkToPublishedPort().
-        
+
         // If the channel has not been set, then there is nothing
         // to do.  This is probably the first setContainer() call,
         // before the object is fully constructed.
@@ -384,7 +384,7 @@ public class SubscriptionAggregatorPort extends SubscriberPort {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables               ////
-    
+
     /** Indicator that the operation is "add" rather than "multiply". */
     private boolean _addOperation = true;
 

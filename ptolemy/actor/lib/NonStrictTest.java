@@ -76,7 +76,7 @@ import ptolemy.util.StringUtilities;
  doesn't declare a type, but lets the type resolution algorithm find
  the least fixed point. If backward type inference is enabled, and
  no input type has been declared, the input is constrained to be
- equal to <code>BaseType.GENERAL</code>. This will result in upstream 
+ equal to <code>BaseType.GENERAL</code>. This will result in upstream
  ports resolving to the most general type rather than the most specific.
  </p><p>
   If the input is a DoubleToken or ComplexToken, then the comparison
@@ -338,7 +338,7 @@ public class NonStrictTest extends Sink {
         _iteration++;
         return true;
     }
-    
+
     /** If <i>trainingMode</i> is <i>true</i>, then take the collected
      *  training tokens and store them as an array in <i>correctValues</i>.
      *  @exception IllegalActionException If initialized() was called
@@ -471,7 +471,7 @@ public class NonStrictTest extends Sink {
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
-    /** Check that the difference in exponents between the 
+    /** Check that the difference in exponents between the
      *  input and the tolerance is not greater than the precision
      *  of a Double.  If the exponent of newValue parameter is
      *  different by from the exponent of the <i>tolerance</i>
@@ -493,14 +493,14 @@ public class NonStrictTest extends Sink {
             double log = Math.log10(((DoubleToken)newValue).doubleValue());
             if (Math.abs(log - Math.log10(_tolerance)) > 10) {
                 // Set the tolerance to something closer to the input so that
-                // we don't set it many times. 
+                // we don't set it many times.
                 double newTolerance = Math.pow(10, log-9);
                 if (newTolerance > _tolerance) {
                     // Only set the tolerance if it is greater than the old tolerance.
                     tolerance.setToken(new DoubleToken(newTolerance));
                     tolerance.setPersistent(true);
                     attributeChanged(tolerance);
-                    System.out.println("NonStrictTest: " + getFullName() + ": exponent of " 
+                    System.out.println("NonStrictTest: " + getFullName() + ": exponent of "
                             + newValue + " is " + log
                             + ", which cannot be compared with the previous tolerance."
                             + " The new tolerance is " + tolerance.getExpression() + ".");
@@ -509,10 +509,10 @@ public class NonStrictTest extends Sink {
         }
     }
 
-    /** Set the input port to be greater than or equal to 
-     *  <code>BaseType.GENERAL</code> in case backward type inference is 
-     *  enabled and the input port has no type declared. 
-     * 
+    /** Set the input port to be greater than or equal to
+     *  <code>BaseType.GENERAL</code> in case backward type inference is
+     *  enabled and the input port has no type declared.
+     *
      *  @return A set of inequalities.
      */
     @Override
@@ -525,7 +525,7 @@ public class NonStrictTest extends Sink {
         }
         return result;
     }
-    
+
     /** Test whether the value of this token is close to the first argument,
      *  where "close" means that the distance between them is less than
      *  or equal to the second argument.  This method only makes sense

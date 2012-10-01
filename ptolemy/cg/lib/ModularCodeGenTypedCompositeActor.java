@@ -276,7 +276,7 @@ public class ModularCodeGenTypedCompositeActor extends LazyTypedCompositeActor {
 
         if (!_USE_PROFILE || profile == null) {
             populate();
-        } 
+        }
         return super.portList();
     }
 

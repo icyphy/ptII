@@ -70,7 +70,7 @@ public class TestModel extends TypedCompositeActor {
 
     /** Return the history of the recorder.
      *  @return a list Tokens.
-     */  
+     */
     public List getResults() {
         return _rec.getHistory(0);
     }

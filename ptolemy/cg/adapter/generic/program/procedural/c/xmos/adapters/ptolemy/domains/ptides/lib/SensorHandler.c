@@ -1,5 +1,5 @@
 /*** fireBlock ***/
 
-	$put(output#0, 1);
+        $put(output#0, 1);
 /**/
 

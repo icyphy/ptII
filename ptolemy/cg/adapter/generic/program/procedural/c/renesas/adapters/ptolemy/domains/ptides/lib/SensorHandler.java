@@ -57,23 +57,23 @@ public class SensorHandler extends InputDevice {
     public SensorHandler(
             ptolemy.domains.ptides.lib.SensorHandler actor)
             throws IllegalActionException, NameDuplicationException {
-        super(actor); 
+        super(actor);
         _number = ((IntToken) ((Parameter) actor
                 .getAttribute("InterruptHandlerID")).getToken())
                 .intValue();
-        _letter = RenesasUtilities.interruptHandlerLetters.get(_number); 
-        _timerNumber = RenesasUtilities.timerNumbers.get(_number); 
+        _letter = RenesasUtilities.interruptHandlerLetters.get(_number);
+        _timerNumber = RenesasUtilities.timerNumbers.get(_number);
         if (_letter == null) {
             throw new IllegalActionException(actor, "The interrupt handler number is not supported.");
-        } 
+        }
     }
-    
+
     @Override
     public String generateFireCode() throws IllegalActionException {
         CodeStream codeStream = _templateParser.getCodeStream();
         codeStream.clear();
         List<String> args = new ArrayList<String>();
-        args.add(_letter + ""); 
+        args.add(_letter + "");
         args.add(_timerNumber + "");
         codeStream.appendCodeBlock("fireBlock", args);
         return processCode(codeStream.toString());
@@ -86,5 +86,5 @@ public class SensorHandler extends InputDevice {
     private int _number;
     private Character _letter;
     private int _timerNumber;
-    
+
 }

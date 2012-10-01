@@ -33,7 +33,7 @@ import ptolemy.kernel.util.StringAttribute;
 
 /**
  * An annotation specifying a single ontology constraints in a model.
- * 
+ *
  * The name of the ontology is specified as a StringAttribute, but it
  * will also fall back to a name-convention based method for backward
  * compatibility.
@@ -49,7 +49,7 @@ public class OntologyAnnotationAttribute extends StringAttribute {
     /** Construct an OntologyAnnotationAttribute with the specified name
      *  and container.
      *  If a reasonable default exists, initialize the ontology solver name,
-     *  as well. 
+     *  as well.
      *  @param container Container
      *  @param name The given name for the attribute.
      *  @exception IllegalActionException If the attribute is not of an
@@ -62,7 +62,7 @@ public class OntologyAnnotationAttribute extends StringAttribute {
         super(container, name);
         ontologySolverName = new StringAttribute(this, "ontologySolverName");
         _initializeSolverName();
-    }    
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
@@ -115,7 +115,7 @@ public class OntologyAnnotationAttribute extends StringAttribute {
         }
         ontologySolverName.setExpression(solverName);
     }
-    
+
 
     /** Return the OntologySolver using the naming-convention method.
      *  @return A String representing the name of the referred ontology solver.
@@ -126,7 +126,7 @@ public class OntologyAnnotationAttribute extends StringAttribute {
         if (tokens.length == 2) {
             return tokens[0];
         }
-        
+
         return null;
 //        throw new IllegalActionException(
 //                "Invalid ontology annotation attribute name: " + getName()

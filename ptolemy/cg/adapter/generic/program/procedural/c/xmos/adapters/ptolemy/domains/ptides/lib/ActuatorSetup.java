@@ -41,7 +41,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  */
 
 public class ActuatorSetup extends OutputDevice {
-    
+
     /** Construct an adapter with the given
      *  ptolemy.domains.ptides.lib.GPOutputDevice actor.
      *  @param actor The given ptolemy.domains.ptides.lib.targets.luminary.GPOutputDevice actor.
@@ -50,12 +50,12 @@ public class ActuatorSetup extends OutputDevice {
      */
     public ActuatorSetup(ptolemy.domains.ptides.lib.ActuatorSetup actor)
             throws IllegalActionException, NameDuplicationException {
-        super(actor);  
+        super(actor);
     }
-    
 
-    
+
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
- 
+
 }

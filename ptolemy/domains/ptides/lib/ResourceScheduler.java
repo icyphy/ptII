@@ -52,7 +52,7 @@ import ptolemy.kernel.util.Workspace;
 import ptolemy.moml.MoMLModelAttribute;
 
 /** This is a resource scheduler.
- * 
+ *
  * @author Patricia Derler
    @version $Id$
    @since Ptolemy II 0.2
@@ -76,7 +76,7 @@ public abstract class ResourceScheduler extends MoMLModelAttribute implements De
      */
     public ResourceScheduler(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
-        super(container, name); 
+        super(container, name);
 
         try {
             _schedulePlotterEditorFactory = new SchedulePlotterEditorFactory(
@@ -84,8 +84,8 @@ public abstract class ResourceScheduler extends MoMLModelAttribute implements De
         } catch (NameDuplicationException e) {
             // Do nothing, we made sure that there cannot be a name duplication
             // exception.
-        } 
-        
+        }
+
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -103,7 +103,7 @@ public abstract class ResourceScheduler extends MoMLModelAttribute implements De
 
     ///////////////////////////////////////////////////////////////////
     //                           public methods                      //
-    
+
     /** Return the decorated attributes for the target NamedObj.
      *  @param target The NamedObj that will be decorated.
      *  @return The decorated attributes for the target NamedObj.
@@ -113,16 +113,16 @@ public abstract class ResourceScheduler extends MoMLModelAttribute implements De
      *   an attribute already in the container.
      */
     public DecoratedAttributes createDecoratedAttributes(NamedObj target)
-            throws IllegalActionException, NameDuplicationException { 
+            throws IllegalActionException, NameDuplicationException {
         DecoratedAttributesImplementation decoratedAttributes = new DecoratedAttributesImplementation(target, this);
         if (target.getAttribute("scheduler") == null) {
             Parameter schedulerParameter = new Parameter(
                   target, "scheduler");
             schedulerParameter.setExpression("");
         }
-        if (target.getAttribute("executionTime") == null) { 
+        if (target.getAttribute("executionTime") == null) {
             Parameter executionTime = new Parameter(
-                    target, "executionTime");  
+                    target, "executionTime");
             executionTime.setExpression("0.0");
         }
         return decoratedAttributes;
@@ -139,8 +139,8 @@ public abstract class ResourceScheduler extends MoMLModelAttribute implements De
     public void setTypesOfDecoratedVariables(
             DecoratedAttributes decoratedAttributes)
             throws IllegalActionException {
-        // FIXME: What has to be done here? 
-        
+        // FIXME: What has to be done here?
+
     }
 
     /** Clone the actor into the specified workspace.
@@ -161,13 +161,13 @@ public abstract class ResourceScheduler extends MoMLModelAttribute implements De
             // Do nothing, we made sure that there cannot be a name duplication
             // exception.
         } catch (IllegalActionException e) {
-            // If we would run into this catch clause 
+            // If we would run into this catch clause
         }
 
         return newObject;
     }
 
-    /** If the last actor that was scheduled finished execution 
+    /** If the last actor that was scheduled finished execution
      *  then this method returns true.
      *  @return True if last actor that was scheduled finished
      *   execution.
@@ -175,10 +175,10 @@ public abstract class ResourceScheduler extends MoMLModelAttribute implements De
     public boolean lastScheduledActorFinished() {
         return _lastActorFinished;
     }
-    
+
     /** Initialize local variables.
      * @returns Next time this scheduler requests a firing.
-     * @throws IllegalActionException Thrown if list of actors 
+     * @throws IllegalActionException Thrown if list of actors
      *   scheduled by this scheduler cannot be retrieved.
      */
     public Time initialize() throws IllegalActionException {
@@ -211,7 +211,7 @@ public abstract class ResourceScheduler extends MoMLModelAttribute implements De
      *  @param actor The actor to be scheduled.
      *  @param currentPlatformTime The current platform time.
      *  @param deadline. The deadline of the event.
-     *  @param executionTime The execution time of the actor. 
+     *  @param executionTime The execution time of the actor.
      *  @return Relative time when this Scheduler has to be executed
      *    again.
      *  @throws IllegalActionException Thrown if actor paramaters such
@@ -227,7 +227,7 @@ public abstract class ResourceScheduler extends MoMLModelAttribute implements De
         return null;
     }
 
-    /** Return a new time object using the enclosing director. 
+    /** Return a new time object using the enclosing director.
      *  @param time Double value of the new time object.
      *  @return The new time object.
      *  @throws IllegalActionException If the time object cannot be created.
@@ -237,8 +237,8 @@ public abstract class ResourceScheduler extends MoMLModelAttribute implements De
     }
 
     /** Plot a new execution event for an actor (i.e. an actor
-     *  started/finished execution, was preempted or resumed). 
-     * @param actor The actor. 
+     *  started/finished execution, was preempted or resumed).
+     * @param actor The actor.
      * @param physicalTime The physical time when this scheduling event occurred.
      * @param scheduleEvent The scheduling event.
      */
@@ -285,7 +285,7 @@ public abstract class ResourceScheduler extends MoMLModelAttribute implements De
 
     /** Create end events for the plotter.
      *  @throws IllegalActionException Thrown by super class.
-     */ 
+     */
     public void wrapup() throws IllegalActionException {
         for (NamedObj actor : _actors) {
             event(actor, ((CompositeActor) getContainer()).getDirector()
@@ -294,13 +294,13 @@ public abstract class ResourceScheduler extends MoMLModelAttribute implements De
     }
 
     ///////////////////////////////////////////////////////////////////
-    //                          protected methods                    // 
+    //                          protected methods                    //
 
     /** Iterate through all actors in the container and find those
-     *  that are scheduled by this ResourceScheduler. 
+     *  that are scheduled by this ResourceScheduler.
      *  @param compositeActor The container.
      *  @throws IllegalActionException If actor parameters that describe
-     *  the schedulers cannot be read. 
+     *  the schedulers cannot be read.
      */
     protected void _getActorsToSchedule(CompositeActor compositeActor)
             throws IllegalActionException {
@@ -323,8 +323,8 @@ public abstract class ResourceScheduler extends MoMLModelAttribute implements De
 
     /** Return the value stored in a parameter associated with
      *  the input port.
-     *  Used for deviceDelay, deviceDelayBound, networkDelayBound, 
-     *  platformDelay and sourcePlatformDelay. 
+     *  Used for deviceDelay, deviceDelayBound, networkDelayBound,
+     *  platformDelay and sourcePlatformDelay.
      *  FIXME: specialized ports do contain the parameters, don't
      *  have to get the attribute with the string! For now leave it
      *  that way to support older models that do not use PtidesPorts.
@@ -349,7 +349,7 @@ public abstract class ResourceScheduler extends MoMLModelAttribute implements De
     //                        protected variables                      //
 
     /** True if in the last request to schedule an actor, this actor
-     *  finished execution. 
+     *  finished execution.
      */
     protected boolean _lastActorFinished;
 
@@ -359,14 +359,14 @@ public abstract class ResourceScheduler extends MoMLModelAttribute implements De
     protected HashMap<Actor, Time> _lastTimeScheduled;
 
     /** The remaining execution time for every actor that has been scheduled
-     *  or null if the actor execution finished. 
+     *  or null if the actor execution finished.
      */
     protected HashMap<Actor, Time> _remainingTimes;
 
     ///////////////////////////////////////////////////////////////////
     //                        private methods                        //
 
-    /** Read actor parameters such as 
+    /** Read actor parameters such as
      *  - which resource scheduler the actor is assigned to
      *  - the execution time
      *  and store these properties in local variables.

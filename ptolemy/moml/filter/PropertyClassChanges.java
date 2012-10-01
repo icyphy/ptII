@@ -319,7 +319,7 @@ public class PropertyClassChanges extends MoMLFilterSimple {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
     // Map of actor names a HashMap of property names to new classes.
-    private static HashMap _actorsWithPropertyClassChanges;    
+    private static HashMap _actorsWithPropertyClassChanges;
 
     // The the full name of the actor we are currently processing
     private String _currentActorFullName;
@@ -630,7 +630,7 @@ public class PropertyClassChanges extends MoMLFilterSimple {
                 "ptolemy.kernel.util.StringAttribute");
         _actorsWithPropertyClassChanges.put(
                 "ptolemy.vergil.basic.DocAttribute", DocAttributeClassChanges);
-        
+
         // Repeat actor
         // Change its numberOfTimes from Parameter to be PortParameter.
         HashMap RepeatAttributeClassChanges = new HashMap();
@@ -638,6 +638,6 @@ public class PropertyClassChanges extends MoMLFilterSimple {
                 "ptolemy.actor.parameters.PortParameter");
         _actorsWithPropertyClassChanges.put(
                 "ptolemy.domains.sdf.lib.Repeat", RepeatAttributeClassChanges);
-        
+
     }
 }

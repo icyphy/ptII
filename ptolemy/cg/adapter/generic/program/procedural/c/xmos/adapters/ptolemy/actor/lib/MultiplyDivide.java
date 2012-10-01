@@ -56,27 +56,27 @@ public class MultiplyDivide
     public MultiplyDivide(ptolemy.actor.lib.MultiplyDivide actor) {
         super(actor);
     }
-    
-    protected String _generateFireCode() throws IllegalActionException { 
+
+    protected String _generateFireCode() throws IllegalActionException {
         CodeStream codeStream = _templateParser.getCodeStream();
         codeStream.clear();
         List<String> args = new ArrayList<String>();
         StringBuffer computeResults = new StringBuffer();
-        
+
         for (int i = 0; i < ((ptolemy.actor.lib.MultiplyDivide)_component).multiply.getWidth(); i++) {
             computeResults.append("if ($hasToken(multiply#" + i + ")) {\n" +
-                    "    result = result * $get(multiply#" + i + ");\n}"); 
+                    "    result = result * $get(multiply#" + i + ");\n}");
         }
         for (int i = 0; i < ((ptolemy.actor.lib.MultiplyDivide)_component).divide.getWidth(); i++) {
             computeResults.append("if ($hasToken(divide#" + i + ")) {\n" +
-                    "    result = result / $get(divide#" + i + ");\n}"); 
+                    "    result = result / $get(divide#" + i + ");\n}");
         }
         args.add(computeResults.toString());
-        
+
         codeStream.appendCodeBlock("fireBlock", args);
         return processCode(codeStream.toString());
     }
-  
+
     /** Return a string that represents the source time.
      *  @param timeVariable The name of the time variable to be set.
      *  @return A string sets the timeVariable to the timestamp of the
@@ -101,5 +101,5 @@ public class MultiplyDivide
         }
         return result.toString();
     }
-    
+
 }

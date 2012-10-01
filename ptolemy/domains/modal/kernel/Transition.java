@@ -961,7 +961,7 @@ public class Transition extends ComponentRelation {
     private long _guardParseTreeVersion = -1;
 
     // Set to true if the transition should be checked
-    // as son as the source state is entered. This may lead 
+    // as son as the source state is entered. This may lead
     // to transient states.
     private boolean _immediate = false;
 
@@ -986,7 +986,7 @@ public class Transition extends ComponentRelation {
 
     // Version of cached source/destination state.
     private long _stateVersion = -1;
-    
+
     // Default text height in the dialog box.
     private static String _TEXT_HEIGHT = "4";
 }

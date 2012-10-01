@@ -319,7 +319,7 @@ public class FixedPointDirector extends StaticSchedulingDirector implements
         }
         return Time.POSITIVE_INFINITY;
     }
-    
+
     /** Return true, indicating that this director assumes and exports
      *  the strict actor semantics, as described in this paper:
      *  <p>
@@ -762,7 +762,7 @@ public class FixedPointDirector extends StaticSchedulingDirector implements
 
     /** The current index of the model. */
     protected int _index;
-    
+
     /** List of all receivers this director has created. */
     protected List _receivers = new LinkedList();
 

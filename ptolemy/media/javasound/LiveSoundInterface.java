@@ -1,4 +1,4 @@
-/* Interface for implementing for implementing LiveSound actor for different 
+/* Interface for implementing for implementing LiveSound actor for different
   platforms
 
  Copyright (c) 2000-2010 The Regents of the University of California.
@@ -35,7 +35,7 @@ import java.io.IOException;
 ////LiveSoundInterface
 
 /**
-Interface for implementing for implementing LiveSoundActor on different 
+Interface for implementing for implementing LiveSoundActor on different
 platforms.
 
 @author Ishwinder Singh

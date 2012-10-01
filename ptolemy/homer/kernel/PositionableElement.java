@@ -1,5 +1,5 @@
-/* Abstract definition of elements. 
- 
+/* Abstract definition of elements.
+
  Copyright (c) 2011 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
@@ -38,7 +38,7 @@ import ptolemy.kernel.util.StringAttribute;
 ///////////////////////////////////////////////////////////////////
 //// PositionableElement
 
-/** Abstract definition of elements. 
+/** Abstract definition of elements.
  *
  *  @author Peter Foldes
  *  @version $Id$
@@ -52,7 +52,7 @@ public abstract class PositionableElement {
     ////                constructor                                ////
 
     /** Store the element that should have its location defined.
-     * 
+     *
      *  @param element The object with the location defined.
      */
     public PositionableElement(NamedObj element) {
@@ -64,16 +64,16 @@ public abstract class PositionableElement {
 
     /** Add the visual representation of the element to the provided
      *  container.
-     * 
+     *
      *  @param container The container to place the representation in.
      *  @exception IllegalActionException If the element cannot be added
-     *  to the container. 
+     *  to the container.
      */
     public abstract void addToContainer(PortableContainer container)
             throws IllegalActionException;
 
     /** Get the underlying element.
-     * 
+     *
      *  @return The Ptolemy element with Android specific location information.
      */
     public NamedObj getElement() {
@@ -81,7 +81,7 @@ public abstract class PositionableElement {
     }
 
     /** Get the location of the element.
-     * 
+     *
      *  @return Return the location object of the element.
      *  @exception IllegalActionException If the location of the element
      *  is not defined.
@@ -96,7 +96,7 @@ public abstract class PositionableElement {
     }
 
     /** Get the location of the element.
-     * 
+     *
      *  @return Return the location object of the element.
      *  @see #setTab(String)
      */
@@ -113,7 +113,7 @@ public abstract class PositionableElement {
     }
 
     /** Set the location of this element's representation.
-     * 
+     *
      *  @param x The x position of the top-left corner.
      *  @param y The y position of the top-left corner.
      *  @param width The width of the representation.
@@ -145,9 +145,9 @@ public abstract class PositionableElement {
     }
 
     /** Set the tab attribute in the underlying named object wrapped by this element.
-     * 
+     *
      *  @param tag The tag identifier of the tab this element belongs to.
-     *  @throws IllegalActionException If the tab cannot be set. 
+     *  @throws IllegalActionException If the tab cannot be set.
      *  @see #getTab()
      */
     public void setTab(String tag) throws IllegalActionException {

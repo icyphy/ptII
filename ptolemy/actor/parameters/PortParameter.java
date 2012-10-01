@@ -147,7 +147,7 @@ public class PortParameter extends AbstractInitializableParameter implements Ini
             _port = new ParameterMirrorPort((ComponentEntity) container, name);
         } else if (container instanceof TypedActor) {
             _port = new ParameterPort((ComponentEntity) container, name);
-        } 
+        }
     }
 
     /** Construct a Parameter with the given container, name, and Token.
@@ -187,7 +187,7 @@ public class PortParameter extends AbstractInitializableParameter implements Ini
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-    
+
     /** React to a change in an attribute.  This method is called by
      *  a contained attribute when its value changes.  In this class,
      *  if the attribute is an instance of Location, then the location
@@ -244,7 +244,7 @@ public class PortParameter extends AbstractInitializableParameter implements Ini
         newObject._port = null;
         return newObject;
     }
-    
+
     /** Get the persistent expression.
      *  @return The expression used by this variable.
      *  @see #setExpression(String)
@@ -329,7 +329,7 @@ public class PortParameter extends AbstractInitializableParameter implements Ini
             }
         }
     }
-    
+
     /** Override the base class to record the persistent expression.
      *  @param expression The expression for this variable.
      *  @see #getExpression()
@@ -437,7 +437,7 @@ public class PortParameter extends AbstractInitializableParameter implements Ini
     protected NamedObj _propagateExistence(NamedObj container)
             throws IllegalActionException {
         NamedObj result = super._propagateExistence(container);
-        
+
         // Since we have created an associated port in the
         // constructor, and since that port is not contained by
         // this parameter, it will not automatically be propagated.
@@ -458,7 +458,7 @@ public class PortParameter extends AbstractInitializableParameter implements Ini
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-        
+
     /** The persistent expression. */
     private String _persistentExpression;
 

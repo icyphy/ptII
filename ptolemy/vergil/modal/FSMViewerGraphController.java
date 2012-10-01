@@ -65,13 +65,13 @@ import diva.graph.NodeController;
  @Pt.AcceptedRating Red (johnr)
  */
 public class FSMViewerGraphController extends RunnableGraphController {
-    
+
     /** Create a new controller with default port, state, and transition
      *  controllers.
      */
     public FSMViewerGraphController() {
         _createControllers();
-        
+
         // The following is a fallback controller used when encountering
         // instances of Locatable that have no container. Do not create
         // this in _createControllers() because that is overridden by
@@ -249,7 +249,7 @@ public class FSMViewerGraphController extends RunnableGraphController {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    
+
     /** The default controller, used only for instances of Locatable
      *  that have no container.
      */
@@ -257,5 +257,5 @@ public class FSMViewerGraphController extends RunnableGraphController {
 
     // The selection interactor for drag-selecting nodes
     private SelectionDragger _selectionDragger;
-    
+
 }

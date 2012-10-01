@@ -132,7 +132,7 @@ public class TextEffigy extends Effigy {
      */
     public static TextEffigy newTextEffigy(CompositeEntity container, URL base,
             URL in) throws Exception {
-        
+
         // Check the extension: if it looks like a binary file do not open.
         // Do not open KAR files,
         // see http://bugzilla.ecoinformatics.org/show_bug.cgi?id=5280#c1
@@ -147,7 +147,7 @@ public class TextEffigy extends Effigy {
                 return null;
             }
         }
-        
+
         // Create a new effigy.
         TextEffigy effigy = new TextEffigy(container,
                 container.uniqueName("effigy"));
@@ -199,14 +199,14 @@ public class TextEffigy extends Effigy {
                         in = jarURL;
                     } catch (Throwable throwable) {
                         try {
-                            // Hmm.  Might be Eclipse, where sadly the 
+                            // Hmm.  Might be Eclipse, where sadly the
                             // .class files are often in a separate directory
                             // than the .java files.  So, we look at the CLASSPATH
                             // and for each element that names a directory, traverse
                             // the parents directories and look for adjacent directories
                             // that contain a "src" directory.  For example if
                             // the classpath contains "kepler/ptolemy/target/classes/",
-                            // then we will find kepler/ptolemy/src and return it 
+                            // then we will find kepler/ptolemy/src and return it
                             // as a URL.  See also Configuration.createPrimaryTableau()
 
                             URL sourceURL = ptolemy.util.ClassUtilities

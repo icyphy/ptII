@@ -93,7 +93,7 @@ public class ConfigurationSwitch extends TypedAtomicActor {
         // Default selector value to false
         selector = new PortParameter(this, "selector", new BooleanToken(false));
         selector.setTypeEquals(BaseType.BOOLEAN);
-        
+
         // Put the selector input on the bottom of the actor.
         StringAttribute selectorCardinal = new StringAttribute(selector.getPort(),
                 "_cardinal");
@@ -250,7 +250,7 @@ public class ConfigurationSwitch extends TypedAtomicActor {
 
     /** Cached value of selector. */
     private boolean _selector = false;
-    
+
     /** A final static IntToken with value 0. */
     private final static IntToken _zero = new IntToken(0);
 

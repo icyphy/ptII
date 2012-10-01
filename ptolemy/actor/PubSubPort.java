@@ -52,7 +52,7 @@ import ptolemy.kernel.util.Workspace;
  @Pt.ProposedRating Yellow (eal)
  @Pt.AcceptedRating Red (eal)
  */
-public abstract class PubSubPort extends TypedIOPort 
+public abstract class PubSubPort extends TypedIOPort
         implements HierarchyListener, Initializable {
 
     /** Construct a subscriber port with a containing actor and a name.
@@ -69,11 +69,11 @@ public abstract class PubSubPort extends TypedIOPort
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
         channel = new StringParameter(this, "channel");
-        
+
         global = new Parameter(this, "global");
         global.setTypeEquals(BaseType.BOOLEAN);
         global.setExpression("false");
-        
+
         initialTokens = new Parameter(this, "initialTokens") {
             /** Override the base class to to allow the type to be unknown.
              *  @return True if the current type is acceptable.
@@ -85,7 +85,7 @@ public abstract class PubSubPort extends TypedIOPort
         };
         setTypeAtLeast(ArrayType.elementType(initialTokens));
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         parameters                        ////
 
@@ -129,7 +129,7 @@ public abstract class PubSubPort extends TypedIOPort
         throw new InternalErrorException(
                 "Cannot add Initializables to publisher and subscriber ports.");
     }
-    
+
     /** Clone the actor into the specified workspace. This calls the
      *  base class and then resets the type constraints.
      *  @param workspace The workspace for the new object.
@@ -179,7 +179,7 @@ public abstract class PubSubPort extends TypedIOPort
             container.removeInitializable(this);
         }
     }
-    
+
     /** Do nothing. */
     @Override
     public void initialize() throws IllegalActionException {
@@ -197,7 +197,7 @@ public abstract class PubSubPort extends TypedIOPort
     public void removeInitializable(Initializable initializable) {
     }
 
-    /** Override the base class to register as an 
+    /** Override the base class to register as an
      *  {@link Initializable}
      *  so that preinitialize() is invoked, and as a
      *  {@link HierarchyListener}, so that we are notified of
@@ -240,12 +240,12 @@ public abstract class PubSubPort extends TypedIOPort
             }
         }
     }
-    
+
     /** Do nothing. */
     @Override
     public void wrapup() throws IllegalActionException {
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
 
@@ -254,7 +254,7 @@ public abstract class PubSubPort extends TypedIOPort
 
     /** Cached variable indicating whether publishing or subscribing is global. */
     protected boolean _global;
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                 ////
 

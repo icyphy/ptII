@@ -276,7 +276,7 @@ public class Server extends DETransformer {
 
     /** The FIFOQueue. */
     protected FIFOQueue _queue;
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
 

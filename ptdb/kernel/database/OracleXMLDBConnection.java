@@ -1291,7 +1291,7 @@ public class OracleXMLDBConnection implements DBConnection {
 
         try {
             if (existingModelDocument == null
-                    || (existingModelContent = existingModelDocument.getContentAsString()) == null) { 
+                    || (existingModelContent = existingModelDocument.getContentAsString()) == null) {
                 throw new DBModelNotFoundException(
                         "The existing model was not found in the database - "
                                 + existingModelName);

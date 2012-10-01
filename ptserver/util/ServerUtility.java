@@ -1,6 +1,6 @@
 /*
  Class containing helper methods used by the ptserver and/or Homer.
- 
+
  Copyright (c) 2011 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
@@ -61,7 +61,7 @@ import ptserver.actor.ProxyActor;
 /**
  * Class containing helper methods used by the ptserver and/or Homer.
  * @author Anar Huseynov
- * @version $Id$ 
+ * @version $Id$
  * @since Ptolemy II 8.1
  * @Pt.ProposedRating Red (ahuseyno)
  * @Pt.AcceptedRating Red (ahuseyno)
@@ -243,7 +243,7 @@ public class ServerUtility {
     }
 
     /** Open a MoML file, parse it, and the parsed model.
-     * 
+     *
      *  @param url The url of the model.
      *  @return The parsed model.
      *  @exception IllegalActionException If the parsing failed.
@@ -263,7 +263,7 @@ public class ServerUtility {
 
     /** Strips the first part of a compound element name, including the
      *  "." at the beginning.
-     * 
+     *
      * @param fullName The compound name of an element.
      * @return The stripped name of the element, where the first part of
      * the compound name is removed, including the "." at the beginning.
@@ -419,7 +419,7 @@ public class ServerUtility {
     /** Merge the source object and all its deeply contained attributes with the target model.
      *  If an entity does not exists in the target model it will not be added, but each
      *  existing object's attributes that are not in the target model will be added.
-     *  
+     *
      *  @param source The source object will potentially extra attributes that are not contained
      *  in the target model.
      * @param targetModel The target model to be updated.
@@ -427,7 +427,7 @@ public class ServerUtility {
      *  this is null, every attribute not present in the target model will be added.
      * @param namedObjectsToMerge The list of named objects to be merged
      *  @exception IllegalActionException If an attribute could not be added to the target model.
-     * @throws CloneNotSupportedException 
+     * @throws CloneNotSupportedException
      */
     private static void _mergeElements(NamedObj source,
             CompositeEntity targetModel,
@@ -448,7 +448,7 @@ public class ServerUtility {
         // If the source is an entity, but is not originally in the target model, the merge
         // skips it
         // Note: This holds for any child entity but does not hold for the top level container.
-        // Added a check to allow merging of top level container's attributes. 
+        // Added a check to allow merging of top level container's attributes.
         if (source instanceof Entity
                 && targetModel.getEntity(stripFullName(source.getFullName())) == null
                 && (source.getContainer() != null)) {
@@ -515,7 +515,7 @@ public class ServerUtility {
     }
 
     /**
-     * Attribute value indicating that the parent attribute is a remote attribute - 
+     * Attribute value indicating that the parent attribute is a remote attribute -
      * it's value needs to synchronized between client and server models.
      */
     public static final String REMOTE_ATTRIBUTE = "attribute";

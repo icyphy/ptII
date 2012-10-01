@@ -65,7 +65,7 @@ public class AttributeChanged extends Entity {
 
     /** Update the cached value of the parameter.
      *  @param attribute The attribute that might be param.
-     *  @exception IllegalActionException If thrown while getting the 
+     *  @exception IllegalActionException If thrown while getting the
      *  parameter as a double.
      */
     public void attributeChanged(Attribute attribute)

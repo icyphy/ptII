@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package ptolemy.domains.coroutine.kernel;
 
@@ -9,39 +9,39 @@ package ptolemy.domains.coroutine.kernel;
  *
  */
 public class ControlExitToken extends ControlToken {
-    
-    private ControlExitToken() { 
+
+    private ControlExitToken() {
         _type      = ControlType.Non;
         _location  = null;
     }
-    
+
     public static ControlExitToken ExitToken(String etS) {
         if (etS.contentEquals("terminate"))   return Terminate();
         if (etS.contentEquals("suspend"))     return Suspend();
         return Exit(new ExitLocation(etS));
     }
-    
+
     public static ControlExitToken Terminate() {
         ControlExitToken ct = new ControlExitToken();
         ct._setExit(ControlType.Terminate, new ExitLocation("terminate"));
         return ct;
     }
-    
+
     public static ControlExitToken Suspend() {
         ControlExitToken ct = new ControlExitToken();
         ct._setExit(ControlType.Suspend, new ExitLocation("suspend"));
         return ct;
     }
-    
+
     public static ControlExitToken Exit(ExitLocation l) {
         ControlExitToken ct = new ControlExitToken();
         ct._setExit(ControlType.Exit, l);
         return ct;
     }
-    
+
     public enum ControlType  { Non, Terminate, Suspend, Exit };
-    
-    
+
+
     @Override
     public boolean isEntry() {
         return false;
@@ -51,21 +51,21 @@ public class ControlExitToken extends ControlToken {
     public boolean isExit() {
         return true;
     }
-    
+
     public boolean isSuspend() {
         return _type == ControlType.Suspend;
     }
-    
+
     public boolean isTerminate() {
         return _type == ControlType.Terminate;
     }
-    
+
     public boolean isLocation() {
-        return _type == ControlType.Exit; 
+        return _type == ControlType.Exit;
     }
-    
+
     public ControlExitToken.ExitLocation getLocation() { return _location; }
-    
+
     public static class ExitLocation implements Location {
         public ExitLocation(String name) { this.name = new String(name); }
         public String toString()  { return name; }
@@ -99,11 +99,11 @@ public class ControlExitToken extends ControlToken {
                 return false;
             return true;
         }
-        
+
     }
-    
+
     ////
-    
+
     public String toString() {
         String str = "Non";
         /**/ if (_type == ControlType.Terminate) str = "Terminate";
@@ -111,18 +111,18 @@ public class ControlExitToken extends ControlToken {
         else if (_type == ControlType.Exit)      {
             str = "Exit[";
             str += _location.toString();
-            str += "]";     
+            str += "]";
         }
         return str;
     }
-    
+
     ////
-    
+
     private void _setExit(ControlType t, ExitLocation l) {
         _type      = t;
         _location  = l;
     }
-    
+
     private ControlType      _type;
     private ExitLocation     _location;
 

@@ -269,9 +269,9 @@ public class SDFDirector
             String exceptionMessage = "Failed to generate code "
                 + "to transfer tokens to for input. "
                 + "The type of the \"" + portName
-                + "\" output port was " + type 
+                + "\" output port was " + type
                 + ", which is not supported. "
-                + "Try setting the type of the \"" 
+                + "Try setting the type of the \""
                 + portName
                 + "\" port by right clicking on the actor "
                 + "and selecting Customize -> Ports.";
@@ -296,7 +296,7 @@ public class SDFDirector
                                 + String.valueOf(i) + "];" + _eol);
                     } else {
                         // FIXME: need to deal with other types
-                        throw new IllegalActionException(inputPort, 
+                        throw new IllegalActionException(inputPort,
                                 exceptionMessage);
                     }
 
@@ -392,9 +392,9 @@ public class SDFDirector
             String exceptionMessage = "Failed to generate code "
                 + "to transfer tokens to fulfill the output rate."
                 + "The type of the \"" + outputPort.getName()
-                + "\" output port was " + type 
+                + "\" output port was " + type
                 + ", which is not supported. "
-                + "Try setting the type of the \"" 
+                + "Try setting the type of the \""
                 + outputPort.getName()
                 + "\" port by right clicking on the actor "
                 + "and selecting Customize -> Ports.";
@@ -418,7 +418,7 @@ public class SDFDirector
 
             } else {
                 // FIXME: need to deal with other types
-                throw new IllegalActionException(outputPort, 
+                throw new IllegalActionException(outputPort,
                         exceptionMessage);
             }
 
@@ -716,7 +716,7 @@ public class SDFDirector
                 && ! (getCodeGenerator().getAdapter(port.getContainer()) instanceof AutoAdapter)
                 && ! AutoAdapter.isAutoAdapteredRemotePort(getCodeGenerator(), port)) {
             // $PTII/bin/ptcg -language java $PTII/ptolemy/cg/kernel/generic/program/procedural/java/test/auto/ObjectToken1.xml
-            // $PTII/bin/ptcg -language java $PTII/ptolemy/cg/kernel/generic/program/procedural/java/test/auto/ObjectTokenTestSampleDelay.xml 
+            // $PTII/bin/ptcg -language java $PTII/ptolemy/cg/kernel/generic/program/procedural/java/test/auto/ObjectTokenTestSampleDelay.xml
             System.out.println("CG SDFDirector: changing to Object to Token");
             portType = "Token";
         }

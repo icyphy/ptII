@@ -51,7 +51,7 @@ import ptserver.util.ServerUtility;
 public class ServerTest {
 
     static {
-        // FIXME remove PTServerModule after SysOutActor is deleted 
+        // FIXME remove PTServerModule after SysOutActor is deleted
         // or create a proper initializer for it
         ArrayList<PtolemyModule> modules = new ArrayList<PtolemyModule>();
         modules.addAll(ActorModuleInitializer.getModules());

@@ -23,13 +23,13 @@ import ptolemy.kernel.util.IllegalActionException;
 public class ArrayElementTypeFunction extends MonotonicFunction {
 
     /** Construct a ArrayElementTypeFunction whose argument is the
-     *  type of the specified object.  
+     *  type of the specified object.
      *  @param typeable A Typeable object.
      */
     public ArrayElementTypeFunction(Typeable typeable) {
         _typeable = typeable;
     }
-    
+
     ///////////////////////////////////////////////////////////////
     ////                     public methods                    ////
 
@@ -62,14 +62,14 @@ public class ArrayElementTypeFunction extends MonotonicFunction {
             return result;
         } else {
             return EMPTY_TERM_ARRAY;
-        }        
+        }
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                    private variables                      ////
 
     /** The argument. */
     private Typeable _typeable;
-        
+
     private static InequalityTerm[] EMPTY_TERM_ARRAY = new InequalityTerm[0];
 }

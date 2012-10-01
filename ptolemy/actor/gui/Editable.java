@@ -37,7 +37,7 @@ import ptolemy.kernel.util.NamedObj;
 /**
  This is an interface for objects that can create an editor for interactively
  configuring something.
- 
+
  @see EditorFactory
  @author Edward A. Lee
  @version $Id$

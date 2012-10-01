@@ -62,17 +62,17 @@ import ptolemy.kernel.util.Workspace;
  <i>delay</i> port is connected (and hence the delay will be variable
  at run time), then the values provided at the port are required to be
  greater than or equal <i>minimumDelay</i>,
- which defaults to the value of <i>delay</i>.  
+ which defaults to the value of <i>delay</i>.
  The input and output types are unconstrained, except that the output type
- must be the same as that of the input. 
+ must be the same as that of the input.
  <p>
  Note that in Ptides the SuperdenseDependency is used for computing
  offsets and deadlines. The dependency between the input and the output
- of this actor is the <i>minimumDelay</i>. A <i>minimumDelay</i> of 
+ of this actor is the <i>minimumDelay</i>. A <i>minimumDelay</i> of
  values > 0.0 allows for more efficient execution of Ptides models. If
  this actor is used as a fixed delay actor, i.e. the delay value is not
  changed during the execution, the <i>minimumDelay</i> should be set to
- the actual delay. 
+ the actual delay.
  <p>
  For directors that implement {@link SuperdenseTimeDirector}, such as
  DE, the output microstep of an event will match the input microstep,
@@ -168,7 +168,7 @@ public class TimeDelay extends Transformer {
      *  it is set.
      */
     public PortParameter delay;
-    
+
     /** Minimum delay to impose if the <i>delay</i>
      *  port is connected. This is a double that defaults to the value of the delay.
      */
@@ -201,7 +201,7 @@ public class TimeDelay extends Transformer {
             }
         } else if (attribute == minimumDelay) {
             double newDelay = ((DoubleToken) (delay.getToken())).doubleValue();
-            double newMinimumDelay = ((DoubleToken) (minimumDelay.getToken())).doubleValue();  
+            double newMinimumDelay = ((DoubleToken) (minimumDelay.getToken())).doubleValue();
             if (newMinimumDelay > newDelay) {
                 throw new IllegalActionException(this,
                         "Cannot have minimumDelay > delay "
@@ -238,7 +238,7 @@ public class TimeDelay extends Transformer {
      *  @see #getCausalityInterface()
      */
     public void declareDelayDependency() throws IllegalActionException {
-        double minimumDelayValue = _minimumDelay(); 
+        double minimumDelayValue = _minimumDelay();
         _declareDelayDependency(delay.getPort(), output, minimumDelayValue);
         _declareDelayDependency(input, output, minimumDelayValue);
     }
@@ -298,7 +298,7 @@ public class TimeDelay extends Transformer {
      */
     public boolean postfire() throws IllegalActionException {
         delay.update();
-        
+
         // No point in using the isTime() method here, since we need
         // all the intermediate values.
         Director director = getDirector();
@@ -307,7 +307,7 @@ public class TimeDelay extends Transformer {
         if (director instanceof SuperdenseTimeDirector) {
             microstep = ((SuperdenseTimeDirector)director).getIndex();
         }
-        
+
         if (_pendingOutputs.size() > 0) {
             PendingEvent event = _pendingOutputs.getLast();
             int comparison = currentTime.compareTo(event.timeStamp);
@@ -317,7 +317,7 @@ public class TimeDelay extends Transformer {
                 _pendingOutputs.removeLast();
             }
         }
-        
+
         // Check whether the next oldest event has the same time.
         if (_pendingOutputs.size() > 0) {
             // The current time stamp of the next event
@@ -338,7 +338,7 @@ public class TimeDelay extends Transformer {
                         + microstep);
             }
         }
-        
+
         if (input.hasToken(0)) {
             Token token = input.get(0);
             PendingEvent newEvent = new PendingEvent();
@@ -361,7 +361,7 @@ public class TimeDelay extends Transformer {
         }
         return super.postfire();
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
@@ -398,8 +398,8 @@ public class TimeDelay extends Transformer {
             while (iterator.hasNext()) {
                 PendingEvent nextNewestEvent = iterator.next();
                 comparison = newEvent.timeStamp.compareTo(nextNewestEvent.timeStamp);
-                if (comparison > 0 
-                        || (comparison == 0 
+                if (comparison > 0
+                        || (comparison == 0
                                 && newEvent.microstep >= newestEvent.microstep)) {
                     // New event is later than or equal to current one.
                     // First replace the current element, then add the current element back in.
@@ -413,8 +413,8 @@ public class TimeDelay extends Transformer {
             _pendingOutputs.addLast(newEvent);
         }
     }
-    
-    /** Return true if it is time to produce an output. 
+
+    /** Return true if it is time to produce an output.
      *  @return Return true if it is time to produce an output.
      *  @exception IllegalActionException If current time exceeds the time of
      *   of the next pending event.
@@ -430,7 +430,7 @@ public class TimeDelay extends Transformer {
         if (director instanceof SuperdenseTimeDirector) {
             microstep = ((SuperdenseTimeDirector)director).getIndex();
         }
-        
+
         PendingEvent event = _pendingOutputs.getLast();
         int comparison = currentTime.compareTo(event.timeStamp);
         if (comparison > 0) {
@@ -445,15 +445,15 @@ public class TimeDelay extends Transformer {
         // the desired microstep, then it is time.
         return (comparison == 0 && microstep >= event.microstep);
     }
-    
+
     /** Return the value of <i>minimumDelay</i>.
      *  @return The minimum delay from the input to the output.
      *  @throws IllegalActionException If the <i>minimumDelay</i>
      *   parameter cannot be evaluated.
      */
     protected double _minimumDelay() throws IllegalActionException {
-        double minimumDelayValue = _minimumDelay; 
-        minimumDelayValue = ((DoubleToken) (minimumDelay.getToken())).doubleValue(); 
+        double minimumDelayValue = _minimumDelay;
+        minimumDelayValue = ((DoubleToken) (minimumDelay.getToken())).doubleValue();
         return minimumDelayValue;
     }
 
@@ -462,7 +462,7 @@ public class TimeDelay extends Transformer {
 
     /** The amount of delay. */
     protected double _delay;
-    
+
     /** The amount of minimumDelay. */
     protected double _minimumDelay;
 

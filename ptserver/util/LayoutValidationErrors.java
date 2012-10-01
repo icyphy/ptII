@@ -1,6 +1,6 @@
 /*
  Handle different errors during layout validation.
- 
+
  Copyright (c) 2011 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
@@ -38,7 +38,7 @@ import ptserver.actor.ProxyActor;
 /**
  * Handle different errors during layout validation.
  * @author Peter Foldes
- * @version $Id$ 
+ * @version $Id$
  * @since Ptolemy II 8.1
  * @Pt.ProposedRating Red (pdf)
  * @Pt.AcceptedRating Red (pdf)
@@ -124,7 +124,7 @@ public class LayoutValidationErrors {
 
     /**
      * Get a set of ports without or invalid targets.
-     * @return a set of ports without or invalid targets. 
+     * @return a set of ports without or invalid targets.
      */
     public HashSet<Port> getPortsWithNoOrInvalidTargets() {
         return _portsWithNoOrInvalidTargets;

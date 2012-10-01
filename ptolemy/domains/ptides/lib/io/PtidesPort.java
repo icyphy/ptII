@@ -33,9 +33,9 @@ import ptolemy.actor.lib.hoc.MirrorPort;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
-import ptolemy.kernel.CompositeEntity; 
+import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.NameDuplicationException; 
+import ptolemy.kernel.util.NameDuplicationException;
 
 /**
  *  This abstract class implements common functionality for ptides
@@ -48,29 +48,29 @@ import ptolemy.kernel.util.NameDuplicationException;
  *  @Pt.AcceptedRating
  */
 public abstract class PtidesPort extends MirrorPort {
-    
+
     /** Create a new PtidesPort with a given container and a name.
-     * @param container The container of the port. 
+     * @param container The container of the port.
      * @param name The name of the port.
      * @throws IllegalActionException If parameters cannot be set.
      * @throws NameDuplicationException If name already exists.
      */
     public PtidesPort(CompositeEntity container, String name) throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        
+
         deviceDelay = new Parameter(this, "deviceDelay");
         deviceDelay.setToken(new DoubleToken(0.0));
         deviceDelay.setTypeEquals(BaseType.DOUBLE);
-        
+
         deviceDelayBound = new Parameter(this, "deviceDelayBound");
         deviceDelayBound.setExpression("0.0");
-        deviceDelayBound.setTypeEquals(BaseType.DOUBLE); 
-        
-    } 
-     
+        deviceDelayBound.setTypeEquals(BaseType.DOUBLE);
+
+    }
+
     /** Device delay parameter that defaults to the double value 0.0. */
     public Parameter deviceDelay;
-    
+
     /** Device delay bound parameter that defaults to the double value 0.0. */
     public Parameter deviceDelayBound;
 }

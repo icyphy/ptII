@@ -115,7 +115,7 @@ public class GenerateCopyrights {
 
         _addIfPresent(copyrightsMap, "javax.servlet.http.HttpServlet",
                 "lib/javax.servlet-api-license.htm");
- 
+
         _addIfPresent(copyrightsMap, "jni.GenericJNIActor",
                 "jni/launcher/launcher-copyright.htm");
 

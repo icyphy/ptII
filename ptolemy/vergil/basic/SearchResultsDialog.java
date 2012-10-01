@@ -87,7 +87,7 @@ import ptolemy.util.MessageHandler;
  @Pt.ProposedRating Yellow (eal)
  @Pt.AcceptedRating Red (eal)
  */
-public class SearchResultsDialog extends PtolemyDialog 
+public class SearchResultsDialog extends PtolemyDialog
         implements ListSelectionListener, QueryListener {
 
     /** Construct a dialog for search results.
@@ -104,7 +104,7 @@ public class SearchResultsDialog extends PtolemyDialog
     }
 
     /** Construct a dialog for search results.
-     *  @param title The title of the dialog   
+     *  @param title The title of the dialog
      *  @param tableau The DialogTableau.
      *  @param owner The frame that, per the user, is generating the dialog.
      *  @param target The object on which the search is to be done.
@@ -115,7 +115,7 @@ public class SearchResultsDialog extends PtolemyDialog
             Entity target, Configuration configuration) {
         super(title, tableau, owner,
                 target, configuration);
-        
+
         _owner = owner;
         _target = target;
 
@@ -133,7 +133,7 @@ public class SearchResultsDialog extends PtolemyDialog
         // If you change the height, then check that a few rows can be added.
         // Also, check the setRowHeight call below.
         _resultsTable.setPreferredScrollableViewportSize(new Dimension(300, 300));
-        
+
         ListSelectionModel selectionModel = _resultsTable.getSelectionModel();
         selectionModel.addListSelectionListener(this);
 
@@ -148,7 +148,7 @@ public class SearchResultsDialog extends PtolemyDialog
         // Make the contents of the table scrollable and visible.
         JScrollPane scrollPane = new JScrollPane(_resultsTable);
         getContentPane().add(scrollPane, BorderLayout.CENTER);
-        
+
         _resultsTable.addKeyListener(new KeyAdapter() {
             public void keyReleased(KeyEvent event) {
                 int code = event.getKeyCode();
@@ -176,8 +176,8 @@ public class SearchResultsDialog extends PtolemyDialog
                 }
             }
         });
-        
-        
+
+
         pack();
         setVisible(true);
     }
@@ -185,7 +185,7 @@ public class SearchResultsDialog extends PtolemyDialog
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Execute the search. This is called to 
+    /** Execute the search. This is called to
      *  notify this dialog that one of the search options has changed.
      *  @param name The name of the query field that changed.
      */
@@ -198,7 +198,7 @@ public class SearchResultsDialog extends PtolemyDialog
         _clearHighlights();
         super.dispose();
     }
-    
+
     /** React to notice that the selection has changed.
      *  @param event The selection event.
      */
@@ -343,7 +343,7 @@ public class SearchResultsDialog extends PtolemyDialog
             }
             if (includeValues && object instanceof Settable) {
                 Settable.Visibility visible = ((Settable)object).getVisibility();
-                if (!visible.equals(Settable.NONE) && !visible.equals(Settable.EXPERT)) { 
+                if (!visible.equals(Settable.NONE) && !visible.equals(Settable.EXPERT)) {
                     String value = ((Settable)object).getExpression();
                     if (!caseSensitive) {
                         value = value.toLowerCase();
@@ -366,7 +366,7 @@ public class SearchResultsDialog extends PtolemyDialog
         }
         return result;
     }
-    
+
     /** Return a URL that points to the help page.
      *  @return A URL that points to the help page
      */
@@ -448,19 +448,19 @@ public class SearchResultsDialog extends PtolemyDialog
 
     /** The color to use for the highlight. */
     private static String _HIGHLIGHT_COLOR = "{0.6, 0.6, 1.0, 1.0}";
-    
+
     /** Highlights that have been created. */
     private Set<Attribute> _highlights = new HashSet<Attribute>();
-    
+
     /** Previous search term, if any. */
     private String _previousSearchTerm = "";
-    
+
     /** The results of the latest search. */
     private NamedObj[] _results = null;
-    
+
     /** The Search button. */
     private JButton _searchButton;
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
 
@@ -483,7 +483,7 @@ public class SearchResultsDialog extends PtolemyDialog
 
     /** The table model for the search results table. */
     class ResultsTableModel extends AbstractTableModel {
-        
+
         /** Populate the _results list.
          */
         public ResultsTableModel() {
@@ -491,7 +491,7 @@ public class SearchResultsDialog extends PtolemyDialog
         }
 
         /** Return the number of columns, which is one.
-	 *  @return the number of columns, which is 1.   
+         *  @return the number of columns, which is 1.
          */
         public int getColumnCount() {
             return 1;
@@ -505,7 +505,7 @@ public class SearchResultsDialog extends PtolemyDialog
         }
 
         /** Get the column header name.
-	 *  @return The string "Found in (select to highlight, double-click to open)".   
+         *  @return The string "Found in (select to highlight, double-click to open)".
          *  @see javax.swing.table.TableModel#getColumnName(int)
          */
         public String getColumnName(int col) {
@@ -515,7 +515,7 @@ public class SearchResultsDialog extends PtolemyDialog
         /** Get the value at a particular row and column.
          *  @param row The row.
          *  @param col The column.
-	 *  @return the value.
+         *  @return the value.
          */
         public Object getValueAt(int row, int col) {
             return _results[row];
@@ -537,7 +537,7 @@ public class SearchResultsDialog extends PtolemyDialog
         public boolean isCellEditable(int row, int column) {
             return false;
         }
-        
+
         public void setContents(Set<NamedObj> results) {
             _results = new NamedObj[results.size()];
             int i = 0;

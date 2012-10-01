@@ -82,7 +82,7 @@ int main(int argc, char *argv[]){
   if (sockfd < 0){
     fprintf(stderr,"Error: Failed to obtain socket file descriptor. sockfd=%d.\n", sockfd);
     fprintf(stderr,"To debug, look in lbnl/lib/util/utilSocket.c for the establishclientsocket() function\n");
-    fprintf(stderr,"and check for the return code %d.\n", sockfd); 
+    fprintf(stderr,"and check for the return code %d.\n", sockfd);
     fprintf(stderr,"Or, recompile libbcvtb with -DNDEBUG:\n");
     fprintf(stderr," cd $PTII/lbnl/lib/util; make clean; make C_DEFINES=-DNDEBUG\n");
     fprintf(stderr,"and then rerun the model and look in the utilSocket.log file.\n");
