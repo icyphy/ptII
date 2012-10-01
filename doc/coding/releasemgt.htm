@@ -316,9 +316,10 @@ and run make.  See the top of the file for the appropriate make command.
 First, untar the previous source release in ptII/adm/dists.  Then:
 <pre>
 cd $PTII/adm/dists
-diff -r ptII8.0.1 ptII8.1.devel > /tmp/pt.diffs
-grep Copyright `egrep "^Only in ptII8.1.devel" /tmp/pt.diffs | \
-   grep.java | sed 's@ptII8.1.devel/@@' | awk '{print substr($3,1,length($3)-1) "/" $4}'`
+diff -r ptII8.0.1 ptII9.0.devel > /tmp/pt.diffs
+cd $PTII
+grep Copyright `egrep "^Only in ptII9.0.devel" /tmp/pt.diffs | \
+   grep .java | sed 's@ptII9.0.devel/@@' | awk '{print substr($3,1,length($3)-1) "/" $4}'`
 </pre>
 
 <li> Run <CODE>$PTII/adm/bin/fixsince</CODE> (not shipped with

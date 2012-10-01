@@ -59,7 +59,7 @@ do
     case $opt in
 	d) 	set -x;;
 	n) 	printonly=yes;;
-	\?)	echo "$0: Usage: $0 [-p] [-x] [filenames . . .]"
+	\?)	echo "$0: Usage: $0 [-n] [-x] [filenames . . .]"
 		echo " -n  Print only, do not modify any files "
 		echo " -d  debug"
 		exit 3;;
@@ -137,14 +137,14 @@ search $@
 # EVERY_YEAR: update the regex to get last-year's changes
 
 doit() {
-    sed 's/Copyright (c) \(200[0-9]\)-20[01][0-9] /Copyright (c) \1-2012 /' \
+    sed 's/Copyright (c) \(20[01][0-9]\)-20[01][0-9] /Copyright (c) \1-2012 /' \
 	    $file > /tmp/fixcopyright.tmp	
     diff $file /tmp/fixcopyright.tmp	
 }
 
 # EVERY_YEAR: update the regex to get last-year's changes
 
-EGREPMATCH='Copyright \(c\) 200[0-9]-20[01][0-9]'
+EGREPMATCH='Copyright \(c\) 20[01][0-9]-20[01][0-9]'
 LOGMESSAGE="Changed copyright to 2012"
 
 search $@
@@ -171,6 +171,8 @@ doit() {
 
 EGREPMATCH="Copyright \(c\) 200[0-9] "
 LOGMESSAGE="Changed copyright to 2012"
+
+search $@
 
 # EVERY_YEAR: update the regex to get last-year's changes
 

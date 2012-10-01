@@ -178,31 +178,17 @@ release_newton_remote4_test:
 	$(MAKE) USER=cxh PTIIHOME=/cygdrive/c/tmp/cxh/ptII9.0.devel COMPRESS=gzip TAR=tar remote4_test REMOTE4PTIIDIST=c:/tmp/cxh/ptII9.0.devel/adm/gen-7.0/test/ptII$(VERSION)
 
 ####
-release_fortytwo:
-	make USER=cxh PTIIHOME=/tmp/cxh/ptII9.0.devel COMPRESS=gzip TAR=tar JAR=/usr/java/default/bin/jar clean all src.jar
-
-release_fortytwo_update_ftp:
-	make USER=cxh PTIIHOME=/tmp/cxh/ptII9.0.devel COMPRESS=gzip TAR=tar JAR=/usr/java/default/bin/jar update_ftp
-
-
-release_fortytwo_setup:
-	make USER=cxh PTIIHOME=/tmp/cxh/ptII9.0.devel COMPRESS=gzip TAR=tar JAR=/usr/java/default/bin/jar L4J_DIR=$(PTII)/vendors/launch4j PTCYGPATH=`pwd`/ptcygpath setup
-
-release_fortytwo_remote4_test:
-	make USER=cxh PTIIHOME=/tmp/cxh/ptII9.0.devel COMPRESS=gzip TAR=tar JAR=/usr/java/default/bin/jar remote4_test
-
-####
 release_sisyphus:
-	make USER=cxh PTIIHOME=/home/cxh/src/ptII9.0.devel PTIIADM=/home/cxh/src/ptII9.0.devel/adm TAR=/bin/tar JAR=/usr/java/default/bin/jar clean all src.jar
+	make USER=cxh PTIIHOME=/home/cxh/src/ptII9.0.devel PTIIADM=/home/cxh/src/ptII9.0.devel/adm TAR=/bin/tar JAR=/etc/alternatives/jar clean all src.jar
 
 release_sisyphus_setup:
-	make USER=cxh PTIIHOME=/home/cxh/src/ptII9.0.devel PTIIADM=/home/cxh/src/ptII9.0.devel/adm TAR=/bin/tar JAR=/usr/java/default/bin/jar setup
+	make USER=cxh PTIIHOME=/home/cxh/src/ptII9.0.devel PTIIADM=/home/cxh/src/ptII9.0.devel/adm TAR=/bin/tar JAR=/etc/alternatives/jar setup
 
 release_sisyphus_remote4_test:
-	make USER=cxh PTIIHOME=/home/cxh/src/ptII9.0.devel PTIIADM=/home/cxh/src/ptII9.0.devel/adm TAR=/bin/tar JAR=/usr/java/default/bin/jar remote4_Test
+	make USER=cxh PTIIHOME=/home/cxh/src/ptII9.0.devel PTIIADM=/home/cxh/src/ptII9.0.devel/adm TAR=/bin/tar JAR=/etc/alternatives/jar remote4_Test
 
 release_sisyphus_update_ftp:
-	make USER=cxh PTIIHOME=/home/cxh/src/ptII9.0.devel PTIIADM=/home/cxh/src/ptII9.0.devel/adm TAR=/bin/tar JAR=/usr/java/default/bin/jar update_ftp
+	make USER=cxh PTIIHOME=/home/cxh/src/ptII9.0.devel PTIIADM=/home/cxh/src/ptII9.0.devel/adm TAR=/bin/tar JAR=/etc/alternatives/jar update_ftp
 
 ####
 release_windows:
