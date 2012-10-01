@@ -1,7 +1,7 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="Indoor Localization Map" class="ptolemy.actor.TypedCompositeActor">
+<entity name="IndoorLocalizationMap" class="ptolemy.actor.TypedCompositeActor">
     <property name="Image" class="ptolemy.vergil.kernel.attributes.ImageAttribute">
         <property name="source" class="ptolemy.data.expr.FileParameter" value="$PTII/org/ptolemy/ptango/demo/guidance/pages/labFloorplan.png">
         </property>
