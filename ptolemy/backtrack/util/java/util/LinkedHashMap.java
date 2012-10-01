@@ -285,7 +285,7 @@ public class LinkedHashMap extends HashMap implements Rollbackable {
      * @param m a Map whose key / value pairs will be put into
      * the new HashMap.  <b>NOTE: key / value pairs
      * are not cloned in this constructor.</b>
-     * @throws NullPointerException if m is null
+     * @exception NullPointerException if m is null
      */
     public LinkedHashMap(Map m) {
         super(m);
@@ -296,7 +296,7 @@ public class LinkedHashMap extends HashMap implements Rollbackable {
      * Construct a new insertion-ordered LinkedHashMap with a specific
      * inital capacity and default load factor of 0.75.
      * @param initialCapacity the initial capacity of this HashMap (&gt;= 0)
-     * @throws IllegalArgumentException if (initialCapacity &lt; 0)
+     * @exception IllegalArgumentException if (initialCapacity &lt; 0)
      */
     public LinkedHashMap(int initialCapacity) {
         super(initialCapacity);
@@ -308,7 +308,7 @@ public class LinkedHashMap extends HashMap implements Rollbackable {
      * inital capacity and load factor.
      * @param initialCapacity the initial capacity (&gt;= 0)
      * @param loadFactor the load factor (&gt; 0, not NaN)
-     * @throws IllegalArgumentException if (initialCapacity &lt; 0) ||
+     * @exception IllegalArgumentException if (initialCapacity &lt; 0) ||
      * ! (loadFactor &gt; 0.0)
      */
     public LinkedHashMap(int initialCapacity, float loadFactor) {
@@ -322,7 +322,7 @@ public class LinkedHashMap extends HashMap implements Rollbackable {
      * @param initialCapacity the initial capacity (&gt;=0)
      * @param loadFactor the load factor (&gt;0, not NaN)
      * @param accessOrder true for access-order, false for insertion-order
-     * @throws IllegalArgumentException if (initialCapacity &lt; 0) ||
+     * @exception IllegalArgumentException if (initialCapacity &lt; 0) ||
      * ! (loadFactor &gt; 0.0)
      */
     public LinkedHashMap(int initialCapacity, float loadFactor,
@@ -490,8 +490,8 @@ public class LinkedHashMap extends HashMap implements Rollbackable {
             /**
              * Returns the next element in the Iterator's sequential view.
              * @return the next element
-             * @throws ConcurrentModificationException if the HashMap was modified
-             * @throws NoSuchElementException if there is none
+             * @exception ConcurrentModificationException if the HashMap was modified
+             * @exception NoSuchElementException if there is none
              */
             public Object next() {
                 if (getKnownMod() != getModCount()) {
@@ -509,8 +509,8 @@ public class LinkedHashMap extends HashMap implements Rollbackable {
             /**
              * Removes from the backing HashMap the last element which was fetched
              * with the <code>next()</code> method.
-             * @throws ConcurrentModificationException if the HashMap was modified
-             * @throws IllegalStateException if called when there is no last element
+             * @exception ConcurrentModificationException if the HashMap was modified
+             * @exception IllegalStateException if called when there is no last element
              */
             public void remove() {
                 if (getKnownMod() != getModCount()) {

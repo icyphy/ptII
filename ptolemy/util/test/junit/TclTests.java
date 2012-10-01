@@ -280,7 +280,7 @@ public class TclTests {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                      protected variables                    ////
+    ////                         protected variables               ////
 
     /**
      * A special string that is passed when there are no tcl tests. This is
@@ -290,7 +290,7 @@ public class TclTests {
 
 
     ///////////////////////////////////////////////////////////////////
-    ////                      private variables                    ////
+    ////                         private variables                 ////
 
     /** The tcl.lang.Interp.eval(String, int) method. */
     private static Method _evalMethod;

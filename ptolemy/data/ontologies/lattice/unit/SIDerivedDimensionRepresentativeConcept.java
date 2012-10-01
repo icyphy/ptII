@@ -156,7 +156,7 @@ public class SIDerivedDimensionRepresentativeConcept extends
     /** Return the RecordToken for the dimensions's base unit specification
      *  contained in the baseUnitRecord parameter.
      *  @return The base unit specification RecordToken.
-     *  @throws IllegalActionException Thrown if there is a problem getting the
+     *  @exception IllegalActionException Thrown if there is a problem getting the
      *   RecordToken.
      */
     private RecordToken getUnitRecordToken() throws IllegalActionException {

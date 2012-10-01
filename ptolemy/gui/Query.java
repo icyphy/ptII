@@ -2513,7 +2513,7 @@ public class Query extends JPanel {
 
             JScrollBar scrollBar = super.getHorizontalScrollBar();
             if (scrollBar != null) {
-                if(scrollBar.isDisplayable()  && scrollBar.getHeight() > 0) {
+                if (scrollBar.isDisplayable()  && scrollBar.getHeight() > 0) {
                     Query._textAreaSetRowsAndRepackParent(textArea, 2);
                 }
             }

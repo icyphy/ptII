@@ -67,7 +67,7 @@ public class EntityElement extends PositionableElement {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                public methods                             ////
+    ////                         public methods                    ////
 
     /** Create a representation and add it to the passed container.
      *

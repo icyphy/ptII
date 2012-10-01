@@ -108,9 +108,9 @@ public class RunCompositeActor extends LifeCycleManager {
      *  workspace directory.  You should set the local director or
      *  executive director before attempting to send data to the actor or
      *  to execute it. Increment the version number of the workspace.
-     *  @throws NameDuplicationException If there is already a parameter with
+     *  @exception NameDuplicationException If there is already a parameter with
      *   name firingCountLimit.
-     *  @throws IllegalActionException If the firingCountLimit cannot be
+     *  @exception IllegalActionException If the firingCountLimit cannot be
      *   initialized.
      */
     public RunCompositeActor() throws IllegalActionException, NameDuplicationException {
@@ -126,9 +126,9 @@ public class RunCompositeActor extends LifeCycleManager {
      *  or to execute it. Add the actor to the workspace directory.
      *  Increment the version number of the workspace.
      *  @param workspace The workspace that will list the actor.
-     *  @throws NameDuplicationException If there is already a parameter with
+     *  @exception NameDuplicationException If there is already a parameter with
      *   name firingCountLimit.
-     *  @throws IllegalActionException If the firingCountLimit cannot be
+     *  @exception IllegalActionException If the firingCountLimit cannot be
      *   initialized.
      */
     public RunCompositeActor(Workspace workspace) throws IllegalActionException, NameDuplicationException {
@@ -320,9 +320,9 @@ public class RunCompositeActor extends LifeCycleManager {
     ////                         private methods                   ////
 
     /** Set the class name and create the parameters.
-     *  @throws NameDuplicationException If there is already a parameter with
+     *  @exception NameDuplicationException If there is already a parameter with
      *   name firingCountLimit.
-     *  @throws IllegalActionException If the firingCountLimit cannot be
+     *  @exception IllegalActionException If the firingCountLimit cannot be
      *   initialized.
      */
     private void _init() throws IllegalActionException, NameDuplicationException {

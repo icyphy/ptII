@@ -107,8 +107,8 @@ public class Director extends Attribute implements Executable {
     /** Construct a director in the default workspace with an empty string
      *  as its name. The director is added to the list of objects in
      *  the workspace. Increment the version number of the workspace.
-     *  @throws NameDuplicationException If construction of Time objects fails.
-     *  @throws IllegalActionException If construction of Time objects fails.
+     *  @exception NameDuplicationException If construction of Time objects fails.
+     *  @exception IllegalActionException If construction of Time objects fails.
      */
     public Director() throws IllegalActionException, NameDuplicationException {
         super();
@@ -141,8 +141,8 @@ public class Director extends Attribute implements Executable {
      *  The director is added to the list of objects in the workspace.
      *  Increment the version number of the workspace.
      *  @param workspace The workspace of this object.
-     *  @throws NameDuplicationException If construction of Time objects fails.
-     *  @throws IllegalActionException If construction of Time objects fails.
+     *  @exception NameDuplicationException If construction of Time objects fails.
+     *  @exception IllegalActionException If construction of Time objects fails.
      */
     public Director(Workspace workspace) throws IllegalActionException,
             NameDuplicationException {
@@ -660,7 +660,7 @@ public class Director extends Attribute implements Executable {
      *  set. Otherwise, return the current time of the enclosing director,
      *  if there is one, and return a Time with value 0.0 otherwise.
      *  @return the start time parameter value.
-     *  @throws IllegalActionException If the executive director throws it.
+     *  @exception IllegalActionException If the executive director throws it.
      */
     public final Time getModelStartTime() throws IllegalActionException {
 
@@ -691,7 +691,7 @@ public class Director extends Attribute implements Executable {
     /** Return the stop time parameter value, if it has been set,
      *  and otherwise, return a time with value Double.POSITIVE_INFINITY.
      *  @return the stop time parameter value.
-     * @throws IllegalActionException
+     * @exception IllegalActionException
      */
     public final Time getModelStopTime() throws IllegalActionException {
         if (_stopTime != null) {
@@ -1783,8 +1783,8 @@ public class Director extends Attribute implements Executable {
     }
 
     /** Initialize parameters. This is called by the constructor.
-     *  @throws IllegalActionException
-     *  @throws NameDuplicationException
+     *  @exception IllegalActionException
+     *  @exception NameDuplicationException
      */
     private void _initializeParameters() throws IllegalActionException,
             NameDuplicationException {

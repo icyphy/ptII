@@ -337,7 +337,7 @@ String tidied, x;
                 int prefixLength;
                 int suffixLength;
 
-                if(mustBeLong) {
+                if (mustBeLong) {
                     suffixLength = 1;
                 } else {
                     suffixLength = 0;
@@ -347,7 +347,7 @@ String tidied, x;
                     // Input is a hex number.
                     radix = 16;
                     prefixLength = 2;
-                } else if(x.startsWith("0")) {
+                } else if (x.startsWith("0")) {
                     // Input is an octal number.
                     radix = 8;
                     prefixLength = 0;
@@ -389,14 +389,14 @@ String tidied, x;
   private boolean jj_2_1(int xla) {
     jj_la = xla; jj_lastpos = jj_scanpos = token;
     try { return !jj_3_1(); }
-    catch(LookaheadSuccess ls) { return true; }
+    catch (LookaheadSuccess ls) { return true; }
     finally { jj_save(0, xla); }
   }
 
   private boolean jj_2_2(int xla) {
     jj_la = xla; jj_lastpos = jj_scanpos = token;
     try { return !jj_3_2(); }
-    catch(LookaheadSuccess ls) { return true; }
+    catch (LookaheadSuccess ls) { return true; }
     finally { jj_save(1, xla); }
   }
 
@@ -517,7 +517,7 @@ String tidied, x;
   }
   /** Constructor with InputStream and supplied encoding */
   public UParser(java.io.InputStream stream, String encoding) {
-    try { jj_input_stream = new SimpleCharStream(stream, encoding, 1, 1); } catch(java.io.UnsupportedEncodingException e) { throw new RuntimeException(e); }
+    try { jj_input_stream = new SimpleCharStream(stream, encoding, 1, 1); } catch (java.io.UnsupportedEncodingException e) { throw new RuntimeException(e); }
     token_source = new UParserTokenManager(jj_input_stream);
     token = new Token();
     jj_ntk = -1;
@@ -532,7 +532,7 @@ String tidied, x;
   }
   /** Reinitialise. */
   public void ReInit(java.io.InputStream stream, String encoding) {
-    try { jj_input_stream.ReInit(stream, encoding, 1, 1); } catch(java.io.UnsupportedEncodingException e) { throw new RuntimeException(e); }
+    try { jj_input_stream.ReInit(stream, encoding, 1, 1); } catch (java.io.UnsupportedEncodingException e) { throw new RuntimeException(e); }
     token_source.ReInit(jj_input_stream);
     token = new Token();
     jj_ntk = -1;
@@ -745,7 +745,7 @@ String tidied, x;
         }
         p = p.next;
       } while (p != null);
-      } catch(LookaheadSuccess ls) { }
+      } catch (LookaheadSuccess ls) { }
     }
     jj_rescan = false;
   }

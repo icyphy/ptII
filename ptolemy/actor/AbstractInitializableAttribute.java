@@ -56,8 +56,8 @@ public abstract class AbstractInitializableAttribute extends Attribute
     /** Construct an instance of the attribute.
      *  @param container The container.
      *  @param name The name.
-     *  @throws IllegalActionException If the superclass throws it.
-     *  @throws NameDuplicationException If the superclass throws it.
+     *  @exception IllegalActionException If the superclass throws it.
+     *  @exception NameDuplicationException If the superclass throws it.
      */
     public AbstractInitializableAttribute(NamedObj container, String name)
             throws IllegalActionException, NameDuplicationException {

@@ -109,7 +109,7 @@ public class ArrayList extends AbstractList implements List, RandomAccess,
     /**
      * Construct a new ArrayList with the supplied initial capacity.
      * @param capacity initial capacity of this ArrayList
-     * @throws IllegalArgumentException if capacity is negative
+     * @exception IllegalArgumentException if capacity is negative
      */
     public ArrayList(int capacity) {
         // Must explicitly check, to get correct exception.
@@ -131,7 +131,7 @@ public class ArrayList extends AbstractList implements List, RandomAccess,
      * in the supplied Collection. The initial capacity is 110% of the
      * Collection's size.
      * @param c the collection whose elements will initialize this list
-     * @throws NullPointerException if c is null
+     * @exception NullPointerException if c is null
      */
     public ArrayList(Collection c) {
         this((int) (c.size() * 1.1f));
@@ -260,9 +260,9 @@ public class ArrayList extends AbstractList implements List, RandomAccess,
      * of this List, then size() index will be set to null.
      * @param a the passed-in Array
      * @return an array representation of this list
-     * @throws ArrayStoreException if the runtime type of a does not allow
+     * @exception ArrayStoreException if the runtime type of a does not allow
      * an element in this list
-     * @throws NullPointerException if a is null
+     * @exception NullPointerException if a is null
      */
     public Object[] toArray(Object[] a) {
         if (a.length < size) {
@@ -278,7 +278,7 @@ public class ArrayList extends AbstractList implements List, RandomAccess,
     /**
      * Retrieves the element at the user-supplied index.
      * @param index the index of the element we are fetching
-     * @throws IndexOutOfBoundsException if index &lt; 0 || index &gt;= size()
+     * @exception IndexOutOfBoundsException if index &lt; 0 || index &gt;= size()
      */
     public Object get(int index) {
         checkBoundExclusive(index);
@@ -291,7 +291,7 @@ public class ArrayList extends AbstractList implements List, RandomAccess,
      * @param index the index at which the element is being set
      * @param e the element to be set
      * @return the element previously at the specified index
-     * @throws IndexOutOfBoundsException if index &lt; 0 || index &gt;= 0
+     * @exception IndexOutOfBoundsException if index &lt; 0 || index &gt;= 0
      */
     public Object set(int index, Object e) {
         checkBoundExclusive(index);
@@ -321,7 +321,7 @@ public class ArrayList extends AbstractList implements List, RandomAccess,
      * The element, e, can be an object of any type or null.
      * @param index the index at which the element is being added
      * @param e the item being added
-     * @throws IndexOutOfBoundsException if index &lt; 0 || index &gt; size()
+     * @exception IndexOutOfBoundsException if index &lt; 0 || index &gt; size()
      */
     public void add(int index, Object e) {
         checkBoundInclusive(index);
@@ -341,7 +341,7 @@ public class ArrayList extends AbstractList implements List, RandomAccess,
      * Removes the element at the user-supplied index.
      * @param index the index of the element to be removed
      * @return the removed Object
-     * @throws IndexOutOfBoundsException if index &lt; 0 || index &gt;= size()
+     * @exception IndexOutOfBoundsException if index &lt; 0 || index &gt;= size()
      */
     public Object remove(int index) {
         checkBoundExclusive(index);
@@ -375,7 +375,7 @@ public class ArrayList extends AbstractList implements List, RandomAccess,
      * of any type, as well as null values.
      * @param c a Collection containing elements to be added to this List
      * @return true if the list was modified, in other words c is not empty
-     * @throws NullPointerException if c is null
+     * @exception NullPointerException if c is null
      */
     public boolean addAll(Collection c) {
         return addAll(size, c);
@@ -387,8 +387,8 @@ public class ArrayList extends AbstractList implements List, RandomAccess,
      * as null values.
      * @param index the index at which the elements will be inserted
      * @param c the Collection containing the elements to be inserted
-     * @throws IndexOutOfBoundsException if index &lt; 0 || index &gt; 0
-     * @throws NullPointerException if c is null
+     * @exception IndexOutOfBoundsException if index &lt; 0 || index &gt; 0
+     * @exception NullPointerException if c is null
      */
     public boolean addAll(int index, Collection c) {
         checkBoundInclusive(index);
@@ -415,7 +415,7 @@ public class ArrayList extends AbstractList implements List, RandomAccess,
      * Does nothing when toIndex is equal to fromIndex.
      * @param fromIndex the first index which will be removed
      * @param toIndex one greater than the last index which will be removed
-     * @throws IndexOutOfBoundsException if fromIndex &gt; toIndex
+     * @exception IndexOutOfBoundsException if fromIndex &gt; toIndex
      */
     protected void removeRange(int fromIndex, int toIndex) {
         int change = toIndex - fromIndex;
@@ -432,7 +432,7 @@ public class ArrayList extends AbstractList implements List, RandomAccess,
     /**
      * Checks that the index is in the range of possible elements (inclusive).
      * @param index the index to check
-     * @throws IndexOutOfBoundsException if index &gt; size
+     * @exception IndexOutOfBoundsException if index &gt; size
      */
     private void checkBoundInclusive(int index) {
         // Implementation note: we do not check for negative ranges here, since
@@ -447,7 +447,7 @@ public class ArrayList extends AbstractList implements List, RandomAccess,
     /**
      * Checks that the index is in the range of existing elements (exclusive).
      * @param index the index to check
-     * @throws IndexOutOfBoundsException if index &gt;= size
+     * @exception IndexOutOfBoundsException if index &gt;= size
      */
     private void checkBoundExclusive(int index) {
         // Implementation note: we do not check for negative ranges here, since
@@ -465,7 +465,7 @@ public class ArrayList extends AbstractList implements List, RandomAccess,
      * time while the default behavior of AbstractList would be quadratic.
      * @param c the collection to filter out
      * @return true if this list changed
-     * @throws NullPointerException if c is null
+     * @exception NullPointerException if c is null
      */
     boolean removeAllInternal(Collection c) {
         int i;
@@ -494,7 +494,7 @@ public class ArrayList extends AbstractList implements List, RandomAccess,
      * time while the default behavior of AbstractList would be quadratic.
      * @param c the collection to filter by
      * @return true if this vector changed
-     * @throws NullPointerException if c is null
+     * @exception NullPointerException if c is null
      * @since 1.2
      */
     boolean retainAllInternal(Collection c) {
@@ -521,7 +521,7 @@ public class ArrayList extends AbstractList implements List, RandomAccess,
     /**
      * Serializes this object to the given stream.
      * @param s the stream to write to
-     * @throws IOException if the underlying stream fails
+     * @exception IOException if the underlying stream fails
      * @serialData the size field (int), the length of the backing array
      * (int), followed by its elements (Objects) in proper order.
      */
@@ -541,8 +541,8 @@ public class ArrayList extends AbstractList implements List, RandomAccess,
     /**
      * Deserializes this object from the given stream.
      * @param s the stream to read from
-     * @throws ClassNotFoundException if the underlying stream fails
-     * @throws IOException if the underlying stream fails
+     * @exception ClassNotFoundException if the underlying stream fails
+     * @exception IOException if the underlying stream fails
      * @serialData the size field (int), the length of the backing array
      * (int), followed by its elements (Objects) in proper order.
      */

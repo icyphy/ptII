@@ -177,7 +177,7 @@ public class TypeAttribute extends Parameter {
                 }
             }
             NamedObj previousContainer = getContainer();
-            if (container != previousContainer){
+            if (container != previousContainer) {
                 // Container is changing. Restore the previous
                 // container to its previous type, and record
                 // the previous type of the new container.

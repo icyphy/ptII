@@ -115,7 +115,7 @@ public class AbsoluteValue extends Transformer {
      *  Otherwise, if the argument type is complex, then return
      *  double. Otherwise, return the argument type.
      *  @return The absolute value of the input.
-     *  @throws IllegalActionException If there is no absolute value
+     *  @exception IllegalActionException If there is no absolute value
      *   operation for the specified token.
      */
     private Token _absoluteValue(Token input) throws IllegalActionException {

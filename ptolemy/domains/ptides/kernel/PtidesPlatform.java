@@ -220,7 +220,7 @@ public class PtidesPlatform extends MirrorComposite {
 
     /** Read inputs from ParameterPorts and update the paramter of the
      *  associatedPort.
-     *  @throws IllegalActionException If reading from parameter associated
+     *  @exception IllegalActionException If reading from parameter associated
      *  with port fails.
      */
     protected void _transferPortParameterInputs() throws IllegalActionException {
@@ -531,7 +531,7 @@ public class PtidesPlatform extends MirrorComposite {
         /** Return a specialized ParameterPort.
          * @param name The name of the port to create.
          * @return The new ParameterPort.
-         * @throws NameDuplicationException Thrown if the container already has
+         * @exception NameDuplicationException Thrown if the container already has
          *  a port with this name.
          */
         public Port newParameterPort(String name) throws NameDuplicationException {
@@ -816,7 +816,7 @@ public class PtidesPlatform extends MirrorComposite {
 
         /** Get the PtidesDirector that is contained by the PtidesComposite.
          *  @return The PtidesDirector.
-         *  @throws IllegalActionException If no PtidesDirector is contained.
+         *  @exception IllegalActionException If no PtidesDirector is contained.
          */
         private Director _getEmbeddedPtidesDirector()
                 throws IllegalActionException {

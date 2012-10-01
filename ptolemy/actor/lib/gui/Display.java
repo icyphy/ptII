@@ -423,7 +423,7 @@ public class Display extends TypedAtomicActor implements PortablePlaceable {
      *  @param i The channel
      *  @return A string representation of the input, or null
      *   if there is nothing to display.
-     *  @throws IllegalActionException If reading the input fails.
+     *  @exception IllegalActionException If reading the input fails.
      */
     protected String _getInputString(int i) throws IllegalActionException {
         if (input.hasToken(i)) {

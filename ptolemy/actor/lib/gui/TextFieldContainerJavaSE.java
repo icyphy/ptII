@@ -34,7 +34,7 @@ import ptolemy.data.Token;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// TextFieldContainerJavaSE
 /**
 JavaSE implementation of the TextFieldContainerInterface.

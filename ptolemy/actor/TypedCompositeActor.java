@@ -724,7 +724,7 @@ public class TypedCompositeActor extends CompositeActor implements TypedActor {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                      private methods                      ////
+    ////                         private methods                   ////
 
     // If this composite actor is opaque, perform static type checking.
     // Specifically, this method scans all the connections within this

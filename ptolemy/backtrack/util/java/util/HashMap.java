@@ -335,8 +335,8 @@ public class HashMap extends AbstractMap implements Map, Cloneable,
         /**
          * Returns the next element in the Iterator's sequential view.
          * @return the next element
-         * @throws ConcurrentModificationException if the HashMap was modified
-         * @throws NoSuchElementException if there is none
+         * @exception ConcurrentModificationException if the HashMap was modified
+         * @exception NoSuchElementException if there is none
          */
         public Object next() {
             if (knownMod != getModCount()) {
@@ -364,8 +364,8 @@ public class HashMap extends AbstractMap implements Map, Cloneable,
         /**
          * Removes from the backing HashMap the last element which was fetched
          * with the <code>next()</code> method.
-         * @throws ConcurrentModificationException if the HashMap was modified
-         * @throws IllegalStateException if called when there is no last element
+         * @exception ConcurrentModificationException if the HashMap was modified
+         * @exception IllegalStateException if called when there is no last element
          */
         public void remove() {
             if (knownMod != getModCount()) {
@@ -594,7 +594,7 @@ public class HashMap extends AbstractMap implements Map, Cloneable,
      * Every element in Map m will be put into this new HashMap.
      * @param m a Map whose key / value pairs will be put into the new HashMap.
      * <b>NOTE: key / value pairs are not cloned in this constructor.</b>
-     * @throws NullPointerException if m is null
+     * @exception NullPointerException if m is null
      */
     public HashMap(Map m) {
         this(Math.max(m.size() * 2, DEFAULT_CAPACITY), DEFAULT_LOAD_FACTOR);
@@ -605,7 +605,7 @@ public class HashMap extends AbstractMap implements Map, Cloneable,
      * Construct a new HashMap with a specific inital capacity and
      * default load factor of 0.75.
      * @param initialCapacity the initial capacity of this HashMap (&gt;=0)
-     * @throws IllegalArgumentException if (initialCapacity &lt; 0)
+     * @exception IllegalArgumentException if (initialCapacity &lt; 0)
      */
     public HashMap(int initialCapacity) {
         this(initialCapacity, DEFAULT_LOAD_FACTOR);
@@ -615,7 +615,7 @@ public class HashMap extends AbstractMap implements Map, Cloneable,
      * Construct a new HashMap with a specific inital capacity and load factor.
      * @param initialCapacity the initial capacity (&gt;=0)
      * @param loadFactor the load factor (&gt; 0, not NaN)
-     * @throws IllegalArgumentException if (initialCapacity &lt; 0) ||
+     * @exception IllegalArgumentException if (initialCapacity &lt; 0) ||
      * ! (loadFactor &gt; 0.0)
      */
     public HashMap(int initialCapacity, float loadFactor) {
@@ -1215,7 +1215,7 @@ public class HashMap extends AbstractMap implements Map, Cloneable,
     /**
      * Serializes this object to the given stream.
      * @param s the stream to write to
-     * @throws IOException if the underlying stream fails
+     * @exception IOException if the underlying stream fails
      * @serialData the <i>capacity</i>(int) that is the length of the
      * bucket array, the <i>size</i>(int) of the hash map
      * are emitted first.  They are followed by size entries,
@@ -1236,8 +1236,8 @@ public class HashMap extends AbstractMap implements Map, Cloneable,
     /**
      * Deserializes this object from the given stream.
      * @param s the stream to read from
-     * @throws ClassNotFoundException if the underlying stream fails
-     * @throws IOException if the underlying stream fails
+     * @exception ClassNotFoundException if the underlying stream fails
+     * @exception IOException if the underlying stream fails
      * @serialData the <i>capacity</i>(int) that is the length of the
      * bucket array, the <i>size</i>(int) of the hash map
      * are emitted first.  They are followed by size entries,

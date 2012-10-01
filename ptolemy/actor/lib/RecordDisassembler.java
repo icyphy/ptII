@@ -190,7 +190,7 @@ public class RecordDisassembler extends TypedAtomicActor {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                     protected methods                     ////
+    ////                         protected methods                 ////
 
     /** Set up and return three type constraints.
      *  <ul>

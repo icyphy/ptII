@@ -1728,7 +1728,7 @@ public class FSMActor extends CompositeEntity implements TypedActor,
      *  @param state The state to check for immediate transitions.
      *  @return true If there are no immediate transitions or if
      *   they are all disabled.
-     * @throws IllegalActionException If the guard expression cannot be parsed
+     * @exception IllegalActionException If the guard expression cannot be parsed
      *  or if it cannot yet be evaluated.
      */
     protected boolean _areAllImmediateTransitionsDisabled(State state)
@@ -1951,7 +1951,7 @@ public class FSMActor extends CompositeEntity implements TypedActor,
      *  @param transitionList The candidate transitions.
      *  @param immediateOnly If true, look only at immediate
      *   transitions from the current state.
-     *  @throws IllegalActionException If something goes wrong.
+     *  @exception IllegalActionException If something goes wrong.
      */
     protected void _chooseTransitions(List<Transition> transitionList,
             boolean immediateOnly) throws IllegalActionException {
@@ -2171,7 +2171,7 @@ public class FSMActor extends CompositeEntity implements TypedActor,
      *  transitions.
      *  @return The state that will be the current state after
      *   all chosen transitions are taken.
-     * @throws IllegalActionException If no controller is found.
+     * @exception IllegalActionException If no controller is found.
      */
     protected State _destinationState() throws IllegalActionException {
         Transition chosenTransition = _lastChosenTransitions.get(_currentState);
@@ -2264,7 +2264,7 @@ public class FSMActor extends CompositeEntity implements TypedActor,
 
     /** Initialize the refinements of the specified state.
      *  @param state The state.
-     *  @throws IllegalActionException If initialization fails.
+     *  @exception IllegalActionException If initialization fails.
      */
     protected void _initializeRefinements(State state)
             throws IllegalActionException {
@@ -2955,7 +2955,7 @@ public class FSMActor extends CompositeEntity implements TypedActor,
      *  it returns false (the transition is not (yet) enabled).
      *  @param transition The transition to check.
      *  @return True if the transition is enabled.
-     *  @throws IllegalActionException If the guard expression cannot be parsed.
+     *  @exception IllegalActionException If the guard expression cannot be parsed.
      */
     private boolean _isTransitionEnabled(Transition transition)
             throws IllegalActionException {

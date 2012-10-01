@@ -384,7 +384,7 @@ public class PtidesPreemptiveEDFDirector extends Director {
 
     /** Generate actor function prototypes.
      *  @return actor function prototype methos for each entity.
-     * @throws IllegalActionException
+     * @exception IllegalActionException
      */
     protected String _generateActorFuncProtoCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
@@ -498,7 +498,7 @@ public class PtidesPreemptiveEDFDirector extends Director {
 
     /** Traverse all the entities in the model and place them in the sensors
      *  and actuators variables.
-     * @throws IllegalActionException Thrown in derived classes.
+     * @exception IllegalActionException Thrown in derived classes.
      */
     protected void _modelStaticAnalysis() throws IllegalActionException {
 

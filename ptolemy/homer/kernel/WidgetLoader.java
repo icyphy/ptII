@@ -41,7 +41,7 @@ import ptolemy.homer.widgets.NamedObjectWidgetInterface;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// WidgetLoader
 
 /**
@@ -77,8 +77,8 @@ public class WidgetLoader {
      * Usually targetType is the same as namedObject's type.
      * @return A new widget instance for the targetType and namedObject.  The
      * returned instance implements {@link NamedObjectWidgetInterface}.
-     * @throws IllegalActionException if there is a problem loading a object widget or icon.
-     * @throws NameDuplicationException if there is a problem loading an icon.
+     * @exception IllegalActionException if there is a problem loading a object widget or icon.
+     * @exception NameDuplicationException if there is a problem loading an icon.
      */
     public static Widget loadWidget(Scene scene, PositionableElement element,
             Class<?> targetType) throws IllegalActionException,
@@ -107,7 +107,7 @@ public class WidgetLoader {
      * Usually targetType is the same as namedObject's type.
      * @return A new widget instance for the targetType and namedObject.  The
      * returned instance implements {@link NamedObjectWidgetInterface}.
-     * @throws IllegalActionException if there is a problem loading a object widget.
+     * @exception IllegalActionException if there is a problem loading a object widget.
      */
     private static Widget _getObjectWidget(Scene scene,
             PositionableElement element, Class<?> targetType)

@@ -49,7 +49,7 @@ public final class HomerConstants {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                public variables                           ////
+    ////                         public variables                  ////
 
     /** The name of the attribute that indicates if a widget is enabled.
      */

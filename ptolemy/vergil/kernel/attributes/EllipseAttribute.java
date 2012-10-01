@@ -72,7 +72,7 @@ public class EllipseAttribute extends FilledShapeAttribute {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         public methods                 ////
+    ////                         public methods                    ////
 
     /** Clone the object into the specified workspace. The new object is
      *  <i>not</i> added to the directory of that workspace (you must do this

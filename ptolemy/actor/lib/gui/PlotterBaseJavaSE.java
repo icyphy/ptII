@@ -50,7 +50,7 @@ import ptolemy.plot.Plot;
 import ptolemy.plot.PlotBox;
 import ptolemy.plot.PlotBoxInterface;
 
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// PlotterBaseJavaSE
 
 /**
@@ -310,7 +310,7 @@ public class PlotterBaseJavaSE implements PlotterBaseInterface {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                      protected variables                 ////
+    ////                         protected variables               ////
     /** Container into which this plot should be placed. */
     protected Container _container;
 

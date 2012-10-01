@@ -164,8 +164,8 @@ public class ParameterMirrorPort extends ParameterPort {
     /** Override the base class to also set the associated port,
      *  if there is one.
      *  @param name The name of the port.
-     *  @throws IllegalActionException If name cannot be set.
-     *  @throws NameDuplicationException If port with the name already exists.
+     *  @exception IllegalActionException If name cannot be set.
+     *  @exception NameDuplicationException If port with the name already exists.
      */
     public void setName(String name) throws IllegalActionException,
             NameDuplicationException {

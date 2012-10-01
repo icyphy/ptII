@@ -557,7 +557,7 @@ public class DiscreteClock extends TimedSource {
     /** Produce the output required at times between the specified times.
      *  This base class makes the output absent, but subclasses may
      *  interpolate the values.
-     *  @throws IllegalActionException If sending the output fails.
+     *  @exception IllegalActionException If sending the output fails.
      */
     protected void _produceIntermediateOutput() throws IllegalActionException {
         if (_debugging) {

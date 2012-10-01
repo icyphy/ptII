@@ -107,7 +107,7 @@ public class HomerApplication extends MoMLApplication {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         protected methods                       ////
+    ////                         protected methods                 ////
 
     /** Return the full default application configuration.
      *  @return The default application configuration.

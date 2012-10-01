@@ -79,8 +79,8 @@ public class HTMLModelExporter extends VisualModelReference {
     /** Create an instance of this parameter.
      *  @param container The container.
      *  @param name The name.
-     *  @throws IllegalActionException If the superclass throws it.
-     *  @throws NameDuplicationException If the superclass throws it.
+     *  @exception IllegalActionException If the superclass throws it.
+     *  @exception NameDuplicationException If the superclass throws it.
      */
     public HTMLModelExporter(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {

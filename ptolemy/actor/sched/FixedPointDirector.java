@@ -310,7 +310,7 @@ public class FixedPointDirector extends StaticSchedulingDirector implements
      *  force the inside Continuous director to have a zero step
      *  size always.
      *  @return The next time of interest.
-     *  @throws IllegalActionException If creating a Time object fails.
+     *  @exception IllegalActionException If creating a Time object fails.
      *  @see #getModelTime()
      */
     public Time getModelNextIterationTime() throws IllegalActionException {

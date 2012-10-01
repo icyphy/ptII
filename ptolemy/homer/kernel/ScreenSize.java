@@ -53,9 +53,9 @@ public class ScreenSize extends Parameter {
      *
      *  @param container The model where the screen size is stored.
      *  @param name The name of the parameter representing the screen size.
-     *  @throws IllegalActionException If the screen size parameter cannot be added
+     *  @exception IllegalActionException If the screen size parameter cannot be added
      *  to the container.
-     *  @throws NameDuplicationException If the container already has an attribute with
+     *  @exception NameDuplicationException If the container already has an attribute with
      *  the same name.
      */
     public ScreenSize(NamedObj container, String name)

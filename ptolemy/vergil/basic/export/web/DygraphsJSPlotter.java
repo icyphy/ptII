@@ -78,8 +78,8 @@ public class DygraphsJSPlotter extends BasicJSPlotter {
      *  library.
      *  @param container The container.
      *  @param name The name.
-     *  @throws IllegalActionException If the superclass throws it.
-     *  @throws NameDuplicationException If the superclass throws it.
+     *  @exception IllegalActionException If the superclass throws it.
+     *  @exception NameDuplicationException If the superclass throws it.
      */
     public DygraphsJSPlotter(NamedObj container, String name)
             throws IllegalActionException, NameDuplicationException {
@@ -99,7 +99,7 @@ public class DygraphsJSPlotter extends BasicJSPlotter {
      *  included in a web page for the container of this object.
      *  
      *  @param exporter  The web exporter to write content to
-     *  @throws IllegalActionException If evaluating the value
+     *  @exception IllegalActionException If evaluating the value
      *   of this parameter fails, or creating a web attribute fails.
      */
     protected void _provideAttributes(WebExporter exporter) 
@@ -110,7 +110,7 @@ public class DygraphsJSPlotter extends BasicJSPlotter {
         // Add the graph title and other libraries.
         insertHeaderContent(false, true, "<title>" + config.get("graphTitle") + "</title>\n\n");
 
-        for(String line : _otherLibs){
+        for (String line : _otherLibs){
             insertHeaderContent(false, true, line);
         }
         
@@ -139,7 +139,7 @@ public class DygraphsJSPlotter extends BasicJSPlotter {
                 + ", yAxisTitle: '" + config.get("yAxisTitle") + "'};\n\n");
         
         // Output the JavaScript code for data plotting to the header.
-        for(String line : _plotCode){
+        for (String line : _plotCode){
             insertHeaderContent(true, false, line + "\n");
         }
         
@@ -154,7 +154,7 @@ public class DygraphsJSPlotter extends BasicJSPlotter {
                 config.get("graphWidth") + "px; height: 280px; margin:0 auto\">\n");
         
         // Output the body content.
-        for(String line : _bodyContent){
+        for (String line : _bodyContent){
             insertBodyContent(line + "\n");
         }
         
@@ -231,7 +231,7 @@ public class DygraphsJSPlotter extends BasicJSPlotter {
             "\t\t\t\t\t\t);// End of new Dygraph()\n", 
             "\t\t\t\t\t\t// customize for each series", 
             "\t\t\t\t\t\tvar seriesOpts = [], pointShapes = [], panelContent = '';", 
-            "\t\t\t\t\t\tfor(var shape in Dygraph.Circles){", 
+            "\t\t\t\t\t\tfor (var shape in Dygraph.Circles){", 
             "\t\t\t\t\t\t\tpointShapes.push(Dygraph.Circles[shape]);", 
             "\t\t\t\t\t\t}",
             "\t\t\t\t\t\tvar strokePatterns = [null, [6, 3], [2, 3], [6, 2, 2, 2],", 
@@ -240,12 +240,12 @@ public class DygraphsJSPlotter extends BasicJSPlotter {
             "\t\t\t\t\t\t                     [18, 5, 2, 5], [18, 5, 2, 5, 2, 5]];\n", 
             "\t\t\t\t\t\tjQuery.each(seriesLabels, function(i, seriesName){", 
             "\t\t\t\t\t\t\t// add checkbox for visibility control", 
-            "\t\t\t\t\t\t\tif(i >= 1){", 
+            "\t\t\t\t\t\t\tif (i >= 1){", 
             "\t\t\t\t\t\t\t\tpanelContent += '<input type=\"checkbox\" checked onClick=\"mainChart.setVisibility(' +", 
             "\t\t\t\t\t\t\t\t\t\t(i-1) + ', this.checked)\">' + seriesName + '<br>';", 
             "\t\t\t\t\t\t\t}\n", 
             "\t\t\t\t\t\t\t// customize data series", 
-            "\t\t\t\t\t\t\tif(isEventTrace(seriesName)){", 
+            "\t\t\t\t\t\t\tif (isEventTrace(seriesName)){", 
             "\t\t\t\t\t\t\t\tseriesOpts[seriesName] = {", 
             "\t\t\t\t\t\t\t\t\t\tdrawPoints: config.enableEventsMarker,", 
             "\t\t\t\t\t\t\t\t\t\tpointSize: config.eventsMarkerRadius,", 
@@ -254,7 +254,7 @@ public class DygraphsJSPlotter extends BasicJSPlotter {
             "\t\t\t\t\t\t\t\t\t\tstrokePattern: strokePatterns[i % strokePatterns.length],", 
             "\t\t\t\t\t\t\t\t\t\tstrokeWidth: config.eventsConnectWidth", 
             "\t\t\t\t\t\t\t\t};", 
-            "\t\t\t\t\t\t\t}else{", 
+            "\t\t\t\t\t\t\t}else {", 
             "\t\t\t\t\t\t\t\tseriesOpts[seriesName] = {", 
             "\t\t\t\t\t\t\t\t\t\tdrawPoints: config.enableDataMarker,", 
             "\t\t\t\t\t\t\t\t\t\tpointSize: config.dataMarkerRadius,", 
@@ -296,16 +296,16 @@ public class DygraphsJSPlotter extends BasicJSPlotter {
             "\t\t\t\t\t\t});\n", 
             "\t\t\t\t\t\tjQuery.each(dataObj, function(x, rowObj){", 
             "\t\t\t\t\t\t\tvar row = [];", 
-            "\t\t\t\t\t\t\tif(config.xAxisMode == 'datetime'){", 
+            "\t\t\t\t\t\t\tif (config.xAxisMode == 'datetime'){", 
             "\t\t\t\t\t\t\t\trow.push(new Date(Number(x)));", 
-            "\t\t\t\t\t\t\t}else{", 
+            "\t\t\t\t\t\t\t}else {", 
             "\t\t\t\t\t\t\t\trow.push(Number(x));", 
             "\t\t\t\t\t\t\t}", 
             "\t\t\t\t\t\t\tjQuery.each(seriesLabels, function(i, name){", 
-            "\t\t\t\t\t\t\t\tif(i >= 1){", 
-            "\t\t\t\t\t\t\t\t\tif(name in rowObj){", 
+            "\t\t\t\t\t\t\t\tif (i >= 1){", 
+            "\t\t\t\t\t\t\t\t\tif (name in rowObj){", 
             "\t\t\t\t\t\t\t\t\t\trow.push(rowObj[name]);", 
-            "\t\t\t\t\t\t\t\t\t}else{", 
+            "\t\t\t\t\t\t\t\t\t}else {", 
             "\t\t\t\t\t\t\t\t\t\trow.push(null);", 
             "\t\t\t\t\t\t\t\t\t}", 
             "\t\t\t\t\t\t\t\t}", 
@@ -321,10 +321,10 @@ public class DygraphsJSPlotter extends BasicJSPlotter {
             "\t\t\t\t\t\t\t\treturn (item.x == xPoint);", 
             "\t\t\t\t\t\t\t});", 
             "\t\t\t\t\t\t\t", 
-            "\t\t\t\t\t\t\tif(tempArray.length > 0){", 
+            "\t\t\t\t\t\t\tif (tempArray.length > 0){", 
             "\t\t\t\t\t\t\t\ttext += '<b>' + eventTrace.name + '</b>: ';", 
             "\t\t\t\t\t\t\t\tjQuery.each(tempArray, function(j, item){", 
-            "\t\t\t\t\t\t\t\t\tif(j > 0)", 
+            "\t\t\t\t\t\t\t\t\tif (j > 0)", 
             "\t\t\t\t\t\t\t\t\t\ttext += ', ';", 
             "\t\t\t\t\t\t\t\t\ttext += item.text;", 
             "\t\t\t\t\t\t\t\t});", 
@@ -335,7 +335,7 @@ public class DygraphsJSPlotter extends BasicJSPlotter {
             "\t\t\t\t\t}", "", 
             "\t\t\t\t\t// Parse Datetime",
             "\t\t\t\t\tfunction parseDatetime(value){",
-            "\t\t\t\t\t\tif(config.xAxisMode == 'datetime')", 
+            "\t\t\t\t\t\tif (config.xAxisMode == 'datetime')", 
             "\t\t\t\t\t\t\treturn new Date(value).toUTCString();", 
             "\t\t\t\t\t\telse ", 
             "\t\t\t\t\t\t\treturn value;", 
@@ -343,7 +343,7 @@ public class DygraphsJSPlotter extends BasicJSPlotter {
             "\t\t\t\t\tfunction isEventTrace(name){", 
             "\t\t\t\t\t\tvar count = 0;",
             "\t\t\t\t\t\tjQuery.each(events, function(i, eventTrace){", 
-            "\t\t\t\t\t\t\tif(eventTrace.name == name)",
+            "\t\t\t\t\t\t\tif (eventTrace.name == name)",
             "\t\t\t\t\t\t\t\tcount++;", "\t\t\t\t\t\t});",
             "\t\t\t\t\t\treturn (count > 0);", "\t\t\t\t\t}", 
             "\t\t\t\t\t// create the main chart and in its callback, create the pie chart", 

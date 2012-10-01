@@ -136,7 +136,7 @@ public class Vector extends AbstractList implements List, RandomAccess,
      * Constructs a vector containing the contents of Collection, in the
      * order given by the collection.
      * @param c collection of elements to add to the new vector
-     * @throws NullPointerException if c is null
+     * @exception NullPointerException if c is null
      * @since 1.2
      */
     public Vector(Collection c) {
@@ -150,7 +150,7 @@ public class Vector extends AbstractList implements List, RandomAccess,
      * @param initialCapacity the initial size of the Vector's internal array
      * @param capacityIncrement the amount the internal array should be
      * increased by when necessary, 0 to double the size
-     * @throws IllegalArgumentException if initialCapacity &lt; 0
+     * @exception IllegalArgumentException if initialCapacity &lt; 0
      */
     public Vector(int initialCapacity, int capacityIncrement) {
         if (initialCapacity < 0) {
@@ -164,7 +164,7 @@ public class Vector extends AbstractList implements List, RandomAccess,
      * Constructs a Vector with the initial capacity specified, and a capacity
      * increment of 0 (double in size).
      * @param initialCapacity the initial size of the Vector's internal array
-     * @throws IllegalArgumentException if initialCapacity &lt; 0
+     * @exception IllegalArgumentException if initialCapacity &lt; 0
      */
     public Vector(int initialCapacity) {
         this(initialCapacity, 0);
@@ -177,8 +177,8 @@ public class Vector extends AbstractList implements List, RandomAccess,
     is thrown without modifying the array.
      * Old elements in the array are overwritten by the new elements.
      * @param a target array for the copy
-     * @throws IndexOutOfBoundsException the array is not large enough
-     * @throws NullPointerException the array is null
+     * @exception IndexOutOfBoundsException the array is not large enough
+     * @exception NullPointerException the array is null
      * @see #toArray(Object[])
      */
     public synchronized void copyInto(Object[] a) {
@@ -229,7 +229,7 @@ public class Vector extends AbstractList implements List, RandomAccess,
      * old values that don't fit are lost. If the new size is larger than the
      * old one, the vector is padded with null entries.
      * @param newSize The new size of the internal array
-     * @throws ArrayIndexOutOfBoundsException if the new size is negative
+     * @exception ArrayIndexOutOfBoundsException if the new size is negative
      */
     public synchronized void setSize(int newSize) {
         // Don't bother checking for the case where size() == the capacity of the
@@ -424,7 +424,7 @@ public class Vector extends AbstractList implements List, RandomAccess,
      * @param e the Object to search for
      * @param index start searching at this index
      * @return the index of the next occurrence, or -1 if it is not found
-     * @throws IndexOutOfBoundsException if index &lt; 0
+     * @exception IndexOutOfBoundsException if index &lt; 0
      */
     public synchronized int indexOf(Object e, int index) {
         for (int i = index; i < getElementCount(); i++) {
@@ -452,7 +452,7 @@ public class Vector extends AbstractList implements List, RandomAccess,
      * @param e the object to search for
      * @param index the index to start searching in reverse from
      * @return the index of the Object if found, -1 otherwise
-     * @throws IndexOutOfBoundsException if index &gt;= size()
+     * @exception IndexOutOfBoundsException if index &gt;= size()
      */
     public synchronized int lastIndexOf(Object e, int index) {
         checkBoundExclusive(index);
@@ -468,7 +468,7 @@ public class Vector extends AbstractList implements List, RandomAccess,
      * Returns the Object stored at <code>index</code>.
      * @param index the index of the Object to retrieve
      * @return the object at <code>index</code>
-     * @throws ArrayIndexOutOfBoundsException index &lt; 0 || index &gt;= size()
+     * @exception ArrayIndexOutOfBoundsException index &lt; 0 || index &gt;= size()
      * @see #get(int)
      */
     public synchronized Object elementAt(int index) {
@@ -479,7 +479,7 @@ public class Vector extends AbstractList implements List, RandomAccess,
     /**
      * Returns the first element (index 0) in the Vector.
      * @return the first Object in the Vector
-     * @throws NoSuchElementException the Vector is empty
+     * @exception NoSuchElementException the Vector is empty
      */
     public synchronized Object firstElement() {
         if (getElementCount() == 0) {
@@ -491,7 +491,7 @@ public class Vector extends AbstractList implements List, RandomAccess,
     /**
      * Returns the last element in the Vector.
      * @return the last Object in the Vector
-     * @throws NoSuchElementException the Vector is empty
+     * @exception NoSuchElementException the Vector is empty
      */
     public synchronized Object lastElement() {
         if (getElementCount() == 0) {
@@ -504,7 +504,7 @@ public class Vector extends AbstractList implements List, RandomAccess,
      * Changes the element at <code>index</code> to be <code>obj</code>
      * @param obj the object to store
      * @param index the position in the Vector to store the object
-     * @throws ArrayIndexOutOfBoundsException the index is out of range
+     * @exception ArrayIndexOutOfBoundsException the index is out of range
      * @see #set(int, Object)
      */
     public void setElementAt(Object obj, int index) {
@@ -515,7 +515,7 @@ public class Vector extends AbstractList implements List, RandomAccess,
      * Removes the element at <code>index</code>, and shifts all elements at
      * positions greater than index to their index - 1.
      * @param index the index of the element to remove
-     * @throws ArrayIndexOutOfBoundsException index &lt; 0 || index &gt;= size();
+     * @exception ArrayIndexOutOfBoundsException index &lt; 0 || index &gt;= size();
      * @see #remove(int)
      */
     public void removeElementAt(int index) {
@@ -527,7 +527,7 @@ public class Vector extends AbstractList implements List, RandomAccess,
      * at or greater than index are shifted up one position.
      * @param obj the object to insert
      * @param index the index at which the object is inserted
-     * @throws ArrayIndexOutOfBoundsException index &lt; 0 || index &gt; size()
+     * @exception ArrayIndexOutOfBoundsException index &lt; 0 || index &gt; size()
      * @see #add(int, Object)
      */
     public synchronized void insertElementAt(Object obj, int index) {
@@ -627,9 +627,9 @@ public class Vector extends AbstractList implements List, RandomAccess,
      * to create a bigger one of the same runtime type.
      * @param a an array to copy the Vector into if large enough
      * @return an array with the contents of this Vector in order
-     * @throws ArrayStoreException the runtime type of the provided array
+     * @exception ArrayStoreException the runtime type of the provided array
      * cannot hold the elements of the Vector
-     * @throws NullPointerException if <code>a</code> is null
+     * @exception NullPointerException if <code>a</code> is null
      * @since 1.2
      */
     public synchronized Object[] toArray(Object[] a) {
@@ -647,7 +647,7 @@ public class Vector extends AbstractList implements List, RandomAccess,
      * Returns the element at position <code>index</code>.
      * @param index the position from which an element will be retrieved
      * @return the element at that position
-     * @throws ArrayIndexOutOfBoundsException index &lt; 0 || index &gt;= size()
+     * @exception ArrayIndexOutOfBoundsException index &lt; 0 || index &gt;= size()
      * @since 1.2
      */
     public Object get(int index) {
@@ -660,7 +660,7 @@ public class Vector extends AbstractList implements List, RandomAccess,
      * @param index the index within the Vector to place the Object
      * @param element the Object to store in the Vector
      * @return the previous object at the specified index
-     * @throws ArrayIndexOutOfBoundsException index &lt; 0 || index &gt;= size()
+     * @exception ArrayIndexOutOfBoundsException index &lt; 0 || index &gt;= size()
      * @since 1.2
      */
     public synchronized Object set(int index, Object element) {
@@ -697,7 +697,7 @@ public class Vector extends AbstractList implements List, RandomAccess,
      * index are shifted up one position.
      * @param index the index at which to add the element
      * @param element the element to add to the Vector
-     * @throws ArrayIndexOutOfBoundsException index &lt; 0 || index &gt; size()
+     * @exception ArrayIndexOutOfBoundsException index &lt; 0 || index &gt; size()
      * @since 1.2
      */
     public void add(int index, Object element) {
@@ -708,7 +708,7 @@ public class Vector extends AbstractList implements List, RandomAccess,
      * Removes the element at the specified index, and returns it.
      * @param index the position from which to remove the element
      * @return the object removed
-     * @throws ArrayIndexOutOfBoundsException index &lt; 0 || index &gt;= size()
+     * @exception ArrayIndexOutOfBoundsException index &lt; 0 || index &gt;= size()
      * @since 1.2
      */
     public synchronized Object remove(int index) {
@@ -735,7 +735,7 @@ public class Vector extends AbstractList implements List, RandomAccess,
      * Returns true if this Vector contains all the elements in c.
      * @param c the collection to compare to
      * @return true if this vector contains all elements of c
-     * @throws NullPointerException if c is null
+     * @exception NullPointerException if c is null
      * @since 1.2
      */
     public synchronized boolean containsAll(Collection c) {
@@ -749,7 +749,7 @@ public class Vector extends AbstractList implements List, RandomAccess,
      * (for example, if this == c).
      * @param c the collection to append
      * @return true if this vector changed, in other words c was not empty
-     * @throws NullPointerException if c is null
+     * @exception NullPointerException if c is null
      * @since 1.2
      */
     public synchronized boolean addAll(Collection c) {
@@ -760,7 +760,7 @@ public class Vector extends AbstractList implements List, RandomAccess,
      * Remove from this vector all elements contained in the given collection.
      * @param c the collection to filter out
      * @return true if this vector changed
-     * @throws NullPointerException if c is null
+     * @exception NullPointerException if c is null
      * @since 1.2
      */
     public synchronized boolean removeAll(Collection c) {
@@ -791,7 +791,7 @@ public class Vector extends AbstractList implements List, RandomAccess,
      * Retain in this vector only the elements contained in the given collection.
      * @param c the collection to filter by
      * @return true if this vector changed
-     * @throws NullPointerException if c is null
+     * @exception NullPointerException if c is null
      * @since 1.2
      */
     public synchronized boolean retainAll(Collection c) {
@@ -824,8 +824,8 @@ public class Vector extends AbstractList implements List, RandomAccess,
      * this operation (for example, if this == c).
      * @param c the collection to append
      * @return true if this vector changed, in other words c was not empty
-     * @throws NullPointerException if c is null
-     * @throws ArrayIndexOutOfBoundsException index &lt; 0 || index &gt; size()
+     * @exception NullPointerException if c is null
+     * @exception ArrayIndexOutOfBoundsException index &lt; 0 || index &gt; size()
      * @since 1.2
      */
     public synchronized boolean addAll(int index, Collection c) {
@@ -889,9 +889,9 @@ public class Vector extends AbstractList implements List, RandomAccess,
      * (inclusive)
      * @param toIndex the index that the returned list should go to (exclusive)
      * @return a List backed by a subsection of this vector
-     * @throws IndexOutOfBoundsException if fromIndex &lt; 0
+     * @exception IndexOutOfBoundsException if fromIndex &lt; 0
      * || toIndex &gt; size()
-     * @throws IllegalArgumentException if fromIndex &gt; toIndex
+     * @exception IllegalArgumentException if fromIndex &gt; toIndex
      * @see ConcurrentModificationException
      * @since 1.2
      */
@@ -907,7 +907,7 @@ public class Vector extends AbstractList implements List, RandomAccess,
      * Does nothing when toIndex is equal to fromIndex.
      * @param fromIndex the index to start deleting from (inclusive)
      * @param toIndex the index to delete up to (exclusive)
-     * @throws IndexOutOfBoundsException if fromIndex &gt; toIndex
+     * @exception IndexOutOfBoundsException if fromIndex &gt; toIndex
      */
     // This does not need to be synchronized, because it is only called through
     // clear() of a sublist, and clear() had already synchronized.
@@ -928,7 +928,7 @@ public class Vector extends AbstractList implements List, RandomAccess,
     /**
      * Checks that the index is in the range of possible elements (inclusive).
      * @param index the index to check
-     * @throws ArrayIndexOutOfBoundsException if index &gt; size
+     * @exception ArrayIndexOutOfBoundsException if index &gt; size
      */
     private void checkBoundInclusive(int index) {
         // Implementation note: we do not check for negative ranges here, since
@@ -943,7 +943,7 @@ public class Vector extends AbstractList implements List, RandomAccess,
     /**
      * Checks that the index is in the range of existing elements (exclusive).
      * @param index the index to check
-     * @throws ArrayIndexOutOfBoundsException if index &gt;= size
+     * @exception ArrayIndexOutOfBoundsException if index &gt;= size
      */
     private void checkBoundExclusive(int index) {
         // Implementation note: we do not check for negative ranges here, since
@@ -958,7 +958,7 @@ public class Vector extends AbstractList implements List, RandomAccess,
     /**
      * Serializes this object to the given stream.
      * @param s the stream to write to
-     * @throws IOException if the underlying stream fails
+     * @exception IOException if the underlying stream fails
      * @serialData just calls default write function
      */
     private synchronized void writeObject(ObjectOutputStream s)

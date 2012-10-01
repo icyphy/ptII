@@ -427,7 +427,7 @@ public class ServerUtility {
      *  this is null, every attribute not present in the target model will be added.
      * @param namedObjectsToMerge The list of named objects to be merged
      *  @exception IllegalActionException If an attribute could not be added to the target model.
-     * @throws CloneNotSupportedException
+     * @exception CloneNotSupportedException
      */
     private static void _mergeElements(NamedObj source,
             CompositeEntity targetModel,

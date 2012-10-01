@@ -104,7 +104,7 @@ public class OntologyAnnotationAttribute extends StringAttribute {
 
     /** If there is only one OntologySolver in the model, initialize the
      *  annotation to refer to that solver.
-     *  @throws IllegalActionException If the {@link #ontologySolverName}
+     *  @exception IllegalActionException If the {@link #ontologySolverName}
      *   attribute cannot be modified.
      */
     private void _initializeSolverName() throws IllegalActionException {

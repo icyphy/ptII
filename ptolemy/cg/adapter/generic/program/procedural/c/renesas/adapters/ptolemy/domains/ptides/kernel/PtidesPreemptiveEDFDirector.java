@@ -142,18 +142,18 @@ public class PtidesPreemptiveEDFDirector
         StringBuffer systick2 = new StringBuffer();
         for (Actor actuator : actuators.keySet()) {
             Character letter = RenesasUtilities.interruptHandlerLetters.get(actuators.get(actuator));
-            systick1.append("if(actNs" + letter + "[dummy] < ((4*divideByValue/2) << 16)) {\n"
+            systick1.append("if (actNs" + letter + "[dummy] < ((4*divideByValue/2) << 16)) {\n"
                     + "    actS" + letter + "[dummy] = actS" + letter + "[dummy]-1;\n"
                     + "    actNs" + letter + "[dummy] = 1000000000+actNs" + letter + "[dummy]-((4*divideByValue/2) << 16);\n"
                     + "} else {\n"
                     + "    actNs" + letter + "[dummy] = actNs" + letter + "[dummy] - ((4*divideByValue/2) << 16);\n"
                     + "}\n");
 
-            systick2.append("if((MTU20.TIOR.BIT.IO" + letter + " == 0) && (actWr" + letter + " != actRd" + letter + ") && (actNs" + letter + "[actRd" + letter + "] < ((4*divideByValue/2)*(65536 + intDel)))) {\n"
+            systick2.append("if ((MTU20.TIOR.BIT.IO" + letter + " == 0) && (actWr" + letter + " != actRd" + letter + ") && (actNs" + letter + "[actRd" + letter + "] < ((4*divideByValue/2)*(65536 + intDel)))) {\n"
                     + "    MTU20.TGR" + letter + " = actNs" + letter + "[actRd" + letter + "]/(4*divideByValue/2);\n"
                     + "    MTU20.TSR.BIT.TGF" + letter + " = 0;\n"
                     + "    MTU20.TIER.BIT.TGIE" + letter + " = 1;\n"
-                    + "    if(actSt" + letter + " == 0)\n"
+                    + "    if (actSt" + letter + " == 0)\n"
                     + "            MTU20.TIOR.BIT.IO" + letter + " =2;\n"
                     + "    else\n"
                     + "             MTU20.TIOR.BIT.IO" + letter + " = 5;\n"

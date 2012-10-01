@@ -142,7 +142,7 @@ public abstract class AbstractList extends AbstractCollection implements List,
         /**
          * This method checks the two modCount fields to ensure that there has
          * not been a concurrent modification, returning if all is okay.
-         * @throws ConcurrentModificationException if the backing list has been
+         * @exception ConcurrentModificationException if the backing list has been
          * modified externally to this sublist
          */
         // This can be inlined. Package visible, for use by iterator.
@@ -156,7 +156,7 @@ public abstract class AbstractList extends AbstractCollection implements List,
          * This method checks that a value is between 0 and size (inclusive). If
          * it is not, an exception is thrown.
          * @param index the value to check
-         * @throws IndexOutOfBoundsException if index &lt; 0 || index &gt; size()
+         * @exception IndexOutOfBoundsException if index &lt; 0 || index &gt; size()
          */
         // This will get inlined, since it is private.
         private void checkBoundsInclusive(int index) {
@@ -170,7 +170,7 @@ public abstract class AbstractList extends AbstractCollection implements List,
          * This method checks that a value is between 0 (inclusive) and size
          * (exclusive). If it is not, an exception is thrown.
          * @param index the value to check
-         * @throws IndexOutOfBoundsException if index &lt; 0 || index &gt;= size()
+         * @exception IndexOutOfBoundsException if index &lt; 0 || index &gt;= size()
          */
         // This will get inlined, since it is private.
         private void checkBoundsExclusive(int index) {
@@ -183,7 +183,7 @@ public abstract class AbstractList extends AbstractCollection implements List,
         /**
          * Specified by AbstractList.subList to return the private field size.
          * @return the sublist size
-         * @throws ConcurrentModificationException if the backing list has been
+         * @exception ConcurrentModificationException if the backing list has been
          * modified externally to this sublist
          */
         public int size() {
@@ -196,14 +196,14 @@ public abstract class AbstractList extends AbstractCollection implements List,
          * @param index the location to modify
          * @param o the new value
          * @return the old value
-         * @throws ConcurrentModificationException if the backing list has been
+         * @exception ConcurrentModificationException if the backing list has been
          * modified externally to this sublist
-         * @throws UnsupportedOperationException if the backing list does not
+         * @exception UnsupportedOperationException if the backing list does not
          * support the set operation
-         * @throws IndexOutOfBoundsException if index &lt; 0 || index &gt;= size()
-         * @throws ClassCastException if o cannot be added to the backing list due
+         * @exception IndexOutOfBoundsException if index &lt; 0 || index &gt;= size()
+         * @exception ClassCastException if o cannot be added to the backing list due
          * to its type
-         * @throws IllegalArgumentException if o cannot be added to the backing list
+         * @exception IllegalArgumentException if o cannot be added to the backing list
          * for some other reason
          */
         public Object set(int index, Object o) {
@@ -216,9 +216,9 @@ public abstract class AbstractList extends AbstractCollection implements List,
          * Specified by AbstractList.subList to delegate to the backing list.
          * @param index the location to get from
          * @return the object at that location
-         * @throws ConcurrentModificationException if the backing list has been
+         * @exception ConcurrentModificationException if the backing list has been
          * modified externally to this sublist
-         * @throws IndexOutOfBoundsException if index &lt; 0 || index &gt;= size()
+         * @exception IndexOutOfBoundsException if index &lt; 0 || index &gt;= size()
          */
         public Object get(int index) {
             checkMod();
@@ -230,14 +230,14 @@ public abstract class AbstractList extends AbstractCollection implements List,
          * Specified by AbstractList.subList to delegate to the backing list.
          * @param index the index to insert at
          * @param o the object to add
-         * @throws ConcurrentModificationException if the backing list has been
+         * @exception ConcurrentModificationException if the backing list has been
          * modified externally to this sublist
-         * @throws IndexOutOfBoundsException if index &lt; 0 || index &gt; size()
-         * @throws UnsupportedOperationException if the backing list does not
+         * @exception IndexOutOfBoundsException if index &lt; 0 || index &gt; size()
+         * @exception UnsupportedOperationException if the backing list does not
          * support the add operation.
-         * @throws ClassCastException if o cannot be added to the backing list due
+         * @exception ClassCastException if o cannot be added to the backing list due
          * to its type.
-         * @throws IllegalArgumentException if o cannot be added to the backing
+         * @exception IllegalArgumentException if o cannot be added to the backing
          * list for some other reason.
          */
         public void add(int index, Object o) {
@@ -252,10 +252,10 @@ public abstract class AbstractList extends AbstractCollection implements List,
          * Specified by AbstractList.subList to delegate to the backing list.
          * @param index the index to remove
          * @return the removed object
-         * @throws ConcurrentModificationException if the backing list has been
+         * @exception ConcurrentModificationException if the backing list has been
          * modified externally to this sublist
-         * @throws IndexOutOfBoundsException if index &lt; 0 || index &gt;= size()
-         * @throws UnsupportedOperationException if the backing list does not
+         * @exception IndexOutOfBoundsException if index &lt; 0 || index &gt;= size()
+         * @exception UnsupportedOperationException if the backing list does not
          * support the remove operation
          */
         public Object remove(int index) {
@@ -273,9 +273,9 @@ public abstract class AbstractList extends AbstractCollection implements List,
          * by trusted code like clear() which has already checked the bounds.
          * @param fromIndex the lower bound, inclusive
          * @param toIndex the upper bound, exclusive
-         * @throws ConcurrentModificationException if the backing list has been
+         * @exception ConcurrentModificationException if the backing list has been
          * modified externally to this sublist
-         * @throws UnsupportedOperationException if the backing list does
+         * @exception UnsupportedOperationException if the backing list does
          * not support removing elements.
          */
         protected void removeRange(int fromIndex, int toIndex) {
@@ -290,16 +290,16 @@ public abstract class AbstractList extends AbstractCollection implements List,
          * @param index the location to insert at
          * @param c the collection to insert
          * @return true if this list was modified, in other words, c is non-empty
-         * @throws ConcurrentModificationException if the backing list has been
+         * @exception ConcurrentModificationException if the backing list has been
          * modified externally to this sublist
-         * @throws IndexOutOfBoundsException if index &lt; 0 || index &gt; size()
-         * @throws UnsupportedOperationException if this list does not support the
+         * @exception IndexOutOfBoundsException if index &lt; 0 || index &gt; size()
+         * @exception UnsupportedOperationException if this list does not support the
          * addAll operation
-         * @throws ClassCastException if some element of c cannot be added to this
+         * @exception ClassCastException if some element of c cannot be added to this
          * list due to its type
-         * @throws IllegalArgumentException if some element of c cannot be added
+         * @exception IllegalArgumentException if some element of c cannot be added
          * to this list for some other reason
-         * @throws NullPointerException if the specified collection is null
+         * @exception NullPointerException if the specified collection is null
          */
         public boolean addAll(int index, Collection c) {
             checkMod();
@@ -315,15 +315,15 @@ public abstract class AbstractList extends AbstractCollection implements List,
          * Specified by AbstractList.subList to return addAll(size, c).
          * @param c the collection to insert
          * @return true if this list was modified, in other words, c is non-empty
-         * @throws ConcurrentModificationException if the backing list has been
+         * @exception ConcurrentModificationException if the backing list has been
          * modified externally to this sublist
-         * @throws UnsupportedOperationException if this list does not support the
+         * @exception UnsupportedOperationException if this list does not support the
          * addAll operation
-         * @throws ClassCastException if some element of c cannot be added to this
+         * @exception ClassCastException if some element of c cannot be added to this
          * list due to its type
-         * @throws IllegalArgumentException if some element of c cannot be added
+         * @exception IllegalArgumentException if some element of c cannot be added
          * to this list for some other reason
-         * @throws NullPointerException if the specified collection is null
+         * @exception NullPointerException if the specified collection is null
          */
         public boolean addAll(Collection c) {
             return addAll(getSize(), c);
@@ -342,9 +342,9 @@ public abstract class AbstractList extends AbstractCollection implements List,
          * backing list's iterator.
          * @param index the start location of the iterator
          * @return a list iterator over the sublist
-         * @throws ConcurrentModificationException if the backing list has been
+         * @exception ConcurrentModificationException if the backing list has been
          * modified externally to this sublist
-         * @throws IndexOutOfBoundsException if the value is out of range
+         * @exception IndexOutOfBoundsException if the value is out of range
          */
         public ListIterator listIterator(final int index) {
             checkMod();
@@ -378,9 +378,9 @@ public abstract class AbstractList extends AbstractCollection implements List,
                 /**
                  * Retrieves the next object from the list.
                  * @return The next object.
-                 * @throws NoSuchElementException if there are no
+                 * @exception NoSuchElementException if there are no
                  * more objects to retrieve.
-                 * @throws ConcurrentModificationException if the
+                 * @exception ConcurrentModificationException if the
                  * list has been modified elsewhere.
                  */
                 public Object next() {
@@ -394,9 +394,9 @@ public abstract class AbstractList extends AbstractCollection implements List,
                 /**
                  * Retrieves the previous object from the list.
                  * @return The next object.
-                 * @throws NoSuchElementException if there are no
+                 * @exception NoSuchElementException if there are no
                  * previous objects to retrieve.
-                 * @throws ConcurrentModificationException if the
+                 * @exception ConcurrentModificationException if the
                  * list has been modified elsewhere.
                  */
                 public Object previous() {
@@ -428,10 +428,10 @@ public abstract class AbstractList extends AbstractCollection implements List,
                 /**
                  * Removes the last object retrieved by <code>next()</code>
                  * from the list, if the list supports object removal.
-                 * @throws IllegalStateException if the iterator is positioned
+                 * @exception IllegalStateException if the iterator is positioned
                  * before the start of the list or the last object has already
                  * been removed.
-                 * @throws UnsupportedOperationException if the list does
+                 * @exception UnsupportedOperationException if the list does
                  * not support removing elements.
                  */
                 public void remove() {
@@ -446,16 +446,16 @@ public abstract class AbstractList extends AbstractCollection implements List,
                  * or <code>previous</code> with o, if the list supports object
                  * replacement and an add or remove operation has not already
                  * been performed.
-                 * @throws IllegalStateException if the iterator is positioned
+                 * @exception IllegalStateException if the iterator is positioned
                  * before the start of the list or the last object has already
                  * been removed.
-                 * @throws UnsupportedOperationException if the list doesn't support
+                 * @exception UnsupportedOperationException if the list doesn't support
                  * the addition or removal of elements.
-                 * @throws ClassCastException if the type of o is not a valid type
+                 * @exception ClassCastException if the type of o is not a valid type
                  * for this list.
-                 * @throws IllegalArgumentException if something else related to o
+                 * @exception IllegalArgumentException if something else related to o
                  * prevents its addition.
-                 * @throws ConcurrentModificationException if the list
+                 * @exception ConcurrentModificationException if the list
                  * has been modified elsewhere.
                  */
                 public void set(Object o) {
@@ -466,13 +466,13 @@ public abstract class AbstractList extends AbstractCollection implements List,
                  * Adds the supplied object before the element that would be returned
                  * by a call to <code>next()</code>, if the list supports addition.
                  * @param o The object to add to the list.
-                 * @throws UnsupportedOperationException if the list doesn't support
+                 * @exception UnsupportedOperationException if the list doesn't support
                  * the addition of new elements.
-                 * @throws ClassCastException if the type of o is not a valid type
+                 * @exception ClassCastException if the type of o is not a valid type
                  * for this list.
-                 * @throws IllegalArgumentException if something else related to o
+                 * @exception IllegalArgumentException if something else related to o
                  * prevents its addition.
-                 * @throws ConcurrentModificationException if the list
+                 * @exception ConcurrentModificationException if the list
                  * has been modified elsewhere.
                  */
                 public void add(Object o) {
@@ -703,7 +703,7 @@ public abstract class AbstractList extends AbstractCollection implements List,
      * Returns the elements at the specified position in the list.
      * @param index the element to return
      * @return the element at that position
-     * @throws IndexOutOfBoundsException if index &lt; 0 || index &gt;= size()
+     * @exception IndexOutOfBoundsException if index &lt; 0 || index &gt;= size()
      */
     public abstract Object get(int index);
 
@@ -717,12 +717,12 @@ public abstract class AbstractList extends AbstractCollection implements List,
      * increment modCount when overriding this.
      * @param index the location to insert the item
      * @param o the object to insert
-     * @throws UnsupportedOperationException if this list does not support the
+     * @exception UnsupportedOperationException if this list does not support the
      * add operation
-     * @throws IndexOutOfBoundsException if index &lt; 0 || index &gt; size()
-     * @throws ClassCastException if o cannot be added to this list due to its
+     * @exception IndexOutOfBoundsException if index &lt; 0 || index &gt; size()
+     * @exception ClassCastException if o cannot be added to this list due to its
      * type
-     * @throws IllegalArgumentException if o cannot be added to this list for
+     * @exception IllegalArgumentException if o cannot be added to this list for
      * some other reason
      * @see #modCount
      */
@@ -737,11 +737,11 @@ public abstract class AbstractList extends AbstractCollection implements List,
      * <code>add(size(), o);</code>, and will fail if that version does.
      * @param o the object to add
      * @return true, as defined by Collection for a modified list
-     * @throws UnsupportedOperationException if this list does not support the
+     * @exception UnsupportedOperationException if this list does not support the
      * add operation
-     * @throws ClassCastException if o cannot be added to this list due to its
+     * @exception ClassCastException if o cannot be added to this list due to its
      * type
-     * @throws IllegalArgumentException if o cannot be added to this list for
+     * @exception IllegalArgumentException if o cannot be added to this list for
      * some other reason
      * @see #add(int, Object)
      */
@@ -762,14 +762,14 @@ public abstract class AbstractList extends AbstractCollection implements List,
      * @param c the collection to insert
      * @return true if the list was modified by this action, that is, if c is
      * non-empty
-     * @throws UnsupportedOperationException if this list does not support the
+     * @exception UnsupportedOperationException if this list does not support the
      * addAll operation
-     * @throws IndexOutOfBoundsException if index &lt; 0 || index &gt; size()
-     * @throws ClassCastException if some element of c cannot be added to this
+     * @exception IndexOutOfBoundsException if index &lt; 0 || index &gt; size()
+     * @exception ClassCastException if some element of c cannot be added to this
      * list due to its type
-     * @throws IllegalArgumentException if some element of c cannot be added
+     * @exception IllegalArgumentException if some element of c cannot be added
      * to this list for some other reason
-     * @throws NullPointerException if the specified collection is null
+     * @exception NullPointerException if the specified collection is null
      * @see #add(int, Object)
      */
     public boolean addAll(int index, Collection c) {
@@ -786,7 +786,7 @@ public abstract class AbstractList extends AbstractCollection implements List,
      * true (optional operation). This implementation calls
      * <code>removeRange(0, size())</code>, so it will fail unless remove
      * or removeRange is overridden.
-     * @throws UnsupportedOperationException if this list does not support the
+     * @exception UnsupportedOperationException if this list does not support the
      * clear operation
      * @see #remove(int)
      * @see #removeRange(int, int)
@@ -902,7 +902,7 @@ public abstract class AbstractList extends AbstractCollection implements List,
             /**
              * Checks for modifications made to the list from
              * elsewhere while iteration is in progress.
-             * @throws ConcurrentModificationException if the
+             * @exception ConcurrentModificationException if the
              * list has been modified elsewhere.
              */
             private void checkMod() {
@@ -924,9 +924,9 @@ public abstract class AbstractList extends AbstractCollection implements List,
             /**
              * Retrieves the next object from the list.
              * @return The next object.
-             * @throws NoSuchElementException if there are
+             * @exception NoSuchElementException if there are
              * no more objects to retrieve.
-             * @throws ConcurrentModificationException if the
+             * @exception ConcurrentModificationException if the
              * list has been modified elsewhere.
              */
             public Object next() {
@@ -941,12 +941,12 @@ public abstract class AbstractList extends AbstractCollection implements List,
             /**
              * Removes the last object retrieved by <code>next()</code>
              * from the list, if the list supports object removal.
-             * @throws ConcurrentModificationException if the list
+             * @exception ConcurrentModificationException if the list
              * has been modified elsewhere.
-             * @throws IllegalStateException if the iterator is positioned
+             * @exception IllegalStateException if the iterator is positioned
              * before the start of the list or the last object has already
              * been removed.
-             * @throws UnsupportedOperationException if the list does
+             * @exception UnsupportedOperationException if the list does
              * not support removing elements.
              */
             public void remove() {
@@ -1174,7 +1174,7 @@ public abstract class AbstractList extends AbstractCollection implements List,
      * iteration from
      * @return a ListIterator over the elements of this list, in order, starting
      * at index
-     * @throws IndexOutOfBoundsException if index &lt; 0 || index &gt; size()
+     * @exception IndexOutOfBoundsException if index &lt; 0 || index &gt; size()
      * @see #modCount
      */
     public ListIterator listIterator(final int index) {
@@ -1194,7 +1194,7 @@ public abstract class AbstractList extends AbstractCollection implements List,
             /**
              * Checks for modifications made to the list from
              * elsewhere while iteration is in progress.
-             * @throws ConcurrentModificationException if the
+             * @exception ConcurrentModificationException if the
              * list has been modified elsewhere.
              */
             private void checkMod() {
@@ -1226,9 +1226,9 @@ public abstract class AbstractList extends AbstractCollection implements List,
             /**
              * Retrieves the next object from the list.
              * @return The next object.
-             * @throws NoSuchElementException if there are no
+             * @exception NoSuchElementException if there are no
              * more objects to retrieve.
-             * @throws ConcurrentModificationException if the
+             * @exception ConcurrentModificationException if the
              * list has been modified elsewhere.
              */
             public Object next() {
@@ -1243,9 +1243,9 @@ public abstract class AbstractList extends AbstractCollection implements List,
             /**
              * Retrieves the previous object from the list.
              * @return The next object.
-             * @throws NoSuchElementException if there are no
+             * @exception NoSuchElementException if there are no
              * previous objects to retrieve.
-             * @throws ConcurrentModificationException if the
+             * @exception ConcurrentModificationException if the
              * list has been modified elsewhere.
              */
             public Object previous() {
@@ -1279,12 +1279,12 @@ public abstract class AbstractList extends AbstractCollection implements List,
              * Removes the last object retrieved by <code>next()</code>
              * or <code>previous()</code> from the list, if the list
              * supports object removal.
-             * @throws IllegalStateException if the iterator is positioned
+             * @exception IllegalStateException if the iterator is positioned
              * before the start of the list or the last object has already
              * been removed.
-             * @throws UnsupportedOperationException if the list does
+             * @exception UnsupportedOperationException if the list does
              * not support removing elements.
-             * @throws ConcurrentModificationException if the list
+             * @exception ConcurrentModificationException if the list
              * has been modified elsewhere.
              */
             public void remove() {
@@ -1304,16 +1304,16 @@ public abstract class AbstractList extends AbstractCollection implements List,
              * or <code>previous</code> with o, if the list supports object
              * replacement and an add or remove operation has not already
              * been performed.
-             * @throws IllegalStateException if the iterator is positioned
+             * @exception IllegalStateException if the iterator is positioned
              * before the start of the list or the last object has already
              * been removed.
-             * @throws UnsupportedOperationException if the list doesn't support
+             * @exception UnsupportedOperationException if the list doesn't support
              * the addition or removal of elements.
-             * @throws ClassCastException if the type of o is not a valid type
+             * @exception ClassCastException if the type of o is not a valid type
              * for this list.
-             * @throws IllegalArgumentException if something else related to o
+             * @exception IllegalArgumentException if something else related to o
              * prevents its addition.
-             * @throws ConcurrentModificationException if the list
+             * @exception ConcurrentModificationException if the list
              * has been modified elsewhere.
              */
             public void set(Object o) {
@@ -1328,13 +1328,13 @@ public abstract class AbstractList extends AbstractCollection implements List,
              * Adds the supplied object before the element that would be returned
              * by a call to <code>next()</code>, if the list supports addition.
              * @param o The object to add to the list.
-             * @throws UnsupportedOperationException if the list doesn't support
+             * @exception UnsupportedOperationException if the list doesn't support
              * the addition of new elements.
-             * @throws ClassCastException if the type of o is not a valid type
+             * @exception ClassCastException if the type of o is not a valid type
              * for this list.
-             * @throws IllegalArgumentException if something else related to o
+             * @exception IllegalArgumentException if something else related to o
              * prevents its addition.
-             * @throws ConcurrentModificationException if the list
+             * @exception ConcurrentModificationException if the list
              * has been modified elsewhere.
              */
             public void add(Object o) {
@@ -1540,9 +1540,9 @@ public abstract class AbstractList extends AbstractCollection implements List,
      * overriding this.
      * @param index the position within the list of the object to remove
      * @return the object that was removed
-     * @throws UnsupportedOperationException if this list does not support the
+     * @exception UnsupportedOperationException if this list does not support the
      * remove operation
-     * @throws IndexOutOfBoundsException if index &lt; 0 || index &gt;= size()
+     * @exception IndexOutOfBoundsException if index &lt; 0 || index &gt;= size()
      * @see #modCount
      */
     public Object remove(int index) {
@@ -1563,7 +1563,7 @@ public abstract class AbstractList extends AbstractCollection implements List,
      * fromIndex times.
      * @param fromIndex the index, inclusive, to remove from.
      * @param toIndex the index, exclusive, to remove to.
-     * @throws UnsupportedOperationException if the list does
+     * @exception UnsupportedOperationException if the list does
      * not support removing elements.
      */
     protected void removeRange(int fromIndex, int toIndex) {
@@ -1580,12 +1580,12 @@ public abstract class AbstractList extends AbstractCollection implements List,
      * @param index the position within this list of the element to be replaced
      * @param o the object to replace it with
      * @return the object that was replaced
-     * @throws UnsupportedOperationException if this list does not support the
+     * @exception UnsupportedOperationException if this list does not support the
      * set operation
-     * @throws IndexOutOfBoundsException if index &lt; 0 || index &gt;= size()
-     * @throws ClassCastException if o cannot be added to this list due to its
+     * @exception IndexOutOfBoundsException if index &lt; 0 || index &gt;= size()
+     * @exception ClassCastException if o cannot be added to this list due to its
      * type
-     * @throws IllegalArgumentException if o cannot be added to this list for
+     * @exception IllegalArgumentException if o cannot be added to this list for
      * some other reason
      */
     public Object set(int index, Object o) {
@@ -1626,9 +1626,9 @@ public abstract class AbstractList extends AbstractCollection implements List,
      * (inclusive)
      * @param toIndex the index that the returned list should go to (exclusive)
      * @return a List backed by a subsection of this list
-     * @throws IndexOutOfBoundsException if fromIndex &lt; 0
+     * @exception IndexOutOfBoundsException if fromIndex &lt; 0
      * || toIndex &gt; size()
-     * @throws IllegalArgumentException if fromIndex &gt; toIndex
+     * @exception IllegalArgumentException if fromIndex &gt; toIndex
      * @see ConcurrentModificationException
      * @see RandomAccess
      */

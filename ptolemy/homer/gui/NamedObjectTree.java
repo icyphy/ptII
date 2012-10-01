@@ -52,7 +52,7 @@ import ptolemy.kernel.util.Nameable;
 import ptolemy.vergil.tree.PTree;
 import ptolemy.vergil.tree.PtolemyTreeCellRenderer;
 
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// NamedObjectTree
 
 /** A side panel panel containing tree of named objects, filtering text field and

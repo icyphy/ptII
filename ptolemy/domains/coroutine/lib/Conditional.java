@@ -33,7 +33,7 @@ public class Conditional extends AtomicContinuationActor {
         _init();
     }
 
-    ///////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////
 
     /* (non-Javadoc)
      * @see ptolemy.domains.coroutine.kernel.ContinuationActor#enter(ptolemy.domains.coroutine.kernel.ControlEntryToken)
@@ -69,7 +69,7 @@ public class Conditional extends AtomicContinuationActor {
 
     public TypedIOPort _inputs;
 
-    ///////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////
 
     protected void _init() throws
         IllegalActionException, NameDuplicationException {

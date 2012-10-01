@@ -128,8 +128,8 @@ public class CompositeProcessDirector extends ProcessDirector {
      *  string as its name. The director is added to the list of
      *  objects in the workspace. Increment the version number of
      *  the workspace.
-     *  @throws NameDuplicationException If construction of Time objects fails.
-     *  @throws IllegalActionException If construction of Time objects fails.
+     *  @exception NameDuplicationException If construction of Time objects fails.
+     *  @exception IllegalActionException If construction of Time objects fails.
      */
     public CompositeProcessDirector() throws IllegalActionException, NameDuplicationException {
         super();
@@ -140,8 +140,8 @@ public class CompositeProcessDirector extends ProcessDirector {
      *  Increment the version number of the workspace.
      *
      *  @param workspace The workspace of this object.
-     *  @throws NameDuplicationException If construction of Time objects fails.
-     *  @throws IllegalActionException If construction of Time objects fails.
+     *  @exception NameDuplicationException If construction of Time objects fails.
+     *  @exception IllegalActionException If construction of Time objects fails.
      */
     public CompositeProcessDirector(Workspace workspace) throws IllegalActionException, NameDuplicationException {
         super(workspace);

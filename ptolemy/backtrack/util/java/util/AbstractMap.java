@@ -200,12 +200,12 @@ public abstract class AbstractMap implements Map, Rollbackable {
          * may be overridden to restrict a null value.
          * @param newVal the new value to store
          * @return the old value
-         * @throws NullPointerException if the map forbids null values.
-         * @throws UnsupportedOperationException if the map doesn't support
+         * @exception NullPointerException if the map forbids null values.
+         * @exception UnsupportedOperationException if the map doesn't support
          * <code>put()</code>.
-         * @throws ClassCastException if the value is of a type unsupported
+         * @exception ClassCastException if the value is of a type unsupported
          * by the map.
-         * @throws IllegalArgumentException if something else about this
+         * @exception IllegalArgumentException if something else about this
          * value prevents it being stored in the map.
          */
         public Object setValue(Object newVal) {
@@ -327,7 +327,7 @@ public abstract class AbstractMap implements Map, Rollbackable {
      * not permit clearing, then this will fail, too. Subclasses often
      * override this for efficiency.  Your implementation of entrySet() should
      * not call <code>AbstractMap.clear</code> unless you want an infinite loop.
-     * @throws UnsupportedOperationException if <code>entrySet().clear()</code>
+     * @exception UnsupportedOperationException if <code>entrySet().clear()</code>
      * does not support clearing.
      * @see Set#clear()
      */
@@ -339,7 +339,7 @@ public abstract class AbstractMap implements Map, Rollbackable {
      * Create a shallow copy of this Map, no keys or values are copied. The
      * default implementation simply calls <code>super.clone()</code>.
      * @return the shallow clone
-     * @throws CloneNotSupportedException if a subclass is not Cloneable
+     * @exception CloneNotSupportedException if a subclass is not Cloneable
      * @see Cloneable
      * @see Object#clone()
      */
@@ -358,7 +358,7 @@ public abstract class AbstractMap implements Map, Rollbackable {
      * can implement this more efficiently.
      * @param key the key to search for
      * @return true if the map contains the key
-     * @throws NullPointerException if key is <code>null</code> but the map
+     * @exception NullPointerException if key is <code>null</code> but the map
      * does not permit null keys
      * @see #containsValue(Object)
      */
@@ -418,7 +418,7 @@ public abstract class AbstractMap implements Map, Rollbackable {
      * the key.  Many implementations override this method.
      * @param key the key to look up
      * @return the value associated with the key, or null if key not in map
-     * @throws NullPointerException if this map does not accept null keys
+     * @exception NullPointerException if this map does not accept null keys
      * @see #containsKey(Object)
      */
     public Object get(Object key) {
@@ -530,7 +530,7 @@ public abstract class AbstractMap implements Map, Rollbackable {
                          * Removes the map entry which has a key equal
                          * to that returned by the last call to
                          * <code>next()</code>.
-                         * @throws UnsupportedOperationException if the
+                         * @exception UnsupportedOperationException if the
                          * map doesn't support removal.
                          */
                         public void remove() {
@@ -683,11 +683,11 @@ public abstract class AbstractMap implements Map, Rollbackable {
      * @param key the key to map
      * @param value the value to be mapped
      * @return the previous value of the key, or null if there was no mapping
-     * @throws UnsupportedOperationException if the operation is not supported
-     * @throws ClassCastException if the key or value is of the wrong type
-     * @throws IllegalArgumentException if something about this key or value
+     * @exception UnsupportedOperationException if the operation is not supported
+     * @exception ClassCastException if the key or value is of the wrong type
+     * @exception IllegalArgumentException if something about this key or value
      * prevents it from existing in this map
-     * @throws NullPointerException if the map forbids null keys or values
+     * @exception NullPointerException if the map forbids null keys or values
      * @see #containsKey(Object)
      */
     public Object put(Object key, Object value) {
@@ -700,14 +700,14 @@ public abstract class AbstractMap implements Map, Rollbackable {
      * simply iterates over the map's entrySet(), calling <code>put</code>,
      * so it is not supported if puts are not.
      * @param m the mapping to load into this map
-     * @throws UnsupportedOperationException if the operation is not supported
+     * @exception UnsupportedOperationException if the operation is not supported
      * by this map.
-     * @throws ClassCastException if a key or value is of the wrong type for
+     * @exception ClassCastException if a key or value is of the wrong type for
      * adding to this map.
-     * @throws IllegalArgumentException if something about a key or value
+     * @exception IllegalArgumentException if something about a key or value
      * prevents it from existing in this map.
-     * @throws NullPointerException if the map forbids null keys or values.
-     * @throws NullPointerException if <code>m</code> is null.
+     * @exception NullPointerException if the map forbids null keys or values.
+     * @exception NullPointerException if <code>m</code> is null.
      * @see #put(Object, Object)
      */
     public void putAll(Map m) {
@@ -732,7 +732,7 @@ public abstract class AbstractMap implements Map, Rollbackable {
      * @return the value the key mapped to, or null if not present.
      * Null may also be returned if null values are allowed
      * in the map and the value of this mapping is null.
-     * @throws UnsupportedOperationException if deletion is unsupported
+     * @exception UnsupportedOperationException if deletion is unsupported
      * @see Iterator#remove()
      */
     public Object remove(Object key) {
@@ -863,7 +863,7 @@ public abstract class AbstractMap implements Map, Rollbackable {
                          * Removes the map entry which has a key equal
                          * to that returned by the last call to
                          * <code>next()</code>.
-                         * @throws UnsupportedOperationException if the
+                         * @exception UnsupportedOperationException if the
                          * map doesn't support removal.
                          */
                         public void remove() {

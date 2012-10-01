@@ -139,7 +139,7 @@ public class TokenReader extends FileReader {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                      protected methods                    ////
+    ////                         protected methods                 ////
 
     /** Do not establish the usual default type constraints.
      *  @return null
@@ -151,7 +151,7 @@ public class TokenReader extends FileReader {
 
     /** FIXME: Send the specified string to the output.
      *  @param fileContents The contents of the file or URL that was read.
-     *  @throws IllegalActionException If sending the data fails.
+     *  @exception IllegalActionException If sending the data fails.
      */
     protected void _handleFileData(String fileContents)
             throws IllegalActionException {

@@ -138,7 +138,7 @@ public class PeriodicSampler extends Transformer {
     ////                         public methods                    ////
 
     /** If the attribute is microstep, adjust the causality interface.
-     *  @throws IllegalActionException If the superclass throws it.
+     *  @exception IllegalActionException If the superclass throws it.
      */
     public void attributeChanged(Attribute attribute) throws IllegalActionException {
         if (attribute == microstep) {

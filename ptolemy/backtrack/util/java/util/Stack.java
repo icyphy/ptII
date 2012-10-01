@@ -97,7 +97,7 @@ public class Stack extends Vector implements Rollbackable {
      * Pops an item from the stack and returns it.  The item popped is
      * removed from the Stack.
      * @return the Object popped from the stack
-     * @throws EmptyStackException if the stack is empty
+     * @exception EmptyStackException if the stack is empty
      */
     public synchronized Object pop() {
         if (getElementCount() == 0) {
@@ -112,7 +112,7 @@ public class Stack extends Vector implements Rollbackable {
     /**
      * Returns the top Object on the stack without removing it.
      * @return the top Object on the stack
-     * @throws EmptyStackException if the stack is empty
+     * @exception EmptyStackException if the stack is empty
      */
     public synchronized Object peek() {
         if (getElementCount() == 0) {

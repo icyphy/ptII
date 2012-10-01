@@ -99,7 +99,7 @@ public class VariableDelaySwitch extends BasicSwitch {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                public variables                           ////
+    ////                         public variables                  ////
     /* channel bandwidth in bits/second */
     public Parameter channelBandwidth;
 
@@ -133,11 +133,11 @@ public class VariableDelaySwitch extends BasicSwitch {
                         "Cannot have negative or zero packet size: " + value);
             }
             _unitTokenSize = value;
-        } else if( attribute == allowPDV){
+        } else if (attribute == allowPDV) {
             boolean value = ((BooleanToken) allowPDV
                     .getToken()).booleanValue();
             _allowPDV = value;
-        } else if( attribute == allowPriority){
+        } else if (attribute == allowPriority) {
             boolean value = ((BooleanToken) allowPriority
                     .getToken()).booleanValue();
             _allowPriority = value;
@@ -186,7 +186,7 @@ public class VariableDelaySwitch extends BasicSwitch {
             RecordToken tokens = (RecordToken)TCPFrame.get("tokens");
             RecordToken TCPHeader = (RecordToken)TCPFrame.get("TCPlabel");
 
-            if( tokens == null || TCPHeader == null){
+            if (tokens == null || TCPHeader == null) {
                 throw new IllegalActionException(this, "Token structure must"
                         + "contain a tokens and a TCPHeader field");
             }
@@ -199,10 +199,10 @@ public class VariableDelaySwitch extends BasicSwitch {
             // get priority value
 
 
-            if( true == _allowPDV)
+            if (true == _allowPDV)
             {
 
-                    if ( packetLength > 0.0){
+                    if ( packetLength > 0.0) {
 
                         _packetSizeDelay = packetLength/_channelBandwidth;
                     }
@@ -211,16 +211,16 @@ public class VariableDelaySwitch extends BasicSwitch {
                         _packetSizeDelay = 0.0;
                     }
             }
-            else{
+            else {
                     _packetSizeDelay = 0.0;
             }
 
             IntToken recordPriority = ((IntToken)TCPHeader.get("options"));
-            if(true == _allowPriority && recordPriority != null){
+            if (true == _allowPriority && recordPriority != null) {
                int _priority = recordPriority.intValue();
                _priorityDelay = _priority/1000.0;
             }
-            else{
+            else {
               //
                _priorityDelay = 0.0;
             }
@@ -245,8 +245,8 @@ public class VariableDelaySwitch extends BasicSwitch {
     }
 
 
-    ///////////////////////////////////////////////////////////////////////
-    ////                protected variables                           ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected variables               ////
 
 
     //channel bandwidth that will be used to determine the delay (in bits/sec)

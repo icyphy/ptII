@@ -3807,7 +3807,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
                 int index = 0;
                 while (!_stack.isEmpty()) {
                     NamedObj parent = _stack.peek();
-                    if(_findInSublibrary(text, parent, index)) {
+                    if (_findInSublibrary(text, parent, index)) {
                         // Found one. Stop the search.
                         foundOne = true;
                         break;

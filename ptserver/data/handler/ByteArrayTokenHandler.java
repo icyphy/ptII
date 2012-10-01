@@ -48,7 +48,7 @@ public class ByteArrayTokenHandler implements TokenHandler<ByteArrayToken> {
     /** Write the ByteArrayToken to the output array.
      *  @param token Token to be converted to bytes.
      *  @param outputStream The stream to write to.
-     *  @throws IOException If the stream cannot be written.
+     *  @exception IOException If the stream cannot be written.
      *  @see ptserver.data.handler.TokenHandler#convertToBytes(ptolemy.data.Token, java.io.DataOutputStream)
      */
     public void convertToBytes(ByteArrayToken token,

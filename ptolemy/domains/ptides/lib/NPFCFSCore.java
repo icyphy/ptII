@@ -78,7 +78,7 @@ public class NPFCFSCore extends ResourceScheduler {
      *  @param executionTime The execution time of the actor.
      *  @return Relative time when this Scheduler has to be executed
      *    again.
-     *  @throws IllegalActionException Thrown if actor paramaters such
+     *  @exception IllegalActionException Thrown if actor paramaters such
      *    as execution time or priority cannot be read.
      */
     @Override

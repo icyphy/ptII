@@ -278,7 +278,7 @@ public class TabbedLayoutScene extends JPanel implements ActionListener {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         private methods                  ////
+    ////                         private methods                   ////
 
     /** Add a tab with the specified name.
      *  @param tag The tag of the content panel.

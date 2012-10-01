@@ -92,8 +92,8 @@ public class WebServer extends AbstractInitializableAttribute {
     /** Construct an instance of the attribute.
      * @param container The container.
      * @param name The name.
-     * @throws IllegalActionException If the superclass throws it.
-     * @throws NameDuplicationException If the superclass throws it.
+     * @exception IllegalActionException If the superclass throws it.
+     * @exception NameDuplicationException If the superclass throws it.
      */
     public WebServer(NamedObj container, String name)
         throws IllegalActionException, NameDuplicationException {
@@ -298,10 +298,10 @@ public class WebServer extends AbstractInitializableAttribute {
                        // Sadly, Jetty is undocumented.
                        _createResourceHandler();
                        _server.start();
-               } catch(Exception e){
+               } catch (Exception e) {
                    try {
                        _server.stop();
-                   } catch(Exception e2){
+                   } catch (Exception e2) {
                        throw new IllegalActionException(this,
                        "Can't update resource handlers of the WebServer.");
                    }
@@ -410,7 +410,7 @@ public class WebServer extends AbstractInitializableAttribute {
       *  the resource handler.
       *
       *  @return A ContextHandler containing the created ResourceHandler
-      *  @throws IllegalActionException If a FileParameter is found that is
+      *  @exception IllegalActionException If a FileParameter is found that is
       *   not a valid URI or references a resource that cannot be found.
       */
      protected ContextHandler _createResourceHandler()
@@ -461,10 +461,10 @@ public class WebServer extends AbstractInitializableAttribute {
                      seen.add(baseAsURL);
                      resources.add(new FileResource(baseAsURL));
                  }
-             } catch(URISyntaxException e2){
+             } catch (URISyntaxException e2) {
                  throw new IllegalActionException(this,
                          "Resource base is not a valid URI: " + base.stringValue());
-             } catch(IOException e3){
+             } catch (IOException e3) {
                  throw new IllegalActionException(this,
                          "Can't access resource base: " + base.stringValue());
              };
@@ -495,7 +495,7 @@ public class WebServer extends AbstractInitializableAttribute {
          // FIXME:  Check for overlapping URLs
          NamedObj topLevel = toplevel();
          Iterator objects = topLevel.containedObjectsIterator();
-         while(objects.hasNext()) {
+         while (objects.hasNext()) {
              Object object = objects.next();
              if (object instanceof HttpService) {
                  HttpService service = (HttpService) object;
@@ -545,7 +545,7 @@ public class WebServer extends AbstractInitializableAttribute {
          */
         public void run() {
 
-            while(!Thread.interrupted()){
+            while (!Thread.interrupted()) {
 
             // Start the server.  The .join() method blocks the thread until the
             // server terminates.
@@ -553,12 +553,12 @@ public class WebServer extends AbstractInitializableAttribute {
                 _server.start();
                 _server.join();
 
-             } catch(Exception e){
+             } catch (Exception e) {
                  // Notify thread users and terminate the server and this thread
                  // if an exception occurs
                  try {
                      _server.stop();
-                 } catch(Exception e2){
+                 } catch (Exception e2) {
                      Thread.currentThread().interrupt();
                      return;
                  }
@@ -568,7 +568,7 @@ public class WebServer extends AbstractInitializableAttribute {
            }
             try {
                 _server.stop();
-            } catch(Exception e) {
+            } catch (Exception e) {
                 // Nothing to do here since the thread will terminate next
             }
             return;

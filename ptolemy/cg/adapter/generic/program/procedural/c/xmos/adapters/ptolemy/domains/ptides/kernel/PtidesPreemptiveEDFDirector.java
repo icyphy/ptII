@@ -467,7 +467,7 @@ public class PtidesPreemptiveEDFDirector
                 + deviceName + "Ready = TRUE;\n";
 
             sensorSwitch += "case " + deviceName + " when pinseq(" + deviceName + "Ready) :> void:\n"
-                + "if(" + deviceName + "Ready) {\n"
+                + "if (" + deviceName + "Ready) {\n"
                 + "getTimestamp(timestamp, platformClockChannel);\n"
                 + CodeGeneratorAdapter.generateName((NamedObj) sensor) + "(schedulerChannel, timestamp);\n"
                 + deviceName + "Ready = FALSE;\n"

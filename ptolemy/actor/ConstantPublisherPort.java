@@ -197,7 +197,7 @@ public class ConstantPublisherPort extends PublisherPort {
     }
 
     /** Override the base class to initialize the token count.
-     *  @throws IllegalActionException If initialTokens is invalid.
+     *  @exception IllegalActionException If initialTokens is invalid.
      */
     @Override
     public void initialize() throws IllegalActionException {

@@ -81,7 +81,7 @@ public class HomerMenu {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                public methods                             ////
+    ////                         public methods                    ////
 
     /** Get the file chooser.
      *  @return The file chooser
@@ -208,7 +208,7 @@ public class HomerMenu {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                private methods                            ////
+    ////                         private methods                   ////
 
     /** Initialize file chooser to the default model directory.
      */
@@ -421,7 +421,7 @@ public class HomerMenu {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                private variables                          ////
+    ////                         private variables                 ////
 
     /** The file path containing device screen size information.
      */

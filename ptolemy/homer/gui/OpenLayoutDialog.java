@@ -71,7 +71,7 @@ public class OpenLayoutDialog implements ActionListener {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                public methods                             ////
+    ////                         public methods                    ////
 
     /**
      * Process action event on choose model and layout buttons.
@@ -141,7 +141,7 @@ public class OpenLayoutDialog implements ActionListener {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                private variables                          ////
+    ////                         private variables                 ////
 
     /**
      * The text field for the model file path.

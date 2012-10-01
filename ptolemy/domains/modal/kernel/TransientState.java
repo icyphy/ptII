@@ -28,8 +28,8 @@ public class TransientState extends State {
     /** Construct a transient state.
      * @param container The container.
      * @param name The name.
-     * @throws IllegalActionException If the superclass throws it.
-     * @throws NameDuplicationException If the superclass throws it.
+     * @exception IllegalActionException If the superclass throws it.
+     * @exception NameDuplicationException If the superclass throws it.
      */
     public TransientState(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {

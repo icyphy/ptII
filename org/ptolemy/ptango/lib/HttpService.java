@@ -58,7 +58,7 @@ import javax.servlet.http.HttpServlet;
 public interface HttpService {
 
     ///////////////////////////////////////////////////////////////////
-    ////                     public methods                        ////
+    ////                         public methods                    ////
 
     /** Returns the relative path that this HttpService is mapped to,
      *  which is the value set previously by a call to

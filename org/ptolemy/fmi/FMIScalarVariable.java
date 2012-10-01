@@ -76,7 +76,7 @@ public class FMIScalarVariable {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////             public methods                                ////
+    ////                         public methods                    ////
 
     /** Create a ScalarVariable from an XML Element.
      *  @param fmiModelDescription the Model Description for this variable.
@@ -339,7 +339,7 @@ public class FMIScalarVariable {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////             inner classes                                 ////
+    ////                         inner classes                     ////
 
     /** Acceptable values for the alias xml attribute.
      *  Alias variables occur during assignment operations.
@@ -452,7 +452,7 @@ public class FMIScalarVariable {
     public Variability variability;
 
     ///////////////////////////////////////////////////////////////////
-    ////             private methods                               ////
+    ////                         private methods                   ////
 
 
     /** Get or set the value of this variable.

@@ -92,13 +92,13 @@ public interface Collection extends Rollbackable {
      * Add an element to this collection.
      * @param o the object to add.
      * @return true if the collection was modified as a result of this action.
-     * @throws UnsupportedOperationException if this collection does not
+     * @exception UnsupportedOperationException if this collection does not
      * support the add operation.
-     * @throws ClassCastException if o cannot be added to this collection due
+     * @exception ClassCastException if o cannot be added to this collection due
      * to its type.
-     * @throws NullPointerException if o is null and this collection doesn't
+     * @exception NullPointerException if o is null and this collection doesn't
      * support the addition of null values.
-     * @throws IllegalArgumentException if o cannot be added to this
+     * @exception IllegalArgumentException if o cannot be added to this
      * collection for some other reason.
      */
     boolean add(Object o);
@@ -107,14 +107,14 @@ public interface Collection extends Rollbackable {
      * Add the contents of a given collection to this collection.
      * @param c the collection to add.
      * @return true if the collection was modified as a result of this action.
-     * @throws UnsupportedOperationException if this collection does not
+     * @exception UnsupportedOperationException if this collection does not
      * support the addAll operation.
-     * @throws ClassCastException if some element of c cannot be added to this
+     * @exception ClassCastException if some element of c cannot be added to this
      * collection due to its type.
-     * @throws NullPointerException if some element of c is null and this
+     * @exception NullPointerException if some element of c is null and this
      * collection does not support the addition of null values.
-     * @throws NullPointerException if c itself is null.
-     * @throws IllegalArgumentException if some element of c cannot be added
+     * @exception NullPointerException if c itself is null.
+     * @exception IllegalArgumentException if some element of c cannot be added
      * to this collection for some other reason.
      */
     boolean addAll(Collection c);
@@ -122,7 +122,7 @@ public interface Collection extends Rollbackable {
     /**
      * Clear the collection, such that a subsequent call to isEmpty() would
      * return true.
-     * @throws UnsupportedOperationException if this collection does not
+     * @exception UnsupportedOperationException if this collection does not
      * support the clear operation.
      */
     void clear();
@@ -133,9 +133,9 @@ public interface Collection extends Rollbackable {
      * @param o the element to look for.
      * @return true if this collection contains at least one element e such that
      * <code>o == null ? e == null : o.equals(e)</code>.
-     * @throws ClassCastException if the type of o is not a valid type for this
+     * @exception ClassCastException if the type of o is not a valid type for this
      * collection.
-     * @throws NullPointerException if o is null and this collection doesn't
+     * @exception NullPointerException if o is null and this collection doesn't
      * support null values.
      */
     boolean contains(Object o);
@@ -144,11 +144,11 @@ public interface Collection extends Rollbackable {
      * Test whether this collection contains every element in a given collection.
      * @param c the collection to test for.
      * @return true if for every element o in c, contains(o) would return true.
-     * @throws ClassCastException if the type of any element in c is not a valid
+     * @exception ClassCastException if the type of any element in c is not a valid
      * type for this collection.
-     * @throws NullPointerException if some element of c is null and this
+     * @exception NullPointerException if some element of c is null and this
      * collection does not support null values.
-     * @throws NullPointerException if c itself is null.
+     * @exception NullPointerException if c itself is null.
      */
     boolean containsAll(Collection c);
 
@@ -203,11 +203,11 @@ public interface Collection extends Rollbackable {
      * @param o the object to remove.
      * @return true if the collection changed as a result of this call, that is,
      * if the collection contained at least one occurrence of o.
-     * @throws UnsupportedOperationException if this collection does not
+     * @exception UnsupportedOperationException if this collection does not
      * support the remove operation.
-     * @throws ClassCastException if the type of o is not a valid type
+     * @exception ClassCastException if the type of o is not a valid type
      * for this collection.
-     * @throws NullPointerException if o is null and the collection doesn't
+     * @exception NullPointerException if o is null and the collection doesn't
      * support null values.
      */
     boolean remove(Object o);
@@ -217,13 +217,13 @@ public interface Collection extends Rollbackable {
      * remove every element e such that c.contains(e).
      * @param c The collection of objects to be removed.
      * @return true if this collection was modified as a result of this call.
-     * @throws UnsupportedOperationException if this collection does not
+     * @exception UnsupportedOperationException if this collection does not
      * support the removeAll operation.
-     * @throws ClassCastException if the type of any element in c is not a valid
+     * @exception ClassCastException if the type of any element in c is not a valid
      * type for this collection.
-     * @throws NullPointerException if some element of c is null and this
+     * @exception NullPointerException if some element of c is null and this
      * collection does not support removing null values.
-     * @throws NullPointerException if c itself is null.
+     * @exception NullPointerException if c itself is null.
      */
     boolean removeAll(Collection c);
 
@@ -232,13 +232,13 @@ public interface Collection extends Rollbackable {
      * collection. That is, remove every element e such that !c.contains(e).
      * @param c The collection of objects to be retained.
      * @return true if this collection was modified as a result of this call.
-     * @throws UnsupportedOperationException if this collection does not
+     * @exception UnsupportedOperationException if this collection does not
      * support the retainAll operation.
-     * @throws ClassCastException if the type of any element in c is not a valid
+     * @exception ClassCastException if the type of any element in c is not a valid
      * type for this collection.
-     * @throws NullPointerException if some element of c is null and this
+     * @exception NullPointerException if some element of c is null and this
      * collection does not support retaining null values.
-     * @throws NullPointerException if c itself is null.
+     * @exception NullPointerException if c itself is null.
      */
     boolean retainAll(Collection c);
 
@@ -269,7 +269,7 @@ public interface Collection extends Rollbackable {
      * @param a the array to copy this collection into.
      * @return an array containing the elements currently in this collection, in
      * any order.
-     * @throws ArrayStoreException if the type of any element of the
+     * @exception ArrayStoreException if the type of any element of the
      * collection is not a subtype of the element type of a.
      */
     Object[] toArray(Object[] a);

@@ -165,11 +165,11 @@ public class FileReader extends LimitedFiringSource {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                      protected methods                    ////
+    ////                         protected methods                 ////
 
     /** Send the specified string to the output.
      *  @param fileContents The contents of the file or URL that was read.
-     *  @throws IllegalActionException If sending the data fails.
+     *  @exception IllegalActionException If sending the data fails.
      */
     protected void _handleFileData(String fileContents)
             throws IllegalActionException {

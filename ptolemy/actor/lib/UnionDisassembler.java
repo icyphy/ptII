@@ -135,7 +135,7 @@ public class UnionDisassembler extends TypedAtomicActor {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                     protected methods                     ////
+    ////                         protected methods                 ////
 
     /** Set up and returns two type constraints.
      *  <ul>

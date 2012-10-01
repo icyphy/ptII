@@ -94,7 +94,7 @@ public class TCPPacketReceiver extends InputDevice {
 
     public TypedIOPort output;
 
-    ////////////
+    ///////////////////////////////////////////////////////////////////
 
     /** Decompose RecordToken into its components.
      *
@@ -128,7 +128,7 @@ public class TCPPacketReceiver extends InputDevice {
                                 + "Here we assume the Record is of types: TCPHeader + tokens");
             }
 
-            //if(record.get(payload).length == BaseType.RECORD)
+            //if (record.get(payload).length == BaseType.RECORD)
 
             // produce different events for each token within the record
             //RecordToken payloadToken = (RecordToken)record.get(payload);
@@ -192,7 +192,7 @@ public class TCPPacketReceiver extends InputDevice {
 
 
     ///////////////////////////////////////////////////////////////////
-    ////                     protected methods                     ////
+    ////                         protected methods                 ////
 
 
     /** Do not establish the usual default type constraints.

@@ -60,7 +60,7 @@ public class FMIStringType extends FMIType {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////             public methods                                ////
+    ////                         public methods                    ////
 
     /** Return the string value of the base element.
      *  @return The string value.

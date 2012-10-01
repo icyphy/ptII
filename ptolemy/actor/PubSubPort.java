@@ -256,7 +256,7 @@ public abstract class PubSubPort extends TypedIOPort
     protected boolean _global;
 
     ///////////////////////////////////////////////////////////////////
-    ////                         private methods                 ////
+    ////                         private methods                   ////
 
     /** Return the first Initializable encountered above this
      *  in the hierarchy that will be initialized (i.e., it is either

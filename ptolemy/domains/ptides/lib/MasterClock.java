@@ -123,7 +123,7 @@ public class MasterClock extends TypedAtomicActor {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                     protected methods                     ////
+    ////                         protected methods                 ////
 
     /**
      * Do not establish the usual default type constraints. Instead, the type

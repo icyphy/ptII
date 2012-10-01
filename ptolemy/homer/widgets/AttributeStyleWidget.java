@@ -61,7 +61,7 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
 
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// AttributeStyleWidget
 
 /**
@@ -80,7 +80,7 @@ public class AttributeStyleWidget extends GlassPaneWidget implements
      * If there is a no style defined, revert to a text field.
      * @param scene The scene containing the widget.
      * @param element The element to visualize.
-     * @throws IllegalActionException if there is a problem parsing attribute's style.
+     * @exception IllegalActionException if there is a problem parsing attribute's style.
      */
     public AttributeStyleWidget(Scene scene, PositionableElement element)
             throws IllegalActionException {
@@ -134,7 +134,7 @@ public class AttributeStyleWidget extends GlassPaneWidget implements
     ////                         public methods                    ////
     /**
      * Update the value of the widget based on the attributes expression (if applicable).
-     * @throws IllegalActionException if there is a problem parsing the attribute's expression.
+     * @exception IllegalActionException if there is a problem parsing the attribute's expression.
      */
     public void updateValue() throws IllegalActionException {
         NamedObj namedObject = getPositionableElement().getElement();

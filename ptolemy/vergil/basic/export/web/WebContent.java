@@ -65,8 +65,8 @@ public abstract class WebContent extends StringParameter
     /** Create an instance of this parameter.
      *  @param container The container.
      *  @param name The name.
-     *  @throws IllegalActionException If the superclass throws it.
-     *  @throws NameDuplicationException If the superclass throws it.
+     *  @exception IllegalActionException If the superclass throws it.
+     *  @exception NameDuplicationException If the superclass throws it.
      */
     public WebContent(NamedObj container, String name)
             throws IllegalActionException, NameDuplicationException {
@@ -176,14 +176,14 @@ public abstract class WebContent extends StringParameter
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                       protected methods                   ////
+    ////                         protected methods                 ////
 
     /** Generate attribute web content.  Should call WebExporter's
      * defineAttribute() method.  Subclasses should override. Please also see
      * {@link ptolemy.vergil.basic.export.web.WebAttribute}
      *
      * @param  exporter  The WebExporter to write content to
-     * @throws IllegalActionException If there is a problem creating the web
+     * @exception IllegalActionException If there is a problem creating the web
      * content.
      */
     protected void _provideAttributes(WebExporter exporter)
@@ -196,7 +196,7 @@ public abstract class WebContent extends StringParameter
      * {@link ptolemy.vergil.basic.export.web.WebElement}
      *
      * @param  exporter  The WebExporter to write content to
-     * @throws IllegalActionException If there is a problem creating the web
+     * @exception IllegalActionException If there is a problem creating the web
      * content.
      */
     protected void _provideElements(WebExporter exporter)
@@ -208,7 +208,7 @@ public abstract class WebContent extends StringParameter
     // would need this.
 
     ///////////////////////////////////////////////////////////////////
-    ////                       protected variables                 ////
+    ////                         protected variables               ////
 
     /** Icon. */
     protected TextIcon _icon;

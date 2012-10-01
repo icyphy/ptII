@@ -954,7 +954,7 @@ public class ContinuousDirector extends FixedPointDirector implements
     /** Roll back all actors that implement ContinuousStatefulComponent
      *  to committed state, and set local model time to the start
      *  of the integration period.
-     *  @throws IllegalActionException If the rollback attempts to go
+     *  @exception IllegalActionException If the rollback attempts to go
      *   back further than the last committed time.
      */
     public void rollBackToCommittedState() throws IllegalActionException {

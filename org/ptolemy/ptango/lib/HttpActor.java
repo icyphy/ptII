@@ -110,8 +110,8 @@ public class HttpActor extends TypedAtomicActor implements HttpService {
     /** Create an instance of the actor.
      *  @param container The container
      *  @param name The name.
-     *  @throws IllegalActionException If the superclass throws it.
-     *  @throws NameDuplicationException If the super
+     *  @exception IllegalActionException If the superclass throws it.
+     *  @exception NameDuplicationException If the super
      */
     public HttpActor(CompositeEntity container, String name)
         throws IllegalActionException, NameDuplicationException {
@@ -274,7 +274,7 @@ public class HttpActor extends TypedAtomicActor implements HttpService {
     public Parameter timeout;
 
     ///////////////////////////////////////////////////////////////////
-    ////                     public methods                        ////
+    ////                         public methods                    ////
 
     /** React to a change in an attribute.  In this case, check the
      *  value of the <i>path</i> attribute to make sure it is a valid URI.
@@ -292,7 +292,7 @@ public class HttpActor extends TypedAtomicActor implements HttpService {
                 } else {
                     _URIpath = URI.create("/*");
                 }
-            } catch(IllegalArgumentException e2){
+            } catch (IllegalArgumentException e2) {
                 throw new IllegalActionException(this,
                         "Path is not a valid URI: " + pathValue);
             }
@@ -443,7 +443,7 @@ public class HttpActor extends TypedAtomicActor implements HttpService {
                                     name = ((StringToken) cookieNames
                                             .getElement(i)).stringValue();
                                     if (name != null && !name.isEmpty() &&
-                                           _cookieCollection.get(name) != null){
+                                           _cookieCollection.get(name) != null) {
                                         value = _cookieCollection.get(name);
                                     }
 
@@ -504,7 +504,7 @@ public class HttpActor extends TypedAtomicActor implements HttpService {
 
 
     ///////////////////////////////////////////////////////////////////
-    ////                     private variables                     ////
+    ////                         private variables                 ////
 
     /** All cookies from the setCookies port plus the Cookies from the
      *  HttpRequest.  Values provided on the setCookies port override values
@@ -548,7 +548,7 @@ public class HttpActor extends TypedAtomicActor implements HttpService {
     private URI _URIpath;
 
     ///////////////////////////////////////////////////////////////////
-    ////                     private methods                       ////
+    ////                         private methods                   ////
 
     /** Take the list of name, value pairs from the cookies RecordToken and
      *  update the _cookieCollection Hashtable.
@@ -567,7 +567,7 @@ public class HttpActor extends TypedAtomicActor implements HttpService {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                     inner classes                         ////
+    ////                         inner classes                     ////
 
     /** A servlet providing implementations of get and post.
      *  The way this servlet works is that when a get or post
@@ -595,9 +595,9 @@ public class HttpActor extends TypedAtomicActor implements HttpService {
          *
          *  @param request The HTTP get request.
          *  @param response The HTTP response to write to.
-         *  @throws ServletException  If there is a problem reading from the
+         *  @exception ServletException  If there is a problem reading from the
          *  servlet request or other servlet problem
-         *  @throws IOException  If there is a problem writing to the servlet
+         *  @exception IOException  If there is a problem writing to the servlet
          *  response
          */
         protected synchronized void doGet(HttpServletRequest request,
@@ -614,9 +614,9 @@ public class HttpActor extends TypedAtomicActor implements HttpService {
          *  request will be postponed until the first has been completely handled.
          *  @param request The HTTP get request.
          *  @param response The HTTP response to write to.
-         *  @throws ServletException  If there is a problem reading from the
+         *  @exception ServletException  If there is a problem reading from the
          *  servlet request or other servlet problem
-         *  @throws IOException  If there is a problem writing to the servlet
+         *  @exception IOException  If there is a problem writing to the servlet
          *  response
          */
         protected synchronized void doPost(HttpServletRequest request,
@@ -631,9 +631,9 @@ public class HttpActor extends TypedAtomicActor implements HttpService {
          *  @param request The HTTP request.
          *  @param response The HTTP response to write to.
          *  @param type The type of request. 0 for get, 1 for post.
-         *  @throws ServletException  If there is a problem reading from the
+         *  @exception ServletException  If there is a problem reading from the
          *  servlet request or other servlet problem
-         *  @throws IOException  If there is a problem writing to the servlet
+         *  @exception IOException  If there is a problem writing to the servlet
          *  response
          */
         private void _handleRequest(HttpServletRequest request,
@@ -813,7 +813,7 @@ public class HttpActor extends TypedAtomicActor implements HttpService {
          *
          * @param response The HttpServletResponse to write the cookies to.
          */
-        private void _writeCookies(HttpServletResponse response){
+        private void _writeCookies(HttpServletResponse response) {
 
             // TODO:  Allow permanent cookies.  Current implementation produces
             // session cookies.  Session cookies are stored in
@@ -858,7 +858,7 @@ public class HttpActor extends TypedAtomicActor implements HttpService {
          *  @param responseCode The HTTP response code for the message.  Should be
          *   one of HttpServletResponse.X
          *  @param message The error message to write.
-         *  @throws IOException If the write fails.
+         *  @exception IOException If the write fails.
          */
         private void _writeError(
                 HttpServletResponse response, int responseCode, String message)

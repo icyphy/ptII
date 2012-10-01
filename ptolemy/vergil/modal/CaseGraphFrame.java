@@ -342,7 +342,7 @@ public class CaseGraphFrame extends ActorGraphFrame implements ChangeListener {
                             Port port = (Port) ports.next();
 
                             // see if we should mirror the port
-                            if(port != _case.control.getPort()) {
+                            if (port != _case.control.getPort()) {
                                 portsToMirror.add(port);
                             }
                         }

@@ -87,7 +87,7 @@ public interface SortedMap extends Map, Rollbackable {
     /**
      * Returns the first (lowest sorted) key in the map.
      * @return the first key
-     * @throws NoSuchElementException if this map is empty.
+     * @exception NoSuchElementException if this map is empty.
      */
     Object firstKey();
 
@@ -103,10 +103,10 @@ public interface SortedMap extends Map, Rollbackable {
      * <code>headMap(new Integer(limit.intValue() + 1))</code>.
      * @param toKey the exclusive upper range of the submap
      * @return the submap
-     * @throws ClassCastException if toKey is not comparable to the map contents
-     * @throws IllegalArgumentException if this is a subMap, and toKey is out
+     * @exception ClassCastException if toKey is not comparable to the map contents
+     * @exception IllegalArgumentException if this is a subMap, and toKey is out
      * of range
-     * @throws NullPointerException if toKey is null but the map does not allow
+     * @exception NullPointerException if toKey is null but the map does not allow
      * null keys
      */
     SortedMap headMap(Object toKey);
@@ -114,7 +114,7 @@ public interface SortedMap extends Map, Rollbackable {
     /**
      * Returns the last (highest sorted) key in the map.
      * @return the last key
-     * @throws NoSuchElementException if this map is empty.
+     * @exception NoSuchElementException if this map is empty.
      */
     Object lastKey();
 
@@ -135,11 +135,11 @@ public interface SortedMap extends Map, Rollbackable {
      * @param fromKey the inclusive lower range of the submap
      * @param toKey the exclusive upper range of the submap
      * @return the submap
-     * @throws ClassCastException if fromKey or toKey is not comparable to
+     * @exception ClassCastException if fromKey or toKey is not comparable to
      * the map contents
-     * @throws IllegalArgumentException if this is a subMap, and fromKey or
+     * @exception IllegalArgumentException if this is a subMap, and fromKey or
      * toKey is out of range
-     * @throws NullPointerException if fromKey or toKey is null but the map
+     * @exception NullPointerException if fromKey or toKey is null but the map
      * does not allow null keys
      */
     SortedMap subMap(Object fromKey, Object toKey);
@@ -156,11 +156,11 @@ public interface SortedMap extends Map, Rollbackable {
      * <code>tailMap(new Integer(limit.intValue() + 1))</code>.
      * @param fromKey the inclusive lower range of the submap
      * @return the submap
-     * @throws ClassCastException if fromKey is not comparable to the map
+     * @exception ClassCastException if fromKey is not comparable to the map
      * contents
-     * @throws IllegalArgumentException if this is a subMap, and fromKey is out
+     * @exception IllegalArgumentException if this is a subMap, and fromKey is out
      * of range
-     * @throws NullPointerException if fromKey is null but the map does not allow
+     * @exception NullPointerException if fromKey is null but the map does not allow
      * null keys
      */
     SortedMap tailMap(Object fromKey);

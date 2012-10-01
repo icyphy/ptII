@@ -122,7 +122,7 @@ public class ModelTests {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                       protected variables                 ////
+    ////                         protected variables               ////
 
     /**
      * The application class. We use reflection here to avoid false dependencies

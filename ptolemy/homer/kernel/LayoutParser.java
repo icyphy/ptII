@@ -69,7 +69,7 @@ public class LayoutParser {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                public methods                             ////
+    ////                         public methods                    ////
 
     /** Get the orientation of the screen from the parsed layout file.
      *  @return The screen orientation (if defined by the layout).
@@ -277,7 +277,7 @@ public class LayoutParser {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                private methods                            ////
+    ////                         private methods                   ////
 
     /** Find all positionable attributes of the model recursively and
      *  add them to the passed container parsed.
@@ -316,7 +316,7 @@ public class LayoutParser {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                private variables                          ////
+    ////                         private variables                 ////
 
     /** The top-level actor of the parsed model file.
      */

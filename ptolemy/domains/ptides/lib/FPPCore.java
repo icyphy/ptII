@@ -73,7 +73,7 @@ public class FPPCore extends ResourceScheduler {
     public static int LOWEST_PRIORITY = Integer.MAX_VALUE;
 
     /** Initialize local variables.
-     *  @throws IllegalActionException Thrown in super class.
+     *  @exception IllegalActionException Thrown in super class.
      */
     @Override
     public Time initialize() throws IllegalActionException {
@@ -90,7 +90,7 @@ public class FPPCore extends ResourceScheduler {
      *  @param executionTime The execution time of the actor.
      *  @return Relative time when this Scheduler has to be executed
      *    again.
-     *  @throws IllegalActionException Thrown if actor paramaters such
+     *  @exception IllegalActionException Thrown if actor paramaters such
      *    as execution time or priority cannot be read.
      */
     @Override
@@ -151,7 +151,7 @@ public class FPPCore extends ResourceScheduler {
      *  @param actor The actor.
      *  @return The priority of the actor or, if the actor has no priority
      *    assigned, the lowest priority.
-     *  @throws IllegalActionException Thrown if parameter cannot be read.
+     *  @exception IllegalActionException Thrown if parameter cannot be read.
      */
     protected double _getPriority(Actor actor) throws IllegalActionException {
         Parameter parameter = (Parameter) ((NamedObj) actor)

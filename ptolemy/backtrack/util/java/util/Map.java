@@ -112,11 +112,11 @@ public interface Map extends Rollbackable {
          * called Iterator.remove().
          * @param value the new value to store
          * @return the old value
-         * @throws UnsupportedOperationException if the operation is not supported
-         * @throws ClassCastException if the value is of the wrong type
-         * @throws IllegalArgumentException if something about the value
+         * @exception UnsupportedOperationException if the operation is not supported
+         * @exception ClassCastException if the value is of the wrong type
+         * @exception IllegalArgumentException if something about the value
          * prevents it from existing in this map
-         * @throws NullPointerException if the map forbids null values
+         * @exception NullPointerException if the map forbids null values
          */
         Object setValue(Object value);
 
@@ -156,7 +156,7 @@ public interface Map extends Rollbackable {
 
     /**
      * Remove all entries from this Map (optional operation).
-     * @throws UnsupportedOperationException if clear is not supported
+     * @exception UnsupportedOperationException if clear is not supported
      */
     void clear();
 
@@ -164,8 +164,8 @@ public interface Map extends Rollbackable {
      * Returns true if this contains a mapping for the given key.
      * @param key the key to search for
      * @return true if the map contains the key
-     * @throws ClassCastException if the key is of an inappropriate type
-     * @throws NullPointerException if key is <code>null</code> but the map
+     * @exception ClassCastException if the key is of an inappropriate type
+     * @exception NullPointerException if key is <code>null</code> but the map
      * does not permit null keys
      */
     boolean containsKey(Object key);
@@ -177,9 +177,9 @@ public interface Map extends Rollbackable {
      * requires linear time.
      * @param value the value to search for
      * @return true if the map contains the value
-     * @throws ClassCastException if the type of the value is not a valid type
+     * @exception ClassCastException if the type of the value is not a valid type
      * for this map.
-     * @throws NullPointerException if the value is null and the map doesn't
+     * @exception NullPointerException if the value is null and the map doesn't
      * support null values.
      */
     boolean containsValue(Object value);
@@ -217,8 +217,8 @@ public interface Map extends Rollbackable {
      * must rely on <code>containsKey</code> to determine if a mapping exists.
      * @param key the key to look up
      * @return the value associated with the key, or null if key not in map
-     * @throws ClassCastException if the key is an inappropriate type
-     * @throws NullPointerException if this map does not accept null keys
+     * @exception ClassCastException if the key is an inappropriate type
+     * @exception NullPointerException if this map does not accept null keys
      * @see #containsKey(Object)
      */
     Object get(Object key);
@@ -231,11 +231,11 @@ public interface Map extends Rollbackable {
      * @param key the key to map
      * @param value the value to be mapped
      * @return the previous value of the key, or null if there was no mapping
-     * @throws UnsupportedOperationException if the operation is not supported
-     * @throws ClassCastException if the key or value is of the wrong type
-     * @throws IllegalArgumentException if something about this key or value
+     * @exception UnsupportedOperationException if the operation is not supported
+     * @exception ClassCastException if the key or value is of the wrong type
+     * @exception IllegalArgumentException if something about this key or value
      * prevents it from existing in this map
-     * @throws NullPointerException if either the key or the value is null,
+     * @exception NullPointerException if either the key or the value is null,
      * and the map forbids null keys or values
      * @see #containsKey(Object)
      */
@@ -274,11 +274,11 @@ public interface Map extends Rollbackable {
      * Copies all entries of the given map to this one (optional operation). If
      * the map already contains a key, its value is replaced.
      * @param m the mapping to load into this map
-     * @throws UnsupportedOperationException if the operation is not supported
-     * @throws ClassCastException if a key or value is of the wrong type
-     * @throws IllegalArgumentException if something about a key or value
+     * @exception UnsupportedOperationException if the operation is not supported
+     * @exception ClassCastException if a key or value is of the wrong type
+     * @exception IllegalArgumentException if something about a key or value
      * prevents it from existing in this map
-     * @throws NullPointerException if the map forbids null keys or values, or
+     * @exception NullPointerException if the map forbids null keys or values, or
      * if <code>m</code> is null.
      * @see #put(Object, Object)
      */
@@ -290,10 +290,10 @@ public interface Map extends Rollbackable {
      * null values may also return null if the key was removed.
      * @param key the key to remove
      * @return the value the key mapped to, or null if not present.
-     * @throws UnsupportedOperationException if deletion is unsupported
-     * @throws NullPointerException if the key is null and this map doesn't
+     * @exception UnsupportedOperationException if deletion is unsupported
+     * @exception NullPointerException if the key is null and this map doesn't
      * support null keys.
-     * @throws ClassCastException if the type of the key is not a valid type
+     * @exception ClassCastException if the type of the key is not a valid type
      * for this map.
      */
     Object remove(Object key);

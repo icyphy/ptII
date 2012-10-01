@@ -35,7 +35,7 @@ import ptolemy.kernel.util.Workspace;
  */
 public class CoroutineDirector extends Director implements Continuation {
 
-    ///////////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////
     public CoroutineDirector() throws IllegalActionException,
             NameDuplicationException {
         super();
@@ -663,7 +663,7 @@ public class CoroutineDirector extends Director implements Continuation {
     public Parameter exitMapping;
 
 
-    ///////////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////
 
     /*private EntryLocation _next(ExitLocation exloc) {
         return _nextMap.get(exloc);

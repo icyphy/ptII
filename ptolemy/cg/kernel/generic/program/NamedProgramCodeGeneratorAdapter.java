@@ -158,7 +158,7 @@ public class NamedProgramCodeGeneratorAdapter extends
         Iterator<TypedIOPort> ports = sourcePorts.iterator();
 
         // for each output port.
-        while(ports.hasNext()) {
+        while (ports.hasNext()) {
             TypedIOPort sourcePort = ports.next();
 
             // for each channel.

@@ -69,8 +69,8 @@ public class IconLink extends WebContent implements WebExportable {
     /** Create an instance of this parameter.
      *  @param container The container.
      *  @param name The name.
-     *  @throws IllegalActionException If the superclass throws it.
-     *  @throws NameDuplicationException If the superclass throws it.
+     *  @exception IllegalActionException If the superclass throws it.
+     *  @exception NameDuplicationException If the superclass throws it.
      */
     public IconLink(NamedObj container, String name)
             throws IllegalActionException, NameDuplicationException {
@@ -124,7 +124,7 @@ public class IconLink extends WebContent implements WebExportable {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         protected methods                ////
+    ////                         protected methods                 ////
 
     /** Provide content to the specified web exporter to be
      *  included in a web page for the container of this object.
@@ -132,7 +132,7 @@ public class IconLink extends WebContent implements WebExportable {
      *  the area of the image map corresponding to its container.
      *
      *  @param exporter  The web exporter to write content to
-     *  @throws IllegalActionException If evaluating the value
+     *  @exception IllegalActionException If evaluating the value
      *   of this parameter fails, or creating a web attribute fails.
      */
     protected void _provideAttributes(WebExporter exporter)

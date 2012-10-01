@@ -186,7 +186,7 @@ public class Merge extends DETransformer {
 
     /** Return the microstep of the director.
      *  @return The microstep.
-     *  @throws IllegalActionException Thrown if the enclosing director
+     *  @exception IllegalActionException Thrown if the enclosing director
      *    is not a SuperdenseTimeDirector.
      */
     private int _getMicrostep() throws IllegalActionException {

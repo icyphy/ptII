@@ -334,7 +334,7 @@ public class Collections implements Rollbackable {
          * method never returns, throwing an exception instead.
          * @param index The index of the element to retrieve.
          * @return the object at the specified index.
-         * @throws IndexOutOfBoundsException as any given index
+         * @exception IndexOutOfBoundsException as any given index
          * is outside the bounds of an empty array.
          */
         public Object get(int index) {
@@ -629,7 +629,7 @@ public class Collections implements Rollbackable {
          * Constructs the list.
          * @param n the count
          * @param o the object
-         * @throws IllegalArgumentException if n &lt; 0
+         * @exception IllegalArgumentException if n &lt; 0
          */
         CopiesList(int n, Object o) {
             if (n < 0) {
@@ -884,7 +884,7 @@ public class Collections implements Rollbackable {
                 /**
                  * Returns the element.
                  * @return The element used by this singleton.
-                 * @throws NoSuchElementException if the object
+                 * @exception NoSuchElementException if the object
                  * has already been retrieved.
                  */
                 public Object next() {
@@ -900,7 +900,7 @@ public class Collections implements Rollbackable {
                  * Removes the element from the singleton.
                  * As this set is immutable, this will always
                  * throw an exception.
-                 * @throws UnsupportedOperationException as the
+                 * @exception UnsupportedOperationException as the
                  * singleton set doesn't support
                  * <code>remove()</code>.
                  */
@@ -1097,7 +1097,7 @@ public class Collections implements Rollbackable {
          * to retrieve.
          * @return The singleton's element if the
          * index is 0.
-         * @throws IndexOutOfBoundsException if
+         * @exception IndexOutOfBoundsException if
          * index is not 0.
          */
         public Object get(int index) {
@@ -1169,8 +1169,8 @@ public class Collections implements Rollbackable {
          * @param to The ending bound for the sublist.
          * @return Either an empty list if both bounds are
          * 0 or 1, or this list if the bounds are 0 and 1.
-         * @throws IllegalArgumentException if <code>from > to</code>
-         * @throws IndexOutOfBoundsException if either bound is greater
+         * @exception IllegalArgumentException if <code>from > to</code>
+         * @exception IndexOutOfBoundsException if either bound is greater
          * than 1.
          */
         public List subList(int from, int to) {
@@ -1275,7 +1275,7 @@ public class Collections implements Rollbackable {
                      * An exception is always thrown, as the map is immutable.
                      * @param o The new value.
                      * @return The old value.
-                     * @throws UnsupportedOperationException as setting the value
+                     * @exception UnsupportedOperationException as setting the value
                      * is not supported.
                      */
                     public Object setValue(Object o) {
@@ -1498,7 +1498,7 @@ public class Collections implements Rollbackable {
         /**
          * Wrap a given collection.
          * @param c the collection to wrap
-         * @throws NullPointerException if c is null
+         * @exception NullPointerException if c is null
          */
         SynchronizedCollection(Collection c) {
             this.c = c;
@@ -1525,13 +1525,13 @@ public class Collections implements Rollbackable {
          * @param o The object to add.
          * @return <code>true</code> if the collection was modified as a result
          * of this action.
-         * @throws UnsupportedOperationException if this collection does not
+         * @exception UnsupportedOperationException if this collection does not
          * support the add operation.
-         * @throws ClassCastException if o cannot be added to this collection due
+         * @exception ClassCastException if o cannot be added to this collection due
          * to its type.
-         * @throws NullPointerException if o is null and this collection doesn't
+         * @exception NullPointerException if o is null and this collection doesn't
          * support the addition of null values.
-         * @throws IllegalArgumentException if o cannot be added to this
+         * @exception IllegalArgumentException if o cannot be added to this
          * collection for some other reason.
          */
         public boolean add(Object o) {
@@ -1546,14 +1546,14 @@ public class Collections implements Rollbackable {
          * @param col The collection to take the new objects from.
          * @return <code>true</code> if the collection was modified as a result
          * of this action.
-         * @throws UnsupportedOperationException if this collection does not
+         * @exception UnsupportedOperationException if this collection does not
          * support the addAll operation.
-         * @throws ClassCastException if some element of col cannot be added to this
+         * @exception ClassCastException if some element of col cannot be added to this
          * collection due to its type.
-         * @throws NullPointerException if some element of col is null and this
+         * @exception NullPointerException if some element of col is null and this
          * collection does not support the addition of null values.
-         * @throws NullPointerException if col itself is null.
-         * @throws IllegalArgumentException if some element of col cannot be added
+         * @exception NullPointerException if col itself is null.
+         * @exception IllegalArgumentException if some element of col cannot be added
          * to this collection for some other reason.
          */
         public boolean addAll(Collection col) {
@@ -1565,7 +1565,7 @@ public class Collections implements Rollbackable {
         /**
          * Removes all objects from the underlying collection,
          * first obtaining a lock on the mutex.
-         * @throws UnsupportedOperationException if this collection does not
+         * @exception UnsupportedOperationException if this collection does not
          * support the clear operation.
          */
         public void clear() {
@@ -1580,9 +1580,9 @@ public class Collections implements Rollbackable {
          * @param o the element to look for.
          * @return <code>true</code> if this collection contains at least one
          * element e such that <code>o == null ? e == null : o.equals(e)</code>.
-         * @throws ClassCastException if the type of o is not a valid type for this
+         * @exception ClassCastException if the type of o is not a valid type for this
          * collection.
-         * @throws NullPointerException if o is null and this collection doesn't
+         * @exception NullPointerException if o is null and this collection doesn't
          * support null values.
          */
         public boolean contains(Object o) {
@@ -1598,11 +1598,11 @@ public class Collections implements Rollbackable {
          * @param c1 the collection to test for.
          * @return <code>true</code> if for every element o in c, contains(o)
          * would return <code>true</code>.
-         * @throws ClassCastException if the type of any element in cl is not a valid
+         * @exception ClassCastException if the type of any element in cl is not a valid
          * type for this collection.
-         * @throws NullPointerException if some element of cl is null and this
+         * @exception NullPointerException if some element of cl is null and this
          * collection does not support null values.
-         * @throws NullPointerException if cl itself is null.
+         * @exception NullPointerException if cl itself is null.
          */
         public boolean containsAll(Collection c1) {
             synchronized (mutex) {
@@ -1641,11 +1641,11 @@ public class Collections implements Rollbackable {
          * @param o The object to remove.
          * @return <code>true</code> if the collection changed as a result of this call, that is,
          * if the collection contained at least one occurrence of o.
-         * @throws UnsupportedOperationException if this collection does not
+         * @exception UnsupportedOperationException if this collection does not
          * support the remove operation.
-         * @throws ClassCastException if the type of o is not a valid type
+         * @exception ClassCastException if the type of o is not a valid type
          * for this collection.
-         * @throws NullPointerException if o is null and the collection doesn't
+         * @exception NullPointerException if o is null and the collection doesn't
          * support null values.
          */
         public boolean remove(Object o) {
@@ -1661,13 +1661,13 @@ public class Collections implements Rollbackable {
          * before the operation proceeds.
          * @param col The collection of objects to be removed.
          * @return <code>true</code> if this collection was modified as a result of this call.
-         * @throws UnsupportedOperationException if this collection does not
+         * @exception UnsupportedOperationException if this collection does not
          * support the removeAll operation.
-         * @throws ClassCastException if the type of any element in c is not a valid
+         * @exception ClassCastException if the type of any element in c is not a valid
          * type for this collection.
-         * @throws NullPointerException if some element of c is null and this
+         * @exception NullPointerException if some element of c is null and this
          * collection does not support removing null values.
-         * @throws NullPointerException if c itself is null.
+         * @exception NullPointerException if c itself is null.
          */
         public boolean removeAll(Collection col) {
             synchronized (mutex) {
@@ -1683,13 +1683,13 @@ public class Collections implements Rollbackable {
          * before the operation proceeds.
          * @param col The collection of objects to be removed.
          * @return <code>true</code> if this collection was modified as a result of this call.
-         * @throws UnsupportedOperationException if this collection does not
+         * @exception UnsupportedOperationException if this collection does not
          * support the removeAll operation.
-         * @throws ClassCastException if the type of any element in c is not a valid
+         * @exception ClassCastException if the type of any element in c is not a valid
          * type for this collection.
-         * @throws NullPointerException if some element of c is null and this
+         * @exception NullPointerException if some element of c is null and this
          * collection does not support removing null values.
-         * @throws NullPointerException if c itself is null.
+         * @exception NullPointerException if c itself is null.
          */
         public boolean retainAll(Collection col) {
             synchronized (mutex) {
@@ -1735,7 +1735,7 @@ public class Collections implements Rollbackable {
          * Before the copying takes place, a lock is obtained on the mutex.
          * @param a An array to copy elements to.
          * @return An array containing the elements of the underlying collection.
-         * @throws ArrayStoreException if the type of any element of the
+         * @exception ArrayStoreException if the type of any element of the
          * collection is not a subtype of the element type of a.
          */
         public Object[] toArray(Object[] a) {
@@ -1830,7 +1830,7 @@ public class Collections implements Rollbackable {
          * Retrieves the next object in the underlying collection.
          * A lock is obtained on the mutex before the collection is accessed.
          * @return The next object in the collection.
-         * @throws NoSuchElementException if there are no more elements
+         * @exception NoSuchElementException if there are no more elements
          */
         public Object next() {
             synchronized (mutex) {
@@ -1860,9 +1860,9 @@ public class Collections implements Rollbackable {
          * <code>next()</code>, it is this element that gets removed.
          * Regardless of whether this takes place or not, element n+1 is
          * still returned on the subsequent <code>next()</code> call.
-         * @throws IllegalStateException if next has not yet been called or remove
+         * @exception IllegalStateException if next has not yet been called or remove
          * has already been called since the last call to next.
-         * @throws UnsupportedOperationException if this Iterator does not support
+         * @exception UnsupportedOperationException if this Iterator does not support
          * the remove operation.
          */
         public void remove() {
@@ -1942,7 +1942,7 @@ public class Collections implements Rollbackable {
         /**
          * Wrap a given list.
          * @param l the list to wrap
-         * @throws NullPointerException if l is null
+         * @exception NullPointerException if l is null
          */
         SynchronizedList(List l) {
             super(l);
@@ -1967,14 +1967,14 @@ public class Collections implements Rollbackable {
          * addition takes place, a lock is obtained on the mutex.
          * @param index the location to insert the item
          * @param o the object to insert
-         * @throws UnsupportedOperationException if this list does not support the
+         * @exception UnsupportedOperationException if this list does not support the
          * add operation
-         * @throws IndexOutOfBoundsException if index &lt; 0 || index &gt; size()
-         * @throws ClassCastException if o cannot be added to this list due to its
+         * @exception IndexOutOfBoundsException if index &lt; 0 || index &gt; size()
+         * @exception ClassCastException if o cannot be added to this list due to its
          * type
-         * @throws IllegalArgumentException if o cannot be added to this list for
+         * @exception IllegalArgumentException if o cannot be added to this list for
          * some other reason
-         * @throws NullPointerException if o is null and this list doesn't support
+         * @exception NullPointerException if o is null and this list doesn't support
          * the addition of null values.
          */
         public void add(int index, Object o) {
@@ -1991,13 +1991,13 @@ public class Collections implements Rollbackable {
          * @param index the index at which to insert
          * @param c the collection to add
          * @return <code>true</code>, as defined by Collection for a modified list
-         * @throws UnsupportedOperationException if this list does not support the
+         * @exception UnsupportedOperationException if this list does not support the
          * add operation
-         * @throws ClassCastException if o cannot be added to this list due to its
+         * @exception ClassCastException if o cannot be added to this list due to its
          * type
-         * @throws IllegalArgumentException if o cannot be added to this list for
+         * @exception IllegalArgumentException if o cannot be added to this list for
          * some other reason
-         * @throws NullPointerException if o is null and this list doesn't support
+         * @exception NullPointerException if o is null and this list doesn't support
          * the addition of null values.
          */
         public boolean addAll(int index, Collection c) {
@@ -2028,7 +2028,7 @@ public class Collections implements Rollbackable {
          * is obtained on the mutex before the list is accessed.
          * @param index the index of the element to be returned
          * @return the element at index index in this list
-         * @throws IndexOutOfBoundsException if index &lt; 0 || index &gt;= size()
+         * @exception IndexOutOfBoundsException if index &lt; 0 || index &gt;= size()
          */
         public Object get(int index) {
             synchronized (mutex) {
@@ -2057,9 +2057,9 @@ public class Collections implements Rollbackable {
          * @param o the object to search for
          * @return the least integer n such that <code>o == null ? get(n) == null :
          * o.equals(get(n))</code>, or -1 if there is no such index.
-         * @throws ClassCastException if the type of o is not a valid
+         * @exception ClassCastException if the type of o is not a valid
          * type for this list.
-         * @throws NullPointerException if o is null and this
+         * @exception NullPointerException if o is null and this
          * list does not support null values.
          */
         public int indexOf(Object o) {
@@ -2074,9 +2074,9 @@ public class Collections implements Rollbackable {
          * is accessed.
          * @return the greatest integer n such that <code>o == null ? get(n) == null
          * : o.equals(get(n))</code>, or -1 if there is no such index.
-         * @throws ClassCastException if the type of o is not a valid
+         * @exception ClassCastException if the type of o is not a valid
          * type for this list.
-         * @throws NullPointerException if o is null and this
+         * @exception NullPointerException if o is null and this
          * list does not support null values.
          */
         public int lastIndexOf(Object o) {
@@ -2114,7 +2114,7 @@ public class Collections implements Rollbackable {
          * The list iterator allows additional list-specific operations
          * to be performed, in addition to those supplied by the
          * standard iterator.
-         * @throws IndexOutOfBoundsException if index &lt; 0 || index &gt; size()
+         * @exception IndexOutOfBoundsException if index &lt; 0 || index &gt; size()
          */
         public ListIterator listIterator(int index) {
             synchronized (mutex) {
@@ -2129,9 +2129,9 @@ public class Collections implements Rollbackable {
          * A lock on the mutex is obtained before the element is removed.
          * @param index the position within the list of the object to remove
          * @return the object that was removed
-         * @throws UnsupportedOperationException if this list does not support the
+         * @exception UnsupportedOperationException if this list does not support the
          * remove operation
-         * @throws IndexOutOfBoundsException if index &lt; 0 || index &gt;= size()
+         * @exception IndexOutOfBoundsException if index &lt; 0 || index &gt;= size()
          */
         public Object remove(int index) {
             synchronized (mutex) {
@@ -2146,14 +2146,14 @@ public class Collections implements Rollbackable {
          * @param index the position within this list of the element to be replaced
          * @param o the object to replace it with
          * @return the object that was replaced
-         * @throws UnsupportedOperationException if this list does not support the
+         * @exception UnsupportedOperationException if this list does not support the
          * set operation.
-         * @throws IndexOutOfBoundsException if index &lt; 0 || index &gt;= size()
-         * @throws ClassCastException if o cannot be added to this list due to its
+         * @exception IndexOutOfBoundsException if index &lt; 0 || index &gt;= size()
+         * @exception ClassCastException if o cannot be added to this list due to its
          * type
-         * @throws IllegalArgumentException if o cannot be added to this list for
+         * @exception IllegalArgumentException if o cannot be added to this list for
          * some other reason
-         * @throws NullPointerException if o is null and this
+         * @exception NullPointerException if o is null and this
          * list does not support null values.
          */
         public Object set(int index, Object o) {
@@ -2176,7 +2176,7 @@ public class Collections implements Rollbackable {
          * (inclusive)
          * @param toIndex the index that the returned list should go to (exclusive)
          * @return a List backed by a subsection of this list
-         * @throws IndexOutOfBoundsException if fromIndex &lt; 0
+         * @exception IndexOutOfBoundsException if fromIndex &lt; 0
          * || toIndex &gt; size() || fromIndex &gt; toIndex
          */
         public List subList(int fromIndex, int toIndex) {
@@ -2220,7 +2220,7 @@ public class Collections implements Rollbackable {
         /**
          * Wrap a given list.
          * @param l the list to wrap
-         * @throws NullPointerException if l is null
+         * @exception NullPointerException if l is null
          */
         SynchronizedRandomAccessList(List l) {
             super(l);
@@ -2251,7 +2251,7 @@ public class Collections implements Rollbackable {
          * (inclusive)
          * @param toIndex the index that the returned list should go to (exclusive)
          * @return a List backed by a subsection of this list
-         * @throws IndexOutOfBoundsException if fromIndex &lt; 0
+         * @exception IndexOutOfBoundsException if fromIndex &lt; 0
          * || toIndex &gt; size() || fromIndex &gt; toIndex
          */
         public List subList(int fromIndex, int toIndex) {
@@ -2312,11 +2312,11 @@ public class Collections implements Rollbackable {
          * by nextIndex() and previousIndex() are incremented.  A lock is obtained
          * on the mutex before the addition takes place.
          * @param o the object to insert into the list
-         * @throws ClassCastException if the object is of a type which cannot be added
+         * @exception ClassCastException if the object is of a type which cannot be added
          * to this list.
-         * @throws IllegalArgumentException if some other aspect of the object stops
+         * @exception IllegalArgumentException if some other aspect of the object stops
          * it being added to this list.
-         * @throws UnsupportedOperationException if this ListIterator does not
+         * @exception UnsupportedOperationException if this ListIterator does not
          * support the add operation.
          */
         public void add(Object o) {
@@ -2358,7 +2358,7 @@ public class Collections implements Rollbackable {
          * backwards. Alternating calls to next and previous will return the same
          * element.  A lock is obtained on the mutex before the object is retrieved.
          * @return the next element in the list in the reverse direction
-         * @throws NoSuchElementException if there are no more elements
+         * @exception NoSuchElementException if there are no more elements
          */
         public Object previous() {
             synchronized (mutex) {
@@ -2386,14 +2386,14 @@ public class Collections implements Rollbackable {
          * <code>next()</code> or <code>previous</code>.  A lock is obtained
          * on the mutex before the list is modified.
          * @param o the object to replace the element with
-         * @throws ClassCastException the object is of a type which cannot be added
+         * @exception ClassCastException the object is of a type which cannot be added
          * to this list
-         * @throws IllegalArgumentException some other aspect of the object stops
+         * @exception IllegalArgumentException some other aspect of the object stops
          * it being added to this list
-         * @throws IllegalStateException if neither next or previous have been
+         * @exception IllegalStateException if neither next or previous have been
          * called, or if add or remove has been called since the last call
          * to next or previous
-         * @throws UnsupportedOperationException if this ListIterator does not
+         * @exception UnsupportedOperationException if this ListIterator does not
          * support the set operation
          */
         public void set(Object o) {
@@ -2470,7 +2470,7 @@ public class Collections implements Rollbackable {
         /**
          * Wrap a given map.
          * @param m the map to wrap
-         * @throws NullPointerException if m is null
+         * @exception NullPointerException if m is null
          */
         SynchronizedMap(Map m) {
             this.m = m;
@@ -2493,7 +2493,7 @@ public class Collections implements Rollbackable {
         /**
          * Clears all the entries from the underlying map.  A lock is obtained
          * on the mutex before the map is cleared.
-         * @throws UnsupportedOperationException if clear is not supported
+         * @exception UnsupportedOperationException if clear is not supported
          */
         public void clear() {
             synchronized (mutex) {
@@ -2506,8 +2506,8 @@ public class Collections implements Rollbackable {
          * A lock is obtained on the mutex before the map is queried.
          * @param key the key to search for.
          * @return <code>true</code> if the underlying map contains the key.
-         * @throws ClassCastException if the key is of an inappropriate type.
-         * @throws NullPointerException if key is <code>null</code> but the map
+         * @exception ClassCastException if the key is of an inappropriate type.
+         * @exception NullPointerException if key is <code>null</code> but the map
          * does not permit null keys.
          */
         public boolean containsKey(Object key) {
@@ -2524,9 +2524,9 @@ public class Collections implements Rollbackable {
          * is queried.
          * @param value the value to search for
          * @return <code>true</code> if the map contains the value
-         * @throws ClassCastException if the type of the value is not a valid type
+         * @exception ClassCastException if the type of the value is not a valid type
          * for this map.
-         * @throws NullPointerException if the value is null and the map doesn't
+         * @exception NullPointerException if the value is null and the map doesn't
          * support null values.
          */
         public boolean containsValue(Object value) {
@@ -2611,11 +2611,11 @@ public class Collections implements Rollbackable {
                  * beforehand.
                  * @param value the new value to store
                  * @return the old value
-                 * @throws UnsupportedOperationException if the operation is not supported.
-                 * @throws ClassCastException if the value is of the wrong type.
-                 * @throws IllegalArgumentException if something about the value
+                 * @exception UnsupportedOperationException if the operation is not supported.
+                 * @exception ClassCastException if the value is of the wrong type.
+                 * @exception IllegalArgumentException if something about the value
                  * prevents it from existing in this map.
-                 * @throws NullPointerException if the map forbids null values.
+                 * @exception NullPointerException if the map forbids null values.
                  */
                 public Object setValue(Object value) {
                     synchronized (mutex) {
@@ -2865,8 +2865,8 @@ public class Collections implements Rollbackable {
          * @param key The key of the required mapping.
          * @return The value associated with the given key, or
          * null if no such mapping exists.
-         * @throws ClassCastException if the key is an inappropriate type.
-         * @throws NullPointerException if this map does not accept null keys.
+         * @exception ClassCastException if the key is an inappropriate type.
+         * @exception NullPointerException if this map does not accept null keys.
          */
         public Object get(Object key) {
             synchronized (mutex) {
@@ -2927,11 +2927,11 @@ public class Collections implements Rollbackable {
          * @param key the key to map.
          * @param value the value to be mapped.
          * @return the previous value of the key, or null if there was no mapping
-         * @throws UnsupportedOperationException if the operation is not supported
-         * @throws ClassCastException if the key or value is of the wrong type
-         * @throws IllegalArgumentException if something about this key or value
+         * @exception UnsupportedOperationException if the operation is not supported
+         * @exception ClassCastException if the key or value is of the wrong type
+         * @exception IllegalArgumentException if something about this key or value
          * prevents it from existing in this map
-         * @throws NullPointerException if either the key or the value is null,
+         * @exception NullPointerException if either the key or the value is null,
          * and the map forbids null keys or values
          * @see #containsKey(Object)
          */
@@ -2946,11 +2946,11 @@ public class Collections implements Rollbackable {
          * operation). If the map already contains a key, its value is replaced.
          * A lock is obtained on the mutex before the operation proceeds.
          * @param map the mapping to load into this map
-         * @throws UnsupportedOperationException if the operation is not supported
-         * @throws ClassCastException if a key or value is of the wrong type
-         * @throws IllegalArgumentException if something about a key or value
+         * @exception UnsupportedOperationException if the operation is not supported
+         * @exception ClassCastException if a key or value is of the wrong type
+         * @exception IllegalArgumentException if something about a key or value
          * prevents it from existing in this map
-         * @throws NullPointerException if the map forbids null keys or values, or
+         * @exception NullPointerException if the map forbids null keys or values, or
          * if <code>m</code> is null.
          * @see #put(Object, Object)
          */
@@ -2968,10 +2968,10 @@ public class Collections implements Rollbackable {
          * Before the mapping is removed, a lock is obtained on the mutex.
          * @param o the key to remove
          * @return the value the key mapped to, or null if not present
-         * @throws UnsupportedOperationException if deletion is unsupported
-         * @throws NullPointerException if the key is null and this map doesn't
+         * @exception UnsupportedOperationException if deletion is unsupported
+         * @exception NullPointerException if the key is null and this map doesn't
          * support null keys.
-         * @throws ClassCastException if the type of the key is not a valid type
+         * @exception ClassCastException if the type of the key is not a valid type
          * for this map.
          */
         public Object remove(Object o) {
@@ -3132,7 +3132,7 @@ public class Collections implements Rollbackable {
         /**
          * Wrap a given set.
          * @param s the set to wrap
-         * @throws NullPointerException if s is null
+         * @exception NullPointerException if s is null
          */
         SynchronizedSet(Set s) {
             super(s);
@@ -3215,7 +3215,7 @@ public class Collections implements Rollbackable {
         /**
          * Wrap a given map.
          * @param sm the map to wrap
-         * @throws NullPointerException if sm is null
+         * @exception NullPointerException if sm is null
          */
         SynchronizedSortedMap(SortedMap sm) {
             super(sm);
@@ -3248,7 +3248,7 @@ public class Collections implements Rollbackable {
          * Returns the first, lowest sorted, key from the underlying map.
          * A lock is obtained on the mutex before the map is accessed.
          * @return the first key.
-         * @throws NoSuchElementException if this map is empty.
+         * @exception NoSuchElementException if this map is empty.
          */
         public Object firstKey() {
             synchronized (mutex) {
@@ -3268,10 +3268,10 @@ public class Collections implements Rollbackable {
          * @param toKey the exclusive upper range of the submap.
          * @return a submap from <code>firstKey()</code> to the
          * the key preceding toKey.
-         * @throws ClassCastException if toKey is not comparable to the underlying
+         * @exception ClassCastException if toKey is not comparable to the underlying
          * map's contents.
-         * @throws IllegalArgumentException if toKey is outside the map's range.
-         * @throws NullPointerException if toKey is null. but the map does not allow
+         * @exception IllegalArgumentException if toKey is outside the map's range.
+         * @exception NullPointerException if toKey is null. but the map does not allow
          * null keys.
          */
         public SortedMap headMap(Object toKey) {
@@ -3284,7 +3284,7 @@ public class Collections implements Rollbackable {
          * Returns the last, highest sorted, key from the underlying map.
          * A lock is obtained on the mutex before the map is accessed.
          * @return the last key.
-         * @throws NoSuchElementException if this map is empty.
+         * @exception NoSuchElementException if this map is empty.
          */
         public Object lastKey() {
             synchronized (mutex) {
@@ -3302,11 +3302,11 @@ public class Collections implements Rollbackable {
          * @param fromKey the inclusive lower range of the submap.
          * @param toKey the exclusive upper range of the submap.
          * @return a submap from fromKey to the key preceding toKey.
-         * @throws ClassCastException if fromKey or toKey is not comparable
+         * @exception ClassCastException if fromKey or toKey is not comparable
          * to the underlying map's contents.
-         * @throws IllegalArgumentException if fromKey or toKey is outside the map's
+         * @exception IllegalArgumentException if fromKey or toKey is outside the map's
          * range.
-         * @throws NullPointerException if fromKey or toKey is null. but the map does
+         * @exception NullPointerException if fromKey or toKey is null. but the map does
          * not allow  null keys.
          */
         public SortedMap subMap(Object fromKey, Object toKey) {
@@ -3325,10 +3325,10 @@ public class Collections implements Rollbackable {
          * this map.
          * @param fromKey the inclusive lower range of the submap.
          * @return a submap from fromKey to <code>lastKey()</code>.
-         * @throws ClassCastException if fromKey is not comparable to the underlying
+         * @exception ClassCastException if fromKey is not comparable to the underlying
          * map's contents.
-         * @throws IllegalArgumentException if fromKey is outside the map's range.
-         * @throws NullPointerException if fromKey is null. but the map does not allow
+         * @exception IllegalArgumentException if fromKey is outside the map's range.
+         * @exception NullPointerException if fromKey is null. but the map does not allow
          * null keys.
          */
         public SortedMap tailMap(Object fromKey) {
@@ -3380,7 +3380,7 @@ public class Collections implements Rollbackable {
         /**
          * Wrap a given set.
          * @param ss the set to wrap
-         * @throws NullPointerException if ss is null
+         * @exception NullPointerException if ss is null
          */
         SynchronizedSortedSet(SortedSet ss) {
             super(ss);
@@ -3413,7 +3413,7 @@ public class Collections implements Rollbackable {
          * Returns the first, lowest sorted, element from the underlying set.
          * A lock is obtained on the mutex before the set is accessed.
          * @return the first element.
-         * @throws NoSuchElementException if this set is empty.
+         * @exception NoSuchElementException if this set is empty.
          */
         public Object first() {
             synchronized (mutex) {
@@ -3433,10 +3433,10 @@ public class Collections implements Rollbackable {
          * @param toElement the exclusive upper range of the subset.
          * @return a subset from <code>first()</code> to the
          * the element preceding toElement.
-         * @throws ClassCastException if toElement is not comparable to the underlying
+         * @exception ClassCastException if toElement is not comparable to the underlying
          * set's contents.
-         * @throws IllegalArgumentException if toElement is outside the set's range.
-         * @throws NullPointerException if toElement is null. but the set does not allow
+         * @exception IllegalArgumentException if toElement is outside the set's range.
+         * @exception NullPointerException if toElement is null. but the set does not allow
          * null elements.
          */
         public SortedSet headSet(Object toElement) {
@@ -3449,7 +3449,7 @@ public class Collections implements Rollbackable {
          * Returns the last, highest sorted, element from the underlying set.
          * A lock is obtained on the mutex before the set is accessed.
          * @return the last element.
-         * @throws NoSuchElementException if this set is empty.
+         * @exception NoSuchElementException if this set is empty.
          */
         public Object last() {
             synchronized (mutex) {
@@ -3467,11 +3467,11 @@ public class Collections implements Rollbackable {
          * @param fromElement the inclusive lower range of the subset.
          * @param toElement the exclusive upper range of the subset.
          * @return a subset from fromElement to the element preceding toElement.
-         * @throws ClassCastException if fromElement or toElement is not comparable
+         * @exception ClassCastException if fromElement or toElement is not comparable
          * to the underlying set's contents.
-         * @throws IllegalArgumentException if fromElement or toElement is outside the set's
+         * @exception IllegalArgumentException if fromElement or toElement is outside the set's
          * range.
-         * @throws NullPointerException if fromElement or toElement is null. but the set does
+         * @exception NullPointerException if fromElement or toElement is null. but the set does
          * not allow null elements.
          */
         public SortedSet subSet(Object fromElement, Object toElement) {
@@ -3490,10 +3490,10 @@ public class Collections implements Rollbackable {
          * this set.
          * @param fromElement the inclusive lower range of the subset.
          * @return a subset from fromElement to <code>last()</code>.
-         * @throws ClassCastException if fromElement is not comparable to the underlying
+         * @exception ClassCastException if fromElement is not comparable to the underlying
          * set's contents.
-         * @throws IllegalArgumentException if fromElement is outside the set's range.
-         * @throws NullPointerException if fromElement is null. but the set does not allow
+         * @exception IllegalArgumentException if fromElement is outside the set's range.
+         * @exception NullPointerException if fromElement is null. but the set does not allow
          * null elements.
          */
         public SortedSet tailSet(Object fromElement) {
@@ -3546,7 +3546,7 @@ public class Collections implements Rollbackable {
         /**
          * Wrap a given collection.
          * @param c the collection to wrap
-         * @throws NullPointerException if c is null
+         * @exception NullPointerException if c is null
          */
         UnmodifiableCollection(Collection c) {
             this.c = c;
@@ -3560,7 +3560,7 @@ public class Collections implements Rollbackable {
          * This method never returns, throwing an exception instead.
          * @param o the object to add.
          * @return <code>true</code> if the collection was modified as a result of this action.
-         * @throws UnsupportedOperationException as an unmodifiable collection does not
+         * @exception UnsupportedOperationException as an unmodifiable collection does not
          * support the add operation.
          */
         public boolean add(Object o) {
@@ -3572,7 +3572,7 @@ public class Collections implements Rollbackable {
          * collection.  This method never returns, throwing an exception instead.
          * @param c the collection to add.
          * @return <code>true</code> if the collection was modified as a result of this action.
-         * @throws UnsupportedOperationException as an unmodifiable collection does not
+         * @exception UnsupportedOperationException as an unmodifiable collection does not
          * support the <code>addAll</code> operation.
          */
         public boolean addAll(Collection c) {
@@ -3582,7 +3582,7 @@ public class Collections implements Rollbackable {
         /**
          * Blocks the clearing of the underlying collection.  This method never
          * returns, throwing an exception instead.
-         * @throws UnsupportedOperationException as an unmodifiable collection does
+         * @exception UnsupportedOperationException as an unmodifiable collection does
          * not support the <code>clear()</code> operation.
          */
         public void clear() {
@@ -3596,9 +3596,9 @@ public class Collections implements Rollbackable {
          * @return <code>true</code> if the underlying collection contains at least
          * one element e such that
          * <code>o == null ? e == null : o.equals(e)</code>.
-         * @throws ClassCastException if the type of o is not a valid type for the
+         * @exception ClassCastException if the type of o is not a valid type for the
          * underlying collection.
-         * @throws NullPointerException if o is null and the underlying collection
+         * @exception NullPointerException if o is null and the underlying collection
          * doesn't support null values.
          */
         public boolean contains(Object o) {
@@ -3611,11 +3611,11 @@ public class Collections implements Rollbackable {
          * @param c1 the collection to test for.
          * @return <code>true</code> if for every element o in c, contains(o) would
          * return <code>true</code>.
-         * @throws ClassCastException if the type of any element in c is not a valid
+         * @exception ClassCastException if the type of any element in c is not a valid
          * type for the underlying collection.
-         * @throws NullPointerException if some element of c is null and the underlying
+         * @exception NullPointerException if some element of c is null and the underlying
          * collection does not support null values.
-         * @throws NullPointerException if c itself is null.
+         * @exception NullPointerException if c itself is null.
          */
         public boolean containsAll(Collection c1) {
             return c.containsAll(c1);
@@ -3646,7 +3646,7 @@ public class Collections implements Rollbackable {
          * @param o The object to remove.
          * @return <code>true</code> if the object was removed (i.e. the underlying
          * collection returned 1 or more instances of o).
-         * @throws UnsupportedOperationException as an unmodifiable collection
+         * @exception UnsupportedOperationException as an unmodifiable collection
          * does not support the <code>remove()</code> operation.
          */
         public boolean remove(Object o) {
@@ -3659,7 +3659,7 @@ public class Collections implements Rollbackable {
          * instead.
          * @param c The collection of objects to remove.
          * @return <code>true</code> if the collection was modified.
-         * @throws UnsupportedOperationException as an unmodifiable collection
+         * @exception UnsupportedOperationException as an unmodifiable collection
          * does not support the <code>removeAll()</code> operation.
          */
         public boolean removeAll(Collection c) {
@@ -3672,7 +3672,7 @@ public class Collections implements Rollbackable {
          * throwing an exception instead.
          * @param c The collection of objects to retain.
          * @return <code>true</code> if the collection was modified.
-         * @throws UnsupportedOperationException as an unmodifiable collection
+         * @exception UnsupportedOperationException as an unmodifiable collection
          * does not support the <code>retainAll()</code> operation.
          */
         public boolean retainAll(Collection c) {
@@ -3710,7 +3710,7 @@ public class Collections implements Rollbackable {
          * @param a the array to copy this collection into.
          * @return an array containing the elements currently in the underlying
          * collection, in any order.
-         * @throws ArrayStoreException if the type of any element of the
+         * @exception ArrayStoreException if the type of any element of the
          * collection is not a subtype of the element type of a.
          */
         public Object[] toArray(Object[] a) {
@@ -3791,7 +3791,7 @@ public class Collections implements Rollbackable {
         /**
          * Obtains the next element in the underlying collection.
          * @return the next element in the collection.
-         * @throws NoSuchElementException if there are no more elements.
+         * @exception NoSuchElementException if there are no more elements.
          */
         public Object next() {
             return i.next();
@@ -3812,7 +3812,7 @@ public class Collections implements Rollbackable {
         /**
          * Blocks the removal of elements from the underlying collection by the
          * iterator.
-         * @throws UnsupportedOperationException as an unmodifiable collection
+         * @exception UnsupportedOperationException as an unmodifiable collection
          * does not support the removal of elements by its iterator.
          */
         public void remove() {
@@ -3889,7 +3889,7 @@ public class Collections implements Rollbackable {
         /**
          * Wrap a given list.
          * @param l the list to wrap
-         * @throws NullPointerException if l is null
+         * @exception NullPointerException if l is null
          */
         UnmodifiableList(List l) {
             super(l);
@@ -3902,7 +3902,7 @@ public class Collections implements Rollbackable {
          * throwing an exception instead.
          * @param index The index at which to place the new element.
          * @param o the object to add.
-         * @throws UnsupportedOperationException as an unmodifiable
+         * @exception UnsupportedOperationException as an unmodifiable
          * list doesn't support the <code>add()</code> operation.
          */
         public void add(int index, Object o) {
@@ -3915,7 +3915,7 @@ public class Collections implements Rollbackable {
          * returns, throwing an exception instead.
          * @param index The index at which to place the new element.
          * @param c the collections of objects to add.
-         * @throws UnsupportedOperationException as an unmodifiable
+         * @exception UnsupportedOperationException as an unmodifiable
          * list doesn't support the <code>addAll()</code> operation.
          */
         public boolean addAll(int index, Collection c) {
@@ -3937,7 +3937,7 @@ public class Collections implements Rollbackable {
          * Retrieves the element at a given index in the underlying list.
          * @param index the index of the element to be returned
          * @return the element at index index in this list
-         * @throws IndexOutOfBoundsException if index &lt; 0 || index &gt;= size()
+         * @exception IndexOutOfBoundsException if index &lt; 0 || index &gt;= size()
          */
         public Object get(int index) {
             return list.get(index);
@@ -3960,9 +3960,9 @@ public class Collections implements Rollbackable {
          * @param o the object to search for
          * @return the least integer n such that <code>o == null ? get(n) == null :
          * o.equals(get(n))</code>, or -1 if there is no such index.
-         * @throws ClassCastException if the type of o is not a valid
+         * @exception ClassCastException if the type of o is not a valid
          * type for the underlying list.
-         * @throws NullPointerException if o is null and the underlying
+         * @exception NullPointerException if o is null and the underlying
          * list does not support null values.
          */
         public int indexOf(Object o) {
@@ -3974,9 +3974,9 @@ public class Collections implements Rollbackable {
          * underlying list.
          * @return the greatest integer n such that <code>o == null ? get(n) == null
          * : o.equals(get(n))</code>, or -1 if there is no such index.
-         * @throws ClassCastException if the type of o is not a valid
+         * @exception ClassCastException if the type of o is not a valid
          * type for the underlying list.
-         * @throws NullPointerException if o is null and the underlying
+         * @exception NullPointerException if o is null and the underlying
          * list does not support null values.
          */
         public int lastIndexOf(Object o) {
@@ -4003,7 +4003,7 @@ public class Collections implements Rollbackable {
          * iteration from.
          * @return a <code>UnmodifiableListIterator</code> over the elements of the
          * underlying list, in order, starting at the specified index.
-         * @throws IndexOutOfBoundsException if index &lt; 0 || index &gt; size()
+         * @exception IndexOutOfBoundsException if index &lt; 0 || index &gt; size()
          */
         public ListIterator listIterator(int index) {
             return new UnmodifiableListIterator(list.listIterator(index));
@@ -4014,7 +4014,7 @@ public class Collections implements Rollbackable {
          * This method never returns, throwing an exception instead.
          * @param index The index of the element to remove.
          * @return the removed element.
-         * @throws UnsupportedOperationException as an unmodifiable
+         * @exception UnsupportedOperationException as an unmodifiable
          * list does not support the <code>remove()</code>
          * operation.
          */
@@ -4028,7 +4028,7 @@ public class Collections implements Rollbackable {
          * @param index The index of the element to replace.
          * @param o The new object to place at the specified index.
          * @return the replaced element.
-         * @throws UnsupportedOperationException as an unmodifiable
+         * @exception UnsupportedOperationException as an unmodifiable
          * list does not support the <code>set()</code>
          * operation.
          */
@@ -4047,7 +4047,7 @@ public class Collections implements Rollbackable {
          * (inclusive).
          * @param toIndex the index that the returned list should go to (exclusive).
          * @return a List backed by a subsection of the underlying list.
-         * @throws IndexOutOfBoundsException if fromIndex &lt; 0
+         * @exception IndexOutOfBoundsException if fromIndex &lt; 0
          * || toIndex &gt; size() || fromIndex &gt; toIndex.
          */
         public List subList(int fromIndex, int toIndex) {
@@ -4088,7 +4088,7 @@ public class Collections implements Rollbackable {
         /**
          * Wrap a given list.
          * @param l the list to wrap
-         * @throws NullPointerException if l is null
+         * @exception NullPointerException if l is null
          */
         UnmodifiableRandomAccessList(List l) {
             super(l);
@@ -4137,7 +4137,7 @@ public class Collections implements Rollbackable {
          * Blocks the addition of an object to the list underlying this iterator.
          * This method never returns, throwing an exception instead.
          * @param o The object to add.
-         * @throws UnsupportedOperationException as the iterator of an unmodifiable
+         * @exception UnsupportedOperationException as the iterator of an unmodifiable
          * list does not support the <code>add()</code> operation.
          */
         public void add(Object o) {
@@ -4169,7 +4169,7 @@ public class Collections implements Rollbackable {
         /**
          * Obtains the previous element in the underlying list.
          * @return the previous element in the list.
-         * @throws NoSuchElementException if there are no more prior elements.
+         * @exception NoSuchElementException if there are no more prior elements.
          */
         public Object previous() {
             return li.previous();
@@ -4190,7 +4190,7 @@ public class Collections implements Rollbackable {
          * Blocks the replacement of an element in the list underlying this
          * iterator.  This method never returns, throwing an exception instead.
          * @param o The new object to replace the existing one.
-         * @throws UnsupportedOperationException as the iterator of an unmodifiable
+         * @exception UnsupportedOperationException as the iterator of an unmodifiable
          * list does not support the <code>set()</code> operation.
          */
         public void set(Object o) {
@@ -4284,7 +4284,7 @@ public class Collections implements Rollbackable {
                      * Obtains the next element from the underlying set of
                      * map entries.
                      * @return the next element in the collection.
-                     * @throws NoSuchElementException if there are no more elements.
+                     * @exception NoSuchElementException if there are no more elements.
                      */
                     public Object next() {
                         final Map.Entry e = (Map.Entry) super.next();
@@ -4333,7 +4333,7 @@ public class Collections implements Rollbackable {
                              * Blocks the alteration of the value of this map entry.
                              * This method never returns, throwing an exception instead.
                              * @param value The new value.
-                             * @throws UnsupportedOperationException as an unmodifiable
+                             * @exception UnsupportedOperationException as an unmodifiable
                              * map entry does not support the <code>setValue()</code>
                              * operation.
                              */
@@ -4471,7 +4471,7 @@ public class Collections implements Rollbackable {
         /**
          * Wrap a given map.
          * @param m the map to wrap
-         * @throws NullPointerException if m is null
+         * @exception NullPointerException if m is null
          */
         UnmodifiableMap(Map m) {
             this.m = m;
@@ -4483,7 +4483,7 @@ public class Collections implements Rollbackable {
         /**
          * Blocks the clearing of entries from the underlying map.
          * This method never returns, throwing an exception instead.
-         * @throws UnsupportedOperationException as an unmodifiable
+         * @exception UnsupportedOperationException as an unmodifiable
          * map does not support the <code>clear()</code> operation.
          */
         public void clear() {
@@ -4495,8 +4495,8 @@ public class Collections implements Rollbackable {
          * the given key.
          * @param key the key to search for
          * @return <code>true</code> if the map contains the key
-         * @throws ClassCastException if the key is of an inappropriate type
-         * @throws NullPointerException if key is <code>null</code> but the map
+         * @exception ClassCastException if the key is of an inappropriate type
+         * @exception NullPointerException if key is <code>null</code> but the map
          * does not permit null keys
          */
         public boolean containsKey(Object key) {
@@ -4510,9 +4510,9 @@ public class Collections implements Rollbackable {
          * requires linear time.
          * @param value the value to search for
          * @return <code>true</code> if the map contains the value
-         * @throws ClassCastException if the type of the value is not a valid type
+         * @exception ClassCastException if the type of the value is not a valid type
          * for this map.
-         * @throws NullPointerException if the value is null and the map doesn't
+         * @exception NullPointerException if the value is null and the map doesn't
          * support null values.
          */
         public boolean containsValue(Object value) {
@@ -4554,8 +4554,8 @@ public class Collections implements Rollbackable {
          * to separate the two possible cases of a null result.
          * @param key The key to look up.
          * @return the value associated with the key, or null if key not in map.
-         * @throws ClassCastException if the key is an inappropriate type.
-         * @throws NullPointerException if this map does not accept null keys.
+         * @exception ClassCastException if the key is an inappropriate type.
+         * @exception NullPointerException if this map does not accept null keys.
          * @see #containsKey(Object)
          */
         public Object get(Object key) {
@@ -4568,7 +4568,7 @@ public class Collections implements Rollbackable {
          * @param key The new key.
          * @param value The new value.
          * @return the previous value of the key, or null if there was no mapping.
-         * @throws UnsupportedOperationException as an unmodifiable
+         * @exception UnsupportedOperationException as an unmodifiable
          * map does not support the <code>put()</code> operation.
          */
         public Object put(Object key, Object value) {
@@ -4613,7 +4613,7 @@ public class Collections implements Rollbackable {
          * This method never returns, throwing an exception instead.
          * @param m The map, the entries of which should be added
          * to the underlying map.
-         * @throws UnsupportedOperationException as an unmodifiable
+         * @exception UnsupportedOperationException as an unmodifiable
          * map does not support the <code>putAll</code> operation.
          */
         public void putAll(Map m) {
@@ -4627,7 +4627,7 @@ public class Collections implements Rollbackable {
          * @return The value the key was associated with, or null
          * if no such mapping existed.  Null is also returned
          * if the removed entry had a null key.
-         * @throws UnsupportedOperationException as an unmodifiable
+         * @exception UnsupportedOperationException as an unmodifiable
          * map does not support the <code>remove</code> operation.
          */
         public Object remove(Object o) {
@@ -4770,7 +4770,7 @@ public class Collections implements Rollbackable {
         /**
          * Wrap a given set.
          * @param s the set to wrap
-         * @throws NullPointerException if s is null
+         * @exception NullPointerException if s is null
          */
         UnmodifiableSet(Set s) {
             super(s);
@@ -4834,7 +4834,7 @@ public class Collections implements Rollbackable {
         /**
          * Wrap a given map.
          * @param sm the map to wrap
-         * @throws NullPointerException if sm is null
+         * @exception NullPointerException if sm is null
          */
         UnmodifiableSortedMap(SortedMap sm) {
             super(sm);
@@ -4853,7 +4853,7 @@ public class Collections implements Rollbackable {
         /**
          * Returns the first (lowest sorted) key in the map.
          * @return the first key.
-         * @throws NoSuchElementException if this map is empty.
+         * @exception NoSuchElementException if this map is empty.
          */
         public Object firstKey() {
             return sm.firstKey();
@@ -4873,10 +4873,10 @@ public class Collections implements Rollbackable {
          * <code>headMap(new Integer(limit.intValue() + 1))</code>.
          * @param toKey the exclusive upper range of the submap.
          * @return the submap.
-         * @throws ClassCastException if toKey is not comparable to the map contents.
-         * @throws IllegalArgumentException if this is a subMap, and toKey is out
+         * @exception ClassCastException if toKey is not comparable to the map contents.
+         * @exception IllegalArgumentException if this is a subMap, and toKey is out
          * of range.
-         * @throws NullPointerException if toKey is null but the map does not allow
+         * @exception NullPointerException if toKey is null but the map does not allow
          * null keys.
          */
         public SortedMap headMap(Object toKey) {
@@ -4886,7 +4886,7 @@ public class Collections implements Rollbackable {
         /**
          * Returns the last (highest sorted) key in the map.
          * @return the last key.
-         * @throws NoSuchElementException if this map is empty.
+         * @exception NoSuchElementException if this map is empty.
          */
         public Object lastKey() {
             return sm.lastKey();
@@ -4909,11 +4909,11 @@ public class Collections implements Rollbackable {
          * @param fromKey the inclusive lower range of the submap.
          * @param toKey the exclusive upper range of the submap.
          * @return the submap.
-         * @throws ClassCastException if fromKey or toKey is not comparable to
+         * @exception ClassCastException if fromKey or toKey is not comparable to
          * the map contents.
-         * @throws IllegalArgumentException if this is a subMap, and fromKey or
+         * @exception IllegalArgumentException if this is a subMap, and fromKey or
          * toKey is out of range.
-         * @throws NullPointerException if fromKey or toKey is null but the map
+         * @exception NullPointerException if fromKey or toKey is null but the map
          * does not allow null keys.
          */
         public SortedMap subMap(Object fromKey, Object toKey) {
@@ -4933,11 +4933,11 @@ public class Collections implements Rollbackable {
          * <code>tailMap(new Integer(limit.intValue() + 1))</code>.
          * @param fromKey the inclusive lower range of the submap
          * @return the submap
-         * @throws ClassCastException if fromKey is not comparable to the map
+         * @exception ClassCastException if fromKey is not comparable to the map
          * contents
-         * @throws IllegalArgumentException if this is a subMap, and fromKey is out
+         * @exception IllegalArgumentException if this is a subMap, and fromKey is out
          * of range
-         * @throws NullPointerException if fromKey is null but the map does not allow
+         * @exception NullPointerException if fromKey is null but the map does not allow
          * null keys
          */
         public SortedMap tailMap(Object fromKey) {
@@ -4987,7 +4987,7 @@ public class Collections implements Rollbackable {
         /**
          * Wrap a given set.
          * @param ss the set to wrap
-         * @throws NullPointerException if ss is null
+         * @exception NullPointerException if ss is null
          */
         UnmodifiableSortedSet(SortedSet ss) {
             super(ss);
@@ -5007,7 +5007,7 @@ public class Collections implements Rollbackable {
          * Returns the first (lowest sorted) element in the underlying
          * set.
          * @return the first element.
-         * @throws NoSuchElementException if the set is empty.
+         * @exception NoSuchElementException if the set is empty.
          */
         public Object first() {
             return ss.first();
@@ -5027,11 +5027,11 @@ public class Collections implements Rollbackable {
          * <code>headSet(new Integer(limit.intValue() + 1))</code>.
          * @param toElement the exclusive upper range of the subset
          * @return the subset.
-         * @throws ClassCastException if toElement is not comparable to the set
+         * @exception ClassCastException if toElement is not comparable to the set
          * contents.
-         * @throws IllegalArgumentException if this is a subSet, and toElement is out
+         * @exception IllegalArgumentException if this is a subSet, and toElement is out
          * of range.
-         * @throws NullPointerException if toElement is null but the set does not
+         * @exception NullPointerException if toElement is null but the set does not
          * allow null elements.
          */
         public SortedSet headSet(Object toElement) {
@@ -5042,7 +5042,7 @@ public class Collections implements Rollbackable {
          * Returns the last (highest sorted) element in the underlying
          * set.
          * @return the last element.
-         * @throws NoSuchElementException if the set is empty.
+         * @exception NoSuchElementException if the set is empty.
          */
         public Object last() {
             return ss.last();
@@ -5065,11 +5065,11 @@ public class Collections implements Rollbackable {
          * @param fromElement the inclusive lower range of the subset.
          * @param toElement the exclusive upper range of the subset.
          * @return the subset.
-         * @throws ClassCastException if fromElement or toElement is not comparable
+         * @exception ClassCastException if fromElement or toElement is not comparable
          * to the set contents.
-         * @throws IllegalArgumentException if this is a subSet, and fromElement or
+         * @exception IllegalArgumentException if this is a subSet, and fromElement or
          * toElement is out of range.
-         * @throws NullPointerException if fromElement or toElement is null but the
+         * @exception NullPointerException if fromElement or toElement is null but the
          * set does not allow null elements.
          */
         public SortedSet subSet(Object fromElement, Object toElement) {
@@ -5088,11 +5088,11 @@ public class Collections implements Rollbackable {
          * <code>tailSet(new Integer(limit.intValue() + 1))</code>.
          * @param fromElement the inclusive lower range of the subset
          * @return the subset.
-         * @throws ClassCastException if fromElement is not comparable to the set
+         * @exception ClassCastException if fromElement is not comparable to the set
          * contents.
-         * @throws IllegalArgumentException if this is a subSet, and fromElement is
+         * @exception IllegalArgumentException if this is a subSet, and fromElement is
          * out of range.
-         * @throws NullPointerException if fromElement is null but the set does not
+         * @exception NullPointerException if fromElement is null but the set does not
          * allow null elements.
          */
         public SortedSet tailSet(Object fromElement) {
@@ -5191,9 +5191,9 @@ public class Collections implements Rollbackable {
      * @return the index at which the key was found, or -n-1 if it was not
      * found, where n is the index of the first value higher than key or
      * a.length if there is no such value
-     * @throws ClassCastException if key could not be compared with one of the
+     * @exception ClassCastException if key could not be compared with one of the
      * elements of l
-     * @throws NullPointerException if a null element has compareTo called
+     * @exception NullPointerException if a null element has compareTo called
      * @see #sort(List)
      */
     public static int binarySearch(List l, Object key) {
@@ -5223,9 +5223,9 @@ public class Collections implements Rollbackable {
      * @return the index at which the key was found, or -n-1 if it was not
      * found, where n is the index of the first value higher than key or
      * a.length if there is no such value
-     * @throws ClassCastException if key could not be compared with one of the
+     * @exception ClassCastException if key could not be compared with one of the
      * elements of l
-     * @throws NullPointerException if a null element is compared with natural
+     * @exception NullPointerException if a null element is compared with natural
      * ordering (only possible when c is null)
      * @see #sort(List, Comparator)
      */
@@ -5288,9 +5288,9 @@ public class Collections implements Rollbackable {
      * linear time.
      * @param dest the destination list
      * @param source the source list
-     * @throws IndexOutOfBoundsException if the destination list is shorter
+     * @exception IndexOutOfBoundsException if the destination list is shorter
      * than the source list (the destination will be unmodified)
-     * @throws UnsupportedOperationException if dest.listIterator() does not
+     * @exception UnsupportedOperationException if dest.listIterator() does not
      * support the set operation
      */
     public static void copy(List dest, List source) {
@@ -5342,7 +5342,7 @@ public class Collections implements Rollbackable {
      * linear time.
      * @param l the list to fill.
      * @param val the object to vill the list with.
-     * @throws UnsupportedOperationException if l.listIterator() does not
+     * @exception UnsupportedOperationException if l.listIterator() does not
      * support the set operation.
      */
     public static void fill(List l, Object val) {
@@ -5436,9 +5436,9 @@ public class Collections implements Rollbackable {
      * @param order the Comparator to order the elements by, or null for natural
      * ordering
      * @return the maximum element of c
-     * @throws NoSuchElementException if c is empty
-     * @throws ClassCastException if elements in c are not mutually comparable
-     * @throws NullPointerException if null is compared by natural ordering
+     * @exception NoSuchElementException if c is empty
+     * @exception ClassCastException if elements in c are not mutually comparable
+     * @exception NullPointerException if null is compared by natural ordering
      * (only possible when order is null)
      */
     public static Object max(Collection c, Comparator order) {
@@ -5460,9 +5460,9 @@ public class Collections implements Rollbackable {
      * Collection, so it works in linear time.
      * @param c the Collection to find the minimum element of
      * @return the minimum element of c
-     * @throws NoSuchElementException if c is empty
-     * @throws ClassCastException if elements in c are not mutually comparable
-     * @throws NullPointerException if null.compareTo is called
+     * @exception NoSuchElementException if c is empty
+     * @exception ClassCastException if elements in c are not mutually comparable
+     * @exception NullPointerException if null.compareTo is called
      */
     public static Object min(Collection c) {
         return min(c, null);
@@ -5476,9 +5476,9 @@ public class Collections implements Rollbackable {
      * @param order the Comparator to order the elements by, or null for natural
      * ordering
      * @return the minimum element of c
-     * @throws NoSuchElementException if c is empty
-     * @throws ClassCastException if elements in c are not mutually comparable
-     * @throws NullPointerException if null is compared by natural ordering
+     * @exception NoSuchElementException if c is empty
+     * @exception ClassCastException if elements in c are not mutually comparable
+     * @exception NullPointerException if null is compared by natural ordering
      * (only possible when order is null)
      */
     public static Object min(Collection c, Comparator order) {
@@ -5503,7 +5503,7 @@ public class Collections implements Rollbackable {
      * @param n the number of times to repeat the object
      * @param o the object to repeat
      * @return a List consisting of n copies of o
-     * @throws IllegalArgumentException if n &lt; 0
+     * @exception IllegalArgumentException if n &lt; 0
      * @see List#addAll(Collection)
      * @see Serializable
      * @see RandomAccess
@@ -5520,11 +5520,11 @@ public class Collections implements Rollbackable {
      * @param oldval the element to replace
      * @param newval the new value for the element
      * @return <code>true</code> if a replacement occurred.
-     * @throws UnsupportedOperationException if the list iterator does not allow
+     * @exception UnsupportedOperationException if the list iterator does not allow
      * for the set operation
-     * @throws ClassCastException if newval is of a type which cannot be added
+     * @exception ClassCastException if newval is of a type which cannot be added
      * to the list
-     * @throws IllegalArgumentException if some other aspect of newval stops
+     * @exception IllegalArgumentException if some other aspect of newval stops
      * it being added to the list
      * @since 1.4
      */
@@ -5543,7 +5543,7 @@ public class Collections implements Rollbackable {
     /**
      * Reverse a given list. This method works in linear time.
      * @param l the list to reverse
-     * @throws UnsupportedOperationException if l.listIterator() does not
+     * @exception UnsupportedOperationException if l.listIterator() does not
      * support the set operation
      */
     public static void reverse(List l) {
@@ -5602,7 +5602,7 @@ public class Collections implements Rollbackable {
      * pieces, then reverses the overall list.
      * @param list the list to rotate
      * @param distance the distance to rotate by; unrestricted in value
-     * @throws UnsupportedOperationException if the list does not support set
+     * @exception UnsupportedOperationException if the list does not support set
      * @since 1.4
      */
     public static void rotate(List list, int distance) {
@@ -5658,7 +5658,7 @@ public class Collections implements Rollbackable {
     , a temporary array is used to acheive
      * this speed, since it would be quadratic access otherwise.
      * @param l the list to shuffle
-     * @throws UnsupportedOperationException if l.listIterator() does not
+     * @exception UnsupportedOperationException if l.listIterator() does not
      * support the set operation
      */
     public static void shuffle(List l) {
@@ -5690,7 +5690,7 @@ public class Collections implements Rollbackable {
      * this speed, since it would be quadratic access otherwise.
      * @param l the list to shuffle
      * @param r the source of randomness to use for the shuffle
-     * @throws UnsupportedOperationException if l.listIterator() does not
+     * @exception UnsupportedOperationException if l.listIterator() does not
      * support the set operation
      */
     public static void shuffle(List l, Random r) {
@@ -5759,9 +5759,9 @@ public class Collections implements Rollbackable {
      * sorts the array, and then iterates over the list setting each element from
      * the array.
      * @param l the List to sort
-     * @throws ClassCastException if some items are not mutually comparable
-     * @throws UnsupportedOperationException if the List is not modifiable
-     * @throws NullPointerException if some element is null
+     * @exception ClassCastException if some items are not mutually comparable
+     * @exception UnsupportedOperationException if the List is not modifiable
+     * @exception NullPointerException if some element is null
      * @see Arrays#sort(Object[])
      */
     public static void sort(List l) {
@@ -5778,9 +5778,9 @@ public class Collections implements Rollbackable {
      * @param l the List to sort
      * @param c the Comparator specifying the ordering for the elements, or
      * null for natural ordering
-     * @throws ClassCastException if c will not compare some pair of items
-     * @throws UnsupportedOperationException if the List is not modifiable
-     * @throws NullPointerException if null is compared by natural ordering
+     * @exception ClassCastException if c will not compare some pair of items
+     * @exception UnsupportedOperationException if the List is not modifiable
+     * @exception NullPointerException if null is compared by natural ordering
      * (only possible when c is null)
      * @see Arrays#sort(Object[], Comparator)
      */
@@ -5800,8 +5800,8 @@ public class Collections implements Rollbackable {
      * @param l the list to work on
      * @param i the first index to swap
      * @param j the second index
-     * @throws UnsupportedOperationException if list.set is not supported
-     * @throws IndexOutOfBoundsException if either i or j is &lt; 0 or &gt;=
+     * @exception UnsupportedOperationException if list.set is not supported
+     * @exception IndexOutOfBoundsException if either i or j is &lt; 0 or &gt;=
      * list.size()
      * @since 1.4
      */

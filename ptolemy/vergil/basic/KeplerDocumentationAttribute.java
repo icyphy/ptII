@@ -647,7 +647,7 @@ public class KeplerDocumentationAttribute extends Attribute implements
      * @param printWhenReplacing
      *            If true, print when the values are overwritten.
      *
-     * @throws Exception
+     * @exception Exception
      *             if there is an error updating the fields.
      */
     public void updateFromExisting(KeplerDocumentationAttribute oldDoc,

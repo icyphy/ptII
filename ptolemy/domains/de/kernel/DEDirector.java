@@ -239,8 +239,8 @@ public class DEDirector extends Director implements SuperdenseTimeDirector {
     /** Construct a director in the default workspace with an empty string
      *  as its name. The director is added to the list of objects in
      *  the workspace. Increment the version number of the workspace.
-     *  @throws NameDuplicationException If construction of Time objects fails.
-     *  @throws IllegalActionException If construction of Time objects fails.
+     *  @exception NameDuplicationException If construction of Time objects fails.
+     *  @exception IllegalActionException If construction of Time objects fails.
      */
     public DEDirector() throws IllegalActionException, NameDuplicationException {
         super();
@@ -251,8 +251,8 @@ public class DEDirector extends Director implements SuperdenseTimeDirector {
      *  The director is added to the list of objects in the workspace.
      *  Increment the version number of the workspace.
      *  @param workspace The workspace of this object.
-     *  @throws NameDuplicationException If construction of Time objects fails.
-     *  @throws IllegalActionException If construction of Time objects fails.
+     *  @exception NameDuplicationException If construction of Time objects fails.
+     *  @exception IllegalActionException If construction of Time objects fails.
      */
     public DEDirector(Workspace workspace) throws IllegalActionException, NameDuplicationException {
         super(workspace);
@@ -671,7 +671,7 @@ public class DEDirector extends Director implements SuperdenseTimeDirector {
      *  in a DE model. If there is no event in the event queue, a positive
      *  infinity object is returned.
      *  @return The time stamp of the next event in the event queue.
-     * @throws IllegalActionException If Time object cannot be created.
+     * @exception IllegalActionException If Time object cannot be created.
      */
     public Time getModelNextIterationTime() throws IllegalActionException {
         Time aFutureTime = Time.POSITIVE_INFINITY;
@@ -737,7 +737,7 @@ public class DEDirector extends Director implements SuperdenseTimeDirector {
      *  the specified time resolution. To avoid this loss, use the
      *  {@link #getModelStartTime()} instead.</p>
      *  @return the start time.
-     *  @throws IllegalActionException If the enclosing director throws it.
+     *  @exception IllegalActionException If the enclosing director throws it.
      *  @deprecated As Ptolemy II 4.1, use {@link #getModelStartTime()}
      *  instead.
      */
@@ -752,7 +752,7 @@ public class DEDirector extends Director implements SuperdenseTimeDirector {
      *  the specified time resolution. To avoid this loss, use the
      *  {@link #getModelStopTime()} instead.</p>
      *  @return the stop time.
-     *  @throws IllegalActionException If getModelStopTime() throws it.
+     *  @exception IllegalActionException If getModelStopTime() throws it.
      *  @deprecated As Ptolemy II 4.1, use {@link #getModelStopTime()}
      *  instead.
      */

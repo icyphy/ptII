@@ -154,7 +154,7 @@ public class ZeroOrderHold extends Transformer {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                     protected methods                     ////
+    ////                         protected methods                 ////
 
     /**
      * Return a constraint that requires the type of the <i>defaultValue</i>

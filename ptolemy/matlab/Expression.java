@@ -463,7 +463,7 @@ public class Expression extends TypedAtomicActor {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                     protected methods                     ////
+    ////                         protected methods                 ////
 
     /** Default type constraints do not apply in this case, since the input
      *  type may be totally unrelated to the output type and cannot be

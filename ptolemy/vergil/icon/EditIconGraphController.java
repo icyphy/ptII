@@ -121,7 +121,7 @@ public class EditIconGraphController extends BasicGraphController {
                 throw new RuntimeException("Unrecognized object: "
                         + semanticObject);
             }
-        } else if (object == null){
+        } else if (object == null) {
             return _attributeController;
         }
 

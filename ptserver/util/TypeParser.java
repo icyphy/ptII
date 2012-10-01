@@ -60,7 +60,7 @@ public class TypeParser {
      * <p> The type string must be created by calling toString() method on the Type.
      * @param type the type string
      * @return the Type instance identified by its type string.
-     * @throws IllegalActionException if it was not possible to parse the type since it's not supported.
+     * @exception IllegalActionException if it was not possible to parse the type since it's not supported.
      */
     public static Type parse(String type) throws IllegalActionException {
         if (type == null) {

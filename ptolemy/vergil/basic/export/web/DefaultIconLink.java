@@ -59,8 +59,8 @@ public class DefaultIconLink extends IconLink {
     /** Create an instance of this parameter.
      *  @param container The container.
      *  @param name The name.
-     *  @throws IllegalActionException If the superclass throws it.
-     *  @throws NameDuplicationException If the superclass throws it.
+     *  @exception IllegalActionException If the superclass throws it.
+     *  @exception NameDuplicationException If the superclass throws it.
      */
     public DefaultIconLink(NamedObj container, String name)
             throws IllegalActionException, NameDuplicationException {
@@ -93,13 +93,13 @@ public class DefaultIconLink extends IconLink {
     public StringParameter include;
 
     ///////////////////////////////////////////////////////////////////
-    ////                       protected methods                   ////
+    ////                         protected methods                 ////
 
     /** Override the base class to define an href attribute to associate with
      *  the area of the image map corresponding to its container.
      *
      *  @param exporter  The web exporter to which to write content.
-     *  @throws IllegalActionException If evaluating the value
+     *  @exception IllegalActionException If evaluating the value
      *   of this parameter fails.
      */
     protected void _provideAttributes(WebExporter exporter)
@@ -159,7 +159,7 @@ public class DefaultIconLink extends IconLink {
      *
      *  @param exporter The exporter.
      *  @param object The object.
-     *  @throws IllegalActionException If evaluating the value
+     *  @exception IllegalActionException If evaluating the value
      *   of this parameter fails.
      */
     protected void _provideEachAttribute(WebExporter exporter, NamedObj object)

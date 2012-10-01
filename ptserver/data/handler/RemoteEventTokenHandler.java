@@ -35,7 +35,7 @@ import java.io.IOException;
 import ptserver.data.RemoteEventToken;
 import ptserver.data.RemoteEventToken.EventType;
 
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// RemoteEventTokenHandler
 
 /** ServerEventTokenHandler converts ServerEventToken to/from byte form.
@@ -48,7 +48,7 @@ import ptserver.data.RemoteEventToken.EventType;
 public class RemoteEventTokenHandler implements TokenHandler<RemoteEventToken> {
 
     ///////////////////////////////////////////////////////////////////
-    ////                      public variables                     ////
+    ////                         public variables                  ////
 
     /** Write the ServerEventToken to a byte array.
      *  @param token Token to be converted to bytes.

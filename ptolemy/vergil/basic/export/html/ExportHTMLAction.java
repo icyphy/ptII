@@ -441,7 +441,7 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable, 
      *  @param waitForCompletion If true, then do not return until the export
      *   is complete. In this case, everything is run in the calling thread,
      *   which is required to be the Swing event thread.
-     *  @throws IllegalActionException If something goes wrong.
+     *  @exception IllegalActionException If something goes wrong.
      */
     public static void openRunAndWriteHTML(
             final BasicGraphFrame graphFrame,
@@ -601,7 +601,7 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable, 
      *   directory given by the directoryToExportTo field of the parameters.
      *  @exception IOException If unable to write associated files.
      *  @exception PrinterException If unable to write associated files.
-     *  @throws IllegalActionException If reading parameters fails.
+     *  @exception IllegalActionException If reading parameters fails.
      */
     public void writeHTML(ExportParameters parameters, Writer writer)
             throws PrinterException, IOException, IllegalActionException {
@@ -914,9 +914,9 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable, 
      *  @param directory The directory into which to write any HTML
      *   that is created as a side effect.
      *  @return HTML that describes the image map.
-     *  @throws PrinterException If writing to the toc file fails.
-     *  @throws IOException If IO fails.
-     *  @throws IllegalActionException If reading parameters fails.
+     *  @exception PrinterException If writing to the toc file fails.
+     *  @exception IOException If IO fails.
+     *  @exception IllegalActionException If reading parameters fails.
      */
     protected String _createImageMap(File directory)
             throws IllegalActionException, IOException, PrinterException {
@@ -1010,7 +1010,7 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable, 
      *  of {@link DefaultIconScript} and {@link DefaultIconLink}
      *  objects, if the model contains one with the same event
      *  type, then the one from the configuration is not used.
-     *  @throws IllegalActionException If cloning a configuration attribute fails.
+     *  @exception IllegalActionException If cloning a configuration attribute fails.
      */
     protected void _provideDefaultContent() throws IllegalActionException {
         Configuration configuration = _basicGraphFrame.getConfiguration();
@@ -1085,7 +1085,7 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable, 
 
     /** Remove default HTML content, which includes all instances of
      *  WebExportable that are not persistent.
-     *  @throws IllegalActionException If removing the attribute fails.
+     *  @exception IllegalActionException If removing the attribute fails.
      */
     protected void _removeDefaultContent() throws IllegalActionException {
         NamedObj model = _basicGraphFrame.getModel();
@@ -1105,7 +1105,7 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable, 
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                       protected methods                   ////
+    ////                         protected methods                 ////
 
     /** The associated Vergil frame. */
     protected final BasicGraphFrame _basicGraphFrame;

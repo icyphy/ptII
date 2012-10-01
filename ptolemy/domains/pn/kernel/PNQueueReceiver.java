@@ -382,7 +382,7 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
      *  on a read from this receiver. If a process is indeed blocked, then
      *  unblock the process, and inform the director of the same.
      *  @param token The token to be put in the receiver, or null to not put anything.
-     *  @throws NoRoomException If during initialization, capacity cannot be increased
+     *  @exception NoRoomException If during initialization, capacity cannot be increased
      *   enough to accomodate initial tokens.
      */
     public void put(Token token) throws NoRoomException {
@@ -509,7 +509,7 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                       protected variables                 ////
+    ////                         protected variables               ////
 
     /** The director in charge of this receiver. */
     protected PNDirector _director;

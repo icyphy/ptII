@@ -61,8 +61,8 @@ public class PtidesPort extends MirrorPort {
     /** Create a new PtidesPort with a given container and a name.
      * @param container The container of the port.
      * @param name The name of the port.
-     * @throws IllegalActionException If parameters cannot be set.
-     * @throws NameDuplicationException If name already exists.
+     * @exception IllegalActionException If parameters cannot be set.
+     * @exception NameDuplicationException If name already exists.
      */
     public PtidesPort(CompositeEntity container, String name) throws IllegalActionException, NameDuplicationException {
         super(container, name);
@@ -215,7 +215,7 @@ public class PtidesPort extends MirrorPort {
 
     /** Change visibility of parameters depending on the type of
      *  port. FIXME: change icon!
-     *  @throws IllegalActionException Thrown if icon cannot be changed.
+     *  @exception IllegalActionException Thrown if icon cannot be changed.
      */
     private void _setIconAndParameterVisibility() throws IllegalActionException {
         try {

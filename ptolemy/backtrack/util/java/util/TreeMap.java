@@ -470,8 +470,8 @@ public class TreeMap extends AbstractMap implements SortedMap, Cloneable,
         /**
          * Returns the next element in the Iterator's sequential view.
          * @return the next element
-         * @throws ConcurrentModificationException if the TreeMap was modified
-         * @throws NoSuchElementException if there is none
+         * @exception ConcurrentModificationException if the TreeMap was modified
+         * @exception NoSuchElementException if there is none
          */
         public Object next() {
             if (knownMod != getModCount()) {
@@ -493,8 +493,8 @@ public class TreeMap extends AbstractMap implements SortedMap, Cloneable,
         /**
          * Removes from the backing TreeMap the last element which was fetched
          * with the <code>next()</code> method.
-         * @throws ConcurrentModificationException if the TreeMap was modified
-         * @throws IllegalStateException if called when there is no last element
+         * @exception ConcurrentModificationException if the TreeMap was modified
+         * @exception IllegalStateException if called when there is no last element
          */
         public void remove() {
             if (last == null) {
@@ -664,7 +664,7 @@ public class TreeMap extends AbstractMap implements SortedMap, Cloneable,
          * (headMap). If maxKey is nil, the SubMap has no upper bound (tailMap).
          * @param minKey the lower bound
          * @param maxKey the upper bound
-         * @throws IllegalArgumentException if minKey &gt; maxKey
+         * @exception IllegalArgumentException if minKey &gt; maxKey
          */
         SubMap(Object minKey, Object maxKey) {
             if (minKey != nil && maxKey != nil && compare(minKey, maxKey) > 0) {
@@ -1151,9 +1151,9 @@ public class TreeMap extends AbstractMap implements SortedMap, Cloneable,
     @link ClassCastException    }
     .
      * @param map a Map, whose entries will be put into this TreeMap
-     * @throws ClassCastException if the keys in the provided Map are not
+     * @exception ClassCastException if the keys in the provided Map are not
      * comparable
-     * @throws NullPointerException if map is null
+     * @exception NullPointerException if map is null
      * @see Comparable
      */
     public TreeMap(Map map) {
@@ -1166,7 +1166,7 @@ public class TreeMap extends AbstractMap implements SortedMap, Cloneable,
      * the provided SortedMap.  The elements will be sorted using the same
      * comparator as in the provided SortedMap. This runs in linear time.
      * @param sm a SortedMap, whose entries will be put into this TreeMap
-     * @throws NullPointerException if sm is null
+     * @exception NullPointerException if sm is null
      */
     public TreeMap(SortedMap sm) {
         this(sm.comparator());
@@ -1230,8 +1230,8 @@ public class TreeMap extends AbstractMap implements SortedMap, Cloneable,
      * Returns true if the map contains a mapping for the given key.
      * @param key the key to look for
      * @return true if the key has a mapping
-     * @throws ClassCastException if key is not comparable to map elements
-     * @throws NullPointerException if key is null and the comparator is not
+     * @exception ClassCastException if key is not comparable to map elements
+     * @exception NullPointerException if key is null and the comparator is not
      * tolerant of nulls
      */
     public boolean containsKey(Object key) {
@@ -1372,7 +1372,7 @@ public class TreeMap extends AbstractMap implements SortedMap, Cloneable,
     /**
      * Returns the first (lowest) key in the map.
      * @return the first key
-     * @throws NoSuchElementException if the map is empty
+     * @exception NoSuchElementException if the map is empty
      */
     public Object firstKey() {
         if (root == nil) {
@@ -1388,8 +1388,8 @@ public class TreeMap extends AbstractMap implements SortedMap, Cloneable,
      * actually maps to something.
      * @param key the key for which to fetch an associated value
      * @return what the key maps to, if present
-     * @throws ClassCastException if key is not comparable to elements in the map
-     * @throws NullPointerException if key is null but the comparator does not
+     * @exception ClassCastException if key is not comparable to elements in the map
+     * @exception NullPointerException if key is null but the comparator does not
      * tolerate nulls
      * @see #put(Object, Object)
      * @see #containsKey(Object)
@@ -1408,9 +1408,9 @@ public class TreeMap extends AbstractMap implements SortedMap, Cloneable,
      * the endpoint; if you want inclusion, pass the successor element.
      * @param toKey the (exclusive) cutoff point
      * @return a view of the map less than the cutoff
-     * @throws ClassCastException if <code>toKey</code> is not compatible with
+     * @exception ClassCastException if <code>toKey</code> is not compatible with
      * the comparator (or is not Comparable, for natural ordering)
-     * @throws NullPointerException if toKey is null, but the comparator does not
+     * @exception NullPointerException if toKey is null, but the comparator does not
      * tolerate null elements
      */
     public SortedMap headMap(Object toKey) {
@@ -1518,7 +1518,7 @@ public class TreeMap extends AbstractMap implements SortedMap, Cloneable,
     /**
      * Returns the last (highest) key in the map.
      * @return the last key
-     * @throws NoSuchElementException if the map is empty
+     * @exception NoSuchElementException if the map is empty
      */
     public Object lastKey() {
         if (root == nil) {
@@ -1536,8 +1536,8 @@ public class TreeMap extends AbstractMap implements SortedMap, Cloneable,
      * @param key the key used to locate the value
      * @param value the value to be stored in the Map
      * @return the prior mapping of the key, or null if there was none
-     * @throws ClassCastException if key is not comparable to current map keys
-     * @throws NullPointerException if key is null, but the comparator does
+     * @exception ClassCastException if key is not comparable to current map keys
+     * @exception NullPointerException if key is null, but the comparator does
      * not tolerate nulls
      * @see #get(Object)
      * @see Object#equals(Object)
@@ -1579,9 +1579,9 @@ public class TreeMap extends AbstractMap implements SortedMap, Cloneable,
      * already has a mapping for a key, the new mapping replaces the current
      * one.
      * @param m the map to be added
-     * @throws ClassCastException if a key in m is not comparable with keys
+     * @exception ClassCastException if a key in m is not comparable with keys
      * in the map
-     * @throws NullPointerException if a key in m is null, and the comparator
+     * @exception NullPointerException if a key in m is null, and the comparator
      * does not tolerate nulls
      */
     public void putAll(Map m) {
@@ -1601,8 +1601,8 @@ public class TreeMap extends AbstractMap implements SortedMap, Cloneable,
      * actually removing a mapping.
      * @param key the key used to locate the value to remove
      * @return whatever the key mapped to, if present
-     * @throws ClassCastException if key is not comparable to current map keys
-     * @throws NullPointerException if key is null, but the comparator does
+     * @exception ClassCastException if key is not comparable to current map keys
+     * @exception NullPointerException if key is null, but the comparator does
      * not tolerate nulls
      */
     public Object remove(Object key) {
@@ -1636,11 +1636,11 @@ public class TreeMap extends AbstractMap implements SortedMap, Cloneable,
      * @param fromKey the (inclusive) low cutoff point
      * @param toKey the (exclusive) high cutoff point
      * @return a view of the map between the cutoffs
-     * @throws ClassCastException if either cutoff is not compatible with
+     * @exception ClassCastException if either cutoff is not compatible with
      * the comparator (or is not Comparable, for natural ordering)
-     * @throws NullPointerException if fromKey or toKey is null, but the
+     * @exception NullPointerException if fromKey or toKey is null, but the
      * comparator does not tolerate null elements
-     * @throws IllegalArgumentException if fromKey is greater than toKey
+     * @exception IllegalArgumentException if fromKey is greater than toKey
      */
     public SortedMap subMap(Object fromKey, Object toKey) {
         return new SubMap(fromKey, toKey);
@@ -1656,9 +1656,9 @@ public class TreeMap extends AbstractMap implements SortedMap, Cloneable,
      * endpoint; if you want to exclude it, pass in the successor element.
      * @param fromKey the (inclusive) low cutoff point
      * @return a view of the map above the cutoff
-     * @throws ClassCastException if <code>fromKey</code> is not compatible with
+     * @exception ClassCastException if <code>fromKey</code> is not compatible with
      * the comparator (or is not Comparable, for natural ordering)
-     * @throws NullPointerException if fromKey is null, but the comparator
+     * @exception NullPointerException if fromKey is null, but the comparator
      * does not tolerate null elements
      */
     public SortedMap tailMap(Object fromKey) {
@@ -1756,9 +1756,9 @@ public class TreeMap extends AbstractMap implements SortedMap, Cloneable,
      * Package visible for use by nested classes.
      * @param o1 the first object
      * @param o2 the second object
-     * @throws ClassCastException if o1 and o2 are not mutually comparable,
+     * @exception ClassCastException if o1 and o2 are not mutually comparable,
      * or are not Comparable with natural ordering
-     * @throws NullPointerException if o1 or o2 is null with natural ordering
+     * @exception NullPointerException if o1 or o2 is null with natural ordering
      */
     final int compare(Object o1, Object o2) {
         return (comparator == null ? ((Comparable) o1).compareTo(o2)
@@ -2064,8 +2064,8 @@ public class TreeMap extends AbstractMap implements SortedMap, Cloneable,
      * @param s the stream to read from
      * @param count the number of keys to read
      * @param readValues true to read values, false to insert "" as the value
-     * @throws ClassNotFoundException if the underlying stream fails
-     * @throws IOException if the underlying stream fails
+     * @exception ClassNotFoundException if the underlying stream fails
+     * @exception IOException if the underlying stream fails
      * @see #readObject(ObjectInputStream)
      * @see TreeSet#readObject(ObjectInputStream)
      */
@@ -2100,8 +2100,8 @@ public class TreeMap extends AbstractMap implements SortedMap, Cloneable,
     /**
      * Deserializes this object from the given stream.
      * @param s the stream to read from
-     * @throws ClassNotFoundException if the underlying stream fails
-     * @throws IOException if the underlying stream fails
+     * @exception ClassNotFoundException if the underlying stream fails
+     * @exception IOException if the underlying stream fails
      * @serialData the <i>size</i> (int), followed by key (Object) and value
      * (Object) pairs in sorted order
      */
@@ -2228,7 +2228,7 @@ public class TreeMap extends AbstractMap implements SortedMap, Cloneable,
     /**
      * Serializes this object to the given stream.
      * @param s the stream to write to
-     * @throws IOException if the underlying stream fails
+     * @exception IOException if the underlying stream fails
      * @serialData the <i>size</i> (int), followed by key (Object) and value
      * (Object) pairs in sorted order
      */

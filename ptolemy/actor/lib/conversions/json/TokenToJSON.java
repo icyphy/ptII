@@ -83,7 +83,7 @@ public class TokenToJSON extends Converter {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                      public methods                       ////
+    ////                         public methods                    ////
 
     /** Read a Token from the input and produce a corresponding JSON-formatted
      *  string on the output.
@@ -113,7 +113,7 @@ public class TokenToJSON extends Converter {
      *  and return it.
      *  @param input an arbitrary Token
      *  @return a StringToken that represent the input in JSON format
-     *  @throws IllegalActionException If the Token found on the input cannot
+     *  @exception IllegalActionException If the Token found on the input cannot
      *  be expressed in JSON format
      */
     public Token constructJSONString(Token input)
@@ -138,7 +138,7 @@ public class TokenToJSON extends Converter {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                      protected methods                    ////
+    ////                         protected methods                 ////
 
     /** Do not establish the usual default type constraints.
      */
@@ -148,7 +148,7 @@ public class TokenToJSON extends Converter {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                      private methods                      ////
+    ////                         private methods                   ////
 
     /** Map an given Token to the corresponding Java Object and return it.
      *  @param token An arbitrary Token

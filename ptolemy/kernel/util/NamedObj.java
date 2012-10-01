@@ -2751,7 +2751,7 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
 
     /** If any hierarchy listeners are registered, notify them
      *  that a change has occurred in the hierarchy.
-     *  @throws IllegalActionException If the change to the
+     *  @exception IllegalActionException If the change to the
      *   hierarchy is not acceptable to the listener.
      *  @see #addHierarchyListener(HierarchyListener)
      *  @see HierarchyListener
@@ -2776,7 +2776,7 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
 
     /** If any hierarchy listeners are registered, notify them
      *  that a change is about to occur in the hierarchy.
-     *  @throws IllegalActionException If changing the
+     *  @exception IllegalActionException If changing the
      *   hierarchy is not acceptable to the listener.
      *  @see #addHierarchyListener(HierarchyListener)
      *  @see HierarchyListener

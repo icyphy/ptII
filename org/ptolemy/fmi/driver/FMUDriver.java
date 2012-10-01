@@ -176,7 +176,7 @@ public abstract class FMUDriver {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                  protected methods                        ////
+    ////                         protected methods                 ////
 
     /** Set the _enableLogging field.
      *  @param enableLogging the value of the enable logging field.

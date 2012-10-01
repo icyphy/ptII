@@ -51,8 +51,8 @@ public abstract class CustomRenderedPort extends MirrorPort {
     /** Create a new CustomRenderedPort with a given container and a name.
      * @param container The container of the port.
      * @param name The name of the port.
-     * @throws IllegalActionException If parameters cannot be set.
-     * @throws NameDuplicationException If name already exists.
+     * @exception IllegalActionException If parameters cannot be set.
+     * @exception NameDuplicationException If name already exists.
      */
     public CustomRenderedPort(CompositeEntity container, String name) throws IllegalActionException, NameDuplicationException {
         super(container, name);

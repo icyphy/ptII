@@ -213,7 +213,7 @@ public class OptimizingSDFDirector extends SDFDirector {
         super.attributeChanged(attribute);
     }
 
-    ///////////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////
     ////                   private fields                                  ////
 
     /** Initialize the object.   In this case, we give the OptimizingSDFDirector a

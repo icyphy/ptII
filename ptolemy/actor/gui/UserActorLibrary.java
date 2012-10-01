@@ -350,8 +350,8 @@ public class UserActorLibrary {
         library.requestChange(request);
     }
 
-    // /////////////////////////////////////////////////////////////////
-    // // public variables ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         public variables                  ////
 
     /** The name of the user library.  The default value is
      *  "UserLibrary".  The value of this variable is what appears
@@ -361,8 +361,8 @@ public class UserActorLibrary {
      */
     public static/* final */String USER_LIBRARY_NAME = "UserLibrary";
 
-    // /////////////////////////////////////////////////////////////////
-    // // private methods ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
 
     /**
      * instantiate a ComponentEntity and create the changeRequest to

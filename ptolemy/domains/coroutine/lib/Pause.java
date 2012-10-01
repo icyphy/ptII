@@ -27,7 +27,7 @@ public class Pause extends AtomicContinuationActor {
         _init();
     }
 
-    /////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////
 
     /* (non-Javadoc)
      * @see ptolemy.domains.coroutine.kernel.ContinuationActor#enter(ptolemy.domains.coroutine.kernel.ControlEntryToken)
@@ -71,7 +71,7 @@ public class Pause extends AtomicContinuationActor {
         return super.postfire();
     }
 
-    ///////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////
 
     protected void _init() throws
         IllegalActionException, NameDuplicationException {

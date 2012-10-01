@@ -207,7 +207,7 @@ public class NetworkReceiver extends InputDevice {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                     protected methods                     ////
+    ////                         protected methods                 ////
 
     /** Do not establish the usual default type constraints.
      *  @return null

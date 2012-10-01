@@ -66,7 +66,7 @@ public class MonotonicityCounterexamples {
      *  @param token The Ptolemy Token representing a set of counterexamples
      *   to monotonicity.
      *  @return The counterexample set represented by the given token.
-     *  @throws IllegalActionException If the given Token does not conform to
+     *  @exception IllegalActionException If the given Token does not conform to
      *   the required structure;
      *  @see #toToken()
      */
@@ -200,7 +200,7 @@ public class MonotonicityCounterexamples {
      *  greater concept is on the right hand side.
      *
      *  @return The Token representation of this set.
-     *  @throws IllegalActionException If any of the concepts are null
+     *  @exception IllegalActionException If any of the concepts are null
      *  @see #fromToken(Token)
      */
     public ArrayToken toToken() throws IllegalActionException {
@@ -221,10 +221,10 @@ public class MonotonicityCounterexamples {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                        private methods                    ////
+    ////                         private methods                   ////
 
     ///////////////////////////////////////////////////////////////////
-    ////                       private variables                   ////
+    ////                         private variables                 ////
 
         /** A multimap to keep track of the mapping of lesser concepts
      *  to greater concepts.  This must be a multimap, because there

@@ -137,7 +137,7 @@ public class PtidesMulticoreDirector extends PtidesBasicDirector {
         int cores = ((IntToken)coresForEventProcessing.getToken()).intValue();
         _currentlyProcessingEvents = 
                 new ArrayList<Stack<ProcessingPtidesEvents>>(cores);
-        for(int i = 0; i < cores; i++) {
+        for (int i = 0; i < cores; i++) {
             _currentlyProcessingEvents
                     .add(i, new Stack<ProcessingPtidesEvents>());
         }
@@ -185,10 +185,10 @@ public class PtidesMulticoreDirector extends PtidesBasicDirector {
             throws IllegalActionException {
           
         // Calculate delayOffset to each input port.
-        for(TypedIOPort port : _inputPorts) {
+        for (TypedIOPort port : _inputPorts) {
             
             // Disallow SensorPort and NetworkReceiverPort.
-            if(port instanceof SensorPort || 
+            if (port instanceof SensorPort || 
                     port instanceof NetworkReceiverPort) {
                 continue;
             }
@@ -196,9 +196,9 @@ public class PtidesMulticoreDirector extends PtidesBasicDirector {
             // Find minimum delay offset from all sensor or network receiver 
             // input ports to the input port group of this port.
             double delayOffset = Double.POSITIVE_INFINITY;
-            for(TypedIOPort inputPort : _inputPorts) {
+            for (TypedIOPort inputPort : _inputPorts) {
                 // Only allow SensorPort and NetworkReceiverPort.
-                if(!(inputPort instanceof SensorPort || 
+                if (!(inputPort instanceof SensorPort || 
                         inputPort instanceof NetworkReceiverPort)) {
                     continue;
                 }
@@ -207,7 +207,7 @@ public class PtidesMulticoreDirector extends PtidesBasicDirector {
                 SuperdenseDependency minDelay = 
                     SuperdenseDependency.OPLUS_IDENTITY;
                 // Find minimum path to input port group.
-                for(TypedIOPort groupPort : _inputPortGroups.get(port)) {
+                for (TypedIOPort groupPort : _inputPortGroups.get(port)) {
                     minDelay = (SuperdenseDependency)minDelay.oPlus(
                             _getSuperdenseDependencyPair(
                             inputPort, groupPort, true));
@@ -216,7 +216,7 @@ public class PtidesMulticoreDirector extends PtidesBasicDirector {
                 // Check if best so far.
                 double thisDelayOffset = minDelay.timeValue()
                         - deviceDelayBound;
-                if(thisDelayOffset < delayOffset) {
+                if (thisDelayOffset < delayOffset) {
                     delayOffset = thisDelayOffset;
                 }           
             }
@@ -235,10 +235,10 @@ public class PtidesMulticoreDirector extends PtidesBasicDirector {
             throws IllegalActionException {
         
         // Calculate relativeDeadline for each input port.
-        for(TypedIOPort port : _inputPorts) {
+        for (TypedIOPort port : _inputPorts) {
             
             // Disallow SensorPort and NetworkReceiverPort.
-            if(port instanceof SensorPort || 
+            if (port instanceof SensorPort || 
                     port instanceof NetworkReceiverPort) {
                 continue;
             }
@@ -246,9 +246,9 @@ public class PtidesMulticoreDirector extends PtidesBasicDirector {
             // Find minimum model time delay path from the input
             // port to any actuator or network transmitter.
             double relativeDeadline = Double.POSITIVE_INFINITY;
-            for(TypedIOPort outputPort : _inputPorts) {
+            for (TypedIOPort outputPort : _inputPorts) {
                 // Only allow ActuatorPort and NetworkTransmitterPort.
-                if(!(outputPort instanceof ActuatorPort || 
+                if (!(outputPort instanceof ActuatorPort || 
                         outputPort instanceof NetworkTransmitterPort)) {
                     continue;
                 }
@@ -261,7 +261,7 @@ public class PtidesMulticoreDirector extends PtidesBasicDirector {
                 // Check if best so far.
                 double thisRelativeDeadline = minDelay.timeValue()
                         - deviceDelayBound;
-                if(thisRelativeDeadline < relativeDeadline) {
+                if (thisRelativeDeadline < relativeDeadline) {
                     relativeDeadline = thisRelativeDeadline;
                 }     
             }
@@ -271,13 +271,13 @@ public class PtidesMulticoreDirector extends PtidesBasicDirector {
         // Set relative deadlines for pure events.
         // FIXME: may need to be modified to handle pure events which update
         // state.
-        for(TypedIOPort port : _inputPortsForPureEvent.keySet()) {
+        for (TypedIOPort port : _inputPortsForPureEvent.keySet()) {
             Double relativeDeadline = Double.POSITIVE_INFINITY;
-            for(TypedIOPort connectedPort : _inputPortsForPureEvent.get(port)) 
+            for (TypedIOPort connectedPort : _inputPortsForPureEvent.get(port)) 
             {
                 Double thisRelativeDeadline =
                     _getRelativeDeadline(connectedPort);
-                if(thisRelativeDeadline.compareTo(
+                if (thisRelativeDeadline.compareTo(
                         relativeDeadline) < 0) {
                     relativeDeadline = thisRelativeDeadline;
                 }
@@ -331,11 +331,11 @@ public class PtidesMulticoreDirector extends PtidesBasicDirector {
         // This will build a weighted directed graph.
         
         // Add sensor, actuator, and network ports.
-        for(TypedIOPort port : (List<TypedIOPort>)
+        for (TypedIOPort port : (List<TypedIOPort>)
                 ((TypedCompositeActor)getContainer()).portList()) {
             
             // Only allow ports which are PtidesPorts.
-            if(!(port instanceof PtidesPort)) {
+            if (!(port instanceof PtidesPort)) {
                 throw new IllegalActionException(port, 
                         port.getFullName() + 
                         " is not a PtidesPort");
@@ -345,10 +345,10 @@ public class PtidesMulticoreDirector extends PtidesBasicDirector {
             
             // Add path from sensor or network input port to connected 
             // input ports. These connections have a weight of 0.
-            if(port instanceof SensorPort || 
+            if (port instanceof SensorPort || 
                     port instanceof NetworkReceiverPort) {
 
-                for(IOPort connectedPort : (List<IOPort>)
+                for (IOPort connectedPort : (List<IOPort>)
                         (port.insideSinkPortList())) {
                     _putSuperdenseDependencyPair(port, 
                             (TypedIOPort)connectedPort, 
@@ -364,22 +364,22 @@ public class PtidesMulticoreDirector extends PtidesBasicDirector {
         // actor to the input ports of immediate predecessor actors (or
         // actuators or network transmitters) using causality interface 
         // of the actor.
-        for(Actor actor : (List<Actor>)((TypedCompositeActor) 
+        for (Actor actor : (List<Actor>)((TypedCompositeActor) 
                 getContainer()).deepEntityList()) {
 
             CausalityInterface actorCausality = actor.getCausalityInterface();
             
-            for(TypedIOPort inputPort: 
+            for (TypedIOPort inputPort: 
                     (List<TypedIOPort>)(actor.inputPortList())) {
                 
                 // Ignore input if it's not connected to anything.
-                if(!inputPort.isOutsideConnected()) {
+                if (!inputPort.isOutsideConnected()) {
                     continue;
                 }
 
                 _addInputPort(inputPort);
     
-                for(TypedIOPort outputPort: 
+                for (TypedIOPort outputPort: 
                         (List<TypedIOPort>)(actor.outputPortList())) {
                     // Get superdense dependency between input port and output
                     // port of current actor.
@@ -387,13 +387,13 @@ public class PtidesMulticoreDirector extends PtidesBasicDirector {
                         (SuperdenseDependency) actorCausality.getDependency(
                         inputPort, outputPort);
                     // Only if dependency exists...
-                    if(!minDelay.equals(
+                    if (!minDelay.equals(
                             SuperdenseDependency.OPLUS_IDENTITY)) {
                         // Add connected input ports if this input port can
                         // produce pure events.
-                        if(!minDelay.equals(
+                        if (!minDelay.equals(
                                 SuperdenseDependency.OTIMES_IDENTITY)) {
-                            if(!_inputPortsForPureEvent.containsKey(inputPort)) 
+                            if (!_inputPortsForPureEvent.containsKey(inputPort)) 
                             {
                                 _inputPortsForPureEvent.put(
                                         inputPort, new HashSet<TypedIOPort>());
@@ -404,23 +404,23 @@ public class PtidesMulticoreDirector extends PtidesBasicDirector {
                         }
                         // Set input port pair for all connected ports.
                         // Assumes no delay from connections.
-                        for(TypedIOPort connectedPort: 
+                        for (TypedIOPort connectedPort: 
                                 (List<TypedIOPort>)
                                 outputPort.deepConnectedPortList()) {
                             _putSuperdenseDependencyPair(inputPort, 
                                     connectedPort, minDelay, false);
-                            if(!considerTrigger || 
+                            if (!considerTrigger || 
                                     _isTriggerPort(inputPort)) {
                                 _putSuperdenseDependencyPair(inputPort, 
                                         connectedPort, minDelay, true);
                             }
                         }    
                         // Find input port group.
-                        for(TypedIOPort inPort: 
+                        for (TypedIOPort inPort: 
                                 (List<TypedIOPort>)(actor.inputPortList())) {
                             minDelay = (SuperdenseDependency) actorCausality
                                     .getDependency(inPort, outputPort);
-                            if(!minDelay.equals(
+                            if (!minDelay.equals(
                                     SuperdenseDependency.OPLUS_IDENTITY)) {
                                 _inputPortGroups.get(inputPort).add(inPort);
                             }
@@ -432,16 +432,16 @@ public class PtidesMulticoreDirector extends PtidesBasicDirector {
         
         // Floyd-Warshall algorithm. This finds the minimum model time delay
         // between all input ports.
-        for(TypedIOPort k : _inputPorts) {
-            for(TypedIOPort i : _inputPorts) {
-                for(TypedIOPort j : _inputPorts) {
+        for (TypedIOPort k : _inputPorts) {
+            for (TypedIOPort i : _inputPorts) {
+                for (TypedIOPort j : _inputPorts) {
                     SuperdenseDependency ij, ik, kj;
                     // All input ports.
                     ij = _getSuperdenseDependencyPair(i, j, false);
                     ik = _getSuperdenseDependencyPair(i, k, false);
                     kj = _getSuperdenseDependencyPair(k, j, false);
                     // Check if i->k->j is better than i->j.
-                    if(ij.compareTo(ik.oTimes(kj)) == 
+                    if (ij.compareTo(ik.oTimes(kj)) == 
                             SuperdenseDependency.GREATER_THAN) {
                         _putSuperdenseDependencyPair(i, j, 
                                 (SuperdenseDependency) ik.oTimes(kj), false);
@@ -451,7 +451,7 @@ public class PtidesMulticoreDirector extends PtidesBasicDirector {
                     ik = _getSuperdenseDependencyPair(i, k, true);
                     kj = _getSuperdenseDependencyPair(k, j, true);
                     // Check if i->k->j is better than i->j.
-                    if(ij.compareTo(ik.oTimes(kj)) == 
+                    if (ij.compareTo(ik.oTimes(kj)) == 
                             SuperdenseDependency.GREATER_THAN) {
                         _putSuperdenseDependencyPair(i, j, 
                                 (SuperdenseDependency) ik.oTimes(kj), true);
@@ -461,17 +461,17 @@ public class PtidesMulticoreDirector extends PtidesBasicDirector {
         }
         
         // Print debug table.
-        if(_debugging) {
+        if (_debugging) {
             StringBuffer buf = new StringBuffer();
             buf.append("\t");
-            for(TypedIOPort srcPort : _inputPorts) {
+            for (TypedIOPort srcPort : _inputPorts) {
                 buf.append(srcPort.getName(getContainer()) + "\t");
             }
             _debug(buf.toString());
-            for(TypedIOPort srcPort : _inputPorts) {
+            for (TypedIOPort srcPort : _inputPorts) {
                 buf = new StringBuffer();
                 buf.append(srcPort.getName(getContainer()) + "\t");
-                for(TypedIOPort destPort : _inputPorts) {
+                for (TypedIOPort destPort : _inputPorts) {
                     buf.append(_getSuperdenseDependencyPair(
                             srcPort, destPort, false)
                             .timeValue() + "(" +
@@ -482,7 +482,7 @@ public class PtidesMulticoreDirector extends PtidesBasicDirector {
                 _debug(buf.toString()); 
                 buf = new StringBuffer();
                 buf.append(srcPort.getName(getContainer()) + "\t");
-                for(TypedIOPort destPort : _inputPorts) {
+                for (TypedIOPort destPort : _inputPorts) {
                     buf.append(_getSuperdenseDependencyPair(
                             srcPort, destPort, true)
                             .timeValue() + "(" +
@@ -523,7 +523,7 @@ public class PtidesMulticoreDirector extends PtidesBasicDirector {
         // Find minimum model time delay path to input port group.
         SuperdenseDependency path = 
             SuperdenseDependency.OPLUS_IDENTITY;
-        for(TypedIOPort groupPort : _inputPortGroups.get(
+        for (TypedIOPort groupPort : _inputPortGroups.get(
                 (TypedIOPort)event.ioPort())) {
             path = (SuperdenseDependency) path.oPlus(
                     _getSuperdenseDependencyPair(
@@ -531,16 +531,16 @@ public class PtidesMulticoreDirector extends PtidesBasicDirector {
                     groupPort, true));
         }
         
-        if(binary) {
+        if (binary) {
             // Return false if finite dependency exists.
-            if(path != SuperdenseDependency.OPLUS_IDENTITY) {          
+            if (path != SuperdenseDependency.OPLUS_IDENTITY) {          
                 return false;
             }
         } else {
             // Return false if event can arrive with earlier or equal tag.
             int compare = source.timeStamp().add(
                     path.timeValue()).compareTo(event.timeStamp());
-            if(compare < 0 || ((compare == 0) && (
+            if (compare < 0 || ((compare == 0) && (
                     (source.microstep() + path.indexValue())
                      <= event.microstep()))) {
                 return false;
@@ -616,7 +616,7 @@ public class PtidesMulticoreDirector extends PtidesBasicDirector {
      */
     protected Time _getAbsoluteDeadline(PtidesEvent event) 
             throws IllegalActionException {
-        if(event.isPureEvent()) {
+        if (event.isPureEvent()) {
             return event.absoluteDeadline();
         } else {
             return event.timeStamp().add(
@@ -633,7 +633,7 @@ public class PtidesMulticoreDirector extends PtidesBasicDirector {
             throws IllegalActionException {
         
         Parameter parameter = (Parameter)port.getAttribute("delayOffset2");
-        if(parameter != null) {
+        if (parameter != null) {
             return ((DoubleToken)parameter.getToken()).doubleValue();
         } else {
             throw new IllegalActionException(port,
@@ -653,7 +653,7 @@ public class PtidesMulticoreDirector extends PtidesBasicDirector {
         
         Parameter parameter = 
                 (Parameter)port.getAttribute("relativeDeadline2");
-        if(parameter != null) {
+        if (parameter != null) {
             return ((DoubleToken)parameter.getToken()).doubleValue();
         } else {
             throw new IllegalActionException(port,
@@ -690,7 +690,7 @@ public class PtidesMulticoreDirector extends PtidesBasicDirector {
         // If any of the currently processing events have reached their finish
         // time, they should be fired.
         Time nextFinishTime = null;
-        for(int i = 0; i < _currentlyProcessingEvents.size(); i++) {
+        for (int i = 0; i < _currentlyProcessingEvents.size(); i++) {
             Stack<ProcessingPtidesEvents> coreStack = 
                 _currentlyProcessingEvents.get(i);
             if (coreStack.size() != 0) {   
@@ -698,7 +698,7 @@ public class PtidesMulticoreDirector extends PtidesBasicDirector {
                 int compare = processingEvent.finishTime.compareTo(
                         executionPhysicalTag.timestamp);
                 // If event is finished processing, then fire actor.
-                if(compare == 0) {
+                if (compare == 0) {
                     PtidesEvent eventToFire = processingEvent.events.get(0);
                     // Actor needs model time to be that of the timestamp.
                     setTag(eventToFire.timeStamp(), eventToFire.microstep());
@@ -710,7 +710,7 @@ public class PtidesMulticoreDirector extends PtidesBasicDirector {
                             ExecutionEventType.STOP, i);
                     // If another event was preempted, record that it has
                     // started again.
-                    if(coreStack.size() != 0) {
+                    if (coreStack.size() != 0) {
                         _sendExecutionTimeEvent(
                             coreStack.peek().events.get(0).actor(), 
                             executionPhysicalTag.timestamp.getDoubleValue(), 
@@ -721,14 +721,14 @@ public class PtidesMulticoreDirector extends PtidesBasicDirector {
                     // Return actor to fire.
                     return eventToFire.actor();
                 // Missed it!
-                } else if(compare < 0) {
+                } else if (compare < 0) {
                     throw new IllegalActionException(this, 
                             "Missed firing actor: " + processingEvent);
                 // Find earliest finish time amongst cores.
                 } else {
-                    if(nextFinishTime == null) {
+                    if (nextFinishTime == null) {
                         nextFinishTime = processingEvent.finishTime;
-                    } else if(processingEvent.finishTime.compareTo(
+                    } else if (processingEvent.finishTime.compareTo(
                             nextFinishTime) < 0) {
                         nextFinishTime = processingEvent.finishTime;
                     }
@@ -739,7 +739,7 @@ public class PtidesMulticoreDirector extends PtidesBasicDirector {
         // Request firing at earliest finish time.
         // TODO: preemption may cause a refiring to become useless and
         // require finish times to be modified.
-        if(nextFinishTime != null) {
+        if (nextFinishTime != null) {
             _debug("next finish time: " + nextFinishTime);
             _fireAtPlatformTime(nextFinishTime, executionTimeClock);
         }
@@ -763,14 +763,14 @@ public class PtidesMulticoreDirector extends PtidesBasicDirector {
         
         // Put events in EDF order <absolute deadline, tag, microstep, depth>.
         List<PtidesEvent> EDF = new ArrayList<PtidesEvent>(_eventQueue.size());
-        for(int i = 0; i < _eventQueue.size(); i++) {
+        for (int i = 0; i < _eventQueue.size(); i++) {
             EDF.add(((PtidesListEventQueue)_eventQueue).get(i));
         }        
         Collections.sort(EDF, new EDFComparator());
 
         // Return first event in <AD, T, I, D> order that is safe-to-process.
-        for(PtidesEvent event : EDF) {
-            if(_safeToProcess(event)) {
+        for (PtidesEvent event : EDF) {
+            if (_safeToProcess(event)) {
                 return event;
             }
         }
@@ -778,7 +778,7 @@ public class PtidesMulticoreDirector extends PtidesBasicDirector {
         // If no events are safe-to-process, then request a refiring when the
         // earliest event will be. (Assume refiring occurs at end of event
         // processing, so this is based on platform time check)
-        if(_nextRunScheduler != null) {
+        if (_nextRunScheduler != null) {
             _debug("next scheduler run: " + _nextRunScheduler);
             _fireAtPlatformTime(_nextRunScheduler, platformTimeClock);
         }
@@ -798,12 +798,12 @@ public class PtidesMulticoreDirector extends PtidesBasicDirector {
     protected SuperdenseDependency _getSuperdenseDependencyPair(
             TypedIOPort source, TypedIOPort destination, boolean triggerOnly) {
         Map<TypedIOPort, Map<TypedIOPort,SuperdenseDependency>> pair;
-        if(triggerOnly) {
+        if (triggerOnly) {
             pair = _superdenseDependencyPairTriggerOnly;        
         } else {
             pair = _superdenseDependencyPair;
         }
-        if(pair.containsKey(source) &&
+        if (pair.containsKey(source) &&
                 pair.get(source).containsKey(destination))
         {
             return pair.get(source).get(destination);
@@ -824,7 +824,7 @@ public class PtidesMulticoreDirector extends PtidesBasicDirector {
         boolean isTrigger = true;
         Parameter isTriggerParameter = (Parameter)
                 port.getAttribute("isTrigger");
-        if(isTriggerParameter != null) {
+        if (isTriggerParameter != null) {
             isTrigger = ((BooleanToken)isTriggerParameter.getToken())
                     .booleanValue();
         }
@@ -842,12 +842,12 @@ public class PtidesMulticoreDirector extends PtidesBasicDirector {
             TypedIOPort destination, SuperdenseDependency dependency,
             boolean triggerOnly) {
         Map<TypedIOPort, Map<TypedIOPort,SuperdenseDependency>> pair;
-        if(triggerOnly) {
+        if (triggerOnly) {
             pair = _superdenseDependencyPairTriggerOnly;        
         } else {
             pair = _superdenseDependencyPair;
         }
-        if(!dependency.equals(SuperdenseDependency.OPLUS_IDENTITY)) {
+        if (!dependency.equals(SuperdenseDependency.OPLUS_IDENTITY)) {
             pair.get(source).put(destination, dependency);
         }
     }
@@ -862,13 +862,13 @@ public class PtidesMulticoreDirector extends PtidesBasicDirector {
     protected List<PtidesEvent> _removeEventsFromQueue(PtidesEvent event) {
         List<PtidesEvent> eventList = new ArrayList<PtidesEvent>();
         int i = 0;
-        while(i < _eventQueue.size()) {
+        while (i < _eventQueue.size()) {
             PtidesEvent eventInQueue = 
                     ((PtidesListEventQueue)_eventQueue).get(i);
             // If event has same tag and destined to same actor, remove from
             // queue.
             // TODO: or input port group?
-            if(eventInQueue.hasTheSameTagAs(event) && 
+            if (eventInQueue.hasTheSameTagAs(event) && 
                     eventInQueue.actor().equals(event.actor())) {
                 eventList.add(eventInQueue);
                 ((PtidesListEventQueue)_eventQueue).take(i);
@@ -898,7 +898,7 @@ public class PtidesMulticoreDirector extends PtidesBasicDirector {
         PtidesEvent nextEvent = _getNextSafeEvent();
         
         // Start processing of all events which can be processed.
-        while(nextEvent != null) {
+        while (nextEvent != null) {
             
             _debug("_getNextSafeEvent(): " + nextEvent);
             
@@ -910,9 +910,9 @@ public class PtidesMulticoreDirector extends PtidesBasicDirector {
             
             // If there are any open cores, then process the event on that
             // core.
-            for(Stack<ProcessingPtidesEvents> coreStack : 
+            for (Stack<ProcessingPtidesEvents> coreStack : 
                 _currentlyProcessingEvents) {
-                if(coreStack.size() == 0) {
+                if (coreStack.size() == 0) {
                     _debug("Found open core.");
                     coreToProcessOn = coreStack;
                     break;
@@ -921,17 +921,17 @@ public class PtidesMulticoreDirector extends PtidesBasicDirector {
             
             // Preempt the event with latest deadline if selected event has
             // earlier deadline.
-            if(coreToProcessOn == null) {
+            if (coreToProcessOn == null) {
                 EDFComparator comparator = new EDFComparator();
                 // Find processing event with latest deadline.
                 PtidesEvent latestEvent = null;
                 Stack<ProcessingPtidesEvents> latestCore = null;
-                for(Stack<ProcessingPtidesEvents> coreStack : 
+                for (Stack<ProcessingPtidesEvents> coreStack : 
                     _currentlyProcessingEvents) {
-                    if(coreStack.size() != 0) {
+                    if (coreStack.size() != 0) {
                         PtidesEvent processingEvent = 
                             coreStack.peek().events.get(0);
-                        if(latestEvent == null || comparator.compare(
+                        if (latestEvent == null || comparator.compare(
                                 processingEvent, latestEvent) > 0) {
                             latestEvent = processingEvent;
                             latestCore = coreStack;
@@ -940,20 +940,20 @@ public class PtidesMulticoreDirector extends PtidesBasicDirector {
                 }
                 // If next event has earlier deadline than the lastest deadline
                 // processing event, preempt it.
-                if(comparator.compare(nextEvent, latestEvent) < 0) {
+                if (comparator.compare(nextEvent, latestEvent) < 0) {
                     _debug("preempt " + latestEvent.actor().getName());
                     coreToProcessOn = latestCore;
                     // Execution time of event causing preemption.
                     // TODO: better way for execution time for pure event?
                     Time executionTime;
-                    if(nextEvent.isPureEvent()) {
+                    if (nextEvent.isPureEvent()) {
                         executionTime = new Time(this, _getExecutionTime(
                                 null, nextEvent.actor()));
                     } else 
                         executionTime = new Time(this, _getExecutionTime(
                                 nextEvent.ioPort(), nextEvent.actor()));
                     // Add this to all the finish times on the core.
-                    for(ProcessingPtidesEvents events : latestCore) {
+                    for (ProcessingPtidesEvents events : latestCore) {
                         events.finishTime = 
                             events.finishTime.add(executionTime);
                         _sendExecutionTimeEvent(events.events.get(0).actor(), 
@@ -965,7 +965,7 @@ public class PtidesMulticoreDirector extends PtidesBasicDirector {
             }
             
             // nextEvent shouldn't be processed yet, so return.
-            if(coreToProcessOn == null) {
+            if (coreToProcessOn == null) {
                 _debug("Don't process yet.");
                 return;
             }
@@ -982,7 +982,7 @@ public class PtidesMulticoreDirector extends PtidesBasicDirector {
             // TODO: better way for execution time for pure event?
             // Currently the execution time of the actor is used.
             Time executionTime;
-            if(nextEvent.isPureEvent()) {
+            if (nextEvent.isPureEvent()) {
                 executionTime = new Time(this, _getExecutionTime(
                         null, nextEvent.actor()));
             } else 
@@ -1028,7 +1028,7 @@ public class PtidesMulticoreDirector extends PtidesBasicDirector {
             throws IllegalActionException {
 
         double delayOffset;
-        if(event.isPureEvent()) {
+        if (event.isPureEvent()) {
             // FIXME: This is not correct if pure event updates state.
             delayOffset = Double.POSITIVE_INFINITY;
         } else {
@@ -1046,9 +1046,9 @@ public class PtidesMulticoreDirector extends PtidesBasicDirector {
         int microstep = platformPhysicalTag.microstep;
         if ((compare < 0) || compare == 0 && 
                 (microstep < event.microstep())) {
-            if(_nextRunScheduler == null) {
+            if (_nextRunScheduler == null) {
                 _nextRunScheduler = waitUntilPhysicalTime;
-            } else if(waitUntilPhysicalTime.compareTo(
+            } else if (waitUntilPhysicalTime.compareTo(
                     _nextRunScheduler) < 0) {
                 _nextRunScheduler = waitUntilPhysicalTime;
             }
@@ -1058,21 +1058,21 @@ public class PtidesMulticoreDirector extends PtidesBasicDirector {
         // If a currently processing event has a superdense dependency with
         // the event being checked, then it COULD causally affect it, so
         // conservatively return not safe to process.
-        for(Stack<ProcessingPtidesEvents> coreStack : 
+        for (Stack<ProcessingPtidesEvents> coreStack : 
                 _currentlyProcessingEvents) {
-            for(ProcessingPtidesEvents processingEvents : coreStack) {
+            for (ProcessingPtidesEvents processingEvents : coreStack) {
                 // Only need to consider one of the events since they should
                 // all have their destination port in same input port group.
                 PtidesEvent processingEvent = 
                     processingEvents.events.get(0);
-                if(!_dependencyCheck(processingEvent, event)) {
+                if (!_dependencyCheck(processingEvent, event)) {
                     return false;
                 }
             }  
         }
         
 
-        if(!((BooleanToken)considerTriggerPorts.
+        if (!((BooleanToken)considerTriggerPorts.
                 getToken()).booleanValue()) {
             return true;
         }
@@ -1081,17 +1081,17 @@ public class PtidesMulticoreDirector extends PtidesBasicDirector {
         // be safe to process.
         // Put events in EDF order <absolute deadline, tag, microstep, depth>.
         List<PtidesEvent> EDF = new ArrayList<PtidesEvent>(_eventQueue.size());
-        for(int i = 0; i < _eventQueue.size(); i++) {
+        for (int i = 0; i < _eventQueue.size(); i++) {
             EDF.add(((PtidesListEventQueue)_eventQueue).get(i));
         }        
         Collections.sort(EDF, new EDFComparator());
-        for(PtidesEvent earlierEvent : EDF) {
+        for (PtidesEvent earlierEvent : EDF) {
             // If no earlier events causally affect the event, then safe
             // to process.
-            if(earlierEvent.equals(event)) {
+            if (earlierEvent.equals(event)) {
                 return true;
             }
-            if(!_dependencyCheck(earlierEvent, event)) {
+            if (!_dependencyCheck(earlierEvent, event)) {
                 return false;
             }
 
@@ -1140,7 +1140,7 @@ public class PtidesMulticoreDirector extends PtidesBasicDirector {
         
         DoubleToken token = new DoubleToken(delayOffset);    
         Parameter parameter = (Parameter)port.getAttribute("delayOffset2");
-        if(parameter == null) {
+        if (parameter == null) {
             try {
                 parameter = new Parameter(port, "delayOffset2", token);
             } catch (NameDuplicationException e) {
@@ -1165,7 +1165,7 @@ public class PtidesMulticoreDirector extends PtidesBasicDirector {
         DoubleToken token = new DoubleToken(relativeDeadline);    
         Parameter parameter = 
                 (Parameter)port.getAttribute("relativeDeadline2");
-        if(parameter == null) {
+        if (parameter == null) {
             try {
                 parameter = new Parameter(port, "relativeDeadline2", token);
             } catch (NameDuplicationException e) {
@@ -1311,21 +1311,21 @@ public class PtidesMulticoreDirector extends PtidesBasicDirector {
                 compare = _getAbsoluteDeadline(e1).compareTo(
                         _getAbsoluteDeadline(e2));
             
-                if(compare != 0) {
+                if (compare != 0) {
                     return compare;
                 }
                 compare = e1.timeStamp().compareTo(e2.timeStamp());
-                if(compare != 0) {
+                if (compare != 0) {
                     return compare;
                 }
-                if(e1.microstep() < e2.microstep()) {
+                if (e1.microstep() < e2.microstep()) {
                     return -1;
-                } else if(e1.microstep() > e2.microstep()) {
+                } else if (e1.microstep() > e2.microstep()) {
                     return 1;
                 }
-                if(e1.depth() < e2.depth()) {
+                if (e1.depth() < e2.depth()) {
                     return -1;
-                } else if(e1.depth() > e2.depth()) {
+                } else if (e1.depth() > e2.depth()) {
                     return 1;
                 } else {
                     return 0;

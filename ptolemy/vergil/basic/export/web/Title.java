@@ -78,8 +78,8 @@ public class Title extends StringParameter implements WebExportable {
     /** Create an instance of this parameter.
      *  @param container The container.
      *  @param name The name.
-     *  @throws IllegalActionException If the superclass throws it.
-     *  @throws NameDuplicationException If the superclass throws it.
+     *  @exception IllegalActionException If the superclass throws it.
+     *  @exception NameDuplicationException If the superclass throws it.
      */
     public Title(NamedObj container, String name)
             throws IllegalActionException, NameDuplicationException {
@@ -346,7 +346,7 @@ public class Title extends StringParameter implements WebExportable {
      *  or an element, but not a document.
      *
      *  @param exporter  The web exporter to which to write content.
-     *  @throws IllegalActionExeption If there is a problem creating
+     *  @exception IllegalActionExeption If there is a problem creating
      *  the content or setting the attribute.
      */
     public void provideContent(WebExporter exporter)
@@ -361,7 +361,7 @@ public class Title extends StringParameter implements WebExportable {
     /** Provide a title for this object to the specified web exporter.
      *
      *  @param exporter The WebExporter to add content to
-     *  @throws IllegalActionException If something is wrong with the
+     *  @exception IllegalActionException If something is wrong with the
      *   specification of the content.
      */
     protected void _provideAttributes(WebExporter exporter)
@@ -379,7 +379,7 @@ public class Title extends StringParameter implements WebExportable {
      *  This element should be included in the <head> section.
      *
      *  @param exporter The WebExporter to add content to
-     *  @throws IllegalActionException If something is wrong with the
+     *  @exception IllegalActionException If something is wrong with the
      *   specification of the content.
      */
 

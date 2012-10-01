@@ -70,7 +70,7 @@ import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
 import ptolemy.util.MessageHandler;
 
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// WidgetPropertiesFrame
 
 /** The property window for setting widget position and size.

@@ -173,14 +173,14 @@ public class MulticoreExecutionTimeMonitor extends Plotter implements
         // The same dataset is used for each actor, regardless of core event
         // occurred on. The last point for each actor on each core is saved.
         Map<Actor, Double[]> lastPoint;
-        if(!_previousPoint.containsKey(Integer.valueOf(core))) {
+        if (!_previousPoint.containsKey(Integer.valueOf(core))) {
             
             // Core doesn't have map of last points for actors.
             lastPoint = new HashMap<Actor, Double[]>();
             _previousPoint.put(Integer.valueOf(core), lastPoint);
             
             // Add labels to y-axis.
-            for(int i = 0; i < _actors.size(); i++) {
+            for (int i = 0; i < _actors.size(); i++) {
                           
                 final String name = _actors.get(i).getDisplayName();
                 final double offset = getOffset(_actors.get(i), core);
@@ -200,7 +200,7 @@ public class MulticoreExecutionTimeMonitor extends Plotter implements
             lastPoint = _previousPoint.get(Integer.valueOf(core));
         }
         // Create initial point if needed.
-        if(!lastPoint.containsKey(actor)) {
+        if (!lastPoint.containsKey(actor)) {
             point[0] = Double.valueOf(0);
             point[1] = getOffset(actor, core);
             lastPoint.put(actor, point);
@@ -251,7 +251,7 @@ public class MulticoreExecutionTimeMonitor extends Plotter implements
     public void initialize() throws IllegalActionException {
 
         // Return if disabled.
-        if(((BooleanToken)disableMonitorExecutionTimes
+        if (((BooleanToken)disableMonitorExecutionTimes
                 .getToken()).booleanValue()) {
             return;
         }
@@ -264,7 +264,7 @@ public class MulticoreExecutionTimeMonitor extends Plotter implements
         
         // Register this monitor to director.
         Director director = container.getDirector();
-        if(director instanceof PtidesBasicDirector) {
+        if (director instanceof PtidesBasicDirector) {
             ((PtidesBasicDirector) director).
                     registerExecutionTimeListener(this);
         }
@@ -273,10 +273,10 @@ public class MulticoreExecutionTimeMonitor extends Plotter implements
         boolean monitorByDefault = ((BooleanToken)
                 monitorExecutionTimesByDefault.getToken()).booleanValue();
 
-        for(Actor actor : (List<Actor>)container.deepEntityList()) {
+        for (Actor actor : (List<Actor>)container.deepEntityList()) {
             
             // Ignore self.
-            if(actor instanceof MulticoreExecutionTimeMonitor) {
+            if (actor instanceof MulticoreExecutionTimeMonitor) {
                 continue;
             }
             
@@ -285,12 +285,12 @@ public class MulticoreExecutionTimeMonitor extends Plotter implements
             // Check if explicitly set.
             Parameter monitor = (Parameter)
                     ((NamedObj)actor).getAttribute("monitorExecutionTime");
-            if(monitor != null) {
+            if (monitor != null) {
                 monitorActor = 
                         ((BooleanToken)monitor.getToken()).booleanValue();
             }
             
-            if(monitorActor) {
+            if (monitorActor) {
                 _actors.add(actor);
                 
             } 
@@ -303,11 +303,11 @@ public class MulticoreExecutionTimeMonitor extends Plotter implements
                 ((NamedObj)a1).getAttribute("dataset");
                 Parameter a2Dataset = (Parameter)
                 ((NamedObj)a2).getAttribute("dataset");
-                if(a1Dataset != null && a2Dataset != null) {
+                if (a1Dataset != null && a2Dataset != null) {
                     try {
                         int i1 = ((IntToken)a1Dataset.getToken()).intValue();
                         int i2 = ((IntToken)a2Dataset.getToken()).intValue();
-                        if(i1 < i2) {
+                        if (i1 < i2) {
                             return -1;
                         }  
                     } catch (IllegalActionException e) {
@@ -318,7 +318,7 @@ public class MulticoreExecutionTimeMonitor extends Plotter implements
             }});
 
         // Initialize plot.
-        if(plot == null) {
+        if (plot == null) {
             plot = _newPlot();
             plot.setGrid(true);
         }
@@ -404,7 +404,7 @@ public class MulticoreExecutionTimeMonitor extends Plotter implements
         protected void coreStarts(double time) {
             Integer i = Integer.valueOf(_activeCores);
             double elapsedTime = time - _lastTime;
-            if(_busyTime.containsKey(i)) {
+            if (_busyTime.containsKey(i)) {
                 elapsedTime += _busyTime.get(i).doubleValue();
             }
             _busyTime.put(i, Double.valueOf(elapsedTime));
@@ -418,7 +418,7 @@ public class MulticoreExecutionTimeMonitor extends Plotter implements
         protected void coreStops(double time) {
             Integer i = Integer.valueOf(_activeCores);
             double elapsedTime = time - _lastTime;
-            if(_busyTime.containsKey(i)) {
+            if (_busyTime.containsKey(i)) {
                 elapsedTime += _busyTime.get(i).doubleValue();
             }
             _busyTime.put(i, Double.valueOf(elapsedTime));

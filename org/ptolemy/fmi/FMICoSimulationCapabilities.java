@@ -99,7 +99,7 @@ public class FMICoSimulationCapabilities {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////             public methods                                ////
+    ////                         public methods                    ////
 
     /** Return a description of the fields that are true or
      *  non-zero.

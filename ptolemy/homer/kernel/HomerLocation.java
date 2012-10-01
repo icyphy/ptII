@@ -77,7 +77,7 @@ public class HomerLocation extends Parameter {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                public methods                             ////
+    ////                         public methods                    ////
 
     /** Get the relative x position of the top-left corner.
      *  Special constants:

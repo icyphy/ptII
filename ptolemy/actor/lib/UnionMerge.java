@@ -138,7 +138,7 @@ public class UnionMerge extends TypedAtomicActor {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                     protected methods                     ////
+    ////                         protected methods                 ////
 
     /** Set up and return two type constraints.
      *  <ul>

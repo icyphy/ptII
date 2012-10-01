@@ -109,8 +109,8 @@ public abstract class AbstractSet extends AbstractCollection implements Set,
      * this operation will fail if a remove methods is not supported.
      * @param c the collection of elements to remove
      * @return true if the set was modified as a result
-     * @throws UnsupportedOperationException if remove is not supported
-     * @throws NullPointerException if the collection is null
+     * @exception UnsupportedOperationException if remove is not supported
+     * @exception NullPointerException if the collection is null
      * @see AbstractCollection#remove(Object)
      * @see Collection#contains(Object)
      * @see Iterator#remove()

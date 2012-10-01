@@ -170,7 +170,7 @@ public class RecordAssembler extends TypedAtomicActor {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                     protected methods                     ////
+    ////                         protected methods                 ////
 
     /** Set up and return two type constraints.
      *  <ul>

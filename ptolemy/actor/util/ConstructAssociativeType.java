@@ -65,7 +65,7 @@ public class ConstructAssociativeType extends MonotonicFunction {
         _type = type;
     }
 
-    ///////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////
     ////                       public inner methods            ////
 
     /** Return a RecordType with field names equal to the given port names,

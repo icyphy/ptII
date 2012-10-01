@@ -31,7 +31,7 @@ package ptolemy.domains.sdf.optimize;
 import ptolemy.actor.Actor;
 import ptolemy.actor.sched.Firing;
 
-////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// BufferingProfileFiring
 
 /**
@@ -68,8 +68,8 @@ public class BufferingProfileFiring extends Firing {
         fireExclusive = exclusive;
     }
 
-    ///////////////////////////////////////////////////////////////
-    ////                  public variables                     ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         public variables                  ////
 
     /**
      * Indicates whether this firing is to be performed exclusively (true)

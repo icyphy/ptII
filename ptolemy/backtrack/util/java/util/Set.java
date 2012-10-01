@@ -77,11 +77,11 @@ public interface Set extends Collection, Rollbackable {
      * a value is not permitted.
      * @param o the object to add
      * @return true if the object was not previously in the set
-     * @throws UnsupportedOperationException if this operation is not allowed
-     * @throws ClassCastException if the class of o prevents it from being added
-     * @throws IllegalArgumentException if some aspect of o prevents it from
+     * @exception UnsupportedOperationException if this operation is not allowed
+     * @exception ClassCastException if the class of o prevents it from being added
+     * @exception IllegalArgumentException if some aspect of o prevents it from
      * being added
-     * @throws NullPointerException if null is not permitted in this set
+     * @exception NullPointerException if null is not permitted in this set
      */
     boolean add(Object o);
 
@@ -92,12 +92,12 @@ public interface Set extends Collection, Rollbackable {
      * modified while this is taking place.
      * @param c the collection to add
      * @return true if the set changed as a result
-     * @throws UnsupportedOperationException if this operation is not allowed
-     * @throws ClassCastException if the class of an element prevents it from
+     * @exception UnsupportedOperationException if this operation is not allowed
+     * @exception ClassCastException if the class of an element prevents it from
      * being added
-     * @throws IllegalArgumentException if something about an element prevents
+     * @exception IllegalArgumentException if something about an element prevents
      * it from being added
-     * @throws NullPointerException if null is not permitted in this set, or
+     * @exception NullPointerException if null is not permitted in this set, or
      * if the argument c is null
      * @see #add(Object)
      */
@@ -106,7 +106,7 @@ public interface Set extends Collection, Rollbackable {
     /**
      * Removes all elements from this set (optional operation). This set will
      * be empty afterwords, unless an exception occurs.
-     * @throws UnsupportedOperationException if this operation is not allowed
+     * @exception UnsupportedOperationException if this operation is not allowed
      */
     void clear();
 
@@ -115,9 +115,9 @@ public interface Set extends Collection, Rollbackable {
      * this looks for <code>o == null ? e == null : o.equals(e)</code>.
      * @param o the object to look for
      * @return true if it is found in the set
-     * @throws ClassCastException if the type of o is not a valid type
+     * @exception ClassCastException if the type of o is not a valid type
      * for this set.
-     * @throws NullPointerException if o is null and this set doesn't
+     * @exception NullPointerException if o is null and this set doesn't
      * support null values.
      */
     boolean contains(Object o);
@@ -128,10 +128,10 @@ public interface Set extends Collection, Rollbackable {
      * relationship.
      * @param c the collection to check membership in
      * @return true if all elements in this set are in c
-     * @throws NullPointerException if c is null
-     * @throws ClassCastException if the type of any element in c is not
+     * @exception NullPointerException if c is null
+     * @exception ClassCastException if the type of any element in c is not
      * a valid type for this set.
-     * @throws NullPointerException if some element of c is null and this
+     * @exception NullPointerException if some element of c is null and this
      * set doesn't support null values.
      * @see #contains(Object)
      */
@@ -173,10 +173,10 @@ public interface Set extends Collection, Rollbackable {
      * it is removed from the set.
      * @param o the object to remove
      * @return true if the set changed (an object was removed)
-     * @throws UnsupportedOperationException if this operation is not allowed
-     * @throws ClassCastException if the type of o is not a valid type
+     * @exception UnsupportedOperationException if this operation is not allowed
+     * @exception ClassCastException if the type of o is not a valid type
      * for this set.
-     * @throws NullPointerException if o is null and this set doesn't allow
+     * @exception NullPointerException if o is null and this set doesn't allow
      * the removal of a null value.
      */
     boolean remove(Object o);
@@ -187,11 +187,11 @@ public interface Set extends Collection, Rollbackable {
      * <i>asymmetric set difference</i> of the two sets.
      * @param c the collection to remove from this set
      * @return true if this set changed as a result
-     * @throws UnsupportedOperationException if this operation is not allowed
-     * @throws NullPointerException if c is null
-     * @throws ClassCastException if the type of any element in c is not
+     * @exception UnsupportedOperationException if this operation is not allowed
+     * @exception NullPointerException if c is null
+     * @exception ClassCastException if the type of any element in c is not
      * a valid type for this set.
-     * @throws NullPointerException if some element of c is null and this
+     * @exception NullPointerException if some element of c is null and this
      * set doesn't support removing null values.
      * @see #remove(Object)
      */
@@ -203,11 +203,11 @@ public interface Set extends Collection, Rollbackable {
      * performs the <i>intersection</i> of the two sets.
      * @param c the collection to keep
      * @return true if this set was modified
-     * @throws UnsupportedOperationException if this operation is not allowed
-     * @throws NullPointerException if c is null
-     * @throws ClassCastException if the type of any element in c is not
+     * @exception UnsupportedOperationException if this operation is not allowed
+     * @exception NullPointerException if c is null
+     * @exception ClassCastException if the type of any element in c is not
      * a valid type for this set.
-     * @throws NullPointerException if some element of c is null and this
+     * @exception NullPointerException if some element of c is null and this
      * set doesn't support retaining null values.
      * @see #remove(Object)
      */
@@ -241,9 +241,9 @@ public interface Set extends Collection, Rollbackable {
      * @param a the array to determine the return type; if it is big enough
      * it is used and returned
      * @return an array holding the elements of the set
-     * @throws ArrayStoreException if the runtime type of a is not a supertype
+     * @exception ArrayStoreException if the runtime type of a is not a supertype
      * of all elements in the set
-     * @throws NullPointerException if a is null
+     * @exception NullPointerException if a is null
      * @see #toArray()
      */
     Object[] toArray(Object[] a);

@@ -130,7 +130,7 @@ public class CompositeQuantityManager extends TypedCompositeActor implements Qua
     /** Create a receiver to mediate a communication via the specified receiver.
      *  @param receiver Target receiver.
      *  @return never returned
-     *  @throws IllegalActionException Always thrown because this
+     *  @exception IllegalActionException Always thrown because this
      *  method cannot be used because a receiver cannot be created
      *  without specifying a port of a CompositeQuantityManager.
      */
@@ -342,7 +342,7 @@ public class CompositeQuantityManager extends TypedCompositeActor implements Qua
      *  @param receiver The target receiver of this token.
      *  @param token Token that is sent.
      *  @param port Input port that should get the token.
-     *  @throws IllegalActionException
+     *  @exception IllegalActionException
      */
     public void sendToken(Receiver source, Receiver receiver, Token token, IOPort port)
             throws IllegalActionException {
@@ -367,11 +367,11 @@ public class CompositeQuantityManager extends TypedCompositeActor implements Qua
     protected int _tokenCount;
 
     ///////////////////////////////////////////////////////////////////
-    ////                        private methods                    ////
+    ////                         private methods                   ////
 
     /** Initialize color and private lists.
-     * @throws IllegalActionException If color attribute cannot be initialized.
-     * @throws NameDuplicationException If color attribute cannot be initialized.
+     * @exception IllegalActionException If color attribute cannot be initialized.
+     * @exception NameDuplicationException If color attribute cannot be initialized.
      */
     private void _initialize() throws IllegalActionException, NameDuplicationException {
         _listeners = new ArrayList();

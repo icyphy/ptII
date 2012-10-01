@@ -116,7 +116,7 @@ public class ArrayToken extends AbstractNotConvertibleToken {
      *   zero.
      */
     public ArrayToken(Token[] value, int length) throws IllegalActionException {
-        if (length > value.length){
+        if (length > value.length) {
             length = value.length;
         }
 
@@ -1063,7 +1063,7 @@ public class ArrayToken extends AbstractNotConvertibleToken {
      *  @param index The index of the element to be updated.
      *  @param value The value of the element to be updated.
      *  @return A new array.
-     *  @throws IllegalActionException Should not be thrown in this base class.
+     *  @exception IllegalActionException Should not be thrown in this base class.
      */
     public ArrayToken update(int index, Token value) throws IllegalActionException {
         if (index < 0 || index >= length()) {
@@ -1491,7 +1491,7 @@ public class ArrayToken extends AbstractNotConvertibleToken {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                       protected variables                 ////
+    ////                         protected variables               ////
 
     /** The depth of the hierarchy of array tokens used to represent
      *  this array. If this array is an instance of this base class,

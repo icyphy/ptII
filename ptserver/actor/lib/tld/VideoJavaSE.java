@@ -60,7 +60,7 @@ public class VideoJavaSE implements VideoInterface {
 
     /**
      * Callback for video.initialize() - empty implementation.
-     * @throws IllegalActionException if there is problem initializing.
+     * @exception IllegalActionException if there is problem initializing.
      */
     public void initialize() throws IllegalActionException {
 
@@ -75,7 +75,7 @@ public class VideoJavaSE implements VideoInterface {
 
     /**
      * Callback for video.fire() - empty implementation.
-     * @throws IllegalActionException if there is problem initializing.
+     * @exception IllegalActionException if there is problem initializing.
      */
     public void fire() throws IllegalActionException {
 

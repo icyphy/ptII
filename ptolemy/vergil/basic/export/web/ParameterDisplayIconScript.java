@@ -64,8 +64,8 @@ public class ParameterDisplayIconScript extends DefaultIconScript {
     /** Create an instance of this parameter.
      *  @param container The container.
      *  @param name The name.
-     *  @throws IllegalActionException If the superclass throws it.
-     *  @throws NameDuplicationException If the superclass throws it.
+     *  @exception IllegalActionException If the superclass throws it.
+     *  @exception NameDuplicationException If the superclass throws it.
      */
     public ParameterDisplayIconScript(NamedObj container, String name)
             throws IllegalActionException, NameDuplicationException {
@@ -156,7 +156,7 @@ public class ParameterDisplayIconScript extends DefaultIconScript {
      *
      *  @param exporter The exporter to which to provide the content.
      *  @param object The object which provides the content.
-     *  @throws IllegalActionException If there is a problem creating the content
+     *  @exception IllegalActionException If there is a problem creating the content
      * or if there is a name duplication with the created attributes
      */
     protected void _provideDefaultAttributes(NamedObj object,
@@ -199,7 +199,7 @@ public class ParameterDisplayIconScript extends DefaultIconScript {
      *  upon onmouseover().
      *
      *  @param exporter The exporter to which to provide the content.
-     *  @throws IllegalActionException If evaluating the value
+     *  @exception IllegalActionException If evaluating the value
      *   of this parameter fails.
      */
     // FIXME:  How to do this, from old comments?

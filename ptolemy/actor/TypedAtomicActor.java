@@ -122,7 +122,7 @@ public class TypedAtomicActor extends AtomicActor<TypedIOPort> implements
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                       public methods                      ////
+    ////                         public methods                    ////
 
     /** React to a change in the type of an attribute.  This method is
      *  called by a contained attribute when its type changes.
@@ -290,7 +290,7 @@ public class TypedAtomicActor extends AtomicActor<TypedIOPort> implements
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                      protected methods                    ////
+    ////                         protected methods                 ////
 
     /**
      * Collect all type constraints from contained Typeables (ports,
@@ -394,13 +394,13 @@ public class TypedAtomicActor extends AtomicActor<TypedIOPort> implements
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                      protected variables                  ////
+    ////                         protected variables               ////
 
     /** Whether or not the resolved types are still valid. */
     protected boolean _typesValid;
 
     ///////////////////////////////////////////////////////////////////
-    ////                       private methods                     ////
+    ////                         private methods                   ////
 
     /**
      * Initialize the variables that keep track of the validity of the cached
@@ -415,7 +415,7 @@ public class TypedAtomicActor extends AtomicActor<TypedIOPort> implements
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                     private variables                     ////
+    ////                         private variables                 ////
 
     /** Cached set of type constraints. */
     private Set<Inequality> _cachedTypeConstraints;

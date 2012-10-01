@@ -127,12 +127,12 @@ public class SubscriptionAggregator extends Subscriber {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                      protected methods                    ////
+    ////                         protected methods                 ////
 
     /** Create an input port. This overrides the base class to create
      *  a SubscriptionAggregatorPort.
-     *  @throws IllegalActionException If creating the input port fails.
-     *  @throws NameDuplicationException If there is already a port named "input".
+     *  @exception IllegalActionException If creating the input port fails.
+     *  @exception NameDuplicationException If there is already a port named "input".
      */
     protected void _createInputPort() throws IllegalActionException,
             NameDuplicationException {

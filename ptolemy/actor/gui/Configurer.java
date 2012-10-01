@@ -394,7 +394,7 @@ public class Configurer extends JPanel implements CloseListener {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                       protected variables                 ////
+    ////                         protected variables               ////
 
     /** A record of the original values. */
     protected HashMap<Settable, String> _originalValues;

@@ -61,8 +61,8 @@ public abstract class BasicJSPlotter extends WebContent
     /** Create an instance for each parameter.
      *  @param container The container.
      *  @param name The name.
-     *  @throws IllegalActionException If the superclass throws it.
-     *  @throws NameDuplicationException If the superclass throws it.
+     *  @exception IllegalActionException If the superclass throws it.
+     *  @exception NameDuplicationException If the superclass throws it.
      */
     public BasicJSPlotter(NamedObj container, String name)
             throws IllegalActionException, NameDuplicationException {
@@ -347,7 +347,7 @@ public abstract class BasicJSPlotter extends WebContent
     
     /** Get the parameter values from the GUI input.
      *  @return The hash map containing the values of all parameters 
-     *  @throws IllegalActionException
+     *  @exception IllegalActionException
      */
     public HashMap<String, String> getBasicConfig() throws IllegalActionException {
         _config.put("outputHTMLFile", outputHTMLFile.stringValue().trim());
@@ -426,13 +426,13 @@ public abstract class BasicJSPlotter extends WebContent
      *  @param content the content to be inserted
      */
     public void insertHeaderContent(boolean isJavaScript, boolean autoIndent, String content){
-        if(isJavaScript && autoIndent){
+        if (isJavaScript && autoIndent){
             _scriptContent.append("\t\t\t" + content);
-        }else if(!isJavaScript & autoIndent){
+        }else if (!isJavaScript & autoIndent){
             _headerContent.append("\t\t" + content);
-        }else if(isJavaScript && !autoIndent){
+        }else if (isJavaScript && !autoIndent){
             _scriptContent.append(content);
-        }else{
+        }else {
             _headerContent.append(content);
         }
     }
@@ -446,7 +446,7 @@ public abstract class BasicJSPlotter extends WebContent
      *  the area of the image map corresponding to its container.
      *  
      *  @param exporter  The web exporter to write content to
-     *  @throws IllegalActionException If evaluating the value
+     *  @exception IllegalActionException If evaluating the value
      *   of this parameter fails, or creating a web attribute fails.
      */
     protected void _provideAttributes(WebExporter exporter) 

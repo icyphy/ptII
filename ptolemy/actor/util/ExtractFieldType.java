@@ -71,7 +71,7 @@ public class ExtractFieldType extends MonotonicFunction {
         _port = port;
     }
 
-    ///////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////
     ////                   public inner methods                ////
 
     /** Return the current value of this monotonic function.
@@ -85,7 +85,7 @@ public class ExtractFieldType extends MonotonicFunction {
      *  does not carry a field corresponding to the given name, then return
      *  <code>BaseType.UNKNOWN</code>. Otherwise, throw an exception.
      *  @return A Type.
-     *  @throws IllegalActionException If the port type is
+     *  @exception IllegalActionException If the port type is
      *   not <code>BaseType.UNKNOWN</code> or <code>BaseType.GENERAL</code>
      *   and is not an instance of <code>AssociateType</code>.
      */
@@ -161,7 +161,7 @@ public class ExtractFieldType extends MonotonicFunction {
         return (new InequalityTerm[0]);
     }
 
-    ///////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////
     ////                  private inner variable               ////
 
     /** The name of the field of interest. */

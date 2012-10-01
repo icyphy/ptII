@@ -538,7 +538,7 @@ public class HybridModalDirector extends FSMDirector implements
 
     /** Roll back to committed state.
      *  This will roll back any actors that were fired in the current iteration.
-     *  @throws IllegalActionException If the rollback attempts to go
+     *  @exception IllegalActionException If the rollback attempts to go
      *   back further than the last committed time.
      */
     public void rollBackToCommittedState() throws IllegalActionException {

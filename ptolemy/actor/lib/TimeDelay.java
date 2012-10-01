@@ -448,7 +448,7 @@ public class TimeDelay extends Transformer {
 
     /** Return the value of <i>minimumDelay</i>.
      *  @return The minimum delay from the input to the output.
-     *  @throws IllegalActionException If the <i>minimumDelay</i>
+     *  @exception IllegalActionException If the <i>minimumDelay</i>
      *   parameter cannot be evaluated.
      */
     protected double _minimumDelay() throws IllegalActionException {

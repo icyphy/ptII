@@ -1143,7 +1143,7 @@ public class DTDirector extends SDFDirector {
      *    - create a new receiver table to cache all receivers contained
      *    - set default number of iterations
      *    - set period value
-     * @throws IllegalActionException If initializing time fails.
+     * @exception IllegalActionException If initializing time fails.
      */
     private void _init() throws IllegalActionException {
         // Change the default period.

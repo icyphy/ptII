@@ -232,7 +232,7 @@ private int jjMoveNfa_0(int startState, int curPos)
                   break;
                default : break;
             }
-         } while(i != startsAt);
+         } while (i != startsAt);
       }
       else if (curChar < 128)
       {
@@ -265,7 +265,7 @@ private int jjMoveNfa_0(int startState, int curPos)
                   break;
                default : break;
             }
-         } while(i != startsAt);
+         } while (i != startsAt);
       }
       else
       {
@@ -281,7 +281,7 @@ private int jjMoveNfa_0(int startState, int curPos)
                   break;
                default : break;
             }
-         } while(i != startsAt);
+         } while (i != startsAt);
       }
       if (kind != 0x7fffffff)
       {
@@ -293,7 +293,7 @@ private int jjMoveNfa_0(int startState, int curPos)
       if ((i = jjnewStateCnt) == (startsAt = 23 - (jjnewStateCnt = startsAt)))
          return curPos;
       try { curChar = input_stream.readChar(); }
-      catch(java.io.IOException e) { return curPos; }
+      catch (java.io.IOException e) { return curPos; }
    }
 }
 static final int[] jjnextStates = {
@@ -323,14 +323,14 @@ private final int[] jjrounds = new int[23];
 private final int[] jjstateSet = new int[46];
 protected char curChar;
 /** Constructor. */
-public MatrixParserTokenManager(SimpleCharStream stream){
+public MatrixParserTokenManager(SimpleCharStream stream) {
    if (SimpleCharStream.staticFlag)
       throw new Error("ERROR: Cannot use a static CharStream class with a non-static lexical analyzer.");
    input_stream = stream;
 }
 
 /** Constructor. */
-public MatrixParserTokenManager(SimpleCharStream stream, int lexState){
+public MatrixParserTokenManager(SimpleCharStream stream, int lexState) {
    this(stream);
    SwitchTo(lexState);
 }
@@ -412,7 +412,7 @@ public Token getNextToken()
    {
       curChar = input_stream.BeginToken();
    }
-   catch(java.io.IOException e)
+   catch (java.io.IOException e)
    {
       jjmatchedKind = 0;
       matchedToken = jjFillToken();

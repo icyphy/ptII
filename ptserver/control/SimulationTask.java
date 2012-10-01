@@ -45,7 +45,7 @@ import ptserver.util.ServerUtility;
  *  ticket reference and wait for the user to issue control commands.
  *
  *  @author Justin Killian
- *  @version $Id: SimulationTask.java 61629 2011-07-28 02:17:45Z ahuseyno $
+ *  @version $Id$
  *  @since Ptolemy II 8.0
  *  @Pt.ProposedRating Red (jkillian)
  *  @Pt.AcceptedRating Red (jkillian)

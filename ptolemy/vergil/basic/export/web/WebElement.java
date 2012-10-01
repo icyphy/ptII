@@ -63,8 +63,8 @@ public class WebElement extends StringAttribute {
     /** Create an instance of this parameter.
      *  @param container The container.
      *  @param name The name.
-     *  @throws IllegalActionException If the superclass throws it.
-     *  @throws NameDuplicationException If the superclass throws it.
+     *  @exception IllegalActionException If the superclass throws it.
+     *  @exception NameDuplicationException If the superclass throws it.
      */
     public WebElement(NamedObj container, String name)
             throws IllegalActionException, NameDuplicationException {
@@ -88,7 +88,7 @@ public class WebElement extends StringAttribute {
      * @param webName The web name of this WebElement
      * @return The WebElement that was created (or that previously existed)
      * with persistent set to false
-     * @throws IllegalActionException if the WebAttribute cannot be created
+     * @exception IllegalActionException if the WebAttribute cannot be created
      * (perhaps another Attribute exists with the requested name)
      */
     public static WebElement createWebElement(NamedObj container, String id,
@@ -101,7 +101,7 @@ public class WebElement extends StringAttribute {
                 webElement = new WebElement(container, id);
                 webElement.setPersistent(false);
             }
-       } catch(NameDuplicationException e){
+       } catch (NameDuplicationException e) {
               throw new IllegalActionException(container,
                "Cannot create web content.  Duplicate id (Ptolemy name) for" +
                "WebElement: " + id);

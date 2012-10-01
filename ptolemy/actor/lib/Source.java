@@ -176,7 +176,7 @@ public abstract class Source extends TypedAtomicActor {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                      protected methods                    ////
+    ////                         protected methods                 ////
 
     /** Set the input port greater than or equal to
      *  <code>BaseType.GENERAL</code> in case backward type inference is

@@ -172,7 +172,7 @@ public class IfNodeFunction extends MonotonicityConceptFunction {
 
         if (!_monotonicConcept.isAboveOrEqualTo(mconditional)
                 || !_isAlmostMonotonic(me3)
-                || !_isAlmostMonotonic(me4)){
+                || !_isAlmostMonotonic(me4)) {
             return false;
         }
 

@@ -72,7 +72,7 @@ import ptolemy.vergil.basic.BasicGraphPane;
 import diva.graph.JGraph;
 import diva.gui.toolbox.JCanvasPanner;
 
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// HomerMainFrame
 
 /** The container window for the UI designer that maintains the palette of

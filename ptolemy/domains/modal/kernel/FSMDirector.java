@@ -191,8 +191,8 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
      * string as its name. The director is added to the list of
      * objects in the workspace. Increment the version number of the
      * workspace.
-     *  @throws NameDuplicationException If construction of Time objects fails.
-     *  @throws IllegalActionException If construction of Time objects fails.
+     *  @exception NameDuplicationException If construction of Time objects fails.
+     *  @exception IllegalActionException If construction of Time objects fails.
      */
     public FSMDirector() throws IllegalActionException, NameDuplicationException {
         super();
@@ -204,8 +204,8 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
      * director is added to the list of objects in the
      * workspace. Increment the version number of the workspace.
      * @param workspace The workspace of this director.
-     *  @throws NameDuplicationException If construction of Time objects fails.
-     *  @throws IllegalActionException If construction of Time objects fails.
+     *  @exception NameDuplicationException If construction of Time objects fails.
+     *  @exception IllegalActionException If construction of Time objects fails.
      */
     public FSMDirector(Workspace workspace) throws IllegalActionException, NameDuplicationException {
         super(workspace);
@@ -1119,7 +1119,7 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
      *  its own protected method so that subclasses of FSMDirector can
      *  access it.
      *  @return A list of actors to postfire.
-     *  @throws IllegalActionException If can't get the controller.
+     *  @exception IllegalActionException If can't get the controller.
      */
     protected List<Actor> _getStateRefinementsToPostfire() throws IllegalActionException {
         FSMActor controller = getController();
@@ -1131,7 +1131,7 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
      *  its own protected method so that subclasses of FSMDirector can
      *  access it.
      *  @return A list of actors to postfire.
-     *  @throws IllegalActionException If can't get the controller.
+     *  @exception IllegalActionException If can't get the controller.
      */
     protected List<Actor> _getTransitionRefinementsToPostfire() throws IllegalActionException {
         FSMActor controller = getController();

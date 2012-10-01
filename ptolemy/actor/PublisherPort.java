@@ -347,7 +347,7 @@ public class PublisherPort extends PubSubPort {
 
     /** If {@link #initialTokens} has been set, then produce the
      *  outputs specified by its array value.
-     *  @throws IllegalActionException If initialTokens is invalid.
+     *  @exception IllegalActionException If initialTokens is invalid.
      */
     @Override
     public void initialize() throws IllegalActionException {

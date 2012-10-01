@@ -383,7 +383,7 @@ public class SubscriptionAggregatorPort extends SubscriberPort {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         private variables               ////
+    ////                         private variables                 ////
 
     /** Indicator that the operation is "add" rather than "multiply". */
     private boolean _addOperation = true;

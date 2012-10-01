@@ -193,7 +193,7 @@ public class RecordUpdater extends TypedAtomicActor {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                     protected methods                     ////
+    ////                         protected methods                 ////
 
 
     /** Return the type constraints of this actor. The type constraint is

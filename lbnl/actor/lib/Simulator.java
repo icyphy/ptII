@@ -531,7 +531,7 @@ public class Simulator extends SDFTransformer {
         // the map still contains the name of this actor and its output directory.
         final String otherEntry = (String)_simulatorWorkingDirs.putIfAbsent(worDir,
                                                                       this.getFullName());
-        if (!( otherEntry == null || otherEntry.equals(this.getFullName()) )){
+        if (!( otherEntry == null || otherEntry.equals(this.getFullName()) )) {
             String em = "Error: Working directory '" + worDir + "'" + LS
                     + "is used by the following Simulator actors:" + LS
                     + otherEntry + LS

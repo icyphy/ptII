@@ -93,8 +93,8 @@ public class LinkToOpenTableaux extends DefaultIconLink {
     /** Create an instance of this parameter.
      *  @param container The container.
      *  @param name The name.
-     *  @throws IllegalActionException If the superclass throws it.
-     *  @throws NameDuplicationException If the superclass throws it.
+     *  @exception IllegalActionException If the superclass throws it.
+     *  @exception NameDuplicationException If the superclass throws it.
      */
     public LinkToOpenTableaux(NamedObj container, String name)
             throws IllegalActionException, NameDuplicationException {
@@ -104,13 +104,13 @@ public class LinkToOpenTableaux extends DefaultIconLink {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                       public methods                      ////
+    ////                         public methods                    ////
 
     /** Provide content to the specified web exporter to be
      *  included in a web page for the container of this object.
      *  This overrides the base class to ensure that each class
      *  definition is exported only once.
-     *  @throws IllegalActionException If a subclass throws it.
+     *  @exception IllegalActionException If a subclass throws it.
      */
     public void provideContent(WebExporter exporter)
         throws IllegalActionException {
@@ -123,7 +123,7 @@ public class LinkToOpenTableaux extends DefaultIconLink {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                       protected methods                   ////
+    ////                         protected methods                 ////
 
     /** Override the base class to generate a web page or an image
      *  file for the specified object, if appropriate, and to provide
@@ -131,7 +131,7 @@ public class LinkToOpenTableaux extends DefaultIconLink {
      *  associated with the object.
      *  @param exporter The exporter.
      *  @param object The Ptolemy II object.
-     *  @throws IllegalActionException If evaluating parameters fails.
+     *  @exception IllegalActionException If evaluating parameters fails.
      */
     protected void _provideEachAttribute(WebExporter exporter, NamedObj object)
             throws IllegalActionException {
@@ -285,7 +285,7 @@ public class LinkToOpenTableaux extends DefaultIconLink {
      *  Otherwise, return the name of the object.
      *  @param object The object.
      *  @return A title for the object.
-     *  @throws IllegalActionException If accessing the title attribute fails..
+     *  @exception IllegalActionException If accessing the title attribute fails..
      */
     private static String _getTitleText(NamedObj object)
         throws IllegalActionException {
@@ -319,7 +319,7 @@ public class LinkToOpenTableaux extends DefaultIconLink {
      *  @param parameters The parameters of the web export that requires this link.
      *  @exception IOException If unable to create required HTML files.
      *  @exception PrinterException If unable to create required HTML files.
-     *  @throws IllegalActionException If something goes wrong.
+     *  @exception IllegalActionException If something goes wrong.
      */
     private void _linkTo(WebExporter exporter, PtolemyEffigy effigy,
             NamedObj sourceObject, NamedObj destinationObject,

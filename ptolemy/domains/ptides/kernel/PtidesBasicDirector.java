@@ -847,7 +847,7 @@ public class PtidesBasicDirector extends DEDirector {
         if (_executionTimeListeners == null) {
             _executionTimeListeners = new ArrayList();
         }
-        if(!_executionTimeListeners.contains(listener)) {
+        if (!_executionTimeListeners.contains(listener)) {
             _executionTimeListeners.add(listener);
         }
     }
@@ -1495,7 +1495,7 @@ public class PtidesBasicDirector extends DEDirector {
         }
         // Add this fireAt time to the list of future fireAt times to expect.
         if (realTimeClock == platformTimeClock) {
-            if(!_futurePlatformFireAtTimes.contains(fireAtTime)) {
+            if (!_futurePlatformFireAtTimes.contains(fireAtTime)) {
                 _futurePlatformFireAtTimes.add(fireAtTime);
                 Collections.sort(_futurePlatformFireAtTimes);
             }

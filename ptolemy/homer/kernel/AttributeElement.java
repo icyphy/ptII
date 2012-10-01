@@ -67,7 +67,7 @@ public class AttributeElement extends PositionableElement {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                public methods                             ////
+    ////                         public methods                    ////
 
     /** Attach a value listener to the underlying attribute.
      *
@@ -131,7 +131,7 @@ public class AttributeElement extends PositionableElement {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                private variables                          ////
+    ////                         private variables                 ////
 
     /** The representation of the attribute based on the style and the
      *  platform.

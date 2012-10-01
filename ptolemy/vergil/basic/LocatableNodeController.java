@@ -82,7 +82,7 @@ public class LocatableNodeController extends BasicNodeController {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         public methods                 ////
+    ////                         public methods                    ////
 
     /** Add a node to this graph editor and render it
      * at the given location.

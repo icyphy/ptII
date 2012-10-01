@@ -101,7 +101,7 @@ public class HashSet extends AbstractSet implements Set, Cloneable,
      * Construct a new, empty HashSet whose backing HashMap has the supplied
      * capacity and the default load factor (0.75).
      * @param initialCapacity the initial capacity of the backing HashMap
-     * @throws IllegalArgumentException if the capacity is negative
+     * @exception IllegalArgumentException if the capacity is negative
      */
     public HashSet(int initialCapacity) {
         this(initialCapacity, HashMap.DEFAULT_LOAD_FACTOR);
@@ -112,7 +112,7 @@ public class HashSet extends AbstractSet implements Set, Cloneable,
      * capacity and load factor.
      * @param initialCapacity the initial capacity of the backing HashMap
      * @param loadFactor the load factor of the backing HashMap
-     * @throws IllegalArgumentException if either argument is negative, or
+     * @exception IllegalArgumentException if either argument is negative, or
      * if loadFactor is POSITIVE_INFINITY or NaN
      */
     public HashSet(int initialCapacity, float loadFactor) {
@@ -125,7 +125,7 @@ public class HashSet extends AbstractSet implements Set, Cloneable,
      * has twice the size of the collection, or the default size of 11,
      * whichever is greater; and the default load factor (0.75).
      * @param c a collection of initial set elements
-     * @throws NullPointerException if c is null
+     * @exception NullPointerException if c is null
      */
     public HashSet(Collection c) {
         this(Math.max(2 * c.size(), HashMap.DEFAULT_CAPACITY));
@@ -226,7 +226,7 @@ public class HashSet extends AbstractSet implements Set, Cloneable,
     /**
      * Serializes this object to the given stream.
      * @param s the stream to write to
-     * @throws IOException if the underlying stream fails
+     * @exception IOException if the underlying stream fails
      * @serialData the <i>capacity</i> (int) and <i>loadFactor</i> (float)
      * of the backing store, followed by the set size (int),
      * then a listing of its elements (Object) in no order
@@ -246,8 +246,8 @@ public class HashSet extends AbstractSet implements Set, Cloneable,
     /**
      * Deserializes this object from the given stream.
      * @param s the stream to read from
-     * @throws ClassNotFoundException if the underlying stream fails
-     * @throws IOException if the underlying stream fails
+     * @exception ClassNotFoundException if the underlying stream fails
+     * @exception IOException if the underlying stream fails
      * @serialData the <i>capacity</i> (int) and <i>loadFactor</i> (float)
      * of the backing store, followed by the set size (int),
      * then a listing of its elements (Object) in no order

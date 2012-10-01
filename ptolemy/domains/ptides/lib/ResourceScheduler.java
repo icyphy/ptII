@@ -178,7 +178,7 @@ public abstract class ResourceScheduler extends MoMLModelAttribute implements De
 
     /** Initialize local variables.
      * @returns Next time this scheduler requests a firing.
-     * @throws IllegalActionException Thrown if list of actors
+     * @exception IllegalActionException Thrown if list of actors
      *   scheduled by this scheduler cannot be retrieved.
      */
     public Time initialize() throws IllegalActionException {
@@ -214,7 +214,7 @@ public abstract class ResourceScheduler extends MoMLModelAttribute implements De
      *  @param executionTime The execution time of the actor.
      *  @return Relative time when this Scheduler has to be executed
      *    again.
-     *  @throws IllegalActionException Thrown if actor paramaters such
+     *  @exception IllegalActionException Thrown if actor paramaters such
      *    as execution time or priority cannot be read.
      */
     public Time schedule(Actor actor, Time currentPlatformTime,
@@ -230,7 +230,7 @@ public abstract class ResourceScheduler extends MoMLModelAttribute implements De
     /** Return a new time object using the enclosing director.
      *  @param time Double value of the new time object.
      *  @return The new time object.
-     *  @throws IllegalActionException If the time object cannot be created.
+     *  @exception IllegalActionException If the time object cannot be created.
      */
     public Time getTime(double time) throws IllegalActionException {
         return new Time(((CompositeActor) getContainer()).getDirector(), time);
@@ -284,7 +284,7 @@ public abstract class ResourceScheduler extends MoMLModelAttribute implements De
     }
 
     /** Create end events for the plotter.
-     *  @throws IllegalActionException Thrown by super class.
+     *  @exception IllegalActionException Thrown by super class.
      */
     public void wrapup() throws IllegalActionException {
         for (NamedObj actor : _actors) {
@@ -299,7 +299,7 @@ public abstract class ResourceScheduler extends MoMLModelAttribute implements De
     /** Iterate through all actors in the container and find those
      *  that are scheduled by this ResourceScheduler.
      *  @param compositeActor The container.
-     *  @throws IllegalActionException If actor parameters that describe
+     *  @exception IllegalActionException If actor parameters that describe
      *  the schedulers cannot be read.
      */
     protected void _getActorsToSchedule(CompositeActor compositeActor)
@@ -371,7 +371,7 @@ public abstract class ResourceScheduler extends MoMLModelAttribute implements De
      *  - the execution time
      *  and store these properties in local variables.
      * @param actor The actor.
-     * @throws IllegalActionException Thrown if parameters cannot
+     * @exception IllegalActionException Thrown if parameters cannot
      * be parsed.
      */
     private void _readActorParameters(Actor actor)

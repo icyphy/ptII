@@ -65,8 +65,8 @@ public class Video extends TypedAtomicActor implements PortablePlaceable {
      * Create new instance of the Video.
      * @param container The parent container.
      * @param name The name of the actor.
-     * @throws IllegalActionException if there is a problem instantiating the object.
-     * @throws NameDuplicationException if there is a problem instantiating the object.
+     * @exception IllegalActionException if there is a problem instantiating the object.
+     * @exception NameDuplicationException if there is a problem instantiating the object.
      */
     public Video(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {

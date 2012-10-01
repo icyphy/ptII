@@ -67,8 +67,8 @@ public class DefaultIconScript extends IconScript {
     /** Create an instance of this parameter.
      *  @param container The container.
      *  @param name The name.
-     *  @throws IllegalActionException If the superclass throws it.
-     *  @throws NameDuplicationException If the superclass throws it.
+     *  @exception IllegalActionException If the superclass throws it.
+     *  @exception NameDuplicationException If the superclass throws it.
      */
     public DefaultIconScript(NamedObj container, String name)
             throws IllegalActionException, NameDuplicationException {
@@ -101,7 +101,7 @@ public class DefaultIconScript extends IconScript {
     public StringParameter include;
 
     ///////////////////////////////////////////////////////////////////
-    ////                       protected methods                   ////
+    ////                         protected methods                 ////
 
     /** Provide content to the specified web exporter to be
      *  included in a web page for the container of this object.
@@ -109,7 +109,7 @@ public class DefaultIconScript extends IconScript {
      *  as specified by <i>include</i> and <i>instancesOf</i>.
      *
      *  @param exporter The web exporter to add content to
-     *  @throws IllegalActionException If a subclass throws it.
+     *  @exception IllegalActionException If a subclass throws it.
      */
     protected void _provideAttributes(WebExporter exporter)
         throws IllegalActionException {
@@ -198,7 +198,7 @@ public class DefaultIconScript extends IconScript {
      *
      * @param exporter The WebExporter to add content to
      * @param object  The NamedObj to generate default events for
-     * @throws IllegalActionException If there is a problem creating the content
+     * @exception IllegalActionException If there is a problem creating the content
      * or if there is a name duplication with the created attributes
      */
     protected void _provideDefaultAttributes(NamedObj object,

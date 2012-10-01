@@ -195,7 +195,7 @@ public class GlassPaneWidget extends NamedObjectWidget {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                      protected variables                  ////
+    ////                         protected variables               ////
 
     /** The container panel holding the underlying component.
      */

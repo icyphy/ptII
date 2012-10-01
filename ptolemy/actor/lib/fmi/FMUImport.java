@@ -134,7 +134,7 @@ public class FMUImport extends TypedAtomicActor implements ContinuousStepSizeCon
     public FileParameter fmuFile;
 
     ///////////////////////////////////////////////////////////////////
-    ////                     public methods                        ////
+    ////                         public methods                    ////
 
     /** If the specified attribute is <i>fmuFile</i>, then unzip
      *  the file and load in the .xml file, creating and deleting parameters
@@ -711,7 +711,7 @@ public class FMUImport extends TypedAtomicActor implements ContinuousStepSizeCon
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                     private methods                       ////
+    ////                         private methods                   ////
 
     /** Given a FMIType object, return a string suitable for setting
      *  the TypeAttribute.
@@ -743,7 +743,7 @@ public class FMUImport extends TypedAtomicActor implements ContinuousStepSizeCon
      *   variables of the FMU corresponding to a connected output
      *   port, and the value of the map is the collection of input
      *   ports that the output declares it depends on (if any).
-     *  @throws IllegalActionException If an expected output is not
+     *  @exception IllegalActionException If an expected output is not
      *   found, or if the width of the output cannot be determined.
      */
     private List<Output> _getOutputs() throws IllegalActionException {
@@ -984,7 +984,7 @@ public class FMUImport extends TypedAtomicActor implements ContinuousStepSizeCon
     private long _outputsVersion = -1;
 
     ///////////////////////////////////////////////////////////////////
-    ////                      inner classes                        ////
+    ////                         inner classes                     ////
 
     /** A data structure representing an output from the FMU. */
     private class Output {

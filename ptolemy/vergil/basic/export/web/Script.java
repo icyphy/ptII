@@ -55,8 +55,8 @@ public abstract class Script extends WebContent implements WebExportable {
     /** Create an instance of this parameter.
      *  @param container The container.
      *  @param name The name.
-     *  @throws IllegalActionException If the superclass throws it.
-     *  @throws NameDuplicationException If the superclass throws it.
+     *  @exception IllegalActionException If the superclass throws it.
+     *  @exception NameDuplicationException If the superclass throws it.
      */
     public Script(NamedObj container, String name)
             throws IllegalActionException, NameDuplicationException {

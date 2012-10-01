@@ -637,7 +637,7 @@ public class FSMActor extends NamedProgramCodeGeneratorAdapter {
     protected PortScope _scope = new PortScope();
 
     ///////////////////////////////////////////////////////////////////
-    ////                     inner classes                         ////
+    ////                         inner classes                     ////
 
 
     /** This class implements a scope, which is used to generate the

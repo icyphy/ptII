@@ -99,7 +99,7 @@ public class TokenToExpression extends Converter {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                      protected methods                    ////
+    ////                         protected methods                 ////
 
 
     /** Set the input port greater than or equal to

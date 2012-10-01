@@ -90,7 +90,7 @@ public final class LayoutFileOperations {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                public methods                             ////
+    ////                         public methods                    ////
 
     /** Open a model and an existing layout on the given frame. The information from both
      *  will be merged into one model that is returned.
@@ -131,8 +131,8 @@ public final class LayoutFileOperations {
      *
      *  @param mainFrame The frame containing the model to be parsed and the underlying contents
      *  infrastructure.
-     *  @throws IllegalActionException If the parsing fails.
-     *  @throws NameDuplicationException If during the parsing a name duplication is found.
+     *  @exception IllegalActionException If the parsing fails.
+     *  @exception NameDuplicationException If during the parsing a name duplication is found.
      */
     public static void parseModel(HomerMainFrame mainFrame)
             throws IllegalActionException, NameDuplicationException {
@@ -465,7 +465,7 @@ public final class LayoutFileOperations {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                private methods                            ////
+    ////                         private methods                   ////
 
     /** Mark the given element as a proxy element in the given model.
      *

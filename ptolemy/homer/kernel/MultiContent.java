@@ -80,7 +80,7 @@ public class MultiContent<T extends ContentPrototype> {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                public methods                             ////
+    ////                         public methods                    ////
 
     /** Add a new content area to the MultiContent with a specific content.
      *  The new content area will be the last in order.
@@ -283,7 +283,7 @@ public class MultiContent<T extends ContentPrototype> {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                protected methods                          ////
+    ////                         protected methods                 ////
 
     /** Return the content mapping.
      *
@@ -302,7 +302,7 @@ public class MultiContent<T extends ContentPrototype> {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                private methods                            ////
+    ////                         private methods                   ////
 
     /** Parse the model and create the multiple content areas. All elements that
      *  have positions defined are placed into a content area defined by the elements
@@ -349,7 +349,7 @@ public class MultiContent<T extends ContentPrototype> {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                private variables                          ////
+    ////                         private variables                 ////
 
     /** Map of all available identifiers to different contents. Identifiers
      *  should be unique.

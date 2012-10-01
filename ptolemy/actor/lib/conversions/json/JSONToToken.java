@@ -102,7 +102,7 @@ public class JSONToToken extends Converter {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                      public methods                       ////
+    ////                         public methods                    ////
 
     /** Read a JSON-formatted String of name/value pairs from the input
      *  and produce a corresponding array or record on the output.
@@ -126,7 +126,7 @@ public class JSONToToken extends Converter {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                      protected methods                    ////
+    ////                         protected methods                 ////
 
     /**
      * Do not establish the usual default type constraints.
@@ -157,7 +157,7 @@ public class JSONToToken extends Converter {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                      private methods                      ////
+    ////                         private methods                   ////
 
     /** Map an given value to the appropriate Token class and return the
      *  new Token.

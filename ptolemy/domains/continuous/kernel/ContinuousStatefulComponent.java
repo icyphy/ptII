@@ -44,7 +44,7 @@ import ptolemy.kernel.util.IllegalActionException;
 public interface ContinuousStatefulComponent {
 
     /** Roll back to committed state.
-     *  @throws IllegalActionException If the rollback attempts to go
+     *  @exception IllegalActionException If the rollback attempts to go
      *   back further than the last committed time.
      */
     public void rollBackToCommittedState() throws IllegalActionException;

@@ -433,7 +433,7 @@ public class VisualModelReference extends ModelReference {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                       protected variables                 ////
+    ////                         protected variables               ////
 
     /** Tableau that has been created (if any). */
     protected Tableau _tableau;

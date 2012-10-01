@@ -39,7 +39,7 @@ public class Counter extends AtomicContinuationActor {
         super(workspace);
     }
 
-    /////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////
 
     /* (non-Javadoc)
      * @see ptolemy.domains.coroutine.kernel.ContinuationActor#enter(ptolemy.domains.coroutine.kernel.ControlEntryToken)
@@ -134,7 +134,7 @@ public class Counter extends AtomicContinuationActor {
     public TypedIOPort _alarmIn;
     public TypedIOPort _countOut;
 
-    ///////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////
 
     protected void _init() throws
         IllegalActionException, NameDuplicationException {

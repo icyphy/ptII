@@ -461,7 +461,7 @@ public class SubscriberPort extends PubSubPort {
      *  registered their port. This method defeats lazy composites
      *  and is expensive to execute.
      *  @param root The root of the tree to search.
-     *  @throws IllegalActionException If the port rejects its channel.
+     *  @exception IllegalActionException If the port rejects its channel.
      */
     protected void _updatePublisherPorts(Entity root) throws IllegalActionException {
         List<Port> ports = root.portList();

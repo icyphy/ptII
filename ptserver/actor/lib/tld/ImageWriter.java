@@ -61,8 +61,8 @@ public class ImageWriter extends TypedAtomicActor {
      * Create new instance of the ImageWriter.
      * @param container The parent container.
      * @param name The name of the actor.
-     * @throws IllegalActionException if there is a problem instantiating the object.
-     * @throws NameDuplicationException if there is a problem instantiating the object.
+     * @exception IllegalActionException if there is a problem instantiating the object.
+     * @exception NameDuplicationException if there is a problem instantiating the object.
      */
     public ImageWriter(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {

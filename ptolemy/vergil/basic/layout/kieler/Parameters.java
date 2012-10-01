@@ -78,7 +78,7 @@ public class Parameters {
      *
      * @param parentLayout the layout of the parent node
      * @param graphModel the graph model of the current diagram
-     * @throws IllegalActionException if one of the parameters has the wrong type
+     * @exception IllegalActionException if one of the parameters has the wrong type
      */
     public void configureLayout(KShapeLayout parentLayout, GraphModel graphModel)
             throws IllegalActionException {

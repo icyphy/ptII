@@ -2809,7 +2809,7 @@ public class CompositeActor extends CompositeEntity implements Actor,
     }
 
     /** Read inputs from ParameterPorts and update.
-     *  @throws IllegalActionException If reading from parameter associated
+     *  @exception IllegalActionException If reading from parameter associated
      *  with port fails.
      */
     protected void _transferPortParameterInputs() throws IllegalActionException {

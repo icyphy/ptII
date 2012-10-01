@@ -79,7 +79,7 @@ public class NonStrictDisplay extends Display {
      *  @param i The channel
      *  @return A string representation of the input, or the string
      *   "absent" or "unknown" if the input is absent or unknown.
-     *  @throws IllegalActionException If reading the input fails.
+     *  @exception IllegalActionException If reading the input fails.
      */
     protected String _getInputString(int i) throws IllegalActionException {
         if (input.isKnown(i)) {

@@ -91,13 +91,13 @@ public class TabDefinition {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                public methods                             ////
+    ////                         public methods                    ////
 
     /** Add an element to the contents of this tab. The element has to have
      *  at least the location defined.
      *
      *  @param element Ptolemy element with location defined.
-     *  @throws IllegalActionException If the element cannot be added to the
+     *  @exception IllegalActionException If the element cannot be added to the
      *  tab content area, or if the tab content area has not been set.
      *  @see #setContent(ContentPrototype)
      */
@@ -169,7 +169,7 @@ public class TabDefinition {
     /** Remove an element to the contents of this tab.
      *
      *  @param element Ptolemy element with location defined.
-     *  @throws IllegalActionException If the element cannot be removed from
+     *  @exception IllegalActionException If the element cannot be removed from
      *  the tab content area, or if the tab content area has not been set.
      */
     public void removeContent(PositionableElement element)
@@ -191,7 +191,7 @@ public class TabDefinition {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                private variables                          ////
+    ////                         private variables                 ////
 
     /** The complete content of the tab.
      */

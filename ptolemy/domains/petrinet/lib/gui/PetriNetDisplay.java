@@ -79,7 +79,7 @@ public class PetriNetDisplay extends Display implements PetriNetDisplayer {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                      public methods                       ////
+    ////                         public methods                    ////
 
     /** Ensure that the text is placed in the textArea.
      *
@@ -106,7 +106,7 @@ public class PetriNetDisplay extends Display implements PetriNetDisplayer {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                    private variables                      ////
+    ////                         private variables                 ////
 
     /** This string represents the evolution of the Petri Net and should
      * be set by the PetriNetDirector.

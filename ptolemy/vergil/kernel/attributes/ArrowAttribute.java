@@ -40,7 +40,7 @@ import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Workspace;
 import diva.util.java2d.Polygon2D;
 
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// ArrowAttribute
 
 /**
@@ -142,7 +142,7 @@ public class ArrowAttribute extends LineAttribute {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                      protected methods                    ////
+    ////                         protected methods                 ////
 
     /** Return a default arrow.
      *  @return An arrow.
@@ -152,7 +152,7 @@ public class ArrowAttribute extends LineAttribute {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                        private methods                    ////
+    ////                         private methods                   ////
 
     /** Create an arrow with the given x, y, arrow length and arrow width
      *  values.

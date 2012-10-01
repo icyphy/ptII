@@ -280,7 +280,7 @@ public abstract class Top extends JFrame {
         // Deal with help menu action listeners
         /*int c =*/MemoryCleaner.removeActionListeners(_historyMenu);
         //System.out.println("_historyMenu: "+c);
-        if(_historyMenu != null) {
+        if (_historyMenu != null) {
             _historyMenusAndListeners.remove(_historyMenu);
         }
         _historyMenuListener = null;
@@ -1135,7 +1135,7 @@ public abstract class Top extends JFrame {
                 }
             }
             // If we found it, add to set of history menus
-            if(_historyMenu != null) {
+            if (_historyMenu != null) {
                 _historyMenusAndListeners.put(_historyMenu, _historyMenuListener);
             }
         }
@@ -1143,7 +1143,7 @@ public abstract class Top extends JFrame {
         //System.out.println("number of history menus: " + _historyMenus.size());
 
         // Update the history menu in each Top
-        for(Map.Entry<JMenu,HistoryMenuListener> entry : _historyMenusAndListeners.entrySet()) {
+        for (Map.Entry<JMenu,HistoryMenuListener> entry : _historyMenusAndListeners.entrySet()) {
             //System.out.println("updating menu " + historyMenu);
 
             JMenu historyMenu = entry.getKey();

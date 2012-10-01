@@ -139,7 +139,7 @@ public class TCPPacketTransmitter extends OutputDevice {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                     public variables                      ////
+    ////                         public variables                  ////
 
     /* The data input port. */
     public TypedIOPort input;
@@ -224,7 +224,7 @@ public class TCPPacketTransmitter extends OutputDevice {
                 frameSize.update();
 
                  _proposedFrameSize = ((IntToken)frameSize.getToken()).intValue();
-                 if(_proposedFrameSize > _packetLength)
+                 if (_proposedFrameSize > _packetLength)
                  {
                      //safe to apply frame size;
                      _frameSize = _proposedFrameSize;
@@ -258,7 +258,7 @@ public class TCPPacketTransmitter extends OutputDevice {
 
 
 
-            if( _packetLength >= _frameSize)
+            if (_packetLength >= _frameSize)
             {
                 RecordToken TCPHeader = getTCPHeader();
                 // form the packet that is ready to be sent
@@ -274,7 +274,7 @@ public class TCPPacketTransmitter extends OutputDevice {
                 _tokenLabels.clear();
                 _tokenValues.clear();
                 // set the new frame size, if possible
-                if((_proposedFrameSize > 0) && (_proposedFrameSize < MAX_FRAME_SIZE))
+                if ((_proposedFrameSize > 0) && (_proposedFrameSize < MAX_FRAME_SIZE))
                 {
                     _frameSize = _proposedFrameSize;
                 }
@@ -337,7 +337,7 @@ public class TCPPacketTransmitter extends OutputDevice {
     public void wrapup() throws IllegalActionException {
 
         // send last packet
-        if( _packetLength > 0 ){
+        if (_packetLength > 0 ) {
             _frameSize = _packetLength;
 
             RecordToken TCPHeader = getTCPHeader();
@@ -358,7 +358,7 @@ public class TCPPacketTransmitter extends OutputDevice {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                     protected methods                     ////
+    ////                         protected methods                 ////
 
     /** Set up and return two type constraints.
      *  <ul>

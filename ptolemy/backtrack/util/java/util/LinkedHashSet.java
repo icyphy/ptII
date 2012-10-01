@@ -104,7 +104,7 @@ public class LinkedHashSet extends HashSet implements Set, Cloneable,
      * Construct a new, empty HashSet whose backing HashMap has the supplied
      * capacity and the default load factor (0.75).
      * @param initialCapacity the initial capacity of the backing HashMap
-     * @throws IllegalArgumentException if the capacity is negative
+     * @exception IllegalArgumentException if the capacity is negative
      */
     public LinkedHashSet(int initialCapacity) {
         super(initialCapacity);
@@ -115,7 +115,7 @@ public class LinkedHashSet extends HashSet implements Set, Cloneable,
      * capacity and load factor.
      * @param initialCapacity the initial capacity of the backing HashMap
      * @param loadFactor the load factor of the backing HashMap
-     * @throws IllegalArgumentException if either argument is negative, or
+     * @exception IllegalArgumentException if either argument is negative, or
      * if loadFactor is POSITIVE_INFINITY or NaN
      */
     public LinkedHashSet(int initialCapacity, float loadFactor) {
@@ -128,7 +128,7 @@ public class LinkedHashSet extends HashSet implements Set, Cloneable,
      * has twice the size of the collection, or the default size of 11,
      * whichever is greater; and the default load factor (0.75).
      * @param c a collection of initial set elements
-     * @throws NullPointerException if c is null
+     * @exception NullPointerException if c is null
      */
     public LinkedHashSet(Collection c) {
         super(c);

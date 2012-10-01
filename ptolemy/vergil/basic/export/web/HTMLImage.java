@@ -79,8 +79,8 @@ public class HTMLImage extends WebContent {
     /** Create an instance of this parameter.
      *  @param container The container.
      *  @param name The name.
-     *  @throws IllegalActionException If the superclass throws it.
-     *  @throws NameDuplicationException If the superclass throws it.
+     *  @exception IllegalActionException If the superclass throws it.
+     *  @exception NameDuplicationException If the superclass throws it.
      */
     public HTMLImage(NamedObj container, String name)
             throws IllegalActionException, NameDuplicationException {
@@ -136,7 +136,7 @@ public class HTMLImage extends WebContent {
       *  element and a caption for the image.
      *
      *  @param exporter The WebExporter to add content to
-     *  @throws IllegalActionException If something is wrong generating the
+     *  @exception IllegalActionException If something is wrong generating the
      *  image file or generating the additional web content
      */
     public void _provideElements(WebExporter exporter)
@@ -182,7 +182,7 @@ public class HTMLImage extends WebContent {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         private methods                    ////
+    ////                         private methods                   ////
 
     private void _linkTo(WebExporter exporter,
             PtolemyEffigy effigy, NamedObj sourceObject,

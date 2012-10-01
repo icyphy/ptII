@@ -179,7 +179,7 @@ public class Random implements Serializable, Rollbackable {
      * }
      * }</pre>
      * @param bytes the byte array that should be filled
-     * @throws NullPointerException if bytes is null
+     * @exception NullPointerException if bytes is null
      * @since 1.1
      */
     public void nextBytes(byte[] bytes) {
@@ -236,7 +236,7 @@ public class Random implements Serializable, Rollbackable {
      * bits = next(31);
      * val = bits % n;
      * }
-     * while(bits - val + (n-1) &lt; 0);
+     * while (bits - val + (n-1) &lt; 0);
      * return val;
      * }</pre>
      * <p>This algorithm would return every value with exactly the same
@@ -252,7 +252,7 @@ public class Random implements Serializable, Rollbackable {
      * number generators (like the one used in this class) are known to be
      * ``less random'' than the high order bits.
      * @param n the upper bound
-     * @throws IllegalArgumentException if the given upper bound is negative
+     * @exception IllegalArgumentException if the given upper bound is negative
      * @return the next pseudorandom value
      * @since 1.2
      */

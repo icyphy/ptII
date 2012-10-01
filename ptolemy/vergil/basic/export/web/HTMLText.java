@@ -56,8 +56,8 @@ public class HTMLText extends WebContent {
     /** Create an instance of this parameter.
      *  @param container The container.
      *  @param name The name.
-     *  @throws IllegalActionException If the superclass throws it.
-     *  @throws NameDuplicationException If the superclass throws it.
+     *  @exception IllegalActionException If the superclass throws it.
+     *  @exception NameDuplicationException If the superclass throws it.
      */
     public HTMLText(NamedObj container, String name)
             throws IllegalActionException, NameDuplicationException {
@@ -102,7 +102,7 @@ public class HTMLText extends WebContent {
     /** Generate a <div/> element holding the text content.
      *
      *  @param exporter The WebExporter to add content to
-     *  @throws IllegalActionException If something is wrong generating the
+     *  @exception IllegalActionException If something is wrong generating the
      *  web content
      */
     protected void _provideElements(WebExporter exporter)

@@ -26,8 +26,8 @@ public class RelativeLocation extends Location {
     /** Construct an instance.
      *  @param container The container (the object to have a relative location).
      *  @param name The name of this instance.
-     *  @throws IllegalActionException If the superclass throws it.
-     *  @throws NameDuplicationException If the superclass throws it.
+     *  @exception IllegalActionException If the superclass throws it.
+     *  @exception NameDuplicationException If the superclass throws it.
      */
     public RelativeLocation(NamedObj container, String name)
             throws IllegalActionException, NameDuplicationException {

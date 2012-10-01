@@ -86,7 +86,7 @@ public class DynamicCoreAssignmentScheduler extends ResourceScheduler {
     //                           public methods                      //
 
     /** Initialize local variables.
-     * @throws IllegalActionException Thrown if list of actors
+     * @exception IllegalActionException Thrown if list of actors
      *   scheduled by this scheduler cannot be retrieved.
      */
     @Override
@@ -107,7 +107,7 @@ public class DynamicCoreAssignmentScheduler extends ResourceScheduler {
      *  @param executionTime The execution time of the actor.
      *  @return Relative time when this Scheduler has to be executed
      *    again.
-     *  @throws IllegalActionException Thrown if actor paramaters such
+     *  @exception IllegalActionException Thrown if actor paramaters such
      *    as execution time or priority cannot be read.
      */
     @Override
@@ -163,7 +163,7 @@ public class DynamicCoreAssignmentScheduler extends ResourceScheduler {
     /** Get Cores that are used by this ResourceScheduler to
      *  schedule actor executions.
      *  @param container The container.
-     *  @throws IllegalActionException Thrown if actor parameters
+     *  @exception IllegalActionException Thrown if actor parameters
      *    cannot be read.
      */
     @Override

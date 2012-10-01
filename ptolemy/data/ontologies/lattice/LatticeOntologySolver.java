@@ -423,7 +423,7 @@ public class LatticeOntologySolver extends OntologySolver {
      *
      * @return True, if solver is solving a least fixed point,
      *    false, if it is solving a greatest fixed point.
-     * @throws IllegalActionException If the solvingFixedPoint parameter
+     * @exception IllegalActionException If the solvingFixedPoint parameter
      *   contains an invalid value.
      */
     public boolean isLeastFixedPoint() throws IllegalActionException {

@@ -299,7 +299,7 @@ public class LinkedList extends AbstractSequentialList implements List,
 
         /**
          * Checks for iterator consistency.
-         * @throws ConcurrentModificationException if the list was modified
+         * @exception ConcurrentModificationException if the list was modified
          */
         private void checkMod() {
             if (knownMod != getModCount()) {
@@ -342,8 +342,8 @@ public class LinkedList extends AbstractSequentialList implements List,
         /**
          * Returns the next element.
          * @return the next element
-         * @throws ConcurrentModificationException if the list was modified
-         * @throws NoSuchElementException if there is no next
+         * @exception ConcurrentModificationException if the list was modified
+         * @exception NoSuchElementException if there is no next
          */
         public Object next() {
             checkMod();
@@ -359,8 +359,8 @@ public class LinkedList extends AbstractSequentialList implements List,
         /**
          * Returns the previous element.
          * @return the previous element
-         * @throws ConcurrentModificationException if the list was modified
-         * @throws NoSuchElementException if there is no previous
+         * @exception ConcurrentModificationException if the list was modified
+         * @exception NoSuchElementException if there is no previous
          */
         public Object previous() {
             checkMod();
@@ -375,8 +375,8 @@ public class LinkedList extends AbstractSequentialList implements List,
 
         /**
          * Remove the most recently returned element from the list.
-         * @throws ConcurrentModificationException if the list was modified
-         * @throws IllegalStateException if there was no last element
+         * @exception ConcurrentModificationException if the list was modified
+         * @exception IllegalStateException if there was no last element
          */
         public void remove() {
             checkMod();
@@ -398,7 +398,7 @@ public class LinkedList extends AbstractSequentialList implements List,
         /**
          * Adds an element between the previous and next, and advance to the next.
          * @param o the element to add
-         * @throws ConcurrentModificationException if the list was modified
+         * @exception ConcurrentModificationException if the list was modified
          */
         public void add(Object o) {
             checkMod();
@@ -426,8 +426,8 @@ public class LinkedList extends AbstractSequentialList implements List,
         /**
          * Changes the contents of the element most recently returned.
          * @param o the new element
-         * @throws ConcurrentModificationException if the list was modified
-         * @throws IllegalStateException if there was no last element
+         * @exception ConcurrentModificationException if the list was modified
+         * @exception IllegalStateException if there was no last element
          */
         public void set(Object o) {
             checkMod();
@@ -673,7 +673,7 @@ public class LinkedList extends AbstractSequentialList implements List,
     /**
      * Checks that the index is in the range of possible elements (inclusive).
      * @param index the index to check
-     * @throws IndexOutOfBoundsException if index &lt; 0 || index &gt; size
+     * @exception IndexOutOfBoundsException if index &lt; 0 || index &gt; size
      */
     private void checkBoundsInclusive(int index) {
         if (index < 0 || index > getSize()) {
@@ -685,7 +685,7 @@ public class LinkedList extends AbstractSequentialList implements List,
     /**
      * Checks that the index is in the range of existing elements (exclusive).
      * @param index the index to check
-     * @throws IndexOutOfBoundsException if index &lt; 0 || index &gt;= size
+     * @exception IndexOutOfBoundsException if index &lt; 0 || index &gt;= size
      */
     private void checkBoundsExclusive(int index) {
         if (index < 0 || index >= getSize()) {
@@ -704,7 +704,7 @@ public class LinkedList extends AbstractSequentialList implements List,
      * Create a linked list containing the elements, in order, of a given
      * collection.
      * @param c the collection to populate this list from
-     * @throws NullPointerException if c is null
+     * @exception NullPointerException if c is null
      */
     public LinkedList(Collection c) {
         addAll(c);
@@ -713,7 +713,7 @@ public class LinkedList extends AbstractSequentialList implements List,
     /**
      * Returns the first element in the list.
      * @return the first list element
-     * @throws NoSuchElementException if the list is empty
+     * @exception NoSuchElementException if the list is empty
      */
     public Object getFirst() {
         if (getSize() == 0) {
@@ -725,7 +725,7 @@ public class LinkedList extends AbstractSequentialList implements List,
     /**
      * Returns the last element in the list.
      * @return the last list element
-     * @throws NoSuchElementException if the list is empty
+     * @exception NoSuchElementException if the list is empty
      */
     public Object getLast() {
         if (getSize() == 0) {
@@ -737,7 +737,7 @@ public class LinkedList extends AbstractSequentialList implements List,
     /**
      * Remove and return the first element in the list.
      * @return the former first element in the list
-     * @throws NoSuchElementException if the list is empty
+     * @exception NoSuchElementException if the list is empty
      */
     public Object removeFirst() {
         if (getSize() == 0) {
@@ -758,7 +758,7 @@ public class LinkedList extends AbstractSequentialList implements List,
     /**
      * Remove and return the last element in the list.
      * @return the former last element in the list
-     * @throws NoSuchElementException if the list is empty
+     * @exception NoSuchElementException if the list is empty
      */
     public Object removeLast() {
         if (getSize() == 0) {
@@ -876,7 +876,7 @@ public class LinkedList extends AbstractSequentialList implements List,
      * list is the collection), behavior is unspecified.
      * @param c the collection to append
      * @return true if the list was modified
-     * @throws NullPointerException if c is null
+     * @exception NullPointerException if c is null
      */
     public boolean addAll(Collection c) {
         return addAll(getSize(), c);
@@ -888,8 +888,8 @@ public class LinkedList extends AbstractSequentialList implements List,
      * if this list is the collection), behavior is unspecified.
      * @param c the collection to append
      * @return true if the list was modified
-     * @throws NullPointerException if c is null
-     * @throws IndexOutOfBoundsException if index &lt; 0 || index &gt; size()
+     * @exception NullPointerException if c is null
+     * @exception IndexOutOfBoundsException if index &lt; 0 || index &gt; size()
      */
     public boolean addAll(int index, Collection c) {
         checkBoundsInclusive(index);
@@ -948,7 +948,7 @@ public class LinkedList extends AbstractSequentialList implements List,
      * Return the element at index.
      * @param index the place to look
      * @return the element at index
-     * @throws IndexOutOfBoundsException if index &lt; 0 || index &gt;= size()
+     * @exception IndexOutOfBoundsException if index &lt; 0 || index &gt;= size()
      */
     public Object get(int index) {
         checkBoundsExclusive(index);
@@ -960,7 +960,7 @@ public class LinkedList extends AbstractSequentialList implements List,
      * @param index which index to change
      * @param o the new element
      * @return the prior element
-     * @throws IndexOutOfBoundsException if index &lt; 0 || index &gt;= size()
+     * @exception IndexOutOfBoundsException if index &lt; 0 || index &gt;= size()
      */
     public Object set(int index, Object o) {
         checkBoundsExclusive(index);
@@ -974,7 +974,7 @@ public class LinkedList extends AbstractSequentialList implements List,
      * Inserts an element in the given position in the list.
      * @param index where to insert the element
      * @param o the element to insert
-     * @throws IndexOutOfBoundsException if index &lt; 0 || index &gt; size()
+     * @exception IndexOutOfBoundsException if index &lt; 0 || index &gt; size()
      */
     public void add(int index, Object o) {
         checkBoundsInclusive(index);
@@ -1000,7 +1000,7 @@ public class LinkedList extends AbstractSequentialList implements List,
      * Removes the element at the given position from the list.
      * @param index the location of the element to remove
      * @return the removed element
-     * @throws IndexOutOfBoundsException if index &lt; 0 || index &gt; size()
+     * @exception IndexOutOfBoundsException if index &lt; 0 || index &gt; size()
      */
     public Object remove(int index) {
         checkBoundsExclusive(index);
@@ -1051,7 +1051,7 @@ public class LinkedList extends AbstractSequentialList implements List,
      * methods.
      * @param index the index of the element to be returned by the first call to
      * next(), or size() to be initially positioned at the end of the list
-     * @throws IndexOutOfBoundsException if index &lt; 0 || index &gt; size()
+     * @exception IndexOutOfBoundsException if index &lt; 0 || index &gt; size()
      */
     public ListIterator listIterator(int index) {
         checkBoundsInclusive(index);
@@ -1097,9 +1097,9 @@ public class LinkedList extends AbstractSequentialList implements List,
      * of this List, then size() index will be set to null.
      * @param a the passed-in Array
      * @return an array representation of this list
-     * @throws ArrayStoreException if the runtime type of a does not allow
+     * @exception ArrayStoreException if the runtime type of a does not allow
      * an element in this list
-     * @throws NullPointerException if a is null
+     * @exception NullPointerException if a is null
      */
     public Object[] toArray(Object[] a) {
         if (a.length < getSize()) {
@@ -1119,7 +1119,7 @@ public class LinkedList extends AbstractSequentialList implements List,
     /**
      * Serializes this object to the given stream.
      * @param s the stream to write to
-     * @throws IOException if the underlying stream fails
+     * @exception IOException if the underlying stream fails
      * @serialData the size of the list (int), followed by all the elements
      * (Object) in proper order
      */
@@ -1136,8 +1136,8 @@ public class LinkedList extends AbstractSequentialList implements List,
     /**
      * Deserializes this object from the given stream.
      * @param s the stream to read from
-     * @throws ClassNotFoundException if the underlying stream fails
-     * @throws IOException if the underlying stream fails
+     * @exception ClassNotFoundException if the underlying stream fails
+     * @exception IOException if the underlying stream fails
      * @serialData the size of the list (int), followed by all the elements
      * (Object) in proper order
      */

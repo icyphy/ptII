@@ -51,7 +51,7 @@ public interface VideoInterface extends PortablePlaceable {
 
     /**
      * Callback for video.initialize().
-     * @throws IllegalActionException if there is problem initializing.
+     * @exception IllegalActionException if there is problem initializing.
      */
     public void initialize() throws IllegalActionException;
 
@@ -62,7 +62,7 @@ public interface VideoInterface extends PortablePlaceable {
 
     /**
      * Callback for video.fire().
-     * @throws IllegalActionException if there is problem initializing.
+     * @exception IllegalActionException if there is problem initializing.
      */
     public void fire() throws IllegalActionException;
 

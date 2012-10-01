@@ -68,7 +68,7 @@ public class BasicGraphFrameExtension implements Serializable {
      * @param selection The objects to be deleted.
      * @param graphModel The graphical model.
      * @param container The container in which the Ptolemy objects reside
-     * @throws IllegalActionException If there is a problem deleting.
+     * @exception IllegalActionException If there is a problem deleting.
      */
     public static void alternateDelete(Object[] selection,
             AbstractBasicGraphModel graphModel, NamedObj container)
@@ -79,7 +79,7 @@ public class BasicGraphFrameExtension implements Serializable {
      * moml argument into the container.
      * @param container The container in to which the Ptolemy objects are pasted.
      * @param moml The moml used to create the objects.
-     * @throws IllegalActionException If there is a problem pasting.
+     * @exception IllegalActionException If there is a problem pasting.
      */
     public static void alternatePasteMomlModification(NamedObj container,
             StringBuffer moml) throws IllegalActionException {
@@ -89,7 +89,7 @@ public class BasicGraphFrameExtension implements Serializable {
      * moml argument into the container.
      * @param container The container in to which the Ptolemy objects are pasted.
      * @param moml The moml used to create the objects.
-     * @throws IllegalActionException If there is a problem pasting.
+     * @exception IllegalActionException If there is a problem pasting.
      */
     public static void alternatePaste(NamedObj container, StringBuffer moml)
             throws IllegalActionException {

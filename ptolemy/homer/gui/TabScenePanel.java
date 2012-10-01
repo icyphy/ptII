@@ -93,7 +93,7 @@ import ptolemy.kernel.util.Settable;
 import ptolemy.util.MessageHandler;
 import ptolemy.vergil.toolbox.PtolemyTransferable;
 
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// TabScenePanel
 
 /** The tab scene onto which widgets can be dropped, resized, and

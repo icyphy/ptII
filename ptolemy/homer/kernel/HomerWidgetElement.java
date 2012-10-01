@@ -63,7 +63,7 @@ public class HomerWidgetElement extends PositionableElement {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                public methods                             ////
+    ////                         public methods                    ////
 
     /** It's normally used to add the visual representation of the element to the
      *  provided container. In this case getWidget() should be used to get the
@@ -102,7 +102,7 @@ public class HomerWidgetElement extends PositionableElement {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                private variables                          ////
+    ////                         private variables                 ////
 
     /** The Netbeans widget representing the element.
      */

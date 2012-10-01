@@ -60,7 +60,7 @@ public abstract class PositionableElement {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                public methods                             ////
+    ////                         public methods                    ////
 
     /** Add the visual representation of the element to the provided
      *  container.
@@ -147,7 +147,7 @@ public abstract class PositionableElement {
     /** Set the tab attribute in the underlying named object wrapped by this element.
      *
      *  @param tag The tag identifier of the tab this element belongs to.
-     *  @throws IllegalActionException If the tab cannot be set.
+     *  @exception IllegalActionException If the tab cannot be set.
      *  @see #getTab()
      */
     public void setTab(String tag) throws IllegalActionException {
@@ -176,7 +176,7 @@ public abstract class PositionableElement {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                private variables                          ////
+    ////                         private variables                 ////
 
     /** The Ptolemy element.
      */

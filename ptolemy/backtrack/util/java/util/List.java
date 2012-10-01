@@ -90,14 +90,14 @@ public interface List extends Collection, Rollbackable {
      * assumed to always succeed if there is no exception.
      * @param index the location to insert the item
      * @param o the object to insert
-     * @throws UnsupportedOperationException if this list does not support the
+     * @exception UnsupportedOperationException if this list does not support the
      * add operation
-     * @throws IndexOutOfBoundsException if index &lt; 0 || index &gt; size()
-     * @throws ClassCastException if o cannot be added to this list due to its
+     * @exception IndexOutOfBoundsException if index &lt; 0 || index &gt; size()
+     * @exception ClassCastException if o cannot be added to this list due to its
      * type
-     * @throws IllegalArgumentException if o cannot be added to this list for
+     * @exception IllegalArgumentException if o cannot be added to this list for
      * some other reason
-     * @throws NullPointerException if o is null and this list doesn't support
+     * @exception NullPointerException if o is null and this list doesn't support
      * the addition of null values.
      */
     void add(int index, Object o);
@@ -108,13 +108,13 @@ public interface List extends Collection, Rollbackable {
      * this should be documented.
      * @param o the object to add
      * @return true, as defined by Collection for a modified list
-     * @throws UnsupportedOperationException if this list does not support the
+     * @exception UnsupportedOperationException if this list does not support the
      * add operation
-     * @throws ClassCastException if o cannot be added to this list due to its
+     * @exception ClassCastException if o cannot be added to this list due to its
      * type
-     * @throws IllegalArgumentException if o cannot be added to this list for
+     * @exception IllegalArgumentException if o cannot be added to this list for
      * some other reason
-     * @throws NullPointerException if o is null and this list doesn't support
+     * @exception NullPointerException if o is null and this list doesn't support
      * the addition of null values.
      */
     boolean add(Object o);
@@ -129,16 +129,16 @@ public interface List extends Collection, Rollbackable {
      * @param c the collection to insert
      * @return true if the list was modified by this action, that is, if c is
      * non-empty
-     * @throws UnsupportedOperationException if this list does not support the
+     * @exception UnsupportedOperationException if this list does not support the
      * addAll operation
-     * @throws IndexOutOfBoundsException if index &lt; 0 || index &gt; size()
-     * @throws ClassCastException if some element of c cannot be added to this
+     * @exception IndexOutOfBoundsException if index &lt; 0 || index &gt; size()
+     * @exception ClassCastException if some element of c cannot be added to this
      * list due to its type
-     * @throws IllegalArgumentException if some element of c cannot be added
+     * @exception IllegalArgumentException if some element of c cannot be added
      * to this list for some other reason
-     * @throws NullPointerException if some element of c is null and this list
+     * @exception NullPointerException if some element of c is null and this list
      * doesn't support the addition of null values.
-     * @throws NullPointerException if the specified collection is null
+     * @exception NullPointerException if the specified collection is null
      * @see #add(int, Object)
      */
     boolean addAll(int index, Collection c);
@@ -151,14 +151,14 @@ public interface List extends Collection, Rollbackable {
      * @param c the collection to add
      * @return true if the list was modified by this action, that is, if c is
      * non-empty
-     * @throws UnsupportedOperationException if this list does not support the
+     * @exception UnsupportedOperationException if this list does not support the
      * addAll operation
-     * @throws ClassCastException if some element of c cannot be added to this
+     * @exception ClassCastException if some element of c cannot be added to this
      * list due to its type
-     * @throws IllegalArgumentException if some element of c cannot be added
+     * @exception IllegalArgumentException if some element of c cannot be added
      * to this list for some other reason
-     * @throws NullPointerException if the specified collection is null
-     * @throws NullPointerException if some element of c is null and this list
+     * @exception NullPointerException if the specified collection is null
+     * @exception NullPointerException if some element of c is null and this list
      * doesn't support the addition of null values.
      * @see #add(Object)
      */
@@ -167,7 +167,7 @@ public interface List extends Collection, Rollbackable {
     /**
      * Clear the list, such that a subsequent call to isEmpty() would return
      * true (optional operation).
-     * @throws UnsupportedOperationException if this list does not support the
+     * @exception UnsupportedOperationException if this list does not support the
      * clear operation
      */
     void clear();
@@ -178,9 +178,9 @@ public interface List extends Collection, Rollbackable {
      * <code>o == null ? e == null : o.equals(e)</code>.
      * @param o the element to look for
      * @return true if this list contains the element
-     * @throws ClassCastException if the type of o is not a valid type
+     * @exception ClassCastException if the type of o is not a valid type
      * for this list.
-     * @throws NullPointerException if o is null and the list doesn't
+     * @exception NullPointerException if o is null and the list doesn't
      * support null values.
      */
     boolean contains(Object o);
@@ -189,10 +189,10 @@ public interface List extends Collection, Rollbackable {
      * Test whether this list contains every element in a given collection.
      * @param c the collection to test for
      * @return true if for every element o in c, contains(o) would return true
-     * @throws NullPointerException if the collection is null
-     * @throws ClassCastException if the type of any element in c is not a valid
+     * @exception NullPointerException if the collection is null
+     * @exception ClassCastException if the type of any element in c is not a valid
      * type for this list.
-     * @throws NullPointerException if some element of c is null and this
+     * @exception NullPointerException if some element of c is null and this
      * list does not support null values.
      * @see #contains(Object)
      */
@@ -216,7 +216,7 @@ public interface List extends Collection, Rollbackable {
      * Get the element at a given index in this list.
      * @param index the index of the element to be returned
      * @return the element at index index in this list
-     * @throws IndexOutOfBoundsException if index &lt; 0 || index &gt;= size()
+     * @exception IndexOutOfBoundsException if index &lt; 0 || index &gt;= size()
      */
     Object get(int index);
 
@@ -245,9 +245,9 @@ public interface List extends Collection, Rollbackable {
      * @param o the object to search for
      * @return the least integer n such that <code>o == null ? get(n) == null :
      * o.equals(get(n))</code>, or -1 if there is no such index.
-     * @throws ClassCastException if the type of o is not a valid
+     * @exception ClassCastException if the type of o is not a valid
      * type for this list.
-     * @throws NullPointerException if o is null and this
+     * @exception NullPointerException if o is null and this
      * list does not support null values.
      */
     int indexOf(Object o);
@@ -269,9 +269,9 @@ public interface List extends Collection, Rollbackable {
      * list.
      * @return the greatest integer n such that <code>o == null ? get(n) == null
      * : o.equals(get(n))</code>, or -1 if there is no such index.
-     * @throws ClassCastException if the type of o is not a valid
+     * @exception ClassCastException if the type of o is not a valid
      * type for this list.
-     * @throws NullPointerException if o is null and this
+     * @exception NullPointerException if o is null and this
      * list does not support null values.
      */
     int lastIndexOf(Object o);
@@ -291,7 +291,7 @@ public interface List extends Collection, Rollbackable {
      * iteration from
      * @return a ListIterator over the elements of this list, in order, starting
      * at index
-     * @throws IndexOutOfBoundsException if index &lt; 0 || index &gt; size()
+     * @exception IndexOutOfBoundsException if index &lt; 0 || index &gt; size()
      */
     ListIterator listIterator(int index);
 
@@ -300,9 +300,9 @@ public interface List extends Collection, Rollbackable {
      * Shifts all remaining elements to the left to fill the gap.
      * @param index the position within the list of the object to remove
      * @return the object that was removed
-     * @throws UnsupportedOperationException if this list does not support the
+     * @exception UnsupportedOperationException if this list does not support the
      * remove operation
-     * @throws IndexOutOfBoundsException if index &lt; 0 || index &gt;= size()
+     * @exception IndexOutOfBoundsException if index &lt; 0 || index &gt;= size()
      */
     Object remove(int index);
 
@@ -313,11 +313,11 @@ public interface List extends Collection, Rollbackable {
      * @param o the object to remove
      * @return true if the list changed as a result of this call, that is, if
      * the list contained at least one occurrence of o
-     * @throws UnsupportedOperationException if this list does not support the
+     * @exception UnsupportedOperationException if this list does not support the
      * remove operation
-     * @throws ClassCastException if the type of o is not a valid
+     * @exception ClassCastException if the type of o is not a valid
      * type for this list.
-     * @throws NullPointerException if o is null and this
+     * @exception NullPointerException if o is null and this
      * list does not support removing null values.
      */
     boolean remove(Object o);
@@ -327,12 +327,12 @@ public interface List extends Collection, Rollbackable {
      * operation). That is, remove every element e such that c.contains(e).
      * @param c the collection to filter out
      * @return true if this list was modified as a result of this call
-     * @throws UnsupportedOperationException if this list does not support the
+     * @exception UnsupportedOperationException if this list does not support the
      * removeAll operation
-     * @throws NullPointerException if the collection is null
-     * @throws ClassCastException if the type of any element in c is not a valid
+     * @exception NullPointerException if the collection is null
+     * @exception ClassCastException if the type of any element in c is not a valid
      * type for this list.
-     * @throws NullPointerException if some element of c is null and this
+     * @exception NullPointerException if some element of c is null and this
      * list does not support removing null values.
      * @see #remove(Object)
      * @see #contains(Object)
@@ -345,12 +345,12 @@ public interface List extends Collection, Rollbackable {
      * that !c.contains(e).
      * @param c the collection to retain
      * @return true if this list was modified as a result of this call
-     * @throws UnsupportedOperationException if this list does not support the
+     * @exception UnsupportedOperationException if this list does not support the
      * retainAll operation
-     * @throws NullPointerException if the collection is null
-     * @throws ClassCastException if the type of any element in c is not a valid
+     * @exception NullPointerException if the collection is null
+     * @exception ClassCastException if the type of any element in c is not a valid
      * type for this list.
-     * @throws NullPointerException if some element of c is null and this
+     * @exception NullPointerException if some element of c is null and this
      * list does not support retaining null values.
      * @see #remove(Object)
      * @see #contains(Object)
@@ -362,14 +362,14 @@ public interface List extends Collection, Rollbackable {
      * @param index the position within this list of the element to be replaced
      * @param o the object to replace it with
      * @return the object that was replaced
-     * @throws UnsupportedOperationException if this list does not support the
+     * @exception UnsupportedOperationException if this list does not support the
      * set operation
-     * @throws IndexOutOfBoundsException if index &lt; 0 || index &gt;= size()
-     * @throws ClassCastException if o cannot be added to this list due to its
+     * @exception IndexOutOfBoundsException if index &lt; 0 || index &gt;= size()
+     * @exception ClassCastException if o cannot be added to this list due to its
      * type
-     * @throws IllegalArgumentException if o cannot be added to this list for
+     * @exception IllegalArgumentException if o cannot be added to this list for
      * some other reason
-     * @throws NullPointerException if o is null and this
+     * @exception NullPointerException if o is null and this
      * list does not support null values.
      */
     Object set(int index, Object o);
@@ -393,7 +393,7 @@ public interface List extends Collection, Rollbackable {
      * (inclusive)
      * @param toIndex the index that the returned list should go to (exclusive)
      * @return a List backed by a subsection of this list
-     * @throws IndexOutOfBoundsException if fromIndex &lt; 0
+     * @exception IndexOutOfBoundsException if fromIndex &lt; 0
      * || toIndex &gt; size() || fromIndex &gt; toIndex
      */
     List subList(int fromIndex, int toIndex);
@@ -417,9 +417,9 @@ public interface List extends Collection, Rollbackable {
      * @param a the array to copy this list into
      * @return an array containing the elements currently in this list, in
      * order
-     * @throws ArrayStoreException if the type of any element of the
+     * @exception ArrayStoreException if the type of any element of the
      * collection is not a subtype of the element type of a
-     * @throws NullPointerException if the specified array is null
+     * @exception NullPointerException if the specified array is null
      */
     Object[] toArray(Object[] a);
 

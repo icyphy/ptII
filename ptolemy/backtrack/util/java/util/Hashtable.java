@@ -213,7 +213,7 @@ public class Hashtable extends Dictionary implements Map, Cloneable,
          * Resets the value.
          * @param newVal the new value
          * @return the prior value
-         * @throws NullPointerException if <code>newVal</code> is null
+         * @exception NullPointerException if <code>newVal</code> is null
          */
         public Object setValue(Object newVal) {
             if (newVal == null) {
@@ -375,8 +375,8 @@ public class Hashtable extends Dictionary implements Map, Cloneable,
         /**
          * Returns the next element in the Iterator's sequential view.
          * @return the next element
-         * @throws ConcurrentModificationException if the hashtable was modified
-         * @throws NoSuchElementException if there is none
+         * @exception ConcurrentModificationException if the hashtable was modified
+         * @exception NoSuchElementException if there is none
          */
         public Object next() {
             if (getKnownMod() != getModCount()) {
@@ -404,8 +404,8 @@ public class Hashtable extends Dictionary implements Map, Cloneable,
         /**
          * Removes from the backing Hashtable the last element which was fetched
          * with the <code>next()</code> method.
-         * @throws ConcurrentModificationException if the hashtable was modified
-         * @throws IllegalStateException if called when there is no last element
+         * @exception ConcurrentModificationException if the hashtable was modified
+         * @exception IllegalStateException if called when there is no last element
          */
         public void remove() {
             if (getKnownMod() != getModCount()) {
@@ -624,7 +624,7 @@ public class Hashtable extends Dictionary implements Map, Cloneable,
         /**
          * Returns the next element.
          * @return the next element
-         * @throws NoSuchElementException if there is none.
+         * @exception NoSuchElementException if there is none.
          */
         public Object nextElement() {
             if (getCount() == 0) {
@@ -754,7 +754,7 @@ public class Hashtable extends Dictionary implements Map, Cloneable,
      * @param m a Map whose key / value pairs will be put into
      * the new Hashtable.  <b>NOTE: key / value pairs
      * are not cloned in this constructor.</b>
-     * @throws NullPointerException if m is null, or if m contains a mapping
+     * @exception NullPointerException if m is null, or if m contains a mapping
      * to or from `null'.
      * @since 1.2
      */
@@ -767,7 +767,7 @@ public class Hashtable extends Dictionary implements Map, Cloneable,
      * Construct a new Hashtable with a specific inital capacity and
      * default load factor of 0.75.
      * @param initialCapacity the initial capacity of this Hashtable (&gt;= 0)
-     * @throws IllegalArgumentException if (initialCapacity &lt; 0)
+     * @exception IllegalArgumentException if (initialCapacity &lt; 0)
      */
     public Hashtable(int initialCapacity) {
         this(initialCapacity, DEFAULT_LOAD_FACTOR);
@@ -778,7 +778,7 @@ public class Hashtable extends Dictionary implements Map, Cloneable,
      * load factor.
      * @param initialCapacity the initial capacity (&gt;= 0)
      * @param loadFactor the load factor (&gt; 0, not NaN)
-     * @throws IllegalArgumentException if (initialCapacity &lt; 0) ||
+     * @exception IllegalArgumentException if (initialCapacity &lt; 0) ||
      * ! (loadFactor &gt; 0.0)
      */
     public Hashtable(int initialCapacity, float loadFactor) {
@@ -844,7 +844,7 @@ public class Hashtable extends Dictionary implements Map, Cloneable,
      * <p>
      * @param value the value to search for in this Hashtable
      * @return true if at least one key maps to the value
-     * @throws NullPointerException if <code>value</code> is null
+     * @exception NullPointerException if <code>value</code> is null
      * @see #containsValue(Object)
      * @see #containsKey(Object)
      */
@@ -872,7 +872,7 @@ public class Hashtable extends Dictionary implements Map, Cloneable,
      * @return true if at least one key maps to the value
      * @see #contains(Object)
      * @see #containsKey(Object)
-     * @throws NullPointerException if <code>value</code> is null
+     * @exception NullPointerException if <code>value</code> is null
      * @since 1.2
      */
     public boolean containsValue(Object value) {
@@ -884,7 +884,7 @@ public class Hashtable extends Dictionary implements Map, Cloneable,
      * in this Hashtable.
      * @param key the key to search for in this Hashtable
      * @return true if the key is in the table
-     * @throws NullPointerException if key is null
+     * @exception NullPointerException if key is null
      * @see #containsValue(Object)
      */
     public synchronized boolean containsKey(Object key) {
@@ -904,7 +904,7 @@ public class Hashtable extends Dictionary implements Map, Cloneable,
      * or <code>null</code> if the key maps to nothing.
      * @param key the key for which to fetch an associated value
      * @return what the key maps to, if present
-     * @throws NullPointerException if key is null
+     * @exception NullPointerException if key is null
      * @see #put(Object, Object)
      * @see #containsKey(Object)
      */
@@ -927,7 +927,7 @@ public class Hashtable extends Dictionary implements Map, Cloneable,
      * @param key the key used to locate the value
      * @param value the value to be stored in the table
      * @return the prior mapping of the key, or null if there was none
-     * @throws NullPointerException if key or value is null
+     * @exception NullPointerException if key or value is null
      * @see #get(Object)
      * @see Object#equals(Object)
      */
@@ -990,7 +990,7 @@ public class Hashtable extends Dictionary implements Map, Cloneable,
      * mapping can contain null as key or value.  If this table already has
      * a mapping for a key, the new mapping replaces the current one.
      * @param m the map to be hashed into this
-     * @throws NullPointerException if m is null, or contains null keys or values
+     * @exception NullPointerException if m is null, or contains null keys or values
      */
     public synchronized void putAll(Map m) {
         Iterator itr = m.entrySet().iterator();
@@ -1407,7 +1407,7 @@ public class Hashtable extends Dictionary implements Map, Cloneable,
      * based on its hashCode().
      * @param key the key
      * @return the bucket number
-     * @throws NullPointerException if key is null
+     * @exception NullPointerException if key is null
      */
     private int hash(Object key) {
         int hash = key.hashCode() % getBuckets().length;
@@ -1498,7 +1498,7 @@ public class Hashtable extends Dictionary implements Map, Cloneable,
     /**
      * Serializes this object to the given stream.
      * @param s the stream to write to
-     * @throws IOException if the underlying stream fails
+     * @exception IOException if the underlying stream fails
      * @serialData the <i>capacity</i> (int) that is the length of the
      * bucket array, the <i>size</i> (int) of the hash map
      * are emitted first.  They are followed by size entries,
@@ -1520,8 +1520,8 @@ public class Hashtable extends Dictionary implements Map, Cloneable,
     /**
      * Deserializes this object from the given stream.
      * @param s the stream to read from
-     * @throws ClassNotFoundException if the underlying stream fails
-     * @throws IOException if the underlying stream fails
+     * @exception ClassNotFoundException if the underlying stream fails
+     * @exception IOException if the underlying stream fails
      * @serialData the <i>capacity</i> (int) that is the length of the
      * bucket array, the <i>size</i> (int) of the hash map
      * are emitted first.  They are followed by size entries,

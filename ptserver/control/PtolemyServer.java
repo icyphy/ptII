@@ -134,7 +134,7 @@ public final class PtolemyServer implements IServerManager {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                  public methods                           ////
+    ////                         public methods                    ////
 
     /** Shut down the simulation thread by calling the finish() method
      *  on its Manager and removing the task from the server.
@@ -609,7 +609,7 @@ public final class PtolemyServer implements IServerManager {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                      public variables                     ////
+    ////                         public variables                  ////
 
     /** The ResourceBundle containing configuration parameters.
      */
@@ -778,7 +778,7 @@ public final class PtolemyServer implements IServerManager {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                   private methods                         ////
+    ////                         private methods                   ////
 
     /** Check to ensure that the provided ticket is valid and refers to
      *  a current simulation request on the server.
@@ -957,7 +957,7 @@ public final class PtolemyServer implements IServerManager {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                private variables                          ////
+    ////                         private variables                 ////
 
     /** The proxy model listener that is notified of exceptions within
      *  the other threads of the application.

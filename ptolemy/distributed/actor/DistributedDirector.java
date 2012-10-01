@@ -57,8 +57,8 @@ import ptolemy.kernel.util.Workspace;
 public class DistributedDirector extends Director {
     /** Construct a director in the default workspace with an empty string
      *  as its name.
-     *  @throws NameDuplicationException If construction of Time objects fails.
-     *  @throws IllegalActionException If construction of Time objects fails.
+     *  @exception NameDuplicationException If construction of Time objects fails.
+     *  @exception IllegalActionException If construction of Time objects fails.
      */
     public DistributedDirector() throws IllegalActionException, NameDuplicationException {
         super();
@@ -66,8 +66,8 @@ public class DistributedDirector extends Director {
 
     /** Construct a director in the workspace with an empty name.
      *  @param workspace The workspace of this object.
-     *  @throws NameDuplicationException If construction of Time objects fails.
-     *  @throws IllegalActionException If construction of Time objects fails.
+     *  @exception NameDuplicationException If construction of Time objects fails.
+     *  @exception IllegalActionException If construction of Time objects fails.
      */
     public DistributedDirector(Workspace workspace) throws IllegalActionException, NameDuplicationException {
         super(workspace);

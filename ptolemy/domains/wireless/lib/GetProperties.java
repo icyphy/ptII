@@ -205,7 +205,7 @@ public class GetProperties extends TypedAtomicActor {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                      protected methods                    ////
+    ////                         protected methods                 ////
 
 
     /**

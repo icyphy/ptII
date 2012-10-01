@@ -270,7 +270,7 @@ public class ProxyModelBuilder {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         private methods                  ////
+    ////                         private methods                   ////
     /**
      * Create a new instance of the ProxySink either by replacing the targetEntity
      * or by replacing all entities connected to it.

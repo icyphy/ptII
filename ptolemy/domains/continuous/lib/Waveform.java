@@ -256,7 +256,7 @@ public class Waveform extends DiscreteClock {
 
     /** Return the interpolation result for the current model time.
      *  @return A double.
-     *  @throws IllegalActionException If the values parameter is malformed.
+     *  @exception IllegalActionException If the values parameter is malformed.
      *  @exception IllegalStateException If the index and value arrays
      *   do not have the same length, or the period is not 0 and not
      *   greater than the largest index.
@@ -367,7 +367,7 @@ public class Waveform extends DiscreteClock {
 
     /** Produce the output required at times between the specified times
      *  using the specified interpolation method.
-     *  @throws IllegalActionException If sending the output fails.
+     *  @exception IllegalActionException If sending the output fails.
      */
     protected void _produceIntermediateOutput() throws IllegalActionException {
         if (!_enabled) {

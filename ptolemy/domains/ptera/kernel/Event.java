@@ -520,7 +520,7 @@ public class Event extends State implements Initializable {
         PteraDirector director = controller.director;
 
         List<SchedulingRelation> relations = new LinkedList<SchedulingRelation>();
-        if(director.getModelException() == null) {
+        if (director.getModelException() == null) {
             relations.addAll(preemptiveTransitionList());
             relations.addAll(nonpreemptiveTransitionList());
         } else {

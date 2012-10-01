@@ -347,7 +347,7 @@ public class PtParser/*@bgen(jjtree)*/implements PtParserTreeConstants, PtParser
         }
         try {
             Class newClass = Class.forName(newClassName);
-            if(!_classesSearched.contains(newClass)) {
+            if (!_classesSearched.contains(newClass)) {
                 _classesSearched.add(newClass);
             }
         } catch (ClassNotFoundException ex) {
@@ -1607,11 +1607,11 @@ String x;
                 int prefixLength;
                 int suffixLength;
 
-                if(mustBeLong) {
+                if (mustBeLong) {
                     suffixLength = 1;
                 } else if (mustBeShort) {
                     suffixLength = 1;
-                } else if(mustBeUnsignedByte) {
+                } else if (mustBeUnsignedByte) {
                     suffixLength = 2;
                 } else {
                     suffixLength = 0;
@@ -1621,7 +1621,7 @@ String x;
                     // Input is a hex number.
                     radix = 16;
                     prefixLength = 2;
-                } else if(x.startsWith("0")) {
+                } else if (x.startsWith("0")) {
                     // Input is an octal number.
                     radix = 8;
                     prefixLength = 0;
@@ -1756,7 +1756,7 @@ String tidied, x;
         jjtc003 = false;
         // Check to see that the start and the end are the same.
         String start = token.image.substring(0, 1);
-        if(!token.image.endsWith(start)) {
+        if (!token.image.endsWith(start)) {
             {if (true) throw new ParseException(
                     "Found unterminated string: " + token.image);}
         }
@@ -1833,7 +1833,7 @@ String tidied, x;
                 x += tok;
             }
         }
-        if(escape) {
+        if (escape) {
             {if (true) throw new ParseException("Unterminated backslash sequence in " +
                     "string: " + token.image);}
         }
@@ -1945,7 +1945,7 @@ String tidied, x;
             ParseTreeTypeInference inference = new ParseTreeTypeInference();
             int argCount = jjtn000.getArgumentNameList().size();
             jjtn000._argTypes = new ptolemy.data.type.Type[argCount];
-            for(int i = 0; i < argCount; i++) {
+            for (int i = 0; i < argCount; i++) {
                 ASTPtRootNode argChild = ((ASTPtRootNode)jjtn000.jjtGetChild(i));
                 ptolemy.data.type.Type type = inference.inferTypes(argChild);
                 jjtn000._argTypes[i] = type;
@@ -2474,112 +2474,112 @@ String tidied, x;
   private boolean jj_2_1(int xla) {
     jj_la = xla; jj_lastpos = jj_scanpos = token;
     try { return !jj_3_1(); }
-    catch(LookaheadSuccess ls) { return true; }
+    catch (LookaheadSuccess ls) { return true; }
     finally { jj_save(0, xla); }
   }
 
   private boolean jj_2_2(int xla) {
     jj_la = xla; jj_lastpos = jj_scanpos = token;
     try { return !jj_3_2(); }
-    catch(LookaheadSuccess ls) { return true; }
+    catch (LookaheadSuccess ls) { return true; }
     finally { jj_save(1, xla); }
   }
 
   private boolean jj_2_3(int xla) {
     jj_la = xla; jj_lastpos = jj_scanpos = token;
     try { return !jj_3_3(); }
-    catch(LookaheadSuccess ls) { return true; }
+    catch (LookaheadSuccess ls) { return true; }
     finally { jj_save(2, xla); }
   }
 
   private boolean jj_2_4(int xla) {
     jj_la = xla; jj_lastpos = jj_scanpos = token;
     try { return !jj_3_4(); }
-    catch(LookaheadSuccess ls) { return true; }
+    catch (LookaheadSuccess ls) { return true; }
     finally { jj_save(3, xla); }
   }
 
   private boolean jj_2_5(int xla) {
     jj_la = xla; jj_lastpos = jj_scanpos = token;
     try { return !jj_3_5(); }
-    catch(LookaheadSuccess ls) { return true; }
+    catch (LookaheadSuccess ls) { return true; }
     finally { jj_save(4, xla); }
   }
 
   private boolean jj_2_6(int xla) {
     jj_la = xla; jj_lastpos = jj_scanpos = token;
     try { return !jj_3_6(); }
-    catch(LookaheadSuccess ls) { return true; }
+    catch (LookaheadSuccess ls) { return true; }
     finally { jj_save(5, xla); }
   }
 
   private boolean jj_2_7(int xla) {
     jj_la = xla; jj_lastpos = jj_scanpos = token;
     try { return !jj_3_7(); }
-    catch(LookaheadSuccess ls) { return true; }
+    catch (LookaheadSuccess ls) { return true; }
     finally { jj_save(6, xla); }
   }
 
   private boolean jj_2_8(int xla) {
     jj_la = xla; jj_lastpos = jj_scanpos = token;
     try { return !jj_3_8(); }
-    catch(LookaheadSuccess ls) { return true; }
+    catch (LookaheadSuccess ls) { return true; }
     finally { jj_save(7, xla); }
   }
 
   private boolean jj_2_9(int xla) {
     jj_la = xla; jj_lastpos = jj_scanpos = token;
     try { return !jj_3_9(); }
-    catch(LookaheadSuccess ls) { return true; }
+    catch (LookaheadSuccess ls) { return true; }
     finally { jj_save(8, xla); }
   }
 
   private boolean jj_2_10(int xla) {
     jj_la = xla; jj_lastpos = jj_scanpos = token;
     try { return !jj_3_10(); }
-    catch(LookaheadSuccess ls) { return true; }
+    catch (LookaheadSuccess ls) { return true; }
     finally { jj_save(9, xla); }
   }
 
   private boolean jj_2_11(int xla) {
     jj_la = xla; jj_lastpos = jj_scanpos = token;
     try { return !jj_3_11(); }
-    catch(LookaheadSuccess ls) { return true; }
+    catch (LookaheadSuccess ls) { return true; }
     finally { jj_save(10, xla); }
   }
 
   private boolean jj_2_12(int xla) {
     jj_la = xla; jj_lastpos = jj_scanpos = token;
     try { return !jj_3_12(); }
-    catch(LookaheadSuccess ls) { return true; }
+    catch (LookaheadSuccess ls) { return true; }
     finally { jj_save(11, xla); }
   }
 
   private boolean jj_2_13(int xla) {
     jj_la = xla; jj_lastpos = jj_scanpos = token;
     try { return !jj_3_13(); }
-    catch(LookaheadSuccess ls) { return true; }
+    catch (LookaheadSuccess ls) { return true; }
     finally { jj_save(12, xla); }
   }
 
   private boolean jj_2_14(int xla) {
     jj_la = xla; jj_lastpos = jj_scanpos = token;
     try { return !jj_3_14(); }
-    catch(LookaheadSuccess ls) { return true; }
+    catch (LookaheadSuccess ls) { return true; }
     finally { jj_save(13, xla); }
   }
 
   private boolean jj_2_15(int xla) {
     jj_la = xla; jj_lastpos = jj_scanpos = token;
     try { return !jj_3_15(); }
-    catch(LookaheadSuccess ls) { return true; }
+    catch (LookaheadSuccess ls) { return true; }
     finally { jj_save(14, xla); }
   }
 
   private boolean jj_2_16(int xla) {
     jj_la = xla; jj_lastpos = jj_scanpos = token;
     try { return !jj_3_16(); }
-    catch(LookaheadSuccess ls) { return true; }
+    catch (LookaheadSuccess ls) { return true; }
     finally { jj_save(15, xla); }
   }
 
@@ -3019,7 +3019,7 @@ String tidied, x;
   }
   /** Constructor with InputStream and supplied encoding */
   public PtParser(java.io.InputStream stream, String encoding) {
-    try { jj_input_stream = new SimpleCharStream(stream, encoding, 1, 1); } catch(java.io.UnsupportedEncodingException e) { throw new RuntimeException(e); }
+    try { jj_input_stream = new SimpleCharStream(stream, encoding, 1, 1); } catch (java.io.UnsupportedEncodingException e) { throw new RuntimeException(e); }
     token_source = new PtParserTokenManager(jj_input_stream);
     token = new Token();
     jj_ntk = -1;
@@ -3034,7 +3034,7 @@ String tidied, x;
   }
   /** Reinitialise. */
   public void ReInit(java.io.InputStream stream, String encoding) {
-    try { jj_input_stream.ReInit(stream, encoding, 1, 1); } catch(java.io.UnsupportedEncodingException e) { throw new RuntimeException(e); }
+    try { jj_input_stream.ReInit(stream, encoding, 1, 1); } catch (java.io.UnsupportedEncodingException e) { throw new RuntimeException(e); }
     token_source.ReInit(jj_input_stream);
     token = new Token();
     jj_ntk = -1;
@@ -3270,7 +3270,7 @@ String tidied, x;
         }
         p = p.next;
       } while (p != null);
-      } catch(LookaheadSuccess ls) { }
+      } catch (LookaheadSuccess ls) { }
     }
     jj_rescan = false;
   }

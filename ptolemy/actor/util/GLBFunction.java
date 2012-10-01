@@ -59,8 +59,8 @@ public class GLBFunction extends MonotonicFunction {
         _updateArguments();
     }
 
-    ///////////////////////////////////////////////////////////////
-    ////                     public methods                    ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
     /** Return the current value of this monotonic function.
      *  @return A Type.
@@ -109,7 +109,7 @@ public class GLBFunction extends MonotonicFunction {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                       protected methods                   ////
+    ////                         protected methods                 ////
 
     /** Update the arguments used in <code>getValue()</code>, which are the
      *  InequalityTerms and Types of the destination ports. The arguments are
@@ -124,7 +124,7 @@ public class GLBFunction extends MonotonicFunction {
         ArrayList<InequalityTerm> portTypeTermList = new ArrayList<InequalityTerm>();
         _cachedTypes = new HashSet<Type>();
         // Make sure to support ports that both inputs and outputs.
-        if (_sourcePort.isOutput()){
+        if (_sourcePort.isOutput()) {
             destinations = _sourcePort.sinkPortList();
         }
         if (_sourcePort.isInput()) {
@@ -157,7 +157,7 @@ public class GLBFunction extends MonotonicFunction {
 */ // FIXME
 
     ///////////////////////////////////////////////////////////////////
-    ////                    protected variables                    ////
+    ////                         protected variables               ////
 
     /** The constant types found in destination ports. */
     protected Set<Type> _cachedTypes;

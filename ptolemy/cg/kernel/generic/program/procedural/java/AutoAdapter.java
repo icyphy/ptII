@@ -2085,7 +2085,7 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
                     if (verbosityLevel > 3) {
                         code.append("System.out.println(\"I1\");" + _eol);
                     }
-                    code.append("if($containerSymbol().getPort(\""
+                    code.append("if ($containerSymbol().getPort(\""
                             + AutoAdapter._externalPortName(port.getContainer(),
                                     codegenPortName).replace("$", "\\u0024")
                             + "\") == null) {" + _eol

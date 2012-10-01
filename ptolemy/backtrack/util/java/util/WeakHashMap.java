@@ -238,7 +238,7 @@ public class WeakHashMap extends AbstractMap implements Map, Rollbackable {
                  * Check the known number of modification to the number of
                  * modifications of the table.  If it differs from the real
                  * number, we throw an exception.
-                 * @throws ConcurrentModificationException if the number
+                 * @exception ConcurrentModificationException if the number
                  * of modifications doesn't match.
                  */
                 private void checkMod() {
@@ -294,9 +294,9 @@ public class WeakHashMap extends AbstractMap implements Map, Rollbackable {
                 /**
                  * Returns the next entry.
                  * @return the next entry.
-                 * @throws ConcurrentModificationException if the hash map was
+                 * @exception ConcurrentModificationException if the hash map was
                  * modified.
-                 * @throws NoSuchElementException if there is no entry.
+                 * @exception NoSuchElementException if there is no entry.
                  */
                 public Object next() {
                     checkMod();
@@ -311,9 +311,9 @@ public class WeakHashMap extends AbstractMap implements Map, Rollbackable {
                 /**
                  * Removes the last returned entry from this set.  This will
                  * also remove the bucket of the underlying weak hash map.
-                 * @throws ConcurrentModificationException if the hash map was
+                 * @exception ConcurrentModificationException if the hash map was
                  * modified.
-                 * @throws IllegalStateException if <code>next()</code> was
+                 * @exception IllegalStateException if <code>next()</code> was
                  * never called or the element was already removed.
                  */
                 public void remove() {
@@ -795,7 +795,7 @@ public class WeakHashMap extends AbstractMap implements Map, Rollbackable {
      * Creates a new weak hash map with default load factor and the given
      * capacity.
      * @param initialCapacity the initial capacity
-     * @throws IllegalArgumentException if initialCapacity is negative
+     * @exception IllegalArgumentException if initialCapacity is negative
      */
     public WeakHashMap(int initialCapacity) {
         this(initialCapacity, DEFAULT_LOAD_FACTOR);
@@ -806,7 +806,7 @@ public class WeakHashMap extends AbstractMap implements Map, Rollbackable {
      * load factor.
      * @param initialCapacity the initial capacity.
      * @param loadFactor the load factor (see class description of HashMap).
-     * @throws IllegalArgumentException if initialCapacity is negative, or
+     * @exception IllegalArgumentException if initialCapacity is negative, or
      * loadFactor is non-positive
      */
     public WeakHashMap(int initialCapacity, float loadFactor) {
@@ -828,7 +828,7 @@ public class WeakHashMap extends AbstractMap implements Map, Rollbackable {
      * Construct a new WeakHashMap with the same mappings as the given map.
      * The WeakHashMap has a default load factor of 0.75.
      * @param m the map to copy
-     * @throws NullPointerException if m is null
+     * @exception NullPointerException if m is null
      * @since 1.3
      */
     public WeakHashMap(Map m) {

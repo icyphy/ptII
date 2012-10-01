@@ -86,7 +86,7 @@ public class FMULog {
             while (tokenizer.hasMoreTokens()) {
                 String token = tokenizer.nextToken();
                 boolean foundType = false;
-                for(int i = 0 ; i < token.length() && !foundType; i++) {
+                for (int i = 0 ; i < token.length() && !foundType; i++) {
                     char type = token.charAt(i);
                     //System.out.println("Token: " + token + " " + type + " " + offset);
                     switch (type) {

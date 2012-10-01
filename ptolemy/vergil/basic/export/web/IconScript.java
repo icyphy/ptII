@@ -61,8 +61,8 @@ public class IconScript extends Script implements WebExportable {
     /** Create an instance of this parameter.
      *  @param container The container.
      *  @param name The name.
-     *  @throws IllegalActionException If the superclass throws it.
-     *  @throws NameDuplicationException If the superclass throws it.
+     *  @exception IllegalActionException If the superclass throws it.
+     *  @exception NameDuplicationException If the superclass throws it.
      */
     public IconScript(NamedObj container, String name)
             throws IllegalActionException, NameDuplicationException {
@@ -113,7 +113,7 @@ public class IconScript extends Script implements WebExportable {
      *  is inserted inside a JavaScript HTML element.
      *
      *  @param exporter The web exporter to add content to
-     *  @throws IllegalActionException If evaluating the value
+     *  @exception IllegalActionException If evaluating the value
      *   of this parameter fails.
      */
 
@@ -132,7 +132,7 @@ public class IconScript extends Script implements WebExportable {
 
         WebElement webElement;
         String jQueryImports =jQueryLibraries.stringValue();
-        if(!jQueryImports.trim().equals(""))
+        if (!jQueryImports.trim().equals(""))
         {
             //Create WebElement for jQueryLibraries and add the exporter.
             //content should only be added once(<onceOnly->true)
@@ -194,7 +194,7 @@ public class IconScript extends Script implements WebExportable {
      *  <button onclick="runFunction()"/>
      *
      *  @param exporter  The web exporter to which to write content.
-     *  @throws IllegalActionException If the eventType cannot be obtained,
+     *  @exception IllegalActionException If the eventType cannot be obtained,
      *  the web attribute cannot be created or set.
      */
     // FIXME:  Support multiple events in the future.  E.g. onclick() and

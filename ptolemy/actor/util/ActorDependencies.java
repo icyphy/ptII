@@ -290,7 +290,7 @@ public class ActorDependencies {
             results.add((AtomicActor) container);
         } else {
             // Handle inside connections of an output port.
-            for( IOPort insidePort : port.insideSourcePortList()) {
+            for ( IOPort insidePort : port.insideSourcePortList()) {
                 Iterator sourcePorts = insidePort.insideSourcePortList().iterator();
                 while (sourcePorts.hasNext()) {
                     IOPort sourcePort = (IOPort)sourcePorts.next();

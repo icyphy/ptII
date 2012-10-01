@@ -77,7 +77,7 @@ import com.sun.jna.Pointer;
  */
 public class OutputRow {
     ///////////////////////////////////////////////////////////////////
-    ////             public methods                                ////
+    ////                         public methods                    ////
 
     /** Output time and all non-alias variables in CSV format. If the
      *  separator is ',', columns are separated by ',' and '.' is used

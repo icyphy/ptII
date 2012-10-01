@@ -129,7 +129,7 @@ public class AutoCGTests extends ModelTests {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                       protected variables                 ////
+    ////                         protected variables               ////
 
     /** The directory where the code is generated, usually $HOME/cg. */
     protected static File _cgDirectory;

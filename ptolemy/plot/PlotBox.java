@@ -2111,8 +2111,8 @@ out.println("\\begin{document}");
     //     *  to the specified directory.
     //     *  @param filename The name of the file to copy.
     //     *  @param directory The directory into which to copy.
-    //     *  @throws FileNotFoundException If the file cannot be found.
-    //     *  @throws IOException If the file cannot be copied.
+    //     *  @exception FileNotFoundException If the file cannot be found.
+    //     *  @exception IOException If the file cannot be copied.
     //     */
     //    private void _copyFiles(String filename, File directory)
     //            throws FileNotFoundException, IOException {

@@ -82,7 +82,7 @@ public class SIPrefixUnitConversionInfo extends UnitConversionInfo {
      *   that make up the unit for an SIDerivedDimensionRepresentativeConcept.
      *   If the dimension is an SIBaseDimensionRepresentativeConcept then this parameter
      *   is ignored.
-     *  @throws IllegalActionException Thrown if the input dimension is not an
+     *  @exception IllegalActionException Thrown if the input dimension is not an
      *   SIBaseDimensionRepresentativeConcept or an SIDerivedDimensionRepresentativeConcept.
      */
     public static void createAllSIPrefixConversionParameters(
@@ -129,7 +129,7 @@ public class SIPrefixUnitConversionInfo extends UnitConversionInfo {
      *  @param unitFactor The conversion factor for the new unit.
      *  @param unitRecord The base unit record for a derived dimension.  If the
      *   dimension is a base dimension, this parameter should be null.
-     *  @throws IllegalActionException Thrown if there is a problem creating
+     *  @exception IllegalActionException Thrown if there is a problem creating
      *   the parameter.
      */
     private static void createUnitConversionParameterForFactor(
@@ -164,7 +164,7 @@ public class SIPrefixUnitConversionInfo extends UnitConversionInfo {
      *  from the given DimensionRepresentativeConcept.
      *  @param dimension The DimensionRepresentativeConcept from which to
      *   remove the parameters.
-     *  @throws IllegalActionException Thrown if there is a problem deleting
+     *  @exception IllegalActionException Thrown if there is a problem deleting
      *   any of the parameters.
      */
     private static void removeAllSIPrefixConversionParameters(

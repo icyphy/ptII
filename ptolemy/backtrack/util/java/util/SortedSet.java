@@ -89,7 +89,7 @@ public interface SortedSet extends Set, Rollbackable {
     /**
      * Returns the first (lowest sorted) element in the set.
      * @return the first element
-     * @throws NoSuchElementException if the set is empty.
+     * @exception NoSuchElementException if the set is empty.
      */
     Object first();
 
@@ -105,11 +105,11 @@ public interface SortedSet extends Set, Rollbackable {
      * <code>headSet(new Integer(limit.intValue() + 1))</code>.
      * @param toElement the exclusive upper range of the subset
      * @return the subset
-     * @throws ClassCastException if toElement is not comparable to the set
+     * @exception ClassCastException if toElement is not comparable to the set
      * contents
-     * @throws IllegalArgumentException if this is a subSet, and toElement is out
+     * @exception IllegalArgumentException if this is a subSet, and toElement is out
      * of range
-     * @throws NullPointerException if toElement is null but the set does not
+     * @exception NullPointerException if toElement is null but the set does not
      * allow null elements
      */
     SortedSet headSet(Object toElement);
@@ -117,7 +117,7 @@ public interface SortedSet extends Set, Rollbackable {
     /**
      * Returns the last (highest sorted) element in the set.
      * @return the last element
-     * @throws NoSuchElementException if the set is empty.
+     * @exception NoSuchElementException if the set is empty.
      */
     Object last();
 
@@ -138,11 +138,11 @@ public interface SortedSet extends Set, Rollbackable {
      * @param fromElement the inclusive lower range of the subset
      * @param toElement the exclusive upper range of the subset
      * @return the subset
-     * @throws ClassCastException if fromElement or toElement is not comparable
+     * @exception ClassCastException if fromElement or toElement is not comparable
      * to the set contents
-     * @throws IllegalArgumentException if this is a subSet, and fromElement or
+     * @exception IllegalArgumentException if this is a subSet, and fromElement or
      * toElement is out of range
-     * @throws NullPointerException if fromElement or toElement is null but the
+     * @exception NullPointerException if fromElement or toElement is null but the
      * set does not allow null elements
      */
     SortedSet subSet(Object fromElement, Object toElement);
@@ -159,11 +159,11 @@ public interface SortedSet extends Set, Rollbackable {
      * <code>tailSet(new Integer(limit.intValue() + 1))</code>.
      * @param fromElement the inclusive lower range of the subset
      * @return the subset
-     * @throws ClassCastException if fromElement is not comparable to the set
+     * @exception ClassCastException if fromElement is not comparable to the set
      * contents
-     * @throws IllegalArgumentException if this is a subSet, and fromElement is
+     * @exception IllegalArgumentException if this is a subSet, and fromElement is
      * out of range
-     * @throws NullPointerException if fromElement is null but the set does not
+     * @exception NullPointerException if fromElement is null but the set does not
      * allow null elements
      */
     SortedSet tailSet(Object fromElement);

@@ -188,7 +188,7 @@ public class NetworkTransmitter extends OutputDevice {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                     protected methods                     ////
+    ////                         protected methods                 ////
 
     /**
      * Adds to the set of inequalities returned by the overridden method

@@ -154,7 +154,7 @@ public class LocalClock extends AbstractSettableAttribute {
     /** Delegate the call to the director, which handles changes
      *  to the parameters of the clock.
      *  @param attribute The attribute that changed.
-     *  @throws IllegalActionException If the director throws it.
+     *  @exception IllegalActionException If the director throws it.
      */
     @Override
     public void attributeChanged(Attribute attribute)

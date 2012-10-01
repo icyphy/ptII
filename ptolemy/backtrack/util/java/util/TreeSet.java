@@ -120,9 +120,9 @@ public class TreeSet extends AbstractSet implements SortedSet, Cloneable,
      * supplied Collection. This runs in n*log(n) time.
      * @param collection the new Set will be initialized with all
      * of the elements in this Collection
-     * @throws ClassCastException if the elements of the collection are not
+     * @exception ClassCastException if the elements of the collection are not
      * comparable
-     * @throws NullPointerException if the collection is null
+     * @exception NullPointerException if the collection is null
      * @see Comparable
      */
     public TreeSet(Collection collection) {
@@ -136,7 +136,7 @@ public class TreeSet extends AbstractSet implements SortedSet, Cloneable,
      * This constructor runs in linear time.
      * @param sortedSet the new TreeSet will use this SortedSet's comparator
      * and will initialize itself with all its elements
-     * @throws NullPointerException if sortedSet is null
+     * @exception NullPointerException if sortedSet is null
      */
     public TreeSet(SortedSet sortedSet) {
         $ASSIGN$map(new TreeMap(sortedSet.comparator()));
@@ -157,7 +157,7 @@ public class TreeSet extends AbstractSet implements SortedSet, Cloneable,
      * Adds the spplied Object to the Set if it is not already in the Set;
      * returns true if the element is added, false otherwise.
      * @param obj the Object to be added to this Set
-     * @throws ClassCastException if the element cannot be compared with objects
+     * @exception ClassCastException if the element cannot be compared with objects
      * already in the set
      */
     public boolean add(Object obj) {
@@ -168,8 +168,8 @@ public class TreeSet extends AbstractSet implements SortedSet, Cloneable,
      * Adds all of the elements in the supplied Collection to this TreeSet.
      * @param c The collection to add
      * @return true if the Set is altered, false otherwise
-     * @throws NullPointerException if c is null
-     * @throws ClassCastException if an element in c cannot be compared with
+     * @exception NullPointerException if c is null
+     * @exception ClassCastException if an element in c cannot be compared with
      * objects already in the set
      */
     public boolean addAll(Collection c) {
@@ -217,7 +217,7 @@ public class TreeSet extends AbstractSet implements SortedSet, Cloneable,
      * Returns true if this Set contains the supplied Object, false otherwise.
      * @param obj the Object to check for
      * @return true if it is in the set
-     * @throws ClassCastException if obj cannot be compared with objects
+     * @exception ClassCastException if obj cannot be compared with objects
      * already in the set
      */
     public boolean contains(Object obj) {
@@ -227,7 +227,7 @@ public class TreeSet extends AbstractSet implements SortedSet, Cloneable,
     /**
      * Returns the first (by order) element in this Set.
      * @return the first element
-     * @throws NoSuchElementException if the set is empty
+     * @exception NoSuchElementException if the set is empty
      */
     public Object first() {
         return map.firstKey();
@@ -243,9 +243,9 @@ public class TreeSet extends AbstractSet implements SortedSet, Cloneable,
      * the endpoint; if you want inclusion, pass the successor element.
      * @param to the (exclusive) cutoff point
      * @return a view of the set less than the cutoff
-     * @throws ClassCastException if <code>to</code> is not compatible with
+     * @exception ClassCastException if <code>to</code> is not compatible with
      * the comparator (or is not Comparable, for natural ordering)
-     * @throws NullPointerException if to is null, but the comparator does not
+     * @exception NullPointerException if to is null, but the comparator does not
      * tolerate null elements
      */
     public SortedSet headSet(Object to) {
@@ -272,7 +272,7 @@ public class TreeSet extends AbstractSet implements SortedSet, Cloneable,
     /**
      * Returns the last (by order) element in this Set.
      * @return the last element
-     * @throws NoSuchElementException if the set is empty
+     * @exception NoSuchElementException if the set is empty
      */
     public Object last() {
         return map.lastKey();
@@ -283,7 +283,7 @@ public class TreeSet extends AbstractSet implements SortedSet, Cloneable,
      * returned; otherwise, false is returned.
      * @param obj the Object to remove from this Set
      * @return true if the set was modified
-     * @throws ClassCastException if obj cannot be compared to set elements
+     * @exception ClassCastException if obj cannot be compared to set elements
      */
     public boolean remove(Object obj) {
         return map.remove(obj) != null;
@@ -309,11 +309,11 @@ public class TreeSet extends AbstractSet implements SortedSet, Cloneable,
      * @param from the (inclusive) low cutoff point
      * @param to the (exclusive) high cutoff point
      * @return a view of the set between the cutoffs
-     * @throws ClassCastException if either cutoff is not compatible with
+     * @exception ClassCastException if either cutoff is not compatible with
      * the comparator (or is not Comparable, for natural ordering)
-     * @throws NullPointerException if from or to is null, but the comparator
+     * @exception NullPointerException if from or to is null, but the comparator
      * does not tolerate null elements
-     * @throws IllegalArgumentException if from is greater than to
+     * @exception IllegalArgumentException if from is greater than to
      */
     public SortedSet subSet(Object from, Object to) {
         return new TreeSet(map.subMap(from, to));
@@ -329,9 +329,9 @@ public class TreeSet extends AbstractSet implements SortedSet, Cloneable,
      * endpoint; if you want to exclude it, pass in the successor element.
      * @param from the (inclusive) low cutoff point
      * @return a view of the set above the cutoff
-     * @throws ClassCastException if <code>from</code> is not compatible with
+     * @exception ClassCastException if <code>from</code> is not compatible with
      * the comparator (or is not Comparable, for natural ordering)
-     * @throws NullPointerException if from is null, but the comparator
+     * @exception NullPointerException if from is null, but the comparator
      * does not tolerate null elements
      */
     public SortedSet tailSet(Object from) {
@@ -341,7 +341,7 @@ public class TreeSet extends AbstractSet implements SortedSet, Cloneable,
     /**
      * Serializes this object to the given stream.
      * @param s the stream to write to
-     * @throws IOException if the underlying stream fails
+     * @exception IOException if the underlying stream fails
      * @serialData the <i>comparator</i> (Object), followed by the set size
      * (int), the the elements in sorted order (Object)
      */
@@ -359,8 +359,8 @@ public class TreeSet extends AbstractSet implements SortedSet, Cloneable,
     /**
      * Deserializes this object from the given stream.
      * @param s the stream to read from
-     * @throws ClassNotFoundException if the underlying stream fails
-     * @throws IOException if the underlying stream fails
+     * @exception ClassNotFoundException if the underlying stream fails
+     * @exception IOException if the underlying stream fails
      * @serialData the <i>comparator</i> (Object), followed by the set size
      * (int), the the elements in sorted order (Object)
      */

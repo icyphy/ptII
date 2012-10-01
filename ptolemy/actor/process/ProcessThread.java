@@ -337,7 +337,7 @@ public class ProcessThread extends PtolemyThread {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                       protected variables                 ////
+    ////                         protected variables               ////
 
     /** The actor that to be executed. */
     protected Actor _actor;

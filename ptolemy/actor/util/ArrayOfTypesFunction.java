@@ -40,12 +40,12 @@ public class ArrayOfTypesFunction extends MonotonicFunction {
         _arrayLength = arrayLength;
     }
 
-    ///////////////////////////////////////////////////////////////
-    ////                     public methods                    ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
     /** Return the current value of this monotonic function.
      *  @return A Type.
-     *  @throws IllegalActionException If the type of the argument
+     *  @exception IllegalActionException If the type of the argument
      *   cannot be determined.
      */
     public Object getValue()  throws IllegalActionException {
@@ -75,7 +75,7 @@ public class ArrayOfTypesFunction extends MonotonicFunction {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                    private variables                      ////
+    ////                         private variables                 ////
 
     /** The argument. */
     private Typeable _typeable;

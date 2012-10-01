@@ -186,7 +186,7 @@ public class ArrayToSequence extends SDFTransformer {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                     protected methods                     ////
+    ////                         protected methods                 ////
 
     /** Do not establish the usual default type constraints. Instead, the type
      *  of the output port is constrained to be no less than the type of the

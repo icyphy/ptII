@@ -219,7 +219,7 @@ public class PtidesDirector extends DEDirector {
      *  the device delay.
      *  @param event New input event.
      *  @param deviceDelay The device delay.
-     *  @throws IllegalActionException If device delay parameter cannot be computed.
+     *  @exception IllegalActionException If device delay parameter cannot be computed.
      */
     public void addInputEvent(PtidesEvent event, double deviceDelay)
             throws IllegalActionException {
@@ -357,7 +357,7 @@ public class PtidesDirector extends DEDirector {
      *  @param time Time the actor should be fired at.
      *  @param index Microstep the actor should be fired at.
      *  @return The time the actor requested to be refired at.
-     * @throws IllegalActionException If firing of the container doesn't succeed.
+     * @exception IllegalActionException If firing of the container doesn't succeed.
      */
     public Time fireAt(Actor actor, Time time, int index)
             throws IllegalActionException {
@@ -573,7 +573,7 @@ public class PtidesDirector extends DEDirector {
      *  enclosing director. This method always returns true, deferring the
      *  decision about whether to fire an actor to the fire() method.
      *  @return True.
-     * @throws IllegalActionException
+     * @exception IllegalActionException
      */
     public boolean prefire() throws IllegalActionException {
         setModelTime(localClock.getLocalTimeForCurrentEnvironmentTime());
@@ -1072,7 +1072,7 @@ public class PtidesDirector extends DEDirector {
      * @param scheduleWithZeroExecutionTime If true execution time is 0.0.
      * @param actor The actor.
      * @return The execution Time.
-     * @throws IllegalActionException Thrown if time objects cannot be created.
+     * @exception IllegalActionException Thrown if time objects cannot be created.
      */
     protected Time _getExecutionTime(boolean scheduleWithZeroExecutionTime,
             Actor actor) throws IllegalActionException {
@@ -1107,7 +1107,7 @@ public class PtidesDirector extends DEDirector {
      *  correct results.
      *  @param queue The event queue.
      *  @return The next actor to fire or null.
-     *  @throws IllegalActionException Thrown by safeToProcess, prefire
+     *  @exception IllegalActionException Thrown by safeToProcess, prefire
      *    or schedule.
      */
     private Actor _getNextActorFrom(DEEventQueue queue) throws IllegalActionException {
@@ -1188,7 +1188,7 @@ public class PtidesDirector extends DEDirector {
     /** Check if event is safe to process.
      * @param event The event to be checked.
      * @return true if the event is safe to process.
-     * @throws IllegalActionException If the delayOffset aparameter
+     * @exception IllegalActionException If the delayOffset aparameter
      * cannot be read.
      */
     protected boolean _isSafeToProcess(PtidesEvent event)
@@ -1259,7 +1259,7 @@ public class PtidesDirector extends DEDirector {
      *  TODO: This method could be moved to the Director class such that all other
      *  MoCs can do resource usage simulation.
      *  @param actor The actor to be scheduled.
-     *  @throws IllegalActionException
+     *  @exception IllegalActionException
      */
     protected ResourceScheduler _getScheduler(Actor actor)
             throws IllegalActionException {
@@ -1419,7 +1419,7 @@ public class PtidesDirector extends DEDirector {
      * @param event The event.
      * @param executionTime The execution Time for this event.
      * @return True if actor was scheduled and can be fired.
-     * @throws IllegalActionException Thrown if parameters cannot be read, event cannot be
+     * @exception IllegalActionException Thrown if parameters cannot be read, event cannot be
      *   scheduled or container cannot be fired at future time.
      */
     private boolean _schedule(PtidesEvent event, Time executionTime) throws IllegalActionException {

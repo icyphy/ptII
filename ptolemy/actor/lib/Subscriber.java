@@ -213,14 +213,14 @@ public class Subscriber extends TypedAtomicActor {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                      protected methods                    ////
+    ////                         protected methods                 ////
 
     /** Create an input port. This is a protected method so that
      *  subclasses can create different input ports. This is called
      *  in the constructor, so subclasses cannot reliably access
      *  local variables.
-     *  @throws IllegalActionException If creating the input port fails.
-     *  @throws NameDuplicationException If there is already a port named "input".
+     *  @exception IllegalActionException If creating the input port fails.
+     *  @exception NameDuplicationException If there is already a port named "input".
      */
     protected void _createInputPort() throws IllegalActionException,
             NameDuplicationException {

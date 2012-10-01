@@ -281,7 +281,7 @@ public class PtIndexer {
         int maximumDefinitions = -1;
         String maximumKey = "";
         int definitionsSum = 0;
-        for( Map.Entry<String, Set<String>> entry :  _dictionary.entrySet()) {
+        for ( Map.Entry<String, Set<String>> entry :  _dictionary.entrySet()) {
             dictionarySize++;
             Set<String> definitions = entry.getValue();
             int size = definitions.size();
@@ -375,7 +375,7 @@ public class PtIndexer {
         // The uncompressed locations.
         Set<String> definitions = null;
         BigInteger indices = null;
-        for( Map.Entry<String, Set<String>> entry :  _dictionary.entrySet()) {
+        for ( Map.Entry<String, Set<String>> entry :  _dictionary.entrySet()) {
            key = entry.getKey();
            definitions = entry.getValue();
            for (String definition: definitions) {

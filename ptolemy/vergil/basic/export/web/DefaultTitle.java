@@ -59,8 +59,8 @@ public class DefaultTitle extends WebContent implements WebExportable {
     /** Create an instance of this parameter.
      *  @param container The container.
      *  @param name The name.
-     *  @throws IllegalActionException If the superclass throws it.
-     *  @throws NameDuplicationException If the superclass throws it.
+     *  @exception IllegalActionException If the superclass throws it.
+     *  @exception NameDuplicationException If the superclass throws it.
      */
     public DefaultTitle(NamedObj container, String name)
             throws IllegalActionException, NameDuplicationException {
@@ -128,7 +128,7 @@ public class DefaultTitle extends WebContent implements WebExportable {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                       protected methods                   ////
+    ////                         protected methods                 ////
 
     /** Provide content to the specified web exporter to be
      *  included in a web page. This class provides a default title for the
@@ -136,7 +136,7 @@ public class DefaultTitle extends WebContent implements WebExportable {
      *  as specified by <i>include</i> and <i>instancesOf</i>.
      *
      *  @param exporter  The web exporter to which to write content.
-     *  @throws IllegalActionException If something is wrong with the web
+     *  @exception IllegalActionException If something is wrong with the web
      *  content or the object already has an attribute with the same name as the
      *  the created WebAttribute
      */
