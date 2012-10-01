@@ -82,6 +82,7 @@ MISC_FILES =	test
 OPTIONAL_FILES = \
 	test \
 	$(PTCLASSJAR) \
+	'AddMissingParameter$$AddProperty.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 

@@ -290,7 +290,9 @@ CLEAN_SHIPPING_FILES = \
 		ptolemy/matlab/ptmatlab.obj \
 		ptolemy/moml/filter/test/testModels.txt \
 		ptolemy/moml/filter/test/testNamedObjs.txt \
-		ptolemy/ptp
+		ptolemy/ptp \
+	        ptolemy/vergil/basic/layout/kieler/test/layoutPerformance.xml \
+	        ptolemy/vergil/basic/layout/kieler/test/layoutPerformance2.xml
 
 clean_shipping:
 	rm -rf $(CLEAN_SHIPPING_FILES)

@@ -52,6 +52,9 @@ OTHER_FILES_TO_BE_JARED = \
 	PtangoWebExport.png \
 	PtangoWebExport.zargo
 
+# Files that are not compiled, such as .tcl and .itcl files.
+EXTRA_SRCS = $(JSRCS) $(OTHER_FILES_TO_BE_JARED)
+
 all: suball
 install: subinstall jars
 

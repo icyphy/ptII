@@ -55,6 +55,7 @@ JSRCS =
 
 OTHER_FILES_TO_BE_JARED = \
 	blank.gif \
+	dygraph-combined.js \
 	fancy_close.png \
 	fancy_loading.png \
 	fancy_nav_left.png \
@@ -83,7 +84,6 @@ OTHER_FILES_TO_BE_JARED = \
 	jquery.fancybox-1.3.4.pack.js \
 	jquery.mousewheel-3.0.4.pack.js \
 	pt-1.0.0.js
-	
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 

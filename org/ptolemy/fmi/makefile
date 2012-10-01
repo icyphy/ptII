@@ -68,12 +68,13 @@ JSRCS = \
 	FMULog.java \
 	NativeSizeT.java
 
-# Files that are not compiled, such as .tcl and .itcl files.
-EXTRA_SRCS = $(JSRCS)
+OTHER_FILES_TO_BE_JARED = build.xml
 
+# Files that are not compiled, such as .tcl and .itcl files.
+EXTRA_SRCS = $(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
 # Non-source files such as README files and subdirectories
-MISC_FILES = driver type
+MISC_FILES = driver fmu type
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
@@ -82,6 +83,22 @@ OPTIONAL_FILES = \
 	manifest.tmp \
 	$(PTCLASSALLJAR) \
 	$(PTAUXJAR) \
+	'FMICallbackFunctions$$ByValue.class' \
+	'FMIEventInfo$$ByReference.class' \
+	'FMIEventInfo$$ByValue.class' \
+	'FMILibrary$$FMICallbackAllocateMemory.class' \
+	'FMILibrary$$FMICallbackFreeMemory.class' \
+	'FMILibrary$$FMICallbackLogger.class' \
+	'FMILibrary$$FMIStatus.class' \
+	'FMILibrary$$FMIStatusKind.class' \
+	'FMILibrary$$FMIStepFinished.class' \
+	'FMIScalarVariable$$Alias.class' \
+	'FMIScalarVariable$$Causality.class' \
+	'FMIScalarVariable$$Variability.class' \
+	'FMULibrary$$FMUAllocateMemory.class' \
+	'FMULibrary$$FMUFreeMemory.class' \
+	'FMULibrary$$FMULogger.class' \
+	'FMULibrary$$FMUStepFinished.class'
 
 KRUFT =
 

@@ -48,6 +48,7 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 EXAMPLE_MODELS = \
 	ObjectType.xml \
 	ObjectTypeCoerced.xml \
+	ObjectTypeMethodInvocation.xml \
 	TypeConversion.xml
 
 OTHER_FILES_TO_BE_JARED = $(EXAMPLE_MODELS)

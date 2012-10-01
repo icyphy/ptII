@@ -57,7 +57,7 @@ JSRCS = \
 	AnimationRenderer.java \
 	AttributeNodeModel.java \
 	AttributeController.java \
-	AttributeWithIconController \
+	AttributeWithIconController.java \
 	CompositePtolemyModel.java \
 	DebugRenderer.java \
 	Link.java \
@@ -85,6 +85,9 @@ OPTIONAL_FILES = \
 	'AnimationRenderer$$1.class' \
 	'AnimationRenderer$$2.class' \
 	'AttributeController$$Access.class' \
+	'AttributeWithIconController$$EditIconAction$$1.class' \
+	'AttributeWithIconController$$EditIconAction.class' \
+	'AttributeWithIconController$$RemoveIconAction.class' \
 	'PortDialogFactory$$1.class' \
 	'PortDialogFactory$$2.class' \
 	'RelationController$$RelationRenderer.class' \

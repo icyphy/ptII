@@ -31,7 +31,7 @@
 ME =		ptolemy/vergil/basic/export/html/demo
 
 # Keep these alphabetical please.
-DIRS = 	 ExportExamples
+DIRS = 	 ExportExamples PageAssembler
 
 # Root of Ptolemy II directory
 ROOT =		../../../../../..
@@ -46,7 +46,8 @@ PTCLASSJAR =
 
 # Include the .class files from these jars in PTCLASSALLJAR
 PTCLASSALLJARS = \
-	ExportExamples/ExportExamples.jar
+	ExportExamples/ExportExamples.jar \
+	PageAssembler/PageAssembler.jar
 
 PTCLASSALLJAR = $(PTPACKAGE).jar
 

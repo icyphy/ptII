@@ -53,7 +53,8 @@ PTCLASSALLJARS = \
 	javascript/javascript.jar
 
 JSRCS = \
-	ExportHTMLAction.java
+	ExportHTMLAction.java \
+	HTMLPageAssembler.java
 
 OTHER_FILES_TO_BE_JARED = \
 	htmlExportConfiguration.xml

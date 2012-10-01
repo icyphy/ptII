@@ -1,7 +1,8 @@
-# Makefile for PtolemyII Export HTML demos
+# Makefile for Ptolemy II PageAssembler demo
 #
-# @Version: $Id: makefile 62568 2011-12-13 18:13:59Z eal $
-# @Author: Christopher Brooks (makefile only)
+# @Authors: Christopher Brooks (makefile only)
+#
+# @Version: $Id: makefile 62535 2011-12-10 00:04:14Z cxh $
 #
 # @Copyright (c) 2011 The Regents of the University of California.
 # All rights reserved.
@@ -28,44 +29,58 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =		ptolemy/vergil/basic/export/html/demo
+ME =		ptolemy/vergil/basic/export/html/demo/PageAssembler
 
-# Keep these alphabetical please.
-DIRS = 	 ExportExamples PageAssembler
+# Root of the Java directory
+ROOT =		../../../../../../..
 
-# Root of Ptolemy II directory
-ROOT =		../../../../../..
+CLASSPATH =	$(ROOT)
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	demo
-PTCLASSJAR =
+PTPACKAGE = 	PageAssembler
+PTCLASSJAR = 	$(PTPACKAGE).jar
 
-# Include the .class files from these jars in PTCLASSALLJAR
-PTCLASSALLJARS = \
-	ExportExamples/ExportExamples.jar \
-	PageAssembler/PageAssembler.jar
+JSRCS =
 
-PTCLASSALLJAR = $(PTPACKAGE).jar
+OTHER_FILES_TO_BE_JARED = \
+	pageAssemblerError.xml \
+	PageAssembler.xml \
+	result.html \
+	script.html \
+	template.html
+
+EXTRA_SRCS = \
+	$(JSRCS) \
+	$(OTHER_FILES_TO_BE_JARED)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
-MISC_FILES = 	$(DIRS)
+MISC_FILES =
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make realclean removes OPTIONAL_FILES
-OPTIONAL_FILES = \
-	doc
+OPTIONAL_FILES =
 
-all: jclass
+JCLASS = $(JSRCS:%.java=%.class)
+
+# Don't include all or install rules here, we want the user
+# to run 'make demos' to run the tests.
+all: jclass $(PTCLASSJAR)
 	@echo "To run all the demos, run 'make demo'"
+	@echo "To run the applet only, run 'make demo_applet'"
+	@echo "To run the application only, run 'make demo_application'"
 
-install: jclass jars
+install: all
 
-demo: subdemo
+# Run the demo
+demo: demo_vergil
+
+demo_vergil:
+	"$(PTII)/bin/vergil" $(OTHER_FILES_TO_BE_JARED)
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk

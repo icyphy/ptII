@@ -68,7 +68,8 @@ MISC_FILES = test
 OPTIONAL_FILES = \
 	demo \
 	doc \
-	'FMUImport$$1.class'
+	'FMUImport$$1.class' \
+	'FMUImport$$Output.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 

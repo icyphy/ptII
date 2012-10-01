@@ -56,8 +56,12 @@ JSRCS = \
 	HttpService.java \
 	WebServer.java
 
+OTHER_FILES_TO_BE_JARED = \
+	ptango.xml \
+	WebServerIcon.xml
+
 # Files that are not compiled, such as .tcl and .itcl files.
-EXTRA_SRCS = $(JSRCS)
+EXTRA_SRCS = $(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
 # Non-source files such as README files and subdirectories
 MISC_FILES = img
@@ -69,6 +73,10 @@ OPTIONAL_FILES = \
 	manifest.tmp \
 	$(PTCLASSALLJAR) \
 	$(PTAUXJAR) \
+	'HTMLModelExporter$$1.class' \
+	'HttpActor$$ActorServlet.class' \
+	'WebServer$$1.class' \
+	'WebServer$$RunnableServer.class'
 
 KRUFT =
 

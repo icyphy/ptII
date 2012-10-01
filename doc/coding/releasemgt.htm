@@ -85,10 +85,9 @@ to test the Web Start release.
 # Check out a clean tree
 svn co svn+ssh://source.eecs.berkeley.edu/chess/ptII/trunk ptII
 cd ptII
-# Make sure empty directories are removed
-setenv PTII `pwd`
+export PTII=`pwd`
 ./configure
-make
+ant
 </pre>
 <li> Clean the tree by running <CODE>make checkjunk</CODE>
 and adding files as appropriate to the makefiles:

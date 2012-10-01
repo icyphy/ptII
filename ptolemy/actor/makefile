@@ -152,6 +152,7 @@ OPTIONAL_FILES = \
 	'Manager$$State.class' \
 	'Manager$$UnpauserThread.class' \
 	'PublisherPort$$1.class' \
+	'PubSubPort$$1.class' \
 	'TypedIOPort$$1.class' \
 	'TypedIOPort$$TypeTerm.class'
 

@@ -68,8 +68,11 @@ JSRCS = \
 	NPFCFSCore.java \
 	OutputDevice.java \
 	PEDFCore.java \
+	PtidesPort.java \
 	RealisticSlaveClock.java \
 	SensorHandler.java \
+	SchedulerDirector.java \
+	SchedulerModel.java \
 	SimulatedPlatformPhysicalTime.java \
 	SlaveClock.java \
 	ExecutionTimeListener.java \
@@ -83,7 +86,8 @@ OTHER_FILES_TO_BE_JARED = \
 	DynamicCoreAssignmentSchedulerIcon.xml \
 	FPPCoreIcon.xml \
 	NPFCFSCoreIcon.xml \
-	PEDFCoreIcon.xml
+	PEDFCoreIcon.xml \
+	SchedulerModelIcon.xml
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 

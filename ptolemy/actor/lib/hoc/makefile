@@ -55,6 +55,7 @@ JSRCS = \
 	ApplyFunctionOverSequence.java \
 	Case.java \
 	CaseDirector.java \
+	ExecuteCompositeActor.java \
 	IterateOverArray.java \
 	LifeCycleManager.java \
 	MirrorComposite.java \

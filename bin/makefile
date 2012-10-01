@@ -91,6 +91,7 @@ EXTRA_EXECUTABLE_SRCS = \
 	mkjnlp \
 	mkl4j \
 	mkosgi \
+	ptjunit \
 	viptos
 
 EXTRA_SRCS = \
