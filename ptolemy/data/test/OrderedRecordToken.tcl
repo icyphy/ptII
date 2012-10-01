@@ -4,7 +4,7 @@
 #
 # @Version $Id: RecordToken.tcl 57040 2010-01-27 20:52:32Z cxh $
 #
-# @Copyright (c) 1997-2008 The Regents of the University of California.
+# @Copyright (c) 1997-2012 The Regents of the University of California.
 # All rights reserved.
 # 
 # Permission is hereby granted, without written agreement and without

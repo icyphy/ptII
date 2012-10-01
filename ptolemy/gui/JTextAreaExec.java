@@ -1,6 +1,6 @@
 /* A JTextArea that takes a list of commands and runs them.
 
- Copyright (c) 2001-2011 The Regents of the University of California.
+ Copyright (c) 2001-2012 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this

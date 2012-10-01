@@ -1,6 +1,6 @@
 /* SensorHandler simulates a hardware device that senses data from the environment.
 
-@Copyright (c) 2008-2011 The Regents of the University of California.
+@Copyright (c) 2008-2012 The Regents of the University of California.
 All rights reserved.
 
 Permission is hereby granted, without written agreement and without

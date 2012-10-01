@@ -1,6 +1,6 @@
 /* Display the evolution of a Petri net.
 
- Copyright (c) 2010 The University of Florida
+ Copyright (c) 2010-2012 The University of Florida
 
  All rights reserved.
  Permission is hereby granted, without written agreement and without

@@ -4,7 +4,7 @@
 #
 # @Version: $Id: Test.tcl 62956 2012-02-12 18:07:16Z bldmastr $
 #
-# @Copyright (c) 2004-2011 The Regents of the University of California.
+# @Copyright (c) 2004-2012 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without

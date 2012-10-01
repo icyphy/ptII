@@ -3,7 +3,7 @@
 # Version: $Id: makefile 62006 2011-09-17 21:27:28Z cxh $
 # Makefile Author: Christopher Brooks
 #
-# Copyright (c) 2011 The Regents of the University of California.
+# Copyright (c) 2011-2012 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without

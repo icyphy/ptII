@@ -1,6 +1,6 @@
 /* Base class for Colt Random Sources.
 
- Copyright (c) 2004-2011 The Regents of the University of California.
+ Copyright (c) 2004-2012 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this

@@ -1,7 +1,7 @@
 /*
  * A extended base abstract class for an ontology solver.
  *
- * Copyright (c) 1998-2011 The Regents of the University of California. All
+ * Copyright (c) 1998-2012 The Regents of the University of California. All
  * rights reserved. Permission is hereby granted, without written agreement and
  * without license or royalty fees, to use, copy, modify, and distribute this
  * software and its documentation for any purpose, provided that the above

@@ -1,6 +1,6 @@
 /* Linear Difference Equation System.
 
- @Copyright (c) 1998-2010 The Regents of the University of California.
+ @Copyright (c) 1998-2012 The Regents of the University of California.
  All rights reserved.
 
  Permission is hereby granted, without written agreement and without

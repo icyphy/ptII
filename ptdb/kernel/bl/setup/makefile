@@ -4,7 +4,7 @@
 #
 # @Version: $Id: makefile 58300 2010-06-19 18:55:03Z lholsing $
 #
-# @Copyright (c) 2010 The Regents of the University of California.
+# @Copyright (c) 2010-2012 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without

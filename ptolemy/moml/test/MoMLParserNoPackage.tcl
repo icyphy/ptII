@@ -4,7 +4,7 @@
 #
 # @Version: $Id: MoMLParser.tcl 63926 2012-07-11 06:04:41Z marten $
 #
-# @Copyright (c) 1997-2011 The Regents of the University of California.
+# @Copyright (c) 1997-2012 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without

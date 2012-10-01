@@ -1,6 +1,6 @@
 /* Utilities to convert between java types and Token types
 
- Copyright (c) 1998-2011 The Regents of the University of California and
+ Copyright (c) 1998-2012 The Regents of the University of California and
  Research in Motion Limited.
  All rights reserved.
  Permission is hereby granted, without written agreement and without

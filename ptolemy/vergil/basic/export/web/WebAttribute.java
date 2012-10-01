@@ -2,7 +2,7 @@
  * for example, an HTML attribute that is part of an HTML element, as in the
  * "href" attribute of <a href="http://www.w3schools.com">This is a link</a>
 
- Copyright (c) 2011 The Regents of the University of California.
+ Copyright (c) 2011-2012 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this

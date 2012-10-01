@@ -1,6 +1,6 @@
 /* An actor that adds a border to an image.
 
- @Copyright (c) 2002-2010 The Regents of the University of California.
+ @Copyright (c) 2002-2012 The Regents of the University of California.
  All rights reserved.
 
  Permission is hereby granted, without written agreement and without
