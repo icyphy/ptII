@@ -1,6 +1,6 @@
 /* An icon that renders the value of the container.
 
- Copyright (c) 1999-2012 The Regents of the University of California.
+ Copyright (c) 1999-2011 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -38,7 +38,6 @@ import ptolemy.data.IntToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Nameable;
 import ptolemy.kernel.util.NamedObj;
@@ -76,7 +75,7 @@ public class ValueIcon extends XMLIcon {
     public ValueIcon(NamedObj container, String name)
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
-
+        
         displayWidth = new Parameter(this, "displayWidth");
         displayWidth.setExpression("60");
         displayWidth.setTypeEquals(BaseType.INT);
@@ -111,37 +110,27 @@ public class ValueIcon extends XMLIcon {
                 super.createBackgroundFigure());
         Nameable container = getContainer();
 
-        // Patch from Sean Riddle so that attributes that have _hideName
-        // are handled in a manner similar to how actors handle _hideName.
-        // See http://bugzilla.ecoinformatics.org/show_bug.cgi?id=4903
-        // and http://bugzilla.ecoinformatics.org/show_bug.cgi?id=5266
-        // and http://bugzilla.ecoinformatics.org/show_bug.cgi?id=5642.
-        if (!_isPropertySet(getContainer(), "_hideName")) {
-            if (container instanceof Settable) {
-                String name = container.getDisplayName();
-                String value = ((Settable) container).getExpression();
-                int width = 60;
-                try {
-                    width = ((IntToken) displayWidth.getToken()).intValue();
-                } catch (IllegalActionException ex) {
-                    throw new InternalErrorException(this, ex,
-                            "Failed to get the width?");
-                }
-                String truncated = StringUtilities
-                    .truncateString(value, width, 1);
-                LabelFigure label = new LabelFigure(name + ": "
-                        + truncated,
-                        _labelFont, 1.0, SwingConstants.SOUTH_WEST);
-                background.add(label);
-                return background;
-            } else {
-                String name = container.getName();
-                LabelFigure label = new LabelFigure(name, _labelFont, 1.0,
-                        SwingConstants.SOUTH_WEST);
-                background.add(label);
-                return background;
+        if (container instanceof Settable) {
+            String name = container.getDisplayName();
+            String value = ((Settable) container).getExpression();
+            int width = 60;
+            try {
+                width = ((IntToken) displayWidth.getToken()).intValue();
+            } catch (IllegalActionException e) {
+                // This should not happen.
             }
+            String truncated = StringUtilities
+                        .truncateString(value, width, 1);
+            LabelFigure label = new LabelFigure(name + ": " 
+                    + truncated,
+                    _labelFont, 1.0, SwingConstants.SOUTH_WEST);
+            background.add(label);
+            return background;
         } else {
+            String name = container.getName();
+            LabelFigure label = new LabelFigure(name, _labelFont, 1.0,
+                    SwingConstants.SOUTH_WEST);
+            background.add(label);
             return background;
         }
     }
