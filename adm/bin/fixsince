@@ -12,8 +12,8 @@
 # by running diff between the old release and the new release
 
 oldVersion=8.0.1
-newVersion=8.1.devel
-sinceVersion=8.1
+newVersion=9.0.devel
+sinceVersion=9.0
 
 #diffOutput=/tmp/fixsince.diffOutput.$$
 diffOutput=/tmp/pt.diffs
@@ -129,6 +129,7 @@ do
 #   else
 #       echo "Not updating copyright on $file"
        diff $file $tmpfile
+
 #  fi
   # If everything looks alright, edit /tmp//fixsince.newJavaFiles and
   # remove the leading adm/dists/ptIIX.Y.devel and then uncomment the

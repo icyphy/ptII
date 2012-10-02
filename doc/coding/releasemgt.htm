@@ -322,6 +322,15 @@ grep Copyright `egrep "^Only in ptII9.0.devel" /tmp/pt.diffs | \
    grep .java | sed 's@ptII9.0.devel/@@' | awk '{print substr($3,1,length($3)-1) "/" $4}'`
 </pre>
 
+<pre>
+grep Copyright `egrep "^Only in ptII9.0.devel" /tmp/pt.diffs | \
+   grep .java | sed 's@ptII9.0.devel/@@' | awk '{print substr($3,1,length($3)-1) "/" $4}'` | grep -v `date +%Y` > /tmp/c2
+</pre>
+See $PTII/adm/copyright/fixcopyright, but basically:
+<pre>
+cat /tmp/c2 | grep Regents | awk -F : '{print $1}'
+</pre>
+
 <li> Run <CODE>$PTII/adm/bin/fixsince</CODE> (not shipped with
 the release) and update the @since tags.  To use
 <code>fixsince</code>, first edit <code>$PTII/adm/bin/fixsince</code>
