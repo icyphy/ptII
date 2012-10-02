@@ -470,13 +470,17 @@ public class FMUImport extends TypedAtomicActor implements ContinuousStepSizeCon
     public static void importFMU(Object originator, String fmuFileName,
             NamedObj context, double x, double y)
             throws IllegalActionException, IOException {
+        System.out.println("FMUImport.importFMU(): " + fmuFileName);
         // This method is called by the gui to import a fmu file and create the
         // actor.
         // The primary issue is that we need to define the ports early on and
         // handle
         // changes to the ports.
+
+        // FIXME: ignore errors loading shared libraries.
+        // This should be made a parameter.
         FMIModelDescription fmiModelDescription = FMUFile
-                .parseFMUFile(fmuFileName);
+            .parseFMUFile(fmuFileName, true);
 
         // FIXME: Use URLs, not files so that we can work from JarZip files.
 
@@ -921,14 +925,18 @@ public class FMUImport extends TypedAtomicActor implements ContinuousStepSizeCon
             _fmuFileModificationTime = modificationTime;
 
             // Calling parseFMUFile also loads the share library.
-            _fmiModelDescription = FMUFile.parseFMUFile(fmuFileName);
+            // FIXME: ignore errors loading shared libraries.
+            // This should be made a parameter.
+            _fmiModelDescription = FMUFile.parseFMUFile(fmuFileName, true);
 
-            _fmiDoStep = _fmiModelDescription.nativeLibrary
+            if (_fmiModelDescription.nativeLibrary != null) {
+                _fmiDoStep = _fmiModelDescription.nativeLibrary
                     .getFunction(_fmiModelDescription.modelIdentifier
                             + "_fmiDoStep");
-            _fmiInstantiateSlave = _fmiModelDescription.nativeLibrary
+                _fmiInstantiateSlave = _fmiModelDescription.nativeLibrary
                     .getFunction(_fmiModelDescription.modelIdentifier
                             + "_fmiInstantiateSlave");
+            }
 
         } catch (IOException ex) {
             throw new IllegalActionException(this, ex,
