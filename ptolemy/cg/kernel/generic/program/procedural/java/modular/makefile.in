@@ -23,12 +23,7 @@ CLASSPATH = $(PTCGLIBRARIES)$(CLASSPATHSEPARATOR)..
 USER_JAVAC_FLAGS =
 
 @modelName@.class: @modelName@.java
-	pwd
-	ls -l
-	@PTJavaCompiler@ -version
-	-@PTJavaCompiler@ -verbose -classpath "$(CLASSPATH)" $(WARNING_CC_FLAGS) $(JAVAC_FLAGS) $(USER_JAVAC_FLAGS) @modelName@.java
-	ls -l @modelName@.java
-	head @modelName@.java
+	-@PTJavaCompiler@ -classpath "$(CLASSPATH)" $(WARNING_CC_FLAGS) $(JAVAC_FLAGS) $(USER_JAVAC_FLAGS) @modelName@.java
 
 run: @modelName@.class
 	"java" -classpath "$(CLASSPATH)" @modelName@
