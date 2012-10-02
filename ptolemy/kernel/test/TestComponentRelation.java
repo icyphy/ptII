@@ -76,7 +76,7 @@ public class TestComponentRelation extends ComponentRelation {
 
     /** Test _propagateExistence()
      *  @param container The container.
-     *  @return What ever _propagateExistance(container) returns.
+     *  @return What ever _propagateExistence(container) returns.
      *  @exception IllegalActionException If the object
      *   cannot be cloned.
      */

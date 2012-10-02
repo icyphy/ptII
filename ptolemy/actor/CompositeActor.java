@@ -215,7 +215,7 @@ public class CompositeActor extends CompositeEntity implements Actor,
     }
 
     /** Add the specified object to the set of objects whose
-     *  preinitialize(), intialize(), and wrapup()
+     *  preinitialize(), initialize(), and wrapup()
      *  methods should be invoked upon invocation of the corresponding
      *  methods of this object.
      *  @param initializable The object whose methods should be invoked.

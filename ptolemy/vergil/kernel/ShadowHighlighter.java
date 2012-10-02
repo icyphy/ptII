@@ -65,7 +65,7 @@ public class ShadowHighlighter extends BasicHighlighter {
      *  and compositing operation.
      *  @param paint The paint.
      *  @param halo The halo, which is the size of the shadow.
-     *  @param composite The composoting operation.
+     *  @param composite The compositing operation.
      */
     public ShadowHighlighter(Paint paint, float halo, Composite composite) {
         super(paint, halo, composite);
@@ -76,7 +76,7 @@ public class ShadowHighlighter extends BasicHighlighter {
      *  draws an outline only and does not fill it.
      *  @param paint The paint.
      *  @param halo The halo, which is the size of the shadow.
-     *  @param composite The composoting operation.
+     *  @param composite The compositing operation.
      *  @param stroke The stroke
      */
     public ShadowHighlighter(Paint paint, float halo, Composite composite,

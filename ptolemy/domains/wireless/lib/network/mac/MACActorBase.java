@@ -541,7 +541,7 @@ public class MACActorBase extends NetworkActorBase {
     }
 
     // A convenient method for the MAC actors to set an
-    // attibute of the MAC composite.
+    // attribute of the MAC composite.
     protected void _setAttribute(Attribute attribute, Token token)
             throws IllegalActionException {
         if (attribute != null) {

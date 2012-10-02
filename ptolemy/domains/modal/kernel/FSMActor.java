@@ -317,7 +317,7 @@ public class FSMActor extends CompositeEntity implements TypedActor,
     }
 
     /** Add the specified object to the list of objects whose
-     *  preinitialize(), intialize(), and wrapup()
+     *  preinitialize(), initialize(), and wrapup()
      *  methods should be invoked upon invocation of the corresponding
      *  methods of this object.
      *  @param initializable The object whose methods should be invoked.
@@ -358,7 +358,7 @@ public class FSMActor extends CompositeEntity implements TypedActor,
         _initializables = null;
         FSMActor newObject = (FSMActor) super.clone(workspace);
         _initializables = oldInitializables;
-        // If the next line is uncommented, the IntializationBug.xml fails.
+        // If the next line is uncommented, the InitializationBug.xml fails.
         // newObject._initializables = null;
 
         newObject._currentState = null;
@@ -1449,7 +1449,7 @@ public class FSMActor extends CompositeEntity implements TypedActor,
     }
 
     /** Remove the specified object from the list of objects whose
-     *  preinitialize(), intialize(), and wrapup()
+     *  preinitialize(), initialize(), and wrapup()
      *  methods should be invoked upon invocation of the corresponding
      *  methods of this object. If the specified object is not
      *  on the list, do nothing.

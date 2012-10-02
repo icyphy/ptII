@@ -646,7 +646,7 @@ public class ContinuousDirector extends FixedPointDirector implements
 
     /** Initialize model after type resolution.
      *  If a start time has been explicitly set, then set the start
-     *  time to that value. Otherwise, inherit if from the enviroment,
+     *  time to that value. Otherwise, inherit if from the environment,
      *  if there is one, and set it to 0.0 otherwise.
      *  In addition to calling the initialize() method of the super class,
      *  this method records the current system time as the "real" starting

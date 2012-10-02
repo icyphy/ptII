@@ -69,7 +69,7 @@ import ptolemy.util.MessageHandler;
  the home page of the Ptolemy Project with an additional
  annotation indicating that the page should be opened
  in a browser. The suffix "#in_browser" will always
- be interepreted this way. Without this suffix, Vergil
+ be interpreted this way. Without this suffix, Vergil
  will be used to open the URL. Note that Vergil's HTML
  viewer does not handle many modern pages well.
 

@@ -54,7 +54,7 @@ public class AutoCGKnownFailedTests extends AutoCGTests {
 
     /**
      * Return a two dimensional array of arrays of strings that name
-     * the model to be executed. If auto/knownFailesTests/ does not
+     * the model to be executed. If auto/knownFailedTests/ does not
      * exist, or does not contain files that end with .xml or .moml,
      * return a list with one element that contains a special string.
      *

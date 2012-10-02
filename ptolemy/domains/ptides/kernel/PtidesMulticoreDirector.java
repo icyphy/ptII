@@ -130,7 +130,7 @@ public class PtidesMulticoreDirector extends PtidesBasicDirector {
         super.initialize();
         _inputPortsForPureEvent = new HashMap<TypedIOPort, Set<TypedIOPort>>();
         _relativeDeadlineForPureEvent = new HashMap<TypedIOPort, Double>();
-        _calculateSuperdenseDependenices();
+        _calculateSuperdenseDependencies();
         _calculateDelayOffsetsTriggerOnly();
         _calculateRelativeDeadlines();
         // Create a stack to contain currently processing events on each core.
@@ -293,7 +293,7 @@ public class PtidesMulticoreDirector extends PtidesBasicDirector {
      * TypedCompositeActor. 
      * TODO: Assumes all channels have same dependency as multiport.
      */
-    protected void _calculateSuperdenseDependenices() 
+    protected void _calculateSuperdenseDependencies() 
             throws IllegalActionException {
         
         //TODO: Code assumes code generation is at atomic actor level, so if

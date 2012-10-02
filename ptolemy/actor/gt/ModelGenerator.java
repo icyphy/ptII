@@ -1,4 +1,4 @@
-/*  An actor to open a window to display the specified model and applie its
+/*  An actor to open a window to display the specified model and apply its
     inputs to the model.
 
 @Copyright (c) 2007-2009 The Regents of the University of California.
@@ -54,7 +54,7 @@ import ptolemy.moml.MoMLParser;
 //// ModelGenerator
 
 /**
-An actor to open a window to display the specified model and applie its inputs
+An actor to open a window to display the specified model and apply its inputs
 to the model.
 If inputs are provided for the moml input port, they are expected to be
 MoML strings that are to be applied to the model. This can be used, for

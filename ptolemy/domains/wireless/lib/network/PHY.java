@@ -342,7 +342,7 @@ public class PHY extends NetworkActorBase {
                 } else {
                     throw new IllegalActionException(this,
                             "trying to send a message with"
-                                    + "not compatable type : "
+                                    + "not compatible type : "
                                     + _data.toString());
                 }
 

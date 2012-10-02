@@ -103,7 +103,7 @@ import javax.swing.plaf.basic.BasicComboBoxEditor;
  query.addRadioButtons("radio", "Radio buttons", options, "water");
  </pre>
 
- @author  Edward A. Lee, Manda Sutijono, Elaine Cheong, Contributor:  Peter Reutemann, Christoh Daniel Schulze
+ @author  Edward A. Lee, Manda Sutijono, Elaine Cheong, Contributor:  Peter Reutemann, Christoph Daniel Schulze
  @version $Id$
  @since Ptolemy II 0.3
  @Pt.ProposedRating Yellow (eal)

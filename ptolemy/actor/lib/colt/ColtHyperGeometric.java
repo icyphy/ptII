@@ -101,12 +101,12 @@ public class ColtHyperGeometric extends ColtRandomSource {
      */
     public PortParameter N;
 
-    /** coltLmabda.
+    /** coltLambda.
      *  This has type int with default 1.
      */
     public PortParameter s;
 
-    /** coltLmabda.
+    /** coltLambda.
      *  This has type int with default 1.
      */
     public PortParameter n;

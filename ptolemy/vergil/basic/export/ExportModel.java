@@ -106,7 +106,7 @@ public class ExportModel {
      *  is true, and if <i>formatName</i> starts with "htm" or "HTM", then
      *  the output will include images of any plots.
      *
-     *  @param openComposites True if the CompositeEntites should be
+     *  @param openComposites True if the CompositeEntities should be
      *  open.  The <i>openComposites</i> parameter only has an effect
      *  if <i>formatName</i> starts with "htm" or "HTM".
      *

@@ -365,7 +365,7 @@ public class BasicSwitch extends MonitoredQuantityManager {
 
     /** If there are still tokens in the queue and a token has been
      *  produced in the fire, schedule a refiring.
-     *  @exception IllegalActionExecption If refiring cannot be scheduled or
+     *  @exception IllegalActionExeception If the refiring cannot be scheduled or
      *  by super class.
      */
     public boolean postfire() throws IllegalActionException {

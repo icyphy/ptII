@@ -102,7 +102,7 @@ public class FindPackages {
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
-    /** Recursivly descend the filesystem.
+    /** Recursively descend the filesystem.
      *  Directories that end in adm, CVS and vendors are skipped.
      *  @param directory  The top level directory.
      *  @param directoriesSeen A Set of objects of type File

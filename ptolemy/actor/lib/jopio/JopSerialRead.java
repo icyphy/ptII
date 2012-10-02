@@ -106,7 +106,7 @@ public class JopSerialRead extends Source {
         output.send(0, _val);
     }
 
-    /** Enable read on the next invokation of fire().
+    /** Enable read on the next invocation of fire().
      *  @exception IllegalActionException If the base class throws it.
      */
     public boolean postfire() throws IllegalActionException {

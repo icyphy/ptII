@@ -1158,7 +1158,7 @@ public class Director extends Attribute implements Executable {
     }
 
     /**
-     * Preintialize the actor.
+     * Preinitialize the actor.
      * This method is used by directors that want to instrument calls to
      * preinitialize. {@link #preinitialize()} calls this method.
      * @param actor The actor to be preinitialized.

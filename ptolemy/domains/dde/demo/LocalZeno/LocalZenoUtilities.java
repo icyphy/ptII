@@ -38,7 +38,7 @@ import ptolemy.kernel.util.IllegalActionException;
 /**
  *  Utilities for DDE LocalZeno demonstration.
  *
- *  @author Christopher Brooksn
+ *  @author Christopher Brooks
  *  @since Ptolemy II 4.1
  *  @Pt.ProposedRating Yellow (davisj)
  *  @Pt.AcceptedRating Red (davisj)

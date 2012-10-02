@@ -58,7 +58,7 @@ public abstract class MoMLFilterSimple implements MoMLFilter {
     public String filterAttributeValue(NamedObj container, String element,
             String attributeName, String attributeValue, String xmlFile,
             MoMLParser parser) {
-        // Ignore the MoMLParser argument for backward compatiblity.
+        // Ignore the MoMLParser argument for backward compatibility.
         return filterAttributeValue(container, element, attributeName,
                 attributeValue, xmlFile);
     }

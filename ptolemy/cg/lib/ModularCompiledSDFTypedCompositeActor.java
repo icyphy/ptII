@@ -592,7 +592,7 @@ public class ModularCompiledSDFTypedCompositeActor extends
             _objectWrapper = classInstance.newInstance();
 
             Method[] methods = classInstance.getMethods();
-            Method intializeMethod = null;
+            Method initializeMethod = null;
 
             for (int i = 0; i < methods.length; i++) {
                 String name = methods[i].getName();
@@ -601,7 +601,7 @@ public class ModularCompiledSDFTypedCompositeActor extends
                 }
 
                 if (name.equals("initialize")) {
-                    intializeMethod = methods[i];
+                    initializeMethod = methods[i];
                 }
             }
             if (_fireMethod == null) {
@@ -609,13 +609,13 @@ public class ModularCompiledSDFTypedCompositeActor extends
                         + "method in the wrapper class.");
             }
 
-            if (intializeMethod == null) {
-                throw new IllegalActionException(this, "Cannot find intialize "
+            if (initializeMethod == null) {
+                throw new IllegalActionException(this, "Cannot find initialize "
                         + "method in the wrapper class.");
             }
 
             //initialize the generated object
-            intializeMethod.invoke(_objectWrapper, (Object[]) null);
+            initializeMethod.invoke(_objectWrapper, (Object[]) null);
             if (_debugging) {
                 _debug("ModularCodeGenerator: Done calling initilize method for generated code.");
             }

@@ -151,7 +151,7 @@ public class TimeDelay extends Transformer {
 
         // Empty set of dependent ports.
         // This declaration is done this way for the benefit of Ptides.
-        // It is interepreted by Ptides to indicate that out-of-order
+        // It is interpreted by Ptides to indicate that out-of-order
         // execution is allowed.
         Set<Port> dependentPorts = new HashSet<Port>();
         _causalityMarker = new CausalityMarker(this, "causalityMarker");

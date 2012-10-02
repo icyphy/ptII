@@ -72,7 +72,7 @@ public class ServerUtility {
     ////                         public methods                    ////
     /**
      * Create and initialize a new MoMLParser.
-     * The parser would have BackwardCompatiblity and RemoveGraphicalClasses filters.
+     * The parser would have BackwardCompatibility and RemoveGraphicalClasses filters.
      * The RemoteGraphicalClasses would filter out only classes that are known not to be
      * portable to be portable to Android.
      * @return new MoMLParser with BackwardCompatibility and RemoveGraphicalClasses filters.

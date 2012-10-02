@@ -287,7 +287,7 @@ public class TestOracleXMLDBConnection {
             new OracleXMLDBConnection(connectionParameters);
             fail("No XmlException thrown");
         } catch (DBConnectionException e) {
-            assertTrue("Incorrect Exeption",
+            assertTrue("Incorrect Exception",
                     e.getCause() instanceof XmlException);
         }
     }
@@ -615,7 +615,7 @@ public class TestOracleXMLDBConnection {
             assertTrue("Parents returned when it should be null.",
                     parentsList == null || parentsList.size() == 0);
         } catch (DBExecutionException e) {
-            fail("Failed with execption - " + e.getMessage());
+            fail("Failed with exeception - " + e.getMessage());
         } finally {
             if (conn != null) {
                 conn.closeConnection();

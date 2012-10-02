@@ -441,7 +441,7 @@ public abstract class AbstractSearcher implements ResultHandler {
 
     /**
      * Indicate whether the searcher existing depends on the existing of other
-     * searchers. For example, the HierarchyFecther needs to be configured with
+     * searchers. For example, the HierarchyFetcher needs to be configured with
      * other dependent searcher, otherwise it is useless.
      */
     protected boolean _isIndependent = true;

@@ -43,7 +43,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 ///DataCollector
 
 /**
- This class collectes sensor update for the state of each parking spot,
+ This class collects sensor update for the state of each parking spot,
  and provides a parking client information of available parking spots.
 
  @author Yang Zhao

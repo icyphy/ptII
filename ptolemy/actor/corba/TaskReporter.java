@@ -1,4 +1,4 @@
-/* An actor that send data to a remote coordiantor.
+/* An actor that send data to a remote coordinator.
 
  Copyright (c) 1998-2011 The Regents of the University of California.
  All rights reserved.
@@ -230,7 +230,7 @@ public class TaskReporter extends Sink {
     ////                         private methods                   ////
     private ORB _orb;
 
-    //the proxy object of the Coordiantor.
+    //the proxy object of the Coordinator.
     private Coordinator _coordinator;
 
     //the name of the client application that this actor belongs to.

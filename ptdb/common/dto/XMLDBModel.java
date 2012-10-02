@@ -127,7 +127,7 @@ public class XMLDBModel implements Comparable {
      * according to their name.
      *
      * @param otherModel The other model to be compared with this model.
-     * @return The value to indicate the result of comparation. If the returned
+     * @return The value to indicate the result of comparision. If the returned
      * value is larger than 0, it means the otherModel is smaller.  If the
      * returned value is less than 0, it means the otherModel is larger. If 0
      * is returned, it means these two models are equal.

@@ -383,7 +383,7 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
      *  unblock the process, and inform the director of the same.
      *  @param token The token to be put in the receiver, or null to not put anything.
      *  @exception NoRoomException If during initialization, capacity cannot be increased
-     *   enough to accomodate initial tokens.
+     *   enough to accommodate initial tokens.
      */
     public void put(Token token) throws NoRoomException {
         IOPort port = getContainer();
@@ -418,7 +418,7 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
                                     _queue.setCapacity(_queue.getCapacity() + 1);
                                 } catch (IllegalActionException e) {
                                     throw new NoRoomException(getContainer(),
-                                            "Failed to increase queue capacity enough to accomodate initial tokens");
+                                            "Failed to increase queue capacity enough to accommodate initial tokens");
                                 }
                             }
                         }

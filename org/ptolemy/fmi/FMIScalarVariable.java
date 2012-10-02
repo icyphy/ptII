@@ -396,7 +396,7 @@ public class FMIScalarVariable {
          *  and at event instances.
          */
         discrete,
-        /** The value does not change after initailization.
+        /** The value does not change after initialization.
          */
         parameter
     }
@@ -459,7 +459,7 @@ public class FMIScalarVariable {
      *  @param fmiComponent The Functional Mock-up Interface (FMI)
      *  component that contains a reference to the variable.
      *  @param valueBuffer The buffer that contains the value to be gotten or set.
-     *  For booleans, doubles and integeers, this is a Buffer, for
+     *  For booleans, doubles and integers, this is a Buffer, for
      *  String it is a PointerByReference
      *  @param typeClass The expected class of the type.
      *  @param getOrSetFunction the fmiGet or fmiSet function.
@@ -486,7 +486,7 @@ public class FMIScalarVariable {
      *  @param fmiComponent The Functional Mock-up Interface (FMI)
      *  component that contains a reference to the variable.
      *  @param valueBuffer The buffer that contains the value to be gotten.
-     *  For booleans, doubles and integeers, this is a Buffer, for
+     *  For booleans, doubles and integers, this is a Buffer, for
      *  String it is a PointerByReference
      *  @param typeClass The expected class of the type.
      */
@@ -498,7 +498,7 @@ public class FMIScalarVariable {
      *  @param fmiComponent The Functional Mock-up Interface (FMI)
      *  component that contains a reference to the variable.
      *  @param valueBuffer The buffer that contains the value to be set.
-     *  For booleans, doubles and integeers, this is a Buffer, for
+     *  For booleans, doubles and integers, this is a Buffer, for
      *  String it is a PointerByReference
      *  @param typeClass The expected class of the type.
      */

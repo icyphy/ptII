@@ -2432,7 +2432,7 @@ public class DEDirector extends Director implements SuperdenseTimeDirector {
         /** Return a collection of the input ports in this actor that are
          *  in the same equivalence class with the specified input
          *  port. This class returns a collection of all
-         *  the input ports of the continer actor.
+         *  the input ports of the container actor.
          *  @param input The port to find the equivalence class of.
          *  @return set of the input ports in this actor that are
          *  in an equivalence class with the specified input.

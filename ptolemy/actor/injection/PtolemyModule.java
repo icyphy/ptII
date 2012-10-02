@@ -52,7 +52,7 @@ import java.util.ResourceBundle;
 public class PtolemyModule {
 
     /**
-     * Create a new intance of the PtolemyModule based on the provided moduleBundle.
+     * Create a new instance of the PtolemyModule based on the provided moduleBundle.
      * @param moduleBundle The moduleBundle contains mappings from platform independent
      * interfaces to platform dependent implementations.  The bundle must have key value mappings
      * from the fully specified interface name to the fully specified class name.

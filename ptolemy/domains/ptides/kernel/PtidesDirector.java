@@ -292,7 +292,7 @@ public class PtidesDirector extends DEDirector {
             for (PtidesEvent event : list) {
                 if (event.ioPort() != null) {
                     _currentLogicalTime = event.timeStamp();
-                    _currentLocialIndex = event.microstep();
+                    _currentLogicalIndex = event.microstep();
                     event.receiver().put(event.token());
                     _currentLogicalTime = null;
                 }
@@ -307,7 +307,7 @@ public class PtidesDirector extends DEDirector {
         if (list != null) {
             for (PtidesEvent event : list) {
                 _currentLogicalTime = event.timeStamp();
-                _currentLocialIndex = event.microstep();
+                _currentLogicalIndex = event.microstep();
                 if (event.ioPort() instanceof PtidesPort) {
                     double deviceDelay = _getDoubleParameterValue(
                             event.ioPort(), "deviceDelay");
@@ -343,7 +343,7 @@ public class PtidesDirector extends DEDirector {
                 PtidesEvent event = ptidesOutputPortList.peek();
                 if (event.absoluteDeadline().equals(localClock.getLocalTime())) {
                     _currentLogicalTime = event.timeStamp();
-                    _currentLocialIndex = event.microstep();
+                    _currentLogicalIndex = event.microstep();
                     event.ioPort().send(0, event.token());
                     _currentLogicalTime = null;
                     ptidesOutputPortList.poll();
@@ -414,7 +414,7 @@ public class PtidesDirector extends DEDirector {
     @Override
     public int getMicrostep() {
         if (_currentLogicalTime != null) {
-            return _currentLocialIndex;
+            return _currentLogicalIndex;
         }
         return super.getMicrostep();
     }
@@ -460,7 +460,7 @@ public class PtidesDirector extends DEDirector {
         _relativeDeadlineForPureEvent = new HashMap<TypedIOPort, Double>();
         _executionTimes = new HashMap<Actor, Time>();
 
-        _calculateSuperdenseDependenices();
+        _calculateSuperdenseDependencies();
         _calculateDelayOffsets();
         _calculateRelativeDeadlines();
 
@@ -755,7 +755,7 @@ public class PtidesDirector extends DEDirector {
      * TypedCompositeActor.
      * TODO: Assumes all channels have same dependency as multiport.
      */
-    protected void _calculateSuperdenseDependenices()
+    protected void _calculateSuperdenseDependencies()
             throws IllegalActionException {
 
         //TODO: Code assumes code generation is at atomic actor level, so if
@@ -1141,7 +1141,7 @@ public class PtidesDirector extends DEDirector {
                 }
 
                 _currentLogicalTime = ptidesEvent.timeStamp();
-                _currentLocialIndex = ptidesEvent.microstep();
+                _currentLogicalIndex = ptidesEvent.microstep();
                 boolean prefire = ptidesEvent.actor().prefire();
                 _currentLogicalTime = null;
 
@@ -1158,7 +1158,7 @@ public class PtidesDirector extends DEDirector {
                 if (prefire && _schedule(ptidesEvent, _getExecutionTime(queue != _pureEvents &&
                             ptidesEvent.actor() instanceof TimeDelay, ptidesEvent.actor()))) {
                     _currentLogicalTime = ptidesEvent.timeStamp();
-                    _currentLocialIndex = ptidesEvent.microstep();
+                    _currentLogicalIndex = ptidesEvent.microstep();
                     _removeEventsFromQueue(queue, ptidesEvent);
                     return ptidesEvent.actor();
                 }
@@ -1455,7 +1455,7 @@ public class PtidesDirector extends DEDirector {
     ////                         private variables                 ////
 
     private Time _currentLogicalTime;
-    private int _currentLocialIndex;
+    private int _currentLogicalIndex;
 
     /** The execution times of actors.
      */

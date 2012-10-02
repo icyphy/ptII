@@ -4396,7 +4396,7 @@ public class IOPort extends ComponentPort {
     /** Flag that is true if there are port event listeners. */
     protected boolean _hasPortEventListeners = false;
 
-    /** The list of IOPortEventLsteners registered with this object.
+    /** The list of IOPortEventListeners registered with this object.
      *  NOTE: Because of the way we synchronize on this object, it should
      *  never be reset to null after the first list is created.
      */

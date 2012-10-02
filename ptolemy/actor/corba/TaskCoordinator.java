@@ -55,7 +55,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 //// PushSupplier
 
 /**
- An actor that coordiantor a set of clients connecting to it to work together
+ An actor that coordinator a set of clients connecting to it to work together
  to finish some tasks.
 
  It has an inner class that implements the Coordinator interface defined in
@@ -68,7 +68,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  where "xyz.eecs.berkeley.edu" is the machine runing name server, and
  "1050" is the port for name service.
 
- Specify the name of the coordinator with <i>coordiatorName<i> that it wants
+ Specify the name of the coordinator with <i>coordinatorName<i> that it wants
  to register to the name service.
 
  @author Yang Zhao

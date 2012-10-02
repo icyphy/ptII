@@ -95,7 +95,7 @@ public class IconScript extends Script implements WebExportable {
     public StringParameter startText;
 
     /** jQuery libraries to be included in the HEAD section of the html file
-     * The path to the libraries will be copyed in the same order as given.
+     * The path to the libraries will be copied in the same order as given.
      */
     public StringParameter jQueryLibraries;
 

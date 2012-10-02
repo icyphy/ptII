@@ -108,15 +108,15 @@ public class Video extends TypedAtomicActor implements PortablePlaceable {
     }
 
     /** Fire the actor.
-     * Actually implementation is contained within interface implementation.
+     * The actual implementation is contained within the interface implementation.
      */
     @Override
     public void fire() throws IllegalActionException {
         _interface.fire();
     }
 
-    /** Update the bounding box coordinatess
-     * Actually implementation is contained within interface implementation.
+    /** Update the bounding box coordinates.
+     * The actual implementation is contained within the interface implementation.
      * @param x1 top left x
      * @param y1 top left y
      * @param x2 bottom right x

@@ -39,7 +39,7 @@ import ptolemy.cg.kernel.generic.program.NamedProgramCodeGeneratorAdapter;
  * @author Christopher Brooks, based on CurrentTime by Man-Kit Leung
  * @version $Id$
  * @since Ptolemy II 8.0
- * @Pt.ProposedRating Gree (cxh)
+ * @Pt.ProposedRating Green (cxh)
  * @Pt.AcceptedRating Green (cxh)
  *
  */

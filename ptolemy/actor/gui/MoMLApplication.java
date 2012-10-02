@@ -59,7 +59,7 @@ import ptolemy.util.StringUtilities;
  @see Configuration
  */
 public class MoMLApplication extends ConfigurationApplication {
-    /** Parse the specified command-line arguments, instatiating classes
+    /** Parse the specified command-line arguments, instantiating classes
      *  and reading files that are specified.
      *  @param args The command-line arguments.
      *  @exception Exception If command line arguments have problems.

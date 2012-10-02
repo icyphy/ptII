@@ -55,7 +55,7 @@ import ptolemy.kernel.util.Workspace;
 //// ComponentActor
 
 /**
- A Component is outside compatable with components and inside compatable
+ A Component is outside compatible with components and inside compatable
  with actors.
 
  @author Yang Zhao

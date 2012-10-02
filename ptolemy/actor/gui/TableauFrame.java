@@ -1447,7 +1447,7 @@ public class TableauFrame extends Top {
         }
     }
 
-    /** Clear  placeable or porablePlacable or by passing a null container to it.
+    /** Clear placeable and portablePlaceable by passing a null container.
      *
      */
     private void _clearPlaceable() {
@@ -1459,7 +1459,7 @@ public class TableauFrame extends Top {
         }
     }
 
-    /** Get the appropriate instance of intance of Placeable or PortablePlaceable,
+    /** Get the appropriate instance of instance of Placeable or PortablePlaceable,
      *  depending upon what is initialized.
      *
      *  @return Instance of Placeable or PortablePlaceable

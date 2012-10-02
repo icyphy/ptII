@@ -38,7 +38,7 @@ import ptolemy.util.StringUtilities;
  Perform real-time pitch shifting of audio signals. This only works
  for audio signals that have either a unique pitch or no pitch at
  any given time (pitched or unpitched, voiced or unvoiced). Examples
- inlude human vocal sounds and sounds from musical instruments capable
+ include human vocal sounds and sounds from musical instruments capable
  of playing only one note at a times (e.g., horns, flute). The pitch
  shifting algorithm is based on the algorithm proposed by Keith Lent
  in his paper: "An efficient Method for Pitch Shifting Digitally

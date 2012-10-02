@@ -113,7 +113,7 @@ public class Processor extends CSPActor {
     public TypedIOPort requestInput;
 
     /** The resource request output port. Resource requests are made
-     *  through this port with a token that includebs the requestor's
+     *  through this port with a token that includes the requestor's
      *  priority level. The type of this port is BaseType.INT.
      */
     public TypedIOPort requestOutput;

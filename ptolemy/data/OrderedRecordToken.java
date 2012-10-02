@@ -222,7 +222,7 @@ public class OrderedRecordToken extends RecordToken {
         return new OrderedRecordToken(labels, values);
     }
 
-    /**  Intialize the storage used by this token.  OrderedRecordToken
+    /**  Initialize the storage used by this token.  OrderedRecordToken
      *   uses a LinkedHashMap so that the original order of the record
      *   is maintained.
      */

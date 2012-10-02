@@ -54,7 +54,7 @@ import chic.ChicForPtolemy;
  right clicking on the attribute and selecting one of the options:
  "CHIC: Asynchronous I/O" and "CHIC: Synchronous A/G".
  The expression of the InterfaceName attribute specifies the name of the
- ChicAttribute that is going to be used upon invokation of Chic.
+ ChicAttribute that is going to be used upon invocation of Chic.
  Note that every directly or indirectly contained port of the attribute's
  container must have a name syntactically equivalent to a Java identifier.
 
@@ -105,7 +105,7 @@ public class ChicInvoker extends Attribute {
     ////                         public methods                    ////
 
     /** Check the interface compatibility of all entities that are directly
-     *  or indirectly contained by the container of this attibute.
+     *  or indirectly contained by the container of this attribute.
      *  @param compiler The compiler of Chic to use.
      *  @see #ASYNCHRONOUS_IO
      *  @see #SYNCHRONOUS_AG

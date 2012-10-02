@@ -346,7 +346,7 @@ public class Title extends StringParameter implements WebExportable {
      *  or an element, but not a document.
      *
      *  @param exporter  The web exporter to which to write content.
-     *  @exception IllegalActionExeption If there is a problem creating
+     *  @exception IllegalActionException If there is a problem creating
      *  the content or setting the attribute.
      */
     public void provideContent(WebExporter exporter)
