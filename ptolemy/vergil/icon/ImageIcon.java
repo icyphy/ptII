@@ -266,13 +266,13 @@ public class ImageIcon extends DynamicEditorIcon implements ImageObserver {
                         // This occurs when running
                         // $PTII/bin/ptcg -language java $PTII/ptolemy/moml/filter/test/auto/modulation2.xml
                         // Negative argument indicates to maintain aspect ratio.
-                        _scaledImage = _image.getScaledInstance(newWidth,
-                                                                -1, Image.SCALE_SMOOTH);
+                        _scaledImage = _image.getScaledInstance(newWidth, -1,
+                                Image.SCALE_SMOOTH);
 
                         _scalePercentageImplemented = _scalePercentage;
 
                         if (tk.prepareImage(_scaledImage, width, height,
-                                            ImageIcon.this)) {
+                                ImageIcon.this)) {
                             // Image is fully prepared. Request a re-rendering.
                             _updateFigures();
                         }

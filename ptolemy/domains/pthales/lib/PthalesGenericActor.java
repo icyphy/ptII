@@ -286,8 +286,7 @@ public class PthalesGenericActor extends PthalesAtomicActor {
             if (listArgs[i].equals("port")) {
                 if (listArgs[i + 1].equals("OUT")) {
                     Integer[] sizes = PthalesIOPort
-                            .getDataProducedSizes((IOPort) outputPortList()
-                                    .get(numOut));
+                            .getDataProducedSizes(outputPortList().get(numOut));
                     for (int size : sizes) {
                         if (size > 1) {
                             objs.add(size);
@@ -298,8 +297,7 @@ public class PthalesGenericActor extends PthalesAtomicActor {
                 }
                 if (listArgs[i + 1].equals("IN")) {
                     Integer[] sizes = PthalesIOPort
-                            .getDataProducedSizes(((IOPort) inputPortList()
-                                    .get(numIn)));
+                            .getDataProducedSizes(inputPortList().get(numIn));
                     for (int size : sizes) {
                         if (size > 1) {
                             objs.add(size);

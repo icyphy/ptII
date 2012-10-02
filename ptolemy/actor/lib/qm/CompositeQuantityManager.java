@@ -79,7 +79,8 @@ import ptolemy.kernel.util.NameDuplicationException;
  *  @Pt.ProposedRating Yellow (derler)
  *  @Pt.AcceptedRating Red (derler)
  */
-public class CompositeQuantityManager extends TypedCompositeActor implements QuantityManager {
+public class CompositeQuantityManager extends TypedCompositeActor implements
+        QuantityManager {
 
     /** Construct a TypedCompositeActor with a name and a container.
      *  The container argument must not be null, or a
@@ -109,7 +110,6 @@ public class CompositeQuantityManager extends TypedCompositeActor implements Qua
      */
     public ColorAttribute color;
 
-
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -126,7 +126,6 @@ public class CompositeQuantityManager extends TypedCompositeActor implements Qua
         super.attributeChanged(attribute);
     }
 
-
     /** Create a receiver to mediate a communication via the specified receiver.
      *  @param receiver Target receiver.
      *  @return never returned
@@ -136,12 +135,11 @@ public class CompositeQuantityManager extends TypedCompositeActor implements Qua
      */
     public Receiver getReceiver(Receiver receiver)
             throws IllegalActionException {
-        throw new IllegalActionException(receiver.getContainer(),
-                                         "Cannot create receiver" +
-                                         "without specifying a port of a CompositeQuantityManager.");
+        throw new IllegalActionException(
+                receiver.getContainer(),
+                "Cannot create receiver"
+                        + "without specifying a port of a CompositeQuantityManager.");
     }
-
-
 
     private boolean _receiversInvalid = true;
 
@@ -161,13 +159,13 @@ public class CompositeQuantityManager extends TypedCompositeActor implements Qua
         IntermediateReceiver intermediateReceiver = new IntermediateReceiver(
                 this, receiver, port);
 
-        if (((IOPort)(receiver.getContainer())).isInput()) {
+        if ((receiver.getContainer()).isInput()) {
             Receiver[][] result = new Receiver[1][1];
             List<Receiver[][]> occurrences = new LinkedList<Receiver[][]>();
             occurrences.add(result);
             HashMap<IORelation, List<Receiver[][]>> map = new HashMap<IORelation, List<Receiver[][]>>();
             map.put(new IORelation(), occurrences);
-            ((IOPort)receiver.getContainer()).setLocalReceiversTable(map);
+            receiver.getContainer().setLocalReceiversTable(map);
             ArrayList<Receiver> list = new ArrayList();
             list.add(receiver);
             _outputMappings.put(port, list);
@@ -202,8 +200,6 @@ public class CompositeQuantityManager extends TypedCompositeActor implements Qua
 
         _tokenCount = 0;
     }
-
-
 
     /** Override the fire and change the transferring of outputs
      *  to transfer data from output ports to target receivers.
@@ -265,8 +261,8 @@ public class CompositeQuantityManager extends TypedCompositeActor implements Qua
                     Token token = p.getInsideReceivers()[0][0].get();
                     for (Receiver receiver : receivers) {
                         receiver.put(token);
-                        sendQMTokenEvent((Actor) receiver.getContainer().getContainer(), 0,
-                                _tokenCount, EventType.SENT);
+                        sendQMTokenEvent((Actor) receiver.getContainer()
+                                .getContainer(), 0, _tokenCount, EventType.SENT);
                     }
 
                 }
@@ -276,7 +272,6 @@ public class CompositeQuantityManager extends TypedCompositeActor implements Qua
         }
 
     }
-
 
     /** Add a quantity manager monitor to the list of listeners.
      *  @param monitor The quantity manager monitor.
@@ -300,7 +295,6 @@ public class CompositeQuantityManager extends TypedCompositeActor implements Qua
         // FIXME what to do here?
     }
 
-
     /** Notify the monitor that an event happened.
      *  @param source The source actor that caused the event in the
      *      quantity manager.
@@ -322,7 +316,6 @@ public class CompositeQuantityManager extends TypedCompositeActor implements Qua
         }
     }
 
-
     /** Use other sendToken method.
      *  @param source Receiver that sent the token.  Ignored in this method.
      *  @param receiver The receiver for which this quantity manager is mediating
@@ -332,7 +325,7 @@ public class CompositeQuantityManager extends TypedCompositeActor implements Qua
      *  @exception IllegalActionException Always thrown because a port must be specified
      */
     public void sendToken(Receiver source, Receiver receiver, Token token)
-        throws IllegalActionException {
+            throws IllegalActionException {
         throw new IllegalActionException(this, "Port must be specified");
     }
 
@@ -344,16 +337,18 @@ public class CompositeQuantityManager extends TypedCompositeActor implements Qua
      *  @param port Input port that should get the token.
      *  @exception IllegalActionException
      */
-    public void sendToken(Receiver source, Receiver receiver, Token token, IOPort port)
-            throws IllegalActionException {
+    public void sendToken(Receiver source, Receiver receiver, Token token,
+            IOPort port) throws IllegalActionException {
         if (port.isInput()) {
             prefire(); // has to be done such that the director gets the current time
             for (int i = 0; i < port.insidePortList().size(); i++) {
-                ((IOPort)port.insidePortList().get(i)).getReceivers()[0][0].put(token);
-                ((CompositeActor)getContainer()).getDirector().fireAtCurrentTime(this);
+                ((IOPort) port.insidePortList().get(i)).getReceivers()[0][0]
+                        .put(token);
+                ((CompositeActor) getContainer()).getDirector()
+                        .fireAtCurrentTime(this);
             }
-            sendQMTokenEvent((Actor) source.getContainer().getContainer(),
-                    0, _tokenCount, EventType.RECEIVED);
+            sendQMTokenEvent((Actor) source.getContainer().getContainer(), 0,
+                    _tokenCount, EventType.RECEIVED);
         } else {
             throw new IllegalActionException(this,
                     "Outputs should be sent to target receivers in the fire, not in this method!");
@@ -373,13 +368,13 @@ public class CompositeQuantityManager extends TypedCompositeActor implements Qua
      * @exception IllegalActionException If color attribute cannot be initialized.
      * @exception NameDuplicationException If color attribute cannot be initialized.
      */
-    private void _initialize() throws IllegalActionException, NameDuplicationException {
+    private void _initialize() throws IllegalActionException,
+            NameDuplicationException {
         _listeners = new ArrayList();
         _outputMappings = new HashMap();
         color = new ColorAttribute(this, "_color");
         color.setExpression("{1.0,0.0,0.0,1.0}");
     }
-
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
@@ -389,6 +384,5 @@ public class CompositeQuantityManager extends TypedCompositeActor implements Qua
 
     /** Listeners registered to receive events from this object. */
     private ArrayList<QuantityManagerListener> _listeners;
-
 
 }

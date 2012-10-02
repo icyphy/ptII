@@ -33,7 +33,6 @@ import org.ptolemy.fmi.FMILibrary;
 import com.sun.jna.Function;
 import com.sun.jna.NativeLibrary;
 
-
 ///////////////////////////////////////////////////////////////////
 //// FMUDriver
 
@@ -66,7 +65,6 @@ public abstract class FMUDriver {
         return _nativeLibrary.getFunction(_modelIdentifier + name);
     }
 
-
     /** Invoke a function that returns an integer representing the
      *  FMIStatus return value.
      *  @param name The name of the function.
@@ -75,7 +73,7 @@ public abstract class FMUDriver {
      *  The message should end with ": " because the return value
      *  of the function will be printed after the error message.
      */
-    public void invoke(String name, Object [] arguments, String message) {
+    public void invoke(String name, Object[] arguments, String message) {
         Function function = getFunction(name);
         invoke(function, arguments, message);
     }
@@ -88,12 +86,12 @@ public abstract class FMUDriver {
      *  The message should end with ": " because the return value
      *  of the function will be printed after the error message.
      */
-    public void invoke(Function function, Object [] arguments, String message) {
+    public void invoke(Function function, Object[] arguments, String message) {
         if (_enableLogging) {
             System.out.println("About to call " + function.getName());
         }
-        int fmiFlag = ((Integer) function.invoke(Integer.class,
-                        arguments)).intValue();
+        int fmiFlag = ((Integer) function.invoke(Integer.class, arguments))
+                .intValue();
         if (fmiFlag > FMILibrary.FMIStatus.fmiWarning) {
             throw new RuntimeException(message + fmiFlag);
         }

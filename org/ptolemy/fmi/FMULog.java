@@ -62,21 +62,21 @@ public class FMULog {
      *  @param parameters The printf style parameters.
      */
     public static void log(Pointer fmiComponent, String instanceName,
-            int status, String category, String message, Pointer /*...*/ parameters) {
+            int status, String category, String message,
+            Pointer /*...*/parameters) {
         // What to do about jni callbacks with varargs?
         // See
         // http://chess.eecs.berkeley.edu/ptexternal/wiki/Main/JNA#fmiCallbackLogger
         //System.out.println("Java FMULogger, status: " + status);
         //System.out.println("Java FMULogger, message: " + message);
 
-
         // FIXME: Need to handle the fmi-specific # format:
         // #<Type><valueReference#, where <Type> is one of
         // r, i, b or s. To print a #, use ##.
 
-        if (parameters != null ) {
+        if (parameters != null) {
             StringTokenizer tokenizer = new StringTokenizer(message, "%", false /* Return delimiters */);
-            ArrayList <Object> parameterList = new ArrayList<Object>();
+            ArrayList<Object> parameterList = new ArrayList<Object>();
             //long nativeLong = Pointer.nativeValue(parameters);
             int offset = 0;
             if (!message.startsWith("%") && tokenizer.hasMoreTokens()) {
@@ -86,7 +86,7 @@ public class FMULog {
             while (tokenizer.hasMoreTokens()) {
                 String token = tokenizer.nextToken();
                 boolean foundType = false;
-                for (int i = 0 ; i < token.length() && !foundType; i++) {
+                for (int i = 0; i < token.length() && !foundType; i++) {
                     char type = token.charAt(i);
                     //System.out.println("Token: " + token + " " + type + " " + offset);
                     switch (type) {
@@ -105,7 +105,8 @@ public class FMULog {
                         //parameterList.add(Integer.valueOf(value));
                         if (!_printedMessage) {
                             _printedMessage = true;
-                            System.out.println("FIXME: logger: don't know how to get integers, using 666 instead.");
+                            System.out
+                                    .println("FIXME: logger: don't know how to get integers, using 666 instead.");
                         }
                         parameterList.add(Integer.valueOf(666));
                         offset += 4;
@@ -118,7 +119,8 @@ public class FMULog {
                         foundType = true;
                         if (!_printedMessage) {
                             _printedMessage = true;
-                            System.out.println("FIXME: logger: don't know how to get doubles, using 666.666 instead.");
+                            System.out
+                                    .println("FIXME: logger: don't know how to get doubles, using 666.666 instead.");
                         }
                         //parameterList.add(Double.valueOf(parameters.getDouble(offset++)));
                         parameterList.add(Double.valueOf(666.666));
@@ -129,7 +131,8 @@ public class FMULog {
                         //parameterList.add(Character.valueOf(parameters.getChar(offset++)));
                         if (!_printedMessage) {
                             _printedMessage = true;
-                            System.out.println("FIXME: logger: don't know how to get chars, using ! instead.");
+                            System.out
+                                    .println("FIXME: logger: don't know how to get chars, using ! instead.");
                         }
                         parameterList.add(Character.valueOf('!'));
                         offset += 1;
@@ -142,7 +145,8 @@ public class FMULog {
                         } else {
                             if (!_printedMessage) {
                                 _printedMessage = true;
-                                System.out.println("FIXME: logger: don't know how to get string other than the first string, using FIXME instead.");
+                                System.out
+                                        .println("FIXME: logger: don't know how to get string other than the first string, using FIXME instead.");
                             }
                             result = "FIXME";
                         }
@@ -155,7 +159,8 @@ public class FMULog {
                         //parameterList.add(parameters.getPointer(offset++).toString());
                         if (!_printedMessage) {
                             _printedMessage = true;
-                            System.out.println("FIXME: logger: don't know how to get long other than the first string, using 666 instead.");
+                            System.out
+                                    .println("FIXME: logger: don't know how to get long other than the first string, using 666 instead.");
                         }
                         parameterList.add(Long.valueOf(666));
                         break;
@@ -181,7 +186,8 @@ public class FMULog {
             // Java format does not handle %u.  Lamers.
             message = message.replace("%u", "%d");
             //System.out.println("Java FMULogger, message0: " + message + " " + parameterList.size() + " " + parameterList);
-            System.out.format("Java FMULogger: " + message, parameterList.toArray());
+            System.out.format("Java FMULogger: " + message,
+                    parameterList.toArray());
             System.out.println("");
         }
     }

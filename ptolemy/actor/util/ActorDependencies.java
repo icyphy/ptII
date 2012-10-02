@@ -103,7 +103,7 @@ public class ActorDependencies {
 
         Iterator outputs = actor.outputPortList().iterator();
         while (outputs.hasNext()) {
-            IOPort output = (IOPort)outputs.next();
+            IOPort output = (IOPort) outputs.next();
             results.addAll(_dependents(output, filter));
         }
         //System.out.println("ActorDependencies.dependents: END " + actor.getFullName() + " " + results);
@@ -129,7 +129,7 @@ public class ActorDependencies {
 
         // preinitialize() creates connections between Publishers and
         // Subscribers.
-        Manager.preinitializeThenWrapup((Actor)port.getContainer());
+        Manager.preinitializeThenWrapup((Actor) port.getContainer());
 
         results.addAll(_dependents(port, filter));
 
@@ -177,7 +177,7 @@ public class ActorDependencies {
 
         Iterator inputs = actor.inputPortList().iterator();
         while (inputs.hasNext()) {
-            IOPort input = (IOPort)inputs.next();
+            IOPort input = (IOPort) inputs.next();
             //            results.addAll(_prerequisites(input, filter));
 
             Iterator ports = input.sourcePortList().iterator();
@@ -198,9 +198,10 @@ public class ActorDependencies {
                                 for (int j = 0; j < receivers[i].length; j++) {
                                     if (receivers[i][j] != null) {
                                         IOPort remotePort = receivers[i][j]
-                                            .getContainer();
+                                                .getContainer();
                                         if (remotePort != null) {
-                                            results.addAll(_prerequisites(remotePort, filter));
+                                            results.addAll(_prerequisites(
+                                                    remotePort, filter));
                                         }
                                     }
                                 }
@@ -238,14 +239,18 @@ public class ActorDependencies {
         } else {
             Receiver[][] receivers = null;
             if (port.isOutput() && port.isInput()) {
-                throw new InternalError("Can't handle port that is both input nor output: " + port);
+                throw new InternalError(
+                        "Can't handle port that is both input nor output: "
+                                + port);
             }
             if (port.isOutput()) {
                 receivers = port.getRemoteReceivers();
             } else if (port.isInput()) {
                 receivers = port.deepGetReceivers();
             } else {
-                throw new InternalError("Can't handle port that is neither input nor output: " + port);
+                throw new InternalError(
+                        "Can't handle port that is neither input nor output: "
+                                + port);
             }
             if (receivers != null) {
                 for (int i = 0; i < receivers.length; i++) {
@@ -253,10 +258,11 @@ public class ActorDependencies {
                         for (int j = 0; j < receivers[i].length; j++) {
                             if (receivers[i][j] != null) {
                                 IOPort remotePort2 = receivers[i][j]
-                                    .getContainer();
+                                        .getContainer();
                                 if (remotePort2 != null) {
                                     //System.out.println("ActorDependencies._dependents: rempotePort2: " + remotePort2.getFullName());
-                                    results.addAll(_dependents(remotePort2, filter));
+                                    results.addAll(_dependents(remotePort2,
+                                            filter));
                                 }
                             }
                         }
@@ -290,10 +296,11 @@ public class ActorDependencies {
             results.add((AtomicActor) container);
         } else {
             // Handle inside connections of an output port.
-            for ( IOPort insidePort : port.insideSourcePortList()) {
-                Iterator sourcePorts = insidePort.insideSourcePortList().iterator();
+            for (IOPort insidePort : port.insideSourcePortList()) {
+                Iterator sourcePorts = insidePort.insideSourcePortList()
+                        .iterator();
                 while (sourcePorts.hasNext()) {
-                    IOPort sourcePort = (IOPort)sourcePorts.next();
+                    IOPort sourcePort = (IOPort) sourcePorts.next();
                     container = sourcePort.getContainer();
                     if (filter.isInstance(container)) {
                         results.add((AtomicActor) container);
@@ -306,14 +313,15 @@ public class ActorDependencies {
             // Handle outside connections.
             Iterator remoteSourcePorts = port.sourcePortList().iterator();
             while (remoteSourcePorts.hasNext()) {
-                IOPort remoteSourcePort = (IOPort)remoteSourcePorts.next();
+                IOPort remoteSourcePort = (IOPort) remoteSourcePorts.next();
                 container = remoteSourcePort.getContainer();
                 if (filter.isInstance(container)) {
                     results.add((AtomicActor) container);
                 }
-                Iterator sourcePorts = remoteSourcePort.sourcePortList().iterator();
+                Iterator sourcePorts = remoteSourcePort.sourcePortList()
+                        .iterator();
                 while (sourcePorts.hasNext()) {
-                    IOPort sourcePort = (IOPort)sourcePorts.next();
+                    IOPort sourcePort = (IOPort) sourcePorts.next();
                     container = sourcePort.getContainer();
                     if (filter.isInstance(container)) {
                         results.add((AtomicActor) container);

@@ -452,7 +452,8 @@ public class DiscreteClock extends TimedSource {
         _triggered = true;
 
         if (_debugging) {
-            _debug("In initialize, requesting firing at time " + _nextOutputTime);
+            _debug("In initialize, requesting firing at time "
+                    + _nextOutputTime);
             _debug("Requesting a refiring at " + _nextOutputTime
                     + ", with index " + _nextOutputIndex);
         }

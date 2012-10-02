@@ -242,7 +242,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
     public MoMLParser(Workspace workspace, ClassLoader loader) {
         this(workspace);
         if (loader != null) {
-                _classLoader = loader;
+            _classLoader = loader;
         }
     }
 
@@ -454,7 +454,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                 && (_current != null)
                 && (name.equals("name") || name.equals("port")
                         || name.startsWith("relation") || name.equals("vertex") || name
-                        .equals("pathTo"))) {
+                            .equals("pathTo"))) {
             // See whether the name is in the translation table.
             // Note that the name might be compound, e.g. "Const.output",
             // in which case, we need to parse it and check to see whether
@@ -542,7 +542,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                     && !_namespace.equals(_AUTO_NAMESPACE)
                     && (name.equals("name") || name.equals("port")
                             || name.equals("relation") || name.equals("vertex") || name
-                            .equals("pathTo"))) {
+                                .equals("pathTo"))) {
                 value = _namespace + ":" + value;
             }
         }
@@ -2859,7 +2859,8 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
 
                 boolean skip = false;
 
-                if (source.equals("ptolemy/configs/properties/propertiesAttributeLibrary.xml")) {
+                if (source
+                        .equals("ptolemy/configs/properties/propertiesAttributeLibrary.xml")) {
                     // Certain models such as the ee149 models like
                     // eecs149/src/reading/io/Models/TimerInterrupt.xml
                     // had a StateLibrary entity that included
@@ -4070,7 +4071,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                 // or defined in scope. Search for a class definition that
                 // matches in the current context.
                 reference = _searchForClassInContext(className, /* source*/
-                null);
+                        null);
             }
 
             if (reference == null || !reference.isClassDefinition()) {
@@ -6080,12 +6081,13 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
      */
     private boolean _loadFileInContext(String fileName, NamedObj context)
             throws Exception {
-            if (_classLoader == null) {
-                    throw new InternalErrorException("_classloader is null? "
-                                            + "If you are using Eclipse, then perhaps the ptII project is in the boothpath? "
-                                            + "Check Run -> Run Configurations... -> Classpath and be sure that the ptII project "
-                                            + "is not in the Bootstrap Entries section.");
-            }
+        if (_classLoader == null) {
+            throw new InternalErrorException(
+                    "_classloader is null? "
+                            + "If you are using Eclipse, then perhaps the ptII project is in the boothpath? "
+                            + "Check Run -> Run Configurations... -> Classpath and be sure that the ptII project "
+                            + "is not in the Bootstrap Entries section.");
+        }
         URL xmlFile = _classLoader.getResource(fileName);
 
         if (xmlFile == null) {

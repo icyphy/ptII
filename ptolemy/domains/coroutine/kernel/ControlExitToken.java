@@ -31,7 +31,6 @@ the copyright link on the splash page or see copyright.htm.
  */
 package ptolemy.domains.coroutine.kernel;
 
-
 /**
  * @author shaver
  *
@@ -39,13 +38,17 @@ package ptolemy.domains.coroutine.kernel;
 public class ControlExitToken extends ControlToken {
 
     private ControlExitToken() {
-        _type      = ControlType.Non;
-        _location  = null;
+        _type = ControlType.Non;
+        _location = null;
     }
 
     public static ControlExitToken ExitToken(String etS) {
-        if (etS.contentEquals("terminate"))   return Terminate();
-        if (etS.contentEquals("suspend"))     return Suspend();
+        if (etS.contentEquals("terminate")) {
+            return Terminate();
+        }
+        if (etS.contentEquals("suspend")) {
+            return Suspend();
+        }
         return Exit(new ExitLocation(etS));
     }
 
@@ -67,8 +70,9 @@ public class ControlExitToken extends ControlToken {
         return ct;
     }
 
-    public enum ControlType  { Non, Terminate, Suspend, Exit };
-
+    public enum ControlType {
+        Non, Terminate, Suspend, Exit
+    };
 
     @Override
     public boolean isEntry() {
@@ -92,12 +96,21 @@ public class ControlExitToken extends ControlToken {
         return _type == ControlType.Exit;
     }
 
-    public ControlExitToken.ExitLocation getLocation() { return _location; }
+    public ControlExitToken.ExitLocation getLocation() {
+        return _location;
+    }
 
     public static class ExitLocation implements Location {
-        public ExitLocation(String name) { this.name = new String(name); }
-        public String toString()  { return name; }
+        public ExitLocation(String name) {
+            this.name = new String(name);
+        }
+
+        public String toString() {
+            return name;
+        }
+
         public String name;
+
         /* (non-Javadoc)
          * @see java.lang.Object#hashCode()
          */
@@ -108,23 +121,29 @@ public class ControlExitToken extends ControlToken {
             result = prime * result + ((name == null) ? 0 : name.hashCode());
             return result;
         }
+
         /* (non-Javadoc)
          * @see java.lang.Object#equals(java.lang.Object)
          */
         @Override
         public boolean equals(Object obj) {
-            if (this == obj)
+            if (this == obj) {
                 return true;
-            if (obj == null)
+            }
+            if (obj == null) {
                 return false;
-            if (getClass() != obj.getClass())
+            }
+            if (getClass() != obj.getClass()) {
                 return false;
+            }
             ExitLocation other = (ExitLocation) obj;
             if (name == null) {
-                if (other.name != null)
+                if (other.name != null) {
                     return false;
-            } else if (!name.equals(other.name))
+                }
+            } else if (!name.equals(other.name)) {
                 return false;
+            }
             return true;
         }
 
@@ -134,9 +153,11 @@ public class ControlExitToken extends ControlToken {
 
     public String toString() {
         String str = "Non";
-        /**/ if (_type == ControlType.Terminate) str = "Terminate";
-        else if (_type == ControlType.Suspend)   str = "Suspend";
-        else if (_type == ControlType.Exit)      {
+        /**/if (_type == ControlType.Terminate) {
+            str = "Terminate";
+        } else if (_type == ControlType.Suspend) {
+            str = "Suspend";
+        } else if (_type == ControlType.Exit) {
             str = "Exit[";
             str += _location.toString();
             str += "]";
@@ -147,11 +168,11 @@ public class ControlExitToken extends ControlToken {
     ////
 
     private void _setExit(ControlType t, ExitLocation l) {
-        _type      = t;
-        _location  = l;
+        _type = t;
+        _location = l;
     }
 
-    private ControlType      _type;
-    private ExitLocation     _location;
+    private ControlType _type;
+    private ExitLocation _location;
 
 }

@@ -208,14 +208,13 @@ public class TransitionController extends BasicEdgeController {
                     c.setTailEnd(blob);
                 }
                 if (transition.isImmediate() && transition.isPreemptive()) {
-                    Blob blob = new Blob(0, 0, 0, Blob.BLOB_CIRCLE_DIAMOND, 5.0,
-                            Color.red);
+                    Blob blob = new Blob(0, 0, 0, Blob.BLOB_CIRCLE_DIAMOND,
+                            5.0, Color.red);
                     blob.setFilled(true);
                     c.setTailEnd(blob);
                 }
                 if (transition.isErrorTransition()) {
-                    Blob blob = new Blob(0, 0, 0, Blob.STAR, 5.0,
-                            Color.red);
+                    Blob blob = new Blob(0, 0, 0, Blob.STAR, 5.0, Color.red);
                     blob.setFilled(true);
                     c.setTailEnd(blob);
                 }

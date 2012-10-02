@@ -200,7 +200,8 @@ public class ExpressionConceptFunctionParseTreeEvaluator extends
         if (node.getFunctionName().compareTo("lub") == 0) {
             CPO cpo = ((Ontology) argValues.get(0).getContainer())
                     .getConceptGraph();
-            Concept bound = (Concept) cpo.leastUpperBound(new HashSet<Concept>(argValues));
+            Concept bound = (Concept) cpo.leastUpperBound(new HashSet<Concept>(
+                    argValues));
             _evaluatedChildToken = new ConceptToken(bound);
             return;
         } else if (node.getFunctionName().compareTo("projectLeft") == 0) {
@@ -213,7 +214,7 @@ public class ExpressionConceptFunctionParseTreeEvaluator extends
             Concept c = argValues.get(0);
             ProductLatticeConcept p = ((ProductLatticeConcept) c);
             List<Concept> tuple = p.getConceptTuple();
-            _evaluatedChildToken = new ConceptToken(tuple.get(tuple.size()-1));
+            _evaluatedChildToken = new ConceptToken(tuple.get(tuple.size() - 1));
             return;
         }
 

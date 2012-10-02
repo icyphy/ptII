@@ -125,7 +125,6 @@ public class PublisherPort extends PubSubPort {
     ///////////////////////////////////////////////////////////////////
     ////                         parameters                        ////
 
-
     /** If true, then propagate channel name changes to any
      *  Subscribers.  The default value is a BooleanToken with the
      *  value false, indicating that if the channel name is changed,
@@ -160,7 +159,8 @@ public class PublisherPort extends PubSubPort {
      */
     @Override
     public void addInitializable(Initializable initializable) {
-        throw new InternalErrorException("Cannot add Initializables to PublisherPort.");
+        throw new InternalErrorException(
+                "Cannot add Initializables to PublisherPort.");
     }
 
     /** If a publish and subscribe channel is set, then set up the connections.
@@ -184,22 +184,22 @@ public class PublisherPort extends PubSubPort {
                 // NOTE: During cloning, the container reports that it is in a class definition!
                 // Hence, this PublisherPort has to do the registering when clone is
                 // set to no longer be a class definition.
-                if ((container instanceof InstantiableNamedObj
-                                && !((InstantiableNamedObj)container).isWithinClassDefinition())
-//                        || (container == null
-//                                && immediateContainer instanceof InstantiableNamedObj
-//                                && !((InstantiableNamedObj)immediateContainer).isWithinClassDefinition())
-                                ) {
+                if ((container instanceof InstantiableNamedObj && !((InstantiableNamedObj) container)
+                        .isWithinClassDefinition())
+                //                        || (container == null
+                //                                && immediateContainer instanceof InstantiableNamedObj
+                //                                && !((InstantiableNamedObj)immediateContainer).isWithinClassDefinition())
+                ) {
                     String newValue = channel.stringValue();
                     boolean globalValue = ((BooleanToken) global.getToken())
                             .booleanValue();
                     if (!newValue.equals(_channel) || globalValue != _global) {
-//                        if (container == null
-//                                && immediateContainer instanceof InstantiableNamedObj
-//                                && !((InstantiableNamedObj)immediateContainer).isWithinClassDefinition()) {
-//                            // Port is in the toplevel.
-//                            container = immediateContainer;
-//                        }
+                        //                        if (container == null
+                        //                                && immediateContainer instanceof InstantiableNamedObj
+                        //                                && !((InstantiableNamedObj)immediateContainer).isWithinClassDefinition()) {
+                        //                            // Port is in the toplevel.
+                        //                            container = immediateContainer;
+                        //                        }
                         if (container instanceof CompositeActor) {
                             // The vergil and config tests were failing because
                             // moml.EntityLibrary sometimes contains Subscribers.
@@ -208,14 +208,14 @@ public class PublisherPort extends PubSubPort {
                                     if (_global && !globalValue) {
                                         // Changing from global to non-global.
                                         ((CompositeActor) container)
-                                                .unregisterPublisherPort(_channel,
-                                                this, true);
+                                                .unregisterPublisherPort(
+                                                        _channel, this, true);
                                     }
                                 }
 
                                 if (attribute == channel
-                                        && (!(_channel == null || _channel.trim()
-                                        .equals("")))) {
+                                        && (!(_channel == null || _channel
+                                                .trim().equals("")))) {
                                     // Changing the channel from a previous channel name.
                                     if (((BooleanToken) propagateNameChanges
                                             .getToken()).booleanValue()) {
@@ -223,7 +223,8 @@ public class PublisherPort extends PubSubPort {
                                             _updateChannelNameOfConnectedSubscribers(
                                                     _channel, newValue);
                                         } catch (KernelException ex) {
-                                            throw new IllegalActionException(this, ex,
+                                            throw new IllegalActionException(
+                                                    this, ex,
                                                     "Failed to set channel to "
                                                             + newValue);
                                         }
@@ -231,12 +232,15 @@ public class PublisherPort extends PubSubPort {
                                 }
 
                                 if (attribute == channel
-                                        && (!(_channel == null || _channel.trim().equals("")))) {
+                                        && (!(_channel == null || _channel
+                                                .trim().equals("")))) {
                                     ((CompositeActor) container)
-                                            .unregisterPublisherPort(_channel, this, _global);
+                                            .unregisterPublisherPort(_channel,
+                                                    this, _global);
                                 }
-                                ((CompositeActor) container).registerPublisherPort(
-                                        newValue, this, globalValue);
+                                ((CompositeActor) container)
+                                        .registerPublisherPort(newValue, this,
+                                                globalValue);
 
                             } catch (NameDuplicationException e) {
                                 throw new IllegalActionException(this, e,
@@ -259,7 +263,7 @@ public class PublisherPort extends PubSubPort {
                     throw new IllegalActionException(this,
                             "initialOutputs value is required to be an array.");
                 }
-                int length = ((ArrayToken)initialOutputsValue).length();
+                int length = ((ArrayToken) initialOutputsValue).length();
                 DFUtilities.setOrCreate(this, "tokenInitProduction", length);
             }
         } else {
@@ -333,8 +337,9 @@ public class PublisherPort extends PubSubPort {
                     NamedObj container = immediateContainer.getContainer();
                     if (container instanceof CompositeActor) {
                         try {
-                            ((CompositeActor) container).unregisterPublisherPort(
-                                    channelValue, this, _global);
+                            ((CompositeActor) container)
+                                    .unregisterPublisherPort(channelValue,
+                                            this, _global);
                         } catch (NameDuplicationException e) {
                             throw new InternalErrorException(e);
                         }
@@ -351,7 +356,7 @@ public class PublisherPort extends PubSubPort {
      */
     @Override
     public void initialize() throws IllegalActionException {
-        if (((InstantiableNamedObj)getContainer()).isWithinClassDefinition()) {
+        if (((InstantiableNamedObj) getContainer()).isWithinClassDefinition()) {
             // Don't initialize Class Definitions.
             // See $PTII/ptolemy/actor/lib/test/auto/PublisherToplevelSubscriberPortAOC.xml
             return;
@@ -363,10 +368,12 @@ public class PublisherPort extends PubSubPort {
             // for a composite actor, and the right way to send outputs is
             // to populate the inside receivers.
             Receiver[][] receivers = getInsideReceivers();
-            if (receivers != null && receivers.length > 0 && receivers[0].length > 0) {
+            if (receivers != null && receivers.length > 0
+                    && receivers[0].length > 0) {
                 for (int i = 0; i < receivers.length; i++) {
                     for (int j = 0; j < receivers.length; j++) {
-                        for (Token token : ((ArrayToken) initialOutputsValue).arrayValue()) {
+                        for (Token token : ((ArrayToken) initialOutputsValue)
+                                .arrayValue()) {
                             receivers[i][j].put(token);
                         }
                     }
@@ -376,7 +383,8 @@ public class PublisherPort extends PubSubPort {
                 // send initial tokens directly from it. It is not correct to send
                 // them from the source ports connected on the inside because those
                 // ports may also have other destinations.
-                for (Token token : ((ArrayToken) initialOutputsValue).arrayValue()) {
+                for (Token token : ((ArrayToken) initialOutputsValue)
+                        .arrayValue()) {
                     broadcast(token);
                 }
             }
@@ -390,7 +398,8 @@ public class PublisherPort extends PubSubPort {
     public void preinitialize() throws IllegalActionException {
         NamedObj actor = getContainer();
         if (actor != null && actor.getContainer() == null) {
-            throw new IllegalActionException(this,
+            throw new IllegalActionException(
+                    this,
                     "PublisherPorts cannot be used at the top level, use a Publisher actor instead.");
         }
         super.preinitialize();
@@ -427,11 +436,10 @@ public class PublisherPort extends PubSubPort {
      *  @exception KernelException If thrown when a Manager is added to
      *  the top level or if preinitialize() fails.
      */
-    public Set<SubscriberPort> subscribers()
-            throws KernelException {
+    public Set<SubscriberPort> subscribers() throws KernelException {
         // preinitialize() creates connections between Publishers and
         // Subscribers.
-        Manager.preinitializeThenWrapup((Actor)getContainer());
+        Manager.preinitializeThenWrapup((Actor) getContainer());
         return _dependents(this);
     }
 
@@ -451,25 +459,28 @@ public class PublisherPort extends PubSubPort {
         //System.out.println("ActorDependencies._dependents: START" + remotePort.getFullName());
         Set<SubscriberPort> results = new HashSet<SubscriberPort>();
         if (port instanceof SubscriberPort) {
-            results.add((SubscriberPort)port);
+            results.add((SubscriberPort) port);
         } else {
             Receiver[][] receivers = null;
             if (port.isOutput() && port.isInput()) {
-                throw new IllegalActionException(port, "Can't handle port that is both input and output.");
+                throw new IllegalActionException(port,
+                        "Can't handle port that is both input and output.");
             }
             if (port.isOutput()) {
                 receivers = port.getRemoteReceivers();
             } else if (port.isInput()) {
                 receivers = port.deepGetReceivers();
             } else {
-                throw new IllegalActionException(port, "Can't handle port that is neither input nor output.");
+                throw new IllegalActionException(port,
+                        "Can't handle port that is neither input nor output.");
             }
             if (receivers != null) {
                 for (int i = 0; i < receivers.length; i++) {
                     if (receivers[i] != null) {
                         for (int j = 0; j < receivers[i].length; j++) {
                             if (receivers[i][j] != null) {
-                                IOPort remotePort2 = receivers[i][j].getContainer();
+                                IOPort remotePort2 = receivers[i][j]
+                                        .getContainer();
                                 if (remotePort2 != null) {
                                     results.addAll(_dependents(remotePort2));
                                 }
@@ -515,9 +526,11 @@ public class PublisherPort extends PubSubPort {
                     // the channel in the Publisher actor, rather than here.
                     if (port.channel.getExpression().equals("$channel")) {
                         NamedObj container = port.getContainer();
-                        Attribute containerChannel = container.getAttribute("channel");
+                        Attribute containerChannel = container
+                                .getAttribute("channel");
                         if (containerChannel instanceof StringParameter) {
-                            ((StringParameter)containerChannel).setExpression(newChannelName);
+                            ((StringParameter) containerChannel)
+                                    .setExpression(newChannelName);
                             container.attributeChanged(containerChannel);
                             port.attributeChanged(port.channel);
                         } else {

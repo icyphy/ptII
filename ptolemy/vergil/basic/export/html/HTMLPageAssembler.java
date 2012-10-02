@@ -34,6 +34,7 @@ import java.util.List;
 
 import javax.swing.text.AttributeSet;
 import javax.swing.text.BadLocationException;
+import javax.swing.text.Document;
 import javax.swing.text.Element;
 import javax.swing.text.ElementIterator;
 import javax.swing.text.html.HTML;
@@ -46,7 +47,6 @@ import ptolemy.data.ArrayToken;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.StringToken;
 import ptolemy.data.Token;
-
 import ptolemy.data.expr.FileParameter;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.StringParameter;
@@ -160,7 +160,7 @@ public class HTMLPageAssembler extends TypedAtomicActor {
             _htmlKit.read(template.openForReading(), _htmlDoc, 0);
 
             // Set the HTML page title
-            _htmlDoc.putProperty(HTMLDocument.TitleProperty, htmlTitle
+            _htmlDoc.putProperty(Document.TitleProperty, htmlTitle
                     .stringValue().trim());
 
             /*
@@ -169,7 +169,7 @@ public class HTMLPageAssembler extends TypedAtomicActor {
              * template file, or in the extra div list, throw an exception.
              */
 
-            List<TypedIOPort> portList = (List<TypedIOPort>) inputPortList();
+            List<TypedIOPort> portList = inputPortList();
             for (TypedIOPort port : portList) {
                 String divID = port.getName();
 

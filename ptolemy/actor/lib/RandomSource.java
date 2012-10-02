@@ -146,7 +146,6 @@ public abstract class RandomSource extends Source {
      */
     public Parameter privateSeed;
 
-
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 

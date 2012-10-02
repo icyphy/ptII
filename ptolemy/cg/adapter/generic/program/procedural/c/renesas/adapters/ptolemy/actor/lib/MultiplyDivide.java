@@ -33,7 +33,6 @@ import java.util.List;
 import ptolemy.cg.kernel.generic.program.CodeStream;
 import ptolemy.kernel.util.IllegalActionException;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// TimeGap
 
@@ -62,13 +61,15 @@ public class MultiplyDivide
         List<String> args = new ArrayList<String>();
         StringBuffer computeResults = new StringBuffer();
 
-        for (int i = 0; i < ((ptolemy.actor.lib.MultiplyDivide)_component).multiply.getWidth(); i++) {
-            computeResults.append("if ($hasToken(multiply#" + i + ")) {\n" +
-                    "    result = result * $get(multiply#" + i + ");\n}");
+        for (int i = 0; i < ((ptolemy.actor.lib.MultiplyDivide) _component).multiply
+                .getWidth(); i++) {
+            computeResults.append("if ($hasToken(multiply#" + i + ")) {\n"
+                    + "    result = result * $get(multiply#" + i + ");\n}");
         }
-        for (int i = 0; i < ((ptolemy.actor.lib.MultiplyDivide)_component).divide.getWidth(); i++) {
-            computeResults.append("if ($hasToken(divide#" + i + ")) {\n" +
-                    "    result = result / $get(divide#" + i + ");\n}");
+        for (int i = 0; i < ((ptolemy.actor.lib.MultiplyDivide) _component).divide
+                .getWidth(); i++) {
+            computeResults.append("if ($hasToken(divide#" + i + ")) {\n"
+                    + "    result = result / $get(divide#" + i + ");\n}");
         }
         args.add(computeResults.toString());
 

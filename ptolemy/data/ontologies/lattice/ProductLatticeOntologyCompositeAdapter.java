@@ -79,15 +79,14 @@ public class ProductLatticeOntologyCompositeAdapter extends
                 // the subadapter constraints, because that the subadapters
                 // will be added by their respective product lattice ontology
                 // adapters when super.constraintList() is called.
-                Ontology adapterOntology = adapter.getSolver()
-                    .getOntology();
+                Ontology adapterOntology = adapter.getSolver().getOntology();
                 adapter._addDefaultConstraints(adapter.getSolver()
                         ._getConstraintType());
-                ((LatticeOntologyCompositeAdapter) adapter)._addInterConnectionConstraints();
+                ((LatticeOntologyCompositeAdapter) adapter)
+                        ._addInterConnectionConstraints();
                 ProductLatticeOntologyAdapter
-                    .addConstraintsFromTupleOntologyAdapter(
-                        adapter._ownConstraints, adapterOntology,
-                        this);
+                        .addConstraintsFromTupleOntologyAdapter(
+                                adapter._ownConstraints, adapterOntology, this);
             }
         }
         return super.constraintList();
@@ -103,7 +102,8 @@ public class ProductLatticeOntologyCompositeAdapter extends
      *  of the component LatticeOntologyAdapters.
      *  @exception IllegalActionException Not thrown in this derived class.
      */
-    protected void _addInterConnectionConstraints() throws IllegalActionException {
+    protected void _addInterConnectionConstraints()
+            throws IllegalActionException {
         // Do nothing here.
     }
 

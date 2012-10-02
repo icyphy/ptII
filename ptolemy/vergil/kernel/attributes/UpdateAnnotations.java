@@ -143,14 +143,10 @@ public class UpdateAnnotations extends MoMLFilterSimple {
         if (_currentlyProcessingAnnotation
                 && container != null
                 && !container.getFullName().equals(_currentAnnotationFullName)
-                && ((_currentAnnotationFullName == null)
-                        || ((_currentAnnotationFullName != null)
-                                && !_currentAnnotationFullName
-                                .startsWith(container.getFullName())))
-                && ((_currentAnnotationFullName == null)
-                        || ((_currentAnnotationFullName != null)
-                                && !container.getFullName().startsWith(
-                                        _currentAnnotationFullName)))) {
+                && ((_currentAnnotationFullName == null) || ((_currentAnnotationFullName != null) && !_currentAnnotationFullName
+                        .startsWith(container.getFullName())))
+                && ((_currentAnnotationFullName == null) || ((_currentAnnotationFullName != null) && !container
+                        .getFullName().startsWith(_currentAnnotationFullName)))) {
             // We found another class in a different container
             // while handling an annotation.
             _reset();

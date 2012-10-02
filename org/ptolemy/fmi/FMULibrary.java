@@ -78,7 +78,8 @@ public interface FMULibrary extends FMILibrary {
                 int status, String category, String message, Pointer /*...*/
                 parameters) {
             // We place this method in separate file for testing purposes.
-            FMULog.log(fmiComponent, instanceName, status, category, message, parameters);
+            FMULog.log(fmiComponent, instanceName, status, category, message,
+                    parameters);
         }
     }
 
@@ -103,8 +104,7 @@ public interface FMULibrary extends FMILibrary {
                 // "out of memory" if they are null.
                 numberOfObjectsValue = 1;
             }
-            Memory memory = new Memory(numberOfObjectsValue
-                    * size.intValue());
+            Memory memory = new Memory(numberOfObjectsValue * size.intValue());
             // FIXME: not sure about alignment.
             Memory alignedMemory = memory.align(4);
             memory.clear();
@@ -142,8 +142,8 @@ public interface FMULibrary extends FMILibrary {
          */
         public void apply(Pointer fmiComponent, int status) {
             // FIXME: More should be done here.
-            System.out.println("Java fmiStepFinished: " + fmiComponent
-                    + " " + status);
+            System.out.println("Java fmiStepFinished: " + fmiComponent + " "
+                    + status);
         }
     };
 }

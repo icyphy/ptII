@@ -207,7 +207,6 @@ public class GetProperties extends TypedAtomicActor {
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
-
     /**
      * Do not establish the usual default type constraints.
      * @return null

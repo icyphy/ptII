@@ -1193,8 +1193,7 @@ public class SyntacticGraph extends CompositeEntity {
         }
 
         Integer ichan = null;
-        outer:
-        for (int chan = 0; chan < irecvs.length; ++chan) {
+        outer: for (int chan = 0; chan < irecvs.length; ++chan) {
             for (Receiver r : irecvs[chan]) {
                 if (r == foundr) {
                     ichan = chan;
@@ -1231,8 +1230,7 @@ public class SyntacticGraph extends CompositeEntity {
         Receiver foundr = null;
         Integer ochan = null;
 
-        outer:
-        for (int chan = 0; chan < orecvs.length; ++chan) {
+        outer: for (int chan = 0; chan < orecvs.length; ++chan) {
             for (Receiver r : orecvs[chan]) {
                 if (r.getContainer() == iport) {
                     foundr = r;

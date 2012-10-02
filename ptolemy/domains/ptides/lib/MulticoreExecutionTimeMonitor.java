@@ -77,9 +77,8 @@ public class MulticoreExecutionTimeMonitor extends Plotter implements
      *  @exception NameDuplicationException If the container already has an
      *   actor with this name.
      */
-    public MulticoreExecutionTimeMonitor(CompositeEntity container, 
-            String name) throws IllegalActionException, 
-            NameDuplicationException {
+    public MulticoreExecutionTimeMonitor(CompositeEntity container, String name)
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         // Icon.
@@ -90,16 +89,16 @@ public class MulticoreExecutionTimeMonitor extends Plotter implements
                 + "Multicore Execution\n     Time Monitor</text></svg>");
 
         // Initialize parameters.
-        monitorExecutionTimesByDefault = 
-            new Parameter(this, "monitorExecutionTimesByDefault");
+        monitorExecutionTimesByDefault = new Parameter(this,
+                "monitorExecutionTimesByDefault");
         monitorExecutionTimesByDefault.setExpression("true");
         monitorExecutionTimesByDefault.setTypeEquals(BaseType.BOOLEAN);
-        
-        disableMonitorExecutionTimes = 
-                new Parameter(this, "disableMonitorExecutionTimes");
+
+        disableMonitorExecutionTimes = new Parameter(this,
+                "disableMonitorExecutionTimes");
         disableMonitorExecutionTimes.setExpression("false");
         disableMonitorExecutionTimes.setTypeEquals(BaseType.BOOLEAN);
-        
+
         // Hide other parameters.
         SingletonParameter hide = new SingletonParameter(this, "_hideName");
         hide.setToken(BooleanToken.TRUE);
@@ -110,13 +109,13 @@ public class MulticoreExecutionTimeMonitor extends Plotter implements
         legend.setVisibility(Settable.EXPERT);
 
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         parameters                        ////
-    
+
     /** If true, displaying of execution times is disabled. */
     public Parameter disableMonitorExecutionTimes;
-    
+
     /** If true, display the execution time of an actor unless the parameter
      * 'monitorExecutionTime' is set to false. If false, the execution time 
      * of an actor is only displayed if the parameter 'monitorExecutionTime' 
@@ -136,7 +135,7 @@ public class MulticoreExecutionTimeMonitor extends Plotter implements
             ExecutionEventType scheduleEvent) {
         event(actor, time, scheduleEvent, 0);
     }
-    
+
     /** Display an execution time event.
      *  @param actor Actor of event.
      *  @param oracleTime Oracle time event occurred.
@@ -146,27 +145,27 @@ public class MulticoreExecutionTimeMonitor extends Plotter implements
      */
     public void event(Actor actor, double oracleTime, double physicalTime,
             double modelTime, ExecutionEventType event) {
-        
+
     }
-    
+
     /** Display an execution time event.
      *  @param actor Actor of event.
      *  @param time Time event occurred.
      *  @param scheduleEvent Type of event.
      *  @param core Core event occurred on.
      */
-    public void event(Actor actor, double time, ExecutionEventType 
-            scheduleEvent, int core) {
+    public void event(Actor actor, double time,
+            ExecutionEventType scheduleEvent, int core) {
 
         if (plot == null) {
             return; // No plot exists.
         }
-        
+
         int actorDataset = _actors.indexOf(actor);
         if (actorDataset == -1) {
             return; // Actor is not being monitored.
         }
-        
+
         double x = time;
         double y;
         Double point[] = new Double[2];
@@ -174,14 +173,14 @@ public class MulticoreExecutionTimeMonitor extends Plotter implements
         // occurred on. The last point for each actor on each core is saved.
         Map<Actor, Double[]> lastPoint;
         if (!_previousPoint.containsKey(Integer.valueOf(core))) {
-            
+
             // Core doesn't have map of last points for actors.
             lastPoint = new HashMap<Actor, Double[]>();
             _previousPoint.put(Integer.valueOf(core), lastPoint);
-            
+
             // Add labels to y-axis.
             for (int i = 0; i < _actors.size(); i++) {
-                          
+
                 final String name = _actors.get(i).getDisplayName();
                 final double offset = getOffset(_actors.get(i), core);
 
@@ -192,7 +191,7 @@ public class MulticoreExecutionTimeMonitor extends Plotter implements
                 };
                 synchronized (plot) {
                     plot.deferIfNecessary(doAddYTick);
-                } 
+                }
             }
 
         } else {
@@ -206,12 +205,12 @@ public class MulticoreExecutionTimeMonitor extends Plotter implements
             lastPoint.put(actor, point);
         }
         // Plot last point.
-        ((Plot)plot).addPoint(actorDataset, 
+        ((Plot) plot).addPoint(actorDataset,
                 lastPoint.get(actor)[0].doubleValue(),
                 lastPoint.get(actor)[1].doubleValue(), false);
-        ((Plot)plot).addPoint(actorDataset, x,
+        ((Plot) plot).addPoint(actorDataset, x,
                 lastPoint.get(actor)[1].doubleValue(), true);
-        
+
         // Plot event as new point.
         y = getOffset(actor, core);
         if (scheduleEvent == ExecutionEventType.START) {
@@ -220,29 +219,29 @@ public class MulticoreExecutionTimeMonitor extends Plotter implements
         } else if (scheduleEvent == ExecutionEventType.STOP) {
             _parallelMonitor.coreStops(x);
         } else if (scheduleEvent == ExecutionEventType.PREEMPTED) {
-            y += 0.33;  
+            y += 0.33;
             _parallelMonitor.coreStops(x);
         }
         point[0] = x;
-        point[1] = y;  
-        ((Plot)plot).addPoint(actorDataset, x, y, true);
+        point[1] = y;
+        ((Plot) plot).addPoint(actorDataset, x, y, true);
         lastPoint.put(actor, point);
-        
+
         Runnable doPlotActions = new Runnable() {
             public void run() {
                 plot.setXLabel(""); // Needed for padding to captions.
                 // Show parallel monitoring results in caption.
                 plot.clearCaptions();
-                plot.addCaptionLine("Time spend with number of active cores:" + _parallelMonitor.toString());
+                plot.addCaptionLine("Time spend with number of active cores:"
+                        + _parallelMonitor.toString());
                 plot.fillPlot();
             }
         };
         synchronized (plot) {
             plot.deferIfNecessary(doPlotActions);
-        } 
-        
-    }
+        }
 
+    }
 
     /** Initialize the plot. This involves finding all actors in the container
      * that will be monitored.
@@ -251,79 +250,80 @@ public class MulticoreExecutionTimeMonitor extends Plotter implements
     public void initialize() throws IllegalActionException {
 
         // Return if disabled.
-        if (((BooleanToken)disableMonitorExecutionTimes
-                .getToken()).booleanValue()) {
+        if (((BooleanToken) disableMonitorExecutionTimes.getToken())
+                .booleanValue()) {
             return;
         }
 
         _parallelMonitor = new ParallelMonitor();
-        _previousPoint = 
-            new HashMap<Integer, Map<Actor, Double[]>>();
+        _previousPoint = new HashMap<Integer, Map<Actor, Double[]>>();
         _actors = new ArrayList<Actor>();
-        TypedCompositeActor container = ((TypedCompositeActor)getContainer());
-        
+        TypedCompositeActor container = ((TypedCompositeActor) getContainer());
+
         // Register this monitor to director.
         Director director = container.getDirector();
         if (director instanceof PtidesBasicDirector) {
-            ((PtidesBasicDirector) director).
-                    registerExecutionTimeListener(this);
+            ((PtidesBasicDirector) director)
+                    .registerExecutionTimeListener(this);
         }
-        
-        // Add actors.
-        boolean monitorByDefault = ((BooleanToken)
-                monitorExecutionTimesByDefault.getToken()).booleanValue();
 
-        for (Actor actor : (List<Actor>)container.deepEntityList()) {
-            
+        // Add actors.
+        boolean monitorByDefault = ((BooleanToken) monitorExecutionTimesByDefault
+                .getToken()).booleanValue();
+
+        for (Actor actor : (List<Actor>) container.deepEntityList()) {
+
             // Ignore self.
             if (actor instanceof MulticoreExecutionTimeMonitor) {
                 continue;
             }
-            
+
             boolean monitorActor = monitorByDefault;
-            
+
             // Check if explicitly set.
-            Parameter monitor = (Parameter)
-                    ((NamedObj)actor).getAttribute("monitorExecutionTime");
+            Parameter monitor = (Parameter) ((NamedObj) actor)
+                    .getAttribute("monitorExecutionTime");
             if (monitor != null) {
-                monitorActor = 
-                        ((BooleanToken)monitor.getToken()).booleanValue();
+                monitorActor = ((BooleanToken) monitor.getToken())
+                        .booleanValue();
             }
-            
+
             if (monitorActor) {
                 _actors.add(actor);
-                
-            } 
-            
+
+            }
+
         }
-        
+
         Collections.sort(_actors, new Comparator<Actor>() {
             public int compare(Actor a1, Actor a2) {
-                Parameter a1Dataset = (Parameter)
-                ((NamedObj)a1).getAttribute("dataset");
-                Parameter a2Dataset = (Parameter)
-                ((NamedObj)a2).getAttribute("dataset");
+                Parameter a1Dataset = (Parameter) ((NamedObj) a1)
+                        .getAttribute("dataset");
+                Parameter a2Dataset = (Parameter) ((NamedObj) a2)
+                        .getAttribute("dataset");
                 if (a1Dataset != null && a2Dataset != null) {
                     try {
-                        int i1 = ((IntToken)a1Dataset.getToken()).intValue();
-                        int i2 = ((IntToken)a2Dataset.getToken()).intValue();
+                        int i1 = ((IntToken) a1Dataset.getToken()).intValue();
+                        int i2 = ((IntToken) a2Dataset.getToken()).intValue();
                         if (i1 < i2) {
                             return -1;
-                        }  
+                        }
                     } catch (IllegalActionException e) {
                     }
-                    
+
                 }
                 return 1;
-            }});
+            }
+        });
 
         // Initialize plot.
         if (plot == null) {
             plot = _newPlot();
             plot.setGrid(true);
         }
-        
-        if ((_getImplementation().getFrame() == null) && ((_getImplementation().getPlatformContainer() == null))) {
+
+        if ((_getImplementation().getFrame() == null)
+                && ((_getImplementation().getPlatformContainer() == null))) {
             // If plot was closed.
             _getImplementation().initializeEffigy();
             _implementDeferredConfigurations();
@@ -332,7 +332,7 @@ public class MulticoreExecutionTimeMonitor extends Plotter implements
             // Monitored actors may have changed so completely clear plot.
             plot.clear(true);
         }
-        
+
         // Set properties.
         Runnable doInit = new Runnable() {
             public void run() {
@@ -340,18 +340,18 @@ public class MulticoreExecutionTimeMonitor extends Plotter implements
                 plot.setButtons(true);
                 plot.setAutomaticRescale(true);
             }
-            };
+        };
         synchronized (plot) {
             plot.deferIfNecessary(doInit);
-        } 
-    
+        }
+
         _getImplementation().bringToFront();
 
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
-    
+
     /** Return the y-value that an execution time event for an actor on a core
      * should be plotted at.
      *  @param actor Actor of event.
@@ -361,16 +361,16 @@ public class MulticoreExecutionTimeMonitor extends Plotter implements
     protected double getOffset(Actor actor, int core) {
         int size = _actors.size();
         double offset = _actors.indexOf(actor);
-        offset += (size+1)*core;
+        offset += (size + 1) * core;
         return offset;
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
-    
+
     /** Contains the actors to be monitored. */
     protected List<Actor> _actors;
-    
+
     /** Monitor how much time elapses with respect to the number of cores
      * processing events at a given time.
      */
@@ -380,17 +380,16 @@ public class MulticoreExecutionTimeMonitor extends Plotter implements
      * points. 
      */
     protected Map<Integer, Map<Actor, Double[]>> _previousPoint;
-    
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
-    
+
     /** Monitor how much time elapses with respect to the number of cores
      * processing events at a given time. This provides a measure of
      * parallelization achieved.
      */
     protected class ParallelMonitor {
-        
+
         /** Construct the parallel monitor by initializing variables. */
         protected ParallelMonitor() {
             _busyTime = new HashMap<Integer, Double>();
@@ -411,7 +410,7 @@ public class MulticoreExecutionTimeMonitor extends Plotter implements
             _lastTime = time;
             _activeCores++;
         }
-        
+
         /** Call when a core stops processing an event (including preemption). 
          * @param time Time when this occurs.
          */
@@ -425,24 +424,21 @@ public class MulticoreExecutionTimeMonitor extends Plotter implements
             _lastTime = time;
             _activeCores--;
         }
-        
+
         /** Return results as a string. */
         public String toString() {
-            return _busyTime.entrySet().toString();      
+            return _busyTime.entrySet().toString();
         }
-        
+
         /** How much busy time with respect to the number of active cores. */
         private Map<Integer, Double> _busyTime;
-        
+
         /** Number of active cores. */
         private int _activeCores;
-        
+
         /** Last time number of active cores changed. */
         private double _lastTime;
 
     }
-
-
-    
 
 }

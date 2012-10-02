@@ -28,7 +28,6 @@
 package ptolemy.moml;
 
 import ptolemy.kernel.util.InternalErrorException;
-import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NamedObj;
 
 ///////////////////////////////////////////////////////////////////
@@ -54,7 +53,6 @@ public class SimpleErrorHandler implements ErrorHandler {
     public SimpleErrorHandler() {
     }
 
-
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -71,6 +69,7 @@ public class SimpleErrorHandler implements ErrorHandler {
      *  @return Never returns.
      */
     public int handleError(String element, NamedObj context, Throwable exception) {
-        throw new InternalErrorException(context, exception, "Element " + element + " caused an exception to be thrown.");
+        throw new InternalErrorException(context, exception, "Element "
+                + element + " caused an exception to be thrown.");
     }
 }

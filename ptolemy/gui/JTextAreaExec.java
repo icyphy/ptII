@@ -43,8 +43,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CancellationException;
 import java.util.concurrent.ExecutionException;
-import java.util.concurrent.TimeoutException;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
@@ -573,11 +573,15 @@ public class JTextAreaExec extends JPanel implements ExecuteCommands {
                     } catch (CancellationException ex) {
                         _statusBar.setText("Cancelled.");
                     } catch (ExecutionException ex1) {
-                        _statusBar.setText("The computation threw an exception: " + ex1.getCause());
+                        _statusBar
+                                .setText("The computation threw an exception: "
+                                        + ex1.getCause());
                     } catch (InterruptedException ex2) {
-                        _statusBar.setText("The worker thread was interrupted while waiting, which is probably not a problem.");
+                        _statusBar
+                                .setText("The worker thread was interrupted while waiting, which is probably not a problem.");
                     } catch (TimeoutException ex3) {
-                        _statusBar.setText("The wait to get the execution result timed out, which is unusual, but probably not a problem.");
+                        _statusBar
+                                .setText("The wait to get the execution result timed out, which is unusual, but probably not a problem.");
                     }
                 }
             };

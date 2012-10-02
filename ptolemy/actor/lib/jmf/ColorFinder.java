@@ -127,7 +127,8 @@ public class ColorFinder extends TypedAtomicActor {
      */
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         ColorFinder newObject = (ColorFinder) super.clone(workspace);
-        newObject.YArray = new byte[newObject._frameWidth * newObject._frameHeight];
+        newObject.YArray = new byte[newObject._frameWidth
+                * newObject._frameHeight];
         newObject.UArray = new byte[(newObject._frameWidth / 2 * newObject._frameHeight) / 2];
         newObject.VArray = new byte[(newObject._frameWidth / 2 * newObject._frameHeight) / 2];
         newObject._yClass = new int[newObject._histSize];

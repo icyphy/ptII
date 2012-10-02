@@ -126,7 +126,6 @@ public class MathematicalModelConverter extends Attribute {
 
     }
 
-
     ///////////////////////////////////////////////////////////////////
     // public methods ////
 
@@ -139,7 +138,8 @@ public class MathematicalModelConverter extends Attribute {
      *  @return The new object.
      */
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        MathematicalModelConverter newObject = (MathematicalModelConverter) super.clone(workspace);
+        MathematicalModelConverter newObject = (MathematicalModelConverter) super
+                .clone(workspace);
         // setContainer() should be called after cloning.
         newObject._model = null;
         return newObject;

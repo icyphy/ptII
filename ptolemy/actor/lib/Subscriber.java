@@ -207,8 +207,7 @@ public class Subscriber extends TypedAtomicActor {
      *  @exception KernelException If thrown when a Manager is added to
      *  the top level or if preinitialize() fails.
      */
-    public Set<AtomicActor> publishers()
-            throws KernelException {
+    public Set<AtomicActor> publishers() throws KernelException {
         return ActorDependencies.prerequisites(this, Publisher.class);
     }
 
@@ -227,4 +226,3 @@ public class Subscriber extends TypedAtomicActor {
         input = new SubscriberPort(this, "input");
     }
 }
-

@@ -125,7 +125,8 @@ import ptolemy.kernel.util.Workspace;
  @Pt.ProposedRating Green (eal)
  @Pt.AcceptedRating Yellow (neuendor)
  */
-public class PortParameter extends AbstractInitializableParameter implements Initializable {
+public class PortParameter extends AbstractInitializableParameter implements
+        Initializable {
     /** Construct a parameter with the given name contained by the specified
      *  entity. The container argument must not be null, or a
      *  NullPointerException will be thrown.  This parameter will create
@@ -142,8 +143,8 @@ public class PortParameter extends AbstractInitializableParameter implements Ini
         super(container, name);
         // If we get to here, we know the container is a ComponentEntity,
         // so the cast is safe.
-        if (container instanceof MirrorComposite.MirrorCompositeContents ||
-                container instanceof MirrorComposite) {
+        if (container instanceof MirrorComposite.MirrorCompositeContents
+                || container instanceof MirrorComposite) {
             _port = new ParameterMirrorPort((ComponentEntity) container, name);
         } else if (container instanceof TypedActor) {
             _port = new ParameterPort((ComponentEntity) container, name);
@@ -176,7 +177,7 @@ public class PortParameter extends AbstractInitializableParameter implements Ini
         setToken(token);
         if (token != null) {
             if (isStringMode() && token instanceof StringToken) {
-                _persistentExpression = ((StringToken)token).stringValue();
+                _persistentExpression = ((StringToken) token).stringValue();
             } else {
                 _persistentExpression = token.toString();
             }
@@ -390,7 +391,7 @@ public class PortParameter extends AbstractInitializableParameter implements Ini
     public void setToken(Token newValue) throws IllegalActionException {
         if (newValue != null) {
             if (isStringMode() && newValue instanceof StringToken) {
-                _persistentExpression = ((StringToken)newValue).stringValue();
+                _persistentExpression = ((StringToken) newValue).stringValue();
             } else {
                 _persistentExpression = newValue.toString();
             }

@@ -102,8 +102,8 @@ public class ReportOntologyLatticeStatus {
             _highlightErrors(modelGraphController, errorMessageBuffer, concepts);
         } else if (!invalidUnacceptables.isEmpty()) {
             _highlightErrors(modelGraphController, new StringBuffer(
-                    "There following unacceptable concepts are not at the " +
-                    "top of the lattice:\n"), invalidUnacceptables);
+                    "There following unacceptable concepts are not at the "
+                            + "top of the lattice:\n"), invalidUnacceptables);
         } else {
             MessageHandler
                     .message("The ontology model graph is a valid lattice.");
@@ -122,8 +122,7 @@ public class ReportOntologyLatticeStatus {
      */
     private static void _highlightErrors(
             OntologyGraphController modelGraphController,
-            StringBuffer errorMessageBuffer,
-            List<Concept> concepts) {
+            StringBuffer errorMessageBuffer, List<Concept> concepts) {
         boolean first = true;
         for (Concept concept : concepts) {
             modelGraphController.highlightError(concept);

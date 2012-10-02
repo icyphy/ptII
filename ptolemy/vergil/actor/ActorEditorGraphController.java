@@ -633,7 +633,8 @@ public class ActorEditorGraphController extends ActorViewerGraphController {
             Figure source = event.getFigureSource();
             NamedObj sourceObject = (NamedObj) source.getUserObject();
 
-            if (sourceObject instanceof PublisherPort || sourceObject instanceof SubscriberPort) {
+            if (sourceObject instanceof PublisherPort
+                    || sourceObject instanceof SubscriberPort) {
                 // MessageHandler.error("Cannot connect directly to publish and subscribe ports.");
                 return;
             }

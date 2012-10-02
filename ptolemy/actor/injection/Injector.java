@@ -82,10 +82,12 @@ public class Injector {
                             + implementationName, e);
                 } catch (InstantiationException e) {
                     throw new IllegalStateException(
-                            "Problem instantiating type " + implementationName, e);
+                            "Problem instantiating type " + implementationName,
+                            e);
                 } catch (IllegalAccessException e) {
                     throw new IllegalStateException(
-                            "Problem instantiating type " + implementationName, e);
+                            "Problem instantiating type " + implementationName,
+                            e);
                 }
             }
         }

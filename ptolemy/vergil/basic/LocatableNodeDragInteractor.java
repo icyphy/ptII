@@ -28,7 +28,6 @@
 package ptolemy.vergil.basic;
 
 import java.awt.geom.Point2D;
-import java.awt.geom.Rectangle2D;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -44,14 +43,11 @@ import ptolemy.moml.MoMLChangeRequest;
 import ptolemy.moml.MoMLUndoEntry;
 import ptolemy.util.MessageHandler;
 import ptolemy.vergil.toolbox.SnapConstraint;
-import diva.canvas.CanvasComponent;
 import diva.canvas.Figure;
-import diva.canvas.FigureLayer;
 import diva.canvas.event.LayerEvent;
 import diva.canvas.interactor.SelectionModel;
 import diva.graph.GraphPane;
 import diva.graph.NodeDragInteractor;
-import diva.util.Filter;
 import diva.util.UserObjectContainer;
 
 ///////////////////////////////////////////////////////////////////
@@ -185,7 +181,8 @@ public class LocatableNodeDragInteractor extends NodeDragInteractor {
             }
             Locatable locatable = (Locatable) locationList.get(0);
             // Use the MoML element name in case the location is a vertex
-            String locationElementName = ((NamedObj) locatable).getElementName();
+            String locationElementName = ((NamedObj) locatable)
+                    .getElementName();
             String locationName = locatable.getName();
             // The location class, which can change if a relative location is dragged.
             String locationClazz = locatable.getClass().getName();
@@ -204,8 +201,8 @@ public class LocatableNodeDragInteractor extends NodeDragInteractor {
                 RelativeLocation relativeLocation = (RelativeLocation) locatable;
                 newLocation = relativeLocation.getRelativeLocation();
                 oldRelativeTo = relativeLocation.relativeTo.getExpression();
-                oldRelativeToElementName = relativeLocation
-                        .relativeToElementName.getExpression();
+                oldRelativeToElementName = relativeLocation.relativeToElementName
+                        .getExpression();
             } else {
                 newLocation = locatable.getLocation();
             }
@@ -225,8 +222,8 @@ public class LocatableNodeDragInteractor extends NodeDragInteractor {
                 if (dropTarget == null) {
                     // Find the drop target if not yet done. Pass the selection
                     // as filter so that objects from the selection are not chosen.
-                    dropTarget = _getObjectUnder(new Point2D.Double(dragEnd[0], dragEnd[1]),
-                            selection);
+                    dropTarget = _getObjectUnder(new Point2D.Double(dragEnd[0],
+                            dragEnd[1]), selection);
                 }
                 // Check to see whether the target is an Entity, and if it is,
                 // then make the position relative to that entity. Also,
@@ -234,7 +231,8 @@ public class LocatableNodeDragInteractor extends NodeDragInteractor {
                 // to a cycle in the references, and ultimately to a stack overflow
                 // when trying to compute the positions!
                 // FIXME: Could make this check weaker by checking for cycles.
-                if (dropTarget instanceof Entity && !(dropTarget instanceof RelativeLocatable)) {
+                if (dropTarget instanceof Entity
+                        && !(dropTarget instanceof RelativeLocatable)) {
                     // Set the new values for the relativeTo properties.
                     newRelativeTo = dropTarget.getName();
                     newRelativeToElementName = dropTarget.getElementName();
@@ -243,8 +241,8 @@ public class LocatableNodeDragInteractor extends NodeDragInteractor {
                     locationClazz = RelativeLocation.class.getName();
                     // Now the location value is relative, so take a fixed offset.
                     newLocation = new double[] {
-                          RelativeLocation.INITIAL_OFFSET,
-                          RelativeLocation.INITIAL_OFFSET };
+                            RelativeLocation.INITIAL_OFFSET,
+                            RelativeLocation.INITIAL_OFFSET };
                     changeRelativeTo = true;
                 } else if (oldRelativeTo.length() > 0 /* && newLocation != null*/) {
                     // We have no drop target, so check the current distance to the
@@ -277,9 +275,9 @@ public class LocatableNodeDragInteractor extends NodeDragInteractor {
             moml.append("<" + locationElementName + " name=\"" + locationName
                     + "\" class=\"" + locationClazz + "\" value=\"["
                     + newLocation[0] + ", " + newLocation[1] + "]\" >\n");
-            undoMoml.append("<" + locationElementName + " name=\"" + locationName
-                    + "\" value=\"[" + oldLocation[0] + ", " + oldLocation[1]
-                    + "]\" >\n");
+            undoMoml.append("<" + locationElementName + " name=\""
+                    + locationName + "\" value=\"[" + oldLocation[0] + ", "
+                    + oldLocation[1] + "]\" >\n");
 
             if (changeRelativeTo) {
                 // Case 1: We have dragged onto another object. Create a reference to

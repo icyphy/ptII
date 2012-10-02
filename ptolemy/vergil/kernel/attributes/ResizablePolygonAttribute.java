@@ -147,7 +147,8 @@ public class ResizablePolygonAttribute extends FilledShapeAttribute {
      *  @return The new Attribute.
      */
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        ResizablePolygonAttribute newObject = (ResizablePolygonAttribute) super.clone(workspace);
+        ResizablePolygonAttribute newObject = (ResizablePolygonAttribute) super
+                .clone(workspace);
 
         // The cloned icon ends up referring to the clonee's shape.
         // We need to fix that here.

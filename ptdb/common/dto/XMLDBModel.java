@@ -173,11 +173,10 @@ public class XMLDBModel implements Comparable {
         if (xmldbModel == this) {
             return true;
         }
-        if ((xmldbModel == null)
-                || (xmldbModel.getClass() != getClass())) {
+        if ((xmldbModel == null) || (xmldbModel.getClass() != getClass())) {
             return false;
         } else {
-            return compareTo((XMLDBModel)xmldbModel) == 0;
+            return compareTo(xmldbModel) == 0;
         }
     }
 

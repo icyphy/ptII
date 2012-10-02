@@ -232,11 +232,10 @@ public class HierarchicalModeController extends StateController {
                                 // FIXME: not sure if this should be -1 or 1.
                                 ((Refinement) entity).setMirrorDisable(1);
 
-                            ((Refinement) entity).setMirrorDisable(1);
+                                ((Refinement) entity).setMirrorDisable(1);
                             } else if (entity instanceof ModalController) {
                                 // FIXME: not sure if this should be -1 or 1.
-                                ((ModalController) entity)
-                                        .setMirrorDisable(1);
+                                ((ModalController) entity).setMirrorDisable(1);
                             }
 
                             Port newPort = entity.newPort(port.getName());
@@ -280,8 +279,7 @@ public class HierarchicalModeController extends StateController {
                             if (entity instanceof Refinement) {
                                 ((Refinement) entity).setMirrorDisable(0);
                             } else if (entity instanceof ModalController) {
-                                ((ModalController) entity)
-                                        .setMirrorDisable(0);
+                                ((ModalController) entity).setMirrorDisable(0);
                             }
                         }
                     }

@@ -88,7 +88,8 @@ public abstract class AbstractInitializableAttribute extends Attribute
      *  @return The cloned variable.
      */
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        AbstractInitializableAttribute newObject = (AbstractInitializableAttribute) super.clone(workspace);
+        AbstractInitializableAttribute newObject = (AbstractInitializableAttribute) super
+                .clone(workspace);
         newObject._initializables = null;
         return newObject;
     }
@@ -175,8 +176,8 @@ public abstract class AbstractInitializableAttribute extends Attribute
      *   an entity with the name of this entity.
      */
     @Override
-    public void setContainer(NamedObj container)
-            throws IllegalActionException, NameDuplicationException {
+    public void setContainer(NamedObj container) throws IllegalActionException,
+            NameDuplicationException {
         Initializable previousInitializableContainer = _getInitializableContainer();
         NamedObj previousContainer = getContainer();
         super.setContainer(container);
@@ -202,46 +203,46 @@ public abstract class AbstractInitializableAttribute extends Attribute
     /** Invoke wrapup() on registered initializables.
      *  @exception IllegalActionException If thrown by a subclass.
      */
-     public void wrapup() throws IllegalActionException {
-         // Invoke initializable methods.
-         if (_initializables != null) {
-             for (Initializable initializable : _initializables) {
-                 initializable.wrapup();
-             }
-         }
-     }
+    public void wrapup() throws IllegalActionException {
+        // Invoke initializable methods.
+        if (_initializables != null) {
+            for (Initializable initializable : _initializables) {
+                initializable.wrapup();
+            }
+        }
+    }
 
-     ///////////////////////////////////////////////////////////////////
-     ////                         protected methods                 ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected methods                 ////
 
-     /** Return the first Initializable encountered above this
-      *  in the hierarchy that will be initialized (i.e., it is either
-      *  an atomic actor or an opaque composite actor).
-      *  @return The first Initializable above this in the hierarchy,
-      *   or null if there is none.
-      */
-     protected Initializable _getInitializableContainer() {
-         NamedObj container = getContainer();
-         while (container != null) {
-             if (container instanceof Initializable) {
-                 if (container instanceof CompositeActor) {
-                     if (((CompositeActor)container).isOpaque()) {
-                         return (Initializable)container;
-                     }
-                 } else {
-                     return (Initializable)container;
-                 }
-             }
-             container = container.getContainer();
-         }
-         return null;
-     }
+    /** Return the first Initializable encountered above this
+     *  in the hierarchy that will be initialized (i.e., it is either
+     *  an atomic actor or an opaque composite actor).
+     *  @return The first Initializable above this in the hierarchy,
+     *   or null if there is none.
+     */
+    protected Initializable _getInitializableContainer() {
+        NamedObj container = getContainer();
+        while (container != null) {
+            if (container instanceof Initializable) {
+                if (container instanceof CompositeActor) {
+                    if (((CompositeActor) container).isOpaque()) {
+                        return (Initializable) container;
+                    }
+                } else {
+                    return (Initializable) container;
+                }
+            }
+            container = container.getContainer();
+        }
+        return null;
+    }
 
-     ///////////////////////////////////////////////////////////////////
-     ////                         private variables                 ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
 
-     /** List of objects whose (pre)initialize() and wrapup() methods should be
-      *  slaved to these.
-      */
-     private transient Set<Initializable> _initializables;
+    /** List of objects whose (pre)initialize() and wrapup() methods should be
+     *  slaved to these.
+     */
+    private transient Set<Initializable> _initializables;
 }

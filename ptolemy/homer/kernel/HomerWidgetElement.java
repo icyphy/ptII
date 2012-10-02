@@ -88,8 +88,8 @@ public class HomerWidgetElement extends PositionableElement {
     public Widget getWidget() {
         if (_widget == null) {
             try {
-                _widget = (Widget) WidgetLoader.loadWidget(
-                        _scene, HomerWidgetElement.this, getElement().getClass());
+                _widget = WidgetLoader.loadWidget(_scene,
+                        HomerWidgetElement.this, getElement().getClass());
             } catch (IllegalActionException e) {
                 // TODO Auto-generated catch block
                 e.printStackTrace();

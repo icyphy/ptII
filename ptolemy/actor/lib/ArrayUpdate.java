@@ -70,12 +70,14 @@ public class ArrayUpdate extends Transformer {
         // Set parameters.
         index = new PortParameter(this, "index");
         index.setExpression("0");
-        new StringAttribute(index.getPort(), "_cardinal").setExpression("SOUTH");
+        new StringAttribute(index.getPort(), "_cardinal")
+                .setExpression("SOUTH");
         new Parameter(index.getPort(), "_showName").setExpression("true");
 
         value = new PortParameter(this, "value");
         value.setExpression("1");
-        new StringAttribute(value.getPort(), "_cardinal").setExpression("SOUTH");
+        new StringAttribute(value.getPort(), "_cardinal")
+                .setExpression("SOUTH");
         new Parameter(value.getPort(), "_showName").setExpression("true");
 
         // Set type constraints.
@@ -117,7 +119,8 @@ public class ArrayUpdate extends Transformer {
         try {
             newObject.output.setTypeAtLeast(ArrayType.arrayOf(newObject.value));
         } catch (IllegalActionException e) {
-            throw new CloneNotSupportedException("Failed to set type constraints on cloned actor.");
+            throw new CloneNotSupportedException(
+                    "Failed to set type constraints on cloned actor.");
         }
 
         return newObject;
@@ -135,7 +138,7 @@ public class ArrayUpdate extends Transformer {
 
         if (input.hasToken(0)) {
             ArrayToken inputValue = ((ArrayToken) input.get(0));
-            int indexValue = ((IntToken)index.getToken()).intValue();
+            int indexValue = ((IntToken) index.getToken()).intValue();
             output.send(0, inputValue.update(indexValue, value.getToken()));
         }
     }

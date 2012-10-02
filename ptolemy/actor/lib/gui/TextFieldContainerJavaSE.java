@@ -59,7 +59,7 @@ public class TextFieldContainerJavaSE implements TextFieldContainerInterface {
      * actor with this name.
      */
     public void init(Sink sink) throws IllegalActionException,
-             NameDuplicationException {
+            NameDuplicationException {
     }
 
     /** Place the visual representation of the actor into the specified container.

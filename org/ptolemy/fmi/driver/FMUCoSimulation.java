@@ -40,7 +40,6 @@ import com.sun.jna.Function;
 import com.sun.jna.NativeLibrary;
 import com.sun.jna.Pointer;
 
-
 ///////////////////////////////////////////////////////////////////
 //// FMUCoSimulation
 
@@ -194,9 +193,8 @@ public class FMUCoSimulation extends FMUDriver {
 
         double startTime = 0;
 
-        invoke("_fmiInitializeSlave",
-                new Object[] { fmiComponent, startTime, (byte) 1, endTime },
-                "Could not initialize slave: ");
+        invoke("_fmiInitializeSlave", new Object[] { fmiComponent, startTime,
+                (byte) 1, endTime }, "Could not initialize slave: ");
 
         File outputFile = new File(outputFileName);
         PrintStream file = null;
@@ -222,10 +220,9 @@ public class FMUCoSimulation extends FMUDriver {
                             + "_fmiDoStep(Component, /* time */ " + time
                             + ", /* stepSize */" + stepSize + ", 1)");
                 }
-                invoke(doStep,
-                        new Object[] {fmiComponent, time, stepSize, (byte) 1 },
-                        "Could not simulate, time was "
-                        + time + ": ");
+                invoke(doStep, new Object[] { fmiComponent, time, stepSize,
+                        (byte) 1 }, "Could not simulate, time was " + time
+                        + ": ");
                 time += stepSize;
                 // Generate a line for this step
                 OutputRow.outputRow(_nativeLibrary, fmiModelDescription,
@@ -237,17 +234,17 @@ public class FMUCoSimulation extends FMUDriver {
             }
         }
 
-        invoke("_fmiTerminateSlave",
-                new Object[] { fmiComponent },
+        invoke("_fmiTerminateSlave", new Object[] { fmiComponent },
                 "Could not terminate slave: ");
 
         // Don't throw an exception while freeing a slave.  Some
         // fmiTerminateSlave calls free the slave for us.
         Function freeSlave = getFunction("_fmiFreeSlaveInstance");
         int fmiFlag = ((Integer) freeSlave.invoke(Integer.class,
-                        new Object[] { fmiComponent })).intValue();
+                new Object[] { fmiComponent })).intValue();
         if (fmiFlag >= FMILibrary.FMIStatus.fmiWarning) {
-            new Exception("Warning: Could not free slave instance: " + fmiFlag).printStackTrace();
+            new Exception("Warning: Could not free slave instance: " + fmiFlag)
+                    .printStackTrace();
         }
 
         if (enableLogging) {

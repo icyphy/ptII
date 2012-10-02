@@ -27,8 +27,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 */
 
-
-
 package ptolemy.domains.ptides.lib.io;
 
 import ptolemy.data.expr.Parameter;
@@ -55,12 +53,14 @@ public class NetworkReceiverPort extends PtidesPort {
      * @exception IllegalActionException If parameters cannot be set.
      * @exception NameDuplicationException If name already exists.
      */
-    public NetworkReceiverPort(CompositeEntity container, String name) throws IllegalActionException, NameDuplicationException {
+    public NetworkReceiverPort(CompositeEntity container, String name)
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         this.setInput(true);
 
-        sourcePlatformDelayBound = new Parameter(this, "sourcePlatformDelayBound");
+        sourcePlatformDelayBound = new Parameter(this,
+                "sourcePlatformDelayBound");
         sourcePlatformDelayBound.setExpression("0.0");
         sourcePlatformDelayBound.setTypeEquals(BaseType.DOUBLE);
 

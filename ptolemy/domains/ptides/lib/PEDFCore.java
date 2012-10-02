@@ -30,19 +30,13 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 package ptolemy.domains.ptides.lib;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
-import java.util.Stack;
 
 import ptolemy.actor.Actor;
 import ptolemy.actor.util.Time;
-import ptolemy.data.IntToken;
-import ptolemy.data.expr.Parameter;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.kernel.util.NamedObj;
 
 /** This is an earliest deadline first scheduler.
  *
@@ -94,8 +88,7 @@ public class PEDFCore extends FPPCore {
      *    as execution time or priority cannot be read.
      */
     public Time schedule(Actor actor, Time currentPlatformTime,
-            Double deadline, Time executionTime)
-            throws IllegalActionException {
+            Double deadline, Time executionTime) throws IllegalActionException {
         if (!_currentlyExecuting.contains(actor)) {
             _deadlines.put(actor, deadline);
         }

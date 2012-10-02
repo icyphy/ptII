@@ -502,7 +502,6 @@ public class CParseTreeCodeGenerator extends AbstractParseTreeVisitor implements
         }
         System.out.println("CParseTree2: " + functionName + " value: " + value);
 
-
         // The first child contains the function name as an id.  It is
         // ignored, and not evaluated unless necessary.
         int argCount = node.jjtGetNumChildren() - 1;
@@ -516,8 +515,8 @@ public class CParseTreeCodeGenerator extends AbstractParseTreeVisitor implements
             if (value == null) {
                 value = _evaluateChild(node, 0);
             }
-        System.out.println("CParseTree: " + functionName + "value: " + value);
-
+            System.out.println("CParseTree: " + functionName + "value: "
+                    + value);
 
             if (type instanceof ArrayType) {
                 if (argCount == 1) {

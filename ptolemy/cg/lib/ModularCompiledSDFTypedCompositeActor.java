@@ -610,8 +610,9 @@ public class ModularCompiledSDFTypedCompositeActor extends
             }
 
             if (initializeMethod == null) {
-                throw new IllegalActionException(this, "Cannot find initialize "
-                        + "method in the wrapper class.");
+                throw new IllegalActionException(this,
+                        "Cannot find initialize "
+                                + "method in the wrapper class.");
             }
 
             //initialize the generated object
@@ -674,10 +675,11 @@ public class ModularCompiledSDFTypedCompositeActor extends
                 if (!isOpaque() && container instanceof CompositeActor) {
                     // Published ports are not propagated if this actor
                     // is opaque.
-                    return ((CompositeActor) container).linkToPublishedPort(name,
-                            subscriberPort);
+                    return ((CompositeActor) container).linkToPublishedPort(
+                            name, subscriberPort);
                 } else if (!(container instanceof CompositeActor)) {
-                    throw new IllegalActionException(subscriberPort, "No matching publisher port");
+                    throw new IllegalActionException(subscriberPort,
+                            "No matching publisher port");
                 } else {
                     IOPort stubPort;
                     if (!(_subscriberPorts != null && _subscriberPorts
@@ -721,12 +723,11 @@ public class ModularCompiledSDFTypedCompositeActor extends
                         if (stubPort.getContainer() == null) {
                             // The user deleted the port.
                             stubPort.setContainer(this);
-                            stubPort.liberalLink(_subscriberRelations
-                                    .get(name));
+                            stubPort.liberalLink(_subscriberRelations.get(name));
                         }
                     }
                     return ((CompositeActor) container).linkToPublishedPort(
-                                name, stubPort);
+                            name, stubPort);
                 }
             }
         } finally {
@@ -1256,28 +1257,28 @@ public class ModularCompiledSDFTypedCompositeActor extends
 
     private boolean _isSubscribedPort(IOPort port) {
         // FIXME: this method might be slow
-            // Note that _subscriberPorts is declared in this file, but _subscribedPorts is declared in CompositeActor.
+        // Note that _subscriberPorts is declared in this file, but _subscribedPorts is declared in CompositeActor.
         return _subscriberPorts != null && _subscriberPorts.containsValue(port);
     }
 
     private boolean _isPublishedPort(IOPort port) {
         // FIXME: this method might be slow
 
-            // FindBugs reported "ptolemy.actor.IOPort is incompatible
-            // with expected argument type
-            // java.util.List<ptolemy.actor.IOPort> in
-            // ptolemy.cg.lib.ModularCompiledSDFTypedCompositeActor._isPublishedPort(IOPort)"
+        // FindBugs reported "ptolemy.actor.IOPort is incompatible
+        // with expected argument type
+        // java.util.List<ptolemy.actor.IOPort> in
+        // ptolemy.cg.lib.ModularCompiledSDFTypedCompositeActor._isPublishedPort(IOPort)"
 
-            // This is because _publishedPort is declared in
-            // CompositeActor to be a Map<String, List<IOPort>>
+        // This is because _publishedPort is declared in
+        // CompositeActor to be a Map<String, List<IOPort>>
 
         //return _publishedPorts != null && _publishedPorts.containsValue(port);
-            if (_publishedPorts == null) {
-                    return false;
-            }
+        if (_publishedPorts == null) {
+            return false;
+        }
         for (String name : _publishedPorts.keySet()) {
             if (_publishedPorts.get(name).contains(port)) {
-                    return true;
+                return true;
             }
         }
         return false;

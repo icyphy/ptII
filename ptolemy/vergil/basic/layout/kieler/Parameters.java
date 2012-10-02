@@ -94,19 +94,20 @@ public class Parameters {
             LayoutConfiguration configuration = configAttributes.get(0);
 
             // Whether decorations are to be laid out or left as they are
-            BooleanToken decorationsToken = BooleanToken.convert(
-                    configuration.includeDecorations.getToken());
-            parentLayout.setProperty(DECORATIONS, decorationsToken.booleanValue());
+            BooleanToken decorationsToken = BooleanToken
+                    .convert(configuration.includeDecorations.getToken());
+            parentLayout.setProperty(DECORATIONS,
+                    decorationsToken.booleanValue());
 
-//            // Whether to optimize relation vertices
-//            BooleanToken optimizeRelationsToken = BooleanToken.convert(
-//                    configuration.optimizeRelations.getToken());
-//            parentLayout.setProperty(OPTIMIZE_RELATIONS,
-//                    optimizeRelationsToken.booleanValue());
+            //            // Whether to optimize relation vertices
+            //            BooleanToken optimizeRelationsToken = BooleanToken.convert(
+            //                    configuration.optimizeRelations.getToken());
+            //            parentLayout.setProperty(OPTIMIZE_RELATIONS,
+            //                    optimizeRelationsToken.booleanValue());
 
             // The node placement algorithm to use
-            BooleanToken minimizeBendsToken = BooleanToken.convert(
-                    configuration.minimizeBends.getToken());
+            BooleanToken minimizeBendsToken = BooleanToken
+                    .convert(configuration.minimizeBends.getToken());
             if (minimizeBendsToken.booleanValue()) {
                 parentLayout.setProperty(Properties.NODEPLACE,
                         NodePlacementStrategy.BRANDES_KOEPF);
@@ -116,20 +117,21 @@ public class Parameters {
             }
 
             // Spacing between diagram elements
-            DoubleToken spacingToken = DoubleToken.convert(
-                    configuration.spacing.getToken());
-            parentLayout.setProperty(SPACING, (float) spacingToken.doubleValue());
+            DoubleToken spacingToken = DoubleToken
+                    .convert(configuration.spacing.getToken());
+            parentLayout.setProperty(SPACING,
+                    (float) spacingToken.doubleValue());
 
             // Target aspect ratio for the diagram
-            DoubleToken logAspectToken = DoubleToken.convert(
-                    configuration.logAspectRatio.getToken());
-            parentLayout.setProperty(ASPECT_RATIO, (float) Math.pow(
-                    10, logAspectToken.doubleValue()));
+            DoubleToken logAspectToken = DoubleToken
+                    .convert(configuration.logAspectRatio.getToken());
+            parentLayout.setProperty(ASPECT_RATIO,
+                    (float) Math.pow(10, logAspectToken.doubleValue()));
 
             // The interaction mode (constraints the layout according to what the
             // diagram currently looks like)
-            InteractionMode interactionMode = (InteractionMode) configuration
-                    .interactionMode.getChosenValue();
+            InteractionMode interactionMode = (InteractionMode) configuration.interactionMode
+                    .getChosenValue();
             if (interactionMode != null) {
                 // The switch cases fall through on purpose!
                 switch (interactionMode) {
@@ -148,17 +150,22 @@ public class Parameters {
             }
 
         } else {
-            parentLayout.setProperty(LayoutOptions.SPACING, SPACING.getDefault());
-            parentLayout.setProperty(LayoutOptions.ASPECT_RATIO, ASPECT_RATIO.getDefault());
-            parentLayout.setProperty(Properties.NODEPLACE, NodePlacementStrategy.BRANDES_KOEPF);
+            parentLayout.setProperty(LayoutOptions.SPACING,
+                    SPACING.getDefault());
+            parentLayout.setProperty(LayoutOptions.ASPECT_RATIO,
+                    ASPECT_RATIO.getDefault());
+            parentLayout.setProperty(Properties.NODEPLACE,
+                    NodePlacementStrategy.BRANDES_KOEPF);
         }
 
         if (graphModel instanceof ActorGraphModel) {
             // Set default values for actor models.
-            parentLayout.setProperty(LayoutOptions.EDGE_ROUTING, EdgeRouting.ORTHOGONAL);
+            parentLayout.setProperty(LayoutOptions.EDGE_ROUTING,
+                    EdgeRouting.ORTHOGONAL);
         } else if (graphModel instanceof FSMGraphModel) {
             // Set default values for modal models.
-            parentLayout.setProperty(LayoutOptions.EDGE_ROUTING, EdgeRouting.POLYLINE);
+            parentLayout.setProperty(LayoutOptions.EDGE_ROUTING,
+                    EdgeRouting.POLYLINE);
             float spacing = parentLayout.getProperty(SPACING);
             parentLayout.setProperty(SPACING, 2 * spacing);
         }
@@ -166,11 +173,12 @@ public class Parameters {
 
     /** Layout option that determines whether decoration nodes are included in layout. */
     public static final IProperty<Boolean> DECORATIONS = new Property<Boolean>(
-            "ptolemy.vergil.basic.layout.decorations", LayoutConfiguration.DEF_DECORATIONS);
+            "ptolemy.vergil.basic.layout.decorations",
+            LayoutConfiguration.DEF_DECORATIONS);
 
-//    /** Layout option for optimizing away superfluous relation vertices. */
-//    public static final IProperty<Boolean> OPTIMIZE_RELATIONS = new Property<Boolean>(
-//            "ptolemy.vergil.basic.layout.optimizeRelations", LayoutConfiguration.DEF_OPTIMIZE_RELATIONS);
+    //    /** Layout option for optimizing away superfluous relation vertices. */
+    //    public static final IProperty<Boolean> OPTIMIZE_RELATIONS = new Property<Boolean>(
+    //            "ptolemy.vergil.basic.layout.optimizeRelations", LayoutConfiguration.DEF_OPTIMIZE_RELATIONS);
 
     /** Layout option for the overall spacing between elements. */
     public static final IProperty<Float> SPACING = new Property<Float>(
@@ -178,7 +186,8 @@ public class Parameters {
 
     /** Layout option for the aspect ratio of connected components. */
     public static final IProperty<Float> ASPECT_RATIO = new Property<Float>(
-            LayoutOptions.ASPECT_RATIO, (float) LayoutConfiguration.DEF_ASPECT_RATIO);
+            LayoutOptions.ASPECT_RATIO,
+            (float) LayoutConfiguration.DEF_ASPECT_RATIO);
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////

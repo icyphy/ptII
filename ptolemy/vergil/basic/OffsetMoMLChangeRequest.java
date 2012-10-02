@@ -27,14 +27,14 @@
 */
 package ptolemy.vergil.basic;
 
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Set;
-import java.awt.EventQueue;
 import java.awt.MouseInfo;
 import java.awt.Point;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Rectangle2D;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Set;
+
 import javax.swing.SwingUtilities;
 
 import ptolemy.kernel.util.IllegalActionException;
@@ -44,20 +44,11 @@ import ptolemy.kernel.util.NamedObj;
 import ptolemy.moml.MoMLChangeRequest;
 import ptolemy.moml.MoMLParser;
 import ptolemy.util.MessageHandler;
-
-import ptolemy.vergil.unit.BasicEdgeHighlighter;
-
 import diva.canvas.Figure;
-import diva.canvas.interactor.BasicSelectionRenderer;
 import diva.canvas.interactor.Interactor;
-import diva.canvas.interactor.SelectionEvent;
 import diva.canvas.interactor.SelectionInteractor;
-import diva.canvas.interactor.SelectionListener;
 import diva.canvas.interactor.SelectionModel;
-import diva.canvas.interactor.SelectionRenderer;
 import diva.graph.GraphController;
-import diva.graph.GraphUtilities;
-
 
 ///////////////////////////////////////////////////////////////////
 //// OffsetMoMLChangeRequest
@@ -116,16 +107,18 @@ public class OffsetMoMLChangeRequest extends MoMLChangeRequest {
     protected void _postParse(MoMLParser parser) {
         // Find the upper-most, left-most location.  Note that
         // this is the center of the component.
-        double [] minimumLocation = new double[] { Double.MAX_VALUE, Double.MAX_VALUE };
+        double[] minimumLocation = new double[] { Double.MAX_VALUE,
+                Double.MAX_VALUE };
         Iterator topObjects = parser.topObjectsCreated().iterator();
         while (topObjects.hasNext()) {
             NamedObj topObject = (NamedObj) topObjects.next();
             Iterator locations = topObject.attributeList(Locatable.class)
-                .iterator();
+                    .iterator();
             while (locations.hasNext()) {
                 Locatable location = (Locatable) locations.next();
                 double[] locationValue = location.getLocation();
-                for (int i = 0; i < locationValue.length && i < minimumLocation.length; i++) {
+                for (int i = 0; i < locationValue.length
+                        && i < minimumLocation.length; i++) {
                     if (locationValue[i] < minimumLocation[i]) {
                         minimumLocation[i] = locationValue[i];
                     }
@@ -137,21 +130,23 @@ public class OffsetMoMLChangeRequest extends MoMLChangeRequest {
         double yOffset = _PASTE_OFFSET;
         double scale = 1.0;
         GraphController controller = null;
-        SelectionModel selectionModel = null;
-
         // If there is a basic graph frame, then get the mouse location.
-        BasicGraphFrame basicGraphFrame = BasicGraphFrame.getBasicGraphFrame(_context);
+        BasicGraphFrame basicGraphFrame = BasicGraphFrame
+                .getBasicGraphFrame(_context);
         if (basicGraphFrame != null) {
-            controller = basicGraphFrame.getJGraph().getGraphPane().getGraphController();
-            Point componentLocation = basicGraphFrame.getJGraph().getGraphPane().getCanvas().getLocationOnScreen();
+            controller = basicGraphFrame.getJGraph().getGraphPane()
+                    .getGraphController();
+            Point componentLocation = basicGraphFrame.getJGraph()
+                    .getGraphPane().getCanvas().getLocationOnScreen();
 
-            AffineTransform current = basicGraphFrame.getJGraph().getCanvasPane()
-                .getTransformContext().getTransform();
+            AffineTransform current = basicGraphFrame.getJGraph()
+                    .getCanvasPane().getTransformContext().getTransform();
 
             // We assume the scaling in the X and Y directions are the same.
             scale = current.getScaleX();
 
-            Rectangle2D visibleCanvas = basicGraphFrame.getVisibleCanvasRectangle();
+            Rectangle2D visibleCanvas = basicGraphFrame
+                    .getVisibleCanvasRectangle();
 
             // Get the mouse location.  We don't use a MouseMotionListener here because we
             // need the mouse location only when we paste.
@@ -162,8 +157,10 @@ public class OffsetMoMLChangeRequest extends MoMLChangeRequest {
             //yOffset = mouseLocation.y - componentLocation.y - minimumLocation[1];
 
             // We adjust by the scale here to get from screen coordinates to model coordinates?
-            xOffset = (mouseLocation.x - componentLocation.x)/scale + visibleCanvas.getX() - minimumLocation[0];
-            yOffset = (mouseLocation.y - componentLocation.y)/scale + visibleCanvas.getY() - minimumLocation[1];
+            xOffset = (mouseLocation.x - componentLocation.x) / scale
+                    + visibleCanvas.getX() - minimumLocation[0];
+            yOffset = (mouseLocation.y - componentLocation.y) / scale
+                    + visibleCanvas.getY() - minimumLocation[1];
 
             //System.out.println("OffsetMoMLChangeRequest: mouse.x: " + mouseLocation.x + " comp.x: " + componentLocation.x + " visCanv.x: " + visibleCanvas.getX() + " min.x: " + minimumLocation[0] + " scale: " + scale + " xOff: " + xOffset + " " + visibleCanvas);
             //System.out.println("OffsetMoMLChangeRequest: mouse.y: " + mouseLocation.y + " comp.y: " + componentLocation.y + " visCanv.y: " + visibleCanvas.getY() + " min.y: " + minimumLocation[1] + " scale: " + scale + " yOff: " + yOffset);
@@ -183,7 +180,7 @@ public class OffsetMoMLChangeRequest extends MoMLChangeRequest {
             try {
                 // Update the location of each top object.
                 Iterator locations = topObject.attributeList(Locatable.class)
-                    .iterator();
+                        .iterator();
                 while (locations.hasNext()) {
                     Locatable location = (Locatable) locations.next();
                     double[] locationValue = location.getLocation();
@@ -210,37 +207,40 @@ public class OffsetMoMLChangeRequest extends MoMLChangeRequest {
             final GraphController controllerFinal = controller;
             final NamedObj containerFinal = container;
             Runnable doHelloWorld = new Runnable() {
-                    public void run() {
-                        Interactor interactor = null;
-                        try {
-                            interactor = controllerFinal.getEdgeController(new Object())
-                                .getEdgeInteractor();
-                        } catch (Exception ex) {
-                            interactor = controllerFinal.getNodeController(null)
+                public void run() {
+                    Interactor interactor = null;
+                    try {
+                        interactor = controllerFinal.getEdgeController(
+                                new Object()).getEdgeInteractor();
+                    } catch (Exception ex) {
+                        interactor = controllerFinal.getNodeController(null)
                                 .getNodeInteractor();
-                        }
-                        SelectionInteractor selectionInteractor = (SelectionInteractor) interactor;
-                        SelectionRenderer defaultSelectionRenderer = selectionInteractor.getSelectionRenderer();
-                        SelectionModel selectionModel = controllerFinal.getSelectionModel();
-                        selectionModel.clearSelection();
-                        AbstractBasicGraphModel graphModel = (AbstractBasicGraphModel) controllerFinal.getGraphModel();
+                    }
+                    SelectionInteractor selectionInteractor = (SelectionInteractor) interactor;
+                    selectionInteractor.getSelectionRenderer();
+                    SelectionModel selectionModel = controllerFinal
+                            .getSelectionModel();
+                    selectionModel.clearSelection();
+                    AbstractBasicGraphModel graphModel = (AbstractBasicGraphModel) controllerFinal
+                            .getGraphModel();
 
-                        if (graphModel != null) {
-                            Iterator nodes = graphModel.nodes(containerFinal);
-                            while (nodes.hasNext()) {
-                                Location node = (Location) nodes.next();
-                                NamedObj entity = (NamedObj) graphModel.getSemanticObject(node);
-                                if (_topObjects.contains(entity)) {
-                                    // If we don't do this in an invokeLater, then the
-                                    // canvas will not be updated so the controller will
-                                    // not have the figures and this will be null.
-                                    Figure figure = controllerFinal.getFigure(node);
-                                    selectionModel.addSelection(figure);
-                                }
+                    if (graphModel != null) {
+                        Iterator nodes = graphModel.nodes(containerFinal);
+                        while (nodes.hasNext()) {
+                            Location node = (Location) nodes.next();
+                            NamedObj entity = (NamedObj) graphModel
+                                    .getSemanticObject(node);
+                            if (_topObjects.contains(entity)) {
+                                // If we don't do this in an invokeLater, then the
+                                // canvas will not be updated so the controller will
+                                // not have the figures and this will be null.
+                                Figure figure = controllerFinal.getFigure(node);
+                                selectionModel.addSelection(figure);
                             }
                         }
                     }
-                };
+                }
+            };
 
             SwingUtilities.invokeLater(doHelloWorld);
         }
@@ -259,12 +259,10 @@ public class OffsetMoMLChangeRequest extends MoMLChangeRequest {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-
     /** The context in which to execute the moml. */
     private NamedObj _context;
 
     /** Offset used when pasting objects. */
     private static int _PASTE_OFFSET = 10;
-
 
 }

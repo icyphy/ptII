@@ -79,43 +79,44 @@ public class ModelTests {
         File auto = new File(directory);
         if (auto.isDirectory()) {
             String[] modelFiles = auto.list(new FilenameFilter() {
-                    /**
-                     * Return true if the file name ends with .xml or .moml
-                     *
-                     * @param directory
-                     *            Ignored
-                     * @param name
-                     *            The name of the file.
-                     * @return true if the file name ends with .xml or .moml
-                     */
-                    public boolean accept(File directory, String name) {
-                        String fileName = name.toLowerCase();
-                        return fileName.endsWith(".xml")
+                /**
+                 * Return true if the file name ends with .xml or .moml
+                 *
+                 * @param directory
+                 *            Ignored
+                 * @param name
+                 *            The name of the file.
+                 * @return true if the file name ends with .xml or .moml
+                 */
+                public boolean accept(File directory, String name) {
+                    String fileName = name.toLowerCase();
+                    return fileName.endsWith(".xml")
                             || fileName.endsWith(".moml");
-                    }
-                });
+                }
+            });
             int i = 0;
             Object[][] data = new Object[modelFiles.length][1];
             if (modelFiles.length > 0) {
                 for (String modelFile : modelFiles) {
-                    data[i++][0] = new File(directory + modelFile).getCanonicalPath();
+                    data[i++][0] = new File(directory + modelFile)
+                            .getCanonicalPath();
                 }
                 // Sort the files so that we execute the tests in
                 // a predictable order.  Tests in ptolemy/actor/lib/test/auto
                 // need this.  File.list() returns files in a different order
                 // on different platforms.  So much for write once, run everywhere.
                 Arrays.sort(data, new Comparator<Object[]>() {
-                            @Override
-                                public int compare(final Object[] entry1,
-                                        final Object[] entry2) {
-                                final String file1 = (String)entry1[0];
-                                final String file2 = (String)entry2[0];
-                                return file1.compareTo(file2);
-                            }
-                        });
+                    @Override
+                    public int compare(final Object[] entry1,
+                            final Object[] entry2) {
+                        final String file1 = (String) entry1[0];
+                        final String file2 = (String) entry2[0];
+                        return file1.compareTo(file2);
+                    }
+                });
                 return data;
             } else {
-                return new Object[][] { {message} };
+                return new Object[][] { { message } };
             }
         }
         return new Object[][] { { message } };

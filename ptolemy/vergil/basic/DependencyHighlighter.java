@@ -218,7 +218,8 @@ public class DependencyHighlighter extends NodeControllerFactory {
             // checkboxes to select between dependencies and prerequisites.
             HighlightDependents listDependents = new HighlightDependents(
                     "List dependents & prereqs.", true, false, true);
-            _menuFactory.addMenuItemFactory(new MenuActionFactory(listDependents));
+            _menuFactory.addMenuItemFactory(new MenuActionFactory(
+                    listDependents));
 
             HighlightDependents clear1 = new HighlightDependents(
                     "Clear dependents", true, true, false);
@@ -264,11 +265,13 @@ public class DependencyHighlighter extends NodeControllerFactory {
             // and Publisher and Subscriber connections may not have yet
             // been created.
             try {
-                BasicGraphFrame frame = BasicGraphFrame.getBasicGraphFrame(actor.toplevel());
+                BasicGraphFrame frame = BasicGraphFrame
+                        .getBasicGraphFrame(actor.toplevel());
                 frame.report("Preinitializing");
                 long startTime = (new Date()).getTime();
-                Manager.preinitializeThenWrapup((Actor)actor);
-                frame.report("Done Preinitializing: " + Manager.timeAndMemory(startTime));
+                Manager.preinitializeThenWrapup((Actor) actor);
+                frame.report("Done Preinitializing: "
+                        + Manager.timeAndMemory(startTime));
             } catch (KernelException ex) {
                 MessageHandler.error("Preinitialize failed.", ex);
                 return;
@@ -279,12 +282,12 @@ public class DependencyHighlighter extends NodeControllerFactory {
                 // This is similar to code in BasicGraphFrame for
                 // SearchResultDialog.
                 Effigy effigy = Configuration.findEffigy(actor.toplevel());
-                Configuration configuration = (Configuration)effigy.toplevel();
+                Configuration configuration = (Configuration) effigy.toplevel();
 
                 DialogTableau dialogTableau = DialogTableau.createDialog(
                         BasicGraphFrame.getBasicGraphFrame(actor.toplevel()),
-                        configuration, effigy,
-                        DependencyResultsDialog.class, (Entity)actor);
+                        configuration, effigy, DependencyResultsDialog.class,
+                        (Entity) actor);
 
                 if (dialogTableau != null) {
                     dialogTableau.show();
@@ -297,7 +300,7 @@ public class DependencyHighlighter extends NodeControllerFactory {
                 _addHighlights(actor, moml, visited, _forward, _clear);
                 moml.append("</group>");
                 actor.requestChange(new MoMLChangeRequest(this, actor
-                                .getContainer(), moml.toString()));
+                        .getContainer(), moml.toString()));
             }
         }
 

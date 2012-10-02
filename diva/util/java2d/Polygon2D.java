@@ -26,7 +26,6 @@
  */
 package diva.util.java2d;
 
-
 import java.awt.Rectangle;
 import java.awt.Shape;
 import java.awt.geom.AffineTransform;
@@ -85,14 +84,15 @@ public abstract class Polygon2D implements Shape {
         // The previous implementation failed if the polygon had a vertical or horizontal
         // edge with the same value as one of the arguments.
         // See diva/util/java2d/test/junit/Polygon2DJUnitTest.java
-        Path2D path = (this instanceof Polygon2D.Float) ? new Path2D.Float() : new Path2D.Double();
+        Path2D path = (this instanceof Polygon2D.Float) ? new Path2D.Float()
+                : new Path2D.Double();
         path.moveTo(getX(0), getY(0));
         for (int i = 1; i < getVertexCount(); i++) {
             path.lineTo(getX(i), getY(i));
         }
         path.closePath();
         Area area = new Area(path);
-        return area.contains(x, y );
+        return area.contains(x, y);
     }
 
     /** Return true if the given point is inside the polygon.

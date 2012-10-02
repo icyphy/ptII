@@ -390,7 +390,8 @@ public class DerivedUnitConcept extends UnitConcept {
      */
     private static void _addBaseUnit(
             Map<BaseDimensionRepresentativeConcept, List<BaseUnitConcept>[]> baseComponentUnits,
-            BaseUnitConcept baseUnit, int exponentValue) throws IllegalActionException {
+            BaseUnitConcept baseUnit, int exponentValue)
+            throws IllegalActionException {
 
         BaseDimensionRepresentativeConcept baseDimension = (BaseDimensionRepresentativeConcept) baseUnit
                 .getDimension();
@@ -444,28 +445,29 @@ public class DerivedUnitConcept extends UnitConcept {
                     arrayOfBaseUnitsLists = arrayOfBaseUnitsListsFromDerivedUnit;
                 } else {
                     arrayOfBaseUnitsLists[POSITIVE_EXPONENT_INDEX]
-                                          .addAll(arrayOfBaseUnitsListsFromDerivedUnit[POSITIVE_EXPONENT_INDEX]);
+                            .addAll(arrayOfBaseUnitsListsFromDerivedUnit[POSITIVE_EXPONENT_INDEX]);
                     arrayOfBaseUnitsLists[NEGATIVE_EXPONENT_INDEX]
-                                          .addAll(arrayOfBaseUnitsListsFromDerivedUnit[NEGATIVE_EXPONENT_INDEX]);
+                            .addAll(arrayOfBaseUnitsListsFromDerivedUnit[NEGATIVE_EXPONENT_INDEX]);
                 }
-            // If the derived dimension's exponent is negative, then the array of units lists must swap
-            // the positive and negative units lists arrays.
+                // If the derived dimension's exponent is negative, then the array of units lists must swap
+                // the positive and negative units lists arrays.
             } else if (derivedDimensionExponent < 0) {
                 if (arrayOfBaseUnitsLists == null) {
                     arrayOfBaseUnitsLists = arrayOfBaseUnitsListsFromDerivedUnit;
-                    List<BaseUnitConcept> tempList = new ArrayList<BaseUnitConcept>(arrayOfBaseUnitsLists[NEGATIVE_EXPONENT_INDEX]);
+                    List<BaseUnitConcept> tempList = new ArrayList<BaseUnitConcept>(
+                            arrayOfBaseUnitsLists[NEGATIVE_EXPONENT_INDEX]);
                     arrayOfBaseUnitsLists[NEGATIVE_EXPONENT_INDEX] = arrayOfBaseUnitsLists[POSITIVE_EXPONENT_INDEX];
                     arrayOfBaseUnitsLists[POSITIVE_EXPONENT_INDEX] = tempList;
                 } else {
                     arrayOfBaseUnitsLists[NEGATIVE_EXPONENT_INDEX]
-                                          .addAll(arrayOfBaseUnitsListsFromDerivedUnit[POSITIVE_EXPONENT_INDEX]);
+                            .addAll(arrayOfBaseUnitsListsFromDerivedUnit[POSITIVE_EXPONENT_INDEX]);
                     arrayOfBaseUnitsLists[POSITIVE_EXPONENT_INDEX]
-                                          .addAll(arrayOfBaseUnitsListsFromDerivedUnit[NEGATIVE_EXPONENT_INDEX]);
+                            .addAll(arrayOfBaseUnitsListsFromDerivedUnit[NEGATIVE_EXPONENT_INDEX]);
                 }
             } else {
-                throw new IllegalActionException("Dimension exponent value " +
-                                "should never be zero because then it would " +
-                                "not have an entry in the dimension map.");
+                throw new IllegalActionException("Dimension exponent value "
+                        + "should never be zero because then it would "
+                        + "not have an entry in the dimension map.");
             }
             baseUnitsMap.put(baseDimension, arrayOfBaseUnitsLists);
         }
@@ -631,7 +633,7 @@ public class DerivedUnitConcept extends UnitConcept {
         // It must be scaled to account for precision errors for very large
         // and very small unit scale factors.
         double unitFactorEpsilon = newUnitFactor.doubleValue();
-        double base10Exponent = Math.log(unitFactorEpsilon)/Math.log(10.0);
+        double base10Exponent = Math.log(unitFactorEpsilon) / Math.log(10.0);
         unitFactorEpsilon = Math.pow(10.0, base10Exponent - 9.0);
 
         List<UnitConcept> matchingUnits = new ArrayList<UnitConcept>();
@@ -650,8 +652,8 @@ public class DerivedUnitConcept extends UnitConcept {
                                 .getComponentBaseUnits()));
             }
             if (noUnitOffsets
-                    && newUnitFactor.isCloseTo(unitFactor,
-                            unitFactorEpsilon).booleanValue()) {
+                    && newUnitFactor.isCloseTo(unitFactor, unitFactorEpsilon)
+                            .booleanValue()) {
                 matchingUnits.add(unit);
             }
         }
@@ -702,14 +704,14 @@ public class DerivedUnitConcept extends UnitConcept {
      */
     private static BaseUnitConcept _findSameUnitFromDimension(
             List<BaseUnitConcept> unitList, BaseUnitConcept baseUnitToFind) {
-        BaseDimensionRepresentativeConcept baseDimension =
-                (BaseDimensionRepresentativeConcept) baseUnitToFind.getDimension();
+        BaseDimensionRepresentativeConcept baseDimension = (BaseDimensionRepresentativeConcept) baseUnitToFind
+                .getDimension();
 
         for (BaseUnitConcept unit : unitList) {
-            BaseDimensionRepresentativeConcept dimension =
-                    (BaseDimensionRepresentativeConcept) unit.getDimension();
+            BaseDimensionRepresentativeConcept dimension = (BaseDimensionRepresentativeConcept) unit
+                    .getDimension();
             if (dimension.equals(baseDimension)) {
-               return unit;
+                return unit;
             }
         }
         return null;
@@ -737,7 +739,8 @@ public class DerivedUnitConcept extends UnitConcept {
                 throw new IllegalActionException("The ontology " + unitOntology
                         + " has a null concept graph.");
             }
-            return conceptGraph.leastUpperBound(new HashSet<Concept>(allDimensionlessConcepts));
+            return conceptGraph.leastUpperBound(new HashSet<Concept>(
+                    allDimensionlessConcepts));
         }
     }
 
@@ -881,9 +884,8 @@ public class DerivedUnitConcept extends UnitConcept {
                     // The conversion factor has already been calculated by
                     // the newUnitFactor variable passed into
                     // findUnitByComponentMapsAndUnitFactor().
-                    BaseUnitConcept unitFromSameDimension =
-                            _findSameUnitFromDimension(originalList,
-                                                       unitToBeRemoved);
+                    BaseUnitConcept unitFromSameDimension = _findSameUnitFromDimension(
+                            originalList, unitToBeRemoved);
                     if (unitFromSameDimension != null) {
                         resultList.remove(unitFromSameDimension);
                     }

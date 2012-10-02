@@ -57,9 +57,9 @@ public abstract class _CoordinatorImplBase extends
             break;
         }
 
-            /* this method is intended to be called remotely by the client,
-             * so that data can be delived back over the network.
-             */
+        /* this method is intended to be called remotely by the client,
+         * so that data can be delived back over the network.
+         */
         case 1: // CoordinatorUtil/Coordinator/result
         {
             try {
@@ -76,9 +76,9 @@ public abstract class _CoordinatorImplBase extends
             break;
         }
 
-            /* this method is intended to be called remotely by the client
-             * to unregister with this when it leaves.
-             */
+        /* this method is intended to be called remotely by the client
+         * to unregister with this when it leaves.
+         */
         case 2: // CoordinatorUtil/Coordinator/unregister
         {
             try {

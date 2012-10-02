@@ -122,8 +122,9 @@ public class SharedParameter extends Parameter implements Initializable {
      *  @exception NameDuplicationException If the name coincides with
      *   a parameter already in the container.
      */
-    public SharedParameter(NamedObj container, String name, Class<?> containerClass)
-            throws IllegalActionException, NameDuplicationException {
+    public SharedParameter(NamedObj container, String name,
+            Class<?> containerClass) throws IllegalActionException,
+            NameDuplicationException {
         this(container, name, containerClass, "");
     }
 

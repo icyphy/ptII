@@ -1786,7 +1786,7 @@ public class FSMActor extends CompositeEntity implements TypedActor,
         Transition chosenTransition = null;
 
         if (numberOfEnabledTransitions == 1) {
-            chosenTransition = (Transition) enabledTransitions.get(0);
+            chosenTransition = enabledTransitions.get(0);
             // Record the chosen transition.
             _transitionsPreviouslyChosenInIteration.add(chosenTransition);
         } else if (numberOfEnabledTransitions > 1) {
@@ -1833,8 +1833,7 @@ public class FSMActor extends CompositeEntity implements TypedActor,
                         randomChoice--;
                     }
 
-                    chosenTransition = (Transition) enabledTransitions
-                            .get(randomChoice);
+                    chosenTransition = enabledTransitions.get(randomChoice);
                     if (_referencedInputPortsByOutputKnown(chosenTransition)) {
                         // The chosen transition has an output action that
                         // references an unknown input.
@@ -1859,23 +1858,27 @@ public class FSMActor extends CompositeEntity implements TypedActor,
             // cmot:
             // If non-preemptive and immediate transition, fire source
             // state refinement.
-            if (!chosenTransition.isPreemptive() && chosenTransition.isImmediate()) {
+            if (!chosenTransition.isPreemptive()
+                    && chosenTransition.isImmediate()) {
                 // If the transition into the current state is a reset transition,
                 // then initialize the current state refinements. Note that this is safe to do
                 // in the fire() method because a transition cannot be unchosen later.
                 if (_lastChosenTransition != null) {
-                    BooleanToken resetToken = (BooleanToken) _lastChosenTransition.reset.getToken();
+                    BooleanToken resetToken = (BooleanToken) _lastChosenTransition.reset
+                            .getToken();
                     if (resetToken.booleanValue()) {
                         _initializeRefinements(currentState);
                     }
                 }
-                if (((BooleanToken) currentState.isInitialState.getToken()).booleanValue()) {
+                if (((BooleanToken) currentState.isInitialState.getToken())
+                        .booleanValue()) {
                     Actor[] stateRefinements = currentState.getRefinement();
                     if (stateRefinements != null && stateRefinements.length > 0) {
-                        throw new IllegalActionException(this,
-                                "Initial state with a refinement and an enabled " +
-                                "immediate transition is not allowed, " +
-                                "because the refinement would have to execute during the initialize phase.");
+                        throw new IllegalActionException(
+                                this,
+                                "Initial state with a refinement and an enabled "
+                                        + "immediate transition is not allowed, "
+                                        + "because the refinement would have to execute during the initialize phase.");
                     }
                 }
                 _fireStateRefinements(currentState);
@@ -2025,7 +2028,7 @@ public class FSMActor extends CompositeEntity implements TypedActor,
                     // much less than this fire() method, and in particular, does not
                     // invoke refinements! This is fixed by using ModalModel in a
                     // hierarchical state.
-                     stateRefinements[i].fire();
+                    stateRefinements[i].fire();
                     _stateRefinementsToPostfire.add(stateRefinements[i]);
                 }
             }

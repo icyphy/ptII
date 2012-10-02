@@ -1087,7 +1087,7 @@ public class Director extends Attribute implements Executable {
         // Support old models that set time resolution in director.
         Attribute timeResolution = getAttribute("timeResolution");
         if (timeResolution != null) {
-            double timeResolutionDouble = ((DoubleToken) ((Parameter)timeResolution)
+            double timeResolutionDouble = ((DoubleToken) ((Parameter) timeResolution)
                     .getToken()).doubleValue();
             try {
                 timeResolution.setContainer(null);

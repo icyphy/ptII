@@ -40,6 +40,7 @@ import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Manager;
 import ptolemy.data.expr.FileParameter;
 import ptolemy.gui.ComponentDialog;
+import ptolemy.gui.ExtensionFilenameFilter;
 import ptolemy.gui.Query;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.undo.UndoStackAttribute;
@@ -110,7 +111,7 @@ public abstract class PtolemyFrame extends TableauFrame {
         // Note that as of Java 1.6, there is a FileNameExtensionFilter which
         // replaces diva.gui.ExtensionFileFilter, see
         //http://download.oracle.com/javase/6/docs/api/javax/swing/filechooser/FileNameExtensionFilter.html
-        _fileFilter = new diva.gui.ExtensionFileFilter(extensions);
+        _fileFilter = new ExtensionFilenameFilter(extensions);
 
         setModel(model);
 

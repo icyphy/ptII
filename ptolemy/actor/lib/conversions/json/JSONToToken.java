@@ -131,10 +131,10 @@ public class JSONToToken extends Converter {
     /**
      * Do not establish the usual default type constraints.
      */
-     @Override
-     protected Set<Inequality> _defaultTypeConstraints() {
-         return null;
-     }
+    @Override
+    protected Set<Inequality> _defaultTypeConstraints() {
+        return null;
+    }
 
     /**
      * Parse the input string by instantiating a new JSONObject, then translate
@@ -151,8 +151,8 @@ public class JSONToToken extends Converter {
                 return _scanJSONArray(new JSONArray(input));
             }
         } catch (JSONException e) {
-            throw new IllegalActionException(this, e, "Unable to parse JSON data: "
-                                             + input);
+            throw new IllegalActionException(this, e,
+                    "Unable to parse JSON data: " + input);
         }
     }
 
@@ -173,31 +173,25 @@ public class JSONToToken extends Converter {
 
         // The value can be any of these types:
         // Boolean, Number, String, or the JSONObject.NULL
-        if (value instanceof JSONArray)
+        if (value instanceof JSONArray) {
             return _scanJSONArray((JSONArray) value);
-        else if (value instanceof JSONObject)
+        } else if (value instanceof JSONObject) {
             return _scanJSONObject((JSONObject) value);
-        else {
+        } else {
             Token t;
             if (value instanceof Boolean) {
                 t = new BooleanToken((Boolean) value);
-            }
-            else if (value instanceof Integer) {
+            } else if (value instanceof Integer) {
                 t = new IntToken((Integer) value);
-            }
-            else if (value instanceof Long) {
+            } else if (value instanceof Long) {
                 t = new LongToken((Long) value);
-            }
-            else if (value instanceof Double) {
+            } else if (value instanceof Double) {
                 t = new DoubleToken((Double) value);
-            }
-            else if (value instanceof String) {
+            } else if (value instanceof String) {
                 t = new StringToken((String) value);
-            }
-            else if (value.equals(JSONObject.NULL)) {
+            } else if (value.equals(JSONObject.NULL)) {
                 t = new ObjectToken(null);
-            }
-            else {
+            } else {
                 throw new IllegalActionException("Unable to map value of "
                         + value.getClass().toString() + " to token.");
             }

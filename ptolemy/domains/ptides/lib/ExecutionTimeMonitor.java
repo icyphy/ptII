@@ -119,7 +119,6 @@ public class ExecutionTimeMonitor extends TypedAtomicActor implements
             return;
         }
 
-
         double x = physicalTime;
         int actorDataset = _actors.indexOf(actor);
         if (actorDataset == -1) {

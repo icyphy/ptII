@@ -117,7 +117,6 @@ public interface ImageDisplayInterface {
     public void initWindowAndSizeProperties() throws IllegalActionException,
             NameDuplicationException;
 
-
     /** Set the container to be placed.
      *  @param container The Container to be placed.
      */

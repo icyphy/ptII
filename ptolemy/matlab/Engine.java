@@ -283,25 +283,27 @@ public class Engine {
                 } catch (Throwable throwable) {
                     Path = throwable.toString();
                 }
-                throw new IllegalActionException("matlabEngine.open("
-                        + startCmd
-                        + ") : can't find Matlab engine. "
-                        + "The PATH for this process is \"" + Path
-                        + "\". Try starting "
-                        + "\"matlab\" by hand from a shell to verify that "
-                        + "Matlab is set up properly and the license is "
-                        + "correct.\n"
-                        + "Under Windows, try running \"matlab /regserver\", "
-                        + "the Matlab C API communicates with Matlab via COM, "
-                        + "and apparently the COM interface is not "
-                        + "automatically registered when Matlab is "
-                        + "installed.\n"
-                        + "Under Mac OS X, 'matlab' must be in the PATH, "
-                        + "it may be easiest to create a link from /usr/bin/matlab "
-                        + "to the location of the matlab script:\n "
-                        + "sudo ln -s /Applications/MATLAB_R2011a.app/bin/matlab /usr/bin/matlab\n"
-                        + "Under Linux and other types of UNIX, csh must be "
-                        + "installed in /bin/csh.");
+                throw new IllegalActionException(
+                        "matlabEngine.open("
+                                + startCmd
+                                + ") : can't find Matlab engine. "
+                                + "The PATH for this process is \""
+                                + Path
+                                + "\". Try starting "
+                                + "\"matlab\" by hand from a shell to verify that "
+                                + "Matlab is set up properly and the license is "
+                                + "correct.\n"
+                                + "Under Windows, try running \"matlab /regserver\", "
+                                + "the Matlab C API communicates with Matlab via COM, "
+                                + "and apparently the COM interface is not "
+                                + "automatically registered when Matlab is "
+                                + "installed.\n"
+                                + "Under Mac OS X, 'matlab' must be in the PATH, "
+                                + "it may be easiest to create a link from /usr/bin/matlab "
+                                + "to the location of the matlab script:\n "
+                                + "sudo ln -s /Applications/MATLAB_R2011a.app/bin/matlab /usr/bin/matlab\n"
+                                + "Under Linux and other types of UNIX, csh must be "
+                                + "installed in /bin/csh.");
             }
 
             if (needOutput) {
@@ -835,10 +837,14 @@ public class Engine {
             } else if (t instanceof IntToken) {
                 a[0] = ((ScalarToken) t).intValue();
             } else {
-                throw new IllegalActionException("Token " + t + " is of type "
-                        + t.getType() + ", it should be one of "
-                        + "ArrayToken, RecordToken, StringToken, ComplexMatrixToken, "
-                        + "MatrixToken, ComplexToken, BooleanToken, DoubleToken or IntToken.");
+                throw new IllegalActionException(
+                        "Token "
+                                + t
+                                + " is of type "
+                                + t.getType()
+                                + ", it should be one of "
+                                + "ArrayToken, RecordToken, StringToken, ComplexMatrixToken, "
+                                + "MatrixToken, ComplexToken, BooleanToken, DoubleToken or IntToken.");
             }
 
             ma = ptmatlabCreateDoubleMatrixOneDim(name, a, 1);

@@ -636,8 +636,8 @@ public class PropertyClassChanges extends MoMLFilterSimple {
         HashMap RepeatAttributeClassChanges = new HashMap();
         RepeatAttributeClassChanges.put("numberOfTimes",
                 "ptolemy.actor.parameters.PortParameter");
-        _actorsWithPropertyClassChanges.put(
-                "ptolemy.domains.sdf.lib.Repeat", RepeatAttributeClassChanges);
+        _actorsWithPropertyClassChanges.put("ptolemy.domains.sdf.lib.Repeat",
+                RepeatAttributeClassChanges);
 
     }
 }

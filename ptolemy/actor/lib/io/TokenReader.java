@@ -80,7 +80,8 @@ public class TokenReader extends FileReader {
         // must reset the output type to unknown (base class sets it to string)
         output.setTypeEquals(BaseType.UNKNOWN);
 
-        errorHandlingStrategy = new StringParameter(this, "errorHandlingStrategy");
+        errorHandlingStrategy = new StringParameter(this,
+                "errorHandlingStrategy");
         errorHandlingStrategy.addChoice("Throw Exception");
         errorHandlingStrategy.addChoice("Do Nothing");
 
@@ -131,7 +132,8 @@ public class TokenReader extends FileReader {
         try {
             super.fire();
         } catch (IllegalActionException exception) {
-            String errorHandlingStrategyValue = errorHandlingStrategy.stringValue();
+            String errorHandlingStrategyValue = errorHandlingStrategy
+                    .stringValue();
             if (errorHandlingStrategyValue.equals("Throw Exception")) {
                 throw exception;
             }
@@ -191,4 +193,4 @@ public class TokenReader extends FileReader {
     /** The parse tree evaluator to use. */
     private ParseTreeEvaluator _parseTreeEvaluator = null;
 
- }
+}

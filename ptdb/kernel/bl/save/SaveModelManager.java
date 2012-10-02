@@ -506,7 +506,7 @@ public class SaveModelManager {
                                     && (name.startsWith("_")
                                             || XMLDBModel.DB_REFERENCE_ATTR
                                                     .equals(name) || XMLDBModel.DB_MODEL_ID_ATTR
-                                            .equals(name))) {
+                                                .equals(name))) {
                                 entityElement.appendChild(childNode);
                             } else {
                                 k++;

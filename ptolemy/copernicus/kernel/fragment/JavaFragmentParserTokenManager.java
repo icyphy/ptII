@@ -977,8 +977,7 @@ public class JavaFragmentParserTokenManager implements
             }
             if (curChar < 64) {
                 long l = 1L << curChar;
-                MatchLoop:
-                do {
+                MatchLoop: do {
                     switch (jjstateSet[--i]) {
                     case 3:
                         if ((0x3ff000000000000L & l) != 0L) {
@@ -1277,8 +1276,7 @@ public class JavaFragmentParserTokenManager implements
                 } while (i != startsAt);
             } else if (curChar < 128) {
                 long l = 1L << (curChar & 077);
-                MatchLoop:
-                do {
+                MatchLoop: do {
                     switch (jjstateSet[--i]) {
                     case 3:
                     case 32:
@@ -1379,8 +1377,7 @@ public class JavaFragmentParserTokenManager implements
                 long l1 = 1L << (hiByte & 077);
                 int i2 = (curChar & 0xff) >> 6;
                 long l2 = 1L << (curChar & 077);
-                MatchLoop:
-                do {
+                MatchLoop: do {
                     switch (jjstateSet[--i]) {
                     case 3:
                     case 32:
@@ -1473,8 +1470,7 @@ public class JavaFragmentParserTokenManager implements
             }
             if (curChar < 64) {
                 long l = 1L << curChar;
-                MatchLoop:
-                do {
+                MatchLoop: do {
                     switch (jjstateSet[--i]) {
                     case 0:
                         if ((0x2400L & l) != 0L) {
@@ -1502,8 +1498,7 @@ public class JavaFragmentParserTokenManager implements
                 } while (i != startsAt);
             } else if (curChar < 128) {
                 long l = 1L << (curChar & 077);
-                MatchLoop:
-                do {
+                MatchLoop: do {
                     switch (jjstateSet[--i]) {
                     default:
                         break;
@@ -1515,8 +1510,7 @@ public class JavaFragmentParserTokenManager implements
                 long l1 = 1L << (hiByte & 077);
                 int i2 = (curChar & 0xff) >> 6;
                 long l2 = 1L << (curChar & 077);
-                MatchLoop:
-                do {
+                MatchLoop: do {
                     switch (jjstateSet[--i]) {
                     default:
                         break;
@@ -1748,8 +1742,7 @@ public class JavaFragmentParserTokenManager implements
         Token matchedToken;
         int curPos = 0;
 
-        EOFLoop:
-        for (;;) {
+        EOFLoop: for (;;) {
             try {
                 curChar = input_stream.BeginToken();
             } catch (java.io.IOException e) {

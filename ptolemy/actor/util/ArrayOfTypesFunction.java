@@ -48,7 +48,6 @@ import ptolemy.kernel.util.IllegalActionException;
  */
 public class ArrayOfTypesFunction extends MonotonicFunction {
 
-
     /** Construct a ArrayElementTypeFunction whose argument is the
      *  type of the specified object.
      *  @param typeable A Typeable object.
@@ -76,12 +75,11 @@ public class ArrayOfTypesFunction extends MonotonicFunction {
      *  @exception IllegalActionException If the type of the argument
      *   cannot be determined.
      */
-    public Object getValue()  throws IllegalActionException {
+    public Object getValue() throws IllegalActionException {
         Type type = _typeable.getType();
         if (_arrayLength > 0) {
             return new ArrayType(type, _arrayLength);
-        }
-        else {
+        } else {
             return new ArrayType(type);
         }
     }

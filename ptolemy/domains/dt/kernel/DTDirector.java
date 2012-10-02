@@ -255,7 +255,8 @@ public class DTDirector extends SDFDirector {
         try {
             newObject._reset();
         } catch (Throwable throwable) {
-            throw new CloneNotSupportedException("Could not clone: " + throwable);
+            throw new CloneNotSupportedException("Could not clone: "
+                    + throwable);
         }
         return newObject;
     }
@@ -712,8 +713,7 @@ public class DTDirector extends SDFDirector {
         ListIterator actorIterator = _actorTable.listIterator();
         int repeats = 0;
 
-        foundRepeatValue:
-        while (actorIterator.hasNext()) {
+        foundRepeatValue: while (actorIterator.hasNext()) {
             DTActor currentActor = (DTActor) actorIterator.next();
 
             if (actor.equals(currentActor._actor)) {

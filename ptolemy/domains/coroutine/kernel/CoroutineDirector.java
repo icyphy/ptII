@@ -81,13 +81,14 @@ public class CoroutineDirector extends Director implements Continuation {
         _init();
     }
 
-    private void _init() throws IllegalActionException, NameDuplicationException {
+    private void _init() throws IllegalActionException,
+            NameDuplicationException {
         initContinuationName = new Parameter(this, "initContinuationName");
         initContinuationName.setStringMode(true);
 
         entryMapping = new Parameter(this, "entryMapping");
-        nextMapping  = new Parameter(this, "nextMapping");
-        exitMapping  = new Parameter(this, "exitMapping");
+        nextMapping = new Parameter(this, "nextMapping");
+        exitMapping = new Parameter(this, "exitMapping");
 
         _receivers = new LinkedList();
     }
@@ -101,7 +102,9 @@ public class CoroutineDirector extends Director implements Continuation {
         _nextLocation = null;
         _currentControlPath = new LinkedList();
         while (true) {
-            if (_debugging) _debug("\nEntering : " + currL.continuation());
+            if (_debugging) {
+                _debug("\nEntering : " + currL.continuation());
+            }
             ControlExitToken ex = _enterWith(currL);
             _currentControlPath.add(currL.continuation());
             if (ex == null) {
@@ -109,33 +112,51 @@ public class CoroutineDirector extends Director implements Continuation {
                 break;
             }
             if (ex.isSuspend()) {
-                if (_debugging) _debug("\nSuspending.\n");
-                _nextLocation = new InternalEntryLocation(currL.continuation(), ControlEntryToken.Resume());
+                if (_debugging) {
+                    _debug("\nSuspending.\n");
+                }
+                _nextLocation = new InternalEntryLocation(currL.continuation(),
+                        ControlEntryToken.Resume());
                 break;
             }
             if (ex.isTerminate()) {
-                if (_debugging) _debug("\nTerminating.\n");
-                _nextLocation = new InternalEntryLocation(_initContinuation, ControlEntryToken.Init());
+                if (_debugging) {
+                    _debug("\nTerminating.\n");
+                }
+                _nextLocation = new InternalEntryLocation(_initContinuation,
+                        ControlEntryToken.Init());
                 break;
             }
             if (ex.isLocation()) {
                 InternalExitLocation iex = _exitFrom(currL, ex);
-                if (_debugging) _debug("\nExiting with location : " + ex.getLocation() + "\n");
-                if (iex == null) break;
+                if (_debugging) {
+                    _debug("\nExiting with location : " + ex.getLocation()
+                            + "\n");
+                }
+                if (iex == null) {
+                    break;
+                }
 
                 // Add exit logic
                 if (_nextMap.containsKey(iex)) {
                     InternalEntryLocation nloc = _nextMap.get(iex);
-                    if (_debugging) _debug("\nMoving to continuation : " + nloc.continuation() + ", with entry : " + nloc.entry() + "\n");
+                    if (_debugging) {
+                        _debug("\nMoving to continuation : "
+                                + nloc.continuation() + ", with entry : "
+                                + nloc.entry() + "\n");
+                    }
                     currL = nloc;
                     if (currL == _currentLocation) {
-                        if (_debugging) _debug("\nControl cycle.");
+                        if (_debugging) {
+                            _debug("\nControl cycle.");
+                        }
                         break;
                     }
                     continue;
-                }
-                else {
-                    if (_debugging) _debug("\nOff the map.");
+                } else {
+                    if (_debugging) {
+                        _debug("\nOff the map.");
+                    }
                     break;
                 }
             }
@@ -145,24 +166,36 @@ public class CoroutineDirector extends Director implements Continuation {
         CompositeActor compAct = (CompositeActor) getContainer();
         List entities = compAct.deepEntityList();
         for (Object ent : entities) {
-            if (!(ent instanceof Executable) || ent instanceof Continuation) continue;
-            Executable e = (Executable)ent;
-            if (_debugging) _debug("\nFiring : " + e + "\n");
+            if (!(ent instanceof Executable) || ent instanceof Continuation) {
+                continue;
+            }
+            Executable e = (Executable) ent;
+            if (_debugging) {
+                _debug("\nFiring : " + e + "\n");
+            }
             e.fire();
         }
     }
 
-    private InternalExitLocation _exitFrom(InternalEntryLocation iel, ControlExitToken cet) {
+    private InternalExitLocation _exitFrom(InternalEntryLocation iel,
+            ControlExitToken cet) {
         Continuation c = iel.continuation();
-        if (!_continuations.contains(c)) return null;
-        if (!cet.isLocation()) return null;
+        if (!_continuations.contains(c)) {
+            return null;
+        }
+        if (!cet.isLocation()) {
+            return null;
+        }
         ExitLocation el = cet.getLocation();
         return new InternalExitLocation(c, el);
     }
 
-    private ControlExitToken _enterWith(InternalEntryLocation iel) throws IllegalActionException {
+    private ControlExitToken _enterWith(InternalEntryLocation iel)
+            throws IllegalActionException {
         Continuation c = iel.continuation();
-        if (!_continuations.contains(c)) return null;
+        if (!_continuations.contains(c)) {
+            return null;
+        }
         ControlExitToken cet = c.controlEnter(iel.entry());
         return cet;
     }
@@ -177,7 +210,9 @@ public class CoroutineDirector extends Director implements Continuation {
 
         _continuations = new LinkedList();
         for (Object entity : entities) {
-            if (!(entity instanceof Continuation)) continue;
+            if (!(entity instanceof Continuation)) {
+                continue;
+            }
             Continuation continuation = (Continuation) entity;
             _continuations.add(continuation);
         }
@@ -185,20 +220,23 @@ public class CoroutineDirector extends Director implements Continuation {
         _initContinuation = null;
         Token initContName = initContinuationName.getToken();
         if (initContName != null && initContName instanceof StringToken) {
-            StringToken stName = (StringToken)initContName;
+            StringToken stName = (StringToken) initContName;
             ComponentEntity ent = compAct.getEntity(stName.stringValue());
             if (ent != null && ent instanceof Continuation) {
-                _initContinuation = (Continuation)ent;
+                _initContinuation = (Continuation) ent;
             }
         }
         if (_initContinuation == null) {
             if (_continuations.size() > 0) {
                 _initContinuation = _continuations.getFirst();
+            } else {
+                throw new IllegalActionException(
+                        "There is no initial continuation.");
             }
-            else throw new IllegalActionException("There is no initial continuation.");
         }
 
-        _currentLocation = new InternalEntryLocation(_initContinuation, ControlEntryToken.Resume());
+        _currentLocation = new InternalEntryLocation(_initContinuation,
+                ControlEntryToken.Resume());
 
         buildEntryMapFromParameter();
         buildMapFromConnections();
@@ -215,25 +253,39 @@ public class CoroutineDirector extends Director implements Continuation {
         _nextMap = new HashMap();
         Token nextMappingToken = nextMapping.getToken();
         if (nextMappingToken != null && nextMappingToken instanceof ArrayToken) {
-            ArrayToken nextMappingAr = (ArrayToken)nextMappingToken;
+            ArrayToken nextMappingAr = (ArrayToken) nextMappingToken;
             for (Token mapElT : nextMappingAr.arrayValue()) {
                 String spec[] = _extractMapSpec(mapElT, 4);
-                if (spec == null) continue;
+                if (spec == null) {
+                    continue;
+                }
 
                 Continuation contout = _getContinuation(spec[0]);
-                if (contout == null) continue;
+                if (contout == null) {
+                    continue;
+                }
 
                 ExitLocation exit = new ExitLocation(spec[1]);
-                if (!contout.exitLocations().contains(exit)) continue;
+                if (!contout.exitLocations().contains(exit)) {
+                    continue;
+                }
 
                 Continuation contin = _getContinuation(spec[2]);
-                if (contin == null) continue;
+                if (contin == null) {
+                    continue;
+                }
 
                 ControlEntryToken conET = ControlEntryToken.EntryToken(spec[3]);
-                if (conET.isLocation() && !contin.entryLocations().contains(conET.getLocation())) continue;
+                if (conET.isLocation()
+                        && !contin.entryLocations().contains(
+                                conET.getLocation())) {
+                    continue;
+                }
 
-                InternalExitLocation  inext = new InternalExitLocation(contout, exit);
-                InternalEntryLocation inent = new InternalEntryLocation(contin, conET);
+                InternalExitLocation inext = new InternalExitLocation(contout,
+                        exit);
+                InternalEntryLocation inent = new InternalEntryLocation(contin,
+                        conET);
                 _nextMap.put(inext, inent);
             }
         }
@@ -244,22 +296,34 @@ public class CoroutineDirector extends Director implements Continuation {
     public void buildEntryMapFromParameter() throws IllegalActionException {
         _entryMap = new HashMap();
         Token entryMappingToken = entryMapping.getToken();
-        if (entryMappingToken != null && entryMappingToken instanceof ArrayToken) {
-            ArrayToken entryMappingAr = (ArrayToken)entryMappingToken;
+        if (entryMappingToken != null
+                && entryMappingToken instanceof ArrayToken) {
+            ArrayToken entryMappingAr = (ArrayToken) entryMappingToken;
             for (Token mapElT : entryMappingAr.arrayValue()) {
                 String spec[] = _extractMapSpec(mapElT, 3);
-                if (spec == null) continue;
+                if (spec == null) {
+                    continue;
+                }
 
                 EntryLocation entry = new EntryLocation(spec[0]);
-                if (!_entries.contains(entry)) continue;
+                if (!_entries.contains(entry)) {
+                    continue;
+                }
 
                 Continuation contin = _getContinuation(spec[1]);
-                if (contin == null) continue;
+                if (contin == null) {
+                    continue;
+                }
 
                 ControlEntryToken conET = ControlEntryToken.EntryToken(spec[2]);
-                if (conET.isLocation() && !contin.entryLocations().contains(conET.getLocation())) continue;
+                if (conET.isLocation()
+                        && !contin.entryLocations().contains(
+                                conET.getLocation())) {
+                    continue;
+                }
 
-                InternalEntryLocation inent = new InternalEntryLocation(contin, conET);
+                InternalEntryLocation inent = new InternalEntryLocation(contin,
+                        conET);
                 _entryMap.put(entry, inent);
             }
         }
@@ -269,21 +333,30 @@ public class CoroutineDirector extends Director implements Continuation {
         _exitMap = new HashMap();
         Token exitMappingToken = exitMapping.getToken();
         if (exitMappingToken != null && exitMappingToken instanceof ArrayToken) {
-            ArrayToken exitMappingAr = (ArrayToken)exitMappingToken;
+            ArrayToken exitMappingAr = (ArrayToken) exitMappingToken;
             for (Token mapElT : exitMappingAr.arrayValue()) {
                 String spec[] = _extractMapSpec(mapElT, 3);
-                if (spec == null) continue;
+                if (spec == null) {
+                    continue;
+                }
 
                 Continuation contout = _getContinuation(spec[0]);
-                if (contout == null) continue;
+                if (contout == null) {
+                    continue;
+                }
 
                 ExitLocation exit = new ExitLocation(spec[1]);
-                if (!contout.exitLocations().contains(exit)) continue;
+                if (!contout.exitLocations().contains(exit)) {
+                    continue;
+                }
 
                 ExitLocation exitM = new ExitLocation(spec[2]);
-                if (!_exits.contains(exitM)) continue;
+                if (!_exits.contains(exitM)) {
+                    continue;
+                }
 
-                InternalExitLocation inext = new InternalExitLocation(contout, exit);
+                InternalExitLocation inext = new InternalExitLocation(contout,
+                        exit);
                 _exitMap.put(inext, exitM);
             }
         }
@@ -292,28 +365,41 @@ public class CoroutineDirector extends Director implements Continuation {
     public void buildMapFromConnections() {
         _nextMap = new HashMap();
         for (Continuation c : _continuations) {
-            if (!(c instanceof AtomicContinuationActor)) continue;
-            AtomicContinuationActor scact = (AtomicContinuationActor)c;
+            if (!(c instanceof AtomicContinuationActor)) {
+                continue;
+            }
+            AtomicContinuationActor scact = (AtomicContinuationActor) c;
             for (Object ob : scact.outputPortList()) {
-                if (!(ob instanceof TypedIOPort)) continue;
+                if (!(ob instanceof TypedIOPort)) {
+                    continue;
+                }
 
-                TypedIOPort sp = (TypedIOPort)ob;
+                TypedIOPort sp = (TypedIOPort) ob;
                 ExitLocation xl = scact.getExitLocationFromPort(sp);
-                if (xl == null) continue;
+                if (xl == null) {
+                    continue;
+                }
 
                 List<TypedIOPort> dps = sp.connectedPortList();
-                if (dps.size() < 1) continue;
+                if (dps.size() < 1) {
+                    continue;
+                }
 
                 TypedIOPort dp = dps.get(0);
                 NamedObj nobj = dp.getContainer();
-                if (!(nobj instanceof AtomicContinuationActor)) continue;
-                AtomicContinuationActor dcact = (AtomicContinuationActor)nobj;
+                if (!(nobj instanceof AtomicContinuationActor)) {
+                    continue;
+                }
+                AtomicContinuationActor dcact = (AtomicContinuationActor) nobj;
 
                 ControlEntryToken et = dcact.getEntryActionFromPort(dp);
-                if (et == null) continue;
+                if (et == null) {
+                    continue;
+                }
 
-                InternalExitLocation  inext = new InternalExitLocation(scact, xl);
-                InternalEntryLocation inent = new InternalEntryLocation(dcact, et);
+                InternalExitLocation inext = new InternalExitLocation(scact, xl);
+                InternalEntryLocation inent = new InternalEntryLocation(dcact,
+                        et);
                 _nextMap.put(inext, inent);
             }
         }
@@ -322,22 +408,35 @@ public class CoroutineDirector extends Director implements Continuation {
     }
 
     public void debugShowMap() {
-        if (_debugging) _debug("\nNext Map:\n");
-        for (Map.Entry<InternalExitLocation, InternalEntryLocation> ent : _nextMap.entrySet()) {
-            if (_debugging) _debug("\n    " + ent.getKey() + " => " + ent.getValue());
+        if (_debugging) {
+            _debug("\nNext Map:\n");
         }
-        if (_debugging) _debug("\n");
+        for (Map.Entry<InternalExitLocation, InternalEntryLocation> ent : _nextMap
+                .entrySet()) {
+            if (_debugging) {
+                _debug("\n    " + ent.getKey() + " => " + ent.getValue());
+            }
+        }
+        if (_debugging) {
+            _debug("\n");
+        }
     }
 
     public String[] _extractMapSpec(Token t, int n) {
-        if (!(t instanceof ArrayToken)) return null;
-        Token[] ts = ((ArrayToken)t).arrayValue();
+        if (!(t instanceof ArrayToken)) {
+            return null;
+        }
+        Token[] ts = ((ArrayToken) t).arrayValue();
 
-        if (ts.length < n) return null;
+        if (ts.length < n) {
+            return null;
+        }
         String spec[] = new String[n];
         for (int k = 0; k < n; ++k) {
-            if (!(ts[k] instanceof StringToken)) return null;
-            spec[k] = ((StringToken)ts[k]).stringValue();
+            if (!(ts[k] instanceof StringToken)) {
+                return null;
+            }
+            spec[k] = ((StringToken) ts[k]).stringValue();
         }
 
         return spec;
@@ -345,8 +444,12 @@ public class CoroutineDirector extends Director implements Continuation {
 
     public Continuation _getContinuation(String name) {
         for (Continuation c : _continuations) {
-            if (!(c instanceof Nameable)) continue;
-            if (((Nameable)c).getName().equals(name)) return c;
+            if (!(c instanceof Nameable)) {
+                continue;
+            }
+            if (((Nameable) c).getName().equals(name)) {
+                return c;
+            }
         }
         return null;
     }
@@ -356,15 +459,21 @@ public class CoroutineDirector extends Director implements Continuation {
      */
     @Override
     public boolean postfire() throws IllegalActionException {
-        if (_nextLocation == null) return false;
+        if (_nextLocation == null) {
+            return false;
+        }
         _currentLocation = _nextLocation;
 
         // Postfire all continuations
         boolean pfret = true;
         for (Continuation c : _currentControlPath) {
-            if (!(c instanceof Executable)) continue;
-            Executable e = (Executable)c;
-            if (_debugging) _debug("\nPostfiring : " + c + "\n");
+            if (!(c instanceof Executable)) {
+                continue;
+            }
+            Executable e = (Executable) c;
+            if (_debugging) {
+                _debug("\nPostfiring : " + c + "\n");
+            }
             pfret = pfret && e.postfire();
         }
 
@@ -372,8 +481,10 @@ public class CoroutineDirector extends Director implements Continuation {
         CompositeActor compAct = (CompositeActor) getContainer();
         List entities = compAct.deepEntityList();
         for (Object ent : entities) {
-            if (!(ent instanceof Executable) || ent instanceof Continuation) continue;
-            Executable e = (Executable)ent;
+            if (!(ent instanceof Executable) || ent instanceof Continuation) {
+                continue;
+            }
+            Executable e = (Executable) ent;
             pfret = pfret && e.postfire();
         }
 
@@ -396,7 +507,7 @@ public class CoroutineDirector extends Director implements Continuation {
      */
     @Override
     public ControlExitToken controlEnter(ControlEntryToken entry)
-        throws IllegalActionException {
+            throws IllegalActionException {
         // TODO Auto-generated method stub
         return null;
     }
@@ -405,8 +516,7 @@ public class CoroutineDirector extends Director implements Continuation {
      * @see ptolemy.domains.coroutine.kernel.Continuation#init()
      */
     @Override
-    public ControlExitToken controlInit()
-        throws IllegalActionException {
+    public ControlExitToken controlInit() throws IllegalActionException {
         // TODO Auto-generated method stub
         return null;
     }
@@ -415,8 +525,7 @@ public class CoroutineDirector extends Director implements Continuation {
      * @see ptolemy.domains.coroutine.kernel.Continuation#resume()
      */
     @Override
-    public ControlExitToken controlResume()
-        throws IllegalActionException {
+    public ControlExitToken controlResume() throws IllegalActionException {
         // TODO Auto-generated method stub
         return null;
     }
@@ -425,8 +534,9 @@ public class CoroutineDirector extends Director implements Continuation {
      * @see ptolemy.domains.coroutine.kernel.Continuation#enterAt(ptolemy.domains.coroutine.kernel.ControlEntryToken.EntryLocation)
      */
     @Override
-    public ControlExitToken controlEnterAt(ControlEntryToken.EntryLocation location)
-        throws IllegalActionException {
+    public ControlExitToken controlEnterAt(
+            ControlEntryToken.EntryLocation location)
+            throws IllegalActionException {
         // TODO Auto-generated method stub
         return null;
     }
@@ -527,18 +637,19 @@ public class CoroutineDirector extends Director implements Continuation {
         }
 
         for (Receiver r : _receivers) {
-            if (!(r instanceof FixedPointReceiver)) continue;
-            FixedPointReceiver receiver = (FixedPointReceiver)r;
+            if (!(r instanceof FixedPointReceiver)) {
+                continue;
+            }
+            FixedPointReceiver receiver = (FixedPointReceiver) r;
             receiver.reset();
         }
     }
-
 
     public class InternalEntryLocation extends EntryLocation {
         InternalEntryLocation(Continuation continuation, ControlEntryToken entry) {
             super("");
             _continuation = continuation;
-            _entry        = entry;
+            _entry = entry;
         }
 
         public Continuation continuation() {
@@ -562,25 +673,33 @@ public class CoroutineDirector extends Director implements Continuation {
          */
         @Override
         public boolean equals(Object obj) {
-            if (this == obj)
+            if (this == obj) {
                 return true;
-            if (!super.equals(obj))
+            }
+            if (!super.equals(obj)) {
                 return false;
-            if (getClass() != obj.getClass())
+            }
+            if (getClass() != obj.getClass()) {
                 return false;
+            }
             InternalEntryLocation other = (InternalEntryLocation) obj;
-            if (!getOuterType().equals(other.getOuterType()))
+            if (!getOuterType().equals(other.getOuterType())) {
                 return false;
+            }
             if (_continuation == null) {
-                if (other._continuation != null)
+                if (other._continuation != null) {
                     return false;
-            } else if (!_continuation.equals(other._continuation))
+                }
+            } else if (!_continuation.equals(other._continuation)) {
                 return false;
+            }
             if (_entry == null) {
-                if (other._entry != null)
+                if (other._entry != null) {
                     return false;
-            } else if (!_entry.equals(other._entry))
+                }
+            } else if (!_entry.equals(other._entry)) {
                 return false;
+            }
             return true;
         }
 
@@ -603,6 +722,7 @@ public class CoroutineDirector extends Director implements Continuation {
 
         private Continuation _continuation;
         private ControlEntryToken _entry;
+
         private CoroutineDirector getOuterType() {
             return CoroutineDirector.this;
         }
@@ -612,7 +732,7 @@ public class CoroutineDirector extends Director implements Continuation {
         InternalExitLocation(Continuation continuation, ExitLocation location) {
             super("");
             _continuation = continuation;
-            _location     = location;
+            _location = location;
         }
 
         public Continuation continuation() {
@@ -631,31 +751,38 @@ public class CoroutineDirector extends Director implements Continuation {
             return "" + _continuation + " : " + _location;
         }
 
-
         /* (non-Javadoc)
          * @see java.lang.Object#equals(java.lang.Object)
          */
         @Override
         public boolean equals(Object obj) {
-            if (this == obj)
+            if (this == obj) {
                 return true;
-            if (!super.equals(obj))
+            }
+            if (!super.equals(obj)) {
                 return false;
-            if (getClass() != obj.getClass())
+            }
+            if (getClass() != obj.getClass()) {
                 return false;
+            }
             InternalExitLocation other = (InternalExitLocation) obj;
-            if (!getOuterType().equals(other.getOuterType()))
+            if (!getOuterType().equals(other.getOuterType())) {
                 return false;
+            }
             if (_continuation == null) {
-                if (other._continuation != null)
+                if (other._continuation != null) {
                     return false;
-            } else if (!_continuation.equals(other._continuation))
+                }
+            } else if (!_continuation.equals(other._continuation)) {
                 return false;
+            }
             if (_location == null) {
-                if (other._location != null)
+                if (other._location != null) {
                     return false;
-            } else if (!_location.equals(other._location))
+                }
+            } else if (!_location.equals(other._location)) {
                 return false;
+            }
             return true;
         }
 
@@ -676,20 +803,18 @@ public class CoroutineDirector extends Director implements Continuation {
             return hashCode;
         }
 
-
         private Continuation _continuation;
         private ExitLocation _location;
+
         private CoroutineDirector getOuterType() {
             return CoroutineDirector.this;
         }
     }
 
-
     public Parameter initContinuationName;
     public Parameter entryMapping;
     public Parameter nextMapping;
     public Parameter exitMapping;
-
 
     ///////////////////////////////////////////////////////////////////
 
@@ -713,13 +838,10 @@ public class CoroutineDirector extends Director implements Continuation {
      */
 
     /** List of continuations that make up the model. */
-    private LinkedList<Continuation>  _continuations;
+    private LinkedList<Continuation> _continuations;
 
     /** Reference to the initial continuation in {@link #_continuations}. */
-    private Continuation              _initContinuation;
-
-    /** Index of the initial continuation in {@link #_continuations}. */
-    private Integer                   _initContinuationIndex;
+    private Continuation _initContinuation;
 
     /** Map from inputs of the model to those of the continuations : m_I */
     //private HashMap<IOPort, IOPort> _inputMap;
@@ -731,7 +853,7 @@ public class CoroutineDirector extends Director implements Continuation {
     private LinkedList<EntryLocation> _entries;
 
     /** Exit Locations of the model : G_M */
-    private LinkedList<ExitLocation>   _exits;
+    private LinkedList<ExitLocation> _exits;
 
     /** Map from Entry Locations of the model to those of the continuations : k */
     private HashMap<EntryLocation, InternalEntryLocation> _entryMap;
@@ -745,23 +867,14 @@ public class CoroutineDirector extends Director implements Continuation {
     /** Map from Exit Locations of the continuations to those of the model : n (to exits) */
     private HashMap<InternalExitLocation, ExitLocation> _exitMap;
 
-
     /* *************************************** */
 
     private LinkedList<Receiver> _receivers;
 
-
     /* *************************************** */
 
     /** Current location from which the model is resumed. */
-    private InternalEntryLocation  _currentLocation, _nextLocation;
+    private InternalEntryLocation _currentLocation, _nextLocation;
     private LinkedList<Continuation> _currentControlPath;
 
 }
-
-
-
-
-
-
-

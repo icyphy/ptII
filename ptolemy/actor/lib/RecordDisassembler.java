@@ -174,12 +174,16 @@ public class RecordDisassembler extends TypedAtomicActor {
                             // because the label started with a character other than one for which
                             // Character.isJavaIdentifierStart() would return true.
                             // The Trilateration demo needs this.
-                            port = (IOPort) getPort(label.replace("_", " ").substring(1));
+                            port = (IOPort) getPort(label.replace("_", " ")
+                                    .substring(1));
                             if (port != null) {
                                 port.send(0, value);
                             } else {
-                                throw new IllegalActionException(this, "Could not find port for label \""
-                                        + label + "\"  This can occur if the Record field name has spaces or other non Java identifier characters in it");
+                                throw new IllegalActionException(
+                                        this,
+                                        "Could not find port for label \""
+                                                + label
+                                                + "\"  This can occur if the Record field name has spaces or other non Java identifier characters in it");
                             }
                         }
                     }
@@ -221,8 +225,8 @@ public class RecordDisassembler extends TypedAtomicActor {
         // constrain the fields in the input record to be greater than or
         // equal to the declared or resolved types of the output ports:
         // input >= {x = typeOf(outputPortX), y = typeOf(outputPortY), ..}
-        result.add(new Inequality(new ConstructAssociativeType(outputPortList(),
-                RecordType.class), input.getTypeTerm()));
+        result.add(new Inequality(new ConstructAssociativeType(
+                outputPortList(), RecordType.class), input.getTypeTerm()));
 
         for (TypedIOPort output : outputPortList()) {
             String outputName = StringUtilities.sanitizeName(output.getName());
@@ -231,8 +235,8 @@ public class RecordDisassembler extends TypedAtomicActor {
 
             // constrain each output to be >= the type of the corresponding
             // field inside the input record
-            result.add(new Inequality(new ExtractFieldType(input,
-                    outputName), output.getTypeTerm()));
+            result.add(new Inequality(new ExtractFieldType(input, outputName),
+                    output.getTypeTerm()));
         }
         // constrain the input record to have the required fields:
         // input <= {x = GENERAL, y = GENERAL}

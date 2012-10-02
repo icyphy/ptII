@@ -29,7 +29,6 @@ package ptolemy.cg.kernel.generic.program.procedural.java.test;
 
 import ptolemy.actor.lib.Sink;
 import ptolemy.data.ObjectToken;
-import ptolemy.data.Token;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
@@ -76,7 +75,7 @@ public class ObjectTokenSink extends Sink {
         if (input.hasToken(0)) {
             ObjectToken token = (ObjectToken) input.get(0);
             if (token.getValue() instanceof Double) {
-                Double value = ((Double)token.getValue());
+                Double value = ((Double) token.getValue());
                 if (value.compareTo(new Double(42.0)) != 0) {
                     throw new IllegalActionException("Input was " + value
                             + ", expected 42.0");
@@ -84,9 +83,10 @@ public class ObjectTokenSink extends Sink {
             } else {
                 // Ignore null ObjectTokens
                 if (token.getValue() != null) {
-                    throw new IllegalActionException("Input was a "
-                            + token + ", which is a " + token.getClass()
-                            + " with a value " + token.getValue() + ", which was not null"
+                    throw new IllegalActionException("Input was a " + token
+                            + ", which is a " + token.getClass()
+                            + " with a value " + token.getValue()
+                            + ", which was not null"
                             + ".  A Double was expected.");
                 }
             }

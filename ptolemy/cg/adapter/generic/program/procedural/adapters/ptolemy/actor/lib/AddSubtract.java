@@ -75,13 +75,13 @@ public class AddSubtract extends NamedProgramCodeGeneratorAdapter {
         String minusType = null;
 
         try {
-            outputType = getCodeGenerator().codeGenType(
-                    actor.output.getType());
+            outputType = getCodeGenerator().codeGenType(actor.output.getType());
             plusType = getCodeGenerator().codeGenType(actor.plus.getType());
-            minusType = getCodeGenerator()
-                .codeGenType(actor.minus.getType());
+            minusType = getCodeGenerator().codeGenType(actor.minus.getType());
         } catch (Throwable throwable) {
-            throw new IllegalActionException(actor, throwable,
+            throw new IllegalActionException(
+                    actor,
+                    throwable,
                     "Failed to get the type of a port, perhaps the type needs to be explicitly set from the UI?");
         }
 

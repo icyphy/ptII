@@ -73,7 +73,7 @@ public class CustomAdder extends Transformer {
         super.fire();
         if (input.hasToken(0)) {
             Token in = input.get(0);
-            output.send(0, ((ScalarToken)in).add(new DoubleToken(42.0)));
+            output.send(0, ((ScalarToken) in).add(new DoubleToken(42.0)));
         }
     }
 }

@@ -836,8 +836,8 @@ public class Occupants extends ArrayOfRecordsRecorder {
                 } else {
                     // Re-open the dialog to search again.
                     return _searchForPerson(lname, fnames, classcd, email,
-                            sponsorlname, parent, object, database, null /* sponsor */,
-                            message);
+                            sponsorlname, parent, object, database,
+                            null /* sponsor */, message);
                 }
             }
         } else if (matches.length() == 0) {

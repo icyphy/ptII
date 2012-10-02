@@ -38,9 +38,7 @@ import ptolemy.cg.kernel.generic.program.NamedProgramCodeGeneratorAdapter;
  @Pt.ProposedRating Green (derler)
  @Pt.AcceptedRating Green (derler)
  */
-public class TrueGate
-        extends
-        NamedProgramCodeGeneratorAdapter {
+public class TrueGate extends NamedProgramCodeGeneratorAdapter {
 
     /**
      * Construct the Comparator adapter.

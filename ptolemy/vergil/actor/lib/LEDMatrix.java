@@ -136,7 +136,8 @@ public class LEDMatrix extends TypedAtomicActor {
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         LEDMatrix newActor = (LEDMatrix) super.clone(workspace);
         try {
-            int columnsValue = ((IntToken) newActor.columns.getToken()).intValue();
+            int columnsValue = ((IntToken) newActor.columns.getToken())
+                    .intValue();
             int rowsValue = ((IntToken) newActor.rows.getToken()).intValue();
             newActor._leds = new RectangleAttribute[rowsValue][columnsValue];
             Attribute attribute = newActor.getAttribute("_icon");
@@ -146,8 +147,7 @@ public class LEDMatrix extends TypedAtomicActor {
             newActor._ledArray_icon = new EditorIcon(newActor, "_icon");
         } catch (Throwable ex) {
             throw new CloneNotSupportedException(getFullName()
-                    + ": Failed to get rows or columns: "
-                    + ex);
+                    + ": Failed to get rows or columns: " + ex);
         }
         return newActor;
     }

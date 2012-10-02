@@ -73,7 +73,8 @@ public class IntermediateReceiver extends AbstractReceiver {
      *  @param receiver The receiver wrapped by this intermediate receiver.
      *  @param port The port wrapped by this intermediate receiver
      */
-    public IntermediateReceiver(QuantityManager qm, Receiver receiver, IOPort port) {
+    public IntermediateReceiver(QuantityManager qm, Receiver receiver,
+            IOPort port) {
         _receiver = receiver;
         quantityManager = qm;
         _port = port;
@@ -156,8 +157,8 @@ public class IntermediateReceiver extends AbstractReceiver {
      */
     public void put(Token token) throws NoRoomException, IllegalActionException {
         if (_port != null) {
-            ((CompositeQuantityManager)quantityManager)
-                    .sendToken(this, _receiver, token, _port);
+            ((CompositeQuantityManager) quantityManager).sendToken(this,
+                    _receiver, token, _port);
         } else {
             quantityManager.sendToken(this, _receiver, token);
         }

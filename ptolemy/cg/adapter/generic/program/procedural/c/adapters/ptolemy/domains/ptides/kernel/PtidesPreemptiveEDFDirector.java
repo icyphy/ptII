@@ -88,7 +88,8 @@ public class PtidesPreemptiveEDFDirector extends Director {
      *  @return The generated assembly file code.
      *  @exception IllegalActionException
      */
-    public Map<String, String> generateAdditionalCodeFiles() throws IllegalActionException {
+    public Map<String, String> generateAdditionalCodeFiles()
+            throws IllegalActionException {
         Map<String, String> list = new HashMap();
         return list;
     }
@@ -337,7 +338,6 @@ public class PtidesPreemptiveEDFDirector extends Director {
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
-
     /**
      *  Return the code for the actuatorActuations array.
      *  @return the code for the actuatorActuations array.
@@ -386,20 +386,21 @@ public class PtidesPreemptiveEDFDirector extends Director {
      *  @return actor function prototype methos for each entity.
      * @exception IllegalActionException
      */
-    protected String _generateActorFuncProtoCode() throws IllegalActionException {
+    protected String _generateActorFuncProtoCode()
+            throws IllegalActionException {
         StringBuffer code = new StringBuffer();
-
 
         for (Actor actor : (List<Actor>) ((CompositeActor) _director
                 .getContainer()).deepEntityList()) {
-            NamedProgramCodeGeneratorAdapter adapter = (NamedProgramCodeGeneratorAdapter) getCodeGenerator().getAdapter(actor);
+            NamedProgramCodeGeneratorAdapter adapter = (NamedProgramCodeGeneratorAdapter) getCodeGenerator()
+                    .getAdapter(actor);
             String fireFunctionParameters = adapter.getFireFunctionParameters();
             if (fireFunctionParameters.equals("")) {
                 fireFunctionParameters = "void";
             }
             code.append("void "
-                    + CodeGeneratorAdapter.generateName((NamedObj) actor)
-                    + "(" + fireFunctionParameters + ");" + _eol);
+                    + CodeGeneratorAdapter.generateName((NamedObj) actor) + "("
+                    + fireFunctionParameters + ");" + _eol);
         }
 
         code.append(_generateActuatorActuationFuncProtoCode());

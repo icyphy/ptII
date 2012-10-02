@@ -216,9 +216,11 @@ public class VergilApplication extends MoMLApplication {
             } catch (SecurityException ex) {
                 if (!_printedSecurityExceptionMessage) {
                     _printedSecurityExceptionMessage = true;
-                    System.out.println("Warning: Mac OS X: Failed to set the \""
-                            + aboutNameProperty + "\" property. "
-                            + "(applets and -sandbox always causes this)");
+                    System.out
+                            .println("Warning: Mac OS X: Failed to set the \""
+                                    + aboutNameProperty
+                                    + "\" property. "
+                                    + "(applets and -sandbox always causes this)");
                 }
             }
             // Uncomment the next line to use the screen menu bar instead of a per-window

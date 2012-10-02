@@ -210,7 +210,7 @@ public class ClassChanges extends MoMLFilterSimple {
                 "ptolemy.domains.modal.kernel.CommitActionsAttribute");
 
         _classChanges.put("ptolemy.domains.fsm.kernel.FSMDirector",
-                          "ptolemy.domains.modal.kernel.FSMDirector");
+                "ptolemy.domains.modal.kernel.FSMDirector");
 
         _classChanges.put("ptolemy.domains.fsm.kernel.OutputActionsAttribute",
                 "ptolemy.domains.modal.kernel.OutputActionsAttribute");
@@ -236,7 +236,8 @@ public class ClassChanges extends MoMLFilterSimple {
         _classChanges.put("ptolemy.domains.fsm.modal.RefinementPort",
                 "ptolemy.domains.modal.modal.RefinementPort");
 
-        _classChanges.put("ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory",
+        _classChanges.put(
+                "ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory",
                 "ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory");
 
         _classChanges.put("ptolemy.vergil.fsm.modal.ModalTableauFactory",
@@ -262,8 +263,9 @@ public class ClassChanges extends MoMLFilterSimple {
         _classChanges.put("ptolemy.vergil.fsm.modal.ModalModel",
                 "ptolemy.domains.modal.modal.ModalModel");
 
-        _classChanges.put("ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory",
-                "ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory");
+        _classChanges
+                .put("ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory",
+                        "ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory");
 
         // Moved InterfaceAutomatonTransition
         _classChanges.put(
@@ -408,14 +410,13 @@ public class ClassChanges extends MoMLFilterSimple {
                     "ptolemy.kernel.util.StringAttribute");
         }
 
-
         // Look for Kepler's SemanticType, and if we don't find it, then
         // add it to the filter.  This makes it much easier to open
         // Kepler models in Ptolemy.
         try {
             Class.forName("org.kepler.sms.SemanticType");
         } catch (ClassNotFoundException ex) {
-                _classChanges.put("org.kepler.sms.SemanticType",
+            _classChanges.put("org.kepler.sms.SemanticType",
                     "ptolemy.kernel.util.StringAttribute");
         }
 
@@ -466,15 +467,18 @@ public class ClassChanges extends MoMLFilterSimple {
                 "ptolemy.vergil.basic.export.web.IconScript");
         _classChanges.put("ptolemy.vergil.basic.export.html.LinkTarget",
                 "ptolemy.vergil.basic.export.web.LinkTarget");
-        _classChanges.put("ptolemy.vergil.basic.export.html.LinkToOpenTableaux",
+        _classChanges.put(
+                "ptolemy.vergil.basic.export.html.LinkToOpenTableaux",
                 "ptolemy.vergil.basic.export.web.LinkToOpenTableaux");
-        _classChanges.put("ptolemy.vergil.basic.export.html.ParameterDisplayIconScript",
+        _classChanges.put(
+                "ptolemy.vergil.basic.export.html.ParameterDisplayIconScript",
                 "ptolemy.vergil.basic.export.web.ParameterDisplayIconScript");
         _classChanges.put("ptolemy.vergil.basic.export.html.Title",
                 "ptolemy.vergil.basic.export.web.Title");
         _classChanges.put("ptolemy.vergil.basic.export.html.WebContent",
                 "ptolemy.vergil.basic.export.web.WebContent");
-        _classChanges.put("ptolemy.vergil.basic.export.html.WebExportParameters",
+        _classChanges.put(
+                "ptolemy.vergil.basic.export.html.WebExportParameters",
                 "ptolemy.vergil.basic.export.web.WebExportParameters");
         _classChanges.put("ptolemy.vergil.basic.export.html.WebExportable",
                 "ptolemy.vergil.basic.export.web.WebExportable");
@@ -508,7 +512,6 @@ public class ClassChanges extends MoMLFilterSimple {
 
         // SRRandomizedScheduler
         _classesToRemove.add("ptolemy.domains.sr.kernel.SRRandomizedScheduler");
-
 
     }
 }

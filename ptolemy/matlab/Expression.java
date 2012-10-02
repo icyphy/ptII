@@ -232,7 +232,8 @@ public class Expression extends TypedAtomicActor {
         newObject._iterationCount = 1;
         try {
             newObject._iteration.setContainer(null);
-            newObject._iteration = new Variable(this, "iteration", new IntToken(1));
+            newObject._iteration = new Variable(this, "iteration",
+                    new IntToken(1));
         } catch (Throwable throwable) {
             throw new CloneNotSupportedException("Failed to set _iteration "
                     + "to 1: " + throwable);
@@ -384,8 +385,7 @@ public class Expression extends TypedAtomicActor {
             // persistent storage created by a function (this usually
             // for speed-up purposes to avoid recalculation on every
             // function call)
-            matlabEngine
-                .evalString(engine, "clear variables;clear globals");
+            matlabEngine.evalString(engine, "clear variables;clear globals");
 
             if (_addPathCommand != null) {
                 matlabEngine.evalString(engine, _addPathCommand);
@@ -393,20 +393,20 @@ public class Expression extends TypedAtomicActor {
 
             try {
                 matlabEngine.put(engine, "time", new DoubleToken(director
-                                .getModelTime().getDoubleValue()));
+                        .getModelTime().getDoubleValue()));
             } catch (IllegalActionException ex) {
                 throw new IllegalActionException(this, ex,
                         "Failed to set the \"time\" variable in the Matlab "
-                        + "engine to "
-                        + new DoubleToken(director
-                                .getModelTime().getDoubleValue()));
+                                + "engine to "
+                                + new DoubleToken(director.getModelTime()
+                                        .getDoubleValue()));
             }
             try {
                 matlabEngine.put(engine, "iteration", _iteration.getToken());
             } catch (IllegalActionException ex) {
                 throw new IllegalActionException(this, ex,
                         "Failed to set the \"iteration\" variable in the Matlab "
-                        + "engine to " + _iteration.getToken());
+                                + "engine to " + _iteration.getToken());
             }
 
             Iterator inputPorts = inputPortList().iterator();
@@ -426,7 +426,7 @@ public class Expression extends TypedAtomicActor {
                 // FIXME: Handle multiports
                 if (port.isOutsideConnected()) {
                     port.send(0, matlabEngine.get(engine, port.getName(),
-                                    _dataParameters));
+                            _dataParameters));
                 }
             }
 

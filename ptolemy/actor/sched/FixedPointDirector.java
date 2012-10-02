@@ -242,8 +242,10 @@ public class FixedPointDirector extends StaticSchedulingDirector implements
                         _actorsFired.add(actor);
                     } else {
                         if (_debugging) {
-                            if (!_actorsFinishedFiring.contains(actor) && actor.isStrict()) {
-                                _debug("Strict actor has uknown inputs: " + actor.getFullName());
+                            if (!_actorsFinishedFiring.contains(actor)
+                                    && actor.isStrict()) {
+                                _debug("Strict actor has uknown inputs: "
+                                        + actor.getFullName());
                             }
                         }
                     }
@@ -483,7 +485,8 @@ public class FixedPointDirector extends StaticSchedulingDirector implements
             Actor actor = ((Firing) firingIterator.next()).getActor();
             // Check for remaining unknown inputs.
             // Don't care about actors that have previously returned false from postfire().
-            if (!_areAllInputsKnown(actor) && !_actorsFinishedExecution.contains(actor)) {
+            if (!_areAllInputsKnown(actor)
+                    && !_actorsFinishedExecution.contains(actor)) {
                 // Construct a list of the unknown inputs.
                 StringBuffer unknownInputs = new StringBuffer();
                 Iterator inputPorts = actor.inputPortList().iterator();

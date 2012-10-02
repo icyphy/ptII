@@ -42,9 +42,7 @@ A adapter class for ptolemy.domains.de.lib.Merge.
 @version $Id$
 @since Ptolemy II 8.0
 */
-public class Merge
-extends
-NamedProgramCodeGeneratorAdapter {
+public class Merge extends NamedProgramCodeGeneratorAdapter {
 
     /**
      *  Construct a Merge adapter.
@@ -77,17 +75,18 @@ NamedProgramCodeGeneratorAdapter {
      *  @exception IllegalActionException If there is a problme
      *  getting the width of the input.
      */
-    public String getSourceTimeString(String timeVariable) throws IllegalActionException {
+    public String getSourceTimeString(String timeVariable)
+            throws IllegalActionException {
         String name = CodeGeneratorAdapter.generateName((NamedObj) _component);
         StringBuffer result = new StringBuffer();
-        for (int i = 0; i < ((ptolemy.domains.de.lib.Merge)_component).input.getWidth(); i++) {
+        for (int i = 0; i < ((ptolemy.domains.de.lib.Merge) _component).input
+                .getWidth(); i++) {
             // This seems wrong, it overwrites timeVariable for each EventHead_ that
             // is non-null.
-            result.append("if (Event_Head_" + name + "_input[" + i +"] != NULL) {\n"
-                    + timeVariable + " = &Event_Head_" + name + "_input[" + i +"]->tag.timestamp;\n" +
-                    "}\n");
+            result.append("if (Event_Head_" + name + "_input[" + i
+                    + "] != NULL) {\n" + timeVariable + " = &Event_Head_"
+                    + name + "_input[" + i + "]->tag.timestamp;\n" + "}\n");
         }
         return result.toString();
     }
 }
-

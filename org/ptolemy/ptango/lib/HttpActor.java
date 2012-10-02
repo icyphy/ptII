@@ -61,9 +61,7 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.kernel.util.StringAttribute;
 import ptolemy.kernel.util.Workspace;
-
 
 /** An actor that handles an HTTP request by producing output,
  *  requesting a firing, and waiting for an input that provides a response.
@@ -114,7 +112,7 @@ public class HttpActor extends TypedAtomicActor implements HttpService {
      *  @exception NameDuplicationException If the super
      */
     public HttpActor(CompositeEntity container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         path = new StringParameter(this, "path");
@@ -148,7 +146,7 @@ public class HttpActor extends TypedAtomicActor implements HttpService {
         postCookies = new TypedIOPort(this, "postCookies", false, true);
         new Parameter(postCookies, "_showName").setExpression("true");
 
-        setCookies = new TypedIOPort(this,"setCookies", true, false);
+        setCookies = new TypedIOPort(this, "setCookies", true, false);
         new Parameter(setCookies, "_showName").setExpression("true");
         // For now, only allow RecordTokens.  In future, expand to other types
         // of tokens such as StringTokens representing JSON data.
@@ -167,11 +165,10 @@ public class HttpActor extends TypedAtomicActor implements HttpService {
         // Internal variables
         _cookieCollection = new Hashtable<String, Token>();
         _hasNewCookies = false;
-  }
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
-
 
     /** An output port that sends the cookies provided by a get request.
      *  The output provided will be a RecordToken with the names given by
@@ -180,7 +177,7 @@ public class HttpActor extends TypedAtomicActor implements HttpService {
      *  {cookieName = value, ...}.
      */
 
-     public TypedIOPort getCookies;
+    public TypedIOPort getCookies;
 
     /** An output port that sends parameters included in a get request.
      *  These are values appended to the URL in the form
@@ -220,7 +217,7 @@ public class HttpActor extends TypedAtomicActor implements HttpService {
      *  {cookieName = value, ...}.
      */
 
-     public TypedIOPort postCookies;
+    public TypedIOPort postCookies;
 
     /** An output port that sends parameters included in a post request.
      *  The output will be a record with
@@ -237,14 +234,14 @@ public class HttpActor extends TypedAtomicActor implements HttpService {
      */
     public TypedIOPort postRequestURI;
 
-     /** A parameter storing a list of names that HttpActor should output the
-      *  cookie values for.  This is needed so that the receivedCookies output
-      *  port will always have the same type for that particular model, to
-      *  avoid runtime type checking errors.  Note that if the value of this
-      *  parameter changes during runtime, a runtime type checking error may
-      *  occur.
-      */
-     public Parameter requestedCookies;
+    /** A parameter storing a list of names that HttpActor should output the
+     *  cookie values for.  This is needed so that the receivedCookies output
+     *  port will always have the same type for that particular model, to
+     *  avoid runtime type checking errors.  Note that if the value of this
+     *  parameter changes during runtime, a runtime type checking error may
+     *  occur.
+     */
+    public Parameter requestedCookies;
 
     /** An input port on which to provide the
      *  response to issue to an HTTP request. When this input port
@@ -285,7 +282,7 @@ public class HttpActor extends TypedAtomicActor implements HttpService {
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == path) {
-            String pathValue = ((StringToken)path.getToken()).stringValue();
+            String pathValue = ((StringToken) path.getToken()).stringValue();
             try {
                 if (!pathValue.trim().equals("")) {
                     _URIpath = URI.create(pathValue);
@@ -358,14 +355,14 @@ public class HttpActor extends TypedAtomicActor implements HttpService {
     public void fire() throws IllegalActionException {
         // The methods of the servlet are invoked in another
         // thread, so we use this actor for mutual exclusion.
-        synchronized(this) {
+        synchronized (this) {
             super.fire();
 
             boolean handledCookies = false;
 
             for (int i = 0; i < response.getWidth(); i++) {
                 if (response.hasToken(i)) {
-                    _response = ((StringToken)response.get(i)).stringValue();
+                    _response = ((StringToken) response.get(i)).stringValue();
                     if (_debugging) {
                         _debug("Received response on the input port: "
                                 + _response);
@@ -380,8 +377,8 @@ public class HttpActor extends TypedAtomicActor implements HttpService {
                     // setCookies port per firing
                     if (!handledCookies && setCookies.getWidth() > 0
                             && setCookies.hasToken(0)) {
-                        RecordToken cookieToken =
-                            (RecordToken) setCookies.get(0);
+                        RecordToken cookieToken = (RecordToken) setCookies
+                                .get(0);
                         _hasNewCookies = true;
                         _updateCookieCollection(cookieToken);
                         handledCookies = true;
@@ -435,21 +432,20 @@ public class HttpActor extends TypedAtomicActor implements HttpService {
                     // The requestedCookies parameter contains an
                     // ArrayToken of StringTokens
                     if (requestedCookies.getToken() instanceof ArrayToken) {
-                        ArrayToken cookieNames =
-                            (ArrayToken) requestedCookies.getToken();
+                        ArrayToken cookieNames = (ArrayToken) requestedCookies
+                                .getToken();
                         for (int i = 0; i < cookieNames.length(); i++) {
-                            if (cookieNames.getElement(i)
-                                    instanceof StringToken) {
-                                    name = ((StringToken) cookieNames
-                                            .getElement(i)).stringValue();
-                                    if (name != null && !name.isEmpty() &&
-                                           _cookieCollection.get(name) != null) {
-                                        value = _cookieCollection.get(name);
-                                    }
-
-                                    names.add(name);
-                                    values.add(value);
+                            if (cookieNames.getElement(i) instanceof StringToken) {
+                                name = ((StringToken) cookieNames.getElement(i))
+                                        .stringValue();
+                                if (name != null && !name.isEmpty()
+                                        && _cookieCollection.get(name) != null) {
+                                    value = _cookieCollection.get(name);
                                 }
+
+                                names.add(name);
+                                values.add(value);
+                            }
                         }
                     }
                 }
@@ -463,7 +459,7 @@ public class HttpActor extends TypedAtomicActor implements HttpService {
                     postCookies.send(0, cookies);
                 }
 
-             }
+            }
         }
     }
 
@@ -502,7 +498,6 @@ public class HttpActor extends TypedAtomicActor implements HttpService {
         // Ignore. This actor doesn't need to know.
     }
 
-
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
@@ -513,7 +508,6 @@ public class HttpActor extends TypedAtomicActor implements HttpService {
      *  provided on the input port.)
      */
     private Hashtable<String, Token> _cookieCollection;
-
 
     /** A variable indicating that new cookies have been received on the
      * setCookies port, and that all cookies should be written to the
@@ -601,8 +595,8 @@ public class HttpActor extends TypedAtomicActor implements HttpService {
          *  response
          */
         protected synchronized void doGet(HttpServletRequest request,
-                HttpServletResponse response)
-                throws ServletException, IOException {
+                HttpServletResponse response) throws ServletException,
+                IOException {
             _handleRequest(request, response, 0);
         }
 
@@ -620,8 +614,8 @@ public class HttpActor extends TypedAtomicActor implements HttpService {
          *  response
          */
         protected synchronized void doPost(HttpServletRequest request,
-                HttpServletResponse response)
-                throws ServletException, IOException {
+                HttpServletResponse response) throws ServletException,
+                IOException {
             _handleRequest(request, response, 1);
         }
 
@@ -642,7 +636,7 @@ public class HttpActor extends TypedAtomicActor implements HttpService {
             // The following codeblock is synchronized on the enclosing
             // actor. This lock _is_ released while waiting for the response,
             // allowing the fire method to execute its own synchronized blocks.
-            synchronized(HttpActor.this) {
+            synchronized (HttpActor.this) {
                 _requestURI = request.getRequestURI();
                 _requestType = type;
 
@@ -695,12 +689,15 @@ public class HttpActor extends TypedAtomicActor implements HttpService {
                     _parameters = new RecordToken(fieldNames, fieldValues);
 
                 } catch (IllegalActionException e1) {
-                    _writeError(response, HttpServletResponse.SC_BAD_REQUEST, e1.getMessage());
+                    _writeError(response, HttpServletResponse.SC_BAD_REQUEST,
+                            e1.getMessage());
                 }
 
                 try {
-                    long elapsedRealTime = System.currentTimeMillis() - _initializeRealTime;
-                    Time timeOfRequest = _initializeModelTime.add(elapsedRealTime);
+                    long elapsedRealTime = System.currentTimeMillis()
+                            - _initializeRealTime;
+                    Time timeOfRequest = _initializeModelTime
+                            .add(elapsedRealTime);
                     // Note that fireAt() will modify the requested firing time if it is in the past.
                     getDirector().fireAt(HttpActor.this, timeOfRequest);
                 } catch (IllegalActionException e) {
@@ -721,7 +718,8 @@ public class HttpActor extends TypedAtomicActor implements HttpService {
                         long startTime = System.currentTimeMillis();
                         long timeoutValue = 10000L;
                         try {
-                            timeoutValue = ((LongToken)timeout.getToken()).longValue();
+                            timeoutValue = ((LongToken) timeout.getToken())
+                                    .longValue();
                         } catch (IllegalActionException e) {
                             // Ignore and use default.
                         }
@@ -747,12 +745,14 @@ public class HttpActor extends TypedAtomicActor implements HttpService {
                     if (_debugging) {
                         _debug("Get request timed out.");
                     }
-                    response.getWriter().println("<h1> Request timed out </h1>");
+                    response.getWriter()
+                            .println("<h1> Request timed out </h1>");
                 } else if (_response == null) {
                     if (_debugging) {
                         _debug("Get request thread interrupted.");
                     }
-                    response.getWriter().println("<h1> Get request thread interrupted </h1>");
+                    response.getWriter().println(
+                            "<h1> Get request thread interrupted </h1>");
                 } else {
                     if (_debugging) {
                         _debug("Responding to get request: " + _response);
@@ -783,8 +783,7 @@ public class HttpActor extends TypedAtomicActor implements HttpService {
             if (request.getCookies().length > 0) {
                 for (Cookie cookie : request.getCookies()) {
                     // Cookie must have a name
-                    if (cookie.getName() != null && !cookie.getName().isEmpty())
-                    {
+                    if (cookie.getName() != null && !cookie.getName().isEmpty()) {
                         // FIXME:  Determine the correct data type of the value
                         // Possible to re-use JSONToToken code?
                         // Right now, generate StringToken for all cookies
@@ -795,10 +794,10 @@ public class HttpActor extends TypedAtomicActor implements HttpService {
 
                         // TODO: Cookies have many other fields besides the
                         // value. Should we include them?
-                        if (cookie.getValue() != null &&
-                                !cookie.getValue().isEmpty()) {
-                           _cookieCollection.put(cookie.getName(),
-                                   new StringToken(cookie.getValue()));
+                        if (cookie.getValue() != null
+                                && !cookie.getValue().isEmpty()) {
+                            _cookieCollection.put(cookie.getName(),
+                                    new StringToken(cookie.getValue()));
                         } else {
                             // Set the value to the empty string
                             _cookieCollection.put(cookie.getName(),
@@ -824,8 +823,8 @@ public class HttpActor extends TypedAtomicActor implements HttpService {
                 String label = (String) cookieIterator.next();
                 String value = "";
                 if (_cookieCollection.get(label) instanceof StringToken) {
-                    value =
-                     ((StringToken) _cookieCollection.get(label)).stringValue();
+                    value = ((StringToken) _cookieCollection.get(label))
+                            .stringValue();
                 }
 
                 // Clear the cookie if the value is empty
@@ -835,15 +834,15 @@ public class HttpActor extends TypedAtomicActor implements HttpService {
                 if (value == null || value.isEmpty()) {
                     Cookie cookie = new Cookie(label, "");
                     cookie.setMaxAge(0);
-                    cookie.setPath( "/");
+                    cookie.setPath("/");
                     response.addCookie(cookie);
                     _cookieCollection.remove(label);
                 } else {
 
                     // FIXME:  Special character handling?  Copied from previous
                     // code.
-                    if (value != null && value.indexOf("\"")!=-1) {
-                        value =value.replace("\"", "");
+                    if (value != null && value.indexOf("\"") != -1) {
+                        value = value.replace("\"", "");
                     }
 
                     response.addCookie(new Cookie(label, value));
@@ -860,9 +859,8 @@ public class HttpActor extends TypedAtomicActor implements HttpService {
          *  @param message The error message to write.
          *  @exception IOException If the write fails.
          */
-        private void _writeError(
-                HttpServletResponse response, int responseCode, String message)
-                throws IOException {
+        private void _writeError(HttpServletResponse response,
+                int responseCode, String message) throws IOException {
             response.setContentType("text/html");
             response.setStatus(responseCode);
 

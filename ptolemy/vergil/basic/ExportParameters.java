@@ -35,7 +35,6 @@ import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.vergil.basic.export.web.WebExportParameters;
 
-
 ///////////////////////////////////////////////////////////////////
 //// ExportParameters
 /**

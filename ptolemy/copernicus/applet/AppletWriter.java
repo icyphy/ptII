@@ -950,7 +950,7 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
             // GeneratorTableauAttribute here so that the Vergil applet has
             // the graphical classes
             RemoveGraphicalClasses removeGraphicalClasses = new RemoveGraphicalClasses();
-            removeGraphicalClasses.clear();
+            RemoveGraphicalClasses.clear();
             removeGraphicalClasses.put(
                     "ptolemy.copernicus.gui.GeneratorTableauAttribute", null);
             MoMLParser.addMoMLFilter(removeGraphicalClasses);
@@ -1320,10 +1320,8 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
             parser.reset();
             MoMLParser.purgeAllModelRecords();
         }
-        return documentation.replaceAll("<svg>", "")
-            .replaceAll("</svg>","")
-            .replaceAll("<text .*[^>]>", "")
-            .replaceAll("</text>", "");
+        return documentation.replaceAll("<svg>", "").replaceAll("</svg>", "")
+                .replaceAll("<text .*[^>]>", "").replaceAll("</text>", "");
     }
 
     /** Return the file size as a JNLP file attribute
@@ -1424,7 +1422,6 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
                 "ptolemy/vergil/vergilApplet.jar");
         auxiliaryJarMap.put("ptolemy.vergil.fsm.modal.ModalTableauFactory",
                 "ptolemy/vergil/vergilApplet.jar");
-
 
         // classes from data.property require tester.jar
         String propertiesJar = "ptolemy/data/properties/properties.jar";
@@ -1726,15 +1723,16 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
         // If called with -Dptolemy.ptII.ptKeystore=/Users/hudson/ptKeystore.properties
         // then use that file as the property file, otherwise use $PTII/ptKeystore.properties
         // We do this so that we don't accidentally check in the ptKeystore.properties file.
-        String ptKeystoreProperty = StringUtilities.getProperty("ptolemy.ptII.ptKeystore");
+        String ptKeystoreProperty = StringUtilities
+                .getProperty("ptolemy.ptII.ptKeystore");
         System.out.println("ptKeystoreProperty: " + ptKeystoreProperty);
         if (!ptKeystoreProperty.equals("")) {
             keystorePropertiesFileName = ptKeystoreProperty;
         } else {
             keystorePropertiesFileName = StringUtilities
-                .getProperty("ptolemy.ptII.dir")
-                + File.separator
-                + "ptKeystore.properties";
+                    .getProperty("ptolemy.ptII.dir")
+                    + File.separator
+                    + "ptKeystore.properties";
         }
         Properties properties = new Properties();
         try {
@@ -1967,28 +1965,33 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
                 }
                 if (!temporaryJarFileName.renameTo(jarFile)) {
                     System.out.println("Attempt #1: Failed to rename \""
-                            + temporaryJarFileName + "\" to \"" + jarFile
+                            + temporaryJarFileName
+                            + "\" to \""
+                            + jarFile
                             + "\", source file "
-                            + (temporaryJarFileName.exists() ? "exists" : "does not exist")
-                            + ", destination file "
+                            + (temporaryJarFileName.exists() ? "exists"
+                                    : "does not exist") + ", destination file "
                             + (jarFile.exists() ? "exists" : "does not exist")
                             + ", destination file "
                             + (jarFile.canWrite() ? "can" : "cannot")
                             + " be written.");
 
                     try {
-                        Thread.currentThread().sleep(1000);
+                        Thread.currentThread();
+                        Thread.sleep(1000);
                     } catch (InterruptedException ex) {
-                        System.out.println("AppletWriter: interrupted while "
-                                + "sleeping before trying to rename "
-                                + temporaryJarFileName + " to " + jarFile
-                                + ".");
+                        System.out
+                                .println("AppletWriter: interrupted while "
+                                        + "sleeping before trying to rename "
+                                        + temporaryJarFileName + " to "
+                                        + jarFile + ".");
                     }
                     File jarFileDirectory = jarFile.getParentFile();
                     if (!jarFileDirectory.isDirectory()) {
                         if (!jarFileDirectory.mkdirs()) {
-                            throw new IOException("Could not create directory \""
-                                                  + jarFileDirectory + "\"");
+                            throw new IOException(
+                                    "Could not create directory \""
+                                            + jarFileDirectory + "\"");
                         }
                     }
 
@@ -1998,22 +2001,28 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
                     }
                     if (!jarFile.delete()) {
                         System.out.println("Warning: could not remove \""
-                                + jarFile.getCanonicalPath() + "\" after test creation.");
+                                + jarFile.getCanonicalPath()
+                                + "\" after test creation.");
                     }
 
                     if (!temporaryJarFileName.renameTo(jarFile)) {
                         throw new IOException("Attempt #2: Failed to rename \""
-                              + temporaryJarFileName + "\" to \"" + jarFile
-                            + "\", source file "
-                            + (temporaryJarFileName.exists() ? "exists" : "does not exist")
-                            + ", destination file "
-                            + (jarFile.exists() ? "exists" : "does not exist")
-                            + ", destination file "
-                            + (jarFile.canWrite() ? "can" : "cannot")
-                            + " be written.  "
-                            + "The directory " + jarFileDirectory
-                            + (jarFileDirectory.isDirectory() ? " is" : " is not")
-                            + " a directory.");
+                                + temporaryJarFileName
+                                + "\" to \""
+                                + jarFile
+                                + "\", source file "
+                                + (temporaryJarFileName.exists() ? "exists"
+                                        : "does not exist")
+                                + ", destination file "
+                                + (jarFile.exists() ? "exists"
+                                        : "does not exist")
+                                + ", destination file "
+                                + (jarFile.canWrite() ? "can" : "cannot")
+                                + " be written.  "
+                                + "The directory "
+                                + jarFileDirectory
+                                + (jarFileDirectory.isDirectory() ? " is"
+                                        : " is not") + " a directory.");
                     }
                 }
             }

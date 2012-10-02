@@ -334,205 +334,211 @@ public class StringUtilities {
      *  If the property is not found, then we return the empty string.
      */
     public static String getProperty(String propertyName) {
-            // NOTE: getProperty() will probably fail in applets, which
-            // is why this is in a try block.
-            String property = null;
+        // NOTE: getProperty() will probably fail in applets, which
+        // is why this is in a try block.
+        String property = null;
 
+        try {
+            property = System.getProperty(propertyName);
+        } catch (SecurityException ex) {
+            if (!propertyName.equals("ptolemy.ptII.dir")) {
+                // Constants.java depends on this when running with
+                // -sandbox.
+                SecurityException security = new SecurityException(
+                        "Could not find '" + propertyName + "' System property");
+                security.initCause(ex);
+                throw security;
+            }
+        }
+
+        if (propertyName.equals("user.dir")) {
             try {
-                    property = System.getProperty(propertyName);
-            } catch (SecurityException ex) {
-                    if (!propertyName.equals("ptolemy.ptII.dir")) {
-                            // Constants.java depends on this when running with
-                            // -sandbox.
-                            SecurityException security = new SecurityException(
-                                            "Could not find '" + propertyName + "' System property");
-                            security.initCause(ex);
-                            throw security;
-                    }
-            }
-
-            if (propertyName.equals("user.dir")) {
-                    try {
-                            if (property == null) {
-                                    return property;
-                            }
-                            File userDirFile = new File(property);
-                            return userDirFile.getCanonicalPath();
-                    } catch (IOException ex) {
-                            return property;
-                    }
-            }
-
-            // Check for cases where the ptII property starts with
-            // the string "/cygdrive".  This can happen if the property
-            // was set by doing "PTII=`pwd`" under Cygwin bash.
-            if (property != null) {
-                    if (propertyName.equals("ptolemy.ptII.dir")
-                                    && property.startsWith("/cygdrive")
-                                    && !_printedCygwinWarning) {
-                            // This error only occurs when users build their own,
-                            // so it is safe to print to stderr
-                            _printedCygwinWarning = true;
-                            System.err.println("ptolemy.ptII.dir property = \"" + property
-                                            + "\", which contains \"cygdrive\". "
-                                            + "This is almost always an error under Cygwin that "
-                                            + "is occurs when one does PTII=`pwd`.  Instead, do "
-                                            + "PTII=c:/foo/ptII");
-                    }
-
+                if (property == null) {
                     return property;
-            } else {
-
-                    if (propertyName.equals("ptolemy.ptII.dirAsURL")) {
-                            // Return $PTII as a URL.  For example, if $PTII was c:\ptII,
-                            // then return file:/c:/ptII/
-                            File ptIIAsFile = new File(getProperty("ptolemy.ptII.dir"));
-
-                            try {
-                                    // Convert first to a URI, then to a URL so that we
-                                    // properly handle cases where $PTII has spaces in it.
-                                    URI ptIIAsURI = ptIIAsFile.toURI();
-                                    URL ptIIAsURL = ptIIAsURI.toURL();
-                                    return ptIIAsURL.toString();
-                            } catch (java.net.MalformedURLException malformed) {
-                                    throw new RuntimeException("While trying to find '"
-                                                    + propertyName + "', could not convert '" + ptIIAsFile
-                                                    + "' to a URL", malformed);
-                            }
-                    }
-
-                    if (propertyName.equals("ptolemy.ptII.dir")) {
-                            if (_ptolemyPtIIDir != null) {
-                                    // Return the previously calculated value
-                                    return _ptolemyPtIIDir;
-                            } else {
-                                    String stringUtilitiesPath = "ptolemy/util/StringUtilities.class";
-
-                                    // PTII variable was not set
-                                    URL namedObjURL = Thread.currentThread()
-                                                    .getContextClassLoader()
-                                                    .getResource(stringUtilitiesPath);
-
-                                    if (namedObjURL != null) {
-                                            // Get the file portion of URL
-                                            String namedObjFileName = namedObjURL.getFile();
-
-                                            // FIXME: How do we get from a URL to a pathname?
-                                            if (namedObjFileName.startsWith("file:")) {
-                                                    if (namedObjFileName.startsWith("file:/")
-                                                                    || namedObjFileName.startsWith("file:\\")) {
-                                                            // We get rid of either file:/ or file:\
-                                                            namedObjFileName = namedObjFileName.substring(6);
-                                                    } else {
-                                                            // Get rid of file:
-                                                            namedObjFileName = namedObjFileName.substring(5);
-                                                    }
-                                            }
-
-                                            String abnormalHome = namedObjFileName.substring(
-                                                            0,
-                                                            namedObjFileName.length()
-                                                            - stringUtilitiesPath.length());
-
-                                            // abnormalHome will have values like: "/C:/ptII/"
-                                            // which cause no end of trouble, so we construct a File
-                                            // and call toString().
-                                            _ptolemyPtIIDir = (new File(abnormalHome)).toString();
-
-                                            // If we are running under Web Start, then strip off
-                                            // the trailing "!"
-                                            if (_ptolemyPtIIDir.endsWith("/!")
-                                                            || _ptolemyPtIIDir.endsWith("\\!")) {
-                                                    _ptolemyPtIIDir = _ptolemyPtIIDir.substring(0,
-                                                                    _ptolemyPtIIDir.length() - 1);
-                                            }
-
-                                            // Web Start, we might have
-                                            // RMptsupport.jar or
-                                            // XMptsupport.jar1088483703686
-                                            String ptsupportJarName = File.separator + "DMptolemy"
-                                                            + File.separator + "RMptsupport.jar";
-
-                                            if (_ptolemyPtIIDir.endsWith(ptsupportJarName)) {
-                                                    _ptolemyPtIIDir = _ptolemyPtIIDir.substring(
-                                                                    0,
-                                                                    _ptolemyPtIIDir.length()
-                                                                    - ptsupportJarName.length());
-                                            } else {
-                                                    ptsupportJarName = "/DMptolemy/XMptsupport.jar";
-
-                                                    if (_ptolemyPtIIDir.lastIndexOf(ptsupportJarName) != -1) {
-                                                            _ptolemyPtIIDir = _ptolemyPtIIDir.substring(0,
-                                                                            _ptolemyPtIIDir
-                                                                            .lastIndexOf(ptsupportJarName));
-                                                    } else {
-                                                            // Ptolemy II 6.0.1 under Windows: remove
-                                                            // "\ptolemy\ptsupport.jar!"
-                                                            // If we don't do this, then ptolemy.ptII.dir
-                                                            // is set incorrectly and then links to the javadoc
-                                                            // files will not be found if the javadoc only
-                                                            // exists in codeDoc.jar and lib/ptII.properties
-                                                            // is not present.
-                                                            ptsupportJarName = File.separator + "ptolemy"
-                                                                            + File.separator + "ptsupport.jar";
-
-                                                            if (_ptolemyPtIIDir.lastIndexOf(ptsupportJarName) != -1) {
-                                                                    _ptolemyPtIIDir = _ptolemyPtIIDir.substring(0,
-                                                                                    _ptolemyPtIIDir
-                                                                                    .lastIndexOf(ptsupportJarName));
-                                                            }
-                                                    }
-                                            }
-                                    }
-
-                                    // Convert %20 to spaces because if a URL has %20 in it,
-                                    // then we know we have a space, but file names do not
-                                    // recognize %20 as being a single space, instead file names
-                                    // see %20 as three characters: '%', '2', '0'.
-                                    if (_ptolemyPtIIDir != null) {
-                                            _ptolemyPtIIDir = StringUtilities.substitute(
-                                                            _ptolemyPtIIDir, "%20", " ");
-                                    }
-                                    //*.class files are compiled into classes.dex file; therefore, check for StringUtilities.class fails
-                                    //it's OK to set _ptolemyPtIIDir to an empty string on Android
-                                    if (_ptolemyPtIIDir == null
-                                                    && System.getProperty("java.vm.name").equals("Dalvik")) {
-                                            _ptolemyPtIIDir = "";
-                                    }
-                                    if (_ptolemyPtIIDir == null) {
-                                            throw new RuntimeException(
-                                                            "Could not find "
-                                                                            + "'ptolemy.ptII.dir'"
-                                                                            + " property.  "
-                                                                            + "Also tried loading '"
-                                                                            + stringUtilitiesPath
-                                                                            + "' as a resource and working from that. "
-                                                                            + "Vergil should be "
-                                                                            + "invoked with -Dptolemy.ptII.dir"
-                                                                            + "=\"$PTII\", "
-                                                                            + "otherwise the following features will not work: "
-                                                                            + "PtinyOS, Ptalon, the Python actor, "
-                                                                            + "actor document, cg code generation and possibly "
-                                                                            + "other features will not work.");
-                                    }
-
-                                    try {
-                                            // Here, we set the property so that future updates
-                                            // will get the correct value.
-                                            System.setProperty("ptolemy.ptII.dir", _ptolemyPtIIDir);
-                                    } catch (SecurityException security) {
-                                            // Ignore, we are probably running as an applet or -sandbox
-                                    }
-
-                                    return _ptolemyPtIIDir;
-                            }
-                    }
-
-                    // If the property is not set then we return the empty string.
-                    //if (property == null) {
-                    return "";
-                    //}
+                }
+                File userDirFile = new File(property);
+                return userDirFile.getCanonicalPath();
+            } catch (IOException ex) {
+                return property;
             }
+        }
+
+        // Check for cases where the ptII property starts with
+        // the string "/cygdrive".  This can happen if the property
+        // was set by doing "PTII=`pwd`" under Cygwin bash.
+        if (property != null) {
+            if (propertyName.equals("ptolemy.ptII.dir")
+                    && property.startsWith("/cygdrive")
+                    && !_printedCygwinWarning) {
+                // This error only occurs when users build their own,
+                // so it is safe to print to stderr
+                _printedCygwinWarning = true;
+                System.err.println("ptolemy.ptII.dir property = \"" + property
+                        + "\", which contains \"cygdrive\". "
+                        + "This is almost always an error under Cygwin that "
+                        + "is occurs when one does PTII=`pwd`.  Instead, do "
+                        + "PTII=c:/foo/ptII");
+            }
+
+            return property;
+        } else {
+
+            if (propertyName.equals("ptolemy.ptII.dirAsURL")) {
+                // Return $PTII as a URL.  For example, if $PTII was c:\ptII,
+                // then return file:/c:/ptII/
+                File ptIIAsFile = new File(getProperty("ptolemy.ptII.dir"));
+
+                try {
+                    // Convert first to a URI, then to a URL so that we
+                    // properly handle cases where $PTII has spaces in it.
+                    URI ptIIAsURI = ptIIAsFile.toURI();
+                    URL ptIIAsURL = ptIIAsURI.toURL();
+                    return ptIIAsURL.toString();
+                } catch (java.net.MalformedURLException malformed) {
+                    throw new RuntimeException("While trying to find '"
+                            + propertyName + "', could not convert '"
+                            + ptIIAsFile + "' to a URL", malformed);
+                }
+            }
+
+            if (propertyName.equals("ptolemy.ptII.dir")) {
+                if (_ptolemyPtIIDir != null) {
+                    // Return the previously calculated value
+                    return _ptolemyPtIIDir;
+                } else {
+                    String stringUtilitiesPath = "ptolemy/util/StringUtilities.class";
+
+                    // PTII variable was not set
+                    URL namedObjURL = Thread.currentThread()
+                            .getContextClassLoader()
+                            .getResource(stringUtilitiesPath);
+
+                    if (namedObjURL != null) {
+                        // Get the file portion of URL
+                        String namedObjFileName = namedObjURL.getFile();
+
+                        // FIXME: How do we get from a URL to a pathname?
+                        if (namedObjFileName.startsWith("file:")) {
+                            if (namedObjFileName.startsWith("file:/")
+                                    || namedObjFileName.startsWith("file:\\")) {
+                                // We get rid of either file:/ or file:\
+                                namedObjFileName = namedObjFileName
+                                        .substring(6);
+                            } else {
+                                // Get rid of file:
+                                namedObjFileName = namedObjFileName
+                                        .substring(5);
+                            }
+                        }
+
+                        String abnormalHome = namedObjFileName.substring(
+                                0,
+                                namedObjFileName.length()
+                                        - stringUtilitiesPath.length());
+
+                        // abnormalHome will have values like: "/C:/ptII/"
+                        // which cause no end of trouble, so we construct a File
+                        // and call toString().
+                        _ptolemyPtIIDir = (new File(abnormalHome)).toString();
+
+                        // If we are running under Web Start, then strip off
+                        // the trailing "!"
+                        if (_ptolemyPtIIDir.endsWith("/!")
+                                || _ptolemyPtIIDir.endsWith("\\!")) {
+                            _ptolemyPtIIDir = _ptolemyPtIIDir.substring(0,
+                                    _ptolemyPtIIDir.length() - 1);
+                        }
+
+                        // Web Start, we might have
+                        // RMptsupport.jar or
+                        // XMptsupport.jar1088483703686
+                        String ptsupportJarName = File.separator + "DMptolemy"
+                                + File.separator + "RMptsupport.jar";
+
+                        if (_ptolemyPtIIDir.endsWith(ptsupportJarName)) {
+                            _ptolemyPtIIDir = _ptolemyPtIIDir.substring(
+                                    0,
+                                    _ptolemyPtIIDir.length()
+                                            - ptsupportJarName.length());
+                        } else {
+                            ptsupportJarName = "/DMptolemy/XMptsupport.jar";
+
+                            if (_ptolemyPtIIDir.lastIndexOf(ptsupportJarName) != -1) {
+                                _ptolemyPtIIDir = _ptolemyPtIIDir.substring(0,
+                                        _ptolemyPtIIDir
+                                                .lastIndexOf(ptsupportJarName));
+                            } else {
+                                // Ptolemy II 6.0.1 under Windows: remove
+                                // "\ptolemy\ptsupport.jar!"
+                                // If we don't do this, then ptolemy.ptII.dir
+                                // is set incorrectly and then links to the javadoc
+                                // files will not be found if the javadoc only
+                                // exists in codeDoc.jar and lib/ptII.properties
+                                // is not present.
+                                ptsupportJarName = File.separator + "ptolemy"
+                                        + File.separator + "ptsupport.jar";
+
+                                if (_ptolemyPtIIDir
+                                        .lastIndexOf(ptsupportJarName) != -1) {
+                                    _ptolemyPtIIDir = _ptolemyPtIIDir
+                                            .substring(
+                                                    0,
+                                                    _ptolemyPtIIDir
+                                                            .lastIndexOf(ptsupportJarName));
+                                }
+                            }
+                        }
+                    }
+
+                    // Convert %20 to spaces because if a URL has %20 in it,
+                    // then we know we have a space, but file names do not
+                    // recognize %20 as being a single space, instead file names
+                    // see %20 as three characters: '%', '2', '0'.
+                    if (_ptolemyPtIIDir != null) {
+                        _ptolemyPtIIDir = StringUtilities.substitute(
+                                _ptolemyPtIIDir, "%20", " ");
+                    }
+                    //*.class files are compiled into classes.dex file; therefore, check for StringUtilities.class fails
+                    //it's OK to set _ptolemyPtIIDir to an empty string on Android
+                    if (_ptolemyPtIIDir == null
+                            && System.getProperty("java.vm.name").equals(
+                                    "Dalvik")) {
+                        _ptolemyPtIIDir = "";
+                    }
+                    if (_ptolemyPtIIDir == null) {
+                        throw new RuntimeException(
+                                "Could not find "
+                                        + "'ptolemy.ptII.dir'"
+                                        + " property.  "
+                                        + "Also tried loading '"
+                                        + stringUtilitiesPath
+                                        + "' as a resource and working from that. "
+                                        + "Vergil should be "
+                                        + "invoked with -Dptolemy.ptII.dir"
+                                        + "=\"$PTII\", "
+                                        + "otherwise the following features will not work: "
+                                        + "PtinyOS, Ptalon, the Python actor, "
+                                        + "actor document, cg code generation and possibly "
+                                        + "other features will not work.");
+                    }
+
+                    try {
+                        // Here, we set the property so that future updates
+                        // will get the correct value.
+                        System.setProperty("ptolemy.ptII.dir", _ptolemyPtIIDir);
+                    } catch (SecurityException security) {
+                        // Ignore, we are probably running as an applet or -sandbox
+                    }
+
+                    return _ptolemyPtIIDir;
+                }
+            }
+
+            // If the property is not set then we return the empty string.
+            //if (property == null) {
+            return "";
+            //}
+        }
     }
 
     /** Return true if we are in an applet.

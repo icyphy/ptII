@@ -115,7 +115,8 @@ public class ServletTest {
     @Test
     public void openSimulation() throws Exception {
         int simulations = _ptolemyServer.numberOfSimulations();
-        System.out.println("ServletTest.openSimulation(): simulations: " + simulations);
+        System.out.println("ServletTest.openSimulation(): simulations: "
+                + simulations);
         _response = _openRemoteModel();
 
         assertNotNull(_response);
@@ -262,8 +263,7 @@ public class ServletTest {
             modelUrl = new URL(unitModel);
         } catch (MalformedURLException ex) {
             MalformedURLException exception = new MalformedURLException(
-                    "Failed to instantiate a URL for \""
-                    + unitModel + "\".");
+                    "Failed to instantiate a URL for \"" + unitModel + "\".");
             exception.initCause(ex);
             throw exception;
         }

@@ -199,7 +199,7 @@ public class VirtualTinyOS extends TypedAtomicActor {
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////    
-    
+
     /** Must specify port types using moml (TypeAttribute) - the default
      *  TypedAtomicActor type constraints do not apply in this case, since the
      *  input type may be totally unrelated to the output type and cannot be
@@ -209,7 +209,7 @@ public class VirtualTinyOS extends TypedAtomicActor {
     public Inequality _defaultConstraints() {
         return null;
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
     private native int signalTimerEvent();

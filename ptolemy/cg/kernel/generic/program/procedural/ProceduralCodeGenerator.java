@@ -167,7 +167,8 @@ public class ProceduralCodeGenerator extends ProgramCodeGenerator {
      *   cannot be cloned.
      */
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        ProceduralCodeGenerator newObject = (ProceduralCodeGenerator) super.clone(workspace);
+        ProceduralCodeGenerator newObject = (ProceduralCodeGenerator) super
+                .clone(workspace);
         newObject._includes = null;
         newObject._libraries = null;
         newObject._modifiedVariables = null;
@@ -189,7 +190,8 @@ public class ProceduralCodeGenerator extends ProgramCodeGenerator {
      *  a function to the set of overloaded functions.
      */
     public void markFunctionCalled(String name,
-            ProceduralTemplateParser templateParser) throws IllegalActionException {
+            ProceduralTemplateParser templateParser)
+            throws IllegalActionException {
     }
 
     ///////////////////////////////////////////////////////////////////

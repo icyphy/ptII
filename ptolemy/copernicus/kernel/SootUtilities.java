@@ -1813,8 +1813,8 @@ public class SootUtilities {
     public static SootMethod searchForMethodByName(SootClass theClass,
             String name) {
         if (theClass == null) {
-            throw new NullPointerException("searchForMethodByName(null, " + name
-                    + ") called with a null first argument?");
+            throw new NullPointerException("searchForMethodByName(null, "
+                    + name + ") called with a null first argument?");
         }
         SootClass previousClass = theClass;
         while (theClass != null) {

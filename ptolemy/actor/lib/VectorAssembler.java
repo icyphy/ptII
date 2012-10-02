@@ -115,11 +115,10 @@ public class VectorAssembler extends Transformer {
             for (int i = 0; i < size; i++) {
                 Token token = input.get(i);
                 try {
-                    data[i][0] = ((ScalarToken)token).doubleValue();
+                    data[i][0] = ((ScalarToken) token).doubleValue();
                 } catch (ClassCastException ex) {
-                    throw new IllegalActionException(this, ex,
-                            "Cannot cast \"" + token
-                            + "\" to a ScalarToken");
+                    throw new IllegalActionException(this, ex, "Cannot cast \""
+                            + token + "\" to a ScalarToken");
                 }
             }
         } else {
@@ -130,9 +129,8 @@ public class VectorAssembler extends Transformer {
                 try {
                     data[0][i] = ((ScalarToken) token).doubleValue();
                 } catch (ClassCastException ex) {
-                    throw new IllegalActionException(this, ex,
-                            "Cannot cast \"" + token
-                            + "\" to a ScalarToken");
+                    throw new IllegalActionException(this, ex, "Cannot cast \""
+                            + token + "\" to a ScalarToken");
                 }
             }
         }

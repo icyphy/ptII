@@ -115,7 +115,8 @@ public class DesignPatternImporter extends Attribute implements GTAttribute,
      *  @return The new object.
      */
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        DesignPatternImporter newObject = (DesignPatternImporter) super.clone(workspace);
+        DesignPatternImporter newObject = (DesignPatternImporter) super
+                .clone(workspace);
         newObject._lastValues = new HashMap<String, Token>();
         return newObject;
     }

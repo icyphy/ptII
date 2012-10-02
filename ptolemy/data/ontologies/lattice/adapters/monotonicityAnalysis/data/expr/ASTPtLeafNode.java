@@ -30,7 +30,6 @@ package ptolemy.data.ontologies.lattice.adapters.monotonicityAnalysis.data.expr;
 
 import java.util.List;
 
-import ptolemy.data.expr.ASTPtFunctionApplicationNode;
 import ptolemy.data.ontologies.Concept;
 import ptolemy.data.ontologies.ConceptFunctionInequalityTerm;
 import ptolemy.data.ontologies.Ontology;
@@ -82,13 +81,12 @@ public class ASTPtLeafNode extends LatticeOntologyASTNodeAdapter {
                 leafNode, getSolver().getOntology(), getSolver()
                         .getAllContainedOntologies());
 
-        ConceptFunctionInequalityTerm constraint =
-                new ConceptFunctionInequalityTerm(astRelationFunction,
-                                _getChildNodeTerms());
-        if (((LatticeOntologySolver)_solver).isLeastFixedPoint()) {
+        ConceptFunctionInequalityTerm constraint = new ConceptFunctionInequalityTerm(
+                astRelationFunction, _getChildNodeTerms());
+        if (((LatticeOntologySolver) _solver).isLeastFixedPoint()) {
             setAtLeast(_getNode(), constraint);
         } else {
-                setAtMost(_getNode(), constraint);
+            setAtMost(_getNode(), constraint);
         }
 
         return super.constraintList();

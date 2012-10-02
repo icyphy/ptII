@@ -53,6 +53,7 @@ public class ModelKnownFailedTests extends ModelTests {
      * @exception IOException If there is a problem accessing the auto/ directory.
      */
     public Object[] modelValues() throws IOException {
-        return modelValues("auto/knownFailedTests/", THERE_ARE_NO_KNOWN_FAILED_TESTS);
+        return modelValues("auto/knownFailedTests/",
+                THERE_ARE_NO_KNOWN_FAILED_TESTS);
     }
 }

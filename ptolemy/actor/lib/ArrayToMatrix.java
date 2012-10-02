@@ -133,7 +133,7 @@ public class ArrayToMatrix extends Transformer {
             int size = token.length();
             int rows = 1;
             int columns = size;
-            if (!((BooleanToken)rowVector.getToken()).booleanValue()) {
+            if (!((BooleanToken) rowVector.getToken()).booleanValue()) {
                 rows = size;
                 columns = 1;
             }
@@ -142,22 +142,26 @@ public class ArrayToMatrix extends Transformer {
             if (arrayElementType.equals(BaseType.INT)) {
                 int[] contents = new int[size];
                 for (int i = 0; i < token.length(); i++) {
-                    contents[i] = ((IntToken)token.getElement(i)).intValue();
+                    contents[i] = ((IntToken) token.getElement(i)).intValue();
                 }
-                MatrixToken result = new IntMatrixToken(contents, rows, columns, MatrixToken.DO_NOT_COPY);
+                MatrixToken result = new IntMatrixToken(contents, rows,
+                        columns, MatrixToken.DO_NOT_COPY);
                 output.broadcast(result);
             } else if (arrayElementType.equals(BaseType.DOUBLE)) {
                 double[] contents = new double[size];
                 for (int i = 0; i < token.length(); i++) {
-                    contents[i] = ((DoubleToken)token.getElement(i)).doubleValue();
+                    contents[i] = ((DoubleToken) token.getElement(i))
+                            .doubleValue();
                 }
-                MatrixToken result = new DoubleMatrixToken(contents, rows, columns, MatrixToken.DO_NOT_COPY);
+                MatrixToken result = new DoubleMatrixToken(contents, rows,
+                        columns, MatrixToken.DO_NOT_COPY);
                 output.broadcast(result);
             } else if (arrayElementType.equals(BaseType.BOOLEAN)) {
                 boolean[][] contents = new boolean[rows][columns];
                 for (int i = 0; i < rows; i++) {
                     for (int j = 0; j < columns; j++) {
-                        contents[i][j] = ((BooleanToken)token.getElement(j + i*columns)).booleanValue();
+                        contents[i][j] = ((BooleanToken) token.getElement(j + i
+                                * columns)).booleanValue();
                     }
                 }
                 MatrixToken result = new BooleanMatrixToken(contents);
@@ -166,16 +170,19 @@ public class ArrayToMatrix extends Transformer {
                 Complex[][] contents = new Complex[rows][columns];
                 for (int i = 0; i < rows; i++) {
                     for (int j = 0; j < columns; j++) {
-                        contents[i][j] = ((ComplexToken)token.getElement(j + i*columns)).complexValue();
+                        contents[i][j] = ((ComplexToken) token.getElement(j + i
+                                * columns)).complexValue();
                     }
                 }
-                MatrixToken result = new ComplexMatrixToken(contents, MatrixToken.DO_NOT_COPY);
+                MatrixToken result = new ComplexMatrixToken(contents,
+                        MatrixToken.DO_NOT_COPY);
                 output.broadcast(result);
             } else if (arrayElementType instanceof FixType) {
                 FixPoint[][] contents = new FixPoint[rows][columns];
                 for (int i = 0; i < rows; i++) {
                     for (int j = 0; j < columns; j++) {
-                        contents[i][j] = ((FixToken)token.getElement(j + i*columns)).fixValue();
+                        contents[i][j] = ((FixToken) token.getElement(j + i
+                                * columns)).fixValue();
                     }
                 }
                 MatrixToken result = new FixMatrixToken(contents);
@@ -183,16 +190,18 @@ public class ArrayToMatrix extends Transformer {
             } else if (arrayElementType.equals(BaseType.LONG)) {
                 long[] contents = new long[size];
                 for (int i = 0; i < token.length(); i++) {
-                    contents[i] = ((LongToken)token.getElement(i)).longValue();
+                    contents[i] = ((LongToken) token.getElement(i)).longValue();
                 }
-                MatrixToken result = new LongMatrixToken(contents, rows, columns, MatrixToken.DO_NOT_COPY);
+                MatrixToken result = new LongMatrixToken(contents, rows,
+                        columns, MatrixToken.DO_NOT_COPY);
                 output.broadcast(result);
             } else {
                 // Not a supported type.
-                throw new IllegalActionException(this,
+                throw new IllegalActionException(
+                        this,
                         "Received an input array with elements of type "
-                        + arrayElementType
-                        + " for which there is no corresponding matrix type.");
+                                + arrayElementType
+                                + " for which there is no corresponding matrix type.");
             }
         }
     }

@@ -340,7 +340,8 @@ public class NamedProgramCodeGeneratorAdapter extends
      *  Derived classes may throw it if there is a problem accessing
      *  ports or parameters in the associated actor.
      */
-    public String getSourceTimeString(String timeVariable) throws IllegalActionException {
+    public String getSourceTimeString(String timeVariable)
+            throws IllegalActionException {
         return "";
     }
 
@@ -360,25 +361,25 @@ public class NamedProgramCodeGeneratorAdapter extends
         return "";
     }
 
-//     /**
-//      * Get the write offset in the buffer of a given channel to which a token
-//      * should be put. The channel is given by its containing port and the
-//      * channel number in that port.
-//      * @param port The given port.
-//      * @param channelNumber The given channel number.
-//      * @return The offset in the buffer of a given channel to which a token
-//      * should be put.
-//      * @exception IllegalActionException Thrown if the helper class cannot be
-//      * found.
-//      */
-// FIXME: this was using ptolemy.codegen.kernel.PortCodeGenerator.
-// We should not be using ptolemy.codegen in cg.
-//     public Object getWriteOffset(IOPort port, int channelNumber)
-//             throws IllegalActionException {
+    //     /**
+    //      * Get the write offset in the buffer of a given channel to which a token
+    //      * should be put. The channel is given by its containing port and the
+    //      * channel number in that port.
+    //      * @param port The given port.
+    //      * @param channelNumber The given channel number.
+    //      * @return The offset in the buffer of a given channel to which a token
+    //      * should be put.
+    //      * @exception IllegalActionException Thrown if the helper class cannot be
+    //      * found.
+    //      */
+    // FIXME: this was using ptolemy.codegen.kernel.PortCodeGenerator.
+    // We should not be using ptolemy.codegen in cg.
+    //     public Object getWriteOffset(IOPort port, int channelNumber)
+    //             throws IllegalActionException {
 
-//         return ((PortCodeGenerator) getAdapter(port))
-//                 .getWriteOffset(channelNumber);
-//     }
+    //         return ((PortCodeGenerator) getAdapter(port))
+    //                 .getWriteOffset(channelNumber);
+    //     }
 
     /**
      * Generate the fire code. In this base class, add the name of the
@@ -714,14 +715,14 @@ public class NamedProgramCodeGeneratorAdapter extends
      * @exception IllegalActionException If the getBufferSize() method of the
      * actor helper class throws it.
      */
-     public int getBufferSize(IOPort port, int channelNumber)
-             throws IllegalActionException {
-         return port.getWidth();
-// FIXME: this was using ptolemy.codegen.kernel.PortCodeGenerator.
-// We should not be using ptolemy.codegen in cg.
-//          return ((PortCodeGenerator) getAdapter(port))
-//                  .getBufferSize(channelNumber);
-     }
+    public int getBufferSize(IOPort port, int channelNumber)
+            throws IllegalActionException {
+        return port.getWidth();
+        // FIXME: this was using ptolemy.codegen.kernel.PortCodeGenerator.
+        // We should not be using ptolemy.codegen in cg.
+        //          return ((PortCodeGenerator) getAdapter(port))
+        //                  .getBufferSize(channelNumber);
+    }
 
     /** Return a set of libraries to link in the generated code.
      *  @return A Set containing the libraries in the actor's
@@ -1377,6 +1378,5 @@ public class NamedProgramCodeGeneratorAdapter extends
      *  the model. This map is used later in the code generation phase.
      */
     private Hashtable<ProgramCodeGeneratorAdapter.Channel, List<ProgramCodeGeneratorAdapter.Channel>> _portConversions = new Hashtable<ProgramCodeGeneratorAdapter.Channel, List<ProgramCodeGeneratorAdapter.Channel>>();
-
 
 }

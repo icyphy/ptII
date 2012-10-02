@@ -52,8 +52,8 @@ import ptolemy.kernel.util.Workspace;
  @Pt.ProposedRating Yellow (eal)
  @Pt.AcceptedRating Red (eal)
  */
-public abstract class PubSubPort extends TypedIOPort
-        implements HierarchyListener, Initializable {
+public abstract class PubSubPort extends TypedIOPort implements
+        HierarchyListener, Initializable {
 
     /** Construct a subscriber port with a containing actor and a name.
      *  This is always an input port.
@@ -210,8 +210,8 @@ public abstract class PubSubPort extends TypedIOPort
      *   an entity with the name of this entity.
      */
     @Override
-    public void setContainer(Entity container)
-            throws IllegalActionException, NameDuplicationException {
+    public void setContainer(Entity container) throws IllegalActionException,
+            NameDuplicationException {
         Initializable previousInitializableContainer = _getInitializableContainer();
         NamedObj previousContainer = getContainer();
         if (previousContainer != container) {
@@ -221,7 +221,8 @@ public abstract class PubSubPort extends TypedIOPort
                 Initializable newInitializableContainer = _getInitializableContainer();
                 if (previousInitializableContainer != newInitializableContainer) {
                     if (previousInitializableContainer != null) {
-                        previousInitializableContainer.removeInitializable(this);
+                        previousInitializableContainer
+                                .removeInitializable(this);
                     }
                     if (newInitializableContainer != null) {
                         newInitializableContainer.addInitializable(this);
@@ -267,18 +268,18 @@ public abstract class PubSubPort extends TypedIOPort
     private Initializable _getInitializableContainer() {
         NamedObj container = getContainer();
         if (container instanceof InstantiableNamedObj) {
-            if (((InstantiableNamedObj)container).isWithinClassDefinition()) {
+            if (((InstantiableNamedObj) container).isWithinClassDefinition()) {
                 return null;
             }
         }
         while (container != null) {
             if (container instanceof Initializable) {
                 if (container instanceof CompositeActor) {
-                    if (((CompositeActor)container).isOpaque()) {
-                        return (Initializable)container;
+                    if (((CompositeActor) container).isOpaque()) {
+                        return (Initializable) container;
                     }
                 } else {
-                    return (Initializable)container;
+                    return (Initializable) container;
                 }
             }
             container = container.getContainer();

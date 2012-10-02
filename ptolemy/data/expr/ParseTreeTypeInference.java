@@ -369,8 +369,8 @@ public class ParseTreeTypeInference extends AbstractParseTreeVisitor {
             }
         }
 
-        throw new IllegalActionException("No matching function "
-                + functionName + "( " + buffer + " ).");
+        throw new IllegalActionException("No matching function " + functionName
+                + "( " + buffer + " ).");
     }
 
     /** Set the type of the given node to be a function type whose

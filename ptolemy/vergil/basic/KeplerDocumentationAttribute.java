@@ -716,7 +716,8 @@ public class KeplerDocumentationAttribute extends Attribute implements
                         if (propertyDescription == null) {
                             propertyDescription = "";
                         }
-                        String newPropDoc = (String) _propertyHash.get(propertyName);
+                        String newPropDoc = (String) _propertyHash
+                                .get(propertyName);
                         if (newPropDoc != null && _isEmpty(newPropDoc)
                                 && !_isEmpty(propertyDescription)) {
                             _propertyHash
@@ -729,7 +730,9 @@ public class KeplerDocumentationAttribute extends Attribute implements
                 if (replaced) {
 
                     if (printWhenReplacing) {
-                        System.out.println("WARNING: using old docs for " + attributeName + " since the new ones appear empty.");
+                        System.out.println("WARNING: using old docs for "
+                                + attributeName
+                                + " since the new ones appear empty.");
                     }
                     // Update the attribute too, creating one if it does not exist.
                     ConfigurableAttribute myAttribute = (ConfigurableAttribute) getAttribute(attributeName);

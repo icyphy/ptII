@@ -162,8 +162,8 @@ public class SequencePlotter extends Plotter implements SequenceActor {
                     // NOTE: We assume the superclass ensures this
                     // cast is safe.
 
-                    ((PlotInterface) plot).addPoint(i + offset, _xValue, curValue,
-                            _connected[i]);
+                    ((PlotInterface) plot).addPoint(i + offset, _xValue,
+                            curValue, _connected[i]);
                     _connected[i] = true;
                 }
             }

@@ -730,8 +730,7 @@ public class LazyTypedCompositeActor extends TypedCompositeActor implements
 
                 parser.setContext(this);
 
-                if ((_configureSource != null)
-                    && !_configureSource.equals("")) {
+                if ((_configureSource != null) && !_configureSource.equals("")) {
                     URL xmlFile = new URL(_base, _configureSource);
                     parser.parse(xmlFile, xmlFile);
                 }
@@ -743,8 +742,8 @@ public class LazyTypedCompositeActor extends TypedCompositeActor implements
                     String trimmed = _configureText.trim();
 
                     if (trimmed.startsWith("<?") && trimmed.endsWith("?>")) {
-                        trimmed = trimmed
-                            .substring(2, trimmed.length() - 2).trim();
+                        trimmed = trimmed.substring(2, trimmed.length() - 2)
+                                .trim();
 
                         if (trimmed.startsWith("moml")) {
                             trimmed = trimmed.substring(4).trim();

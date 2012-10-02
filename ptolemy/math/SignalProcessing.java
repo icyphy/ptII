@@ -1962,7 +1962,7 @@ public class SignalProcessing {
             return returnValue;
         }
 
-            // Optimized base case for higher orders
+        // Optimized base case for higher orders
         case 4: {
             double[] returnValue = new double[3];
             returnValue[0] = x[0] + x[1] + x[2] + x[3];

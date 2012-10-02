@@ -297,7 +297,8 @@ public class IOPort extends NamedProgramCodeGeneratorAdapter implements
             if (dataToken.toString().equals("object(null)")) {
                 // This model needs to convert object(null) to object.
                 // $PTII/bin/ptcg -language java $PTII/ptolemy/cg/adapter/generic/program/procedural/java/adapters/ptolemy/domains/sdf/lib/test/auto/SampleDelayObjectNull.xml
-                System.out.println("Warning: cg IOPort hack, found object(null), converting to null");
+                System.out
+                        .println("Warning: cg IOPort hack, found object(null), converting to null");
                 dataToken = "null";
             }
             code.append(targetType(type) + " temporary = " + dataToken + ";"

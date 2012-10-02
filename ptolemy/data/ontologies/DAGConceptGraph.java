@@ -30,6 +30,7 @@ import java.util.Set;
 
 import ptolemy.graph.CPO;
 import ptolemy.graph.DirectedAcyclicGraph;
+import ptolemy.graph.Graph;
 import ptolemy.graph.NonLatticeCounterExample;
 import ptolemy.kernel.util.IllegalActionException;
 
@@ -101,7 +102,7 @@ public class DAGConceptGraph extends ConceptGraph {
     public List<Concept> checkUnacceptableConcepts() {
         Set<Concept> invalidConcepts = new HashSet<Concept>();
         // Not sure why this doesn't return a unique set
-        for (Object o : DirectedAcyclicGraph.weightArray(_dag.nodes())) {
+        for (Object o : Graph.weightArray(_dag.nodes())) {
             if (o instanceof FiniteConcept) {
                 FiniteConcept c = (FiniteConcept) o;
                 if (!c.isValueAcceptable()) {

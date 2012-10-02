@@ -95,9 +95,9 @@ public class Test extends NamedProgramCodeGeneratorAdapter {
                         actor.input.getType());
             } else {
                 inputType = "Token";
-                ((ProceduralCodeGenerator) getCodeGenerator()).markFunctionCalled(
-                        "equals_Token_Token",
-                        (ProceduralTemplateParser) _templateParser);
+                ((ProceduralCodeGenerator) getCodeGenerator())
+                        .markFunctionCalled("equals_Token_Token",
+                                (ProceduralTemplateParser) _templateParser);
                 //((ProceduralCodeGenerator) getCodeGenerator()).markFunctionCalled(
                 //        "isCloseTo_Token_Token",
                 //        (ProceduralTemplateParser) _templateParser);

@@ -29,9 +29,8 @@ package org.ptolemy.fmi;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
+
 import org.w3c.dom.Element;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
 
 ///////////////////////////////////////////////////////////////////
 //// FMICoSimulationCapbilities
@@ -81,16 +80,17 @@ public class FMICoSimulationCapabilities {
 
                     // The field is a primitive boolean, not a Boolean.
                     if (fields[i].getType().equals(Boolean.TYPE)) {
-                        boolean value = Boolean.valueOf(element.getAttribute(fields[i].getName()));
+                        boolean value = Boolean.valueOf(element
+                                .getAttribute(fields[i].getName()));
                         fields[i].setBoolean(this, value);
                     } else if (fields[i].getType().equals(Integer.TYPE)) {
-                        int value = Integer.valueOf(element.getAttribute(fields[i].getName()));
+                        int value = Integer.valueOf(element
+                                .getAttribute(fields[i].getName()));
                         fields[i].setInt(this, value);
                     }
                 } catch (IllegalAccessException ex) {
                     throw new RuntimeException("Failed to set the "
-                            + fields[i].getName()
-                            + " field to "
+                            + fields[i].getName() + " field to "
                             + element.getAttribute(fields[i].getName()) + ".",
                             ex);
                 }
@@ -128,8 +128,8 @@ public class FMICoSimulationCapabilities {
                         }
                     }
                 } catch (IllegalAccessException ex) {
-                    throw new RuntimeException("Failed to get the "
-                            + fields[i] + " field", ex);
+                    throw new RuntimeException("Failed to get the " + fields[i]
+                            + " field", ex);
                 }
 
                 // Optionally append a comma.
@@ -198,4 +198,3 @@ public class FMICoSimulationCapabilities {
      */
     public int maxOutputDerivativeOrder;
 }
-

@@ -124,8 +124,8 @@ public class PlotMLParser extends PlotBoxMLParser {
             } else if (elementName.equals("dataset")) {
                 String name = (String) _attributes.get("name");
 
-                if (!((PlotInterface) _plot).getReuseDatasets() || (name == null)
-                        || (_currentDataset < 0)) {
+                if (!((PlotInterface) _plot).getReuseDatasets()
+                        || (name == null) || (_currentDataset < 0)) {
                     // reuseDatasets was not present or if it was,
                     // the current dataset does not have a name
                     // or we have not yet seen a dataset.
@@ -133,7 +133,8 @@ public class PlotMLParser extends PlotBoxMLParser {
                     _currentPointCount = 0.0;
                 } else {
                     // reuseDatasets was set to true and name is not null.
-                    int possibleDataset = ((PlotInterface) _plot).getLegendDataset(name);
+                    int possibleDataset = ((PlotInterface) _plot)
+                            .getLegendDataset(name);
 
                     if (possibleDataset != -1) {
                         _currentDataset = possibleDataset;
@@ -152,30 +153,36 @@ public class PlotMLParser extends PlotBoxMLParser {
 
                 if (connected != null) {
                     if (connected.equals("no")) {
-                        ((PlotInterface) _plot).setConnected(false, _currentDataset);
+                        ((PlotInterface) _plot).setConnected(false,
+                                _currentDataset);
                     } else {
-                        ((PlotInterface) _plot).setConnected(true, _currentDataset);
+                        ((PlotInterface) _plot).setConnected(true,
+                                _currentDataset);
                     }
                 }
 
                 String lineStyle = (String) _attributes.get("lineStyle");
                 if (lineStyle != null) {
-                    ((PlotInterface) _plot).setLineStyle(lineStyle, _currentDataset);
+                    ((PlotInterface) _plot).setLineStyle(lineStyle,
+                            _currentDataset);
                 }
 
                 String marks = (String) _attributes.get("marks");
 
                 if (marks != null) {
-                    ((PlotInterface) _plot).setMarksStyle(marks, _currentDataset);
+                    ((PlotInterface) _plot).setMarksStyle(marks,
+                            _currentDataset);
                 }
 
                 String stems = (String) _attributes.get("stems");
 
                 if (stems != null) {
                     if (stems.equals("yes")) {
-                        ((PlotInterface) _plot).setImpulses(true, _currentDataset);
+                        ((PlotInterface) _plot).setImpulses(true,
+                                _currentDataset);
                     } else {
-                        ((PlotInterface) _plot).setImpulses(false, _currentDataset);
+                        ((PlotInterface) _plot).setImpulses(false,
+                                _currentDataset);
                     }
                 }
             } else if (elementName.equals("default")) {
@@ -302,8 +309,8 @@ public class PlotMLParser extends PlotBoxMLParser {
                 high = x;
             }
 
-            ((PlotInterface) _plot).addPointWithErrorBars(_currentDataset, x, y, low,
-                    high, connected);
+            ((PlotInterface) _plot).addPointWithErrorBars(_currentDataset, x,
+                    y, low, high, connected);
         }
     }
 }

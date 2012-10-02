@@ -228,14 +228,15 @@ public class TypeLattice {
                 if (t1 == t2) {
                     return SAME;
                 }
-                int i1 = ((Type)t1).getTypeHash();
-                int i2 = ((Type)t2).getTypeHash();
+                int i1 = ((Type) t1).getTypeHash();
+                int i2 = ((Type) t2).getTypeHash();
 
                 // Uncommment the false below to measure the impact of
                 // _lattice.compare() on ptolemy.data package performance... Run
                 // ptolemy/data/type/test/performance.xml before and after...(zk)
                 if ( /*false &&*/
-                (i1 != Type.HASH_INVALID) && (i2 != Type.HASH_INVALID)
+                (i1 != Type.HASH_INVALID)
+                        && (i2 != Type.HASH_INVALID)
                         && _getCachedTypeComparisonResult(i1, i2) != Type.HASH_INVALID) {
                     return _getCachedTypeComparisonResult(i1, i2);
                 }
@@ -248,7 +249,8 @@ public class TypeLattice {
 
                 int result = INCOMPARABLE;
                 if (t1Rep.equals(t2Rep) && t1Rep instanceof StructuredType) {
-                    result = ((StructuredType) t1)._compare((StructuredType) t2);
+                    result = ((StructuredType) t1)
+                            ._compare((StructuredType) t2);
                 } else if (t1Rep instanceof ArrayType
                         && !(t2Rep instanceof ArrayType)
                         && !t2.equals(BaseType.UNKNOWN)
@@ -498,7 +500,7 @@ public class TypeLattice {
                 // for the greatest one. This is a simple, brute force algorithm,
                 // but may be inefficient. A more efficient one is used in
                 // the graph package, but more complex.
-                for (Object o1: subset) {
+                for (Object o1 : subset) {
                     boolean isGreatest = true;
 
                     for (Object o2 : subset) {

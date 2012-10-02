@@ -81,10 +81,13 @@ public class Flip extends Transformer {
                                 + inputObject.getClass());
             }
 
-            OpenCV openCV = ((OpenCVImageObject)inputObject).openCV;
+            OpenCV openCV = ((OpenCVImageObject) inputObject).openCV;
             openCV.copy(openCV.image(0));
             openCV.flip(OpenCV.FLIP_BOTH);
-            output.send(0, new ObjectToken(new OpenCVImageObject(openCV, openCV.image())));
+            output.send(
+                    0,
+                    new ObjectToken(new OpenCVImageObject(openCV, openCV
+                            .image())));
         }
     }
 }

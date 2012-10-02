@@ -58,7 +58,6 @@ import ptolemy.vergil.basic.ExportParameters;
 import ptolemy.vergil.basic.HTMLExportable;
 import ptolemy.vergil.basic.export.html.ExportHTMLAction;
 
-
 ///////////////////////////////////////////////////////////////////
 //// LinkToOpenTableaux
 /**
@@ -113,7 +112,7 @@ public class LinkToOpenTableaux extends DefaultIconLink {
      *  @exception IllegalActionException If a subclass throws it.
      */
     public void provideContent(WebExporter exporter)
-        throws IllegalActionException {
+            throws IllegalActionException {
         try {
             _exportedClassDefinitions = new HashSet<NamedObj>();
             super.provideContent(exporter);
@@ -140,8 +139,7 @@ public class LinkToOpenTableaux extends DefaultIconLink {
 
         // Create a table of effigies associated with any
         // open submodel or plot.
-        Map<NamedObj, PtolemyEffigy> openEffigies =
-            new HashMap<NamedObj, PtolemyEffigy>();
+        Map<NamedObj, PtolemyEffigy> openEffigies = new HashMap<NamedObj, PtolemyEffigy>();
         Tableau myTableau = exporter.getFrame().getTableau();
         Effigy myEffigy = (Effigy) myTableau.getContainer();
         List<PtolemyEffigy> effigies = myEffigy.entityList(PtolemyEffigy.class);
@@ -156,8 +154,7 @@ public class LinkToOpenTableaux extends DefaultIconLink {
         // with an open effigy, then we attempt to associate it with
         // the container instead, or the container's container, until
         // we get to the top level.
-        Map<NamedObj, PtolemyEffigy> containerAssociations =
-            new HashMap<NamedObj, PtolemyEffigy>();
+        Map<NamedObj, PtolemyEffigy> containerAssociations = new HashMap<NamedObj, PtolemyEffigy>();
         if (openEffigies.size() > 0) {
             for (NamedObj component : openEffigies.keySet()) {
                 if (component == null) {
@@ -166,8 +163,10 @@ public class LinkToOpenTableaux extends DefaultIconLink {
                     // htm -run -openComposites -whiteBackground
                     // ptolemy/actor/gt/demo/ModelExecution/ModelExecution.xml
                     // $PTII/ptolemy/actor/gt/demo/ModelExecution/ModelExecution
-                    System.out.println("Warning: LinkToOpenTableaux._provideEachAttribute() "
-                                       + object.getFullName() + ", an open effigy was null?");
+                    System.out
+                            .println("Warning: LinkToOpenTableaux._provideEachAttribute() "
+                                    + object.getFullName()
+                                    + ", an open effigy was null?");
                 } else {
                     NamedObj container = component.getContainer();
                     while (container != null) {
@@ -185,7 +184,7 @@ public class LinkToOpenTableaux extends DefaultIconLink {
                         // not have an open effigy.  Associate this
                         // container and then try the container's container.
                         containerAssociations.put(container,
-                                                  openEffigies.get(component));
+                                openEffigies.get(component));
                         container = container.getContainer();
                     }
                 }
@@ -201,7 +200,7 @@ public class LinkToOpenTableaux extends DefaultIconLink {
         if (effigy == null) {
             Effigy candidate = Configuration.findEffigy(object);
             if (candidate instanceof PtolemyEffigy) {
-                effigy = (PtolemyEffigy)candidate;
+                effigy = (PtolemyEffigy) candidate;
             }
         }
         try {
@@ -217,14 +216,13 @@ public class LinkToOpenTableaux extends DefaultIconLink {
                     // under the refinements of that state, which have the
                     // same container as the _Controller.
                     try {
-                        TypedActor[] refinements =
-                            ((State) object).getRefinement();
+                        TypedActor[] refinements = ((State) object)
+                                .getRefinement();
                         // FIXME: There may be more
                         // than one refinement. How to open all of them?
                         // We have only one link. For now, just open the first one.
                         if (refinements != null && refinements.length > 0) {
-                            effigy =
-                                openEffigies.get((NamedObj) refinements[0]);
+                            effigy = openEffigies.get(refinements[0]);
                             if (effigy != null) {
                                 // _linkTo() recursively calls writeHTML();
                                 _linkTo(exporter, effigy,
@@ -247,11 +245,10 @@ public class LinkToOpenTableaux extends DefaultIconLink {
                         if (_exportedClassDefinitions.contains(parent)) {
                             // Have already exported the class definition. Just
                             // need to add the hyperlink.
-                            webAttribute =
-                                WebAttribute.createWebAttribute(object,
-                                        "hrefWebAttribute", "href");
-                            webAttribute
-                               .setExpression(parent.getName() + "/index.html");
+                            webAttribute = WebAttribute.createWebAttribute(
+                                    object, "hrefWebAttribute", "href");
+                            webAttribute.setExpression(parent.getName()
+                                    + "/index.html");
                             exporter.defineAttribute(webAttribute, true);
                         } else {
                             // Have not exported the class definition. Do so now.
@@ -260,7 +257,7 @@ public class LinkToOpenTableaux extends DefaultIconLink {
                                     .findEffigy((NamedObj) parent);
                             if (classEffigy instanceof PtolemyEffigy) {
                                 // _linkTo() recursively calls writeHTML();
-                                _linkTo(exporter, (PtolemyEffigy)classEffigy,
+                                _linkTo(exporter, (PtolemyEffigy) classEffigy,
                                         object, (NamedObj) parent,
                                         exporter.getExportParameters());
                             }
@@ -288,7 +285,7 @@ public class LinkToOpenTableaux extends DefaultIconLink {
      *  @exception IllegalActionException If accessing the title attribute fails..
      */
     private static String _getTitleText(NamedObj object)
-        throws IllegalActionException {
+            throws IllegalActionException {
         // If the object contains an IconLink parameter, then use that instead
         // of the default. If it has more than one, then just use the first one.
         List<Title> links = object.attributeList(Title.class);
@@ -323,8 +320,8 @@ public class LinkToOpenTableaux extends DefaultIconLink {
      */
     private void _linkTo(WebExporter exporter, PtolemyEffigy effigy,
             NamedObj sourceObject, NamedObj destinationObject,
-            ExportParameters parameters)
-            throws IOException, PrinterException, IllegalActionException {
+            ExportParameters parameters) throws IOException, PrinterException,
+            IllegalActionException {
         File gifFile;
         WebAttribute webAttribute;
         WebElement webElement;
@@ -344,49 +341,46 @@ public class LinkToOpenTableaux extends DefaultIconLink {
                         File backupFile = new File(directory, name + ".bak");
                         if (!subDirectory.renameTo(backupFile)) {
                             throw new IOException("Failed to rename \""
-                                    + subDirectory + "\" to \""
-                                    + backupFile + "\"");
+                                    + subDirectory + "\" to \"" + backupFile
+                                    + "\"");
                         }
                     }
                 } else if (!subDirectory.mkdir()) {
                     throw new IOException("Unable to create directory "
                             + subDirectory);
                 }
-                ExportParameters newParameters =
-                    new ExportParameters(subDirectory, parameters);
+                ExportParameters newParameters = new ExportParameters(
+                        subDirectory, parameters);
                 // The null argument causes the write to occur to an index.html
                 // file.
                 ((HTMLExportable) frame).writeHTML(newParameters, null);
-                webAttribute =
-                    WebAttribute.createWebAttribute(sourceObject,
-                            "hrefWebAttribute", "href");
+                webAttribute = WebAttribute.createWebAttribute(sourceObject,
+                        "hrefWebAttribute", "href");
                 webAttribute.setExpression(name + "/index.html");
                 exporter.defineAttribute(webAttribute, true);
 
                 // Add to table of contents file if we are using the Ptolemy
                 // website infrastructure.
-                boolean usePtWebsite =
-                    Boolean.valueOf(StringUtilities
-                          .getProperty("ptolemy.ptII.exportHTML.usePtWebsite"));
+                boolean usePtWebsite = Boolean.valueOf(StringUtilities
+                        .getProperty("ptolemy.ptII.exportHTML.usePtWebsite"));
                 if (usePtWebsite) {
-                    String destinationTitle =
-                        LinkToOpenTableaux._getTitleText(destinationObject);
+                    String destinationTitle = LinkToOpenTableaux
+                            ._getTitleText(destinationObject);
                     if (destinationTitle.length() > 16) {
                         //Truncate the text so that it does not overflow the toc.
-                        destinationTitle =
-                            destinationTitle.substring(0,16) + ".";
+                        destinationTitle = destinationTitle.substring(0, 16)
+                                + ".";
                     }
                     webElement = WebElement.createWebElement(destinationObject,
                             "tocContents", "tocContents");
-                    webElement.setExpression(" <li><a href=\""
-                            + name + "/index.html" + "\">"
-                            + destinationTitle
+                    webElement.setExpression(" <li><a href=\"" + name
+                            + "/index.html" + "\">" + destinationTitle
                             + "</a></li>");
                     exporter.defineElement(webElement, false);
                 }
             } else if (frame instanceof ImageExportable) {
-                gifFile =
-                    new File(parameters.directoryToExportTo, name + ".gif");
+                gifFile = new File(parameters.directoryToExportTo, name
+                        + ".gif");
                 OutputStream gifOut = new FileOutputStream(gifFile);
                 try {
                     ((ImageExportable) frame).writeImage(gifOut, "gif");
@@ -395,15 +389,13 @@ public class LinkToOpenTableaux extends DefaultIconLink {
                 }
                 // Strangely, the class has to be "iframe".
                 // I don't understand why it can't be "lightbox".
-                webAttribute =
-                    WebAttribute.createWebAttribute(sourceObject,
-                            "hrefWebAttribute", "href");
+                webAttribute = WebAttribute.createWebAttribute(sourceObject,
+                        "hrefWebAttribute", "href");
                 webAttribute.setExpression(name + ".gif");
                 exporter.defineAttribute(webAttribute, true);
 
-                webAttribute =
-                    WebAttribute.createWebAttribute(sourceObject,
-                            "classWebAttribute", "class");
+                webAttribute = WebAttribute.createWebAttribute(sourceObject,
+                        "classWebAttribute", "class");
                 webAttribute.setExpression("iframe");
                 exporter.defineAttribute(webAttribute, true);
             }

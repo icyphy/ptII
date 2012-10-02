@@ -327,7 +327,8 @@ public class TypedIOPort extends IOPort implements Typeable {
                 return newToken;
             } catch (IllegalActionException ex) {
                 // Catch the exception to show the port in which it occurred.
-                throw new IllegalActionException(this, ex, "Type conversion failed.");
+                throw new IllegalActionException(this, ex,
+                        "Type conversion failed.");
             }
         }
     }
@@ -381,7 +382,8 @@ public class TypedIOPort extends IOPort implements Typeable {
                 }
 
                 CPO lattice = TypeLattice.lattice();
-                result = (Type) lattice.leastUpperBound(new HashSet<Type>(portTypeList));
+                result = (Type) lattice.leastUpperBound(new HashSet<Type>(
+                        portTypeList));
             }
 
             return result;
@@ -731,8 +733,7 @@ public class TypedIOPort extends IOPort implements Typeable {
     protected void _checkContainer(Entity container)
             throws IllegalActionException {
         if (!(container instanceof TypedActor)
-                && !(container instanceof EntityLibrary)
-                && (container != null)) {
+                && !(container instanceof EntityLibrary) && (container != null)) {
             throw new IllegalActionException(container, this,
                     "TypedIOPort can only be contained by objects "
                             + "implementing the TypedActor interface.");
@@ -1030,7 +1031,8 @@ public class TypedIOPort extends IOPort implements Typeable {
          *  @return A description of the port and its type.
          */
         public String toString() {
-            return "(port " + TypedIOPort.this.getFullName() + ": " + getType() + ")";
+            return "(port " + TypedIOPort.this.getFullName() + ": " + getType()
+                    + ")";
         }
     }
 }

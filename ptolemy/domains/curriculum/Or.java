@@ -75,7 +75,8 @@ public class Or extends TypedAtomicActor {
         _attachText("_iconDescription", "<svg>\n"
                 + "<circle cx=\"0\" cy=\"0\" r=\"8\""
                 + "style=\"fill:black\"/>\n" + "<text x=\"-7\" y=\"3\" "
-                + "style=\"font-size:11;font-family:sans-serif;fill:white\">\n" + "Or" + "</text>\n" + "</svg>\n");
+                + "style=\"font-size:11;font-family:sans-serif;fill:white\">\n"
+                + "Or" + "</text>\n" + "</svg>\n");
     }
 
     ///////////////////////////////////////////////////////////////////

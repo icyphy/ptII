@@ -269,10 +269,12 @@ public class LinkController extends BasicEdgeController {
                     // Ignore;
                 }
                 // New way to specify colors.
-                List<ColorAttribute> colorAttributes = relation.attributeList(ColorAttribute.class);
+                List<ColorAttribute> colorAttributes = relation
+                        .attributeList(ColorAttribute.class);
                 if (colorAttributes != null && colorAttributes.size() > 0) {
                     // Use the last color added.
-                    Color color = colorAttributes.get(colorAttributes.size() - 1).asColor();
+                    Color color = colorAttributes.get(
+                            colorAttributes.size() - 1).asColor();
                     connector.setStrokePaint(color);
                 }
 
@@ -313,7 +315,8 @@ public class LinkController extends BasicEdgeController {
         public boolean acceptHead(Connector c, Figure f) {
             Object object = f.getUserObject();
 
-            boolean isPubSubPort = object instanceof PublisherPort || object instanceof SubscriberPort;
+            boolean isPubSubPort = object instanceof PublisherPort
+                    || object instanceof SubscriberPort;
 
             if ((object instanceof Port && !isPubSubPort)
                     || object instanceof Vertex
@@ -346,9 +349,10 @@ public class LinkController extends BasicEdgeController {
         public boolean acceptTail(Connector c, Figure f) {
             Object object = f.getUserObject();
 
-            boolean isPubSubPort = object instanceof PublisherPort || object instanceof SubscriberPort;
+            boolean isPubSubPort = object instanceof PublisherPort
+                    || object instanceof SubscriberPort;
 
-            if ((object instanceof Port  && !isPubSubPort)
+            if ((object instanceof Port && !isPubSubPort)
                     || object instanceof Vertex
                     || (object instanceof Link && c != f)
                     || (object instanceof Locatable && ((Locatable) object)

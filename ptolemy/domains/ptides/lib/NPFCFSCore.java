@@ -32,12 +32,10 @@ package ptolemy.domains.ptides.lib;
 
 import ptolemy.actor.Actor;
 import ptolemy.actor.util.Time;
-import ptolemy.domains.ptides.lib.ResourceScheduler.ExecutionEventType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
-
 
 /** This is a first come first serve scheduler.
  *
@@ -82,12 +80,15 @@ public class NPFCFSCore extends ResourceScheduler {
      *    as execution time or priority cannot be read.
      */
     @Override
-    public Time schedule(Actor actor, Time currentPlatformTime, Double deadline, Time executionTime) throws IllegalActionException {
+    public Time schedule(Actor actor, Time currentPlatformTime,
+            Double deadline, Time executionTime) throws IllegalActionException {
         super.schedule(actor, currentPlatformTime, deadline, executionTime);
         _lastActorFinished = false;
         if (currentlyExecuting == null) {
             currentlyExecuting = actor;
-            event((NamedObj) currentlyExecuting, currentPlatformTime.getDoubleValue(),ExecutionEventType.START);
+            event((NamedObj) currentlyExecuting,
+                    currentPlatformTime.getDoubleValue(),
+                    ExecutionEventType.START);
         }
 
         Time remainingTime = null;
@@ -97,14 +98,17 @@ public class NPFCFSCore extends ResourceScheduler {
         } else { //has been scheduled
             Time lasttime = _lastTimeScheduled.get(currentlyExecuting);
             Time timePassed = currentPlatformTime.subtract(lasttime);
-            remainingTime = _remainingTimes.get(currentlyExecuting).subtract(timePassed);
+            remainingTime = _remainingTimes.get(currentlyExecuting).subtract(
+                    timePassed);
             _remainingTimes.put(currentlyExecuting, remainingTime);
         }
 
         _lastTimeScheduled.put(currentlyExecuting, currentPlatformTime);
 
         if (remainingTime.getDoubleValue() == 0.0) {
-            event((NamedObj) currentlyExecuting, currentPlatformTime.getDoubleValue(), ExecutionEventType.STOP);
+            event((NamedObj) currentlyExecuting,
+                    currentPlatformTime.getDoubleValue(),
+                    ExecutionEventType.STOP);
 
             _remainingTimes.put(currentlyExecuting, null);
             currentlyExecuting = null;
@@ -112,7 +116,6 @@ public class NPFCFSCore extends ResourceScheduler {
         }
         return remainingTime;
     }
-
 
     ///////////////////////////////////////////////////////////////////
     //                      private variables                        //

@@ -45,9 +45,8 @@ import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Manager;
 import ptolemy.actor.TypedCompositeActor;
-import ptolemy.actor.gui.MoMLApplication;
+import ptolemy.actor.gui.ConfigurationApplication;
 import ptolemy.actor.injection.ActorModuleInitializer;
-import ptolemy.actor.parameters.SharedParameter;
 import ptolemy.cg.gui.CodeGeneratorGUIFactory;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.expr.FileParameter;
@@ -282,14 +281,15 @@ public abstract class GenericCodeGenerator extends Attribute implements
      *   cannot be cloned.
      */
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        GenericCodeGenerator newObject = (GenericCodeGenerator) super.clone(workspace);
+        GenericCodeGenerator newObject = (GenericCodeGenerator) super
+                .clone(workspace);
         newObject._adapterStore = null;
         newObject._generatorPackageListParser = null;
         newObject._model = null;
 
-
         return newObject;
     }
+
     /** Return a formatted comment containing the
      *  specified string.  In this base class, the empty
      *  string is returned.
@@ -360,7 +360,7 @@ public abstract class GenericCodeGenerator extends Attribute implements
             Manager manager = container.getManager();
 
             TypedCompositeActor toplevel = (TypedCompositeActor) ((NamedObj) container)
-                .toplevel();
+                    .toplevel();
 
             if (manager == null) {
                 manager = new Manager(toplevel.workspace(), "Manager");
@@ -496,7 +496,7 @@ public abstract class GenericCodeGenerator extends Attribute implements
                     if (codeGenerators.size() != 0) {
                         // Get the last CodeGenerator in the list, maybe
                         // it was added last?
-                        for (Object object : (List<GenericCodeGenerator>) codeGenerators) {
+                        for (Object object : codeGenerators) {
                             //if (object instanceof CCodeGenerator) {
                             if (generatorClass.isInstance(object)) {
                                 codeGenerator = (GenericCodeGenerator) object;
@@ -596,7 +596,7 @@ public abstract class GenericCodeGenerator extends Attribute implements
             }
             return -2;
         } catch (Throwable ex) {
-            MoMLApplication.throwArgsException(ex, args);
+            ConfigurationApplication.throwArgsException(ex, args);
         } finally {
             if (codeGenerator != null) {
                 codeGenerator._resetAll();

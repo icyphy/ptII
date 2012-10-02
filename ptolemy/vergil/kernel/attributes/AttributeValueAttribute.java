@@ -280,7 +280,8 @@ public class AttributeValueAttribute extends AbstractTextAttribute implements
                         value = token.toString();
                         // Suppress scientific notation if it's a double.
                         if (token instanceof DoubleToken) {
-                            double doubleValue = ((DoubleToken)token).doubleValue();
+                            double doubleValue = ((DoubleToken) token)
+                                    .doubleValue();
                             NumberFormat format = NumberFormat.getInstance();
                             format.setGroupingUsed(false);
                             format.setMinimumFractionDigits(1);

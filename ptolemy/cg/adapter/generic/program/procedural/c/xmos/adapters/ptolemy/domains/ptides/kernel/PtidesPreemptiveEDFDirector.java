@@ -84,7 +84,8 @@ public class PtidesPreemptiveEDFDirector
      *  @return The generated assembly file code.
      *  @exception IllegalActionException If thrown while generating the XC file.
      */
-    public Map<String, String> generateAdditionalCodeFiles() throws IllegalActionException {
+    public Map<String, String> generateAdditionalCodeFiles()
+            throws IllegalActionException {
         Map<String, String> list = new HashMap<String, String>();
         list.put("xc", _generateXCFile());
         return list;
@@ -192,7 +193,6 @@ public class PtidesPreemptiveEDFDirector
 
         codestream.clear();
 
-
         // if the outside is already a Ptides director (this could only happen if
         // we have a EmbeddedCodeActor inside of a Ptides director. This case
         // the EmbeddedCodeActor would also have a Ptides director (in order to
@@ -203,14 +203,14 @@ public class PtidesPreemptiveEDFDirector
             return code.toString();
         }
 
-        code.append(_templateParser.getCodeStream().getCodeBlock("preinitPDBlock"));
+        code.append(_templateParser.getCodeStream().getCodeBlock(
+                "preinitPDBlock"));
 
-
-//        List args = new ArrayList();
-//
-//        _templateParser.getCodeStream().append(
-//                _templateParser.getCodeStream().getCodeBlock("initPDCodeBlock",
-//                        args));
+        //        List args = new ArrayList();
+        //
+        //        _templateParser.getCodeStream().append(
+        //                _templateParser.getCodeStream().getCodeBlock("initPDCodeBlock",
+        //                        args));
 
         code.append(_generateInitializeHardwareCode());
 
@@ -260,14 +260,13 @@ public class PtidesPreemptiveEDFDirector
         _templateParser.getCodeStream().append(
                 "#define numActuators " + actuators.size() + _eol);
 
-        _templateParser.getCodeStream().appendCodeBlocks("CommonTypeDefinitions");
+        _templateParser.getCodeStream().appendCodeBlocks(
+                "CommonTypeDefinitions");
         _templateParser.getCodeStream().appendCodeBlocks("StructDefBlock");
         _templateParser.getCodeStream().appendCodeBlocks("FuncProtoBlock");
         _templateParser.getCodeStream().appendCodeBlocks("SchedulerBlock");
 
         List args = new LinkedList();
-
-
 
         // prototypes for actor functions
         _templateParser.getCodeStream().append(_generateActorFuncProtoCode());
@@ -281,7 +280,6 @@ public class PtidesPreemptiveEDFDirector
         String devicePortId = "";
         String deviceId = "";
         String actuatorIds = "";
-        String actuatorFunction = "";
         for (Actor actor : (List<Actor>) ((CompositeActor) _director
                 .getContainer()).deepEntityList()) {
             if (actor instanceof ActuatorSetup) {
@@ -294,8 +292,7 @@ public class PtidesPreemptiveEDFDirector
                 _devicePortIds.put(actor, devicePortId);
 
                 deviceId = ((StringToken) ((Parameter) ((ActuatorSetup) actor)
-                        .getAttribute("deviceId")).getToken())
-                        .stringValue();
+                        .getAttribute("deviceId")).getToken()).stringValue();
                 _deviceIds.put(actor, deviceId);
             }
 
@@ -309,25 +306,24 @@ public class PtidesPreemptiveEDFDirector
                 _devicePortIds.put(actor, devicePortId);
 
                 deviceId = ((StringToken) ((Parameter) ((SensorHandler) actor)
-                        .getAttribute("deviceId")).getToken())
-                        .stringValue();
+                        .getAttribute("deviceId")).getToken()).stringValue();
                 _deviceIds.put(actor, deviceId);
             }
         }
 
-
-//        for (int i = 0; i < maxNumSensorInputs - sensors.size(); i++) {
-//            args.add("");
-//        }
-//        _templateParser.getCodeStream()
-//                .append(_templateParser.getCodeStream().getCodeBlock(
-//                        "FuncBlock", args));
+        //        for (int i = 0; i < maxNumSensorInputs - sensors.size(); i++) {
+        //            args.add("");
+        //        }
+        //        _templateParser.getCodeStream()
+        //                .append(_templateParser.getCodeStream().getCodeBlock(
+        //                        "FuncBlock", args));
 
         args.clear();
 
         String switchstatement = "switch(type) {\n";
         for (Actor actuator : actuators.keySet()) {
-            String deviceName = CodeGeneratorAdapter.generateName((NamedObj) actuator);
+            String deviceName = CodeGeneratorAdapter
+                    .generateName((NamedObj) actuator);
             switchstatement += "case " + _deviceIds.get(actuator) + ":\n";
             switchstatement += "    newEvent->fire = " + deviceName + ";\n";
             switchstatement += "break;\n";
@@ -340,11 +336,9 @@ public class PtidesPreemptiveEDFDirector
         args.add(actuatorIds);
         args.add(switchstatement);
 
-        _templateParser.getCodeStream()
-        .append(_templateParser.getCodeStream().getCodeBlock(
-                "ActuationBlock", args));
-
-
+        _templateParser.getCodeStream().append(
+                _templateParser.getCodeStream().getCodeBlock("ActuationBlock",
+                        args));
 
         if (!_templateParser.getCodeStream().isEmpty()) {
             sharedCode.add(processCode(_templateParser.getCodeStream()
@@ -354,10 +348,8 @@ public class PtidesPreemptiveEDFDirector
         return sharedCode;
     }
 
-
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
-
 
     /** Fire methods for each actor.
      * @return fire methods for each actor
@@ -385,8 +377,8 @@ public class PtidesPreemptiveEDFDirector
 
             String fireFunctionParameters = adapter.getFireFunctionParameters();
             code.append("void "
-                    + CodeGeneratorAdapter.generateName((NamedObj) actor)
-                    + "(" + fireFunctionParameters +") " + "{" + _eol);
+                    + CodeGeneratorAdapter.generateName((NamedObj) actor) + "("
+                    + fireFunctionParameters + ") " + "{" + _eol);
             code.append(adapter.generateFireCode());
 
             // After each actor firing, the Event Head ptr needs to point to null
@@ -441,7 +433,8 @@ public class PtidesPreemptiveEDFDirector
             if (actor instanceof SensorHandler) {
                 code.append("void "
                         + CodeGeneratorAdapter.generateName((NamedObj) actor)
-                        + "(streaming chanend schedulerChannel, const Time &timestamp);" + _eol);
+                        + "(streaming chanend schedulerChannel, const Time &timestamp);"
+                        + _eol);
             }
         }
 
@@ -457,37 +450,38 @@ public class PtidesPreemptiveEDFDirector
 
         String sensorDefinition = "", sensorReadyFlags = "", sensorSwitch = "while (1) {\n    select {\n";
         for (Actor sensor : sensors.keySet()) {
-            String deviceName = CodeGeneratorAdapter.generateName((NamedObj) sensor) + "_device";
+            String deviceName = CodeGeneratorAdapter
+                    .generateName((NamedObj) sensor) + "_device";
 
-            sensorDefinition += "on stdcore[1]: in port "
-                + deviceName + " = "
-                + _devicePortIds.get(sensor) + ";\n";
+            sensorDefinition += "on stdcore[1]: in port " + deviceName + " = "
+                    + _devicePortIds.get(sensor) + ";\n";
 
-            sensorReadyFlags += "uint8 "
-                + deviceName + "Ready = TRUE;\n";
+            sensorReadyFlags += "uint8 " + deviceName + "Ready = TRUE;\n";
 
-            sensorSwitch += "case " + deviceName + " when pinseq(" + deviceName + "Ready) :> void:\n"
-                + "if (" + deviceName + "Ready) {\n"
-                + "getTimestamp(timestamp, platformClockChannel);\n"
-                + CodeGeneratorAdapter.generateName((NamedObj) sensor) + "(schedulerChannel, timestamp);\n"
-                + deviceName + "Ready = FALSE;\n"
-                + "} else {\n"
-                + deviceName + "Ready = TRUE;\n"
-                + "}\n break; \n";
+            sensorSwitch += "case " + deviceName + " when pinseq(" + deviceName
+                    + "Ready) :> void:\n" + "if (" + deviceName + "Ready) {\n"
+                    + "getTimestamp(timestamp, platformClockChannel);\n"
+                    + CodeGeneratorAdapter.generateName((NamedObj) sensor)
+                    + "(schedulerChannel, timestamp);\n" + deviceName
+                    + "Ready = FALSE;\n" + "} else {\n" + deviceName
+                    + "Ready = TRUE;\n" + "}\n break; \n";
         }
         sensorSwitch += "}\n}\n";
 
         String actuatorDefinition = "", doActuation = "", initActuatorString = "";
         for (Actor actuator : actuators.keySet()) {
-            String deviceName = CodeGeneratorAdapter.generateName((NamedObj) actuator);
-            actuatorDefinition += "on stdcore[1]: out port "
-                + deviceName + " = "
-                + _devicePortIds.get(actuator) + ";\n";
+            String deviceName = CodeGeneratorAdapter
+                    .generateName((NamedObj) actuator);
+            actuatorDefinition += "on stdcore[1]: out port " + deviceName
+                    + " = " + _devicePortIds.get(actuator) + ";\n";
 
-            doActuation += "void " + deviceName + "_Actuation() {\n"
-                + "timer time;\n uint32 count;\n"
-                + deviceName + " <: 1;\n time :> count;\ntime when timerafter(count + 5000) :> void;"
-                + deviceName + " <: 0;\n}\n";
+            doActuation += "void "
+                    + deviceName
+                    + "_Actuation() {\n"
+                    + "timer time;\n uint32 count;\n"
+                    + deviceName
+                    + " <: 1;\n time :> count;\ntime when timerafter(count + 5000) :> void;"
+                    + deviceName + " <: 0;\n}\n";
 
             initActuatorString += deviceName + " <: 0;\n";
         }
@@ -501,17 +495,12 @@ public class PtidesPreemptiveEDFDirector
         args.add(doActuation);
         args.add(initActuatorString);
 
-        _templateParser.getCodeStream()
-        .append(_templateParser.getCodeStream().getCodeBlock(
-                "XCCodeBlock", args));
+        _templateParser.getCodeStream().append(
+                _templateParser.getCodeStream().getCodeBlock("XCCodeBlock",
+                        args));
 
-        return processCode(_templateParser.getCodeStream()
-                .toString());
+        return processCode(_templateParser.getCodeStream().toString());
     }
-
-    /** The maximum number of sensor inputs that is supported.
-     */
-    private static int maxNumSensorInputs = 8;
 
     private Map<Actor, String> _devicePortIds = new HashMap();
     private Map<Actor, String> _deviceIds = new HashMap();

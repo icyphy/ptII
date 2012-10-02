@@ -28,7 +28,6 @@ import ptolemy.data.expr.ASTPtFunctionApplicationNode;
 import ptolemy.data.expr.ASTPtLeafNode;
 import ptolemy.data.expr.ASTPtMethodCallNode;
 import ptolemy.data.expr.ParseTreeTypeInference;
-import ptolemy.data.type.ObjectType;
 import ptolemy.kernel.util.IllegalActionException;
 
 ///////////////////////////////////////////////////////////////////

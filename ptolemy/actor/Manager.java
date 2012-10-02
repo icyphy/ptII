@@ -444,9 +444,10 @@ public class Manager extends NamedObj implements Runnable {
                     // Look for attributes and entities that implement ExceptionHandler.
                     List<ExceptionHandler> exceptionHandlersList = _container
                             .attributeList(ExceptionHandler.class);
-                    exceptionHandlersList.addAll(_container.entityList(ExceptionHandler.class));
+                    exceptionHandlersList.addAll(_container
+                            .entityList(ExceptionHandler.class));
                     boolean exceptionHandled = false;
-                    for (ExceptionHandler exceptionHandler : exceptionHandlersList ) {
+                    for (ExceptionHandler exceptionHandler : exceptionHandlersList) {
                         // Note that we allow multiple exception handlers
                         // to handle the same exception. So we iterate all
                         // of the exception handlers, at least until one
@@ -1016,7 +1017,8 @@ public class Manager extends NamedObj implements Runnable {
         // Publisher.
         Manager manager = actor.getManager();
         if (manager == null) {
-            CompositeActor toplevel = (CompositeActor) ((NamedObj)actor).toplevel();
+            CompositeActor toplevel = (CompositeActor) ((NamedObj) actor)
+                    .toplevel();
             manager = new Manager(toplevel.workspace(), "PubManager");
             toplevel.setManager(manager);
         }
@@ -1026,7 +1028,8 @@ public class Manager extends NamedObj implements Runnable {
         } finally {
             try {
                 // FIXME: should this be synchronized on this?
-                if ((manager.getState() != IDLE) && (manager.getState() != WRAPPING_UP)) {
+                if ((manager.getState() != IDLE)
+                        && (manager.getState() != WRAPPING_UP)) {
                     manager.wrapup();
                 }
             } catch (Throwable throwable) {

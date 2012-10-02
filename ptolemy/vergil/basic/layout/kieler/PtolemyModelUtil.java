@@ -90,7 +90,8 @@ public final class PtolemyModelUtil {
                 if (attribute instanceof Locatable) {
                     return (Locatable) attribute;
                 }
-                List<Locatable> locatables = object.attributeList(Locatable.class);
+                List<Locatable> locatables = object
+                        .attributeList(Locatable.class);
                 if (!locatables.isEmpty()) {
                     return locatables.get(0);
                 }
@@ -162,7 +163,8 @@ public final class PtolemyModelUtil {
      * @param relations Set of relations
      * @return a Set of relation groups as given by List<Relation> objects by Ptolemy
      */
-    protected static Set<List<Relation>> _getRelationGroups(Set<Relation> relations) {
+    protected static Set<List<Relation>> _getRelationGroups(
+            Set<Relation> relations) {
         Set<List<Relation>> relationGroups = new HashSet<List<Relation>>();
         for (Relation relation : relations) {
             List<Relation> relationGroup = relation.relationGroupList();
@@ -254,7 +256,8 @@ public final class PtolemyModelUtil {
             if (containersContainer instanceof CompositeEntity) {
                 CompositeEntity composite = (CompositeEntity) containersContainer;
                 String relativeToName = location.relativeTo.getExpression();
-                String elementName = location.relativeToElementName.getExpression();
+                String elementName = location.relativeToElementName
+                        .getExpression();
                 // The relativeTo object is not necessarily an Entity.
                 NamedObj relativeToNamedObj;
                 if (elementName.equals("property")) {

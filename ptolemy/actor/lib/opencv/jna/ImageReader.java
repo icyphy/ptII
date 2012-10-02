@@ -1,4 +1,4 @@
- /* An actor that capture image from camera by using OpenCV
+/* An actor that capture image from camera by using OpenCV
 
 Copyright (c) 2010-2011 The Regents of the University of California.
 All rights reserved.

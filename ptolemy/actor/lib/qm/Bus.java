@@ -216,35 +216,35 @@ public class Bus extends MonitoredQuantityManager {
             // container will fire to handle that token.
             // We handle this by requesting a firing of the composite.
 
-//            if (!(receiver instanceof IntermediateReceiver)) {
-//                Actor container = (Actor) receiver.getContainer()
-//                        .getContainer();
-//                if (receiver.getContainer().isOutput()) {
-//                    _sendToReceiver(receiver, token);
-//                    // The fire that results from the following fireAt()
-//                    // call, at a minimum, will result in a
-//                    // transfer outputs to the outside of the composite.
-//                    Actor containerOfComposite = (Actor) container
-//                            .getContainer();
-//                    if (containerOfComposite != null) {
-//                        containerOfComposite.getDirector().fireAt(container,
-//                                currentTime);
-//                    }
-//                } else {
-//                    // If the recipient is an input, then
-//                    if (receiver.getContainer().isInput()) {
-//                        // the container must have the correct model time before putting the token
-//                        ((Actor) container.getContainer()).getDirector()
-//                                .fireAt(container, currentTime);
-//                        _sendToReceiver(receiver, token);
-//                        // making sure the input is transferred inside.
-//                        ((Actor) container.getContainer()).getDirector()
-//                                .fireAt(container, currentTime);
-//                    }
-//                }
-//            } else {
-                _sendToReceiver(receiver, token);
-//            }
+            //            if (!(receiver instanceof IntermediateReceiver)) {
+            //                Actor container = (Actor) receiver.getContainer()
+            //                        .getContainer();
+            //                if (receiver.getContainer().isOutput()) {
+            //                    _sendToReceiver(receiver, token);
+            //                    // The fire that results from the following fireAt()
+            //                    // call, at a minimum, will result in a
+            //                    // transfer outputs to the outside of the composite.
+            //                    Actor containerOfComposite = (Actor) container
+            //                            .getContainer();
+            //                    if (containerOfComposite != null) {
+            //                        containerOfComposite.getDirector().fireAt(container,
+            //                                currentTime);
+            //                    }
+            //                } else {
+            //                    // If the recipient is an input, then
+            //                    if (receiver.getContainer().isInput()) {
+            //                        // the container must have the correct model time before putting the token
+            //                        ((Actor) container.getContainer()).getDirector()
+            //                                .fireAt(container, currentTime);
+            //                        _sendToReceiver(receiver, token);
+            //                        // making sure the input is transferred inside.
+            //                        ((Actor) container.getContainer()).getDirector()
+            //                                .fireAt(container, currentTime);
+            //                    }
+            //                }
+            //            } else {
+            _sendToReceiver(receiver, token);
+            //            }
 
             if (_debugging) {
                 _debug("At time " + currentTime + ", completing send to "

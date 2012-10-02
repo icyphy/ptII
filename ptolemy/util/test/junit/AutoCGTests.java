@@ -63,12 +63,15 @@ public class AutoCGTests extends ModelTests {
      * @exception Throwable If the class or constructor cannot be found.
      */
     public void setUp() throws Throwable {
-        _applicationClass = Class.forName("ptolemy.cg.kernel.generic.GenericCodeGenerator");
+        _applicationClass = Class
+                .forName("ptolemy.cg.kernel.generic.GenericCodeGenerator");
 
-        _cgDirectory = new File(StringUtilities.getProperty("user.home") + "/cg");
+        _cgDirectory = new File(StringUtilities.getProperty("user.home")
+                + "/cg");
 
         Class[] argTypes = new Class[] { String[].class };
-        _generateCodeMethod = _applicationClass.getMethod("generateCode", argTypes);
+        _generateCodeMethod = _applicationClass.getMethod("generateCode",
+                argTypes);
     }
 
     /**
@@ -89,8 +92,9 @@ public class AutoCGTests extends ModelTests {
      * into arrays.
      * @exception Throwable If thrown while generating, compiling or executing the compiled code.
      */
-    public void runModel(String fullPath, String language, boolean generateInSubdirectory,
-            boolean inline, int maximumLinesPerBlock, boolean variablesAsArrays)
+    public void runModel(String fullPath, String language,
+            boolean generateInSubdirectory, boolean inline,
+            int maximumLinesPerBlock, boolean variablesAsArrays)
             throws Throwable {
         if (fullPath.endsWith(THERE_ARE_NO_AUTO_TESTS)) {
             System.out.println("No auto/*.xml tests in "
@@ -109,20 +113,21 @@ public class AutoCGTests extends ModelTests {
                 + "-language " + language + " -generateInSubdirectory "
                 + generateInSubdirectory + " -inline " + inline
                 + " -maximumLinesPerBlock " + maximumLinesPerBlock
-                + " -variablesAsArrays " + variablesAsArrays
-                + " " + fullPath);
-        String [] args = new String [] {
-            "-language", language,
-            "-generateInSubdirectory", Boolean.toString(generateInSubdirectory),
-            "-inline", Boolean.toString(inline),
-            "-maximumLinesPerBlock", Integer.toString(maximumLinesPerBlock),
-            "-variablesAsArrays", Boolean.toString(variablesAsArrays),
-            fullPath};
-        int returnValue = ((Integer)_generateCodeMethod.invoke(null, (Object) args)).intValue();
+                + " -variablesAsArrays " + variablesAsArrays + " " + fullPath);
+        String[] args = new String[] { "-language", language,
+                "-generateInSubdirectory",
+                Boolean.toString(generateInSubdirectory), "-inline",
+                Boolean.toString(inline), "-maximumLinesPerBlock",
+                Integer.toString(maximumLinesPerBlock), "-variablesAsArrays",
+                Boolean.toString(variablesAsArrays), fullPath };
+        int returnValue = ((Integer) _generateCodeMethod.invoke(null,
+                (Object) args)).intValue();
         if (returnValue != 0) {
-            System.out.println("AutoCGTests: " + fullPath
-                   + ": Return value of the last command executed was not zero, it was: "
-                    + returnValue + ", marking this as a test failure.");
+            System.out
+                    .println("AutoCGTests: "
+                            + fullPath
+                            + ": Return value of the last command executed was not zero, it was: "
+                            + returnValue + ", marking this as a test failure.");
             Assert.fail("Return value of the last command executed was not zero, it was: "
                     + returnValue);
         }

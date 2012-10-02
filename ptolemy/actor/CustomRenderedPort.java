@@ -54,14 +54,15 @@ public abstract class CustomRenderedPort extends MirrorPort {
      * @exception IllegalActionException If parameters cannot be set.
      * @exception NameDuplicationException If name already exists.
      */
-    public CustomRenderedPort(CompositeEntity container, String name) throws IllegalActionException, NameDuplicationException {
+    public CustomRenderedPort(CompositeEntity container, String name)
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         // FIXME: the following should use getCoordinatesForShape to
         // generate the correct svg icon.
-        _attachText("_iconDescription", "<svg>\n"
-                + "<rect x=\"-5\" y=\"-5\" " + "width=\"5\" height=\"5\" "
-                + "style=\"fill:black\"/>\n" + "</svg>\n");
+        _attachText("_iconDescription", "<svg>\n" + "<rect x=\"-5\" y=\"-5\" "
+                + "width=\"5\" height=\"5\" " + "style=\"fill:black\"/>\n"
+                + "</svg>\n");
     }
 
     /** Compute and return a list of coordinates for the custom shape.

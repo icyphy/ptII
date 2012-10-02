@@ -614,44 +614,44 @@ public class CompositeEntity extends ComponentEntity {
         return new ContainedObjectsIterator();
     }
 
-   /** Return a list that consists of all the transparent and opaque
-    *  composite entities in a model.  This method differs from
-    *  {@link #allAtomicEntityList()} in that this method returns
-    *  CompositeEntities and allAtomicEntityList() returns atomic
-    *  entities.  This method differs from {@link #deepEntityList()}
-    *  in that this method returns only opaque and transparent
-    *  CompositeEntities, whereas deepEntityList() returns opaque
-    *  ComponentEntities.  The returned list of this method does not
-    *  include any entities that are class definitions.
-    *  The {@link #entityList(Class)} method only returns entities in the
-    *  current level, this method traverses the hierarchy.
-    *  @return a List of all transparent and opaque composite entities in the
-    *  model.  A transparent composite is a composite that does not
-    *  contain a director.  An opaque composite is a composite that does
-    *  contain a director.  Note that class definitions are also returned.
-    */
-   public List<CompositeEntity> deepCompositeEntityList() {
-       try {
-           _workspace.getReadAccess();
-           LinkedList result = new LinkedList();
+    /** Return a list that consists of all the transparent and opaque
+     *  composite entities in a model.  This method differs from
+     *  {@link #allAtomicEntityList()} in that this method returns
+     *  CompositeEntities and allAtomicEntityList() returns atomic
+     *  entities.  This method differs from {@link #deepEntityList()}
+     *  in that this method returns only opaque and transparent
+     *  CompositeEntities, whereas deepEntityList() returns opaque
+     *  ComponentEntities.  The returned list of this method does not
+     *  include any entities that are class definitions.
+     *  The {@link #entityList(Class)} method only returns entities in the
+     *  current level, this method traverses the hierarchy.
+     *  @return a List of all transparent and opaque composite entities in the
+     *  model.  A transparent composite is a composite that does not
+     *  contain a director.  An opaque composite is a composite that does
+     *  contain a director.  Note that class definitions are also returned.
+     */
+    public List<CompositeEntity> deepCompositeEntityList() {
+        try {
+            _workspace.getReadAccess();
+            LinkedList result = new LinkedList();
 
-           // This might be called from within a superclass constructor,
-           // in which case there are no contained entities yet.
-           if (_containedEntities != null) {
-               Iterator entities = _containedEntities.elementList().iterator();
-               while (entities.hasNext()) {
-                   ComponentEntity entity = (ComponentEntity) entities.next();
-                   if (/*!entity.isClassDefinition() */
-                           /* &&!entity.isOpaque() */
-                           entity instanceof CompositeEntity) {
-                       result.add(entity);
-                       result.addAll(((CompositeEntity) entity)
-                               .deepCompositeEntityList());
-                   }
-               }
-           }
+            // This might be called from within a superclass constructor,
+            // in which case there are no contained entities yet.
+            if (_containedEntities != null) {
+                Iterator entities = _containedEntities.elementList().iterator();
+                while (entities.hasNext()) {
+                    ComponentEntity entity = (ComponentEntity) entities.next();
+                    if (/*!entity.isClassDefinition() */
+                    /* &&!entity.isOpaque() */
+                    entity instanceof CompositeEntity) {
+                        result.add(entity);
+                        result.addAll(((CompositeEntity) entity)
+                                .deepCompositeEntityList());
+                    }
+                }
+            }
 
-           return result;
+            return result;
         } finally {
             _workspace.doneReading();
         }

@@ -95,11 +95,13 @@ public class TestExceptionAttribute extends AbstractInitializableAttribute
 
         // In order for this to show up in the vergil library, it has to have
         // an icon description.
-        _attachText("_iconDescription", "<svg>\n"
-                + "<polygon points=\"0,0 22,-8 12,-28 32,-18 40,-40 48,-18 68,-28 58,-8 80,0 58,8 68,28 48,18 40,40 32,18 12,28 22,8 0,0\" "
-                + "style=\"fill:pink;stroke:red\"/>\n"
-                + "<text x=\"35\" y=\"10\" style=\"font-size:30;fill:red\">!</text>\n"
-                + "</svg>\n");
+        _attachText(
+                "_iconDescription",
+                "<svg>\n"
+                        + "<polygon points=\"0,0 22,-8 12,-28 32,-18 40,-40 48,-18 68,-28 58,-8 80,0 58,8 68,28 48,18 40,40 32,18 12,28 22,8 0,0\" "
+                        + "style=\"fill:pink;stroke:red\"/>\n"
+                        + "<text x=\"35\" y=\"10\" style=\"font-size:30;fill:red\">!</text>\n"
+                        + "</svg>\n");
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -159,25 +161,26 @@ public class TestExceptionAttribute extends AbstractInitializableAttribute
                 throw new IllegalActionException(this, exception,
                         "No training message to check against. Perhaps you need to set training mode?");
             }
-            int prefixLength = ((IntToken)matchPrefixOfLength.getToken()).intValue();
+            int prefixLength = ((IntToken) matchPrefixOfLength.getToken())
+                    .intValue();
             if (prefixLength <= 0) {
                 if (!exception.getMessage().equals(
                         correctExceptionMessage.stringValue())) {
-                    throw new IllegalActionException(this, exception, "Expected:\n"
-                            + correctExceptionMessage.stringValue()
-                            + "\nBut got:\n"
-                            + exception.getMessage());
+                    throw new IllegalActionException(this, exception,
+                            "Expected:\n"
+                                    + correctExceptionMessage.stringValue()
+                                    + "\nBut got:\n" + exception.getMessage());
                 }
             } else {
                 if (correct.length() < prefixLength) {
                     prefixLength = correct.length();
                 }
-                String prefix = correctExceptionMessage.stringValue().substring(0, prefixLength);
+                String prefix = correctExceptionMessage.stringValue()
+                        .substring(0, prefixLength);
                 if (!exception.getMessage().startsWith(prefix)) {
-                    throw new IllegalActionException(this, exception, "Expected a message starting with:\n"
-                            + prefix
-                            + "\nBut got:\n"
-                            + exception.getMessage());
+                    throw new IllegalActionException(this, exception,
+                            "Expected a message starting with:\n" + prefix
+                                    + "\nBut got:\n" + exception.getMessage());
                 }
             }
         }

@@ -126,7 +126,8 @@ public class ProxyModelBuilder {
         for (Object obj : _topLevelActor.deepEntityList()) {
             ComponentEntity actor = (ComponentEntity) obj;
             // find actors that have a remote tag
-            Attribute remoteAttribute = actor.getAttribute(ServerUtility.REMOTE_OBJECT_TAG);
+            Attribute remoteAttribute = actor
+                    .getAttribute(ServerUtility.REMOTE_OBJECT_TAG);
             if (ServerUtility.isTargetProxySource(remoteAttribute)) {
                 sources.add(actor);
             } else if (ServerUtility.isTargetProxySink(remoteAttribute)) {

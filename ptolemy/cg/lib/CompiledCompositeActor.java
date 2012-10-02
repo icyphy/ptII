@@ -993,14 +993,13 @@ public class CompiledCompositeActor extends TypedCompositeActor {
                                 (Class[]) null);
 
                         Object payload = null;
-                        payload = (Object) getPayload.invoke(
-                                tmpOutputTokens[i][k], (Object[]) null);
+                        payload = getPayload.invoke(tmpOutputTokens[i][k],
+                                (Object[]) null);
 
-                        Field objSize = (Field) (payload.getClass()
-                                .getField("size"));
+                        Field objSize = (payload.getClass().getField("size"));
                         int size = objSize.getInt(payload);
 
-                        Field elementsField = (Field) (payload.getClass()
+                        Field elementsField = (payload.getClass()
                                 .getField("elements"));
                         Object[] elements = (Object[]) elementsField
                                 .get(payload);
@@ -1008,8 +1007,8 @@ public class CompiledCompositeActor extends TypedCompositeActor {
                         Token[] convertedTokens = new Token[size];
 
                         for (int j = 0; j < size; j++) {
-                            Object element = (Object) getPayload.invoke(
-                                    elements[j], (Object[]) null);
+                            Object element = getPayload.invoke(elements[j],
+                                    (Object[]) null);
                             if (type == BaseType.INT) {
                                 convertedTokens[j] = new IntToken(
                                         Integer.parseInt(element.toString()));

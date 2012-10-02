@@ -157,11 +157,8 @@ public class DebuggerParameter extends TableauParameter implements
             case B_CHECK_LOG:
                 if (!message.equals(_lines[_lineNumber++])) {
                     throw new RuntimeException("Log does not match on line "
-                            + (_lineNumber - 1)
-                            + ".\nMessage was:\n"
-                            + message
-                            + "\nLine was:\n"
-                            + _lines[_lineNumber - 1]);
+                            + (_lineNumber - 1) + ".\nMessage was:\n" + message
+                            + "\nLine was:\n" + _lines[_lineNumber - 1]);
 
                 }
                 break;

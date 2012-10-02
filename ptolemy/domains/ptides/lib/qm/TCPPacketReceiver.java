@@ -30,26 +30,17 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 package ptolemy.domains.ptides.lib.qm;
 
-
-import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Set;
 
 import ptolemy.actor.Director;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.TypedIOPort;
-import ptolemy.actor.util.ConstructAssociativeType;
-import ptolemy.actor.util.ExtractFieldType;
 import ptolemy.actor.util.Time;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.RecordToken;
 import ptolemy.data.type.BaseType;
-import ptolemy.data.type.RecordType;
-import ptolemy.data.type.Type;
-import ptolemy.data.type.TypeConstant;
 import ptolemy.domains.ptides.kernel.PtidesBasicDirector;
 import ptolemy.domains.ptides.lib.InputDevice;
 import ptolemy.graph.Inequality;
@@ -174,8 +165,8 @@ public class TCPPacketReceiver extends InputDevice {
         super.preinitialize();
 
         boolean flag = false;
-        for (TypedIOPort input : (List<TypedIOPort>) inputPortList()) {
-            for (IOPort sourcePort : (List<IOPort>) input.sourcePortList()) {
+        for (TypedIOPort input : inputPortList()) {
+            for (IOPort sourcePort : input.sourcePortList()) {
                 if (sourcePort.getContainer() == getContainer()) {
                     flag = true;
                 }
@@ -190,10 +181,8 @@ public class TCPPacketReceiver extends InputDevice {
         }
     }
 
-
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
-
 
     /** Do not establish the usual default type constraints.
     *  @return null
@@ -202,8 +191,6 @@ public class TCPPacketReceiver extends InputDevice {
     protected Set<Inequality> _defaultTypeConstraints() {
         return null;
     }
-
-
 
     ///////////////////////////////////////////////////////////////////
     ////                     private variable                      ////
@@ -262,8 +249,6 @@ public class TCPPacketReceiver extends InputDevice {
     /** label of the payload that is transmitted within the RecordToken.
      */
     private static final String payload = "payload";
-
-    private static final String TCPlabel = "TCPlabel";
 
     //private static final int max_packet_length = 5;
 

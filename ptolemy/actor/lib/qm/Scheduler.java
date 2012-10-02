@@ -145,10 +145,9 @@ public class Scheduler extends MonitoredQuantityManager {
      *  @exception IllegalActionException If the token of the deviceDelay
      *  parameter cannot be evaluated.
      */
-    protected static Double _getDoubleParameterValue(NamedObj namedObj, String parameterName)
-            throws IllegalActionException {
-        Parameter parameter = (Parameter) namedObj
-                .getAttribute(parameterName);
+    protected static Double _getDoubleParameterValue(NamedObj namedObj,
+            String parameterName) throws IllegalActionException {
+        Parameter parameter = (Parameter) namedObj.getAttribute(parameterName);
         if (parameter != null) {
             return Double.valueOf(((DoubleToken) parameter.getToken())
                     .doubleValue());
@@ -204,7 +203,7 @@ public class Scheduler extends MonitoredQuantityManager {
         // the queue and, if there are still tokens in the queue,
         // request another firing at the time those tokens should
         // be delivered to the delegated receiver.
-       if (_nextTimeFree != null && _tokens.size() > 0
+        if (_nextTimeFree != null && _tokens.size() > 0
                 && currentTime.compareTo(_nextTimeFree) == 0) {
             // Discard the token that was sent to the output in fire().
             _tokens.take();
@@ -249,11 +248,12 @@ public class Scheduler extends MonitoredQuantityManager {
                                 + " in the same iteration.");
             }
         } else {
-            Double executionTime = _getDoubleParameterValue(receiver.getContainer().getContainer(), "executionTime");
+            Double executionTime = _getDoubleParameterValue(receiver
+                    .getContainer().getContainer(), "executionTime");
             _tokens.put(new Object[] { receiver, token, executionTime });
             _tokenCount++;
-            sendQMTokenEvent((Actor) source.getContainer().getContainer(),
-                    0, _tokenCount, EventType.RECEIVED);
+            sendQMTokenEvent((Actor) source.getContainer().getContainer(), 0,
+                    _tokenCount, EventType.RECEIVED);
             if (_tokens.size() == 1) { // no refiring has been scheduled
                 _scheduleRefire();
             }
@@ -290,8 +290,9 @@ public class Scheduler extends MonitoredQuantityManager {
     protected void _scheduleRefire() throws IllegalActionException {
         Time currentTime = getDirector().getModelTime();
         _nextReceiver = (Receiver) ((Object[]) _tokens.get(0))[0];
-        _nextTimeFree = currentTime.add((Double) ((Object[]) _tokens.get(0))[2]);
-        System.out.println(currentTime +" fire at " + _nextTimeFree);
+        _nextTimeFree = currentTime
+                .add((Double) ((Object[]) _tokens.get(0))[2]);
+        System.out.println(currentTime + " fire at " + _nextTimeFree);
         _fireAt(_nextTimeFree);
 
     }

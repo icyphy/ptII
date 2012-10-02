@@ -218,7 +218,7 @@ public class RecordToken extends AbstractNotConvertibleToken {
      *  @return A Token.
      */
     public Token get(String label) {
-        return (Token) _fields.get(label);
+        return _fields.get(label);
     }
 
     /** Return the type of this token.
@@ -422,7 +422,8 @@ public class RecordToken extends AbstractNotConvertibleToken {
             // FIXME: It is not clear if we need to sanitize again,
             // but doing so protects against labels being set to
             // spaces and other characters.
-            stringRepresentation.append(StringUtilities.sanitizeName(label) + " = " + value);
+            stringRepresentation.append(StringUtilities.sanitizeName(label)
+                    + " = " + value);
         }
 
         return stringRepresentation.toString() + "}";

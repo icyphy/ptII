@@ -74,20 +74,25 @@ public class Counter extends AtomicContinuationActor {
      */
     @Override
     public ControlExitToken controlEnter(ControlEntryToken entry)
-        throws IllegalActionException {
+            throws IllegalActionException {
 
         ControlEntryToken.EntryLocation loc = null;
         ControlExitToken extk = null;
 
         Token alarmPToken = alarmP.getToken();
         if (alarmPToken instanceof IntToken) {
-            _alarm = ((IntToken)alarmPToken).intValue();
+            _alarm = ((IntToken) alarmPToken).intValue();
         }
 
-        /**/ if (entry.isInit())   { loc = resetEntry; }
-        else if (entry.isResume()) { loc = _resumeLoc; }
-        else if (entry.isEntry())  { loc = entry.getLocation(); }
-        else { super.controlEnter(entry); }
+        /**/if (entry.isInit()) {
+            loc = resetEntry;
+        } else if (entry.isResume()) {
+            loc = _resumeLoc;
+        } else if (entry.isEntry()) {
+            loc = entry.getLocation();
+        } else {
+            super.controlEnter(entry);
+        }
 
         _currentCount = _count;
         while (true) {
@@ -103,8 +108,7 @@ public class Counter extends AtomicContinuationActor {
                     _currentLoc = tickEntry;
                     extk = ControlExitToken.Exit(alarmExit);
                     break;
-                }
-                else {
+                } else {
                     _currentLoc = tickEntry;
                     extk = ControlExitToken.Suspend();
                     break;
@@ -114,7 +118,7 @@ public class Counter extends AtomicContinuationActor {
                 try {
                     Token alarmT = _alarmIn.get(0);
                     if (alarmT instanceof IntToken) {
-                        IntToken alarmIntT = (IntToken)alarmT;
+                        IntToken alarmIntT = (IntToken) alarmT;
                         _alarm = alarmIntT.intValue();
                         alarmP.setToken(new IntToken(_alarm));
                     }
@@ -133,8 +137,11 @@ public class Counter extends AtomicContinuationActor {
             e.printStackTrace();
         }
 
-        if (extk != null) return extk;
-        else return super.controlEnter(entry);
+        if (extk != null) {
+            return extk;
+        } else {
+            return super.controlEnter(entry);
+        }
     }
 
     /* (non-Javadoc)
@@ -158,14 +165,13 @@ public class Counter extends AtomicContinuationActor {
         return super.postfire();
     }
 
-
     public TypedIOPort _alarmIn;
     public TypedIOPort _countOut;
 
     ///////////////////////////////////////////////////////////////////
 
-    protected void _init() throws
-        IllegalActionException, NameDuplicationException {
+    protected void _init() throws IllegalActionException,
+            NameDuplicationException {
         _alarm = 0;
         _count = _currentCount = 0;
 
@@ -174,7 +180,7 @@ public class Counter extends AtomicContinuationActor {
         addEntryLocation(tickEntry);
         addExitLocation(alarmExit);
 
-        _alarmIn  = new TypedIOPort(this, "AlarmIn",  true,  false);
+        _alarmIn = new TypedIOPort(this, "AlarmIn", true, false);
         _countOut = new TypedIOPort(this, "CountOut", false, true);
 
         _resumeLoc = _currentLoc = resetEntry;
@@ -189,16 +195,10 @@ public class Counter extends AtomicContinuationActor {
     private int _alarm;
 
     final public EntryLocation resetEntry = new EntryLocation("reset");
-    final public EntryLocation tickEntry  = new EntryLocation("tick");
-    final public EntryLocation setEntry   = new EntryLocation("set");
-    final public ExitLocation  alarmExit  = new ExitLocation("alarm");
+    final public EntryLocation tickEntry = new EntryLocation("tick");
+    final public EntryLocation setEntry = new EntryLocation("set");
+    final public ExitLocation alarmExit = new ExitLocation("alarm");
 
     private EntryLocation _resumeLoc, _currentLoc;
 
 }
-
-
-
-
-
-

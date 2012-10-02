@@ -103,7 +103,8 @@ public class GRDirector extends StaticSchedulingDirector {
      *  @exception NameDuplicationException If construction of Time objects fails.
      *  @exception IllegalActionException If construction of Time objects fails.
      */
-    public GRDirector(Workspace workspace) throws IllegalActionException, NameDuplicationException {
+    public GRDirector(Workspace workspace) throws IllegalActionException,
+            NameDuplicationException {
         super(workspace);
         _init();
     }

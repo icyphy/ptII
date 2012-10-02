@@ -33,7 +33,6 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Container;
 import java.awt.Image;
-import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.LinkedList;
 import java.util.List;
@@ -72,7 +71,7 @@ classes.</p>
 */
 
 public class ImageDisplayJavaSE extends AbstractPlaceableJavaSE implements
-                ImageDisplayInterface {
+        ImageDisplayInterface {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -112,7 +111,7 @@ public class ImageDisplayJavaSE extends AbstractPlaceableJavaSE implements
      * @see #setFrame(Object)
      */
     public Object getFrame() {
-            return _imageWindowFrame;
+        return _imageWindowFrame;
     }
 
     /**
@@ -121,7 +120,7 @@ public class ImageDisplayJavaSE extends AbstractPlaceableJavaSE implements
      * @see #setPicture(Object)
      */
     public Object getPicture() {
-            return _picture;
+        return _picture;
     }
 
     /**
@@ -130,7 +129,7 @@ public class ImageDisplayJavaSE extends AbstractPlaceableJavaSE implements
      * @see #setPlatformContainer(Object)
      */
     public Object getPlatformContainer() {
-            return _container;
+        return _container;
     }
 
     /**
@@ -138,7 +137,7 @@ public class ImageDisplayJavaSE extends AbstractPlaceableJavaSE implements
      * @return the image tableau.
      */
     public Object getTableau() {
-            return _tableau;
+        return _tableau;
     }
 
     /** Initialize an object.
@@ -148,8 +147,8 @@ public class ImageDisplayJavaSE extends AbstractPlaceableJavaSE implements
      * @exception NameDuplicationException If the container already has an
      * actor with this name.
      */
-    public void init(ImageDisplay imageDisplayActor) throws IllegalActionException,
-            NameDuplicationException {
+    public void init(ImageDisplay imageDisplayActor)
+            throws IllegalActionException, NameDuplicationException {
         _display = imageDisplayActor;
         super.init(imageDisplayActor);
     }
@@ -175,10 +174,11 @@ public class ImageDisplayJavaSE extends AbstractPlaceableJavaSE implements
      */
     public void initWindowAndSizeProperties() throws IllegalActionException,
             NameDuplicationException {
-        _windowProperties = (WindowPropertiesAttribute)
-                        _display.getAttribute("_windowProperties", WindowPropertiesAttribute.class);
+        _windowProperties = (WindowPropertiesAttribute) _display.getAttribute(
+                "_windowProperties", WindowPropertiesAttribute.class);
         if (_windowProperties == null) {
-            _windowProperties = new WindowPropertiesAttribute(_display, "_windowProperties");
+            _windowProperties = new WindowPropertiesAttribute(_display,
+                    "_windowProperties");
             // Note that we have to force this to be persistent because
             // there is no real mechanism for the value of the properties
             // to be updated when the window is moved or resized. By
@@ -187,11 +187,11 @@ public class ImageDisplayJavaSE extends AbstractPlaceableJavaSE implements
             // of the window and save it.
             _windowProperties.setPersistent(true);
         }
-        _pictureSize = (SizeAttribute)
-                        _display.getAttribute("_pictureSize", SizeAttribute.class);
+        _pictureSize = (SizeAttribute) _display.getAttribute("_pictureSize",
+                SizeAttribute.class);
         if (_pictureSize == null) {
-                _pictureSize = new SizeAttribute(_display, "_pictureSize");
-                _pictureSize.setPersistent(true);
+            _pictureSize = new SizeAttribute(_display, "_pictureSize");
+            _pictureSize.setPersistent(true);
         }
     }
 
@@ -248,7 +248,7 @@ public class ImageDisplayJavaSE extends AbstractPlaceableJavaSE implements
      *  @see #getBackground()
      */
     public void setBackground(Color background) {
-            _container.setBackground(background);
+        _container.setBackground(background);
     }
 
     /**
@@ -325,7 +325,8 @@ public class ImageDisplayJavaSE extends AbstractPlaceableJavaSE implements
             // No current container for the pane.
             // Need an effigy and a tableau so that menu ops work properly.
             if (_tableau == null) {
-                Effigy containerEffigy = Configuration.findEffigy(_display.toplevel());
+                Effigy containerEffigy = Configuration.findEffigy(_display
+                        .toplevel());
 
                 if (containerEffigy == null) {
                     throw new InternalErrorException(
@@ -496,9 +497,10 @@ public class ImageDisplayJavaSE extends AbstractPlaceableJavaSE implements
     }
 
     /** Listener for windowClosing action. */
-    class WindowClosingAdapter extends AbstractPlaceableJavaSE.WindowClosingAdapter {
+    class WindowClosingAdapter extends
+            AbstractPlaceableJavaSE.WindowClosingAdapter {
         public void windowClosing(WindowEvent e) {
-                _display.cleanUp();
+            _display.cleanUp();
         }
     }
 }

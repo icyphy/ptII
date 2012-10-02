@@ -53,7 +53,6 @@ import ptolemy.kernel.util.Workspace;
 import ptolemy.vergil.icon.TextIcon;
 import ptolemy.vergil.toolbox.VisibleParameterEditorFactory;
 
-
 ///////////////////////////////////////////////////////////////////
 //// Title
 /**
@@ -152,10 +151,14 @@ public class Title extends StringParameter implements WebExportable {
         new VisibleParameterEditorFactory(this, "_editorFactory");
 
         // Add a small icon.
-        ConfigurableAttribute smallIcon = new ConfigurableAttribute(this, "_smallIconDescription");
+        ConfigurableAttribute smallIcon = new ConfigurableAttribute(this,
+                "_smallIconDescription");
         try {
-            smallIcon.configure(null, null,
-                    "<svg><text x=\"20\" style=\"font-size:14; font-family:SansSerif; fill:blue\" y=\"20\">title</text></svg>");
+            smallIcon
+                    .configure(
+                            null,
+                            null,
+                            "<svg><text x=\"20\" style=\"font-size:14; font-family:SansSerif; fill:blue\" y=\"20\">title</text></svg>");
         } catch (Exception e) {
             // Show exception on the console. Should not occur.
             e.printStackTrace();
@@ -262,8 +265,7 @@ public class Title extends StringParameter implements WebExportable {
      *   cannot be cloned.
      */
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        Title result = (Title) super
-                .clone(workspace);
+        Title result = (Title) super.clone(workspace);
         result._icon = (TextIcon) result.getAttribute("_icon");
         return result;
     }
@@ -350,13 +352,12 @@ public class Title extends StringParameter implements WebExportable {
      *  the content or setting the attribute.
      */
     public void provideContent(WebExporter exporter)
-        throws IllegalActionException{
+            throws IllegalActionException {
         // Provide a WebElement containing the title.  Title does not
         // provide any WebAttributes.
         //_provideElements(exporter);
         _provideAttributes(exporter);
     }
-
 
     /** Provide a title for this object to the specified web exporter.
      *
@@ -365,12 +366,12 @@ public class Title extends StringParameter implements WebExportable {
      *   specification of the content.
      */
     protected void _provideAttributes(WebExporter exporter)
-        throws IllegalActionException {
+            throws IllegalActionException {
 
         // Create a WebAttribute for title and add to exporter.
         // Content should only be added once (onceOnly -> true).
-        WebAttribute webAttribute = WebAttribute.
-            createWebAttribute(getContainer(), "titleWebAttribute", "title");
+        WebAttribute webAttribute = WebAttribute.createWebAttribute(
+                getContainer(), "titleWebAttribute", "title");
         webAttribute.setExpression(stringValue());
         exporter.defineAttribute(webAttribute, true);
     }

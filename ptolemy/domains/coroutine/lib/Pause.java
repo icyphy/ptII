@@ -67,10 +67,15 @@ public class Pause extends AtomicContinuationActor {
         ControlEntryToken.EntryLocation loc = null;
         ControlExitToken extk = null;
 
-        /**/ if (entry.isInit())   { loc = pauseEntry; }
-        else if (entry.isResume()) { loc = _resumeLoc; }
-        else if (entry.isEntry())  { loc = entry.getLocation(); }
-        else { super.controlEnter(entry); }
+        /**/if (entry.isInit()) {
+            loc = pauseEntry;
+        } else if (entry.isResume()) {
+            loc = _resumeLoc;
+        } else if (entry.isEntry()) {
+            loc = entry.getLocation();
+        } else {
+            super.controlEnter(entry);
+        }
 
         while (true) {
             if (loc == pauseEntry) {
@@ -86,8 +91,11 @@ public class Pause extends AtomicContinuationActor {
             break;
         }
 
-        if (extk != null) return extk;
-        else return super.controlEnter(entry);
+        if (extk != null) {
+            return extk;
+        } else {
+            return super.controlEnter(entry);
+        }
     }
 
     /* (non-Javadoc)
@@ -101,17 +109,16 @@ public class Pause extends AtomicContinuationActor {
 
     ///////////////////////////////////////////////////////////////////
 
-    protected void _init() throws
-        IllegalActionException, NameDuplicationException {
+    protected void _init() throws IllegalActionException,
+            NameDuplicationException {
 
         addEntryLocation(pauseEntry);
         addEntryLocation(resumeEntry);
         addExitLocation(nextExit);
     }
 
-
-    final public EntryLocation pauseEntry  = new EntryLocation("pause");
+    final public EntryLocation pauseEntry = new EntryLocation("pause");
     final public EntryLocation resumeEntry = new EntryLocation("resume");
-    final public ExitLocation  nextExit    = new ExitLocation("next");
+    final public ExitLocation nextExit = new ExitLocation("next");
     private EntryLocation _resumeLoc, _currentLoc;
 }

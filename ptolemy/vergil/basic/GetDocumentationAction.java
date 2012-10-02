@@ -221,13 +221,15 @@ public class GetDocumentationAction extends FigureAction {
             if (toRead != null) {
                 _lastClassName = null;
                 // Opening a remote URL can be slow, so we report to the status bar.
-                BasicGraphFrame basicGraphFrame = BasicGraphFrame.getBasicGraphFrame(context);
+                BasicGraphFrame basicGraphFrame = BasicGraphFrame
+                        .getBasicGraphFrame(context);
                 if (basicGraphFrame != null) {
                     basicGraphFrame.report("Opening " + toRead);
                 }
                 configuration.openModel(null, toRead, toRead.toExternalForm());
                 if (basicGraphFrame != null) {
-                    basicGraphFrame.report("Opened documentation for " + className);
+                    basicGraphFrame.report("Opened documentation for "
+                            + className);
                 }
             } else {
                 Parameter docApplicationSpecializerParameter = (Parameter) configuration
@@ -268,11 +270,13 @@ public class GetDocumentationAction extends FigureAction {
                     tentativeRemoteDocumentationURLBase = remoteDocumentationURLBaseParameter
                             .getExpression();
                 } else {
-                    if (VersionAttribute.CURRENT_VERSION.getExpression().indexOf(".devel") != -1) {
+                    if (VersionAttribute.CURRENT_VERSION.getExpression()
+                            .indexOf(".devel") != -1) {
                         tentativeRemoteDocumentationURLBase = "http://chess.eecs.berkeley.edu/ptexternal/src/ptII/";
                     } else {
                         tentativeRemoteDocumentationURLBase = "http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII"
-                            + VersionAttribute.majorCurrentVersion() + "/ptII/";
+                                + VersionAttribute.majorCurrentVersion()
+                                + "/ptII/";
                     }
                 }
                 // Pop up a query an prompt the user

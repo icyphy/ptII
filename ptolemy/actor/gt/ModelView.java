@@ -289,7 +289,8 @@ public class ModelView extends TypedAtomicActor implements WindowListener {
                             titleString = titleValue;
                         }
                         tableau.setTitle(titleString);
-                        boolean isPersistentValue = ((BooleanToken)isPersistent.getToken()).booleanValue();
+                        boolean isPersistentValue = ((BooleanToken) isPersistent
+                                .getToken()).booleanValue();
                         // Mark the Effigy as not persistent so that when the
                         // Tableau is closed we don't prompt the user for
                         // saving.
@@ -298,7 +299,8 @@ public class ModelView extends TypedAtomicActor implements WindowListener {
                         // ~/ptII/ptolemy/actor/gt/demo/ConstOptimization/ConstOptimizationDDF.xml
                         // and then close the optimized model.  You should not be
                         // prompted for save.
-                        ((Effigy) tableau.getContainer()).setPersistent(isPersistentValue);
+                        ((Effigy) tableau.getContainer())
+                                .setPersistent(isPersistentValue);
                         model.setDeferringChangeRequests(false);
                         output.send(i, token);
                     } catch (NameDuplicationException e) {

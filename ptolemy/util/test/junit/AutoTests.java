@@ -79,7 +79,7 @@ public class AutoTests extends ModelTests {
     public void setUp() throws Throwable {
         _applicationClass = Class.forName("ptolemy.moml.MoMLSimpleApplication");
         _applicationConstructor = _applicationClass
-            .getConstructor(String.class);
+                .getConstructor(String.class);
     }
 
     /**
@@ -106,7 +106,8 @@ public class AutoTests extends ModelTests {
             System.out.flush();
             _applicationConstructor.newInstance(fullPath);
         } else {
-            System.err.println("----------------- *** Skipping testing of " + fullPath);
+            System.err.println("----------------- *** Skipping testing of "
+                    + fullPath);
             System.err.flush();
 
         }
@@ -120,8 +121,10 @@ public class AutoTests extends ModelTests {
      */
     public boolean modelFileIsOK(String fullPath) {
         if (fullPath.endsWith("de/test/auto/ThreadedComposite.xml")
-                && ! StringUtilities.getProperty("net.sourceforge.cobertura.datafile").equals("")) {
-            System.err.println("ModelTests: Skipping de/test/auto/ThreadedComposite.xml because it interacts badly with Cobertura.");
+                && !StringUtilities.getProperty(
+                        "net.sourceforge.cobertura.datafile").equals("")) {
+            System.err
+                    .println("ModelTests: Skipping de/test/auto/ThreadedComposite.xml because it interacts badly with Cobertura.");
             return false;
         }
         return true;

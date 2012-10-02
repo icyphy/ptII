@@ -75,7 +75,7 @@ public class ValueIcon extends XMLIcon {
     public ValueIcon(NamedObj container, String name)
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
-        
+
         displayWidth = new Parameter(this, "displayWidth");
         displayWidth.setExpression("60");
         displayWidth.setTypeEquals(BaseType.INT);
@@ -119,10 +119,8 @@ public class ValueIcon extends XMLIcon {
             } catch (IllegalActionException e) {
                 // This should not happen.
             }
-            String truncated = StringUtilities
-                        .truncateString(value, width, 1);
-            LabelFigure label = new LabelFigure(name + ": " 
-                    + truncated,
+            String truncated = StringUtilities.truncateString(value, width, 1);
+            LabelFigure label = new LabelFigure(name + ": " + truncated,
                     _labelFont, 1.0, SwingConstants.SOUTH_WEST);
             background.add(label);
             return background;

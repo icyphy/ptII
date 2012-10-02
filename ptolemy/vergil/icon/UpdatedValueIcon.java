@@ -158,12 +158,8 @@ public class UpdatedValueIcon extends AttributeValueIcon {
             // NOTE: Padding of 10.
             int width = (int) ((stringBounds.getWidth() * numberOfCharacters) + 10);
 
-            // If the actual string is too wide, then correct.
-            // Note that this will result in annoying fluctuating icon size,
-            // but this is probably better than text spilling over.
-            String currentValue = _displayString();
-            label = new LabelFigure("N", _labelFont, 1.0,
-                    SwingConstants.CENTER);
+            _displayString();
+            label = new LabelFigure("N", _labelFont, 1.0, SwingConstants.CENTER);
             stringBounds = label.getBounds();
             if (width < stringBounds.getWidth()) {
                 width = (int) stringBounds.getWidth() + 10;

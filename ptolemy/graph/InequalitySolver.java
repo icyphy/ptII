@@ -505,13 +505,20 @@ public class InequalitySolver {
             // forever.  We have to truncate the search at some point, so we limit the depth.
             if (prevNS == null) {
                 prevNS = _NS;
-            } else if (_NS.size() > 0 && prevNS.size() == _NS.size() && prevNS.containsAll(_NS) && loopCnt > _DEPTH_LIMIT) {
+            } else if (_NS.size() > 0 && prevNS.size() == _NS.size()
+                    && prevNS.containsAll(_NS) && loopCnt > _DEPTH_LIMIT) {
                 StringBuffer errorMessage = new StringBuffer();
                 for (Object o : _NS) {
                     Integer i = (Integer) o;
-                    errorMessage.append(" (" + ((Info)_Ilist.get(i))._ineq.getGreaterTerm() + " >= " + ((Info)_Ilist.get(i))._ineq.getLesserTerm() + ") ");
+                    errorMessage.append(" ("
+                            + ((Info) _Ilist.get(i))._ineq.getGreaterTerm()
+                            + " >= "
+                            + ((Info) _Ilist.get(i))._ineq.getLesserTerm()
+                            + ") ");
                 }
-                throw new IllegalActionException("Cannot resolve types. Unsatisfied constraints: " + errorMessage);
+                throw new IllegalActionException(
+                        "Cannot resolve types. Unsatisfied constraints: "
+                                + errorMessage);
             }
             loopCnt++;
         }

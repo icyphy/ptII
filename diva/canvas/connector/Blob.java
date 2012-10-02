@@ -248,41 +248,52 @@ public class Blob implements ConnectorEnd {
         case BLOB_CIRCLE_DIAMOND:
             Path2D shape = new Path2D.Float();
             shape.moveTo(_originX, _originY);
-            shape.curveTo(_originX, _originY - 1.3*_unit,
-                    _originX + 2*_unit, _originY - 1.3*_unit,
-                    _originX + 2*_unit, _originY);
-            shape.lineTo(_originX + 2*_unit + 1.5*_unit, _originY - _unit);
-            shape.lineTo(_originX + 2*_unit + 3.0*_unit, _originY);
-            shape.lineTo(_originX + 2*_unit + 1.5*_unit, _originY + _unit);
-            shape.lineTo(_originX + 2*_unit, _originY);
-            shape.curveTo(_originX + 2*_unit, _originY + 1.3*_unit,
-                    _originX, _originY + 1.3*_unit,
-                    _originX, _originY);
+            shape.curveTo(_originX, _originY - 1.3 * _unit, _originX + 2
+                    * _unit, _originY - 1.3 * _unit, _originX + 2 * _unit,
+                    _originY);
+            shape.lineTo(_originX + 2 * _unit + 1.5 * _unit, _originY - _unit);
+            shape.lineTo(_originX + 2 * _unit + 3.0 * _unit, _originY);
+            shape.lineTo(_originX + 2 * _unit + 1.5 * _unit, _originY + _unit);
+            shape.lineTo(_originX + 2 * _unit, _originY);
+            shape.curveTo(_originX + 2 * _unit, _originY + 1.3 * _unit,
+                    _originX, _originY + 1.3 * _unit, _originX, _originY);
             _shape = shape;
             break;
         case STAR:
             Path2D star = new Path2D.Float();
             double insideRadius = _unit;
-            double outsideRadius = 2*_unit;
+            double outsideRadius = 2 * _unit;
             double cosPIover8 = 0.9238795325113;
             double sinPIover8 = 0.3826834323651;
             double sqrt2over2 = 0.7071067811865;
             star.moveTo(_originX, _originY);
-            star.lineTo(_originX + outsideRadius - cosPIover8*insideRadius, _originY - sinPIover8*insideRadius);
-            star.lineTo(_originX + outsideRadius - sqrt2over2*outsideRadius, _originY - sqrt2over2*outsideRadius);
-            star.lineTo(_originX + outsideRadius - sinPIover8*insideRadius, _originY - cosPIover8*insideRadius);
+            star.lineTo(_originX + outsideRadius - cosPIover8 * insideRadius,
+                    _originY - sinPIover8 * insideRadius);
+            star.lineTo(_originX + outsideRadius - sqrt2over2 * outsideRadius,
+                    _originY - sqrt2over2 * outsideRadius);
+            star.lineTo(_originX + outsideRadius - sinPIover8 * insideRadius,
+                    _originY - cosPIover8 * insideRadius);
             star.lineTo(_originX + outsideRadius, _originY - outsideRadius);
-            star.lineTo(_originX + outsideRadius + sinPIover8*insideRadius, _originY - cosPIover8*insideRadius);
-            star.lineTo(_originX + outsideRadius + sqrt2over2*outsideRadius, _originY - sqrt2over2*outsideRadius);
-            star.lineTo(_originX + outsideRadius + cosPIover8*insideRadius, _originY - sinPIover8*insideRadius);
-            star.lineTo(_originX + 2*outsideRadius, _originY);
-            star.lineTo(_originX + outsideRadius + cosPIover8*insideRadius, _originY + sinPIover8*insideRadius);
-            star.lineTo(_originX + outsideRadius + sqrt2over2*outsideRadius, _originY + sqrt2over2*outsideRadius);
-            star.lineTo(_originX + outsideRadius + sinPIover8*insideRadius, _originY + cosPIover8*insideRadius);
+            star.lineTo(_originX + outsideRadius + sinPIover8 * insideRadius,
+                    _originY - cosPIover8 * insideRadius);
+            star.lineTo(_originX + outsideRadius + sqrt2over2 * outsideRadius,
+                    _originY - sqrt2over2 * outsideRadius);
+            star.lineTo(_originX + outsideRadius + cosPIover8 * insideRadius,
+                    _originY - sinPIover8 * insideRadius);
+            star.lineTo(_originX + 2 * outsideRadius, _originY);
+            star.lineTo(_originX + outsideRadius + cosPIover8 * insideRadius,
+                    _originY + sinPIover8 * insideRadius);
+            star.lineTo(_originX + outsideRadius + sqrt2over2 * outsideRadius,
+                    _originY + sqrt2over2 * outsideRadius);
+            star.lineTo(_originX + outsideRadius + sinPIover8 * insideRadius,
+                    _originY + cosPIover8 * insideRadius);
             star.lineTo(_originX + outsideRadius, _originY + outsideRadius);
-            star.lineTo(_originX + outsideRadius - sinPIover8*insideRadius, _originY + cosPIover8*insideRadius);
-            star.lineTo(_originX + outsideRadius - sqrt2over2*outsideRadius, _originY + sqrt2over2*outsideRadius);
-            star.lineTo(_originX + outsideRadius - cosPIover8*insideRadius, _originY + sinPIover8*insideRadius);
+            star.lineTo(_originX + outsideRadius - sinPIover8 * insideRadius,
+                    _originY + cosPIover8 * insideRadius);
+            star.lineTo(_originX + outsideRadius - sqrt2over2 * outsideRadius,
+                    _originY + sqrt2over2 * outsideRadius);
+            star.lineTo(_originX + outsideRadius - cosPIover8 * insideRadius,
+                    _originY + sinPIover8 * insideRadius);
             star.lineTo(_originX, _originY);
             _shape = star;
             break;

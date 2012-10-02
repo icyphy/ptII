@@ -117,8 +117,7 @@ public class SuperdenseDependency extends BooleanDependency {
         if (object == this) {
             return true;
         }
-        if ((object == null)
-                || (object.getClass() != getClass())) {
+        if ((object == null) || (object.getClass() != getClass())) {
             return false;
         } else {
             if (((SuperdenseDependency) object)._time == Double.POSITIVE_INFINITY

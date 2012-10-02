@@ -88,11 +88,8 @@ public class AutoCGJavaKnownFailedTests extends AutoCGKnownFailedTests {
     @Test
     @Parameters(method = "modelValues")
     public void runModelInline(String fullPath) throws Throwable {
-        runModel(fullPath, "java",
-                false /* generateInSubdirectory */,
-                true /* inline */,
-                2500 /* maximumLinesPerBlock */,
-                false /*variablesAsArrays*/);
+        runModel(fullPath, "java", false /* generateInSubdirectory */,
+                true /* inline */, 2500 /* maximumLinesPerBlock */, false /*variablesAsArrays*/);
     }
 
     /**
@@ -107,11 +104,8 @@ public class AutoCGJavaKnownFailedTests extends AutoCGKnownFailedTests {
     @Test
     @Parameters(method = "modelValues")
     public void runModelLarge(String fullPath) throws Throwable {
-        runModel(fullPath, "java",
-                true /* generateInSubdirectory */,
-                false /* inline */,
-                1 /* maximumLinesPerBlock */,
-                true /*variablesAsArrays*/);
+        runModel(fullPath, "java", true /* generateInSubdirectory */,
+                false /* inline */, 1 /* maximumLinesPerBlock */, true /*variablesAsArrays*/);
     }
 
     /**
@@ -126,10 +120,7 @@ public class AutoCGJavaKnownFailedTests extends AutoCGKnownFailedTests {
     @Test
     @Parameters(method = "modelValues")
     public void runModelNoInline(String fullPath) throws Throwable {
-        runModel(fullPath, "java",
-                false /* generateInSubdirectory */,
-                false /* inline */,
-                2500 /* maximumLinesPerBlock */,
-                false /*variablesAsArrays*/);
+        runModel(fullPath, "java", false /* generateInSubdirectory */,
+                false /* inline */, 2500 /* maximumLinesPerBlock */, false /*variablesAsArrays*/);
     }
 }

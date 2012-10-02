@@ -94,13 +94,13 @@ public class LayoutConfiguration extends Attribute {
         minimizeBends.setExpression(Boolean.toString(DEF_MINIMIZE_BENDS));
         minimizeBends.setVisibility(Settable.EXPERT);
 
-//        optimizeRelations = new Parameter(this, "optimizeRelations");
-//        optimizeRelations.setDisplayName("Optimize relations");
-//        optimizeRelations.setTypeEquals(BaseType.BOOLEAN);
-//        optimizeRelations.setExpression(Boolean.toString(DEF_OPTIMIZE_RELATIONS));
+        //        optimizeRelations = new Parameter(this, "optimizeRelations");
+        //        optimizeRelations.setDisplayName("Optimize relations");
+        //        optimizeRelations.setTypeEquals(BaseType.BOOLEAN);
+        //        optimizeRelations.setExpression(Boolean.toString(DEF_OPTIMIZE_RELATIONS));
         // DEBUG Start
         // This should be commented back in once the feature is finished.
-//        optimizeRelations.setVisibility(Settable.EXPERT);
+        //        optimizeRelations.setVisibility(Settable.EXPERT);
         // DEBUG End
 
         spacing = new DoubleRangeParameter(this, "spacing");
@@ -118,7 +118,8 @@ public class LayoutConfiguration extends Attribute {
         logAspectRatio.setDisplayName("Aspect ratio");
         logAspectRatio.min.setExpression("-1.0");
         logAspectRatio.max.setExpression("1.0");
-        logAspectRatio.setExpression(Double.toString(Math.log10(DEF_ASPECT_RATIO)));
+        logAspectRatio.setExpression(Double.toString(Math
+                .log10(DEF_ASPECT_RATIO)));
         logAspectRatio.minLabel.setExpression("Narrow");
         logAspectRatio.maxLabel.setExpression("Wide");
         logAspectRatio.min.setVisibility(Settable.NONE);
@@ -127,7 +128,8 @@ public class LayoutConfiguration extends Attribute {
         logAspectRatio.maxLabel.setVisibility(Settable.NONE);
         logAspectRatio.precision.setVisibility(Settable.NONE);
 
-        interactionMode = new ChoiceParameter(this, "interactionMode", InteractionMode.class);
+        interactionMode = new ChoiceParameter(this, "interactionMode",
+                InteractionMode.class);
         interactionMode.setDisplayName("Interaction mode");
         interactionMode.setExpression(DEF_INTERACTION_MODE.toString());
 
@@ -147,8 +149,8 @@ public class LayoutConfiguration extends Attribute {
 
     public Parameter minimizeBends;
 
-//    /** Whether to try to optimize relation vertices or not. */
-//    public Parameter optimizeRelations;
+    //    /** Whether to try to optimize relation vertices or not. */
+    //    public Parameter optimizeRelations;
 
     /** The overall spacing between graph elements. */
     public DoubleRangeParameter spacing;
@@ -162,7 +164,6 @@ public class LayoutConfiguration extends Attribute {
     /** Customized help file to be displayed by the layout configuration dialog. */
     public StringParameter helpURL;
 
-
     /** Default value for useOldAlgorithm. */
     public static final boolean DEF_OLD_ALGORITHM = false;
 
@@ -172,8 +173,8 @@ public class LayoutConfiguration extends Attribute {
     /** Default value for minimizeBends. */
     public static final boolean DEF_MINIMIZE_BENDS = true;
 
-//    /** Default value for optimizeRelations. */
-//    public static final boolean DEF_OPTIMIZE_RELATIONS = true;
+    //    /** Default value for optimizeRelations. */
+    //    public static final boolean DEF_OPTIMIZE_RELATIONS = true;
 
     /** Default value for spacing. */
     public static final double DEF_SPACING = 10.0;

@@ -496,7 +496,7 @@ public class JarSigner {
                     && !(manifestFileName.equalsIgnoreCase(metaEntry.getName())
                             || signatureFileName.equalsIgnoreCase(metaEntry
                                     .getName()) || signatureBlockName
-                            .equalsIgnoreCase(metaEntry.getName()))) {
+                                .equalsIgnoreCase(metaEntry.getName()))) {
                 _writeJarEntry(metaEntry, jarFile, jos);
             }
         }
@@ -697,8 +697,8 @@ public class JarSigner {
                             contentSignerClass, String[].class, ZipFile.class);
 
                     block = constructor.newInstance(sfg.getJDKSignatureFile(), /* explicit argument on the constructor */
-                    privateKey, certChain, externalSF, null, null, null, null,
-                            zipFile);
+                            privateKey, certChain, externalSF, null, null,
+                            null, null, zipFile);
 
                 } catch (NoSuchMethodException ex) {
                     // Java 1.6
@@ -719,9 +719,9 @@ public class JarSigner {
                             contentSignerClass, String[].class, ZipFile.class);
 
                     block = constructor.newInstance(sfg.getJDKSignatureFile(), /* explicit argument on the constructor */
-                    privateKey,
-                    /*signatureAlgorithm*/null, certChain, externalSF, null,
-                            null, null, null, zipFile);
+                            privateKey,
+                            /*signatureAlgorithm*/null, certChain, externalSF,
+                            null, null, null, null, zipFile);
                 }
                 getMetaNameMethod = _findMethod(blockClass, GETMETANAME_METHOD);
                 writeMethod = _findMethod(blockClass, WRITE_METHOD,

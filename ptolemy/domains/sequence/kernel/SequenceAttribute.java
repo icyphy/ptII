@@ -127,9 +127,11 @@ public class SequenceAttribute extends Parameter implements Comparable {
                 // FIXME:  This is bad coding style, because SequenceAtribute should not know about
                 // its subclass SequenceAttribute - refactor?
                 if (object instanceof ProcessAttribute) {
-                    sequenceNumber2 = ((ProcessAttribute) object).getSequenceNumber();
+                    sequenceNumber2 = ((ProcessAttribute) object)
+                            .getSequenceNumber();
                 } else {
-                    sequenceNumber2 = ((SequenceAttribute) object).getSequenceNumber();
+                    sequenceNumber2 = ((SequenceAttribute) object)
+                            .getSequenceNumber();
                 }
 
                 if (sequenceNumber1 < sequenceNumber2) {
@@ -322,7 +324,7 @@ public class SequenceAttribute extends Parameter implements Comparable {
             if (workspace != null) {
                 hashCode = 31 * hashCode + workspace.hashCode();
             }
-   } catch (IllegalActionException ex) {
+        } catch (IllegalActionException ex) {
             return hashCode;
         }
         return hashCode;

@@ -306,12 +306,13 @@ public class NameIcon extends EditorIcon {
         // Quantize the height so that snap to grid still works.
         // Round up so as to never overlap the text.
         double defaultResolution = SnapConstraint.getDefaultResolution();
-        height = (Math.floor(height / defaultResolution)+1) * defaultResolution;
+        height = (Math.floor(height / defaultResolution) + 1)
+                * defaultResolution;
         // Quantize the width to an even multiple of the resolution.
         // The icon is centered on snap to grid, so this ensures that both
         // ends align with the grid.
-        width = (Math.floor((width + defaultResolution) / (2.0* defaultResolution))
-                * 2.0 * defaultResolution);
+        width = (Math.floor((width + defaultResolution)
+                / (2.0 * defaultResolution)) * 2.0 * defaultResolution);
 
         return new Point2D.Double(width, height);
     }

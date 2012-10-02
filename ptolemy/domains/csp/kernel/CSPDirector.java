@@ -121,7 +121,8 @@ public class CSPDirector extends CompositeProcessDirector {
      *  @exception NameDuplicationException If construction of Time objects fails.
      *  @exception IllegalActionException If construction of Time objects fails.
      */
-    public CSPDirector() throws IllegalActionException, NameDuplicationException {
+    public CSPDirector() throws IllegalActionException,
+            NameDuplicationException {
         super();
     }
 
@@ -132,7 +133,8 @@ public class CSPDirector extends CompositeProcessDirector {
      *  @exception NameDuplicationException If construction of Time objects fails.
      *  @exception IllegalActionException If construction of Time objects fails.
      */
-    public CSPDirector(Workspace workspace) throws IllegalActionException, NameDuplicationException {
+    public CSPDirector(Workspace workspace) throws IllegalActionException,
+            NameDuplicationException {
         super(workspace);
     }
 

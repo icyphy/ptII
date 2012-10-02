@@ -58,9 +58,8 @@ public class PtidesBasicPreemptiveDirector extends PtidesBasicDirector {
      *  @exception IllegalActionException If the superclass throws it.
      *  @exception NameDuplicationException If the superclass throws it.
      */
-    public PtidesBasicPreemptiveDirector(CompositeEntity container,
-            String name) throws IllegalActionException,
-            NameDuplicationException {
+    public PtidesBasicPreemptiveDirector(CompositeEntity container, String name)
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
 

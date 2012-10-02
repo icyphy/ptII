@@ -440,8 +440,7 @@ public class ActorRecursion extends TypedCompositeActor {
             // Scan the contained receivers of the port to find
             // out channel index.
             int channelIndex = 0;
-            foundChannelIndex:
-            for (int m = 0; m < portReceivers.length; m++) {
+            foundChannelIndex: for (int m = 0; m < portReceivers.length; m++) {
                 for (int n = 0; n < portReceivers[m].length; n++) {
                     if (receiver == portReceivers[m][n]) {
                         channelIndex = m;

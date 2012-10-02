@@ -91,36 +91,31 @@ public class MultiCompositeActor extends TypedCompositeActor {
      *  @param refinement The refinement in which to create ports.
      *  @param portsToMirror The ports to mirror in the refinement.
      */
-    public static void mirrorContainerPortsInRefinement(Refinement refinement, Set<Port> portsToMirror)
-        throws IllegalActionException, NameDuplicationException {
+    public static void mirrorContainerPortsInRefinement(Refinement refinement,
+            Set<Port> portsToMirror) throws IllegalActionException,
+            NameDuplicationException {
 
         for (Port port : portsToMirror) {
             try {
                 refinement.setMirrorDisable(true);
                 Port newPort = refinement.newPort(port.getName());
-                if (newPort instanceof RefinementPort
-                        && port instanceof IOPort) {
+                if (newPort instanceof RefinementPort && port instanceof IOPort) {
                     try {
-                        ((RefinementPort) newPort)
-                                .setMirrorDisable(true);
+                        ((RefinementPort) newPort).setMirrorDisable(true);
 
                         if (((IOPort) port).isInput()) {
-                            ((RefinementPort) newPort)
-                                    .setInput(true);
+                            ((RefinementPort) newPort).setInput(true);
                         }
 
                         if (((IOPort) port).isOutput()) {
-                            ((RefinementPort) newPort)
-                                    .setOutput(true);
+                            ((RefinementPort) newPort).setOutput(true);
                         }
 
                         if (((IOPort) port).isMultiport()) {
-                            ((RefinementPort) newPort)
-                                    .setMultiport(true);
+                            ((RefinementPort) newPort).setMultiport(true);
                         }
                     } finally {
-                        ((RefinementPort) newPort)
-                                .setMirrorDisable(false);
+                        ((RefinementPort) newPort).setMirrorDisable(false);
                     }
                 }
             } finally {

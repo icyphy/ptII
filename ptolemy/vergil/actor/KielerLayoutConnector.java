@@ -107,7 +107,8 @@ public class KielerLayoutConnector extends LinkManhattanConnector {
                         // thread-safe, but should work since no more than one MomlChangeRequest
                         // is executed at a given time, and those are the only things that
                         // could trigger a problem with this code.
-                        considerBendPoints = _layoutInProgress || layoutHintItem.revalidate();
+                        considerBendPoints = _layoutInProgress
+                                || layoutHintItem.revalidate();
                         if (considerBendPoints) {
                             bendPointList = layoutHintItem.getBendPointList();
                         } else {

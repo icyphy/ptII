@@ -245,7 +245,7 @@ public class ConstPropagationAbsIntMathFunctions extends ConceptFunction {
                                 .getRepresentative()) || _negativeRepresentative
                         .equals(((FlatScalarTokenInfiniteConcept) inputConcept)
                                 .getRepresentative())) && ((FlatScalarTokenInfiniteConcept) inputConcept)
-                .getTokenValue() != null))) {
+                    .getTokenValue() != null))) {
             throw new IllegalActionException(inputConcept,
                     "Invalid argument: "
                             + "the FlatScalarTokenInfiniteConcept "

@@ -642,8 +642,7 @@ public class TypedCompositeActor extends CompositeActor implements TypedActor {
                     .iterator();
 
             while (destinationPorts.hasNext()) {
-                TypedIOPort destinationPort = (TypedIOPort) destinationPorts
-                        .next();
+                TypedIOPort destinationPort = destinationPorts.next();
                 isUndeclared = destinationPort.getTypeTerm().isSettable();
 
                 if (!isUndeclared) {
@@ -769,7 +768,7 @@ public class TypedCompositeActor extends CompositeActor implements TypedActor {
                     .portList().iterator();
 
             while (ports.hasNext()) {
-                TypedIOPort sourcePort = (TypedIOPort) ports.next();
+                TypedIOPort sourcePort = ports.next();
                 Receiver[][] receivers = sourcePort.getRemoteReceivers();
 
                 List destinationPorts = _receiverToPort(receivers);

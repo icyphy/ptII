@@ -109,7 +109,6 @@ public class TransitionRefinementPort extends RefinementPort {
         super.link(relation);
     }
 
-
     /** Override the base class so that if the port is being removed
      *  from the current container, then it is also removed from the
      *  controller and from each of the refinements.

@@ -148,6 +148,7 @@ public class PtFileChooser extends Container {
             return _jFileChooser.getCurrentDirectory();
         }
     }
+
     /** Return the selected file as an absolute File (a File that is not relative).
      *  @return the selected file.
      *  @see #setSelectedFile(File)
@@ -187,13 +188,14 @@ public class PtFileChooser extends Container {
             // FIXME: we should support users under applets opening files
             // on the server.
             String currentWorkingDirectory = StringUtilities
-                .getProperty("user.dir");
+                    .getProperty("user.dir");
 
             if (currentWorkingDirectory != null) {
                 if (_useFileDialog) {
                     _fileDialog.setDirectory(currentWorkingDirectory);
                 } else {
-                    _jFileChooser.setCurrentDirectory(new File(currentWorkingDirectory));
+                    _jFileChooser.setCurrentDirectory(new File(
+                            currentWorkingDirectory));
                 }
             }
         }
@@ -225,9 +227,10 @@ public class PtFileChooser extends Container {
                 if (_mode != 0) {
                     if (!_printedDirectoryWarning) {
                         _printedDirectoryWarning = true;
-                        System.out.println("Warning: The PtFileChooser was instantiated with "
-                            + "a mode other than 0, but setFileSelectionMode(DIRECTORIES_ONLY) "
-                            + "was called.  This is likely to not work.");
+                        System.out
+                                .println("Warning: The PtFileChooser was instantiated with "
+                                        + "a mode other than 0, but setFileSelectionMode(DIRECTORIES_ONLY) "
+                                        + "was called.  This is likely to not work.");
                     }
                 }
                 // Mac Specific: allow the user to select a directory.
@@ -237,7 +240,8 @@ public class PtFileChooser extends Container {
                 // https://developer.apple.com/library/mac/#documentation/Java/Reference/Java_PropertiesRef/Articles/JavaSystemProperties.html
                 System.setProperty("apple.awt.fileDialogForDirectories", "true");
             } else {
-                System.setProperty("apple.awt.fileDialogForDirectories", "false");
+                System.setProperty("apple.awt.fileDialogForDirectories",
+                        "false");
             }
         } else {
             _jFileChooser.setFileSelectionMode(mode);

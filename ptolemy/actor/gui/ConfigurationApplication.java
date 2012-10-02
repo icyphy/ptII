@@ -348,15 +348,15 @@ public class ConfigurationApplication implements ExecutionListener {
      *  @exception NameDuplicationException If the model cannot be closed.
      *  @see #openModel(String)
      */
-    public static void closeModelWithoutSavingOrExiting(
-            CompositeEntity model) throws IllegalActionException,
-            NameDuplicationException {
+    public static void closeModelWithoutSavingOrExiting(CompositeEntity model)
+            throws IllegalActionException, NameDuplicationException {
         Effigy effigy = Configuration.findEffigy(model.toplevel());
         // Avoid being prompted for save.
         effigy.setModified(false);
 
         // Avoid calling System.exit().
-        String previousPropertyValue = StringUtilities.getProperty("ptolemy.ptII.doNotExit");
+        String previousPropertyValue = StringUtilities
+                .getProperty("ptolemy.ptII.doNotExit");
         System.setProperty("ptolemy.ptII.doNotExit", "true");
         try {
             // FIXME: are all these necessary?
@@ -510,14 +510,13 @@ public class ConfigurationApplication implements ExecutionListener {
             throws Throwable {
         CompositeEntity model = openModelOrEntity(modelFileName);
         if (!(model instanceof TypedCompositeActor)) {
-            System.out.println("While trying to open \""
-                               + modelFileName
-                               + "\", openModelOrEntity() returned a "
-                               + (model == null ? "null" : model.getClass().getName())
+            System.out.println("While trying to open \"" + modelFileName
+                    + "\", openModelOrEntity() returned a "
+                    + (model == null ? "null" : model.getClass().getName())
                     + ".  This can happen when opening a HTML or text file. ");
             return null;
         } else {
-            return (TypedCompositeActor)model;
+            return (TypedCompositeActor) model;
         }
     }
 
@@ -1241,7 +1240,8 @@ public class ConfigurationApplication implements ExecutionListener {
                     // defer to it to read the model.  Otherwise,
                     // assume the file is an XML file.
                     if (_configuration != null) {
-                        ModelDirectory directory = (ModelDirectory) _configuration.getDirectory();
+                        ModelDirectory directory = _configuration
+                                .getDirectory();
                         if (directory == null) {
                             throw new InternalErrorException(
                                     "No model directory!");
@@ -1363,7 +1363,7 @@ public class ConfigurationApplication implements ExecutionListener {
             String value = (String) values.next();
 
             boolean match = false;
-            ModelDirectory directory = (ModelDirectory) _configuration.getDirectory();
+            ModelDirectory directory = _configuration.getDirectory();
 
             if (directory == null) {
                 throw new InternalErrorException("No model directory!");
@@ -1464,7 +1464,7 @@ public class ConfigurationApplication implements ExecutionListener {
             System.out.println("_printPDF: no configuration?");
             return;
         }
-        ModelDirectory directory = (ModelDirectory) _configuration.getDirectory();
+        ModelDirectory directory = _configuration.getDirectory();
         Iterator effigies = directory.entityList().iterator();
 
         while (effigies.hasNext()) {

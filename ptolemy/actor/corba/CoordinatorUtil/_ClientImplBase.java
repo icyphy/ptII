@@ -54,9 +54,9 @@ public abstract class _ClientImplBase extends org.omg.CORBA.portable.ObjectImpl
             break;
         }
 
-            /* this method is intended to be called remotely to start the application
-             * for the consumer.
-             */
+        /* this method is intended to be called remotely to start the application
+         * for the consumer.
+         */
         case 1: // CoordinatorUtil/Client/start
         {
             this.start();
@@ -64,9 +64,9 @@ public abstract class _ClientImplBase extends org.omg.CORBA.portable.ObjectImpl
             break;
         }
 
-            /* this method is intended to be called remotely to stop the application
-             * for the consumer.
-             */
+        /* this method is intended to be called remotely to stop the application
+         * for the consumer.
+         */
         case 2: // CoordinatorUtil/Client/stop
         {
             this.stop();

@@ -59,9 +59,8 @@ public class AlphabetizeOperation {
      */
     public static void main(String[] args) {
         try {
-            File directory = new File(FileUtilities.nameToURL(
-                            args[0],
-                            null, null).getFile());
+            File directory = new File(FileUtilities.nameToURL(args[0], null,
+                    null).getFile());
 
             // Iterate through every file in type/polymorphic/
             for (File file : directory.listFiles()) {

@@ -28,7 +28,6 @@
 package ptolemy.actor.lib;
 
 import ptolemy.actor.TypedIOPort;
-import ptolemy.data.BooleanToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.Token;
 import ptolemy.data.type.BaseType;
@@ -111,7 +110,7 @@ public class Multiplexor extends Transformer {
 
                 // Perform the in-range test here, where a new channel value is obtained:
                 int c = _selectChannel.intValue();
-                if (c<0 || c>=input.getWidth()) {
+                if (c < 0 || c >= input.getWidth()) {
                     throw new IllegalActionException(this,
                             "Select input is out of range: " + c + ".");
                 }
@@ -126,7 +125,8 @@ public class Multiplexor extends Transformer {
                     if (input.hasToken(i)) {
                         token = input.get(i);
                     }
-                    if (_selectChannel != null && _selectChannel.intValue() == i) {
+                    if (_selectChannel != null
+                            && _selectChannel.intValue() == i) {
                         // Note that if the input is known to be absent,
                         // then the following sends null. Dataflow receivers
                         // interpret this as sending nothing (nothing is queued).

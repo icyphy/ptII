@@ -66,10 +66,10 @@ public class ArrayElementTypeFunction extends MonotonicFunction {
      *  @exception IllegalActionException If the type of the argument
      *   cannot be determined.
      */
-    public Object getValue()  throws IllegalActionException {
+    public Object getValue() throws IllegalActionException {
         Type type = _typeable.getType();
         if (type instanceof ArrayType) {
-            return ((ArrayType)type).getElementType();
+            return ((ArrayType) type).getElementType();
         }
         if (type.equals(BaseType.GENERAL)) {
             return BaseType.GENERAL;

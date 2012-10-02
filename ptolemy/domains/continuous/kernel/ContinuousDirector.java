@@ -207,8 +207,7 @@ import ptolemy.kernel.util.Workspace;
  @Pt.AcceptedRating Red (hyzheng)
  */
 public class ContinuousDirector extends FixedPointDirector implements
-        ContinuousStatefulComponent,
-        ContinuousStepSizeController {
+        ContinuousStatefulComponent, ContinuousStepSizeController {
 
     /** Construct a director in the given container with the given name.
      *  The container argument must not be null, or a NullPointerException
@@ -516,8 +515,8 @@ public class ContinuousDirector extends FixedPointDirector implements
                     if (timeIncrement == 1.0) {
                         _isIntermediateStep = false;
                     }
-                    localClock.setLocalTime(_iterationBeginTime.add(_currentStepSize
-                            * timeIncrement));
+                    localClock.setLocalTime(_iterationBeginTime
+                            .add(_currentStepSize * timeIncrement));
                     _index = 0;
                     if (_debugging) {
                         _debug("-- Setting current time for the next ODE solver round: "
@@ -709,8 +708,7 @@ public class ContinuousDirector extends FixedPointDirector implements
                 // that initialization could create discontinuities.
                 fireContainerAt(currentTime, 1);
             }
-            if (!stopTime.isInfinite()
-                    && stopTime.compareTo(currentTime) >= 0) {
+            if (!stopTime.isInfinite() && stopTime.compareTo(currentTime) >= 0) {
                 fireContainerAt(stopTime);
             }
         }
@@ -964,8 +962,8 @@ public class ContinuousDirector extends FixedPointDirector implements
         _index = _iterationBeginIndex;
 
         if (_debugging) {
-            _debug("-- Roll back time to: " + _iterationBeginTime + " and index "
-                    + _index);
+            _debug("-- Roll back time to: " + _iterationBeginTime
+                    + " and index " + _index);
         }
 
         Iterator rollbacks = _statefulComponents().iterator();
@@ -1731,7 +1729,8 @@ public class ContinuousDirector extends FixedPointDirector implements
         _currentStepSize = enclosingDirector._currentStepSize;
         // Do not use setCommittedTime on the following line because we
         // are probably speculatively executing into the future.
-        localClock.setLocalTime(localClock.getLocalTimeForCurrentEnvironmentTime());
+        localClock.setLocalTime(localClock
+                .getLocalTimeForCurrentEnvironmentTime());
 
         if (_debugging) {
             _debug("-- Setting current time to " + currentTime
@@ -1739,7 +1738,8 @@ public class ContinuousDirector extends FixedPointDirector implements
                     + enclosingDirector.getModelTime());
         }
 
-        _iterationBeginTime = localClock.getLocalTimeForEnvironmentTime(enclosingDirector._iterationBeginTime);
+        _iterationBeginTime = localClock
+                .getLocalTimeForEnvironmentTime(enclosingDirector._iterationBeginTime);
 
         // FIXME: Probably shouldn't make the index match that of the environment!
         // There may have been suspensions happening. So what should the index be?
@@ -1797,7 +1797,7 @@ public class ContinuousDirector extends FixedPointDirector implements
         // Note that time has already been automatically adjusted with the
         // accumulated suspend time.
         Time outTime = localClock.getLocalTimeForCurrentEnvironmentTime();
-                executiveDirector.getModelTime();
+        executiveDirector.getModelTime();
 
         int localTimeExceedsOutsideTime = currentTime.compareTo(outTime);
         if (localTimeExceedsOutsideTime > 0) {
@@ -1899,8 +1899,9 @@ public class ContinuousDirector extends FixedPointDirector implements
             // Adjust the step size to
             // make sure the time does not exceed the next iteration
             // time of the environment during this next integration step.
-            Time environmentNextIterationTime = localClock.getLocalTimeForEnvironmentTime(executiveDirector
-                    .getModelNextIterationTime());
+            Time environmentNextIterationTime = localClock
+                    .getLocalTimeForEnvironmentTime(executiveDirector
+                            .getModelNextIterationTime());
 
             Time localTargetTime = _iterationBeginTime.add(_currentStepSize);
             if (environmentNextIterationTime.compareTo(localTargetTime) < 0) {
@@ -1929,8 +1930,7 @@ public class ContinuousDirector extends FixedPointDirector implements
             SuperdenseTime nextBreakpoint = (SuperdenseTime) _breakpoints
                     .first();
             Time breakpointTime = nextBreakpoint.timestamp();
-            localTimeExceedsOutsideTime = breakpointTime
-                    .compareTo(currentTime);
+            localTimeExceedsOutsideTime = breakpointTime.compareTo(currentTime);
             if (localTimeExceedsOutsideTime < 0) {
                 throw new IllegalActionException(this,
                         "ContinuousDirector expected to be fired at time "

@@ -39,9 +39,9 @@ package ptolemy.cg.adapter.generic.program.procedural.java.adapters.ptolemy.doma
  @Pt.ProposedRating Green (cxh)
  @Pt.AcceptedRating Green (cxh)
  */
-public class ModalController extends
+public class ModalController
+        extends
         ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.domains.modal.modal.ModalController {
-
 
     /** Construct the code generator helper associated
      *  with the given modal controller.

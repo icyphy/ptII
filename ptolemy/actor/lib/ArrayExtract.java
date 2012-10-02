@@ -84,20 +84,28 @@ public class ArrayExtract extends Transformer {
         // Set parameters.
         sourcePosition = new PortParameter(this, "sourcePosition");
         sourcePosition.setExpression("0");
-        new StringAttribute(sourcePosition.getPort(), "_cardinal").setExpression("SOUTH");
-        new Parameter(sourcePosition.getPort(), "_showName").setExpression("true");
+        new StringAttribute(sourcePosition.getPort(), "_cardinal")
+                .setExpression("SOUTH");
+        new Parameter(sourcePosition.getPort(), "_showName")
+                .setExpression("true");
         extractLength = new PortParameter(this, "extractLength");
         extractLength.setExpression("1");
-        new StringAttribute(extractLength.getPort(), "_cardinal").setExpression("SOUTH");
-        new Parameter(extractLength.getPort(), "_showName").setExpression("true");
+        new StringAttribute(extractLength.getPort(), "_cardinal")
+                .setExpression("SOUTH");
+        new Parameter(extractLength.getPort(), "_showName")
+                .setExpression("true");
         destinationPosition = new PortParameter(this, "destinationPosition");
         destinationPosition.setExpression("0");
-        new StringAttribute(destinationPosition.getPort(), "_cardinal").setExpression("SOUTH");
-        new Parameter(destinationPosition.getPort(), "_showName").setExpression("true");
+        new StringAttribute(destinationPosition.getPort(), "_cardinal")
+                .setExpression("SOUTH");
+        new Parameter(destinationPosition.getPort(), "_showName")
+                .setExpression("true");
         outputArrayLength = new PortParameter(this, "outputArrayLength");
         outputArrayLength.setExpression("1");
-        new StringAttribute(outputArrayLength.getPort(), "_cardinal").setExpression("SOUTH");
-        new Parameter(outputArrayLength.getPort(), "_showName").setExpression("true");
+        new StringAttribute(outputArrayLength.getPort(), "_cardinal")
+                .setExpression("SOUTH");
+        new Parameter(outputArrayLength.getPort(), "_showName")
+                .setExpression("true");
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -184,7 +192,8 @@ public class ArrayExtract extends Transformer {
                     outputArray[i] = zero;
                 }
                 int j = sourcePositionValue;
-                for (int i = destinationPositionValue; i < destinationPositionValue + extractLengthValue; i++) {
+                for (int i = destinationPositionValue; i < destinationPositionValue
+                        + extractLengthValue; i++) {
                     outputArray[i] = inputValue.getElement(j++);
                 }
                 for (int i = destinationPositionValue + extractLengthValue; i < outputArrayLengthValue; i++) {

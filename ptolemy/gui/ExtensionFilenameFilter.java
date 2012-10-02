@@ -184,7 +184,6 @@ public class ExtensionFilenameFilter extends PtFilenameFilter {
         return false;
     }
 
-
     /**
      * Return true if this file should be shown in the directory pane,
      * false if it shouldn't.
@@ -320,7 +319,6 @@ public class ExtensionFilenameFilter extends PtFilenameFilter {
         return _fullDescription;
     }
 
-
     /**
      * Return the extension portion of the file's name.
      * @param f The file.
@@ -381,7 +379,8 @@ public class ExtensionFilenameFilter extends PtFilenameFilter {
      * @see #getDescription()
      * @see #isExtensionListInDescription()
      */
-    public void setExtensionListInDescription(boolean useExtensionListInDescription) {
+    public void setExtensionListInDescription(
+            boolean useExtensionListInDescription) {
         _useExtensionsInDescription = useExtensionListInDescription;
         _fullDescription = null;
     }

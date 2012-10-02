@@ -244,10 +244,11 @@ public class IconController extends ParameterizedNodeController {
                     NamedObj container = object.getContainer();
                     if (container != null) {
                         shadowAttribute = (ColorAttribute) (container
-                                .getAttribute("_shadowColor", ColorAttribute.class));
+                                .getAttribute("_shadowColor",
+                                        ColorAttribute.class));
                         if (shadowAttribute != null
                                 && !shadowAttribute.getExpression().trim()
-                                .equals("")) {
+                                        .equals("")) {
                             Color color = shadowAttribute.asColor();
                             // FIXME: How to set the size of the shadow?
                             ShadowRenderer animationRenderer = new ShadowRenderer(

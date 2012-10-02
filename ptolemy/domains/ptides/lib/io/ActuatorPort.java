@@ -27,7 +27,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 */
 
-
 package ptolemy.domains.ptides.lib.io;
 
 import ptolemy.data.BooleanToken;
@@ -37,7 +36,6 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
-
 
 /**
  *  This port provides a specialized TypedIOPort for actuators
@@ -57,7 +55,8 @@ public class ActuatorPort extends PtidesPort {
      * @exception IllegalActionException If parameters cannot be set.
      * @exception NameDuplicationException If name already exists.
      */
-    public ActuatorPort(CompositeEntity container, String name) throws IllegalActionException, NameDuplicationException {
+    public ActuatorPort(CompositeEntity container, String name)
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         this.setOutput(true);
@@ -86,13 +85,12 @@ public class ActuatorPort extends PtidesPort {
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == actuateAtEventTimestamp) {
-            _actuateAtEventTimestamp = ((BooleanToken) actuateAtEventTimestamp.getToken())
-                    .booleanValue();
+            _actuateAtEventTimestamp = ((BooleanToken) actuateAtEventTimestamp
+                    .getToken()).booleanValue();
         } else {
             super.attributeChanged(attribute);
         }
     }
-
 
     private boolean _actuateAtEventTimestamp;
 

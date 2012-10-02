@@ -1051,8 +1051,7 @@ public class PtalonScopeChecker extends antlr.TreeParser implements
         info.setActorParameter(paramValue);
 
         {
-            _loop57:
-            do {
+            _loop57: do {
                 if (_t == null) {
                     _t = ASTNULL;
                 }
@@ -1155,8 +1154,7 @@ public class PtalonScopeChecker extends antlr.TreeParser implements
             }
         }
         {
-            _loop53:
-            do {
+            _loop53: do {
                 if (_t == null) {
                     _t = ASTNULL;
                 }
@@ -1552,8 +1550,7 @@ public class PtalonScopeChecker extends antlr.TreeParser implements
         info.setCurrentBranch(true);
 
         {
-            _loop78:
-            do {
+            _loop78: do {
                 if (_t == null) {
                     _t = ASTNULL;
                 }
@@ -1614,8 +1611,7 @@ public class PtalonScopeChecker extends antlr.TreeParser implements
         info.setCurrentBranch(false);
 
         {
-            _loop81:
-            do {
+            _loop81: do {
                 if (_t == null) {
                     _t = ASTNULL;
                 }
@@ -1754,8 +1750,7 @@ public class PtalonScopeChecker extends antlr.TreeParser implements
         info.pushForStatement(a.getText(), b.getText(), c.getText());
 
         {
-            _loop88:
-            do {
+            _loop88: do {
                 if (_t == null) {
                     _t = ASTNULL;
                 }
@@ -1858,7 +1853,7 @@ public class PtalonScopeChecker extends antlr.TreeParser implements
             switch (_t.getType()) {
             case PLUS: {
                 PtalonAST tmp80_AST = null;
-                tmp80_AST = (PtalonAST) astFactory.create((PtalonAST) _t);
+                tmp80_AST = (PtalonAST) astFactory.create(_t);
                 astFactory.addASTChild(currentAST, tmp80_AST);
                 match(_t, PLUS);
                 _t = _t.getNextSibling();
@@ -1895,8 +1890,7 @@ public class PtalonScopeChecker extends antlr.TreeParser implements
             }
         }
         {
-            _loop94:
-            do {
+            _loop94: do {
                 if (_t == null) {
                     _t = ASTNULL;
                 }
@@ -1980,7 +1974,7 @@ public class PtalonScopeChecker extends antlr.TreeParser implements
             switch (_t.getType()) {
             case DANGLING_PORTS_OKAY: {
                 PtalonAST tmp81_AST = null;
-                tmp81_AST = (PtalonAST) astFactory.create((PtalonAST) _t);
+                tmp81_AST = (PtalonAST) astFactory.create(_t);
                 astFactory.addASTChild(currentAST, tmp81_AST);
                 match(_t, DANGLING_PORTS_OKAY);
                 _t = _t.getNextSibling();
@@ -2022,7 +2016,7 @@ public class PtalonScopeChecker extends antlr.TreeParser implements
             switch (_t.getType()) {
             case ATTACH_DANGLING_PORTS: {
                 PtalonAST tmp82_AST = null;
-                tmp82_AST = (PtalonAST) astFactory.create((PtalonAST) _t);
+                tmp82_AST = (PtalonAST) astFactory.create(_t);
                 astFactory.addASTChild(currentAST, tmp82_AST);
                 match(_t, ATTACH_DANGLING_PORTS);
                 _t = _t.getNextSibling();
@@ -2060,8 +2054,7 @@ public class PtalonScopeChecker extends antlr.TreeParser implements
             }
         }
         {
-            _loop100:
-            do {
+            _loop100: do {
                 if (_t == null) {
                     _t = ASTNULL;
                 }

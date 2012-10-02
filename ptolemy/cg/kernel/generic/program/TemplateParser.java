@@ -44,6 +44,7 @@ import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.parameters.PortParameter;
 import ptolemy.cg.adapter.generic.adapters.ptolemy.actor.Director;
 import ptolemy.cg.kernel.generic.CGException;
+import ptolemy.cg.kernel.generic.CodeGeneratorAdapter;
 import ptolemy.cg.kernel.generic.GenericCodeGenerator;
 import ptolemy.cg.kernel.generic.ParseTreeCodeGenerator;
 import ptolemy.cg.kernel.generic.PortCodeGenerator;
@@ -286,7 +287,7 @@ public class TemplateParser {
         // treat it as output port and this is not correct.
         // FIXME: what about offset?
         if (sink.port.getContainer() instanceof ModalController) {
-            sinkRef = NamedProgramCodeGeneratorAdapter.generateName(sink.port);
+            sinkRef = CodeGeneratorAdapter.generateName(sink.port);
             if (sink.port.isMultiport()) {
                 sinkRef = sinkRef + "[" + sink.channelNumber + "]";
             }
@@ -1014,7 +1015,6 @@ public class TemplateParser {
                             + "Initial String was:\n:" + initialFunctionString);
         }
 
-
         String typeOrToken = functionString.substring(0, commaIndex).trim();
         String functionName = functionString.substring(commaIndex + 2,
                 openFuncParenIndex).trim();
@@ -1025,7 +1025,8 @@ public class TemplateParser {
         if (underbar != -1) {
             String type = typeOrToken.substring(underbar + 1,
                     typeOrToken.length());
-            if (_getCodeGenerator().isPrimitive(type) || type.equals("Complex") || type.equals("Matrix") || type.equals("Object")) {
+            if (_getCodeGenerator().isPrimitive(type) || type.equals("Complex")
+                    || type.equals("Matrix") || type.equals("Object")) {
                 addNewTypesUsed(type);
             }
         }
@@ -1349,8 +1350,8 @@ public class TemplateParser {
                         container, container.getName());
             } else {
                 return _codeGenerator.generatePtTypedCompositeActorName(
-                        container, container.getName()
-                        + "_" + processCode(parameter));
+                        container, container.getName() + "_"
+                                + processCode(parameter));
             }
 
         } else if (macro.equals("actorClass")) {
@@ -1490,21 +1491,21 @@ public class TemplateParser {
 
         ProgramCodeGeneratorAdapter adapter = null;
         CodeStream codeStream = null;
-//         if (component != null
-//                 && component instanceof ptolemy.actor.lib.jni.EmbeddedCActor) {
-//             adapter = (ProgramCodeGeneratorAdapter) codeGenerator
-//                     .getAdapter(codeGenerator.getContainer());
-//             codeStream = new CodeStream(adapter);
-//             // We have an EmbeddedCActor, read the codeBlocks from
-//             // the embeddedCCode parameter.
-//             codeStream
-//                     .setCodeBlocks(((ptolemy.actor.lib.jni.EmbeddedCActor) component).embeddedCCode
-//                             .getExpression());
-//         } else {
-            adapter = (ProgramCodeGeneratorAdapter) codeGenerator
-                    .getAdapter(component);
-            codeStream = new CodeStream(adapter);
-//         }
+        //         if (component != null
+        //                 && component instanceof ptolemy.actor.lib.jni.EmbeddedCActor) {
+        //             adapter = (ProgramCodeGeneratorAdapter) codeGenerator
+        //                     .getAdapter(codeGenerator.getContainer());
+        //             codeStream = new CodeStream(adapter);
+        //             // We have an EmbeddedCActor, read the codeBlocks from
+        //             // the embeddedCCode parameter.
+        //             codeStream
+        //                     .setCodeBlocks(((ptolemy.actor.lib.jni.EmbeddedCActor) component).embeddedCCode
+        //                             .getExpression());
+        //         } else {
+        adapter = (ProgramCodeGeneratorAdapter) codeGenerator
+                .getAdapter(component);
+        codeStream = new CodeStream(adapter);
+        //         }
 
         return codeStream;
     }

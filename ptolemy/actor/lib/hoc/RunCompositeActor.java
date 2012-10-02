@@ -113,7 +113,8 @@ public class RunCompositeActor extends LifeCycleManager {
      *  @exception IllegalActionException If the firingCountLimit cannot be
      *   initialized.
      */
-    public RunCompositeActor() throws IllegalActionException, NameDuplicationException {
+    public RunCompositeActor() throws IllegalActionException,
+            NameDuplicationException {
         super();
         _init();
     }
@@ -131,7 +132,8 @@ public class RunCompositeActor extends LifeCycleManager {
      *  @exception IllegalActionException If the firingCountLimit cannot be
      *   initialized.
      */
-    public RunCompositeActor(Workspace workspace) throws IllegalActionException, NameDuplicationException {
+    public RunCompositeActor(Workspace workspace)
+            throws IllegalActionException, NameDuplicationException {
         super(workspace);
         _init();
     }
@@ -219,7 +221,7 @@ public class RunCompositeActor extends LifeCycleManager {
      *  but declared so the subclasses can throw it.
      */
     public boolean postfire() throws IllegalActionException {
-        int limitValue = ((IntToken)firingCountLimit.getToken()).intValue();
+        int limitValue = ((IntToken) firingCountLimit.getToken()).intValue();
         if (limitValue > 0) {
             _iteration++;
             if (_iteration >= limitValue) {
@@ -325,7 +327,8 @@ public class RunCompositeActor extends LifeCycleManager {
      *  @exception IllegalActionException If the firingCountLimit cannot be
      *   initialized.
      */
-    private void _init() throws IllegalActionException, NameDuplicationException {
+    private void _init() throws IllegalActionException,
+            NameDuplicationException {
         // By default, when exporting MoML, the class name is whatever
         // the Java class is, which in this case is RunCompositeActor.
         // In derived classes, however, we usually do not want to identify

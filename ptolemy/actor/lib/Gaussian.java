@@ -75,7 +75,8 @@ public class Gaussian extends RandomSource {
         standardDeviation = new PortParameter(this, "standardDeviation");
         standardDeviation.setExpression("1.0");
         standardDeviation.setTypeEquals(BaseType.DOUBLE);
-        new Parameter(standardDeviation.getPort(), "_showName", BooleanToken.TRUE);
+        new Parameter(standardDeviation.getPort(), "_showName",
+                BooleanToken.TRUE);
     }
 
     ///////////////////////////////////////////////////////////////////

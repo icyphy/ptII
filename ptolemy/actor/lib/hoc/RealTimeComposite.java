@@ -225,9 +225,11 @@ public class RealTimeComposite extends MirrorComposite {
         try {
             // Remove the old inner RealTimeDirector(s) that is(are) in the wrong workspace.
             String realTimeDirectorName = null;
-            Iterator realTimeDirectors = result.attributeList(RealTimeDirector.class).iterator();
+            Iterator realTimeDirectors = result.attributeList(
+                    RealTimeDirector.class).iterator();
             while (realTimeDirectors.hasNext()) {
-                RealTimeDirector oldRealTimeDirector = (RealTimeDirector)realTimeDirectors.next();
+                RealTimeDirector oldRealTimeDirector = (RealTimeDirector) realTimeDirectors
+                        .next();
                 if (realTimeDirectorName == null) {
                     realTimeDirectorName = oldRealTimeDirector.getName();
                 }
@@ -235,11 +237,13 @@ public class RealTimeComposite extends MirrorComposite {
             }
 
             // Create a new RealTimeDirector that is in the right workspace.
-            RealTimeDirector realTimeDirector = result.new RealTimeDirector(workspace);
+            RealTimeDirector realTimeDirector = result.new RealTimeDirector(
+                    workspace);
             realTimeDirector.setContainer(result);
             realTimeDirector.setName(realTimeDirectorName);
         } catch (Throwable throwable) {
-            throw new CloneNotSupportedException("Could not clone: " + throwable);
+            throw new CloneNotSupportedException("Could not clone: "
+                    + throwable);
         }
         return result;
     }
@@ -423,11 +427,10 @@ public class RealTimeComposite extends MirrorComposite {
             if (inputFrame == this) {
                 return true;
             }
-            if ((inputFrame == null)
-                    || (inputFrame.getClass() != getClass())) {
+            if ((inputFrame == null) || (inputFrame.getClass() != getClass())) {
                 return false;
             } else {
-                InputFrame frame = (InputFrame)inputFrame;
+                InputFrame frame = (InputFrame) inputFrame;
                 if (compareTo(frame) == 0
                         && frame.tokens.size() == tokens.size()) {
                     return frame.tokens.equals(tokens);
@@ -543,8 +546,8 @@ public class RealTimeComposite extends MirrorComposite {
          *  @exception NameDuplicationException If the name coincides with
          *   an actor already in the container.
          */
-        public RealTimeDirector(Workspace workspace) throws IllegalActionException,
-                NameDuplicationException {
+        public RealTimeDirector(Workspace workspace)
+                throws IllegalActionException, NameDuplicationException {
             super(workspace);
             setPersistent(false);
         }

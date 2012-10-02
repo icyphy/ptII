@@ -33,7 +33,6 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.geom.Point2D;
 import java.net.URL;
 import java.util.Comparator;
 import java.util.HashSet;
@@ -56,20 +55,16 @@ import javax.swing.event.ListSelectionListener;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.DefaultTableCellRenderer;
 
-import ptolemy.actor.CompositeActor;
 import ptolemy.actor.gui.ColorAttribute;
 import ptolemy.actor.gui.Configuration;
 import ptolemy.actor.gui.DialogTableau;
 import ptolemy.actor.gui.PtolemyDialog;
-import ptolemy.actor.gui.Tableau;
 import ptolemy.gui.Query;
 import ptolemy.gui.QueryListener;
-import ptolemy.gui.Top;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.ChangeRequest;
 import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.Location;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
@@ -87,8 +82,8 @@ import ptolemy.util.MessageHandler;
  @Pt.ProposedRating Yellow (eal)
  @Pt.AcceptedRating Red (eal)
  */
-public class SearchResultsDialog extends PtolemyDialog
-        implements ListSelectionListener, QueryListener {
+public class SearchResultsDialog extends PtolemyDialog implements
+        ListSelectionListener, QueryListener {
 
     /** Construct a dialog for search results.
      *  @param tableau The DialogTableau.
@@ -99,8 +94,8 @@ public class SearchResultsDialog extends PtolemyDialog
      */
     public SearchResultsDialog(DialogTableau tableau, Frame owner,
             Entity target, Configuration configuration) {
-        this("Find in " + target.getName(), tableau, owner,
-                target, configuration);
+        this("Find in " + target.getName(), tableau, owner, target,
+                configuration);
     }
 
     /** Construct a dialog for search results.
@@ -111,10 +106,9 @@ public class SearchResultsDialog extends PtolemyDialog
      *  @param configuration The configuration to use to open the help screen
      *   (or null if help is not supported).
      */
-    public SearchResultsDialog(String title, DialogTableau tableau, Frame owner,
-            Entity target, Configuration configuration) {
-        super(title, tableau, owner,
-                target, configuration);
+    public SearchResultsDialog(String title, DialogTableau tableau,
+            Frame owner, Entity target, Configuration configuration) {
+        super(title, tableau, owner, target, configuration);
 
         _owner = owner;
         _target = target;
@@ -128,11 +122,13 @@ public class SearchResultsDialog extends PtolemyDialog
 
         _resultsTableModel = new ResultsTableModel();
         _resultsTable = new JTable(_resultsTableModel);
-        _resultsTable.setDefaultRenderer(NamedObj.class, new NamedObjRenderer());
+        _resultsTable
+                .setDefaultRenderer(NamedObj.class, new NamedObjRenderer());
 
         // If you change the height, then check that a few rows can be added.
         // Also, check the setRowHeight call below.
-        _resultsTable.setPreferredScrollableViewportSize(new Dimension(300, 300));
+        _resultsTable
+                .setPreferredScrollableViewportSize(new Dimension(300, 300));
 
         ListSelectionModel selectionModel = _resultsTable.getSelectionModel();
         selectionModel.addListSelectionListener(this);
@@ -170,13 +166,13 @@ public class SearchResultsDialog extends PtolemyDialog
                 if (button == MouseEvent.BUTTON1 && count == 2) {
                     int[] selected = _resultsTable.getSelectedRows();
                     for (int i = 0; i < selected.length; i++) {
-                        NamedObj selectedObject = (NamedObj) _resultsTableModel.getValueAt(selected[i], 0);
+                        NamedObj selectedObject = (NamedObj) _resultsTableModel
+                                .getValueAt(selected[i], 0);
                         BasicGraphFrame.openComposite(_owner, selectedObject);
                     }
                 }
             }
         });
-
 
         pack();
         setVisible(true);
@@ -212,7 +208,8 @@ public class SearchResultsDialog extends PtolemyDialog
         // Highlight new selection.
         int[] selected = _resultsTable.getSelectedRows();
         for (int i = 0; i < selected.length; i++) {
-            NamedObj selectedObject = (NamedObj) _resultsTableModel.getValueAt(selected[i], 0);
+            NamedObj selectedObject = (NamedObj) _resultsTableModel.getValueAt(
+                    selected[i], 0);
             _highlightResult(selectedObject);
         }
     }
@@ -241,17 +238,17 @@ public class SearchResultsDialog extends PtolemyDialog
      */
     protected void _highlightResult(final NamedObj target) {
         ChangeRequest request = new ChangeRequest(this, "Error Highlighter") {
-                protected void _execute() throws Exception {
-                    _addHighlightIfNeeded(target);
-                    NamedObj container = target.getContainer();
-                    while (container != null) {
-                        _addHighlightIfNeeded(container);
-                        container = container.getContainer();
-                    }
+            protected void _execute() throws Exception {
+                _addHighlightIfNeeded(target);
+                NamedObj container = target.getContainer();
+                while (container != null) {
+                    _addHighlightIfNeeded(container);
+                    container = container.getContainer();
                 }
-            };
+            }
+        };
         request.setPersistent(false);
-        ((NamedObj) target).requestChange(request);
+        target.requestChange(request);
     }
 
     /** Initialize the query dialog.
@@ -265,8 +262,6 @@ public class SearchResultsDialog extends PtolemyDialog
         _query.addCheckBox("recursive", "Recursive search", true);
         _query.addCheckBox("case", "Case sensitive", false);
     }
-
-
 
     /** Perform a search and update the results table.
      */
@@ -283,12 +278,14 @@ public class SearchResultsDialog extends PtolemyDialog
         boolean caseSensitive = _query.getBooleanValue("case");
         Pattern pattern = null;
         try {
-            pattern = Pattern.compile(findText, caseSensitive ? 0 : Pattern.CASE_INSENSITIVE);
-        } catch(PatternSyntaxException ex) {
-            BasicGraphFrame.report(_owner,
-                    "Problem with " + findText + " as a regular expression: " + ex);
+            pattern = Pattern.compile(findText, caseSensitive ? 0
+                    : Pattern.CASE_INSENSITIVE);
+        } catch (PatternSyntaxException ex) {
+            BasicGraphFrame.report(_owner, "Problem with " + findText
+                    + " as a regular expression: " + ex);
         }
-        Set<NamedObj>results = _find(_target, findText, includeValues, includeNames, recursiveSearch, caseSensitive, pattern);
+        Set<NamedObj> results = _find(_target, findText, includeValues,
+                includeNames, recursiveSearch, caseSensitive, pattern);
         _resultsTableModel.setContents(results);
         if (results.size() == 0) {
             MessageHandler.message("No matches");
@@ -315,13 +312,14 @@ public class SearchResultsDialog extends PtolemyDialog
      *  not be compiled as a pattern.
      *  @return The list of objects in the model that match the specified search.
      */
-    protected Set<NamedObj> _find(
-            NamedObj container, String text, boolean includeValues,
-            boolean includeNames, boolean recursive, boolean caseSensitive, Pattern pattern) {
+    protected Set<NamedObj> _find(NamedObj container, String text,
+            boolean includeValues, boolean includeNames, boolean recursive,
+            boolean caseSensitive, Pattern pattern) {
         if (!caseSensitive) {
             text = text.toLowerCase();
         }
-        SortedSet<NamedObj> result = new TreeSet<NamedObj>(new NamedObjComparator());
+        SortedSet<NamedObj> result = new TreeSet<NamedObj>(
+                new NamedObjComparator());
         Iterator<NamedObj> objects = container.containedObjectsIterator();
         while (objects.hasNext()) {
             NamedObj object = objects.next();
@@ -342,9 +340,11 @@ public class SearchResultsDialog extends PtolemyDialog
                 }
             }
             if (includeValues && object instanceof Settable) {
-                Settable.Visibility visible = ((Settable)object).getVisibility();
-                if (!visible.equals(Settable.NONE) && !visible.equals(Settable.EXPERT)) {
-                    String value = ((Settable)object).getExpression();
+                Settable.Visibility visible = ((Settable) object)
+                        .getVisibility();
+                if (!visible.equals(Settable.NONE)
+                        && !visible.equals(Settable.EXPERT)) {
+                    String value = ((Settable) object).getExpression();
                     if (!caseSensitive) {
                         value = value.toLowerCase();
                     }
@@ -361,7 +361,8 @@ public class SearchResultsDialog extends PtolemyDialog
                 }
             }
             if (recursive) {
-                result.addAll(_find(object, text, includeValues, includeNames, recursive, caseSensitive, pattern));
+                result.addAll(_find(object, text, includeValues, includeNames,
+                        recursive, caseSensitive, pattern));
             }
         }
         return result;
@@ -430,13 +431,11 @@ public class SearchResultsDialog extends PtolemyDialog
         Attribute highlightColor = target.getAttribute("_highlightColor");
         if (highlightColor instanceof ColorAttribute) {
             // There is already a highlight. Set its color.
-            ((ColorAttribute) highlightColor)
-                    .setExpression(_HIGHLIGHT_COLOR);
+            ((ColorAttribute) highlightColor).setExpression(_HIGHLIGHT_COLOR);
             _highlights.add(highlightColor);
         } else if (highlightColor == null) {
             highlightColor = new ColorAttribute(target, "_highlightColor");
-            ((ColorAttribute) highlightColor)
-                    .setExpression(_HIGHLIGHT_COLOR);
+            ((ColorAttribute) highlightColor).setExpression(_HIGHLIGHT_COLOR);
             highlightColor.setPersistent(false);
             ((ColorAttribute) highlightColor).setVisibility(Settable.EXPERT);
             _highlights.add(highlightColor);
@@ -474,9 +473,10 @@ public class SearchResultsDialog extends PtolemyDialog
     /** Default renderer for results table. */
     class NamedObjRenderer extends DefaultTableCellRenderer {
         public void setValue(Object value) {
-            String fullName = ((NamedObj)value).getFullName();
+            String fullName = ((NamedObj) value).getFullName();
             // Strip the name of the model name and the leading and trailing period.
-            String strippedName = fullName.substring(_target.toplevel().getName().length() + 2);
+            String strippedName = fullName.substring(_target.toplevel()
+                    .getName().length() + 2);
             setText(strippedName);
         }
     }

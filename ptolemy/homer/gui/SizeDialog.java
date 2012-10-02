@@ -82,7 +82,7 @@ public class SizeDialog extends JPanel {
         dialog.setModal(true);
 
         if (optionPane.getValue() == null) {
-            return (int) JOptionPane.CANCEL_OPTION;
+            return JOptionPane.CANCEL_OPTION;
         } else {
             return (Integer) optionPane.getValue();
         }

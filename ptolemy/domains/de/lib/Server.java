@@ -213,9 +213,7 @@ public class Server extends DETransformer {
             if (_debugging) {
                 _debug("Read input with value " + token
                         + ", and put into queue, which now has size"
-                        + _queue.size()
-                        + " at time "
-                        + currentTime
+                        + _queue.size() + " at time " + currentTime
                         + ". Event will be processes with service time "
                         + serviceTimeValue);
             }
@@ -230,10 +228,8 @@ public class Server extends DETransformer {
             _nextTimeFree = Time.NEGATIVE_INFINITY;
             if (_debugging) {
                 _debug("Produced output " + outputToken
-                        + ", so queue now has size "
-                        + _queue.size()
-                        + " at time "
-                        + currentTime);
+                        + ", so queue now has size " + _queue.size()
+                        + " at time " + currentTime);
             }
         }
         size.send(0, new IntToken(_queue.size()));
@@ -258,10 +254,11 @@ public class Server extends DETransformer {
         Time currentTime = getDirector().getModelTime();
 
         if (_nextTimeFree.equals(Time.NEGATIVE_INFINITY) && _queue.size() > 0) {
-            Job job = (Job)_queue.get(0);
+            Job job = (Job) _queue.get(0);
             _nextTimeFree = currentTime.add(job.serviceTime);
             if (_debugging) {
-                _debug("In postfire, requesting a refiring at time " + _nextTimeFree);
+                _debug("In postfire, requesting a refiring at time "
+                        + _nextTimeFree);
             }
             _fireAt(_nextTimeFree);
         }
@@ -282,10 +279,11 @@ public class Server extends DETransformer {
 
     /** A data structure containing a token and a service time. */
     private class Job {
-        public Job (Token payload, double serviceTime) {
+        public Job(Token payload, double serviceTime) {
             this.payload = payload;
             this.serviceTime = serviceTime;
         }
+
         public Token payload;
         public double serviceTime;
     }

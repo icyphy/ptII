@@ -527,8 +527,9 @@ public class ModularCodeGenTypedCompositeActor extends LazyTypedCompositeActor {
             }
 
             if (initializeMethod == null) {
-                throw new IllegalActionException(this, "Cannot find initialize "
-                        + "method in the wrapper class.");
+                throw new IllegalActionException(this,
+                        "Cannot find initialize "
+                                + "method in the wrapper class.");
             }
 
             //initialize the generated object

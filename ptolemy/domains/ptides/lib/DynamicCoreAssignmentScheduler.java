@@ -32,22 +32,15 @@ ENHANCEMENTS, OR MODIFICATIONS.
 package ptolemy.domains.ptides.lib;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
-import java.util.ListIterator;
 
 import ptolemy.actor.Actor;
-import ptolemy.actor.AtomicActor;
 import ptolemy.actor.CompositeActor;
-import ptolemy.actor.IOPort;
-import ptolemy.actor.QuantityManager;
 import ptolemy.actor.util.Time;
 import ptolemy.data.ObjectToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
-import ptolemy.domains.ptides.lib.ResourceScheduler.ExecutionEventType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
@@ -97,7 +90,6 @@ public class DynamicCoreAssignmentScheduler extends ResourceScheduler {
         return null;
     }
 
-
     /** Schedule a new actor for execution on the next available
      *  scheduler and return the next time
      *  this scheduler has to perform a reschedule.
@@ -118,12 +110,16 @@ public class DynamicCoreAssignmentScheduler extends ResourceScheduler {
         // Check if is already executing somewhere.
         for (NamedObj schedulerActor : _actors) {
             ResourceScheduler scheduler = (ResourceScheduler) schedulerActor;
-            if (scheduler._remainingTimes.get(actor) != null && scheduler._remainingTimes.get(actor).getDoubleValue() > 0.0) {
+            if (scheduler._remainingTimes.get(actor) != null
+                    && scheduler._remainingTimes.get(actor).getDoubleValue() > 0.0) {
                 // This actor is currently executing on this scheduler.
-                Time time = scheduler.schedule(actor, currentPlatformTime, deadline, executionTime);
-                event(scheduler, currentPlatformTime.getDoubleValue(), ExecutionEventType.START);
+                Time time = scheduler.schedule(actor, currentPlatformTime,
+                        deadline, executionTime);
+                event(scheduler, currentPlatformTime.getDoubleValue(),
+                        ExecutionEventType.START);
                 if (time.getDoubleValue() == 0.0) {
-                    event(scheduler, currentPlatformTime.getDoubleValue(), ExecutionEventType.STOP);
+                    event(scheduler, currentPlatformTime.getDoubleValue(),
+                            ExecutionEventType.STOP);
                 }
                 _remainingTimeOnCore.put(scheduler, time);
                 _lastActorFinished = scheduler._lastActorFinished;
@@ -139,17 +135,20 @@ public class DynamicCoreAssignmentScheduler extends ResourceScheduler {
             }
             Time remainingTime = _remainingTimeOnCore.get(scheduler);
             if (remainingTime == null || remainingTime.getDoubleValue() == 0.0) {
-                Time time = scheduler.schedule(actor, currentPlatformTime, deadline, executionTime);
-                event(scheduler, currentPlatformTime.getDoubleValue(), ExecutionEventType.START);
+                Time time = scheduler.schedule(actor, currentPlatformTime,
+                        deadline, executionTime);
+                event(scheduler, currentPlatformTime.getDoubleValue(),
+                        ExecutionEventType.START);
                 if (time.getDoubleValue() == 0.0) {
-                    event(scheduler, currentPlatformTime.getDoubleValue(), ExecutionEventType.STOP);
+                    event(scheduler, currentPlatformTime.getDoubleValue(),
+                            ExecutionEventType.STOP);
                 }
                 _remainingTimeOnCore.put(scheduler, time);
                 _lastActorFinished = scheduler._lastActorFinished;
                 return time;
             } else {
-                if (minimumRemainingTime == null ||
-                        minimumRemainingTime.compareTo(remainingTime) > 0) {
+                if (minimumRemainingTime == null
+                        || minimumRemainingTime.compareTo(remainingTime) > 0) {
                     minimumRemainingTime = remainingTime;
                 }
             }
@@ -175,10 +174,9 @@ public class DynamicCoreAssignmentScheduler extends ResourceScheduler {
             if (attribute instanceof Parameter) {
                 Token paramToken = ((Parameter) attribute).getToken();
                 if (paramToken instanceof ObjectToken) {
-                    Object paramObject = ((ObjectToken) paramToken)
-                            .getValue();
+                    Object paramObject = ((ObjectToken) paramToken).getValue();
                     if (paramObject instanceof ResourceScheduler) {
-                        _actors.add((ResourceScheduler)paramObject);
+                        _actors.add((ResourceScheduler) paramObject);
                     }
                 }
             }

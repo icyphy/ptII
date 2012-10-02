@@ -235,7 +235,8 @@ public class ThreadedComposite extends MirrorComposite {
         setClassName("ptolemy.actor.lib.hoc.ThreadedComposite");
 
         // Create the ThreadedDirector in the proper workspace.
-        ThreadedDirector threadedDirector = this.new ThreadedDirector(workspace());
+        ThreadedDirector threadedDirector = this.new ThreadedDirector(
+                workspace());
         threadedDirector.setContainer(this);
         threadedDirector.setName(uniqueName("ThreadedDirector"));
 
@@ -315,17 +316,21 @@ public class ThreadedComposite extends MirrorComposite {
                 .clone(workspace);
         try {
             // Remove the old inner ThreadedDirector that is in the wrong workspace.
-            List iterateDirectors = newObject.attributeList(ThreadedDirector.class);
-            ThreadedDirector oldThreadedDirector = (ThreadedDirector) iterateDirectors.get(0);
+            List iterateDirectors = newObject
+                    .attributeList(ThreadedDirector.class);
+            ThreadedDirector oldThreadedDirector = (ThreadedDirector) iterateDirectors
+                    .get(0);
             String threadedDirectorName = oldThreadedDirector.getName();
             oldThreadedDirector.setContainer(null);
 
             // Create a new ThreadedDirector that is in the right workspace.
-            ThreadedDirector iterateDirector = newObject.new ThreadedDirector(workspace);
+            ThreadedDirector iterateDirector = newObject.new ThreadedDirector(
+                    workspace);
             iterateDirector.setContainer(newObject);
             iterateDirector.setName(threadedDirectorName);
         } catch (Throwable throwable) {
-            throw new CloneNotSupportedException("Could not clone: " + throwable);
+            throw new CloneNotSupportedException("Could not clone: "
+                    + throwable);
         }
 
         newObject._causalityInterface = null;
@@ -528,8 +533,8 @@ public class ThreadedComposite extends MirrorComposite {
          *  @exception NameDuplicationException If the name coincides with
          *   an actor already in the container.
          */
-        public ThreadedDirector(Workspace workspace) throws IllegalActionException,
-                NameDuplicationException {
+        public ThreadedDirector(Workspace workspace)
+                throws IllegalActionException, NameDuplicationException {
             super(workspace);
             setPersistent(false);
         }
@@ -803,8 +808,8 @@ public class ThreadedComposite extends MirrorComposite {
                                     + environmentTime);
                 }
                 synchronized (this) {
-                    _inputFrames.add(new TokenFrame(environmentTime, _inputTokens,
-                            TokenFrame.EVENT));
+                    _inputFrames.add(new TokenFrame(environmentTime,
+                            _inputTokens, TokenFrame.EVENT));
                     notifyAll();
                     if (_delayValue >= 0.0) {
                         // Delay value is not UNDEFINED. Schedule a firing
@@ -818,7 +823,8 @@ public class ThreadedComposite extends MirrorComposite {
                                         ThreadedComposite.this, responseTime);
 
                         if (!response.equals(responseTime)) {
-                            throw new IllegalActionException(this,
+                            throw new IllegalActionException(
+                                    this,
                                     "Director is unable to fire the actor at the requested time: "
                                             + responseTime
                                             + ". It responds it will fire it at: "
@@ -1182,8 +1188,8 @@ public class ThreadedComposite extends MirrorComposite {
                             // exception will be thrown.
                             _exception = ex;
                             // Post a stop frame.
-                            TokenFrame stopFrame = new TokenFrame(getModelTime(),
-                                    null, TokenFrame.STOP);
+                            TokenFrame stopFrame = new TokenFrame(
+                                    getModelTime(), null, TokenFrame.STOP);
                             _outputFrames.add(stopFrame);
                             ThreadedDirector.this.notifyAll();
                         }

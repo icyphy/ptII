@@ -51,37 +51,32 @@ public class RenesasUtilities {
     public static char INTERRUPT_HANDLER_LETTER_182 = 'C';
     public static char INTERRUPT_HANDLER_LETTER_183 = 'D';
 
+    public static final Map<Integer, Character> interruptHandlerLetters = new HashMap<Integer, Character>() {
+        {
+            put(156, RenesasUtilities.INTERRUPT_HANDLER_LETTER_156);
+            put(157, RenesasUtilities.INTERRUPT_HANDLER_LETTER_157);
+            put(158, RenesasUtilities.INTERRUPT_HANDLER_LETTER_158);
+            put(159, RenesasUtilities.INTERRUPT_HANDLER_LETTER_159);
+            put(162, RenesasUtilities.INTERRUPT_HANDLER_LETTER_162);
+            put(180, RenesasUtilities.INTERRUPT_HANDLER_LETTER_180);
+            put(181, RenesasUtilities.INTERRUPT_HANDLER_LETTER_181);
+            put(182, RenesasUtilities.INTERRUPT_HANDLER_LETTER_182);
+            put(183, RenesasUtilities.INTERRUPT_HANDLER_LETTER_183);
+        }
+    };
 
-
-    public static final Map<Integer, Character> interruptHandlerLetters =
-        new HashMap<Integer, Character>() {
-            {
-                put(156, RenesasUtilities.INTERRUPT_HANDLER_LETTER_156);
-                put(157, RenesasUtilities.INTERRUPT_HANDLER_LETTER_157);
-                put(158, RenesasUtilities.INTERRUPT_HANDLER_LETTER_158);
-                put(159, RenesasUtilities.INTERRUPT_HANDLER_LETTER_159);
-                put(162, RenesasUtilities.INTERRUPT_HANDLER_LETTER_162);
-                put(180, RenesasUtilities.INTERRUPT_HANDLER_LETTER_180);
-                put(181, RenesasUtilities.INTERRUPT_HANDLER_LETTER_181);
-                put(182, RenesasUtilities.INTERRUPT_HANDLER_LETTER_182);
-                put(183, RenesasUtilities.INTERRUPT_HANDLER_LETTER_183);
-            }
-        };
-
-    public static final Map<Integer, Integer> timerNumbers =
-        new HashMap<Integer, Integer>() {
-            {
-                put(156, 0);
-                put(157, 0);
-                put(158, 0);
-                put(159, 0);
-                put(162, 0);
-                put(180, 0);
-                put(181, 0);
-                put(182, 0);
-                put(183, 0);
-            }
-        };
-
+    public static final Map<Integer, Integer> timerNumbers = new HashMap<Integer, Integer>() {
+        {
+            put(156, 0);
+            put(157, 0);
+            put(158, 0);
+            put(159, 0);
+            put(162, 0);
+            put(180, 0);
+            put(181, 0);
+            put(182, 0);
+            put(183, 0);
+        }
+    };
 
 }

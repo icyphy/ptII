@@ -121,7 +121,7 @@ public class PtidesPreemptiveEDFDirector extends PtidesBasicDirector {
      *  @return The absolute deadline for this event.
      */
     protected Time _absoluteDeadlineForPureEvent(Actor actor) {
-        Time lastAbsoluteDeadline = (Time) _pureEventDeadlines.get(actor);
+        Time lastAbsoluteDeadline = _pureEventDeadlines.get(actor);
         return lastAbsoluteDeadline;
     }
 
@@ -178,7 +178,10 @@ public class PtidesPreemptiveEDFDirector extends PtidesBasicDirector {
             SuperdenseDependency startDelay = SuperdenseDependency.OTIMES_IDENTITY;
             // If platformDelayBound is specified use that to update deadline.
             if (outputPort instanceof NetworkTransmitterPort) {
-                startDelay = SuperdenseDependency.valueOf(((DoubleToken)((NetworkTransmitterPort)outputPort).platformDelayBound.getToken()).doubleValue(), 0);
+                startDelay = SuperdenseDependency
+                        .valueOf(
+                                ((DoubleToken) ((NetworkTransmitterPort) outputPort).platformDelayBound
+                                        .getToken()).doubleValue(), 0);
             }
             portDeadlines.put(outputPort, startDelay);
         }
@@ -231,8 +234,7 @@ public class PtidesPreemptiveEDFDirector extends PtidesBasicDirector {
                         // value, meaning it should be replaced. This is because the output port that
                         // led to that pair would not be in distQueue if it the dependency was smaller.
 
-                        for (IOPort sourcePort : (List<IOPort>) port
-                                .sourcePortList()) {
+                        for (IOPort sourcePort : port.sourcePortList()) {
                             // Assume output ports only have width of 1.
                             // we do not want to traverse to the outside of the platform.
                             if (sourcePort.getContainer() != getContainer()) {
@@ -625,7 +627,5 @@ public class PtidesPreemptiveEDFDirector extends PtidesBasicDirector {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
-
 
 }

@@ -72,9 +72,8 @@ public class ActorGraphicalMessageHandler extends GraphicalMessageHandler {
         Nameable nameable1 = _getNameable(throwable);
         // If the throwable has a Nameable, and is not the top level,
         // then add a button
-        if (nameable1 != null
-                && nameable1 instanceof NamedObj
-                && ((NamedObj)nameable1).toplevel() != nameable1) {
+        if (nameable1 != null && nameable1 instanceof NamedObj
+                && ((NamedObj) nameable1).toplevel() != nameable1) {
             result = new Object[options.length + 1];
             System.arraycopy(options, 0, result, 0, options.length);
             result[options.length] = "Go To Actor";

@@ -27,8 +27,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 */
 
-
-
 package ptolemy.domains.ptides.lib.io;
 
 import java.util.HashMap;
@@ -55,14 +53,14 @@ import ptolemy.kernel.util.NameDuplicationException;
  */
 public class NetworkTransmitterPort extends PtidesPort {
 
-
     /** Create a new NetworkTransmitterPort with a given container and a name.
      * @param container The container of the port.
      * @param name The name of the port.
      * @exception IllegalActionException If parameters cannot be set.
      * @exception NameDuplicationException If name already exists.
      */
-    public NetworkTransmitterPort(CompositeEntity container, String name) throws IllegalActionException, NameDuplicationException {
+    public NetworkTransmitterPort(CompositeEntity container, String name)
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         this.setOutput(true);
@@ -72,7 +70,6 @@ public class NetworkTransmitterPort extends PtidesPort {
         platformDelayBound.setTypeEquals(BaseType.DOUBLE);
 
     }
-
 
     /** Return the timestamp for a specific token.
      *  @param t The token.
@@ -99,7 +96,8 @@ public class NetworkTransmitterPort extends PtidesPort {
     @Override
     public void send(int channelIndex, Token token)
             throws IllegalActionException, NoRoomException {
-        Time timestamp = ((CompositeActor)getContainer()).getDirector().getModelTime();
+        Time timestamp = ((CompositeActor) getContainer()).getDirector()
+                .getModelTime();
         if (_transmittedTokens == null) {
             _transmittedTokens = new HashMap();
             _transmittedTokenCnt = new HashMap();
@@ -108,16 +106,15 @@ public class NetworkTransmitterPort extends PtidesPort {
             _transmittedTokenCnt.put(token, 0);
         }
         _transmittedTokens.put(token, timestamp);
-        _transmittedTokenCnt.put(token, _transmittedTokenCnt.get(token).intValue() + 1);
+        _transmittedTokenCnt.put(token, _transmittedTokenCnt.get(token)
+                .intValue() + 1);
         super.send(channelIndex, token);
     }
 
     /** Platform delay bound parameter that defaults to the double value 0.0. */
     public Parameter platformDelayBound;
 
-
     private HashMap<Token, Time> _transmittedTokens;
     private HashMap<Token, Integer> _transmittedTokenCnt;
-
 
 }

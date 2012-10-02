@@ -546,10 +546,9 @@ public class Transition extends ComponentRelation {
         if (!(token instanceof BooleanToken)) {
             throw new IllegalActionException(this,
                     "Guard expression does not evaluate to a boolean!"
-                    + " The gaurd expression is: \""
-                    + guardExpression.getExpression()
-                    + "\", which evaluates to "
-                    + token);
+                            + " The gaurd expression is: \""
+                            + guardExpression.getExpression()
+                            + "\", which evaluates to " + token);
         }
         boolean result = ((BooleanToken) token).booleanValue();
         return result;

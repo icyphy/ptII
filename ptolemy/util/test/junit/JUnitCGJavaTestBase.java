@@ -43,9 +43,7 @@ import org.junit.runners.Suite;
  * @Pt.AcceptedRating Red (cxh)
  */
 @RunWith(Suite.class)
-@Suite.SuiteClasses({
-            ptolemy.util.test.junit.AutoCGJavaKnownFailedTests.class,
-                ptolemy.util.test.junit.AutoCGJavaTests.class
-})
+@Suite.SuiteClasses({ ptolemy.util.test.junit.AutoCGJavaKnownFailedTests.class,
+        ptolemy.util.test.junit.AutoCGJavaTests.class })
 public class JUnitCGJavaTestBase {
 }

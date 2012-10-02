@@ -64,7 +64,8 @@ public class PtidesPort extends MirrorPort {
      * @exception IllegalActionException If parameters cannot be set.
      * @exception NameDuplicationException If name already exists.
      */
-    public PtidesPort(CompositeEntity container, String name) throws IllegalActionException, NameDuplicationException {
+    public PtidesPort(CompositeEntity container, String name)
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         deviceDelay = new Parameter(this, "deviceDelay");
@@ -88,7 +89,8 @@ public class PtidesPort extends MirrorPort {
         platformDelayBound.setExpression("0.0");
         platformDelayBound.setTypeEquals(BaseType.DOUBLE);
 
-        sourcePlatformDelayBound = new Parameter(this, "sourcePlatformDelayBound");
+        sourcePlatformDelayBound = new Parameter(this,
+                "sourcePlatformDelayBound");
         sourcePlatformDelayBound.setExpression("0.0");
         sourcePlatformDelayBound.setTypeEquals(BaseType.DOUBLE);
 
@@ -96,7 +98,8 @@ public class PtidesPort extends MirrorPort {
         networkDelayBound.setExpression("0.0");
         networkDelayBound.setTypeEquals(BaseType.DOUBLE);
 
-        _iconDescription = new SingletonConfigurableAttribute(this, "_iconDescription");
+        _iconDescription = new SingletonConfigurableAttribute(this,
+                "_iconDescription");
         _iconDescription.setPersistent(false);
         _setIconAndParameterVisibility();
     }
@@ -109,8 +112,6 @@ public class PtidesPort extends MirrorPort {
 
     /** Device delay parameter that defaults to the double value 0.0. */
     public Parameter deviceDelay;
-
-
 
     /** Device delay bound parameter that defaults to the double value 0.0. */
     public Parameter deviceDelayBound;
@@ -134,11 +135,13 @@ public class PtidesPort extends MirrorPort {
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == isNetworkPort) {
-            _isNetworkPort = ((BooleanToken)isNetworkPort.getToken()).booleanValue();
+            _isNetworkPort = ((BooleanToken) isNetworkPort.getToken())
+                    .booleanValue();
             _setIconAndParameterVisibility();
-        } if (attribute == actuateAtEventTimestamp) {
-            _actuateAtEventTimestamp = ((BooleanToken) actuateAtEventTimestamp.getToken())
-            .booleanValue();
+        }
+        if (attribute == actuateAtEventTimestamp) {
+            _actuateAtEventTimestamp = ((BooleanToken) actuateAtEventTimestamp
+                    .getToken()).booleanValue();
         } else {
             super.attributeChanged(attribute);
         }
@@ -200,7 +203,8 @@ public class PtidesPort extends MirrorPort {
     @Override
     public void send(int channelIndex, Token token)
             throws IllegalActionException, NoRoomException {
-        Time timestamp = ((CompositeActor)getContainer()).getDirector().getModelTime();
+        Time timestamp = ((CompositeActor) getContainer()).getDirector()
+                .getModelTime();
         if (_transmittedTokens == null) {
             _transmittedTokens = new HashMap();
             _transmittedTokenCnt = new HashMap();
@@ -209,7 +213,8 @@ public class PtidesPort extends MirrorPort {
             _transmittedTokenCnt.put(token, 0);
         }
         _transmittedTokens.put(token, timestamp);
-        _transmittedTokenCnt.put(token, _transmittedTokenCnt.get(token).intValue() + 1);
+        _transmittedTokenCnt.put(token, _transmittedTokenCnt.get(token)
+                .intValue() + 1);
         super.send(channelIndex, token);
     }
 
@@ -224,33 +229,53 @@ public class PtidesPort extends MirrorPort {
                 networkDelayBound.setVisibility(Settable.NONE);
                 platformDelayBound.setVisibility(Settable.NONE);
                 sourcePlatformDelayBound.setVisibility(Settable.NONE);
-                _iconDescription.configure(null, null, "<svg>\n"
-                        + "<polygon points=\"0, 0, 0, 16, 16, 16, 16, 12, 20, 8, 16, 4, 16, 0\" "
-                        + "style=\"fill:black\"/>\n" + "</svg>\n");
+                _iconDescription
+                        .configure(
+                                null,
+                                null,
+                                "<svg>\n"
+                                        + "<polygon points=\"0, 0, 0, 16, 16, 16, 16, 12, 20, 8, 16, 4, 16, 0\" "
+                                        + "style=\"fill:black\"/>\n"
+                                        + "</svg>\n");
             } else if (isActuatorPort()) {
                 actuateAtEventTimestamp.setVisibility(Settable.FULL);
                 networkDelayBound.setVisibility(Settable.NONE);
                 platformDelayBound.setVisibility(Settable.NONE);
                 sourcePlatformDelayBound.setVisibility(Settable.NONE);
-                _iconDescription.configure(null, null, "<svg>\n"
-                        + "<polygon points=\"0, 0, 0, 4, -4, 8, 0, 12, 0, 16, 16, 16, 16, 0\" "
-                        + "style=\"fill:black\"/>\n" + "</svg>\n");
+                _iconDescription
+                        .configure(
+                                null,
+                                null,
+                                "<svg>\n"
+                                        + "<polygon points=\"0, 0, 0, 4, -4, 8, 0, 12, 0, 16, 16, 16, 16, 0\" "
+                                        + "style=\"fill:black\"/>\n"
+                                        + "</svg>\n");
             } else if (isNetworkReceiverPort()) {
                 actuateAtEventTimestamp.setVisibility(Settable.NONE);
                 networkDelayBound.setVisibility(Settable.FULL);
                 platformDelayBound.setVisibility(Settable.NONE);
                 sourcePlatformDelayBound.setVisibility(Settable.FULL);
-                _iconDescription.configure(null, null, "<svg>\n"
-                        + "<polygon points=\"0, 0, 0, 16, 16, 16, 16, 12, 20, 12, 20, 4, 16, 4, 16, 0\" "
-                        + "style=\"fill:black\"/>\n" + "</svg>\n");
+                _iconDescription
+                        .configure(
+                                null,
+                                null,
+                                "<svg>\n"
+                                        + "<polygon points=\"0, 0, 0, 16, 16, 16, 16, 12, 20, 12, 20, 4, 16, 4, 16, 0\" "
+                                        + "style=\"fill:black\"/>\n"
+                                        + "</svg>\n");
             } else if (isNetworkTransmitterPort()) {
                 actuateAtEventTimestamp.setVisibility(Settable.NONE);
                 networkDelayBound.setVisibility(Settable.NONE);
                 platformDelayBound.setVisibility(Settable.FULL);
                 sourcePlatformDelayBound.setVisibility(Settable.NONE);
-                _iconDescription.configure(null, null, "<svg>\n"
-                        + "<polygon points=\"0, 0, 0, 4, -4, 4, -4, 12, 0, 12, 0, 16, 16, 16, 16, 0\" "
-                        + "style=\"fill:black\"/>\n" + "</svg>\n");
+                _iconDescription
+                        .configure(
+                                null,
+                                null,
+                                "<svg>\n"
+                                        + "<polygon points=\"0, 0, 0, 4, -4, 4, -4, 12, 0, 12, 0, 16, 16, 16, 16, 0\" "
+                                        + "style=\"fill:black\"/>\n"
+                                        + "</svg>\n");
             }
         } catch (Exception e) {
             throw new IllegalActionException(this, e.getMessage());

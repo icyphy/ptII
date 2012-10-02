@@ -1095,10 +1095,9 @@ public class PteraDirector extends Director implements ValueListener {
                             _initializeAndFireRefinement(refinement,
                                     timedEvent.reset);
                             scheduled = true;
-                        } catch (IllegalActionException ex) {   //FIXME: Dai
+                        } catch (IllegalActionException ex) { //FIXME: Dai
                             _refinementException = ex;
                         }
-
 
                     }
                 }

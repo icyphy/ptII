@@ -29,15 +29,11 @@ the copyright link on the splash page or see copyright.htm.
 package ptolemy.domains.ptides.lib;
 
 import ptolemy.actor.Actor;
-import ptolemy.actor.CompositeActor;
-import ptolemy.actor.util.BooleanDependency;
-import ptolemy.actor.util.Dependency;
 import ptolemy.domains.de.kernel.DEDirector;
 import ptolemy.domains.de.kernel.DEEvent;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.kernel.util.Workspace;
 
 public class SchedulerDirector extends DEDirector {
 
@@ -70,8 +66,5 @@ public class SchedulerDirector extends DEDirector {
         }
         return super._getNextActorToFire();
     }
-
-
-
 
 }

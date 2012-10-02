@@ -266,30 +266,30 @@ public class MostRecent extends Transformer {
      *  @return a list of Inequality objects.
      *  @see ptolemy.graph.Inequality
      */
-/*    public Set<Inequality> typeConstraints() {
-        Set<Inequality> typeConstraints = super.typeConstraints();
+    /*    public Set<Inequality> typeConstraints() {
+            Set<Inequality> typeConstraints = super.typeConstraints();
 
-        try {
-            if (initialValue.getToken() != null) {
-                // Set type of initialValue to be equal to input type
-                Inequality ineq = new Inequality(initialValue.getTypeTerm(),
-                        input.getTypeTerm());
-                typeConstraints.add(ineq);
-                ineq = new Inequality(input.getTypeTerm(),
-                        initialValue.getTypeTerm());
+            try {
+                if (initialValue.getToken() != null) {
+                    // Set type of initialValue to be equal to input type
+                    Inequality ineq = new Inequality(initialValue.getTypeTerm(),
+                            input.getTypeTerm());
+                    typeConstraints.add(ineq);
+                    ineq = new Inequality(input.getTypeTerm(),
+                            initialValue.getTypeTerm());
 
-                typeConstraints.add(ineq);
+                    typeConstraints.add(ineq);
+                }
+            } catch (IllegalActionException ex) {
+                // Errors in the initialValue parameter should already
+                // have been caught in getAttribute() method of the base
+                // class.
+                throw new InternalErrorException("Bad initialValue value!");
             }
-        } catch (IllegalActionException ex) {
-            // Errors in the initialValue parameter should already
-            // have been caught in getAttribute() method of the base
-            // class.
-            throw new InternalErrorException("Bad initialValue value!");
-        }
 
-        return typeConstraints;
-    }
-*/
+            return typeConstraints;
+        }
+    */
     /**
      * Adds two inequalities to the set returned by the overridden method that
      * together constrain the input to be equal to the type of the initial

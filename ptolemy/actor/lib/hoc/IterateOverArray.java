@@ -238,9 +238,11 @@ public class IterateOverArray extends MirrorComposite {
         try {
             // Remove the old inner IterateDirector(s) that is(are) in the wrong workspace.
             String iterateDirectorName = null;
-            Iterator iterateDirectors = result.attributeList(IterateDirector.class).iterator();
+            Iterator iterateDirectors = result.attributeList(
+                    IterateDirector.class).iterator();
             while (iterateDirectors.hasNext()) {
-                IterateDirector oldIterateDirector = (IterateDirector)iterateDirectors.next();
+                IterateDirector oldIterateDirector = (IterateDirector) iterateDirectors
+                        .next();
                 if (iterateDirectorName == null) {
                     iterateDirectorName = oldIterateDirector.getName();
                 }
@@ -248,11 +250,13 @@ public class IterateOverArray extends MirrorComposite {
             }
 
             // Create a new IterateDirector that is in the right workspace.
-            IterateDirector iterateDirector = result.new IterateDirector(workspace);
+            IterateDirector iterateDirector = result.new IterateDirector(
+                    workspace);
             iterateDirector.setContainer(result);
             iterateDirector.setName(iterateDirectorName);
         } catch (Throwable throwable) {
-            throw new CloneNotSupportedException("Could not clone: " + throwable);
+            throw new CloneNotSupportedException("Could not clone: "
+                    + throwable);
         }
         result._iterationCount = (Variable) result
                 .getAttribute("iterationCount");
@@ -424,9 +428,8 @@ public class IterateOverArray extends MirrorComposite {
                     if (isBackwardTypeInferenceEnabled()) {
                         InequalityTerm typeTerm = sourcePort.getTypeTerm();
                         if (typeTerm.isSettable()) {
-                            result.add(new Inequality(
-                                    new GLBArrayFunction(sourcePort),
-                                    typeTerm));
+                            result.add(new Inequality(new GLBArrayFunction(
+                                    sourcePort), typeTerm));
                         }
                     }
                 } else if (sourcePort.getContainer().equals(this)) {
@@ -458,9 +461,8 @@ public class IterateOverArray extends MirrorComposite {
                         if (isBackwardTypeInferenceEnabled()) {
                             InequalityTerm typeTerm = sourcePort.getTypeTerm();
                             if (typeTerm.isSettable()) {
-                                result.add(new Inequality(
-                                        new GLBArrayFunction(sourcePort),
-                                        typeTerm));
+                                result.add(new Inequality(new GLBArrayFunction(
+                                        sourcePort), typeTerm));
                             }
                         }
                     } catch (IllegalActionException e) {
@@ -546,7 +548,7 @@ public class IterateOverArray extends MirrorComposite {
          *  @return A Type.
          */
         public Object getValue() throws IllegalActionException {
-            Type elementType = (Type)super.getValue();
+            Type elementType = (Type) super.getValue();
             return new ArrayType(elementType);
         }
     }
@@ -577,12 +579,12 @@ public class IterateOverArray extends MirrorComposite {
             for (int i = 0; i < _cachedTerms.length; i++) {
                 Object termObject = _cachedTerms[i].getAssociatedObject();
                 if (termObject instanceof IOPort
-                        && ((IOPort)termObject).getContainer() == IterateOverArray.this) {
+                        && ((IOPort) termObject).getContainer() == IterateOverArray.this) {
                     // The type term belongs to a port of this IterateOverArray actor.
                     // Use its element type rather than its type.
                     Object value = _cachedTerms[i].getValue();
                     if (value instanceof ArrayType) {
-                        types.add(((ArrayType)value).getElementType());
+                        types.add(((ArrayType) value).getElementType());
                     } else if (value.equals(BaseType.GENERAL)) {
                         // To ensure that this function is monotonic, we have to
                         // handle the case where the value is greater than ArrayType.
@@ -593,7 +595,7 @@ public class IterateOverArray extends MirrorComposite {
                     // so we don't need to add it to the collection. Adding unknown
                     // to the arguments to GLB does nothing.
                 } else {
-                    types.add((Type)_cachedTerms[i].getValue());
+                    types.add((Type) _cachedTerms[i].getValue());
                 }
             }
             // If there are no destination outputs at all, then set
@@ -679,8 +681,8 @@ public class IterateOverArray extends MirrorComposite {
          *  @exception NameDuplicationException If the name coincides with
          *   an actor already in the container.
          */
-        public IterateDirector(Workspace workspace) throws IllegalActionException,
-                NameDuplicationException {
+        public IterateDirector(Workspace workspace)
+                throws IllegalActionException, NameDuplicationException {
             super(workspace);
             setPersistent(false);
         }

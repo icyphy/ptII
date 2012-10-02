@@ -39,9 +39,7 @@ import ptolemy.cg.kernel.generic.program.NamedProgramCodeGeneratorAdapter;
 @version $Id$
 @since Ptolemy II 8.0
  */
-public class TimeGap
-        extends
-        NamedProgramCodeGeneratorAdapter {
+public class TimeGap extends NamedProgramCodeGeneratorAdapter {
     /**
      *  Construct a TimeGap adapter.
      *  @param actor The given ptolemy.actor.lib.TimeGap actor.

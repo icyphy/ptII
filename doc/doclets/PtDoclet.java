@@ -138,7 +138,8 @@ public class PtDoclet {
                 allNamedObjsWriter.close();
             }
         }
-        _ptIndexer.write(new File(_outputDirectory, "PtIndexer.ser").getCanonicalPath());
+        _ptIndexer.write(new File(_outputDirectory, "PtIndexer.ser")
+                .getCanonicalPath());
         return true;
     }
 

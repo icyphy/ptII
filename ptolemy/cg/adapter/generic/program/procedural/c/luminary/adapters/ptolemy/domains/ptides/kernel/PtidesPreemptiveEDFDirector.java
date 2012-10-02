@@ -91,7 +91,8 @@ public class PtidesPreemptiveEDFDirector
      *  @exception IllegalActionException
      */
 
-    public Map<String, String> generateAdditionalCodeFiles() throws IllegalActionException {
+    public Map<String, String> generateAdditionalCodeFiles()
+            throws IllegalActionException {
         Map<String, String> list = new HashMap();
 
         StringBuffer code = new StringBuffer();

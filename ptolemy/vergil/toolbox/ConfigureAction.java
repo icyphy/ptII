@@ -140,7 +140,7 @@ public class ConfigureAction extends FigureAction {
                 && !event.getActionCommand().equals("Configure")) {
 
             // Use the last editor factory if there is more than one.
-            Editable factory = attributeList.get(attributeList.size()-1);
+            Editable factory = attributeList.get(attributeList.size() - 1);
             factory.createEditor(target, parent);
         } else {
             new EditParametersDialog(parent, target);

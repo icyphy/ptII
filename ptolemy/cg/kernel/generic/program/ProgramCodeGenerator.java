@@ -282,10 +282,10 @@ public class ProgramCodeGenerator extends GenericCodeGenerator {
                                                 : ptType == BaseType.UNSIGNED_BYTE ? "UnsignedByte"
                                                         : ptType == PointerToken.POINTER ? "Pointer"
                                                                 : ptType == BaseType.COMPLEX ? "Complex"
-            // FIXME: Why do we have to use equals with BaseType.OBJECT?
-            : ptType.equals(BaseType.OBJECT) ? "Object"
-            //: ptType == BaseType.OBJECT ? "Object"
-                                                                        : null;
+                                                                        // FIXME: Why do we have to use equals with BaseType.OBJECT?
+                                                                        : ptType.equals(BaseType.OBJECT) ? "Object"
+                                                                                //: ptType == BaseType.OBJECT ? "Object"
+                                                                                : null;
 
         if (result == null) {
             if (ptType instanceof ArrayType) {
@@ -357,8 +357,8 @@ public class ProgramCodeGenerator extends GenericCodeGenerator {
      *  In this base class, a comment with the values of the
      *  arguments is returned.
      */
-    public String generateConstantDefinition(String constant,
-            String type, String value) {
+    public String generateConstantDefinition(String constant, String type,
+            String value) {
         return comment(constant + " " + type + " " + value);
     }
 
@@ -607,8 +607,7 @@ public class ProgramCodeGenerator extends GenericCodeGenerator {
             int bufferSize) {
 
         try {
-            if (!((BooleanToken) variablesAsArrays.getToken())
-                    .booleanValue()) {
+            if (!((BooleanToken) variablesAsArrays.getToken()).booleanValue()) {
                 return portName.replace(".", "_");
             }
         } catch (IllegalActionException ex) {
@@ -708,7 +707,6 @@ public class ProgramCodeGenerator extends GenericCodeGenerator {
                 + portIndex + "]";
     }
 
-
     /** Generate sanitized name for the given Ptolemy IOPort.
      * This method returns an array reference in to an array of Ptolemy
      * ports.  This method is used with AutoAdapter, most code
@@ -722,7 +720,8 @@ public class ProgramCodeGenerator extends GenericCodeGenerator {
     public String generatePtIOPortName(NamedObj container, String portName) {
         // This method is used in AutoAdapter.
         Integer portIndex = null;
-        String portNameSymbol = generateVariableName(container) + "_" + portName;
+        String portNameSymbol = generateVariableName(container) + "_"
+                + portName;
         if ((portIndex = _ioPortMap.get(portNameSymbol)) == null) {
             // FIXME: is there a better way to update an element in a HashMap?
             portIndex = Integer.valueOf(_ioPortMap.size());
@@ -739,7 +738,6 @@ public class ProgramCodeGenerator extends GenericCodeGenerator {
         return _ioPortMap.size();
     }
 
-
     /** Generate sanitized name for the given TypedCompositeActor
      * This method is used when the {@link #variablesAsArrays}
      * parameter is true.
@@ -749,22 +747,22 @@ public class ProgramCodeGenerator extends GenericCodeGenerator {
      *  @exception IllegalActionException If the variablesAsArrays parameter
      *  of the code generator cannot be read.
      */
-    public String generatePtTypedCompositeActorName(NamedObj container, String actorName)
-            throws IllegalActionException {
-         if (!((BooleanToken) variablesAsArrays.getToken())
-                 .booleanValue()) {
-             return generateVariableName(container);
-         } else {
-             // This method is used in AutoAdapter.
-             Integer actorIndex = null;
-             String actorNameSymbol = generateVariableName(container) + "_" + actorName;
-             if ((actorIndex = _typedCompositeActorMap.get(actorNameSymbol)) == null) {
-                 // FIXME: is there a better way to update an element in a HashMap?
-                 actorIndex = Integer.valueOf(_typedCompositeActorMap.size());
-                 _typedCompositeActorMap.put(actorNameSymbol, actorIndex);
-             }
-             return "_compositeMap[" + actorIndex + "]";
-         }
+    public String generatePtTypedCompositeActorName(NamedObj container,
+            String actorName) throws IllegalActionException {
+        if (!((BooleanToken) variablesAsArrays.getToken()).booleanValue()) {
+            return generateVariableName(container);
+        } else {
+            // This method is used in AutoAdapter.
+            Integer actorIndex = null;
+            String actorNameSymbol = generateVariableName(container) + "_"
+                    + actorName;
+            if ((actorIndex = _typedCompositeActorMap.get(actorNameSymbol)) == null) {
+                // FIXME: is there a better way to update an element in a HashMap?
+                actorIndex = Integer.valueOf(_typedCompositeActorMap.size());
+                _typedCompositeActorMap.put(actorNameSymbol, actorIndex);
+            }
+            return "_compositeMap[" + actorIndex + "]";
+        }
     }
 
     /** Return the size of the TypedCompositeActor Map.
@@ -862,7 +860,7 @@ public class ProgramCodeGenerator extends GenericCodeGenerator {
      *  @return The generated variable name.
      */
     public String generateVariableName(NamedObj attribute) {
-        return NamedProgramCodeGeneratorAdapter.generateName(attribute) + "_";
+        return CodeGeneratorAdapter.generateName(attribute) + "_";
     }
 
     /** Generate into the specified code stream the code associated with
@@ -971,7 +969,8 @@ public class ProgramCodeGenerator extends GenericCodeGenerator {
                             : elementType.equals("Double") ? BaseType.DOUBLE_MATRIX
                                     : elementType.equals("Boolean") ? BaseType.BOOLEAN_MATRIX
                                             : elementType.equals("Fix") ? BaseType.FIX_MATRIX
-                                                    : elementType.equals("Long") ? BaseType.LONG_MATRIX
+                                                    : elementType
+                                                            .equals("Long") ? BaseType.LONG_MATRIX
                                                             : null;
 
         }
@@ -1049,10 +1048,10 @@ public class ProgramCodeGenerator extends GenericCodeGenerator {
                                 : ptType == BaseType.BOOLEAN ? "boolean"
                                         : ptType == BaseType.LONG ? "long long "
                                                 : ptType == BaseType.UNSIGNED_BYTE ? "unsigned char"
-            // FIXME: Why do we have to use equals with BaseType.OBJECT?
-            : ptType.equals(BaseType.OBJECT) ? "Object"
-                                                        : ptType == PointerToken.POINTER ? "void*"
-                                                                : "Token";
+                                                        // FIXME: Why do we have to use equals with BaseType.OBJECT?
+                                                        : ptType.equals(BaseType.OBJECT) ? "Object"
+                                                                : ptType == PointerToken.POINTER ? "void*"
+                                                                        : "Token";
     }
 
     /** Return an updated array of command line options.
@@ -1304,8 +1303,7 @@ public class ProgramCodeGenerator extends GenericCodeGenerator {
 
         _reset();
 
-        _sanitizedModelName = NamedProgramCodeGeneratorAdapter
-                .generateName(_model);
+        _sanitizedModelName = CodeGeneratorAdapter.generateName(_model);
 
         // Each time a .dll file is generated, we must use a different name
         // for it so that it can be loaded without restarting vergil.
@@ -1769,8 +1767,8 @@ public class ProgramCodeGenerator extends GenericCodeGenerator {
         try {
             results = splitVariableDeclaration(
                     ((IntToken) maximumLinesPerBlock.getToken()).intValue(),
-                    NamedProgramCodeGeneratorAdapter
-                            .generateName(getContainer()) + suffix, code);
+                    CodeGeneratorAdapter.generateName(getContainer()) + suffix,
+                    code);
         } catch (Throwable throwable) {
             // Ignore
             System.out
@@ -1844,9 +1842,8 @@ public class ProgramCodeGenerator extends GenericCodeGenerator {
         try {
             results = splitLongBody(
                     ((IntToken) maximumLinesPerBlock.getToken()).intValue(),
-                    prefix
-                            + NamedProgramCodeGeneratorAdapter
-                                    .generateName(getContainer()), code);
+                    prefix + CodeGeneratorAdapter.generateName(getContainer()),
+                    code);
         } catch (Throwable throwable) {
             // Ignore
             System.out.println("Warning: Failed to split code: " + throwable);
@@ -1994,7 +1991,6 @@ public class ProgramCodeGenerator extends GenericCodeGenerator {
      *  is set to true.
      */
     private static HashMap<String, Integer> _typedCompositeActorMap = new HashMap<String, Integer>();
-
 
     /** The extension of the template files.
      *   (for example c in case of C and j in case of Java)

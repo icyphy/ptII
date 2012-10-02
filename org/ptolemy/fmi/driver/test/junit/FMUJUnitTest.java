@@ -64,24 +64,23 @@ public class FMUJUnitTest {
      *  @exception Exception If there is a problem reading or executing the test
      *  or if the results is not the same as the known good results.
      */
-    public void cosimulate(String fmuFileName, String knownGoodFileName) throws Exception {
-        String resultsFileName = File.createTempFile("FMUJUnitTest", "csv").getCanonicalPath();
+    public void cosimulate(String fmuFileName, String knownGoodFileName)
+            throws Exception {
+        String resultsFileName = File.createTempFile("FMUJUnitTest", "csv")
+                .getCanonicalPath();
         System.out.println("To update " + knownGoodFileName + ", run:\n"
-                + "java -classpath \"" + topDirectory + "/lib/jna.jar:" + topDirectory
-                + "\" org.ptolemy.fmi.driver.FMUCoSimulation "
-                + fmuFileName + " 1.0 0.1 false c "
-                + knownGoodFileName);
-        new FMUCoSimulation().simulate(fmuFileName,
-                1.0, 0.1, false /*logging*/, ',' , resultsFileName);
+                + "java -classpath \"" + topDirectory + "/lib/jna.jar:"
+                + topDirectory + "\" org.ptolemy.fmi.driver.FMUCoSimulation "
+                + fmuFileName + " 1.0 0.1 false c " + knownGoodFileName);
+        new FMUCoSimulation().simulate(fmuFileName, 1.0, 0.1,
+                false /*logging*/, ',', resultsFileName);
 
         String results = FMUJUnitTest.readFile(resultsFileName);
         String knownGood = FMUJUnitTest.readFile(knownGoodFileName);
         if (results.length() != knownGood.length()) {
-            Assert.fail(fmuFileName + ":results length "
-                    + results.length() + " != known good length "
-                    + knownGood.length()
-                    + "\nresults:\n" + results
-                    + "\nknownGood:\n" + knownGood);
+            Assert.fail(fmuFileName + ":results length " + results.length()
+                    + " != known good length " + knownGood.length()
+                    + "\nresults:\n" + results + "\nknownGood:\n" + knownGood);
         }
         assertArrayEquals(results.getBytes(), knownGood.getBytes());
     }
@@ -92,8 +91,9 @@ public class FMUJUnitTest {
      *  or if the results is not the same as the known good results.
      */
     public void cosimulate(String testName) throws Exception {
-        cosimulate(topDirectory + "/org/ptolemy/fmi/fmu/cs/" + testName + ".fmu",
-                topDirectory + "/org/ptolemy/fmi/driver/test/junit/" + testName + ".csv");
+        cosimulate(topDirectory + "/org/ptolemy/fmi/fmu/cs/" + testName
+                + ".fmu", topDirectory + "/org/ptolemy/fmi/driver/test/junit/"
+                + testName + ".csv");
     }
 
     // /** Run the bouncing ball co-simulation functional mock-up unit test.
@@ -125,7 +125,7 @@ public class FMUJUnitTest {
      */
     @org.junit.Test
     public void cosimulateValues() throws Exception {
-       cosimulate("values");
+        cosimulate("values");
     }
 
     /** Run the vanDerPol co-simulation functional mock-up unit test.
@@ -147,24 +147,23 @@ public class FMUJUnitTest {
      *  @exception Exception If there is a problem reading or executing the test
      *  or if the results is not the same as the known good results.
      */
-    public void modelExchange(String fmuFileName, String knownGoodFileName) throws Exception {
-        String resultsFileName = File.createTempFile("FMUJUnitTest", "csv").getCanonicalPath();
+    public void modelExchange(String fmuFileName, String knownGoodFileName)
+            throws Exception {
+        String resultsFileName = File.createTempFile("FMUJUnitTest", "csv")
+                .getCanonicalPath();
         System.out.println("To update " + knownGoodFileName + ", run:\n"
-                + "java -classpath \"" + topDirectory + "/lib/jna.jar:" + topDirectory
-                + "\" org.ptolemy.fmi.driver.FMUModelExchange "
-                + fmuFileName + " 1.0 0.1 false c "
-                + knownGoodFileName);
-        new FMUModelExchange().simulate(fmuFileName,
-                1.0, 0.1, false /*logging*/, ',' , resultsFileName);
+                + "java -classpath \"" + topDirectory + "/lib/jna.jar:"
+                + topDirectory + "\" org.ptolemy.fmi.driver.FMUModelExchange "
+                + fmuFileName + " 1.0 0.1 false c " + knownGoodFileName);
+        new FMUModelExchange().simulate(fmuFileName, 1.0, 0.1,
+                false /*logging*/, ',', resultsFileName);
 
         String results = FMUJUnitTest.readFile(resultsFileName);
         String knownGood = FMUJUnitTest.readFile(knownGoodFileName);
         if (results.length() != knownGood.length()) {
-            Assert.fail(fmuFileName + ":results length "
-                    + results.length() + " != known good length "
-                    + knownGood.length()
-                    + "\nresults:\n" + results
-                    + "\nknownGood:\n" + knownGood);
+            Assert.fail(fmuFileName + ":results length " + results.length()
+                    + " != known good length " + knownGood.length()
+                    + "\nresults:\n" + results + "\nknownGood:\n" + knownGood);
         }
         assertArrayEquals(results.getBytes(), knownGood.getBytes());
     }
@@ -175,17 +174,18 @@ public class FMUJUnitTest {
      *  or if the results is not the same as the known good results.
      */
     public void modelExchange(String testName) throws Exception {
-        modelExchange(topDirectory + "/org/ptolemy/fmi/fmu/me/" + testName + ".fmu",
-                topDirectory + "/org/ptolemy/fmi/driver/test/junit/" + testName + "_me.csv");
+        modelExchange(topDirectory + "/org/ptolemy/fmi/fmu/me/" + testName
+                + ".fmu", topDirectory + "/org/ptolemy/fmi/driver/test/junit/"
+                + testName + "_me.csv");
     }
 
     /** Run the bouncing ball model exchange functional mock-up unit test.
      *  @exception Exception If there is a problem reading or running the test.
      */
-     @org.junit.Test
-     public void modelExchangeBouncingBall() throws Exception {
-         modelExchange("bouncingBall");
-     }
+    @org.junit.Test
+    public void modelExchangeBouncingBall() throws Exception {
+        modelExchange("bouncingBall");
+    }
 
     /** Run the dq model exchange functional mock-up unit test.
      *  @exception Exception If there is a problem reading or running the test.
@@ -200,7 +200,7 @@ public class FMUJUnitTest {
      */
     @org.junit.Test
     public void modelExchangeInc() throws Exception {
-       modelExchange("inc");
+        modelExchange("inc");
     }
 
     /** Run the values model exchange functional mock-up unit test.
@@ -208,7 +208,7 @@ public class FMUJUnitTest {
      */
     @org.junit.Test
     public void modelExchangeValues() throws Exception {
-       modelExchange("values");
+        modelExchange("values");
     }
 
     /** Run the vanDerPol model exchange functional mock-up unit test.
@@ -243,9 +243,10 @@ public class FMUJUnitTest {
         try {
             fileInputStream = new FileInputStream(fileName);
             dataInputStream = new DataInputStream(fileInputStream);
-            bufferedReader = new BufferedReader(new InputStreamReader(dataInputStream));
+            bufferedReader = new BufferedReader(new InputStreamReader(
+                    dataInputStream));
             String line;
-            while ((line = bufferedReader.readLine()) != null)   {
+            while ((line = bufferedReader.readLine()) != null) {
                 results.append(line + lineSeparator);
             }
         } finally {
@@ -267,9 +268,11 @@ public class FMUJUnitTest {
         if (ptolemyPtIIDir != null) {
             topDirectory = ptolemyPtIIDir;
         } else if (userDir.endsWith("org/ptolemy/fmi")) {
-            topDirectory = new File(userDir).getParentFile().getParentFile().getParentFile().toString();
+            topDirectory = new File(userDir).getParentFile().getParentFile()
+                    .getParentFile().toString();
         } else if (userDir.endsWith("org/ptolemy/fmi/test/jni")) {
-            topDirectory = new File(userDir).getParentFile().getParentFile().getParentFile().getParentFile().getParentFile().toString();
+            topDirectory = new File(userDir).getParentFile().getParentFile()
+                    .getParentFile().getParentFile().getParentFile().toString();
         } else {
             topDirectory = userDir;
         }

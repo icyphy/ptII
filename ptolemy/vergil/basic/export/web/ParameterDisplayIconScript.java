@@ -36,7 +36,6 @@ import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
 import ptolemy.util.StringUtilities;
 
-
 ///////////////////////////////////////////////////////////////////
 //// ParameterDisplayIconScript
 /**
@@ -164,29 +163,24 @@ public class ParameterDisplayIconScript extends DefaultIconScript {
 
         WebAttribute webAttribute;
 
-        String command = "writeText('<h2>"
-            + object.getName()
-            + "</h2>"
-            + getParameterTable(object)
-            + "')";
+        String command = "writeText('<h2>" + object.getName() + "</h2>"
+                + getParameterTable(object) + "')";
 
-        String clear = "writeText('Mouse over the icons to see their " +
-                    "parameters.  Click on composites and plotters to " +
-                    "reveal their contents (if provided).')";
+        String clear = "writeText('Mouse over the icons to see their "
+                + "parameters.  Click on composites and plotters to "
+                + "reveal their contents (if provided).')";
 
         // Create WebAttribute for onmouseover event and add to exporter.
         // Content should only be added once (onceOnly -> true).
-        webAttribute = WebAttribute
-            .createWebAttribute(object, "onmouseoverWebAttribute",
-                    "onmouseover");
+        webAttribute = WebAttribute.createWebAttribute(object,
+                "onmouseoverWebAttribute", "onmouseover");
         webAttribute.setExpression(command);
         exporter.defineAttribute(webAttribute, true);
 
         // Create WebAttribute for onmouseout event and add to exporter.
         // Content should only be added once (onceOnly -> true).
-        webAttribute = WebAttribute
-            .createWebAttribute(object, "onmouseoutWebAttribute",
-                    "onmouseout");
+        webAttribute = WebAttribute.createWebAttribute(object,
+                "onmouseoutWebAttribute", "onmouseout");
         webAttribute.setExpression(clear);
         exporter.defineAttribute(webAttribute, true);
     }
@@ -207,7 +201,7 @@ public class ParameterDisplayIconScript extends DefaultIconScript {
     //*  remove all previously defined defaults and use the global
     //*  defaults.
     protected void _provideElements(WebExporter exporter)
-        throws IllegalActionException {
+            throws IllegalActionException {
         WebElement webElement;
 
         // Add content from IconScript (DefaultIconScript does not override
@@ -219,29 +213,29 @@ public class ParameterDisplayIconScript extends DefaultIconScript {
         webElement = WebElement.createWebElement(getContainer(),
                 "writeTextScriptWebElement", "writeTextScript");
         webElement.setParent(WebElement.HEAD);
-        webElement.setExpression("<script type=\"text/javascript\">\n"
-                + "function writeText(text) {\n"
-                + "   document.getElementById(\"afterImage\").innerHTML = text;\n"
-                + "};\n"
-                + "</script>");
+        webElement
+                .setExpression("<script type=\"text/javascript\">\n"
+                        + "function writeText(text) {\n"
+                        + "   document.getElementById(\"afterImage\").innerHTML = text;\n"
+                        + "};\n" + "</script>");
         exporter.defineElement(webElement, true);
 
         // Put a destination paragraph in the end section of the HTML.
         webElement = WebElement.createWebElement(getContainer(),
                 "afterImageWebElement", "afterImage");
         webElement.setParent(WebElement.END);
-        webElement.setExpression( "<div id=\"afterImage\">\n"
-                    + "  <script type=\"text/javascript\">\n"
-                    + "     writeText('Mouse over the icons to see their parameters. "
-                    + "Click on composites and plotters to reveal their contents (if provided).');\n"
-                    + "  </script>\n"
-                    + "  <noscript>\n"
-                    + "     Your browser does not support JavaScript so moving the mouse\n"
-                    + "     over the actors will not display their parameters. To enable\n"
-                    + "     JavaScript, consult the security preferences of your browser.\n"
-                    + "     <br/>See <a href=\"http://support.microsoft.com/gp/howtoscript\"><code>http://support.microsoft.com/gp/howtoscript</code></a> for details.\n"
-                    + "  </noscript>\n"
-                    + "</div>");
+        webElement
+                .setExpression("<div id=\"afterImage\">\n"
+                        + "  <script type=\"text/javascript\">\n"
+                        + "     writeText('Mouse over the icons to see their parameters. "
+                        + "Click on composites and plotters to reveal their contents (if provided).');\n"
+                        + "  </script>\n"
+                        + "  <noscript>\n"
+                        + "     Your browser does not support JavaScript so moving the mouse\n"
+                        + "     over the actors will not display their parameters. To enable\n"
+                        + "     JavaScript, consult the security preferences of your browser.\n"
+                        + "     <br/>See <a href=\"http://support.microsoft.com/gp/howtoscript\"><code>http://support.microsoft.com/gp/howtoscript</code></a> for details.\n"
+                        + "  </noscript>\n" + "</div>");
         exporter.defineElement(webElement, true);
-        }
+    }
 }

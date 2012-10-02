@@ -35,6 +35,7 @@ import ptolemy.actor.IOPort;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.util.DFUtilities;
 import ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.TypedCompositeActor;
+import ptolemy.cg.kernel.generic.CodeGeneratorAdapter;
 import ptolemy.cg.kernel.generic.GenericCodeGenerator;
 import ptolemy.cg.kernel.generic.program.CodeStream;
 import ptolemy.cg.kernel.generic.program.NamedProgramCodeGeneratorAdapter;
@@ -115,7 +116,7 @@ public class SDFDirector
         code.append(CodeStream.indent(getCodeGenerator().comment(
                 "SDFDirector: " + "Transfer tokens to the inside.")));
         int rate = DFUtilities.getTokenConsumptionRate(inputPort);
-        boolean targetCpp = ((BooleanToken) ((CCodeGenerator) getCodeGenerator()).generateCpp
+        boolean targetCpp = ((BooleanToken) getCodeGenerator().generateCpp
                 .getToken()).booleanValue();
 
         CompositeActor container = (CompositeActor) getComponent()
@@ -136,14 +137,12 @@ public class SDFDirector
             String portName = inputPort.getName();
 
             String exceptionMessage = "Failed to generate code "
-                + "to transfer tokens to for input. "
-                + "The type of the \"" + portName
-                + "\" output port was " + type
-                + ", which is not supported. "
-                + "Try setting the type of the \""
-                + portName
-                + "\" port by right clicking on the actor "
-                + "and selecting Customize -> Ports.";
+                    + "to transfer tokens to for input. "
+                    + "The type of the \"" + portName + "\" output port was "
+                    + type + ", which is not supported. "
+                    + "Try setting the type of the \"" + portName
+                    + "\" port by right clicking on the actor "
+                    + "and selecting Customize -> Ports.";
 
             for (int i = 0; i < inputPort.getWidth(); i++) {
                 if (i < inputPort.getWidthInside()) {
@@ -278,7 +277,7 @@ public class SDFDirector
                 "SDFDirector: " + "Transfer tokens to the outside.")));
 
         int rate = DFUtilities.getTokenProductionRate(outputPort);
-        boolean targetCpp = ((BooleanToken) ((CCodeGenerator) getCodeGenerator()).generateCpp
+        boolean targetCpp = ((BooleanToken) getCodeGenerator().generateCpp
                 .getToken()).booleanValue();
 
         CompositeActor container = (CompositeActor) getComponent()
@@ -317,14 +316,13 @@ public class SDFDirector
             Type type = ((TypedIOPort) outputPort).getType();
 
             String exceptionMessage = "Failed to generate code "
-                + "to transfer tokens to fulfill the output rate."
-                + "The type of the \"" + outputPort.getName()
-                + "\" output port was " + type
-                + ", which is not supported. "
-                + "Try setting the type of the \""
-                + outputPort.getName()
-                + "\" port by right clicking on the actor "
-                + "and selecting Customize -> Ports.";
+                    + "to transfer tokens to fulfill the output rate."
+                    + "The type of the \"" + outputPort.getName()
+                    + "\" output port was " + type
+                    + ", which is not supported. "
+                    + "Try setting the type of the \"" + outputPort.getName()
+                    + "\" port by right clicking on the actor "
+                    + "and selecting Customize -> Ports.";
 
             int numberOfChannels = outputPort.getWidthInside();
             code.append("jobjectArray " + tokensToThisPort + ";" + _eol);
@@ -381,11 +379,11 @@ public class SDFDirector
                                 targetCpp) + ";" + _eol);
             } else {
                 // FIXME: need to deal with other types
-                throw new IllegalActionException(outputPort,
-                        exceptionMessage);
+                throw new IllegalActionException(outputPort, exceptionMessage);
             }
 
-            System.out.println("cg SDFDirector: outputPort width: " + outputPort.getWidthInside());
+            System.out.println("cg SDFDirector: outputPort width: "
+                    + outputPort.getWidthInside());
             // Create an array to contain jni objects
             for (int i = 0; i < outputPort.getWidthInside(); i++) {
 
@@ -592,8 +590,7 @@ public class SDFDirector
 
         ProgramCodeGenerator codeGenerator = getCodeGenerator();
 
-        String name = NamedProgramCodeGeneratorAdapter
-                .generateName(getComponent());
+        String name = CodeGeneratorAdapter.generateName(getComponent());
         // Generate variable declarations for referenced parameters.
         String referencedParameterDeclaration = _generateReferencedParameterDeclaration(target);
         if (referencedParameterDeclaration.length() > 1) {
@@ -658,7 +655,7 @@ public class SDFDirector
             }
 
             code.append("static " + targetType(inputPort.getType()) + " "
-                    + NamedProgramCodeGeneratorAdapter.generateName(inputPort));
+                    + CodeGeneratorAdapter.generateName(inputPort));
 
             int bufferSize = _ports.getBufferSize(inputPort);
             if (inputPort.isMultiport()) {
@@ -697,11 +694,8 @@ public class SDFDirector
             // the output port has inside receivers.
             if (!outputPort.isOutsideConnected()
                     || outputPort.isInsideConnected()) {
-                code.append("static "
-                        + targetType(outputPort.getType())
-                        + " "
-                        + NamedProgramCodeGeneratorAdapter
-                                .generateName(outputPort));
+                code.append("static " + targetType(outputPort.getType()) + " "
+                        + CodeGeneratorAdapter.generateName(outputPort));
 
                 if (outputPort.isMultiport()) {
                     code.append("[" + outputPort.getWidthInside() + "]");

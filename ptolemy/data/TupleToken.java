@@ -165,12 +165,11 @@ public class TupleToken extends Token {
      *   support this comparison.
      *  @return A true-valued token if the argument is equal.
      */
-    public BooleanToken isEqualTo(Token token)
-            throws IllegalActionException {
+    public BooleanToken isEqualTo(Token token) throws IllegalActionException {
         if (getClass() != (token.getClass())) {
-            throw new IllegalActionException("isEqualTo not supported" +
-                        " between " + this.getType().toString() +
-                        " and " + token.getType().toString());
+            throw new IllegalActionException("isEqualTo not supported"
+                    + " between " + this.getType().toString() + " and "
+                    + token.getType().toString());
         }
 
         if (isNil() || token.isNil()) {

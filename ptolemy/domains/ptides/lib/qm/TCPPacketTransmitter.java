@@ -30,7 +30,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 package ptolemy.domains.ptides.lib.qm;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -38,15 +37,12 @@ import ptolemy.actor.Director;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.parameters.PortParameter;
-import ptolemy.actor.util.ConstructAssociativeType;
-import ptolemy.actor.util.ExtractFieldType;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.RecordToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
-import ptolemy.data.type.RecordType;
 import ptolemy.domains.ptides.kernel.PtidesBasicDirector;
 import ptolemy.domains.ptides.lib.OutputDevice;
 import ptolemy.graph.Inequality;
@@ -102,7 +98,7 @@ public class TCPPacketTransmitter extends OutputDevice {
         defaultFrameSize.setTypeEquals(BaseType.INT);
         _frameSize = 5;
 
-        priority = new Parameter(this,"Packet Priority");
+        priority = new Parameter(this, "Packet Priority");
         priority.setExpression("1");
         priority.setTypeEquals(BaseType.INT);
         _priority = 1;
@@ -114,27 +110,24 @@ public class TCPPacketTransmitter extends OutputDevice {
     }
 
     public void attributeChanged(Attribute attribute)
-        throws IllegalActionException {
+            throws IllegalActionException {
         if (attribute == defaultFrameSize) {
-            int value = ((IntToken) defaultFrameSize.getToken())
-                .intValue();
+            int value = ((IntToken) defaultFrameSize.getToken()).intValue();
             if (value <= 0) {
                 throw new IllegalActionException(this,
                         "Cannot have negative or zero frame size: " + value);
             }
-        _frameSize = value;
+            _frameSize = value;
         } else if (attribute == priority) {
-            int value = ((IntToken)priority.getToken())
-                .intValue();
-                if (value <= 0) {
-                    throw new IllegalActionException(this,
-                            "Cannot have negative or zero frame size: " + value);
-                }
-                _priority = value;
+            int value = ((IntToken) priority.getToken()).intValue();
+            if (value <= 0) {
+                throw new IllegalActionException(this,
+                        "Cannot have negative or zero frame size: " + value);
+            }
+            _priority = value;
         }
 
-    super.attributeChanged(attribute);
-
+        super.attributeChanged(attribute);
 
     }
 
@@ -156,16 +149,13 @@ public class TCPPacketTransmitter extends OutputDevice {
     /* User-Defined frame size port parameter. */
     public PortParameter frameSize;
 
-
     /** Fill-in and return fields of the TCP header as a RecordToken
      *
      */
-    public RecordToken getTCPHeader() throws IllegalActionException
-    {
-        String[] TCPHeaderLabels = new String[] {sourcePort, destinationPort,
-                                                 sequenceNumber, acknowledgementNumber,
-                                                 offsetControlBits, windowSize,
-                                                 checksum, urgentPointer,options};
+    public RecordToken getTCPHeader() throws IllegalActionException {
+        String[] TCPHeaderLabels = new String[] { sourcePort, destinationPort,
+                sequenceNumber, acknowledgementNumber, offsetControlBits,
+                windowSize, checksum, urgentPointer, options };
         short sourcePortContents = 0;
         short destinationPortContents = 0;
         int sequenceNumberContents = 0;
@@ -175,7 +165,7 @@ public class TCPPacketTransmitter extends OutputDevice {
         short checksumContents = 0;
         short urgentPointerContents = 0;
         // do it so for now. (should be short)
-        int optionsContents =_priority;
+        int optionsContents = _priority;
         Token[] TCPHeaderValues = new Token[] {
                 new IntToken(sourcePortContents),
                 new IntToken(destinationPortContents),
@@ -185,9 +175,9 @@ public class TCPPacketTransmitter extends OutputDevice {
                 new IntToken(windowSizeContents),
                 new IntToken(checksumContents),
                 new IntToken(urgentPointerContents),
-                new IntToken(optionsContents)
-                };
-        RecordToken TCPHeaderToken = new RecordToken(TCPHeaderLabels, TCPHeaderValues);
+                new IntToken(optionsContents) };
+        RecordToken TCPHeaderToken = new RecordToken(TCPHeaderLabels,
+                TCPHeaderValues);
         return TCPHeaderToken;
     }
 
@@ -206,7 +196,6 @@ public class TCPPacketTransmitter extends OutputDevice {
         super.fire();
         Director director = getDirector();
 
-
         if (director == null || !(director instanceof PtidesBasicDirector)) {
             throw new IllegalActionException(this, "Director expected to"
                     + "be a Ptides director, but it's not.");
@@ -223,19 +212,17 @@ public class TCPPacketTransmitter extends OutputDevice {
             try {
                 frameSize.update();
 
-                 _proposedFrameSize = ((IntToken)frameSize.getToken()).intValue();
-                 if (_proposedFrameSize > _packetLength)
-                 {
-                     //safe to apply frame size;
-                     _frameSize = _proposedFrameSize;
+                _proposedFrameSize = ((IntToken) frameSize.getToken())
+                        .intValue();
+                if (_proposedFrameSize > _packetLength) {
+                    //safe to apply frame size;
+                    _frameSize = _proposedFrameSize;
 
-                 }
-                 else
-                 {
-                     //cut the frame as it is.
-                     _frameSize = _packetLength +1;
+                } else {
+                    //cut the frame as it is.
+                    _frameSize = _packetLength + 1;
 
-                 }
+                }
             } catch (IllegalActionException ex) {
                 throw new InternalErrorException(this, ex,
                         "Should not be thrown because we have already "
@@ -248,25 +235,26 @@ public class TCPPacketTransmitter extends OutputDevice {
             Token[] values = new Token[] {
                     new DoubleToken(ptidesDirector.getModelTime()
                             .getDoubleValue()),
-                    new IntToken(ptidesDirector.getMicrostep()),  input.get(0) };
+                    new IntToken(ptidesDirector.getMicrostep()), input.get(0) };
             RecordToken record = new RecordToken(labels, values);
 
             // add the token into packet values List
             _tokenLabels.add(Integer.toString(_packetLength));
             _tokenValues.add(record);
-            _packetLength ++;
+            _packetLength++;
 
-
-
-            if (_packetLength >= _frameSize)
-            {
+            if (_packetLength >= _frameSize) {
                 RecordToken TCPHeader = getTCPHeader();
                 // form the packet that is ready to be sent
-                _completePayload = new RecordToken((String[])(_tokenLabels.toArray(new String[0])), (Token[])(_tokenValues.toArray(new Token[0])));
-                String[] fullTCPlabels = new String[]{TCPlabel, tokens};
-                Token[] fullTCPvalues = new Token[]{ TCPHeader, _completePayload};
+                _completePayload = new RecordToken(
+                        (_tokenLabels.toArray(new String[0])),
+                        (_tokenValues.toArray(new Token[0])));
+                String[] fullTCPlabels = new String[] { TCPlabel, tokens };
+                Token[] fullTCPvalues = new Token[] { TCPHeader,
+                        _completePayload };
 
-                RecordToken TCPFrame = new RecordToken(fullTCPlabels,fullTCPvalues);
+                RecordToken TCPFrame = new RecordToken(fullTCPlabels,
+                        fullTCPvalues);
                 // create packet to be sent;
                 output.send(0, TCPFrame);
                 _packetLength = 0;
@@ -274,31 +262,23 @@ public class TCPPacketTransmitter extends OutputDevice {
                 _tokenLabels.clear();
                 _tokenValues.clear();
                 // set the new frame size, if possible
-                if ((_proposedFrameSize > 0) && (_proposedFrameSize < MAX_FRAME_SIZE))
-                {
+                if ((_proposedFrameSize > 0)
+                        && (_proposedFrameSize < MAX_FRAME_SIZE)) {
                     _frameSize = _proposedFrameSize;
-                }
-                else
-                {
+                } else {
 
                     // ignore proposed frame size.
                 }
 
-
-            }
-            else
-            {
+            } else {
 
                 // keep saving.
             }
 
-        }
-        else
-        {
+        } else {
             _packetLength = 0;
         }
     }
-
 
     /** Perform a check to see if this device is connected to a network
      *  port on the outside. If not, throw an exception. Also call
@@ -312,8 +292,8 @@ public class TCPPacketTransmitter extends OutputDevice {
         super.preinitialize();
 
         boolean flag = false;
-        for (TypedIOPort output : (List<TypedIOPort>) outputPortList()) {
-            for (IOPort sinkPort : (List<IOPort>)output.sinkPortList()) {
+        for (TypedIOPort output : outputPortList()) {
+            for (IOPort sinkPort : output.sinkPortList()) {
                 if (sinkPort.getContainer() == getContainer()) {
                     flag = true;
                     break;
@@ -337,16 +317,18 @@ public class TCPPacketTransmitter extends OutputDevice {
     public void wrapup() throws IllegalActionException {
 
         // send last packet
-        if (_packetLength > 0 ) {
+        if (_packetLength > 0) {
             _frameSize = _packetLength;
 
             RecordToken TCPHeader = getTCPHeader();
             // form the packet that is ready to be sent
-            _completePayload = new RecordToken((String[])(_tokenLabels.toArray(new String[0])), (Token[])(_tokenValues.toArray(new Token[0])));
-            String[] fullTCPlabels = new String[]{TCPlabel, tokens};
-            Token[] fullTCPvalues = new Token[]{ TCPHeader, _completePayload};
+            _completePayload = new RecordToken(
+                    (_tokenLabels.toArray(new String[0])),
+                    (_tokenValues.toArray(new Token[0])));
+            String[] fullTCPlabels = new String[] { TCPlabel, tokens };
+            Token[] fullTCPvalues = new Token[] { TCPHeader, _completePayload };
 
-            RecordToken TCPFrame = new RecordToken(fullTCPlabels,fullTCPvalues);
+            RecordToken TCPFrame = new RecordToken(fullTCPlabels, fullTCPvalues);
             // create packet to be sent;
             output.send(0, TCPFrame);
             _packetLength = 0;
@@ -389,7 +371,7 @@ public class TCPPacketTransmitter extends OutputDevice {
         return null;
     }
 
-/*TCP Frame Field Labels */
+    /*TCP Frame Field Labels */
 
     /** label of the source port Field -- 16 bits.
      */
@@ -431,7 +413,7 @@ public class TCPPacketTransmitter extends OutputDevice {
     /** defining the options field but not including to the RecordToken as of now
      *  8 bytes --
      */
-    private static final String options =  "options";
+    private static final String options = "options";
 
     /** label of the timestamp that is transmitted within the RecordToken.
      */
@@ -449,10 +431,6 @@ public class TCPPacketTransmitter extends OutputDevice {
 
     // data tokens
     private static final String tokens = "tokens";
-
-    private static final String TCPpriority = "priority";
-
-
 
     /* The TCP Packet Token To be sent to the network fabric*/
     private RecordToken _completePayload;
@@ -474,6 +452,5 @@ public class TCPPacketTransmitter extends OutputDevice {
 
     /* Limit on Maximum Frame Size*/
     private static final int MAX_FRAME_SIZE = 20;
-
 
 }

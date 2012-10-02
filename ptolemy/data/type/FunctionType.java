@@ -164,8 +164,7 @@ public class FunctionType extends StructuredType implements Cloneable {
         if (object == this) {
             return true;
         }
-        if ((object == null)
-                    || (object.getClass() != getClass())) {
+        if ((object == null) || (object.getClass() != getClass())) {
             return false;
         } else {
             FunctionType functionType = (FunctionType) object;
@@ -673,8 +672,7 @@ public class FunctionType extends StructuredType implements Cloneable {
             if (object == this) {
                 return true;
             }
-            if ((object == null)
-                    || (object.getClass() != getClass())) {
+            if ((object == null) || (object.getClass() != getClass())) {
                 return false;
             } else {
                 FieldTypeTerm fieldTypeTerm = (FieldTypeTerm) object;
@@ -727,6 +725,7 @@ public class FunctionType extends StructuredType implements Cloneable {
             }
             return hashCode;
         }
+
         /** Reset the variable part of the element type to the specified
          *  type.
          *  @param e A Type.

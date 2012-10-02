@@ -186,7 +186,7 @@ public class TypedAtomicActor extends AtomicActor<TypedIOPort> implements
     public boolean isBackwardTypeInferenceEnabled() {
         NamedObj container = getContainer();
         if (container != null && container instanceof TypedActor) {
-            return ((TypedActor)container).isBackwardTypeInferenceEnabled();
+            return ((TypedActor) container).isBackwardTypeInferenceEnabled();
         }
         return false;
     }
@@ -261,8 +261,9 @@ public class TypedAtomicActor extends AtomicActor<TypedIOPort> implements
             }
 
             // collect constraints from contained Typeables
-            if ((cts = _containedTypeConstraints()) != null)
+            if ((cts = _containedTypeConstraints()) != null) {
                 _cachedTypeConstraints.addAll(cts);
+            }
 
             // validate cached type constraints
             _typeConstraintsVersion = _workspace.getVersion();
@@ -338,8 +339,8 @@ public class TypedAtomicActor extends AtomicActor<TypedIOPort> implements
                 }
                 // 2) only set default constraint of none are set already
                 if (inPortConstraints.isEmpty() && outPortConstraints.isEmpty()) {
-                    result.add(new Inequality(input.getTypeTerm(),
-                            output.getTypeTerm()));
+                    result.add(new Inequality(input.getTypeTerm(), output
+                            .getTypeTerm()));
                 }
             }
         }

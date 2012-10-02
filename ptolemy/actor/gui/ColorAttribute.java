@@ -64,8 +64,8 @@ public class ColorAttribute extends Parameter {
      *  @exception NameDuplicationException If the name coincides with
      *   an attribute already in the container.
      */
-    public ColorAttribute(String name)
-        throws IllegalActionException, NameDuplicationException {
+    public ColorAttribute(String name) throws IllegalActionException,
+            NameDuplicationException {
         super();
         setTypeEquals(new ArrayType(BaseType.DOUBLE));
     }

@@ -167,14 +167,14 @@ public class UnionDisassembler extends TypedAtomicActor {
         // constrain the fields in the input union to be greater than or
         // equal to the declared or resolved types of the output ports:
         // input >= {| x = typeOf(outputPortX), y = typeOf(outputPortY), ..|}
-        result.add(new Inequality(new ConstructAssociativeType(outputPortList(),
-                UnionType.class), input.getTypeTerm()));
+        result.add(new Inequality(new ConstructAssociativeType(
+                outputPortList(), UnionType.class), input.getTypeTerm()));
 
         for (TypedIOPort output : outputPortList()) {
             // constrain each output to be >= the type of the corresponding
             // field inside the input union
-            result.add(new Inequality(new ExtractFieldType(input,
-                    output.getName()), output.getTypeTerm()));
+            result.add(new Inequality(new ExtractFieldType(input, output
+                    .getName()), output.getTypeTerm()));
         }
 
         // NOTE: refrain from using port.setTypeAtMost() or

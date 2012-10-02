@@ -43,7 +43,6 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 import ptolemy.util.MessageHandler;
 
-
 ///////////////////////////////////////////////////////////////////
 //// RendezvousDirector
 
@@ -74,7 +73,8 @@ public class RendezvousDirector extends CompositeProcessDirector {
      *  @exception NameDuplicationException If construction of Time objects fails.
      *  @exception IllegalActionException If construction of Time objects fails.
      */
-    public RendezvousDirector() throws IllegalActionException, NameDuplicationException {
+    public RendezvousDirector() throws IllegalActionException,
+            NameDuplicationException {
         super();
     }
 
@@ -85,7 +85,8 @@ public class RendezvousDirector extends CompositeProcessDirector {
      *  @exception NameDuplicationException If construction of Time objects fails.
      *  @exception IllegalActionException If construction of Time objects fails.
      */
-    public RendezvousDirector(Workspace workspace) throws IllegalActionException, NameDuplicationException {
+    public RendezvousDirector(Workspace workspace)
+            throws IllegalActionException, NameDuplicationException {
         super(workspace);
     }
 
@@ -118,10 +119,12 @@ public class RendezvousDirector extends CompositeProcessDirector {
      *  an attribute that cannot be cloned.
      */
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        RendezvousDirector newObject = (RendezvousDirector) super.clone(workspace);
+        RendezvousDirector newObject = (RendezvousDirector) super
+                .clone(workspace);
         newObject._resultMaps = new HashMap();
         return newObject;
     }
+
     /** Return a new instance of RendezvousReceiver compatible with
      *  this director.
      *  @return A new instance of RendezvousReceiver.

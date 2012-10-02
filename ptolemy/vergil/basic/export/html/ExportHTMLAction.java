@@ -132,7 +132,8 @@ import diva.graph.GraphController;
  * @Pt.ProposedRating Yellow (eal)
  * @Pt.AcceptedRating Red (eal)
  */
-public class ExportHTMLAction extends AbstractAction implements HTMLExportable, WebExporter {
+public class ExportHTMLAction extends AbstractAction implements HTMLExportable,
+        WebExporter {
 
     /** Create a new action to export HTML.
      *  @param basicGraphFrame The Vergil window to export.
@@ -154,11 +155,16 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable, 
         NamedObj model = _basicGraphFrame.getModel();
         WebExportParameters defaultParameters = null;
         try {
-            List<WebExportParameters> defaultParameterList = model.attributeList(WebExportParameters.class);
-            if (defaultParameterList == null || defaultParameterList.size() == 0) {
-                defaultParameterList = _basicGraphFrame.getConfiguration().attributeList(WebExportParameters.class);
-                if (defaultParameterList == null || defaultParameterList.size() == 0) {
-                    defaultParameters = new WebExportParameters(model, model.uniqueName("_defaultWebExportParameters"));
+            List<WebExportParameters> defaultParameterList = model
+                    .attributeList(WebExportParameters.class);
+            if (defaultParameterList == null
+                    || defaultParameterList.size() == 0) {
+                defaultParameterList = _basicGraphFrame.getConfiguration()
+                        .attributeList(WebExportParameters.class);
+                if (defaultParameterList == null
+                        || defaultParameterList.size() == 0) {
+                    defaultParameters = new WebExportParameters(model,
+                            model.uniqueName("_defaultWebExportParameters"));
                     // We want this new attribute to look as if it were part of
                     // its container's class definition so that it does not get
                     // exported to MoML unless it changes in some way, e.g. one
@@ -169,13 +175,15 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable, 
             if (defaultParameters == null) {
                 defaultParameters = defaultParameterList.get(0);
             }
-            EditParametersDialog dialog = new EditParametersDialog(_basicGraphFrame, defaultParameters,
-                    "Export to Web for " + model.getName());
+            EditParametersDialog dialog = new EditParametersDialog(
+                    _basicGraphFrame, defaultParameters, "Export to Web for "
+                            + model.getName());
             if (!dialog.buttonPressed().equals("Commit")) {
                 return;
             }
 
-            ExportParameters parameters = defaultParameters.getExportParameters();
+            ExportParameters parameters = defaultParameters
+                    .getExportParameters();
             // Set the copy directory target to null to indicate that no copying
             // of files has happened.
             parameters.setJSCopier(null);
@@ -197,7 +205,8 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable, 
     public static boolean copyJavaScriptFilesIfNeeded(
             final BasicGraphFrame graphFrame, final ExportParameters parameters) {
         // First, if appropriate, copy needed files.
-        boolean usePtWebsite = Boolean.valueOf(StringUtilities.getProperty("ptolemy.ptII.exportHTML.usePtWebsite"));
+        boolean usePtWebsite = Boolean.valueOf(StringUtilities
+                .getProperty("ptolemy.ptII.exportHTML.usePtWebsite"));
         usePtWebsite = usePtWebsite || parameters.usePtWebsite;
         if (parameters.copyJavaScriptFiles && !usePtWebsite) {
             // Copy Javascript source files into destination directory,
@@ -210,23 +219,27 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable, 
             // We assume that if the directory exists, then the files exist.
             if (jsDirectory.isDirectory()) {
                 // Copy files into the "javascript" directory.
-                File jsTargetDirectory = new File(parameters.directoryToExportTo, "javascript");
-                if (jsTargetDirectory.exists() && !jsTargetDirectory.isDirectory()) {
-                    File jsBackupDirectory = new File(parameters.directoryToExportTo, "javascript.bak");
+                File jsTargetDirectory = new File(
+                        parameters.directoryToExportTo, "javascript");
+                if (jsTargetDirectory.exists()
+                        && !jsTargetDirectory.isDirectory()) {
+                    File jsBackupDirectory = new File(
+                            parameters.directoryToExportTo, "javascript.bak");
                     if (!jsTargetDirectory.renameTo(jsBackupDirectory)) {
                         // It is ok to ignore this.
-                        System.out.println("Failed to rename \"" + jsTargetDirectory
-                                + "\" to \"" + jsBackupDirectory + "\"");
+                        System.out.println("Failed to rename \""
+                                + jsTargetDirectory + "\" to \""
+                                + jsBackupDirectory + "\"");
                     }
                 }
                 if (!jsTargetDirectory.exists() && !jsTargetDirectory.mkdir()) {
                     try {
-                        MessageHandler.warning(
-                                "Warning: Cannot find required JavaScript, CSS, and image files"
-                                + " for lightbox effect implemented by the fancybox"
-                                + " package. Perhaps your Ptolemy II"
-                                + " installation does not include them."
-                                + " Will use the files on ptolemy.org.");
+                        MessageHandler
+                                .warning("Warning: Cannot find required JavaScript, CSS, and image files"
+                                        + " for lightbox effect implemented by the fancybox"
+                                        + " package. Perhaps your Ptolemy II"
+                                        + " installation does not include them."
+                                        + " Will use the files on ptolemy.org.");
                     } catch (CancelException e) {
                         // Cancel the action.
                         return false;
@@ -236,18 +249,16 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable, 
                     // Copy css, JavaScript, and image files.
                     for (String filename : FILENAMES) {
                         try {
-                            URL lightboxFile = FileUtilities
-                                    .nameToURL(
-                                            jsDirectoryName + filename,
-                                            null, null);
-                            FileUtilities.binaryCopyURLToFile(lightboxFile, new File(
-                                    jsTargetDirectory, filename));
+                            URL lightboxFile = FileUtilities.nameToURL(
+                                    jsDirectoryName + filename, null, null);
+                            FileUtilities.binaryCopyURLToFile(lightboxFile,
+                                    new File(jsTargetDirectory, filename));
                         } catch (IOException e) {
                             try {
-                                MessageHandler.warning(
-                                        "Warning: failed to copy required files."
-                                        + " Use the files on ptolemy.org? "
-                                        + e.getMessage());
+                                MessageHandler
+                                        .warning("Warning: failed to copy required files."
+                                                + " Use the files on ptolemy.org? "
+                                                + e.getMessage());
                             } catch (CancelException e1) {
                                 // Cancel the action.
                                 return false;
@@ -287,20 +298,18 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable, 
      *  @return True if the specified attribute and value was defined (i.e.,
      *   if there was a previous value, it was overwritten).
      */
-    public boolean defineAttribute(WebAttribute webAttribute,
-            boolean overwrite) {
+    public boolean defineAttribute(WebAttribute webAttribute, boolean overwrite) {
         if (webAttribute.getContainer() != null) {
             NamedObj object = webAttribute.getContainer();
-                HashMap<String,String> areaTable =
-                _areaAttributes.get(object);
+            HashMap<String, String> areaTable = _areaAttributes.get(object);
             if (areaTable == null) {
                 // No previously defined table. Add one.
-                areaTable = new HashMap<String,String>();
+                areaTable = new HashMap<String, String>();
                 _areaAttributes.put(object, areaTable);
             }
             if (overwrite || areaTable.get(webAttribute.getWebName()) == null) {
                 areaTable.put(webAttribute.getWebName(),
-                       _escapeString(webAttribute.getExpression()));
+                        _escapeString(webAttribute.getExpression()));
                 return true;
             }
         }
@@ -350,8 +359,7 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable, 
      *   making the exported web page independent of the ptolemy.org site.
      */
     public static synchronized void exportToWeb(
-            final BasicGraphFrame graphFrame,
-            final ExportParameters parameters) {
+            final BasicGraphFrame graphFrame, final ExportParameters parameters) {
         try {
 
             if (parameters.directoryToExportTo == null) {
@@ -360,39 +368,47 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable, 
             }
 
             // See whether the directory has a file called index.html.
-            final File indexFile = new File(parameters.directoryToExportTo, "index.html");
+            final File indexFile = new File(parameters.directoryToExportTo,
+                    "index.html");
             if (parameters.directoryToExportTo.exists()) {
                 // Previously, if directory existed and was a directory, we would always pop
                 // up a dialog stating that the directory existed and that the contents would
                 // be overwritten.  This seems excessive because the dialog will always
                 // be shown.
                 if (indexFile.exists()) {
-                    if (!MessageHandler.yesNoQuestion("\"" + parameters.directoryToExportTo
-                            + "\" exists and contains an index.html file. Overwrite contents?")) {
+                    if (!MessageHandler
+                            .yesNoQuestion("\""
+                                    + parameters.directoryToExportTo
+                                    + "\" exists and contains an index.html file. Overwrite contents?")) {
                         MessageHandler.message("HTML export canceled.");
                         return;
                     }
                 }
                 if (!parameters.directoryToExportTo.isDirectory()) {
                     if (!MessageHandler
-                            .yesNoQuestion("\"" + parameters.directoryToExportTo
+                            .yesNoQuestion("\""
+                                    + parameters.directoryToExportTo
                                     + "\" is a file, not a directory. Delete the file named \""
-                                    + parameters.directoryToExportTo + "\" and create a directory with that name?")) {
+                                    + parameters.directoryToExportTo
+                                    + "\" and create a directory with that name?")) {
                         MessageHandler.message("HTML export canceled.");
                         return;
                     }
                     if (!parameters.directoryToExportTo.delete()) {
-                        MessageHandler.message("Unable to delete file \"" + parameters.directoryToExportTo + "\".");
+                        MessageHandler.message("Unable to delete file \""
+                                + parameters.directoryToExportTo + "\".");
                         return;
                     }
                     if (!parameters.directoryToExportTo.mkdir()) {
-                        MessageHandler.message("Unable to create directory \"" + parameters.directoryToExportTo + "\".");
+                        MessageHandler.message("Unable to create directory \""
+                                + parameters.directoryToExportTo + "\".");
                         return;
                     }
                 }
             } else {
                 if (!parameters.directoryToExportTo.mkdir()) {
-                    MessageHandler.message("Unable to create directory \"" + parameters.directoryToExportTo + "\".");
+                    MessageHandler.message("Unable to create directory \""
+                            + parameters.directoryToExportTo + "\".");
                     return;
                 }
             }
@@ -405,7 +421,8 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable, 
             // Using a null here causes the write to occur to an index.html file.
             final PrintWriter writer = null;
 
-            openRunAndWriteHTML(graphFrame, parameters, indexFile, writer, false);
+            openRunAndWriteHTML(graphFrame, parameters, indexFile, writer,
+                    false);
         } catch (Exception ex) {
             MessageHandler.error("Unable to export to web.", ex);
             throw new RuntimeException(ex);
@@ -443,27 +460,27 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable, 
      *   which is required to be the Swing event thread.
      *  @exception IllegalActionException If something goes wrong.
      */
-    public static void openRunAndWriteHTML(
-            final BasicGraphFrame graphFrame,
-            final ExportParameters parameters,
-            final File indexFile,
-            final Writer writer,
-            final boolean waitForCompletion)
-                    throws IllegalActionException {
+    public static void openRunAndWriteHTML(final BasicGraphFrame graphFrame,
+            final ExportParameters parameters, final File indexFile,
+            final Writer writer, final boolean waitForCompletion)
+            throws IllegalActionException {
         if (graphFrame == null) {
-            throw new IllegalActionException("Cannot export without a graphFrame.");
+            throw new IllegalActionException(
+                    "Cannot export without a graphFrame.");
         }
         // Open submodels, if appropriate.
         final Set<Tableau> tableauxToClose = new HashSet<Tableau>();
         if (parameters.openCompositesBeforeExport) {
             NamedObj model = graphFrame.getModel();
-            Effigy masterEffigy = Configuration.findEffigy(graphFrame.getModel());
+            Effigy masterEffigy = Configuration.findEffigy(graphFrame
+                    .getModel());
             if (model instanceof CompositeEntity) {
                 // graphFrame.getModel() might return a
                 // PteraController, which is not a CompositeActor.
-                List<Entity> entities = ((CompositeEntity)model).entityList();
+                List<Entity> entities = ((CompositeEntity) model).entityList();
                 for (Entity entity : entities) {
-                    _openEntity(entity, tableauxToClose, masterEffigy, graphFrame);
+                    _openEntity(entity, tableauxToClose, masterEffigy,
+                            graphFrame);
                 }
             }
         }
@@ -480,13 +497,15 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable, 
                     NamedObj model = graphFrame.getModel();
 
                     // If parameters are set to run the model, then do that.
-                    if (parameters.runBeforeExport && model instanceof CompositeActor) {
+                    if (parameters.runBeforeExport
+                            && model instanceof CompositeActor) {
                         // Run the model.
-                        Manager manager = ((CompositeActor)model).getManager();
+                        Manager manager = ((CompositeActor) model).getManager();
                         if (manager == null) {
-                            manager = new Manager(((CompositeActor)model).workspace(),
+                            manager = new Manager(
+                                    ((CompositeActor) model).workspace(),
                                     "MyManager");
-                            ((CompositeActor)model).setManager(manager);
+                            ((CompositeActor) model).setManager(manager);
                         }
                         manager.execute();
                     }
@@ -504,24 +523,33 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable, 
                                 graphFrame.writeHTML(parameters, writer);
 
                                 // Finally, if requested, show the exported page.
-                                if (parameters.showInBrowser && indexFile != null) {
-                                    Configuration configuration = graphFrame.getConfiguration();
+                                if (parameters.showInBrowser
+                                        && indexFile != null) {
+                                    Configuration configuration = graphFrame
+                                            .getConfiguration();
                                     try {
-                                        URL indexURL = new URL(indexFile.toURI().toURL().toString() + "#in_browser");
-                                        configuration.openModel(indexURL, indexURL, indexURL.toExternalForm(),
+                                        URL indexURL = new URL(indexFile
+                                                .toURI().toURL().toString()
+                                                + "#in_browser");
+                                        configuration.openModel(indexURL,
+                                                indexURL,
+                                                indexURL.toExternalForm(),
                                                 BrowserEffigy.staticFactory);
                                     } catch (Throwable throwable) {
-                                        MessageHandler.error("Failed to open \"" + indexFile + "\".", throwable);
+                                        MessageHandler.error(
+                                                "Failed to open \"" + indexFile
+                                                        + "\".", throwable);
                                         throw new RuntimeException(throwable);
                                     }
                                 }
                             } catch (Exception ex) {
-                                MessageHandler.error("Unable to export to web.", ex);
+                                MessageHandler.error(
+                                        "Unable to export to web.", ex);
                                 throw new RuntimeException(ex);
                             } finally {
                                 // Export is finally finished.
                                 _exportInProgress = false;
-                                synchronized(ExportHTMLAction.class) {
+                                synchronized (ExportHTMLAction.class) {
                                     ExportHTMLAction.class.notifyAll();
                                 }
                                 for (Tableau tableau : tableauxToClose) {
@@ -561,7 +589,6 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable, 
         _title = StringUtilities.escapeForXML(title);
         _showTitleInHTML = showInHTML;
     }
-
 
     /** Wait for the current invocation of {@link #exportToWeb(BasicGraphFrame, ExportParameters)}
      *  to complete. If there is not one in progress, return immediately.
@@ -608,7 +635,8 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable, 
         // Invoke with -Dptolemy.ptII.usePtWebsite=true to get Server
         // Side Includes (SSI).  FIXME: this is a bit of a hack, we should
         // use templates instead.
-        boolean usePtWebsite = Boolean.valueOf(StringUtilities.getProperty("ptolemy.ptII.exportHTML.usePtWebsite"));
+        boolean usePtWebsite = Boolean.valueOf(StringUtilities
+                .getProperty("ptolemy.ptII.exportHTML.usePtWebsite"));
         usePtWebsite = usePtWebsite || parameters.usePtWebsite;
 
         File indexFile = null;
@@ -624,16 +652,18 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable, 
             NamedObj model = _basicGraphFrame.getModel();
             // Use a sanitized model name and avoid problems with special characters in file names.
             _sanitizedModelName = StringUtilities.sanitizeName(model.getName());
-            File gifFile = new File(parameters.directoryToExportTo, _sanitizedModelName + ".gif");
+            File gifFile = new File(parameters.directoryToExportTo,
+                    _sanitizedModelName + ".gif");
             OutputStream out = new FileOutputStream(gifFile);
             try {
-                _basicGraphFrame.writeImage(out, "gif", parameters.backgroundColor);
+                _basicGraphFrame.writeImage(out, "gif",
+                        parameters.backgroundColor);
             } finally {
                 out.close();
             }
             // Initialize the data structures into which content is collected.
-            _areaAttributes = new HashMap<NamedObj,HashMap<String,String>>();
-            _contents = new HashMap<String,List<StringBuffer>>();
+            _areaAttributes = new HashMap<NamedObj, HashMap<String, String>>();
+            _contents = new HashMap<String, List<StringBuffer>>();
             _end = new LinkedList<StringBuffer>();
             _head = new LinkedList<StringBuffer>();
             _start = new LinkedList<StringBuffer>();
@@ -648,13 +678,13 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable, 
 
             // Next, collect the web content specified by the instances
             // of WebExportable contained by the model.
-            List<WebExportable> exportables =
-                model.attributeList(WebExportable.class);
+            List<WebExportable> exportables = model
+                    .attributeList(WebExportable.class);
 
             // Plus, collect the web content specified by the contained
             // objects of the model.
-            Iterator<NamedObj> contentsIterator =
-                    model.containedObjectsIterator();
+            Iterator<NamedObj> contentsIterator = model
+                    .containedObjectsIterator();
             while (contentsIterator.hasNext()) {
                 NamedObj containedObject = contentsIterator.next();
                 exportables.addAll(containedObject
@@ -677,12 +707,12 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable, 
                 _start.add(2, new StringBuffer("</h1>\n"));
             }
 
-           // System.out.println("Location of index.html: "+parameters.directoryToExportTo);
+            // System.out.println("Location of index.html: "+parameters.directoryToExportTo);
 
             // Next, create an HTML file.
             if (writer == null) {
-                indexFile =
-                    new File(parameters.directoryToExportTo, "index.html");
+                indexFile = new File(parameters.directoryToExportTo,
+                        "index.html");
                 Writer indexWriter = new FileWriter(indexFile);
                 printWriter = new PrintWriter(indexWriter);
             } else {
@@ -693,10 +723,13 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable, 
             // http://validator.w3.org/
             // We use println so as to get the correct eol character for
             // the local platform.
-            printWriter.println("<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">");
-            printWriter.println("<html xmlns=\"http://www.w3.org/1999/xhtml\" xml:lang=\"en-US\" lang=\"en-US\">");
+            printWriter
+                    .println("<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">");
+            printWriter
+                    .println("<html xmlns=\"http://www.w3.org/1999/xhtml\" xml:lang=\"en-US\" lang=\"en-US\">");
             printWriter.println("<head>");
-            printWriter.println("<meta http-equiv=\"Content-Type\" content=\"text/html; charset=iso-8859-1\"/>");
+            printWriter
+                    .println("<meta http-equiv=\"Content-Type\" content=\"text/html; charset=iso-8859-1\"/>");
 
             // Define the path to the SSI files on the ptolemy site.
             String ssiRoot = "http://ptolemy.org/";
@@ -717,32 +750,48 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable, 
                 // FIXME: This can fail if we export a submodel only but
                 // the enclosing model has its copyJavaScriptFiles parameter
                 // set to true!
-                String copiedLibrary = _findCopiedLibrary(model, "", parameters.getJSCopier());
+                String copiedLibrary = _findCopiedLibrary(model, "",
+                        parameters.getJSCopier());
                 if (copiedLibrary != null) {
                     jsLibrary = copiedLibrary;
                 }
             }
 
-            printWriter.println("<link rel=\"stylesheet\" type=\"text/css\" href=\"" + jsLibrary + "javascript/" + FILENAMES[2] + "\" media=\"screen\"/>");
+            printWriter
+                    .println("<link rel=\"stylesheet\" type=\"text/css\" href=\""
+                            + jsLibrary
+                            + "javascript/"
+                            + FILENAMES[2]
+                            + "\" media=\"screen\"/>");
             if (usePtWebsite) {
                 // FIXME: this absolute path is not very safe.  The
                 // problem is that we don't know where $PTII is located on
                 // the website.
-                printWriter.println("<link href=\""
-                        + ssiRoot
-                        + "ptolemyII/ptIIlatest/ptII/doc/default.css\" rel=\"stylesheet\" type=\"text/css\"/>");
+                printWriter
+                        .println("<link href=\""
+                                + ssiRoot
+                                + "ptolemyII/ptIIlatest/ptII/doc/default.css\" rel=\"stylesheet\" type=\"text/css\"/>");
             }
 
             // Title needed for the HTML validator.
             printWriter.println("<title>" + _title + "</title>");
 
             // NOTE: Due to a bug somewhere (browser, Javascript, etc.), can't end this with />. Have to use </script>.
-            printWriter.println("<script type=\"text/javascript\" src=\"" + jsLibrary + "javascript/" + FILENAMES[0] + "\"></script>");
-            printWriter.println("<script type=\"text/javascript\" src=\"" + jsLibrary + "javascript/" + FILENAMES[1] + "\"></script>");
+            printWriter
+                    .println("<script type=\"text/javascript\" src=\""
+                            + jsLibrary + "javascript/" + FILENAMES[0]
+                            + "\"></script>");
+            printWriter
+                    .println("<script type=\"text/javascript\" src=\""
+                            + jsLibrary + "javascript/" + FILENAMES[1]
+                            + "\"></script>");
 
             // FILENAMES[2] is a stylesheet <link, so it goes in the head, see above.
 
-            printWriter.println("<script type=\"text/javascript\" src=\"" + jsLibrary + "javascript/" + FILENAMES[3] + "\"></script>");
+            printWriter
+                    .println("<script type=\"text/javascript\" src=\""
+                            + jsLibrary + "javascript/" + FILENAMES[3]
+                            + "\"></script>");
             // Could alternatively use a CDS (Content Delivery Service) for the JavaScript library for jquery.
             // index.println("<script type=\"text/javascript\" src=\"http://ajax.googleapis.com/ajax/libs/jquery/1.4/jquery.min.js\"></script>");
 
@@ -757,9 +806,11 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable, 
             if (usePtWebsite) {
                 // Reference the server-side includes.
                 // toppremenu.htm includes </head>...<body>
-                printWriter.println("<!--#include virtual=\"/ssi/toppremenu.htm\" -->");
+                printWriter
+                        .println("<!--#include virtual=\"/ssi/toppremenu.htm\" -->");
                 printWriter.println("<!--#include virtual=\"toc.htm\" -->");
-                printWriter.println("<!--#include virtual=\"/ssi/toppostmenu.htm\" -->");
+                printWriter
+                        .println("<!--#include virtual=\"/ssi/toppostmenu.htm\" -->");
             } else {
                 // The Ptolemy website headers include the closing </head> and <body tag>
                 printWriter.println("</head><body>");
@@ -767,11 +818,13 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable, 
 
             _printHTML(printWriter, "start");
 
-            boolean linkToJNLP = Boolean.valueOf(StringUtilities.getProperty("ptolemy.ptII.exportHTML.linkToJNLP"));
+            boolean linkToJNLP = Boolean.valueOf(StringUtilities
+                    .getProperty("ptolemy.ptII.exportHTML.linkToJNLP"));
             if (linkToJNLP && model.getContainer() == null) {
                 printWriter.println("Below is a browsable image of the model. "
                         + "For an executable version, go to the "
-                        + "<a href=\"../" + _sanitizedModelName + ".jnlp\">WebStart version</a>.");
+                        + "<a href=\"../" + _sanitizedModelName
+                        + ".jnlp\">WebStart version</a>.");
             }
             // Put the image in.
             printWriter.println("<img src=\"" + _sanitizedModelName
@@ -787,16 +840,19 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable, 
             } else {
                 printWriter.println("<!-- /body -->");
                 printWriter.println("<!-- /html -->");
-                printWriter.println("<!--#include virtual=\"/ssi/bottom.htm\" -->");
+                printWriter
+                        .println("<!--#include virtual=\"/ssi/bottom.htm\" -->");
 
                 // Start the top of the toc.htm file.
                 _addContent("toc.htm", false, "<div id=\"menu\">");
                 _addContent("toc.htm", false, "<ul>");
-                _addContent("toc.htm", false, "<li><a href=\"/index.htm\">Ptolemy Home</a></li>");
+                _addContent("toc.htm", false,
+                        "<li><a href=\"/index.htm\">Ptolemy Home</a></li>");
                 _addContent("toc.htm", false, "</ul>");
                 _addContent("toc.htm", false, "");
                 _addContent("toc.htm", false, "<ul>");
-                _addContent("toc.htm", false, " <li><a href=\"../index.html\">Up</a></li>");
+                _addContent("toc.htm", false,
+                        " <li><a href=\"../index.html\">Up</a></li>");
                 _addContent("toc.htm", false, "</ul>");
                 _addContent("toc.htm", false, "<ul>");
 
@@ -823,7 +879,8 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable, 
 
                         // (cd $PTII/doc/papers/y12/designContracts; $PTII/bin/ptinvoke -Dptolemy.ptII.exportHTML.linkToJNLP=true -Dptolemy.ptII.exportHTML.usePtWebsite=true ptolemy.vergil.basic.export.ExportModel -run -whiteBackground -openComposites htm DCMotorTol.xml)
 
-                        System.out.println("Warning, key of tocContents was empty?");
+                        System.out
+                                .println("Warning, key of tocContents was empty?");
                         continue;
                     }
                     // NOTE: A RESTful version of this would create a resource
@@ -833,11 +890,14 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable, 
                     // but it does seem to do that, so I assume that's what it does.
                     Writer fileWriter = null;
                     try {
-                        fileWriter = new FileWriter(new File(parameters.directoryToExportTo, key));
+                        fileWriter = new FileWriter(new File(
+                                parameters.directoryToExportTo, key));
                     } catch (IOException ex) {
-                        throw new IllegalActionException(model, ex, "Could not open a FileWriter "
-                                + "in directory \"" + parameters.directoryToExportTo + "\" and file \""
-                                + key + "\".");
+                        throw new IllegalActionException(model, ex,
+                                "Could not open a FileWriter "
+                                        + "in directory \""
+                                        + parameters.directoryToExportTo
+                                        + "\" and file \"" + key + "\".");
 
                     }
                     PrintWriter otherWriter = new PrintWriter(fileWriter);
@@ -878,33 +938,16 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable, 
      */
     // FIXME: I don't like the hardwired version numbers here.
     // Findbugs wants this package protected and final.
-    final static String[] FILENAMES = {
-            "jquery-1.4.3.min.js",
-            "jquery.fancybox-1.3.4.pack.js",
-            "jquery.fancybox-1.3.4.css",
-            "pt-1.0.0.js",
-            "blank.gif",
-            "fancybox.png",
-            "fancybox-y.png",
-            "fancybox-x.png",
-            "fancy_title_right.png",
-            "fancy_title_over.png",
-            "fancy_title_main.png",
-            "fancy_title_left.png",
-            "fancy_shadow_w.png",
-            "fancy_shadow_sw.png",
-            "fancy_shadow_se.png",
-            "fancy_shadow_s.png",
-            "fancy_shadow_nw.png",
-            "fancy_shadow_ne.png",
-            "fancy_shadow_n.png",
-            "fancy_shadow_e.png",
-            "fancy_nav_right.png",
-            "fancy_nav_left.png",
-            "fancy_loading.png",
-            "fancy_close.png",
-            "javascript-license.htm"
-    };
+    final static String[] FILENAMES = { "jquery-1.4.3.min.js",
+            "jquery.fancybox-1.3.4.pack.js", "jquery.fancybox-1.3.4.css",
+            "pt-1.0.0.js", "blank.gif", "fancybox.png", "fancybox-y.png",
+            "fancybox-x.png", "fancy_title_right.png", "fancy_title_over.png",
+            "fancy_title_main.png", "fancy_title_left.png",
+            "fancy_shadow_w.png", "fancy_shadow_sw.png", "fancy_shadow_se.png",
+            "fancy_shadow_s.png", "fancy_shadow_nw.png", "fancy_shadow_ne.png",
+            "fancy_shadow_n.png", "fancy_shadow_e.png", "fancy_nav_right.png",
+            "fancy_nav_left.png", "fancy_loading.png", "fancy_close.png",
+            "javascript-license.htm" };
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
@@ -929,10 +972,12 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable, 
         for (IconVisibleLocation location : iconLocations) {
             // This string will have at least one space at the start and the end.
             StringBuffer attributeString = new StringBuffer(" ");
-            String title = "Actor";  // Default in case there is no title key.
-            HashMap<String,String> areaAttributes = _areaAttributes.get(location.object);
+            String title = "Actor"; // Default in case there is no title key.
+            HashMap<String, String> areaAttributes = _areaAttributes
+                    .get(location.object);
             if (areaAttributes != null) {
-                for (Map.Entry<String,String> entry : areaAttributes.entrySet()) {
+                for (Map.Entry<String, String> entry : areaAttributes
+                        .entrySet()) {
                     String key = entry.getKey();
                     String value = entry.getValue();
                     // If the value is empty, omit the entry.
@@ -942,20 +987,18 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable, 
                         }
                         attributeString.append(key);
                         attributeString.append("=\"");
-                        attributeString.append(StringUtilities.escapeString(value));
+                        attributeString.append(StringUtilities
+                                .escapeString(value));
                         attributeString.append("\" ");
                     }
                 }
             }
 
             // Write the name of the actor followed by the table.
-            result.append(
-                    "<area shape=\"rect\" coords=\""
+            result.append("<area shape=\"rect\" coords=\""
                     + (int) location.topLeftX + "," + (int) location.topLeftY
                     + "," + (int) location.bottomRightX + ","
-                    + (int) location.bottomRightY
-                    + "\"\n"
-                    + attributeString
+                    + (int) location.bottomRightY + "\"\n" + attributeString
                     + "alt=\"" + title + "\"/>\n");
         }
         result.append("</map>\n");
@@ -1018,7 +1061,8 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable, 
             // Any instances of WebExportable contained by the
             // configuration are cloned into the model.
             NamedObj model = _basicGraphFrame.getModel();
-            List<WebExportable> exportables = configuration.attributeList(WebExportable.class);
+            List<WebExportable> exportables = configuration
+                    .attributeList(WebExportable.class);
             for (WebExportable exportable : exportables) {
                 if (exportable instanceof Attribute) {
                     boolean foundOverride = false;
@@ -1027,15 +1071,23 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable, 
                         // one given in the configurations. It does if the eventType matches
                         // and it either includes the same objects (Entities or Attributes) or
                         // it includes all objects, and the instancesOf that is specifies matches.
-                        String eventType = ((DefaultIconScript)exportable).eventType.stringValue();
-                        String include = ((DefaultIconScript)exportable).include.stringValue();
-                        String instancesOf = ((DefaultIconScript)exportable).instancesOf.stringValue();
-                        List<DefaultIconScript> defaults = model.attributeList(DefaultIconScript.class);
+                        String eventType = ((DefaultIconScript) exportable).eventType
+                                .stringValue();
+                        String include = ((DefaultIconScript) exportable).include
+                                .stringValue();
+                        String instancesOf = ((DefaultIconScript) exportable).instancesOf
+                                .stringValue();
+                        List<DefaultIconScript> defaults = model
+                                .attributeList(DefaultIconScript.class);
                         for (DefaultIconScript script : defaults) {
-                            if (script.eventType.stringValue().equals(eventType) &&
-                                    (script.include.stringValue().equals(include)
-                                    || script.include.stringValue().toLowerCase().equals("all"))
-                                    && script.instancesOf.stringValue().equals(instancesOf)) {
+                            if (script.eventType.stringValue()
+                                    .equals(eventType)
+                                    && (script.include.stringValue().equals(
+                                            include) || script.include
+                                            .stringValue().toLowerCase()
+                                            .equals("all"))
+                                    && script.instancesOf.stringValue().equals(
+                                            instancesOf)) {
                                 // Skip this default from the configuration.
                                 foundOverride = true;
                                 break;
@@ -1046,13 +1098,17 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable, 
                         // one given in the configurations. It does if
                         // it either includes the same objects (Entities or Attributes) or
                         // it includes all objects, and the instancesOf that is specifies matches.
-                        String include = ((DefaultIconLink)exportable).include.stringValue();
-                        String instancesOf = ((DefaultIconLink)exportable).instancesOf.stringValue();
-                        List<DefaultIconLink> defaults = model.attributeList(DefaultIconLink.class);
+                        String include = ((DefaultIconLink) exportable).include
+                                .stringValue();
+                        String instancesOf = ((DefaultIconLink) exportable).instancesOf
+                                .stringValue();
+                        List<DefaultIconLink> defaults = model
+                                .attributeList(DefaultIconLink.class);
                         for (DefaultIconLink script : defaults) {
-                            if ((script.include.stringValue().equals(include)
-                                    || script.include.stringValue().toLowerCase().equals("all"))
-                                    && script.instancesOf.stringValue().equals(instancesOf)) {
+                            if ((script.include.stringValue().equals(include) || script.include
+                                    .stringValue().toLowerCase().equals("all"))
+                                    && script.instancesOf.stringValue().equals(
+                                            instancesOf)) {
                                 // Skip this default from the configuration.
                                 foundOverride = true;
                                 break;
@@ -1063,7 +1119,8 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable, 
                         continue;
                     }
                     try {
-                        Attribute clone = (Attribute)((Attribute)exportable).clone(model.workspace());
+                        Attribute clone = (Attribute) ((Attribute) exportable)
+                                .clone(model.workspace());
                         clone.setName(model.uniqueName(clone.getName()));
                         clone.setContainer(model);
                         clone.setPersistent(false);
@@ -1072,11 +1129,13 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable, 
                         // override the ones provided by the configuration.
                         clone.moveToFirst();
                     } catch (CloneNotSupportedException e) {
-                        throw new InternalErrorException("Can't clone WebExportable attribute in Configuration: "
-                                + ((Attribute)exportable).getName());
+                        throw new InternalErrorException(
+                                "Can't clone WebExportable attribute in Configuration: "
+                                        + ((Attribute) exportable).getName());
                     } catch (NameDuplicationException e) {
-                        throw new InternalErrorException("Failed to generate unique name for attribute in Configuration: "
-                                + ((Attribute)exportable).getName());
+                        throw new InternalErrorException(
+                                "Failed to generate unique name for attribute in Configuration: "
+                                        + ((Attribute) exportable).getName());
                     }
                 }
             }
@@ -1089,10 +1148,11 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable, 
      */
     protected void _removeDefaultContent() throws IllegalActionException {
         NamedObj model = _basicGraphFrame.getModel();
-        List<WebExportable> exportables = model.attributeList(WebExportable.class);
+        List<WebExportable> exportables = model
+                .attributeList(WebExportable.class);
         for (WebExportable exportable : exportables) {
             if (exportable instanceof Attribute) {
-                Attribute attribute = (Attribute)exportable;
+                Attribute attribute = (Attribute) exportable;
                 if (!attribute.isPersistent()) {
                     try {
                         attribute.setContainer(null);
@@ -1196,10 +1256,12 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable, 
                 double height = figureBounds.getHeight();
                 IconVisibleLocation i = new IconVisibleLocation();
                 i.object = object;
-                i.topLeftX = figureBounds.getX() * scaleX + translateX - _PADDING;
-                i.topLeftY = figureBounds.getY() * scaleY + translateY - _PADDING;
-                i.bottomRightX = i.topLeftX + (width * scaleX) + 2*_PADDING;
-                i.bottomRightY = i.topLeftY + (height * scaleY) + 2*_PADDING;
+                i.topLeftX = figureBounds.getX() * scaleX + translateX
+                        - _PADDING;
+                i.topLeftY = figureBounds.getY() * scaleY + translateY
+                        - _PADDING;
+                i.bottomRightX = i.topLeftX + (width * scaleX) + 2 * _PADDING;
+                i.bottomRightY = i.topLeftY + (height * scaleY) + 2 * _PADDING;
 
                 // If the rectangle is not visible, no more to do.
                 if (i.bottomRightX < 0.0 || i.bottomRightY < 0.0
@@ -1255,7 +1317,8 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable, 
      *   responsible for copying, or a container of model if a container of model
      *   is doing the copying.
      */
-    private String _findCopiedLibrary(NamedObj model, String path, NamedObj copier) {
+    private String _findCopiedLibrary(NamedObj model, String path,
+            NamedObj copier) {
         if (model == copier) {
             return path;
         }
@@ -1278,8 +1341,8 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable, 
      *  @exception NameDuplicationException Not thrown.
      */
     private static void _openComposite(CompositeEntity entity,
-            Set<Tableau> tableauxToClose, Effigy masterEffigy, BasicGraphFrame graphFrame)
-           throws IllegalActionException {
+            Set<Tableau> tableauxToClose, Effigy masterEffigy,
+            BasicGraphFrame graphFrame) throws IllegalActionException {
 
         Configuration configuration = graphFrame.getConfiguration();
         Effigy effigy = configuration.getEffigy(entity);
@@ -1316,17 +1379,19 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable, 
      *  @param masterEffigy The top-level effigy for the modeling being exported.
      *  @param graphFrame The graph frame.
      */
-    private static void _openEntity(
-            Entity entity, Set<Tableau> tableauxToClose, Effigy masterEffigy, BasicGraphFrame graphFrame)
-            throws IllegalActionException {
+    private static void _openEntity(Entity entity,
+            Set<Tableau> tableauxToClose, Effigy masterEffigy,
+            BasicGraphFrame graphFrame) throws IllegalActionException {
         if (entity instanceof CompositeEntity) {
-            _openComposite((CompositeEntity) entity, tableauxToClose, masterEffigy, graphFrame);
+            _openComposite((CompositeEntity) entity, tableauxToClose,
+                    masterEffigy, graphFrame);
         } else if (entity instanceof State) {
             TypedActor[] refinements = ((State) entity).getRefinement();
             // refinements could be null, see ptolemy/domains/ptides/demo/PtidesBasicPowerPlant/PtidesBasicPowerPlant.xml
             if (refinements != null) {
                 for (TypedActor refinement : refinements) {
-                    _openComposite((CompositeEntity) refinement, tableauxToClose, masterEffigy, graphFrame);
+                    _openComposite((CompositeEntity) refinement,
+                            tableauxToClose, masterEffigy, graphFrame);
                 }
             }
         }
@@ -1349,10 +1414,10 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable, 
     ////                         private fields                    ////
 
     /** Data structure storing area attributes to for each Ptolemy II object. */
-    private HashMap<NamedObj,HashMap<String,String>> _areaAttributes;
+    private HashMap<NamedObj, HashMap<String, String>> _areaAttributes;
 
     /** Content added by position. */
-    private HashMap<String,List<StringBuffer>> _contents;
+    private HashMap<String, List<StringBuffer>> _contents;
 
     /** Content of the end section. */
     private LinkedList<StringBuffer> _end;

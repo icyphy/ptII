@@ -184,14 +184,15 @@ public class TypeAttribute extends Parameter {
                 if (previousContainer instanceof Typeable) {
                     // Notice that if the previous type is UNKNOWN, then this
                     // delegate to type resolution.
-                    ((Typeable)previousContainer).setTypeEquals(_previousType);
+                    ((Typeable) previousContainer).setTypeEquals(_previousType);
                     if (previousContainer instanceof Actor) {
-                        Director previousDirector = ((Actor)previousContainer).getDirector();
+                        Director previousDirector = ((Actor) previousContainer)
+                                .getDirector();
                         previousDirector.invalidateResolvedTypes();
                     }
                 }
                 if (container instanceof Typeable) {
-                    InequalityTerm term = ((Typeable)container).getTypeTerm();
+                    InequalityTerm term = ((Typeable) container).getTypeTerm();
                     if (term.isSettable()) {
                         // If the type term is a variable, then we want to
                         // delegate to type resolution.
@@ -199,10 +200,10 @@ public class TypeAttribute extends Parameter {
                     } else {
                         // If the type term is a constant, then we want to record
                         // the constant.
-                        _previousType = ((Typeable)container).getType();
+                        _previousType = ((Typeable) container).getType();
                     }
                     if (container instanceof Actor) {
-                        Director director = ((Actor)container).getDirector();
+                        Director director = ((Actor) container).getDirector();
                         director.invalidateResolvedTypes();
                     }
                 }

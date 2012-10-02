@@ -115,8 +115,8 @@ public class ConstPlaceable extends Const implements PortablePlaceable {
         if (_implementation == null) {
             if (PtolemyInjector.getInjector() == null) {
                 System.err.println("Warning: main() did not call "
-                               + "ActorModuleInitializer.initializeInjector(), "
-                               + "so Const is calling it for you.");
+                        + "ActorModuleInitializer.initializeInjector(), "
+                        + "so Const is calling it for you.");
                 ActorModuleInitializer.initializeInjector();
             }
             _implementation = PtolemyInjector.getInjector().getInstance(

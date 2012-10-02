@@ -32,7 +32,6 @@ import java.io.StringWriter;
 
 import ptolemy.util.MessageHandler;
 
-
 ///////////////////////////////////////////////////////////////////
 //// RecorderMessageHandler
 
@@ -78,9 +77,8 @@ public class RecorderMessageHandler extends MessageHandler {
             throwable.printStackTrace(printWriter);
         }
 
-        _buffer.append("RecorderMessageHandler: Error encountered in:\n"
-                + info + "\n"
-                + stringWriter);
+        _buffer.append("RecorderMessageHandler: Error encountered in:\n" + info
+                + "\n" + stringWriter);
     }
 
     ///////////////////////////////////////////////////////////////////

@@ -102,33 +102,36 @@ public class PtidyOSCodeGenerator extends CCodeGenerator {
                 .getDirector();
         if (director instanceof ptolemy.domains.ptides.kernel.PtidesBasicDirector) {
             directorAdapter = (PtidesPreemptiveEDFDirector) getAdapter(director);
-            Map<String, String> map = directorAdapter.generateAdditionalCodeFiles();
+            Map<String, String> map = directorAdapter
+                    .generateAdditionalCodeFiles();
             for (String file : map.keySet()) {
                 StringBuffer sb = new StringBuffer();
                 if (file.contains(".")) {
-                    fileExtension = file.substring(file.indexOf("."), file.length());
-                    _writeCodeFileName(sb.append(map.get(file)), file, true, false);
+                    fileExtension = file.substring(file.indexOf("."),
+                            file.length());
+                    _writeCodeFileName(sb.append(map.get(file)), file, true,
+                            false);
                 } else {
                     fileExtension = "." + file;
                     _writeCode(sb.append(map.get(file)));
                 }
             }
-//        } else if (director instanceof ptolemy.domains.ptides.kernel.PtidesTopLevelDirector) {
-//            // If the PtidyOSCodeGenerator is used on the top level, then one assembly file
-//            // should be generated for each platform.
-//            for (Actor actor : (List<Actor>) ((TypedCompositeActor) getContainer())
-//                    .deepEntityList()) {
-//                Director insideDirector = actor.getDirector();
-//                if (insideDirector instanceof ptolemy.domains.ptides.kernel.PtidesBasicDirector) {
-//                    directorAdapter = (PtidesPreemptiveEDFDirector) getAdapter(director);
-//                    Map<String, String> map = directorAdapter.generateAdditionalCodeFiles();
-//                    for (String file : map.keySet()) {
-//                        fileExtension = "." + file;
-//                        StringBuffer sb = new StringBuffer();
-//                        _writeCode(sb.append(map.get(file)));
-//                    }
-//                }
-//            }
+            //        } else if (director instanceof ptolemy.domains.ptides.kernel.PtidesTopLevelDirector) {
+            //            // If the PtidyOSCodeGenerator is used on the top level, then one assembly file
+            //            // should be generated for each platform.
+            //            for (Actor actor : (List<Actor>) ((TypedCompositeActor) getContainer())
+            //                    .deepEntityList()) {
+            //                Director insideDirector = actor.getDirector();
+            //                if (insideDirector instanceof ptolemy.domains.ptides.kernel.PtidesBasicDirector) {
+            //                    directorAdapter = (PtidesPreemptiveEDFDirector) getAdapter(director);
+            //                    Map<String, String> map = directorAdapter.generateAdditionalCodeFiles();
+            //                    for (String file : map.keySet()) {
+            //                        fileExtension = "." + file;
+            //                        StringBuffer sb = new StringBuffer();
+            //                        _writeCode(sb.append(map.get(file)));
+            //                    }
+            //                }
+            //            }
         } else {
             throw new IllegalActionException(director,
                     "This PtidyOS code generator should be used "
@@ -167,8 +170,7 @@ public class PtidyOSCodeGenerator extends CCodeGenerator {
                     "PtidyOSCodeGenerator can only "
                             + "work with Ptides directors.");
         }
-        return !(director)
-                .isEmbedded();
+        return !(director).isEmbedded();
     }
 
     ///////////////////////////////////////////////////////////////////

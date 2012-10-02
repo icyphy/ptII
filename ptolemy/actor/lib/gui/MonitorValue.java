@@ -147,7 +147,7 @@ public class MonitorValue extends Sink implements PortablePlaceable {
      *  @exception IllegalActionException Not thrown in this base class.
      */
     public void preinitialize() throws IllegalActionException {
-        TypedCompositeActor container = (TypedCompositeActor)getContainer();
+        TypedCompositeActor container = (TypedCompositeActor) getContainer();
         if (container.isBackwardTypeInferenceEnabled()) {
             input.setTypeEquals(BaseType.GENERAL);
         }
@@ -175,8 +175,8 @@ public class MonitorValue extends Sink implements PortablePlaceable {
         if (_implementation == null) {
             if (PtolemyInjector.getInjector() == null) {
                 System.err.println("Warning: main() did not call "
-                               + "ActorModuleInitializer.initializeInjector(), "
-                               + "so Monitor is calling it for you.");
+                        + "ActorModuleInitializer.initializeInjector(), "
+                        + "so Monitor is calling it for you.");
                 ActorModuleInitializer.initializeInjector();
             }
             _implementation = PtolemyInjector.getInjector().getInstance(
@@ -196,11 +196,9 @@ public class MonitorValue extends Sink implements PortablePlaceable {
         return _implementation;
     }
 
-
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
     /** Implementation of the MonitorValueInterface. */
     private TextFieldContainerInterface _implementation;
 }
-

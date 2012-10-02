@@ -493,7 +493,8 @@ public class TableauFrame extends Top {
             // is capable of creating blank effigies.
             final Configuration configuration = getConfiguration();
             if (configuration == null) {
-                System.out.println("TableauFrame._addMenus: configuration == null?");
+                System.out
+                        .println("TableauFrame._addMenus: configuration == null?");
                 return;
             }
             EffigyFactory effigyFactory = (EffigyFactory) configuration
@@ -673,10 +674,12 @@ public class TableauFrame extends Top {
                 if (!effigy.isPersistent()) {
                     if (_debugClosing) {
                         NamedObj model = ((PtolemyEffigy) effigy).getModel();
-                        System.out.println("TableauFrame._close(): model "
-                                + model.getFullName()
-                                + " has Effigy " + effigy
-                                + ", which is not persistent, so it will not be saved.");
+                        System.out
+                                .println("TableauFrame._close(): model "
+                                        + model.getFullName()
+                                        + " has Effigy "
+                                        + effigy
+                                        + ", which is not persistent, so it will not be saved.");
                     }
                     dispose();
                     return true;
@@ -720,12 +723,12 @@ public class TableauFrame extends Top {
                 dispose();
             }
         }
-        if (result == true ) {
-                // If the user hit Cancel, do not clear the placeables.
-                _clearPlaceable();
+        if (result == true) {
+            // If the user hit Cancel, do not clear the placeables.
+            _clearPlaceable();
         }
         return result;
-        }
+    }
 
     /** Dispose of this frame.
      *
@@ -892,8 +895,8 @@ public class TableauFrame extends Top {
             Effigy effigy = (Effigy) effigies.next();
 
             if (!effigy.closeTableaux()) {
-                    // This is a hack because we don't want to change add a protected int _exit() method.
-                    _exitResult = _CANCELED;
+                // This is a hack because we don't want to change add a protected int _exit() method.
+                _exitResult = _CANCELED;
                 return;
             }
 
@@ -1277,11 +1280,12 @@ public class TableauFrame extends Top {
             // been saved, so we do not change its modified status.
             // setModified(false);
             // Open a new window on the model.
-            Tableau newTableau = getConfiguration().openModel(newURL, newURL, newKey);
+            Tableau newTableau = getConfiguration().openModel(newURL, newURL,
+                    newKey);
 
             newTableau.getFrame().setTitle(
                     StringUtilities.abbreviate(new File(_directory, file
-                                    .getName()).toString()));
+                            .getName()).toString()));
 
             // If the tableau was unnamed before, then we need
             // to close this window after doing the save.
@@ -1388,7 +1392,8 @@ public class TableauFrame extends Top {
                 file = new File(file.getAbsolutePath() + extension);
             }
 
-            return _saveAsHelperCommon(file, new File(fileDialog.getDirectory()));
+            return _saveAsHelperCommon(file,
+                    new File(fileDialog.getDirectory()));
         }
         // The user hit cancel or there was an error, so we did not
         // successfully save.
@@ -1436,7 +1441,8 @@ public class TableauFrame extends Top {
                     file = new File(file.getAbsolutePath() + extension);
                 }
 
-                return _saveAsHelperCommon(file, fileDialog.getCurrentDirectory());
+                return _saveAsHelperCommon(file,
+                        fileDialog.getCurrentDirectory());
             }
 
             // The user hit cancel or there was an error, so we did not

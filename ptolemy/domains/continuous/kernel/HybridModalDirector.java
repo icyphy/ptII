@@ -141,7 +141,8 @@ public class HybridModalDirector extends FSMDirector implements
                                     stateRefinements[i].getName());
                         }
                         stateRefinements[i].fire();
-                        _getStateRefinementsToPostfire().add(stateRefinements[i]);
+                        _getStateRefinementsToPostfire().add(
+                                stateRefinements[i]);
                     }
                 }
             }
@@ -228,13 +229,13 @@ public class HybridModalDirector extends FSMDirector implements
             // Check whether there is any preemptive transition enabled.
             FSMActor controller = getController();
             State currentState = controller.currentState();
-            List preemptiveEnabledTransitions = controller
-                    .enabledTransitions(currentState.preemptiveTransitionList(), false);
+            List preemptiveEnabledTransitions = controller.enabledTransitions(
+                    currentState.preemptiveTransitionList(), false);
 
             // Check whether there is any non-preemptive transition enabled.
             List nonpreemptiveEnabledTransitions = controller
-                    .enabledTransitions(currentState
-                            .nonpreemptiveTransitionList(), false);
+                    .enabledTransitions(
+                            currentState.nonpreemptiveTransitionList(), false);
 
             // Check whether there is any event detected for preemptive transitions.
             Transition preemptiveTrWithEvent = _checkEvent(currentState
@@ -390,7 +391,8 @@ public class HybridModalDirector extends FSMDirector implements
     public boolean postfire() throws IllegalActionException {
         FSMActor controller = getController();
         State currentState = controller.currentState();
-        Map<State,Transition> lastChosenTransitions = controller.getLastChosenTransitions();
+        Map<State, Transition> lastChosenTransitions = controller
+                .getLastChosenTransitions();
         if (lastChosenTransitions.size() == 0) {
             // No transition was chosen.
             // Record the current values on either side of each
@@ -567,7 +569,8 @@ public class HybridModalDirector extends FSMDirector implements
         try {
             FSMActor controller = getController();
             if (controller != null) {
-                Map<State,Transition> chosenTransitions = controller.getLastChosenTransitions();
+                Map<State, Transition> chosenTransitions = controller
+                        .getLastChosenTransitions();
                 chosenTransitions.clear();
             }
         } catch (IllegalActionException e) {

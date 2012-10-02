@@ -199,8 +199,8 @@ public class RecordAssembler extends TypedAtomicActor {
         // constrain the type of every input to be <= the resolved type
         // of the corresponding field in the output record
         for (TypedIOPort input : inputPortList()) {
-            result.add(new Inequality(new ExtractFieldType(output, input.getName()),
-                    input.getTypeTerm()));
+            result.add(new Inequality(new ExtractFieldType(output, input
+                    .getName()), input.getTypeTerm()));
         }
 
         // constrain the fields in the output record to be greater than or

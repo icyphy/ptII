@@ -125,8 +125,7 @@ public class BasicManhattanRouter implements ManhattanRouter {
 
         // Find the angle formed by the direct line connecting the tail
         // point with the head point and the x axis
-        double radAngle = Math.atan2(
-                tailPt.getY() - headPt.getY(),
+        double radAngle = Math.atan2(tailPt.getY() - headPt.getY(),
                 headPt.getX() - tailPt.getX());
         double distance = tailPt.distance(headPt);
 
@@ -136,7 +135,8 @@ public class BasicManhattanRouter implements ManhattanRouter {
                 radAngle,
                 distance,
                 true,
-                headSite.hasNormal() ? CanvasUtilities.getDirection(headSite.getNormal()) : -1);
+                headSite.hasNormal() ? CanvasUtilities.getDirection(headSite
+                        .getNormal()) : -1);
         headSite.setNormal(CanvasUtilities.getNormal(headDir));
         headPt = headSite.getPoint(currentContext);
 
@@ -146,7 +146,8 @@ public class BasicManhattanRouter implements ManhattanRouter {
                 radAngle,
                 distance,
                 false,
-                tailSite.hasNormal() ? CanvasUtilities.getDirection(tailSite.getNormal()) : -1);
+                tailSite.hasNormal() ? CanvasUtilities.getDirection(tailSite
+                        .getNormal()) : -1);
         tailSite.setNormal(CanvasUtilities.getNormal(tailDir));
         tailPt = tailSite.getPoint(currentContext);
 
@@ -368,7 +369,8 @@ public class BasicManhattanRouter implements ManhattanRouter {
      *  describing the direction from which the edge should approach
      *  the specified connection point.
      */
-    private int _getManhattanDirection(double radAngle, double distance, boolean head, int oldDirection) {
+    private int _getManhattanDirection(double radAngle, double distance,
+            boolean head, int oldDirection) {
         int dir;
         boolean downwards = false;
 

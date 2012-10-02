@@ -74,7 +74,7 @@ public class PtolemyApplication extends MoMLApplication {
     public PtolemyApplication(String arg) throws Exception {
         // This method is used by the JUnit test framework, see
         // ptolemy/util/test/junit/AutoGUITests.java
-        super(new String[] {arg});
+        super(new String[] { arg });
     }
 
     ///////////////////////////////////////////////////////////////////

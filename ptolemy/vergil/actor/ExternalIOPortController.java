@@ -395,7 +395,7 @@ public class ExternalIOPortController extends AttributeController {
     private void _createAppearanceSubmenu() {
         _editIconAction.setConfiguration(_configuration);
         _removeIconAction.setConfiguration(_configuration);
-        Action[] actions = { _editIconAction, _removeIconAction};
+        Action[] actions = { _editIconAction, _removeIconAction };
         _appearanceMenuActionFactory.addActions(actions, "Appearance");
     }
 
@@ -445,7 +445,8 @@ public class ExternalIOPortController extends AttributeController {
                         .get(iconList.size() - 1);
                 figure = icon.createFigure();
             } else {
-                Attribute iconDescription = port.getAttribute("_iconDescription");
+                Attribute iconDescription = port
+                        .getAttribute("_iconDescription");
                 if (iconDescription != null) {
                     figure = super.render(n);
                 }
@@ -638,7 +639,7 @@ public class ExternalIOPortController extends AttributeController {
                     }
                 }
 
-                _createPubSubLabels((IOPort) ioPort, (CompositeFigure) figure);
+                _createPubSubLabels(ioPort, (CompositeFigure) figure);
 
                 figure = new PortTerminal(ioPort, figure, normal, true);
             } else {

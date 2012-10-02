@@ -71,7 +71,6 @@ public class OntologyAnnotationAttribute extends StringAttribute {
      */
     public StringAttribute ontologySolverName;
 
-
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -94,10 +93,9 @@ public class OntologyAnnotationAttribute extends StringAttribute {
         if (solverName != null && !solverName.isEmpty()) {
             return solverName;
         }
-        throw new IllegalActionException(this,
-                "Cannot determine " + OntologySolver.class.getName());
+        throw new IllegalActionException(this, "Cannot determine "
+                + OntologySolver.class.getName());
     }
-
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
@@ -109,13 +107,13 @@ public class OntologyAnnotationAttribute extends StringAttribute {
      */
     private void _initializeSolverName() throws IllegalActionException {
         String solverName = "";
-        List<OntologySolver> solvers = toplevel().attributeList(OntologySolver.class);
+        List<OntologySolver> solvers = toplevel().attributeList(
+                OntologySolver.class);
         if (solvers != null && solvers.size() == 1) {
             solverName = solvers.get(0).getDisplayName();
         }
         ontologySolverName.setExpression(solverName);
     }
-
 
     /** Return the OntologySolver using the naming-convention method.
      *  @return A String representing the name of the referred ontology solver.
@@ -128,9 +126,9 @@ public class OntologyAnnotationAttribute extends StringAttribute {
         }
 
         return null;
-//        throw new IllegalActionException(
-//                "Invalid ontology annotation attribute name: " + getName()
-//                        + ". (should have form ONTOLOGY_SOLVER_NAME::LABEL)");
+        //        throw new IllegalActionException(
+        //                "Invalid ontology annotation attribute name: " + getName()
+        //                        + ". (should have form ONTOLOGY_SOLVER_NAME::LABEL)");
     }
 
 }

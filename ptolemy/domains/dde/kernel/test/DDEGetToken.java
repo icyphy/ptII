@@ -85,14 +85,14 @@ public class DDEGetToken extends DDEGet {
     /**
      */
     public void fire() throws IllegalActionException {
-//        int aCntr = 0;
-//        Receiver[][] theReceivers = input.getReceivers();
-//
-//        for (int i = 0; i < theReceivers.length; i++) {
-//            for (int j = 0; j < theReceivers[i].length; j++) {
-//                aCntr++;
-//            }
-//        }
+        //        int aCntr = 0;
+        //        Receiver[][] theReceivers = input.getReceivers();
+        //
+        //        for (int i = 0; i < theReceivers.length; i++) {
+        //            for (int j = 0; j < theReceivers[i].length; j++) {
+        //                aCntr++;
+        //            }
+        //        }
 
         int cnt = 0;
 

@@ -168,9 +168,11 @@ public class FileUtilities {
             Enumeration entries = jarFile.entries();
             while (entries.hasMoreElements()) {
                 JarEntry jarEntry = (JarEntry) entries.nextElement();
-                File destinationFile = new File(directoryName, jarEntry.getName());
+                File destinationFile = new File(directoryName,
+                        jarEntry.getName());
                 if (jarEntry.isDirectory()) {
-                    if (!destinationFile.isDirectory() && !destinationFile.mkdirs()) {
+                    if (!destinationFile.isDirectory()
+                            && !destinationFile.mkdirs()) {
                         throw new IOException("Warning, failed to create "
                                 + "directory for \"" + destinationFile + "\".");
                     }
@@ -192,7 +194,7 @@ public class FileUtilities {
      */
     static public boolean deleteDirectory(File directory) {
         boolean deletedAllFiles = true;
-        if (directory.exists() ) {
+        if (directory.exists()) {
             File[] files = directory.listFiles();
             for (int i = 0; i < files.length; i++) {
                 if (files[i].isDirectory()) {

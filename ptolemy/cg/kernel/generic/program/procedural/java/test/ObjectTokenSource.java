@@ -29,7 +29,6 @@ package ptolemy.cg.kernel.generic.program.procedural.java.test;
 
 import ptolemy.actor.lib.Source;
 import ptolemy.data.ObjectToken;
-import ptolemy.data.Token;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;

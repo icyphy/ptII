@@ -155,7 +155,8 @@ public class OrderedRecordToken extends RecordToken {
             // FIXME: It is not clear if we need to sanitize again,
             // but doing so protects against labels being set to
             // spaces and other characters.
-            stringRepresentation.append(StringUtilities.sanitizeName(label) + " = " + value);
+            stringRepresentation.append(StringUtilities.sanitizeName(label)
+                    + " = " + value);
         }
 
         return stringRepresentation.toString() + "]";

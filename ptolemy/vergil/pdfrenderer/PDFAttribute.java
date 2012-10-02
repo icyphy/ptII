@@ -212,7 +212,7 @@ public class PDFAttribute extends VisibleAttribute {
      */
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         PDFAttribute newObject = (PDFAttribute) super.clone(workspace);
-        newObject._icon = (PDFIcon)newObject.getAttribute("_icon");
+        newObject._icon = (PDFIcon) newObject.getAttribute("_icon");
         return newObject;
     }
 

@@ -30,7 +30,7 @@ import java.net.URL;
 import java.util.HashMap;
 import java.util.Iterator;
 
-import ptolemy.actor.gui.MoMLApplication;
+import ptolemy.actor.gui.ConfigurationApplication;
 import ptolemy.domains.modal.kernel.State;
 import ptolemy.domains.modal.kernel.ia.InterfaceAutomaton;
 import ptolemy.kernel.util.IllegalActionException;
@@ -83,30 +83,31 @@ public class Check {
         // of MoMLParser must be used to parse each file, otherwise
         // the same automaton will be returned the second time parse() is
         // called.
-        URL url = MoMLApplication.specToURL(base + "CSPReceiver.xml");
+        URL url = ConfigurationApplication.specToURL(base + "CSPReceiver.xml");
         MoMLParser parser = new MoMLParser();
         _receiver = (InterfaceAutomaton) parser.parse(url, url);
 
         if (useSimple) {
-            url = MoMLApplication.specToURL(base + "SimpleSend.xml");
+            url = ConfigurationApplication.specToURL(base + "SimpleSend.xml");
             parser = new MoMLParser();
             _simpleSend = (InterfaceAutomaton) parser.parse(url, url);
         } else {
-            url = MoMLApplication.specToURL(base + "ConditionalSend.xml");
+            url = ConfigurationApplication.specToURL(base
+                    + "ConditionalSend.xml");
             parser = new MoMLParser();
             _send = (InterfaceAutomaton) parser.parse(url, url);
 
-            url = MoMLApplication.specToURL(base
+            url = ConfigurationApplication.specToURL(base
                     + "ConditionalBranchController.xml");
             parser = new MoMLParser();
             _controller = (InterfaceAutomaton) parser.parse(url, url);
         }
 
-        url = MoMLApplication.specToURL(base + "Philosopher.xml");
+        url = ConfigurationApplication.specToURL(base + "Philosopher.xml");
         parser = new MoMLParser();
         _philosopher = (InterfaceAutomaton) parser.parse(url, url);
 
-        url = MoMLApplication.specToURL(base + "Chopstick.xml");
+        url = ConfigurationApplication.specToURL(base + "Chopstick.xml");
         parser = new MoMLParser();
         _chopstick = (InterfaceAutomaton) parser.parse(url, url);
     }

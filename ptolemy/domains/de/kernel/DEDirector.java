@@ -254,7 +254,8 @@ public class DEDirector extends Director implements SuperdenseTimeDirector {
      *  @exception NameDuplicationException If construction of Time objects fails.
      *  @exception IllegalActionException If construction of Time objects fails.
      */
-    public DEDirector(Workspace workspace) throws IllegalActionException, NameDuplicationException {
+    public DEDirector(Workspace workspace) throws IllegalActionException,
+            NameDuplicationException {
         super(workspace);
         _initParameters();
     }
@@ -339,7 +340,7 @@ public class DEDirector extends Director implements SuperdenseTimeDirector {
      */
     public void addDebugListener(DebugListener listener) {
         if (_eventQueue != null) {
-            synchronized(_eventQueue) {
+            synchronized (_eventQueue) {
                 _eventQueue.addDebugListener(listener);
             }
         }
@@ -364,7 +365,7 @@ public class DEDirector extends Director implements SuperdenseTimeDirector {
             _synchronizeToRealTime = ((BooleanToken) synchronizeToRealTime
                     .getToken()).booleanValue();
         } else if (attribute == enforceMicrostepSemantics) {
-            _enforceMicrostepSemantics = ((BooleanToken)enforceMicrostepSemantics
+            _enforceMicrostepSemantics = ((BooleanToken) enforceMicrostepSemantics
                     .getToken()).booleanValue();
         } else {
             super.attributeChanged(attribute);
@@ -419,8 +420,8 @@ public class DEDirector extends Director implements SuperdenseTimeDirector {
      */
     public void fire() throws IllegalActionException {
         if (_debugging) {
-            _debug("========= " + this.getName() + " director fires at " + getModelTime()
-                    + "  with microstep as " + _microstep);
+            _debug("========= " + this.getName() + " director fires at "
+                    + getModelTime() + "  with microstep as " + _microstep);
         }
 
         // NOTE: This fire method does not call super.fire()
@@ -709,8 +710,9 @@ public class DEDirector extends Director implements SuperdenseTimeDirector {
         // director, so be sure to check _isTopLevel().
         if (executiveDirector != null && !_isTopLevel()) {
 
-            Time aFutureTimeOfUpperLevel = localClock.getLocalTimeForEnvironmentTime(
-                    executiveDirector.getModelNextIterationTime());
+            Time aFutureTimeOfUpperLevel = localClock
+                    .getLocalTimeForEnvironmentTime(executiveDirector
+                            .getModelNextIterationTime());
 
             if (aFutureTime.compareTo(aFutureTimeOfUpperLevel) > 0) {
                 aFutureTime = aFutureTimeOfUpperLevel;
@@ -821,7 +823,8 @@ public class DEDirector extends Director implements SuperdenseTimeDirector {
                     // Some composites, such as RunCompositeActor want to be treated
                     // as if they are at the top level even though they have an executive
                     // director, so be sure to check _isTopLevel().
-                    if (executiveDirector instanceof SuperdenseTimeDirector && !_isTopLevel()) {
+                    if (executiveDirector instanceof SuperdenseTimeDirector
+                            && !_isTopLevel()) {
                         _microstep = ((SuperdenseTimeDirector) executiveDirector)
                                 .getIndex();
                     }
@@ -895,7 +898,7 @@ public class DEDirector extends Director implements SuperdenseTimeDirector {
 
         // If any output ports still have tokens to transfer,
         // request a refiring at the current time.
-        CompositeActor container = (CompositeActor)getContainer();
+        CompositeActor container = (CompositeActor) getContainer();
         Iterator<IOPort> outports = container.outputPortList().iterator();
         boolean moreOutputsToTransfer = false;
         while (outports.hasNext() && !moreOutputsToTransfer) {
@@ -1028,7 +1031,8 @@ public class DEDirector extends Director implements SuperdenseTimeDirector {
                 // Some composites, such as RunCompositeActor want to be treated
                 // as if they are at the top level even though they have an executive
                 // director, so be sure to check _isTopLevel().
-                if (executiveDirector instanceof SuperdenseTimeDirector && !_isTopLevel()) {
+                if (executiveDirector instanceof SuperdenseTimeDirector
+                        && !_isTopLevel()) {
                     _microstep = ((SuperdenseTimeDirector) executiveDirector)
                             .getIndex();
                 }
@@ -1048,7 +1052,7 @@ public class DEDirector extends Director implements SuperdenseTimeDirector {
 
         // If embedded, check the timestamp of the next event to decide
         // whether this director is ready to fire.
-        synchronized(_eventQueue) {
+        synchronized (_eventQueue) {
             Time modelTime = getModelTime();
             Time nextEventTime = Time.POSITIVE_INFINITY;
 
@@ -1208,7 +1212,7 @@ public class DEDirector extends Director implements SuperdenseTimeDirector {
      */
     public void removeDebugListener(DebugListener listener) {
         if (_eventQueue != null) {
-            synchronized(_eventQueue) {
+            synchronized (_eventQueue) {
                 _eventQueue.removeDebugListener(listener);
             }
         }
@@ -1328,7 +1332,7 @@ public class DEDirector extends Director implements SuperdenseTimeDirector {
     public void wrapup() throws IllegalActionException {
         super.wrapup();
         _disabledActors = null;
-        synchronized(_eventQueue) {
+        synchronized (_eventQueue) {
             _eventQueue.clear();
         }
         _noMoreActorsToFire = false;
@@ -1478,7 +1482,7 @@ public class DEDirector extends Director implements SuperdenseTimeDirector {
         }
 
         DEEvent newEvent = new DEEvent(actor, time, microstep, depth);
-        synchronized(_eventQueue) {
+        synchronized (_eventQueue) {
             _eventQueue.put(newEvent);
         }
     }
@@ -1522,16 +1526,18 @@ public class DEDirector extends Director implements SuperdenseTimeDirector {
          * a dependency on domains/modal.
          */
         if (_microstep < 1 && _enforceMicrostepSemantics) {
-            throw new IllegalActionException(this, ioPort.getContainer(),
+            throw new IllegalActionException(
+                    this,
+                    ioPort.getContainer(),
                     "Received a non-discrete event at port "
-                    + ioPort.getName()
-                    + " of actor "
-                    + ioPort.getContainer().getName()
-                    + ". Discrete events are required to have microstep greater than zero,"
-                    + " but this one has microstep "
-                    + _microstep
-                    + ". Perhaps a Continuous submodel is sending a continuous rather than"
-                    + " discrete signal?");
+                            + ioPort.getName()
+                            + " of actor "
+                            + ioPort.getContainer().getName()
+                            + ". Discrete events are required to have microstep greater than zero,"
+                            + " but this one has microstep "
+                            + _microstep
+                            + ". Perhaps a Continuous submodel is sending a continuous rather than"
+                            + " discrete signal?");
         }
 
         int depth = _getDepthOfIOPort(ioPort);
@@ -1549,7 +1555,7 @@ public class DEDirector extends Director implements SuperdenseTimeDirector {
 
         // Register this trigger event.
         DEEvent newEvent = new DEEvent(ioPort, getModelTime(), microstep, depth);
-        synchronized(_eventQueue) {
+        synchronized (_eventQueue) {
             _eventQueue.put(newEvent);
         }
     }
@@ -1756,7 +1762,8 @@ public class DEDirector extends Director implements SuperdenseTimeDirector {
                 for (int i = 0; i < port.getWidth(); i++) {
                     if (port.hasToken(i)) {
                         if (_debugging) {
-                            _debug("Port named " + port.getName() + " still has input on channel " + i
+                            _debug("Port named " + port.getName()
+                                    + " still has input on channel " + i
                                     + ". Refire the actor.");
                         }
                         refire = true;
@@ -1899,14 +1906,16 @@ public class DEDirector extends Director implements SuperdenseTimeDirector {
                     // Some composites, such as RunCompositeActor want to be treated
                     // as if they are at the top level even though they have an executive
                     // director, so be sure to check _isTopLevel().
-                    if (executiveDirector instanceof SuperdenseTimeDirector && !_isTopLevel()) {
+                    if (executiveDirector instanceof SuperdenseTimeDirector
+                            && !_isTopLevel()) {
                         // If the next event microstep in the past (which it should
                         // not be normally), then we will consider it to match.
                         microstepMatches = nextEvent.microstep() <= _microstep;
                     }
                 }
 
-                int comparison = nextEvent.timeStamp().compareTo(getModelTime());
+                int comparison = nextEvent.timeStamp()
+                        .compareTo(getModelTime());
                 if (comparison > 0 || (comparison == 0 && !microstepMatches)) {
                     // reset the next event
                     nextEvent = null;
@@ -2294,7 +2303,8 @@ public class DEDirector extends Director implements SuperdenseTimeDirector {
             binCountFactor.setTypeEquals(BaseType.INT);
             binCountFactor.setVisibility(Settable.EXPERT);
 
-            enforceMicrostepSemantics = new Parameter(this, "enforceMicrostepSemantics");
+            enforceMicrostepSemantics = new Parameter(this,
+                    "enforceMicrostepSemantics");
             enforceMicrostepSemantics.setExpression("false");
             enforceMicrostepSemantics.setTypeEquals(BaseType.BOOLEAN);
         } catch (KernelException e) {
@@ -2387,8 +2397,8 @@ public class DEDirector extends Director implements SuperdenseTimeDirector {
          *  @exception IllegalArgumentException If the actor parameter is not
          *  an instance of CompositeEntity.
          */
-        public DECausalityInterface(Actor actor,
-                Dependency defaultDependency) throws IllegalArgumentException {
+        public DECausalityInterface(Actor actor, Dependency defaultDependency)
+                throws IllegalArgumentException {
             super(actor, defaultDependency);
         }
 

@@ -655,7 +655,8 @@ public class Port extends NamedObj {
                         Iterator requests = _changeRequests.iterator();
 
                         while (requests.hasNext()) {
-                            ChangeRequest request = (ChangeRequest) requests.next();
+                            ChangeRequest request = (ChangeRequest) requests
+                                    .next();
                             entity.requestChange(request);
                         }
 

@@ -27,7 +27,6 @@
  */
 package ptolemy.actor.lib.conversions;
 
-import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.lib.Transformer;
 import ptolemy.data.ArrayToken;
 import ptolemy.data.IntToken;

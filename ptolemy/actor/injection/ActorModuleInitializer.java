@@ -32,7 +32,6 @@ package ptolemy.actor.injection;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 
-
 ///////////////////////////////////////////////////////////////////
 //// ActorModuleInitializer
 /**

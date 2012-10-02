@@ -137,8 +137,7 @@ public class DeltaConstraintSolver extends LatticeOntologySolver {
         List<Inequality> errorList = constraintList;
         int blockSize = errorList.size() / 2;
 
-        WHILE_LOOP:
-        while (blockSize >= 1) {
+        WHILE_LOOP: while (blockSize >= 1) {
             System.err.println("Blocksize " + blockSize);
             for (int i = 0; i < errorList.size(); i += blockSize) {
 

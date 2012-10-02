@@ -53,6 +53,7 @@ import javax.swing.filechooser.FileFilter;
 
 import ptolemy.actor.injection.PortablePlaceable;
 import ptolemy.data.expr.StringParameter;
+import ptolemy.gui.ExtensionFilenameFilter;
 import ptolemy.gui.ImageExportable;
 import ptolemy.gui.JFileChooserBugFix;
 import ptolemy.gui.Top;
@@ -112,7 +113,7 @@ public class PlotTableauFrame extends TableauFrame implements Printable,
      *   an instance of Plot.
      */
     public PlotTableauFrame(Tableau tableau, PlotBox plotBox) {
-        this(tableau, plotBox, (Placeable)null);
+        this(tableau, plotBox, (Placeable) null);
     }
 
     /** Construct a plot frame with the specified title and by default
@@ -541,7 +542,7 @@ public class PlotTableauFrame extends TableauFrame implements Printable,
                 LinkedList extensions = new LinkedList();
                 extensions.add(_formatName);
                 fileDialog
-                        .addChoosableFileFilter(new diva.gui.ExtensionFileFilter(
+                        .addChoosableFileFilter(new ExtensionFilenameFilter(
                                 extensions));
 
                 if (_directory != null) {

@@ -142,12 +142,11 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
      *  @param value The value of the constant.
      *  @return A #define that defines the constant.
      */
-    public String generateConstantDefinition(String constant,
-            String type, String value) {
+    public String generateConstantDefinition(String constant, String type,
+            String value) {
         // Maybe we should keep track of these in a Set?
-        return "#ifndef " + constant + _eol
-            + "#define " + constant + " " + value + _eol
-            + "#endif" + _eol;
+        return "#ifndef " + constant + _eol + "#define " + constant + " "
+                + value + _eol + "#endif" + _eol;
     }
 
     /** Generate the function table.  In this base class return
@@ -181,7 +180,8 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
                             code.append(types[i] + "_equals");
                         } else {
                             // Check to see if the type/function combo is supported.
-                            String typeFunctionName = types[i] + "_" + functions[j];
+                            String typeFunctionName = types[i] + "_"
+                                    + functions[j];
                             if (_unsupportedTypeFunctions
                                     .contains(typeFunctionName)) {
                                 code.append("unsupportedTypeFunction");
@@ -448,12 +448,13 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
         // Generate function map.
         // We don't generate functions for the new functions. because new takes
         // different arguments than the other functions
-        int offset = 0;  // set to 1 when we see the new function
+        int offset = 0; // set to 1 when we see the new function
         for (int i = 0; i < functionsArray.length; i++) {
             if (functionsArray[i].equals("new")) {
                 offset = 1;
             } else {
-                code.append("#define FUNC_" + functionsArray[i] + " " + (i - offset) + _eol);
+                code.append("#define FUNC_" + functionsArray[i] + " "
+                        + (i - offset) + _eol);
                 if (functionsArray[i].equals("delete")) {
                     defineEmptyToken = true;
                 }
@@ -523,8 +524,8 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
                     // Boolean_isCloseTo and String_isCloseTo map to
                     // Boolean_equals and String_equals.
                     if (functionsArray[j].equals("isCloseTo")
-                            && (typesArray[i].equals("Boolean")
-                                    || typesArray[i].equals("String"))) {
+                            && (typesArray[i].equals("Boolean") || typesArray[i]
+                                    .equals("String"))) {
 
                         if (!functions.contains("equals")) {
                             markFunctionCalled(typesArray[i] + "_equals", null);
@@ -731,7 +732,7 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
                     .iterator();
             while (modifiedVariables.hasNext()) {
                 // SetVariable needs this to be a Variable, not a Parameter.
-                Variable variable = (Variable) modifiedVariables.next();
+                Variable variable = modifiedVariables.next();
 
                 NamedProgramCodeGeneratorAdapter adapter = (NamedProgramCodeGeneratorAdapter) getAdapter(variable
                         .getContainer());
@@ -761,7 +762,7 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
                     .iterator();
             while (modifiedVariables.hasNext()) {
                 // SetVariable needs this to be a Variable, not a Parameter.
-                Variable variable = (Variable) modifiedVariables.next();
+                Variable variable = modifiedVariables.next();
 
                 NamedObj container = variable.getContainer();
                 NamedProgramCodeGeneratorAdapter containerAdapter = (NamedProgramCodeGeneratorAdapter) getAdapter(container);
@@ -903,8 +904,7 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
         Iterator<String> libraryDirectoryIterator = actorLibraryDirectories
                 .iterator();
         while (libraryDirectoryIterator.hasNext()) {
-            addLibrary("-L\"" + ((String) libraryDirectoryIterator.next())
-                    + "\"");
+            addLibrary("-L\"" + libraryDirectoryIterator.next() + "\"");
         }
 
         Set<String> actorLibraries = adapter.getLibraries();
@@ -957,10 +957,10 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
         _overloadedFunctions.parse(typeDir + "UnsignedByte.c");
 
         // Useful for debugging
-//         Iterator codeBlockNames = _overloadedFunctions.getAllCodeBlockNames().iterator();
-//         while (codeBlockNames.hasNext()) {
-//            System.out.println("code block: " + codeBlockNames.next());
-//         }
+        //         Iterator codeBlockNames = _overloadedFunctions.getAllCodeBlockNames().iterator();
+        //         while (codeBlockNames.hasNext()) {
+        //            System.out.println("code block: " + codeBlockNames.next());
+        //         }
 
         // Parse other function files.
         //        String directorFunctionDir = cCodegenPath
@@ -1007,7 +1007,7 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
             StringBuffer errorMessage = new StringBuffer();
             Iterator<String> allCommands = commands.iterator();
             while (allCommands.hasNext()) {
-                errorMessage.append((String) allCommands.next() + _eol);
+                errorMessage.append(allCommands.next() + _eol);
             }
             throw new IllegalActionException("Problem executing the "
                     + "commands:" + _eol + errorMessage + _eol + throwable);
@@ -1109,7 +1109,7 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
         includingFiles.add("<stdio.h>");
         includingFiles.add("<string.h>");
 
-        for (String file : (Set<String>) includingFiles) {
+        for (String file : includingFiles) {
             // Not all embedded platforms have all .h files.
             // For example, the AVR does not have time.h
             // FIXME: Surely we can control whether the files are
@@ -1419,7 +1419,7 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
             if (buffer.length() > 0) {
                 buffer.append(" ");
             }
-            buffer.append((String) iterator.next());
+            buffer.append(iterator.next());
         }
         return buffer.toString();
     }
@@ -1500,7 +1500,8 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
             addInclude("-I\"" + javaHome + "/include\"");
         } else {
             // Perhaps this is Mac OS X 10.7, where Java is laid out differently?
-            File headerDirectory = new File(new File(javaHome).getParentFile(), "Headers");
+            File headerDirectory = new File(new File(javaHome).getParentFile(),
+                    "Headers");
             if (new File(headerDirectory, "jni.h").exists()) {
                 addInclude("-I\"" + headerDirectory + "\"");
             }
@@ -1607,7 +1608,8 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
      *  a function to the set of overloaded functions.
      */
     public void markFunctionCalled(String name,
-            ProceduralTemplateParser templateParser) throws IllegalActionException {
+            ProceduralTemplateParser templateParser)
+            throws IllegalActionException {
 
         try {
             String functionCode = _overloadedFunctions.getCodeBlock(name);

@@ -89,7 +89,7 @@ public class SchedulePlotterEditorFactory extends EditorFactory {
             Configuration configuration = ((TableauFrame) parent)
                     .getConfiguration();
 
-            NamedObj container = object.getContainer();
+            object.getContainer();
 
             plot = new Plot();
             plot.setTitle("Execution Time Monitor");
@@ -102,8 +102,7 @@ public class SchedulePlotterEditorFactory extends EditorFactory {
             // so that it closes when the model is closed.
             Effigy effigy = Configuration.findEffigy(toplevel());
             String name = "plotterEffigy" + String.valueOf(id++);
-            PlotEffigy schedulePlotterEffigy = new PlotEffigy(effigy,
-                    name);
+            PlotEffigy schedulePlotterEffigy = new PlotEffigy(effigy, name);
             schedulePlotterEffigy.setPlot(plot);
             schedulePlotterEffigy.setModel(this.getContainer());
             schedulePlotterEffigy.identifier

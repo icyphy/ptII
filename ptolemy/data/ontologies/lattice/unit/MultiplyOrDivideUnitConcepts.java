@@ -288,7 +288,8 @@ public class MultiplyOrDivideUnitConcepts extends ConceptFunction {
                 throw new IllegalActionException("The ontology "
                         + _unitOntology + " has a null concept graph.");
             }
-            return conceptGraph.leastUpperBound(new HashSet<Concept>(allDimensionlessConcepts));
+            return conceptGraph.leastUpperBound(new HashSet<Concept>(
+                    allDimensionlessConcepts));
         }
     }
 

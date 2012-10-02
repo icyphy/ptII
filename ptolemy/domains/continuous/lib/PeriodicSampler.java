@@ -140,17 +140,20 @@ public class PeriodicSampler extends Transformer {
     /** If the attribute is microstep, adjust the causality interface.
      *  @exception IllegalActionException If the superclass throws it.
      */
-    public void attributeChanged(Attribute attribute) throws IllegalActionException {
+    public void attributeChanged(Attribute attribute)
+            throws IllegalActionException {
         if (attribute == microstep) {
-            int microstepValue = ((IntToken)microstep.getToken()).intValue();
+            int microstepValue = ((IntToken) microstep.getToken()).intValue();
             if (microstepValue != _microstep) {
                 CausalityInterface causalityInterface = getCausalityInterface();
                 if (microstepValue == 0) {
                     // Output depends on the input after a microstep delay.
-                    causalityInterface.declareDelayDependency(input, output, 0.0, 1);
+                    causalityInterface.declareDelayDependency(input, output,
+                            0.0, 1);
                 } else {
                     // Output depends immediately on the input.
-                    causalityInterface.declareDelayDependency(input, output, 0.0, 0);
+                    causalityInterface.declareDelayDependency(input, output,
+                            0.0, 0);
                 }
                 _microstep = microstepValue;
                 Director director = getDirector();
@@ -211,7 +214,7 @@ public class PeriodicSampler extends Transformer {
                         output.send(i, _pendingOutputs[i]);
                         if (_debugging) {
                             _debug("Sending output value " + _pendingOutputs[i]
-                                                                             + " on channel " + i);
+                                    + " on channel " + i);
                         }
                     } else {
                         output.sendClear(i);
@@ -226,8 +229,8 @@ public class PeriodicSampler extends Transformer {
                         if (i < outputWidth) {
                             output.send(i, token);
                             if (_debugging) {
-                                _debug("Read input and sent to output: " + token
-                                        + " on channel " + i);
+                                _debug("Read input and sent to output: "
+                                        + token + " on channel " + i);
                             }
                         }
                     }
@@ -293,7 +296,7 @@ public class PeriodicSampler extends Transformer {
     public boolean postfire() throws IllegalActionException {
         Director director = getDirector();
         Time currentTime = director.getModelTime();
-        int microstep = ((SuperdenseTimeDirector)director).getIndex();
+        int microstep = ((SuperdenseTimeDirector) director).getIndex();
         int inputWidth = input.getWidth();
         if (currentTime.compareTo(_nextSamplingTime) == 0) {
             // Current time matches. Check microstep.

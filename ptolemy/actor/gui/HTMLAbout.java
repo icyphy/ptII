@@ -469,7 +469,7 @@ public class HTMLAbout {
             throw new InternalErrorException("Failed to process "
                     + "ptolemy.ptII.dirAsURL property, ptII = null?");
         }
-        URL demoURL = MoMLApplication.specToURL(demosFileName);
+        URL demoURL = ConfigurationApplication.specToURL(demosFileName);
         List demosList = _getURLs(demoURL, ".*.xml", true, 2);
         Set demosSet = new HashSet(demosList);
         FileWriter fileWriter = null;
@@ -546,7 +546,7 @@ public class HTMLAbout {
             String aboutURLString = baseURL.toExternalForm();
             String base = aboutURLString.substring(0,
                     aboutURLString.lastIndexOf("/"));
-            baseURL = MoMLApplication.specToURL(base + "/intro.htm");
+            baseURL = ConfigurationApplication.specToURL(base + "/intro.htm");
             System.out
                     .println("HTMLAbout._expandLibrary(): looking in about URL: "
                             + baseURL);
@@ -644,7 +644,7 @@ public class HTMLAbout {
 
         URL url = null;
         try {
-            url = MoMLApplication.specToURL(demosFileName);
+            url = ConfigurationApplication.specToURL(demosFileName);
         } catch (Exception ex) {
             System.out.println("Warning: " + demosFileName + " not found: "
                     + ex);
@@ -680,7 +680,8 @@ public class HTMLAbout {
                 while (demos.hasNext()) {
                     String demo = (String) demos.next();
                     if (!completeDemosList.contains(demo)) {
-                        URL missingDemoURL = MoMLApplication.specToURL(demo);
+                        URL missingDemoURL = ConfigurationApplication
+                                .specToURL(demo);
                         results.append(" <li><a href=\"" + missingDemoURL
                                 + "\">" + missingDemoURL + "</a>\n");
                     }
@@ -778,14 +779,15 @@ public class HTMLAbout {
                         if (model == null) {
                             try {
                                 // Could be a jar url
-                                model = MoMLApplication.specToURL(modelLink)
-                                        .toString();
+                                model = ConfigurationApplication.specToURL(
+                                        modelLink).toString();
                             } catch (Exception ex) {
                                 if (modelLink.startsWith("/")) {
                                     modelLink = modelLink.substring(1);
                                     try {
-                                        model = MoMLApplication.specToURL(
-                                                modelLink).toString();
+                                        model = ConfigurationApplication
+                                                .specToURL(modelLink)
+                                                .toString();
                                     } catch (Exception ex2) {
                                         System.out.println("Failed to look up "
                                                 + demosURLParent + modelLink
@@ -796,8 +798,9 @@ public class HTMLAbout {
                                     String absoluteModelLink = demosURLParent
                                             + modelLink;
                                     try {
-                                        model = MoMLApplication.specToURL(
-                                                absoluteModelLink).toString();
+                                        model = ConfigurationApplication
+                                                .specToURL(absoluteModelLink)
+                                                .toString();
                                     } catch (Exception ex3) {
                                         System.out.println("Failed to look up "
                                                 + demosURLParent + modelLink

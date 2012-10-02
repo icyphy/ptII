@@ -162,6 +162,7 @@ public interface CPO<T extends Object> {
      *   in the specified array is not an element of this CPO.
      */
     public T leastUpperBound(Set<T> subset);
+
     /** Return the top element of this CPO.
      *  The top element is the element in the CPO that is higher than
      *  all the other elements.

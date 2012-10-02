@@ -46,7 +46,7 @@ import ptolemy.actor.Manager;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.parameters.ParameterPort;
 import ptolemy.actor.util.DFUtilities;
-import ptolemy.cg.kernel.generic.program.NamedProgramCodeGeneratorAdapter;
+import ptolemy.cg.kernel.generic.CodeGeneratorAdapter;
 import ptolemy.cg.kernel.generic.program.procedural.java.JavaCodeGenerator;
 import ptolemy.cg.lib.ModularCompiledSDFTypedCompositeActor;
 import ptolemy.cg.lib.Profile;
@@ -109,8 +109,7 @@ public class ModularSDFCodeGenerator extends JavaCodeGenerator {
      *                when the profile can't be generated.
      */
     public void createProfile() throws IllegalActionException {
-        String modelName = NamedProgramCodeGeneratorAdapter
-                .generateName(_model);
+        String modelName = CodeGeneratorAdapter.generateName(_model);
         String profileClassName = modelName + "_profile";
 
         StringBuffer profileCode = new StringBuffer();
@@ -757,8 +756,7 @@ public class ModularSDFCodeGenerator extends JavaCodeGenerator {
                         boolean firstConsumption = true;
 
                         for (int i = 0; i <= numFirings; i++) {
-                            nextFiring:
-                            for (int j = 0; j < numFireFunctions; j++) {
+                            nextFiring: for (int j = 0; j < numFireFunctions; j++) {
                                 boolean fired = false;
                                 if (i > 0) {
                                     if (actor instanceof ModularCompiledSDFTypedCompositeActor) {
@@ -787,8 +785,7 @@ public class ModularSDFCodeGenerator extends JavaCodeGenerator {
                                         //get the last fire function that put tokens into the junction
                                         int lastFireFunction = numFireFunctions - 1;
                                         if (actor instanceof ModularCompiledSDFTypedCompositeActor) {
-                                            FOUND_FUNCTION:
-                                            for (int k = numFireFunctions - 1; k >= 0; k--) {
+                                            FOUND_FUNCTION: for (int k = numFireFunctions - 1; k >= 0; k--) {
                                                 for (FiringFunctionPort port : currentActorFirings
                                                         .get(k).ports) {
                                                     if (port.externalPortName
@@ -804,8 +801,7 @@ public class ModularSDFCodeGenerator extends JavaCodeGenerator {
                                         int firstFireFunction = 0;
 
                                         if (nextActor instanceof ModularCompiledSDFTypedCompositeActor) {
-                                            FOUND_NEXT_ACTOR_FUNCTION:
-                                            for (int n = 0; n < numFireFunctions; n++) {
+                                            FOUND_NEXT_ACTOR_FUNCTION: for (int n = 0; n < numFireFunctions; n++) {
                                                 for (FiringFunctionPort port : nextActorFirings
                                                         .get(n).ports) {
                                                     if (port.externalPortName
@@ -1065,8 +1061,8 @@ public class ModularSDFCodeGenerator extends JavaCodeGenerator {
             Firing firing = (Firing) firings.next();
             if (_getFiringFunction(outputFiringFunctions, firing.actor,
                     firing.firingFunction) != null) {
-                Set inputFirings = (Set) new HashSet();
-                Set searchedFirings = (Set) new HashSet();
+                Set inputFirings = new HashSet();
+                Set searchedFirings = new HashSet();
 
                 _getDependentBackwardFiring(firing, inputFirings,
                         searchedFirings, inputFiringFunctions,
@@ -1103,7 +1099,7 @@ public class ModularSDFCodeGenerator extends JavaCodeGenerator {
             if (!existed) {
                 Set clusteredOutputFirings = new HashSet();
                 clusteredOutputFirings.add(outputFiring);
-                Set firings = (Set) new HashSet(inputFirings);
+                Set firings = new HashSet(inputFirings);
                 clusteredOutputs.put(firings, clusteredOutputFirings);
             }
         }
@@ -1738,8 +1734,7 @@ public class ModularSDFCodeGenerator extends JavaCodeGenerator {
         graph.append("}" + _eol);
         clustersGraph.append("}");
 
-        String modelName = NamedProgramCodeGeneratorAdapter
-                .generateName(_model);
+        String modelName = CodeGeneratorAdapter.generateName(_model);
 
         _writeCodeFileName(graph, modelName + "_clusterDependency.dot", true,
                 true);

@@ -344,7 +344,8 @@ public abstract class AbstractReceiver implements Receiver {
                         // Do not put the token. The finite number has been reached.
                         break;
                     } else {
-                        receivers[j].put(container.convert(container._constantToken));
+                        receivers[j].put(container
+                                .convert(container._constantToken));
                         container._constantTokensSent++;
                     }
                 }
@@ -386,7 +387,8 @@ public abstract class AbstractReceiver implements Receiver {
                     // Do not put the token. The finite number has been reached.
                     continue;
                 } else {
-                    receivers[j].put(container.convert(container._constantToken));
+                    receivers[j].put(container
+                            .convert(container._constantToken));
                     container._constantTokensSent++;
                 }
             } else {

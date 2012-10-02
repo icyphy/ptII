@@ -294,7 +294,8 @@ public class FmvAutomatonGraphFrame extends FSMGraphFrame {
                                 if (selected == 0) {
                                     try {
                                         smvFileWriter = new FileWriter(smvFile);
-                                        smvFileWriter.write(fmvFormat.toString());
+                                        smvFileWriter.write(fmvFormat
+                                                .toString());
                                     } finally {
                                         if (smvFileWriter != null) {
                                             smvFileWriter.close();

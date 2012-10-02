@@ -147,10 +147,14 @@ public abstract class MonotonicityConceptFunction extends ConceptFunction {
                     "Concept General not found in monotonicityAnalysis ontology.");
         }
 
-        _nonMonotonicRepresentative = (FlatTokenRepresentativeConcept) _monotonicityAnalysisOntology.getEntity("NonMonotonic");
-        _nonAntimonotonicRepresentative = (FlatTokenRepresentativeConcept) _monotonicityAnalysisOntology.getEntity("NonAntimonotonic");
-        if (_nonAntimonotonicRepresentative == null || null == _nonMonotonicRepresentative) {
-            throw new IllegalActionException(_monotonicityAnalysisOntology,
+        _nonMonotonicRepresentative = (FlatTokenRepresentativeConcept) _monotonicityAnalysisOntology
+                .getEntity("NonMonotonic");
+        _nonAntimonotonicRepresentative = (FlatTokenRepresentativeConcept) _monotonicityAnalysisOntology
+                .getEntity("NonAntimonotonic");
+        if (_nonAntimonotonicRepresentative == null
+                || null == _nonMonotonicRepresentative) {
+            throw new IllegalActionException(
+                    _monotonicityAnalysisOntology,
                     "Infinite representatives (NonMonotonic and NonAntimonontonic) not found in monotonicityAnalysis ontology.");
         }
     }

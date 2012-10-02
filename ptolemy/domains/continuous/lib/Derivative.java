@@ -194,8 +194,8 @@ public class Derivative extends TypedAtomicActor {
         DoubleToken currentInput = (DoubleToken) input.get(0);
 
         if (_debugging) {
-            _debug("fire at time: " + currentTime
-                    + ", microstep " + ((ContinuousDirector)getDirector()).getIndex()
+            _debug("fire at time: " + currentTime + ", microstep "
+                    + ((ContinuousDirector) getDirector()).getIndex()
                     + "\n-- current input: " + currentInput
                     + "\n-- _previousOutput: " + _previousOutput
                     + "\n-- _previousInput: " + _previousInput
@@ -301,13 +301,12 @@ public class Derivative extends TypedAtomicActor {
         _previousInput = ((DoubleToken) input.get(0)).doubleValue();
         _previousTime = getDirector().getModelTime();
         if (_debugging) {
-            _debug("postfire at time: " + currentTime
-                    + ", microstep " + ((ContinuousDirector)getDirector()).getIndex()
+            _debug("postfire at time: " + currentTime + ", microstep "
+                    + ((ContinuousDirector) getDirector()).getIndex()
                     + "\n-- current input: " + currentInput
                     + "\n-- _previousOutput updated to: " + _previousOutput
                     + "\n-- _previousInput updated to: " + _previousInput
-                    + "\n-- _previousTime updated to: " + _previousTime
-                    + "\n");
+                    + "\n-- _previousTime updated to: " + _previousTime + "\n");
         }
         return result;
     }

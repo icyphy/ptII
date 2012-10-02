@@ -204,13 +204,15 @@ public class ModalModel extends TypedCompositeActor implements ChangeListener {
                 try {
                     Class.forName(className);
                 } catch (ClassNotFoundException e) {
-                    if (className.equals("ptolemy.domains.modal.kernel.FSMDirector")) {
+                    if (className
+                            .equals("ptolemy.domains.modal.kernel.FSMDirector")) {
                         className = "ptolemy.domains.modal.kernel.FSMDirector";
                         try {
                             Class.forName(className);
                         } catch (ClassNotFoundException e2) {
                             throw new IllegalActionException(this, null, e2,
-                                    "Invalid directorClass. \"" + className + "\".");
+                                    "Invalid directorClass. \"" + className
+                                            + "\".");
                         }
                     } else {
                         throw new IllegalActionException(this, null, e,
@@ -421,7 +423,7 @@ public class ModalModel extends TypedCompositeActor implements ChangeListener {
         }
         // If the controller FSM can handle the error, let it.
         // Otherwise, delegate to the superclass.
-        if (!getController().handleModelError(context,  exception)) {
+        if (!getController().handleModelError(context, exception)) {
             return super.handleModelError(context, exception);
         }
         return true;

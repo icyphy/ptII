@@ -111,23 +111,22 @@ public class WebAttribute extends StringAttribute {
      * (perhaps another Attribute exists with the requested name)
      */
     public static WebAttribute createWebAttribute(NamedObj container,
-            String id, String webName)throws IllegalActionException{
-       WebAttribute webAttribute;
+            String id, String webName) throws IllegalActionException {
+        WebAttribute webAttribute;
 
-       try {
-            if (id != null && container.getAttribute(id) == null)
-            {
+        try {
+            if (id != null && container.getAttribute(id) == null) {
                 webAttribute = new WebAttribute(container, id);
                 webAttribute.setPersistent(false);
             }
-       } catch (NameDuplicationException e) {
-              throw new IllegalActionException(container,
-               "Cannot create web content.  Duplicate name for " +
-               "WebAttribute: " + id);
-       }
+        } catch (NameDuplicationException e) {
+            throw new IllegalActionException(container,
+                    "Cannot create web content.  Duplicate name for "
+                            + "WebAttribute: " + id);
+        }
 
-        webAttribute =
-            (WebAttribute) container.getAttribute(id, WebAttribute.class);
+        webAttribute = (WebAttribute) container.getAttribute(id,
+                WebAttribute.class);
         webAttribute.setWebName(webName);
         webAttribute.setPersistent(false);
         webAttribute.setVisibility(NONE);

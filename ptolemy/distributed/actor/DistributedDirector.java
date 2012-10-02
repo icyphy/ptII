@@ -60,7 +60,8 @@ public class DistributedDirector extends Director {
      *  @exception NameDuplicationException If construction of Time objects fails.
      *  @exception IllegalActionException If construction of Time objects fails.
      */
-    public DistributedDirector() throws IllegalActionException, NameDuplicationException {
+    public DistributedDirector() throws IllegalActionException,
+            NameDuplicationException {
         super();
     }
 
@@ -69,7 +70,8 @@ public class DistributedDirector extends Director {
      *  @exception NameDuplicationException If construction of Time objects fails.
      *  @exception IllegalActionException If construction of Time objects fails.
      */
-    public DistributedDirector(Workspace workspace) throws IllegalActionException, NameDuplicationException {
+    public DistributedDirector(Workspace workspace)
+            throws IllegalActionException, NameDuplicationException {
         super(workspace);
     }
 

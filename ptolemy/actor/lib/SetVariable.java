@@ -324,7 +324,8 @@ public class SetVariable extends TypedAtomicActor implements ChangeListener,
                 // The ChangeRequest has false as third argument to avoid complete
                 // repaints of the model.
                 ChangeRequest request = new ChangeRequest(this,
-                        "SetVariable change request", /* isStructuralChange */ false) {
+                        "SetVariable change request", /* isStructuralChange */
+                        false) {
                     protected void _execute() throws IllegalActionException {
                         _setValue(value);
                     }

@@ -90,9 +90,9 @@ public class ShadowHighlighter extends BasicHighlighter {
      */
     public Rectangle2D getBounds() {
         Rectangle2D b = getChild().getBounds();
-        Rectangle2D bounds = new Rectangle2D.Double(
-                b.getX(), b.getY() + getHalo(),
-                b.getWidth() + getHalo(), b.getHeight() + getHalo());
+        Rectangle2D bounds = new Rectangle2D.Double(b.getX(), b.getY()
+                + getHalo(), b.getWidth() + getHalo(), b.getHeight()
+                + getHalo());
         return bounds;
     }
 
@@ -103,7 +103,8 @@ public class ShadowHighlighter extends BasicHighlighter {
      *  @return A new instance of the ShadowHighlighter class.
      */
     public FigureDecorator newInstance(Figure figure) {
-        return new ShadowHighlighter(getPaint(), getHalo(), getComposite(), getStroke());
+        return new ShadowHighlighter(getPaint(), getHalo(), getComposite(),
+                getStroke());
     }
 
     /** Paint the figure. This method first paints the shadow over

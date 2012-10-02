@@ -153,12 +153,12 @@ public abstract class OntologySolverBase extends MoMLModelAttribute {
      *   cannot be cloned.
      */
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        OntologySolverBase newObject = (OntologySolverBase) super.clone(workspace);
+        OntologySolverBase newObject = (OntologySolverBase) super
+                .clone(workspace);
         newObject._ontologySolverUtilities = null;
         newObject.reset();
         return newObject;
     }
-
 
     /**
      * Return the list of all PropertyAdapters associated with this

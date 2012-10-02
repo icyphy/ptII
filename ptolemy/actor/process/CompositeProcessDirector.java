@@ -131,7 +131,8 @@ public class CompositeProcessDirector extends ProcessDirector {
      *  @exception NameDuplicationException If construction of Time objects fails.
      *  @exception IllegalActionException If construction of Time objects fails.
      */
-    public CompositeProcessDirector() throws IllegalActionException, NameDuplicationException {
+    public CompositeProcessDirector() throws IllegalActionException,
+            NameDuplicationException {
         super();
     }
 
@@ -143,7 +144,8 @@ public class CompositeProcessDirector extends ProcessDirector {
      *  @exception NameDuplicationException If construction of Time objects fails.
      *  @exception IllegalActionException If construction of Time objects fails.
      */
-    public CompositeProcessDirector(Workspace workspace) throws IllegalActionException, NameDuplicationException {
+    public CompositeProcessDirector(Workspace workspace)
+            throws IllegalActionException, NameDuplicationException {
         super(workspace);
     }
 
@@ -690,7 +692,7 @@ public class CompositeProcessDirector extends ProcessDirector {
                         if (_inputBranchController == null) {
                             throw new InternalErrorException(this, null,
                                     "_inputBranchController was null?  Perhaps initialize() "
-                                    + "was not called?");
+                                            + "was not called?");
                         }
                         if (_inputBranchController.isBlocked()) {
                             while (!_outputBranchController.isBlocked()) {

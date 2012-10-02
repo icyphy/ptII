@@ -92,7 +92,7 @@ public class TokenToJSON extends Converter {
      */
     public void fire() throws IllegalActionException {
         super.fire();
-        output.send(0, constructJSONString(((Token) (input.get(0)))));
+        output.send(0, constructJSONString((input.get(0))));
     }
 
     /** Return false if the input port has no token, otherwise return
@@ -116,8 +116,7 @@ public class TokenToJSON extends Converter {
      *  @exception IllegalActionException If the Token found on the input cannot
      *  be expressed in JSON format
      */
-    public Token constructJSONString(Token input)
-            throws IllegalActionException {
+    public Token constructJSONString(Token input) throws IllegalActionException {
         try {
             if (input instanceof ArrayToken) {
                 return new StringToken(_scanArrayToken((ArrayToken) input)
@@ -163,12 +162,11 @@ public class TokenToJSON extends Converter {
 
         // The value can be any of these types:
         // Boolean, Number, String, or the JSONObject.NULL
-        if (token instanceof RecordToken)
+        if (token instanceof RecordToken) {
             return _scanRecordToken((RecordToken) token);
-        else if (token instanceof ArrayToken)
+        } else if (token instanceof ArrayToken) {
             return _scanArrayToken((ArrayToken) token);
-
-        else {
+        } else {
             Object o;
             if (token instanceof BooleanToken) {
                 o = ((BooleanToken) token).booleanValue();

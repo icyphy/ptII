@@ -163,7 +163,7 @@ public class Entity<T extends Port> extends InstantiableNamedObj {
             Iterator<T> ports = portList().iterator();
 
             while (ports.hasNext()) {
-                Port port = (Port) ports.next();
+                Port port = ports.next();
                 Port newPort = (Port) port.clone(workspace);
 
                 // Assume that since we are dealing with clones,
@@ -242,7 +242,7 @@ public class Entity<T extends Port> extends InstantiableNamedObj {
                 Iterator<T> ports = _portList.elementList().iterator();
 
                 while (ports.hasNext()) {
-                    Port port = (Port) ports.next();
+                    Port port = ports.next();
                     _connectedPorts.addAll(port.connectedPortList());
                 }
 

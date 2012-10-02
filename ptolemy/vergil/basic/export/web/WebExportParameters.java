@@ -42,7 +42,6 @@ import ptolemy.util.FileUtilities;
 import ptolemy.util.StringUtilities;
 import ptolemy.vergil.basic.ExportParameters;
 
-
 ///////////////////////////////////////////////////////////////////
 //// WebExportParameters
 /**
@@ -75,13 +74,15 @@ public class WebExportParameters extends Attribute {
         Parameter allowFiles = new Parameter(directoryToExportTo, "allowFiles");
         allowFiles.setExpression("false");
         allowFiles.setVisibility(Settable.NONE);
-        Parameter allowDirectories = new Parameter(directoryToExportTo, "allowDirectories");
+        Parameter allowDirectories = new Parameter(directoryToExportTo,
+                "allowDirectories");
         allowDirectories.setExpression("true");
         allowDirectories.setVisibility(Settable.NONE);
 
         backgroundColor = new ColorAttribute(this, "backgroundColor");
 
-        openCompositesBeforeExport = new Parameter(this, "openCompositesBeforeExport");
+        openCompositesBeforeExport = new Parameter(this,
+                "openCompositesBeforeExport");
         openCompositesBeforeExport.setTypeEquals(BaseType.BOOLEAN);
         openCompositesBeforeExport.setExpression("false");
 
@@ -164,26 +165,27 @@ public class WebExportParameters extends Attribute {
      *  @exception IllegalActionException If the change is not acceptable
      *   to this container (not thrown in this base class).
      */
-    public void attributeChanged(Attribute attribute) throws IllegalActionException {
+    public void attributeChanged(Attribute attribute)
+            throws IllegalActionException {
         if (attribute == backgroundColor) {
             _parameters.backgroundColor = backgroundColor.asColor();
         } else if (attribute == copyJavaScriptFiles) {
-            _parameters.copyJavaScriptFiles
-                    = ((BooleanToken)copyJavaScriptFiles.getToken()).booleanValue();
+            _parameters.copyJavaScriptFiles = ((BooleanToken) copyJavaScriptFiles
+                    .getToken()).booleanValue();
         } else if (attribute == directoryToExportTo) {
             _parameters.directoryToExportTo = directoryToExportTo.asFile();
         } else if (attribute == openCompositesBeforeExport) {
-            _parameters.openCompositesBeforeExport
-                    = ((BooleanToken)openCompositesBeforeExport.getToken()).booleanValue();
+            _parameters.openCompositesBeforeExport = ((BooleanToken) openCompositesBeforeExport
+                    .getToken()).booleanValue();
         } else if (attribute == runBeforeExport) {
-            _parameters.runBeforeExport
-                    = ((BooleanToken)runBeforeExport.getToken()).booleanValue();
+            _parameters.runBeforeExport = ((BooleanToken) runBeforeExport
+                    .getToken()).booleanValue();
         } else if (attribute == showInBrowser) {
-            _parameters.showInBrowser
-                = ((BooleanToken)showInBrowser.getToken()).booleanValue();
+            _parameters.showInBrowser = ((BooleanToken) showInBrowser
+                    .getToken()).booleanValue();
         } else if (attribute == usePtWebsite) {
-            _parameters.usePtWebsite
-                = ((BooleanToken)usePtWebsite.getToken()).booleanValue();
+            _parameters.usePtWebsite = ((BooleanToken) usePtWebsite.getToken())
+                    .booleanValue();
         } else {
             super.attributeChanged(attribute);
         }

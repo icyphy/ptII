@@ -97,7 +97,7 @@ public class GenerateCopyrights {
         // A Map of copyrights, where the key is a URL naming
         // the copyright and the value is a List of entities
         // that use that as a copyright.
-        TreeMap<String, Set <String>> copyrightsMap = new TreeMap<String, Set<String>>();
+        TreeMap<String, Set<String>> copyrightsMap = new TreeMap<String, Set<String>>();
 
         // Add the classnames and copyrights.
         // Alphabetical by className.
@@ -137,7 +137,8 @@ public class GenerateCopyrights {
         _addIfPresent(copyrightsMap, "org.ptolemy.fmi.driver.OutputRow",
                 "org/ptolemy/fmi/driver/fmusdk-license.htm");
 
-        _addIfPresent(copyrightsMap, "org.satlive.jsat.objects.ExternalLiteral",
+        _addIfPresent(copyrightsMap,
+                "org.satlive.jsat.objects.ExternalLiteral",
                 "mescal/configs/doc/jsat-copyright.htm");
 
         _addIfPresent(copyrightsMap, "ptolemy.actor.gui.BrowserLauncher",
@@ -148,7 +149,8 @@ public class GenerateCopyrights {
                 "org/mlc/mlc-copyright.htm");
         _addIfPresent(copyrightsMap, "ptolemy.actor.lib.colt.ColtRandomSource",
                 "ptolemy/actor/lib/colt/colt-copyright.htm");
-        _addIfPresent(copyrightsMap, "ptolemy.actor.lib.database.DatabaseManager",
+        _addIfPresent(copyrightsMap,
+                "ptolemy.actor.lib.database.DatabaseManager",
                 "com.mysql.jdbc.Driver",
                 "ptolemy/actor/lib/database/mysql-copyright.htm");
         _addIfPresent(copyrightsMap, "ptolemy.actor.lib.excel.Excel",
@@ -161,13 +163,15 @@ public class GenerateCopyrights {
                 "ptolemy/actor/lib/jmf/jmf-copyright.htm");
         _addIfPresent(copyrightsMap, "ptolemy.actor.lib.joystick.Joystick",
                 "ptolemy/actor/lib/joystick/copyright.htm");
-        _addIfPresent(copyrightsMap, "ptolemy.actor.lib.logic.fuzzy.FuzzyLogic",
+        _addIfPresent(copyrightsMap,
+                "ptolemy.actor.lib.logic.fuzzy.FuzzyLogic",
                 "ptolemy/actor/lib/logic/fuzzy/FuzzyEngine-copyright.htm");
         _addIfPresent(copyrightsMap, "ptolemy.actor.lib.mail.SendMail",
                 "ptolemy/actor/lib/mail/JavaMail-license.htm");
         _addIfPresent(copyrightsMap, "ptolemy.actor.lib.opencv.OpenCVReader",
                 "ptolemy/actor/lib/opencv/opencv-copyright.htm");
-        _addIfPresent(copyrightsMap, "ptolemy.actor.lib.opencv.javacv.CameraReader",
+        _addIfPresent(copyrightsMap,
+                "ptolemy.actor.lib.opencv.javacv.CameraReader",
                 "ptolemy/actor/lib/opencv/javacv/javacv-copyright.htm");
         _addIfPresent(copyrightsMap, "ptolemy.actor.lib.python.PythonScript",
                 "ptolemy/actor/lib/python/jython-license.htm");
@@ -177,12 +181,14 @@ public class GenerateCopyrights {
         _addIfPresent(copyrightsMap, "ptolemy.actor.ptalon.PtalonActor",
                 "ptolemy/actor/ptalon/ptalon-copyright.html");
 
-        _addIfPresent(copyrightsMap, "ptolemy.backtrack.eclipse.ast.TypeAnalyzer",
+        _addIfPresent(copyrightsMap,
+                "ptolemy.backtrack.eclipse.ast.TypeAnalyzer",
                 "ptolemy/backtrack/eclipse/ast/eclipse-copyright.htm");
         _addIfPresent(copyrightsMap, "ptolemy.backtrack.util.ClassFileLoader",
                 "ptolemy/backtrack/util/gcj-copyright.html");
 
-        _addIfPresent(copyrightsMap, "ptolemy.caltrop.actors.AbstractCalInterpreter",
+        _addIfPresent(copyrightsMap,
+                "ptolemy.caltrop.actors.AbstractCalInterpreter",
                 "ptolemy/caltrop/cup-copyright.htm");
         _addIfPresent(copyrightsMap, "ptolemy.caltrop.actors.CalInterpreter",
                 "ptolemy/caltrop/saxon-copyright.htm");
@@ -195,24 +201,29 @@ public class GenerateCopyrights {
 
         _addIfPresent(copyrightsMap, "ptolemy.domains.gr.kernel.GRActor",
                 "ptolemy/domains/gr/lib/java3d-copyright.htm");
-        _addIfPresent(copyrightsMap, "ptolemy.domains.gr.lib.quicktime.MovieViewScreen2D",
+        _addIfPresent(copyrightsMap,
+                "ptolemy.domains.gr.lib.quicktime.MovieViewScreen2D",
                 "ptolemy/domains/gr/lib/quicktime/quicktime-copyright.htm");
-        _addIfPresent(copyrightsMap, "ptolemy.domains.gr.lib.vr.GRTexture2D.java",
+        _addIfPresent(copyrightsMap,
+                "ptolemy.domains.gr.lib.vr.GRTexture2D.java",
                 "ptolemy/domains/gr/lib/vr/vr-copyright.htm");
 
         _addIfPresent(copyrightsMap, "ptolemy.domains.gro.kernel.GRODirector",
                 "ptolemy/domains/gro/JOGL-copyright.htm");
 
-        _addIfPresent(copyrightsMap, "ptolemy.domains.psdf.kernel.PSDFScheduler",
+        _addIfPresent(copyrightsMap,
+                "ptolemy.domains.psdf.kernel.PSDFScheduler",
                 "ptolemy/domains/psdf/mapss-copyright.htm");
 
-        _addIfPresent(copyrightsMap, "ptolemy.domains.ptinyos.util.nc2moml.MoMLLib",
+        _addIfPresent(copyrightsMap,
+                "ptolemy.domains.ptinyos.util.nc2moml.MoMLLib",
                 "ptolemy/domains/ptinyos/lib/jdom-copyright.htm");
 
         _addIfPresent(copyrightsMap, "ptolemy.gui.ExtensionFilenameFilter",
                 "ptolemy/gui/ExtensionFilenameFilter-license.htm");
 
-        _addIfPresent(copyrightsMap, "ptolemy.homer.widgets.ResizableImageWidget",
+        _addIfPresent(copyrightsMap,
+                "ptolemy.homer.widgets.ResizableImageWidget",
                 "ptolemy/homer/widgets/ResizableImageWidget-license.htm");
 
         _addIfPresent(copyrightsMap, "ptolemy.matlab.Expression",
@@ -224,25 +235,29 @@ public class GenerateCopyrights {
         _addIfPresent(copyrightsMap, "ptolemy.util.test.junit.TclTests",
                 "lib/JUnitParams-license.htm");
 
-        _addIfPresent(copyrightsMap, "ptolemy.vergil.basic.export.html.ExportHTMLAction",
+        _addIfPresent(copyrightsMap,
+                "ptolemy.vergil.basic.export.html.ExportHTMLAction",
                 "ptolemy/vergil/basic/export/html/javascript/javascript-license.htm");
 
-        _addIfPresent(copyrightsMap, "ptolemy.vergil.basic.export.html.ExportToWeb",
+        _addIfPresent(copyrightsMap,
+                "ptolemy.vergil.basic.export.html.ExportToWeb",
                 "ptolemy/vergil/basic/export/html/javascript/fancybox/fancybox-license.htm");
 
-        _addIfPresent(copyrightsMap, "ptolemy.vergil.basic.export.itextpdf.ExportPDFAction",
+        _addIfPresent(copyrightsMap,
+                "ptolemy.vergil.basic.export.itextpdf.ExportPDFAction",
                 "ptolemy/vergil/basic/export/itextpdf/itextpdf-copyright.htm");
 
-        _addIfPresent(copyrightsMap, "ptolemy.vergil.basic.layout.kieler.KielerLayout",
+        _addIfPresent(copyrightsMap,
+                "ptolemy.vergil.basic.layout.kieler.KielerLayout",
                 "lib/guava-license.htm");
-        _addIfPresent(copyrightsMap, "ptolemy.vergil.basic.layout.kieler.KielerGraphUtil",
+        _addIfPresent(copyrightsMap,
+                "ptolemy.vergil.basic.layout.kieler.KielerGraphUtil",
                 "ptolemy/vergil/basic/layout/kieler/kieler-copyright.htm");
 
         _addIfPresent(copyrightsMap, "ptolemy.vergil.pdfrenderer.PDFAttribute",
                 "ptolemy/vergil/pdfrenderer/PDFRenderer-copyright.htm");
 
-        _addIfPresent(copyrightsMap, "tcl.lang.Shell",
-                "lib/ptjacl-license.htm");
+        _addIfPresent(copyrightsMap, "tcl.lang.Shell", "lib/ptjacl-license.htm");
 
         _addIfPresent(copyrightsMap, "thales.vergil.SingleWindowApplication",
                 "thales/thalesSingleWindow-license.htm");
@@ -425,7 +440,7 @@ public class GenerateCopyrights {
      * @param copyrightPath The path or URL to the copyright for
      * the library
      */
-    private static void _addIfPresent(Map<String,Set<String>> copyrightsMap,
+    private static void _addIfPresent(Map<String, Set<String>> copyrightsMap,
             String applicationClassName, String libraryClassName,
             String copyrightPath) {
         // If actor.lib.database.DatabaseManager is present, then
@@ -448,9 +463,8 @@ public class GenerateCopyrights {
      * @param copyrightPath The path or URL to the copyright for
      * the library.
      */
-    private static void _addIfPresent(Map<String,Set<String>> copyrightsMap,
-            String className,
-            String copyrightPath) {
+    private static void _addIfPresent(Map<String, Set<String>> copyrightsMap,
+            String className, String copyrightPath) {
         try {
             Class.forName(className);
 

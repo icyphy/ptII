@@ -101,8 +101,10 @@ public class AttributeBoundsManipulator extends BoundsManipulator {
             // Check to see whether the size has changed by more than the
             // snap resolution.
             if (_boundsOnMousePressed != null
-                    && Math.abs(bounds.getWidth() - _boundsOnMousePressed.getWidth()) < resolution
-                    && Math.abs(bounds.getHeight() - _boundsOnMousePressed.getHeight()) < resolution) {
+                    && Math.abs(bounds.getWidth()
+                            - _boundsOnMousePressed.getWidth()) < resolution
+                    && Math.abs(bounds.getHeight()
+                            - _boundsOnMousePressed.getHeight()) < resolution) {
                 // Change is not big enough. Return.
                 return;
             }
@@ -119,7 +121,8 @@ public class AttributeBoundsManipulator extends BoundsManipulator {
                 // Snap the new width and height to the grid (not the parameter values!).
                 // The reason is that it is the new width and height, not the parameter
                 // values, are what is visible on the screen.
-                double[] snappedWidthHeight = _resizer.constrain(bounds.getWidth(), bounds.getHeight());
+                double[] snappedWidthHeight = _resizer.constrain(
+                        bounds.getWidth(), bounds.getHeight());
 
                 // The new width and height should be proportional to the original
                 // ones. This is because the width and height parameters of the
@@ -132,10 +135,13 @@ public class AttributeBoundsManipulator extends BoundsManipulator {
                 double newHeight = snappedWidthHeight[1];
 
                 try {
-                    Token previousWidth = ((Parameter)widthParameter).getToken();
-                    if (previousWidth instanceof DoubleToken && _boundsOnMousePressed != null) {
-                        newWidth = (snappedWidthHeight[0]/_boundsOnMousePressed.getWidth())
-                                * ((DoubleToken)previousWidth).doubleValue();
+                    Token previousWidth = ((Parameter) widthParameter)
+                            .getToken();
+                    if (previousWidth instanceof DoubleToken
+                            && _boundsOnMousePressed != null) {
+                        newWidth = (snappedWidthHeight[0] / _boundsOnMousePressed
+                                .getWidth())
+                                * ((DoubleToken) previousWidth).doubleValue();
                     }
                 } catch (IllegalActionException e1) {
                     // This should not occur.
@@ -143,10 +149,13 @@ public class AttributeBoundsManipulator extends BoundsManipulator {
                 }
 
                 try {
-                    Token previousHeight = ((Parameter)heightParameter).getToken();
-                    if (previousHeight instanceof DoubleToken && _boundsOnMousePressed != null) {
-                        newHeight = (snappedWidthHeight[1]/_boundsOnMousePressed.getHeight())
-                                * ((DoubleToken)previousHeight).doubleValue();
+                    Token previousHeight = ((Parameter) heightParameter)
+                            .getToken();
+                    if (previousHeight instanceof DoubleToken
+                            && _boundsOnMousePressed != null) {
+                        newHeight = (snappedWidthHeight[1] / _boundsOnMousePressed
+                                .getHeight())
+                                * ((DoubleToken) previousHeight).doubleValue();
                     }
                 } catch (IllegalActionException e1) {
                     // This should not occur.
@@ -165,7 +174,8 @@ public class AttributeBoundsManipulator extends BoundsManipulator {
                 // location needs to change too if dragged left or up.
                 if (locationParameter instanceof Locatable) {
 
-                    double[] previousLocation = ((Locatable)locationParameter).getLocation();
+                    double[] previousLocation = ((Locatable) locationParameter)
+                            .getLocation();
 
                     // Use these defaults if for some reason _boundsOnMousePressed == null
                     // (which should not occur).
@@ -178,17 +188,24 @@ public class AttributeBoundsManipulator extends BoundsManipulator {
                         // The reason is that it is the new X and Y, not the location,
                         // the is visible on the screen. The location could be the
                         // center of the object, or off center anywhere.
-                        double[] snappedXY = _resizer.constrain(bounds.getX(), bounds.getY());
+                        double[] snappedXY = _resizer.constrain(bounds.getX(),
+                                bounds.getY());
 
                         // If the previous location does not match X and Y of
                         // _boundsOnMousePressed, then the figure location is not
                         // the upper left corner. In this case, we need to scale
                         // displacement according to the following formulas
                         // (this is a tricky geometry problem!).
-                        newX = snappedXY[0] + (snappedWidthHeight[0]/_boundsOnMousePressed.getWidth())
-                                * (previousLocation[0] - _boundsOnMousePressed.getX());
-                        newY = snappedXY[1] + (snappedWidthHeight[1]/_boundsOnMousePressed.getHeight())
-                                * (previousLocation[1] - _boundsOnMousePressed.getY());
+                        newX = snappedXY[0]
+                                + (snappedWidthHeight[0] / _boundsOnMousePressed
+                                        .getWidth())
+                                * (previousLocation[0] - _boundsOnMousePressed
+                                        .getX());
+                        newY = snappedXY[1]
+                                + (snappedWidthHeight[1] / _boundsOnMousePressed
+                                        .getHeight())
+                                * (previousLocation[1] - _boundsOnMousePressed
+                                        .getY());
                     } else {
                         // This is legacy code. Should never be invoked.
                         // If the figure is centered, have to use the center

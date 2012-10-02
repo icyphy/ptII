@@ -623,7 +623,6 @@ public class ComponentEntity<T extends ComponentPort> extends Entity<T> {
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
-
     /** Adjust the deferrals in this object. This method should
      *  be called on any newly created object that is created by
      *  cloning. While cloning, parent relations are set to null.

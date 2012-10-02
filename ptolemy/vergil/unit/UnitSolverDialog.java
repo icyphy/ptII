@@ -134,14 +134,15 @@ public class UnitSolverDialog extends PtolemyDialog implements
             _relations = _getSelectedRelations();
 
             if (_entities.isEmpty() && _relations.isEmpty()) {
-                _entities = new HashSet<ComponentEntity>(_model.entityList(ComponentEntity.class));
+                _entities = new HashSet<ComponentEntity>(
+                        _model.entityList(ComponentEntity.class));
                 _relations = new HashSet<Relation>(_model.relationList());
             }
         } else {
             _entities = new HashSet<ComponentEntity>();
             Entity targetEntity = getTarget();
             if (targetEntity instanceof ComponentEntity) {
-                _entities.add((ComponentEntity)targetEntity);
+                _entities.add((ComponentEntity) targetEntity);
             }
             _relations = new HashSet<Relation>();
         }
@@ -212,8 +213,8 @@ public class UnitSolverDialog extends PtolemyDialog implements
         if (aEvent.getSource() == _runMinimalSpanSolverButton) {
             try {
                 // FIXME: UnitContstraint ctor should take args other than Vectors.
-                _uConstraints = new UnitConstraints(_model, new Vector(_entities),
-                        new Vector(_relations));
+                _uConstraints = new UnitConstraints(_model, new Vector(
+                        _entities), new Vector(_relations));
                 _solutions = _uConstraints.minimalSpanSolutions();
             } catch (IllegalActionException e) {
                 MessageHandler.error("Minimal Span Solver failed: ", e);
@@ -226,8 +227,8 @@ public class UnitSolverDialog extends PtolemyDialog implements
             _solutionsList.clearSelection();
 
             try {
-                _uConstraints = new UnitConstraints(_model, new Vector(_entities),
-                        new Vector(_relations));
+                _uConstraints = new UnitConstraints(_model, new Vector(
+                        _entities), new Vector(_relations));
 
                 Solution solution = _uConstraints.completeSolution();
                 _fullSolutionResult.setText(solution.getShortStateDesc());
@@ -420,7 +421,7 @@ public class UnitSolverDialog extends PtolemyDialog implements
                             .getSemanticObject(userObject);
 
                     if (actual instanceof ComponentEntity) {
-                        nodes.add((ComponentEntity)actual);
+                        nodes.add((ComponentEntity) actual);
                     }
                 }
             }
@@ -447,7 +448,7 @@ public class UnitSolverDialog extends PtolemyDialog implements
 
                     if ((actual instanceof Relation)
                             && (!relations.contains(actual))) {
-                        relations.add((Relation)actual);
+                        relations.add((Relation) actual);
                     }
                 }
             }
@@ -466,13 +467,13 @@ public class UnitSolverDialog extends PtolemyDialog implements
         _entities = new HashSet<ComponentEntity>(entities);
         _relations = new HashSet<Relation>(relations);
 
-//         for (int i = 0; i < entities.size(); i++) {
-//             _entities.add(entities.elementAt(i));
-//         }
+        //         for (int i = 0; i < entities.size(); i++) {
+        //             _entities.add(entities.elementAt(i));
+        //         }
 
-//         for (int i = 0; i < relations.size(); i++) {
-//             _relations.add(relations.elementAt(i));
-//         }
+        //         for (int i = 0; i < relations.size(); i++) {
+        //             _relations.add(relations.elementAt(i));
+        //         }
 
         _setToSelectedButton.setEnabled(false);
     }

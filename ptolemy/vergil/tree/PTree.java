@@ -95,15 +95,11 @@ public class PTree extends JTree {
      *  If the value is a Nameable, this returns its name.
      *  Otherwise, it returns value.toString();
      */
-    public String convertValueToText(Object value,
-            boolean selected,
-            boolean expanded,
-            boolean leaf,
-            int row,
-            boolean hasFocus) {
+    public String convertValueToText(Object value, boolean selected,
+            boolean expanded, boolean leaf, int row, boolean hasFocus) {
         String result;
         if (value instanceof Nameable) {
-            result = ((Nameable)value).getName();
+            result = ((Nameable) value).getName();
         } else {
             result = value.toString();
         }

@@ -53,4 +53,3 @@ public abstract class AssociativeType extends StructuredType {
      */
     public abstract Type get(String label);
 }
-

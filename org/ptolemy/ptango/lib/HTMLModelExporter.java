@@ -55,7 +55,6 @@ import ptolemy.vergil.basic.BasicGraphFrame;
 import ptolemy.vergil.basic.ExportParameters;
 import ptolemy.vergil.basic.export.html.ExportHTMLAction;
 
-
 ///////////////////////////////////////////////////////////////////
 //// HTMLModelExporter
 /**
@@ -92,13 +91,15 @@ public class HTMLModelExporter extends VisualModelReference {
         Parameter allowFiles = new Parameter(directoryToExportTo, "allowFiles");
         allowFiles.setExpression("false");
         allowFiles.setVisibility(Settable.NONE);
-        Parameter allowDirectories = new Parameter(directoryToExportTo, "allowDirectories");
+        Parameter allowDirectories = new Parameter(directoryToExportTo,
+                "allowDirectories");
         allowDirectories.setExpression("true");
         allowDirectories.setVisibility(Settable.NONE);
 
         backgroundColor = new ColorAttribute(this, "backgroundColor");
 
-        openCompositesBeforeExport = new Parameter(this, "openCompositesBeforeExport");
+        openCompositesBeforeExport = new Parameter(this,
+                "openCompositesBeforeExport");
         openCompositesBeforeExport.setTypeEquals(BaseType.BOOLEAN);
         openCompositesBeforeExport.setExpression("false");
 
@@ -206,7 +207,8 @@ public class HTMLModelExporter extends VisualModelReference {
      *  @exception IllegalActionException If the change is not acceptable
      *   to this container (not thrown in this base class).
      */
-    public void attributeChanged(Attribute attribute) throws IllegalActionException {
+    public void attributeChanged(Attribute attribute)
+            throws IllegalActionException {
         if (attribute == backgroundColor) {
             if (backgroundColor.getToken() == null) {
                 // No color specified. Use the model's background color,
@@ -215,12 +217,14 @@ public class HTMLModelExporter extends VisualModelReference {
                 // in the model.
                 NamedObj container = getContainer();
                 if (container != null) {
-                    List list = container.attributeList(PtolemyPreferences.class);
+                    List list = container
+                            .attributeList(PtolemyPreferences.class);
                     if (list.size() > 0) {
                         // Use the last of the preferences if there is more than one.
                         PtolemyPreferences preferences = (PtolemyPreferences) list
                                 .get(list.size() - 1);
-                        _parameters.backgroundColor = preferences.backgroundColor.asColor();
+                        _parameters.backgroundColor = preferences.backgroundColor
+                                .asColor();
                         return;
                     }
                 }
@@ -229,17 +233,20 @@ public class HTMLModelExporter extends VisualModelReference {
                 // color.
                 if (_defaultColor == null) {
                     // Look for default preferences in the configuration.
-                    Effigy effigy = Configuration.findEffigy(container.toplevel());
+                    Effigy effigy = Configuration.findEffigy(container
+                            .toplevel());
                     if (effigy == null) {
                         // No effigy. Can't find a configuration.
                         _defaultColor = Color.white;
                     } else {
-                        Configuration configuration = (Configuration) effigy.toplevel();
+                        Configuration configuration = (Configuration) effigy
+                                .toplevel();
                         try {
                             PtolemyPreferences preferences = PtolemyPreferences
                                     .getPtolemyPreferencesWithinConfiguration(configuration);
                             if (preferences != null) {
-                                _defaultColor = preferences.backgroundColor.asColor();
+                                _defaultColor = preferences.backgroundColor
+                                        .asColor();
                             }
                         } catch (IllegalActionException ex) {
                             _defaultColor = Color.white;
@@ -251,24 +258,24 @@ public class HTMLModelExporter extends VisualModelReference {
                 _parameters.backgroundColor = backgroundColor.asColor();
             }
         } else if (attribute == copyJavaScriptFiles) {
-            _parameters.copyJavaScriptFiles
-                    = ((BooleanToken)copyJavaScriptFiles.getToken()).booleanValue();
+            _parameters.copyJavaScriptFiles = ((BooleanToken) copyJavaScriptFiles
+                    .getToken()).booleanValue();
         } else if (attribute == directoryToExportTo) {
             _parameters.directoryToExportTo = directoryToExportTo.asFile();
         } else if (attribute == openCompositesBeforeExport) {
-            _parameters.openCompositesBeforeExport
-                    = ((BooleanToken)openCompositesBeforeExport.getToken()).booleanValue();
+            _parameters.openCompositesBeforeExport = ((BooleanToken) openCompositesBeforeExport
+                    .getToken()).booleanValue();
         } else if (attribute == runBeforeExport) {
-            _parameters.runBeforeExport
-                    = ((BooleanToken)runBeforeExport.getToken()).booleanValue();
+            _parameters.runBeforeExport = ((BooleanToken) runBeforeExport
+                    .getToken()).booleanValue();
             if (_parameters.runBeforeExport) {
                 executionOnFiring.setExpression("run in calling thread");
             } else {
                 executionOnFiring.setExpression("do nothing");
             }
         } else if (attribute == usePtWebsite) {
-            _parameters.usePtWebsite
-                = ((BooleanToken)usePtWebsite.getToken()).booleanValue();
+            _parameters.usePtWebsite = ((BooleanToken) usePtWebsite.getToken())
+                    .booleanValue();
         } else if (attribute == executionOnFiring) {
             String executionOnFiringValue = executionOnFiring.stringValue();
 
@@ -301,10 +308,13 @@ public class HTMLModelExporter extends VisualModelReference {
                     // FIXME: Following should not be necessary. The above super.fire() call should shown the tableau.
                     _tableau.show();
                     // FIXME: Do we have to wait for the frame to exist?
-                    BasicGraphFrame graphFrame = (BasicGraphFrame)_tableau.getFrame();
-                    if (!ExportHTMLAction.copyJavaScriptFilesIfNeeded(graphFrame, _parameters)) {
+                    BasicGraphFrame graphFrame = (BasicGraphFrame) _tableau
+                            .getFrame();
+                    if (!ExportHTMLAction.copyJavaScriptFilesIfNeeded(
+                            graphFrame, _parameters)) {
                         // Canceled the export.
-                        _exception = new IllegalActionException(HTMLModelExporter.this, "Export canceled.");
+                        _exception = new IllegalActionException(
+                                HTMLModelExporter.this, "Export canceled.");
                         return;
                     }
 
@@ -315,14 +325,16 @@ public class HTMLModelExporter extends VisualModelReference {
                     try {
                         // The null third argument ensure that there is no attempt to open
                         // the exported file in a browser.
-                        ExportHTMLAction.openRunAndWriteHTML(graphFrame, _parameters, null, writer, true);
+                        ExportHTMLAction.openRunAndWriteHTML(graphFrame,
+                                _parameters, null, writer, true);
                         writer.flush();
-                        webPage.send(0,  new StringToken(writer.toString()));
+                        webPage.send(0, new StringToken(writer.toString()));
                     } catch (IllegalActionException e) {
                         _exception = e;
                     }
                 } else {
-                    _exception = new IllegalActionException(HTMLModelExporter.this, "No model to export.");
+                    _exception = new IllegalActionException(
+                            HTMLModelExporter.this, "No model to export.");
                 }
             }
         };
@@ -333,8 +345,7 @@ public class HTMLModelExporter extends VisualModelReference {
             // We need to run the model outside the GUI thread.
             SwingUtilities.invokeAndWait(doExport);
         } catch (Exception ex) {
-            throw new IllegalActionException(this, null, ex,
-                    "Open failed.");
+            throw new IllegalActionException(this, null, ex, "Open failed.");
         }
         if (_exception != null) {
             throw _exception;

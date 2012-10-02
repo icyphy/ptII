@@ -73,22 +73,22 @@ public class MonotonicityCounterexamples {
     public static MonotonicityCounterexamples fromToken(Token token)
             throws IllegalActionException {
         if (!(token instanceof ArrayToken)) {
-            throw new IllegalActionException("Invalid token structure" +
-                    "for creating MonotonicityCounterexamples:" +
-                    "Token must be ArrayToken.");
+            throw new IllegalActionException("Invalid token structure"
+                    + "for creating MonotonicityCounterexamples:"
+                    + "Token must be ArrayToken.");
         }
         MonotonicityCounterexamples result = new MonotonicityCounterexamples();
-        for (Token insideToken : ((ArrayToken)token).arrayValue()) {
+        for (Token insideToken : ((ArrayToken) token).arrayValue()) {
             if (!(insideToken instanceof TupleToken)) {
-                throw new IllegalActionException("Invalid token structure" +
-                                "for creating MonotonicityCounterexamples:" +
-                                "ArrayToken must contain TupleTokens.");
+                throw new IllegalActionException("Invalid token structure"
+                        + "for creating MonotonicityCounterexamples:"
+                        + "ArrayToken must contain TupleTokens.");
             }
             TupleToken tupleToken = (TupleToken) insideToken;
             if (tupleToken.length() != 2) {
-                throw new IllegalActionException("Invalid token structure" +
-                        "for creating MonotonicityCounterexamples:" +
-                        "TupleTokens must be of length 2.");
+                throw new IllegalActionException("Invalid token structure"
+                        + "for creating MonotonicityCounterexamples:"
+                        + "TupleTokens must be of length 2.");
             }
             ConceptToken x1 = (ConceptToken) tupleToken.getElement(0);
             ConceptToken x2 = (ConceptToken) tupleToken.getElement(1);
@@ -131,7 +131,8 @@ public class MonotonicityCounterexamples {
             @Override
             public int compare(ConceptPair o1, ConceptPair o2) {
                 if (o1.lesser.toString().equals(o2.lesser.toString())) {
-                    return o1.greater.toString().compareTo(o2.greater.toString());
+                    return o1.greater.toString().compareTo(
+                            o2.greater.toString());
                 } else {
                     return o1.lesser.toString().compareTo(o2.lesser.toString());
                 }
@@ -161,7 +162,7 @@ public class MonotonicityCounterexamples {
         if (!(o instanceof MonotonicityCounterexamples)) {
             return false;
         }
-        MonotonicityCounterexamples mc = (MonotonicityCounterexamples)o;
+        MonotonicityCounterexamples mc = (MonotonicityCounterexamples) o;
         if (!mc._counterexamples.keySet().equals(_counterexamples.keySet())) {
             return false;
         }
@@ -174,8 +175,8 @@ public class MonotonicityCounterexamples {
     }
 
     public int hashCode() {
-                return _counterexamples.hashCode();
-        }
+        return _counterexamples.hashCode();
+    }
 
     /** Return the string representation of the counterexample set.
      *  @return The string representation of this set.
@@ -208,10 +209,8 @@ public class MonotonicityCounterexamples {
         TupleToken[] array = new TupleToken[entrySet().size()];
         int i = 0;
         for (Entry<Concept, Concept> pair : entryArraySorted()) {
-            ConceptToken[] conceptArr = {
-                    new ConceptToken(pair.getKey()),
-                    new ConceptToken(pair.getValue())
-            };
+            ConceptToken[] conceptArr = { new ConceptToken(pair.getKey()),
+                    new ConceptToken(pair.getValue()) };
             TupleToken pairTuple = new TupleToken(conceptArr);
             array[i] = pairTuple;
             i++;
@@ -226,13 +225,13 @@ public class MonotonicityCounterexamples {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-        /** A multimap to keep track of the mapping of lesser concepts
-     *  to greater concepts.  This must be a multimap, because there
-     *  could be multiple counterexamples with the same lesser concept.
-     *
-     *  If our MultiMap supported Java Generics, this would have a type of
-     *    MultiMap<Concept, Concept>
-     */
+    /** A multimap to keep track of the mapping of lesser concepts
+    *  to greater concepts.  This must be a multimap, because there
+    *  could be multiple counterexamples with the same lesser concept.
+    *
+    *  If our MultiMap supported Java Generics, this would have a type of
+    *    MultiMap<Concept, Concept>
+    */
     private MultiHashMap<Concept, Concept> _counterexamples;
 
     ///////////////////////////////////////////////////////////////////

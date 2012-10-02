@@ -61,6 +61,7 @@ import ptolemy.data.IntMatrixToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.LongMatrixToken;
 import ptolemy.data.LongToken;
+import ptolemy.data.MatrixToken;
 import ptolemy.data.ObjectToken;
 import ptolemy.data.RecordToken;
 import ptolemy.data.ScalarToken;
@@ -1859,7 +1860,7 @@ public class UtilityFunctions {
         DoubleMatrixToken result = null;
 
         try {
-            result = new DoubleMatrixToken(mtr, DoubleMatrixToken.DO_NOT_COPY);
+            result = new DoubleMatrixToken(mtr, MatrixToken.DO_NOT_COPY);
         } catch (IllegalActionException ex) {
             throw new InternalErrorException(null, ex,
                     "UtilityFunctions.zeroMatrixDouble: "
@@ -1879,7 +1880,7 @@ public class UtilityFunctions {
         IntMatrixToken result = null;
 
         try {
-            result = new IntMatrixToken(mtr, IntMatrixToken.DO_NOT_COPY);
+            result = new IntMatrixToken(mtr, MatrixToken.DO_NOT_COPY);
         } catch (IllegalActionException ex) {
             throw new InternalErrorException(null, ex,
                     "UtilityFunctions.zeroMatrixInt: "
@@ -1899,7 +1900,7 @@ public class UtilityFunctions {
         LongMatrixToken result = null;
 
         try {
-            result = new LongMatrixToken(mtr, LongMatrixToken.DO_NOT_COPY);
+            result = new LongMatrixToken(mtr, MatrixToken.DO_NOT_COPY);
         } catch (IllegalActionException ex) {
             throw new InternalErrorException(null, ex,
                     "UtilityFunctions.zeroMatrixLong: "

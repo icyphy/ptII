@@ -1291,7 +1291,8 @@ public class OracleXMLDBConnection implements DBConnection {
 
         try {
             if (existingModelDocument == null
-                    || (existingModelContent = existingModelDocument.getContentAsString()) == null) {
+                    || (existingModelContent = existingModelDocument
+                            .getContentAsString()) == null) {
                 throw new DBModelNotFoundException(
                         "The existing model was not found in the database - "
                                 + existingModelName);
@@ -1563,7 +1564,7 @@ public class OracleXMLDBConnection implements DBConnection {
 
             if (_xmlModelHierarchyMap.containsKey(currentModelName)) {
 
-                return (String) _xmlModelHierarchyMap.get(currentModelName);
+                return _xmlModelHierarchyMap.get(currentModelName);
             }
 
             if (_xmlContainer == null) {
@@ -2901,10 +2902,10 @@ public class OracleXMLDBConnection implements DBConnection {
         ArrayList<DBModel> _parentsList;
 
         /* *//**
-              * Match the given DBModel to the current model
-              * @param model Model to be compared.
-              * @return True if the names are same, false otherwise.
-              */
+               * Match the given DBModel to the current model
+               * @param model Model to be compared.
+               * @return True if the names are same, false otherwise.
+               */
         /*
         public boolean equals(DBModel model) {
          if (model instanceof DBModel) {

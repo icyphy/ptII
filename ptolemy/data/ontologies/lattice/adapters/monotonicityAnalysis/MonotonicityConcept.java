@@ -262,7 +262,7 @@ public class MonotonicityConcept extends MapTypeInfiniteConcept<Concept> {
      */
     protected MonotonicityConcept(Ontology ontology)
             throws IllegalActionException, NameDuplicationException {
-        super(ontology, (FiniteConcept) ontology.getConceptGraph().bottom());
+        super(ontology, ontology.getConceptGraph().bottom());
     }
 
     ///////////////////////////////////////////////////////////////////

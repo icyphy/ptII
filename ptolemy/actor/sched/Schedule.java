@@ -216,7 +216,7 @@ public class Schedule extends ScheduleElement {
      * @return The element at the specified position in the list.
      */
     public ScheduleElement get(int index) {
-        return ((ScheduleElement) _schedule.get(index));
+        return _schedule.get(index);
     }
 
     /** Return an iterator over the schedule elements of this schedule.
@@ -245,7 +245,7 @@ public class Schedule extends ScheduleElement {
      */
     public ScheduleElement remove(int index) {
         _incrementVersion();
-        return ((ScheduleElement) _schedule.remove(index));
+        return _schedule.remove(index);
     }
 
     /** Return the number of elements in this list.

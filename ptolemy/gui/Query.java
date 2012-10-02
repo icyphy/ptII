@@ -50,7 +50,6 @@ import java.net.URI;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.NoSuchElementException;
@@ -707,7 +706,8 @@ public class Query extends JPanel {
      */
     public JSlider addSlider(String name, String label, int defaultValue,
             int minimum, int maximum) throws IllegalArgumentException {
-        return addSlider(name, label, defaultValue, minimum, maximum, null, null);
+        return addSlider(name, label, defaultValue, minimum, maximum, null,
+                null);
     }
 
     /** Create a slider with the specified name, label, default value,
@@ -729,8 +729,8 @@ public class Query extends JPanel {
      *   is not between the minimum and maximum.
      */
     public JSlider addSlider(String name, String label, int defaultValue,
-            int minimum, int maximum, String minLabelText,
-            String maxLabelText) throws IllegalArgumentException {
+            int minimum, int maximum, String minLabelText, String maxLabelText)
+            throws IllegalArgumentException {
         JLabel lbl = new JLabel(label + ": ");
 
         if (minimum > maximum) {
@@ -2241,7 +2241,7 @@ public class Query extends JPanel {
                 // Absolute file name.
                 try {
                     _entryBox.setText(new File(fileDialog.getDirectory(),
-                                    fileDialog.getFile()).getCanonicalPath());
+                            fileDialog.getFile()).getCanonicalPath());
                 } catch (IOException ex) {
                     // If we can't get a path, then just use the name.
                     _entryBox.setText(fileDialog.getFile());
@@ -2513,7 +2513,7 @@ public class Query extends JPanel {
 
             JScrollBar scrollBar = super.getHorizontalScrollBar();
             if (scrollBar != null) {
-                if (scrollBar.isDisplayable()  && scrollBar.getHeight() > 0) {
+                if (scrollBar.isDisplayable() && scrollBar.getHeight() > 0) {
                     Query._textAreaSetRowsAndRepackParent(textArea, 2);
                 }
             }

@@ -1240,7 +1240,7 @@ public class IOPort extends ComponentPort {
                 if (seen.containsKey(relation)) {
                     // Have seen this relation before.  Increment
                     // the occurrence number.
-                    occurrence = ((Integer) (seen.get(relation))).intValue();
+                    occurrence = (seen.get(relation)).intValue();
                     occurrence++;
                 }
 
@@ -1351,8 +1351,7 @@ public class IOPort extends ComponentPort {
      *  @exception IllegalActionException Thrown if the token of the parameter
      *      containing the quantity manager object cannot be retrieved.
      */
-    public List getQuantityManagers()
-            throws IllegalActionException {
+    public List getQuantityManagers() throws IllegalActionException {
         if (_qmListValid == false) {
             _qmList = new ArrayList();
             if (attributeList().size() > 0) {
@@ -1363,10 +1362,9 @@ public class IOPort extends ComponentPort {
                         if (paramToken instanceof ObjectToken) {
                             Object paramObject = ((ObjectToken) paramToken)
                                     .getValue();
-                            if ((paramObject instanceof QuantityManager) ||
-                                (paramObject instanceof IOPort &&
-                                    ((IOPort)paramObject).getContainer()
-                                    instanceof QuantityManager)) {
+                            if ((paramObject instanceof QuantityManager)
+                                    || (paramObject instanceof IOPort && ((IOPort) paramObject)
+                                            .getContainer() instanceof QuantityManager)) {
                                 _qmList.add(paramObject);
                             }
                         }
@@ -1456,8 +1454,7 @@ public class IOPort extends ComponentPort {
                         if (seen.containsKey(relation)) {
                             // Have seen this relation before.  Increment
                             // the occurrence number.
-                            occurrence = ((Integer) (seen.get(relation)))
-                                    .intValue();
+                            occurrence = (seen.get(relation)).intValue();
                             occurrence++;
                         }
                         seen.put(relation, Integer.valueOf(occurrence));
@@ -1624,10 +1621,13 @@ public class IOPort extends ComponentPort {
                                 // ArrayIndexOutOfBounds was thrown by a bug in code generation.
                                 // The previous error message was meaningless.
                                 throw new InternalErrorException(this, ex,
-                                        "Failed to set farReceivers["
-                                        + index + "] = deepReceivers[" + i + "]. "
-                                        + "farReceivers.length = " + farReceivers.length
-                                        + " deepReceivers.length = " + deepReceivers.length + ".");
+                                        "Failed to set farReceivers[" + index
+                                                + "] = deepReceivers[" + i
+                                                + "]. "
+                                                + "farReceivers.length = "
+                                                + farReceivers.length
+                                                + " deepReceivers.length = "
+                                                + deepReceivers.length + ".");
                             }
                             index++;
                         }
@@ -2563,7 +2563,8 @@ public class IOPort extends ComponentPort {
                 // actors fool with that (like RunCompositeActor).
                 Nameable containersContainer = container.getContainer();
                 if (containersContainer instanceof Actor) {
-                    Director excDirector = ((Actor)containersContainer).getDirector();
+                    Director excDirector = ((Actor) containersContainer)
+                            .getDirector();
                     int depthOfDirector = excDirector.depthInHierarchy();
                     LinkedList<IOPort> result = new LinkedList<IOPort>();
                     Iterator<?> ports = deepConnectedPortList().iterator();
@@ -2620,7 +2621,8 @@ public class IOPort extends ComponentPort {
                     // actors fool with that (like RunCompositeActor).
                     Nameable containersContainer = container.getContainer();
                     if (containersContainer instanceof Actor) {
-                        Director director = ((Actor)containersContainer).getDirector();
+                        Director director = ((Actor) containersContainer)
+                                .getDirector();
                         if (director != null) {
                             depthOfDirector = director.depthInHierarchy();
                         }
@@ -3077,7 +3079,8 @@ public class IOPort extends ComponentPort {
      *  CompositeQuantityManager. FIXME: find a better solution.
      *  @param map The new local receivers table.
      */
-    public void setLocalReceiversTable(HashMap<IORelation, List<Receiver[][]>> map) {
+    public void setLocalReceiversTable(
+            HashMap<IORelation, List<Receiver[][]>> map) {
         _localReceiversTable = map;
     }
 
@@ -3190,7 +3193,8 @@ public class IOPort extends ComponentPort {
                 Nameable containersContainer = container.getContainer();
                 _sinkPortList = new LinkedList<IOPort>();
                 if (containersContainer instanceof Actor) {
-                    Director excDirector = ((Actor)containersContainer).getDirector();
+                    Director excDirector = ((Actor) containersContainer)
+                            .getDirector();
                     int depthOfDirector = excDirector.depthInHierarchy();
                     Iterator<?> ports = deepConnectedPortList().iterator();
 
@@ -3237,7 +3241,8 @@ public class IOPort extends ComponentPort {
                     // actors fool with that (like RunCompositeActor).
                     Nameable containersContainer = container.getContainer();
                     if (containersContainer instanceof Actor) {
-                        Director director = ((Actor)containersContainer).getDirector();
+                        Director director = ((Actor) containersContainer)
+                                .getDirector();
                         if (director != null) {
                             depthOfDirector = director.depthInHierarchy();
                         }
@@ -3616,7 +3621,6 @@ public class IOPort extends ComponentPort {
      *  remotely connected to this port (if any).
      */
     public static final int REMOTERECEIVERS = 2048;
-
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
@@ -4158,7 +4162,8 @@ public class IOPort extends ComponentPort {
      *   or the container is unable to return a new receiver (for example
      *   if it has no local director).
      */
-    protected Receiver _newInsideReceiver(int channel) throws IllegalActionException {
+    protected Receiver _newInsideReceiver(int channel)
+            throws IllegalActionException {
         Nameable container = getContainer();
 
         if (container instanceof CompositeActor) {
@@ -4241,7 +4246,7 @@ public class IOPort extends ComponentPort {
             if (receivers != null) {
                 Iterator<Receiver[][]> iterator = receivers.iterator();
                 while (iterator.hasNext()) {
-                    Receiver[][] receiverArray = (Receiver[][]) iterator.next();
+                    Receiver[][] receiverArray = iterator.next();
                     for (int i = 0; i < receiverArray.length; i++) {
                         if (receiverArray[i] != null) {
                             for (int j = 0; j < receiverArray[i].length; j++) {
@@ -4345,25 +4350,27 @@ public class IOPort extends ComponentPort {
             for (int i = qmList.size() - 1; i >= 0; i--) {
                 Object object = qmList.get(i);
                 if (object instanceof QuantityManager) {
-                    result = ((QuantityManager)object).getReceiver(result);
+                    result = ((QuantityManager) object).getReceiver(result);
                 } else if (object instanceof IOPort) {
-                    result = ((QuantityManager)((IOPort)object).getContainer())
-                            .getReceiver(result, ((IOPort)object));
+                    result = ((QuantityManager) ((IOPort) object)
+                            .getContainer()).getReceiver(result,
+                            ((IOPort) object));
                 }
             }
             if (result instanceof IntermediateReceiver) {
                 IntermediateReceiver intermediateReceiver = (IntermediateReceiver) result;
-                intermediateReceiver.source = (Actor) ((IOPort) this
-                        .sourcePortList().get(channel)).getContainer();
+                intermediateReceiver.source = (Actor) this.sourcePortList()
+                        .get(channel).getContainer();
             }
         } else {
             for (int i = 0; i < qmList.size(); i++) {
                 Object object = qmList.get(i);
                 if (object instanceof QuantityManager) {
-                    result = ((QuantityManager)object).getReceiver(result);
+                    result = ((QuantityManager) object).getReceiver(result);
                 } else if (object instanceof IOPort) {
-                    IntermediateReceiver ir = (IntermediateReceiver) ((QuantityManager)((IOPort)object).getContainer())
-                        .getReceiver(result, ((IOPort)object));
+                    IntermediateReceiver ir = (IntermediateReceiver) ((QuantityManager) ((IOPort) object)
+                            .getContainer()).getReceiver(result,
+                            ((IOPort) object));
                     _intermediateFarReceiver = ir;
                 }
             }

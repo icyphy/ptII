@@ -50,7 +50,6 @@ import ptolemy.domains.ptera.lib.EventUtils;
 import ptolemy.domains.ptera.lib.TableauParameter;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.attributes.URIAttribute;
-import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Settable;
@@ -138,7 +137,6 @@ public class View extends GTEvent {
      *  the model has changed.
      */
     public Parameter isPersistent;
-
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -281,7 +279,8 @@ public class View extends GTEvent {
                 titleString = titleValue;
             }
             tableau.setTitle(titleString);
-            boolean isPersistentValue = ((BooleanToken)isPersistent.getToken()).booleanValue();
+            boolean isPersistentValue = ((BooleanToken) isPersistent.getToken())
+                    .booleanValue();
             // Mark the Effigy as not persistent so that when the
             // Tableau is closed we don't prompt the user for
             // saving.

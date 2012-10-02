@@ -360,7 +360,8 @@ public class SRDirector extends FixedPointDirector implements PeriodicDirector {
             if (container instanceof CompositeActor) {
                 Director executiveDirector = ((CompositeActor) container)
                         .getExecutiveDirector();
-                if (isEmbedded() && executiveDirector instanceof SuperdenseTimeDirector) {
+                if (isEmbedded()
+                        && executiveDirector instanceof SuperdenseTimeDirector) {
                     _index = ((SuperdenseTimeDirector) executiveDirector)
                             .getIndex();
                 } else {
@@ -371,7 +372,8 @@ public class SRDirector extends FixedPointDirector implements PeriodicDirector {
                 }
             } else {
                 // No container. This should not happen.
-                throw new IllegalActionException(this, "SRDirector needs a CompositeActor container to execute");
+                throw new IllegalActionException(this,
+                        "SRDirector needs a CompositeActor container to execute");
             }
         } else {
             // If either we are not going to fire or are at the top level,

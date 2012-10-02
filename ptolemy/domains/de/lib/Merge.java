@@ -35,8 +35,6 @@ import ptolemy.data.BooleanToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
-import ptolemy.domains.continuous.kernel.ContinuousDirector;
-import ptolemy.domains.de.kernel.DEDirector;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -117,8 +115,8 @@ public class Merge extends DETransformer {
      */
     public void fire() throws IllegalActionException {
         super.fire();
-        _previousModelTime = ((CompositeActor) this.getContainer()).getDirector()
-                        .getModelTime();
+        _previousModelTime = ((CompositeActor) this.getContainer())
+                .getDirector().getModelTime();
         _previousMicrostep = _getMicrostep();
         _moreTokensOnOtherChannels = false;
         boolean discard = ((BooleanToken) discardEvents.getToken())
@@ -195,8 +193,8 @@ public class Merge extends DETransformer {
         if (director instanceof SuperdenseTimeDirector) {
             return ((SuperdenseTimeDirector) director).getIndex();
         }
-//        throw new IllegalActionException(this,
-//                "This actor can only be used with a SuperdenseTimeDirector");
+        //        throw new IllegalActionException(this,
+        //                "This actor can only be used with a SuperdenseTimeDirector");
         // FIXME: Is the following assumption correct?
         // The TMDirector uses Merge, so we should probably not
         // throw an exception here but return a default

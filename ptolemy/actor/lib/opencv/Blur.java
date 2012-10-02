@@ -83,7 +83,10 @@ public class Blur extends Transformer {
             OpenCV openCV = ((OpenCVImageObject) inputObject).openCV;
             openCV.copy(openCV.image(0));
             openCV.blur(OpenCV.BLUR, 13); //Does not have to be 13. Can be any odd number.
-            output.send(0, new ObjectToken(new OpenCVImageObject(openCV, openCV.image())));
+            output.send(
+                    0,
+                    new ObjectToken(new OpenCVImageObject(openCV, openCV
+                            .image())));
         }
     }
 

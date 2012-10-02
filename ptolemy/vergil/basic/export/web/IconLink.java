@@ -32,7 +32,6 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 
-
 ///////////////////////////////////////////////////////////////////
 //// IconLink
 /**
@@ -136,7 +135,7 @@ public class IconLink extends WebContent implements WebExportable {
      *   of this parameter fails, or creating a web attribute fails.
      */
     protected void _provideAttributes(WebExporter exporter)
-        throws IllegalActionException{
+            throws IllegalActionException {
 
         WebAttribute webAttribute;
 
@@ -147,9 +146,8 @@ public class IconLink extends WebContent implements WebExportable {
 
                 // Create link attribute and add to exporter.
                 // Content should only be added once (onceOnly -> true).
-                webAttribute =
-                    WebAttribute.createWebAttribute(getContainer(),
-                            "hrefWebAttribute", "href");
+                webAttribute = WebAttribute.createWebAttribute(getContainer(),
+                        "hrefWebAttribute", "href");
                 webAttribute.setExpression(stringValue());
                 exporter.defineAttribute(webAttribute, true);
             }
@@ -162,18 +160,16 @@ public class IconLink extends WebContent implements WebExportable {
 
                     // Create class attribute and add to exporter.
                     // Content should only be added once (onceOnly -> true).
-                    webAttribute =
-                       WebAttribute.createWebAttribute(getContainer(),
-                               "classWebAttribute", "class");
+                    webAttribute = WebAttribute.createWebAttribute(
+                            getContainer(), "classWebAttribute", "class");
                     webAttribute.setExpression("iframe");
                     exporter.defineAttribute(webAttribute, true);
                 } else {
 
                     // Create target attribute and add to exporter.
                     // Content should only be added once (onceOnly -> true).
-                    webAttribute =
-                      WebAttribute.createWebAttribute(getContainer(),
-                              "targetWebAttribute", "target");
+                    webAttribute = WebAttribute.createWebAttribute(
+                            getContainer(), "targetWebAttribute", "target");
                     webAttribute.setExpression(targetValue);
                     exporter.defineAttribute(webAttribute, true);
                 }

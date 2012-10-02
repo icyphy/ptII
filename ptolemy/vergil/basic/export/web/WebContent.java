@@ -29,7 +29,6 @@
 package ptolemy.vergil.basic.export.web;
 
 import java.awt.Color;
-import java.net.URI;
 
 import ptolemy.actor.gui.style.TextStyle;
 import ptolemy.data.expr.Parameter;
@@ -43,7 +42,6 @@ import ptolemy.kernel.util.SingletonAttribute;
 import ptolemy.kernel.util.Workspace;
 import ptolemy.vergil.icon.TextIcon;
 import ptolemy.vergil.toolbox.VisibleParameterEditorFactory;
-
 
 ///////////////////////////////////////////////////////////////////
 //// WebContent
@@ -59,8 +57,8 @@ import ptolemy.vergil.toolbox.VisibleParameterEditorFactory;
  * @Pt.ProposedRating Red (cxh)
  * @Pt.AcceptedRating Red (cxh)
  */
-public abstract class WebContent extends StringParameter
-    implements WebExportable {
+public abstract class WebContent extends StringParameter implements
+        WebExportable {
 
     /** Create an instance of this parameter.
      *  @param container The container.
@@ -113,7 +111,6 @@ public abstract class WebContent extends StringParameter
      */
     public Parameter width;
 
-
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -122,7 +119,8 @@ public abstract class WebContent extends StringParameter
      *  @exception IllegalActionException If thrown while setting the
      *  icon text or by the superclass.
      */
-    public void attributeChanged(Attribute attribute) throws IllegalActionException {
+    public void attributeChanged(Attribute attribute)
+            throws IllegalActionException {
         if (attribute == displayText) {
             _icon.setText(displayText.stringValue());
         } else {
@@ -144,7 +142,8 @@ public abstract class WebContent extends StringParameter
             newObject._icon.setTextColor(Color.RED);
             newObject._icon.setIconText("H");
         } catch (Throwable throwable) {
-            throw new CloneNotSupportedException(getFullName() + ": Failed to clone: " + throwable);
+            throw new CloneNotSupportedException(getFullName()
+                    + ": Failed to clone: " + throwable);
         }
         return newObject;
     }
@@ -169,8 +168,8 @@ public abstract class WebContent extends StringParameter
      *  @exception IllegalActionException If something is wrong with the web
      *  content.
      */
-    public void provideContent(WebExporter exporter) throws
-        IllegalActionException {
+    public void provideContent(WebExporter exporter)
+            throws IllegalActionException {
         _provideAttributes(exporter);
         _provideElements(exporter);
     }
@@ -187,7 +186,7 @@ public abstract class WebContent extends StringParameter
      * content.
      */
     protected void _provideAttributes(WebExporter exporter)
-        throws IllegalActionException {
+            throws IllegalActionException {
 
     }
 
@@ -200,7 +199,7 @@ public abstract class WebContent extends StringParameter
      * content.
      */
     protected void _provideElements(WebExporter exporter)
-        throws IllegalActionException {
+            throws IllegalActionException {
 
     }
 

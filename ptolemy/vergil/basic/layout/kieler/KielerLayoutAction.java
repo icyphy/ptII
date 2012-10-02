@@ -90,10 +90,8 @@ public class KielerLayoutAction extends Object implements IGuiAction, Filter {
             if (!accept(model)) {
                 throw new InternalErrorException(
                         "For now only actor models and modal models are supported by KIELER layout. "
-                                + "The model \""
-                                + model.getFullName()
-                                + "\" is a "
-                                + model.getClass().getName()
+                                + "The model \"" + model.getFullName()
+                                + "\" is a " + model.getClass().getName()
                                 + " which is not supported yet.");
             }
             JFrame frame = null;
@@ -120,13 +118,13 @@ public class KielerLayoutAction extends Object implements IGuiAction, Filter {
                 if (tableauxCount == 0) {
                     message = "findEffigy() found no Tableaux.";
                 } else if (effigy != null) {
-                    JFrame firstFrame = effigy.entityList(Tableau.class).get(0).getFrame();
+                    JFrame firstFrame = effigy.entityList(Tableau.class).get(0)
+                            .getFrame();
                     message = "The first frame of "
                             + tableauxCount
                             + " found by findEffigy() is "
                             + (firstFrame == null ? "null" : "a \""
-                                    + firstFrame.getClass().getName()
-                                    + "\"")
+                                    + firstFrame.getClass().getName() + "\"")
                             + ", which is not an ActorGraphFrame or FSMGraphFrame.";
                 }
                 throw new InternalErrorException(model, null,
@@ -142,8 +140,9 @@ public class KielerLayoutAction extends Object implements IGuiAction, Filter {
                     // Fetch everything needed to build the LayoutTarget.
                     GraphController graphController = graphFrame.getJGraph()
                             .getGraphPane().getGraphController();
-                    GraphModel graphModel = graphFrame.getJGraph().getGraphPane()
-                            .getGraphController().getGraphModel();
+                    GraphModel graphModel = graphFrame.getJGraph()
+                            .getGraphPane().getGraphController()
+                            .getGraphModel();
                     BasicLayoutTarget layoutTarget = new BasicLayoutTarget(
                             graphController);
 
@@ -176,7 +175,6 @@ public class KielerLayoutAction extends Object implements IGuiAction, Filter {
         return o instanceof CompositeActor || o instanceof FSMActor;
     }
 
-
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
@@ -190,15 +188,15 @@ public class KielerLayoutAction extends Object implements IGuiAction, Filter {
     private boolean _useOldAlgorithm(NamedObj model) {
         try {
             // Find the model's LayoutConfiguration element
-            List<LayoutConfiguration> configAttributes = model.attributeList(
-                    LayoutConfiguration.class);
+            List<LayoutConfiguration> configAttributes = model
+                    .attributeList(LayoutConfiguration.class);
 
             // If there is such an element, check if the old algorithm is to be used
             if (!configAttributes.isEmpty()) {
                 LayoutConfiguration configuration = configAttributes.get(0);
 
-                BooleanToken useOldAlgorithm = BooleanToken.convert(
-                        configuration.useOldAlgorithm.getToken());
+                BooleanToken useOldAlgorithm = BooleanToken
+                        .convert(configuration.useOldAlgorithm.getToken());
                 if (useOldAlgorithm.booleanValue()) {
                     return true;
                 }

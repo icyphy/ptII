@@ -37,7 +37,6 @@ import ptolemy.data.DoubleToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
@@ -132,7 +131,7 @@ public class SingleEvent extends TypedAtomicActor {
         Director director = getDirector();
         int microstep = 1;
         if (director instanceof SuperdenseTimeDirector) {
-            microstep = ((SuperdenseTimeDirector)director).getIndex();
+            microstep = ((SuperdenseTimeDirector) director).getIndex();
         }
         Time eventTime = new Time(director, eventTimeValue);
         Time currentTime = director.getModelTime();

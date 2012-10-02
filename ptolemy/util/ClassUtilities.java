@@ -193,8 +193,7 @@ public class ClassUtilities {
      *  to a URL.
      *  @see java.net.JarURLConnection
      */
-    public static URL sourceResource(String sourceURLString)
-            throws IOException {
+    public static URL sourceResource(String sourceURLString) throws IOException {
         // FIXME: Maybe only allow relative paths?
 
         // Hmm.  Might be Eclipse, where sadly the
@@ -209,26 +208,27 @@ public class ClassUtilities {
 
         // First time through, search each element of the CLASSPATH that names
         // a directory
-            if (_sourceDirectories == null) {
-                    List<File> sourceDirectories = new LinkedList<File>();
-                    String classPath[] = StringUtilities.getProperty("java.class.path").split(StringUtilities.getProperty("path.separator"));
-                    for ( int i = 0; i < classPath.length; i++) {
-                            File directory = new File(classPath[i]);
-                            if (directory.isDirectory()) {
-                                    // We have a potential winner.
-                                    while (directory != null) {
-                                            File sourceDirectory = new File(directory, "src");
-                                            if (sourceDirectory.isDirectory()) {
-                                                    sourceDirectories.add(sourceDirectory);
-                                                    break;
-                                            }
-                                            directory = directory.getParentFile();
-                                    }
-                            }
+        if (_sourceDirectories == null) {
+            List<File> sourceDirectories = new LinkedList<File>();
+            String classPath[] = StringUtilities.getProperty("java.class.path")
+                    .split(StringUtilities.getProperty("path.separator"));
+            for (int i = 0; i < classPath.length; i++) {
+                File directory = new File(classPath[i]);
+                if (directory.isDirectory()) {
+                    // We have a potential winner.
+                    while (directory != null) {
+                        File sourceDirectory = new File(directory, "src");
+                        if (sourceDirectory.isDirectory()) {
+                            sourceDirectories.add(sourceDirectory);
+                            break;
+                        }
+                        directory = directory.getParentFile();
                     }
-                    // Avoid FindBugs: LI: Incorrect lazy initialization and update of static field.
-                    _sourceDirectories = sourceDirectories;
+                }
             }
+            // Avoid FindBugs: LI: Incorrect lazy initialization and update of static field.
+            _sourceDirectories = sourceDirectories;
+        }
 
         // Search _sourceDirectories for sourceURLString
         for (File sourceDirectory : _sourceDirectories) {
@@ -297,5 +297,5 @@ public class ClassUtilities {
     /** A list of directories that end with "src" that are found in
      *  in the paths of individual elements in the classpath.
      */
-    private static List<File>_sourceDirectories = null;
+    private static List<File> _sourceDirectories = null;
 }

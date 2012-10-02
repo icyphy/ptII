@@ -307,10 +307,10 @@ public class ObjectType extends StructuredType implements Cloneable {
         if (this.equals(type)) {
             return CPO.SAME;
         }
-        if (_isLessThanOrEqualTo(this, (ObjectType)type)) {
+        if (_isLessThanOrEqualTo(this, (ObjectType) type)) {
             return CPO.LOWER;
         }
-        if (_isLessThanOrEqualTo((ObjectType)type, this)) {
+        if (_isLessThanOrEqualTo((ObjectType) type, this)) {
             return CPO.HIGHER;
         }
         return CPO.INCOMPARABLE;

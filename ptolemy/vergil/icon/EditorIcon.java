@@ -312,7 +312,8 @@ public class EditorIcon extends Attribute {
         // RelativeLocatables are drawn with a line that indicates to which object
         // they are connected. This line is drawn by RelativeLinkFigure.
         if (container instanceof RelativeLocatable) {
-            List<RelativeLocation> locations = container.attributeList(RelativeLocation.class);
+            List<RelativeLocation> locations = container
+                    .attributeList(RelativeLocation.class);
             if (locations.size() > 0) {
                 RelativeLocation relativeLocation = locations.get(0);
                 figure.add(new RelativeLinkFigure(relativeLocation));

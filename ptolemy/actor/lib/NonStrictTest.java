@@ -404,12 +404,12 @@ public class NonStrictTest extends Sink {
                     if (newValues[i] instanceof Token[]) {
                         // Handle width of 1, ArrayToken
                         newTokens[i] = new ArrayToken((Token[]) newValues[i]);
-                        for (int j = 0; j < ((Token[])newValues[i]).length; j++) {
-                            _checkRangeOfTolerance(((Token[])newValues[i])[j]);
+                        for (int j = 0; j < ((Token[]) newValues[i]).length; j++) {
+                            _checkRangeOfTolerance(((Token[]) newValues[i])[j]);
                         }
                     } else {
                         newTokens[i] = (Token) newValues[i];
-                        _checkRangeOfTolerance((Token)newValues[i]);
+                        _checkRangeOfTolerance((Token) newValues[i]);
                     }
                 }
             } else {
@@ -483,27 +483,34 @@ public class NonStrictTest extends Sink {
      *  @exception IllegalActionException If thrown while reading the
      *  <i>tolerance</i> parameter.
      */
-    protected void _checkRangeOfTolerance(Token newValue) throws IllegalActionException {
+    protected void _checkRangeOfTolerance(Token newValue)
+            throws IllegalActionException {
         if (newValue instanceof DoubleToken) {
-            Double value = ((DoubleToken)newValue).doubleValue();
+            Double value = ((DoubleToken) newValue).doubleValue();
             if (value == 0.0) {
                 // The exponent of 0.0 is -Infinity, so skip it
                 return;
             }
-            double log = Math.log10(((DoubleToken)newValue).doubleValue());
+            double log = Math.log10(((DoubleToken) newValue).doubleValue());
             if (Math.abs(log - Math.log10(_tolerance)) > 10) {
                 // Set the tolerance to something closer to the input so that
                 // we don't set it many times.
-                double newTolerance = Math.pow(10, log-9);
+                double newTolerance = Math.pow(10, log - 9);
                 if (newTolerance > _tolerance) {
                     // Only set the tolerance if it is greater than the old tolerance.
                     tolerance.setToken(new DoubleToken(newTolerance));
                     tolerance.setPersistent(true);
                     attributeChanged(tolerance);
-                    System.out.println("NonStrictTest: " + getFullName() + ": exponent of "
-                            + newValue + " is " + log
-                            + ", which cannot be compared with the previous tolerance."
-                            + " The new tolerance is " + tolerance.getExpression() + ".");
+                    System.out
+                            .println("NonStrictTest: "
+                                    + getFullName()
+                                    + ": exponent of "
+                                    + newValue
+                                    + " is "
+                                    + log
+                                    + ", which cannot be compared with the previous tolerance."
+                                    + " The new tolerance is "
+                                    + tolerance.getExpression() + ".");
                 }
             }
         }

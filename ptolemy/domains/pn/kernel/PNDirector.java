@@ -475,18 +475,20 @@ public class PNDirector extends CompositeProcessDirector {
                     .intValue();
 
             if ((maximumCapacity > 0) && ((capacity * 2) > maximumCapacity)) {
-                int channel = smallestCapacityQueue.getContainer().getChannelForReceiver(smallestCapacityQueue);
+                int channel = smallestCapacityQueue.getContainer()
+                        .getChannelForReceiver(smallestCapacityQueue);
                 String msg = "Queue size " + (capacity * 2)
                         + " exceeds the maximum capacity in port "
                         + smallestCapacityQueue.getContainer().getFullName()
-                        + ( channel > 0 ? " (channel " + channel + ")" : "")
+                        + (channel > 0 ? " (channel " + channel + ")" : "")
                         + ". Perhaps you have an unbounded queue?";
 
                 if (_debugging) {
                     _debug(msg);
                 }
 
-                throw new IllegalActionException(smallestCapacityQueue.getContainer(), msg);
+                throw new IllegalActionException(
+                        smallestCapacityQueue.getContainer(), msg);
             }
 
             smallestCapacityQueue.setCapacity(capacity * 2);
@@ -588,6 +590,5 @@ public class PNDirector extends CompositeProcessDirector {
 
     /** List of process listeners. */
     private LinkedList _processListeners = new LinkedList();
-
 
 }

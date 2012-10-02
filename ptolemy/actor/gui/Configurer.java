@@ -354,7 +354,7 @@ public class Configurer extends JPanel implements CloseListener {
                     backwardTypeInf = new Parameter(object,
                             "enableBackwardTypeInference");
                     backwardTypeInf.setExpression("false");
-                    attributes.add((Settable) backwardTypeInf);
+                    attributes.add(backwardTypeInf);
                 }
                 backwardTypeInf.setTypeEquals(BaseType.BOOLEAN);
             } catch (KernelException e) {
@@ -408,7 +408,4 @@ public class Configurer extends JPanel implements CloseListener {
 
     // The object that this configurer configures.
     private NamedObj _object;
-
-    /** */
-    private boolean _originalExpertMode = true;
 }

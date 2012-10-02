@@ -57,15 +57,13 @@ public class PeriodicSamplingSensorPort extends SensorPort {
      * @exception IllegalActionException If parameters cannot be set.
      * @exception NameDuplicationException If name already exists.
      */
-    public PeriodicSamplingSensorPort(CompositeEntity container, String name) throws IllegalActionException, NameDuplicationException {
+    public PeriodicSamplingSensorPort(CompositeEntity container, String name)
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         samplingTime = new Parameter(this, "samplingTime");
         samplingTime.setToken(new DoubleToken(1.0));
         samplingTime.setTypeEquals(BaseType.DOUBLE);
     }
-
-
-
 
 }

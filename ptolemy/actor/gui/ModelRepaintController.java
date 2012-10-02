@@ -104,10 +104,13 @@ public class ModelRepaintController extends Attribute {
      *  an attribute that cannot be cloned.
      */
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        ModelRepaintController newObject = (ModelRepaintController) super.clone(workspace);
+        ModelRepaintController newObject = (ModelRepaintController) super
+                .clone(workspace);
         newObject._executable = null;
-        newObject._repaintOnPostFire = (Parameter)newObject.getAttribute("repaintOnPostFire");
-        newObject._repaintOnWrapUp = (Parameter)newObject.getAttribute("repaintOnWrapUp");
+        newObject._repaintOnPostFire = (Parameter) newObject
+                .getAttribute("repaintOnPostFire");
+        newObject._repaintOnWrapUp = (Parameter) newObject
+                .getAttribute("repaintOnWrapUp");
         return newObject;
     }
 

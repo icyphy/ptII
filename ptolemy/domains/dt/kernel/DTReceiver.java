@@ -199,8 +199,7 @@ public class DTReceiver extends SDFReceiver {
 
         Iterator portListIterator = listOfConnectedPorts.iterator();
 
-        foundReceiver:
-        while (portListIterator.hasNext()) {
+        foundReceiver: while (portListIterator.hasNext()) {
             connectedPort = (IOPort) portListIterator.next();
 
             if (connectedPort.isOutput() == true) {
@@ -370,24 +369,24 @@ public class DTReceiver extends SDFReceiver {
      *   this receiver.
      */
     void _debugViewReceiverInfo() {
-//        String fromString;
-//        String toString;
-//
-//        if (_from == null) {
-//            fromString = "0";
-//        } else {
-//            fromString = ((Nameable) _from).getName();
-//        }
-//
-//        fromString += (" (" + ((TypedIOPort) _fromPort).getType() + ")");
-//
-//        if (_to == null) {
-//            toString = "0";
-//        } else {
-//            toString = ((Nameable) _to).getName();
-//        }
-//
-//        toString += (" (" + ((TypedIOPort) _toPort).getType() + ")");
+        //        String fromString;
+        //        String toString;
+        //
+        //        if (_from == null) {
+        //            fromString = "0";
+        //        } else {
+        //            fromString = ((Nameable) _from).getName();
+        //        }
+        //
+        //        fromString += (" (" + ((TypedIOPort) _fromPort).getType() + ")");
+        //
+        //        if (_to == null) {
+        //            toString = "0";
+        //        } else {
+        //            toString = ((Nameable) _to).getName();
+        //        }
+        //
+        //        toString += (" (" + ((TypedIOPort) _toPort).getType() + ")");
 
         //    _debug(fromString + " " + toString + " " + _deltaTime);
     }

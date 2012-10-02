@@ -347,7 +347,8 @@ public class CaseGraphFrame extends ActorGraphFrame implements ChangeListener {
                             }
                         }
 
-                        MultiCompositeActor.mirrorContainerPortsInRefinement(entity, portsToMirror);
+                        MultiCompositeActor.mirrorContainerPortsInRefinement(
+                                entity, portsToMirror);
 
                         JGraph jgraph = _addTabbedPane(entity, true);
                         ((CaseGraphController) _controller)._addHotKeys(jgraph);

@@ -307,7 +307,8 @@ public class ArrayToken extends AbstractNotConvertibleToken {
      *   or if all specified arrays are empty.
      *  @since Ptolemy II 9.0
      */
-    public static ArrayToken append(ArrayToken[] tokens) throws IllegalActionException {
+    public static ArrayToken append(ArrayToken[] tokens)
+            throws IllegalActionException {
         // FIXME: This should probably create an instance of a subclass the
         // preserves and refers to the subarrays.
 
@@ -337,7 +338,8 @@ public class ArrayToken extends AbstractNotConvertibleToken {
             int i = 0;
             for (ArrayToken token : tokens) {
                 if (token != null) {
-                    System.arraycopy(token._value, 0, result, i, token._value.length);
+                    System.arraycopy(token._value, 0, result, i,
+                            token._value.length);
                     i += token._value.length;
                 }
             }
@@ -628,7 +630,8 @@ public class ArrayToken extends AbstractNotConvertibleToken {
         }
 
         for (int i = 0; i < length(); i++) {
-            if (!getElement(i).equals(arrayArgument.getElement(i)) || getElement(i).isNil()) {
+            if (!getElement(i).equals(arrayArgument.getElement(i))
+                    || getElement(i).isNil()) {
                 return false;
             }
         }
@@ -1065,7 +1068,8 @@ public class ArrayToken extends AbstractNotConvertibleToken {
      *  @return A new array.
      *  @exception IllegalActionException Should not be thrown in this base class.
      */
-    public ArrayToken update(int index, Token value) throws IllegalActionException {
+    public ArrayToken update(int index, Token value)
+            throws IllegalActionException {
         if (index < 0 || index >= length()) {
             return this;
         }
@@ -1257,8 +1261,8 @@ public class ArrayToken extends AbstractNotConvertibleToken {
             // Here is where isCloseTo() differs from isEqualTo().
             // Note that we return false the first time we hit an
             // element token that is not close to our current element token.
-            BooleanToken result = getElement(i).isCloseTo(rightArray.getElement(i),
-                    epsilon);
+            BooleanToken result = getElement(i).isCloseTo(
+                    rightArray.getElement(i), epsilon);
 
             if (result.booleanValue() == false) {
                 return BooleanToken.FALSE;
@@ -1287,7 +1291,8 @@ public class ArrayToken extends AbstractNotConvertibleToken {
         ArrayToken rightArray = (ArrayToken) token;
 
         for (int i = 0; i < length(); i++) {
-            BooleanToken result = getElement(i).isEqualTo(rightArray.getElement(i));
+            BooleanToken result = getElement(i).isEqualTo(
+                    rightArray.getElement(i));
 
             if (result.booleanValue() == false) {
                 return BooleanToken.FALSE;
@@ -1387,7 +1392,8 @@ public class ArrayToken extends AbstractNotConvertibleToken {
             ArrayToken rightArray = (ArrayToken) rightArgument;
             if (rightArray.length() == length()) {
                 for (int i = 0; i < length(); i++) {
-                    result[i] = getElement(i).multiply(rightArray.getElement(i));
+                    result[i] = getElement(i)
+                            .multiply(rightArray.getElement(i));
                 }
             } else {
                 // Maybe one argument or the other is an array
@@ -1434,7 +1440,8 @@ public class ArrayToken extends AbstractNotConvertibleToken {
             ArrayToken rightArray = (ArrayToken) rightArgument;
             if (rightArray.length() == length()) {
                 for (int i = 0; i < length(); i++) {
-                    result[i] = getElement(i).subtract(rightArray.getElement(i));
+                    result[i] = getElement(i)
+                            .subtract(rightArray.getElement(i));
                 }
             } else {
                 // Maybe one argument or the other is an array

@@ -43,6 +43,7 @@ import ptolemy.actor.sched.Firing;
 import ptolemy.actor.sched.Schedule;
 import ptolemy.actor.util.DFUtilities;
 import ptolemy.cg.adapter.generic.adapters.ptolemy.actor.Director;
+import ptolemy.cg.kernel.generic.CodeGeneratorAdapter;
 import ptolemy.cg.kernel.generic.GenericCodeGenerator;
 import ptolemy.cg.kernel.generic.program.CodeStream;
 import ptolemy.cg.kernel.generic.program.NamedProgramCodeGeneratorAdapter;
@@ -168,7 +169,7 @@ public class StaticSchedulingDirector extends Director {
             // see whether the actor contains a code generator attribute.
             // If it does, we should use that as the adapter.
             NamedProgramCodeGeneratorAdapter adapter = (NamedProgramCodeGeneratorAdapter) codeGenerator
-                    .getAdapter((NamedObj) actor);
+                    .getAdapter(actor);
 
             boolean inline = ((BooleanToken) getCodeGenerator().inline
                     .getToken()).booleanValue();
@@ -185,8 +186,7 @@ public class StaticSchedulingDirector extends Director {
                 if (count > 1) {
                     // for loops should have the loop initial declaration outside the for block.  Test case:
                     // $PTII/bin/ptcg -language c -generateInSubdirectory false -inline false -maximumLinesPerBlock 2500 -variablesAsArrays false $PTII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/actor/lib/test/auto/DistributorMultipleTypes.xml
-                    code.append("{" + _eol
-                            + "int i = 0;" + _eol
+                    code.append("{" + _eol + "int i = 0;" + _eol
                             + "for (; i < " + count + " ; i++) {" + _eol);
                 }
 
@@ -197,8 +197,7 @@ public class StaticSchedulingDirector extends Director {
                 _generateUpdatePortOffsetCode(code, actor);
 
                 if (count > 1) {
-                    code.append("}" + _eol
-                            + "}" + _eol);
+                    code.append("}" + _eol + "}" + _eol);
                 }
             }
         }
@@ -284,11 +283,9 @@ public class StaticSchedulingDirector extends Director {
             }
         }
 
-        String[] splitFireCode = getCodeGenerator()
-                ._splitBody(
-                        "_"
-                                + NamedProgramCodeGeneratorAdapter.generateName(getComponent())
-                                + "_run_", generateFireCode());
+        String[] splitFireCode = getCodeGenerator()._splitBody(
+                "_" + CodeGeneratorAdapter.generateName(getComponent())
+                        + "_run_", generateFireCode());
 
         code.append("if (!run()) {" + _eol + "break;" + _eol + "}" + _eol + "}"
                 + _eol + "}" + _eol + _eol + splitFireCode[0] + _eol
@@ -1208,7 +1205,7 @@ public class StaticSchedulingDirector extends Director {
                         _port, j);
 
                 for (int k = 0; k < sinkChannels.size(); k++) {
-                    ProgramCodeGeneratorAdapter.Channel channel = (ProgramCodeGeneratorAdapter.Channel) sinkChannels
+                    ProgramCodeGeneratorAdapter.Channel channel = sinkChannels
                             .get(k);
                     ptolemy.actor.IOPort sinkPort = channel.port;
                     int sinkChannelNumber = channel.channelNumber;
@@ -1285,8 +1282,7 @@ public class StaticSchedulingDirector extends Director {
 
         private ProgramCodeGeneratorAdapter.Channel _getChannel(
                 int channelNumber) {
-            return new ProgramCodeGeneratorAdapter.Channel(
-                    (ptolemy.actor.IOPort) _port, channelNumber);
+            return new ProgramCodeGeneratorAdapter.Channel(_port, channelNumber);
         }
 
         /**

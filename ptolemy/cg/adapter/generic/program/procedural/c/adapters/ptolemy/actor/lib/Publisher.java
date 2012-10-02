@@ -28,7 +28,6 @@
  */
 package ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.actor.lib;
 
-
 /**
  * Generate Java code for an actor that publishes tokens on a named channel.
  *
@@ -41,7 +40,8 @@ package ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.actor.l
  *
  */
 public class Publisher
-    extends ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.lib.Publisher {
+        extends
+        ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.lib.Publisher {
     /**
      * Constructor method for the Publisher adapter.
      * @param actor the associated actor

@@ -59,14 +59,16 @@ public class AccumLUB extends TypedAtomicActor {
     public void fire() throws IllegalActionException {
         int width = _ins.getWidth();
         for (int i = 0; i < width; ++i) {
-            if (!_ins.isKnown(i)) continue;
+            if (!_ins.isKnown(i)) {
+                continue;
+            }
             _out.broadcast(_ins.hasToken(i) ? _ins.get(i) : null);
             break;
         }
     }
 
-    private void _init()
-            throws IllegalActionException, NameDuplicationException {
+    private void _init() throws IllegalActionException,
+            NameDuplicationException {
         _ins = new TypedIOPort(this, "Ins", true, false);
         _out = new TypedIOPort(this, "Out", false, true);
         _ins.setMultiport(true);
@@ -74,6 +76,5 @@ public class AccumLUB extends TypedAtomicActor {
 
     public TypedIOPort _ins;
     public TypedIOPort _out;
-
 
 }

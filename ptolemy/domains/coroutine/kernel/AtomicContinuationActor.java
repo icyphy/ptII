@@ -54,7 +54,8 @@ import ptolemy.kernel.util.Workspace;
  * @author shaver
  *
  */
-public abstract class AtomicContinuationActor extends TypedAtomicActor implements Continuation {
+public abstract class AtomicContinuationActor extends TypedAtomicActor
+        implements Continuation {
 
     public AtomicContinuationActor() {
         super();
@@ -70,19 +71,19 @@ public abstract class AtomicContinuationActor extends TypedAtomicActor implement
         _init();
     }
 
-    private void _init()
-        throws IllegalActionException, NameDuplicationException {
+    private void _init() throws IllegalActionException,
+            NameDuplicationException {
         _entries = new LinkedList();
-        _exits   = new LinkedList();
+        _exits = new LinkedList();
 
-        _entryPoints  = new HashMap();
+        _entryPoints = new HashMap();
         _entryPointsR = new HashMap();
-        _exitPoints   = new HashMap();
-        _exitPointsR  = new HashMap();
+        _exitPoints = new HashMap();
+        _exitPointsR = new HashMap();
 
         // Creating control ports
         _entryPort = new TypedIOPort(this, "entryPort", true, false);
-        _exitPort  = new TypedIOPort(this, "exitPort",  false, true);
+        _exitPort = new TypedIOPort(this, "exitPort", false, true);
         //
 
         BaseType t = BaseType.GENERAL;
@@ -101,7 +102,7 @@ public abstract class AtomicContinuationActor extends TypedAtomicActor implement
      */
     @Override
     public ControlExitToken controlEnter(ControlEntryToken entry)
-        throws IllegalActionException {
+            throws IllegalActionException {
         return null;
     }
 
@@ -109,8 +110,7 @@ public abstract class AtomicContinuationActor extends TypedAtomicActor implement
      * @see ptolemy.domains.coroutine.kernel.Continuation#init()
      */
     @Override
-    public ControlExitToken controlInit()
-        throws IllegalActionException {
+    public ControlExitToken controlInit() throws IllegalActionException {
         return controlEnter(ControlEntryToken.Init());
     }
 
@@ -118,8 +118,7 @@ public abstract class AtomicContinuationActor extends TypedAtomicActor implement
      * @see ptolemy.domains.coroutine.kernel.Continuation#resume()
      */
     @Override
-    public ControlExitToken controlResume()
-        throws IllegalActionException {
+    public ControlExitToken controlResume() throws IllegalActionException {
         return controlEnter(ControlEntryToken.Resume());
     }
 
@@ -127,8 +126,9 @@ public abstract class AtomicContinuationActor extends TypedAtomicActor implement
      * @see ptolemy.domains.coroutine.kernel.Continuation#enterAt(ptolemy.domains.coroutine.kernel.ControlEntryToken.EntryLocation)
      */
     @Override
-    public ControlExitToken controlEnterAt(ControlEntryToken.EntryLocation location)
-        throws IllegalActionException {
+    public ControlExitToken controlEnterAt(
+            ControlEntryToken.EntryLocation location)
+            throws IllegalActionException {
         return controlEnter(ControlEntryToken.Enter(location));
     }
 
@@ -150,7 +150,9 @@ public abstract class AtomicContinuationActor extends TypedAtomicActor implement
 
     public void addEntryLocation(EntryLocation l)
             throws IllegalActionException, NameDuplicationException {
-        if (_entryPoints.containsKey(l)) return;
+        if (_entryPoints.containsKey(l)) {
+            return;
+        }
         _entries.add(l);
         TypedIOPort lp = new TypedIOPort(this, l.name, true, false);
         lp.setTypeEquals(new ObjectType());
@@ -159,9 +161,11 @@ public abstract class AtomicContinuationActor extends TypedAtomicActor implement
         _entryPointsR.put(lp, l);
     }
 
-    public void addExitLocation(ExitLocation l)
-            throws IllegalActionException, NameDuplicationException {
-        if (_exitPoints.containsKey(l)) return;
+    public void addExitLocation(ExitLocation l) throws IllegalActionException,
+            NameDuplicationException {
+        if (_exitPoints.containsKey(l)) {
+            return;
+        }
         _exits.add(l);
         TypedIOPort lp = new TypedIOPort(this, l.name, false, true);
         lp.setTypeEquals(new ObjectType());
@@ -171,15 +175,23 @@ public abstract class AtomicContinuationActor extends TypedAtomicActor implement
     }
 
     public ControlEntryToken getEntryActionFromPort(TypedIOPort p) {
-        if (p == _initPoint)   return ControlEntryToken.Init();
-        if (p == _resumePoint) return ControlEntryToken.Resume();
-        if (!_entryPointsR.containsKey(p)) return null;
+        if (p == _initPoint) {
+            return ControlEntryToken.Init();
+        }
+        if (p == _resumePoint) {
+            return ControlEntryToken.Resume();
+        }
+        if (!_entryPointsR.containsKey(p)) {
+            return null;
+        }
         EntryLocation el = _entryPointsR.get(p);
         return ControlEntryToken.Enter(el);
     }
 
     public ExitLocation getExitLocationFromPort(TypedIOPort p) {
-        if (!_exitPointsR.containsKey(p)) return null;
+        if (!_exitPointsR.containsKey(p)) {
+            return null;
+        }
         ExitLocation xl = _exitPointsR.get(p);
         return xl;
     }
@@ -198,18 +210,16 @@ public abstract class AtomicContinuationActor extends TypedAtomicActor implement
             try {
                 Token entryT = _entryPort.get(0);
                 if (entryT instanceof ControlEntryToken) {
-                    entk = (ControlEntryToken)entryT;
-                }
-                else if (entryT instanceof IntToken) {
+                    entk = (ControlEntryToken) entryT;
+                } else if (entryT instanceof IntToken) {
                     List<ControlEntryToken.EntryLocation> entries = entryLocations();
-                    int edex = ((IntToken)entryT).intValue();
-                    if (entries != null && edex >= 2 && edex < entries.size() + 2) {
-                        entk = ControlEntryToken.Enter(entries.get(edex-2));
-                    }
-                    else if (edex == 1) {
+                    int edex = ((IntToken) entryT).intValue();
+                    if (entries != null && edex >= 2
+                            && edex < entries.size() + 2) {
+                        entk = ControlEntryToken.Enter(entries.get(edex - 2));
+                    } else if (edex == 1) {
                         entk = ControlEntryToken.Resume();
-                    }
-                    else if (edex == 0) {
+                    } else if (edex == 0) {
                         entk = ControlEntryToken.Init();
                     }
 
@@ -227,7 +237,6 @@ public abstract class AtomicContinuationActor extends TypedAtomicActor implement
         }
     }
 
-
     ///////////////////////////////////////////////////////////////////
 
     protected TypedIOPort _entryPort;
@@ -238,18 +247,10 @@ public abstract class AtomicContinuationActor extends TypedAtomicActor implement
 
     protected HashMap<EntryLocation, TypedIOPort> _entryPoints;
     protected HashMap<TypedIOPort, EntryLocation> _entryPointsR;
-    protected HashMap<ExitLocation,  TypedIOPort> _exitPoints;
-    protected HashMap<TypedIOPort,  ExitLocation> _exitPointsR;
+    protected HashMap<ExitLocation, TypedIOPort> _exitPoints;
+    protected HashMap<TypedIOPort, ExitLocation> _exitPointsR;
 
     private LinkedList<EntryLocation> _entries;
-    private LinkedList<ExitLocation>  _exits;
+    private LinkedList<ExitLocation> _exits;
 
 }
-
-
-
-
-
-
-
-

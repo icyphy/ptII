@@ -678,9 +678,9 @@ public class RefinementPort extends TypedIOPort {
                     // the container's port. The reason this makes sense
                     // if its an output is that the output will also
                     // be an input to the controller.
-                    setTypeAtLeast((TypedIOPort)port);
+                    setTypeAtLeast((TypedIOPort) port);
                     if (isOutput()) {
-                        ((TypedIOPort)port).setTypeAtLeast(this);
+                        ((TypedIOPort) port).setTypeAtLeast(this);
                     }
                 }
             }

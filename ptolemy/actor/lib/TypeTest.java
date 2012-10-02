@@ -238,10 +238,11 @@ public class TypeTest extends Discard {
             RecordToken correctParameterTypes = (RecordToken) parameterTypes
                     .getToken();
 
-            if (((correctPortTypes == null) || (correctPortTypes.labelSet().size() == 0))
-                    && ((correctParameterTypes == null) || (correctParameterTypes.labelSet().size() == 0))) {
-                throw new IllegalActionException(
-                        this,
+            if (((correctPortTypes == null) || (correctPortTypes.labelSet()
+                    .size() == 0))
+                    && ((correctParameterTypes == null) || (correctParameterTypes
+                            .labelSet().size() == 0))) {
+                throw new IllegalActionException(this,
                         "TypeTest actor has no training data.");
             }
 

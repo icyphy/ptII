@@ -109,7 +109,7 @@ public class ArrayModelList extends AbstractListModel {
      */
     public void removeItem(String item) {
         for (Iterator<String> iterator = _items.iterator(); iterator.hasNext();) {
-            String existingItem = (String) iterator.next();
+            String existingItem = iterator.next();
             if (existingItem.equals(item)) {
                 int index = _items.indexOf(item);
 

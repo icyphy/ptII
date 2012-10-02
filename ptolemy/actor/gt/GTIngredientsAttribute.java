@@ -103,7 +103,8 @@ public class GTIngredientsAttribute extends StringAttribute {
      *  @return The new object.
      */
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        GTIngredientsAttribute newObject = (GTIngredientsAttribute) super.clone(workspace);
+        GTIngredientsAttribute newObject = (GTIngredientsAttribute) super
+                .clone(workspace);
         try {
             newObject._parse();
         } catch (MalformedStringException ex) {

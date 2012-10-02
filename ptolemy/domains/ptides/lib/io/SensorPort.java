@@ -27,8 +27,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 */
 
-
-
 package ptolemy.domains.ptides.lib.io;
 
 import ptolemy.kernel.CompositeEntity;
@@ -47,14 +45,14 @@ import ptolemy.kernel.util.NameDuplicationException;
  */
 public class SensorPort extends PtidesPort {
 
-
     /** Create a new SensorPort with a given container and a name.
      * @param container The container of the port.
      * @param name The name of the port.
      * @exception IllegalActionException If parameters cannot be set.
      * @exception NameDuplicationException If name already exists.
      */
-    public SensorPort(CompositeEntity container, String name) throws IllegalActionException, NameDuplicationException {
+    public SensorPort(CompositeEntity container, String name)
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         this.setInput(true);
@@ -68,6 +66,5 @@ public class SensorPort extends PtidesPort {
      * - value correction
      * - timestamp correction
      */
-
 
 }

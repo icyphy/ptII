@@ -152,7 +152,6 @@ public class PlatformTimeMonitor extends TypedAtomicActor implements
         plot.repaint();
     }
 
-
     /** The event is displayed (core is ignored).
      *  @param actor The actor where the event happened. This parameter can be
      *     null if the event is TRANSFEROUTPUT or TRANSFERINPUT.
@@ -203,8 +202,6 @@ public class PlatformTimeMonitor extends TypedAtomicActor implements
     //                   private variables                           //
 
     private List<Actor> _platforms;
-    private double _previousX = 0.0;
-    private double _previousY = 0.0;
 
     ///////////////////////////////////////////////////////////////////
     //                    inner classes                              //

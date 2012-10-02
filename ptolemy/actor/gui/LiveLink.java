@@ -129,7 +129,8 @@ public class LiveLink extends FileParameter implements Editable {
             // the URIAttribute contained by the toplevel.
             NamedObj toplevel = toplevel();
             URL base = null;
-            List<URIAttribute> attributes = toplevel.attributeList(URIAttribute.class);
+            List<URIAttribute> attributes = toplevel
+                    .attributeList(URIAttribute.class);
             if (attributes != null && attributes.size() > 0) {
                 base = (attributes.get(0)).getURL();
             }

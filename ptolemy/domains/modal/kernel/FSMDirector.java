@@ -194,7 +194,8 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
      *  @exception NameDuplicationException If construction of Time objects fails.
      *  @exception IllegalActionException If construction of Time objects fails.
      */
-    public FSMDirector() throws IllegalActionException, NameDuplicationException {
+    public FSMDirector() throws IllegalActionException,
+            NameDuplicationException {
         super();
         _createAttribute();
     }
@@ -207,7 +208,8 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
      *  @exception NameDuplicationException If construction of Time objects fails.
      *  @exception IllegalActionException If construction of Time objects fails.
      */
-    public FSMDirector(Workspace workspace) throws IllegalActionException, NameDuplicationException {
+    public FSMDirector(Workspace workspace) throws IllegalActionException,
+            NameDuplicationException {
         super(workspace);
         _createAttribute();
     }
@@ -368,8 +370,10 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
                             + time + " with microstep " + microstep);
                 }
                 // Translate the local time into an environment time.
-                Time environmentTime = localClock.getEnvironmentTimeForLocalTime(time);
-                Time result = director.fireAt(container, environmentTime, microstep);
+                Time environmentTime = localClock
+                        .getEnvironmentTimeForLocalTime(time);
+                Time result = director.fireAt(container, environmentTime,
+                        microstep);
 
                 // Translate the response from the environment into a local time.
                 return localClock.getLocalTimeForEnvironmentTime(result);
@@ -454,13 +458,14 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
                     .linkedRelationList();
             // FIXME: Does this do the right thing with a chain
             // of immediate transitions?
-            List enabledTransitions = controller
-                    .enabledTransitions(transitionList, false);
+            List enabledTransitions = controller.enabledTransitions(
+                    transitionList, false);
             if (enabledTransitions.size() > 0) {
                 return getModelTime();
             }
             // The result returned below needs to be adjusted by the current offset.
-            Time result = localClock.getLocalTimeForEnvironmentTime(super.getModelNextIterationTime());
+            Time result = localClock.getLocalTimeForEnvironmentTime(super
+                    .getModelNextIterationTime());
             return result;
         } catch (IllegalActionException e) {
             // Any exception here should have shown up before now.
@@ -606,8 +611,8 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
             State st = controller.currentState();
             // FIXME: Need to understand how error transitions work
             // in combination with immediate transitions.
-            List enabledTransitions = controller.enabledTransitions(st
-                    .nonpreemptiveTransitionList(), false);
+            List enabledTransitions = controller.enabledTransitions(
+                    st.nonpreemptiveTransitionList(), false);
 
             if (enabledTransitions.size() == 0) {
                 ModelErrorHandler container = getContainer();
@@ -1104,7 +1109,7 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
      * @exception IllegalActionException
      *                If there is no controller.
      */
-    protected Map<State,Transition> _getLastChosenTransition()
+    protected Map<State, Transition> _getLastChosenTransition()
             throws IllegalActionException {
         FSMActor controller = getController();
         if (controller != null) {
@@ -1121,7 +1126,8 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
      *  @return A list of actors to postfire.
      *  @exception IllegalActionException If can't get the controller.
      */
-    protected List<Actor> _getStateRefinementsToPostfire() throws IllegalActionException {
+    protected List<Actor> _getStateRefinementsToPostfire()
+            throws IllegalActionException {
         FSMActor controller = getController();
         return controller._getStateRefinementsToPostfire();
     }
@@ -1133,7 +1139,8 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
      *  @return A list of actors to postfire.
      *  @exception IllegalActionException If can't get the controller.
      */
-    protected List<Actor> _getTransitionRefinementsToPostfire() throws IllegalActionException {
+    protected List<Actor> _getTransitionRefinementsToPostfire()
+            throws IllegalActionException {
         FSMActor controller = getController();
         return controller._getTransitionRefinementsToPostfire();
     }
@@ -1268,8 +1275,11 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
                             // in the fixed-point iteration, it will not be possible
                             // for a transition to become enabled that might send data
                             // on this port.
-                            if (controller._lastChosenTransitions.size() > 0 && !controller.foundUnknown()
-                                    || controller._isSafeToClear(port, i, controller._currentState, false, null)) {
+                            if (controller._lastChosenTransitions.size() > 0
+                                    && !controller.foundUnknown()
+                                    || controller._isSafeToClear(port, i,
+                                            controller._currentState, false,
+                                            null)) {
                                 port.send(i, null);
                             }
                         }

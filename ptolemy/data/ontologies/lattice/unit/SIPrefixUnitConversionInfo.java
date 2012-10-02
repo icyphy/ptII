@@ -90,8 +90,8 @@ public class SIPrefixUnitConversionInfo extends UnitConversionInfo {
             boolean useSymbols, double baseUnitFactor,
             RecordToken baseUnitRecord) throws IllegalActionException {
 
-        if (dimension instanceof SIBaseDimensionRepresentativeConcept ||
-                dimension instanceof SIDerivedDimensionRepresentativeConcept) {
+        if (dimension instanceof SIBaseDimensionRepresentativeConcept
+                || dimension instanceof SIDerivedDimensionRepresentativeConcept) {
             removeAllSIPrefixConversionParameters(dimension);
 
             // Create the unit factor for the base unit with no prefix.
@@ -106,15 +106,16 @@ public class SIPrefixUnitConversionInfo extends UnitConversionInfo {
                     completeUnitName = prefix.prefixName().concat(unitName);
                 }
 
-                createUnitConversionParameterForFactor(dimension, completeUnitName,
-                        baseUnitFactor*prefix.unitFactor(), baseUnitRecord);
+                createUnitConversionParameterForFactor(dimension,
+                        completeUnitName, baseUnitFactor * prefix.unitFactor(),
+                        baseUnitRecord);
             }
         } else {
-            throw new IllegalActionException(dimension, "The given dimension " +
-                            dimension.getName() + "is not an " +
-                            "SIBaseDimensionRepresentativeConcept or an " +
-                            "SIDerivedDimensionRepresentativeConcept so no " +
-                            "SI prefix units can be created.");
+            throw new IllegalActionException(dimension, "The given dimension "
+                    + dimension.getName() + "is not an "
+                    + "SIBaseDimensionRepresentativeConcept or an "
+                    + "SIDerivedDimensionRepresentativeConcept so no "
+                    + "SI prefix units can be created.");
         }
     }
 
@@ -134,28 +135,30 @@ public class SIPrefixUnitConversionInfo extends UnitConversionInfo {
      */
     private static void createUnitConversionParameterForFactor(
             DimensionRepresentativeConcept dimension, String unitName,
-            double unitFactor, RecordToken unitRecord) throws IllegalActionException {
+            double unitFactor, RecordToken unitRecord)
+            throws IllegalActionException {
         SIPrefixUnitConversionInfo unitParameter = null;
         try {
             unitParameter = new SIPrefixUnitConversionInfo(dimension, unitName);
             unitParameter.setVisibility(NOT_EDITABLE);
         } catch (NameDuplicationException nameDup) {
             throw new IllegalActionException(dimension, nameDup,
-                    "Error creating SI unit factor: factor parameter " +
-                            unitName + " already exists.");
+                    "Error creating SI unit factor: factor parameter "
+                            + unitName + " already exists.");
         }
 
-        unitParameter.setToken(new RecordToken(new String[] { UnitConversionInfo.unitFactorLabel },
-                                               new Token[] { new DoubleToken(unitFactor) }));
+        unitParameter.setToken(new RecordToken(
+                new String[] { UnitConversionInfo.unitFactorLabel },
+                new Token[] { new DoubleToken(unitFactor) }));
         if (dimension instanceof SIDerivedDimensionRepresentativeConcept) {
             if (unitRecord != null) {
                 unitParameter.setToken(RecordToken.merge(unitRecord,
                         (RecordToken) unitParameter.getToken()));
             } else {
-                throw new IllegalActionException(dimension, "Error creating " +
-                                "SI unit factor: The dimension is an " +
-                                "SIDerivedDimensionRepresentativeConcept " +
-                                "but the base unitRecord is null.");
+                throw new IllegalActionException(dimension, "Error creating "
+                        + "SI unit factor: The dimension is an "
+                        + "SIDerivedDimensionRepresentativeConcept "
+                        + "but the base unitRecord is null.");
             }
         }
     }
@@ -168,15 +171,16 @@ public class SIPrefixUnitConversionInfo extends UnitConversionInfo {
      *   any of the parameters.
      */
     private static void removeAllSIPrefixConversionParameters(
-            DimensionRepresentativeConcept dimension) throws IllegalActionException {
-        for (SIPrefixUnitConversionInfo prefixUnitParameter :
-             dimension.attributeList(SIPrefixUnitConversionInfo.class)) {
+            DimensionRepresentativeConcept dimension)
+            throws IllegalActionException {
+        for (SIPrefixUnitConversionInfo prefixUnitParameter : dimension
+                .attributeList(SIPrefixUnitConversionInfo.class)) {
             try {
                 prefixUnitParameter.setContainer(null);
             } catch (NameDuplicationException nameDup) {
                 throw new IllegalActionException(dimension, nameDup,
-                        "Error removing SI unit factor " +
-                                prefixUnitParameter.getName() + ".");
+                        "Error removing SI unit factor "
+                                + prefixUnitParameter.getName() + ".");
             }
         }
     }

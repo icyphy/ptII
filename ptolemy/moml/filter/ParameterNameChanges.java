@@ -292,7 +292,6 @@ public class ParameterNameChanges extends MoMLFilterSimple {
         HashMap embeddedCodeActorChanges = new HashMap();
         embeddedCodeActorChanges.put("embeddedCCode", "embeddedCode");
         _classesWithParameterNameChanges.put(
-                "ptolemy.cg.lib.EmbeddedCodeActor",
-                embeddedCodeActorChanges);
+                "ptolemy.cg.lib.EmbeddedCodeActor", embeddedCodeActorChanges);
     }
 }

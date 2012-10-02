@@ -82,7 +82,7 @@ public class ImageDisplay extends Sink implements Placeable {
 
     /** Free up memory when closing. */
     public void cleanUp() {
-            _getImplementation().setFrame(null);
+        _getImplementation().setFrame(null);
         _getImplementation().cleanUp();
     }
 
@@ -99,22 +99,23 @@ public class ImageDisplay extends Sink implements Placeable {
 
         newObject._implementation = null;
         try {
-                // See _getImplementation():
-                    if (PtolemyInjector.getInjector() == null) {
-                        System.err.println("Warning: main() did not call "
-                                       + "ActorModuleInitializer.initializeInjector(), "
-                                       + "so ImageDisplayInterface.clone() is calling it for you.");
-                        ActorModuleInitializer.initializeInjector();
-                    }
-                        newObject._implementation = PtolemyInjector.getInjector().getInstance(
-                                        ImageDisplayInterface.class);
-                        newObject._implementation.init(newObject);
-                        newObject._implementation.initWindowAndSizeProperties();
-
-            } catch (Exception e) {
-                // This should not occur.
-                throw new CloneNotSupportedException("Clone failed: " + e);
+            // See _getImplementation():
+            if (PtolemyInjector.getInjector() == null) {
+                System.err
+                        .println("Warning: main() did not call "
+                                + "ActorModuleInitializer.initializeInjector(), "
+                                + "so ImageDisplayInterface.clone() is calling it for you.");
+                ActorModuleInitializer.initializeInjector();
             }
+            newObject._implementation = PtolemyInjector.getInjector()
+                    .getInstance(ImageDisplayInterface.class);
+            newObject._implementation.init(newObject);
+            newObject._implementation.initWindowAndSizeProperties();
+
+        } catch (Exception e) {
+            // This should not occur.
+            throw new CloneNotSupportedException("Clone failed: " + e);
+        }
 
         return newObject;
     }
@@ -164,12 +165,11 @@ public class ImageDisplay extends Sink implements Placeable {
      *  @see #getBackground()
      */
     public void setBackground(Color background) {
-            _getImplementation().setBackground(background);
+        _getImplementation().setBackground(background);
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
-
 
     /** Get the right instance of the implementation depending upon the
      *  of the dependency specified through dependency injection.
@@ -190,12 +190,12 @@ public class ImageDisplay extends Sink implements Placeable {
         if (_implementation == null) {
             if (PtolemyInjector.getInjector() == null) {
                 System.err.println("Warning: main() did not call "
-                               + "ActorModuleInitializer.initializeInjector(), "
-                               + "so ImageDisplay is calling it for you.");
+                        + "ActorModuleInitializer.initializeInjector(), "
+                        + "so ImageDisplay is calling it for you.");
                 ActorModuleInitializer.initializeInjector();
             }
             _implementation = PtolemyInjector.getInjector().getInstance(
-                            ImageDisplayInterface.class);
+                    ImageDisplayInterface.class);
             try {
                 _implementation.init(this);
             } catch (NameDuplicationException e) {

@@ -129,7 +129,7 @@ public class MultirateFSMDirector extends FSMDirector {
             // Commit the transition.
             super.postfire();
             state = chooseTransition(state);
-            Map<State,Transition> chosenTransitions = _getLastChosenTransition();
+            Map<State, Transition> chosenTransitions = _getLastChosenTransition();
 
             if (chosenTransitions.size() == 0) {
                 throw new IllegalActionException(this,
@@ -179,12 +179,14 @@ public class MultirateFSMDirector extends FSMDirector {
         }
 
         if (state.getRefinement() == null) {
-            transition = controller._chooseTransition(state, state.preemptiveTransitionList(), false);
+            transition = controller._chooseTransition(state,
+                    state.preemptiveTransitionList(), false);
         }
 
         if (transition == null) {
             // No preemptiveTransition enabled. Choose nonpreemptiveTransition.
-            transition = controller._chooseTransition(state, state.nonpreemptiveTransitionList(), false);
+            transition = controller._chooseTransition(state,
+                    state.nonpreemptiveTransitionList(), false);
         }
 
         if (transition == null) {
@@ -390,7 +392,7 @@ public class MultirateFSMDirector extends FSMDirector {
         // in the fire() method.
         FSMActor controller = getController();
         State currentState = controller.currentState();
-        Map<State,Transition> lastChosenTransitions = _getLastChosenTransition();
+        Map<State, Transition> lastChosenTransitions = _getLastChosenTransition();
 
         // Commit the transition.
         boolean superPostfire = super.postfire();
@@ -481,16 +483,16 @@ public class MultirateFSMDirector extends FSMDirector {
         TypedActor[] currentRefinements = initialState.getRefinement();
 
         if ((currentRefinements == null) || (currentRefinements.length != 1)) {
-            throw new IllegalActionException(this,
+            throw new IllegalActionException(
+                    this,
                     "The initial state is required to have exactly one refinement: \""
-                    + initialState.getName()
-                    + "\".  The getRefinement() method on the \""
-                    + initialState.getName()
-                    + "\" state returned "
-                    + (currentRefinements == null
-                            ? "null."
-                            : currentRefinements.length
-                            + " refinements, only 1 should have been returned."));
+                            + initialState.getName()
+                            + "\".  The getRefinement() method on the \""
+                            + initialState.getName()
+                            + "\" state returned "
+                            + (currentRefinements == null ? "null."
+                                    : currentRefinements.length
+                                            + " refinements, only 1 should have been returned."));
         }
 
         TypedCompositeActor currentRefinement = (TypedCompositeActor) (currentRefinements[0]);
@@ -950,7 +952,7 @@ public class MultirateFSMDirector extends FSMDirector {
             // postfire() here.
             controller._commitLastChosenTransition();
             currentState = controller.currentState();
-            Map<State,Transition> lastChosenTransitions = _getLastChosenTransition();
+            Map<State, Transition> lastChosenTransitions = _getLastChosenTransition();
             controller._lastChosenTransitions.clear();
 
             if (lastChosenTransitions.size() == 0) {

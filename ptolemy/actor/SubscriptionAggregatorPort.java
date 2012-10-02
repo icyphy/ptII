@@ -196,9 +196,10 @@ public class SubscriptionAggregatorPort extends SubscriberPort {
     public Token get(int channelIndex) throws NoTokenException,
             IllegalActionException {
         if (channelIndex != 0) {
-            throw new IllegalActionException(this,
-                    "Although it is a multiport, you can only read" +
-                    " from channel 0 of a SubscriptionAggregatorPort.");
+            throw new IllegalActionException(
+                    this,
+                    "Although it is a multiport, you can only read"
+                            + " from channel 0 of a SubscriptionAggregatorPort.");
         }
         Token result = null;
         for (int i = 0; i < getWidth(); i++) {
@@ -241,12 +242,13 @@ public class SubscriptionAggregatorPort extends SubscriberPort {
      *   if the channel index is not 0.
      */
     @Override
-    public Token[] get(int channelIndex, int vectorLength) throws NoTokenException,
-            IllegalActionException {
+    public Token[] get(int channelIndex, int vectorLength)
+            throws NoTokenException, IllegalActionException {
         if (channelIndex != 0) {
-            throw new IllegalActionException(this,
-                    "Although it is a multiport, you can only read" +
-                    " from channel 0 of a SubscriptionAggregatorPort.");
+            throw new IllegalActionException(
+                    this,
+                    "Although it is a multiport, you can only read"
+                            + " from channel 0 of a SubscriptionAggregatorPort.");
         }
         Token[] result = null;
         for (int i = 0; i < getWidth(); i++) {
@@ -280,12 +282,12 @@ public class SubscriptionAggregatorPort extends SubscriberPort {
      *   or if the superclass throws it.
      */
     @Override
-    public boolean hasToken(int channelIndex)
-            throws IllegalActionException {
+    public boolean hasToken(int channelIndex) throws IllegalActionException {
         if (channelIndex != 0) {
-            throw new IllegalActionException(this,
-                    "Although it is a multiport, you can only read" +
-                    " from channel 0 of a SubscriptionAggregatorPort.");
+            throw new IllegalActionException(
+                    this,
+                    "Although it is a multiport, you can only read"
+                            + " from channel 0 of a SubscriptionAggregatorPort.");
         }
         for (int i = 0; i < getWidth(); i++) {
             if (super.hasToken(i)) {
@@ -306,9 +308,10 @@ public class SubscriptionAggregatorPort extends SubscriberPort {
     public boolean hasToken(int channelIndex, int vectorLength)
             throws IllegalActionException {
         if (channelIndex != 0) {
-            throw new IllegalActionException(this,
-                    "Although it is a multiport, you can only read" +
-                    " from channel 0 of a SubscriptionAggregatorPort.");
+            throw new IllegalActionException(
+                    this,
+                    "Although it is a multiport, you can only read"
+                            + " from channel 0 of a SubscriptionAggregatorPort.");
         }
         boolean foundOne = false;
         for (int i = 0; i < getWidth(); i++) {
@@ -330,7 +333,8 @@ public class SubscriptionAggregatorPort extends SubscriberPort {
     public void preinitialize() throws IllegalActionException {
         NamedObj actor = getContainer();
         if (actor != null && actor.getContainer() == null) {
-            throw new IllegalActionException(this,
+            throw new IllegalActionException(
+                    this,
                     "SubscriptionAggregatorPorts cannot be used at the top level, use a SubscriptionAggregator actor instead.");
         }
         super.preinitialize();
@@ -369,7 +373,7 @@ public class SubscriptionAggregatorPort extends SubscriberPort {
                         // and retry the link.  This is computationally
                         // expensive.
                         // See $PTII/ptolemy/actor/lib/test/auto/LazyPubSub.xml
-                        _updatePublisherPorts((CompositeEntity)toplevel());
+                        _updatePublisherPorts((CompositeEntity) toplevel());
                         // Now try again.
                         ((CompositeActor) container).linkToPublishedPort(
                                 _channelPattern, this, _global);

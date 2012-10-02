@@ -165,7 +165,8 @@ public class TransformContext {
             if (parentComponent == null) {
                 return _transform;
             }
-            TransformContext parentContext = parentComponent.getTransformContext();
+            TransformContext parentContext = parentComponent
+                    .getTransformContext();
             AffineTransform transform = _transform;
 
             if (parentContext == context) {

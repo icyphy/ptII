@@ -242,7 +242,7 @@ public class ConceptRelationController extends BasicEdgeController {
             ArcConnector c = new ArcConnector(tailSite, headSite);
             // For some reason, setting the angle to 0.0 doesn't work.
             // The arc doesn't get drawn. Set it small.
-            c.setAngle(Math.PI/999.0);
+            c.setAngle(Math.PI / 999.0);
             Arrowhead arrowhead = new Arrowhead();
             c.setHeadEnd(arrowhead);
             c.setLineWidth((float) 2.0);

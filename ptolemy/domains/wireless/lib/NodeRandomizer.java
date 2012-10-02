@@ -376,7 +376,8 @@ public class NodeRandomizer extends TypedAtomicActor {
         // If the isPersistent parameter is false, then don't marke
         // the model as modified in BasicGraphFrame.changeExecuted().
         // Ptalon needs this to avoid prompting for save upon close.
-        boolean isPersistentValue = ((BooleanToken)isPersistent.getToken()).booleanValue();
+        boolean isPersistentValue = ((BooleanToken) isPersistent.getToken())
+                .booleanValue();
         request.setPersistent(isPersistentValue);
 
         container.requestChange(request);

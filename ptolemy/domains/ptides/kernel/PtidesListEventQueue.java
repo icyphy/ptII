@@ -165,7 +165,7 @@ public class PtidesListEventQueue implements DEEventQueue {
                         .putToReceiver(ptidesEvent.token());
             } else {
                 ((PtidesBasicReceiver) ptidesEvent.receiver())
-                    .putToReceiver(ptidesEvent.token());
+                        .putToReceiver(ptidesEvent.token());
             }
         }
         if (_debugging) {

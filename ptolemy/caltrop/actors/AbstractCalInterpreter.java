@@ -130,7 +130,8 @@ abstract public class AbstractCalInterpreter extends TypedAtomicActor {
      *   cannot be cloned.
      */
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        AbstractCalInterpreter newObject = (AbstractCalInterpreter) super.clone(workspace);
+        AbstractCalInterpreter newObject = (AbstractCalInterpreter) super
+                .clone(workspace);
         newObject._actor = null;
         newObject._ddi = null;
         newObject._env = null;

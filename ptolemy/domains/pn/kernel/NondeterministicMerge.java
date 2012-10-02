@@ -203,13 +203,16 @@ public class NondeterministicMerge extends TypedCompositeActor {
      *  @see #exportMoML(Writer, int, String)
      */
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        NondeterministicMerge result = (NondeterministicMerge) super.clone(workspace);
+        NondeterministicMerge result = (NondeterministicMerge) super
+                .clone(workspace);
         try {
             // Remove the old inner MergeDirector(s) that is(are) in the wrong workspace.
             String mergeDirectorName = null;
-            Iterator mergeDirectors = result.attributeList(MergeDirector.class).iterator();
+            Iterator mergeDirectors = result.attributeList(MergeDirector.class)
+                    .iterator();
             while (mergeDirectors.hasNext()) {
-                MergeDirector oldMergeDirector = (MergeDirector)mergeDirectors.next();
+                MergeDirector oldMergeDirector = (MergeDirector) mergeDirectors
+                        .next();
                 if (mergeDirectorName == null) {
                     mergeDirectorName = oldMergeDirector.getName();
                 }
@@ -223,7 +226,8 @@ public class NondeterministicMerge extends TypedCompositeActor {
                 mergeDirector.setName(mergeDirectorName);
             }
         } catch (Throwable throwable) {
-            throw new CloneNotSupportedException("Could not clone: " + throwable);
+            throw new CloneNotSupportedException("Could not clone: "
+                    + throwable);
         }
         return result;
     }
@@ -403,8 +407,8 @@ public class NondeterministicMerge extends TypedCompositeActor {
          *  @exception NameDuplicationException If the name coincides with
          *   an actor already in the container.
          */
-        public MergeDirector(Workspace workspace) throws IllegalActionException,
-                NameDuplicationException {
+        public MergeDirector(Workspace workspace)
+                throws IllegalActionException, NameDuplicationException {
             super(workspace);
             setPersistent(false);
         }

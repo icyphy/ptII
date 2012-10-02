@@ -535,7 +535,7 @@ public abstract class OntologyAdapter {
                     // AnnotationAttribute matches the name of the ontology
                     // solver.
                     if (_solver.getName().equals(ontologySolverName)) {
-                        result.add((OntologyAnnotationAttribute)attribute);
+                        result.add((OntologyAnnotationAttribute) attribute);
                     }
                 }
             }

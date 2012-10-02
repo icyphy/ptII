@@ -795,8 +795,7 @@ public class PxgraphParser {
 
             int c;
             String partialarg = null;
-            out:
-            while (true) {
+            out: while (true) {
                 c = stoken.nextToken();
 
                 //System.out.print(c + " "+stoken.ttype+" "+stoken.sval+" ");

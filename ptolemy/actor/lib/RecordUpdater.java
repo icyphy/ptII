@@ -195,7 +195,6 @@ public class RecordUpdater extends TypedAtomicActor {
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
-
     /** Return the type constraints of this actor. The type constraint is
      *  that the type of the output port is no less than the type of the
      *  input port, and contains additional fields for each input port.
@@ -270,8 +269,7 @@ public class RecordUpdater extends TypedAtomicActor {
                         if (port.getType().isCompatible(fields.get(label))) {
                             fields.put(label, port.getType());
                         }
-                    }
-                    else {
+                    } else {
                         fields.put(label, port.getType());
                     }
                 }
@@ -289,7 +287,7 @@ public class RecordUpdater extends TypedAtomicActor {
             Iterator<TypedIOPort> inputPorts = inputPortList().iterator();
             LinkedList<InequalityTerm> result = new LinkedList<InequalityTerm>();
             while (inputPorts.hasNext()) {
-                TypedIOPort port = (TypedIOPort) inputPorts.next();
+                TypedIOPort port = inputPorts.next();
                 InequalityTerm term = port.getTypeTerm();
                 if (term.isSettable()) {
                     result.add(term);

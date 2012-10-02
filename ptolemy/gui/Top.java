@@ -347,9 +347,11 @@ public abstract class Top extends JFrame {
                             } catch (SecurityException ex) {
                                 if (!_printedSecurityExceptionMessage) {
                                     _printedSecurityExceptionMessage = true;
-                                    System.out.println("Warning: Failed set " + fields[i]
-                                            + " accessible while disposing. "
-                                            + "(applets and -sandbox always causes this)");
+                                    System.out
+                                            .println("Warning: Failed set "
+                                                    + fields[i]
+                                                    + " accessible while disposing. "
+                                                    + "(applets and -sandbox always causes this)");
                                 }
                             }
                             break;
@@ -1136,14 +1138,16 @@ public abstract class Top extends JFrame {
             }
             // If we found it, add to set of history menus
             if (_historyMenu != null) {
-                _historyMenusAndListeners.put(_historyMenu, _historyMenuListener);
+                _historyMenusAndListeners.put(_historyMenu,
+                        _historyMenuListener);
             }
         }
 
         //System.out.println("number of history menus: " + _historyMenus.size());
 
         // Update the history menu in each Top
-        for (Map.Entry<JMenu,HistoryMenuListener> entry : _historyMenusAndListeners.entrySet()) {
+        for (Map.Entry<JMenu, HistoryMenuListener> entry : _historyMenusAndListeners
+                .entrySet()) {
             //System.out.println("updating menu " + historyMenu);
 
             JMenu historyMenu = entry.getKey();
@@ -1170,7 +1174,8 @@ public abstract class Top extends JFrame {
      * @exception IOException If the history file cannot be created, written to,
      * or saved.
      */
-    protected void _updateHistory(String file, boolean delete) throws IOException {
+    protected void _updateHistory(String file, boolean delete)
+            throws IOException {
         List<String> historyList = _readHistory();
 
         // Remove if already present (then added to first position)
@@ -1324,7 +1329,7 @@ public abstract class Top extends JFrame {
                     _print();
                 } else if (actionCommand.equals("Close")) {
                     if (!isDisposed()) {
-                        Window thisWindow = (Window) Top.this;
+                        Window thisWindow = Top.this;
                         WindowEvent wev = new WindowEvent(thisWindow,
                                 WindowEvent.WINDOW_CLOSING);
                         Toolkit toolkit = Toolkit.getDefaultToolkit();
@@ -1612,8 +1617,10 @@ public abstract class Top extends JFrame {
             // com.apple.mrj.application.apple.menu.about.name
             // property in the main thread, not the event thread.  See
             // VergilApplication.java
-            MacOSXAdapter.setAboutMethod(this, getClass().getMethod("about", (Class[])null));
-            MacOSXAdapter.setQuitMethod(this, getClass().getMethod("exit", (Class[])null));
+            MacOSXAdapter.setAboutMethod(this,
+                    getClass().getMethod("about", (Class[]) null));
+            MacOSXAdapter.setQuitMethod(this,
+                    getClass().getMethod("exit", (Class[]) null));
         } catch (NoSuchMethodException ex) {
             report("Mac OS X specific initializations failed.", ex);
         }
@@ -1997,7 +2004,6 @@ public abstract class Top extends JFrame {
             setDirectory(file.getParentFile());
         }
     }
-
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////

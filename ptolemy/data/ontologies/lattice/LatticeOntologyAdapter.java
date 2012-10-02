@@ -221,15 +221,18 @@ public class LatticeOntologyAdapter extends OntologyAdapter {
             interconnectConstraintType = actorConstraintType;
         }
 
-        List<IOPort> inputPorts = ((AtomicActor) getComponent()).inputPortList();
-        List<IOPort> outputPorts = ((AtomicActor) getComponent()).outputPortList();
+        List<IOPort> inputPorts = ((AtomicActor) getComponent())
+                .inputPortList();
+        List<IOPort> outputPorts = ((AtomicActor) getComponent())
+                .outputPortList();
 
         _constrainObjectLists(actorConstraintType, inputPorts, outputPorts);
 
         for (IOPort inputSink : inputPorts) {
             List<IOPort> previousOutputs = _getSourcePortList(inputSink);
             for (IOPort source : previousOutputs) {
-                _constrainSingleObject(interconnectConstraintType, source, inputSink);
+                _constrainSingleObject(interconnectConstraintType, source,
+                        inputSink);
             }
         }
     }
@@ -300,19 +303,26 @@ public class LatticeOntologyAdapter extends OntologyAdapter {
      * represents the sources for the default constraints
      * @exception IllegalActionException If an exception is thrown
      */
-    protected void _constrainObject(ConstraintType constraintType,
-            Object sink, List sourceList) throws IllegalActionException {
+    protected void _constrainObject(ConstraintType constraintType, Object sink,
+            List sourceList) throws IllegalActionException {
 
         // Not sure why this next line is needed, but there are test cases
         // that depend on this behavior.             FIXME: Investigate why
-        if (constraintType == null) constraintType = ConstraintType.SOURCE_GE_SINK;
+        if (constraintType == null) {
+            constraintType = ConstraintType.SOURCE_GE_SINK;
+        }
 
         for (Object source : sourceList) {
             switch (constraintType) {
-                case NONE: break;
-                case EQUALS: setSameAs(source, sink); break;
-                case SINK_GE_SOURCE: //setAtLeast(source, sink); break;
-                case SOURCE_GE_SINK: setAtLeast(sink, source); break;
+            case NONE:
+                break;
+            case EQUALS:
+                setSameAs(source, sink);
+                break;
+            case SINK_GE_SOURCE: //setAtLeast(source, sink); break;
+            case SOURCE_GE_SINK:
+                setAtLeast(sink, source);
+                break;
             }
         }
     }
@@ -327,8 +337,7 @@ public class LatticeOntologyAdapter extends OntologyAdapter {
      * @exception IllegalActionException If an exception is thrown
      */
     protected void _constrainObjectLists(ConstraintType constraintType,
-            List sourceList, List sinkList)
-            throws IllegalActionException {
+            List sourceList, List sinkList) throws IllegalActionException {
         for (Object source : sourceList) {
             for (Object sink : sinkList) {
                 _constrainSingleObject(constraintType, source, sink);
@@ -349,13 +358,19 @@ public class LatticeOntologyAdapter extends OntologyAdapter {
     protected void _constrainSingleObject(ConstraintType constraintType,
             Object source, Object sink) throws IllegalActionException {
         switch (constraintType) {
-            case NONE: break;
-            case EQUALS: setSameAs(source, sink); break;
-            case SINK_GE_SOURCE: setAtLeast(sink, source); break;
-            case SOURCE_GE_SINK: setAtLeast(source, sink); break;
+        case NONE:
+            break;
+        case EQUALS:
+            setSameAs(source, sink);
+            break;
+        case SINK_GE_SOURCE:
+            setAtLeast(sink, source);
+            break;
+        case SOURCE_GE_SINK:
+            setAtLeast(source, sink);
+            break;
         }
     }
-
 
     /**
      * Return the list of constrained ports given the flag whether source or

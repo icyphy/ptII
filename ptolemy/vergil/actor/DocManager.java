@@ -830,13 +830,13 @@ public class DocManager extends HandlerBase {
                 if (toRead != null) {
                     docURL = toRead;
                     result.append("<li><a href=\"" + toRead.toExternalForm()
-                            // Sadly, Javadoc from Java 1.7 cannot be
-                            // displayed using a JEditorPane, so we open
-                            // javadoc in an external browser.  To test this
-                            // out, see
-                            // http://docs.oracle.com/javase/tutorial/uiswing/components/editorpane.html#editorpane
-                            // and modify the example so that it tries to view
-                            // the Javadoc for Object.
+                    // Sadly, Javadoc from Java 1.7 cannot be
+                    // displayed using a JEditorPane, so we open
+                    // javadoc in an external browser.  To test this
+                    // out, see
+                    // http://docs.oracle.com/javase/tutorial/uiswing/components/editorpane.html#editorpane
+                    // and modify the example so that it tries to view
+                    // the Javadoc for Object.
                             + "#in_browser\">Javadoc Documentation</a></li>");
                 } else {
                     // FIXME: Make this a hyperlink to a doc on how
@@ -893,22 +893,24 @@ public class DocManager extends HandlerBase {
                             // it out of date.
                             File sourceFile = new File(toRead.getFile());
                             File docFile = new File(docURL.getFile());
-                            if (sourceFile.lastModified() > docFile.lastModified()) {
+                            if (sourceFile.lastModified() > docFile
+                                    .lastModified()) {
                                 modificationMessage = "<font color=\"red\">Documentation "
-                                    + "may be out of date when compared to source.</font> "
-                                    + "<br/>The source was last modified on <br/>"
-                                    + new Date(sourceFile.lastModified())
-                                    + ",<br/> documentation was last modified on <br/>"
-                                    + new Date(docFile.lastModified())
-                                    + ".<br/> To rebuild the documentation use the "
-                                    + "Build menu choice.";
+                                        + "may be out of date when compared to source.</font> "
+                                        + "<br/>The source was last modified on <br/>"
+                                        + new Date(sourceFile.lastModified())
+                                        + ",<br/> documentation was last modified on <br/>"
+                                        + new Date(docFile.lastModified())
+                                        + ".<br/> To rebuild the documentation use the "
+                                        + "Build menu choice.";
                             }
                         }
                     } catch (Exception ex) {
                         // Ignore
                     }
                     result.append("<li><a href=\"" + toRead.toExternalForm()
-                            + "\">Source code</a>" + modificationMessage + "</li>");
+                            + "\">Source code</a>" + modificationMessage
+                            + "</li>");
                 }
             } catch (Exception ex) {
                 // Do not report anything.

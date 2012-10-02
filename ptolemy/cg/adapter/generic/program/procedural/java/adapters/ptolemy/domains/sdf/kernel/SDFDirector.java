@@ -36,6 +36,7 @@ import ptolemy.actor.IOPort;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.util.DFUtilities;
 import ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.TypedCompositeActor;
+import ptolemy.cg.kernel.generic.CodeGeneratorAdapter;
 import ptolemy.cg.kernel.generic.GenericCodeGenerator;
 import ptolemy.cg.kernel.generic.program.CodeStream;
 import ptolemy.cg.kernel.generic.program.NamedProgramCodeGeneratorAdapter;
@@ -267,14 +268,12 @@ public class SDFDirector
                     .escapePortName(inputPort.getName());
 
             String exceptionMessage = "Failed to generate code "
-                + "to transfer tokens to for input. "
-                + "The type of the \"" + portName
-                + "\" output port was " + type
-                + ", which is not supported. "
-                + "Try setting the type of the \""
-                + portName
-                + "\" port by right clicking on the actor "
-                + "and selecting Customize -> Ports.";
+                    + "to transfer tokens to for input. "
+                    + "The type of the \"" + portName + "\" output port was "
+                    + type + ", which is not supported. "
+                    + "Try setting the type of the \"" + portName
+                    + "\" port by right clicking on the actor "
+                    + "and selecting Customize -> Ports.";
 
             for (int i = 0; i < inputPort.getWidth(); i++) {
                 if (i < inputPort.getWidthInside()) {
@@ -390,14 +389,13 @@ public class SDFDirector
             Type type = ((TypedIOPort) outputPort).getType();
 
             String exceptionMessage = "Failed to generate code "
-                + "to transfer tokens to fulfill the output rate."
-                + "The type of the \"" + outputPort.getName()
-                + "\" output port was " + type
-                + ", which is not supported. "
-                + "Try setting the type of the \""
-                + outputPort.getName()
-                + "\" port by right clicking on the actor "
-                + "and selecting Customize -> Ports.";
+                    + "to transfer tokens to fulfill the output rate."
+                    + "The type of the \"" + outputPort.getName()
+                    + "\" output port was " + type
+                    + ", which is not supported. "
+                    + "Try setting the type of the \"" + outputPort.getName()
+                    + "\" port by right clicking on the actor "
+                    + "and selecting Customize -> Ports.";
 
             int numberOfChannels = outputPort.getWidthInside();
 
@@ -418,8 +416,7 @@ public class SDFDirector
 
             } else {
                 // FIXME: need to deal with other types
-                throw new IllegalActionException(outputPort,
-                        exceptionMessage);
+                throw new IllegalActionException(outputPort, exceptionMessage);
             }
 
             for (int i = 0; i < outputPort.getWidthInside(); i++) {
@@ -552,8 +549,7 @@ public class SDFDirector
 
         StringBuffer code = new StringBuffer();
         ProgramCodeGenerator codeGenerator = getCodeGenerator();
-        String name = NamedProgramCodeGeneratorAdapter.generateName(target
-                .getComponent());
+        String name = CodeGeneratorAdapter.generateName(target.getComponent());
 
         // Generate variable declarations for input ports.
         String inputVariableDeclaration = _generateInputVariableDeclaration(target);
@@ -590,8 +586,7 @@ public class SDFDirector
 
         ProgramCodeGenerator codeGenerator = getCodeGenerator();
 
-        String name = NamedProgramCodeGeneratorAdapter.generateName(target
-                .getComponent());
+        String name = CodeGeneratorAdapter.generateName(target.getComponent());
         // Generate variable declarations for referenced parameters.
         if (((BooleanToken) codeGenerator.variablesAsArrays.getToken())
                 .booleanValue()) {
@@ -713,8 +708,9 @@ public class SDFDirector
         StringBuffer code = new StringBuffer();
         String portType = targetType(port.getType());
         if (portType.equals("Object")
-                && ! (getCodeGenerator().getAdapter(port.getContainer()) instanceof AutoAdapter)
-                && ! AutoAdapter.isAutoAdapteredRemotePort(getCodeGenerator(), port)) {
+                && !(getCodeGenerator().getAdapter(port.getContainer()) instanceof AutoAdapter)
+                && !AutoAdapter.isAutoAdapteredRemotePort(getCodeGenerator(),
+                        port)) {
             // $PTII/bin/ptcg -language java $PTII/ptolemy/cg/kernel/generic/program/procedural/java/test/auto/ObjectToken1.xml
             // $PTII/bin/ptcg -language java $PTII/ptolemy/cg/kernel/generic/program/procedural/java/test/auto/ObjectTokenTestSampleDelay.xml
             System.out.println("CG SDFDirector: changing to Object to Token");
@@ -736,7 +732,7 @@ public class SDFDirector
                     code.append("[]");
                 }
             }
-            code.append(" = new " + portType );
+            code.append(" = new " + portType);
         } else {
             if (bufferSize > 1) {
                 if (!variablesAsArrays) {

@@ -63,7 +63,8 @@ public class RelativeLocation extends Location {
 
         relativeTo = new StringAttribute(this, "relativeTo");
         relativeTo.setVisibility(Settable.EXPERT);
-        relativeToElementName = new StringAttribute(this, "relativeToElementName");
+        relativeToElementName = new StringAttribute(this,
+                "relativeToElementName");
         relativeToElementName.setExpression("entity");
     }
 
@@ -224,7 +225,8 @@ public class RelativeLocation extends Location {
      *   does not exist.
      */
     private double[] _getRelativeToLocation(NamedObj relativeToObject) {
-        List<Locatable> locatables = relativeToObject.attributeList(Locatable.class);
+        List<Locatable> locatables = relativeToObject
+                .attributeList(Locatable.class);
         if (locatables.size() > 0) {
             _cachedReltoLoc = locatables.get(0).getLocation();
             return _cachedReltoLoc;

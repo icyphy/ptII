@@ -96,7 +96,7 @@ public class JAIPNGWriter extends JAIWriter {
         setBackground.setToken(BooleanToken.FALSE);
 
         IntToken[] initialArray = { new IntToken(0), new IntToken(0),
-            new IntToken(0) };
+                new IntToken(0) };
 
         background = new Parameter(this, "background", new ArrayToken(
                 BaseType.INT, initialArray));

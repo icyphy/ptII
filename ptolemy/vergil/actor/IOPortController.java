@@ -379,16 +379,16 @@ public class IOPortController extends AttributeController {
             Shape shape;
 
             // NOTE: The preferences mechanism may set this.
-            Token portSize = PtolemyPreferences.preferenceValue(
-                    port, "_portSize");
+            Token portSize = PtolemyPreferences.preferenceValue(port,
+                    "_portSize");
 
             // Default size is 4.0.
             double size = 4.0;
             if (portSize instanceof DoubleToken) {
                 size = ((DoubleToken) portSize).doubleValue();
             }
-            double halfSize = size/2.0;
-            double doubleSize = size*2.0;
+            double halfSize = size / 2.0;
+            double doubleSize = size * 2.0;
 
             if (size == 0.0) {
                 // Use an empty ellipse as the shape.
@@ -425,7 +425,8 @@ public class IOPortController extends AttributeController {
                     polygon.closePath();
                     shape = polygon;
                 } else {
-                    shape = new Ellipse2D.Double(-size, -size, doubleSize, doubleSize);
+                    shape = new Ellipse2D.Double(-size, -size, doubleSize,
+                            doubleSize);
                 }
             }
             boolean isPubSubPort = port instanceof PubSubPort;
@@ -463,11 +464,14 @@ public class IOPortController extends AttributeController {
                             }
                             ColorAttribute color = null;
                             if (object instanceof MonitoredQuantityManager) {
-                                color = ((MonitoredQuantityManager) qmList.get(0)).color;
+                                color = ((MonitoredQuantityManager) qmList
+                                        .get(0)).color;
                             } else if (object instanceof CompositeQuantityManager) {
-                                color = ((CompositeQuantityManager) qmList.get(0)).color;
+                                color = ((CompositeQuantityManager) qmList
+                                        .get(0)).color;
                             } else if (object instanceof IOPort) {
-                                color = ((CompositeQuantityManager) ((IOPort)qmList.get(0)).getContainer()).color;
+                                color = ((CompositeQuantityManager) ((IOPort) qmList
+                                        .get(0)).getContainer()).color;
                             }
                             fill = color.asColor();
 
@@ -482,7 +486,9 @@ public class IOPortController extends AttributeController {
                                 if (qmStringBuffer.length() > 0) {
                                     qmStringBuffer.append(", ");
                                 }
-                                qmStringBuffer.append(((NamedObj)qmList.get(j)).getName());
+                                qmStringBuffer
+                                        .append(((NamedObj) qmList.get(j))
+                                                .getName());
                             }
                             info.setExpression("QM: "
                                     + qmStringBuffer.toString());
@@ -667,31 +673,36 @@ public class IOPortController extends AttributeController {
                     }
                 }
                 if (port instanceof PublisherPort) {
-                    CompositeFigure compositeFigure = new CompositeFigure(figure);
+                    CompositeFigure compositeFigure = new CompositeFigure(
+                            figure);
                     Path2D path = new Path2D.Double();
-                    path.moveTo(0.5*size, -size);
-                    path.lineTo(2.5*size, 0);
-                    path.lineTo(0.5*size, size);
+                    path.moveTo(0.5 * size, -size);
+                    path.lineTo(2.5 * size, 0);
+                    path.lineTo(0.5 * size, size);
 
-                    path.moveTo(2*size, -size);
-                    path.lineTo(4*size, 0);
-                    path.lineTo(2*size, size);
+                    path.moveTo(2 * size, -size);
+                    path.lineTo(4 * size, 0);
+                    path.lineTo(2 * size, size);
 
                     Figure pathFigure = new BasicFigure(path);
                     compositeFigure.add(pathFigure);
 
                     String channel = "???";
                     try {
-                        if (((InstantiableNamedObj)port.getContainer()).isWithinClassDefinition()) {
+                        if (((InstantiableNamedObj) port.getContainer())
+                                .isWithinClassDefinition()) {
                             // If the port is in a class definition, do not expand it, it might contain $foo.$bar.
-                            channel = ((PublisherPort)port).channel.getExpression();
+                            channel = ((PublisherPort) port).channel
+                                    .getExpression();
                         } else {
-                            channel = ((PublisherPort)port).channel.stringValue();
+                            channel = ((PublisherPort) port).channel
+                                    .stringValue();
                         }
                         // Also display the number of initial tokens in parens.
-                        Token initialTokens = ((PublisherPort)port).initialTokens.getToken();
+                        Token initialTokens = ((PublisherPort) port).initialTokens
+                                .getToken();
                         if (initialTokens instanceof ArrayToken) {
-                            int number = ((ArrayToken)initialTokens).length();
+                            int number = ((ArrayToken) initialTokens).length();
                             channel = channel + " (" + number + ")";
                         }
                     } catch (IllegalActionException e) {
@@ -699,40 +710,45 @@ public class IOPortController extends AttributeController {
                         e.printStackTrace();
                     }
                     // The anchor argument below is (sadly) ignored.
-                    Figure label = new LabelFigure(
-                            channel, _pubSubLabelFont, 0.0, SwingConstants.SOUTH_EAST, _pubSubLabelColor);
+                    Figure label = new LabelFigure(channel, _pubSubLabelFont,
+                            0.0, SwingConstants.SOUTH_EAST, _pubSubLabelColor);
                     double labelHeight = label.getBounds().getHeight();
-                    label.translate(5*size, 0.5 * labelHeight);
+                    label.translate(5 * size, 0.5 * labelHeight);
                     compositeFigure.add(label);
 
                     figure = compositeFigure;
                 } else if (port instanceof SubscriberPort) {
-                    CompositeFigure compositeFigure = new CompositeFigure(figure);
+                    CompositeFigure compositeFigure = new CompositeFigure(
+                            figure);
                     Path2D path = new Path2D.Double();
-                    path.moveTo(-2*size, -size);
-                    path.lineTo(-2*size, size);
+                    path.moveTo(-2 * size, -size);
+                    path.lineTo(-2 * size, size);
 
-                    path.moveTo(-3*size, -size);
-                    path.lineTo(-3*size, size);
+                    path.moveTo(-3 * size, -size);
+                    path.lineTo(-3 * size, size);
 
-                    path.moveTo(-4*size, -size);
-                    path.lineTo(-4*size, size);
+                    path.moveTo(-4 * size, -size);
+                    path.lineTo(-4 * size, size);
 
                     Figure pathFigure = new BasicFigure(path);
                     compositeFigure.add(pathFigure);
 
                     String channel = "???";
                     try {
-                        if (((InstantiableNamedObj)port.getContainer()).isWithinClassDefinition()) {
+                        if (((InstantiableNamedObj) port.getContainer())
+                                .isWithinClassDefinition()) {
                             // If the port is in a class definition, do not expand it, it might contain $foo.$bar.
-                            channel = ((SubscriberPort)port).channel.getExpression();
+                            channel = ((SubscriberPort) port).channel
+                                    .getExpression();
                         } else {
-                            channel = ((SubscriberPort)port).channel.stringValue();
+                            channel = ((SubscriberPort) port).channel
+                                    .stringValue();
                         }
                         // Also display the number of initial tokens in parens.
-                        Token initialTokens = ((SubscriberPort)port).initialTokens.getToken();
+                        Token initialTokens = ((SubscriberPort) port).initialTokens
+                                .getToken();
                         if (initialTokens instanceof ArrayToken) {
-                            int number = ((ArrayToken)initialTokens).length();
+                            int number = ((ArrayToken) initialTokens).length();
                             channel = channel + " (" + number + ")";
                         }
                     } catch (IllegalActionException e) {
@@ -740,8 +756,8 @@ public class IOPortController extends AttributeController {
                         e.printStackTrace();
                     }
                     // The anchor argument below is (sadly) ignored.
-                    Figure label = new LabelFigure(
-                            channel, _pubSubLabelFont, 0.0, SwingConstants.SOUTH_EAST, _pubSubLabelColor);
+                    Figure label = new LabelFigure(channel, _pubSubLabelFont,
+                            0.0, SwingConstants.SOUTH_EAST, _pubSubLabelColor);
                     double labelHeight = label.getBounds().getHeight();
                     double labelWidth = label.getBounds().getWidth();
                     label.translate(-labelWidth - 5 * size, 0.5 * labelHeight);

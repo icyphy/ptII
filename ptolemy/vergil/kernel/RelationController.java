@@ -175,10 +175,12 @@ public class RelationController extends ParameterizedNodeController {
                     // Ignore.
                 }
                 // New way to set the color
-                List<ColorAttribute> colorAttributes = relation.attributeList(ColorAttribute.class);
+                List<ColorAttribute> colorAttributes = relation
+                        .attributeList(ColorAttribute.class);
                 if (colorAttributes != null && colorAttributes.size() > 0) {
                     // Use the last color added.
-                    Color color = colorAttributes.get(colorAttributes.size() - 1).asColor();
+                    Color color = colorAttributes.get(
+                            colorAttributes.size() - 1).asColor();
                     ((BasicFigure) figure).setFillPaint(color);
                     ((BasicFigure) figure).setStrokePaint(color);
                 }

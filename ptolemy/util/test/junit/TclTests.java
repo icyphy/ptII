@@ -97,9 +97,8 @@ public class TclTests {
         // not present or 1, then ::tycho::TopLevel::exitProgram is
         // called.  We don't want that because it prints an error
         // message, so we set reallyExit to 0.
-        _setVarMethod.invoke(_interp, new Object [] {"reallyExit",
-                                                     _tclObjectZero,
-                                                     1 /*TCL.GLOBAL_ONLY*/});
+        _setVarMethod.invoke(_interp, new Object[] { "reallyExit",
+                _tclObjectZero, 1 /*TCL.GLOBAL_ONLY*/});
 
         // Invoke the doneTests Tcl command which prints the number of
         // tests.
@@ -109,21 +108,23 @@ public class TclTests {
             if (!_tclExceptionClass.isInstance(throwable.getCause())) {
                 throw throwable;
             } else {
-                Integer completionCode = (Integer)_getCompletionCodeMethod.invoke(throwable.getCause(), new Object [] {});
-                if (completionCode.intValue() == 1 /** TCL.ERROR */) {
+                Integer completionCode = (Integer) _getCompletionCodeMethod
+                        .invoke(throwable.getCause(), new Object[] {});
+                if (completionCode.intValue() == 1 /** TCL.ERROR */
+                ) {
                     // The completion code was 1, which means that the
                     // command could not be completed successfully.
 
                     // The Tcl errorInfo global variable will have information
                     // about what went wrong.
                     Object errorInfoTclObject = _getVarMethod.invoke(_interp,
-                            new Object [] {
-                                "errorInfo", (String) null, 1 /*TCL.GLOBAL_ONLY*/
+                            new Object[] { "errorInfo", null, 1 /*TCL.GLOBAL_ONLY*/
                             });
-                    throw new Exception ("Evaluating the Tcl method \"doneTests\" "
-                            + "resulted in a TclException being thrown.\nThe Tcl "
-                            + "errorInfo global variable has the value:\n"
-                            + errorInfoTclObject);
+                    throw new Exception(
+                            "Evaluating the Tcl method \"doneTests\" "
+                                    + "resulted in a TclException being thrown.\nThe Tcl "
+                                    + "errorInfo global variable has the value:\n"
+                                    + errorInfoTclObject);
                 }
             }
         }
@@ -139,38 +140,38 @@ public class TclTests {
      */
     public Object[] parametersForRunTclFile() throws IOException {
         String[] tclFiles = new File(".").list(new FilenameFilter() {
-                /**
-                 * Return true if the file name ends with .tcl and is not
-                 * alljtests.tcl or testDefs.tcl
-                 *
-                 * @param directory
-                 *            Ignored
-                 * @param name
-                 *            The name of the file.
-                 * @return true if the file name ends with .xml or .moml
-                 */
-                public boolean accept(File directory, String name) {
-                    String fileName = name.toLowerCase();
-                    if (fileName.endsWith(".tcl")) {
-                        // alljsimpletests.tcl calls exit,
-                        // which results in JUnit
-                        // producing
-                        // "junit.framework.AssertionFailedError:
-                        // Forked Java VM exited
-                        // abnormally. Please note the
-                        // time in the report does not
-                        // reflect the time until the VM
-                        // exit."
+            /**
+             * Return true if the file name ends with .tcl and is not
+             * alljtests.tcl or testDefs.tcl
+             *
+             * @param directory
+             *            Ignored
+             * @param name
+             *            The name of the file.
+             * @return true if the file name ends with .xml or .moml
+             */
+            public boolean accept(File directory, String name) {
+                String fileName = name.toLowerCase();
+                if (fileName.endsWith(".tcl")) {
+                    // alljsimpletests.tcl calls exit,
+                    // which results in JUnit
+                    // producing
+                    // "junit.framework.AssertionFailedError:
+                    // Forked Java VM exited
+                    // abnormally. Please note the
+                    // time in the report does not
+                    // reflect the time until the VM
+                    // exit."
 
-                        if (!fileName.endsWith("alljsimpletests.tcl")
-                                && !fileName.endsWith("alljtests.tcl")
-                                && !fileName.endsWith("testdefs.tcl")) {
-                            return true;
-                        }
+                    if (!fileName.endsWith("alljsimpletests.tcl")
+                            && !fileName.endsWith("alljtests.tcl")
+                            && !fileName.endsWith("testdefs.tcl")) {
+                        return true;
                     }
-                    return false;
                 }
-            });
+                return false;
+            }
+        });
 
         if (tclFiles.length > 0) {
             int i = 0;
@@ -183,14 +184,13 @@ public class TclTests {
             // File.list() returns files in a different order
             // on different platforms.  So much for write once, run everywhere.
             Arrays.sort(data, new Comparator<Object[]>() {
-                    @Override
-                        public int compare(final Object[] entry1,
-                                           final Object[] entry2) {
-                        final String file1 = (String)entry1[0];
-                        final String file2 = (String)entry2[0];
-                        return file1.compareTo(file2);
-                    }
-                });
+                @Override
+                public int compare(final Object[] entry1, final Object[] entry2) {
+                    final String file1 = (String) entry1[0];
+                    final String file2 = (String) entry2[0];
+                    return file1.compareTo(file2);
+                }
+            });
             return data;
         } else {
             return new Object[][] { { THERE_ARE_NO_TCL_TESTS } };
@@ -228,8 +228,10 @@ public class TclTests {
             if (!_tclExceptionClass.isInstance(throwable.getCause())) {
                 throw throwable;
             } else {
-                Integer completionCode = (Integer)_getCompletionCodeMethod.invoke(throwable.getCause(), new Object [] {});
-                if (completionCode.intValue() == 1 /** TCL.ERROR */) {
+                Integer completionCode = (Integer) _getCompletionCodeMethod
+                        .invoke(throwable.getCause(), new Object[] {});
+                if (completionCode.intValue() == 1 /** TCL.ERROR */
+                ) {
                     // The completion code was 1, which means that the
                     // command could not be completed successfully.
 
@@ -238,21 +240,22 @@ public class TclTests {
                     Object errorInfoTclObject = null;
                     try {
                         errorInfoTclObject = _getVarMethod.invoke(_interp,
-                                                                  new Object [] {
-                                "errorInfo", (String) null, 1 /*TCL.GLOBAL_ONLY*/
-                            });
-                        throw new Exception ("Evaluating the Tcl file \""
-                                             + tclFile
-                                             + "\"resulted in a TclException being thrown.\nThe Tcl "
-                                             + "errorInfo global variable has the value:\n"
-                                             + errorInfoTclObject);
+                                new Object[] { "errorInfo", null, 1 /*TCL.GLOBAL_ONLY*/
+                                });
+                        throw new Exception(
+                                "Evaluating the Tcl file \""
+                                        + tclFile
+                                        + "\"resulted in a TclException being thrown.\nThe Tcl "
+                                        + "errorInfo global variable has the value:\n"
+                                        + errorInfoTclObject);
                     } catch (Throwable throwable2) {
                         throwable2.printStackTrace();
-                        throw new Exception ("Evaluating the Tcl file \""
-                                             + tclFile
-                                             + "\"resulted in a TclException being thrown.\n"
-                                             + "The Tcl errorInfo variable could not be obtained.\n"
-                                             + throwable2, throwable);
+                        throw new Exception(
+                                "Evaluating the Tcl file \""
+                                        + tclFile
+                                        + "\"resulted in a TclException being thrown.\n"
+                                        + "The Tcl errorInfo variable could not be obtained.\n"
+                                        + throwable2, throwable);
                     }
                 }
             }
@@ -261,8 +264,7 @@ public class TclTests {
         // Get the value of the Tcl FAILED global variable.
         // We check for non-zero results for *each* .tcl file.
         Object newFailedCountTclObject = _getVarMethod.invoke(_interp,
-                new Object [] {
-                    "FAILED", (String) null, 1 /*TCL.GLOBAL_ONLY*/
+                new Object[] { "FAILED", null, 1 /*TCL.GLOBAL_ONLY*/
                 });
         int newFailed = Integer.parseInt(newFailedCountTclObject.toString());
         int lastFailed = Integer.parseInt(_failedTestCount.toString());
@@ -271,12 +273,12 @@ public class TclTests {
         // this prevents us from reporting cascading errors if the
         // first .tcl file has a failure.
         _failedTestCount = _newInstanceTclIntegerMethod.invoke(null,
-                    new Object [] {Integer.valueOf(newFailed)});
+                new Object[] { Integer.valueOf(newFailed) });
 
         // If the Tcl FAILED global variable is not equal to the
         // previous number of failures, then add a failure.
-        assertEquals("Number of failed tests is has increased.",
-                lastFailed, newFailed);
+        assertEquals("Number of failed tests is has increased.", lastFailed,
+                newFailed);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -287,7 +289,6 @@ public class TclTests {
      * necessary to avoid an exception in the JUnitParameters.
      */
     protected final static String THERE_ARE_NO_TCL_TESTS = "ThereAreNoTclTests";
-
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
@@ -361,33 +362,33 @@ public class TclTests {
             _interpClass = Class.forName("tcl.lang.Interp");
             _interp = _interpClass.newInstance();
 
-            _evalMethod = _interpClass.getMethod("eval",
-                    new Class [] {String.class, Integer.TYPE});
+            _evalMethod = _interpClass.getMethod("eval", new Class[] {
+                    String.class, Integer.TYPE });
 
             _evalFileMethod = _interpClass.getMethod("evalFile", String.class);
 
-            _getVarMethod = _interpClass.getMethod("getVar",
-                    new Class [] {String.class, String.class, Integer.TYPE});
+            _getVarMethod = _interpClass.getMethod("getVar", new Class[] {
+                    String.class, String.class, Integer.TYPE });
 
             _tclObjectClass = Class.forName("tcl.lang.TclObject");
-            _setVarMethod = _interpClass.getMethod("setVar",
-                    new Class [] {String.class, _tclObjectClass, Integer.TYPE});
+            _setVarMethod = _interpClass.getMethod("setVar", new Class[] {
+                    String.class, _tclObjectClass, Integer.TYPE });
 
             // Create a TclObject with value 0 for use with the doneTests Tcl proc.
             Class<?> tclIntegerClass = Class.forName("tcl.lang.TclInteger");
-            _newInstanceTclIntegerMethod = tclIntegerClass.getMethod("newInstance",
-                    new Class [] {Integer.TYPE});
+            _newInstanceTclIntegerMethod = tclIntegerClass.getMethod(
+                    "newInstance", new Class[] { Integer.TYPE });
 
             _tclExceptionClass = Class.forName("tcl.lang.TclException");
 
-            _getCompletionCodeMethod = _tclExceptionClass.getMethod("getCompletionCode",
-                    new Class [] {});
+            _getCompletionCodeMethod = _tclExceptionClass.getMethod(
+                    "getCompletionCode", new Class[] {});
 
             _tclObjectZero = _newInstanceTclIntegerMethod.invoke(null,
-                    new Object [] {Integer.valueOf(0)});
+                    new Object[] { Integer.valueOf(0) });
 
             _failedTestCount = _newInstanceTclIntegerMethod.invoke(null,
-                    new Object [] {Integer.valueOf(0)});
+                    new Object[] { Integer.valueOf(0) });
 
         } catch (Throwable throwable) {
             // Exceptions sometimes get marked as multiple failures here so

@@ -89,7 +89,7 @@ public class MonitorImage extends Sink {
      */
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         MonitorImage newObject = (MonitorImage) super.clone(workspace);
-        newObject._icon = (ImageIcon)newObject.getAttribute("_icon");
+        newObject._icon = (ImageIcon) newObject.getAttribute("_icon");
         return newObject;
     }
 

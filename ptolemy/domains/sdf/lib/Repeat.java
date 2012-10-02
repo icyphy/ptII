@@ -69,7 +69,8 @@ public class Repeat extends SDFTransformer {
         super(container, name);
 
         // parameters
-        numberOfTimes = new PortParameter(this, "numberOfTimes", new IntToken(2));
+        numberOfTimes = new PortParameter(this, "numberOfTimes",
+                new IntToken(2));
         numberOfTimes.setTypeEquals(BaseType.INT);
 
         blockSize = new Parameter(this, "blockSize", new IntToken(1));

@@ -89,7 +89,8 @@ public class MultipleConceptIcon extends ConceptIcon {
         Figure background = super.createBackgroundFigure();
         double translationValue = 10.0;
         try {
-            translationValue = ((DoubleToken)translation.getToken()).doubleValue();
+            translationValue = ((DoubleToken) translation.getToken())
+                    .doubleValue();
         } catch (IllegalActionException e) {
             // Ignore and use default value.
             e.printStackTrace();
@@ -131,12 +132,13 @@ public class MultipleConceptIcon extends ConceptIcon {
         LabelFigure result = super._getLabel(background, name);
         double translationValue = 10.0;
         try {
-            translationValue = ((DoubleToken)translation.getToken()).doubleValue();
+            translationValue = ((DoubleToken) translation.getToken())
+                    .doubleValue();
         } catch (IllegalActionException e) {
             // Ignore and use default value.
             e.printStackTrace();
         }
-        result.translate(-0.5*translationValue, -0.5*translationValue);
+        result.translate(-0.5 * translationValue, -0.5 * translationValue);
         return result;
     }
 }

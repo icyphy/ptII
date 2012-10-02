@@ -173,11 +173,12 @@ public class Waveform extends DiscreteClock {
                 _interpolation = _HERMITE;
             }
         } else if (attribute == period) {
-            double periodValue = ((DoubleToken) period.getToken()).doubleValue();
+            double periodValue = ((DoubleToken) period.getToken())
+                    .doubleValue();
             if (periodValue == Double.POSITIVE_INFINITY) {
                 throw new IllegalActionException(this,
-                        "Period is required to be finite.  "
-                        + "Period given: " + periodValue);
+                        "Period is required to be finite.  " + "Period given: "
+                                + periodValue);
             }
             super.attributeChanged(attribute);
         } else {
@@ -209,8 +210,9 @@ public class Waveform extends DiscreteClock {
      *  @param tanEnd The tangent of the ending reference point.
      *  @return The Hermite curve interpolation.
      */
-    protected double _hermite(double index, double startTime, double startValue,
-            double tanStart, double endTime, double endValue, double tanEnd) {
+    protected double _hermite(double index, double startTime,
+            double startValue, double tanStart, double endTime,
+            double endValue, double tanEnd) {
         // forming the Hermite matrix M
         double[][] M = new double[4][4];
         double iStartSqr = startTime * startTime;
@@ -291,10 +293,12 @@ public class Waveform extends DiscreteClock {
 
         if (indexIndexStart == -1) {
             startTime = _offsets[numRefPoints - 1] - periodValue;
-            startValue = ((DoubleToken) _getValue(numRefPoints - 1)).doubleValue();
+            startValue = ((DoubleToken) _getValue(numRefPoints - 1))
+                    .doubleValue();
         } else {
             startTime = _offsets[indexIndexStart];
-            startValue = ((DoubleToken) _getValue(indexIndexStart)).doubleValue();
+            startValue = ((DoubleToken) _getValue(indexIndexStart))
+                    .doubleValue();
         }
 
         if (indexIndexStart == (numRefPoints - 1)) {
@@ -302,12 +306,14 @@ public class Waveform extends DiscreteClock {
             endValue = ((DoubleToken) _getValue(0)).doubleValue();
         } else {
             endTime = _offsets[indexIndexStart + 1];
-            endValue = ((DoubleToken) _getValue(indexIndexStart + 1)).doubleValue();
+            endValue = ((DoubleToken) _getValue(indexIndexStart + 1))
+                    .doubleValue();
         }
 
         if (_interpolation == _LINEAR) {
-            return new DoubleToken(startValue
-                    + (((time - startTime) * (endValue - startValue)) / (endTime - startTime)));
+            return new DoubleToken(
+                    startValue
+                            + (((time - startTime) * (endValue - startValue)) / (endTime - startTime)));
         }
 
         // order is 3. Need the points before Start and the point after End
@@ -319,11 +325,13 @@ public class Waveform extends DiscreteClock {
 
         if (indexIndexStart == -1) {
             timeBeforeStart = _offsets[numRefPoints - 2] - periodValue;
-            valueBeforeStart = ((DoubleToken) _getValue(numRefPoints - 2)).doubleValue();
+            valueBeforeStart = ((DoubleToken) _getValue(numRefPoints - 2))
+                    .doubleValue();
         } else if (indexIndexStart == 0) {
             if (periodValue > 0) {
                 timeBeforeStart = _offsets[numRefPoints - 1] - periodValue;
-                valueBeforeStart = ((DoubleToken) _getValue(numRefPoints - 1)).doubleValue();
+                valueBeforeStart = ((DoubleToken) _getValue(numRefPoints - 1))
+                        .doubleValue();
             } else {
                 // Not periodic
                 timeBeforeStart = _offsets[0] - 1;
@@ -331,7 +339,8 @@ public class Waveform extends DiscreteClock {
             }
         } else {
             timeBeforeStart = _offsets[indexIndexStart - 1];
-            valueBeforeStart = ((DoubleToken) _getValue(indexIndexStart - 1)).doubleValue();
+            valueBeforeStart = ((DoubleToken) _getValue(indexIndexStart - 1))
+                    .doubleValue();
         }
 
         if (indexIndexStart == (numRefPoints - 1)) {
@@ -349,20 +358,22 @@ public class Waveform extends DiscreteClock {
             }
         } else {
             timeAfterEnd = _offsets[indexIndexStart + 2];
-            valueAfterEnd = ((DoubleToken) _getValue(indexIndexStart + 2)).doubleValue();
+            valueAfterEnd = ((DoubleToken) _getValue(indexIndexStart + 2))
+                    .doubleValue();
         }
 
         // Compute the tangent at Start and End.
         double tanBefore2Start = (startValue - valueBeforeStart)
                 / (startTime - timeBeforeStart);
         double tanStart2End = (endValue - startValue) / (endTime - startTime);
-        double tanEnd2After = (valueAfterEnd - endValue) / (timeAfterEnd - endTime);
+        double tanEnd2After = (valueAfterEnd - endValue)
+                / (timeAfterEnd - endTime);
 
         double tanStart = 0.5 * (tanBefore2Start + tanStart2End);
         double tanEnd = 0.5 * (tanStart2End + tanEnd2After);
 
-        return new DoubleToken(
-                _hermite(time, startTime, startValue, tanStart, endTime, endValue, tanEnd));
+        return new DoubleToken(_hermite(time, startTime, startValue, tanStart,
+                endTime, endValue, tanEnd));
     }
 
     /** Produce the output required at times between the specified times

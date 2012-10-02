@@ -143,8 +143,7 @@ public class ModelFrame extends PtolemyFrame implements ExecutionListener {
         } else {
             statusMessage = ".";
         }
-        report("execution finished"
-                + statusMessage);
+        report("execution finished" + statusMessage);
     }
 
     /** Report that a manager state has changed.
@@ -169,8 +168,7 @@ public class ModelFrame extends PtolemyFrame implements ExecutionListener {
             } else {
                 statusMessage = ".";
             }
-            report(manager.getState().getDescription()
-                    + statusMessage);
+            report(manager.getState().getDescription() + statusMessage);
 
             _previousState = newState;
         }

@@ -184,7 +184,8 @@ public class RecursiveLattice extends Transformer {
         int forwardLength = 0;
         if (_forward == null) {
             try {
-                ArrayToken value = (ArrayToken) reflectionCoefficients.getToken();
+                ArrayToken value = (ArrayToken) reflectionCoefficients
+                        .getToken();
                 forwardLength = value.length() + 1;
             } catch (IllegalActionException ex) {
                 throw new CloneNotSupportedException("Failed to clone: " + ex);
@@ -196,7 +197,8 @@ public class RecursiveLattice extends Transformer {
         int backwardLength = 0;
         if (_backward == null) {
             try {
-                ArrayToken value = (ArrayToken) reflectionCoefficients.getToken();
+                ArrayToken value = (ArrayToken) reflectionCoefficients
+                        .getToken();
                 backwardLength = value.length() + 1;
             } catch (IllegalActionException ex) {
                 throw new CloneNotSupportedException("Failed to clone: " + ex);
@@ -211,14 +213,16 @@ public class RecursiveLattice extends Transformer {
         newObject._reflectionCoefficients = new double[forwardLength - 1];
 
         if (_backward != null) {
-            System.arraycopy(_backward, 0, newObject._backward, 0, backwardLength);
+            System.arraycopy(_backward, 0, newObject._backward, 0,
+                    backwardLength);
         }
         if (_backwardCache != null) {
             System.arraycopy(_backwardCache, 0, newObject._backwardCache, 0,
                     _backwardCache.length);
         }
         if (_forward != null) {
-            System.arraycopy(_forward, 0, newObject._forward, 0, _forward.length);
+            System.arraycopy(_forward, 0, newObject._forward, 0,
+                    _forward.length);
         }
         if (_forwardCache != null) {
             System.arraycopy(_forwardCache, 0, newObject._forwardCache, 0,

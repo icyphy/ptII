@@ -48,7 +48,6 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.vergil.basic.ExportParameters;
 
-
 ///////////////////////////////////////////////////////////////////
 //// HTMLImage
 /**
@@ -132,21 +131,20 @@ public class HTMLImage extends WebContent {
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
-     /** Generate the image file and a <table/> element holding an <img/>
-      *  element and a caption for the image.
-     *
-     *  @param exporter The WebExporter to add content to
-     *  @exception IllegalActionException If something is wrong generating the
-     *  image file or generating the additional web content
-     */
+    /** Generate the image file and a <table/> element holding an <img/>
+     *  element and a caption for the image.
+    *
+    *  @param exporter The WebExporter to add content to
+    *  @exception IllegalActionException If something is wrong generating the
+    *  image file or generating the additional web content
+    */
     public void _provideElements(WebExporter exporter)
-        throws IllegalActionException {
+            throws IllegalActionException {
 
         // Copied from LinkToOpenTableau
         // Create a table of effigies associated with any
         // open submodel or plot.
-        Map<NamedObj, PtolemyEffigy> openEffigies = new HashMap<NamedObj,
-            PtolemyEffigy>();
+        Map<NamedObj, PtolemyEffigy> openEffigies = new HashMap<NamedObj, PtolemyEffigy>();
         Tableau myTableau = exporter.getFrame().getTableau();
         Effigy myEffigy = (Effigy) myTableau.getContainer();
         List<PtolemyEffigy> effigies = myEffigy.entityList(PtolemyEffigy.class);
@@ -165,7 +163,7 @@ public class HTMLImage extends WebContent {
         if (effigy == null) {
             Effigy candidate = Configuration.findEffigy(getContainer());
             if (candidate instanceof PtolemyEffigy) {
-                effigy = (PtolemyEffigy)candidate;
+                effigy = (PtolemyEffigy) candidate;
             }
         }
         try {
@@ -173,21 +171,21 @@ public class HTMLImage extends WebContent {
             if (effigy != null) {
                 // _linkTo() recursively calls writeHTML();
                 _linkTo(exporter, effigy, getContainer(), getContainer(),
-                    exporter.getExportParameters());
+                        exporter.getExportParameters());
             }
         } catch (Throwable throwable) {
             throw new IllegalActionException(this, throwable,
-            "Failed to generate HTMLImage. ");
+                    "Failed to generate HTMLImage. ");
         }
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
-    private void _linkTo(WebExporter exporter,
-            PtolemyEffigy effigy, NamedObj sourceObject,
-            NamedObj destinationObject, ExportParameters parameters)
-            throws IOException, PrinterException, IllegalActionException {
+    private void _linkTo(WebExporter exporter, PtolemyEffigy effigy,
+            NamedObj sourceObject, NamedObj destinationObject,
+            ExportParameters parameters) throws IOException, PrinterException,
+            IllegalActionException {
         File gifFile;
         WebElement webElement;
         // Look for any open tableaux for the object.
@@ -199,8 +197,8 @@ public class HTMLImage extends WebContent {
             // If it's a composite actor, export HTML.
             if (frame instanceof ImageExportable) {
 
-                gifFile =
-                    new File(parameters.directoryToExportTo, name + ".gif");
+                gifFile = new File(parameters.directoryToExportTo, name
+                        + ".gif");
                 OutputStream gifOut = new FileOutputStream(gifFile);
                 try {
                     ((ImageExportable) frame).writeImage(gifOut, "gif");
@@ -216,7 +214,7 @@ public class HTMLImage extends WebContent {
                 // stored locally and located relative to the main web page
                 String path = exporter.getExportParameters().HTMLPathForFiles;
                 if (path == null) {
-                    path ="/";
+                    path = "/";
                 } else {
                     if (!path.equals("") && !path.endsWith("/")) {
                         path = path + "/";
@@ -224,13 +222,12 @@ public class HTMLImage extends WebContent {
                 }
 
                 String content = "<table> <caption align=\"bottom\">"
-                    + this.displayText.getExpression()
-                    + "</caption> <tr> <td> <img src=\""
-                    + path
-                    + name + ".gif\"> </td></tr></table>";
+                        + this.displayText.getExpression()
+                        + "</caption> <tr> <td> <img src=\"" + path + name
+                        + ".gif\"> </td></tr></table>";
 
                 webElement = WebElement.createWebElement(getContainer(),
-                      getName() + "WebElement", getName() + "WebElement");
+                        getName() + "WebElement", getName() + "WebElement");
                 webElement.setExpression(content);
                 webElement.setParent(imagePosition.stringValue());
 

@@ -2542,8 +2542,7 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
 
                 if (_debugging) {
                     _debug("-- Executing change request "
-                            + "with description: "
-                            + change.getDescription());
+                            + "with description: " + change.getDescription());
                 }
                 change.execute();
             }
@@ -2756,7 +2755,8 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
      *  @see #addHierarchyListener(HierarchyListener)
      *  @see HierarchyListener
      */
-    protected void _notifyHierarchyListenersAfterChange() throws IllegalActionException {
+    protected void _notifyHierarchyListenersAfterChange()
+            throws IllegalActionException {
         if (_hierarchyListeners != null) {
             // The hierarchy has changed. Add all hierarchy listeners
             // up the new hierarchy. This should be done before notification
@@ -2781,7 +2781,8 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
      *  @see #addHierarchyListener(HierarchyListener)
      *  @see HierarchyListener
      */
-    protected void _notifyHierarchyListenersBeforeChange() throws IllegalActionException {
+    protected void _notifyHierarchyListenersBeforeChange()
+            throws IllegalActionException {
         if (_hierarchyListeners != null) {
             for (HierarchyListener listener : _hierarchyListeners) {
                 listener.hierarchyWillChange();

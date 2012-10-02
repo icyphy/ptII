@@ -182,7 +182,7 @@ public class ConfigurationSelect extends TypedAtomicActor {
             throws IllegalActionException {
         if (attribute == selector) {
             boolean previousSelector = _selector;
-            _selector = ((BooleanToken)selector.getToken()).booleanValue();
+            _selector = ((BooleanToken) selector.getToken()).booleanValue();
             if (_selector != previousSelector) {
                 if (_selector) {
                     trueInput_tokenConsumptionRate.setToken(_one);

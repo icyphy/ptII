@@ -30,12 +30,10 @@ package ptolemy.actor.gui;
 
 import java.awt.Color;
 import java.awt.Component;
-import java.awt.Container;
 import java.awt.KeyboardFocusManager;
 import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.io.File;
 import java.net.URI;
@@ -46,15 +44,12 @@ import java.util.List;
 import java.util.Map;
 
 import javax.swing.AbstractAction;
-import javax.swing.ActionMap;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
-import javax.swing.InputMap;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.KeyStroke;
@@ -68,7 +63,6 @@ import ptolemy.actor.parameters.IntRangeParameter;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.IntToken;
-import ptolemy.data.StringToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.FileParameter;
 import ptolemy.data.expr.Parameter;
@@ -211,13 +205,17 @@ public class PtolemyQuery extends Query implements QueryListener,
                                 .getCurrentValue();
                         int min = ((IntRangeParameter) attribute).getMinValue();
                         int max = ((IntRangeParameter) attribute).getMaxValue();
-                        String minLabel = ((DoubleRangeParameter) attribute).minLabel.stringValue();
-                        String maxLabel = ((DoubleRangeParameter) attribute).maxLabel.stringValue();
+                        String minLabel = ((DoubleRangeParameter) attribute).minLabel
+                                .stringValue();
+                        String maxLabel = ((DoubleRangeParameter) attribute).maxLabel
+                                .stringValue();
 
                         // minLabel and maxLabel can contain the special placeholders $min and
                         // $max, which must be replaced by the actual limits of the range
-                        minLabel = minLabel.replace("$min", Double.toString(min));
-                        maxLabel = maxLabel.replace("$max", Double.toString(max));
+                        minLabel = minLabel.replace("$min",
+                                Double.toString(min));
+                        maxLabel = maxLabel.replace("$max",
+                                Double.toString(max));
 
                         component = addSlider(name, displayName, current, min,
                                 max, minLabel, maxLabel);
@@ -234,13 +232,17 @@ public class PtolemyQuery extends Query implements QueryListener,
                                 .getToken()).doubleValue();
                         int precision = ((IntToken) ((DoubleRangeParameter) attribute).precision
                                 .getToken()).intValue();
-                        String minLabel = ((DoubleRangeParameter) attribute).minLabel.stringValue();
-                        String maxLabel = ((DoubleRangeParameter) attribute).maxLabel.stringValue();
+                        String minLabel = ((DoubleRangeParameter) attribute).minLabel
+                                .stringValue();
+                        String maxLabel = ((DoubleRangeParameter) attribute).maxLabel
+                                .stringValue();
 
                         // minLabel and maxLabel can contain the special placeholders $min and
                         // $max, which must be replaced by the actual limits of the range
-                        minLabel = minLabel.replace("$min", Double.toString(min));
-                        maxLabel = maxLabel.replace("$max", Double.toString(max));
+                        minLabel = minLabel.replace("$min",
+                                Double.toString(min));
+                        maxLabel = maxLabel.replace("$max",
+                                Double.toString(max));
 
                         // Get the quantized integer for the current value.
                         int quantized = ((int) Math
@@ -481,7 +483,8 @@ public class PtolemyQuery extends Query implements QueryListener,
                             area.setRows(area.getRows() + 1);
                             area.revalidate();
                             Component parent = area.getParent();
-                            while ((parent != null) && !(parent instanceof EditParametersDialog)) {
+                            while ((parent != null)
+                                    && !(parent instanceof EditParametersDialog)) {
                                 parent = parent.getParent();
                             }
                             if (parent instanceof EditParametersDialog) {
@@ -516,7 +519,7 @@ public class PtolemyQuery extends Query implements QueryListener,
      */
     public boolean adjustEditable(Settable settable, Component component) {
         if (settable.getVisibility() == Settable.NOT_EDITABLE) {
-            NamedObj container = (NamedObj)settable.getContainer();
+            NamedObj container = settable.getContainer();
             Attribute expertMode = container.getAttribute("_expertMode");
             if (expertMode == null) {
                 // If the user has selected expert mode, then they can
@@ -1101,7 +1104,8 @@ public class PtolemyQuery extends Query implements QueryListener,
                 revalidate();
                 try {
                     Component parent = component.getParent();
-                    while ((parent != null) && !(parent instanceof EditParametersDialog)) {
+                    while ((parent != null)
+                            && !(parent instanceof EditParametersDialog)) {
                         parent = parent.getParent();
                     }
                     if (parent instanceof EditParametersDialog) {

@@ -113,7 +113,6 @@ public class TypeOpaqueCompositeActor extends CompositeActor implements
         return false;
     }
 
-
     /** Create a new TypedIOPort with the specified name.
      *  The container of the port is set to this actor.
      *  This method is write-synchronized on the workspace.

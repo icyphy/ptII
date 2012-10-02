@@ -92,7 +92,8 @@ public class AbsoluteValue extends Transformer {
      */
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         AbsoluteValue newObject = (AbsoluteValue) super.clone(workspace);
-        newObject.output.setTypeAtLeast(new TypeOfAbsoluteValue(newObject.input));
+        newObject.output
+                .setTypeAtLeast(new TypeOfAbsoluteValue(newObject.input));
         return newObject;
     }
 
@@ -120,14 +121,14 @@ public class AbsoluteValue extends Transformer {
      */
     private Token _absoluteValue(Token input) throws IllegalActionException {
         if (input instanceof ArrayToken) {
-            int length = ((ArrayToken)input).length();
+            int length = ((ArrayToken) input).length();
             Token[] result = new Token[length];
             for (int i = 0; i < length; i++) {
-                result[i] = _absoluteValue(((ArrayToken)input).getElement(i));
+                result[i] = _absoluteValue(((ArrayToken) input).getElement(i));
             }
             return new ArrayToken(result);
         } else if (input instanceof ScalarToken) {
-            return ((ScalarToken)input).absolute();
+            return ((ScalarToken) input).absolute();
         } else {
             throw new IllegalActionException(this,
                     "AbsoluteValue only accepts scalar inputs or arrays of scalars.");
@@ -170,7 +171,7 @@ public class AbsoluteValue extends Transformer {
          *  @return A Type.
          */
         public Object getValue() {
-            return(_outputType(_port.getType()));
+            return (_outputType(_port.getType()));
         }
 
         /** Return the variables in this term. If the type of the input port
@@ -202,7 +203,7 @@ public class AbsoluteValue extends Transformer {
             if (inputType == BaseType.COMPLEX) {
                 return BaseType.DOUBLE;
             } else if (inputType instanceof ArrayType) {
-                Type elementType = ((ArrayType)inputType).getElementType();
+                Type elementType = ((ArrayType) inputType).getElementType();
                 return new ArrayType(_outputType(elementType));
             } else {
                 return inputType;

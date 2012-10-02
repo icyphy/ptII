@@ -291,7 +291,8 @@ public class Configuration extends CompositeEntity implements
      */
     public String check() throws Exception {
         StringBuffer results = new StringBuffer();
-        Configuration cloneConfiguration = (Configuration) clone(new Workspace("clonedCheckWorkspace"));
+        Configuration cloneConfiguration = (Configuration) clone(new Workspace(
+                "clonedCheckWorkspace"));
 
         // Check TypedAtomicActors and Attributes
         Iterator containedObjects = deepNamedObjList().iterator();
@@ -315,10 +316,11 @@ public class Configuration extends CompositeEntity implements
 
         containedObjects = deepCompositeEntityList().iterator();
         for (CompositeEntity composite : deepCompositeEntityList()) {
-            CompositeEntity clonedComposite = (CompositeEntity)composite.clone(new Workspace("clonedCompositeWorkspace"));
+            CompositeEntity clonedComposite = (CompositeEntity) composite
+                    .clone(new Workspace("clonedCompositeWorkspace"));
             Iterator attributes = composite.attributeList().iterator();
             while (attributes.hasNext()) {
-                Attribute attribute = (Attribute)attributes.next();
+                Attribute attribute = (Attribute) attributes.next();
                 if (!attribute.getClass().isMemberClass()) {
                     // If an attribute is an inner class, it makes
                     // no sense to clone to a different workspace because
@@ -330,52 +332,69 @@ public class Configuration extends CompositeEntity implements
                     } catch (Throwable throwable) {
                         throw new InternalErrorException(attribute, null,
                                 throwable, "The check for "
-                                + "clone methods properly setting "
-                                + "the fields failed.");
+                                        + "clone methods properly setting "
+                                        + "the fields failed.");
                     }
                 } else {
                     // Clone the composite and check that any inner
                     // classes are properly cloned.
                     String name = attribute.getName();
-                    Attribute clonedAttribute = clonedComposite.getAttribute(name);
+                    Attribute clonedAttribute = clonedComposite
+                            .getAttribute(name);
                     if (clonedAttribute == null) {
-                        results.append("Could not find \"" + name
-                                + "\" in " + composite.getFullName() + "\n"
+                        results.append("Could not find \"" + name + "\" in "
+                                + composite.getFullName() + "\n"
                                 + clonedComposite.description());
                     } else {
-                        if (attribute.workspace().equals(clonedAttribute.workspace())) {
-                            results.append("\nIn attribute " + attribute.getFullName()
+                        if (attribute.workspace().equals(
+                                clonedAttribute.workspace())) {
+                            results.append("\nIn attribute "
+                                    + attribute.getFullName()
                                     + ", the workspace is the same in the master and "
                                     + " the clone?");
                         }
                         // Check that the Workspace of the outer class is different.
                         Class attributeClass = attribute.getClass();
 
-                        if (! Modifier.isStatic(attributeClass.getModifiers())) {
+                        if (!Modifier.isStatic(attributeClass.getModifiers())) {
                             // Get the this$0 field, which refers to the outer class.
                             Field thisZeroField = null;
                             try {
-                                thisZeroField = attributeClass.getDeclaredField("this$0");
+                                thisZeroField = attributeClass
+                                        .getDeclaredField("this$0");
                             } catch (Throwable throwable) {
-                                results.append("Class " + attributeClass.getName()
+                                results.append("Class "
+                                        + attributeClass.getName()
                                         + " does not have a this$0 field?\n");
                             }
                             if (thisZeroField != null) {
                                 thisZeroField.setAccessible(true);
 
                                 Object outer = thisZeroField.get(attribute);
-                                if (Class.forName("ptolemy.kernel.util.NamedObj").isAssignableFrom(outer.getClass())) {
+                                if (Class.forName(
+                                        "ptolemy.kernel.util.NamedObj")
+                                        .isAssignableFrom(outer.getClass())) {
                                     NamedObj outerNamedObj = (NamedObj) outer;
-                                    NamedObj clonedOuterNamedObj = (NamedObj)thisZeroField.get(clonedAttribute);
-                                    if (outerNamedObj.workspace().equals(clonedOuterNamedObj.workspace())) {
+                                    NamedObj clonedOuterNamedObj = (NamedObj) thisZeroField
+                                            .get(clonedAttribute);
+                                    if (outerNamedObj.workspace().equals(
+                                            clonedOuterNamedObj.workspace())) {
                                         results.append("\nAn inner class instance has the same workspace in the outer "
                                                 + "class in both the original and the cloned attribute."
-                                                + "\n Attribute:        " + attribute.getFullName()
-                                                + "\n Cloned attribute: " + clonedAttribute.getFullName()
-                                                + "\n Outer Workspace:       " + outerNamedObj.workspace()
-                                                + "\n ClonedOuter Workspace: " + clonedOuterNamedObj.workspace()
-                                                + "\n Outer Object:        " + outerNamedObj.getFullName()
-                                                + "\n Cloned Outer Object: " + clonedOuterNamedObj.getFullName());
+                                                + "\n Attribute:        "
+                                                + attribute.getFullName()
+                                                + "\n Cloned attribute: "
+                                                + clonedAttribute.getFullName()
+                                                + "\n Outer Workspace:       "
+                                                + outerNamedObj.workspace()
+                                                + "\n ClonedOuter Workspace: "
+                                                + clonedOuterNamedObj
+                                                        .workspace()
+                                                + "\n Outer Object:        "
+                                                + outerNamedObj.getFullName()
+                                                + "\n Cloned Outer Object: "
+                                                + clonedOuterNamedObj
+                                                        .getFullName());
                                     }
                                 }
                             }
@@ -605,7 +624,7 @@ public class Configuration extends CompositeEntity implements
         Configuration configuration = (Configuration) Configuration
                 .configurations().iterator().next();
         // Get the directory from the configuration.
-        ModelDirectory directory = (ModelDirectory) configuration.getDirectory();
+        ModelDirectory directory = configuration.getDirectory();
         if (directory == null) {
             return;
         }
@@ -789,7 +808,8 @@ public class Configuration extends CompositeEntity implements
                         // by Eclipse for Kepler.  See also TextEffigy.newTextEffigy()
                         if (toRead == null) {
                             toRead = ClassUtilities.sourceResource(filename);
-                            System.out.println("Configuration: sourceResource " + filename + " " + toRead);
+                            System.out.println("Configuration: sourceResource "
+                                    + filename + " " + toRead);
                         }
 
                         if (toRead != null) {
@@ -861,21 +881,20 @@ public class Configuration extends CompositeEntity implements
      *  @exception NoSuchMethodException If there is no constructor with the type.
      */
     public Object getStringParameterAsClass(String parameterName,
-            Class [] constructorParameterTypes,
-            Object [] constructorParameterClass)
-            throws ClassNotFoundException, IllegalAccessException,
-            IllegalActionException, InstantiationException,
+            Class[] constructorParameterTypes,
+            Object[] constructorParameterClass) throws ClassNotFoundException,
+            IllegalAccessException, IllegalActionException,
+            InstantiationException,
             java.lang.reflect.InvocationTargetException, NoSuchMethodException {
         // Deal with the PDF Action first.
-        StringParameter classNameParameter = (StringParameter)getAttribute(parameterName,
-                        StringParameter.class);
+        StringParameter classNameParameter = (StringParameter) getAttribute(
+                parameterName, StringParameter.class);
 
         if (classNameParameter != null) {
-            String className = classNameParameter
-                .stringValue();
-            Class clazz = Class
-                .forName(className);
-            Constructor constructor = clazz.getDeclaredConstructor(constructorParameterTypes);
+            String className = classNameParameter.stringValue();
+            Class clazz = Class.forName(className);
+            Constructor constructor = clazz
+                    .getDeclaredConstructor(constructorParameterTypes);
             return constructor.newInstance(constructorParameterClass);
         }
         return null;
@@ -1241,7 +1260,8 @@ public class Configuration extends CompositeEntity implements
      *  a field.
      *  @exception ClassNotFoundException If a class cannot be found.
      */
-    private static String _checkCloneField(NamedObj namedObj, NamedObj namedObjClone, Field field)
+    private static String _checkCloneField(NamedObj namedObj,
+            NamedObj namedObjClone, Field field)
             throws CloneNotSupportedException, IllegalAccessException,
             ClassNotFoundException {
         Class namedObjClass = namedObj.getClass();
@@ -1264,7 +1284,7 @@ public class Configuration extends CompositeEntity implements
                 && !(field.getName().indexOf("$RECORDS") != -1)
                 && !(field.getName().indexOf("$CHECKPOINT") != -1)
                 // Skip dependency injection fields
-                && !(field.getName().indexOf("_implementation")!= -1)
+                && !(field.getName().indexOf("_implementation") != -1)
                 // Skip immutables
                 && !fieldType.equals(java.net.InetAddress.class)
                 && !fieldType.equals(java.util.regex.Pattern.class)
@@ -1284,24 +1304,29 @@ public class Configuration extends CompositeEntity implements
                             .identityHashCode(field.get(namedObjClone)))) {
 
                 String message = "";
-                if (Class.forName("ptolemy.kernel.util.NamedObj").isAssignableFrom(fieldType)) {
-                    NamedObj fieldNamedObj = (NamedObj) Class.forName("ptolemy.kernel.util.NamedObj").cast(field.get(namedObj));
-                    NamedObj cloneNamedObj = (NamedObj) Class.forName("ptolemy.kernel.util.NamedObj").cast(field.get(namedObjClone));
+                if (Class.forName("ptolemy.kernel.util.NamedObj")
+                        .isAssignableFrom(fieldType)) {
+                    NamedObj fieldNamedObj = (NamedObj) Class.forName(
+                            "ptolemy.kernel.util.NamedObj").cast(
+                            field.get(namedObj));
+                    NamedObj cloneNamedObj = (NamedObj) Class.forName(
+                            "ptolemy.kernel.util.NamedObj").cast(
+                            field.get(namedObjClone));
                     message = "Field: " + fieldNamedObj.workspace().getName()
-                        + " Clone: " + cloneNamedObj.workspace().getName();
+                            + " Clone: " + cloneNamedObj.workspace().getName();
                 }
 
                 // Determine what code should go in clone(W)
                 String assignment = field.getName();
                 // FIXME: extend this to more types
                 if (Class.forName("ptolemy.kernel.Port").isAssignableFrom(
-                                fieldType)) {
+                        fieldType)) {
                     assignment = ".getPort(\"" + assignment + "\")";
                     //                       } else if (fieldType.isInstance( new Attribute())) {
                 } else if (Class.forName("ptolemy.kernel.util.Attribute")
                         .isAssignableFrom(fieldType)) {
                     Attribute fieldAttribute = (Attribute) field
-                        .get(namedObjClone);
+                            .get(namedObjClone);
 
                     if (fieldAttribute.getContainer() != namedObjClone) {
                         // If the attribute is actually contained by a Port
@@ -1310,41 +1335,36 @@ public class Configuration extends CompositeEntity implements
                         // tokenConsumptionRate and tokenProductionRate
                         // such as ConvolutionalCoder need this.
                         assignment = "."
-                            + fieldAttribute.getContainer().getName()
-                            + ".getAttribute(\""
-                            + fieldAttribute.getName() + "\")";
+                                + fieldAttribute.getContainer().getName()
+                                + ".getAttribute(\"" + fieldAttribute.getName()
+                                + "\")";
                     } else {
-                        assignment = ".getAttribute(\"" + assignment
-                            + "\")";
+                        assignment = ".getAttribute(\"" + assignment + "\")";
                     }
                 } else {
                     assignment = "\n\t/* Get the object method "
-                        + "or null?  */ " + assignment;
+                            + "or null?  */ " + assignment;
                 }
 
                 String shortClassName = field
-                    .getType()
-                    .getName()
-                    .substring(
-                            field.getType().getName().lastIndexOf(".") + 1);
+                        .getType()
+                        .getName()
+                        .substring(
+                                field.getType().getName().lastIndexOf(".") + 1);
 
                 //new Exception("Configuration._checkCloneField()").printStackTrace();
 
-
                 results.append("The " + field.getName() + " "
                         + field.getType().getName() + " field"
-                        + "\n\tin the clone of \""
-                        + namedObjClass.getName()
+                        + "\n\tin the clone of \"" + namedObjClass.getName()
                         + "\"\n\tdoes not point to an "
                         + "object distinct from the "
                         + "master.  \n\tThis may cause problems with "
                         + "actor oriented classes."
                         + "\n\tThe clone(Workspace) "
-                        + "method should have a line "
-                        + "like:\n newObject." + field.getName() + " = ("
-                        + shortClassName + ")newObject" + assignment
-                        + ";\n"
-                        + message);
+                        + "method should have a line " + "like:\n newObject."
+                        + field.getName() + " = (" + shortClassName
+                        + ")newObject" + assignment + ";\n" + message);
             }
 
         }

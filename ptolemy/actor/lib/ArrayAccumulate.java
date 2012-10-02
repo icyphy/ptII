@@ -104,7 +104,7 @@ public class ArrayAccumulate extends Transformer {
         // which is overridden in the subclasses. Use the append()
         // method of ArrayToken instead.
         if (input.hasToken(0)) {
-            ArrayToken token = (ArrayToken)input.get(0);
+            ArrayToken token = (ArrayToken) input.get(0);
             if (_accumulating == null) {
                 _tentativeAccumulating = token;
                 output.send(0, token);
@@ -115,7 +115,7 @@ public class ArrayAccumulate extends Transformer {
                 output.send(0, ArrayToken.append(_arrays));
             }
         } else {
-            Type elementType = ((ArrayType)output.getType()).getElementType();
+            Type elementType = ((ArrayType) output.getType()).getElementType();
             output.send(0, new ArrayToken(elementType));
         }
     }

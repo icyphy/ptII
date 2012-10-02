@@ -129,7 +129,6 @@ public class MirrorComposite extends TypedCompositeActor implements
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-
     /** Clone the object into the specified workspace. This overrides
      *  the base class to set up the associations in the mirror ports
      *  and to set a flag indicating that cloning is complete.
@@ -154,9 +153,11 @@ public class MirrorComposite extends TypedCompositeActor implements
                 Port insidePort = insideEntity.getPort(port.getName());
 
                 if (insidePort instanceof MirrorPort) {
-                    ((MirrorPort)port).setAssociatedPort((MirrorPort) insidePort);
+                    ((MirrorPort) port)
+                            .setAssociatedPort((MirrorPort) insidePort);
                 } else if (insidePort instanceof ParameterMirrorPort) {
-                    ((ParameterMirrorPort)port).setAssociatedPort((ParameterMirrorPort) insidePort);
+                    ((ParameterMirrorPort) port)
+                            .setAssociatedPort((ParameterMirrorPort) insidePort);
                 }
             }
         }
@@ -403,7 +404,8 @@ public class MirrorComposite extends TypedCompositeActor implements
                                 if (castPort instanceof MirrorPort) {
                                     insidePort = insideEntity.newPort(portName);
                                 } else if (castPort instanceof ParameterMirrorPort) { // ParameterMirrorPort
-                                    insidePort = ((MirrorComposite)insideEntity).newParameterPort(portName);
+                                    insidePort = ((MirrorComposite) insideEntity)
+                                            .newParameterPort(portName);
                                 }
 
                                 if (insidePort instanceof IOPort) {
@@ -417,9 +419,11 @@ public class MirrorComposite extends TypedCompositeActor implements
                             }
 
                             if (insidePort instanceof MirrorPort) {
-                                ((MirrorPort)castPort).setAssociatedPort((MirrorPort) insidePort);
+                                ((MirrorPort) castPort)
+                                        .setAssociatedPort((MirrorPort) insidePort);
                             } else if (insidePort instanceof ParameterMirrorPort) { // ParameterMirrorPort
-                                ((ParameterMirrorPort)castPort).setAssociatedPort((ParameterMirrorPort) insidePort);
+                                ((ParameterMirrorPort) castPort)
+                                        .setAssociatedPort((ParameterMirrorPort) insidePort);
                             }
 
                             // Create a link only if it doesn't already exist.
@@ -675,15 +679,15 @@ public class MirrorComposite extends TypedCompositeActor implements
 
                         if (port instanceof ParameterMirrorPort) {
                             ParameterMirrorPort newPort = (ParameterMirrorPort) container
-                            .getPort(port.getName());
+                                    .getPort(port.getName());
 
                             if (newPort == null) {
-                                newPort = (ParameterMirrorPort) ((MirrorComposite)container).newParameterPort(port
-                                        .getName());
+                                newPort = (ParameterMirrorPort) container
+                                        .newParameterPort(port.getName());
                             }
                         } else { // MirrorPort
                             MirrorPort newPort = (MirrorPort) container
-                                .getPort(port.getName());
+                                    .getPort(port.getName());
 
                             if (newPort == null) {
                                 newPort = (MirrorPort) container.newPort(port
@@ -693,7 +697,8 @@ public class MirrorComposite extends TypedCompositeActor implements
                             if (port instanceof IOPort) {
                                 newPort.setInput(((IOPort) port).isInput());
                                 newPort.setOutput(((IOPort) port).isOutput());
-                                newPort.setMultiport(((IOPort) port).isMultiport());
+                                newPort.setMultiport(((IOPort) port)
+                                        .isMultiport());
                             }
                         }
                     } finally {

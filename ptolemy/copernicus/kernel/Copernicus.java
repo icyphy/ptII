@@ -44,7 +44,7 @@ import java.util.List;
 import java.util.Map;
 
 import ptolemy.actor.CompositeActor;
-import ptolemy.actor.gui.MoMLApplication;
+import ptolemy.actor.gui.ConfigurationApplication;
 import ptolemy.cg.kernel.generic.CodeGeneratorUtilities;
 import ptolemy.data.StringToken;
 import ptolemy.data.expr.Parameter;
@@ -496,7 +496,7 @@ public class Copernicus {
         URL modelURL = null;
 
         try {
-            modelURL = MoMLApplication.specToURL(modelPathOrURL);
+            modelURL = ConfigurationApplication.specToURL(modelPathOrURL);
         } catch (IOException ex) {
             try {
                 // We might have a JAR URL because we are inside webstart
@@ -540,7 +540,7 @@ public class Copernicus {
                 // sets the location of a LineAttribute. To reproduce:
                 // cd $PTII/ptolemy/domains/ptides/demo/PrintingPress
                 // $PTII/bin/copernicus -codeGenerator applet -targetPath ptolemy/domains/ptides/demo/PrintingPress PrintingPress.xml
-                removeGraphicalClasses.clear();
+                RemoveGraphicalClasses.clear();
                 break;
             }
         }
@@ -552,7 +552,6 @@ public class Copernicus {
         // shallow/test/IIRGUI.xml has a GeneratorTableauAttribute in it.
         removeGraphicalClasses.put(
                 "ptolemy.copernicus.gui.GeneratorTableauAttribute", null);
-
 
         // FIXME: If this is Deep codegen, then don't use Test, use CGTest
         // because Test has a SharedParameter

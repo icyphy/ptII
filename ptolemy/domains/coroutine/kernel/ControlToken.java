@@ -39,12 +39,15 @@ import ptolemy.data.Token;
  */
 public abstract class ControlToken extends Token {
 
-    public enum ControlType { Non, Entry, Exit };
+    public enum ControlType {
+        Non, Entry, Exit
+    };
 
     public abstract boolean isEntry();
 
     public abstract boolean isExit();
 
-    public interface Location {}
+    public interface Location {
+    }
 
 }

@@ -255,8 +255,7 @@ public class Test extends NonStrictTest {
 
             if (_debugging) {
                 _debug("-- Read input: " + token
-                        + ", which is expected to match: "
-                        + reference[i]);
+                        + ", which is expected to match: " + reference[i]);
             }
 
             boolean isClose;
@@ -299,8 +298,8 @@ public class Test extends NonStrictTest {
         _numberOfInputTokensSeen++;
 
         if (output.numberOfSinks() > 0) {
-            if (_numberOfInputTokensSeen >= ((ArrayToken) (correctValues.getToken()))
-                    .length()) {
+            if (_numberOfInputTokensSeen >= ((ArrayToken) (correctValues
+                    .getToken())).length()) {
                 // Seen all expected inputs.
                 output.send(0, BooleanToken.TRUE);
             } else {

@@ -2069,8 +2069,8 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
                 if (actorList.contains(itsActor)) {
                     // Check and see whether the connectedActor
                     // can be scheduled.
-                    int inputCount = _countUnfulfilledInputs(
-                            (Actor) itsActor, actorList, false);
+                    int inputCount = _countUnfulfilledInputs((Actor) itsActor,
+                            actorList, false);
                     int firingsRemaining = _getFiringCount(itsActor);
 
                     // If so, then add it to the proper list.

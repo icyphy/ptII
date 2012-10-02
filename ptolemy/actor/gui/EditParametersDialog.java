@@ -117,7 +117,8 @@ public class EditParametersDialog extends ComponentDialog implements
             // EditParametersDialog.
             // First, create a string array with the names of all the
             // parameters.
-            List<Settable> attributeList = _target.attributeList(Settable.class);
+            List<Settable> attributeList = _target
+                    .attributeList(Settable.class);
 
             // Count visible attributes
             Iterator<Settable> parameters = attributeList.iterator();
@@ -229,7 +230,8 @@ public class EditParametersDialog extends ComponentDialog implements
                 }
             } catch (Exception ex) {
                 try {
-                    MessageHandler.warning("Cannot open help page \"" + helpURL + "\".", ex);
+                    MessageHandler.warning("Cannot open help page \"" + helpURL
+                            + "\".", ex);
                 } catch (CancelException exception) {
                     // Ignore the cancel.
                 }
@@ -421,14 +423,16 @@ public class EditParametersDialog extends ComponentDialog implements
      */
     private String _getHelpURL() {
         // Look for a _helpURL parameter attached to the target object
-        List<StringParameter> attributeList = _target.attributeList(StringParameter.class);
+        List<StringParameter> attributeList = _target
+                .attributeList(StringParameter.class);
         for (StringParameter attribute : attributeList) {
             if (attribute.getName().equals("_helpURL")) {
                 try {
                     return attribute.stringValue();
                 } catch (IllegalActionException ex) {
                     try {
-                        MessageHandler.warning("Couldn't access help URL parameter.", ex);
+                        MessageHandler.warning(
+                                "Couldn't access help URL parameter.", ex);
                     } catch (CancelException exception) {
                         // Ignore the cancel.
                     }

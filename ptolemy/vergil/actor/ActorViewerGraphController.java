@@ -685,7 +685,8 @@ public class ActorViewerGraphController extends RunnableGraphController {
 
             while (ports.hasNext()) {
                 Port port = (Port) ports.next();
-                Figure portFigure = ActorViewerGraphController.this.getFigure(port);
+                Figure portFigure = ActorViewerGraphController.this
+                        .getFigure(port);
                 // If there is no figure, then ignore this port. This may
                 // happen if the port hasn't been rendered yet.
                 if (portFigure == null) {

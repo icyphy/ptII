@@ -1452,7 +1452,7 @@ public class CodeStream {
                 return _getCode(signature, arguments,
                         scopeList.subList(1, size));
             } else {
-                Object[] codeObject = (Object[]) table.get(signature);
+                Object[] codeObject = table.get(signature);
                 StringBuffer codeBlock = (StringBuffer) codeObject[1];
                 List<String> parameters = (List<String>) codeObject[2];
 

@@ -75,7 +75,8 @@ public class ParameterMirrorPort extends ParameterPort {
      *  @see #exportMoML(Writer, int, String)
      */
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        ParameterMirrorPort result = (ParameterMirrorPort) super.clone(workspace);
+        ParameterMirrorPort result = (ParameterMirrorPort) super
+                .clone(workspace);
         result._associatedPort = null;
         return result;
     }
@@ -103,8 +104,6 @@ public class ParameterMirrorPort extends ParameterPort {
         // NOTE: The association is not propagated to derived
         // objects because we explicitly propagate all the changes.
     }
-
-
 
     /** Override the base class so that if the container is being
      *  set to null, then the associated port is also deleted

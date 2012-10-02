@@ -48,6 +48,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
+import javax.swing.SwingConstants;
 import javax.swing.plaf.basic.BasicButtonUI;
 
 import ptolemy.homer.events.TabEvent;
@@ -216,7 +217,7 @@ public class TabbedLayoutScene extends JPanel implements ActionListener {
      */
     public TabbedLayoutScene(HomerMainFrame mainFrame) {
         _mainFrame = mainFrame;
-        _tabScenes = new JTabbedPane(JTabbedPane.TOP);
+        _tabScenes = new JTabbedPane(SwingConstants.TOP);
 
         add(_tabScenes);
 

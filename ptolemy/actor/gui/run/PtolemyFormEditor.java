@@ -819,7 +819,8 @@ public class PtolemyFormEditor extends JPanel {
                         .allAtomicEntityList().iterator();
                 while (atomicEntities.hasNext()) {
                     NamedObj object = (NamedObj) atomicEntities.next();
-                    if (object instanceof Placeable  || object instanceof PortablePlaceable) {
+                    if (object instanceof Placeable
+                            || object instanceof PortablePlaceable) {
                         components.add("Placeable:"
                                 + object.getName(_layoutFrame._pane._model));
                     }

@@ -240,12 +240,11 @@ public class CodeGeneratorGUI extends PtolemyFrame {
                 // FIXME: Customize to the particular code generator.
                 // Use Thread.currentThread() so that this code will
                 // work under WebStart.
-                URL infoURL = Thread.currentThread()
-                    .getContextClassLoader()
-                    .getResource("ptolemy/cg/README.html");
+                URL infoURL = Thread.currentThread().getContextClassLoader()
+                        .getResource("ptolemy/cg/README.html");
 
-                configuration.openModel(null, infoURL,
-                        infoURL.toExternalForm());
+                configuration
+                        .openModel(null, infoURL, infoURL.toExternalForm());
             } catch (Exception ex) {
                 throw new InternalErrorException(getModel(), ex,
                         "Failed to open doc/codegen.htm: ");

@@ -62,7 +62,8 @@ public class AutoCGKnownFailedTests extends AutoCGTests {
      * @exception IOException If there is a problem accessing the auto/ directory.
      */
     public Object[] modelValues() throws IOException {
-        return modelValues("auto/knownFailedTests/", THERE_ARE_NO_KNOWN_FAILED_TESTS);
+        return modelValues("auto/knownFailedTests/",
+                THERE_ARE_NO_KNOWN_FAILED_TESTS);
     }
 
     /**
@@ -82,8 +83,9 @@ public class AutoCGKnownFailedTests extends AutoCGTests {
      *  into arrays.
      *  @exception Throwable If thrown while generating, compiling or executing the compiled code.
      */
-    public void runModel(String fullPath, String language, boolean generateInSubdirectory,
-            boolean inline, int maximumLinesPerBlock, boolean variablesAsArrays)
+    public void runModel(String fullPath, String language,
+            boolean generateInSubdirectory, boolean inline,
+            int maximumLinesPerBlock, boolean variablesAsArrays)
             throws Throwable {
         if (fullPath.endsWith(THERE_ARE_NO_KNOWN_FAILED_TESTS)) {
             System.out.println("No auto/*.xml tests in "
@@ -98,24 +100,33 @@ public class AutoCGKnownFailedTests extends AutoCGTests {
             System.out.println("Warning, failed to delete " + _cgDirectory);
         }
 
-        System.out.println("----------------- (Known Failure) AutoCG $PTII/bin/ptcg "
-                + "-language " + language + " -generateInSubdirectory "
-                + generateInSubdirectory + " -inline " + inline
-                + " -maximumLinesPerBlock " + maximumLinesPerBlock
-                + " -variablesAsArrays " + variablesAsArrays
-                + " " + fullPath);
-        String [] args = new String [] {
-            "-language", language,
-            "-generateInSubdirectory", Boolean.toString(generateInSubdirectory),
-            "-inline", Boolean.toString(inline),
-            "-maximumLinesPerBlock", Integer.toString(maximumLinesPerBlock),
-            "-variablesAsArrays", Boolean.toString(variablesAsArrays),
-            fullPath};
+        System.out
+                .println("----------------- (Known Failure) AutoCG $PTII/bin/ptcg "
+                        + "-language "
+                        + language
+                        + " -generateInSubdirectory "
+                        + generateInSubdirectory
+                        + " -inline "
+                        + inline
+                        + " -maximumLinesPerBlock "
+                        + maximumLinesPerBlock
+                        + " -variablesAsArrays "
+                        + variablesAsArrays
+                        + " "
+                        + fullPath);
+        String[] args = new String[] { "-language", language,
+                "-generateInSubdirectory",
+                Boolean.toString(generateInSubdirectory), "-inline",
+                Boolean.toString(inline), "-maximumLinesPerBlock",
+                Integer.toString(maximumLinesPerBlock), "-variablesAsArrays",
+                Boolean.toString(variablesAsArrays), fullPath };
         try {
-            int returnValue = ((Integer)_generateCodeMethod.invoke(null, (Object) args)).intValue();
+            int returnValue = ((Integer) _generateCodeMethod.invoke(null,
+                    (Object) args)).intValue();
             if (returnValue != 0) {
-                System.out.println("Known Failure: Return value of the last command executed was not zero, it was: "
-                        + returnValue);
+                System.out
+                        .println("Known Failure: Return value of the last command executed was not zero, it was: "
+                                + returnValue);
             }
         } catch (Throwable throwable) {
             System.out.println("Known Failure: " + throwable);

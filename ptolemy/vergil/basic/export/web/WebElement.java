@@ -92,20 +92,19 @@ public class WebElement extends StringAttribute {
      * (perhaps another Attribute exists with the requested name)
      */
     public static WebElement createWebElement(NamedObj container, String id,
-            String webName) throws IllegalActionException{
-       WebElement webElement;
+            String webName) throws IllegalActionException {
+        WebElement webElement;
 
-       try {
-            if (id != null && container.getAttribute(id) == null)
-            {
+        try {
+            if (id != null && container.getAttribute(id) == null) {
                 webElement = new WebElement(container, id);
                 webElement.setPersistent(false);
             }
-       } catch (NameDuplicationException e) {
-              throw new IllegalActionException(container,
-               "Cannot create web content.  Duplicate id (Ptolemy name) for" +
-               "WebElement: " + id);
-       }
+        } catch (NameDuplicationException e) {
+            throw new IllegalActionException(container,
+                    "Cannot create web content.  Duplicate id (Ptolemy name) for"
+                            + "WebElement: " + id);
+        }
 
         webElement = (WebElement) container.getAttribute(id, WebElement.class);
         webElement.setWebName(webName);
@@ -124,7 +123,6 @@ public class WebElement extends StringAttribute {
     public String getParent() {
         return _parent;
     }
-
 
     /** Return the web name of this element; for example, "myElement" in
      * &lt;div name="myElement"/&gt; in HTML.

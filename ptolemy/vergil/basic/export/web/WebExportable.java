@@ -31,7 +31,6 @@ package ptolemy.vergil.basic.export.web;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.Nameable;
 
-
 ///////////////////////////////////////////////////////////////////
 //// WebExportable
 /**
@@ -79,6 +78,6 @@ public interface WebExportable extends Nameable {
      *  @exception IllegalActionException If something is wrong with the web
      *  content.
      */
-    public void provideContent(WebExporter exporter) throws
-        IllegalActionException;
+    public void provideContent(WebExporter exporter)
+            throws IllegalActionException;
 }

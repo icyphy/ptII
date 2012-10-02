@@ -1208,8 +1208,8 @@ public class PtalonEvaluator extends AbstractPtalonEvaluator {
                     if (port == null) {
                         port = new TypedIOPort(actor,
                                 actor.uniqueName(portName));
-                        inner:
-                        for (Object connection : relation.linkedPortList()) {
+                        inner: for (Object connection : relation
+                                .linkedPortList()) {
                             if (connection instanceof TypedIOPort) {
                                 TypedIOPort testPort = (TypedIOPort) connection;
                                 if (testPort.getContainer().equals(_actor)) {
@@ -1246,8 +1246,8 @@ public class PtalonEvaluator extends AbstractPtalonEvaluator {
                         if (port == null) {
                             port = new TypedIOPort(actor,
                                     actor.uniqueName(portName));
-                            inner:
-                            for (Object connection : rel.linkedPortList()) {
+                            inner: for (Object connection : rel
+                                    .linkedPortList()) {
                                 if (connection instanceof TypedIOPort) {
                                     TypedIOPort testPort = (TypedIOPort) connection;
                                     if (testPort.getContainer().equals(_actor)) {
@@ -1345,8 +1345,8 @@ public class PtalonEvaluator extends AbstractPtalonEvaluator {
                         if (port == null) {
                             port = new TypedIOPort(actor,
                                     actor.uniqueName(portName));
-                            inner:
-                            for (Object connection : relation.linkedPortList()) {
+                            inner: for (Object connection : relation
+                                    .linkedPortList()) {
                                 if (connection instanceof TypedIOPort) {
                                     TypedIOPort testPort = (TypedIOPort) connection;
                                     if (testPort.getContainer().equals(_actor)) {
@@ -1382,8 +1382,8 @@ public class PtalonEvaluator extends AbstractPtalonEvaluator {
                             if (port == null) {
                                 port = new TypedIOPort(actor,
                                         actor.uniqueName(portName));
-                                inner:
-                                for (Object connection : rel.linkedPortList()) {
+                                inner: for (Object connection : rel
+                                        .linkedPortList()) {
                                     if (connection instanceof TypedIOPort) {
                                         TypedIOPort testPort = (TypedIOPort) connection;
                                         if (testPort.getContainer().equals(

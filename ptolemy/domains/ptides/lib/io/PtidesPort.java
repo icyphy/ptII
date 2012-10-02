@@ -55,7 +55,8 @@ public abstract class PtidesPort extends MirrorPort {
      * @exception IllegalActionException If parameters cannot be set.
      * @exception NameDuplicationException If name already exists.
      */
-    public PtidesPort(CompositeEntity container, String name) throws IllegalActionException, NameDuplicationException {
+    public PtidesPort(CompositeEntity container, String name)
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         deviceDelay = new Parameter(this, "deviceDelay");

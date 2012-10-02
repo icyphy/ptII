@@ -81,13 +81,12 @@ public class JAIEdgeDetection extends Transformer {
         _secondMask = _SOBEL_VERTICAL;
 
         double[][] initialMatrix = { { 0.0F, 0.0F, 0.0F },
-            { 0.0F, 0.707F, 0.0F }, { 0.0F, 0.0F, 0.0F } };
+                { 0.0F, 0.707F, 0.0F }, { 0.0F, 0.0F, 0.0F } };
 
         userSpecifiedFirstMask = new Parameter(this, "userSpecifiedFirstMask",
                 new DoubleMatrixToken(initialMatrix));
         userSpecifiedSecondMask = new Parameter(this,
-                "userSpecifiedSecondMask",
-                new DoubleMatrixToken(initialMatrix));
+                "userSpecifiedSecondMask", new DoubleMatrixToken(initialMatrix));
     }
 
     ///////////////////////////////////////////////////////////////////

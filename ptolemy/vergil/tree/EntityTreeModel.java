@@ -269,11 +269,13 @@ public class EntityTreeModel implements TreeModel {
                     }
 
                     try {
-                        valueForPathChanged(new TreePath(path.toArray()), locality);
+                        valueForPathChanged(new TreePath(path.toArray()),
+                                locality);
                     } catch (IllegalArgumentException ex) {
-                        new RuntimeException("Failed to instantiate a TreePath, path was "
-                                             + path.toArray() + " locality was "
-                                             + locality, ex);
+                        new RuntimeException(
+                                "Failed to instantiate a TreePath, path was "
+                                        + path.toArray() + " locality was "
+                                        + locality, ex);
                     }
                 }
             });

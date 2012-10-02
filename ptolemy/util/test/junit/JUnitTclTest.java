@@ -29,7 +29,6 @@
 
 package ptolemy.util.test.junit;
 
-
 ///////////////////////////////////////////////////////////////////
 //// JUnitTclTest
 /**
@@ -56,4 +55,3 @@ package ptolemy.util.test.junit;
 public class JUnitTclTest extends JUnitTclTestBase {
     // This class is empty, all the action occurs in the parent.
 }
-

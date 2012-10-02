@@ -35,7 +35,6 @@ import java.util.List;
 
 import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
-import ptolemy.actor.IOPort;
 import ptolemy.actor.TypedCompositeActor;
 import ptolemy.actor.util.Time;
 import ptolemy.data.BooleanToken;
@@ -45,7 +44,6 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
-
 
 /** This is a resource scheduler Ptolemy model. Special naming
  *  conventions are used to connect the functional model to the
@@ -88,9 +86,9 @@ public class SchedulerModel extends ResourceScheduler {
     @Override
     public Time initialize() throws IllegalActionException {
         super.initialize();
-        ((TypedCompositeActor)_model).preinitialize();
-        ((TypedCompositeActor)_model).initialize();
-        ((TypedCompositeActor)_model).getDirector().setEmbedded(true);
+        ((TypedCompositeActor) _model).preinitialize();
+        ((TypedCompositeActor) _model).initialize();
+        ((TypedCompositeActor) _model).getDirector().setEmbedded(true);
 
         // FIXME: How can I do automatic type checking?
         // This ((TypedCompositeActor)_model).resolveTypes((TypedCompositeActor) _model);
@@ -100,14 +98,15 @@ public class SchedulerModel extends ResourceScheduler {
         //((CompositeActor)this.getContainer()).getManager().
         //((TypedCompositeActor)_model).setManager(((CompositeActor)this.getContainer()).getManager());
         //((TypedCompositeActor)_model).setManager(new Manager());
-//        try {
-//            ((TypedCompositeActor)_model).resolveTypes((TypedCompositeActor) _model);
-//        } catch (TypeConflictException e) {
-//            // TODO Auto-generated catch block
-//            throw new IllegalActionException(this, e.getMessage());
-//        }
+        //        try {
+        //            ((TypedCompositeActor)_model).resolveTypes((TypedCompositeActor) _model);
+        //        } catch (TypeConflictException e) {
+        //            // TODO Auto-generated catch block
+        //            throw new IllegalActionException(this, e.getMessage());
+        //        }
         _currentlyExecuting = new ArrayList();
-        return ((CompositeActor)_model).getDirector().getModelNextIterationTime();
+        return ((CompositeActor) _model).getDirector()
+                .getModelNextIterationTime();
     }
 
     /** Schedule a new actor for execution. Find the const
@@ -138,15 +137,19 @@ public class SchedulerModel extends ResourceScheduler {
                     ExecutionEventType.START);
             Actor mappedActor = _getActor(actor, "");
             if (mappedActor != null) {
-                ((CompositeActor)_model).getDirector().setModelTime(currentPlatformTime);
-                ((CompositeActor)_model).getDirector().fireAtCurrentTime(mappedActor);
+                ((CompositeActor) _model).getDirector().setModelTime(
+                        currentPlatformTime);
+                ((CompositeActor) _model).getDirector().fireAtCurrentTime(
+                        mappedActor);
             }
         }
-        ((CompositeActor)_model).getDirector().setModelTime(currentPlatformTime);
+        ((CompositeActor) _model).getDirector().setModelTime(
+                currentPlatformTime);
         _fireModel(currentPlatformTime);
 
-        Parameter parameter = (Parameter)((CompositeActor)_model).getAttribute("resume" + actor.getName());
-        finished = ((BooleanToken)parameter.getToken()).booleanValue();
+        Parameter parameter = (Parameter) ((CompositeActor) _model)
+                .getAttribute("resume" + actor.getName());
+        finished = ((BooleanToken) parameter.getToken()).booleanValue();
         if (finished) {
             time = getTime(0.0);
             parameter.setToken(new BooleanToken(false));
@@ -155,7 +158,8 @@ public class SchedulerModel extends ResourceScheduler {
             event((NamedObj) actor, currentPlatformTime.getDoubleValue(),
                     ExecutionEventType.STOP);
         } else {
-            time = ((CompositeActor)_model).getDirector().getModelNextIterationTime().subtract(currentPlatformTime);
+            time = ((CompositeActor) _model).getDirector()
+                    .getModelNextIterationTime().subtract(currentPlatformTime);
             _lastActorFinished = false;
         }
         return time;
@@ -164,38 +168,32 @@ public class SchedulerModel extends ResourceScheduler {
     @Override
     public void wrapup() throws IllegalActionException {
         super.wrapup();
-        ((CompositeActor)_model).wrapup();
+        ((CompositeActor) _model).wrapup();
     }
 
     /** List of currently executing actors. */
     protected List<Actor> _currentlyExecuting;
 
-    private IOPort _getOutputPort(Actor actor) {
-        for (int i = 0; i < ((CompositeActor)_model).outputPortList().size(); i++) {
-            IOPort port = (IOPort) ((CompositeActor)_model).outputPortList().get(i);
-            if (port.getName().equals(actor.getName() + "Port")) {
-                return port;
-            }
-        }
-        return null;
-    }
-
-    private void _fireModel(Time currentPlatformTime) throws IllegalActionException {
+    private void _fireModel(Time currentPlatformTime)
+            throws IllegalActionException {
         Time time = currentPlatformTime;
         int index = 1;
         while (time.equals(currentPlatformTime)) {
-            ((DEDirector)((CompositeActor)_model).getDirector()).setIndex(index);
-            ((CompositeActor)_model).prefire();
-            ((CompositeActor)_model).fire();
-            ((CompositeActor)_model).postfire();
-            time = ((CompositeActor)_model).getDirector().getModelNextIterationTime();
+            ((DEDirector) ((CompositeActor) _model).getDirector())
+                    .setIndex(index);
+            ((CompositeActor) _model).prefire();
+            ((CompositeActor) _model).fire();
+            ((CompositeActor) _model).postfire();
+            time = ((CompositeActor) _model).getDirector()
+                    .getModelNextIterationTime();
             index++;
         }
     }
 
     private Actor _getActor(Actor actor, String suffix) {
-        for (int i = 0; i < ((CompositeActor)_model).entityList().size(); i++) {
-            Actor mappedActor = (Actor)((CompositeActor)_model).entityList().get(i);
+        for (int i = 0; i < ((CompositeActor) _model).entityList().size(); i++) {
+            Actor mappedActor = (Actor) ((CompositeActor) _model).entityList()
+                    .get(i);
             if (mappedActor.getName().equals(actor.getName() + suffix)) {
                 return mappedActor;
             }

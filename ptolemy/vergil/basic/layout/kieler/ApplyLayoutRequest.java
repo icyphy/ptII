@@ -86,7 +86,8 @@ public class ApplyLayoutRequest extends ChangeRequest {
      */
     public void addConnection(Relation relation, NamedObj head, NamedObj tail,
             double[] bendPoints) {
-        _connectionEntries.add(new ConnectionEntry(relation, head, tail, bendPoints));
+        _connectionEntries.add(new ConnectionEntry(relation, head, tail,
+                bendPoints));
     }
 
     /**
@@ -115,7 +116,7 @@ public class ApplyLayoutRequest extends ChangeRequest {
             double[] oldLoc = entry._locatable.getLocation();
             undoLayoutAction.addLocation(new LocationEntry(entry._locatable,
                     oldLoc[0], oldLoc[1]));
-            entry._locatable.setLocation(new double[] { entry._x, entry._y } );
+            entry._locatable.setLocation(new double[] { entry._x, entry._y });
         }
 
         // Process connection routings.
@@ -126,7 +127,8 @@ public class ApplyLayoutRequest extends ChangeRequest {
             }
             if (attribute instanceof LayoutHint) {
                 LayoutHint layoutHint = (LayoutHint) attribute;
-                layoutHint.setLayoutHintItem(entry._head, entry._tail, entry._bendPoints);
+                layoutHint.setLayoutHintItem(entry._head, entry._tail,
+                        entry._bendPoints);
                 undoLayoutAction.removeConnection(layoutHint);
             }
         }
@@ -135,7 +137,8 @@ public class ApplyLayoutRequest extends ChangeRequest {
         for (CurveEntry entry : _curveEntries) {
             Parameter exitAngleParam = entry._transition.exitAngle;
             DoubleToken token = DoubleToken.convert(exitAngleParam.getToken());
-            undoLayoutAction.addCurve(new CurveEntry(entry._transition, token.doubleValue()));
+            undoLayoutAction.addCurve(new CurveEntry(entry._transition, token
+                    .doubleValue()));
             exitAngleParam.setExpression(Double.toString(entry._exitAngle));
         }
 

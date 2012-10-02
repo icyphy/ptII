@@ -76,7 +76,7 @@ public class BackwardCompatibility {
         //  $PTII/bin/ptjacl
         //  source ActorIndex.tcl
         //  source GRColorChanges.tcl
-        return (List)((LinkedList)_filterList).clone();
+        return (List) ((LinkedList) _filterList).clone();
     }
 
     /** Clear the list of filters.

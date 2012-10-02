@@ -640,8 +640,8 @@ public class UnionType extends AssociativeType implements Cloneable {
             } else if (type2 == null) {
                 types[i] = type1;
             } else {
-                types[i] = (Type) TypeLattice.lattice().leastUpperBound(
-                        type1, type2);
+                types[i] = (Type) TypeLattice.lattice().leastUpperBound(type1,
+                        type2);
             }
         }
 

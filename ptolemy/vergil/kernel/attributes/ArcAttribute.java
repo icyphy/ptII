@@ -128,13 +128,14 @@ public class ArcAttribute extends FilledShapeAttribute {
                 _icon.setShape(_newShape());
             }
         } else if (attribute == start) {
-            double startValue = ((DoubleToken)start.getToken()).doubleValue();
+            double startValue = ((DoubleToken) start.getToken()).doubleValue();
             if (startValue != _start) {
                 _start = startValue;
                 _icon.setShape(_newShape());
             }
         } else if (attribute == extent) {
-            double extentValue = ((DoubleToken)extent.getToken()).doubleValue();
+            double extentValue = ((DoubleToken) extent.getToken())
+                    .doubleValue();
             if (extentValue != _extent) {
                 _extent = extentValue;
                 _icon.setShape(_newShape());
@@ -168,7 +169,8 @@ public class ArcAttribute extends FilledShapeAttribute {
      *  @return A Circle.
      */
     protected Shape _getDefaultShape() {
-        Rectangle2D bounds = new Rectangle2D.Double(0, 0, _widthValue, _heightValue);
+        Rectangle2D bounds = new Rectangle2D.Double(0, 0, _widthValue,
+                _heightValue);
         return new Arc2D.Double(bounds, 0, 90, Arc2D.PIE);
     }
 
@@ -179,10 +181,12 @@ public class ArcAttribute extends FilledShapeAttribute {
         if (_centeredValue) {
             double halfWidth = _widthValue * 0.5;
             double halfHeight = _heightValue * 0.5;
-            Rectangle2D bounds = new Rectangle2D.Double(-halfWidth, -halfHeight, halfWidth, halfHeight);
+            Rectangle2D bounds = new Rectangle2D.Double(-halfWidth,
+                    -halfHeight, halfWidth, halfHeight);
             return new Arc2D.Double(bounds, _start, _extent, _typeDesignator);
         } else {
-            Rectangle2D bounds = new Rectangle2D.Double(0, 0, _widthValue, _heightValue);
+            Rectangle2D bounds = new Rectangle2D.Double(0, 0, _widthValue,
+                    _heightValue);
             return new Arc2D.Double(bounds, _start, _extent, _typeDesignator);
         }
     }

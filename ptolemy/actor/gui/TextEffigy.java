@@ -210,9 +210,9 @@ public class TextEffigy extends Effigy {
                             // as a URL.  See also Configuration.createPrimaryTableau()
 
                             URL sourceURL = ptolemy.util.ClassUtilities
-                                .sourceResource(in.toString());
+                                    .sourceResource(in.toString());
                             reader = new BufferedReader(new InputStreamReader(
-                                            sourceURL.openStream()));
+                                    sourceURL.openStream()));
 
                             // We were able to open the URL, so update the
                             // original URL so that the title bar accurately

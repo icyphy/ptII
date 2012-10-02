@@ -53,8 +53,6 @@ public class ActuatorSetup extends OutputDevice {
         super(actor);
     }
 
-
-
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 

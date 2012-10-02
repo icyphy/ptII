@@ -529,16 +529,23 @@ public class Simulator extends SDFTransformer {
         // is because if Ptolemy II stops due to an exception (such as because of a
         // wrong connection), then the wrapup method is not called, in which case
         // the map still contains the name of this actor and its output directory.
-        final String otherEntry = (String)_simulatorWorkingDirs.putIfAbsent(worDir,
-                                                                      this.getFullName());
-        if (!( otherEntry == null || otherEntry.equals(this.getFullName()) )) {
-            String em = "Error: Working directory '" + worDir + "'" + LS
-                    + "is used by the following Simulator actors:" + LS
-                    + otherEntry + LS
-                    + this.getFullName() + LS
-                    + "Each Simulator actor needs to have its own working directory." + LS
-                    + "You need to change the value of the parameter workingDirectory" + LS
-                    + "in any of these actors.";
+        final String otherEntry = _simulatorWorkingDirs.putIfAbsent(worDir,
+                this.getFullName());
+        if (!(otherEntry == null || otherEntry.equals(this.getFullName()))) {
+            String em = "Error: Working directory '"
+                    + worDir
+                    + "'"
+                    + LS
+                    + "is used by the following Simulator actors:"
+                    + LS
+                    + otherEntry
+                    + LS
+                    + this.getFullName()
+                    + LS
+                    + "Each Simulator actor needs to have its own working directory."
+                    + LS
+                    + "You need to change the value of the parameter workingDirectory"
+                    + LS + "in any of these actors.";
             throw new IllegalActionException(this, em);
         }
 
@@ -775,8 +782,9 @@ public class Simulator extends SDFTransformer {
         super.wrapup();
         // Remove the entry for the working directory. Otherwise,
         // Ptolemy II needs to be closed to erase the static map.
-        if (worDir != null)
+        if (worDir != null) {
             _simulatorWorkingDirs.remove(worDir);
+        }
         try {
             // Send signal to the client, indicating that we are done with the time stepping.
             // This allows the client to terminate gracefully.
@@ -929,6 +937,5 @@ public class Simulator extends SDFTransformer {
         Simulator actor. This map is used to enforce that each Simulator
         actor uses its own working directory.
     */
-    private static ConcurrentHashMap<String,String> _simulatorWorkingDirs =
-        new ConcurrentHashMap<String,String>();
+    private static ConcurrentHashMap<String, String> _simulatorWorkingDirs = new ConcurrentHashMap<String, String>();
 }

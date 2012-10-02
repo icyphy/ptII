@@ -156,8 +156,7 @@ public class PtidesPreemptiveUserEDFDirector extends
                         ._finiteDependentPorts(firstInput)) {
                     Dependency dependency = actor.getCausalityInterface()
                             .getDependency(firstInput, output);
-                    for (IOPort secondInput : (List<IOPort>) output
-                            .sinkPortList()) {
+                    for (IOPort secondInput : output.sinkPortList()) {
                         if (secondInput.getContainer() != getContainer()) {
                             Map<IOPort, Dependency> portDependency = _inputPairDependencies
                                     .get(firstInput);

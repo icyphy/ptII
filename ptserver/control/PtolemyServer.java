@@ -757,20 +757,20 @@ public final class PtolemyServer implements IServerManager {
                 file = new File(ptII, _modelsDirectory);
                 if (!file.isDirectory()) {
                     File oldFile = file;
-                    file = new File (ptII, "ptserver" + File.separator + "demo");
+                    file = new File(ptII, "ptserver" + File.separator + "demo");
                     if (!file.isDirectory()) {
-                        throw new IllegalArgumentException("Models directory \""
-                                + _modelsDirectory + "\" is invalid directory/path."
-                                + " (Also tried \"" + oldFile + "\" and \""
-                                + file + "\".");
+                        throw new IllegalArgumentException(
+                                "Models directory \"" + _modelsDirectory
+                                        + "\" is invalid directory/path."
+                                        + " (Also tried \"" + oldFile
+                                        + "\" and \"" + file + "\".");
                     } else {
                         _modelsDirectory = file.getCanonicalPath();
                     }
                 } else {
                     _modelsDirectory = file.getCanonicalPath();
                 }
-                System.out.println("models directory is "
-                        + _modelsDirectory);
+                System.out.println("models directory is " + _modelsDirectory);
             }
         } catch (Throwable e) {
             _handleException("Unable to initialize Ptolemy server.", e);

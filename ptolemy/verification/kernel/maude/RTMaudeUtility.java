@@ -330,7 +330,7 @@ public class RTMaudeUtility {
 
             // Transition & Refinement
             RTMList rtrans = new RTMList(";", "emptyTransitionSet");
-            for (State s : (List<State>) target.entityList(State.class)) {
+            for (State s : target.entityList(State.class)) {
                 // State refinement
                 if (s.getRefinement() != null) {
                     rrefines.add(procRefinements(s.getName(),
@@ -356,8 +356,7 @@ public class RTMaudeUtility {
         if (act instanceof FSMActor) {
             RTMList ri = new RTMList(";", "emptyMap");
             RTMOpTermGenerator ragn = new RTMOpTermGenerator("(", " |-> ", ")");
-            for (Variable v : (List<Variable>) (((NamedObj) act)
-                    .attributeList(Variable.class))) {
+            for (Variable v : (((NamedObj) act).attributeList(Variable.class))) {
                 ri.add(ragn.get(new RTMFragment(RTMTerm.transId(v.getName())),
                         new RTMPtExp(v.getExpression())));
             }
@@ -396,14 +395,14 @@ public class RTMaudeUtility {
         RTMList rent = new RTMList("", "none");
         RTMList rcons = new RTMList("", "none");
 
-        for (Actor act : (List<Actor>) cent.entityList(Actor.class)) {
+        for (Actor act : cent.entityList(Actor.class)) {
             if (exc == null || !exc.contains(act)) {
                 rent.add(_translateActor(act));
 
                 // translate connections : Same level
                 for (IOPort p : (List<IOPort>) act.outputPortList()) {
                     RTMList rports = new RTMList(";", "noPort");
-                    for (Port op : (List<IOPort>) p.sinkPortList()) {
+                    for (Port op : p.sinkPortList()) {
                         if (op.getContainer() != p.getContainer()
                                 .getContainer()) {
                             rports.add(portName(null, op));
@@ -418,7 +417,7 @@ public class RTMaudeUtility {
         // translate connections : From outside
         for (IOPort ip : (List<IOPort>) ((Actor) cent).inputPortList()) {
             RTMList rports = new RTMList(";", "noPort");
-            for (Port op : (List<IOPort>) ip.insideSinkPortList()) {
+            for (Port op : ip.insideSinkPortList()) {
                 if (exc == null || !exc.contains(op.getContainer())) {
                     rports.add(portName(ip.getContainer(), op));
                 }
@@ -430,7 +429,7 @@ public class RTMaudeUtility {
         // translate connections : To outside
         //FIXME : there would be the case --  1_inside : N_outside
         for (IOPort op : (List<IOPort>) ((Actor) cent).outputPortList()) {
-            for (Port ip : (List<IOPort>) op.insideSourcePortList()) {
+            for (Port ip : op.insideSourcePortList()) {
                 if (exc == null || !exc.contains(ip.getContainer())) {
                     rcons.add(rtran.get(portName(op.getContainer(), ip),
                             portName(null, op)));

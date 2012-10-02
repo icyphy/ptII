@@ -352,15 +352,15 @@ public class PeriodicDirectorHelper {
         Actor container = (Actor) _director.getContainer();
         if (container != null) {
             // Use microstep 1 because periodic directors are always discrete.
-            Time result = ((Director)_director).fireContainerAt(time, 1);
+            Time result = ((Director) _director).fireContainerAt(time, 1);
             if (!result.equals(time)) {
                 throw new IllegalActionException(_director,
                         "Timing incompatibility error: "
                                 + " enclosing director is unable to fire "
                                 + container.getName()
                                 + " at the requested time: " + time
-                                + ". It responds it will fire it at: "
-                                + result + ".");
+                                + ". It responds it will fire it at: " + result
+                                + ".");
             }
             return result;
         }

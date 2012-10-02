@@ -664,7 +664,8 @@ public class CompositeActor extends CompositeEntity implements Actor,
                     message.append(keyName + " ");
                 }
                 throw new IllegalActionException(this,
-                        "Can't find the publisher for \"" + name + "\"., names were: " + message);
+                        "Can't find the publisher for \"" + name
+                                + "\"., names were: " + message);
             } else if (publishedPorts.size() > 1) {
                 // Check to see if any of the publishedPorts are within a ClassDefinition.
                 // FIXME: we should be able to do this before now, but when ports are being
@@ -674,22 +675,24 @@ public class CompositeActor extends CompositeEntity implements Actor,
                 StringBuffer message = new StringBuffer();
                 Iterator ports = publishedPorts.iterator();
                 while (ports.hasNext()) {
-                    IOPort port = (IOPort)ports.next();
-                    InstantiableNamedObj actor = (InstantiableNamedObj)port.getContainer();
-                    if (actor != null
-                            && actor.isWithinClassDefinition()) {
+                    IOPort port = (IOPort) ports.next();
+                    InstantiableNamedObj actor = (InstantiableNamedObj) port
+                            .getContainer();
+                    if (actor != null && actor.isWithinClassDefinition()) {
                         ports.remove();
                     } else {
                         if (port instanceof PubSubPort) {
-                            PubSubPort pubSubPort = (PubSubPort)port;
-                            message.append(" port: " + pubSubPort + "name: " + pubSubPort.getName() + " channel: " + pubSubPort.channel + "\n");
+                            PubSubPort pubSubPort = (PubSubPort) port;
+                            message.append(" port: " + pubSubPort + "name: "
+                                    + pubSubPort.getName() + " channel: "
+                                    + pubSubPort.channel + "\n");
                         }
                     }
                 }
                 if (publishedPorts.size() != 1) {
-                 throw new NameDuplicationException(this,
-                         "We have " + publishedPorts.size() + " ports with the name \"" + name
-                        + "\", which is not equal to 1.\n" + message);
+                    throw new NameDuplicationException(this, "We have "
+                            + publishedPorts.size() + " ports with the name \""
+                            + name + "\", which is not equal to 1.\n" + message);
                 }
             }
 
@@ -893,7 +896,6 @@ public class CompositeActor extends CompositeEntity implements Actor,
                     piggyback.initialize();
                 }
             }
-
 
             // Note that this is assured of firing the local director,
             // not the executive director, because this is opaque.
@@ -1146,8 +1148,8 @@ public class CompositeActor extends CompositeEntity implements Actor,
                     subscriberPort);
         } else {
             IOPort publishedPort = getPublishedPort(name);
-            IORelation relation = _publisherRelations != null ?
-                    _publisherRelations.get(name) : null;
+            IORelation relation = _publisherRelations != null ? _publisherRelations
+                    .get(name) : null;
             if (relation == null) {
                 try {
                     // CompositeActor always creates an IORelation.
@@ -1260,8 +1262,8 @@ public class CompositeActor extends CompositeEntity implements Actor,
                         notifyConnectivityChange();
                     }
 
-                    return ((CompositeActor) container).linkToPublishedPort(name,
-                                port, global);
+                    return ((CompositeActor) container).linkToPublishedPort(
+                            name, port, global);
                 }
             }
         }
@@ -1862,7 +1864,8 @@ public class CompositeActor extends CompositeEntity implements Actor,
                     publisherPort = (IOPort) newPort(portName);
                     new Parameter(publisherPort, "_hide", BooleanToken.TRUE);
                     // Also make sure the port does not show up on the inside.
-                    new Parameter(publisherPort, "_hideInside", BooleanToken.TRUE);
+                    new Parameter(publisherPort, "_hideInside",
+                            BooleanToken.TRUE);
                     publisherPort.setPersistent(false);
                     publisherPort.setOutput(true);
                     publisherPort.setMultiport(true);
@@ -1970,38 +1973,38 @@ public class CompositeActor extends CompositeEntity implements Actor,
      *  @exception IllegalActionException If the argument is true and
      *   this entity contains ports with links.
      */
-//     public void setClassDefinition(boolean isClass)
-//             throws IllegalActionException {
-//         if (isClass && !isClassDefinition()) {
-//             _publishedPorts = null;
-//             _subscribedPorts = null;
-//             _publisherRelations = null;
-//             NamedObj immediateContainer = getContainer();
-//             if (immediateContainer != null
-//                     && immediateContainer instanceof CompositeActor) {
-//                 CompositeActor container = (CompositeActor)immediateContainer;
-//                 List<Port> portList = portList();
-//                 for (Port port: portList) {
-//                     if (port instanceof PublisherPort) {
-//                         PublisherPort publisherPort = (PublisherPort)port;
-//                         try {
-//                             container.unregisterPublisherPort(publisherPort.channel.stringValue(), publisherPort, ((BooleanToken) publisherPort.global.getToken())
-//                                 .booleanValue());
-//                         } catch (NameDuplicationException ex) {
-//                             throw new IllegalActionException(this, ex, "Could not unregister " + publisherPort);
-//                         }
-//                     }
-//                 }
-//             }
-//         } else if (!isClass && isClassDefinition()) {
-//             if (_publishedPorts != null
-//                     || _subscribedPorts != null
-//                     || _publisherRelations != null) {
-//                 System.out.println("FIXME: conversion from a class definition to an instance causes problems with Publishers and Subscribers.");
-//             }
-//         }
-//         super.setClassDefinition(isClass);
-//     }
+    //     public void setClassDefinition(boolean isClass)
+    //             throws IllegalActionException {
+    //         if (isClass && !isClassDefinition()) {
+    //             _publishedPorts = null;
+    //             _subscribedPorts = null;
+    //             _publisherRelations = null;
+    //             NamedObj immediateContainer = getContainer();
+    //             if (immediateContainer != null
+    //                     && immediateContainer instanceof CompositeActor) {
+    //                 CompositeActor container = (CompositeActor)immediateContainer;
+    //                 List<Port> portList = portList();
+    //                 for (Port port: portList) {
+    //                     if (port instanceof PublisherPort) {
+    //                         PublisherPort publisherPort = (PublisherPort)port;
+    //                         try {
+    //                             container.unregisterPublisherPort(publisherPort.channel.stringValue(), publisherPort, ((BooleanToken) publisherPort.global.getToken())
+    //                                 .booleanValue());
+    //                         } catch (NameDuplicationException ex) {
+    //                             throw new IllegalActionException(this, ex, "Could not unregister " + publisherPort);
+    //                         }
+    //                     }
+    //                 }
+    //             }
+    //         } else if (!isClass && isClassDefinition()) {
+    //             if (_publishedPorts != null
+    //                     || _subscribedPorts != null
+    //                     || _publisherRelations != null) {
+    //                 System.out.println("FIXME: conversion from a class definition to an instance causes problems with Publishers and Subscribers.");
+    //             }
+    //         }
+    //         super.setClassDefinition(isClass);
+    //     }
 
     /** Override the base class to invalidate the schedule and
      *  resolved types of the director.
@@ -2813,7 +2816,7 @@ public class CompositeActor extends CompositeEntity implements Actor,
      *  with port fails.
      */
     protected void _transferPortParameterInputs() throws IllegalActionException {
-     // Need to read from port parameters
+        // Need to read from port parameters
         // first because in some domains (e.g. SDF)
         // the behavior of the schedule might depend on rate variables
         // set from ParameterPorts.

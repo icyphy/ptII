@@ -297,12 +297,16 @@ public class HTMLViewer extends TableauFrame implements Printable,
                                 // starts with $CLASSPATH.
                                 // See http://bugzilla.ecoinformatics.org/show_bug.cgi?id=5194
                                 URL eventURL = null;
-                                String eventDescription = event.getDescription();
+                                String eventDescription = event
+                                        .getDescription();
                                 try {
-                                    eventURL = FileUtilities.nameToURL(eventDescription, null, null);
+                                    eventURL = FileUtilities.nameToURL(
+                                            eventDescription, null, null);
                                     if (eventURL == null) {
-                                        throw new NullPointerException("Could not find \""
-                                                + eventDescription + "\"");
+                                        throw new NullPointerException(
+                                                "Could not find \""
+                                                        + eventDescription
+                                                        + "\"");
                                     }
                                     configuration.openModel(eventURL, eventURL,
                                             eventURL.toExternalForm());
@@ -314,21 +318,33 @@ public class HTMLViewer extends TableauFrame implements Printable,
                                             // Try in the $CLASSPATH.
                                             // One test is to view the docs in PNDirector from the website
                                             // (no local docs) and then try to follow the links to other models.
-                                            if (eventDescription.startsWith("/")) {
-                                                eventDescription = eventDescription.substring(1);
+                                            if (eventDescription
+                                                    .startsWith("/")) {
+                                                eventDescription = eventDescription
+                                                        .substring(1);
                                             }
-                                            String classpathEventDescription = "$CLASSPATH/" + eventDescription;
-                                            eventURL2 = FileUtilities.nameToURL(classpathEventDescription, null, null);
+                                            String classpathEventDescription = "$CLASSPATH/"
+                                                    + eventDescription;
+                                            eventURL2 = FileUtilities
+                                                    .nameToURL(
+                                                            classpathEventDescription,
+                                                            null, null);
                                             if (eventURL2 == null) {
-                                                throw new NullPointerException("Could not find \""
-                                                        + classpathEventDescription + "\"");
+                                                throw new NullPointerException(
+                                                        "Could not find \""
+                                                                + classpathEventDescription
+                                                                + "\"");
                                             }
-                                            configuration.openModel(eventURL2, eventURL2,
+                                            configuration.openModel(eventURL2,
+                                                    eventURL2,
                                                     eventURL2.toExternalForm());
                                         } catch (Throwable throwable2) {
                                             IOException exception = new IOException(
-                                                    "Failed to find " + newURL + ", also tried\n "
-                                                    + eventURL + " and\n" + eventURL2);
+                                                    "Failed to find " + newURL
+                                                            + ", also tried\n "
+                                                            + eventURL
+                                                            + " and\n"
+                                                            + eventURL2);
                                             exception.initCause(ex);
                                             throw exception;
                                         }

@@ -104,13 +104,12 @@ public class LocalClock extends AbstractSettableAttribute {
     public LocalClock(NamedObj container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        globalTimeResolution = new SharedParameter(this, "globalTimeResolution",
-                null, "1E-10");
+        globalTimeResolution = new SharedParameter(this,
+                "globalTimeResolution", null, "1E-10");
 
         clockDrift = new Parameter(this, "clockRate");
         clockDrift.setExpression("1.0");
         clockDrift.setTypeEquals(BaseType.DOUBLE);
-
 
         // Make sure getCurrentTime() never returns null.
         _localTime = Time.NEGATIVE_INFINITY;
@@ -161,8 +160,7 @@ public class LocalClock extends AbstractSettableAttribute {
             throws IllegalActionException {
         if (attribute == clockDrift) {
             double drift;
-            drift = ((DoubleToken) clockDrift.getToken())
-                    .doubleValue();
+            drift = ((DoubleToken) clockDrift.getToken()).doubleValue();
             if (drift != getClockDrift()) {
                 setClockDrift(drift);
             }
@@ -218,7 +216,7 @@ public class LocalClock extends AbstractSettableAttribute {
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         LocalClock newObject = (LocalClock) super.clone(workspace);
         newObject._localTime = Time.NEGATIVE_INFINITY;
-        newObject._offset = ((Director)getContainer())._zeroTime;
+        newObject._offset = ((Director) getContainer())._zeroTime;
         newObject._drift = 1.0;
         return newObject;
     }
@@ -240,22 +238,28 @@ public class LocalClock extends AbstractSettableAttribute {
      *  @exception IllegalActionException If the specified local time
      *   is in the past, or if Time objects cannot be created.
      */
-    public Time getEnvironmentTimeForLocalTime(Time time) throws IllegalActionException {
+    public Time getEnvironmentTimeForLocalTime(Time time)
+            throws IllegalActionException {
         if (time.compareTo(_lastCommitLocalTime) < 0) {
             throw new IllegalActionException(
-                    "Cannot compute environment time for local time "
-                    + time + " because "
-                    + "the last commit of the local time occured at "
-                    + "local time " + _lastCommitLocalTime);
+                    "Cannot compute environment time for local time " + time
+                            + " because "
+                            + "the last commit of the local time occured at "
+                            + "local time " + _lastCommitLocalTime);
         }
         Time localTimePassedSinceCommit = time.subtract(_lastCommitLocalTime);
         Time environmentTimePassedSinceCommit = localTimePassedSinceCommit;
         if (_drift != 1.0) {
-            double environmentTimePassedSinceCommitDoubleValue = environmentTimePassedSinceCommit.getDoubleValue();
-            environmentTimePassedSinceCommitDoubleValue =  environmentTimePassedSinceCommitDoubleValue / _drift;
-            environmentTimePassedSinceCommit = new Time(((Director)getContainer()), environmentTimePassedSinceCommitDoubleValue);
+            double environmentTimePassedSinceCommitDoubleValue = environmentTimePassedSinceCommit
+                    .getDoubleValue();
+            environmentTimePassedSinceCommitDoubleValue = environmentTimePassedSinceCommitDoubleValue
+                    / _drift;
+            environmentTimePassedSinceCommit = new Time(
+                    ((Director) getContainer()),
+                    environmentTimePassedSinceCommitDoubleValue);
         }
-        Time environmentTime = _lastCommitEnvironmentTime.add(environmentTimePassedSinceCommit);
+        Time environmentTime = _lastCommitEnvironmentTime
+                .add(environmentTimePassedSinceCommit);
         return environmentTime;
     }
 
@@ -263,10 +267,11 @@ public class LocalClock extends AbstractSettableAttribute {
      *  @return The local time as a string value.
      */
     public String getExpression() {
-        if (_localTime == null)
+        if (_localTime == null) {
             return "";
-        else
+        } else {
             return String.valueOf(_localTime);
+        }
     }
 
     /** Get current local time. If it has never been set, then this will return
@@ -287,8 +292,10 @@ public class LocalClock extends AbstractSettableAttribute {
      *   if the current environment time is less than the time
      *   corresponding to the last committed local time.
      */
-    public Time getLocalTimeForCurrentEnvironmentTime() throws IllegalActionException {
-        return getLocalTimeForEnvironmentTime(((Director)getContainer()).getEnvironmentTime());
+    public Time getLocalTimeForCurrentEnvironmentTime()
+            throws IllegalActionException {
+        return getLocalTimeForEnvironmentTime(((Director) getContainer())
+                .getEnvironmentTime());
     }
 
     /** Get the local time that corresponds to the given environment time.
@@ -300,25 +307,32 @@ public class LocalClock extends AbstractSettableAttribute {
      *   is less than the environment time corresponding to the last
      *   committed local time, or if Time objects cannot be created.
      */
-    public Time getLocalTimeForEnvironmentTime(Time time) throws IllegalActionException {
-        if (_lastCommitEnvironmentTime == null || time.compareTo(_lastCommitEnvironmentTime) < 0) {
+    public Time getLocalTimeForEnvironmentTime(Time time)
+            throws IllegalActionException {
+        if (_lastCommitEnvironmentTime == null
+                || time.compareTo(_lastCommitEnvironmentTime) < 0) {
             throw new IllegalActionException(
-                    "Cannot compute local time for environment time "
-                    + time + " because "
-                    + "the last commit of the local time occured at "
-                    + "local time " + _lastCommitLocalTime + " which "
-                    + "corresponds to environment time "
-                    + _lastCommitEnvironmentTime);
+                    "Cannot compute local time for environment time " + time
+                            + " because "
+                            + "the last commit of the local time occured at "
+                            + "local time " + _lastCommitLocalTime + " which "
+                            + "corresponds to environment time "
+                            + _lastCommitEnvironmentTime);
         }
 
-        Time environmentTimePassedSinceCommit = time.subtract(_lastCommitEnvironmentTime);
+        Time environmentTimePassedSinceCommit = time
+                .subtract(_lastCommitEnvironmentTime);
         Time localTimePassedSinceCommit = environmentTimePassedSinceCommit;
         if (_drift != 1.0) {
-            double localTimePassedSinceCommitDoubleValue = environmentTimePassedSinceCommit.getDoubleValue();
-            localTimePassedSinceCommitDoubleValue = localTimePassedSinceCommitDoubleValue * _drift;
-            localTimePassedSinceCommit = new Time(((Director)getContainer()), localTimePassedSinceCommitDoubleValue);
+            double localTimePassedSinceCommitDoubleValue = environmentTimePassedSinceCommit
+                    .getDoubleValue();
+            localTimePassedSinceCommitDoubleValue = localTimePassedSinceCommitDoubleValue
+                    * _drift;
+            localTimePassedSinceCommit = new Time(((Director) getContainer()),
+                    localTimePassedSinceCommitDoubleValue);
         }
-        Time localTime = _lastCommitEnvironmentTime.subtract(_offset).add(localTimePassedSinceCommit);
+        Time localTime = _lastCommitEnvironmentTime.subtract(_offset).add(
+                localTimePassedSinceCommit);
         return localTime;
     }
 
@@ -350,7 +364,7 @@ public class LocalClock extends AbstractSettableAttribute {
      *  MOMLParser after the director is initialized.
      */
     public void initialize() {
-        _offset = ((Director)getContainer())._zeroTime;
+        _offset = ((Director) getContainer())._zeroTime;
     }
 
     /** This method has to be implemented for the AbstractSettableAttribute
@@ -387,10 +401,9 @@ public class LocalClock extends AbstractSettableAttribute {
     public void setClockDrift(double drift) throws IllegalActionException {
         // FIXME: This returns a double, what does 1.0 mean?  0.0?
         if (drift <= 0.0) {
-            throw new IllegalActionException(((Director)getContainer()),
-                    "Illegal clock drift: "
-                    + drift
-                    + ". Clock drift is required to be positive.");
+            throw new IllegalActionException(getContainer(),
+                    "Illegal clock drift: " + drift
+                            + ". Clock drift is required to be positive.");
         }
         _drift = drift;
         _commit();
@@ -405,12 +418,14 @@ public class LocalClock extends AbstractSettableAttribute {
      *  @see #getLocalTime()
      */
     public void setLocalTime(Time time) throws IllegalActionException {
-        if (_lastCommitLocalTime != null && time.compareTo(_lastCommitLocalTime) < 0) {
-            throw new IllegalActionException(((Director)getContainer()),
+        if (_lastCommitLocalTime != null
+                && time.compareTo(_lastCommitLocalTime) < 0) {
+            throw new IllegalActionException(
+                    getContainer(),
                     "Cannot set local time to "
-                    + time
-                    + ", which is earlier than the last committed current time "
-                    + _lastCommitLocalTime);
+                            + time
+                            + ", which is earlier than the last committed current time "
+                            + _lastCommitLocalTime);
         }
         _localTime = time;
     }
@@ -434,7 +449,6 @@ public class LocalClock extends AbstractSettableAttribute {
     public void setVisibility(Visibility visibility) {
         // nothing to do, visibility is always false.
     }
-
 
     /** Start the clock with the current drift as specified by the
      *  last call to {@link #setClockDrift(double)}.
@@ -478,7 +492,8 @@ public class LocalClock extends AbstractSettableAttribute {
         }
         // skip if local time has never been set.
         if (_localTime != Time.NEGATIVE_INFINITY) {
-            Time environmentTime = ((Director)getContainer()).getEnvironmentTime();
+            Time environmentTime = ((Director) getContainer())
+                    .getEnvironmentTime();
             _offset = environmentTime.subtract(_localTime);
             _lastCommitEnvironmentTime = environmentTime;
             _lastCommitLocalTime = _localTime;

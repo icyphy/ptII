@@ -81,7 +81,7 @@ public class JAIBandCombine extends Transformer {
 
         // The initial value of the transformation matrix.
         double[][] initialMatrix = { { 1.0D, 0.0D, 0.0D, 0.0D },
-            { 0.0D, 1.0D, 0.0D, 0.0D }, { 0.0D, 0.0D, 1.0D, 0.0D } };
+                { 0.0D, 1.0D, 0.0D, 0.0D }, { 0.0D, 0.0D, 1.0D, 0.0D } };
 
         matrix = new Parameter(this, "matrix", new DoubleMatrixToken(
                 initialMatrix));

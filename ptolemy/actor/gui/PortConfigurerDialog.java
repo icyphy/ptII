@@ -81,7 +81,6 @@ import ptolemy.data.expr.ASTPtRootNode;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.ParseTreeEvaluator;
 import ptolemy.data.expr.PtParser;
-import ptolemy.data.type.BaseType;
 import ptolemy.data.type.TypeLattice;
 import ptolemy.graph.DirectedAcyclicGraph;
 import ptolemy.gui.PtGUIUtilities;
@@ -1795,18 +1794,19 @@ public class PortConfigurerDialog extends PtolemyDialog implements
     private JComboBox _createPortTypeComboBox() {
         JComboBox jComboBox = _createComboBox();
 
-//         // Add the types from data.expr.Constants
-//         TreeMap typeMap = Constants.types();
-//         Iterator types = typeMap.keySet().iterator();
+        //         // Add the types from data.expr.Constants
+        //         TreeMap typeMap = Constants.types();
+        //         Iterator types = typeMap.keySet().iterator();
 
-//         while (types.hasNext()) {
-//             String type = (String) (types.next());
-//             jComboBox.addItem(type);
-//         }
+        //         while (types.hasNext()) {
+        //             String type = (String) (types.next());
+        //             jComboBox.addItem(type);
+        //         }
 
         // Get the types from the TypeLattice.
         // http://bugzilla.ecoinformatics.org/show_bug.cgi?id=5627
-        Object [] types = ((DirectedAcyclicGraph)TypeLattice.basicLattice()).topologicalSort();
+        Object[] types = ((DirectedAcyclicGraph) TypeLattice.basicLattice())
+                .topologicalSort();
         List<String> typeList = new LinkedList<String>();
         for (int i = 0; i < types.length; i++) {
             typeList.add(types[i].toString());
@@ -1916,7 +1916,8 @@ public class PortConfigurerDialog extends PtolemyDialog implements
             // and characters can be hard to read."
             // If you change the height, then check that a few rows can be added,
             // see the _portTable.setPreferredScrollableViewportSize(new Dimension(... call above
-            _portTable.setRowHeight((int)Math.round(_portTable.getRowHeight() * 1.20));
+            _portTable
+                    .setRowHeight((int) Math.round(_portTable.getRowHeight() * 1.20));
         }
 
         if (_columnNames.contains(ColumnNames.COL_DIRECTION)) {

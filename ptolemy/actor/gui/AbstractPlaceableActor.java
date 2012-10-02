@@ -93,16 +93,20 @@ public abstract class AbstractPlaceableActor extends TypedAtomicActor implements
      *  @return The cloned variable.
      */
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        AbstractPlaceableActor newObject = (AbstractPlaceableActor) super.clone(workspace);
+        AbstractPlaceableActor newObject = (AbstractPlaceableActor) super
+                .clone(workspace);
         try {
-            newObject._windowProperties = (WindowPropertiesAttribute)newObject.getAttribute("_windowProperties");
+            newObject._windowProperties = (WindowPropertiesAttribute) newObject
+                    .getAttribute("_windowProperties");
             newObject._windowProperties.setPersistent(true);
 
-            newObject._paneSize = (SizeAttribute)newObject.getAttribute("_paneSize");
+            newObject._paneSize = (SizeAttribute) newObject
+                    .getAttribute("_paneSize");
             newObject._paneSize.setPersistent(true);
 
         } catch (Throwable throwable) {
-            throw new CloneNotSupportedException(getFullName() + ": Failed to clone: " + throwable);
+            throw new CloneNotSupportedException(getFullName()
+                    + ": Failed to clone: " + throwable);
         }
         return newObject;
     }

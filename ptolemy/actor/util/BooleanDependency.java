@@ -88,8 +88,7 @@ public class BooleanDependency implements Dependency {
         if (object == this) {
             return true;
         }
-        if ((object == null)
-                || (object.getClass() != getClass())) {
+        if ((object == null) || (object.getClass() != getClass())) {
             return false;
         } else {
             return (_value == ((BooleanDependency) object)._value);
@@ -119,7 +118,7 @@ public class BooleanDependency implements Dependency {
      *  @exception ClassCastException if d is not a BooleanDependency.
      */
     public Dependency oPlus(Dependency d) {
-     // FIXME: Findbugs reports this as an Unchecked/unconfirmed cast
+        // FIXME: Findbugs reports this as an Unchecked/unconfirmed cast
         if (((BooleanDependency) d)._value || _value) {
             return OTIMES_IDENTITY;
         }
@@ -144,7 +143,7 @@ public class BooleanDependency implements Dependency {
      *  @exception ClassCastException if d is not a BooleanDependency.
      */
     public Dependency oTimes(Dependency d) {
-     // FIXME: Findbugs reports this as an Unchecked/unconfirmed cast
+        // FIXME: Findbugs reports this as an Unchecked/unconfirmed cast
         if (_value && ((BooleanDependency) d)._value) {
             return OTIMES_IDENTITY;
         }

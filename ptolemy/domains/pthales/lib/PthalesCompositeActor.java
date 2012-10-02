@@ -206,7 +206,8 @@ public class PthalesCompositeActor extends TypedCompositeActor {
 
                     jump = tilingDims.get(dims[i])[0];
                 }
-                int val = (int) Math.floor((sizes.get(dims[i]) - nb) / ((double)jump)) + 1;
+                int val = (int) Math.floor((sizes.get(dims[i]) - nb)
+                        / ((double) jump)) + 1;
 
                 repetition.add(val);
             }

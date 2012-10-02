@@ -79,37 +79,38 @@ public class Conditional extends AtomicContinuationActor {
             for (int k = 0; k < insize; ++k) {
                 Token inToken = _inputs.get(k);
                 if (inToken instanceof BooleanToken) {
-                    val = val && ((BooleanToken)inToken).booleanValue();
+                    val = val && ((BooleanToken) inToken).booleanValue();
                 }
             }
             extk = ControlExitToken.Exit(val ? trueExit : falseExit);
-        }
-        catch (NoRoomException e) {
+        } catch (NoRoomException e) {
             e.printStackTrace();
-        }
-        catch (NoTokenException e) {
+        } catch (NoTokenException e) {
             e.printStackTrace();
         }
 
-        if (extk != null) return extk;
-        else return super.controlEnter(entry);
+        if (extk != null) {
+            return extk;
+        } else {
+            return super.controlEnter(entry);
+        }
     }
 
     public TypedIOPort _inputs;
 
     ///////////////////////////////////////////////////////////////////
 
-    protected void _init() throws
-        IllegalActionException, NameDuplicationException {
+    protected void _init() throws IllegalActionException,
+            NameDuplicationException {
 
         addExitLocation(trueExit);
         addExitLocation(falseExit);
 
-        _inputs = new TypedIOPort(this, "Inputs",  true, false);
+        _inputs = new TypedIOPort(this, "Inputs", true, false);
         _inputs.setTypeEquals(BaseType.BOOLEAN);
     }
 
-    final public ExitLocation trueExit  = new ExitLocation("true");
+    final public ExitLocation trueExit = new ExitLocation("true");
     final public ExitLocation falseExit = new ExitLocation("false");
 
 }

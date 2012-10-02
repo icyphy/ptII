@@ -28,7 +28,6 @@
 
 package ptolemy.vergil.basic.export.test.junit;
 
-
 import java.io.BufferedReader;
 import java.io.DataInputStream;
 import java.io.FileInputStream;
@@ -90,22 +89,25 @@ public class ExportModelJUnitTest {
         String ptolemyPtIIDir = StringUtilities.getProperty("ptolemy.ptII.dir");
         String fullModelPath = ptolemyPtIIDir + "/" + modelPath;
 
-        String modelDirectory = modelPath.substring(0, modelPath.lastIndexOf("/"));
+        String modelDirectory = modelPath.substring(0,
+                modelPath.lastIndexOf("/"));
         // A directory inside the current directory that contains the model because
         // we remove the contents of the outputDirectory with the force parameter.
-        String outputDirectory = ptolemyPtIIDir + "/" + modelDirectory + "/" + modelName;
+        String outputDirectory = ptolemyPtIIDir + "/" + modelDirectory + "/"
+                + modelName;
 
         boolean openComposites = _openComposites(modelPath);
         boolean run = _runDemo(modelPath);
 
         _count++;
         Date date = new Date();
-        System.out.println("####### " + _count + " " + date +" $PTII/bin/ptinvoke "
+        System.out.println("####### " + _count + " " + date
+                + " $PTII/bin/ptinvoke "
                 + "ptolemy.vergil.basic.export.ExportModel -force htm "
-                           + (run ? "-run " : " ")
-                           + (openComposites ? "-openComposites " : " ")
-                           + " -whiteBackground " + modelPath
-                           + " $PTII/" + modelDirectory + "/" + modelName);
+                + (run ? "-run " : " ")
+                + (openComposites ? "-openComposites " : " ")
+                + " -whiteBackground " + modelPath + " $PTII/" + modelDirectory
+                + "/" + modelName);
 
         // ExportModel.exportModel() calls System.exit() unless we set this property.
         System.setProperty("ptolemy.ptII.doNotExit", "true");
@@ -114,23 +116,16 @@ public class ExportModelJUnitTest {
         try {
             long startTime = new Date().getTime();
             exportModel.exportModel(false /* copyJavaScriptFiles */,
-                                    true /* force */,
-                                    "htm",
-                                    fullModelPath,
-                                    run,
-                                    openComposites,
-                                    false /* open results */,
-                                    outputDirectory,
-                                    false /* save */,
-                                    true /* whitebackground */);
+                    true /* force */, "htm", fullModelPath, run,
+                    openComposites, false /* open results */, outputDirectory,
+                    false /* save */, true /* whitebackground */);
             System.out.println(Manager.timeAndMemory(startTime));
         } catch (Throwable throwable) {
             throwable.printStackTrace();
             // If exporting html throws an exception, then that is a
             // test failure, not a test error.
-            Assert.fail("Exporting HTML for " + modelPath
-                        + " failed: \n"
-                        + KernelException.stackTraceToString(throwable));
+            Assert.fail("Exporting HTML for " + modelPath + " failed: \n"
+                    + KernelException.stackTraceToString(throwable));
         }
     }
 
@@ -147,7 +142,7 @@ public class ExportModelJUnitTest {
         String ptolemyPtIIDir = StringUtilities.getProperty("ptolemy.ptII.dir");
         String modelsFile = ptolemyPtIIDir + "/ptolemy/configs/doc/models.txt";
         FileInputStream fileInputStream = null;
-        DataInputStream dataInputStream  = null;
+        DataInputStream dataInputStream = null;
         BufferedReader reader = null;
         List<String> demos = new LinkedList<String>();
         try {
@@ -155,11 +150,11 @@ public class ExportModelJUnitTest {
             dataInputStream = new DataInputStream(fileInputStream);
             reader = new BufferedReader(new InputStreamReader(dataInputStream));
             String line;
-            while ((line = reader.readLine()) != null)   {
+            while ((line = reader.readLine()) != null) {
                 // Lines in models.txt look like
                 // $CLASSPATH/lbnl/demo/CRoom/CRoom.xml
                 String prefix = "$CLASSPATH/";
-                if (! line.startsWith(prefix)) {
+                if (!line.startsWith(prefix)) {
                     throw new IOException("Line in \"" + modelsFile
                             + "\" does not start with \"" + prefix
                             + "\".  Line was:\n" + line);
@@ -192,11 +187,9 @@ public class ExportModelJUnitTest {
      */
     private boolean _openComposites(String modelPath) {
         // Pathnames that should be skipped
-        String [] skip = {
-            // Fails with: Cannot render to more than 32 Canvas3Ds
-            "Gravitation.xml",
-            "GravitationWithCollisionDetection.xml",
-        };
+        String[] skip = {
+                // Fails with: Cannot render to more than 32 Canvas3Ds
+                "Gravitation.xml", "GravitationWithCollisionDetection.xml", };
         for (int i = 0; i < skip.length; i++) {
             if (modelPath.indexOf(skip[i]) != -1) {
                 return false;
@@ -205,24 +198,23 @@ public class ExportModelJUnitTest {
         return true;
     }
 
-
     /** Return true if we should open the model.
      */
     private boolean _openModel(String modelPath) {
         // Pathnames that should be skipped
-        String [] skip = {
-            //"luminary/adapters/ptolemy/domains/ptides/demo/Speaker/Speaker.xml", // TypeConflict
-            //"luminary/adapters/ptolemy/domains/ptides/demo/Accumulator/Accumulator.xml", // TypeConflict
-            //"ModularCGPubSub.xml", //Can't find the publisher for "channel".
-            //"MonotonicityAnalysis.xml", // Expected '{x = General}' but got '{x = NonMonotonic_{<o...
-            "ddf/demo/IfThenElse/IfThenElse.xml", // FIXME: Failed to generate sub-web-page.
-            "ddf/demo/IfThenElse/IfThenElseFSM.xml", // FIXME: Failed to generate sub-web-page.
+        String[] skip = {
+                //"luminary/adapters/ptolemy/domains/ptides/demo/Speaker/Speaker.xml", // TypeConflict
+                //"luminary/adapters/ptolemy/domains/ptides/demo/Accumulator/Accumulator.xml", // TypeConflict
+                //"ModularCGPubSub.xml", //Can't find the publisher for "channel".
+                //"MonotonicityAnalysis.xml", // Expected '{x = General}' but got '{x = NonMonotonic_{<o...
+                "ddf/demo/IfThenElse/IfThenElse.xml", // FIXME: Failed to generate sub-web-page.
+                "ddf/demo/IfThenElse/IfThenElseFSM.xml", // FIXME: Failed to generate sub-web-page.
 
-            "ScaleWithEmbeddedCFileActor", // Only works on 32-bit
-            "SimplePassPointer", // Only works on 32-bit
-            "MatlabWirelessSoundDetection.xml", // Hangs.
-            //"ModeReference.xml", // "Cannot call invokeAndWait from the event dispatcher thread"
-            //"Signature.xml", // Keystore is not present.
+                "ScaleWithEmbeddedCFileActor", // Only works on 32-bit
+                "SimplePassPointer", // Only works on 32-bit
+                "MatlabWirelessSoundDetection.xml", // Hangs.
+        //"ModeReference.xml", // "Cannot call invokeAndWait from the event dispatcher thread"
+        //"Signature.xml", // Keystore is not present.
         };
         for (int i = 0; i < skip.length; i++) {
             if (modelPath.indexOf(skip[i]) != -1) {
@@ -238,43 +230,37 @@ public class ExportModelJUnitTest {
      */
     private boolean _runDemo(String modelPath) {
         // Pathnames that should be skipped
-        String [] skip = {
-            "ptalon/gt/demo/Adder/Adder.xml", // "Channel index 0 is out of range, because width is only 0."
-            "backtrack/demo/PrimeTest/PrimeTest.xml", // FIXME: Channel index 0 out of range.
-            "CRoom.xml", // hangs.
-            "distributed/demo/Sleep/Sleep.xml", // Requires jini.
-            "de/demo/Clock/Clock.xml", // FIXME: "Audio Device Unavailable"
-            "domains/gr", // "Cannot render to more than 32 Canvas3Ds",
-                          // need to close ViewScreen3D by adding a ViewScreen3D Tableau.
-            "ExecDemos.xml", // FIXME: vergil: command not found
-            "GravitationWithCollisionDetection.xml", // "Cannot render to more than 32 Canvas3Ds."
-            "HierarchyFlattening.xml", // gt
-            "iRobotCreateVerification.xml", // Annotation says that it does not simulate.
-            "IterateOverArray.xml", // FIXME: no matching function abs( string )
-            "JMFJAI.xml",
-            "KarplusStrong.xml",
-            "MatlabRoom.xml", // Matlab message: Error: Too many inputs passed to SimpleFunctionThunk.
-            "ModelReference.xml", // FIXME: "Cannot call invokeAndWait from the event dispatcher thread"
-            "ModularCGPubSub.xml", // FIXME: Can't link Subscriber with Publisher, channel was "channel
-            "ptolemy/gt/demo/Adder/Adder.xml", // FIXME: Channel index 0 is out of range, because width is only 0.
-            "ptolemy/domains/ptides/demo/Speaker/Speaker.xml", // FIXME: Types resolved to unacceptable types in .Speaker due to the following inequalities:
-            "PrintingPress.xml", // FIXME: "Cannot set local time to -Infinity, which is earlier than the last committed current time 0.0"
-            "PtidesBasicOnePlatform.xml", // FIXME: Type problem
-            "PtidesNetworkLatencyTest.xml", // FIXME: "Cannot set local time to -Infinity, which is earlier than the last committed current time 0.0"
-            "PublisherTest", // gt
-            "RealTimeComposite.xml", // FIXME: "Audio Device Unavailable"
-            "RunDemos.xml", // FIXME: cannot call invokeAndWait from the event dispatcher thread
-            "SerialPort.xml",
-            "Signature.xml", // FIXME: Cannot read ptKeystore
-            "SimpleTrafficLightSMVModule.xml", // "PedestrianLightSMV can not run in simulation mode."
-            "SMVLegacyCodeActor",
-            "SoundSpectrum.xml",
-            "SynthesizedVoice.xml",
-            "SystemCommand.xml", // Hangs.
-            "SystemLevelType",
-            "TunnelingBallDevice",
-            "VideoCapture.xml",
-        };
+        String[] skip = {
+                "ptalon/gt/demo/Adder/Adder.xml", // "Channel index 0 is out of range, because width is only 0."
+                "backtrack/demo/PrimeTest/PrimeTest.xml", // FIXME: Channel index 0 out of range.
+                "CRoom.xml", // hangs.
+                "distributed/demo/Sleep/Sleep.xml", // Requires jini.
+                "de/demo/Clock/Clock.xml", // FIXME: "Audio Device Unavailable"
+                "domains/gr", // "Cannot render to more than 32 Canvas3Ds",
+                              // need to close ViewScreen3D by adding a ViewScreen3D Tableau.
+                "ExecDemos.xml", // FIXME: vergil: command not found
+                "GravitationWithCollisionDetection.xml", // "Cannot render to more than 32 Canvas3Ds."
+                "HierarchyFlattening.xml", // gt
+                "iRobotCreateVerification.xml", // Annotation says that it does not simulate.
+                "IterateOverArray.xml", // FIXME: no matching function abs( string )
+                "JMFJAI.xml", "KarplusStrong.xml",
+                "MatlabRoom.xml", // Matlab message: Error: Too many inputs passed to SimpleFunctionThunk.
+                "ModelReference.xml", // FIXME: "Cannot call invokeAndWait from the event dispatcher thread"
+                "ModularCGPubSub.xml", // FIXME: Can't link Subscriber with Publisher, channel was "channel
+                "ptolemy/gt/demo/Adder/Adder.xml", // FIXME: Channel index 0 is out of range, because width is only 0.
+                "ptolemy/domains/ptides/demo/Speaker/Speaker.xml", // FIXME: Types resolved to unacceptable types in .Speaker due to the following inequalities:
+                "PrintingPress.xml", // FIXME: "Cannot set local time to -Infinity, which is earlier than the last committed current time 0.0"
+                "PtidesBasicOnePlatform.xml", // FIXME: Type problem
+                "PtidesNetworkLatencyTest.xml", // FIXME: "Cannot set local time to -Infinity, which is earlier than the last committed current time 0.0"
+                "PublisherTest", // gt
+                "RealTimeComposite.xml", // FIXME: "Audio Device Unavailable"
+                "RunDemos.xml", // FIXME: cannot call invokeAndWait from the event dispatcher thread
+                "SerialPort.xml",
+                "Signature.xml", // FIXME: Cannot read ptKeystore
+                "SimpleTrafficLightSMVModule.xml", // "PedestrianLightSMV can not run in simulation mode."
+                "SMVLegacyCodeActor", "SoundSpectrum.xml",
+                "SynthesizedVoice.xml", "SystemCommand.xml", // Hangs.
+                "SystemLevelType", "TunnelingBallDevice", "VideoCapture.xml", };
         for (int i = 0; i < skip.length; i++) {
             if (modelPath.indexOf(skip[i]) != -1) {
                 return false;

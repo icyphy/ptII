@@ -189,7 +189,8 @@ public class DisplayJavaSE extends AbstractPlaceableJavaSE implements
                         if (containerEffigy == null) {
                             throw new IllegalActionException(
                                     "Cannot find effigy for top level: "
-                                            + (_display.toplevel()).getFullName());
+                                            + (_display.toplevel())
+                                                    .getFullName());
                         }
                         TextEffigy textEffigy = TextEffigy.newTextEffigy(
                                 containerEffigy, "");
@@ -198,25 +199,27 @@ public class DisplayJavaSE extends AbstractPlaceableJavaSE implements
                         // two reasons: Wrong title bar label, and it causes a save-as
                         // to destroy the original window.
 
-                        textEffigy.identifier.setExpression(_display.getFullName());
+                        textEffigy.identifier.setExpression(_display
+                                .getFullName());
 
-                        _tableau = new DisplayWindowTableau(_display, textEffigy,
-                                "tableau");
+                        _tableau = new DisplayWindowTableau(_display,
+                                textEffigy, "tableau");
                         _frame = _tableau.frame.get();
                         textArea = ((TextEditor) _frame).text;
 
-                        int numRows = ((IntToken) _display.rowsDisplayed.getToken())
-                                .intValue();
+                        int numRows = ((IntToken) _display.rowsDisplayed
+                                .getToken()).intValue();
                         textArea.setRows(numRows);
 
-                        int numColumns = ((IntToken) _display.columnsDisplayed.getToken())
-                                .intValue();
+                        int numColumns = ((IntToken) _display.columnsDisplayed
+                                .getToken()).intValue();
 
                         textArea.setColumns(numColumns);
                         setFrame(_frame);
                         _frame.pack();
                     } catch (Exception ex) {
-                        MessageHandler.error("Error opening window for Display actor.", ex);
+                        MessageHandler.error(
+                                "Error opening window for Display actor.", ex);
                     }
                 } else {
                     // Erase previous text.
@@ -293,7 +296,8 @@ public class DisplayJavaSE extends AbstractPlaceableJavaSE implements
                 }
 
                 if (!titleSpec.trim().equals("")) {
-                    _scrollPane.setBorder(BorderFactory.createTitledBorder(titleSpec));
+                    _scrollPane.setBorder(BorderFactory
+                            .createTitledBorder(titleSpec));
                 }
 
                 try {
@@ -301,8 +305,8 @@ public class DisplayJavaSE extends AbstractPlaceableJavaSE implements
                             .intValue();
                     textArea.setRows(numRows);
 
-                    int numColumns = ((IntToken) _display.columnsDisplayed.getToken())
-                            .intValue();
+                    int numColumns = ((IntToken) _display.columnsDisplayed
+                            .getToken()).intValue();
                     textArea.setColumns(numColumns);
 
                 } catch (IllegalActionException ex) {
@@ -343,7 +347,8 @@ public class DisplayJavaSE extends AbstractPlaceableJavaSE implements
      *  @exception IllegalActionException If the specified attribute
      *   is <i>rowsDisplayed</i> and its value is not positive.
      */
-    public void setColumns(final int numberOfColumns) throws IllegalActionException {
+    public void setColumns(final int numberOfColumns)
+            throws IllegalActionException {
         Runnable doIt = new Runnable() {
             public void run() {
                 if (textArea != null) {
@@ -351,7 +356,9 @@ public class DisplayJavaSE extends AbstractPlaceableJavaSE implements
                     try {
                         _paneSize.setToken((Token) null);
                     } catch (IllegalActionException e) {
-                        MessageHandler.error("Unexpected error: Unable to unset previous pane size.", e);
+                        MessageHandler
+                                .error("Unexpected error: Unable to unset previous pane size.",
+                                        e);
                     }
                     setFrame(_frame);
 
@@ -381,7 +388,9 @@ public class DisplayJavaSE extends AbstractPlaceableJavaSE implements
                     try {
                         _paneSize.setToken((Token) null);
                     } catch (IllegalActionException e) {
-                        MessageHandler.error("Unexpected error: Unable to unset previous pane size.", e);
+                        MessageHandler
+                                .error("Unexpected error: Unable to unset previous pane size.",
+                                        e);
                     }
                     setFrame(_frame);
 
@@ -406,7 +415,8 @@ public class DisplayJavaSE extends AbstractPlaceableJavaSE implements
      * @param stringValue The title to be set.
      * @exception IllegalActionException If the title cannot be set.
      */
-    public void setTitle(final String stringValue) throws IllegalActionException {
+    public void setTitle(final String stringValue)
+            throws IllegalActionException {
         Runnable doIt = new Runnable() {
             public void run() {
                 if (_tableau != null) {

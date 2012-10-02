@@ -86,12 +86,12 @@ public class VariableDelaySwitch extends BasicSwitch {
         unitTokenSize.setTypeEquals(BaseType.INT);
         _unitTokenSize = 1000;
 
-        allowPDV = new Parameter(this,"Allow PDV");
+        allowPDV = new Parameter(this, "Allow PDV");
         allowPDV.setExpression("true");
         allowPDV.setTypeEquals(BaseType.BOOLEAN);
         _allowPDV = true;
 
-        allowPriority = new Parameter(this,"Allow Priority Routing");
+        allowPriority = new Parameter(this, "Allow Priority Routing");
         allowPriority.setExpression("false");
         allowPriority.setTypeEquals(BaseType.BOOLEAN);
         _allowPriority = false;
@@ -115,36 +115,33 @@ public class VariableDelaySwitch extends BasicSwitch {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-   public void attributeChanged(Attribute attribute)
-        throws IllegalActionException {
+    public void attributeChanged(Attribute attribute)
+            throws IllegalActionException {
         if (attribute == channelBandwidth) {
-            int value = ((IntToken) channelBandwidth.getToken())
-                    .intValue();
+            int value = ((IntToken) channelBandwidth.getToken()).intValue();
             if (value <= 0) {
                 throw new IllegalActionException(this,
-                        "Cannot have negative or zero channel bandwidth: " + value);
+                        "Cannot have negative or zero channel bandwidth: "
+                                + value);
             }
             _channelBandwidth = value;
         } else if (attribute == unitTokenSize) {
-            int value = ((IntToken) unitTokenSize.getToken())
-                    .intValue();
+            int value = ((IntToken) unitTokenSize.getToken()).intValue();
             if (value <= 0) {
                 throw new IllegalActionException(this,
                         "Cannot have negative or zero packet size: " + value);
             }
             _unitTokenSize = value;
         } else if (attribute == allowPDV) {
-            boolean value = ((BooleanToken) allowPDV
-                    .getToken()).booleanValue();
+            boolean value = ((BooleanToken) allowPDV.getToken()).booleanValue();
             _allowPDV = value;
         } else if (attribute == allowPriority) {
-            boolean value = ((BooleanToken) allowPriority
-                    .getToken()).booleanValue();
+            boolean value = ((BooleanToken) allowPriority.getToken())
+                    .booleanValue();
             _allowPriority = value;
         }
         super.attributeChanged(attribute);
     }
-
 
     /** Initiate a send of the specified token to the specified
      *  receiver. This method will schedule a refiring of this actor
@@ -181,55 +178,49 @@ public class VariableDelaySwitch extends BasicSwitch {
         double _priorityDelay = 0.0;
         double _packetSizeDelay = 0.0;
 
-            RecordToken TCPFrame = (RecordToken)token;
-            // get payload
-            RecordToken tokens = (RecordToken)TCPFrame.get("tokens");
-            RecordToken TCPHeader = (RecordToken)TCPFrame.get("TCPlabel");
+        RecordToken TCPFrame = (RecordToken) token;
+        // get payload
+        RecordToken tokens = (RecordToken) TCPFrame.get("tokens");
+        RecordToken TCPHeader = (RecordToken) TCPFrame.get("TCPlabel");
 
-            if (tokens == null || TCPHeader == null) {
-                throw new IllegalActionException(this, "Token structure must"
-                        + "contain a tokens and a TCPHeader field");
+        if (tokens == null || TCPHeader == null) {
+            throw new IllegalActionException(this, "Token structure must"
+                    + "contain a tokens and a TCPHeader field");
+        }
+
+        /* priority is carried as a part of the options field
+        of the TCP header */
+
+        int numberOfTokens = tokens.length();
+        double packetLength = numberOfTokens * _unitTokenSize + TCPHeaderSize;
+        // get priority value
+
+        if (true == _allowPDV) {
+
+            if (packetLength > 0.0) {
+
+                _packetSizeDelay = packetLength / _channelBandwidth;
+            } else {
+                _packetSizeDelay = 0.0;
             }
+        } else {
+            _packetSizeDelay = 0.0;
+        }
 
-            /* priority is carried as a part of the options field
-            of the TCP header */
+        IntToken recordPriority = ((IntToken) TCPHeader.get("options"));
+        if (true == _allowPriority && recordPriority != null) {
+            int _priority = recordPriority.intValue();
+            _priorityDelay = _priority / 1000.0;
+        } else {
+            //
+            _priorityDelay = 0.0;
+        }
 
-            int numberOfTokens = tokens.length();
-            double packetLength = numberOfTokens*_unitTokenSize + TCPHeaderSize;
-            // get priority value
-
-
-            if (true == _allowPDV)
-            {
-
-                    if ( packetLength > 0.0) {
-
-                        _packetSizeDelay = packetLength/_channelBandwidth;
-                    }
-                    else
-                    {
-                        _packetSizeDelay = 0.0;
-                    }
-            }
-            else {
-                    _packetSizeDelay = 0.0;
-            }
-
-            IntToken recordPriority = ((IntToken)TCPHeader.get("options"));
-            if (true == _allowPriority && recordPriority != null) {
-               int _priority = recordPriority.intValue();
-               _priorityDelay = _priority/1000.0;
-            }
-            else {
-              //
-               _priorityDelay = 0.0;
-            }
-
-
-         // in addition to the static _inputBufferDelay, packet-specific delays calculated and added
+        // in addition to the static _inputBufferDelay, packet-specific delays calculated and added
         _inputTokens.get(actorPortId).add(
-                new TimedEvent(lastTimeStamp.add(_inputBufferDelay + _priorityDelay + _packetSizeDelay),
-                        new Object[] { receiver, token }));
+                new TimedEvent(lastTimeStamp.add(_inputBufferDelay
+                        + _priorityDelay + _packetSizeDelay), new Object[] {
+                        receiver, token }));
         _tokenCount++;
         sendQMTokenEvent((Actor) source.getContainer().getContainer(), 0,
                 _tokenCount, EventType.RECEIVED);
@@ -244,10 +235,8 @@ public class VariableDelaySwitch extends BasicSwitch {
 
     }
 
-
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
-
 
     //channel bandwidth that will be used to determine the delay (in bits/sec)
     protected int _channelBandwidth;
@@ -263,6 +252,5 @@ public class VariableDelaySwitch extends BasicSwitch {
 
     //default header size for TCP
     protected static final int TCPHeaderSize = 160;
-
 
 }

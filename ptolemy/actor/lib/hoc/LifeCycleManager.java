@@ -188,8 +188,7 @@ public class LifeCycleManager extends TypedCompositeActor {
                         .listIterator();
 
                 while (listeners.hasNext()) {
-                    WeakReference<ChangeListener> reference = listeners
-                            .next();
+                    WeakReference<ChangeListener> reference = listeners.next();
 
                     if (reference.get() == listener) {
                         listeners.remove();
@@ -287,7 +286,8 @@ public class LifeCycleManager extends TypedCompositeActor {
             Director insideDirector = getDirector();
             Director outsideDirector = getExecutiveDirector();
             if (insideDirector == outsideDirector) {
-                throw new IllegalActionException(this, "An inside director is required to execute the inside model.");
+                throw new IllegalActionException(this,
+                        "An inside director is required to execute the inside model.");
             }
             // Force the inside director to behave as if it were at the top level.
             insideDirector.setEmbedded(false);
@@ -399,8 +399,7 @@ public class LifeCycleManager extends TypedCompositeActor {
 
                 if (_debugging) {
                     _debug("** Updated PortParameter: " + port.getName()
-                            + " to value "
-                            + parameter.getToken());
+                            + " to value " + parameter.getToken());
                 }
 
                 continue;
@@ -455,10 +454,8 @@ public class LifeCycleManager extends TypedCompositeActor {
                 if (attribute instanceof Variable) {
                     if (_debugging) {
                         _debug("** Transferring parameter to output: "
-                                + port.getName()
-                                + " ("
-                                + ((Variable) attribute).getToken()
-                                + ")");
+                                + port.getName() + " ("
+                                + ((Variable) attribute).getToken() + ")");
                     }
 
                     port.send(0, ((Variable) attribute).getToken());
@@ -467,8 +464,7 @@ public class LifeCycleManager extends TypedCompositeActor {
                         _debug("** Transferring parameter as string to output: "
                                 + port.getName()
                                 + " ("
-                                + ((Settable) attribute).getExpression()
-                                + ")");
+                                + ((Settable) attribute).getExpression() + ")");
                     }
 
                     port.send(

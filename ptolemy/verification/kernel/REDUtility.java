@@ -124,18 +124,16 @@ public class REDUtility {
 
         ArrayList<FSMActor> list = new ArrayList<FSMActor>();
 
-        if ((((CompositeActor) originalCompositeActor).entityList()).size() > 0) {
-            Iterator it = (((CompositeActor) originalCompositeActor)
-                    .entityList()).iterator();
+        if ((originalCompositeActor.entityList()).size() > 0) {
+            Iterator it = (originalCompositeActor.entityList()).iterator();
             while (it.hasNext()) {
                 Entity innerEntity = (Entity) it.next();
                 if (innerEntity instanceof ModalModel) {
                     // If the innerEntity is a ModalModel, try to rewrite it.
-                    FSMActor newActor = (FSMActor) _rewriteModalModelWithStateRefinementToFSMActor((ModalModel) innerEntity);
+                    FSMActor newActor = _rewriteModalModelWithStateRefinementToFSMActor((ModalModel) innerEntity);
                     // Remove the original ModalModel from the system
                     // (we would add an equivalent FSMActor back later).
-                    (((CompositeActor) originalCompositeActor).entityList())
-                            .remove(innerEntity);
+                    (originalCompositeActor.entityList()).remove(innerEntity);
                     // Add the newly generated FSMActor to the list.
                     list.add(newActor);
                 }
@@ -144,8 +142,7 @@ public class REDUtility {
 
         for (int i = 0; i < list.size(); i++) {
             // Add back those previously generated new FSMActors.
-            (((CompositeActor) originalCompositeActor).entityList()).add(list
-                    .get(i));
+            (originalCompositeActor.entityList()).add(list.get(i));
         }
         return originalCompositeActor;
 
@@ -212,8 +209,8 @@ public class REDUtility {
 
         // Perform a search to determine the all useful synchronizers used
         // in the system.
-        for (Iterator actors = (((CompositeActor) model).entityList())
-                .iterator(); actors.hasNext();) {
+        for (Iterator actors = (model.entityList()).iterator(); actors
+                .hasNext();) {
             Entity innerEntity = (Entity) actors.next();
 
             HashSet<String> setOfSynchronizes = _decideSynchronizerVariableSet(innerEntity);
@@ -237,8 +234,8 @@ public class REDUtility {
         // BoundedBufferNondeterministicDelay as BoundedBufferTimedDelay.
         //
 
-        for (Iterator actors = (((CompositeActor) model).entityList())
-                .iterator(); actors.hasNext();) {
+        for (Iterator actors = (model.entityList()).iterator(); actors
+                .hasNext();) {
             Entity innerEntity = (Entity) actors.next();
             if (innerEntity instanceof FSMActor) {
 
@@ -535,8 +532,8 @@ public class REDUtility {
             }
         }
 
-        for (Iterator actors = (((CompositeActor) model).entityList())
-                .iterator(); actors.hasNext();) {
+        for (Iterator actors = (model.entityList()).iterator(); actors
+                .hasNext();) {
             Entity innerEntity = (Entity) actors.next();
             if (innerEntity instanceof FSMActor) {
                 returnREDFormat.append("N_" + innerEntity.getName().trim()
@@ -609,7 +606,7 @@ public class REDUtility {
      * @return boolean value indicating if the director is DE.
      */
     public static boolean isValidModelForVerification(CompositeActor model) {
-        Director director = ((CompositeActor) model).getDirector();
+        Director director = model.getDirector();
         if (!(director instanceof DEDirector)) {
             return false;
         } else {
@@ -643,8 +640,8 @@ public class REDUtility {
         // iterate
         while (!frontier.isEmpty()) {
             Iterator<String> iterator = frontier.keySet().iterator();
-            name = (String) iterator.next();
-            stateInThis = (State) frontier.remove(name);
+            name = iterator.next();
+            stateInThis = frontier.remove(name);
             if (stateInThis == null) {
                 throw new IllegalActionException("Internal error, removing \""
                         + name + "\" returned null?");
@@ -757,8 +754,8 @@ public class REDUtility {
                 // easy way to pick an arbitrary entry from a HashMap, except
                 // through Iterator
                 Iterator<String> iterator = frontier.keySet().iterator();
-                name = (String) iterator.next();
-                stateInThis = (State) frontier.remove(name);
+                name = iterator.next();
+                stateInThis = frontier.remove(name);
                 if (stateInThis == null) {
                     throw new IllegalActionException(
                             "Internal error, removing \"" + name
@@ -924,8 +921,8 @@ public class REDUtility {
             // easy way to pick an arbitrary entry from a HashMap, except
             // through Iterator
             Iterator<String> iterator = frontier.keySet().iterator();
-            name = (String) iterator.next();
-            stateInThis = (State) frontier.remove(name);
+            name = iterator.next();
+            stateInThis = frontier.remove(name);
             if (stateInThis == null) {
                 throw new IllegalActionException("Internal error, removing \""
                         + name + "\" returned null?");
@@ -1007,7 +1004,7 @@ public class REDUtility {
                                             returnVariableSet
                                                     .add(characterOfSubGuard[0]
                                                             .trim());
-                                            VariableInfo variable = (VariableInfo) _variableInfo
+                                            VariableInfo variable = _variableInfo
                                                     .get(characterOfSubGuard[0]
                                                             .trim());
                                             if (variable == null) {
@@ -1068,7 +1065,7 @@ public class REDUtility {
                                         .parseInt(characters[1].trim());
                                 // add it into the _variableInfo
 
-                                VariableInfo variable = (VariableInfo) _variableInfo
+                                VariableInfo variable = _variableInfo
                                         .get(lValue);
                                 if (variable == null) {
                                     // Create a new one and insert all info.
@@ -1126,8 +1123,7 @@ public class REDUtility {
                 property = "";
             }
 
-            VariableInfo variableInfo = (VariableInfo) _variableInfo
-                    .get(variableName);
+            VariableInfo variableInfo = _variableInfo.get(variableName);
 
             if (Pattern.matches("^-?\\d+$", property) == true) {
                 if (variableInfo != null) {
@@ -1153,12 +1149,11 @@ public class REDUtility {
         Iterator<String> itVariableSet = returnVariableSet.iterator();
         while (itVariableSet.hasNext()) {
 
-            String valName = (String) itVariableSet.next();
+            String valName = itVariableSet.next();
 
             // Retrieve the lower bound and upper bound of the variable used in
             // the system based on inequalities or assignments
-            VariableInfo individual = (VariableInfo) _variableInfo
-                    .remove(valName);
+            VariableInfo individual = _variableInfo.remove(valName);
             try {
                 if (individual != null) {
                     if ((individual._maxValue != null)
@@ -1213,8 +1208,8 @@ public class REDUtility {
                 // easy way to pick an arbitrary entry from a HashMap, except
                 // through Iterator
                 Iterator<String> iterator = frontier.keySet().iterator();
-                name = (String) iterator.next();
-                stateInThis = (State) frontier.remove(name);
+                name = iterator.next();
+                stateInThis = frontier.remove(name);
                 ComponentPort outPort = stateInThis.outgoingPort;
                 Iterator transitions = outPort.linkedRelationList().iterator();
 
@@ -2122,8 +2117,8 @@ public class REDUtility {
             // refinement must have a state which connects to the destination;
             // if the destination has refinements, then all of these newly added
             // transitions must be connected to the refinement initial state.
-            TypedActor[] sActors = ((State) source).getRefinement();
-            TypedActor[] dActors = ((State) destination).getRefinement();
+            TypedActor[] sActors = source.getRefinement();
+            TypedActor[] dActors = destination.getRefinement();
             if ((sActors == null) && (dActors == null)) {
 
                 // We only need to find the corresponding node in the
@@ -3024,8 +3019,7 @@ public class REDUtility {
         REDModuleNameInitialBean moduleNameInitialState = new REDModuleNameInitialBean();
         moduleNameInitialState._name = actor.getName();
         moduleNameInitialState._initialStateDescription = actor.getName()
-                + "_State_"
-                + ((FSMActor) actor).getInitialState().getName().trim()
+                + "_State_" + actor.getInitialState().getName().trim()
                 + "_Plum";
         bean._nameInitialState = moduleNameInitialState;
 
@@ -3146,8 +3140,7 @@ public class REDUtility {
             Iterator<String> variables = variableSet.iterator();
             while (variables.hasNext()) {
                 String variableName = variables.next();
-                VariableInfo individual = (VariableInfo) _variableInfo
-                        .get(variableName);
+                VariableInfo individual = _variableInfo.get(variableName);
                 if (individual != null) {
                     if ((individual._maxValue != null)
                             && (individual._minValue != null)) {
@@ -3173,7 +3166,7 @@ public class REDUtility {
 
         Iterator<State> ite = frontier.iterator();
         while (ite.hasNext()) {
-            State state = (State) ite.next();
+            State state = ite.next();
             if (actor.getInitialState() == state) {
                 bean._moduleDescription.append("mode " + actor.getName().trim()
                         + "_State_" + state.getName().trim() + "_Plum"

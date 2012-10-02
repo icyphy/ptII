@@ -67,7 +67,6 @@ public class ImageContrast extends Transformer {
         input.setTypeEquals(BaseType.INT_MATRIX);
     }
 
-
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 

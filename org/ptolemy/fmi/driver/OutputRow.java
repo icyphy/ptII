@@ -186,5 +186,6 @@ public class OutputRow {
     /** This class contains only static methods, so there is no public
      * constructor.
      */
-    private OutputRow() {}
+    private OutputRow() {
+    }
 }

@@ -95,8 +95,7 @@ public class FPPCore extends ResourceScheduler {
      */
     @Override
     public Time schedule(Actor actor, Time currentPlatformTime,
-            Double deadline, Time executionTime)
-            throws IllegalActionException {
+            Double deadline, Time executionTime) throws IllegalActionException {
         super.schedule(actor, currentPlatformTime, deadline, executionTime);
         _lastActorFinished = false;
         Time remainingTime = null;
@@ -114,7 +113,8 @@ public class FPPCore extends ResourceScheduler {
                 double newActorPriority = _getPriority(actor);
                 if (newActorPriority < executingPriority) {
                     remainingTime = executionTime;
-                    event((NamedObj) executing, currentPlatformTime.getDoubleValue(),
+                    event((NamedObj) executing,
+                            currentPlatformTime.getDoubleValue(),
                             ExecutionEventType.PREEMPTED);
                     scheduleNewActor(actor, currentPlatformTime, executionTime);
                 }

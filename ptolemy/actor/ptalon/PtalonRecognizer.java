@@ -294,11 +294,9 @@ public class PtalonRecognizer extends antlr.LLkParser implements
             port_declaration_AST = (PtalonAST) currentAST.root;
 
             if (dynamic_name) {
-                port_declaration_AST.addChild((PtalonAST) astFactory
-                        .make((new ASTArray(3))
-                                .add((PtalonAST) astFactory.create(
-                                        DYNAMIC_NAME, "dynamic")).add(d_AST)
-                                .add(e_AST)));
+                port_declaration_AST.addChild(astFactory.make((new ASTArray(3))
+                        .add(astFactory.create(DYNAMIC_NAME, "dynamic"))
+                        .add(d_AST).add(e_AST)));
             } else {
                 port_declaration_AST.addChild(d_AST);
             }
@@ -421,28 +419,26 @@ public class PtalonRecognizer extends antlr.LLkParser implements
                             if (dynamic_name) {
                                 parameter_declaration_AST = (PtalonAST) astFactory
                                         .make((new ASTArray(3))
-                                                .add((PtalonAST) astFactory
-                                                        .create(PARAM_EQUALS,
-                                                                "="))
-                                                .add((PtalonAST) astFactory
-                                                        .make((new ASTArray(2))
-                                                                .add(p_AST)
-                                                                .add((PtalonAST) astFactory
-                                                                        .make((new ASTArray(
-                                                                                3))
-                                                                                .add((PtalonAST) astFactory
-                                                                                        .create(DYNAMIC_NAME,
-                                                                                                "dynamic"))
-                                                                                .add(c_AST)
-                                                                                .add(n_AST)))))
+                                                .add(astFactory.create(
+                                                        PARAM_EQUALS, "="))
+                                                .add(astFactory.make((new ASTArray(
+                                                        2))
+                                                        .add(p_AST)
+                                                        .add(astFactory
+                                                                .make((new ASTArray(
+                                                                        3))
+                                                                        .add(astFactory
+                                                                                .create(DYNAMIC_NAME,
+                                                                                        "dynamic"))
+                                                                        .add(c_AST)
+                                                                        .add(n_AST)))))
                                                 .add(e_AST));
                             } else {
                                 parameter_declaration_AST = (PtalonAST) astFactory
                                         .make((new ASTArray(3))
-                                                .add((PtalonAST) astFactory
-                                                        .create(PARAM_EQUALS,
-                                                                "="))
-                                                .add((PtalonAST) astFactory
+                                                .add(astFactory.create(
+                                                        PARAM_EQUALS, "="))
+                                                .add(astFactory
                                                         .make((new ASTArray(2))
                                                                 .add(p_AST)
                                                                 .add(c_AST)))
@@ -474,15 +470,12 @@ public class PtalonRecognizer extends antlr.LLkParser implements
                     if (addChild) {
                         if (dynamic_name) {
                             parameter_declaration_AST = (PtalonAST) astFactory
-                                    .make((new ASTArray(2))
-                                            .add(p_AST)
-                                            .add((PtalonAST) astFactory
-                                                    .make((new ASTArray(3))
-                                                            .add((PtalonAST) astFactory
-                                                                    .create(DYNAMIC_NAME,
-                                                                            "dynamic"))
-                                                            .add(c_AST)
-                                                            .add(n_AST))));
+                                    .make((new ASTArray(2)).add(p_AST).add(
+                                            astFactory.make((new ASTArray(3))
+                                                    .add(astFactory.create(
+                                                            DYNAMIC_NAME,
+                                                            "dynamic"))
+                                                    .add(c_AST).add(n_AST))));
                         } else {
                             parameter_declaration_AST = (PtalonAST) astFactory
                                     .make((new ASTArray(2)).add(p_AST).add(
@@ -541,12 +534,10 @@ public class PtalonRecognizer extends antlr.LLkParser implements
 
                             parameter_declaration_AST = (PtalonAST) astFactory
                                     .make((new ASTArray(3))
-                                            .add((PtalonAST) astFactory.create(
+                                            .add(astFactory.create(
                                                     ACTOR_EQUALS, "="))
-                                            .add((PtalonAST) astFactory
-                                                    .make((new ASTArray(2))
-                                                            .add(a_AST).add(
-                                                                    d_AST)))
+                                            .add(astFactory.make((new ASTArray(
+                                                    2)).add(a_AST).add(d_AST)))
                                             .add(q_AST));
                             addChild = false;
 
@@ -640,8 +631,7 @@ public class PtalonRecognizer extends antlr.LLkParser implements
 
         }
         {
-            _loop21:
-            do {
+            _loop21: do {
                 if ((LA(1) == DOT)) {
                     PtalonAST tmp11_AST = null;
                     tmp11_AST = (PtalonAST) astFactory.create(LT(1));
@@ -708,11 +698,9 @@ public class PtalonRecognizer extends antlr.LLkParser implements
                     relation_declaration_AST = (PtalonAST) currentAST.root;
 
                     relation_declaration_AST = (PtalonAST) astFactory
-                            .make((new ASTArray(2))
-                                    .add(r_AST)
-                                    .add((PtalonAST) astFactory.make((new ASTArray(
-                                            3))
-                                            .add((PtalonAST) astFactory.create(
+                            .make((new ASTArray(2)).add(r_AST).add(
+                                    astFactory.make((new ASTArray(3))
+                                            .add(astFactory.create(
                                                     DYNAMIC_NAME, "dynamic"))
                                             .add(i_AST).add(e_AST))));
 
@@ -789,12 +777,11 @@ public class PtalonRecognizer extends antlr.LLkParser implements
                     transparent_relation_declaration_AST = (PtalonAST) currentAST.root;
 
                     transparent_relation_declaration_AST = (PtalonAST) astFactory
-                            .make((new ASTArray(2))
-                                    .add((PtalonAST) astFactory.create(
-                                            TRANSPARENT, "transparent"))
-                                    .add((PtalonAST) astFactory.make((new ASTArray(
-                                            3))
-                                            .add((PtalonAST) astFactory.create(
+                            .make((new ASTArray(2)).add(
+                                    astFactory.create(TRANSPARENT,
+                                            "transparent")).add(
+                                    astFactory.make((new ASTArray(3))
+                                            .add(astFactory.create(
                                                     DYNAMIC_NAME, "dynamic"))
                                             .add(i_AST).add(e_AST))));
                     created = true;
@@ -823,8 +810,8 @@ public class PtalonRecognizer extends antlr.LLkParser implements
             if (!created) {
                 transparent_relation_declaration_AST = (PtalonAST) astFactory
                         .make((new ASTArray(2)).add(
-                                (PtalonAST) astFactory.create(TRANSPARENT,
-                                        "transparent")).add(i_AST));
+                                astFactory.create(TRANSPARENT, "transparent"))
+                                .add(i_AST));
             }
 
             currentAST.root = transparent_relation_declaration_AST;
@@ -1147,10 +1134,11 @@ public class PtalonRecognizer extends antlr.LLkParser implements
 
                     PtalonAST left;
                     if (dynamic_left) {
-                        left = (PtalonAST) astFactory.make((new ASTArray(3))
-                                .add((PtalonAST) astFactory.create(
-                                        DYNAMIC_NAME, "dynamic")).add(l_AST)
-                                .add(lExp_AST));
+                        left = (PtalonAST) astFactory
+                                .make((new ASTArray(3))
+                                        .add(astFactory.create(DYNAMIC_NAME,
+                                                "dynamic")).add(l_AST)
+                                        .add(lExp_AST));
                     } else {
                         left = l_AST;
                     }
@@ -1159,12 +1147,11 @@ public class PtalonRecognizer extends antlr.LLkParser implements
                                 .make((new ASTArray(3))
                                         .add(a_AST)
                                         .add(left)
-                                        .add((PtalonAST) astFactory
-                                                .make((new ASTArray(3))
-                                                        .add((PtalonAST) astFactory
-                                                                .create(DYNAMIC_NAME,
-                                                                        "dynamic"))
-                                                        .add(r_AST).add(e_AST))));
+                                        .add(astFactory.make((new ASTArray(3))
+                                                .add(astFactory
+                                                        .create(DYNAMIC_NAME,
+                                                                "dynamic"))
+                                                .add(r_AST).add(e_AST))));
                     } else {
                         assignment_AST = (PtalonAST) astFactory
                                 .make((new ASTArray(3)).add(a_AST).add(left)
@@ -1298,8 +1285,7 @@ public class PtalonRecognizer extends antlr.LLkParser implements
 
                 }
                 {
-                    _loop37:
-                    do {
+                    _loop37: do {
                         if ((LA(1) == COMMA)) {
                             PtalonAST tmp36_AST = null;
                             tmp36_AST = (PtalonAST) astFactory.create(LT(1));
@@ -1589,11 +1575,10 @@ public class PtalonRecognizer extends antlr.LLkParser implements
             transformation_declaration_AST = (PtalonAST) currentAST.root;
 
             if (dynamic_name) {
-                transformation_declaration_AST.addChild((PtalonAST) astFactory
-                        .make((new ASTArray(3))
-                                .add((PtalonAST) astFactory.create(
-                                        DYNAMIC_NAME, "dynamic")).add(d_AST)
-                                .add(e_AST)));
+                transformation_declaration_AST
+                        .addChild(astFactory.make((new ASTArray(3))
+                                .add(astFactory.create(DYNAMIC_NAME, "dynamic"))
+                                .add(d_AST).add(e_AST)));
             } else {
                 transformation_declaration_AST.addChild(d_AST);
             }
@@ -1631,9 +1616,8 @@ public class PtalonRecognizer extends antlr.LLkParser implements
 
             conditional_statement_AST = (PtalonAST) astFactory
                     .make((new ASTArray(2)).add(i_AST).add(b_AST));
-            trueTree = (PtalonAST) astFactory.create(TRUEBRANCH, "true branch");
-            falseTree = (PtalonAST) astFactory.create(FALSEBRANCH,
-                    "false branch");
+            trueTree = astFactory.create(TRUEBRANCH, "true branch");
+            falseTree = astFactory.create(FALSEBRANCH, "false branch");
 
             currentAST.root = conditional_statement_AST;
             currentAST.child = conditional_statement_AST != null
@@ -1643,8 +1627,7 @@ public class PtalonRecognizer extends antlr.LLkParser implements
         }
         match(LCURLY);
         {
-            _loop51:
-            do {
+            _loop51: do {
                 switch (LA(1)) {
                 case PORT:
                 case INPORT:
@@ -1701,8 +1684,7 @@ public class PtalonRecognizer extends antlr.LLkParser implements
                 match(ELSE);
                 match(LCURLY);
                 {
-                    _loop54:
-                    do {
+                    _loop54: do {
                         switch (LA(1)) {
                         case PORT:
                         case INPORT:
@@ -1831,15 +1813,14 @@ public class PtalonRecognizer extends antlr.LLkParser implements
             iterative_statement_AST = (PtalonAST) astFactory
                     .make((new ASTArray(4))
                             .add(f_AST)
-                            .add((PtalonAST) astFactory.make((new ASTArray(2))
-                                    .add((PtalonAST) astFactory.create(
-                                            VARIABLE, "variable")).add(a_AST)))
-                            .add((PtalonAST) astFactory.make((new ASTArray(2))
-                                    .add(b_AST).add(init_AST)))
-                            .add((PtalonAST) astFactory.make((new ASTArray(2))
-                                    .add((PtalonAST) astFactory.create(
-                                            SATISFIES, "satisfies")).add(
-                                            sat_AST))));
+                            .add(astFactory.make((new ASTArray(2)).add(
+                                    astFactory.create(VARIABLE, "variable"))
+                                    .add(a_AST)))
+                            .add(astFactory.make((new ASTArray(2)).add(b_AST)
+                                    .add(init_AST)))
+                            .add(astFactory.make((new ASTArray(2)).add(
+                                    astFactory.create(SATISFIES, "satisfies"))
+                                    .add(sat_AST))));
 
             currentAST.root = iterative_statement_AST;
             currentAST.child = iterative_statement_AST != null
@@ -1848,8 +1829,7 @@ public class PtalonRecognizer extends antlr.LLkParser implements
             currentAST.advanceChildToEnd();
         }
         {
-            _loop57:
-            do {
+            _loop57: do {
                 switch (LA(1)) {
                 case FOR: {
                     iterative_statement();
@@ -1913,8 +1893,8 @@ public class PtalonRecognizer extends antlr.LLkParser implements
         if (inputState.guessing == 0) {
             iterative_statement_AST = (PtalonAST) currentAST.root;
 
-            iterative_statement_AST.addChild((PtalonAST) astFactory
-                    .make((new ASTArray(2)).add(c_AST).add(next_AST)));
+            iterative_statement_AST.addChild(astFactory.make((new ASTArray(2))
+                    .add(c_AST).add(next_AST)));
 
         }
         returnAST = iterative_statement_AST;
@@ -2010,8 +1990,7 @@ public class PtalonRecognizer extends antlr.LLkParser implements
         match(IS);
         match(LCURLY);
         {
-            _loop62:
-            do {
+            _loop62: do {
                 switch (LA(1)) {
                 case PORT:
                 case INPORT:
@@ -2167,8 +2146,7 @@ public class PtalonRecognizer extends antlr.LLkParser implements
         }
         match(LCURLY);
         {
-            _loop67:
-            do {
+            _loop67: do {
                 switch (LA(1)) {
                 case PORT:
                 case INPORT:

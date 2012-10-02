@@ -31,7 +31,6 @@ the copyright link on the splash page or see copyright.htm.
  */
 package ptolemy.domains.coroutine.kernel;
 
-
 /**
  * @author shaver
  *
@@ -44,8 +43,12 @@ public class ControlEntryToken extends ControlToken {
     }
 
     public static ControlEntryToken EntryToken(String etS) {
-        if (etS.contentEquals("init"))   return Init();
-        if (etS.contentEquals("resume")) return Resume();
+        if (etS.contentEquals("init")) {
+            return Init();
+        }
+        if (etS.contentEquals("resume")) {
+            return Resume();
+        }
         return Enter(new EntryLocation(etS));
     }
 
@@ -67,7 +70,9 @@ public class ControlEntryToken extends ControlToken {
         return ct;
     }
 
-    public enum ControlType { Non, Init, Resume, Enter };
+    public enum ControlType {
+        Non, Init, Resume, Enter
+    };
 
     @Override
     public boolean isEntry() {
@@ -78,7 +83,6 @@ public class ControlEntryToken extends ControlToken {
     public boolean isExit() {
         return false;
     }
-
 
     public boolean isInit() {
         return _type == ControlType.Init;
@@ -92,14 +96,21 @@ public class ControlEntryToken extends ControlToken {
         return _type == ControlType.Enter;
     }
 
-
-    public ControlEntryToken.EntryLocation getLocation() { return _location; }
-
+    public ControlEntryToken.EntryLocation getLocation() {
+        return _location;
+    }
 
     public static class EntryLocation implements Location {
-        public EntryLocation(String name) { this.name = new String(name); }
-        public String toString()   { return name; }
+        public EntryLocation(String name) {
+            this.name = new String(name);
+        }
+
+        public String toString() {
+            return name;
+        }
+
         public String name;
+
         /* (non-Javadoc)
          * @see java.lang.Object#hashCode()
          */
@@ -110,37 +121,43 @@ public class ControlEntryToken extends ControlToken {
             result = prime * result + ((name == null) ? 0 : name.hashCode());
             return result;
         }
+
         /* (non-Javadoc)
          * @see java.lang.Object#equals(java.lang.Object)
          */
         @Override
         public boolean equals(Object obj) {
-            if (this == obj)
+            if (this == obj) {
                 return true;
-            if (obj == null)
+            }
+            if (obj == null) {
                 return false;
-            if (getClass() != obj.getClass())
+            }
+            if (getClass() != obj.getClass()) {
                 return false;
+            }
             EntryLocation other = (EntryLocation) obj;
             if (name == null) {
-                if (other.name != null)
+                if (other.name != null) {
                     return false;
-            } else if (!name.equals(other.name))
+                }
+            } else if (!name.equals(other.name)) {
                 return false;
+            }
             return true;
         }
 
     }
 
-
-
     ////
 
     public String toString() {
         String str = "Non";
-        /**/ if (_type == ControlType.Init)   str = "Init";
-        else if (_type == ControlType.Resume) str = "Resume";
-        else if (_type == ControlType.Enter)  {
+        /**/if (_type == ControlType.Init) {
+            str = "Init";
+        } else if (_type == ControlType.Resume) {
+            str = "Resume";
+        } else if (_type == ControlType.Enter) {
             str = "Enter[";
             str += _location.toString();
             str += "]";
@@ -153,12 +170,10 @@ public class ControlEntryToken extends ControlToken {
 
     private void _setEntry(ControlType t, EntryLocation l) {
         _type = t;
-        _location  = l;
+        _location = l;
     }
 
-
-    private ControlType      _type;
-    private EntryLocation    _location;
-
+    private ControlType _type;
+    private EntryLocation _location;
 
 }

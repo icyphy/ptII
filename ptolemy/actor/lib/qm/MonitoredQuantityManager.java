@@ -105,7 +105,8 @@ public abstract class MonitoredQuantityManager extends TypedAtomicActor
      *   cannot be cloned.
      */
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        MonitoredQuantityManager newObject = (MonitoredQuantityManager) super.clone(workspace);
+        MonitoredQuantityManager newObject = (MonitoredQuantityManager) super
+                .clone(workspace);
         newObject._listeners = null;
         return newObject;
     }

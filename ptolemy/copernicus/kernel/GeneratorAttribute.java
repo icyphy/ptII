@@ -39,8 +39,8 @@ import java.util.List;
 
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Director;
+import ptolemy.actor.gui.ConfigurationApplication;
 import ptolemy.actor.gui.JNLPUtilities;
-import ptolemy.actor.gui.MoMLApplication;
 import ptolemy.data.ArrayToken;
 import ptolemy.data.StringToken;
 import ptolemy.data.Token;
@@ -495,7 +495,7 @@ public class GeneratorAttribute extends SingletonAttribute implements
         URL modelURL = null;
 
         try {
-            modelURL = MoMLApplication.specToURL(modelPathOrURL);
+            modelURL = ConfigurationApplication.specToURL(modelPathOrURL);
         } catch (IOException ex) {
             try {
                 // We might have a JAR URL because we are inside webstart

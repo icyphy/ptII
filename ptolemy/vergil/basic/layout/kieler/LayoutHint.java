@@ -331,7 +331,8 @@ public class LayoutHint extends SingletonAttribute implements Settable {
     public void removeLayoutHintItem(final LayoutHintItem itemToRemove) {
         final NamedObj container = getContainer();
         if (container != null) {
-            container.requestChange(new ChangeRequest(container, "Remove Layout Hint") {
+            container.requestChange(new ChangeRequest(container,
+                    "Remove Layout Hint") {
                 protected void _execute() throws Exception {
                     _layoutHintItems.remove(itemToRemove);
                     if (_layoutHintItems.isEmpty()) {
@@ -494,7 +495,8 @@ public class LayoutHint extends SingletonAttribute implements Settable {
             // The token is expected to be an array of LayoutHintItems.
             for (int i = 0; i < ((ArrayToken) hints).length(); i++) {
                 // Each LayoutHintItem is expected to be a Record.
-                RecordToken layoutItem = (RecordToken) ((ArrayToken) hints).getElement(i);
+                RecordToken layoutItem = (RecordToken) ((ArrayToken) hints)
+                        .getElement(i);
                 // A LayoutHintItem has a head and tail entry, which are
                 // records containing an identifying String, coordinates,
                 // and optionally the width of a multiport.
@@ -502,22 +504,28 @@ public class LayoutHint extends SingletonAttribute implements Settable {
                 NamedObj head = _findNamedObj(this,
                         ((StringToken) headToken.get("id")).stringValue());
                 Point2D.Double headLocation = new Point2D.Double();
-                headLocation.x = ((DoubleToken) headToken.get("x")).doubleValue();
-                headLocation.y = ((DoubleToken) headToken.get("y")).doubleValue();
+                headLocation.x = ((DoubleToken) headToken.get("x"))
+                        .doubleValue();
+                headLocation.y = ((DoubleToken) headToken.get("y"))
+                        .doubleValue();
                 int headMultiportWidth = 1;
                 if (headToken.get("index") != null) {
-                    headMultiportWidth = ((IntToken) headToken.get("index")).intValue();
+                    headMultiportWidth = ((IntToken) headToken.get("index"))
+                            .intValue();
                 }
 
                 RecordToken tailToken = ((RecordToken) layoutItem.get("tail"));
                 NamedObj tail = _findNamedObj(this,
                         ((StringToken) tailToken.get("id")).stringValue());
                 Point2D.Double tailLocation = new Point2D.Double();
-                tailLocation.x = ((DoubleToken) tailToken.get("x")).doubleValue();
-                tailLocation.y = ((DoubleToken) tailToken.get("y")).doubleValue();
+                tailLocation.x = ((DoubleToken) tailToken.get("x"))
+                        .doubleValue();
+                tailLocation.y = ((DoubleToken) tailToken.get("y"))
+                        .doubleValue();
                 int tailMultiportWidth = 1;
                 if (tailToken.get("index") != null) {
-                    tailMultiportWidth = ((IntToken) tailToken.get("index")).intValue();
+                    tailMultiportWidth = ((IntToken) tailToken.get("index"))
+                            .intValue();
                 }
 
                 // The LayoutHintItem record contains a points entry, containing
@@ -545,7 +553,9 @@ public class LayoutHint extends SingletonAttribute implements Settable {
                 }
             }
         } catch (Exception e) {
-            throw new IllegalActionException(this,e,
+            throw new IllegalActionException(
+                    this,
+                    e,
                     e.getMessage()
                             + "\nExpression is expected to be an Array of layout hint Records. "
                             + "The following expression is of wrong format: \n"
@@ -960,8 +970,8 @@ public class LayoutHint extends SingletonAttribute implements Settable {
          */
         private static String _getName(NamedObj obj) {
             NamedObj parent = obj.getContainer();
-            if ((obj instanceof Port || obj instanceof Vertex
-                    || obj instanceof Attribute) && parent != null) {
+            if ((obj instanceof Port || obj instanceof Vertex || obj instanceof Attribute)
+                    && parent != null) {
                 parent = parent.getContainer();
             }
             return obj.getName(parent);
@@ -978,7 +988,8 @@ public class LayoutHint extends SingletonAttribute implements Settable {
             // a composite actor, so take the actor's position instead of the port's
             // internal position.
             if (obj instanceof ComponentPort) {
-                return (Point2D.Double) PtolemyModelUtil._getLocationPoint(obj.getContainer());
+                return (Point2D.Double) PtolemyModelUtil._getLocationPoint(obj
+                        .getContainer());
             }
             return (Point2D.Double) PtolemyModelUtil._getLocationPoint(obj);
         }

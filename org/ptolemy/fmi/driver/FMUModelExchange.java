@@ -184,10 +184,11 @@ public class FMUModelExchange extends FMUDriver {
         try {
             instantiateModelFunction = getFunction("_fmiInstantiateModel");
         } catch (UnsatisfiedLinkError ex) {
-            UnsatisfiedLinkError error = new UnsatisfiedLinkError("Could not load "
-                    + _modelIdentifier + "_fmiInstantiateModel()"
-                    + ". This can happen when a co-simulation .fmu "
-                    + "is run in a model exchange context.");
+            UnsatisfiedLinkError error = new UnsatisfiedLinkError(
+                    "Could not load " + _modelIdentifier
+                            + "_fmiInstantiateModel()"
+                            + ". This can happen when a co-simulation .fmu "
+                            + "is run in a model exchange context.");
             error.initCause(ex);
             throw error;
         }
@@ -214,17 +215,14 @@ public class FMUModelExchange extends FMUDriver {
         // Set the start time.
         double startTime = 0.0;
         Function setTime = getFunction("_fmiSetTime");
-        invoke(setTime,
-                new Object[] { fmiComponent, startTime },
-                "Could not set time to start time: "
-                + startTime + ": ");
+        invoke(setTime, new Object[] { fmiComponent, startTime },
+                "Could not set time to start time: " + startTime + ": ");
 
         // Initialize the model.
         byte toleranceControlled = 0;
         FMIEventInfo eventInfo = new FMIEventInfo();
-        invoke("_fmiInitialize",
-                new Object[] { fmiComponent, toleranceControlled,
-                               startTime, eventInfo},
+        invoke("_fmiInitialize", new Object[] { fmiComponent,
+                toleranceControlled, startTime, eventInfo },
                 "Could not initialize model: ");
 
         double time = startTime;
@@ -261,17 +259,14 @@ public class FMUModelExchange extends FMUDriver {
             byte stepEvent = (byte) 0;
             // Loop until the time is greater than the end time.
             while (time < endTime) {
-                invoke(getContinuousStates,
-                        new Object[] { fmiComponent, states,
-                                       numberOfStates },
-                        "Could not get continuous states, time was "
-                        + time + ": ");
+                invoke(getContinuousStates, new Object[] { fmiComponent,
+                        states, numberOfStates },
+                        "Could not get continuous states, time was " + time
+                                + ": ");
 
-                invoke(getDerivatives,
-                        new Object[] { fmiComponent, derivatives,
-                                       numberOfStates },
-                        "Could not get derivatives, time was "
-                        + time + ": ");
+                invoke(getDerivatives, new Object[] { fmiComponent,
+                        derivatives, numberOfStates },
+                        "Could not get derivatives, time was " + time + ": ");
 
                 // Update time.
                 double stepStartTime = time;
@@ -282,10 +277,8 @@ public class FMUModelExchange extends FMUDriver {
                     time = eventInfo.nextEventTime;
                 }
                 double dt = time - stepStartTime;
-                invoke(setTime,
-                        new Object[] { fmiComponent, time },
-                        "Could not set time, time was "
-                        + time + ": ");
+                invoke(setTime, new Object[] { fmiComponent, time },
+                        "Could not set time, time was " + time + ": ");
 
                 // Perform a step.
                 for (int i = 0; i < numberOfStates; i++) {
@@ -293,22 +286,20 @@ public class FMUModelExchange extends FMUDriver {
                     states[i] += dt * derivatives[i];
                 }
 
-                invoke(setContinuousStates,
-                        new Object[] { fmiComponent, states,
-                                       numberOfStates },
-                        "Could not set continuous states, time was "
-                        + time + ": ");
+                invoke(setContinuousStates, new Object[] { fmiComponent,
+                        states, numberOfStates },
+                        "Could not set continuous states, time was " + time
+                                + ": ");
 
                 // Check to see if we have completed the integrator step.
                 // Pass stepEvent in by reference. See
                 // https://github.com/twall/jna/blob/master/www/ByRefArguments.md
                 ByteByReference stepEventReference = new ByteByReference(
                         stepEvent);
-                invoke(completedIntegratorStep,
-                        new Object[] { fmiComponent,
-                                       stepEventReference },
+                invoke(completedIntegratorStep, new Object[] { fmiComponent,
+                        stepEventReference },
                         "Could not set complete integrator step, time was "
-                        + time + ": ");
+                                + time + ": ");
 
                 // Save the state events.
                 for (int i = 0; i < numberOfEventIndicators; i++) {
@@ -316,12 +307,10 @@ public class FMUModelExchange extends FMUDriver {
                 }
 
                 // Get the eventIndicators.
-                invoke(getEventIndicators,
-                        new Object[] { fmiComponent,
-                                       eventIndicators,
-                                       numberOfEventIndicators },
-                        "Could not set get event indicators, time was "
-                        + time + ": ");
+                invoke(getEventIndicators, new Object[] { fmiComponent,
+                        eventIndicators, numberOfEventIndicators },
+                        "Could not set get event indicators, time was " + time
+                                + ": ");
 
                 stateEvent = Boolean.FALSE;
                 for (int i = 0; i < numberOfEventIndicators; i++) {
@@ -358,11 +347,10 @@ public class FMUModelExchange extends FMUDriver {
                         }
                     }
 
-                    invoke(eventUpdate,
-                            new Object[] { fmiComponent,
-                                           (byte) 0, eventInfo },
-                            "Could not set update event, time was "
-                            + time + ": ");
+                    invoke(eventUpdate, new Object[] { fmiComponent, (byte) 0,
+                            eventInfo },
+                            "Could not set update event, time was " + time
+                                    + ": ");
 
                     if (eventInfo.terminateSimulation != (byte) 0) {
                         System.out.println("Termination requested: " + time);
@@ -385,8 +373,7 @@ public class FMUModelExchange extends FMUDriver {
                         fmiComponent, time, file, csvSeparator, Boolean.FALSE);
                 numberOfSteps++;
             }
-            invoke("_fmiTerminate",
-                    new Object[] { fmiComponent },
+            invoke("_fmiTerminate", new Object[] { fmiComponent },
                     "Could not terminate: ");
         } finally {
             if (file != null) {

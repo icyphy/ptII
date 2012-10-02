@@ -718,8 +718,7 @@ public class SDFDirector extends StaticSchedulingDirector {
                     readTokens = DFUtilities.getRate(outputPort);
                     Iterator<?> sourcePorts = outputPort.insideSourcePortList()
                             .iterator();
-                    label1:
-                    while (sourcePorts.hasNext()) {
+                    label1: while (sourcePorts.hasNext()) {
                         IOPort sourcePort = (IOPort) sourcePorts.next();
                         //                            ProgramCodeGeneratorAdapter adapter = getCodeGenerator().getAdapter(sourcePort
                         //                                    .getContainer());
@@ -805,8 +804,7 @@ public class SDFDirector extends StaticSchedulingDirector {
                         readTokens = DFUtilities.getRate(inputPort);
                         Iterator<?> sourcePorts = inputPort.sourcePortList()
                                 .iterator();
-                        label2:
-                        while (sourcePorts.hasNext()) {
+                        label2: while (sourcePorts.hasNext()) {
                             IOPort sourcePort = (IOPort) sourcePorts.next();
                             //                                ProgramCodeGeneratorAdapter adapter = getCodeGenerator().getAdapter(sourcePort
                             //                                        .getContainer());

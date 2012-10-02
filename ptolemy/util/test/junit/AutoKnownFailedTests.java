@@ -78,7 +78,7 @@ public class AutoKnownFailedTests extends ModelKnownFailedTests {
     public void setUp() throws Throwable {
         _applicationClass = Class.forName("ptolemy.moml.MoMLSimpleApplication");
         _applicationConstructor = _applicationClass
-            .getConstructor(String.class);
+                .getConstructor(String.class);
     }
 
     /**

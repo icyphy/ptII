@@ -36,7 +36,6 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 
-
 ///////////////////////////////////////////////////////////////////
 //// DefaultIconLink
 /**
@@ -103,7 +102,7 @@ public class DefaultIconLink extends IconLink {
      *   of this parameter fails.
      */
     protected void _provideAttributes(WebExporter exporter)
-        throws IllegalActionException{
+            throws IllegalActionException {
 
         boolean entities = false, attributes = false;
         String includeValue = include.stringValue().toLowerCase();
@@ -120,14 +119,15 @@ public class DefaultIconLink extends IconLink {
         NamedObj container = getContainer();
         if (entities && container instanceof CompositeEntity) {
             if (instances.trim().equals("")) {
-                objects = ((CompositeEntity)container).entityList();
+                objects = ((CompositeEntity) container).entityList();
             } else {
                 try {
                     Class restrict = Class.forName(instances);
-                    objects = ((CompositeEntity)container).entityList(restrict);
+                    objects = ((CompositeEntity) container)
+                            .entityList(restrict);
                 } catch (ClassNotFoundException e) {
-                    throw new IllegalActionException(this,
-                            "No such class: " + instances);
+                    throw new IllegalActionException(this, "No such class: "
+                            + instances);
                 }
             }
             for (NamedObj object : objects) {
@@ -136,14 +136,15 @@ public class DefaultIconLink extends IconLink {
         }
         if (attributes) {
             if (instances.trim().equals("")) {
-                objects = ((CompositeEntity)container).attributeList();
+                objects = ((CompositeEntity) container).attributeList();
             } else {
                 try {
                     Class restrict = Class.forName(instances);
-                    objects = ((CompositeEntity)container).attributeList(restrict);
+                    objects = ((CompositeEntity) container)
+                            .attributeList(restrict);
                 } catch (ClassNotFoundException e) {
-                    throw new IllegalActionException(this,
-                            "No such class: " + instances);
+                    throw new IllegalActionException(this, "No such class: "
+                            + instances);
                 }
             }
             for (NamedObj object : objects) {
@@ -173,9 +174,8 @@ public class DefaultIconLink extends IconLink {
 
                 // Create link attribute and add to exporter.
                 // Content should only be added once (onceOnly -> true).
-                webAttribute =
-                    WebAttribute.createWebAttribute(getContainer(),
-                            "hrefWebAttribute", "href");
+                webAttribute = WebAttribute.createWebAttribute(getContainer(),
+                        "hrefWebAttribute", "href");
                 webAttribute.setExpression(stringValue());
                 exporter.defineAttribute(webAttribute, true);
 
@@ -187,17 +187,15 @@ public class DefaultIconLink extends IconLink {
 
                         // Create class attribute and add to exporter.
                         // Content should only be added once (onceOnly -> true).
-                        webAttribute = WebAttribute
-                             .createWebAttribute(getContainer(),
-                                     "classWebAttribute", "class");
+                        webAttribute = WebAttribute.createWebAttribute(
+                                getContainer(), "classWebAttribute", "class");
                         webAttribute.setExpression("iframe");
                         exporter.defineAttribute(webAttribute, true);
                     } else {
                         // Create target attribute and add to exporter.
                         // Content should only be added once (onceOnly -> true).
-                        webAttribute = WebAttribute.
-                            createWebAttribute(getContainer(),
-                                    "targetWebAttribute", "target");
+                        webAttribute = WebAttribute.createWebAttribute(
+                                getContainer(), "targetWebAttribute", "target");
                         webAttribute.setExpression(targetValue);
                         exporter.defineAttribute(webAttribute, true);
                     }

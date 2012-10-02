@@ -351,6 +351,5 @@ public class ProcessThread extends PtolemyThread {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-
     private String _name;
 }

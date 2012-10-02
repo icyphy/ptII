@@ -55,6 +55,7 @@ import ptolemy.actor.sched.Firing;
 import ptolemy.actor.sched.Schedule;
 import ptolemy.actor.util.DFUtilities;
 import ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.TypedCompositeActor;
+import ptolemy.cg.kernel.generic.CodeGeneratorAdapter;
 import ptolemy.cg.kernel.generic.GenericCodeGenerator;
 import ptolemy.cg.kernel.generic.program.CodeStream;
 import ptolemy.cg.kernel.generic.program.NamedProgramCodeGeneratorAdapter;
@@ -131,12 +132,12 @@ public class SDFDirector
             if (actor instanceof ModularCodeGenTypedCompositeActor
                     || actor instanceof ModularCompiledSDFTypedCompositeActor) {
 
-                String className = NamedProgramCodeGeneratorAdapter
+                String className = CodeGeneratorAdapter
                         .generateName((NamedObj) actor);
                 String actorName = ModularCodeGenTypedCompositeActor
                         .classToActorName(className);
 
-                NamedProgramCodeGeneratorAdapter codegeneratorAdaptor = (NamedProgramCodeGeneratorAdapter) getAdapter((NamedObj) actor);
+                NamedProgramCodeGeneratorAdapter codegeneratorAdaptor = (NamedProgramCodeGeneratorAdapter) getAdapter(actor);
 
                 code.append("{" + _eol);
 
@@ -518,7 +519,7 @@ public class SDFDirector
 
             if (actor instanceof ModularCodeGenTypedCompositeActor
                     || actor instanceof ModularCompiledSDFTypedCompositeActor) {
-                String className = NamedProgramCodeGeneratorAdapter
+                String className = CodeGeneratorAdapter
                         .generateName((NamedObj) actor);
                 String actorName = ModularCodeGenTypedCompositeActor
                         .classToActorName(className);
@@ -569,7 +570,7 @@ public class SDFDirector
                     || actor instanceof ModularCompiledSDFTypedCompositeActor) {
                 //call the internal generated code of the composite actor
 
-                String className = NamedProgramCodeGeneratorAdapter
+                String className = CodeGeneratorAdapter
                         .generateName((NamedObj) actor);
                 String actorName = ModularCodeGenTypedCompositeActor
                         .classToActorName(className);
@@ -658,8 +659,8 @@ public class SDFDirector
 
             if (remoteReceivers.length == 0) {
                 // The channel of this output port doesn't have any sink.
-                result.append(NamedProgramCodeGeneratorAdapter
-                        .generateName(target.getComponent()));
+                result.append(CodeGeneratorAdapter.generateName(target
+                        .getComponent()));
                 result.append("_");
                 result.append(port.getName());
                 return result.toString();
@@ -723,8 +724,7 @@ public class SDFDirector
                     if (i != 0) {
                         result.append(" = ");
                     }
-                    result.append(NamedProgramCodeGeneratorAdapter
-                            .generateName(sinkPort));
+                    result.append(CodeGeneratorAdapter.generateName(sinkPort));
 
                     if (sinkPort.isMultiport()) {
                         result.append("[" + sinkChannelNumber + "]");
@@ -766,7 +766,7 @@ public class SDFDirector
 
         if (_checkLocal(forComposite, port)) {
 
-            result.append(NamedProgramCodeGeneratorAdapter.generateName(port));
+            result.append(CodeGeneratorAdapter.generateName(port));
 
             //if (!channelAndOffset[0].equals("")) {
             if (port.isMultiport()) {

@@ -167,8 +167,8 @@ public class ZeroOrderHold extends Transformer {
         try {
             // type of initialValue <= type of output
             if (defaultValue.getToken() != null) {
-                result.add(new Inequality(defaultValue.getTypeTerm(),
-                        output.getTypeTerm()));
+                result.add(new Inequality(defaultValue.getTypeTerm(), output
+                        .getTypeTerm()));
             }
         } catch (IllegalActionException ex) {
             // Errors in the defaultValue parameter should already

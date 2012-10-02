@@ -350,6 +350,7 @@ public class Histogram extends PlotBox {
     public void setSeed(Long seed) {
         _random.setSeed(seed);
     }
+
     /** Write the current data and plot configuration to the
      *  specified stream in PlotML syntax.  This writes the histogram,
      *  not the raw data, in such a way that the Plot class (not the

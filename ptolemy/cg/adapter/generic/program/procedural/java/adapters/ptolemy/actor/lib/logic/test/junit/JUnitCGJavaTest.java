@@ -50,4 +50,3 @@ import ptolemy.util.test.junit.JUnitCGJavaTestBase;
 public class JUnitCGJavaTest extends JUnitCGJavaTestBase {
     // This class is empty, all the action occurs in the parent.
 }
-

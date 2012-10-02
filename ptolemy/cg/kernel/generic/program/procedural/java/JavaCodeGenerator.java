@@ -134,16 +134,16 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
         //String ptolemyType = super.codeGenType(type);
         String result = type == BaseType.INT ? "Int"
                 : type == BaseType.LONG ? "Long"
-            : type == BaseType.STRING ? "String"
-            : type == BaseType.DOUBLE ? "Double"
-            : type == BaseType.BOOLEAN ? "Boolean"
-            : type == BaseType.UNSIGNED_BYTE ? "UnsignedByte"
-            : type == PointerToken.POINTER ? "Pointer"
-            : type == BaseType.COMPLEX ? "Complex"
-            // FIXME: Why do we have to use equals with BaseType.OBJECT?
-            : type.equals(BaseType.OBJECT) ? "Object"
-            //: type == BaseType.OBJECT ? "Object"
-            : null;
+                        : type == BaseType.STRING ? "String"
+                                : type == BaseType.DOUBLE ? "Double"
+                                        : type == BaseType.BOOLEAN ? "Boolean"
+                                                : type == BaseType.UNSIGNED_BYTE ? "UnsignedByte"
+                                                        : type == PointerToken.POINTER ? "Pointer"
+                                                                : type == BaseType.COMPLEX ? "Complex"
+                                                                        // FIXME: Why do we have to use equals with BaseType.OBJECT?
+                                                                        : type.equals(BaseType.OBJECT) ? "Object"
+                                                                                //: type == BaseType.OBJECT ? "Object"
+                                                                                : null;
 
         if (result == null) {
             if (type instanceof ArrayType) {
@@ -154,28 +154,30 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
             }
         }
         if (result == null || result.length() == 0) {
-//             if (type instanceof ptolemy.data.type.ObjectType) {
-//                 System.out.println("ObjectType: " + type + " " + BaseType.OBJECT);
-//                 ptolemy.data.type.ObjectType objectType = (ptolemy.data.type.ObjectType)type;
-//                 Class clazz = objectType.getTokenClass();
-//                 System.out.println("ObjectType class: " + (clazz == null ? "null!" : clazz.getName()));
-//                 Class clazz2 = BaseType.OBJECT.getTokenClass();
-//                 System.out.println("BaseType.ObjectType class: " + (clazz2 == null ? "null!" : clazz2.getName()));
-//                 boolean flag = (clazz == clazz2);
-//                 System.out.println("clazz == clazz2: " + flag);
-//                 flag = (type == BaseType.OBJECT);
-//                 System.out.println("type == BaseType.OBJECT: " + flag);
-//                 flag = (type.equals(BaseType.OBJECT));
-//                 System.out.println("type.equals(BaseType.OBJECT): " + flag);
-//                 System.out.println("type.hashCode(): " + type.hashCode() + " BaseType.OBJECT.hashCode(): " + BaseType.OBJECT.hashCode());
-//                 System.out.println("System.identityHashCode(type): " + System.identityHashCode(type)
-//                         + " System.identityHashCode(BaseType.OBJECT) " + System.identityHashCode(BaseType.OBJECT));
-//             }
+            //             if (type instanceof ptolemy.data.type.ObjectType) {
+            //                 System.out.println("ObjectType: " + type + " " + BaseType.OBJECT);
+            //                 ptolemy.data.type.ObjectType objectType = (ptolemy.data.type.ObjectType)type;
+            //                 Class clazz = objectType.getTokenClass();
+            //                 System.out.println("ObjectType class: " + (clazz == null ? "null!" : clazz.getName()));
+            //                 Class clazz2 = BaseType.OBJECT.getTokenClass();
+            //                 System.out.println("BaseType.ObjectType class: " + (clazz2 == null ? "null!" : clazz2.getName()));
+            //                 boolean flag = (clazz == clazz2);
+            //                 System.out.println("clazz == clazz2: " + flag);
+            //                 flag = (type == BaseType.OBJECT);
+            //                 System.out.println("type == BaseType.OBJECT: " + flag);
+            //                 flag = (type.equals(BaseType.OBJECT));
+            //                 System.out.println("type.equals(BaseType.OBJECT): " + flag);
+            //                 System.out.println("type.hashCode(): " + type.hashCode() + " BaseType.OBJECT.hashCode(): " + BaseType.OBJECT.hashCode());
+            //                 System.out.println("System.identityHashCode(type): " + System.identityHashCode(type)
+            //                         + " System.identityHashCode(BaseType.OBJECT) " + System.identityHashCode(BaseType.OBJECT));
+            //             }
 
             // It is not an error to resolve to general.  See
             // $PTII/bin/ptcg -language java $PTII/ptolemy/cg/kernel/generic/program/procedural/java/test/auto/Display.xml
-            System.out.println("JavaCodeGenerator.codeGenType(): Cannot resolve codegen type from Ptolemy type: " + type
-                    + ".  Maybe the type of a port needs to be set from the UI or backward type inference disabled?");
+            System.out
+                    .println("JavaCodeGenerator.codeGenType(): Cannot resolve codegen type from Ptolemy type: "
+                            + type
+                            + ".  Maybe the type of a port needs to be set from the UI or backward type inference disabled?");
         }
         if (result == null) {
             return null;
@@ -205,10 +207,10 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
                                                 : type == BaseType.UNSIGNED_BYTE ? "unsigned byte"
                                                         : type == PointerToken.POINTER ? "Pointer"
                                                                 : type == BaseType.COMPLEX ? "Complex"
-            // FIXME: Why do we have to use equals with Object
-            : type.equals(BaseType.OBJECT) ? "Object"
-            //: type == BaseType.OBJECT ? "Object"
-                                                                        : null;
+                                                                        // FIXME: Why do we have to use equals with Object
+                                                                        : type.equals(BaseType.OBJECT) ? "Object"
+                                                                                //: type == BaseType.OBJECT ? "Object"
+                                                                                : null;
 
         if (result == null) {
             if (type instanceof ArrayType) {
@@ -334,16 +336,18 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
             throws IllegalActionException {
         // FIXME: the typesArray should only include types used
         // by the model.
-        int result = type == BaseType.INT ? 2 : type == BaseType.LONG ? 3
-                : type == BaseType.STRING ? 0 : type == BaseType.DOUBLE ? 4
-                        : type == BaseType.BOOLEAN ? 5
-                                : type == BaseType.UNSIGNED_BYTE ? 6
-                                        : type == PointerToken.POINTER ? 7
-                                                : type == BaseType.COMPLEX ? 9
-            // FIXME: Why do we have to use equals with BaseType.OBJECT?
-            : type.equals(BaseType.OBJECT) ? 10
-            //: type == BaseType.OBJECT ? 10
-                                                        : -10;
+        int result = type == BaseType.INT ? 2
+                : type == BaseType.LONG ? 3
+                        : type == BaseType.STRING ? 0
+                                : type == BaseType.DOUBLE ? 4
+                                        : type == BaseType.BOOLEAN ? 5
+                                                : type == BaseType.UNSIGNED_BYTE ? 6
+                                                        : type == PointerToken.POINTER ? 7
+                                                                : type == BaseType.COMPLEX ? 9
+                                                                        // FIXME: Why do we have to use equals with BaseType.OBJECT?
+                                                                        : type.equals(BaseType.OBJECT) ? 10
+                                                                                //: type == BaseType.OBJECT ? 10
+                                                                                : -10;
 
         if (result == -10) {
             if (type instanceof ArrayType) {
@@ -355,7 +359,7 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
         }
 
         if (result == -10) {
-            throw new IllegalActionException("Unsuported type: " + type );
+            throw new IllegalActionException("Unsuported type: " + type);
         }
 
         return result;
@@ -369,10 +373,11 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
      *  @param value The value of the constant.
      *  @return A static final that defines the constant.
      */
-    public String generateConstantDefinition(String constant,
-            String type, String value) {
+    public String generateConstantDefinition(String constant, String type,
+            String value) {
         // Maybe we should keep track of these in a Set?
-        return "static final " + type + " " + constant + " = " + value + ";" + _eol;
+        return "static final " + type + " " + constant + " = " + value + ";"
+                + _eol;
     }
 
     /** Generate the closing code for a group of fire functions common
@@ -585,8 +590,8 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
                 for (int j = 0; j < functions.length; j++) {
                     if (functions[j].equals("isCloseTo")
                             && (types[i].equals("Boolean")
-                                    || types[i].equals("String")
-                                    || types[i].equals("Object"))) {
+                                    || types[i].equals("String") || types[i]
+                                        .equals("Object"))) {
                         // Boolean_isCloseTo and String_isCloseTo
                         // are the same as their corresponding *_equals
                         code.append(types[i] + "_equals");
@@ -1016,8 +1021,8 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
                     // Boolean_equals and String_equals.
                     if (functionsArray[j].equals("isCloseTo")
                             && (typesArray[i].equals("Boolean")
-                                    || typesArray[i].equals("String")
-                                    || typesArray[i].equals("Object"))) {
+                                    || typesArray[i].equals("String") || typesArray[i]
+                                        .equals("Object"))) {
 
                         if (!functions.contains("equals")) {
                             //typeStreams[i].appendCodeBlock(typesArray[i]
@@ -1078,7 +1083,7 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
                 NamedObj namedObj = (NamedObj) namedObjs.next();
                 if (namedObj instanceof Actor) {
                     variableDeclarations
-                        .add(generateFireFunctionVariableDeclaration(namedObj));
+                            .add(generateFireFunctionVariableDeclaration(namedObj));
                 }
             }
 
@@ -1499,8 +1504,7 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
                 // or the if, {}, comment or try/catch block ends.
                 for (int i = 0; (i + 1 < linesPerMethod && line != null)
                         || ifCount > 0 || openBracketCount > 0
-                        || commentCount > 0 || tryCount > 0
-                        || switchCount > 0 ; i++) {
+                        || commentCount > 0 || tryCount > 0 || switchCount > 0; i++) {
                     lineNumber++;
                     line = bufferedReader.readLine();
                     //System.out.println(ifCount + " " + openBracketCount + " " + commentCount + " " + tryCount + " b:" + line);
@@ -1749,11 +1753,11 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
                                 : ptType == BaseType.BOOLEAN ? "boolean"
                                         : ptType == BaseType.LONG ? "long"
                                                 : ptType == BaseType.UNSIGNED_BYTE ? "byte"
-            // FIXME: Why do we have to use equals with BaseType.OBJECT?
-            // Object and Complex types are not primitive types.
-            // $PTII/bin/ptcg -language java $PTII/ptolemy/cg/kernel/generic/program/procedural/java/test/auto/ObjectToken1.xml
-            //: ptType.equals(BaseType.OBJECT) ? "Object"
-            //: ptType == BaseType.OBJECT ? "Object"
+                                                        // FIXME: Why do we have to use equals with BaseType.OBJECT?
+                                                        // Object and Complex types are not primitive types.
+                                                        // $PTII/bin/ptcg -language java $PTII/ptolemy/cg/kernel/generic/program/procedural/java/test/auto/ObjectToken1.xml
+                                                        //: ptType.equals(BaseType.OBJECT) ? "Object"
+                                                        //: ptType == BaseType.OBJECT ? "Object"
 
                                                         //: ptType == PointerToken.POINTER ? "void*"
                                                         : "Token";
@@ -2005,7 +2009,7 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
         NamedProgramCodeGeneratorAdapter compositeActorAdapter = (NamedProgramCodeGeneratorAdapter) getAdapter(getContainer());
         Set<String> includingFiles = compositeActorAdapter.getHeaderFiles();
 
-        for (String file : (Set<String>) includingFiles) {
+        for (String file : includingFiles) {
             if (!file.equals("<math.h>") && !file.equals("<stdio.h>")) {
                 code.append("import " + file + _eol);
             }
@@ -2277,7 +2281,8 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
             String ptcgLibraries = _concatenateClasspath(_libraries);
             // Remove any trailing : and avoid having ".::.." in the makefile.
             if (ptcgLibraries.endsWith(":")) {
-                ptcgLibraries = ptcgLibraries.substring(0, ptcgLibraries.length() - 1);
+                ptcgLibraries = ptcgLibraries.substring(0,
+                        ptcgLibraries.length() - 1);
             }
             _substituteMap.put("@PTCGLibraries@", ptcgLibraries);
 
@@ -2640,14 +2645,14 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
                     // FIXME: we should not be deleting the .java and .class file
                     // in the top level, instead, we should be writing our code
                     // into a subdirectory.
-                    File topTokenFile = new File(codeDirectoryFile,
-                            typeName + ".java");
+                    File topTokenFile = new File(codeDirectoryFile, typeName
+                            + ".java");
                     if (!topTokenFile.delete()) {
                         throw new IllegalActionException("Failed to delete "
                                 + topTokenFile);
                     }
-                    File topTokenClass = new File(codeDirectoryFile,
-                            typeName + ".class");
+                    File topTokenClass = new File(codeDirectoryFile, typeName
+                            + ".class");
                     if (!topTokenClass.delete()) {
                         System.out.println("Warning: Failed to delete "
                                 + topTokenClass);
@@ -2717,9 +2722,9 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
         functions.add("isCloseTo");
         functions.addAll(_typeFuncUsed);
         functions.addAll(_tokenFuncUsed);
-//         System.out.println("JavaCodeGenerator: all type functions: " + _typeFuncUsed);
-//         System.out.println("JavaCodeGenerator: all token functions: " + _tokenFuncUsed);
-//         System.out.println("JavaCodeGenerator: all referenced functions: " + functions);
+        //         System.out.println("JavaCodeGenerator: all type functions: " + _typeFuncUsed);
+        //         System.out.println("JavaCodeGenerator: all token functions: " + _tokenFuncUsed);
+        //         System.out.println("JavaCodeGenerator: all referenced functions: " + functions);
         return functions;
     }
 
@@ -2778,7 +2783,7 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
      */
     private static String _typeNameCG(String typeName) {
         if (typeName.equals("Complex")) {
-            typeName =  "ComplexCG";
+            typeName = "ComplexCG";
         } else if (typeName.equals("Object")) {
             typeName = "ObjectCG";
         }

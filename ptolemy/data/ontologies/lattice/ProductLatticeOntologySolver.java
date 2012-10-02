@@ -152,7 +152,6 @@ public class ProductLatticeOntologySolver extends LatticeOntologySolver {
         //reset();
         OntologySolverUtilities productLatticeSolverUtilities = getOntologySolverUtilities();
 
-
         // Before calling initialize set all the sub ontology solvers to use the same shared utilities
         // object as the product lattice ontology solver.  This is necessary to keep track of
         // constraint relationships between Ptolemy expressions and the model elements that contain them.
@@ -201,8 +200,8 @@ public class ProductLatticeOntologySolver extends LatticeOntologySolver {
                     LatticeOntologyAdapter toplevelAdapter = (LatticeOntologyAdapter) innerSolver
                             .getAdapter(toplevel);
                     toplevelAdapter.reinitialize();
-                    toplevelAdapter
-                            ._addDefaultConstraints(innerSolver._getConstraintType());
+                    toplevelAdapter._addDefaultConstraints(innerSolver
+                            ._getConstraintType());
                     toplevelAdapter._setConnectionConstraintType(innerSolver
                             ._getConstraintType());
                 } catch (IllegalActionException e) {

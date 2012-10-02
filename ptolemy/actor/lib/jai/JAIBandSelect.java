@@ -76,7 +76,7 @@ public class JAIBandSelect extends Transformer {
 
         // An initial array that simply copies a three banded image. */
         IntToken[] initialArray = { new IntToken(0), new IntToken(1),
-            new IntToken(2) };
+                new IntToken(2) };
 
         bandIndices = new Parameter(this, "bandIndices", new ArrayToken(
                 BaseType.INT, initialArray));

@@ -88,11 +88,8 @@ public class AutoCGCKnownFailedTests extends AutoCGKnownFailedTests {
     @Test
     @Parameters(method = "modelValues")
     public void runModelInline(String fullPath) throws Throwable {
-        runModel(fullPath, "c",
-                false /* generateInSubdirectory */,
-                true /* inline */,
-                2500 /* maximumLinesPerBlock */,
-                false /*variablesAsArrays*/);
+        runModel(fullPath, "c", false /* generateInSubdirectory */,
+                true /* inline */, 2500 /* maximumLinesPerBlock */, false /*variablesAsArrays*/);
     }
 
     /**
@@ -107,10 +104,7 @@ public class AutoCGCKnownFailedTests extends AutoCGKnownFailedTests {
     @Test
     @Parameters(method = "modelValues")
     public void runModelNoInline(String fullPath) throws Throwable {
-        runModel(fullPath, "c",
-                false /* generateInSubdirectory */,
-                false /* inline */,
-                2500 /* maximumLinesPerBlock */,
-                false /*variablesAsArrays*/);
+        runModel(fullPath, "c", false /* generateInSubdirectory */,
+                false /* inline */, 2500 /* maximumLinesPerBlock */, false /*variablesAsArrays*/);
     }
 }

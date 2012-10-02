@@ -41,14 +41,12 @@ import ptolemy.data.IntToken;
 import ptolemy.data.RecordToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.gui.Top;
-import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.Workspace;
-import ptolemy.moml.MoMLChangeRequest;
 
 ///////////////////////////////////////////////////////////////////
 //// WindowPropertiesAttribute
@@ -111,7 +109,8 @@ public class WindowPropertiesAttribute extends Parameter implements
      *  an attribute that cannot be cloned.
      */
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        WindowPropertiesAttribute newObject = (WindowPropertiesAttribute) super.clone(workspace);
+        WindowPropertiesAttribute newObject = (WindowPropertiesAttribute) super
+                .clone(workspace);
         newObject._listeningTo = new WeakReference<Frame>(null);
         return newObject;
     }
@@ -162,13 +161,15 @@ public class WindowPropertiesAttribute extends Parameter implements
             try {
                 value = (RecordToken) getToken();
             } catch (IllegalActionException ex) {
-                throw new IllegalActionException(this, ex,
+                throw new IllegalActionException(
+                        this,
+                        ex,
                         "Attempting to get the value of the WindowPropertiesAttribute "
-                        + "failed.  This can happen when a model with graphical actors "
-                        + "is run using MoMLSimpleApplication "
-                        + "because MoMLSimpleApplication does not run the model in "
-                        + "the Swing event thread.  One possibility is that the model "
-                        + "needs to be run in Vergil and saved.");
+                                + "failed.  This can happen when a model with graphical actors "
+                                + "is run using MoMLSimpleApplication "
+                                + "because MoMLSimpleApplication does not run the model in "
+                                + "the Swing event thread.  One possibility is that the model "
+                                + "needs to be run in Vergil and saved.");
             }
             boolean updateValue = false;
 
@@ -176,7 +177,8 @@ public class WindowPropertiesAttribute extends Parameter implements
                 updateValue = true;
             } else {
                 ArrayToken boundsToken = (ArrayToken) value.get("bounds");
-                BooleanToken maximizedToken = (BooleanToken) value.get("maximized");
+                BooleanToken maximizedToken = (BooleanToken) value
+                        .get("maximized");
                 int x = ((IntToken) boundsToken.getElement(0)).intValue();
                 int y = ((IntToken) boundsToken.getElement(1)).intValue();
                 int width = ((IntToken) boundsToken.getElement(2)).intValue();
@@ -187,10 +189,8 @@ public class WindowPropertiesAttribute extends Parameter implements
                 }
 
                 // If the new values are different, then do a MoMLChangeRequest.
-                if (maximizedToken.booleanValue() != maximized
-                        || x != bounds.x
-                        || y != bounds.y
-                        || width != bounds.width
+                if (maximizedToken.booleanValue() != maximized || x != bounds.x
+                        || y != bounds.y || width != bounds.width
                         || height != bounds.height) {
                     updateValue = true;
                 }
@@ -203,8 +203,8 @@ public class WindowPropertiesAttribute extends Parameter implements
 
                 // Construct values for the record token.
                 String values = "{bounds={" + bounds.x + ", " + bounds.y + ", "
-                    + bounds.width + ", " + bounds.height + "}, maximized="
-                    + maximized + "}";
+                        + bounds.width + ", " + bounds.height + "}, maximized="
+                        + maximized + "}";
 
                 // Don't call setToken(), instead use a MoMLChangeRequest so that
                 // the model is marked modified so that any changes are preserved.
@@ -219,18 +219,19 @@ public class WindowPropertiesAttribute extends Parameter implements
                 // Display actors, then they should explicitly save the model.
                 setToken(values);
 
-//                 String moml = "<property name=\"" + getName()
-//                     + "\" value=\"" + values + "\"/>";
+                //                 String moml = "<property name=\"" + getName()
+                //                     + "\" value=\"" + values + "\"/>";
 
-//                 MoMLChangeRequest request = new MoMLChangeRequest(this,
-//                         getContainer(), moml, false);
-//                 getContainer().requestChange(request);
+                //                 MoMLChangeRequest request = new MoMLChangeRequest(this,
+                //                         getContainer(), moml, false);
+                //                 getContainer().requestChange(request);
                 // Not clear why the following is needed, but if it isn't there,
                 // then window properties may not be recorded.
                 propagateValue();
             }
         } catch (IllegalActionException ex) {
-            throw new InternalErrorException(this, ex, "Can't set propertes value!");
+            throw new InternalErrorException(this, ex,
+                    "Can't set propertes value!");
         }
     }
 

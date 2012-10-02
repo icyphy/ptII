@@ -114,7 +114,8 @@ public abstract class RunnableGraphController extends WithIconGraphController
                 while (inequalities.hasNext()) {
                     Object item = inequalities.next();
                     if (item instanceof InequalityTerm) {
-                        Object object = ((InequalityTerm)item).getAssociatedObject();
+                        Object object = ((InequalityTerm) item)
+                                .getAssociatedObject();
                         if (object instanceof Nameable) {
                             highlightError((Nameable) object);
                         }
@@ -159,8 +160,7 @@ public abstract class RunnableGraphController extends WithIconGraphController
         } else {
             statusMessage = ".";
         }
-        getFrame().report("execution finished"
-                          + statusMessage);
+        getFrame().report("execution finished" + statusMessage);
     }
 
     /** Report that a manager state has changed.
@@ -198,8 +198,8 @@ public abstract class RunnableGraphController extends WithIconGraphController
             } else {
                 statusMessage = ".";
             }
-            getFrame().report(manager.getState().getDescription()
-                              + statusMessage);
+            getFrame().report(
+                    manager.getState().getDescription() + statusMessage);
             _previousState = newState;
 
             if (newState == Manager.INITIALIZING

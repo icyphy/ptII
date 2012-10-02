@@ -39,7 +39,6 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 
-
 ///////////////////////////////////////////////////////////////////
 //// DefaultTitle
 /**
@@ -67,7 +66,8 @@ public class DefaultTitle extends WebContent implements WebExportable {
         super(container, name);
 
         _icon.setIconText("T");
-        displayText.setExpression("Default title to give to icons in the model.");
+        displayText
+                .setExpression("Default title to give to icons in the model.");
 
         showTitleInHTML = new Parameter(this, "showTitleInHTML");
         showTitleInHTML.setExpression("true");
@@ -141,7 +141,7 @@ public class DefaultTitle extends WebContent implements WebExportable {
      *  the created WebAttribute
      */
     protected void _provideAttributes(WebExporter exporter)
-        throws IllegalActionException {
+            throws IllegalActionException {
 
         WebAttribute webAttribute;
 
@@ -154,7 +154,7 @@ public class DefaultTitle extends WebContent implements WebExportable {
 
         // FIXME:  Refactor so we don't need this method
         exporter.setTitle(titleValue,
-                ((BooleanToken)showTitleInHTML.getToken()).booleanValue());
+                ((BooleanToken) showTitleInHTML.getToken()).booleanValue());
 
         // Create a WebAttribute for title and add to exporter.
         // Content should only be added once (onceOnly -> true).
@@ -178,14 +178,15 @@ public class DefaultTitle extends WebContent implements WebExportable {
         NamedObj container = getContainer();
         if (entities && container instanceof CompositeEntity) {
             if (instances.trim().equals("")) {
-                objects = ((CompositeEntity)container).entityList();
+                objects = ((CompositeEntity) container).entityList();
             } else {
                 try {
                     Class restrict = Class.forName(instances);
-                    objects = ((CompositeEntity)container).entityList(restrict);
+                    objects = ((CompositeEntity) container)
+                            .entityList(restrict);
                 } catch (ClassNotFoundException e) {
-                    throw new IllegalActionException(this,
-                            "No such class: " + instances);
+                    throw new IllegalActionException(this, "No such class: "
+                            + instances);
                 }
             }
             for (NamedObj object : objects) {
@@ -200,15 +201,15 @@ public class DefaultTitle extends WebContent implements WebExportable {
         }
         if (attributes) {
             if (instances.trim().equals("")) {
-                objects = ((CompositeEntity)container).attributeList();
+                objects = ((CompositeEntity) container).attributeList();
             } else {
                 try {
                     Class restrict = Class.forName(instances);
-                    objects = ((CompositeEntity)container)
-                        .attributeList(restrict);
+                    objects = ((CompositeEntity) container)
+                            .attributeList(restrict);
                 } catch (ClassNotFoundException e) {
-                    throw new IllegalActionException(this,
-                            "No such class: " + instances);
+                    throw new IllegalActionException(this, "No such class: "
+                            + instances);
                 }
             }
             for (NamedObj object : objects) {

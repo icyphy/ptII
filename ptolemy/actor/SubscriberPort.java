@@ -165,7 +165,7 @@ public class SubscriberPort extends PubSubPort {
                     throw new IllegalActionException(this,
                             "initialOutputs value is required to be an array.");
                 }
-                int length = ((ArrayToken)initialOutputsValue).length();
+                int length = ((ArrayToken) initialOutputsValue).length();
                 DFUtilities.setOrCreate(this, "tokenInitProduction", length);
             }
         } else {
@@ -187,7 +187,8 @@ public class SubscriberPort extends PubSubPort {
         if (_tokenInitConsumptionSet != null) {
             for (IOPort port : _tokenInitConsumptionSet.keySet()) {
                 String previousValue = _tokenInitConsumptionSet.get(port);
-                Variable variable = DFUtilities.getRateVariable(port, "tokenInitConsumption");
+                Variable variable = DFUtilities.getRateVariable(port,
+                        "tokenInitConsumption");
                 if (previousValue == null) {
                     try {
                         variable.setContainer(null);
@@ -202,6 +203,7 @@ public class SubscriberPort extends PubSubPort {
         }
         super.hierarchyChanged();
     }
+
     /** Notify this object that the containment hierarchy above it will be
      *  changed, which results in the channel being unlinked from the publisher.
      *  @exception IllegalActionException If unlinking to a published port fails.
@@ -236,7 +238,7 @@ public class SubscriberPort extends PubSubPort {
      */
     @Override
     public void initialize() throws IllegalActionException {
-        if (((InstantiableNamedObj)getContainer()).isWithinClassDefinition()) {
+        if (((InstantiableNamedObj) getContainer()).isWithinClassDefinition()) {
             // Don't initialize Class Definitions.
             // FIXME: Probably shouldn't even be a registered Initializable.
             // See $PTII/ptolemy/actor/lib/test/auto/PublisherToplevelSubscriberPortAOC.xml
@@ -248,9 +250,11 @@ public class SubscriberPort extends PubSubPort {
         // provided by the ConstantPublisherPort. If not, then we have
         // set the inside destination ports to return constant values.
         if (_publisherPort instanceof ConstantPublisherPort) {
-            Token constantToken = ((ConstantPublisherPort)_publisherPort).constantValue.getToken();
-            Token limitToken = ((ConstantPublisherPort)_publisherPort).numberOfTokens.getToken();
-            int limit = ((IntToken)limitToken).intValue();
+            Token constantToken = ((ConstantPublisherPort) _publisherPort).constantValue
+                    .getToken();
+            Token limitToken = ((ConstantPublisherPort) _publisherPort).numberOfTokens
+                    .getToken();
+            int limit = ((IntToken) limitToken).intValue();
             if (isOpaque()) {
                 _setConstant(constantToken, limit);
             } else {
@@ -258,7 +262,7 @@ public class SubscriberPort extends PubSubPort {
                 // port is transparent. The returned list is empty,
                 // unfortunately, so we have duplicate that functionality
                 // here.
-                Director dir = ((Actor)getContainer()).getDirector();
+                Director dir = ((Actor) getContainer()).getDirector();
                 int depthOfDirector = dir.depthInHierarchy();
                 LinkedList<IOPort> insidePorts = new LinkedList<IOPort>();
                 Iterator<?> ports = deepInsidePortList().iterator();
@@ -287,7 +291,8 @@ public class SubscriberPort extends PubSubPort {
                 if (receivers != null) {
                     for (int i = 0; i < receivers.length; i++) {
                         for (int j = 0; j < receivers.length; j++) {
-                            for (Token token : ((ArrayToken) initialOutputsValue).arrayValue()) {
+                            for (Token token : ((ArrayToken) initialOutputsValue)
+                                    .arrayValue()) {
                                 receivers[i][j].put(token);
                             }
                         }
@@ -295,7 +300,8 @@ public class SubscriberPort extends PubSubPort {
                 }
             } else {
                 // The port is not opaque.
-                for (Token token : ((ArrayToken) initialOutputsValue).arrayValue()) {
+                for (Token token : ((ArrayToken) initialOutputsValue)
+                        .arrayValue()) {
                     for (int i = 0; i < getWidth(); i++) {
                         sendInside(i, token);
                     }
@@ -316,10 +322,11 @@ public class SubscriberPort extends PubSubPort {
         }
         NamedObj actor = getContainer();
         if (actor != null && actor.getContainer() == null) {
-            throw new IllegalActionException(this,
+            throw new IllegalActionException(
+                    this,
                     "SubscriberPorts cannot be used at the top level, use a Subscriber actor instead.");
         }
-        if (((InstantiableNamedObj)getContainer()).isWithinClassDefinition()) {
+        if (((InstantiableNamedObj) getContainer()).isWithinClassDefinition()) {
             // Don't preinitialize Class Definitions.
             // See $PTII/ptolemy/actor/lib/test/auto/PublisherToplevelSubscriberPortAOC.xml
             return;
@@ -381,9 +388,8 @@ public class SubscriberPort extends PubSubPort {
                 try {
                     IOPort publisherPort = null;
                     try {
-                        publisherPort =
-                                ((CompositeActor) container).linkToPublishedPort(
-                                _channel, this, _global);
+                        publisherPort = ((CompositeActor) container)
+                                .linkToPublishedPort(_channel, this, _global);
                     } catch (IllegalActionException ex) {
                         // If we have a LazyTypedCompositeActor that
                         // contains the Publisher, then populate() the
@@ -391,15 +397,16 @@ public class SubscriberPort extends PubSubPort {
                         // and retry the link.  This is computationally
                         // expensive.
                         // See $PTII/ptolemy/actor/lib/test/auto/LazyPubSub.xml
-                        _updatePublisherPorts((CompositeEntity)toplevel());
+                        _updatePublisherPorts((CompositeEntity) toplevel());
                         // Now try again.
                         try {
-                            publisherPort =
-                                    ((CompositeActor) container).linkToPublishedPort(
-                                    _channel, this, _global);
+                            publisherPort = ((CompositeActor) container)
+                                    .linkToPublishedPort(_channel, this,
+                                            _global);
                         } catch (IllegalActionException ex2) {
                             // Rethrow with the "this" so that Go To Actor works.
-                            throw new IllegalActionException(this, ex2, "Failed to update link.");
+                            throw new IllegalActionException(this, ex2,
+                                    "Failed to update link.");
                         }
                     }
                     // Set the init consumption parameter for this port, or if this
@@ -412,7 +419,7 @@ public class SubscriberPort extends PubSubPort {
 
                     Token initialOutputsValue = initialTokens.getToken();
                     if (initialOutputsValue != null) {
-                        length = ((ArrayToken)initialOutputsValue).length();
+                        length = ((ArrayToken) initialOutputsValue).length();
                     }
 
                     // If the publisherPort has initial production and is not opaque,
@@ -420,30 +427,37 @@ public class SubscriberPort extends PubSubPort {
                     // parameter here so that the SDF scheduler knows that initial tokens
                     // will be available.
                     if (!publisherPort.isOpaque()) {
-                        length += DFUtilities.getTokenInitProduction(publisherPort);
+                        length += DFUtilities
+                                .getTokenInitProduction(publisherPort);
                     }
                     _publisherPort = publisherPort;
 
                     if (length > 0) {
                         if (isOpaque()) {
-                            DFUtilities.setOrCreate(this, "tokenInitConsumption", length);
+                            DFUtilities.setOrCreate(this,
+                                    "tokenInitConsumption", length);
                         } else {
                             // If this port is not opaque, then we have
                             // to set the parameter for inside ports that will
                             // actually receive the initial token.
                             if (_tokenInitConsumptionSet == null) {
-                                _tokenInitConsumptionSet = new HashMap<IOPort,String>();
+                                _tokenInitConsumptionSet = new HashMap<IOPort, String>();
                             }
                             List<IOPort> insidePorts = deepInsidePortList();
                             for (IOPort port : insidePorts) {
-                                Variable previousVariable = DFUtilities.getRateVariable(port, "tokenInitConsumption");
+                                Variable previousVariable = DFUtilities
+                                        .getRateVariable(port,
+                                                "tokenInitConsumption");
                                 if (previousVariable == null) {
                                     _tokenInitConsumptionSet.put(port, null);
                                 } else {
-                                    String previousValue = previousVariable.getExpression();
-                                    _tokenInitConsumptionSet.put(port, previousValue);
+                                    String previousValue = previousVariable
+                                            .getExpression();
+                                    _tokenInitConsumptionSet.put(port,
+                                            previousValue);
                                 }
-                                DFUtilities.setOrCreate(port, "tokenInitConsumption", length);
+                                DFUtilities.setOrCreate(port,
+                                        "tokenInitConsumption", length);
                             }
                         }
                     }
@@ -463,18 +477,19 @@ public class SubscriberPort extends PubSubPort {
      *  @param root The root of the tree to search.
      *  @exception IllegalActionException If the port rejects its channel.
      */
-    protected void _updatePublisherPorts(Entity root) throws IllegalActionException {
+    protected void _updatePublisherPorts(Entity root)
+            throws IllegalActionException {
         List<Port> ports = root.portList();
         for (Port port : ports) {
             if (port instanceof PublisherPort) {
                 // FIXME: Not sure if this is necessary
-                StringParameter channel = ((PublisherPort)port).channel;
+                StringParameter channel = ((PublisherPort) port).channel;
                 channel.validate();
                 port.attributeChanged(channel);
             }
         }
         if (root instanceof CompositeEntity) {
-            List<Entity> entities = ((CompositeEntity)root).entityList();
+            List<Entity> entities = ((CompositeEntity) root).entityList();
             for (Entity entity : entities) {
                 _updatePublisherPorts(entity);
             }
@@ -491,5 +506,5 @@ public class SubscriberPort extends PubSubPort {
      *  in preinitialize to something other than 0. This is needed so
      *  that these variables can be unset if the hierarchy changes.
      */
-    private Map<IOPort,String> _tokenInitConsumptionSet;
+    private Map<IOPort, String> _tokenInitConsumptionSet;
 }

@@ -92,7 +92,7 @@ public class ExportToWebJUnitTest {
     protected void _exportToWebTest(final String modelFileName,
             final String directoryName) throws Exception {
         FileUtilities.deleteDirectory(new File(directoryName));
-        String args [] = new String[3];
+        String args[] = new String[3];
         args[0] = "-run";
         args[1] = modelFileName;
         args[2] = directoryName;

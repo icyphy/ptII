@@ -103,7 +103,7 @@ public class JAIBorder extends Transformer {
         DoubleToken[] initialArray = { new DoubleToken(0) };
 
         constants = new Parameter(this, "constants", new ArrayToken(
-                        BaseType.DOUBLE, initialArray));
+                BaseType.DOUBLE, initialArray));
     }
 
     ///////////////////////////////////////////////////////////////////

@@ -128,7 +128,8 @@ public class JavaTemplateParser extends ProceduralTemplateParser {
         if (underbar != -1) {
             String type = typeOrToken.substring(underbar + 1,
                     typeOrToken.length());
-            if (_getCodeGenerator().isPrimitive(type) || type.equals("Complex") || type.equals("Object")) {
+            if (_getCodeGenerator().isPrimitive(type) || type.equals("Complex")
+                    || type.equals("Object")) {
                 addNewTypesUsed(type);
             }
         }

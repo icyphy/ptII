@@ -461,8 +461,8 @@ public class PythonScript extends TypedAtomicActor {
         if (object == null) {
             throw new IllegalActionException(this,
                     "Error in creating an instance of the "
-                    + jythonClassName.getExpression()
-                    + "defined in the script.");
+                            + jythonClassName.getExpression()
+                            + "defined in the script.");
         }
 
         // set up access to this actor
@@ -484,8 +484,7 @@ public class PythonScript extends TypedAtomicActor {
             }
 
             object.__setattr__(new PyString(mangledName),
-                    PyJavaType.wrapJavaObject(attribute)
-                               );
+                    PyJavaType.wrapJavaObject(attribute));
         }
 
         Iterator ports = portList().iterator();
@@ -500,8 +499,7 @@ public class PythonScript extends TypedAtomicActor {
             }
 
             object.__setattr__(new PyString(mangledName),
-                    PyJavaType.wrapJavaObject(port)
-                               );
+                    PyJavaType.wrapJavaObject(port));
         }
 
         // populate the method map
@@ -549,27 +547,33 @@ public class PythonScript extends TypedAtomicActor {
 
             // Get the class defined by the script.
             try {
-                _class = (PyClass) _interpreter.get(jythonClassName.getExpression());
+                _class = (PyClass) _interpreter.get(jythonClassName
+                        .getExpression());
             } catch (ClassCastException ex) {
                 try {
-                    PyModule module = (PyModule) _interpreter.get(jythonClassName.getExpression());
-                    _class = (PyClass)module.__findattr_ex__("Main");
+                    PyModule module = (PyModule) _interpreter
+                            .get(jythonClassName.getExpression());
+                    _class = (PyClass) module.__findattr_ex__("Main");
                 } catch (ClassCastException ex2) {
                     throw new IllegalActionException(this, ex,
-                        "Failed to cast _interpreter.get(jythonClassName.getExpression()) "
-                        + " which is of type "
-                        + _interpreter.get(jythonClassName.getExpression()).getClass().getName()
-                        + " to PyClass.");
+                            "Failed to cast _interpreter.get(jythonClassName.getExpression()) "
+                                    + " which is of type "
+                                    + _interpreter
+                                            .get(jythonClassName
+                                                    .getExpression())
+                                            .getClass().getName()
+                                    + " to PyClass.");
                 }
             }
 
             if (_class == null) {
-                throw new IllegalActionException(this,
+                throw new IllegalActionException(
+                        this,
                         "The script does not define a \""
-                        + jythonClassName.getExpression()
-                        + " \" class, try setting the jythonClassName parameter "
-                        + "or have the script start with \"class "
-                        + jythonClassName.getExpression() + "\".");
+                                + jythonClassName.getExpression()
+                                + " \" class, try setting the jythonClassName parameter "
+                                + "or have the script start with \"class "
+                                + jythonClassName.getExpression() + "\".");
             }
         }
     }
@@ -622,7 +626,8 @@ public class PythonScript extends TypedAtomicActor {
 
                     for (int i = 0; i < args.length; ++i) {
                         if (!(args[i] instanceof PyObject)) {
-                            convertedArgs[i] = PyJavaType.wrapJavaObject(args[i]);
+                            convertedArgs[i] = PyJavaType
+                                    .wrapJavaObject(args[i]);
                         } else {
                             convertedArgs[i] = (PyObject) args[i];
                         }
@@ -764,7 +769,6 @@ public class PythonScript extends TypedAtomicActor {
             _interpreter.exec("import sys\n");
             //_interpreter.exec("sys.path.append('" + ptIIDir
             //        + "/ptolemy/actor/lib/python/test/')");
-
 
         } catch (Exception ex) {
             // Ignore this, $PTII//ptolemy/actor/lib/python/test/ might not exist.

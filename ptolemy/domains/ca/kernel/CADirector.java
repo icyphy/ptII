@@ -200,11 +200,12 @@ public class CADirector extends Director {
      */
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         CADirector newObject = (CADirector) super.clone(workspace);
-        newObject.delay = (Parameter)newObject.getAttribute("delay");
-        newObject.initialMatrix = (Parameter)newObject.getAttribute("initialMatrix");
-        newObject.iterations = (Parameter)newObject.getAttribute("iterations");
-        newObject.random = (Parameter)newObject.getAttribute("random");
-        newObject.size = (Parameter)newObject.getAttribute("size");
+        newObject.delay = (Parameter) newObject.getAttribute("delay");
+        newObject.initialMatrix = (Parameter) newObject
+                .getAttribute("initialMatrix");
+        newObject.iterations = (Parameter) newObject.getAttribute("iterations");
+        newObject.random = (Parameter) newObject.getAttribute("random");
+        newObject.size = (Parameter) newObject.getAttribute("size");
         return newObject;
     }
 

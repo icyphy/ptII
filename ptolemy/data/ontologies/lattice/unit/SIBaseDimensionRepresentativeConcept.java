@@ -114,22 +114,22 @@ public class SIBaseDimensionRepresentativeConcept extends
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
 
-        boolean useUnitAbbreviation = ((BooleanToken) useAbbreviation.
-                getToken()).booleanValue();
+        boolean useUnitAbbreviation = ((BooleanToken) useAbbreviation
+                .getToken()).booleanValue();
 
         // If not using unit abbreviations, react to a change in the
         // unitFullName parameter.
-        if ((attribute.equals(useAbbreviation) || attribute.equals(unitFullName))
-                && !useUnitAbbreviation) {
+        if ((attribute.equals(useAbbreviation) || attribute
+                .equals(unitFullName)) && !useUnitAbbreviation) {
 
             SIPrefixUnitConversionInfo.createAllSIPrefixConversionParameters(
                     this, unitFullName.getValueAsString(), useUnitAbbreviation,
                     1.0, null);
 
-        // If using unit abbreviations, react to a change in the
-        // unitAbbreviation parameter.
-        } else if ((attribute.equals(useAbbreviation) ||
-                attribute.equals(unitAbbreviation)) && useUnitAbbreviation) {
+            // If using unit abbreviations, react to a change in the
+            // unitAbbreviation parameter.
+        } else if ((attribute.equals(useAbbreviation) || attribute
+                .equals(unitAbbreviation)) && useUnitAbbreviation) {
 
             SIPrefixUnitConversionInfo.createAllSIPrefixConversionParameters(
                     this, unitAbbreviation.getValueAsString(),

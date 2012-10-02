@@ -136,8 +136,7 @@ public class TestExceptionHandler extends TypedAtomicActor implements
                     correctExceptionMessage.stringValue())) {
                 throw new IllegalActionException(this, exception, "Expected:\n"
                         + correctExceptionMessage.stringValue()
-                        + "\nBut got:\n"
-                        + exception.getMessage());
+                        + "\nBut got:\n" + exception.getMessage());
             }
         }
         return true;

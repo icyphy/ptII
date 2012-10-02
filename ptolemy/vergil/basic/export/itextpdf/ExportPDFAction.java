@@ -150,23 +150,26 @@ public class ExportPDFAction extends AbstractAction {
 
             LinkedList extensions = new LinkedList();
             extensions.add("pdf");
-            ptFileChooser
-                .addChoosableFileFilter(new ExtensionFilenameFilter(
-                                extensions));
+            ptFileChooser.addChoosableFileFilter(new ExtensionFilenameFilter(
+                    extensions));
 
             BasicGraphFrame basicGraphFrame = null;
             if (_frame instanceof BasicGraphFrame) {
-                basicGraphFrame = (BasicGraphFrame)_frame;
-                ptFileChooser.setCurrentDirectory(basicGraphFrame.getLastDirectory());
-                ptFileChooser.setSelectedFile(new File(basicGraphFrame.getModel().getName() + ".pdf"));
+                basicGraphFrame = (BasicGraphFrame) _frame;
+                ptFileChooser.setCurrentDirectory(basicGraphFrame
+                        .getLastDirectory());
+                ptFileChooser.setSelectedFile(new File(basicGraphFrame
+                        .getModel().getName() + ".pdf"));
             }
             int returnVal = ptFileChooser.showDialog(_frame, "Export PDF");
 
             if (returnVal == JFileChooser.APPROVE_OPTION) {
                 if (basicGraphFrame != null) {
-                    basicGraphFrame.setLastDirectory(ptFileChooser.getCurrentDirectory());
+                    basicGraphFrame.setLastDirectory(ptFileChooser
+                            .getCurrentDirectory());
                 }
-                File pdfFile = ptFileChooser.getSelectedFile().getCanonicalFile();
+                File pdfFile = ptFileChooser.getSelectedFile()
+                        .getCanonicalFile();
 
                 if (pdfFile.getName().indexOf(".") == -1) {
                     // If the user has not given the file an extension, add it
@@ -209,20 +212,24 @@ public class ExportPDFAction extends AbstractAction {
                 //_read(pdfFile.toURI().toURL());
                 // Open the image pdfFile.
                 if (basicGraphFrame == null) {
-                    MessageHandler
-                        .message("PDF file exported to " + pdfFile.getName());
+                    MessageHandler.message("PDF file exported to "
+                            + pdfFile.getName());
                 } else {
-                    if (MessageHandler.yesNoQuestion("Open \"" + pdfFile.getCanonicalPath()
-                                    + "\" in a browser?")) {
-                        Configuration configuration = basicGraphFrame.getConfiguration();
+                    if (MessageHandler.yesNoQuestion("Open \""
+                            + pdfFile.getCanonicalPath() + "\" in a browser?")) {
+                        Configuration configuration = basicGraphFrame
+                                .getConfiguration();
                         try {
-                            URL imageURL = new URL(pdfFile.toURI().toURL().toString()
+                            URL imageURL = new URL(pdfFile.toURI().toURL()
+                                    .toString()
                                     + "#in_browser");
-                            configuration.openModel(imageURL, imageURL, imageURL.toExternalForm(),
-                                BrowserEffigy.staticFactory);
+                            configuration.openModel(imageURL, imageURL,
+                                    imageURL.toExternalForm(),
+                                    BrowserEffigy.staticFactory);
                         } catch (Throwable throwable) {
-                            MessageHandler.error("Failed to open \""
-                                    + pdfFile.getName() + "\".", throwable);
+                            MessageHandler.error(
+                                    "Failed to open \"" + pdfFile.getName()
+                                            + "\".", throwable);
                         }
                     }
                 }

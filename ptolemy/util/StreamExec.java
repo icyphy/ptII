@@ -221,6 +221,7 @@ public class StreamExec implements ExecuteCommands {
         _patternOutLog = new StringBuffer();
         _patternErrorLog = new StringBuffer();
     }
+
     /** Determine whether the last subprocess is waited for or not.
      *  @param waitForLastSubprocess True if the {@link #start()}
      *  method should wait for the last subprocess to finish.
@@ -255,8 +256,7 @@ public class StreamExec implements ExecuteCommands {
      *  @param text The text to append to standard error.
      */
     public void stderr(final String text) {
-        if (_pattern != null
-            && _pattern.matcher(text).matches()) {
+        if (_pattern != null && _pattern.matcher(text).matches()) {
             _patternErrorLog.append(text + _eol);
         }
         System.err.println(text);
@@ -274,8 +274,7 @@ public class StreamExec implements ExecuteCommands {
      *  @param text The text to append to standard out.
      */
     public void stdout(final String text) {
-        if (_pattern != null
-            && _pattern.matcher(text).matches()) {
+        if (_pattern != null && _pattern.matcher(text).matches()) {
             _patternOutLog.append(text + _eol);
         }
         System.out.println(text);

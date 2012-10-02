@@ -138,7 +138,8 @@ public class PtIndexer {
      *  @exception ClassNotFoundException If the file does not contain the
      *  dictionary class.
      */
-    public static void main(String args[]) throws IOException, ClassNotFoundException {
+    public static void main(String args[]) throws IOException,
+            ClassNotFoundException {
         String usage = "Usage: java -classpath $PTII doc.doclets.PtIndexer [target]";
         String dictionaryFile = "PtIndexer.ser";
 
@@ -178,13 +179,15 @@ public class PtIndexer {
                     // Remove .xml
                     fileName = fileName.substring(0, fileName.lastIndexOf("."));
                     // Replace "./" with "" and then "/" with "."
-                    String className = fileName.replace("./", "").replace("/", ".");
+                    String className = fileName.replace("./", "").replace("/",
+                            ".");
                     while ((line = fileInput.readLine()) != null) {
                         numberOfLines++;
                         ptIndexer.append(className, line);
                     }
                 }
-                System.out.println("Read " + numberOfFiles + " files, " + numberOfLines + " lines.");
+                System.out.println("Read " + numberOfFiles + " files, "
+                        + numberOfLines + " lines.");
             } finally {
                 try {
                     if (stdin != null) {
@@ -211,19 +214,25 @@ public class PtIndexer {
      *  @exception ClassNotFoundException If the file does not contain the
      *  dictionary class.
      */
-    public void read(String fileName) throws IOException, ClassNotFoundException {
+    public void read(String fileName) throws IOException,
+            ClassNotFoundException {
         FileInputStream fileInputStream = null;
         ObjectInputStream objectInputStream = null;
         try {
             fileInputStream = new FileInputStream(fileName);
             objectInputStream = new ObjectInputStream(fileInputStream);
             if (_useCompression) {
-                _compressedDictionary = (Map<String, BigInteger>)objectInputStream.readObject();
-                _compressedDefinitions = (String[]) objectInputStream.readObject();
-                System.out.println("_compressedDictionary size: " + _compressedDictionary.size());
-                System.out.println("_compressedDefinitions size: " + _compressedDefinitions.length);
+                _compressedDictionary = (Map<String, BigInteger>) objectInputStream
+                        .readObject();
+                _compressedDefinitions = (String[]) objectInputStream
+                        .readObject();
+                System.out.println("_compressedDictionary size: "
+                        + _compressedDictionary.size());
+                System.out.println("_compressedDefinitions size: "
+                        + _compressedDefinitions.length);
             } else {
-                _dictionary = (Map<String, Set<String>>)objectInputStream.readObject();
+                _dictionary = (Map<String, Set<String>>) objectInputStream
+                        .readObject();
             }
         } finally {
             try {
@@ -254,12 +263,14 @@ public class PtIndexer {
         // The StreamTokenizer converts to lowercase so the
         // dictionary is lower case.
         if (_useCompression) {
-            BigInteger indices = _compressedDictionary.get(target.toLowerCase());
+            BigInteger indices = _compressedDictionary
+                    .get(target.toLowerCase());
             if (indices == null) {
                 return null;
             }
             int lastBit = indices.bitLength();
-            System.out.println(indices + " lastBit: " + lastBit + " size: " + _compressedDefinitions.length);
+            System.out.println(indices + " lastBit: " + lastBit + " size: "
+                    + _compressedDefinitions.length);
             Set results = new HashSet();
             for (int i = 0; i <= lastBit; i++) {
                 if (indices.testBit(i)) {
@@ -281,23 +292,22 @@ public class PtIndexer {
         int maximumDefinitions = -1;
         String maximumKey = "";
         int definitionsSum = 0;
-        for ( Map.Entry<String, Set<String>> entry :  _dictionary.entrySet()) {
+        for (Map.Entry<String, Set<String>> entry : _dictionary.entrySet()) {
             dictionarySize++;
             Set<String> definitions = entry.getValue();
             int size = definitions.size();
             definitionsSum += size;
-            if (size  > maximumDefinitions) {
+            if (size > maximumDefinitions) {
                 maximumDefinitions = size;
                 maximumKey = entry.getKey();
             }
         }
 
         return "Number of keys: " + dictionarySize
-            + "\nKey with the most definitions: \""
-            + maximumKey + "\" with " + maximumDefinitions
-            + " definitions."
-            + "\nAverage number of definitions: "
-            + definitionsSum / dictionarySize ;
+                + "\nKey with the most definitions: \"" + maximumKey
+                + "\" with " + maximumDefinitions + " definitions."
+                + "\nAverage number of definitions: " + definitionsSum
+                / dictionarySize;
     }
 
     /** Write the dictionary to a file or URL.
@@ -360,7 +370,8 @@ public class PtIndexer {
 
         // A map from the definition name (typically the class name)
         // to the index in _compressedDefinitions
-        Map<String, Integer> definitionsMap = new HashMap<String, Integer>(dictionarySize);
+        Map<String, Integer> definitionsMap = new HashMap<String, Integer>(
+                dictionarySize);
 
         // The dictionary consists of keys (the word to be searched
         // for) and values (a set of locations, typically class
@@ -375,39 +386,40 @@ public class PtIndexer {
         // The uncompressed locations.
         Set<String> definitions = null;
         BigInteger indices = null;
-        for ( Map.Entry<String, Set<String>> entry :  _dictionary.entrySet()) {
-           key = entry.getKey();
-           definitions = entry.getValue();
-           for (String definition: definitions) {
-               // See if the definition has already been mapped.
-               Integer definitionIndex = definitionsMap.get(definition);
-               if (definitionIndex == null) {
-                   // The definition (typically the class path)
-                   // is not in the map from definition name to index
-                   // into _compressedDefinitions, so add it now.
-                   definitionsMap.put(definition, keyCount);
-                   // Add the definition to the array of definitions:
-                   _compressedDefinitions[keyCount] = definition;
-                   definitionIndex = new Integer(keyCount++);
-               }
-               // The value of definitionsIndex is now the index of
-               // the element in _compressedDefinitions.
+        for (Map.Entry<String, Set<String>> entry : _dictionary.entrySet()) {
+            key = entry.getKey();
+            definitions = entry.getValue();
+            for (String definition : definitions) {
+                // See if the definition has already been mapped.
+                Integer definitionIndex = definitionsMap.get(definition);
+                if (definitionIndex == null) {
+                    // The definition (typically the class path)
+                    // is not in the map from definition name to index
+                    // into _compressedDefinitions, so add it now.
+                    definitionsMap.put(definition, keyCount);
+                    // Add the definition to the array of definitions:
+                    _compressedDefinitions[keyCount] = definition;
+                    definitionIndex = new Integer(keyCount++);
+                }
+                // The value of definitionsIndex is now the index of
+                // the element in _compressedDefinitions.
 
-               indices = _compressedDictionary.get(key);
-               if (indices == null) {
-                   // _compressedDictionary does not have an element for key, add one now.
-                   // Since definitionsIndex is the first index, we just add it.
-                   indices = new BigInteger("0");
-                   indices = indices.setBit(definitionIndex.intValue());
-                   _compressedDictionary.put(key, indices);
-               } else {
-                   // _compressedDictionary already has an element for key.
-                   indices = indices.setBit(definitionIndex.intValue());
-                   _compressedDictionary.put(key, indices);
-               }
-           }
+                indices = _compressedDictionary.get(key);
+                if (indices == null) {
+                    // _compressedDictionary does not have an element for key, add one now.
+                    // Since definitionsIndex is the first index, we just add it.
+                    indices = new BigInteger("0");
+                    indices = indices.setBit(definitionIndex.intValue());
+                    _compressedDictionary.put(key, indices);
+                } else {
+                    // _compressedDictionary already has an element for key.
+                    indices = indices.setBit(definitionIndex.intValue());
+                    _compressedDictionary.put(key, indices);
+                }
+            }
         }
     }
+
     /** The dictionary, where the key is the word and the value is
      *  a Set of Strings where each element names a place where the word
      *  is used.  For searching actors, the key element is a dot-separated
@@ -425,8 +437,7 @@ public class PtIndexer {
      *  typically a dot-separated class name (the location) where a key
      *  was found.
      */
-    private String[] _compressedDefinitions = new String[]{};
-
+    private String[] _compressedDefinitions = new String[] {};
 
     /** True if compression is used.
      */
@@ -436,109 +447,105 @@ public class PtIndexer {
      *  One way to update this is with:
      * find $PTII/doc/codeDoc -name "*.xml"  | xargs cat | tr -cs "[:alpha:]" "\n" | tr "[:upper:]" "[:lower:]" | sort | uniq -c | sort -nr | head -100 | awk '{printf("       \"%s\", // %d\n", $2, $1)}'
      */
-    static Set<String> _common = new HashSet(Arrays.asList(
-       "the", // 20622
-       "gt", // 12103
-       "lt", // 11901
-       "ptolemy", // 9308
-       "a", // 8364
-       "is", // 7371
-       "pt", // 7309
-       "of", // 6723
-       "i", // 6130
-       "doc", // 5953
-       "dtd", // 5905
-       "version", // 5823
-       "to", // 5519
-       "actor", // 4654
-       "this", // 4633
-       "name", // 4555
-       "xml", // 4233
-       "description", // 3981
-       "berkeley", // 3966
-       "docml", // 3934
-       "since", // 3860
-       "author", // 3775
-       "proposedrating", // 3655
-       "acceptedrating", // 3654
-       "in", // 3415
-       "and", // 3371
-       "that", // 3308
-       "class", // 3206
-       "property", // 3190
-       "port", // 2844
-       "quot", // 2763
-       "parameter", // 2737
-       "an", // 2709
-       "be", // 2680
-       "cxh", // 2648
-       "for", // 2525
-       "p", // 2443
-       "java", // 2250
-       "red", // 2207
-       "input", // 2191
-       "if", // 2108
-       "http", // 2096
-       "output", // 2036
-       "public", // 2013
-       "edu", // 1998
-       "eecs", // 1995
-       "standalone", // 1973
-       "yes", // 1969
-       "en", // 1969
-       "uc", // 1968
-       "doctype", // 1968
-       "ii", // 1967
-       "value", // 1930
-       "id", // 1909
-       "z", // 1903
-       "by", // 1783
-       "data", // 1752
-       "it", // 1722
-       "lib", // 1716
-       "are", // 1545
-       "with", // 1521
-       "will", // 1362
-       "on", // 1338
-       "then", // 1300
-       "expr", // 1265
-       "type", // 1176
-       "or", // 1117
-       "code", // 1117
-       "default", // 1114
-       "time", // 1091
-       "which", // 981
-       "as", // 978
-       "can", // 973
-       "domains", // 969
-       "model", // 957
-       "not", // 939
-       "has", // 847
-       "token", // 832
-       "at", // 823
-       "yellow", // 767
-       "each", // 762
-       "from", // 742
-       "green", // 681
-       "one", // 666
-       "set", // 662
-       "number", // 656
-       "director", // 656
-       "when", // 655
-       "lee", // 636
-       "its", // 628
-       "edward", // 614
-       "used", // 588
-       "true", // 578
-       "file", // 578
-       "eal", // 575
-       "typedioport", // 569
-       "kernel", // 559
-       "any", // 555
-       "method", // 548
-       "tokens", // 543
-       "pt.proposedrating",
-       "pt.acceptedrating",
-       "a."
-    ));
+    static Set<String> _common = new HashSet(Arrays.asList("the", // 20622
+            "gt", // 12103
+            "lt", // 11901
+            "ptolemy", // 9308
+            "a", // 8364
+            "is", // 7371
+            "pt", // 7309
+            "of", // 6723
+            "i", // 6130
+            "doc", // 5953
+            "dtd", // 5905
+            "version", // 5823
+            "to", // 5519
+            "actor", // 4654
+            "this", // 4633
+            "name", // 4555
+            "xml", // 4233
+            "description", // 3981
+            "berkeley", // 3966
+            "docml", // 3934
+            "since", // 3860
+            "author", // 3775
+            "proposedrating", // 3655
+            "acceptedrating", // 3654
+            "in", // 3415
+            "and", // 3371
+            "that", // 3308
+            "class", // 3206
+            "property", // 3190
+            "port", // 2844
+            "quot", // 2763
+            "parameter", // 2737
+            "an", // 2709
+            "be", // 2680
+            "cxh", // 2648
+            "for", // 2525
+            "p", // 2443
+            "java", // 2250
+            "red", // 2207
+            "input", // 2191
+            "if", // 2108
+            "http", // 2096
+            "output", // 2036
+            "public", // 2013
+            "edu", // 1998
+            "eecs", // 1995
+            "standalone", // 1973
+            "yes", // 1969
+            "en", // 1969
+            "uc", // 1968
+            "doctype", // 1968
+            "ii", // 1967
+            "value", // 1930
+            "id", // 1909
+            "z", // 1903
+            "by", // 1783
+            "data", // 1752
+            "it", // 1722
+            "lib", // 1716
+            "are", // 1545
+            "with", // 1521
+            "will", // 1362
+            "on", // 1338
+            "then", // 1300
+            "expr", // 1265
+            "type", // 1176
+            "or", // 1117
+            "code", // 1117
+            "default", // 1114
+            "time", // 1091
+            "which", // 981
+            "as", // 978
+            "can", // 973
+            "domains", // 969
+            "model", // 957
+            "not", // 939
+            "has", // 847
+            "token", // 832
+            "at", // 823
+            "yellow", // 767
+            "each", // 762
+            "from", // 742
+            "green", // 681
+            "one", // 666
+            "set", // 662
+            "number", // 656
+            "director", // 656
+            "when", // 655
+            "lee", // 636
+            "its", // 628
+            "edward", // 614
+            "used", // 588
+            "true", // 578
+            "file", // 578
+            "eal", // 575
+            "typedioport", // 569
+            "kernel", // 559
+            "any", // 555
+            "method", // 548
+            "tokens", // 543
+            "pt.proposedrating", "pt.acceptedrating", "a."));
 }

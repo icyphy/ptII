@@ -586,8 +586,7 @@ public class DDFDirector extends Director {
             while (inputPorts.hasNext()) {
                 IOPort inputPort = (IOPort) inputPorts.next();
                 Receiver[][] deepReceivers = inputPort.deepGetReceivers();
-                foundNotSatisfiedReceiver:
-                for (int i = 0; i < deepReceivers.length; i++) {
+                foundNotSatisfiedReceiver: for (int i = 0; i < deepReceivers.length; i++) {
                     for (int j = 0; j < deepReceivers[i].length; j++) {
                         QueueReceiver deepReceiver = (QueueReceiver) deepReceivers[i][j];
                         IOPort port = deepReceiver.getContainer();
@@ -1250,8 +1249,7 @@ public class DDFDirector extends Director {
             // Scan the contained receivers of the port to find
             // out channel index.
             int channelIndex = 0;
-            foundChannelIndex:
-            for (int m = 0; m < portReceivers.length; m++) {
+            foundChannelIndex: for (int m = 0; m < portReceivers.length; m++) {
                 for (int n = 0; n < portReceivers[m].length; n++) {
                     if (receiver == portReceivers[m][n]) {
                         channelIndex = m;

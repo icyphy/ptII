@@ -120,7 +120,7 @@ import ptolemy.data.BooleanToken;
 import ptolemy.domains.modal.kernel.FSMActor;
 import ptolemy.domains.ptera.lib.ListDirectory.RecursiveFileFilter;
 import ptolemy.gui.ComponentDialog;
-import ptolemy.gui.GraphicalMessageHandler;
+import ptolemy.gui.UndeferredGraphicalMessageHandler;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Entity;
@@ -289,7 +289,7 @@ public class TransformationEditor extends GTFrame implements ActionListener,
         }
         pack();
         show();
-        GraphicalMessageHandler.setContext(_previousDefaultContext);
+        UndeferredGraphicalMessageHandler.setContext(_previousDefaultContext);
         toFront();
         _getRightComponent().requestFocus();
     }
@@ -380,9 +380,9 @@ public class TransformationEditor extends GTFrame implements ActionListener,
         _screen.setVisible(true);
 
         // Make the new screen the default context for modal messages.
-        Component _previousDefaultContext = GraphicalMessageHandler
+        Component _previousDefaultContext = UndeferredGraphicalMessageHandler
                 .getContext();
-        GraphicalMessageHandler.setContext(_screen);
+        UndeferredGraphicalMessageHandler.setContext(_screen);
 
         // NOTE: As usual with swing, what the UI does is pretty
         // random, and doesn't correlate much with the documentation.
@@ -410,7 +410,7 @@ public class TransformationEditor extends GTFrame implements ActionListener,
         }
 
         setVisible(false);
-        GraphicalMessageHandler.setContext(_previousDefaultContext);
+        UndeferredGraphicalMessageHandler.setContext(_previousDefaultContext);
     }
 
     public void menuItemCreated(JContextMenu menu, NamedObj object,

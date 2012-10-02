@@ -993,5 +993,4 @@ public class SDFDirector extends StaticSchedulingDirector implements
     /** Cache of the most recent value of vectorizationFactor. */
     private int _vectorizationFactor = 1;
 
-
 }

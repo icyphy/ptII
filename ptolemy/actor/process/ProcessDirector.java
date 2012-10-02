@@ -86,7 +86,8 @@ public class ProcessDirector extends Director {
      *  @exception NameDuplicationException If construction of Time objects fails.
      *  @exception IllegalActionException If construction of Time objects fails.
      */
-    public ProcessDirector() throws IllegalActionException, NameDuplicationException {
+    public ProcessDirector() throws IllegalActionException,
+            NameDuplicationException {
         super();
     }
 
@@ -97,7 +98,8 @@ public class ProcessDirector extends Director {
      *  @exception NameDuplicationException If construction of Time objects fails.
      *  @exception IllegalActionException If construction of Time objects fails.
      */
-    public ProcessDirector(Workspace workspace) throws IllegalActionException, NameDuplicationException {
+    public ProcessDirector(Workspace workspace) throws IllegalActionException,
+            NameDuplicationException {
         super(workspace);
     }
 

@@ -127,7 +127,7 @@ public interface FMILibrary extends Library {
          *  @param parameters The printf style parameters.
          */
         void apply(Pointer fmiComponent, String instanceName, int status,
-                String category, String message, Pointer /*...*/ parameters);
+                String category, String message, Pointer /*...*/parameters);
         // What to do about jni callbacks with varargs?
         // See
         // http://chess.eecs.berkeley.edu/ptexternal/wiki/Main/JNA#fmiCallbackLogger

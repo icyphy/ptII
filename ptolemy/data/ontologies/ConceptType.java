@@ -51,7 +51,7 @@ public class ConceptType extends StructuredType implements Cloneable {
                     Token.notSupportedIncomparableConversionMessage(token,
                             toString()));
         }
-        return (ConceptToken)token;
+        return (ConceptToken) token;
     }
 
     /** Return the class for tokens that this type represents.
@@ -108,7 +108,8 @@ public class ConceptType extends StructuredType implements Cloneable {
      *  @param type Ignored.
      */
     @Override
-    public void initialize(Type type) {}
+    public void initialize(Type type) {
+    }
 
     /** Compare this type with the specified type.
      *  @param type Another instance of the ConceptType singleton type.

@@ -131,9 +131,13 @@ public class ModularCodeGenerator extends JavaCodeGenerator {
                     profilePort = model.convertProfilePort(port);
 
                 } catch (IllegalActionException ex) {
-                    throw new IllegalActionException(port, ex, "Failed to convert profile port \""
-                            + port.getName() + "\", perhaps the type of the port needs to "
-                            + "be set from the UI or the backward type inference disabled?");
+                    throw new IllegalActionException(
+                            port,
+                            ex,
+                            "Failed to convert profile port \""
+                                    + port.getName()
+                                    + "\", perhaps the type of the port needs to "
+                                    + "be set from the UI or the backward type inference disabled?");
                 }
                 profileCode.append(INDENT2
                         + "ports.add(new Profile.Port(\""

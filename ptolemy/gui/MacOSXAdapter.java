@@ -59,8 +59,9 @@ public class MacOSXAdapter implements InvocationHandler {
      *  the com.apple.eawt.ApplicationListener methods are all void.
      */
     public Object invoke(Object proxy, Method method, Object[] args)
-                        throws Throwable {
-        if (_topMethod == null || ! _proxySignature.equals(method.getName()) || args.length != 1) {
+            throws Throwable {
+        if (_topMethod == null || !_proxySignature.equals(method.getName())
+                || args.length != 1) {
             return null;
         }
         boolean handled = true;
@@ -75,8 +76,8 @@ public class MacOSXAdapter implements InvocationHandler {
             setHandledMethod.invoke(args[0],
                     new Object[] { Boolean.valueOf(handled) });
         } catch (Exception ex) {
-            _top.report("The Application event \"" + args[0] + "\" was not handled.",
-                    ex);
+            _top.report("The Application event \"" + args[0]
+                    + "\" was not handled.", ex);
         }
         return null;
     }
@@ -97,8 +98,8 @@ public class MacOSXAdapter implements InvocationHandler {
         }
         try {
             Method enableAboutMethod = _macOSXApplication.getClass()
-                .getDeclaredMethod("setEnabledAboutMenu",
-                        new Class[] { boolean.class });
+                    .getDeclaredMethod("setEnabledAboutMenu",
+                            new Class[] { boolean.class });
             enableAboutMethod.invoke(_macOSXApplication,
                     new Object[] { Boolean.TRUE });
         } catch (SecurityException ex) {
@@ -122,7 +123,6 @@ public class MacOSXAdapter implements InvocationHandler {
         _setHandler(top, new MacOSXAdapter("handleQuit", top, quitMethod));
     }
 
-
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
@@ -139,7 +139,6 @@ public class MacOSXAdapter implements InvocationHandler {
         _topMethod = topMethod;
     }
 
-
     /** Create a proxy object from the adapter and add it as an ApplicationListener.
      *  @param top the Top level window to perform the operation.
      *  @param adapter The adapter.
@@ -149,8 +148,7 @@ public class MacOSXAdapter implements InvocationHandler {
             Class applicationClass = null;
             String applicationClassName = "com.apple.eawt.Application";
             try {
-                applicationClass = Class
-                    .forName(applicationClassName);
+                applicationClass = Class.forName(applicationClassName);
             } catch (NoClassDefFoundError ex) {
                 if (!_printedNoClassDefFoundMessage) {
                     System.out.println("Warning: Failed to find the \""
@@ -163,8 +161,8 @@ public class MacOSXAdapter implements InvocationHandler {
                 if (ex.getCause() instanceof SecurityException) {
                     if (!_printedSecurityExceptionMessage) {
                         System.out.println("Warning: Failed to create new "
-                                + "instance of \""
-                                + applicationClassName + "\": " + ex
+                                + "instance of \"" + applicationClassName
+                                + "\": " + ex
                                 + "(applets and -sandbox always causes this)");
                     }
                     return;
@@ -178,18 +176,22 @@ public class MacOSXAdapter implements InvocationHandler {
                 } catch (java.lang.reflect.InvocationTargetException ex) {
                     if (ex.getCause() instanceof SecurityException) {
                         if (!_printedSecurityExceptionMessage) {
-                            System.out.println("Warning: Failed to get the"
-                                    + "constructor of \""
-                                    + applicationClassName + "\" ("
-                                    + applicationClass + "): " + ex
-                                    + "(applets and -sandbox always causes this)");
+                            System.out
+                                    .println("Warning: Failed to get the"
+                                            + "constructor of \""
+                                            + applicationClassName
+                                            + "\" ("
+                                            + applicationClass
+                                            + "): "
+                                            + ex
+                                            + "(applets and -sandbox always causes this)");
                         }
                     }
                     return;
                 }
             }
             Class applicationListenerClass = Class
-                .forName("com.apple.eawt.ApplicationListener");
+                    .forName("com.apple.eawt.ApplicationListener");
             Method addListenerMethod = applicationClass.getDeclaredMethod(
                     "addApplicationListener",
                     new Class[] { applicationListenerClass });
@@ -204,10 +206,11 @@ public class MacOSXAdapter implements InvocationHandler {
         } catch (ClassNotFoundException ex) {
             top.report("The a com.apple.eawt class was not found?", ex);
         } catch (Exception ex2) {
-            top.report("There was a problem invoking the addApplicationListener method", ex2);
+            top.report(
+                    "There was a problem invoking the addApplicationListener method",
+                    ex2);
         }
     }
-
 
     /** An instance of com.apple.eawt.Application, upon which methods are invoked.
      *  We use Object here instead of com.apple.eawt.Application so as to avoid
@@ -224,9 +227,9 @@ public class MacOSXAdapter implements InvocationHandler {
     /** True if we have printed the NoClassDefFound message. */
     private static boolean _printedNoClassDefFoundMessage = false;
 
-   /**  The name of a method in com.apple.eawt.ApplicationListener,
-     *  for example "handleQuit".
-     */
+    /**  The name of a method in com.apple.eawt.ApplicationListener,
+      *  for example "handleQuit".
+      */
     private String _proxySignature;
 
     /** The Top level window to perform the operation.  This window is also

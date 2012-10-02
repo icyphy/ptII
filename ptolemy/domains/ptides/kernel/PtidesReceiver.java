@@ -81,7 +81,6 @@ public class PtidesReceiver extends DEReceiver {
         super(container);
     }
 
-
     /**
      * Wrap the token in an DETokenEvent and post the trigger event to the director.
      * The director will be responsible to dequeue the trigger event at the
@@ -165,7 +164,7 @@ public class PtidesReceiver extends DEReceiver {
                     }
 
                     if (dir != null) {
-                        _director =  (PtidesDirector) dir;
+                        _director = (PtidesDirector) dir;
                         _directorVersion = port.workspace().getVersion();
                         return _director;
                     }

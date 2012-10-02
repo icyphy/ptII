@@ -191,7 +191,7 @@ public class EmbeddedCodeActor extends CompiledCompositeActor {
                     // Needed for $PTII/bin/vergil ptolemy/cg/lib/test/auto/Scale_c.xml
                     // See "SDF director iterations parameter default of 0 is unfriendly"
                     // http://bugzilla.ecoinformatics.org/show_bug.cgi?id=5546
-                    ((SDFDirector)localDirector).iterations.setExpression("0");
+                    ((SDFDirector) localDirector).iterations.setExpression("0");
 
                 }
             } catch (Exception ex) {

@@ -117,7 +117,7 @@ public class UndoLayoutAction implements UndoAction {
             double[] oldLoc = entry._locatable.getLocation();
             undoLayoutAction.addLocation(new LocationEntry(entry._locatable,
                     oldLoc[0], oldLoc[1]));
-            entry._locatable.setLocation(new double[] { entry._x, entry._y } );
+            entry._locatable.setLocation(new double[] { entry._x, entry._y });
         }
 
         // Process layout hints that shall be added.
@@ -130,7 +130,8 @@ public class UndoLayoutAction implements UndoAction {
         for (CurveEntry entry : this._curveEntries) {
             Parameter exitAngleParam = entry._transition.exitAngle;
             DoubleToken token = DoubleToken.convert(exitAngleParam.getToken());
-            undoLayoutAction.addCurve(new CurveEntry(entry._transition, token.doubleValue()));
+            undoLayoutAction.addCurve(new CurveEntry(entry._transition, token
+                    .doubleValue()));
             exitAngleParam.setExpression(Double.toString(entry._exitAngle));
         }
 

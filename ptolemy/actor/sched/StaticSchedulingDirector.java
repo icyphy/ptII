@@ -73,7 +73,8 @@ public class StaticSchedulingDirector extends Director {
      *  @exception NameDuplicationException If construction of Time objects fails.
      *  @exception IllegalActionException If construction of Time objects fails.
      */
-    public StaticSchedulingDirector() throws IllegalActionException, NameDuplicationException {
+    public StaticSchedulingDirector() throws IllegalActionException,
+            NameDuplicationException {
         super();
     }
 
@@ -84,7 +85,8 @@ public class StaticSchedulingDirector extends Director {
      *  @exception NameDuplicationException If construction of Time objects fails.
      *  @exception IllegalActionException If construction of Time objects fails.
      */
-    public StaticSchedulingDirector(Workspace workspace) throws IllegalActionException, NameDuplicationException {
+    public StaticSchedulingDirector(Workspace workspace)
+            throws IllegalActionException, NameDuplicationException {
         super(workspace);
     }
 

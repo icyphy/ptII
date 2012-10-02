@@ -50,19 +50,18 @@ public class SensorHandler extends InputDevice {
      *  @exception IllegalActionException
      * @exception NameDuplicationException
      */
-    public SensorHandler(
-            ptolemy.domains.ptides.lib.SensorHandler actor)
+    public SensorHandler(ptolemy.domains.ptides.lib.SensorHandler actor)
             throws IllegalActionException, NameDuplicationException {
         super(actor);
     }
-
 
     /** Return a string that represents the source time.
      *  @param timeVariable The variable that represents source time.
      *  @return A string that sets the timeVariable to the value at the timestamp pointer.
      *  @exception IllegalActionException Not thrown in this base class.
      */
-    public String getSourceTimeString(String timeVariable) throws IllegalActionException {
+    public String getSourceTimeString(String timeVariable)
+            throws IllegalActionException {
         String s = timeVariable + " = *timestamp;";
         return s;
     }

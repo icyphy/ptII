@@ -27,14 +27,7 @@ includes a button to open the actor that caused the problem and that zooms in to
  */
 package ptolemy.vergil;
 
-import java.util.Iterator;
-
 import ptolemy.actor.gui.ActorGraphicalMessageHandler;
-import ptolemy.gui.GraphicalMessageHandler;
-import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.util.InternalErrorException;
-import ptolemy.kernel.util.KernelException;
-import ptolemy.kernel.util.KernelRuntimeException;
 import ptolemy.kernel.util.Nameable;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.vergil.basic.BasicGraphFrame;
@@ -63,7 +56,7 @@ public class VergilGraphicalMessageHandler extends ActorGraphicalMessageHandler 
     protected void _showNameable(Throwable throwable) {
         Nameable nameable1 = _getNameable(throwable);
         if (nameable1 != null) {
-            BasicGraphFrame.openComposite(null, (NamedObj)nameable1);
+            BasicGraphFrame.openComposite(null, (NamedObj) nameable1);
             return;
         }
 

@@ -123,7 +123,8 @@ public class RectangleAttribute extends FilledShapeAttribute {
      *  @return The new Attribute.
      */
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        RectangleAttribute newObject = (RectangleAttribute) super.clone(workspace);
+        RectangleAttribute newObject = (RectangleAttribute) super
+                .clone(workspace);
 
         // The cloned icon ends up referring to the clonee's shape.
         // We need to fix that here.

@@ -67,8 +67,8 @@ import ptolemy.kernel.util.Workspace;
  @see ptolemy.actor.CompositeActor
  @see ptolemy.actor.IOPort
  */
-public class AtomicActor<T extends IOPort> extends ComponentEntity<T> implements Actor,
-        FiringsRecordable {
+public class AtomicActor<T extends IOPort> extends ComponentEntity<T> implements
+        Actor, FiringsRecordable {
     /** Construct an actor in the default workspace with an empty string
      *  as its name. Increment the version number of the workspace.
      *  The object is added to the workspace directory.
@@ -855,10 +855,11 @@ public class AtomicActor<T extends IOPort> extends ComponentEntity<T> implements
      */
     protected final void _actorFiring(FiringEvent event) {
         if (_notifyingActorFiring) {
-            Iterator<ActorFiringListener> listeners = _actorFiringListeners.iterator();
+            Iterator<ActorFiringListener> listeners = _actorFiringListeners
+                    .iterator();
 
             while (listeners.hasNext()) {
-                ((ActorFiringListener) listeners.next()).firingEvent(event);
+                listeners.next().firingEvent(event);
             }
         }
     }

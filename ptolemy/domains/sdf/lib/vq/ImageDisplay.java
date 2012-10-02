@@ -80,7 +80,6 @@ public class ImageDisplay extends ptolemy.actor.lib.image.ImageDisplay {
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
-
     /** Get the right instance of the implementation depending upon the
      *  of the dependency specified through dependency injection.
      *  If the instance has not been created, then it is created.
@@ -100,12 +99,12 @@ public class ImageDisplay extends ptolemy.actor.lib.image.ImageDisplay {
         if (_implementation == null) {
             if (PtolemyInjector.getInjector() == null) {
                 System.err.println("Warning: main() did not call "
-                               + "ActorModuleInitializer.initializeInjector(), "
-                               + "so ImageDisplay is calling it for you.");
+                        + "ActorModuleInitializer.initializeInjector(), "
+                        + "so ImageDisplay is calling it for you.");
                 ActorModuleInitializer.initializeInjector();
             }
             _implementation = PtolemyInjector.getInjector().getInstance(
-                            ImageDisplayInterface.class);
+                    ImageDisplayInterface.class);
             try {
                 _implementation.init(this);
             } catch (NameDuplicationException e) {

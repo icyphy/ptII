@@ -68,8 +68,7 @@ public abstract class AbstractPlaceableJavaSE {
             NameDuplicationException {
         // An actor may already have _windowProperties set.
         _windowProperties = (WindowPropertiesAttribute) actor.getAttribute(
-                "_windowProperties",
-                WindowPropertiesAttribute.class);
+                "_windowProperties", WindowPropertiesAttribute.class);
         if (_windowProperties == null) {
             _windowProperties = new WindowPropertiesAttribute(actor,
                     "_windowProperties");
@@ -83,8 +82,8 @@ public abstract class AbstractPlaceableJavaSE {
         // of the window and save it.
         _windowProperties.setPersistent(true);
 
-        _paneSize = (SizeAttribute) actor.getAttribute(
-                "_paneSize", SizeAttribute.class);
+        _paneSize = (SizeAttribute) actor.getAttribute("_paneSize",
+                SizeAttribute.class);
         if (_paneSize == null) {
             _paneSize = new SizeAttribute(actor, "_paneSize");
         }
@@ -138,8 +137,9 @@ public abstract class AbstractPlaceableJavaSE {
      *  @param depth The depth in the hierarchy, to determine indenting.
      *  @exception IOException If an I/O error occurs.
      */
-    protected void _exportMoMLContents(/*TypedAtomicActor actor, */ Writer output,
-            int depth) throws IOException {
+    protected void _exportMoMLContents(
+            /*TypedAtomicActor actor, */Writer output, int depth)
+            throws IOException {
         // Make sure that the current position of the frame, if any,
         // is up to date.
         if (_frame != null) {

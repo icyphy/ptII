@@ -60,7 +60,8 @@ import ptolemy.moml.MoMLModelAttribute;
    @Pt.ProposedRating Red (derler)
    @Pt.AcceptedRating Red (derler)
  */
-public abstract class ResourceScheduler extends MoMLModelAttribute implements Decorator {
+public abstract class ResourceScheduler extends MoMLModelAttribute implements
+        Decorator {
 
     /** Create a new actor in the specified container with the specified
      *  name.  The name must be unique within the container or an exception
@@ -114,15 +115,14 @@ public abstract class ResourceScheduler extends MoMLModelAttribute implements De
      */
     public DecoratedAttributes createDecoratedAttributes(NamedObj target)
             throws IllegalActionException, NameDuplicationException {
-        DecoratedAttributesImplementation decoratedAttributes = new DecoratedAttributesImplementation(target, this);
+        DecoratedAttributesImplementation decoratedAttributes = new DecoratedAttributesImplementation(
+                target, this);
         if (target.getAttribute("scheduler") == null) {
-            Parameter schedulerParameter = new Parameter(
-                  target, "scheduler");
+            Parameter schedulerParameter = new Parameter(target, "scheduler");
             schedulerParameter.setExpression("");
         }
         if (target.getAttribute("executionTime") == null) {
-            Parameter executionTime = new Parameter(
-                    target, "executionTime");
+            Parameter executionTime = new Parameter(target, "executionTime");
             executionTime.setExpression("0.0");
         }
         return decoratedAttributes;

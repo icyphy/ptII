@@ -32,7 +32,6 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 
-
 ///////////////////////////////////////////////////////////////////
 //// HTMLText
 /**
@@ -106,7 +105,7 @@ public class HTMLText extends WebContent {
      *  web content
      */
     protected void _provideElements(WebExporter exporter)
-        throws IllegalActionException{
+            throws IllegalActionException {
         WebElement webElement = WebElement.createWebElement(getContainer(),
                 getName() + "WebElement", getName() + "WebElement");
         webElement.setExpression("<div>" + stringValue() + "</div>");

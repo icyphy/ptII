@@ -121,7 +121,8 @@ public class LatticeOntologyCompositeAdapter extends LatticeOntologyAdapter {
      *  @exception IllegalActionException Thrown if getAdapter() has an error
      *   when it is called.
      */
-    protected void _addInterConnectionConstraints() throws IllegalActionException {
+    protected void _addInterConnectionConstraints()
+            throws IllegalActionException {
         CompositeEntity actor = (CompositeEntity) getComponent();
 
         // Set up inter-actor constraints.

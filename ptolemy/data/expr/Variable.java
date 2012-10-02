@@ -2154,7 +2154,8 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
          *  @exception IllegalActionException If a value in the scope
          *  exists with the given name, but cannot be evaluated.
          */
-        public synchronized Variable getVariable(String name) throws IllegalActionException {
+        public synchronized Variable getVariable(String name)
+                throws IllegalActionException {
             // This method is synchronized to prevent concurrent modification
             // of the _variablesDependentOn collection.
 
@@ -2478,7 +2479,8 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
          *  @return A description of the variable and its type.
          */
         public String toString() {
-            return "(variable " + Variable.this.getFullName() + ": " + getType() + ")";
+            return "(variable " + Variable.this.getFullName() + ": "
+                    + getType() + ")";
         }
     }
 }

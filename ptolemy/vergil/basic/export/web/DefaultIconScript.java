@@ -36,7 +36,6 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 
-
 ///////////////////////////////////////////////////////////////////
 //// DefaultIconScript
 /**
@@ -112,7 +111,7 @@ public class DefaultIconScript extends IconScript {
      *  @exception IllegalActionException If a subclass throws it.
      */
     protected void _provideAttributes(WebExporter exporter)
-        throws IllegalActionException {
+            throws IllegalActionException {
         WebAttribute webAttribute;
 
         boolean entities = false, attributes = false;
@@ -130,14 +129,15 @@ public class DefaultIconScript extends IconScript {
         NamedObj container = getContainer();
         if (entities && container instanceof CompositeEntity) {
             if (instances.trim().equals("")) {
-                objects = ((CompositeEntity)container).entityList();
+                objects = ((CompositeEntity) container).entityList();
             } else {
                 try {
                     Class restrict = Class.forName(instances);
-                    objects = ((CompositeEntity)container).entityList(restrict);
+                    objects = ((CompositeEntity) container)
+                            .entityList(restrict);
                 } catch (ClassNotFoundException e) {
-                    throw new IllegalActionException(this,
-                            "No such class: " + instances);
+                    throw new IllegalActionException(this, "No such class: "
+                            + instances);
                 }
             }
             for (NamedObj object : objects) {
@@ -147,46 +147,49 @@ public class DefaultIconScript extends IconScript {
                     if (!eventTypeValue.trim().equals("")) {
                         // Create WebAttribute for event and add to exporter.
                         // Content should only be added once (onceOnly -> true).
-                        webAttribute = WebAttribute.
-                            createWebAttribute(getContainer(), eventTypeValue
-                                    + "WebAttribute", eventTypeValue);
+                        webAttribute = WebAttribute
+                                .createWebAttribute(getContainer(),
+                                        eventTypeValue + "WebAttribute",
+                                        eventTypeValue);
                         webAttribute.setExpression(stringValue());
                         exporter.defineAttribute(webAttribute, true);
 
                         _provideDefaultAttributes(object, exporter);
-                                           }
+                    }
                 }
             }
         }
         if (attributes) {
             if (instances.trim().equals("")) {
-                objects = ((CompositeEntity)container).attributeList();
+                objects = ((CompositeEntity) container).attributeList();
             } else {
                 try {
                     Class restrict = Class.forName(instances);
-                    objects = ((CompositeEntity)container).attributeList(restrict);
+                    objects = ((CompositeEntity) container)
+                            .attributeList(restrict);
                 } catch (ClassNotFoundException e) {
-                    throw new IllegalActionException(this,
-                            "No such class: " + instances);
+                    throw new IllegalActionException(this, "No such class: "
+                            + instances);
                 }
             }
             for (NamedObj object : objects) {
                 // Do not generate events for WebAttributes and WebElements
-                if (object != null && !(object instanceof WebAttribute) &&
-                        !(object instanceof WebElement)) {
+                if (object != null && !(object instanceof WebAttribute)
+                        && !(object instanceof WebElement)) {
                     // TODO:  Enable multiple eventTypes
                     String eventTypeValue = eventType.stringValue();
                     if (!eventTypeValue.trim().equals("")) {
                         // Create WebAttribute for event and add to exporter.
                         // Content should only be added once (onceOnly -> true).
-                        webAttribute = WebAttribute.
-                            createWebAttribute(getContainer(), eventTypeValue
-                                    + "WebAttribute", eventTypeValue);
+                        webAttribute = WebAttribute
+                                .createWebAttribute(getContainer(),
+                                        eventTypeValue + "WebAttribute",
+                                        eventTypeValue);
                         webAttribute.setExpression(stringValue());
                         exporter.defineAttribute(webAttribute, true);
 
                         _provideDefaultAttributes(object, exporter);
-                  }
+                    }
                 }
             }
         }
@@ -202,7 +205,7 @@ public class DefaultIconScript extends IconScript {
      * or if there is a name duplication with the created attributes
      */
     protected void _provideDefaultAttributes(NamedObj object,
-                WebExporter exporter) throws IllegalActionException{
+            WebExporter exporter) throws IllegalActionException {
     }
 
 }

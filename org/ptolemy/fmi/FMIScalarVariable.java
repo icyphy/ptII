@@ -184,11 +184,12 @@ public class FMIScalarVariable {
                     for (int j = 0; j < names.getLength(); j++) {
                         Node name = element.getChildNodes().item(i);
                         if (name instanceof Element) {
-                            String childType = ((Element)name).getNodeName();
+                            String childType = ((Element) name).getNodeName();
                             if (childType.equals("Name")) {
                                 // FIXME: Is getNodeValue() the way to get "foo"
                                 // from <Name>foo</Name>?
-                                directDependency.add(((Element)child).getNodeValue());
+                                directDependency.add(((Element) child)
+                                        .getNodeValue());
                             }
                         }
                     }
@@ -280,7 +281,7 @@ public class FMIScalarVariable {
         _getValue(fmiComponent, pointerByReference, FMIStringType.class);
         Pointer reference = pointerByReference.getValue();
         String result = null;
-        if (reference != null)  {
+        if (reference != null) {
             // If _fmiGetString is not supported, then we might
             // have reference == null.
             result = reference.getString(0);
@@ -295,7 +296,8 @@ public class FMIScalarVariable {
      *  @see #getBoolean(Pointer fmiComponent)
      */
     public void setBoolean(Pointer fmiComponent, boolean value) {
-        ByteBuffer valueBuffer = ByteBuffer.allocate(1).put(0, (value ? (byte)1 : (byte)0));
+        ByteBuffer valueBuffer = ByteBuffer.allocate(1).put(0,
+                (value ? (byte) 1 : (byte) 0));
         _setValue(fmiComponent, valueBuffer, FMIBooleanType.class);
     }
 
@@ -454,7 +456,6 @@ public class FMIScalarVariable {
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
-
     /** Get or set the value of this variable.
      *  @param fmiComponent The Functional Mock-up Interface (FMI)
      *  component that contains a reference to the variable.
@@ -464,18 +465,19 @@ public class FMIScalarVariable {
      *  @param typeClass The expected class of the type.
      *  @param getOrSetFunction the fmiGet or fmiSet function.
      */
-    private void _getOrSetValue(Pointer fmiComponent, Object valueBuffer, Class typeClass, Function getOrSetFunction) {
+    private void _getOrSetValue(Pointer fmiComponent, Object valueBuffer,
+            Class typeClass, Function getOrSetFunction) {
         // This is syntactic sugar that helps us avoid duplicated code.
         if (!typeClass.isInstance(type)) {
-            throw new RuntimeException("Variable " + name +
-                    " is not a " + typeClass.getName()
-                    + ", it is a " + type.getClass().getName());
+            throw new RuntimeException("Variable " + name + " is not a "
+                    + typeClass.getName() + ", it is a "
+                    + type.getClass().getName());
         }
         IntBuffer valueReferenceIntBuffer = IntBuffer.allocate(1).put(0,
                 (int) valueReference);
         int fmiFlag = ((Integer) getOrSetFunction.invokeInt(new Object[] {
-                            fmiComponent, valueReferenceIntBuffer, new NativeSizeT(1),
-                            valueBuffer })).intValue();
+                fmiComponent, valueReferenceIntBuffer, new NativeSizeT(1),
+                valueBuffer })).intValue();
         if (fmiFlag > FMILibrary.FMIStatus.fmiWarning) {
             throw new RuntimeException("Could not get or set " + name
                     + " as a " + typeClass.getName() + ": " + fmiFlag);
@@ -490,7 +492,8 @@ public class FMIScalarVariable {
      *  String it is a PointerByReference
      *  @param typeClass The expected class of the type.
      */
-    private void _getValue(Pointer fmiComponent, Object valueBuffer, Class typeClass) {
+    private void _getValue(Pointer fmiComponent, Object valueBuffer,
+            Class typeClass) {
         _getOrSetValue(fmiComponent, valueBuffer, typeClass, fmiGetFunction);
     }
 
@@ -502,7 +505,8 @@ public class FMIScalarVariable {
      *  String it is a PointerByReference
      *  @param typeClass The expected class of the type.
      */
-    private void _setValue(Pointer fmiComponent, Object valueBuffer, Class typeClass) {
+    private void _setValue(Pointer fmiComponent, Object valueBuffer,
+            Class typeClass) {
         _getOrSetValue(fmiComponent, valueBuffer, typeClass, fmiSetFunction);
     }
 

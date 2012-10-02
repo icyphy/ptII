@@ -130,7 +130,8 @@ public class TextStyle extends ParameterEditorStyle {
         try {
             int heightValue = ((IntToken) height.getToken()).intValue();
             int widthValue = ((IntToken) width.getToken()).intValue();
-            JTextArea area = query.addTextArea(name, container.getDisplayName(), defaultValue,
+            JTextArea area = query.addTextArea(name,
+                    container.getDisplayName(), defaultValue,
                     PtolemyQuery.preferredBackgroundColor(container),
                     PtolemyQuery.preferredForegroundColor(container),
                     heightValue, widthValue);

@@ -107,7 +107,8 @@ public class PtolemyTreeCellRenderer extends DefaultTreeCellRenderer {
                 buffer.append(object.getDisplayName());
                 if (_showSettableValues) {
                     buffer.append("=");
-                    buffer.append(((Settable) object).getExpression().replace('\n', ' '));
+                    buffer.append(((Settable) object).getExpression().replace(
+                            '\n', ' '));
                 }
                 component.setText(buffer.toString());
             } else {
@@ -136,8 +137,8 @@ public class PtolemyTreeCellRenderer extends DefaultTreeCellRenderer {
                 // The last statement is wrong. The result is that icons do not
                 // display in the library. Hence, I've reversed the change. EAL 12/15/11.
                 if ((iconList.size() > 0)
-                      || (object.getAttribute("_iconDescription") != null)
-                      || (object.getAttribute("_smallIconDescription") != null)) {
+                        || (object.getAttribute("_iconDescription") != null)
+                        || (object.getAttribute("_smallIconDescription") != null)) {
                     // NOTE: this code is similar to that in IconController.
                     EditorIcon icon = null;
 

@@ -65,7 +65,8 @@ import ptolemy.kernel.util.Settable;
  @Pt.ProposedRating Yellow (eal)
  @Pt.AcceptedRating Red (cxh)
 */
-public class ShowTypes extends AbstractInitializableAttribute implements ExecutionListener {
+public class ShowTypes extends AbstractInitializableAttribute implements
+        ExecutionListener {
 
     /** Construct an actor with the specified container and name.
      *  @param container The container.
@@ -129,7 +130,7 @@ public class ShowTypes extends AbstractInitializableAttribute implements Executi
 
         NamedObj container = getContainer();
         if (container instanceof Actor) {
-            _manager = ((Actor)container).getManager();
+            _manager = ((Actor) container).getManager();
             // Note that this will have no effect if this is already a listener.
             _manager.addExecutionListener(this);
         }
@@ -156,7 +157,8 @@ public class ShowTypes extends AbstractInitializableAttribute implements Executi
         if (previousContainer != null
                 && previousContainer instanceof CompositeActor) {
             // Remove all _showInfo attributes in the ports of the previous container.
-            List<Actor> entities = ((CompositeActor) previousContainer).entityList();
+            List<Actor> entities = ((CompositeActor) previousContainer)
+                    .entityList();
             for (Actor entity : entities) {
                 List<IOPort> ports = entity.inputPortList();
                 for (IOPort port : ports) {
@@ -179,17 +181,19 @@ public class ShowTypes extends AbstractInitializableAttribute implements Executi
         if (container != null && container instanceof CompositeEntity) {
             ChangeRequest request = new ChangeRequest(this,
                     "Update types on ports", true) {
-                protected void _execute()
-                        throws IllegalActionException {
-                    List<Entity> entities = ((CompositeEntity) container).entityList();
+                protected void _execute() throws IllegalActionException {
+                    List<Entity> entities = ((CompositeEntity) container)
+                            .entityList();
                     for (Entity entity : entities) {
                         List<IOPort> ports = entity.portList();
                         for (IOPort port : ports) {
                             // If there is already a _showInfo attribute, do not add one.
-                            Attribute attribute = port.getAttribute("_showInfo");
+                            Attribute attribute = port
+                                    .getAttribute("_showInfo");
                             if (attribute == null) {
                                 try {
-                                    attribute = new StringParameter(port, "_showInfo");
+                                    attribute = new StringParameter(port,
+                                            "_showInfo");
                                     attribute.setPersistent(false);
                                 } catch (NameDuplicationException e) {
                                     throw new InternalErrorException(e);
@@ -197,9 +201,12 @@ public class ShowTypes extends AbstractInitializableAttribute implements Executi
                             }
                             if (attribute instanceof StringParameter) {
                                 if (port instanceof TypedIOPort) {
-                                    ((StringParameter)attribute).setExpression(((TypedIOPort)port).getType().toString());
+                                    ((StringParameter) attribute)
+                                            .setExpression(((TypedIOPort) port)
+                                                    .getType().toString());
                                 } else {
-                                    ((StringParameter)attribute).setExpression("untyped");
+                                    ((StringParameter) attribute)
+                                            .setExpression("untyped");
                                 }
                             }
                         }

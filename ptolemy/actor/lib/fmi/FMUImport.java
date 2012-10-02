@@ -105,7 +105,8 @@ import com.sun.jna.Pointer;
  * @Pt.ProposedRating Red (cxh)
  * @Pt.AcceptedRating Red (cxh)
  */
-public class FMUImport extends TypedAtomicActor implements ContinuousStepSizeController {
+public class FMUImport extends TypedAtomicActor implements
+        ContinuousStepSizeController {
     // FIXME: For FMI Co-simulation, we want to extend TypedAtomicActor.
     // For model exchange, we want to extend TypedCompositeActor.
 
@@ -255,8 +256,7 @@ public class FMUImport extends TypedAtomicActor implements ContinuousStepSizeCon
                         } else {
                             // Port is known to be absent, but FMI
                             // does not support absent values.
-                            throw new IllegalActionException(this,
-                                    "Input "
+                            throw new IllegalActionException(this, "Input "
                                     + scalarVariable.name
                                     + " has value 'absent', but FMI does not "
                                     + "support a notion of absent inputs.");
@@ -268,8 +268,8 @@ public class FMUImport extends TypedAtomicActor implements ContinuousStepSizeCon
                 } else {
                     throw new IllegalActionException(this,
                             "Expected an input port named "
-                            + scalarVariable.name
-                            + ", but there is no such port.");
+                                    + scalarVariable.name
+                                    + ", but there is no such port.");
                 }
             }
         }
@@ -359,8 +359,7 @@ public class FMUImport extends TypedAtomicActor implements ContinuousStepSizeCon
 
                 if (_debugging) {
                     _debug("FMUImport.fire(): Output " + scalarVariable.name
-                            + " sends value "
-                            + token);
+                            + " sends value " + token);
                 }
                 port.send(0, token);
             }
@@ -379,7 +378,8 @@ public class FMUImport extends TypedAtomicActor implements ContinuousStepSizeCon
             double time = getDirector().getModelTime().getDoubleValue();
 
             // FIXME: depending on ContinuousDirector here.
-            double stepSize = ((ContinuousDirector) getDirector()).getCurrentStepSize();
+            double stepSize = ((ContinuousDirector) getDirector())
+                    .getCurrentStepSize();
 
             if (_debugging) {
                 _debug("FMIImport.fire(): about to call " + modelIdentifier
@@ -394,69 +394,72 @@ public class FMUImport extends TypedAtomicActor implements ContinuousStepSizeCon
             if (fmiFlag != FMILibrary.FMIStatus.fmiOK) {
                 throw new IllegalActionException(this, "Could not simulate, "
                         + modelIdentifier + "_fmiDoStep(Component, /* time */ "
-                        + time + ", /* stepSize */" + stepSize + ", 1) returned "
-                        + fmiFlag);
+                        + time + ", /* stepSize */" + stepSize
+                        + ", 1) returned " + fmiFlag);
             }
 
             if (_debugging) {
-                _debug("FMUImport done calling " + modelIdentifier + "_fmiDoStep()");
+                _debug("FMUImport done calling " + modelIdentifier
+                        + "_fmiDoStep()");
             }
         }
     }
 
-   /** Initialize the slave FMU.
-    *  @exception IllegalActionException If the slave FMU cannot be
-    *  initialized.
-    */
-   public void initialize() throws IllegalActionException {
-       super.initialize();
-       if (_debugging) {
-           _debug("FMIImport.initialize() START");
-       }
+    /** Initialize the slave FMU.
+     *  @exception IllegalActionException If the slave FMU cannot be
+     *  initialized.
+     */
+    public void initialize() throws IllegalActionException {
+        super.initialize();
+        if (_debugging) {
+            _debug("FMIImport.initialize() START");
+        }
 
-       // Loop through the scalar variables and find a scalar
-       // variable that has variability == "parameter" and is not an
-       // input or output.  We can't do this in attributeChanged()
-       // because setting a scalar variable requires that
-       // _fmiComponent be non-null, which happens in
-       // preinitialize();
-       for (FMIScalarVariable scalar : _fmiModelDescription.modelVariables) {
-           if (scalar.variability == FMIScalarVariable.Variability.parameter
-                   && scalar.causality != Causality.input
-                   && scalar.causality != Causality.output) {
-               String sanitizedName = StringUtilities.sanitizeName(scalar.name);
-               Parameter parameter = (Parameter)getAttribute(sanitizedName, Parameter.class);
-               if (parameter != null) {
-                   _setScalarVariable(scalar, parameter.getToken());
-               }
-           }
-       }
+        // Loop through the scalar variables and find a scalar
+        // variable that has variability == "parameter" and is not an
+        // input or output.  We can't do this in attributeChanged()
+        // because setting a scalar variable requires that
+        // _fmiComponent be non-null, which happens in
+        // preinitialize();
+        for (FMIScalarVariable scalar : _fmiModelDescription.modelVariables) {
+            if (scalar.variability == FMIScalarVariable.Variability.parameter
+                    && scalar.causality != Causality.input
+                    && scalar.causality != Causality.output) {
+                String sanitizedName = StringUtilities
+                        .sanitizeName(scalar.name);
+                Parameter parameter = (Parameter) getAttribute(sanitizedName,
+                        Parameter.class);
+                if (parameter != null) {
+                    _setScalarVariable(scalar, parameter.getToken());
+                }
+            }
+        }
 
-       String modelIdentifier = _fmiModelDescription.modelIdentifier;
+        String modelIdentifier = _fmiModelDescription.modelIdentifier;
 
-       if (_debugging) {
-           _debug("FMUCoSimulation: about to call " + modelIdentifier
-                   + "_fmiInitializeSlave");
-       }
-       Function function = _fmiModelDescription.nativeLibrary
-               .getFunction(modelIdentifier + "_fmiInitializeSlave");
+        if (_debugging) {
+            _debug("FMUCoSimulation: about to call " + modelIdentifier
+                    + "_fmiInitializeSlave");
+        }
+        Function function = _fmiModelDescription.nativeLibrary
+                .getFunction(modelIdentifier + "_fmiInitializeSlave");
 
-       // FIXME: FMI-1.0 uses doubles for times.
-       double startTime = getDirector().getModelStartTime().getDoubleValue();
-       double stopTime = getDirector().getModelStopTime().getDoubleValue();
-       int fmiFlag = ((Integer) function.invoke(Integer.class, new Object[] {
-               _fmiComponent, startTime, (byte) 1, stopTime })).intValue();
-       if (fmiFlag > FMILibrary.FMIStatus.fmiWarning) {
-           throw new IllegalActionException(this, "Could not simulate, "
-                   + modelIdentifier
-                   + "_fmiInitializeSlave(Component, /* startTime */ "
-                   + startTime + ", 1, /* stopTime */" + stopTime
-                   + ") returned " + fmiFlag);
-       }
-       if (_debugging) {
-           _debug("FMIImport.initialize() END");
-       }
-   }
+        // FIXME: FMI-1.0 uses doubles for times.
+        double startTime = getDirector().getModelStartTime().getDoubleValue();
+        double stopTime = getDirector().getModelStopTime().getDoubleValue();
+        int fmiFlag = ((Integer) function.invoke(Integer.class, new Object[] {
+                _fmiComponent, startTime, (byte) 1, stopTime })).intValue();
+        if (fmiFlag > FMILibrary.FMIStatus.fmiWarning) {
+            throw new IllegalActionException(this, "Could not simulate, "
+                    + modelIdentifier
+                    + "_fmiInitializeSlave(Component, /* startTime */ "
+                    + startTime + ", 1, /* stopTime */" + stopTime
+                    + ") returned " + fmiFlag);
+        }
+        if (_debugging) {
+            _debug("FMIImport.initialize() END");
+        }
+    }
 
     /** Import a FMUFile.
      *  @param originator The originator of the change request.
@@ -479,8 +482,8 @@ public class FMUImport extends TypedAtomicActor implements ContinuousStepSizeCon
 
         // FIXME: ignore errors loading shared libraries.
         // This should be made a parameter.
-        FMIModelDescription fmiModelDescription = FMUFile
-            .parseFMUFile(fmuFileName, true);
+        FMIModelDescription fmiModelDescription = FMUFile.parseFMUFile(
+                fmuFileName, true);
 
         // FIXME: Use URLs, not files so that we can work from JarZip files.
 
@@ -557,7 +560,8 @@ public class FMUImport extends TypedAtomicActor implements ContinuousStepSizeCon
                 portMoML.append("  <port name=\""
                         + StringUtilities.sanitizeName(scalar.name)
                         + "\" class=\"ptolemy.actor.TypedIOPort\">\n"
-                        + "    <property name=\"" + causality
+                        + "    <property name=\""
+                        + causality
                         + "\"/>\n"
                         + "    <property name=\"_type\" "
                         + "class=\"ptolemy.actor.TypeAttribute\" value=\""
@@ -669,7 +673,7 @@ public class FMUImport extends TypedAtomicActor implements ContinuousStepSizeCon
         // FIXME: Do something smarter.
         Director director = getDirector();
         if (director instanceof ContinuousDirector) {
-            return ((ContinuousDirector)director).getCurrentStepSize();
+            return ((ContinuousDirector) director).getCurrentStepSize();
         }
         return Double.MAX_VALUE;
     }
@@ -695,8 +699,8 @@ public class FMUImport extends TypedAtomicActor implements ContinuousStepSizeCon
         String modelIdentifier = _fmiModelDescription.modelIdentifier;
         Function fmiTerminateSlave = _fmiModelDescription.nativeLibrary
                 .getFunction(modelIdentifier + "_fmiTerminateSlave");
-        int fmiFlag = ((Integer) fmiTerminateSlave.invokeInt(new Object[] {
-                _fmiComponent})).intValue();
+        int fmiFlag = ((Integer) fmiTerminateSlave
+                .invokeInt(new Object[] { _fmiComponent })).intValue();
         if (fmiFlag > FMILibrary.FMIStatus.fmiWarning) {
             throw new IllegalActionException(this,
                     "Could not terminate slave: " + fmiFlag);
@@ -704,12 +708,11 @@ public class FMUImport extends TypedAtomicActor implements ContinuousStepSizeCon
 
         Function fmiFreeSlaveInstance = _fmiModelDescription.nativeLibrary
                 .getFunction(modelIdentifier + "_fmiFreeSlaveInstance");
-        fmiFlag = ((Integer) fmiFreeSlaveInstance.invokeInt(new Object[] {
-                _fmiComponent})).intValue();
+        fmiFlag = ((Integer) fmiFreeSlaveInstance
+                .invokeInt(new Object[] { _fmiComponent })).intValue();
         if (fmiFlag > FMILibrary.FMIStatus.fmiWarning) {
             if (_debugging) {
-                _debug("Could not free slave instance: "
-                        + fmiFlag);
+                _debug("Could not free slave instance: " + fmiFlag);
             }
         }
     }
@@ -810,12 +813,13 @@ public class FMUImport extends TypedAtomicActor implements ContinuousStepSizeCon
                     for (String inputName : scalarVariable.directDependency) {
                         TypedIOPort inputPort = (TypedIOPort) getPort(inputName);
                         if (inputPort == null) {
-                            throw new IllegalActionException(this,
+                            throw new IllegalActionException(
+                                    this,
                                     "FMU declares that output port "
-                                    + port.getName()
-                                    + " depends directly on input port "
-                                    + inputName
-                                    + ", but there is no such input port.");
+                                            + port.getName()
+                                            + " depends directly on input port "
+                                            + inputName
+                                            + ", but there is no such input port.");
                         }
                         dependencies.add(inputPort);
                     }
@@ -826,32 +830,6 @@ public class FMUImport extends TypedAtomicActor implements ContinuousStepSizeCon
         return _outputs;
     }
 
-    /** Set a Ptolemy II Parameter to the value of a FMI
-     *  ScalarVariable.
-     *  @param parameter The Ptolemy parameter to be set.
-     *  @param scalar The FMI scalar variable that contains the value
-     *  to be set
-     *  @exception IllegalActionException If the scalar is of a type
-     *  that is not handled.
-     */
-    private void _setParameter(Parameter parameter, FMIScalarVariable scalar)
-            throws IllegalActionException {
-        // FIXME: What about arrays?
-        if (scalar.type instanceof FMIBooleanType) {
-            parameter.setToken(new BooleanToken(scalar.getBoolean(_fmiComponent)));
-        } else if (scalar.type instanceof FMIIntegerType) {
-            // FIXME: handle Enumerations?
-            parameter.setToken(new IntToken(scalar.getInt(_fmiComponent)));
-        } else if (scalar.type instanceof FMIRealType) {
-            parameter.setToken(new DoubleToken(scalar.getDouble(_fmiComponent)));
-        } else if (scalar.type instanceof FMIStringType) {
-            parameter.setToken(new StringToken(scalar.getString(_fmiComponent)));
-        } else {
-            throw new IllegalActionException("Type "
-                    + scalar.type + " not supported.");
-        }
-    }
-
     /** Set a FMI scalar variable to the value of a Ptolemy token.
      *  @param scalar the FMI scalar to be set.
      *  @param token the Ptolemy token that contains the value to be set.
@@ -860,32 +838,31 @@ public class FMUImport extends TypedAtomicActor implements ContinuousStepSizeCon
      *  the type of the scalar.
      */
     private void _setScalarVariable(FMIScalarVariable scalar, Token token)
-        throws IllegalActionException {
+            throws IllegalActionException {
         try {
             // FIXME: What about arrays?
             if (scalar.type instanceof FMIBooleanType) {
                 scalar.setBoolean(_fmiComponent,
-                        ((BooleanToken)token).booleanValue());
+                        ((BooleanToken) token).booleanValue());
             } else if (scalar.type instanceof FMIIntegerType) {
                 // FIXME: handle Enumerations?
-                scalar.setInt(_fmiComponent,
-                        ((IntToken)token).intValue());
+                scalar.setInt(_fmiComponent, ((IntToken) token).intValue());
             } else if (scalar.type instanceof FMIRealType) {
                 scalar.setDouble(_fmiComponent,
-                        ((DoubleToken)token).doubleValue());
+                        ((DoubleToken) token).doubleValue());
             } else if (scalar.type instanceof FMIStringType) {
                 scalar.setString(_fmiComponent,
-                        ((StringToken)token).stringValue());
+                        ((StringToken) token).stringValue());
             } else {
-                throw new IllegalActionException("Type "
-                        + scalar.type + " not supported.");
+                throw new IllegalActionException("Type " + scalar.type
+                        + " not supported.");
             }
         } catch (ClassCastException ex) {
             throw new IllegalActionException(this, ex,
-                    "Could not cast a token \"" + token
-                    + "\" of type " + token.getType()
-                    + " to an FMI scalar variable of type "
-                    + scalar.type);
+                    "Could not cast a token \"" + token + "\" of type "
+                            + token.getType()
+                            + " to an FMI scalar variable of type "
+                            + scalar.type);
         }
     }
 
@@ -931,11 +908,11 @@ public class FMUImport extends TypedAtomicActor implements ContinuousStepSizeCon
 
             if (_fmiModelDescription.nativeLibrary != null) {
                 _fmiDoStep = _fmiModelDescription.nativeLibrary
-                    .getFunction(_fmiModelDescription.modelIdentifier
-                            + "_fmiDoStep");
+                        .getFunction(_fmiModelDescription.modelIdentifier
+                                + "_fmiDoStep");
                 _fmiInstantiateSlave = _fmiModelDescription.nativeLibrary
-                    .getFunction(_fmiModelDescription.modelIdentifier
-                            + "_fmiInstantiateSlave");
+                        .getFunction(_fmiModelDescription.modelIdentifier
+                                + "_fmiInstantiateSlave");
             }
 
         } catch (IOException ex) {

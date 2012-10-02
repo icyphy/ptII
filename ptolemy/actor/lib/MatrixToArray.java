@@ -120,10 +120,10 @@ public class MatrixToArray extends Transformer {
                 throw new IllegalActionException(this,
                         "Input is not a matrix: " + token);
             }
-            if (((BooleanToken)columnMajor.getToken()).booleanValue()) {
-                output.broadcast(((MatrixToken)token).toArrayColumnMajor());
+            if (((BooleanToken) columnMajor.getToken()).booleanValue()) {
+                output.broadcast(((MatrixToken) token).toArrayColumnMajor());
             } else {
-                output.broadcast(((MatrixToken)token).toArray());
+                output.broadcast(((MatrixToken) token).toArray());
             }
         }
     }

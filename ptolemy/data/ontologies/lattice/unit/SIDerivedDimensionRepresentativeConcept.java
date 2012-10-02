@@ -121,26 +121,29 @@ public class SIDerivedDimensionRepresentativeConcept extends
      */
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
-        boolean useUnitAbbreviation = ((BooleanToken) useAbbreviation.
-                getToken()).booleanValue();
+        boolean useUnitAbbreviation = ((BooleanToken) useAbbreviation
+                .getToken()).booleanValue();
         RecordToken baseUnitRecordToken = getUnitRecordToken();
 
         // If not using unit abbreviations, react to a change in the
         // unitFullName parameter.
-        if ((attribute.equals(useAbbreviation) || attribute.equals(unitFullName)
-                || attribute.equals(baseUnitRecord)) && !useUnitAbbreviation &&
-                baseUnitRecordToken != null) {
+        if ((attribute.equals(useAbbreviation)
+                || attribute.equals(unitFullName) || attribute
+                    .equals(baseUnitRecord))
+                && !useUnitAbbreviation
+                && baseUnitRecordToken != null) {
 
             SIPrefixUnitConversionInfo.createAllSIPrefixConversionParameters(
                     this, unitFullName.getValueAsString(), useUnitAbbreviation,
                     1.0, baseUnitRecordToken);
 
-        // If using unit abbreviations, react to a change in the
-        // unitAbbreviation parameter.
-        } else if ((attribute.equals(useAbbreviation) ||
-                attribute.equals(unitAbbreviation) ||
-                attribute.equals(baseUnitRecord)) && useUnitAbbreviation &&
-                baseUnitRecordToken != null) {
+            // If using unit abbreviations, react to a change in the
+            // unitAbbreviation parameter.
+        } else if ((attribute.equals(useAbbreviation)
+                || attribute.equals(unitAbbreviation) || attribute
+                    .equals(baseUnitRecord))
+                && useUnitAbbreviation
+                && baseUnitRecordToken != null) {
 
             SIPrefixUnitConversionInfo.createAllSIPrefixConversionParameters(
                     this, unitAbbreviation.getValueAsString(),

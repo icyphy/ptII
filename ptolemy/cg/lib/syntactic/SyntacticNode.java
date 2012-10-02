@@ -998,14 +998,14 @@ public class SyntacticNode extends ComponentEntity implements SyntacticTerm {
 
         if (ins == 1 && outs > 1) {
             svgicon += "<polygon points=\"20,-20 -20,0 20,20\" style=\"fill:red\"/>\n";
-            double vinc = 30.0 / ((double) (outs - 1));
+            double vinc = 30.0 / (outs - 1);
             for (int n = 0; n < outs; ++n) {
                 svgicon += "<line x1=\"-18\" y1=\"0\" x2=\"18\" y2=\""
                         + (n * vinc - 15.0) + "\" />\n";
             }
         } else if (outs == 1 && ins > 1) {
             svgicon += "<polygon points=\"-10,-20 10,0 -10,20\" style=\"fill:red\"/>\n";
-            double vinc = 30.0 / ((double) (ins - 1));
+            double vinc = 30.0 / (ins - 1);
             for (int n = 0; n < ins; ++n) {
                 svgicon += "<line x1=\"-18\" y1=\"" + (n * vinc - 15.0)
                         + "\" x2=\"18\" y2=\"0\" />\n";

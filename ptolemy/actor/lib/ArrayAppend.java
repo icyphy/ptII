@@ -128,16 +128,15 @@ public class ArrayAppend extends Transformer {
                     arraysToAppend[i] = arrayToken;
                     resultWidth += arrayToken.length();
                 } catch (ClassCastException ex) {
-                    throw new IllegalActionException(this, ex,
-                            "Cannot cast \"" + token
-                            + "\" to an ArrayToken");
+                    throw new IllegalActionException(this, ex, "Cannot cast \""
+                            + token + "\" to an ArrayToken");
                 }
             }
         }
         if (resultWidth > 0) {
             output.send(0, ArrayToken.append(arraysToAppend));
         } else {
-            Type elementType = ((ArrayType)input.getType()).getElementType();
+            Type elementType = ((ArrayType) input.getType()).getElementType();
             output.send(0, new ArrayToken(elementType));
         }
     }

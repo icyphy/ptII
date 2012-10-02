@@ -35,7 +35,6 @@ import ptolemy.cg.kernel.generic.program.CodeStream;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NamedObj;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// TimeGap
 
@@ -63,13 +62,15 @@ public class MultiplyDivide
         List<String> args = new ArrayList<String>();
         StringBuffer computeResults = new StringBuffer();
 
-        for (int i = 0; i < ((ptolemy.actor.lib.MultiplyDivide)_component).multiply.getWidth(); i++) {
-            computeResults.append("if ($hasToken(multiply#" + i + ")) {\n" +
-                    "    result = result * $get(multiply#" + i + ");\n}");
+        for (int i = 0; i < ((ptolemy.actor.lib.MultiplyDivide) _component).multiply
+                .getWidth(); i++) {
+            computeResults.append("if ($hasToken(multiply#" + i + ")) {\n"
+                    + "    result = result * $get(multiply#" + i + ");\n}");
         }
-        for (int i = 0; i < ((ptolemy.actor.lib.MultiplyDivide)_component).divide.getWidth(); i++) {
-            computeResults.append("if ($hasToken(divide#" + i + ")) {\n" +
-                    "    result = result / $get(divide#" + i + ");\n}");
+        for (int i = 0; i < ((ptolemy.actor.lib.MultiplyDivide) _component).divide
+                .getWidth(); i++) {
+            computeResults.append("if ($hasToken(divide#" + i + ")) {\n"
+                    + "    result = result / $get(divide#" + i + ");\n}");
         }
         args.add(computeResults.toString());
 
@@ -84,20 +85,23 @@ public class MultiplyDivide
      *  @exception IllegalActionException If there is a problem getting the width of the divide
      *  or multiply ports.
      */
-    public String getSourceTimeString(String timeVariable) throws IllegalActionException {
+    public String getSourceTimeString(String timeVariable)
+            throws IllegalActionException {
         String name = CodeGeneratorAdapter.generateName((NamedObj) _component);
         StringBuffer result = new StringBuffer();
-        for (int i = 0; i < ((ptolemy.actor.lib.MultiplyDivide)_component).divide.getWidth(); i++) {
+        for (int i = 0; i < ((ptolemy.actor.lib.MultiplyDivide) _component).divide
+                .getWidth(); i++) {
             // This seems wrong, it overwrites timeVariable for each EventHead_ that
             // is non-null.
-            result.append("if (Event_Head_" + name + "_divide[" + i + "] != NULL) {\n" +
-                    timeVariable + " = &Event_Head_" + name + "_divide[" + i + "]->tag.timestamp;\n" +
-                    "}\n");
+            result.append("if (Event_Head_" + name + "_divide[" + i
+                    + "] != NULL) {\n" + timeVariable + " = &Event_Head_"
+                    + name + "_divide[" + i + "]->tag.timestamp;\n" + "}\n");
         }
-        for (int i = 0; i < ((ptolemy.actor.lib.MultiplyDivide)_component).multiply.getWidth(); i++) {
-            result.append("if (Event_Head_" + name + "_multiply[" + i + "] != NULL) {\n" +
-                    timeVariable + " = &Event_Head_" + name + "_multiply[" + i + "]->tag.timestamp;\n" +
-                    "}\n");
+        for (int i = 0; i < ((ptolemy.actor.lib.MultiplyDivide) _component).multiply
+                .getWidth(); i++) {
+            result.append("if (Event_Head_" + name + "_multiply[" + i
+                    + "] != NULL) {\n" + timeVariable + " = &Event_Head_"
+                    + name + "_multiply[" + i + "]->tag.timestamp;\n" + "}\n");
         }
         return result.toString();
     }

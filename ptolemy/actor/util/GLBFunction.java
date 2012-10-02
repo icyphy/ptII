@@ -95,13 +95,13 @@ public class GLBFunction extends MonotonicFunction {
      *  @exception IllegalActionException If thrown while getting the
      *  value of the cached terms.
      */
-    public Object getValue()  throws IllegalActionException {
+    public Object getValue() throws IllegalActionException {
         _updateArguments();
 
         Set<Type> types = new HashSet<Type>();
         types.addAll(_cachedTypes);
         for (int i = 0; i < _cachedTerms.length; i++) {
-            Type type = (Type)_cachedTerms[i].getValue();
+            Type type = (Type) _cachedTerms[i].getValue();
             types.add(type);
         }
         // If there are no destination outputs at all, then set
@@ -145,8 +145,7 @@ public class GLBFunction extends MonotonicFunction {
      */
     protected void _updateArguments() {
         List<IOPort> destinations = null;
-        if (_sourcePort.getContainer().workspace().getVersion()
-                == _cachedVariablesWorkspaceVersion) {
+        if (_sourcePort.getContainer().workspace().getVersion() == _cachedVariablesWorkspaceVersion) {
             return;
         }
         ArrayList<InequalityTerm> portTypeTermList = new ArrayList<InequalityTerm>();
@@ -165,12 +164,12 @@ public class GLBFunction extends MonotonicFunction {
         }
 
         for (IOPort destination : destinations) {
-            InequalityTerm destinationTypeTerm =
-                    ((TypedIOPort)destination).getTypeTerm();
+            InequalityTerm destinationTypeTerm = ((TypedIOPort) destination)
+                    .getTypeTerm();
             if (destinationTypeTerm.isSettable()) {
                 portTypeTermList.add(destinationTypeTerm);
             } else {
-                _cachedTypes.add(((TypedIOPort)destination).getType());
+                _cachedTypes.add(((TypedIOPort) destination).getType());
             }
         }
         _cachedTerms = portTypeTermList.toArray(new InequalityTerm[0]);
@@ -178,11 +177,11 @@ public class GLBFunction extends MonotonicFunction {
                 .workspace().getVersion();
     }
 
-/*   @Override
-    public String getVerboseString() {
-        return _sourcePort.getContainer().getName() + "$" +_sourcePort.getName();
-    }
-*/ // FIXME
+    /*   @Override
+        public String getVerboseString() {
+            return _sourcePort.getContainer().getName() + "$" +_sourcePort.getName();
+        }
+    */// FIXME
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////

@@ -153,7 +153,8 @@ public class TMDirector extends Director {
      *  @exception NameDuplicationException If construction of Time objects fails.
      *  @exception IllegalActionException If construction of Time objects fails.
      */
-    public TMDirector(Workspace workspace) throws IllegalActionException, NameDuplicationException {
+    public TMDirector(Workspace workspace) throws IllegalActionException,
+            NameDuplicationException {
         super(workspace);
         _initParameters();
     }

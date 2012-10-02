@@ -28,12 +28,13 @@
 package ptolemy.vergil.kernel;
 
 import java.awt.Color;
+
 import javax.swing.Action;
 
-import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.NamedObj;
 import ptolemy.actor.gui.ColorAttribute;
 import ptolemy.actor.gui.Configuration;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.NamedObj;
 import ptolemy.vergil.basic.BasicGraphController;
 import ptolemy.vergil.basic.CustomizeDocumentationAction;
 import ptolemy.vergil.basic.GetDocumentationAction;
@@ -96,8 +97,9 @@ public class AttributeController extends IconController {
             // vergil/basic/BasicGraphFrame.java
             // Derived classes like IOPortController override _moveToFirstDescription()
             Action[] appearanceActions = {
-                new MoveAction(_moveToFirstDescription(), MoveAction.TO_FIRST),
-                new MoveAction(_moveToLastDescription(), MoveAction.TO_LAST) };
+                    new MoveAction(_moveToFirstDescription(),
+                            MoveAction.TO_FIRST),
+                    new MoveAction(_moveToLastDescription(), MoveAction.TO_LAST) };
             _appearanceMenuActionFactory = new MenuActionFactory(
                     appearanceActions, "Appearance");
             _menuFactory.addMenuItemFactory(_appearanceMenuActionFactory);
@@ -135,8 +137,7 @@ public class AttributeController extends IconController {
             ColorAttribute highlightAttribute = (ColorAttribute) (namedObj
                     .getAttribute("_highlightColor", ColorAttribute.class));
             if (highlightAttribute != null
-                    && !highlightAttribute.getExpression().trim()
-                    .equals("")) {
+                    && !highlightAttribute.getExpression().trim().equals("")) {
                 Color color = highlightAttribute.asColor();
                 AnimationRenderer animationRenderer = new AnimationRenderer(
                         color);
@@ -147,6 +148,7 @@ public class AttributeController extends IconController {
         }
 
     }
+
     /** Set the configuration.  This is used in derived classes to
      *  to open files (such as documentation).  The configuration is
      *  is important because it keeps track of which files are already

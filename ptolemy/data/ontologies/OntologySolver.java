@@ -118,7 +118,6 @@ public abstract class OntologySolver extends OntologySolverBase implements
         return newObject;
     }
 
-
     /** Construct and configure the contained model with the specified source and
      *  text. This parses the specified MoML text. Also set the container solver
      *  for the contained model to be the ontology solver.

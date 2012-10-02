@@ -152,8 +152,8 @@ public class PtidesEvent extends DEEvent {
      *  but its value cannot be obtained, which should be an integer.
      */
     public PtidesEvent(IOPort ioPort, int channel, Time timeStamp,
-            int microstep, int depth, Token token, Receiver receiver, Time deadline)
-            throws IllegalActionException {
+            int microstep, int depth, Token token, Receiver receiver,
+            Time deadline) throws IllegalActionException {
         super(ioPort, timeStamp, microstep, depth);
         assert (token != null && receiver != null);
         _channel = channel;
@@ -172,11 +172,11 @@ public class PtidesEvent extends DEEvent {
      *          or the event is a pure event and absoluteDeadline is null.
      */
     public final Time absoluteDeadline() {
-//        if (!isPureEvent()) {
-//            throw new InternalErrorException("This event is not a pure event, "
-//                    + "in which case the absolute deadline should be obtained "
-//                    + "from the destination port of the event.");
-//        }
+        //        if (!isPureEvent()) {
+        //            throw new InternalErrorException("This event is not a pure event, "
+        //                    + "in which case the absolute deadline should be obtained "
+        //                    + "from the destination port of the event.");
+        //        }
         return _absoluteDeadline;
     }
 

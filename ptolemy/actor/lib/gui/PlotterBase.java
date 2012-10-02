@@ -189,7 +189,6 @@ public class PlotterBase extends TypedAtomicActor implements Configurable,
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         PlotterBase newObject = (PlotterBase) super.clone(workspace);
 
-
         newObject._configureBases = null;
         newObject._configureSources = null;
         newObject._configureTexts = null;
@@ -204,12 +203,12 @@ public class PlotterBase extends TypedAtomicActor implements Configurable,
             // See _getImplementation():
             if (PtolemyInjector.getInjector() == null) {
                 System.err.println("Warning: main() did not call "
-                               + "ActorModuleInitializer.initializeInjector(), "
-                               + "so PlotterBase.clone() is calling it for you.");
+                        + "ActorModuleInitializer.initializeInjector(), "
+                        + "so PlotterBase.clone() is calling it for you.");
                 ActorModuleInitializer.initializeInjector();
             }
-            newObject._implementation = PtolemyInjector.getInjector().getInstance(
-                    PlotterBaseInterface.class);
+            newObject._implementation = PtolemyInjector.getInjector()
+                    .getInstance(PlotterBaseInterface.class);
             newObject._implementation.init(newObject);
 
             newObject._implementation.initWindowAndSizeProperties();
@@ -259,7 +258,8 @@ public class PlotterBase extends TypedAtomicActor implements Configurable,
                     // outer level.  Thus, we have to strip it.
 
                     if (trimmed.startsWith("<?") && trimmed.endsWith("?>")) {
-                        trimmed = trimmed.substring(2, trimmed.length() - 2).trim();
+                        trimmed = trimmed.substring(2, trimmed.length() - 2)
+                                .trim();
 
                         if (trimmed.startsWith("plotml")) {
                             trimmed = trimmed.substring(6).trim();
@@ -569,8 +569,8 @@ public class PlotterBase extends TypedAtomicActor implements Configurable,
         if (_implementation == null) {
             if (PtolemyInjector.getInjector() == null) {
                 System.err.println("Warning: main() did not call "
-                               + "ActorModuleInitializer.initializeInjector(), "
-                               + "so PlotterBase is calling it for you.");
+                        + "ActorModuleInitializer.initializeInjector(), "
+                        + "so PlotterBase is calling it for you.");
                 ActorModuleInitializer.initializeInjector();
             }
             _implementation = PtolemyInjector.getInjector().getInstance(
@@ -579,7 +579,6 @@ public class PlotterBase extends TypedAtomicActor implements Configurable,
         }
         return _implementation;
     }
-
 
     /** If configurations have been deferred, implement them now.
      *  Also, configure the plot legends, if appropriate.
@@ -597,7 +596,9 @@ public class PlotterBase extends TypedAtomicActor implements Configurable,
                 try {
                     configure(base, source, text);
                 } catch (Exception ex) {
-                    System.out.println("Failed to parse? base: \"" + base + "\": source:\"" + source + "text:\"" + text + "\"");
+                    System.out.println("Failed to parse? base: \"" + base
+                            + "\": source:\"" + source + "text:\"" + text
+                            + "\"");
                     getManager().notifyListenersOfException(ex);
                 }
             }

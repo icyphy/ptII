@@ -35,7 +35,6 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 
-
 ///////////////////////////////////////////////////////////////////
 //// IconScript
 /**
@@ -76,8 +75,8 @@ public class IconScript extends Script implements WebExportable {
         style = new TextStyle(endText, "style");
         style.height.setExpression("5");
 
-        jQueryLibraries =new StringParameter(this, "jQueryLibraries");
-        style =new TextStyle(jQueryLibraries,"style");
+        jQueryLibraries = new StringParameter(this, "jQueryLibraries");
+        style = new TextStyle(jQueryLibraries, "style");
         style.height.setExpression("5");
     }
 
@@ -98,7 +97,6 @@ public class IconScript extends Script implements WebExportable {
      * The path to the libraries will be copied in the same order as given.
      */
     public StringParameter jQueryLibraries;
-
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -122,7 +120,7 @@ public class IconScript extends Script implements WebExportable {
     //*  remove all previously defined defaults and use the global
     //*  defaults.
     protected void _provideElements(WebExporter exporter)
-        throws IllegalActionException {
+            throws IllegalActionException {
 
         // All content covered?
         // 1) the script itself, and
@@ -131,23 +129,22 @@ public class IconScript extends Script implements WebExportable {
         // 4) <divs> that the script will change the content of -> target <div>
 
         WebElement webElement;
-        String jQueryImports =jQueryLibraries.stringValue();
-        if (!jQueryImports.trim().equals(""))
-        {
+        String jQueryImports = jQueryLibraries.stringValue();
+        if (!jQueryImports.trim().equals("")) {
             //Create WebElement for jQueryLibraries and add the exporter.
             //content should only be added once(<onceOnly->true)
-            webElement =WebElement.createWebElement(getContainer(), "jQueryLibraries", "jQueryLibraries");
+            webElement = WebElement.createWebElement(getContainer(),
+                    "jQueryLibraries", "jQueryLibraries");
             webElement.setParent(WebElement.HEAD);
             webElement.setExpression(jQueryImports);
             exporter.defineElement(webElement, true);
         }
 
-
         String scriptValue;
         // Check whether the user wants to insert the evaluated expression
         // or the exact text for the script
-        if (evaluateScript.getToken()
-                .isEqualTo(BooleanToken.TRUE).booleanValue()) {
+        if (evaluateScript.getToken().isEqualTo(BooleanToken.TRUE)
+                .booleanValue()) {
             scriptValue = script.stringValue();
         } else {
             scriptValue = script.getExpression();
@@ -156,22 +153,20 @@ public class IconScript extends Script implements WebExportable {
         if (!scriptValue.trim().equals("")) {
             // Create WebElement for script and add to exporter.
             // Content should only be added once (onceOnly -> true).
-            webElement = WebElement.
-                createWebElement(getContainer(), "script", "script");
+            webElement = WebElement.createWebElement(getContainer(), "script",
+                    "script");
             webElement.setParent(WebElement.HEAD);
-            webElement.setExpression("<script type=\"" + getMimeType() + "\">\n"
-                    + scriptValue
-                    + "\n</script>\n");
+            webElement.setExpression("<script type=\"" + getMimeType()
+                    + "\">\n" + scriptValue + "\n</script>\n");
             exporter.defineElement(webElement, true);
         }
-
 
         String startTextValue = startText.stringValue();
         if (!startTextValue.trim().equals("")) {
             // Create WebElement for start text and add to exporter.
             // Content should only be added once (onceOnly -> true).
-            webElement = WebElement.
-                createWebElement(getContainer(), "startText", "startText");
+            webElement = WebElement.createWebElement(getContainer(),
+                    "startText", "startText");
             webElement.setParent(WebElement.START);
             webElement.setExpression(startTextValue);
             exporter.defineElement(webElement, true);
@@ -181,8 +176,8 @@ public class IconScript extends Script implements WebExportable {
         if (!endTextValue.trim().equals("")) {
             // Create WebElement for end text and add to exporter.
             // Content should only be added once (onceOnly -> true).
-            webElement = WebElement.
-                createWebElement(getContainer(), "endText", "endText");
+            webElement = WebElement.createWebElement(getContainer(), "endText",
+                    "endText");
             webElement.setParent(WebElement.END);
             webElement.setExpression(endTextValue);
             exporter.defineElement(webElement, true);
@@ -200,7 +195,7 @@ public class IconScript extends Script implements WebExportable {
     // FIXME:  Support multiple events in the future.  E.g. onclick() and
     // ontap() might call the same Javascript method.
     protected void _provideAttributes(WebExporter exporter)
-        throws IllegalActionException {
+            throws IllegalActionException {
 
         WebAttribute webAttribute;
 
@@ -210,9 +205,8 @@ public class IconScript extends Script implements WebExportable {
             if (!eventTypeValue.trim().equals("")) {
                 // Create WebAttribute for event and add to exporter.
                 // Content should only be added once (onceOnly -> true).
-                webAttribute = WebAttribute.
-                    createWebAttribute(getContainer(),
-                            eventTypeValue + "WebAttribute", eventTypeValue);
+                webAttribute = WebAttribute.createWebAttribute(getContainer(),
+                        eventTypeValue + "WebAttribute", eventTypeValue);
                 webAttribute.setExpression(stringValue());
                 exporter.defineAttribute(webAttribute, true);
             }

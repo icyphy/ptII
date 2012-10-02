@@ -27,7 +27,6 @@
  */
 package ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.actor.lib;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// Scale
 
@@ -41,7 +40,8 @@ package ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.actor.l
  @Pt.AcceptedRating Red (rodiers)
  */
 public class Scale
-    extends ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.lib.Scale {
+        extends
+        ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.lib.Scale {
 
     /**
      *  Construct a Scale adapter.

@@ -37,7 +37,6 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 
-
 ///////////////////////////////////////////////////////////////////
 //// Script
 /**
@@ -117,11 +116,11 @@ public abstract class Script extends WebContent implements WebExportable {
      *  will be invoked when the UI event specified by <i>eventType</i>
      *  occurs. By default, this is blank. For example, if the value
      *  of this parameter is the string
-<pre>
-function writeText(text) {
+    <pre>
+    function writeText(text) {
     document.getElementById("xyz").innerHTML = text;
-};
-</pre>
+    };
+    </pre>
      * and the value of this parameter is "writeText('hello world')",
      * then the HTML element with ID xyz will be populated with the
      * string 'hello world' when the UI action <i>eventType</i> occurs.

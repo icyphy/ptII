@@ -94,7 +94,8 @@ public class FMUFile {
 
         // Determine the path to the shared object.
         String topDirectory = modelDescriptionFile.getParent();
-        String osName = System.getProperty("os.name").toLowerCase(Locale.getDefault());
+        String osName = System.getProperty("os.name").toLowerCase(
+                Locale.getDefault());
         String extension = ".so";
         if (osName.startsWith("mac")) {
             // JModelica seems to use darwin as the binary name
@@ -155,8 +156,7 @@ public class FMUFile {
      *  file cannot be parsed.
      */
     public static FMIModelDescription parseFMUFile(String fmuFileName,
-            boolean ignoreSharedLibraryErrors)
-            throws IOException {
+            boolean ignoreSharedLibraryErrors) throws IOException {
 
         // Unzip the file.
         List<File> files = null;
@@ -300,10 +300,11 @@ public class FMUFile {
         for (int i = 0; i < implementation.getLength(); i++) {
             Element element = (Element) implementation.item(i);
             NodeList capabilities = element
-                .getElementsByTagName("Capabilities");
+                    .getElementsByTagName("Capabilities");
             for (int j = 0; j < capabilities.getLength(); j++) {
                 Element capabilitiesElement = (Element) capabilities.item(j);
-                fmiModelDescription.capabilities = new FMICoSimulationCapabilities(capabilitiesElement);
+                fmiModelDescription.capabilities = new FMICoSimulationCapabilities(
+                        capabilitiesElement);
             }
         }
 
@@ -362,8 +363,8 @@ public class FMUFile {
         ZipInputStream zipInputStream = null;
         try {
             fileInputStream = new FileInputStream(zipFileName);
-            zipInputStream = new ZipInputStream(
-                new BufferedInputStream(fileInputStream));
+            zipInputStream = new ZipInputStream(new BufferedInputStream(
+                    fileInputStream));
             ZipEntry entry;
             while ((entry = zipInputStream.getNextEntry()) != null) {
                 // System.out.println("Extracting: " + entry);

@@ -337,7 +337,7 @@ public class MoMLVariableChecker {
                     idException = (UndefinedConstantOrIdentifierException) cause;
                     break;
                 }
-                cause = ((IllegalActionException)cause).getCause();
+                cause = ((IllegalActionException) cause).getCause();
             }
         }
 

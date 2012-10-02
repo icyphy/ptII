@@ -114,18 +114,18 @@ public class ImportFMUAction extends AbstractAction {
         try {
             BasicGraphFrame basicGraphFrame = null;
             if (_frame instanceof BasicGraphFrame) {
-                basicGraphFrame = (BasicGraphFrame)_frame;
+                basicGraphFrame = (BasicGraphFrame) _frame;
             }
             Query query = new Query();
             query.setTextWidth(60);
             // Use this file chooser so that we can read URLs or files.
             query.addFileChooser("location", "Location (URL)", _lastLocation,
-                    /* URI base */ null,
-                    /* File startingDirectory */ basicGraphFrame.getLastDirectory(),
-                    /* allowFiles */ true,
-                    /* allowDirectories */ false,
-                    /* Color background */
-                    PtolemyQuery.preferredBackgroundColor(_frame),
+            /* URI base */null,
+            /* File startingDirectory */basicGraphFrame.getLastDirectory(),
+            /* allowFiles */true,
+            /* allowDirectories */false,
+            /* Color background */
+            PtolemyQuery.preferredBackgroundColor(_frame),
                     PtolemyQuery.preferredForegroundColor(_frame));
 
             ComponentDialog dialog = new ComponentDialog(_frame,
@@ -134,14 +134,15 @@ public class ImportFMUAction extends AbstractAction {
                 _lastLocation = query.getStringValue("location");
 
                 // Get the associated Ptolemy model.
-                GraphController controller = basicGraphFrame.getJGraph().getGraphPane()
-                    .getGraphController();
+                GraphController controller = basicGraphFrame.getJGraph()
+                        .getGraphPane().getGraphController();
                 AbstractBasicGraphModel model = (AbstractBasicGraphModel) controller
-                    .getGraphModel();
+                        .getGraphModel();
                 NamedObj context = model.getPtolemyModel();
 
                 // Use the center of the screen as a location.
-                Rectangle2D bounds = basicGraphFrame.getVisibleCanvasRectangle();
+                Rectangle2D bounds = basicGraphFrame
+                        .getVisibleCanvasRectangle();
                 double x = bounds.getWidth() / 2.0;
                 double y = bounds.getHeight() / 2.0;
 

@@ -107,7 +107,8 @@ public class AddMissingParameter extends MoMLFilterSimple {
                 } else {
                     _currentActorFullName = "." + _lastNameSeen;
                 }
-                _addProperty = _namedObjsWithMissingProperties.get(attributeValue);
+                _addProperty = _namedObjsWithMissingProperties
+                        .get(attributeValue);
             } else if (_currentlyProcessingActorThatMayNeedUpdating
                     && (container != null)
                     && !container.getFullName().equals(_currentActorFullName)
@@ -157,19 +158,19 @@ public class AddMissingParameter extends MoMLFilterSimple {
     public void filterEndElement(NamedObj container, String elementName,
             StringBuffer currentCharData, String xmlFile, MoMLParser parser)
             throws Exception {
-//          System.out.println("AddMissingParameter: filterEndElement: "
-//                  + _currentlyProcessingActorThatMayNeedUpdating
-//                  + " elementName: " + (elementName == null? "null" : elementName)
-//                  + "\n            container: " + (container == null ? "null" : container.getFullName())
-//                  + "\n currentActorFullName: " + _currentActorFullName);
+        //          System.out.println("AddMissingParameter: filterEndElement: "
+        //                  + _currentlyProcessingActorThatMayNeedUpdating
+        //                  + " elementName: " + (elementName == null? "null" : elementName)
+        //                  + "\n            container: " + (container == null ? "null" : container.getFullName())
+        //                  + "\n currentActorFullName: " + _currentActorFullName);
 
         if (!_currentlyProcessingActorThatMayNeedUpdating) {
             return;
         } else if (_addProperty != null
-                && ((_addProperty.onlyAddIfPresent != null && _currentAttributeHasValue)
-                        || _addProperty.onlyAddIfPresent == null)
+                && ((_addProperty.onlyAddIfPresent != null && _currentAttributeHasValue) || _addProperty.onlyAddIfPresent == null)
                 && (elementName != null) && elementName.equals("property")
-                && (container != null) && container.getFullName().equals(_currentActorFullName)) {
+                && (container != null)
+                && container.getFullName().equals(_currentActorFullName)) {
 
             //System.out.println("AddMissingParameter: filterEndElement: Processing!!!");
             _currentlyProcessingActorThatMayNeedUpdating = false;
@@ -183,7 +184,7 @@ public class AddMissingParameter extends MoMLFilterSimple {
             // setContext calls parser.reset()
             parser.setContext(container);
 
-            String moml =  _addProperty.moml;
+            String moml = _addProperty.moml;
             _addProperty = null;
 
             //System.out.println("AddMissingParameter: filterEndElement: moml: " + moml);
@@ -204,18 +205,23 @@ public class AddMissingParameter extends MoMLFilterSimple {
      *  @return the description of the filter that ends with a newline.
      */
     public String toString() {
-        StringBuffer results = new StringBuffer(getClass().getName()
-                + ": If a NamedObj is missing a property, then add it.\n"
-                + "Optionally, only add the property if another property, "
-                + "such as _location is present.\n"
-                + "Below are the property names, the optional property and the moml:\n");
-        for (Map.Entry<String, AddProperty> entry : _namedObjsWithMissingProperties.entrySet()) {
+        StringBuffer results = new StringBuffer(
+                getClass().getName()
+                        + ": If a NamedObj is missing a property, then add it.\n"
+                        + "Optionally, only add the property if another property, "
+                        + "such as _location is present.\n"
+                        + "Below are the property names, the optional property and the moml:\n");
+        for (Map.Entry<String, AddProperty> entry : _namedObjsWithMissingProperties
+                .entrySet()) {
             String namedObjName = entry.getKey();
             AddProperty addProperty = entry.getValue();
-            results.append(namedObjName + "\t -> "
-                    + addProperty.propertyName + "\t"
-                    + (addProperty.onlyAddIfPresent == null ? "null" : addProperty.onlyAddIfPresent)
-                    + "\n\t" + addProperty.moml + "\n");
+            results.append(namedObjName
+                    + "\t -> "
+                    + addProperty.propertyName
+                    + "\t"
+                    + (addProperty.onlyAddIfPresent == null ? "null"
+                            : addProperty.onlyAddIfPresent) + "\n\t"
+                    + addProperty.moml + "\n");
         }
         return results.toString();
     }
@@ -229,6 +235,7 @@ public class AddMissingParameter extends MoMLFilterSimple {
             this.moml = moml;
             this.onlyAddIfPresent = onlyAddIfPresent;
         }
+
         /** The property name to be added if it is missing. */
         public String propertyName;
         /** The moml to be added */
@@ -240,6 +247,7 @@ public class AddMissingParameter extends MoMLFilterSimple {
          */
         public String onlyAddIfPresent;
     }
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
@@ -269,22 +277,19 @@ public class AddMissingParameter extends MoMLFilterSimple {
 
         // SDFDirector
         AddProperty sdfDirectorChanges = new AddProperty("iterations",
-                "<property "
-                + "name=\"iterations\" "
-                + "class=\"ptolemy.data.expr.Parameter\" "
-                + "value=\"0\"/>", null);
-        _namedObjsWithMissingProperties.put("ptolemy.domains.sdf.kernel.SDFDirector",
-                sdfDirectorChanges);
-
+                "<property " + "name=\"iterations\" "
+                        + "class=\"ptolemy.data.expr.Parameter\" "
+                        + "value=\"0\"/>", null);
+        _namedObjsWithMissingProperties.put(
+                "ptolemy.domains.sdf.kernel.SDFDirector", sdfDirectorChanges);
 
         // EditorFactory
         AddProperty editorFactoryChanges = new AddProperty("_editorFactory",
                 "<property name=\"_editorFactory\""
-                + " class=\"ptolemy.vergil.toolbox."
-                + "VisibleParameterEditorFactory\"/>",
-                "_location");
+                        + " class=\"ptolemy.vergil.toolbox."
+                        + "VisibleParameterEditorFactory\"/>", "_location");
 
         _namedObjsWithMissingProperties.put("ptolemy.data.expr.Parameter",
-            editorFactoryChanges);
+                editorFactoryChanges);
     }
 }

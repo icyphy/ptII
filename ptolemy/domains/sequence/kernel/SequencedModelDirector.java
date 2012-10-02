@@ -153,21 +153,21 @@ public abstract class SequencedModelDirector extends Director {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-     /** Code copied from StaticSchedulingDirector
-     *  FIXME:  Do we just want a SequencedModelDirector to be a subclass of
-     *  StaticSchedulingDirector?  But, the complete schedule is not statically computable
-     *  if control actors are present
-     *  FIXME:  I am not sure if this works correctly in all situations...
-     *
-     *  Clone is needed in the director to clone the scheduler
-     *
-     *  Clone the object into the specified workspace. The new object is
-     *  <i>not</i> added to the directory of that workspace (you must do this
-     *  yourself if you want it there).
-     *  @param workspace The workspace for the cloned object.
-     *  @exception CloneNotSupportedException Not thrown in this base class
-     *  @return The new Attribute.
-     */
+    /** Code copied from StaticSchedulingDirector
+    *  FIXME:  Do we just want a SequencedModelDirector to be a subclass of
+    *  StaticSchedulingDirector?  But, the complete schedule is not statically computable
+    *  if control actors are present
+    *  FIXME:  I am not sure if this works correctly in all situations...
+    *
+    *  Clone is needed in the director to clone the scheduler
+    *
+    *  Clone the object into the specified workspace. The new object is
+    *  <i>not</i> added to the directory of that workspace (you must do this
+    *  yourself if you want it there).
+    *  @param workspace The workspace for the cloned object.
+    *  @exception CloneNotSupportedException Not thrown in this base class
+    *  @return The new Attribute.
+    */
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         SequencedModelDirector newObject = (SequencedModelDirector) super
                 .clone(workspace);

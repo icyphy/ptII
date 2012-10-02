@@ -161,7 +161,7 @@ public class ConstantPublisherPort extends PublisherPort {
         if (token == null) {
             super.broadcast(null);
         } else {
-            int limit = ((IntToken)numberOfTokens.getToken()).intValue();
+            int limit = ((IntToken) numberOfTokens.getToken()).intValue();
             if (limit >= 0) {
                 if (_numberOfTokensSent >= limit) {
                     return;
@@ -186,7 +186,7 @@ public class ConstantPublisherPort extends PublisherPort {
         for (int i = 0; i < tokenArray.length; i++) {
             replacement[i] = tokenArray[i];
         }
-        int limit = ((IntToken)numberOfTokens.getToken()).intValue();
+        int limit = ((IntToken) numberOfTokens.getToken()).intValue();
         if (limit >= 0) {
             if (_numberOfTokensSent >= limit) {
                 return;
@@ -217,7 +217,7 @@ public class ConstantPublisherPort extends PublisherPort {
         if (token == null) {
             super.send(channelIndex, null);
         } else {
-            int limit = ((IntToken)numberOfTokens.getToken()).intValue();
+            int limit = ((IntToken) numberOfTokens.getToken()).intValue();
             if (limit >= 0) {
                 if (_numberOfTokensSent >= limit) {
                     return;
@@ -243,7 +243,7 @@ public class ConstantPublisherPort extends PublisherPort {
         for (int i = 0; i < tokenArray.length; i++) {
             replacement[i] = tokenArray[i];
         }
-        int limit = ((IntToken)numberOfTokens.getToken()).intValue();
+        int limit = ((IntToken) numberOfTokens.getToken()).intValue();
         if (limit >= 0) {
             if (_numberOfTokensSent >= limit) {
                 return;

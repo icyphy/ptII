@@ -558,9 +558,11 @@ public class ProxyModelInfrastructure {
         try {
             _mqttClient.connect(topic, true, (short) 10);
         } catch (MqttException ex) {
-            MqttException exception = new MqttException("Failed to connect to topic \""
-                    + topic + "\".  Perhaps the mosquitto daemon is not running? "
-                    + "See $PTII/ptserver/control/PtolemyServer.java.");
+            MqttException exception = new MqttException(
+                    "Failed to connect to topic \""
+                            + topic
+                            + "\".  Perhaps the mosquitto daemon is not running? "
+                            + "See $PTII/ptserver/control/PtolemyServer.java.");
             exception.initCause(ex);
             throw exception;
         }

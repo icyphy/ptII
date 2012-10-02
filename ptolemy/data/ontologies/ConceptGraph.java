@@ -272,7 +272,7 @@ public abstract class ConceptGraph implements CPO<Concept> {
                 if (compare(concept, superlative) == CPO.INCOMPARABLE) {
                     return null;
                 } else if (compare(concept, superlative) == direction) {
-                    superlative = (Concept) concept;
+                    superlative = concept;
                 }
             }
             return superlative;

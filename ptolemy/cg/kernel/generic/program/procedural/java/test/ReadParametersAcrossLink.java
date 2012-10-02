@@ -114,7 +114,7 @@ public class ReadParametersAcrossLink extends TypedAtomicActor {
             /*Discard the input */
             //System.out.println(getFullName() + ".fire() reading input " + x);
             // Note that we don't check for input, which is bad, but common.
-            sum += ((ScalarToken)input.get(x)).doubleValue();
+            sum += ((ScalarToken) input.get(x)).doubleValue();
         }
         //System.out.println(getFullName() + ".fire() sending " + sum);
         output.send(0, new DoubleToken(sum));
@@ -151,10 +151,12 @@ public class ReadParametersAcrossLink extends TypedAtomicActor {
             //System.out.println(getFullName() + ".preinitialize(): container.getAttribute(\"remoteParameter\"): " + container.getAttribute("remoteParameter"));
             if (container.getAttribute("remoteParameter") != null) {
                 double remoteParameter = ((DoubleToken) ((Variable) container
-                                .getAttribute("remoteParameter")).getToken()).doubleValue();
+                        .getAttribute("remoteParameter")).getToken())
+                        .doubleValue();
                 group.setRemoteParameter(remoteParameter);
             } else {
-                throw new IllegalActionException(this, "Could not find a parameter named \"remoteParameter\".");
+                throw new IllegalActionException(this,
+                        "Could not find a parameter named \"remoteParameter\".");
             }
         }
     }

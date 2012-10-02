@@ -84,7 +84,8 @@ public class SubscriptionAggregator extends Subscriber {
 
         // Set the operation attribute of the input port to inherit
         // the value of the operation parameter of this actor.
-        ((SubscriptionAggregatorPort)input).operation.setExpression("$operation");
+        ((SubscriptionAggregatorPort) input).operation
+                .setExpression("$operation");
     }
 
     ///////////////////////////////////////////////////////////////////

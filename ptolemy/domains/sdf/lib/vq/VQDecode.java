@@ -45,7 +45,6 @@ import ptolemy.kernel.util.Workspace;
 import ptolemy.math.IntegerMatrixMath;
 import ptolemy.util.FileUtilities;
 
-
 ///////////////////////////////////////////////////////////////////
 //// VQDecode
 

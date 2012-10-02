@@ -135,29 +135,29 @@ public class Previous extends DETransformer {
      *  @return a list of Inequality objects.
      *  @see ptolemy.graph.Inequality
      */
-/*    public Set<Inequality> typeConstraints() {
-        Set<Inequality> typeConstraints = super.typeConstraints();
+    /*    public Set<Inequality> typeConstraints() {
+            Set<Inequality> typeConstraints = super.typeConstraints();
 
-        try {
-            if (initialValue.getToken() != null) {
-                Inequality ineq = new Inequality(initialValue.getTypeTerm(),
+            try {
+                if (initialValue.getToken() != null) {
+                    Inequality ineq = new Inequality(initialValue.getTypeTerm(),
+                            output.getTypeTerm());
+                    typeConstraints.add(ineq);
+                }
+
+                Inequality ineq2 = new Inequality(input.getTypeTerm(),
                         output.getTypeTerm());
-                typeConstraints.add(ineq);
+                typeConstraints.add(ineq2);
+            } catch (IllegalActionException ex) {
+                // Errors in the initialValue parameter should
+                // already have been caught in getAttribute() method
+                // of the base class.
+                throw new InternalErrorException("Bad initialValue value!");
             }
 
-            Inequality ineq2 = new Inequality(input.getTypeTerm(),
-                    output.getTypeTerm());
-            typeConstraints.add(ineq2);
-        } catch (IllegalActionException ex) {
-            // Errors in the initialValue parameter should
-            // already have been caught in getAttribute() method
-            // of the base class.
-            throw new InternalErrorException("Bad initialValue value!");
+            return typeConstraints;
         }
-
-        return typeConstraints;
-    }
-*/
+    */
 
     /**
      * Adds to the set of inequalities returned by the overridden method
@@ -170,8 +170,8 @@ public class Previous extends DETransformer {
         try {
             // type of initialValue <= type of output
             if (initialValue.getToken() != null) {
-                result.add(new Inequality(initialValue.getTypeTerm(),
-                        output.getTypeTerm()));
+                result.add(new Inequality(initialValue.getTypeTerm(), output
+                        .getTypeTerm()));
             }
         } catch (IllegalActionException ex) {
             // Errors in the initialValue parameter should already

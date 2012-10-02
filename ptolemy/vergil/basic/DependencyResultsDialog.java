@@ -70,9 +70,9 @@ public class DependencyResultsDialog extends SearchResultsDialog {
             Entity target, Configuration configuration) {
         super("Dependency analysis for " + target.getName(), tableau, owner,
                 target, configuration);
-        _resultsTable.setDefaultRenderer(NamedObj.class, new DependencyResultsNamedObjRenderer());
+        _resultsTable.setDefaultRenderer(NamedObj.class,
+                new DependencyResultsNamedObjRenderer());
     }
-
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
@@ -86,22 +86,21 @@ public class DependencyResultsDialog extends SearchResultsDialog {
         _query.addCheckBox("dependents", "Dependents", true);
     }
 
-
     /** Perform a search and update the results table.
      */
     protected void _search() {
         boolean prerequisites = _query.getBooleanValue("prerequisites");
         boolean dependents = _query.getBooleanValue("dependents");
         try {
-            Set<NamedObj>results = _findDependencies((Actor)_target, prerequisites, dependents);
+            Set<NamedObj> results = _findDependencies((Actor) _target,
+                    prerequisites, dependents);
             _resultsTableModel.setContents(results);
             if (results.size() == 0) {
                 MessageHandler.message("No prerequisites and/or dependents.");
             }
         } catch (KernelException ex) {
             MessageHandler.error("Failed to get prequisites or dependents for "
-                    + _target.getFullName() + ".",
-                    ex);
+                    + _target.getFullName() + ".", ex);
         }
     }
 
@@ -113,22 +112,25 @@ public class DependencyResultsDialog extends SearchResultsDialog {
      *  @return The Set of objects in the model that match the specified search.
      *  @exception KernelException If thrown while preinitializing() or wrapping up.
      */
-    protected Set<NamedObj> _findDependencies(
-            Actor actor, boolean prerequisites, boolean dependents) throws KernelException {
+    protected Set<NamedObj> _findDependencies(Actor actor,
+            boolean prerequisites, boolean dependents) throws KernelException {
 
         // FIXME: we could add a field to the search box for specifying the filter
         // class.  However, how would we specify that searching Publishers should
         // have Subscribers as the field?
         Class clazz = AtomicActor.class;
-        SortedSet<NamedObj> result = new TreeSet<NamedObj>(new NamedObjComparator());
+        SortedSet<NamedObj> result = new TreeSet<NamedObj>(
+                new NamedObjComparator());
         if (prerequisites) {
-            BasicGraphFrame.report(_owner, "Generating prerequisite information.");
+            BasicGraphFrame.report(_owner,
+                    "Generating prerequisite information.");
             System.out.println("_findDependencies: " + actor);
             result.addAll(ActorDependencies.prerequisites(actor, clazz));
             BasicGraphFrame.report(_owner, "");
         }
         if (dependents) {
-            BasicGraphFrame.report(_owner, "Generating dependency information.");
+            BasicGraphFrame
+                    .report(_owner, "Generating dependency information.");
             result.addAll(ActorDependencies.dependents(actor, clazz));
             BasicGraphFrame.report(_owner, "");
         }
@@ -150,7 +152,7 @@ public class DependencyResultsDialog extends SearchResultsDialog {
     /** Default renderer for results table. */
     class DependencyResultsNamedObjRenderer extends DefaultTableCellRenderer {
         public void setValue(Object value) {
-         String fullName = ((NamedObj)value).getFullName();
+            String fullName = ((NamedObj) value).getFullName();
             String strippedName = fullName.substring(fullName.indexOf(".", 1));
             setText(strippedName);
         }

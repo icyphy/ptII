@@ -42,6 +42,7 @@ import ptolemy.util.FileUtilities;
 import ptolemy.util.StreamExec;
 //////////////////////////////////////////////////////////////////////////
 //// AllTests
+
 /**
  * Test suite of the ptserver.
  *
@@ -61,11 +62,13 @@ public class AllTests {
      * the mosquitto process.
      */
     @BeforeClass
-    public static void startMosquitto() throws IllegalActionException, IOException {
+    public static void startMosquitto() throws IllegalActionException,
+            IOException {
         System.out.println("AllTests.startMosquitto()");
 
         URL defaultConfigURL = FileUtilities.nameToURL(
-                "$CLASSPATH/ptserver/PtolemyServerConfig.properties.default", null, null);
+                "$CLASSPATH/ptserver/PtolemyServerConfig.properties.default",
+                null, null);
         File configFile = FileUtilities.nameToFile(
                 "$CLASSPATH/ptserver/PtolemyServerConfig.properties", null);
         if (configFile.exists() && !configFile.delete()) {
@@ -73,8 +76,7 @@ public class AllTests {
         }
         FileUtilities.binaryCopyURLToFile(defaultConfigURL, configFile);
         System.out.println("AllTests.startMosquitto(): Copied "
-                + defaultConfigURL + " to " +  configFile);
-
+                + defaultConfigURL + " to " + configFile);
 
         _exec = new StreamExec();
         List<String> commands = new LinkedList<String>();

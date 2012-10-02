@@ -1241,17 +1241,17 @@ public class JavaParseTreeCodeGenerator extends AbstractParseTreeVisitor
                     result.append("/" + _childCode);
                 }
             } else if (operator.kind == PtParserConstants.MODULO) {
-                     if (type != null) {
-                     result = new StringBuffer("$modulo_"
-                             + _codeGenType(resultType) + "_"
-                             + _codeGenType(type) + "(" + result.toString()
-                             + ", " + _childCode + ")");
+                if (type != null) {
+                    result = new StringBuffer("$modulo_"
+                            + _codeGenType(resultType) + "_"
+                            + _codeGenType(type) + "(" + result.toString()
+                            + ", " + _childCode + ")");
 
-                     resultType = resultType.divide(type);
+                    resultType = resultType.divide(type);
 
-                 } else {
-                     result.append("%" + _childCode);
-                 }
+                } else {
+                    result.append("%" + _childCode);
+                }
             }
 
             if (operator.kind == PtParserConstants.MULTIPLY) {
@@ -1824,10 +1824,10 @@ public class JavaParseTreeCodeGenerator extends AbstractParseTreeVisitor
                                                 : ptType == BaseType.UNSIGNED_BYTE ? "UnsignedByte"
                                                         //: ptType == PointerToken.POINTER ? "Pointer"
                                                         : ptType == BaseType.COMPLEX ? "Complex"
-            // FIXME: Why do we have to use equals with BaseType.OBJECT
-            : ptType.equals(BaseType.OBJECT) ? "Object"
-            //: ptType == BaseType.OBJECT ? "Object"
-                                                                : null;
+                                                                // FIXME: Why do we have to use equals with BaseType.OBJECT
+                                                                : ptType.equals(BaseType.OBJECT) ? "Object"
+                                                                        //: ptType == BaseType.OBJECT ? "Object"
+                                                                        : null;
 
         if (result == null) {
             if (ptType instanceof ArrayType) {

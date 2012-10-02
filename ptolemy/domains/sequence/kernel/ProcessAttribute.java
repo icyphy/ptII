@@ -132,7 +132,8 @@ public class ProcessAttribute extends SequenceAttribute {
                 // If the second object is a ProcessAttribute, compare the process names
                 if (object instanceof ProcessAttribute) {
                     String processName1 = this.getProcessName();
-                    String processName2 = ((ProcessAttribute) object).getProcessName();
+                    String processName2 = ((ProcessAttribute) object)
+                            .getProcessName();
 
                     int procCompare = processName1.compareTo(processName2);
 
@@ -143,7 +144,8 @@ public class ProcessAttribute extends SequenceAttribute {
 
                     // If process names are the same, compare the sequence numbers
                     sequenceNumber1 = this.getSequenceNumber();
-                    sequenceNumber2 = ((ProcessAttribute) object).getSequenceNumber();
+                    sequenceNumber2 = ((ProcessAttribute) object)
+                            .getSequenceNumber();
 
                     if (sequenceNumber1 < sequenceNumber2) {
                         return -1;
@@ -156,7 +158,8 @@ public class ProcessAttribute extends SequenceAttribute {
                     // For process name and sequence number, just compare sequence numbers
                     // Need to call getSequenceNumber from SequenceAttribute
                     sequenceNumber1 = this.getSequenceNumber();
-                    sequenceNumber2 = ((SequenceAttribute) object).getSequenceNumber();
+                    sequenceNumber2 = ((SequenceAttribute) object)
+                            .getSequenceNumber();
 
                     if (sequenceNumber1 < sequenceNumber2) {
                         return -1;
@@ -243,8 +246,7 @@ public class ProcessAttribute extends SequenceAttribute {
         String methodName = "";
 
         ArrayToken processArrayToken = (ArrayToken) getToken();
-        if (processArrayToken != null
-                && processArrayToken.length() > 2) {
+        if (processArrayToken != null && processArrayToken.length() > 2) {
             methodName = ((StringToken) processArrayToken.getElement(2))
                     .stringValue();
         }

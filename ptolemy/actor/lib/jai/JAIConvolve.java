@@ -70,7 +70,7 @@ public class JAIConvolve extends Transformer {
 
         // A filter that does nothing to an image when convolved with it.
         double[][] initialMatrix = { { 0.0F, 0.0F, 0.0F },
-            { 0.0F, 1.0F, 0.0F }, { 0.0F, 0.0F, 0.0F } };
+                { 0.0F, 1.0F, 0.0F }, { 0.0F, 0.0F, 0.0F } };
 
         filter = new Parameter(this, "filter", new DoubleMatrixToken(
                 initialMatrix));

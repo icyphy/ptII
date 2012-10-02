@@ -25,12 +25,14 @@
  COPYRIGHTENDKEY
 */
 package ptolemy.actor.lib.hoc.test;
+
 import java.lang.reflect.Field;
 import java.util.List;
 
 import ptolemy.actor.TypedCompositeActor;
 import ptolemy.actor.lib.hoc.IterateOverArray;
 import ptolemy.kernel.util.Workspace;
+
 /**
  * Test for clone(Workspace) of IterateOverArray.
  * To run:
@@ -54,11 +56,14 @@ public class IterateOverArrayCloneTest {
         // Create an IterateOverArray
         Workspace workspace = new Workspace("masterWorkspace");
         TypedCompositeActor container = new TypedCompositeActor(workspace);
-        IterateOverArray iterateOverArray = new IterateOverArray(container, "iterateOverArray");
+        IterateOverArray iterateOverArray = new IterateOverArray(container,
+                "iterateOverArray");
 
         // IterateOverArray has an inner class called IterateDirector.
-        Class iterateDirectorClass = Class.forName("ptolemy.actor.lib.hoc.IterateOverArray$IterateDirector");
-        List iterateDirectors = iterateOverArray.attributeList(iterateDirectorClass);
+        Class iterateDirectorClass = Class
+                .forName("ptolemy.actor.lib.hoc.IterateOverArray$IterateDirector");
+        List iterateDirectors = iterateOverArray
+                .attributeList(iterateDirectorClass);
         Object iterateDirector = iterateDirectors.get(0);
 
         // Get the this$0 field, which refers to the outer class.
@@ -66,31 +71,41 @@ public class IterateOverArrayCloneTest {
         thisZeroField.setAccessible(true);
 
         // Get the outer object and then the Workspace
-        IterateOverArray outerIterateOverArray = (IterateOverArray)thisZeroField.get(iterateDirectorClass.cast(iterateDirector));
-        Workspace outerIterateOverArrayWorkspace = outerIterateOverArray.workspace();
-        System.out.println("The workspace of the outer class is " + outerIterateOverArrayWorkspace.getName());
-
+        IterateOverArray outerIterateOverArray = (IterateOverArray) thisZeroField
+                .get(iterateDirectorClass.cast(iterateDirector));
+        Workspace outerIterateOverArrayWorkspace = outerIterateOverArray
+                .workspace();
+        System.out.println("The workspace of the outer class is "
+                + outerIterateOverArrayWorkspace.getName());
 
         ////////////
         // Call clone(Workspace) and get the outer object and the workspace.
         Workspace cloneWorkspace = new Workspace("cloneWorkspace");
 
-        IterateOverArray clonedIterateOverArray = (IterateOverArray)iterateOverArray.clone(cloneWorkspace);
-        List clonedIterateDirectors = clonedIterateOverArray.attributeList(iterateDirectorClass);
+        IterateOverArray clonedIterateOverArray = (IterateOverArray) iterateOverArray
+                .clone(cloneWorkspace);
+        List clonedIterateDirectors = clonedIterateOverArray
+                .attributeList(iterateDirectorClass);
         Object clonedIterateDirector = clonedIterateDirectors.get(0);
 
         // Get the outer object and then the Workspace
-        IterateOverArray clonedOuterIterateOverArray = (IterateOverArray)thisZeroField.get(iterateDirectorClass.cast(clonedIterateDirector));
-        Workspace clonedOuterIterateOverArrayWorkspace = clonedOuterIterateOverArray.workspace();
-        System.out.println("The workspace of the outer class of the clone is " + clonedOuterIterateOverArrayWorkspace.getName());
+        IterateOverArray clonedOuterIterateOverArray = (IterateOverArray) thisZeroField
+                .get(iterateDirectorClass.cast(clonedIterateDirector));
+        Workspace clonedOuterIterateOverArrayWorkspace = clonedOuterIterateOverArray
+                .workspace();
+        System.out.println("The workspace of the outer class of the clone is "
+                + clonedOuterIterateOverArrayWorkspace.getName());
 
         if (outerIterateOverArray.equals(clonedOuterIterateOverArray)) {
-            System.err.println("Error! the outer IterateOverArray objects are equal?");
-         } else {
-            System.err.println("Passed! the outer IterateOverArray objects are not equal!");
+            System.err
+                    .println("Error! the outer IterateOverArray objects are equal?");
+        } else {
+            System.err
+                    .println("Passed! the outer IterateOverArray objects are not equal!");
         }
 
-        if (outerIterateOverArrayWorkspace.equals(clonedOuterIterateOverArrayWorkspace)) {
+        if (outerIterateOverArrayWorkspace
+                .equals(clonedOuterIterateOverArrayWorkspace)) {
             System.err.println("Error! the workspaces are equal?");
             System.exit(1);
         } else {

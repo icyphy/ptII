@@ -34,7 +34,6 @@ import java.awt.dnd.DropTargetDropEvent;
 import java.awt.dnd.DropTargetEvent;
 import java.awt.dnd.DropTargetListener;
 import java.awt.geom.Point2D;
-import java.awt.geom.Rectangle2D;
 import java.lang.reflect.Method;
 import java.util.Iterator;
 
@@ -55,9 +54,7 @@ import ptolemy.util.MessageHandler;
 import ptolemy.vergil.kernel.AnimationRenderer;
 import ptolemy.vergil.toolbox.PtolemyTransferable;
 import ptolemy.vergil.toolbox.SnapConstraint;
-import diva.canvas.CanvasComponent;
 import diva.canvas.Figure;
-import diva.canvas.FigureLayer;
 import diva.graph.GraphController;
 import diva.graph.GraphModel;
 import diva.graph.GraphPane;
@@ -248,7 +245,8 @@ public class EditorDropTargetListener implements DropTargetListener {
             // Figure out the destination container.
             NamedObj destinationContainer = targetContainer;
             boolean relativeLocation = false;
-            if (dropObj instanceof RelativeLocatable && targetContainer != rootContainer) {
+            if (dropObj instanceof RelativeLocatable
+                    && targetContainer != rootContainer) {
                 relativeLocation = true;
                 destinationContainer = rootContainer;
             }
@@ -352,12 +350,15 @@ public class EditorDropTargetListener implements DropTargetListener {
 
             if (appendGroupAuto) {
                 moml.insert(0, "<group name=\"auto\">\n");
-                moml.append("<" + dropObjElementType + " name=\"" + name + "\">\n");
+                moml.append("<" + dropObjElementType + " name=\"" + name
+                        + "\">\n");
                 if (relativeLocation) {
                     moml.append("<property name=\"_location\" "
                             + "class=\"ptolemy.kernel.util.RelativeLocation\" value=\"{"
-                            + RelativeLocation.INITIAL_OFFSET + ", "
-                            + RelativeLocation.INITIAL_OFFSET + "}\">"
+                            + RelativeLocation.INITIAL_OFFSET
+                            + ", "
+                            + RelativeLocation.INITIAL_OFFSET
+                            + "}\">"
                             + "<property name=\"relativeTo\" value=\""
                             + targetContainer.getName()
                             + "\"/>\n"
@@ -365,8 +366,8 @@ public class EditorDropTargetListener implements DropTargetListener {
                             // Entity, Port, Relation, or Attribute.
                             + "<property name=\"relativeToElementName\" value=\""
                             + targetContainer.getElementName()
-                            + "\"/></property>\n</"
-                            + dropObjElementType + ">\n");
+                            + "\"/></property>\n</" + dropObjElementType
+                            + ">\n");
 
                 } else {
                     moml.append("<property name=\"_location\" "
@@ -380,15 +381,15 @@ public class EditorDropTargetListener implements DropTargetListener {
             }
             if (destinationContainer instanceof DropTargetHandler) {
                 try {
-                    ((DropTargetHandler) destinationContainer).dropObject(destinationContainer,
-                            dropObjects, moml.toString());
+                    ((DropTargetHandler) destinationContainer).dropObject(
+                            destinationContainer, dropObjects, moml.toString());
                 } catch (IllegalActionException e) {
                     MessageHandler.error("Unable to drop the object to "
                             + destinationContainer.getName() + ".", e);
                 }
             } else {
-                MoMLChangeRequest request = new MoMLChangeRequest(this, destinationContainer,
-                        moml.toString());
+                MoMLChangeRequest request = new MoMLChangeRequest(this,
+                        destinationContainer, moml.toString());
                 request.setUndoable(true);
                 destinationContainer.requestChange(request);
             }
@@ -444,7 +445,8 @@ public class EditorDropTargetListener implements DropTargetListener {
         pane.getTransformContext().getInverseTransform()
                 .transform(point, transformedPoint);
 
-        return BasicGraphFrame.getFigureUnder(pane, transformedPoint, new Object [] {});
+        return BasicGraphFrame.getFigureUnder(pane, transformedPoint,
+                new Object[] {});
     }
 
     /** Return the object under the specified point, or null if there

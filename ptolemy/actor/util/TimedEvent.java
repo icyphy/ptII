@@ -105,13 +105,11 @@ public class TimedEvent implements Comparable<TimedEvent> {
         if (timedEvent == this) {
             return true;
         }
-        if ((timedEvent == null)
-                || (timedEvent.getClass() != getClass())) {
+        if ((timedEvent == null) || (timedEvent.getClass() != getClass())) {
             return false;
         } else {
             TimedEvent event = (TimedEvent) timedEvent;
-            if (compareTo(event) == 0
-                    && contents.equals(event.contents)) {
+            if (compareTo(event) == 0 && contents.equals(event.contents)) {
                 return true;
             }
         }

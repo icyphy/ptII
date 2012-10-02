@@ -259,8 +259,7 @@ public class Publisher extends TypedAtomicActor {
      *  @exception KernelException If thrown when a Manager is added to
      *  the top level or if preinitialize() fails.
      */
-    public Set<AtomicActor> subscribers()
-            throws KernelException {
+    public Set<AtomicActor> subscribers() throws KernelException {
         return ActorDependencies.dependents(this, Subscriber.class);
     }
 }

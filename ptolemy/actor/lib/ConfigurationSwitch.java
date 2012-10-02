@@ -95,8 +95,8 @@ public class ConfigurationSwitch extends TypedAtomicActor {
         selector.setTypeEquals(BaseType.BOOLEAN);
 
         // Put the selector input on the bottom of the actor.
-        StringAttribute selectorCardinal = new StringAttribute(selector.getPort(),
-                "_cardinal");
+        StringAttribute selectorCardinal = new StringAttribute(
+                selector.getPort(), "_cardinal");
         selectorCardinal.setExpression("SOUTH");
 
         trueOutput = new TypedIOPort(this, "trueOutput", false, true);
@@ -181,7 +181,7 @@ public class ConfigurationSwitch extends TypedAtomicActor {
             throws IllegalActionException {
         if (attribute == selector) {
             boolean previousSelector = _selector;
-            _selector = ((BooleanToken)selector.getToken()).booleanValue();
+            _selector = ((BooleanToken) selector.getToken()).booleanValue();
             if (_selector != previousSelector) {
                 if (_selector) {
                     trueOutput_tokenProductionRate.setToken(_one);

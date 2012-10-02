@@ -89,8 +89,7 @@ public class JAIAffineTransform extends Transformer {
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
-        double[][] initialMatrix = { { 1.0F, 0.0F, 0.0F },
-            { 0.0F, 1.0F, 0.0F } };
+        double[][] initialMatrix = { { 1.0F, 0.0F, 0.0F }, { 0.0F, 1.0F, 0.0F } };
 
         affineMatrix = new Parameter(this, "affineMatrix",
                 new DoubleMatrixToken(initialMatrix));
@@ -135,7 +134,8 @@ public class JAIAffineTransform extends Transformer {
      *  an attribute that cannot be cloned.
      */
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        JAIAffineTransform newObject = (JAIAffineTransform) super.clone(workspace);
+        JAIAffineTransform newObject = (JAIAffineTransform) super
+                .clone(workspace);
         newObject._affineTransform = null;
         newObject._matrixValue = null;
         return newObject;

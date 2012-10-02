@@ -132,9 +132,10 @@ public class MicrostepDelay extends Transformer {
         _pendingOutput = null;
 
         if (!(getDirector() instanceof SuperdenseTimeDirector)) {
-            throw new IllegalActionException(this,
-                    "MicrostepDelay can only be used with a director that implements " +
-                    "SuperdenseTimeDirector, such as ContinuousDirector or DEDirector.");
+            throw new IllegalActionException(
+                    this,
+                    "MicrostepDelay can only be used with a director that implements "
+                            + "SuperdenseTimeDirector, such as ContinuousDirector or DEDirector.");
         }
     }
 
@@ -156,9 +157,10 @@ public class MicrostepDelay extends Transformer {
         // all the intermediate values.
         Director director = getDirector();
         if (input.hasToken(0)) {
-            int microstep = ((SuperdenseTimeDirector)director).getIndex();
+            int microstep = ((SuperdenseTimeDirector) director).getIndex();
             if (microstep == 0) {
-                throw new IllegalActionException(this, "Input is not purely discrete.");
+                throw new IllegalActionException(this,
+                        "Input is not purely discrete.");
             }
             _pendingOutput = input.get(0);
             director.fireAtCurrentTime(this);

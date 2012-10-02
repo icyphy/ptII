@@ -180,8 +180,7 @@ public abstract class AbstractBasicGraphModel extends ModularGraphModel
      *   object of this graph model.  Otherwise return null.
      */
     public CompositeModel getCompositeModel(Object composite) {
-        if (composite != null
-                && composite.equals(_composite)) {
+        if (composite != null && composite.equals(_composite)) {
             return _compositeModel;
         } else {
             return null;

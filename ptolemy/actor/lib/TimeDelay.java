@@ -144,7 +144,8 @@ public class TimeDelay extends Transformer {
         minimumDelay.setExpression("delay");
 
         // Put the delay input on the bottom of the actor.
-        StringAttribute controlCardinal = new StringAttribute(delay.getPort(), "_cardinal");
+        StringAttribute controlCardinal = new StringAttribute(delay.getPort(),
+                "_cardinal");
         controlCardinal.setExpression("SOUTH");
 
         output.setTypeSameAs(input);
@@ -193,20 +194,20 @@ public class TimeDelay extends Transformer {
             if (newDelay < minimumDelayValue) {
                 throw new IllegalActionException(this,
                         "Cannot have delay less than minimumDelay of "
-                        + minimumDelayValue
-                        + ". Attempt to set it to "
-                        + newDelay);
+                                + minimumDelayValue + ". Attempt to set it to "
+                                + newDelay);
             } else {
                 _delay = newDelay;
             }
         } else if (attribute == minimumDelay) {
             double newDelay = ((DoubleToken) (delay.getToken())).doubleValue();
-            double newMinimumDelay = ((DoubleToken) (minimumDelay.getToken())).doubleValue();
+            double newMinimumDelay = ((DoubleToken) (minimumDelay.getToken()))
+                    .doubleValue();
             if (newMinimumDelay > newDelay) {
                 throw new IllegalActionException(this,
                         "Cannot have minimumDelay > delay "
-                        + (newMinimumDelay > newDelay)
-                        + ". Modify the delay value.");
+                                + (newMinimumDelay > newDelay)
+                                + ". Modify the delay value.");
             } else {
                 _minimumDelay = newMinimumDelay;
                 _delay = newDelay;
@@ -255,12 +256,8 @@ public class TimeDelay extends Transformer {
             PendingEvent event = _pendingOutputs.getLast();
             output.send(0, event.token);
             if (_debugging) {
-                _debug("Sending output. Value = "
-                        + event.token
-                        + ", time = "
-                        + event.timeStamp
-                        + ", microstep = "
-                        + event.microstep);
+                _debug("Sending output. Value = " + event.token + ", time = "
+                        + event.timeStamp + ", microstep = " + event.microstep);
             }
         } else {
             // Nothing to send. Assert the output to be absent.
@@ -305,7 +302,7 @@ public class TimeDelay extends Transformer {
         Time currentTime = director.getModelTime();
         int microstep = 1;
         if (director instanceof SuperdenseTimeDirector) {
-            microstep = ((SuperdenseTimeDirector)director).getIndex();
+            microstep = ((SuperdenseTimeDirector) director).getIndex();
         }
 
         if (_pendingOutputs.size() > 0) {
@@ -329,13 +326,9 @@ public class TimeDelay extends Transformer {
             }
             if (_debugging) {
                 _debug("Deferring output to a later microstep. Value = "
-                        + nextEvent.token
-                        + ", time = "
-                        + nextEvent.timeStamp
-                        + ", microstep = "
-                        + nextEvent.microstep
-                        + ". Current microstep is "
-                        + microstep);
+                        + nextEvent.token + ", time = " + nextEvent.timeStamp
+                        + ", microstep = " + nextEvent.microstep
+                        + ". Current microstep is " + microstep);
             }
         }
 
@@ -352,11 +345,8 @@ public class TimeDelay extends Transformer {
             _addEvent(newEvent);
             if (_debugging) {
                 _debug("Queueing event for later output. Value = "
-                        + newEvent.token
-                        + ", time = "
-                        + newEvent.timeStamp
-                        + ", microstep = "
-                        + newEvent.microstep);
+                        + newEvent.token + ", time = " + newEvent.timeStamp
+                        + ", microstep = " + newEvent.microstep);
             }
         }
         return super.postfire();
@@ -386,7 +376,8 @@ public class TimeDelay extends Transformer {
         if (comparison > 0) {
             // New event has higher time stamp than all in the queue.
             _pendingOutputs.addFirst(newEvent);
-        } else if (comparison == 0 && newEvent.microstep >= newestEvent.microstep) {
+        } else if (comparison == 0
+                && newEvent.microstep >= newestEvent.microstep) {
             // New event has the same time stamp as the newest
             // in the queue, but microstep is greater or equal.
             _pendingOutputs.addFirst(newEvent);
@@ -394,13 +385,14 @@ public class TimeDelay extends Transformer {
             // Event has to be inserted into the queue.
             // Here we do a linear search, which is a poor choice if
             // the delay is highly variable. But that case is rare.
-            ListIterator<PendingEvent> iterator = _pendingOutputs.listIterator();
+            ListIterator<PendingEvent> iterator = _pendingOutputs
+                    .listIterator();
             while (iterator.hasNext()) {
                 PendingEvent nextNewestEvent = iterator.next();
-                comparison = newEvent.timeStamp.compareTo(nextNewestEvent.timeStamp);
+                comparison = newEvent.timeStamp
+                        .compareTo(nextNewestEvent.timeStamp);
                 if (comparison > 0
-                        || (comparison == 0
-                                && newEvent.microstep >= newestEvent.microstep)) {
+                        || (comparison == 0 && newEvent.microstep >= newestEvent.microstep)) {
                     // New event is later than or equal to current one.
                     // First replace the current element, then add the current element back in.
                     iterator.set(newEvent);
@@ -428,18 +420,20 @@ public class TimeDelay extends Transformer {
         Time currentTime = director.getModelTime();
         int microstep = 1;
         if (director instanceof SuperdenseTimeDirector) {
-            microstep = ((SuperdenseTimeDirector)director).getIndex();
+            microstep = ((SuperdenseTimeDirector) director).getIndex();
         }
 
         PendingEvent event = _pendingOutputs.getLast();
         int comparison = currentTime.compareTo(event.timeStamp);
         if (comparison > 0) {
             // Current time exceeds the event time. This should not happen.
-            throw new IllegalActionException(this, "Failed to output event with time stamp "
-                    + event.timeStamp
-                    + " and value "
-                    + event.token
-                    + ". Perhaps the director is incompatible with TimeDelay?");
+            throw new IllegalActionException(
+                    this,
+                    "Failed to output event with time stamp "
+                            + event.timeStamp
+                            + " and value "
+                            + event.token
+                            + ". Perhaps the director is incompatible with TimeDelay?");
         }
         // If the time is right and the microstep matches or exceeds
         // the desired microstep, then it is time.
@@ -453,7 +447,8 @@ public class TimeDelay extends Transformer {
      */
     protected double _minimumDelay() throws IllegalActionException {
         double minimumDelayValue = _minimumDelay;
-        minimumDelayValue = ((DoubleToken) (minimumDelay.getToken())).doubleValue();
+        minimumDelayValue = ((DoubleToken) (minimumDelay.getToken()))
+                .doubleValue();
         return minimumDelayValue;
     }
 

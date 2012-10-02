@@ -82,7 +82,7 @@ public class Copy extends Transformer {
             if (!(inputObject instanceof OpenCVImageObject)) {
                 throw new IllegalActionException(this,
                         "Input is required to be an instance of OpenCVImageObject. Got "
-                        + inputObject.getClass().getName());
+                                + inputObject.getClass().getName());
             }
 
             OpenCV openCV = ((OpenCVImageObject) inputObject).openCV;
@@ -94,8 +94,12 @@ public class Copy extends Transformer {
             openCVCopy.copy(openCV.image());
             openCVCopy.width = openCV.width;
             openCVCopy.height = openCV.height;
-            output.send(0, new ObjectToken(new OpenCVImageObject(openCV, openCV.image())));
-            output.send(1, new ObjectToken(new OpenCVImageObject(openCVCopy, openCVCopy.image())));
+            output.send(
+                    0,
+                    new ObjectToken(new OpenCVImageObject(openCV, openCV
+                            .image())));
+            output.send(1, new ObjectToken(new OpenCVImageObject(openCVCopy,
+                    openCVCopy.image())));
 
         }
     }

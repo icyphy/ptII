@@ -68,8 +68,6 @@ public class PtidesBasicReceiver
         super(receiver);
     }
 
-
-
     public String generatePutCode(IOPort sourcePort, String offset, String token)
             throws IllegalActionException {
         TypedIOPort sinkPort = (TypedIOPort) getComponent().getContainer();
@@ -128,7 +126,7 @@ public class PtidesBasicReceiver
             //deadlineNsecsString = "0";
             // deadline param should always be here
             throw new IllegalActionException(sinkPort,
-            "Cannot get the deadline Parameter.");
+                    "Cannot get the deadline Parameter.");
         }
 
         // Getting offsetTime.
@@ -149,11 +147,15 @@ public class PtidesBasicReceiver
 
         String sourceTime;
 
-        NamedProgramCodeGeneratorAdapter adapter = (NamedProgramCodeGeneratorAdapter) getAdapter(sourcePort.getContainer());
+        NamedProgramCodeGeneratorAdapter adapter = (NamedProgramCodeGeneratorAdapter) getAdapter(sourcePort
+                .getContainer());
 
         sourceTime = adapter.getSourceTimeString("sourceTime");
         if (sourceTime.equals("")) { // use default input output actor
-            sourceTime = "sourceTime = &Event_Head_" + CodeGeneratorAdapter.generateName(sourcePort.getContainer()) + "_" + adapter.getTimeSourcePortName() + "[0]->tag.timestamp";
+            sourceTime = "sourceTime = &Event_Head_"
+                    + CodeGeneratorAdapter.generateName(sourcePort
+                            .getContainer()) + "_"
+                    + adapter.getTimeSourcePortName() + "[0]->tag.timestamp";
         }
 
         // FIXME: not sure whether we should check if we are putting into an input port or
