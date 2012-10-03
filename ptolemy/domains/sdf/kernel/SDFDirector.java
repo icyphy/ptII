@@ -431,7 +431,7 @@ public class SDFDirector extends StaticSchedulingDirector implements
         // as if it were at the top level...
         if (!isEmbedded()) {
             // The container of this director is at the toplevel
-            if (iterations.getToken().equals(_auto)) {
+            if (iterations.getToken().equals(AUTO_INTTOKEN)) {
                 return 1;
             }
         }
@@ -922,21 +922,21 @@ public class SDFDirector extends StaticSchedulingDirector implements
         // AUTO and UNBOUNDED are used to set the value of iterations,
         // see the getIterations() method.
 
-        Parameter AUTO = new Parameter(this, "AUTO");
-        AUTO.setToken(_auto);
+        Parameter AUTO = new Parameter(this, AUTO_NAME);
+        AUTO.setToken(AUTO_INTTOKEN);
         AUTO.setVisibility(Settable.EXPERT);
         AUTO.setPersistent(false);
 
-        Parameter UNBOUNDED = new Parameter(this, "UNBOUNDED");
-        UNBOUNDED.setToken(IntToken.ZERO);
+        Parameter UNBOUNDED = new Parameter(this, UNBOUNDED_NAME);
+        UNBOUNDED.setToken(UNBOUNDED_INTTOKEN);
         UNBOUNDED.setVisibility(Settable.EXPERT);
         UNBOUNDED.setPersistent(false);
 
-        iterations = new Parameter(this, "iterations");
+        iterations = new Parameter(this, ITERATIONS_NAME);
         iterations.setTypeEquals(BaseType.INT);
-        iterations.addChoice("AUTO");
-        iterations.addChoice("UNBOUNDED");
-        iterations.setExpression("AUTO");
+        iterations.addChoice(AUTO_NAME);
+        iterations.addChoice(UNBOUNDED_NAME);
+        iterations.setExpression(AUTO_NAME);
 
         vectorizationFactor = new Parameter(this, "vectorizationFactor");
         vectorizationFactor.setTypeEquals(BaseType.INT);
@@ -985,7 +985,20 @@ public class SDFDirector extends StaticSchedulingDirector implements
     /** The value used to signify special behavior for the
      *  iterations parameter.
      */
-    private static final IntToken _auto = new IntToken(-1);
+    public static final IntToken AUTO_INTTOKEN = new IntToken(-1);
+    
+    /** "AUTO" */
+    public static final String AUTO_NAME = "AUTO"; 
+    
+    /** The UNBOUNDED iterations choice is equivalent to IntToken.ZERO. */
+    public static final IntToken UNBOUNDED_INTTOKEN = IntToken.ZERO;
+    
+    /** "UNBOUNDED" */
+    public static final String UNBOUNDED_NAME = "UNBOUNDED"; 
+    
+    /** "iterations" */
+    public static final String ITERATIONS_NAME = "iterations";
+    
 
     /** The real time at which the model begins executing. */
     private long _realStartTime = 0L;
