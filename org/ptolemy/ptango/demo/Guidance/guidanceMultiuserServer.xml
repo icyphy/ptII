@@ -599,7 +599,7 @@
         </port>
     </entity>
     <entity name="HTMLModelExporter" class="org.ptolemy.ptango.lib.HTMLModelExporter">
-        <property name="modelFileOrURL" class="ptolemy.actor.parameters.FilePortParameter" value="Indoor%20Localization%20Map.xml">
+        <property name="modelFileOrURL" class="ptolemy.actor.parameters.FilePortParameter" value="IndoorLocalizationMap.xml">
         </property>
         <property name="spawnSeparateModels" class="ptolemy.data.expr.Parameter" value="false">
         </property>
@@ -957,7 +957,7 @@
             </property>
         </entity>
         <entity name="StringMatches" class="ptolemy.actor.lib.string.StringMatches">
-            <property name="pattern" class="ptolemy.actor.parameters.PortParameter" value="5">
+            <property name="pattern" class="ptolemy.actor.parameters.PortParameter" value="2">
             </property>
             <property name="matchString" class="ptolemy.actor.parameters.PortParameter" value="1">
             </property>
@@ -987,7 +987,7 @@
             </port>
         </entity>
         <entity name="StringMatches2" class="ptolemy.actor.lib.string.StringMatches">
-            <property name="pattern" class="ptolemy.actor.parameters.PortParameter" value="5">
+            <property name="pattern" class="ptolemy.actor.parameters.PortParameter" value="2">
             </property>
             <property name="matchString" class="ptolemy.actor.parameters.PortParameter" value="2">
             </property>
@@ -996,7 +996,7 @@
             </property>
         </entity>
         <entity name="StringMatches3" class="ptolemy.actor.lib.string.StringMatches">
-            <property name="pattern" class="ptolemy.actor.parameters.PortParameter" value="5">
+            <property name="pattern" class="ptolemy.actor.parameters.PortParameter" value="2">
             </property>
             <property name="matchString" class="ptolemy.actor.parameters.PortParameter" value="3">
             </property>
@@ -1005,7 +1005,7 @@
             </property>
         </entity>
         <entity name="StringMatches4" class="ptolemy.actor.lib.string.StringMatches">
-            <property name="pattern" class="ptolemy.actor.parameters.PortParameter" value="5">
+            <property name="pattern" class="ptolemy.actor.parameters.PortParameter" value="2">
             </property>
             <property name="matchString" class="ptolemy.actor.parameters.PortParameter" value="4">
             </property>
@@ -1014,7 +1014,7 @@
             </property>
         </entity>
         <entity name="StringMatches5" class="ptolemy.actor.lib.string.StringMatches">
-            <property name="pattern" class="ptolemy.actor.parameters.PortParameter" value="5">
+            <property name="pattern" class="ptolemy.actor.parameters.PortParameter" value="2">
             </property>
             <property name="matchString" class="ptolemy.actor.parameters.PortParameter" value="5">
             </property>
@@ -1399,7 +1399,7 @@
         <link port="Const6.trigger" relation="relation34"/>
     </entity>
     <entity name="HTMLModelExporter2" class="org.ptolemy.ptango.lib.HTMLModelExporter">
-        <property name="modelFileOrURL" class="ptolemy.actor.parameters.FilePortParameter" value="Indoor%20Localization%20Map.xml">
+        <property name="modelFileOrURL" class="ptolemy.actor.parameters.FilePortParameter" value="IndoorLocalizationMap.xml">
         </property>
         <property name="spawnSeparateModels" class="ptolemy.data.expr.Parameter" value="false">
         </property>

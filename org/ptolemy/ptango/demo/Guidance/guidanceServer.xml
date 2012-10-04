@@ -190,7 +190,7 @@
         </property>
     </entity>
     <entity name="HTMLModelExporter" class="org.ptolemy.ptango.lib.HTMLModelExporter">
-        <property name="modelFileOrURL" class="ptolemy.actor.parameters.FilePortParameter" value="Indoor%20Localization%20Map%20Single%20User.xml">
+        <property name="modelFileOrURL" class="ptolemy.actor.parameters.FilePortParameter" value="IndoorLocalizationMapSingleUser.xml">
         </property>
         <property name="spawnSeparateModels" class="ptolemy.data.expr.Parameter" value="false">
         </property>
