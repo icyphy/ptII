@@ -218,6 +218,9 @@ public class SDFDirector extends StaticSchedulingDirector implements
     }
 
     ///////////////////////////////////////////////////////////////////
+    ////                         public variables                  ////
+    
+    ///////////////////////////////////////////////////////////////////
     ////                         parameters                        ////
 
     /** A parameter representing whether disconnected graphs are
@@ -312,6 +315,24 @@ public class SDFDirector extends StaticSchedulingDirector implements
      */
     public Parameter vectorizationFactor;
 
+    
+    /** The value used to signify special behavior for the
+     *  iterations parameter.
+     */
+    public static final IntToken AUTO_INTTOKEN = new IntToken(-1);
+    
+    /** The name of the AUTO iterations parameter choice: "AUTO". */
+    public static final String AUTO_NAME = "AUTO"; 
+    
+    /** The UNBOUNDED iterations choice is equivalent to IntToken.ZERO. */
+    public static final IntToken UNBOUNDED_INTTOKEN = IntToken.ZERO;
+    
+    /** The name of the UNBOUNDED iterations parameter choice: "UNBOUNDED". */
+    public static final String UNBOUNDED_NAME = "UNBOUNDED"; 
+    
+    /** The name of the iterations parameter: "iterations". */
+    public static final String ITERATIONS_NAME = "iterations";
+    
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -981,25 +1002,7 @@ public class SDFDirector extends StaticSchedulingDirector implements
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
-    /** The value used to signify special behavior for the
-     *  iterations parameter.
-     */
-    public static final IntToken AUTO_INTTOKEN = new IntToken(-1);
     
-    /** "AUTO" */
-    public static final String AUTO_NAME = "AUTO"; 
-    
-    /** The UNBOUNDED iterations choice is equivalent to IntToken.ZERO. */
-    public static final IntToken UNBOUNDED_INTTOKEN = IntToken.ZERO;
-    
-    /** "UNBOUNDED" */
-    public static final String UNBOUNDED_NAME = "UNBOUNDED"; 
-    
-    /** "iterations" */
-    public static final String ITERATIONS_NAME = "iterations";
-    
-
     /** The real time at which the model begins executing. */
     private long _realStartTime = 0L;
 
