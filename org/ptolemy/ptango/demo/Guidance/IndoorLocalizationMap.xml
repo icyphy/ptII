@@ -14,13 +14,13 @@
     </property>
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.0.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={5, 12, 765, 733}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 42, 762, 733}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[537, 617]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[534, 617]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.952015711978059">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.9520157119780591">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{216.57153774242306, 271.023476758794}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{221.56095119457143, 271.0234767587941}">
     </property>
     <property name="enableBackwardTypeInference" class="ptolemy.data.expr.Parameter" value="false">
     </property>
@@ -54,17 +54,17 @@
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="textSize" class="ptolemy.data.expr.Parameter" value="14">
         </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="TODO:  Add valid range; &#10;check using Javascript in HTML page">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Note that, in &quot;Javascript for icons&quot;, to refresh page,&#10;the evaluateScript paramter is set to true so that&#10;refreshRate will be evaluated. refreshRate is in msec">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[635.0, 285.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[640.0, 260.0]">
         </property>
     </property>
     <property name="DefaultIconScript" class="ptolemy.vergil.basic.export.web.DefaultIconScript" value="writeText('')">
         <property name="displayText" class="ptolemy.data.expr.StringParameter" value="Javascript for icons is entered here.  Right click this text -&gt; Customize -&gt; Configure">
         </property>
-        <property name="script" class="ptolemy.data.expr.StringParameter" value="function writeText(text) {&#10;    document.getElementById(&quot;afterImage&quot;).innerHTML = text;&#10;};&#10;&#10;function refresh(period) {&#10;	if (period &gt; 0) {&#10;		setTimeout(&quot;location.reload(true);&quot;, period);&#10;	}&#10;}&#10;&#10;">
+        <property name="script" class="ptolemy.data.expr.StringParameter" value="function writeText(text) {&#10;    document.getElementById(&quot;afterImage&quot;).innerHTML = text;&#10;};&#10;&#10;function refresh(period) {&#10;	if (period &gt; 0) {&#10;		setTimeout(&quot;location.reload(true);&quot;, period);&#10;	}&#10;}&#10;&#10;window.onload = refresh($refreshRate)&#10;&#10;&#10;">
         </property>
-        <property name="evaluateScript" class="ptolemy.data.expr.Parameter" value="false">
+        <property name="evaluateScript" class="ptolemy.data.expr.Parameter" value="true">
         </property>
         <property name="startText" class="ptolemy.data.expr.StringParameter" value="&#10;&#10;&lt;div id=&quot;welcomeMessage&quot;&gt; &lt;/div&gt;">
         </property>
@@ -491,7 +491,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[1150.0, 280.0]">
         </property>
     </property>
-    <property name="x5" class="ptolemy.actor.parameters.PortParameter" value="&quot;200&quot;">
+    <property name="x5" class="ptolemy.actor.parameters.PortParameter" value="&quot;0&quot;">
         <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="false">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -541,7 +541,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[1150.0, 345.0]">
         </property>
     </property>
-    <property name="y5" class="ptolemy.actor.parameters.PortParameter" value="&quot;300&quot;">
+    <property name="y5" class="ptolemy.actor.parameters.PortParameter" value="&quot;0&quot;">
         <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="false">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -572,6 +572,39 @@
         <property name="allowDisconnectedGraphs" class="ptolemy.data.expr.Parameter" value="true">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[695.0, 55.0]">
+        </property>
+    </property>
+    <property name="refreshRate" class="ptolemy.actor.parameters.PortParameter" value="0">
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="false">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+        </property>
+        <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+	<polyline points="-15,-15, -3,-5, -16,5" style="stroke:black"></polyline>
+	<polygon points="-22,-1, -22,4, -10,-5, -22,-14, -22,-9, -30,-9, -30, -1" style="fill:lightGray"></polygon>
+      </svg>
+    </configure>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:black" y="20">-P-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[1150.0, 620.0]">
+        </property>
+    </property>
+    <property name="Annotation4" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="14">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="TODO:  Add valid range; &#10;check using Javascript in HTML page">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[640.0, 330.0]">
         </property>
     </property>
     <port name="name1" class="ptolemy.actor.parameters.ParameterPort">
@@ -647,6 +680,11 @@
     <port name="y5" class="ptolemy.actor.parameters.ParameterPort">
         <property name="input"/>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{1130.0, 410.0}">
+        </property>
+    </port>
+    <port name="refreshRate" class="ptolemy.actor.parameters.ParameterPort">
+        <property name="input"/>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{1130.0, 615.0}">
         </property>
     </port>
     <class name="MarkerClassDefinition" extends="ptolemy.actor.TypedCompositeActor">
@@ -928,7 +966,7 @@
         </property>
     </entity>
     <entity name="MarkerInstance" class="MarkerClassDefinition">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[200.0, 300.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[0.0, 0.0]">
         </property>
         <property name="markerName" class="ptolemy.data.expr.Parameter" value="name5">
         </property>
