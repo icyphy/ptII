@@ -51,9 +51,9 @@ import ptolemy.math.FixPoint;
  */
 public class UnsizedFixToken extends FixToken {
 
-    /** Construct a token with integer 0.
+    /** Construct a fixed-point token.
      *  This method calls the {@link ptolemy.math.FixPoint#FixPoint(int)}
-     *  constructor, so the precision and quantization are the what ever
+     *  constructor, so the precision and quantization are what ever
      *  is defined for that constructor
      */
     public UnsizedFixToken() {
