@@ -127,18 +127,12 @@ proc testTypesEqual {type1 type2} {
     test TypeLattice-testTypesEqual-[$type1 toString]-[$type2 toString] {lubEquals2} {$lub equals $type2} {1}
 }        
 
-# Steve writes:
-# There are a few failures, which I think can be safely ignored at the
-# moment, until they can be looked at further.  Essentially, these
-# failures don't matter because tokens of type arraybottom can never
-# actually exist.
-
 proc testTypesIncomparable {type1 type2} {
     set lattice [java::new ptolemy.data.type.TypeLattice]
     testInvariants $type1 $type2
     if {[$type1 toString] == "arrayBottom" \
 	&& [$type2 toString] == "arrayType(arrayBottom,2)"} {
-        test TypeLattice-testTypesIncomparable-[$type1 toString]-[$type2 toString] {compare} {java::call ptolemy.data.type.TypeLattice compare $type1 $type2} {2} {Known Failure: arrayBottom-arrayType(arrayBottom,2) FAILED}
+        test TypeLattice-testTypesIncomparable-[$type1 toString]-[$type2 toString] {compare} {java::call ptolemy.data.type.TypeLattice compare $type1 $type2} {-1}
     } else {
         test TypeLattice-testTypesIncomparable-[$type1 toString]-[$type2 toString] {compare} {java::call ptolemy.data.type.TypeLattice compare $type1 $type2} {2}
     }
@@ -147,7 +141,7 @@ proc testTypesIncomparable {type1 type2} {
 
     if {[$type1 toString] == "arrayBottom" \
 	&& [$type2 toString] == "arrayType(arrayBottom,2)"} {
-        test TypeLattice-testTypesIncomparable-[$type1 toString]-[$type2 toString] {lubCompare2} {java::call ptolemy.data.type.TypeLattice compare $lub $type2} {1}  {Known Failure: lubCompare2 arrayBottom-arrayType(arrayBottom,2)}
+        test TypeLattice-testTypesIncomparable-[$type1 toString]-[$type2 toString] {lubCompare2} {java::call ptolemy.data.type.TypeLattice compare $lub $type2} {0}
     } else {
         test TypeLattice-testTypesIncomparable-[$type1 toString]-[$type2 toString] {lubCompare2} {java::call ptolemy.data.type.TypeLattice compare $lub $type2} {1}
     }
@@ -156,12 +150,18 @@ proc testTypesIncomparable {type1 type2} {
 
     if {[$type1 toString] == "arrayBottom" \
 	&& [$type2 toString] == "arrayType(arrayBottom,2)"} {
-	test TypeLattice-testTypesIncomparable-[$type1 toString]-[$type2 toString] {lubEquals2} {$lub equals $type2} {0} {Known Failure: lubEquals2}
+		test TypeLattice-testTypesIncomparable-[$type1 toString]-[$type2 toString] {lubEquals2} {$lub equals $type2} {1}
     } else {
-	test TypeLattice-testTypesIncomparable-[$type1 toString]-[$type2 toString] {lubEquals2} {$lub equals $type2} {0}
+		test TypeLattice-testTypesIncomparable-[$type1 toString]-[$type2 toString] {lubEquals2} {$lub equals $type2} {0}
     }
+}
 
-}        
+# Ensure that arrayBottom is less than an array of anything.
+set arrayBottom [java::field ptolemy.data.type.BaseType ARRAY_BOTTOM]
+foreach type $baseTypes {
+	set arrayType [java::new ptolemy.data.type.ArrayType $type]
+	testTypeIsLessThan $arrayBottom $arrayType
+}
 
 foreach type [concat $baseTypes $unsizedArrayTypes $lengthOneArrayTypes $lengthTwoArrayTypes] {
     testTypeIsLessThan $type $generalType
@@ -228,6 +228,26 @@ test TypeLattice-1.3 {bounds} {
     set lattice [java::call ptolemy.data.type.TypeLattice lattice]
     list [[java::call ptolemy.data.type.TypeLattice leastUpperBound $type1 $type2] toString] [[java::call ptolemy.data.type.TypeLattice leastUpperBound $type2 $type1] toString] [[$lattice greatestLowerBound $type1 $type2] toString] [[$lattice greatestLowerBound $type2 $type1] toString]
 } {scalar scalar int int}
+
+test TypeLattice-1.4 {lub with arrayBottom} {
+    set tokDou [java::new ptolemy.data.DoubleToken]
+    set double [$tokDou getType]
+    list [[java::call ptolemy.data.type.TypeLattice leastUpperBound $arrayBottom $double] toString] [[java::call ptolemy.data.type.TypeLattice leastUpperBound $double $arrayBottom] toString]
+} {arrayType(double) arrayType(double)}
+
+test TypeLattice-1.5 {compare double with arrayBottom} {
+    set tokDou [java::new ptolemy.data.DoubleToken]
+    set double [$tokDou getType]
+    list [java::call ptolemy.data.type.TypeLattice compare $arrayBottom $double] [java::call ptolemy.data.type.TypeLattice compare $double $arrayBottom]
+} {2 2}
+
+test TypeLattice-1.5 {compare {double} with arrayBottom} {
+    set tokDou [java::new ptolemy.data.DoubleToken]
+    set double [$tokDou getType]
+    set arrayType [java::new ptolemy.data.type.ArrayType $double]
+    list [java::call ptolemy.data.type.TypeLattice compare $arrayBottom $arrayType] [java::call ptolemy.data.type.TypeLattice compare $arrayType $arrayBottom]
+} {-1 1}
+
 
 ######################################################################
 ####

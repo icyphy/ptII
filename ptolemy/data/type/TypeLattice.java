@@ -258,8 +258,7 @@ public class TypeLattice {
                         && !t2.equals(BaseType.ARRAY_BOTTOM)) {
                     // NOTE: Added by EAL, 7/16/06, to make scalar < {scalar}
                     ArrayType arrayType = (ArrayType) t1;
-                    if (arrayType.hasKnownLength() && arrayType.length() != 1
-                            && !t2.equals(BaseType.GENERAL)) {
+                    if (arrayType.hasKnownLength() && arrayType.length() != 1) {
                         // If we have a Const with {1,2,3} -> Display
                         // then we used to fail here.
                         result = INCOMPARABLE;
@@ -628,6 +627,21 @@ public class TypeLattice {
                             }
                         }
                     }
+                } else if (t1.equals(BaseType.ARRAY_BOTTOM)
+                        && !(t2Rep instanceof ArrayType)
+                        && !t2.equals(BaseType.UNKNOWN)
+                        && !t2.equals(BaseType.GENERAL)
+                        && !t2.equals(BaseType.ARRAY_BOTTOM)) {
+                    // NOTE: Added by EAL, 10/8/12, to make lub(arrayBottom, double) = {double}
+                    // INCOMPARABLE
+                    if (_basicLattice.containsNodeWeight(t2Rep)) {
+                        // The least upper bound is an array of t2Rep.
+                        return new ArrayType(t2Rep);
+                    } else {
+                        // t2 is a user type (has no representative in the
+                        // basic lattice). Arrays of this type are not supported.
+                        return BaseType.GENERAL;
+                    }
                 } else if (t2Rep instanceof ArrayType
                         && !(t1Rep instanceof ArrayType)
                         && !t1.equals(BaseType.UNKNOWN)
@@ -665,6 +679,21 @@ public class TypeLattice {
                                 return BaseType.GENERAL;
                             }
                         }
+                    }
+                } else if (t2.equals(BaseType.ARRAY_BOTTOM)
+                        && !(t1Rep instanceof ArrayType)
+                        && !t1.equals(BaseType.UNKNOWN)
+                        && !t1.equals(BaseType.GENERAL)
+                        && !t1.equals(BaseType.ARRAY_BOTTOM)) {
+                    // NOTE: Added by EAL, 10/8/12, to make lub(double, arrayBottom) = {double}
+                    // INCOMPARABLE
+                    if (_basicLattice.containsNodeWeight(t1Rep)) {
+                        // The least upper bound is an array of t2Rep.
+                        return new ArrayType(t1Rep);
+                    } else {
+                        // t2 is a user type (has no representative in the
+                        // basic lattice). Arrays of this type are not supported.
+                        return BaseType.GENERAL;
                     }
                 } else if (_basicLattice.containsNodeWeight(t1Rep)
                         && _basicLattice.containsNodeWeight(t2Rep)) {
@@ -867,7 +896,10 @@ public class TypeLattice {
                 _basicLattice.addEdge(BaseType.EVENT, BaseType.GENERAL);
                 _basicLattice.addEdge(BaseType.UNKNOWN, BaseType.EVENT);
 
-                _basicLattice.addEdge(arrayRep, BaseType.STRING);
+                // NOTE: Below used to add an edge to BaseType.STRING, but
+                // other concrete array types are not < STRING (see compare methods above).
+                // EAL 10/8/12.
+                _basicLattice.addEdge(arrayRep, BaseType.GENERAL);
                 _basicLattice.addEdge(BaseType.ARRAY_BOTTOM, arrayRep);
                 _basicLattice.addEdge(BaseType.UNKNOWN, BaseType.ARRAY_BOTTOM);
 
