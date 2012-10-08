@@ -47,7 +47,7 @@ LinearStateSpace is {
 	 * These lines define some actor "constants" to be
 	 * used later.
 	 */
-	actor integrator = ptolemy.domains.ct.lib.Integrator;
+	actor integrator = ptolemy.domains.continuous.lib.Integrator;
 	actor adder = ptolemy.actor.lib.AddSubtract;
 	actor scale = ptolemy.actor.lib.Scale;
 	
@@ -91,7 +91,7 @@ LinearStateSpace is {
 		 * loop variable.
 		 */
 		integrator(initialState := [[initialStates(0, a)]], 
-			input := stateAdderOut[[a]], output := state[[a]] );
+			derivative := stateAdderOut[[a]], state := state[[a]] );
 			
 		/*
 		 * This creates a port reference.  The port
