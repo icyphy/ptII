@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="TimingParadox" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.0.devel">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
         <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
@@ -22,7 +22,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="635.0, 45.0">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1, 22, 961, 668}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1, 22, 982, 668}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[748, 558]">
     </property>
@@ -279,7 +279,7 @@
         </property>
         <property name="legend" class="ptolemy.kernel.util.StringAttribute" value="0.0,.05,.1,.2,.3,.4">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1, 94, 1024, 657}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={568, 332, 1024, 657}, maximized=false}">
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[1024, 613]">
         </property>
@@ -296,8 +296,8 @@
 <title>The Delay Paradox</title>
 <xLabel>Delay Between Sample Produced and Sample Observed</xLabel>
 <yLabel>Number of Occurrences</yLabel>
-<xRange min="0.015" max="1.4"/>
-<yRange min="0.0" max="617.0"/>
+<xRange min="0.015" max="1.4199999999999997"/>
+<yRange min="0.0" max="608.0"/>
 <barGraph width="0.5" offset="0.15"/>
 <bin width="0.01" offset="0.0050"/>
 </plot>?>
@@ -369,10 +369,18 @@
         </property>
     </entity>
     <entity name="TimeDelay" class="ptolemy.actor.lib.TimeDelay">
+        <property name="delay" class="ptolemy.actor.parameters.PortParameter" value="0.1751704401088">
+        </property>
+        <property name="minimumDelay" class="ptolemy.data.expr.Parameter" value="0.0">
+        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[310.0, 50.0]">
         </property>
     </entity>
     <entity name="TimeDelay2" class="ptolemy.actor.lib.TimeDelay">
+        <property name="delay" class="ptolemy.actor.parameters.PortParameter" value="0.1467898356025">
+        </property>
+        <property name="minimumDelay" class="ptolemy.data.expr.Parameter" value="0.0">
+        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[295.0, 445.0]">
         </property>
     </entity>
