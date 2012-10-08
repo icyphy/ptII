@@ -10,9 +10,9 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[75.0, 30.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={11, 33, 980, 741}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-4, -4, 1288, 756}, maximized=true}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[760, 634]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1068, 649]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
@@ -76,8 +76,16 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[0.0, 85.0]">
         </property>
     </property>
+    <property name="TestExceptionAttribute" class="ptolemy.actor.lib.TestExceptionAttribute">
+        <property name="correctExceptionMessage" class="ptolemy.data.expr.StringParameter" value="Queue size 512 exceeds the maximum capacity in port .CounterMachinePrelim.Decrement.OutputFunction.BooleanMultiplexor.trueInput. Perhaps you have an unbounded queue?&#10;  in .CounterMachinePrelim.Decrement.OutputFunction.BooleanMultiplexor.trueInput">
+        </property>
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{580.0, 565.0}">
+        </property>
+    </property>
     <entity name="Display" class="ptolemy.actor.lib.gui.Display">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={767, 538, 505, 417}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={767, 383, 505, 394}, maximized=false}">
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[497, 346]">
         </property>
@@ -130,6 +138,23 @@
         <entity name="BooleanSelect" class="ptolemy.actor.lib.BooleanSelect">
             <property name="_location" class="ptolemy.kernel.util.Location" value="[460.0, 130.0]">
             </property>
+            <port name="trueInput" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="multiport"/>
+                <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="0">
+                </property>
+            </port>
+            <port name="falseInput" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="multiport"/>
+                <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="0">
+                </property>
+            </port>
+            <port name="control" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="1">
+                </property>
+            </port>
         </entity>
         <entity name="Const" class="ptolemy.actor.lib.Const">
             <property name="value" class="ptolemy.data.expr.Parameter" value="true">
@@ -149,6 +174,23 @@
             </property>
             <property name="_flipPortsVertical" class="ptolemy.data.expr.Parameter" value="false">
             </property>
+            <port name="trueInput" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="multiport"/>
+                <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="1">
+                </property>
+            </port>
+            <port name="falseInput" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="multiport"/>
+                <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="0">
+                </property>
+            </port>
+            <port name="control" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="0">
+                </property>
+            </port>
         </entity>
         <entity name="Const2" class="ptolemy.actor.lib.Const">
             <property name="value" class="ptolemy.data.expr.Parameter" value="true">
@@ -254,7 +296,7 @@
         <link port="BooleanMultiplexor.output" relation="relation10"/>
     </entity>
     <entity name="Display3" class="ptolemy.actor.lib.gui.Display">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={164, 78, 505, 417}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={164, 78, 505, 394}, maximized=false}">
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[497, 346]">
         </property>
@@ -759,7 +801,7 @@
         </property>
     </entity>
     <entity name="Display2" class="ptolemy.actor.lib.gui.Display">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={219, 450, 505, 417}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={219, 383, 505, 394}, maximized=false}">
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[497, 346]">
         </property>
@@ -818,6 +860,23 @@
         <entity name="BooleanSelect" class="ptolemy.actor.lib.BooleanSelect">
             <property name="_location" class="ptolemy.kernel.util.Location" value="[119.0, 297.5]">
             </property>
+            <port name="trueInput" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="multiport"/>
+                <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="1">
+                </property>
+            </port>
+            <port name="falseInput" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="multiport"/>
+                <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="0">
+                </property>
+            </port>
+            <port name="control" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="0">
+                </property>
+            </port>
         </entity>
         <entity name="SampleDelay" class="ptolemy.domains.sdf.lib.SampleDelay">
             <property name="initialOutputs" class="ptolemy.data.expr.Parameter" value="{true}">
@@ -840,6 +899,23 @@
         <entity name="BooleanSelect2" class="ptolemy.actor.lib.BooleanSelect">
             <property name="_location" class="ptolemy.kernel.util.Location" value="[239.0, 187.5]">
             </property>
+            <port name="trueInput" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="multiport"/>
+                <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="0">
+                </property>
+            </port>
+            <port name="falseInput" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="multiport"/>
+                <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="0">
+                </property>
+            </port>
+            <port name="control" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="1">
+                </property>
+            </port>
         </entity>
         <entity name="Discard" class="ptolemy.actor.lib.Discard">
             <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
@@ -947,6 +1023,23 @@
         <entity name="BooleanSelect" class="ptolemy.actor.lib.BooleanSelect">
             <property name="_location" class="ptolemy.kernel.util.Location" value="[129.0, 377.5]">
             </property>
+            <port name="trueInput" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="multiport"/>
+                <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="1">
+                </property>
+            </port>
+            <port name="falseInput" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="multiport"/>
+                <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="0">
+                </property>
+            </port>
+            <port name="control" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="0">
+                </property>
+            </port>
         </entity>
         <entity name="SampleDelay" class="ptolemy.domains.sdf.lib.SampleDelay">
             <property name="initialOutputs" class="ptolemy.data.expr.Parameter" value="{true}">
@@ -1046,7 +1139,7 @@
         </property>
     </entity>
     <entity name="Display4" class="ptolemy.actor.lib.gui.Display">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={572, 49, 505, 417}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={572, 49, 505, 394}, maximized=false}">
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[497, 346]">
         </property>
@@ -1056,7 +1149,7 @@
         </property>
     </entity>
     <entity name="Display5" class="ptolemy.actor.lib.gui.Display">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={853, 51, 505, 417}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={775, 51, 505, 394}, maximized=false}">
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[497, 346]">
         </property>
@@ -1066,7 +1159,7 @@
         </property>
     </entity>
     <entity name="Display6" class="ptolemy.actor.lib.gui.Display">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={887, 225, 489, 417}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={791, 225, 489, 394}, maximized=false}">
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[481, 346]">
         </property>
@@ -1137,6 +1230,23 @@
         <entity name="BooleanSelect" class="ptolemy.actor.lib.BooleanSelect">
             <property name="_location" class="ptolemy.kernel.util.Location" value="[215.0, 140.0]">
             </property>
+            <port name="trueInput" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="multiport"/>
+                <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="1">
+                </property>
+            </port>
+            <port name="falseInput" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="multiport"/>
+                <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="0">
+                </property>
+            </port>
+            <port name="control" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="0">
+                </property>
+            </port>
         </entity>
         <entity name="Const" class="ptolemy.actor.lib.Const">
             <property name="value" class="ptolemy.data.expr.Parameter" value="false">
@@ -1156,6 +1266,23 @@
             </property>
             <property name="_flipPortsVertical" class="ptolemy.data.expr.Parameter" value="true">
             </property>
+            <port name="trueInput" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="multiport"/>
+                <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="1">
+                </property>
+            </port>
+            <port name="falseInput" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="multiport"/>
+                <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="0">
+                </property>
+            </port>
+            <port name="control" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="0">
+                </property>
+            </port>
         </entity>
         <entity name="Const2" class="ptolemy.actor.lib.Const">
             <property name="value" class="ptolemy.data.expr.Parameter" value="true">

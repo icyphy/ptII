@@ -60,6 +60,14 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[415.0, 670.0]">
         </property>
     </property>
+    <property name="TestExceptionAttribute" class="ptolemy.actor.lib.TestExceptionAttribute">
+        <property name="correctExceptionMessage" class="ptolemy.data.expr.StringParameter" value="Queue size 128 exceeds the maximum capacity in port .CounterMachineWithException.Program.BooleanMultiplexor.falseInput. Perhaps you have an unbounded queue?&#10;  in .CounterMachineWithException.Program.BooleanMultiplexor.falseInput">
+        </property>
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{845, 0}">
+        </property>
+    </property>
     <class name="IsZero" extends="ptolemy.actor.TypedCompositeActor">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[195.0, 655.0]">
         </property>
@@ -1096,6 +1104,44 @@
         <entity name="InstanceOfIncrement" class="Increment">
             <property name="_location" class="ptolemy.kernel.util.Location" value="[365.0, 100.0]">
             </property>
+            <entity name="BooleanSelect" class="ptolemy.actor.lib.BooleanSelect">
+                <port name="trueInput" class="ptolemy.actor.TypedIOPort">
+                    <property name="input"/>
+                    <property name="multiport"/>
+                    <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="0">
+                    </property>
+                </port>
+                <port name="falseInput" class="ptolemy.actor.TypedIOPort">
+                    <property name="input"/>
+                    <property name="multiport"/>
+                    <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="0">
+                    </property>
+                </port>
+                <port name="control" class="ptolemy.actor.TypedIOPort">
+                    <property name="input"/>
+                    <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="1">
+                    </property>
+                </port>
+            </entity>
+            <entity name="BooleanSelect2" class="ptolemy.actor.lib.BooleanSelect">
+                <port name="trueInput" class="ptolemy.actor.TypedIOPort">
+                    <property name="input"/>
+                    <property name="multiport"/>
+                    <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="1">
+                    </property>
+                </port>
+                <port name="falseInput" class="ptolemy.actor.TypedIOPort">
+                    <property name="input"/>
+                    <property name="multiport"/>
+                    <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="0">
+                    </property>
+                </port>
+                <port name="control" class="ptolemy.actor.TypedIOPort">
+                    <property name="input"/>
+                    <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="0">
+                    </property>
+                </port>
+            </entity>
         </entity>
         <entity name="InstanceOfDecrement" class="Decrement">
             <property name="_location" class="ptolemy.kernel.util.Location" value="[750.0, 100.0]">
@@ -1104,18 +1150,132 @@
         <entity name="InstanceOfWordLevelSwitch" class="WordLevelSwitch">
             <property name="_location" class="ptolemy.kernel.util.Location" value="[235.0, 130.0]">
             </property>
+            <entity name="BooleanSelect" class="ptolemy.actor.lib.BooleanSelect">
+                <port name="trueInput" class="ptolemy.actor.TypedIOPort">
+                    <property name="input"/>
+                    <property name="multiport"/>
+                    <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="1">
+                    </property>
+                </port>
+                <port name="falseInput" class="ptolemy.actor.TypedIOPort">
+                    <property name="input"/>
+                    <property name="multiport"/>
+                    <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="0">
+                    </property>
+                </port>
+                <port name="control" class="ptolemy.actor.TypedIOPort">
+                    <property name="input"/>
+                    <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="0">
+                    </property>
+                </port>
+            </entity>
         </entity>
         <entity name="InstanceOfWordLevelSwitch2" class="WordLevelSwitch">
             <property name="_location" class="ptolemy.kernel.util.Location" value="[630.0, 130.0]">
             </property>
+            <entity name="BooleanSelect" class="ptolemy.actor.lib.BooleanSelect">
+                <port name="trueInput" class="ptolemy.actor.TypedIOPort">
+                    <property name="input"/>
+                    <property name="multiport"/>
+                    <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="1">
+                    </property>
+                </port>
+                <port name="falseInput" class="ptolemy.actor.TypedIOPort">
+                    <property name="input"/>
+                    <property name="multiport"/>
+                    <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="0">
+                    </property>
+                </port>
+                <port name="control" class="ptolemy.actor.TypedIOPort">
+                    <property name="input"/>
+                    <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="0">
+                    </property>
+                </port>
+            </entity>
         </entity>
         <entity name="InstanceOfWordLevelSelect" class="WordLevelSelect">
             <property name="_location" class="ptolemy.kernel.util.Location" value="[496.9673614501953, 130.44795608520508]">
             </property>
+            <entity name="BooleanSelect" class="ptolemy.actor.lib.BooleanSelect">
+                <port name="trueInput" class="ptolemy.actor.TypedIOPort">
+                    <property name="input"/>
+                    <property name="multiport"/>
+                    <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="1">
+                    </property>
+                </port>
+                <port name="falseInput" class="ptolemy.actor.TypedIOPort">
+                    <property name="input"/>
+                    <property name="multiport"/>
+                    <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="0">
+                    </property>
+                </port>
+                <port name="control" class="ptolemy.actor.TypedIOPort">
+                    <property name="input"/>
+                    <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="0">
+                    </property>
+                </port>
+            </entity>
+            <entity name="BooleanSelect2" class="ptolemy.actor.lib.BooleanSelect">
+                <port name="trueInput" class="ptolemy.actor.TypedIOPort">
+                    <property name="input"/>
+                    <property name="multiport"/>
+                    <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="0">
+                    </property>
+                </port>
+                <port name="falseInput" class="ptolemy.actor.TypedIOPort">
+                    <property name="input"/>
+                    <property name="multiport"/>
+                    <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="0">
+                    </property>
+                </port>
+                <port name="control" class="ptolemy.actor.TypedIOPort">
+                    <property name="input"/>
+                    <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="1">
+                    </property>
+                </port>
+            </entity>
         </entity>
         <entity name="InstanceOfWordLevelSelect2" class="WordLevelSelect">
             <property name="_location" class="ptolemy.kernel.util.Location" value="[880.0, 130.0]">
             </property>
+            <entity name="BooleanSelect" class="ptolemy.actor.lib.BooleanSelect">
+                <port name="trueInput" class="ptolemy.actor.TypedIOPort">
+                    <property name="input"/>
+                    <property name="multiport"/>
+                    <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="1">
+                    </property>
+                </port>
+                <port name="falseInput" class="ptolemy.actor.TypedIOPort">
+                    <property name="input"/>
+                    <property name="multiport"/>
+                    <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="0">
+                    </property>
+                </port>
+                <port name="control" class="ptolemy.actor.TypedIOPort">
+                    <property name="input"/>
+                    <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="0">
+                    </property>
+                </port>
+            </entity>
+            <entity name="BooleanSelect2" class="ptolemy.actor.lib.BooleanSelect">
+                <port name="trueInput" class="ptolemy.actor.TypedIOPort">
+                    <property name="input"/>
+                    <property name="multiport"/>
+                    <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="0">
+                    </property>
+                </port>
+                <port name="falseInput" class="ptolemy.actor.TypedIOPort">
+                    <property name="input"/>
+                    <property name="multiport"/>
+                    <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="0">
+                    </property>
+                </port>
+                <port name="control" class="ptolemy.actor.TypedIOPort">
+                    <property name="input"/>
+                    <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="1">
+                    </property>
+                </port>
+            </entity>
         </entity>
         <relation name="relation2" class="ptolemy.actor.TypedIORelation">
         </relation>
@@ -1362,6 +1522,23 @@
         <entity name="BooleanSelect" class="ptolemy.actor.lib.BooleanSelect">
             <property name="_location" class="ptolemy.kernel.util.Location" value="[424.0, 459.5]">
             </property>
+            <port name="trueInput" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="multiport"/>
+                <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="0">
+                </property>
+            </port>
+            <port name="falseInput" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="multiport"/>
+                <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="0">
+                </property>
+            </port>
+            <port name="control" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="1">
+                </property>
+            </port>
         </entity>
         <entity name="BooleanSwitch" class="ptolemy.actor.lib.BooleanSwitch">
             <property name="_location" class="ptolemy.kernel.util.Location" value="[259.0, 459.5]">
@@ -1468,6 +1645,23 @@
             </property>
             <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
+            <port name="trueInput" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="multiport"/>
+                <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="0">
+                </property>
+            </port>
+            <port name="falseInput" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="multiport"/>
+                <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="0">
+                </property>
+            </port>
+            <port name="control" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="1">
+                </property>
+            </port>
         </entity>
         <entity name="AddSubtract3" class="ptolemy.actor.lib.AddSubtract">
             <property name="_location" class="ptolemy.kernel.util.Location" value="[579.0, 429.5]">
@@ -1538,6 +1732,23 @@
             </property>
             <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
+            <port name="trueInput" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="multiport"/>
+                <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="0">
+                </property>
+            </port>
+            <port name="falseInput" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="multiport"/>
+                <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="0">
+                </property>
+            </port>
+            <port name="control" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="1">
+                </property>
+            </port>
         </entity>
         <entity name="BooleanSwitch4" class="ptolemy.actor.lib.BooleanSwitch">
             <property name="_location" class="ptolemy.kernel.util.Location" value="[884.5, 456.0]">
@@ -1550,6 +1761,23 @@
             </property>
             <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
+            <port name="trueInput" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="multiport"/>
+                <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="0">
+                </property>
+            </port>
+            <port name="falseInput" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="multiport"/>
+                <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="0">
+                </property>
+            </port>
+            <port name="control" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="1">
+                </property>
+            </port>
         </entity>
         <entity name="Discard2" class="ptolemy.actor.lib.Discard">
             <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
@@ -1866,6 +2094,44 @@
         <entity name="InstanceOfIncrement2" class="Increment">
             <property name="_location" class="ptolemy.kernel.util.Location" value="[360.0, 100.0]">
             </property>
+            <entity name="BooleanSelect" class="ptolemy.actor.lib.BooleanSelect">
+                <port name="trueInput" class="ptolemy.actor.TypedIOPort">
+                    <property name="input"/>
+                    <property name="multiport"/>
+                    <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="0">
+                    </property>
+                </port>
+                <port name="falseInput" class="ptolemy.actor.TypedIOPort">
+                    <property name="input"/>
+                    <property name="multiport"/>
+                    <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="0">
+                    </property>
+                </port>
+                <port name="control" class="ptolemy.actor.TypedIOPort">
+                    <property name="input"/>
+                    <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="1">
+                    </property>
+                </port>
+            </entity>
+            <entity name="BooleanSelect2" class="ptolemy.actor.lib.BooleanSelect">
+                <port name="trueInput" class="ptolemy.actor.TypedIOPort">
+                    <property name="input"/>
+                    <property name="multiport"/>
+                    <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="1">
+                    </property>
+                </port>
+                <port name="falseInput" class="ptolemy.actor.TypedIOPort">
+                    <property name="input"/>
+                    <property name="multiport"/>
+                    <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="0">
+                    </property>
+                </port>
+                <port name="control" class="ptolemy.actor.TypedIOPort">
+                    <property name="input"/>
+                    <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="0">
+                    </property>
+                </port>
+            </entity>
         </entity>
         <entity name="InstanceOfDecrement2" class="Decrement">
             <property name="_location" class="ptolemy.kernel.util.Location" value="{755.0, 105.0}">
@@ -1874,18 +2140,132 @@
         <entity name="InstanceOfWordLevelSwitch" class="WordLevelSwitch">
             <property name="_location" class="ptolemy.kernel.util.Location" value="[230.0, 130.0]">
             </property>
+            <entity name="BooleanSelect" class="ptolemy.actor.lib.BooleanSelect">
+                <port name="trueInput" class="ptolemy.actor.TypedIOPort">
+                    <property name="input"/>
+                    <property name="multiport"/>
+                    <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="1">
+                    </property>
+                </port>
+                <port name="falseInput" class="ptolemy.actor.TypedIOPort">
+                    <property name="input"/>
+                    <property name="multiport"/>
+                    <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="0">
+                    </property>
+                </port>
+                <port name="control" class="ptolemy.actor.TypedIOPort">
+                    <property name="input"/>
+                    <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="0">
+                    </property>
+                </port>
+            </entity>
         </entity>
         <entity name="InstanceOfWordLevelSwitch2" class="WordLevelSwitch">
             <property name="_location" class="ptolemy.kernel.util.Location" value="[630.0, 130.0]">
             </property>
+            <entity name="BooleanSelect" class="ptolemy.actor.lib.BooleanSelect">
+                <port name="trueInput" class="ptolemy.actor.TypedIOPort">
+                    <property name="input"/>
+                    <property name="multiport"/>
+                    <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="1">
+                    </property>
+                </port>
+                <port name="falseInput" class="ptolemy.actor.TypedIOPort">
+                    <property name="input"/>
+                    <property name="multiport"/>
+                    <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="0">
+                    </property>
+                </port>
+                <port name="control" class="ptolemy.actor.TypedIOPort">
+                    <property name="input"/>
+                    <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="0">
+                    </property>
+                </port>
+            </entity>
         </entity>
         <entity name="InstanceOfWordLevelSelect" class="WordLevelSelect">
             <property name="_location" class="ptolemy.kernel.util.Location" value="[491.9673614501953, 130.44795608520508]">
             </property>
+            <entity name="BooleanSelect" class="ptolemy.actor.lib.BooleanSelect">
+                <port name="trueInput" class="ptolemy.actor.TypedIOPort">
+                    <property name="input"/>
+                    <property name="multiport"/>
+                    <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="1">
+                    </property>
+                </port>
+                <port name="falseInput" class="ptolemy.actor.TypedIOPort">
+                    <property name="input"/>
+                    <property name="multiport"/>
+                    <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="0">
+                    </property>
+                </port>
+                <port name="control" class="ptolemy.actor.TypedIOPort">
+                    <property name="input"/>
+                    <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="0">
+                    </property>
+                </port>
+            </entity>
+            <entity name="BooleanSelect2" class="ptolemy.actor.lib.BooleanSelect">
+                <port name="trueInput" class="ptolemy.actor.TypedIOPort">
+                    <property name="input"/>
+                    <property name="multiport"/>
+                    <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="0">
+                    </property>
+                </port>
+                <port name="falseInput" class="ptolemy.actor.TypedIOPort">
+                    <property name="input"/>
+                    <property name="multiport"/>
+                    <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="0">
+                    </property>
+                </port>
+                <port name="control" class="ptolemy.actor.TypedIOPort">
+                    <property name="input"/>
+                    <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="1">
+                    </property>
+                </port>
+            </entity>
         </entity>
         <entity name="InstanceOfWordLevelSelect2" class="WordLevelSelect">
             <property name="_location" class="ptolemy.kernel.util.Location" value="[875.0, 130.0]">
             </property>
+            <entity name="BooleanSelect" class="ptolemy.actor.lib.BooleanSelect">
+                <port name="trueInput" class="ptolemy.actor.TypedIOPort">
+                    <property name="input"/>
+                    <property name="multiport"/>
+                    <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="1">
+                    </property>
+                </port>
+                <port name="falseInput" class="ptolemy.actor.TypedIOPort">
+                    <property name="input"/>
+                    <property name="multiport"/>
+                    <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="0">
+                    </property>
+                </port>
+                <port name="control" class="ptolemy.actor.TypedIOPort">
+                    <property name="input"/>
+                    <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="0">
+                    </property>
+                </port>
+            </entity>
+            <entity name="BooleanSelect2" class="ptolemy.actor.lib.BooleanSelect">
+                <port name="trueInput" class="ptolemy.actor.TypedIOPort">
+                    <property name="input"/>
+                    <property name="multiport"/>
+                    <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="0">
+                    </property>
+                </port>
+                <port name="falseInput" class="ptolemy.actor.TypedIOPort">
+                    <property name="input"/>
+                    <property name="multiport"/>
+                    <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="0">
+                    </property>
+                </port>
+                <port name="control" class="ptolemy.actor.TypedIOPort">
+                    <property name="input"/>
+                    <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="1">
+                    </property>
+                </port>
+            </entity>
         </entity>
         <relation name="relation2" class="ptolemy.actor.TypedIORelation">
         </relation>
