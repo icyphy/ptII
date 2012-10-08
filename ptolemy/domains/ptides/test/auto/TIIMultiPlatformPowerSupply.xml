@@ -1,7 +1,7 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="PP_TIIPtidesBasicMultiPlatformPowerSupply" class="ptolemy.actor.TypedCompositeActor">
+<entity name="TIIMultiPlatformPowerSupply" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.0.devel">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
@@ -928,19 +928,22 @@
                 </port>
                 <port name="NetworkReceiverPort" class="ptolemy.domains.ptides.lib.PtidesPort">
                     <property name="input"/>
-<property name="isNetworkPort" value="true"/>
+                    <property name="isNetworkPort" class="ptolemy.data.expr.Parameter" value="true">
+                    </property>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[85.0, 120.0]">
                     </property>
                 </port>
                 <port name="NetworkReceiverPort2" class="ptolemy.domains.ptides.lib.PtidesPort">
                     <property name="input"/>
-<property name="isNetworkPort" value="true"/>
+                    <property name="isNetworkPort" class="ptolemy.data.expr.Parameter" value="true">
+                    </property>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[85.0, 155.0]">
                     </property>
                 </port>
                 <port name="NetworkReceiverPort3" class="ptolemy.domains.ptides.lib.PtidesPort">
                     <property name="input"/>
-<property name="isNetworkPort" value="true"/>
+                    <property name="isNetworkPort" class="ptolemy.data.expr.Parameter" value="true">
+                    </property>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[85.0, 190.0]">
                     </property>
                 </port>
@@ -962,8 +965,10 @@
                     <property name="relativeDeadline" class="ptolemy.data.expr.Parameter" value="0.0">
                     </property>
                 </port>
-                <port name="NetworkTransmitterPort" class="ptolemy.domains.ptides.lib.PtidesPort"><property name="isNetworkPort" value="true"/>
+                <port name="NetworkTransmitterPort" class="ptolemy.domains.ptides.lib.PtidesPort">
                     <property name="output"/>
+                    <property name="isNetworkPort" class="ptolemy.data.expr.Parameter" value="true">
+                    </property>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[450.0, 260.0]">
                     </property>
                     <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="Infinity">
@@ -1287,68 +1292,6 @@ actors to enable timed sequencing of a set of power supplies.</text></svg></conf
                         <link port="steady state.outgoingPort" relation="relation3"/>
                         <link port="state.outgoingPort" relation="relation5"/>
                     </entity>
-                    <entity name="initial state" class="ptolemy.domains.modal.modal.Refinement">
-                        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={173, 180, 815, 517}, maximized=false}">
-                        </property>
-                        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
-                        </property>
-                        <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0548581160893">
-                        </property>
-                        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{261.3984375, 272.8333333333334}">
-                        </property>
-                        <port name="faultIndication" class="ptolemy.domains.modal.modal.RefinementPort">
-                            <property name="input"/>
-                            <property name="_location" class="ptolemy.kernel.util.Location" value="[-5.0, 105.0]">
-                            </property>
-                        </port>
-                        <port name="startupIndication" class="ptolemy.domains.modal.modal.RefinementPort">
-                            <property name="input"/>
-                            <property name="_location" class="ptolemy.kernel.util.Location" value="[-10.0, 300.0]">
-                            </property>
-                        </port>
-                        <port name="shutdownIndication" class="ptolemy.domains.modal.modal.RefinementPort">
-                            <property name="input"/>
-                            <property name="_location" class="ptolemy.kernel.util.Location" value="[-10.0, 360.0]">
-                            </property>
-                        </port>
-                        <port name="powerOut" class="ptolemy.domains.modal.modal.RefinementPort">
-                            <property name="output"/>
-                            <property name="_location" class="ptolemy.kernel.util.Location" value="[490.0, 160.0]">
-                            </property>
-                        </port>
-                        <port name="voltageMonitor" class="ptolemy.domains.modal.modal.RefinementPort">
-                            <property name="input"/>
-                        </port>
-                        <port name="portTrigger" class="ptolemy.domains.modal.modal.RefinementPort">
-                            <property name="input"/>
-                        </port>
-                        <port name="overcurrent" class="ptolemy.domains.modal.modal.RefinementPort">
-                            <property name="input"/>
-                        </port>
-                        <port name="stateMonitor" class="ptolemy.domains.modal.modal.RefinementPort">
-                            <property name="output"/>
-                        </port>
-                        <port name="triggerRequest" class="ptolemy.domains.modal.modal.RefinementPort">
-                            <property name="output"/>
-                        </port>
-                        <entity name="Const" class="ptolemy.actor.lib.Const">
-                            <property name="value" class="ptolemy.data.expr.Parameter" value="0">
-                            </property>
-                            <doc>Create a constant sequence.</doc>
-                            <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
-                                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
-                                </property>
-                                <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
-                                </property>
-                            </property>
-                            <property name="_location" class="ptolemy.kernel.util.Location" value="{165, 165}">
-                            </property>
-                        </entity>
-                        <relation name="relation" class="ptolemy.actor.TypedIORelation">
-                        </relation>
-                        <link port="powerOut" relation="relation"/>
-                        <link port="Const.output" relation="relation"/>
-                    </entity>
                     <entity name="powerup" class="ptolemy.domains.modal.modal.Refinement">
                         <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={118, 162, 814, 513}, maximized=false}">
                         </property>
@@ -1591,15 +1534,6 @@ actors to enable timed sequencing of a set of power supplies.</text></svg></conf
                     <link port="_Controller.overcurrent" relation="overcurrentRelation"/>
                     <link port="_Controller.stateMonitor" relation="stateMonitorRelation"/>
                     <link port="_Controller.triggerRequest" relation="triggerRequestRelation"/>
-                    <link port="initial state.faultIndication" relation="faultIndicationRelation"/>
-                    <link port="initial state.startupIndication" relation="startupIndicationRelation"/>
-                    <link port="initial state.shutdownIndication" relation="shutdownIndicationRelation"/>
-                    <link port="initial state.powerOut" relation="powerOutRelation"/>
-                    <link port="initial state.voltageMonitor" relation="voltageMonitorRelation"/>
-                    <link port="initial state.portTrigger" relation="portTriggerRelation"/>
-                    <link port="initial state.overcurrent" relation="overcurrentRelation"/>
-                    <link port="initial state.stateMonitor" relation="stateMonitorRelation"/>
-                    <link port="initial state.triggerRequest" relation="triggerRequestRelation"/>
                     <link port="powerup.faultIndication" relation="faultIndicationRelation"/>
                     <link port="powerup.startupIndication" relation="startupIndicationRelation"/>
                     <link port="powerup.shutdownIndication" relation="shutdownIndicationRelation"/>
@@ -3171,19 +3105,24 @@ actors to enable timed sequencing of a set of power supplies.</text></svg></conf
                     <property name="_location" class="ptolemy.kernel.util.Location" value="{85.0, 260.0}">
                     </property>
                 </port>
-                <port name="NetworkReceiverPort" class="ptolemy.domains.ptides.lib.PtidesPort"><property name="isNetworkPort" value="true"/>
+                <port name="NetworkReceiverPort" class="ptolemy.domains.ptides.lib.PtidesPort">
                     <property name="input"/>
-<property name="isNetworkPort" value="true"/>
+                    <property name="isNetworkPort" class="ptolemy.data.expr.Parameter" value="true">
+                    </property>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[85.0, 120.0]">
                     </property>
                 </port>
-                <port name="NetworkReceiverPort2" class="ptolemy.domains.ptides.lib.PtidesPort"><property name="isNetworkPort" value="true"/>
+                <port name="NetworkReceiverPort2" class="ptolemy.domains.ptides.lib.PtidesPort">
                     <property name="input"/>
+                    <property name="isNetworkPort" class="ptolemy.data.expr.Parameter" value="true">
+                    </property>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[85.0, 155.0]">
                     </property>
                 </port>
-                <port name="NetworkReceiverPort3" class="ptolemy.domains.ptides.lib.PtidesPort"><property name="isNetworkPort" value="true"/>
+                <port name="NetworkReceiverPort3" class="ptolemy.domains.ptides.lib.PtidesPort">
                     <property name="input"/>
+                    <property name="isNetworkPort" class="ptolemy.data.expr.Parameter" value="true">
+                    </property>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[85.0, 190.0]">
                     </property>
                 </port>
@@ -3205,8 +3144,10 @@ actors to enable timed sequencing of a set of power supplies.</text></svg></conf
                     <property name="relativeDeadline" class="ptolemy.data.expr.Parameter" value="0.0">
                     </property>
                 </port>
-                <port name="NetworkTransmitterPort" class="ptolemy.domains.ptides.lib.PtidesPort"><property name="isNetworkPort" value="true"/>
+                <port name="NetworkTransmitterPort" class="ptolemy.domains.ptides.lib.PtidesPort">
                     <property name="output"/>
+                    <property name="isNetworkPort" class="ptolemy.data.expr.Parameter" value="true">
+                    </property>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[450.0, 260.0]">
                     </property>
                     <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="Infinity">
@@ -3530,68 +3471,6 @@ actors to enable timed sequencing of a set of power supplies.</text></svg></conf
                         <link port="steady state.outgoingPort" relation="relation3"/>
                         <link port="state.outgoingPort" relation="relation5"/>
                     </entity>
-                    <entity name="initial state" class="ptolemy.domains.modal.modal.Refinement">
-                        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={173, 180, 815, 517}, maximized=false}">
-                        </property>
-                        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
-                        </property>
-                        <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0548581160893">
-                        </property>
-                        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{261.3984375, 272.8333333333334}">
-                        </property>
-                        <port name="faultIndication" class="ptolemy.domains.modal.modal.RefinementPort">
-                            <property name="input"/>
-                            <property name="_location" class="ptolemy.kernel.util.Location" value="[-5.0, 105.0]">
-                            </property>
-                        </port>
-                        <port name="startupIndication" class="ptolemy.domains.modal.modal.RefinementPort">
-                            <property name="input"/>
-                            <property name="_location" class="ptolemy.kernel.util.Location" value="[-10.0, 300.0]">
-                            </property>
-                        </port>
-                        <port name="shutdownIndication" class="ptolemy.domains.modal.modal.RefinementPort">
-                            <property name="input"/>
-                            <property name="_location" class="ptolemy.kernel.util.Location" value="[-10.0, 360.0]">
-                            </property>
-                        </port>
-                        <port name="powerOut" class="ptolemy.domains.modal.modal.RefinementPort">
-                            <property name="output"/>
-                            <property name="_location" class="ptolemy.kernel.util.Location" value="[490.0, 160.0]">
-                            </property>
-                        </port>
-                        <port name="voltageMonitor" class="ptolemy.domains.modal.modal.RefinementPort">
-                            <property name="input"/>
-                        </port>
-                        <port name="portTrigger" class="ptolemy.domains.modal.modal.RefinementPort">
-                            <property name="input"/>
-                        </port>
-                        <port name="overcurrent" class="ptolemy.domains.modal.modal.RefinementPort">
-                            <property name="input"/>
-                        </port>
-                        <port name="stateMonitor" class="ptolemy.domains.modal.modal.RefinementPort">
-                            <property name="output"/>
-                        </port>
-                        <port name="triggerRequest" class="ptolemy.domains.modal.modal.RefinementPort">
-                            <property name="output"/>
-                        </port>
-                        <entity name="Const" class="ptolemy.actor.lib.Const">
-                            <property name="value" class="ptolemy.data.expr.Parameter" value="0">
-                            </property>
-                            <doc>Create a constant sequence.</doc>
-                            <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
-                                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
-                                </property>
-                                <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
-                                </property>
-                            </property>
-                            <property name="_location" class="ptolemy.kernel.util.Location" value="{165, 165}">
-                            </property>
-                        </entity>
-                        <relation name="relation" class="ptolemy.actor.TypedIORelation">
-                        </relation>
-                        <link port="powerOut" relation="relation"/>
-                        <link port="Const.output" relation="relation"/>
-                    </entity>
                     <entity name="powerup" class="ptolemy.domains.modal.modal.Refinement">
                         <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={118, 162, 814, 513}, maximized=false}">
                         </property>
@@ -3834,15 +3713,6 @@ actors to enable timed sequencing of a set of power supplies.</text></svg></conf
                     <link port="_Controller.overcurrent" relation="overcurrentRelation"/>
                     <link port="_Controller.stateMonitor" relation="stateMonitorRelation"/>
                     <link port="_Controller.triggerRequest" relation="triggerRequestRelation"/>
-                    <link port="initial state.faultIndication" relation="faultIndicationRelation"/>
-                    <link port="initial state.startupIndication" relation="startupIndicationRelation"/>
-                    <link port="initial state.shutdownIndication" relation="shutdownIndicationRelation"/>
-                    <link port="initial state.powerOut" relation="powerOutRelation"/>
-                    <link port="initial state.voltageMonitor" relation="voltageMonitorRelation"/>
-                    <link port="initial state.portTrigger" relation="portTriggerRelation"/>
-                    <link port="initial state.overcurrent" relation="overcurrentRelation"/>
-                    <link port="initial state.stateMonitor" relation="stateMonitorRelation"/>
-                    <link port="initial state.triggerRequest" relation="triggerRequestRelation"/>
                     <link port="powerup.faultIndication" relation="faultIndicationRelation"/>
                     <link port="powerup.startupIndication" relation="startupIndicationRelation"/>
                     <link port="powerup.shutdownIndication" relation="shutdownIndicationRelation"/>
@@ -4865,18 +4735,24 @@ actors to enable timed sequencing of a set of power supplies.</text></svg></conf
                     <property name="_location" class="ptolemy.kernel.util.Location" value="{85.0, 260.0}">
                     </property>
                 </port>
-                <port name="NetworkReceiverPort" class="ptolemy.domains.ptides.lib.PtidesPort"><property name="isNetworkPort" value="true"/>
+                <port name="NetworkReceiverPort" class="ptolemy.domains.ptides.lib.PtidesPort">
                     <property name="input"/>
+                    <property name="isNetworkPort" class="ptolemy.data.expr.Parameter" value="true">
+                    </property>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[85.0, 120.0]">
                     </property>
                 </port>
-                <port name="NetworkReceiverPort2" class="ptolemy.domains.ptides.lib.PtidesPort"><property name="isNetworkPort" value="true"/>
+                <port name="NetworkReceiverPort2" class="ptolemy.domains.ptides.lib.PtidesPort">
                     <property name="input"/>
+                    <property name="isNetworkPort" class="ptolemy.data.expr.Parameter" value="true">
+                    </property>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[85.0, 155.0]">
                     </property>
                 </port>
-                <port name="NetworkReceiverPort3" class="ptolemy.domains.ptides.lib.PtidesPort"><property name="isNetworkPort" value="true"/>
+                <port name="NetworkReceiverPort3" class="ptolemy.domains.ptides.lib.PtidesPort">
                     <property name="input"/>
+                    <property name="isNetworkPort" class="ptolemy.data.expr.Parameter" value="true">
+                    </property>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[85.0, 190.0]">
                     </property>
                 </port>
@@ -4898,8 +4774,10 @@ actors to enable timed sequencing of a set of power supplies.</text></svg></conf
                     <property name="relativeDeadline" class="ptolemy.data.expr.Parameter" value="0.0">
                     </property>
                 </port>
-                <port name="NetworkTransmitterPort" class="ptolemy.domains.ptides.lib.PtidesPort"><property name="isNetworkPort" value="true"/>
+                <port name="NetworkTransmitterPort" class="ptolemy.domains.ptides.lib.PtidesPort">
                     <property name="output"/>
+                    <property name="isNetworkPort" class="ptolemy.data.expr.Parameter" value="true">
+                    </property>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[450.0, 260.0]">
                     </property>
                     <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="Infinity">
@@ -5223,68 +5101,6 @@ actors to enable timed sequencing of a set of power supplies.</text></svg></conf
                         <link port="steady state.outgoingPort" relation="relation3"/>
                         <link port="state.outgoingPort" relation="relation5"/>
                     </entity>
-                    <entity name="initial state" class="ptolemy.domains.modal.modal.Refinement">
-                        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={173, 180, 815, 517}, maximized=false}">
-                        </property>
-                        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
-                        </property>
-                        <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0548581160893">
-                        </property>
-                        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{261.3984375, 272.8333333333334}">
-                        </property>
-                        <port name="faultIndication" class="ptolemy.domains.modal.modal.RefinementPort">
-                            <property name="input"/>
-                            <property name="_location" class="ptolemy.kernel.util.Location" value="[-5.0, 105.0]">
-                            </property>
-                        </port>
-                        <port name="startupIndication" class="ptolemy.domains.modal.modal.RefinementPort">
-                            <property name="input"/>
-                            <property name="_location" class="ptolemy.kernel.util.Location" value="[-10.0, 300.0]">
-                            </property>
-                        </port>
-                        <port name="shutdownIndication" class="ptolemy.domains.modal.modal.RefinementPort">
-                            <property name="input"/>
-                            <property name="_location" class="ptolemy.kernel.util.Location" value="[-10.0, 360.0]">
-                            </property>
-                        </port>
-                        <port name="powerOut" class="ptolemy.domains.modal.modal.RefinementPort">
-                            <property name="output"/>
-                            <property name="_location" class="ptolemy.kernel.util.Location" value="[490.0, 160.0]">
-                            </property>
-                        </port>
-                        <port name="voltageMonitor" class="ptolemy.domains.modal.modal.RefinementPort">
-                            <property name="input"/>
-                        </port>
-                        <port name="portTrigger" class="ptolemy.domains.modal.modal.RefinementPort">
-                            <property name="input"/>
-                        </port>
-                        <port name="overcurrent" class="ptolemy.domains.modal.modal.RefinementPort">
-                            <property name="input"/>
-                        </port>
-                        <port name="stateMonitor" class="ptolemy.domains.modal.modal.RefinementPort">
-                            <property name="output"/>
-                        </port>
-                        <port name="triggerRequest" class="ptolemy.domains.modal.modal.RefinementPort">
-                            <property name="output"/>
-                        </port>
-                        <entity name="Const" class="ptolemy.actor.lib.Const">
-                            <property name="value" class="ptolemy.data.expr.Parameter" value="0">
-                            </property>
-                            <doc>Create a constant sequence.</doc>
-                            <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
-                                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
-                                </property>
-                                <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
-                                </property>
-                            </property>
-                            <property name="_location" class="ptolemy.kernel.util.Location" value="{165, 165}">
-                            </property>
-                        </entity>
-                        <relation name="relation" class="ptolemy.actor.TypedIORelation">
-                        </relation>
-                        <link port="powerOut" relation="relation"/>
-                        <link port="Const.output" relation="relation"/>
-                    </entity>
                     <entity name="powerup" class="ptolemy.domains.modal.modal.Refinement">
                         <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={118, 162, 814, 513}, maximized=false}">
                         </property>
@@ -5527,15 +5343,6 @@ actors to enable timed sequencing of a set of power supplies.</text></svg></conf
                     <link port="_Controller.overcurrent" relation="overcurrentRelation"/>
                     <link port="_Controller.stateMonitor" relation="stateMonitorRelation"/>
                     <link port="_Controller.triggerRequest" relation="triggerRequestRelation"/>
-                    <link port="initial state.faultIndication" relation="faultIndicationRelation"/>
-                    <link port="initial state.startupIndication" relation="startupIndicationRelation"/>
-                    <link port="initial state.shutdownIndication" relation="shutdownIndicationRelation"/>
-                    <link port="initial state.powerOut" relation="powerOutRelation"/>
-                    <link port="initial state.voltageMonitor" relation="voltageMonitorRelation"/>
-                    <link port="initial state.portTrigger" relation="portTriggerRelation"/>
-                    <link port="initial state.overcurrent" relation="overcurrentRelation"/>
-                    <link port="initial state.stateMonitor" relation="stateMonitorRelation"/>
-                    <link port="initial state.triggerRequest" relation="triggerRequestRelation"/>
                     <link port="powerup.faultIndication" relation="faultIndicationRelation"/>
                     <link port="powerup.startupIndication" relation="startupIndicationRelation"/>
                     <link port="powerup.shutdownIndication" relation="shutdownIndicationRelation"/>
@@ -6549,8 +6356,10 @@ actors to enable timed sequencing of a set of power supplies.</text></svg></conf
             </property>
             <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{350.0, 262.0}">
             </property>
-            <port name="NetworkTransmitterPort" class="ptolemy.domains.ptides.lib.PtidesPort"><property name="isNetworkPort" value="true"/>
+            <port name="NetworkTransmitterPort" class="ptolemy.domains.ptides.lib.PtidesPort">
                 <property name="output"/>
+                <property name="isNetworkPort" class="ptolemy.data.expr.Parameter" value="true">
+                </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="{540, 205}">
                 </property>
                 <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="Infinity">
@@ -6558,8 +6367,10 @@ actors to enable timed sequencing of a set of power supplies.</text></svg></conf
                 <property name="relativeDeadline" class="ptolemy.data.expr.Parameter" value="0.0">
                 </property>
             </port>
-            <port name="NetworkTransmitterPort2" class="ptolemy.domains.ptides.lib.PtidesPort"><property name="isNetworkPort" value="true"/>
+            <port name="NetworkTransmitterPort2" class="ptolemy.domains.ptides.lib.PtidesPort">
                 <property name="output"/>
+                <property name="isNetworkPort" class="ptolemy.data.expr.Parameter" value="true">
+                </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="{570, 265}">
                 </property>
                 <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="Infinity">
@@ -6567,8 +6378,10 @@ actors to enable timed sequencing of a set of power supplies.</text></svg></conf
                 <property name="relativeDeadline" class="ptolemy.data.expr.Parameter" value="0.0">
                 </property>
             </port>
-            <port name="NetworkTransmitterPort3" class="ptolemy.domains.ptides.lib.PtidesPort"><property name="isNetworkPort" value="true"/>
+            <port name="NetworkTransmitterPort3" class="ptolemy.domains.ptides.lib.PtidesPort">
                 <property name="output"/>
+                <property name="isNetworkPort" class="ptolemy.data.expr.Parameter" value="true">
+                </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="{535, 370}">
                 </property>
                 <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="Infinity">
@@ -6867,18 +6680,24 @@ actors to enable timed sequencing of a set of power supplies.</text></svg></conf
                 <property name="_location" class="ptolemy.kernel.util.Location" value="{105, 160}">
                 </property>
             </port>
-            <port name="NetworkReceiverPort" class="ptolemy.domains.ptides.lib.PtidesPort"><property name="isNetworkPort" value="true"/>
+            <port name="NetworkReceiverPort" class="ptolemy.domains.ptides.lib.PtidesPort">
                 <property name="input"/>
+                <property name="isNetworkPort" class="ptolemy.data.expr.Parameter" value="true">
+                </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="{95, 250}">
                 </property>
             </port>
-            <port name="NetworkReceiverPort2" class="ptolemy.domains.ptides.lib.PtidesPort"><property name="isNetworkPort" value="true"/>
+            <port name="NetworkReceiverPort2" class="ptolemy.domains.ptides.lib.PtidesPort">
                 <property name="input"/>
+                <property name="isNetworkPort" class="ptolemy.data.expr.Parameter" value="true">
+                </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="{80, 320}">
                 </property>
             </port>
-            <port name="NetworkReceiverPort3" class="ptolemy.domains.ptides.lib.PtidesPort"><property name="isNetworkPort" value="true"/>
+            <port name="NetworkReceiverPort3" class="ptolemy.domains.ptides.lib.PtidesPort">
                 <property name="input"/>
+                <property name="isNetworkPort" class="ptolemy.data.expr.Parameter" value="true">
+                </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="{110, 390}">
                 </property>
             </port>

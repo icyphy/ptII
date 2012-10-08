@@ -26,13 +26,17 @@
  */
 package ptolemy.domains.modal.modal;
 
+import java.io.IOException;
+import java.io.Writer;
 import java.lang.reflect.Constructor;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
 
 import ptolemy.actor.Actor;
 import ptolemy.actor.Director;
+import ptolemy.actor.TypedActor;
 import ptolemy.actor.TypedCompositeActor;
 import ptolemy.actor.util.CausalityInterface;
 import ptolemy.data.BooleanToken;
@@ -43,6 +47,7 @@ import ptolemy.domains.modal.kernel.FSMActor;
 import ptolemy.domains.modal.kernel.FSMDirector;
 import ptolemy.domains.modal.kernel.RefinementActor;
 import ptolemy.domains.modal.kernel.State;
+import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.Port;
@@ -51,6 +56,7 @@ import ptolemy.kernel.util.ChangeListener;
 import ptolemy.kernel.util.ChangeRequest;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
+import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.StringAttribute;
@@ -327,6 +333,42 @@ public class ModalModel extends TypedCompositeActor implements ChangeListener {
                             + getFullName());
         }
         return newModel;
+    }
+
+    /** Override the base class to remove any unused refinements
+     *  before exporting.
+     *  @param output The output stream to write to.
+     *  @param depth The depth in the hierarchy, to determine indenting.
+     *  @param name The name to use in the exported MoML.
+     *  @exception IOException If an I/O error occurs.
+     *  @see ptolemy.kernel.util.MoMLExportable
+     */
+    public void exportMoML(Writer output, int depth, String name)
+            throws IOException {
+        try {
+            HashSet<TypedActor> activeRefinements = new HashSet<TypedActor>();
+            for (State state : _controller.entityList(State.class)) {
+                TypedActor refinements[] = state.getRefinement();
+                if (refinements != null) {
+                    for (TypedActor refinement : refinements) {
+                        activeRefinements.add(refinement);
+                    }
+                }
+            }
+            for (TypedActor actor : entityList(Refinement.class)) {
+                if (!activeRefinements.contains(actor) && actor != _controller) {
+                    if (MessageHandler.yesNoQuestion("Unused state refinement in modal model: "
+                            + actor.getFullName()
+                            + ". Remove it?")) {
+                        ((ComponentEntity)actor).setContainer(null);
+                    }
+                }
+            }
+        } catch (KernelException ex) {
+            // This should not happen. Ignore and continue the export.
+            System.out.println(ex);
+        }
+        super.exportMoML(output, depth, name);
     }
 
     /** Get the attribute with the given name. The name may be compound,
