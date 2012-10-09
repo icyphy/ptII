@@ -2,11 +2,11 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="cruisecontrol" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="6.1.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.0.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={158, 165, 815, 516}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={158, 165, 834, 634}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 524]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
@@ -58,6 +58,9 @@
         </property>
         <configure>
             <ptalon file="ptolemy.actor.ptalon.demo.CruiseControl.LinearStateSpace">
+                <ptalonParameter name="integrator" value="ptolemy.domains.continuous.lib.Integrator"/>
+                <ptalonParameter name="adder" value="ptolemy.actor.lib.AddSubtract"/>
+                <ptalonParameter name="scale" value="ptolemy.actor.lib.Scale"/>
                 <ptalonExpressionParameter name="A" value="[0.0, 1.0; 0.0, -1.0]"/>
                 <ptalonExpressionParameter name="B" value="[0.0; 1.0]"/>
                 <ptalonExpressionParameter name="C" value="[1.0, 0.0]"/>
@@ -67,23 +70,27 @@
         </configure>
     </entity>
     <entity name="Test" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.0, 0.0048333333333, 0.0265618706585, 0.0658935381943, 0.122955283685, 0.1980001263304, 0.2914139827935, 0.4037468389231, 0.5357542394869, 0.6884529306687, 0.8631969418382, 1.061783974123, 1.2866081180223, 1.5408859999145, 1.8290045083291, 2.1570810184373, 2.5339215807374, 2.9727960404439, 3.4951207409588, 4.0066320753261, 4.0066320753261, 4.0066320753261}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.0, 0.0, 0.0, 0.00375, 0.0048333333333, 0.0048333333333, 0.028625, 0.1253489583333, 0.1466701388889, 0.0048333333333, 0.0167291666667, 0.0438841145833, 0.0545447048611, 0.0048333333333, 0.01078125, 0.0190569661458, 0.0235036349826, 0.0235036349826, 0.0864712490506, 0.2349233619902, 0.2729054082411, 0.0235036349826, 0.0549874420166, 0.09997142201, 0.1213992848418, 0.0235036349826, 0.0392455384996, 0.0544270093772, 0.0642271259032, 0.0642271259032, 0.1880641860973, 0.4063037746744, 0.4660511789592, 0.0642271259032, 0.1261456560003, 0.1961851856688, 0.2333864374274, 0.0642271259032, 0.0951863909518, 0.120436089631, 0.1383243148532, 0.1383243148532, 0.3523078036944, 0.6602012286512, 0.7469632899623, 0.1383243148532, 0.2453160592738, 0.3490373516182, 0.4083754167955, 0.1383243148532, 0.1918201870635, 0.2311244782022, 0.2606954142671, 0.1383243148532, 0.1650722509584, 0.1815853077693, 0.1958353322766, 0.1958353322766, 0.3492769461143, 0.4954561426567, 0.5764879520565, 0.1958353322766, 0.2725561391954, 0.3282811400608, 0.370074518398, 0.1958353322766, 0.234195735736, 0.2577170868172, 0.2780499352986, 0.2780499352986, 0.4966972313749, 0.6991886214668, 0.8079764741134, 0.2780499352986, 0.3873735833367, 0.4653273428693, 0.5238041817166, 0.2780499352986, 0.3327117593176, 0.3658656552055, 0.3946439413817, 0.3946439413817, 0.7033061771302, 0.9779253731609, 1.1213677834395, 0.3946439413817, 0.548975059256, 0.6562126377322, 0.7370291114764, 0.3946439413817, 0.4718095003188, 0.5179102846722, 0.5582024293058, 0.5582024293058, 0.9192882874068, 1.2040168228815, 1.3729835734405, 1.3729835734405, 1.8266788594741, 2.0882550379657, 2.3112439548187, 2.3112439548187, 2.7958090501633, 3.0496677763271, 3.2906640819448, 3.2906640819448, 3.6467745570442, 3.8268280798133, 4.0049102934546, 4.0049102934546}">
+        </property>
+        <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-4">
         </property>
         <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{500, 75}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{500.0, 75.0}">
         </property>
     </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="1">
         </property>
     </relation>
-    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="1">
         </property>
+        <vertex name="vertex1" value="{435.0, 70.0}">
+        </vertex>
     </relation>
     <link port="Const.output" relation="relation"/>
     <link port="LinearStateSpace.input" relation="relation"/>
-    <link port="LinearStateSpace.output" relation="relation2"/>
-    <link port="Test.input" relation="relation2"/>
+    <link port="LinearStateSpace.output" relation="relation3"/>
+    <link port="Test.input" relation="relation3"/>
 </entity>
