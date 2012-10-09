@@ -10,9 +10,9 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[0.0, -20.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 0, 1292, 812}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 0, 1288, 756}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1072, 705]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1068, 649]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.8">
     </property>
@@ -61,9 +61,11 @@
         </property>
     </property>
     <property name="TestExceptionAttribute" class="ptolemy.actor.lib.TestExceptionAttribute">
-        <property name="correctExceptionMessage" class="ptolemy.data.expr.StringParameter" value="Queue size 128 exceeds the maximum capacity in port .CounterMachineWithException.Program.BooleanMultiplexor.falseInput. Perhaps you have an unbounded queue?&#10;  in .CounterMachineWithException.Program.BooleanMultiplexor.falseInput">
+        <property name="correctExceptionMessage" class="ptolemy.data.expr.StringParameter" value="Queue size 128 exceeds the maximum capacity in port .CounterMachineWithException.UpdateC2.InstanceOfIncrement2.BooleanMultiplexor.select. Perhaps you have an unbounded queue?&#10;  in .CounterMachineWithException.UpdateC2.InstanceOfIncrement2.BooleanMultiplexor.select">
         </property>
-        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="true">
+        <property name="matchPrefixOfLength" class="ptolemy.data.expr.Parameter" value="40">
+        </property>
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{845, 0}">
         </property>
