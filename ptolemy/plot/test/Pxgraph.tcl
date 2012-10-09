@@ -115,6 +115,7 @@ test Pxgraph-1.1 {Test set labeling} {
 <!DOCTYPE plot SYSTEM "Usually, the DTD would go here">
 <plot>
 <!-- Ptolemy plot, version XXX -->
+<title></title>
 <dataset name="''">
 <m x="0.0" y="-2.0"/>
 <p x="1.0" y="2.0"/>
