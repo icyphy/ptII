@@ -39,6 +39,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.ListIterator;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 import java.util.TreeMap;
 
@@ -130,7 +131,7 @@ public class CanBus extends MonitoredQuantityManager {
         canFormatOfFrame.addChoice("\"Standard frame\"");
         canFormatOfFrame.addChoice("\"Extended frame\"");
         canFormatOfFrame.setExpression("\"Standard frame\"");
-        frameSize = 108;
+        _frameSize = 108;
 
         bitRate = new Parameter(this, "bitRate (kbit/s)");
         bitRate.setExpression("125");
@@ -144,7 +145,7 @@ public class CanBus extends MonitoredQuantityManager {
 
     ///////////////////////////////////////////////////////////////////
     //                          public variables                     //
-    
+
     /** The bit rate of the bus. This is a double with default value to 125 (Kbit/second).
      *  It is required to be positive.
      */
@@ -154,7 +155,96 @@ public class CanBus extends MonitoredQuantityManager {
      *  It is required to be either "Standard frame" or "Extended frame".
      */
     public Parameter canFormatOfFrame;
-    
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
+
+    /** If the attribute is <i>bitRate</i>, then ensure that the value
+     *  is non-negative.
+     *  @param attribute The attribute that changed.
+     *  @exception IllegalActionException If the service time is negative.
+     */
+    public void attributeChanged(Attribute attribute)
+            throws IllegalActionException {
+        if (attribute == bitRate) {
+            double value = ((DoubleToken) bitRate.getToken()).doubleValue();
+            if (value <= 0.0) {
+                throw new IllegalActionException(this,
+                        "Cannot have negative or zero bitRate: " + value);
+            }
+            _bitRate = value;
+        } else if (attribute == canFormatOfFrame) {
+            String value = ((StringToken) canFormatOfFrame.getToken())
+                    .stringValue();
+            if (value == "Standard frame") {
+                _frameSize = 108;
+            } else if (value == "Extended frame") {
+                _frameSize = 128;
+            }
+
+        }
+        super.attributeChanged(attribute);
+    }
+
+    /** Clone this actor into the specified workspace. The new actor is
+     *  <i>not</i> added to the directory of that workspace (you must do this
+     *  yourself if you want it there).
+     *  The result is a new actor with the same ports as the original, but
+     *  no connections and no container.  A container must be set before
+     *  much can be done with this actor.
+     *
+     *  @param workspace The workspace for the cloned object.
+     *  @exception CloneNotSupportedException If cloned ports cannot have
+     *   as their container the cloned entity (this should not occur), or
+     *   if one of the attributes cannot be cloned.
+     *  @return A new CanBus.
+     */
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        CanBus newObject = (CanBus) super.clone(workspace);
+
+        newObject._tokenTree = new TreeMap<Integer, LinkedList<Object[]>>();
+        newObject._multiCast = new HashMap<Integer, Integer>();
+        newObject._frameSize = _frameSize;
+        newObject._nextTokenSize = _nextTokenSize;
+        newObject._nextTokenFiringTime = null;
+        newObject._startingTime = null;
+        newObject._channelUsed = _channelUsed;
+        newObject._bitRate = _bitRate;
+        return newObject;
+
+    }
+
+    /** Fire the actor. 
+     *  Typically, the fire() method performs the computation associated
+     *  with an actor. 
+     *  Here, it delivers (if required) the intended token to the intended receiver(s)  
+     *
+     *  @exception IllegalActionException If firing is not permitted.
+     */
+    public void fire() throws IllegalActionException {
+        Time currentTime = getDirector().getModelTime();
+
+        // 'If' statement that allows to construct the 'multiCast' Map
+        if (!_multiCast.containsKey(_channelUsed)) {
+            HashSet<Receiver> receiverSet = new HashSet<Receiver>();
+            ListIterator<Object[]> li = _tokenTree.get(_channelUsed)
+                    .listIterator();
+            while (li.hasNext()) {
+                receiverSet.add((Receiver) ((li.next())[0]));
+            }
+            _multiCast.put(_channelUsed, receiverSet.size());
+        }
+
+        // delivers (if required) the intended token to the intended receiver
+        if (_nextTokenFiringTime != null && _nextTokenFiringTime == currentTime) {
+            for (int i = 0; i < _multiCast.get(_channelUsed); i++) {
+                Object[] o = _tokenTree.get(_channelUsed).poll();
+                _sendToReceiver((Receiver) o[0], (Token) o[1]);
+            }
+            _scheduleRefire();
+        }
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -180,61 +270,6 @@ public class CanBus extends MonitoredQuantityManager {
         return getReceiver(receiver);
     }
 
-    /** If the attribute is <i>bitRate</i>, then ensure that the value
-     *  is non-negative.
-     *  @param attribute The attribute that changed.
-     *  @exception IllegalActionException If the service time is negative.
-     */
-    public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
-        if (attribute == bitRate) {
-            double value = ((DoubleToken) bitRate.getToken()).doubleValue();
-            if (value <= 0.0) {
-                throw new IllegalActionException(this,
-                        "Cannot have negative or zero bitRate: " + value);
-            }
-            _bitRate = value;
-        } else if (attribute == canFormatOfFrame) {
-            String value = ((StringToken) canFormatOfFrame.getToken())
-                    .stringValue();
-            if (value == "Standard frame") {
-                frameSize = 108;
-            } else if (value == "Extended frame") {
-                frameSize = 128;
-            }
-
-        }
-        super.attributeChanged(attribute);
-    }
-
-    /** Clone this actor into the specified workspace. The new actor is
-     *  <i>not</i> added to the directory of that workspace (you must do this
-     *  yourself if you want it there).
-     *  The result is a new actor with the same ports as the original, but
-     *  no connections and no container.  A container must be set before
-     *  much can be done with this actor.
-     *
-     *  @param workspace The workspace for the cloned object.
-     *  @exception CloneNotSupportedException If cloned ports cannot have
-     *   as their container the cloned entity (this should not occur), or
-     *   if one of the attributes cannot be cloned.
-     *  @return A new CanBus.
-     */
-    public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        CanBus newObject = (CanBus) super.clone(workspace);
-
-        newObject._tokenTree = new TreeMap<Integer, LinkedList<Object[]>>();
-        newObject._multiCast = new HashMap<Integer, Integer>();
-        newObject.frameSize = frameSize;
-        newObject._nextTokenSize = _nextTokenSize;
-        newObject._nextTokenFiringTime = null;
-        newObject.startingTime = null;
-        newObject.channelUsed = channelUsed;
-        newObject._bitRate = _bitRate;
-        return newObject;
-
-    }
-
     /** Initialize the actor.
      *  @exception IllegalActionException If the superclass throws it.
      */
@@ -245,83 +280,8 @@ public class CanBus extends MonitoredQuantityManager {
         _multiCast.clear();
         _nextTokenSize = 0;
         _nextTokenFiringTime = null;
-        startingTime = null;
-        channelUsed = 0;
-
-    }
-
-    /** Fire the actor. 
-     *  Typically, the fire() method performs the computation associated
-     *  with an actor. 
-     *  Here, it delivers (if required) the intended token to the intended receiver(s)  
-     *
-     *  @exception IllegalActionException If firing is not permitted.
-     */
-    public void fire() throws IllegalActionException {
-        Time currentTime = getDirector().getModelTime();
-
-        // 'If' statement that allows to construct the 'multiCast' Map
-        if (!_multiCast.containsKey(channelUsed)) {
-            HashSet<Receiver> receiverSet = new HashSet<Receiver>();
-            ListIterator<Object[]> li = _tokenTree.get(channelUsed)
-                    .listIterator();
-            while (li.hasNext()) {
-                receiverSet.add((Receiver) ((li.next())[0]));
-            }
-            _multiCast.put(channelUsed, receiverSet.size());
-        }
-
-        // delivers (if required) the intended token to the intended receiver
-        if (_nextTokenFiringTime != null && _nextTokenFiringTime == currentTime) {
-            for (int i = 0; i < _multiCast.get(channelUsed); i++) {
-                Object[] o = _tokenTree.get(channelUsed).poll();
-                _sendToReceiver((Receiver) o[0], (Token) o[1]);
-            }
-            _scheduleRefire();
-        }
-    }
-
-    /** Initiate a send of the specified token to the specified
-     *  receiver. This method will schedule a refiring of this actor 
-     *  according to the requirements of the CAN protocol.
-     *  
-     *  @param source Sender of the token.
-     *  @param receiver The receiver to send to.
-     *  @param token The token to send.
-     *  @exception IllegalActionException If the refiring request fails.
-     */
-    public void sendToken(Receiver source, Receiver receiver, Token token)
-            throws IllegalActionException {
-
-        Time currentTime = getDirector().getModelTime();
-
-        // 'CanId' parameter
-        Parameter priority = (Parameter) ((NamedObj) ((IntermediateReceiver) source).source)
-                .getAttribute("CanId");
-
-        // 'CanId' value
-        int id = ((IntToken) priority.getToken()).intValue();
-
-        if (!_tokenTree.containsKey(id)) {
-            _tokenTree.put(id, new LinkedList<Object[]>());
-        }
-
-        // Storage of the token until it's delivered to the specified receiver at the scheduled time
-        if (nextCanId() == -1) {
-            channelUsed = id;
-            ((LinkedList<Object[]>) _tokenTree.get(id)).add(new Object[] {
-                    receiver, token });
-
-            _nextTokenFiringTime = currentTime.add(nextTokenTransmissionTime());
-            _fireAt(_nextTokenFiringTime);
-            startingTime = currentTime;
-        } else {
-            ((LinkedList<Object[]>) _tokenTree.get(id)).add(new Object[] {
-                    receiver, token });
-            if (currentTime.equals(startingTime)) {
-                channelUsed = nextCanId();
-            }
-        }
+        _startingTime = null;
+        _channelUsed = 0;
 
     }
 
@@ -381,21 +341,15 @@ public class CanBus extends MonitoredQuantityManager {
      */
     public double nextTokenTransmissionTime() {
         //return nextTokenSize()/(_bitRate*1000);
-        return frameSize / (_bitRate * 1000);
-    }
-
-    /**
-     * Reset the quantity manager.
-     */
-    public void reset() {
-
+        return _frameSize / (_bitRate * 1000);
     }
 
     /** Method that print in a human readable way the content of {@link #_tokenTree}
      * 
      */
     public void printTokenTree() {
-        Set<Map.Entry<Integer, LinkedList<Object[]>>> es = _tokenTree.entrySet();
+        Set<Map.Entry<Integer, LinkedList<Object[]>>> es = _tokenTree
+                .entrySet();
         Iterator<Map.Entry<Integer, LinkedList<Object[]>>> it = es.iterator();
         Map.Entry<Integer, LinkedList<Object[]>> entry;
         while (it.hasNext()) {
@@ -410,8 +364,56 @@ public class CanBus extends MonitoredQuantityManager {
         }
     }
 
-    ///////////////////////////////////////////////////////////////////
-    //                          protected methods                    //
+    /**
+     * Reset the quantity manager.
+     */
+    public void reset() {
+
+    }
+
+    /** Initiate a send of the specified token to the specified
+     *  receiver. This method will schedule a refiring of this actor 
+     *  according to the requirements of the CAN protocol.
+     *  
+     *  @param source Sender of the token.
+     *  @param receiver The receiver to send to.
+     *  @param token The token to send.
+     *  @exception IllegalActionException If the refiring request fails.
+     */
+    public void sendToken(Receiver source, Receiver receiver, Token token)
+            throws IllegalActionException {
+
+        Time currentTime = getDirector().getModelTime();
+
+        // 'CanId' parameter
+        Parameter priority = (Parameter) ((NamedObj) ((IntermediateReceiver) source).source)
+                .getAttribute("CanId");
+
+        // 'CanId' value
+        int id = ((IntToken) priority.getToken()).intValue();
+
+        if (!_tokenTree.containsKey(id)) {
+            _tokenTree.put(id, new LinkedList<Object[]>());
+        }
+
+        // Storage of the token until it's delivered to the specified receiver at the scheduled time
+        if (nextCanId() == -1) {
+            _channelUsed = id;
+            ((LinkedList<Object[]>) _tokenTree.get(id)).add(new Object[] {
+                    receiver, token });
+
+            _nextTokenFiringTime = currentTime.add(nextTokenTransmissionTime());
+            _fireAt(_nextTokenFiringTime);
+            _startingTime = currentTime;
+        } else {
+            ((LinkedList<Object[]>) _tokenTree.get(id)).add(new Object[] {
+                    receiver, token });
+            if (currentTime.equals(_startingTime)) {
+                _channelUsed = nextCanId();
+            }
+        }
+
+    }
 
     /** Schedule a refiring of the actor.
      *  @exception IllegalActionException Thrown if the actor cannot be rescheduled
@@ -421,12 +423,10 @@ public class CanBus extends MonitoredQuantityManager {
         if (nextCanId() != -1) {
             Time currentTime = getDirector().getModelTime();
             _nextTokenFiringTime = currentTime.add(nextTokenTransmissionTime());
-            channelUsed = nextCanId();
+            _channelUsed = nextCanId();
             _fireAt(_nextTokenFiringTime);
         }
     }
-
-    
 
     /** Data structure in which all tokens received and valuable information will be stocked
      * The <i>Integer</i> key corresponds to the <i>CanId</i> parameter (identifier of the message that sets the priority)
@@ -446,7 +446,7 @@ public class CanBus extends MonitoredQuantityManager {
     /**
      * Fixed size of a frame 
      */
-    private int frameSize;
+    private int _frameSize;
 
     /**
      * Size of the next token due to be sent
@@ -461,12 +461,12 @@ public class CanBus extends MonitoredQuantityManager {
     /**
      * Variable used in the case of a collision
      */
-    private Time startingTime;
+    private Time _startingTime;
 
     /**
      * <i>channelUsed</i> represents the identifier of the message that is being transmitted on the Bus
      */
-    private int channelUsed;
+    private int _channelUsed;
 
     /**
      * Value of the bit rate of the bus
