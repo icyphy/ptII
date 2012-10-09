@@ -52,7 +52,7 @@ NonlinearStateSpace is {
 	 * These lines define some actor "constants" to be
 	 * used later.
 	 */
-	actor integrator = ptolemy.domains.ct.lib.Integrator;
+	actor integrator = ptolemy.domains.continuous.lib.Integrator;
 	actor assembler = ptolemy.actor.lib.VectorAssembler;
 	actor disassembler = ptolemy.actor.lib.VectorDisassembler;
 	actor expression = ptolemy.actor.lib.Expression;
@@ -145,7 +145,7 @@ NonlinearStateSpace is {
 			expression := [[ eval(eval("f" + a.toString)) ]]);
 		relation convertedX[[a]];
 		typeConverter(input := x[[a]], output := convertedX[[a]]);
-		integrator(input := convertedX[[a]], output := stateRelation,
+		integrator(derivative := convertedX[[a]], state := stateRelation,
 			initialState := [[initialStates(0, a)]]);
 		this(stateOutput := stateAsOutput);
 	} next [[ a + 1 ]]
