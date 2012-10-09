@@ -49,15 +49,18 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 
 OTHER_FILES_TO_BE_JARED = \
 	qm.xml \
-	CompositeQuantityManagerIcon.xml \
 	BasicSwitchIcon.xml \
 	BusIcon.xml \
+	CanBusIcon.xml \
+	CompositeQuantityManagerIcon.xml \
 	CrossbarSwitchIcon.xml \
 	TTESwitchIcon.xml
 
 JSRCS = \
 	BasicSwitch.java \
 	Bus.java \
+	CanBus.java \
+	CanBusPriority.java \
 	ColoredQuantityManager.java \
 	CompositeQuantityManager.java \
 	CrossbarSwitch.java \

@@ -19,6 +19,18 @@
   <entity name="CrossbarSwitch" class="ptolemy.actor.lib.qm.CrossbarSwitch"> 
   </entity>
 
+<entity name="CanBus" class="ptolemy.actor.lib.qm.CanBus">
+   <doc>A quantity manager that simulate a CAN bus.</doc>
+ </entity>
+
+ <entity name="CanBusPriority" class="ptolemy.actor.lib.qm.CanBusPriority">
+   <doc>A actor (used with the CanBus quantity manager) that attributes a given priority to a given output signal.</doc>
+   <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+     <property name="attributeName" value="CanId"/>
+     <property name="displayWidth" value="60"/>
+   </property>
+ </entity>
+
       </group>
     ?>
   </configure>
