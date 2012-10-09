@@ -51,7 +51,8 @@ JSRCS =
 
 OTHER_FILES_TO_BE_JARED = \
 	$(JSRCS) \
-	CanBus.xml 
+	CanBus.xml \
+	CanBusVariousCollisions.xml
 
 
 EXTRA_SRCS = \
