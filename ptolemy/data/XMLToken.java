@@ -57,7 +57,7 @@ public class XMLToken extends Token {
      */
     public XMLToken() {
         super();
-        _toString = null;
+        _toString = "";
     }
 
     /** Construct an XmlToken from the specified string.
