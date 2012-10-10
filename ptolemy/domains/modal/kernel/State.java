@@ -480,13 +480,12 @@ public class State extends ComponentEntity implements ConfigurableEntity,
     /** Return the list of preemptive outgoing transitions from
      *  this state.
      *  @return The list of preemptive outgoing transitions from
-     *   this state.
+     *   this state. This will be an empty list if there aren't any.
      */
     public List preemptiveTransitionList() {
         if (_transitionListVersion != workspace().getVersion()) {
             _updateTransitionLists();
         }
-
         return _preemptiveTransitionList;
     }
 
