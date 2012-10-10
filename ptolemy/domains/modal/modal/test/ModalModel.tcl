@@ -211,10 +211,18 @@ test ModalModel-1.5 {Remove a port in the controller and check modal model} {
 ######################################################################
 ####
 #
+# No longer allowed to have a refinement that is not a refinement of a state.
+# EAL 10/10/12.
+#
 test ModalModel-1.6 {Create a refinement in the modal model} {
     set moml_2 {
 <entity name="test2" class="ptolemy.actor.TypedCompositeActor">
   <entity name="modal model" class="ptolemy.domains.modal.modal.ModalModel">
+    <entity name="_Controller" class="ptolemy.domains.modal.kernel.FSMActor">
+      <entity name="state" class="ptolemy.domains.modal.kernel.State">
+        <property name="refinementName" value="refinement"/>
+      </entity>
+    </entity>
     <entity name="refinement" class="ptolemy.domains.modal.modal.Refinement"/>
   </entity>
 </entity>
@@ -227,9 +235,17 @@ test ModalModel-1.6 {Create a refinement in the modal model} {
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="test2" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="3.1-devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.0.devel">
     </property>
     <entity name="modal model" class="ptolemy.domains.modal.modal.ModalModel">
+        <entity name="_Controller" class="ptolemy.domains.modal.modal.ModalController">
+            <entity name="state" class="ptolemy.domains.modal.kernel.State">
+                <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="refinement">
+                </property>
+                <property name="isInitialState" class="ptolemy.data.expr.Parameter" value="true">
+                </property>
+            </entity>
+        </entity>
         <entity name="refinement" class="ptolemy.domains.modal.modal.Refinement">
         </entity>
     </entity>
