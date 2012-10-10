@@ -106,107 +106,111 @@ test FSMDirector-3.1 {test getNextIterationTime} {
 ######################################################################
 ####
 #
-test FSMDirector-4.1 {test action methods} {
-    set e0 [deModel 3.5]
-    set clk [java::new ptolemy.actor.lib.Clock $e0 clk]
-    set src [java::new ptolemy.actor.lib.Ramp $e0 src]
-    set r0 [java::new ptolemy.actor.TypedIORelation $e0 r0]
-    [java::field [java::cast ptolemy.actor.lib.Source $clk] output] link $r0
-    [java::field [java::cast ptolemy.actor.lib.Source $src] trigger] link $r0
-    [java::field $src step] setExpression "3"
-    set e1 [java::new ptolemy.domains.modal.modal.ModalModel $e0 e1]
-	[java::field $e1 directorClass] setExpression "ptolemy.domains.modal.kernel.FSMDirector"
-	[java::field $e1 directorClass] validate
-#    The following commented statements were the way to construct
-#    a modal model before the ModalModel class was implemented.
-#    We use ModalModel class instead to avoid GraphConstructionException
-#    when constructing an IODependency of a modal model.
-#    set e1 [java::new ptolemy.actor.TypedCompositeActor $e0 e1]
-#    set dir [java::new ptolemy.domains.modal.kernel.FSMDirector $e1 dir]
-    set e2 [java::new ptolemy.actor.lib.Const $e1 e2]
-    set tok [java::new {ptolemy.data.IntToken int} 6]
-    [java::field $e2 value] setToken $tok
-    set fsm [$e1 getController]
-#    set fsm [java::new ptolemy.domains.modal.kernel.FSMActor $e1 fsm]
-    set p0 [java::new ptolemy.actor.TypedIOPort $e1 p0]
-    $p0 setInput true
-    set r1 [java::new ptolemy.actor.TypedIORelation $e0 r1]
-    [java::field [java::cast ptolemy.actor.lib.Source $src] output] link $r1
-    $p0 link $r1
-    #set p1 [java::new ptolemy.actor.TypedIOPort $fsm p1]
-    set p1 [java::cast ptolemy.actor.TypedIOPort [$fsm newPort p1]]
-    $p1 setInput true
-    #set p2 [java::new ptolemy.actor.TypedIOPort $fsm p2]
-    set p2 [java::cast ptolemy.actor.TypedIOPort [$fsm newPort p2]]
-    $p2 setOutput true
-    $p2 setTypeEquals [java::field ptolemy.data.type.BaseType INT]
-    #set r2 [java::new ptolemy.actor.TypedIORelation $e1 r2]
-    set lrl1 [$p1 linkedRelationList]
-    set r2 [$lrl1 get 0]
-    $p0 link $r2
-    #$p1 link $r2
-    [java::field [java::cast ptolemy.actor.lib.Source $e2] output] link $r2
-    set p3 [java::new ptolemy.actor.TypedIOPort $e1 p3]
-    $p3 setOutput true
-    $p3 setTypeEquals [java::field ptolemy.data.type.BaseType INT]
-    #set r3 [java::new ptolemy.actor.TypedIORelation $e1 r3]
-    set lrl2 [$p2 linkedRelationList]
-    set r3 [$lrl2 get 0]
-
-    #$p2 link $r3
-    $p3 link $r3
-    set rec [java::new ptolemy.actor.lib.Recorder $e0 rec]
-    set r4 [java::new ptolemy.actor.TypedIORelation $e0 r4]
-    $p3 link $r4
-    [java::field [java::cast ptolemy.actor.lib.Sink $rec] input] link $r4
-
-    set s0 [java::new ptolemy.domains.modal.kernel.State $fsm s0]
-    set s1 [java::new ptolemy.domains.modal.kernel.State $fsm s1]
-    set t0 [java::new ptolemy.domains.modal.kernel.Transition $fsm t0]
-    set t1 [java::new ptolemy.domains.modal.kernel.Transition $fsm t1]
-    set t2 [java::new ptolemy.domains.modal.kernel.Transition $fsm t2]
-    [java::field $s0 outgoingPort] link $t0
-    [java::field $s1 incomingPort] link $t0
-    [java::field $s1 outgoingPort] link $t1
-    [java::field $s0 incomingPort] link $t1
-    [java::field $s0 outgoingPort] link $t2
-    [java::field $s1 incomingPort] link $t2
-    [java::field $fsm initialStateName] setExpression s0
-    [java::field $s0 refinementName] setExpression e2
-    [java::field $s1 refinementName] setExpression e2
-    $t0 setGuardExpression "p1_isPresent && p1 > 5"
-    [java::field $t1 preemptive] setExpression "true"
-    $t1 setGuardExpression "p1_isPresent && p1 > 0"
-    [java::field $t2 preemptive] setExpression "true"
-    $t2 setGuardExpression "p1_isPresent && p1 > 5"
-    set act0 [java::field $t0 outputActions]
-    $act0 setExpression "p2 = 1"
-    set act1 [java::field $t1 outputActions]
-    $act1 setExpression "p2 = p1"
-    set act2 [java::field $t2 outputActions]
-    $act2 setExpression "p2 = 0"
-
-    [$e0 getManager] execute
-    # The same test in fsm has the result {1 3 1 6 1 9 1}
-    # See also modal/kernel/test/auto/bizarre.xml and the 
-
-    # This test is really a weird one. The output of the
-    # refinement of the fsm, called e2, connects to the input of the
-    # fsm (p1) rather than the output (p2). Therefore, the simulation
-    # results (logic) are shown as follow.
-    # 
-    #	state	input(p1)	|	output(p2)		next state
-    #	s0		0				(no output)		s0
-    #	s0		6(from e2)		1				s1
-    #	s1		3, 6 (one external and one from e2, in this order)
-    #	(continuing ...)		3				s0
-    # 	s0		6				1				s1
-    #	s1		6, 6			6				s0
-    #	s0		6				1				s1
-    # 	... (omitted)
-
-    listToStrings [$rec getHistory 0]
-} {1 3 1 6 1 9 1}
+# Removed this test, which is too bizarre for words.
+# It has a refinement that is an actor that feeds data to the controller.
+# We are not interested in topologies like this.  EAL 10/10/12
+#
+# test FSMDirector-4.1 {test action methods} {
+#     set e0 [deModel 3.5]
+#     set clk [java::new ptolemy.actor.lib.Clock $e0 clk]
+#     set src [java::new ptolemy.actor.lib.Ramp $e0 src]
+#     set r0 [java::new ptolemy.actor.TypedIORelation $e0 r0]
+#     [java::field [java::cast ptolemy.actor.lib.Source $clk] output] link $r0
+#     [java::field [java::cast ptolemy.actor.lib.Source $src] trigger] link $r0
+#     [java::field $src step] setExpression "3"
+#     set e1 [java::new ptolemy.domains.modal.modal.ModalModel $e0 e1]
+# 	[java::field $e1 directorClass] setExpression "ptolemy.domains.modal.kernel.FSMDirector"
+# 	[java::field $e1 directorClass] validate
+# #    The following commented statements were the way to construct
+# #    a modal model before the ModalModel class was implemented.
+# #    We use ModalModel class instead to avoid GraphConstructionException
+# #    when constructing an IODependency of a modal model.
+# #    set e1 [java::new ptolemy.actor.TypedCompositeActor $e0 e1]
+# #    set dir [java::new ptolemy.domains.modal.kernel.FSMDirector $e1 dir]
+#     set e2 [java::new ptolemy.actor.lib.Const $e1 e2]
+#     set tok [java::new {ptolemy.data.IntToken int} 6]
+#     [java::field $e2 value] setToken $tok
+#     set fsm [$e1 getController]
+# #    set fsm [java::new ptolemy.domains.modal.kernel.FSMActor $e1 fsm]
+#     set p0 [java::new ptolemy.actor.TypedIOPort $e1 p0]
+#     $p0 setInput true
+#     set r1 [java::new ptolemy.actor.TypedIORelation $e0 r1]
+#     [java::field [java::cast ptolemy.actor.lib.Source $src] output] link $r1
+#     $p0 link $r1
+#     #set p1 [java::new ptolemy.actor.TypedIOPort $fsm p1]
+#     set p1 [java::cast ptolemy.actor.TypedIOPort [$fsm newPort p1]]
+#     $p1 setInput true
+#     #set p2 [java::new ptolemy.actor.TypedIOPort $fsm p2]
+#     set p2 [java::cast ptolemy.actor.TypedIOPort [$fsm newPort p2]]
+#     $p2 setOutput true
+#     $p2 setTypeEquals [java::field ptolemy.data.type.BaseType INT]
+#     #set r2 [java::new ptolemy.actor.TypedIORelation $e1 r2]
+#     set lrl1 [$p1 linkedRelationList]
+#     set r2 [$lrl1 get 0]
+#     $p0 link $r2
+#     #$p1 link $r2
+#     [java::field [java::cast ptolemy.actor.lib.Source $e2] output] link $r2
+#     set p3 [java::new ptolemy.actor.TypedIOPort $e1 p3]
+#     $p3 setOutput true
+#     $p3 setTypeEquals [java::field ptolemy.data.type.BaseType INT]
+#     #set r3 [java::new ptolemy.actor.TypedIORelation $e1 r3]
+#     set lrl2 [$p2 linkedRelationList]
+#     set r3 [$lrl2 get 0]
+# 
+#     #$p2 link $r3
+#     $p3 link $r3
+#     set rec [java::new ptolemy.actor.lib.Recorder $e0 rec]
+#     set r4 [java::new ptolemy.actor.TypedIORelation $e0 r4]
+#     $p3 link $r4
+#     [java::field [java::cast ptolemy.actor.lib.Sink $rec] input] link $r4
+# 
+#     set s0 [java::new ptolemy.domains.modal.kernel.State $fsm s0]
+#     set s1 [java::new ptolemy.domains.modal.kernel.State $fsm s1]
+#     set t0 [java::new ptolemy.domains.modal.kernel.Transition $fsm t0]
+#     set t1 [java::new ptolemy.domains.modal.kernel.Transition $fsm t1]
+#     set t2 [java::new ptolemy.domains.modal.kernel.Transition $fsm t2]
+#     [java::field $s0 outgoingPort] link $t0
+#     [java::field $s1 incomingPort] link $t0
+#     [java::field $s1 outgoingPort] link $t1
+#     [java::field $s0 incomingPort] link $t1
+#     [java::field $s0 outgoingPort] link $t2
+#     [java::field $s1 incomingPort] link $t2
+#     [java::field $fsm initialStateName] setExpression s0
+#     [java::field $s0 refinementName] setExpression e2
+#     [java::field $s1 refinementName] setExpression e2
+#     $t0 setGuardExpression "p1_isPresent && p1 > 5"
+#     [java::field $t1 preemptive] setExpression "true"
+#     $t1 setGuardExpression "p1_isPresent && p1 > 0"
+#     [java::field $t2 preemptive] setExpression "true"
+#     $t2 setGuardExpression "p1_isPresent && p1 > 5"
+#     set act0 [java::field $t0 outputActions]
+#     $act0 setExpression "p2 = 1"
+#     set act1 [java::field $t1 outputActions]
+#     $act1 setExpression "p2 = p1"
+#     set act2 [java::field $t2 outputActions]
+#     $act2 setExpression "p2 = 0"
+# 
+#     [$e0 getManager] execute
+#     # The same test in fsm has the result {1 3 1 6 1 9 1}
+#     # See also modal/kernel/test/auto/bizarre.xml and the 
+# 
+#     # This test is really a weird one. The output of the
+#     # refinement of the fsm, called e2, connects to the input of the
+#     # fsm (p1) rather than the output (p2). Therefore, the simulation
+#     # results (logic) are shown as follow.
+#     # 
+#     #	state	input(p1)	|	output(p2)		next state
+#     #	s0		0				(no output)		s0
+#     #	s0		6(from e2)		1				s1
+#     #	s1		3, 6 (one external and one from e2, in this order)
+#     #	(continuing ...)		3				s0
+#     # 	s0		6				1				s1
+#     #	s1		6, 6			6				s0
+#     #	s0		6				1				s1
+#     # 	... (omitted)
+# 
+#     listToStrings [$rec getHistory 0]
+# } {1 3 1 6 1 9 1}
 
 ######################################################################
 ####
@@ -348,96 +352,101 @@ test FSMDirector-6.1 {test transferInputs} {
 ######################################################################
 ####
 #
-test FSMDirector-7.1 {test clone a modal model} {
-    set e0 [deModel 3.5]
-    set clk [java::new ptolemy.actor.lib.Clock $e0 clk]
-    set src [java::new ptolemy.actor.lib.Ramp $e0 src]
-    set r0 [java::new ptolemy.actor.TypedIORelation $e0 r0]
-    [java::field [java::cast ptolemy.actor.lib.Source $clk] output] link $r0
-    [java::field [java::cast ptolemy.actor.lib.Source $src] trigger] link $r0
-    [java::field $src step] setExpression "3"
-
-    set e1 [java::new ptolemy.domains.modal.modal.ModalModel $e0 e1]
-	[java::field $e1 directorClass] setExpression "ptolemy.domains.modal.kernel.FSMDirector"
-    set e2 [java::new ptolemy.actor.lib.Const $e1 e2]
-    set tok [java::new {ptolemy.data.IntToken int} 6]
-    [java::field $e2 value] setToken $tok
-    set fsm [$e1 getController]
-    set p0 [java::new ptolemy.actor.TypedIOPort $e1 p0]
-    $p0 setInput true
-    
-    #set p1 [java::new ptolemy.actor.TypedIOPort $fsm p1]
-    set p1 [java::cast ptolemy.actor.TypedIOPort [$fsm newPort p1]]
-    $p1 setInput true
-
-    #set p2 [java::new ptolemy.actor.TypedIOPort $fsm p2]
-    set p2 [java::cast ptolemy.actor.TypedIOPort [$fsm newPort p2]]
-    $p2 setOutput true
-    $p2 setTypeEquals [java::field ptolemy.data.type.BaseType INT]
-
-    #set r2 [java::new ptolemy.actor.TypedIORelation $e1 r2]
-    #$p0 link $r2
-    #$p1 link $r2
-    set lrl1 [$p1 linkedRelationList]
-    set r2 [$lrl1 get 0]
-    [java::field [java::cast ptolemy.actor.lib.Source $e2] output] link $r2
-
-    #set p3 [java::new ptolemy.actor.TypedIOPort $e1 p3]
-    #$p3 setOutput true
-    #$p3 setTypeEquals [java::field ptolemy.data.type.BaseType INT]
-    #set r3 [java::new ptolemy.actor.TypedIORelation $e1 r3]
-    #$p2 link $r3
-    set lrl2 [$p2 linkedRelationList]
-    set r3 [java::cast ptolemy.kernel.Relation [$lrl2 get 0]]
-    set pl [$r3 linkedPortList [java::null]]
-    set p3 [$pl get 1]
-    #$p3 link $r3
-
-    set s0 [java::new ptolemy.domains.modal.kernel.State $fsm s0]
-    set s1 [java::new ptolemy.domains.modal.kernel.State $fsm s1]
-    set t0 [java::new ptolemy.domains.modal.kernel.Transition $fsm t0]
-    set t1 [java::new ptolemy.domains.modal.kernel.Transition $fsm t1]
-    set t2 [java::new ptolemy.domains.modal.kernel.Transition $fsm t2]
-    [java::field $s0 outgoingPort] link $t0
-    [java::field $s1 incomingPort] link $t0
-    [java::field $s1 outgoingPort] link $t1
-    [java::field $s0 incomingPort] link $t1
-    [java::field $s0 outgoingPort] link $t2
-    [java::field $s1 incomingPort] link $t2
-    [java::field $fsm initialStateName] setExpression s0
-    [java::field $s0 refinementName] setExpression e2
-    [java::field $s1 refinementName] setExpression e2
-    $t0 setGuardExpression "p1_isPresent && p1 > 5"
-    [java::field $t1 preemptive] setExpression "true"
-    $t1 setGuardExpression "p1_isPresent && p1 > 0"
-    [java::field $t2 preemptive] setExpression "true"
-    $t2 setGuardExpression "p1_isPresent && p1 > 5"
-    set act0 [java::field $t0 outputActions]
-    $act0 setExpression "p2 = 1"
-    set act1 [java::field $t1 outputActions]
-    $act1 setExpression "p2 = p1"
-    set act2 [java::field $t2 outputActions]
-    $act2 setExpression "p2 = 0"
-
-    set e1clone [java::cast ptolemy.domains.modal.modal.ModalModel \
-            [$e1 clone]]
-    
-    $e1clone setName e1clone
-    puts {####################################################################################}
-    # FIXME: The following setContainer causes a concurrent modification exception.
-    # presumably this is because queued change requests get executed at that point.
-    # why doesn't the above call to executeChangeRequests take care of that?
-    $e1clone setContainer $e0
-    set r1 [java::new ptolemy.actor.TypedIORelation $e0 r1]
-    [java::field [java::cast ptolemy.actor.lib.Source $src] output] link $r1
-    [$e1clone getPort p1] link $r1
-    set rec [java::new ptolemy.actor.lib.Recorder $e0 rec]
-    set r4 [java::new ptolemy.actor.TypedIORelation $e0 r4]
-    [$e1clone getPort p2] link $r4
-    [java::field [java::cast ptolemy.actor.lib.Sink $rec] input] link $r4
-
-    [$e0 getManager] execute
-    # In FSM, we get: {1 3 1 6 1 9 1}
-    listToStrings [$rec getHistory 0]
-} {1 3 1 6 1 9 1}
-
+#
+# Removed this test, which is too bizarre for words.
+# It has a refinement that is an actor that feeds data to the controller.
+# We are not interested in topologies like this.  EAL 10/10/12
+#
+# test FSMDirector-7.1 {test clone a modal model} {
+#     set e0 [deModel 3.5]
+#     set clk [java::new ptolemy.actor.lib.Clock $e0 clk]
+#     set src [java::new ptolemy.actor.lib.Ramp $e0 src]
+#     set r0 [java::new ptolemy.actor.TypedIORelation $e0 r0]
+#     [java::field [java::cast ptolemy.actor.lib.Source $clk] output] link $r0
+#     [java::field [java::cast ptolemy.actor.lib.Source $src] trigger] link $r0
+#     [java::field $src step] setExpression "3"
+# 
+#     set e1 [java::new ptolemy.domains.modal.modal.ModalModel $e0 e1]
+# 	[java::field $e1 directorClass] setExpression "ptolemy.domains.modal.kernel.FSMDirector"
+#     set e2 [java::new ptolemy.actor.lib.Const $e1 e2]
+#     set tok [java::new {ptolemy.data.IntToken int} 6]
+#     [java::field $e2 value] setToken $tok
+#     set fsm [$e1 getController]
+#     set p0 [java::new ptolemy.actor.TypedIOPort $e1 p0]
+#     $p0 setInput true
+#     
+#     #set p1 [java::new ptolemy.actor.TypedIOPort $fsm p1]
+#     set p1 [java::cast ptolemy.actor.TypedIOPort [$fsm newPort p1]]
+#     $p1 setInput true
+# 
+#     #set p2 [java::new ptolemy.actor.TypedIOPort $fsm p2]
+#     set p2 [java::cast ptolemy.actor.TypedIOPort [$fsm newPort p2]]
+#     $p2 setOutput true
+#     $p2 setTypeEquals [java::field ptolemy.data.type.BaseType INT]
+# 
+#     #set r2 [java::new ptolemy.actor.TypedIORelation $e1 r2]
+#     #$p0 link $r2
+#     #$p1 link $r2
+#     set lrl1 [$p1 linkedRelationList]
+#     set r2 [$lrl1 get 0]
+#     [java::field [java::cast ptolemy.actor.lib.Source $e2] output] link $r2
+# 
+#     #set p3 [java::new ptolemy.actor.TypedIOPort $e1 p3]
+#     #$p3 setOutput true
+#     #$p3 setTypeEquals [java::field ptolemy.data.type.BaseType INT]
+#     #set r3 [java::new ptolemy.actor.TypedIORelation $e1 r3]
+#     #$p2 link $r3
+#     set lrl2 [$p2 linkedRelationList]
+#     set r3 [java::cast ptolemy.kernel.Relation [$lrl2 get 0]]
+#     set pl [$r3 linkedPortList [java::null]]
+#     set p3 [$pl get 1]
+#     #$p3 link $r3
+# 
+#     set s0 [java::new ptolemy.domains.modal.kernel.State $fsm s0]
+#     set s1 [java::new ptolemy.domains.modal.kernel.State $fsm s1]
+#     set t0 [java::new ptolemy.domains.modal.kernel.Transition $fsm t0]
+#     set t1 [java::new ptolemy.domains.modal.kernel.Transition $fsm t1]
+#     set t2 [java::new ptolemy.domains.modal.kernel.Transition $fsm t2]
+#     [java::field $s0 outgoingPort] link $t0
+#     [java::field $s1 incomingPort] link $t0
+#     [java::field $s1 outgoingPort] link $t1
+#     [java::field $s0 incomingPort] link $t1
+#     [java::field $s0 outgoingPort] link $t2
+#     [java::field $s1 incomingPort] link $t2
+#     [java::field $fsm initialStateName] setExpression s0
+#     [java::field $s0 refinementName] setExpression e2
+#     [java::field $s1 refinementName] setExpression e2
+#     $t0 setGuardExpression "p1_isPresent && p1 > 5"
+#     [java::field $t1 preemptive] setExpression "true"
+#     $t1 setGuardExpression "p1_isPresent && p1 > 0"
+#     [java::field $t2 preemptive] setExpression "true"
+#     $t2 setGuardExpression "p1_isPresent && p1 > 5"
+#     set act0 [java::field $t0 outputActions]
+#     $act0 setExpression "p2 = 1"
+#     set act1 [java::field $t1 outputActions]
+#     $act1 setExpression "p2 = p1"
+#     set act2 [java::field $t2 outputActions]
+#     $act2 setExpression "p2 = 0"
+# 
+#     set e1clone [java::cast ptolemy.domains.modal.modal.ModalModel \
+#             [$e1 clone]]
+#     
+#     $e1clone setName e1clone
+#     puts {####################################################################################}
+#     # FIXME: The following setContainer causes a concurrent modification exception.
+#     # presumably this is because queued change requests get executed at that point.
+#     # why doesn't the above call to executeChangeRequests take care of that?
+#     $e1clone setContainer $e0
+#     set r1 [java::new ptolemy.actor.TypedIORelation $e0 r1]
+#     [java::field [java::cast ptolemy.actor.lib.Source $src] output] link $r1
+#     [$e1clone getPort p1] link $r1
+#     set rec [java::new ptolemy.actor.lib.Recorder $e0 rec]
+#     set r4 [java::new ptolemy.actor.TypedIORelation $e0 r4]
+#     [$e1clone getPort p2] link $r4
+#     [java::field [java::cast ptolemy.actor.lib.Sink $rec] input] link $r4
+# 
+#     [$e0 getManager] execute
+#     # In FSM, we get: {1 3 1 6 1 9 1}
+#     listToStrings [$rec getHistory 0]
+# } {1 3 1 6 1 9 1}
+# 
