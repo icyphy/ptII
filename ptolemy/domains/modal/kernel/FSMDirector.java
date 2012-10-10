@@ -317,8 +317,8 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
      * (outputActions). Otherwise, fire the refinement of the current
      * state.  After this firing, if there is a transition enabled,
      * execute its choice actions. If any tokens are produced during
-     * this iteration, they are sent to both the output ports of the
-     * model model but also the input ports of the mode controller.
+     * this iteration, they are sent to the output ports of the
+     * model model and also the input ports of the mode controller.
      *
      * @exception IllegalActionException If there is more than one
      *                transition enabled and nondeterminism is not
@@ -767,10 +767,10 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
     /**
      * Invoke postfire() on any state refinements that were fired,
      * then execute the commit actions contained by the last chosen
-     * transition, if any, then invoke postfire() on any transition
-     * refinements that were fired, and finally set the current state
+     * transition, if any, and finally set the current state
      * to the destination state of the transition. This will return
-     * false if any refinement that is postfired returns false.  <p>
+     * false if any refinement that is postfired returns false.
+     * <p>
      * If any transition was taken in this iteration, and if there is
      * an executive director, and if there is a transition from the
      * new state that is currently enabled, then this method calls
