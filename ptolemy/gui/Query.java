@@ -893,12 +893,12 @@ public class Query extends JPanel {
                 KeyboardFocusManager.BACKWARD_TRAVERSAL_KEYS, null);
         
         textArea.getInputMap().put(KeyStroke.getKeyStroke("shift ENTER"),
-        "TRANSFER_TEXT");
+                "TRANSFER_TEXT");
         final JTextArea area = textArea;
         textArea.getActionMap().put("TRANSFER_TEXT", new AbstractAction() {
             @Override
-            public void actionPerformed(ActionEvent e) {
-                area.append("\n");
+            public void actionPerformed(ActionEvent e) { 
+                area.insert("\n", area.getCaretPosition());
                 if (area.getRows() < 4) {
                     area.setRows(area.getRows() + 1);
                     area.revalidate();
