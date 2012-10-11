@@ -703,7 +703,9 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
             if (refinements != null) {
                 for (TypedActor refinement : refinements) {
                     Director refinementDirector = refinement.getDirector();
-                    refinementDirector.suspend();
+                    if (refinementDirector != this) {
+                        refinementDirector.suspend();
+                    }
                 }
             }
         }
@@ -794,7 +796,7 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
                 .currentState());
 
         // Reset all the receivers on the inside of output ports.
-        // FIXME: Check derived classes. This may only make sense for FSMReceiver.
+        // NOTE: This only has an effect for FSMReceiver.
         _resetOutputReceivers();
 
         // clear this runtime list of ports to remember that a token has passed thru

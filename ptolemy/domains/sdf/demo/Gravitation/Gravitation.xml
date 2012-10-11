@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="Gravitation" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.0.beta">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.0.devel">
     </property>
     <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
         <property name="iterations" class="ptolemy.data.expr.Parameter" value="300">
@@ -14,7 +14,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[76.5, 54.5]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={6, 255, 980, 489}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={6, 255, 999, 634}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[765, 373]">
     </property>
@@ -129,9 +129,9 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[302.5, 285.0]">
         </property>
         <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[80.0, 65.0]">
-            </property>
             <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[80.0, 65.0]">
             </property>
         </property>
         <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={7, 1, 1009, 710}, maximized=false}">
@@ -207,7 +207,7 @@
             </property>
         </entity>
         <entity name="Repeat" class="ptolemy.domains.sdf.lib.Repeat">
-            <property name="numberOfTimes" class="ptolemy.data.expr.Parameter" value="numberOfBodies">
+            <property name="numberOfTimes" class="ptolemy.actor.parameters.PortParameter" value="numberOfBodies">
             </property>
             <property name="RepeatIcon" class="ptolemy.vergil.icon.EditorIcon">
                 <property name="rectangle" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
@@ -964,7 +964,7 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="[80.0, 35.0]">
             </property>
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={220, 10, 815, 469}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={220, 22, 834, 634}, maximized=false}">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 351]">
         </property>
@@ -1095,9 +1095,9 @@
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[225.0, 20.0]">
                 </property>
             </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 125, 815, 518}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 125, 834, 634}, maximized=false}">
             </property>
-            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 524]">
             </property>
             <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
             </property>
@@ -1165,10 +1165,6 @@
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[400.0, 215.0]">
                 </property>
             </entity>
-            <entity name="ArrayToElements" class="ptolemy.actor.lib.ArrayToElements">
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[200.0, 270.0]">
-                </property>
-            </entity>
             <entity name="Scale" class="ptolemy.actor.lib.Scale">
                 <property name="factor" class="ptolemy.data.expr.Parameter" value="0.2">
                 </property>
@@ -1179,19 +1175,23 @@
                 <property name="_location" class="ptolemy.kernel.util.Location" value="{105, 270}">
                 </property>
             </entity>
+            <entity name="ArrayToElements" class="ptolemy.actor.lib.ArrayToElements">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[200.0, 270.0]">
+                </property>
+            </entity>
             <relation name="relation" class="ptolemy.actor.TypedIORelation">
-            </relation>
-            <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-            </relation>
-            <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-            </relation>
-            <relation name="relation4" class="ptolemy.actor.TypedIORelation">
             </relation>
             <relation name="relation6" class="ptolemy.actor.TypedIORelation">
             </relation>
             <relation name="relation5" class="ptolemy.actor.TypedIORelation">
             </relation>
             <relation name="relation7" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <relation name="relation2" class="ptolemy.actor.TypedIORelation">
             </relation>
             <link port="position" relation="relation5"/>
             <link port="out" relation="relation6"/>
@@ -1201,12 +1201,12 @@
             <link port="Translate3D.xTranslate" relation="relation2"/>
             <link port="Translate3D.yTranslate" relation="relation3"/>
             <link port="Translate3D.zTranslate" relation="relation4"/>
+            <link port="Scale.input" relation="relation5"/>
+            <link port="Scale.output" relation="relation7"/>
             <link port="ArrayToElements.input" relation="relation7"/>
             <link port="ArrayToElements.output" relation="relation2"/>
             <link port="ArrayToElements.output" relation="relation3"/>
             <link port="ArrayToElements.output" relation="relation4"/>
-            <link port="Scale.input" relation="relation5"/>
-            <link port="Scale.output" relation="relation7"/>
         </entity>
         <relation name="relation" class="ptolemy.actor.TypedIORelation">
         </relation>

@@ -50,6 +50,7 @@ import ptolemy.actor.TypedActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.util.BooleanDependency;
 import ptolemy.actor.util.CausalityInterface;
+import ptolemy.actor.util.DFUtilities;
 import ptolemy.actor.util.DefaultCausalityInterface;
 import ptolemy.actor.util.Dependency;
 import ptolemy.actor.util.ExplicitChangeContext;
@@ -819,6 +820,36 @@ public class FSMActor extends CompositeEntity implements TypedActor,
         return getDirector();
     }
 
+    /** If the current state has any immediate transitions out of it
+     *  that are enabled, follow the chain of such immediate transitions
+     *  and return the state will be transitioned to when those immediate
+     *  transitions are taken. Otherwise, return the current state.
+     *  @returns The next state after following immediate transitions from
+     *   the current state.
+     *  @throws IllegalActionException If guards cannot be evaluated.
+     */
+    public State getImmediateNextState() throws IllegalActionException {
+        // Check for immediate transitions out of the initial state,
+        // and also for any enabled transition (to request a refiring
+        // at the current time.
+        // NOTE: There is no current state when the FSMActor is in fact a Ptera
+        // controller. (tfeng 05/12/2009)
+        State result = _currentState;
+        if (_currentState != null) {
+            List transitionList = _currentState.outgoingPort
+                    .linkedRelationList();
+            _chooseTransitions(transitionList, true);
+            result = _destinationState();
+            if (result == null) {
+                result = _currentState;
+            }
+        }
+        if (_debugging) {
+            _debug("** Immediate next state is: " + result.getName());
+        }
+        return result;
+    }
+    
     /** Return the initial state of this actor. The initial state is
      *  the unique state with its <i>isInitialState</i> parameter set
      *  to true. An exception is thrown if this actor does not contain
@@ -1019,30 +1050,10 @@ public class FSMActor extends CompositeEntity implements TypedActor,
             }
         }
 
-        _reachedFinalState = false;
-        _newIteration = true;
-        _modelError = false;
-
         // Even though reset() is called in preinitialize(),
         // we have to call it again because if a reset transition is
         // taken, preinitialize() is not called.
         reset();
-
-        // To ensure that nondeterministic transitions result in the
-        // same choice anytime during an iteration, but that different
-        // choices can be made in subsequent transitions, clear the
-        // set of previously chosen transitions.
-        _transitionsPreviouslyChosenInIteration.clear();
-
-        // Although this will be cleared at the start of fire(),
-        // we need to clear it here as well before we potentially
-        // choose immediate transitions.
-        _lastChosenTransitions.clear();
-        _lastChosenTransition = null;
-
-        // Clear the list of refinements whose postfire() methods
-        // have returned false.
-        _disabledRefinements.clear();
 
         // Check for immediate transitions out of the initial state,
         // and also for any enabled transition (to request a refiring
@@ -1056,6 +1067,11 @@ public class FSMActor extends CompositeEntity implements TypedActor,
                 _debug("** Checking immediate transitions.");
             }
             _chooseTransitions(transitionList, true);
+            if (_lastChosenTransitions.size() > 0) {
+                _transitionTaken = true;
+            } else {
+                _transitionTaken = false;
+            }
             _commitLastChosenTransition();
             // Need to clear this again.
             _transitionsPreviouslyChosenInIteration.clear();
@@ -1065,13 +1081,19 @@ public class FSMActor extends CompositeEntity implements TypedActor,
             if (_debugging) {
                 _debug("** Checking all transitions to see whether to request a firing at the current time.");
             }
-            List enabledTransitions = enabledTransitions(transitionList, false);
-            if (enabledTransitions.size() > 0) {
-                if (_debugging) {
-                    _debug("FSMActor requesting refiring by at "
-                            + getDirector().getModelTime());
+            try {
+                // State may have changed. Get new transition list.
+                transitionList = _currentState.outgoingPort.linkedRelationList();
+                List enabledTransitions = enabledTransitions(transitionList, false);
+                if (enabledTransitions.size() > 0) {
+                    if (_debugging) {
+                        _debug("FSMActor requesting refiring by at "
+                                + getDirector().getModelTime());
+                    }
+                    getDirector().fireAtCurrentTime(this);
                 }
-                getDirector().fireAtCurrentTime(this);
+            } catch (IllegalActionException ex) {
+                // Guards cannot yet be evaluated. Ignore.
             }
         }
     }
@@ -1326,7 +1348,7 @@ public class FSMActor extends CompositeEntity implements TypedActor,
         if (refinements != null) {
             for (Actor stateRefinement : refinements) {
                 Director refinementDirector = stateRefinement.getDirector();
-                if (_lastChosenTransitions.size() != 0) {
+                if (_lastChosenTransitions.size() != 0 && refinementDirector != director) {
                     refinementDirector.suspend();
                 }
             }
@@ -1335,6 +1357,7 @@ public class FSMActor extends CompositeEntity implements TypedActor,
         // Notify all the refinements of the destination state that they are being
         // resumed.
         if (_lastChosenTransitions.size() != 0) {
+            _transitionTaken = true;
             State destinationState = _destinationState();
             if (destinationState != null) {
                 TypedActor[] destinationRefinements = destinationState
@@ -1343,10 +1366,14 @@ public class FSMActor extends CompositeEntity implements TypedActor,
                     for (TypedActor destinationRefinement : destinationRefinements) {
                         Director refinementDirector = destinationRefinement
                                 .getDirector();
-                        refinementDirector.resume();
+                        if (refinementDirector != director) {
+                            refinementDirector.resume();
+                        }
                     }
                 }
             }
+        } else {
+            _transitionTaken = false;
         }
 
         // To ensure that nondeterministic transitions result in the
@@ -1412,6 +1439,7 @@ public class FSMActor extends CompositeEntity implements TypedActor,
     }
 
     /** Set the value of the shadow variables for input ports of this actor.
+     *  This method skips over ports that connected to outputs of a refinement.
      *  @exception IllegalActionException If a shadow variable cannot take
      *   the token read from its corresponding channel (should not occur).
      */
@@ -1423,7 +1451,9 @@ public class FSMActor extends CompositeEntity implements TypedActor,
             int width = p.getWidth();
 
             for (int channel = 0; channel < width; ++channel) {
-                _readInputs(p, channel);
+                if (!_isRefinementOutput(p, channel)) {
+                    _readInputs(p, channel);
+                }
             }
         }
     }
@@ -1471,11 +1501,32 @@ public class FSMActor extends CompositeEntity implements TypedActor,
      *  getting the initial state or setting the current connection map.
      */
     public void reset() throws IllegalActionException {
+        
+        _reachedFinalState = false;
+        _newIteration = true;
+        _modelError = false;
+
         _currentState = getInitialState();
         if (_debugging && _currentState != null) {
             _debug("Resetting to initial state: " + _currentState.getName());
         }
         _setCurrentConnectionMap();
+        
+        // To ensure that nondeterministic transitions result in the
+        // same choice anytime during an iteration, but that different
+        // choices can be made in subsequent transitions, clear the
+        // set of previously chosen transitions.
+        _transitionsPreviouslyChosenInIteration.clear();
+
+        // Although this will be cleared at the start of fire(),
+        // we need to clear it here as well before we potentially
+        // choose immediate transitions.
+        _lastChosenTransitions.clear();
+        _lastChosenTransition = null;
+
+        // Clear the list of refinements whose postfire() methods
+        // have returned false.
+        _disabledRefinements.clear();
     }
 
     /** Set the last chosen transition. Note that this erases
@@ -1621,6 +1672,15 @@ public class FSMActor extends CompositeEntity implements TypedActor,
             _workspace.doneReading();
         }
     }
+    
+    /** Return true if a transition was taken in the previous
+     *  iteration, or if this is before the first iteration concludes,
+     *  true if during initialize an immediate transition was taken.
+     *  @return True if a transition was taken.
+     */
+    public boolean wasTransitionTaken() {
+        return _transitionTaken;
+    }
 
     /** Do nothing except invoke the wrapup method of any objects
      *  that have been added using addInitializable().
@@ -1746,204 +1806,6 @@ public class FSMActor extends CompositeEntity implements TypedActor,
             }
         }
         return true;
-    }
-
-    /** Return an enabled transition among the given list of transitions
-     *  for which both the guard expression and the output actions can
-     *  be evaluated (the inputs referred by these are known).
-     *  If there is only one transition enabled, return that transition.
-     *  In case there are multiple enabled transitions, if any of
-     *  them is not marked nondeterministic, throw an exception.
-     *  Otherwise, randomly choose one from the enabled transitions
-     *  and return it if the output actions can be evaluated.
-     *  Execute the output actions contained by the returned
-     *  transition before returning. Also, fire the transition
-     *  refinements, if any, and the refinements of any transient
-     *  states.
-     *  <p>
-     *  After calling this method, you can call foundUnknown()
-     *  to determine whether any guard expressions or output value
-     *  expressions on a transition whose guard evaluates to true
-     *  were found in the specified transition list that
-     *  referred to input ports that are not currently known.
-     *  @param currentState The state from which transitions are examined.
-     *  @param transitionList A list of transitions.
-     *  @param immediateOnly True to consider only immediate transitions.
-     *  @return An enabled transition, or null if none is enabled.
-     *  @exception IllegalActionException If there is more than one
-     *   transition enabled and not all of them are nondeterministic.
-     */
-    // FIXME: Make this private when MultirateFSMDirector no longer needs it.
-    protected Transition _chooseTransition(State currentState,
-            List transitionList, boolean immediateOnly)
-            throws IllegalActionException {
-
-        // Get the transitions enabled from the current state.
-        List<Transition> enabledTransitions = enabledTransitions(
-                transitionList, immediateOnly);
-        int numberOfEnabledTransitions = enabledTransitions.size();
-
-        Transition chosenTransition = null;
-
-        if (numberOfEnabledTransitions == 1) {
-            chosenTransition = enabledTransitions.get(0);
-            // Record the chosen transition.
-            _transitionsPreviouslyChosenInIteration.add(chosenTransition);
-        } else if (numberOfEnabledTransitions > 1) {
-            // Ensure that if there are multiple enabled transitions, all of them
-            // are nondeterministic.
-            for (Transition enabledTransition : enabledTransitions) {
-                if (!enabledTransition.isNondeterministic()) {
-                    throw new MultipleEnabledTransitionsException(
-                            currentState,
-                            "Nondeterministic FSM error: "
-                                    + "Multiple enabled transitions found but not all"
-                                    + " of them are nondeterministic. Transition "
-                                    + enabledTransition.getName()
-                                    + " is deterministic.");
-                }
-            }
-            // If one of these transitions has been previously chosen in
-            // this iteration, then choose it again. This ensures the same
-            // results for nondeterministic choices.
-            if (_transitionsPreviouslyChosenInIteration.size() > 0) {
-                for (Transition previouslyChosenTransition : _transitionsPreviouslyChosenInIteration) {
-                    if (enabledTransitions.contains(previouslyChosenTransition)) {
-                        chosenTransition = previouslyChosenTransition;
-                    }
-                }
-            }
-            if (chosenTransition == null) {
-                // No previously chosen transition.
-                // Randomly choose one transition from the list of the
-                // enabled transitions. Note that it is possible that the
-                // chosen transition cannot be executed because inputs needed
-                // by its output actions are not known.
-                // In that case, we have to choose a different transition.
-                while (enabledTransitions.size() > 0) {
-                    // Since the size of the list of enabled transitions usually (almost
-                    // always) is less than the maximum value of integer. We can safely
-                    // do the cast from long to int in the following statement.
-                    int randomChoice = (int) Math.floor(Math.random()
-                            * numberOfEnabledTransitions);
-
-                    // There is a tiny chance that randomChoice equals length.
-                    // When this happens, we deduct 1 from the randomChoice.
-                    if (randomChoice == numberOfEnabledTransitions) {
-                        randomChoice--;
-                    }
-
-                    chosenTransition = enabledTransitions.get(randomChoice);
-                    if (_referencedInputPortsByOutputKnown(chosenTransition)) {
-                        // The chosen transition has an output action that
-                        // references an unknown input.
-                        _foundUnknown = true;
-                        break;
-                    } else {
-                        // Cannot make this choice.
-                        enabledTransitions.remove(chosenTransition);
-                        chosenTransition = null;
-                    }
-                }
-                // Record the chosen transition.
-                _transitionsPreviouslyChosenInIteration.add(chosenTransition);
-            }
-        }
-
-        if (chosenTransition != null) {
-            if (_debugging) {
-                _debug("Choose transition: ", chosenTransition.getFullName());
-            }
-
-            // cmot:
-            // If non-preemptive and immediate transition, fire source
-            // state refinement.
-            if (!chosenTransition.isPreemptive()
-                    && chosenTransition.isImmediate()) {
-                // If the transition into the current state is a reset transition,
-                // then initialize the current state refinements. Note that this is safe to do
-                // in the fire() method because a transition cannot be unchosen later.
-                if (_lastChosenTransition != null) {
-                    BooleanToken resetToken = (BooleanToken) _lastChosenTransition.reset
-                            .getToken();
-                    if (resetToken.booleanValue()) {
-                        _initializeRefinements(currentState);
-                    }
-                }
-                if (((BooleanToken) currentState.isInitialState.getToken())
-                        .booleanValue()) {
-                    Actor[] stateRefinements = currentState.getRefinement();
-                    if (stateRefinements != null && stateRefinements.length > 0) {
-                        throw new IllegalActionException(
-                                this,
-                                "Initial state with a refinement and an enabled "
-                                        + "immediate transition is not allowed, "
-                                        + "because the refinement would have to execute during the initialize phase.");
-                    }
-                }
-                _fireStateRefinements(currentState);
-            }
-
-            // Execute the choice actions.
-            Iterator actions = chosenTransition.choiceActionList().iterator();
-            while (actions.hasNext()) {
-                Action action = (Action) actions.next();
-                // Produce output tokens here
-                action.execute();
-            }
-
-            // Execute the refinements of the transition.
-            Actor[] transitionRefinements = chosenTransition.getRefinement();
-            if (transitionRefinements != null) {
-                for (int i = 0; i < transitionRefinements.length; ++i) {
-                    if (_stopRequested
-                            || _disabledRefinements
-                                    .contains(transitionRefinements[i])) {
-                        break;
-                    }
-                    if (_debugging) {
-                        _debug("Fire transition refinement:",
-                                transitionRefinements[i].getName());
-                    }
-                    // NOTE: What should model time be for transition refinements?
-                    // It is not reasonable for it to be the time of the originating
-                    // refinement because multiple transitions may share a refinement
-                    // and time will end up bouncing around...
-                    // Transition refinements are deprecated anyway, so let's not
-                    // worry about that.
-                    if (transitionRefinements[i].prefire()) {
-                        transitionRefinements[i].fire();
-                        _transitionRefinementsToPostfire
-                                .add(transitionRefinements[i]);
-                    }
-                }
-            }
-
-            // If the current state has no refinement and there are
-            // outputs that remain unknown, make them absent.
-            // NOTE: Even if there is a refinement, it might be
-            // reasonable to assert that outputs are absent.
-            // We can't do that here, however, because the outputs
-            // from the refinement have not been transferred.
-            // This case has to be handled by the fire method.
-            if (_areAllImmediateTransitionsDisabled(chosenTransition
-                    .destinationState())
-                    && currentState.getRefinement() == null) {
-                List<IOPort> outputs = outputPortList();
-                for (IOPort port : outputs) {
-                    for (int channel = 0; channel < port.getWidth(); channel++) {
-                        if (!port.isKnown(channel)) {
-                            port.send(channel, null);
-                        }
-                    }
-                }
-            }
-
-            // Commit to this transition, if it is != null.
-            _lastChosenTransitions.put(currentState, chosenTransition);
-        }
-        _lastChosenTransition = chosenTransition;
-        return chosenTransition;
     }
 
     /** Choose zero or more transitions enabled in the current
@@ -2073,6 +1935,16 @@ public class FSMActor extends CompositeEntity implements TypedActor,
                             + "destination state.");
         }
 
+        // Next execute the commit actions.
+        // This needs to occur before resetting the destination
+        // refinement because the commit actions may initialize
+        // the destination refinement.
+        Iterator actions = currentTransition.commitActionList().iterator();
+        while (actions.hasNext() && !_stopRequested) {
+            Action action = (Action) actions.next();
+            action.execute();
+        }
+
         // If the chosen transition is a reset transition, initialize the destination
         // refinement. Note that initializing the director will normally also have
         // the side effect of setting its time and time to match the enclosing
@@ -2095,13 +1967,6 @@ public class FSMActor extends CompositeEntity implements TypedActor,
             if (resetToken.booleanValue()) {
                 _initializeRefinements(nextState);
             }
-        }
-
-        // Next execute the commit actions.
-        Iterator actions = currentTransition.commitActionList().iterator();
-        while (actions.hasNext() && !_stopRequested) {
-            Action action = (Action) actions.next();
-            action.execute();
         }
 
         // Commit to the new state.
@@ -2173,7 +2038,8 @@ public class FSMActor extends CompositeEntity implements TypedActor,
      *  to the new state, possibly traversing several immediate
      *  transitions.
      *  @return The state that will be the current state after
-     *   all chosen transitions are taken.
+     *   all chosen transitions are taken, or null if there are no
+     *   chosen transitions.
      * @exception IllegalActionException If no controller is found.
      */
     protected State _destinationState() throws IllegalActionException {
@@ -2492,9 +2358,14 @@ public class FSMActor extends CompositeEntity implements TypedActor,
                 // Update the value variable if there is/are token(s) in
                 // the channel. The HDF(SDF) schedule will guarantee there
                 // are always enough tokens.
-
-                while (port.hasToken(channel)) {
+                // Limit the number of tokens read to the consumption rate
+                // of the port, which by default is 1. If the MultirateFSMDirector
+                // is used, however, it may set the consumption rate other than one.
+                int numberOfTokensToRead = DFUtilities.getTokenConsumptionRate(port);
+                int count = 0;
+                while (port.hasToken(channel) && count < numberOfTokensToRead) {
                     Token token = port.get(channel);
+                    count++;
 
                     if (_debugging) {
                         _debug("---", port.getName(), "(" + channel + ") has ",
@@ -2504,13 +2375,13 @@ public class FSMActor extends CompositeEntity implements TypedActor,
 
                     tokenListArray[channel].add(0, token);
                 }
-
+                
+                int length = tokenListArray[channel].size();
                 if (_debugging) {
                     _debug("Total tokens available at port: "
-                            + port.getFullName() + "  ");
+                            + port.getFullName() + " is  " + length);
                 }
 
-                int length = tokenListArray[channel].size();
                 if (length > 0) {
                     Token[] tokens = new Token[length];
                     tokenListArray[channel].toArray(tokens);
@@ -2575,7 +2446,7 @@ public class FSMActor extends CompositeEntity implements TypedActor,
             Time environmentTime = executiveDirector.getModelTime();
             /* FIXME: This is now handled by the director.
             Director refinementDirector = refinement.getDirector();
-            if (refinementDirector instanceof Suspendable) {
+            if (refinementDirector instanceof Suspendable && refinementDirector != director) {
                 // Adjust current time to be the environment time minus
                 // the accumulated suspended time of the refinement.
                 Time suspendedTime = ((Suspendable) refinementDirector)
@@ -2872,6 +2743,203 @@ public class FSMActor extends CompositeEntity implements TypedActor,
         } finally {
             workspace().doneReading();
         }
+    }
+
+    /** Return an enabled transition among the given list of transitions
+     *  for which both the guard expression and the output actions can
+     *  be evaluated (the inputs referred by these are known).
+     *  If there is only one transition enabled, return that transition.
+     *  In case there are multiple enabled transitions, if any of
+     *  them is not marked nondeterministic, throw an exception.
+     *  Otherwise, randomly choose one from the enabled transitions
+     *  and return it if the output actions can be evaluated.
+     *  Execute the output actions contained by the returned
+     *  transition before returning. Also, fire the transition
+     *  refinements, if any, and the refinements of any transient
+     *  states.
+     *  <p>
+     *  After calling this method, you can call foundUnknown()
+     *  to determine whether any guard expressions or output value
+     *  expressions on a transition whose guard evaluates to true
+     *  were found in the specified transition list that
+     *  referred to input ports that are not currently known.
+     *  @param currentState The state from which transitions are examined.
+     *  @param transitionList A list of transitions.
+     *  @param immediateOnly True to consider only immediate transitions.
+     *  @return An enabled transition, or null if none is enabled.
+     *  @exception IllegalActionException If there is more than one
+     *   transition enabled and not all of them are nondeterministic.
+     */
+    private Transition _chooseTransition(State currentState,
+            List transitionList, boolean immediateOnly)
+            throws IllegalActionException {
+
+        // Get the transitions enabled from the current state.
+        List<Transition> enabledTransitions = enabledTransitions(
+                transitionList, immediateOnly);
+        int numberOfEnabledTransitions = enabledTransitions.size();
+
+        Transition chosenTransition = null;
+
+        if (numberOfEnabledTransitions == 1) {
+            chosenTransition = enabledTransitions.get(0);
+            // Record the chosen transition.
+            _transitionsPreviouslyChosenInIteration.add(chosenTransition);
+        } else if (numberOfEnabledTransitions > 1) {
+            // Ensure that if there are multiple enabled transitions, all of them
+            // are nondeterministic.
+            for (Transition enabledTransition : enabledTransitions) {
+                if (!enabledTransition.isNondeterministic()) {
+                    throw new MultipleEnabledTransitionsException(
+                            currentState,
+                            "Nondeterministic FSM error: "
+                                    + "Multiple enabled transitions found but not all"
+                                    + " of them are nondeterministic. Transition "
+                                    + enabledTransition.getName()
+                                    + " is deterministic.");
+                }
+            }
+            // If one of these transitions has been previously chosen in
+            // this iteration, then choose it again. This ensures the same
+            // results for nondeterministic choices.
+            if (_transitionsPreviouslyChosenInIteration.size() > 0) {
+                for (Transition previouslyChosenTransition : _transitionsPreviouslyChosenInIteration) {
+                    if (enabledTransitions.contains(previouslyChosenTransition)) {
+                        chosenTransition = previouslyChosenTransition;
+                    }
+                }
+            }
+            if (chosenTransition == null) {
+                // No previously chosen transition.
+                // Randomly choose one transition from the list of the
+                // enabled transitions. Note that it is possible that the
+                // chosen transition cannot be executed because inputs needed
+                // by its output actions are not known.
+                // In that case, we have to choose a different transition.
+                while (enabledTransitions.size() > 0) {
+                    // Since the size of the list of enabled transitions usually (almost
+                    // always) is less than the maximum value of integer. We can safely
+                    // do the cast from long to int in the following statement.
+                    int randomChoice = (int) Math.floor(Math.random()
+                            * numberOfEnabledTransitions);
+
+                    // There is a tiny chance that randomChoice equals length.
+                    // When this happens, we deduct 1 from the randomChoice.
+                    if (randomChoice == numberOfEnabledTransitions) {
+                        randomChoice--;
+                    }
+
+                    chosenTransition = enabledTransitions.get(randomChoice);
+                    if (_referencedInputPortsByOutputKnown(chosenTransition)) {
+                        // The chosen transition has an output action that
+                        // references an unknown input.
+                        _foundUnknown = true;
+                        break;
+                    } else {
+                        // Cannot make this choice.
+                        enabledTransitions.remove(chosenTransition);
+                        chosenTransition = null;
+                    }
+                }
+                // Record the chosen transition.
+                _transitionsPreviouslyChosenInIteration.add(chosenTransition);
+            }
+        }
+
+        if (chosenTransition != null) {
+            if (_debugging) {
+                _debug("Choose transition: ", chosenTransition.getFullName());
+            }
+
+            // cmot:
+            // If non-preemptive and immediate transition, fire source
+            // state refinement.
+            if (!chosenTransition.isPreemptive()
+                    && chosenTransition.isImmediate()) {
+                // If the transition into the current state is a reset transition,
+                // then initialize the current state refinements. Note that this is safe to do
+                // in the fire() method because a transition cannot be unchosen later.
+                if (_lastChosenTransition != null) {
+                    BooleanToken resetToken = (BooleanToken) _lastChosenTransition.reset
+                            .getToken();
+                    if (resetToken.booleanValue()) {
+                        _initializeRefinements(currentState);
+                    }
+                }
+                if (((BooleanToken) currentState.isInitialState.getToken())
+                        .booleanValue()) {
+                    Actor[] stateRefinements = currentState.getRefinement();
+                    if (stateRefinements != null && stateRefinements.length > 0) {
+                        throw new IllegalActionException(
+                                this,
+                                "Initial state with a refinement and an enabled "
+                                        + "immediate transition is not allowed, "
+                                        + "because the refinement would have to execute during the initialize phase.");
+                    }
+                }
+                _fireStateRefinements(currentState);
+            }
+
+            // Execute the choice actions.
+            Iterator actions = chosenTransition.choiceActionList().iterator();
+            while (actions.hasNext()) {
+                Action action = (Action) actions.next();
+                // Produce output tokens here
+                action.execute();
+            }
+
+            // Execute the refinements of the transition.
+            Actor[] transitionRefinements = chosenTransition.getRefinement();
+            if (transitionRefinements != null) {
+                for (int i = 0; i < transitionRefinements.length; ++i) {
+                    if (_stopRequested
+                            || _disabledRefinements
+                                    .contains(transitionRefinements[i])) {
+                        break;
+                    }
+                    if (_debugging) {
+                        _debug("Fire transition refinement:",
+                                transitionRefinements[i].getName());
+                    }
+                    // NOTE: What should model time be for transition refinements?
+                    // It is not reasonable for it to be the time of the originating
+                    // refinement because multiple transitions may share a refinement
+                    // and time will end up bouncing around...
+                    // Transition refinements are deprecated anyway, so let's not
+                    // worry about that.
+                    if (transitionRefinements[i].prefire()) {
+                        transitionRefinements[i].fire();
+                        _transitionRefinementsToPostfire
+                                .add(transitionRefinements[i]);
+                    }
+                }
+            }
+
+            // If the current state has no refinement and there are
+            // outputs that remain unknown, make them absent.
+            // NOTE: Even if there is a refinement, it might be
+            // reasonable to assert that outputs are absent.
+            // We can't do that here, however, because the outputs
+            // from the refinement have not been transferred.
+            // This case has to be handled by the fire method.
+            if (_areAllImmediateTransitionsDisabled(chosenTransition
+                    .destinationState())
+                    && currentState.getRefinement() == null) {
+                List<IOPort> outputs = outputPortList();
+                for (IOPort port : outputs) {
+                    for (int channel = 0; channel < port.getWidth(); channel++) {
+                        if (!port.isKnown(channel)) {
+                            port.send(channel, null);
+                        }
+                    }
+                }
+            }
+
+            // Commit to this transition, if it is != null.
+            _lastChosenTransitions.put(currentState, chosenTransition);
+        }
+        _lastChosenTransition = chosenTransition;
+        return chosenTransition;
     }
 
     /** Create receivers for each input port.
@@ -3400,6 +3468,12 @@ public class FSMActor extends CompositeEntity implements TypedActor,
     // This is used in HDF when multiple tokens are consumed
     // by the FSMActor in one iteration.
     private Hashtable _tokenListArrays;
+    
+    /** Indicator that a transition was taken in the last iteration.
+     *  This gets set to true in initialize if immediate transitions are
+     *  taken, and to true in postfire if any transition is taken.
+     */
+    private boolean _transitionTaken;
 
     //A flag indicating whether or not the actor needs to deal with a model error.
     private boolean _modelError = false;

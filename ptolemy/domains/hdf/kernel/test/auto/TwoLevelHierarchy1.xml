@@ -2,11 +2,11 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="TwoLevelHierarchy1" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="5.0-beta">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.0.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={99, 86, 803, 518}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={99, 86, 822, 634}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[588, 400]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[588, 524]">
     </property>
     <property name="rateA" class="ptolemy.data.expr.Parameter" value="2">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -132,11 +132,11 @@
     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{294.0, 200.0}">
     </property>
     <property name="HDFTop" class="ptolemy.domains.hdf.kernel.HDFDirector">
-        <property name="allowDisconnectedGraphs" class="ptolemy.data.expr.Parameter" value="false">
-        </property>
         <property name="iterations" class="ptolemy.data.expr.Parameter" value="9">
         </property>
         <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <property name="allowDisconnectedGraphs" class="ptolemy.data.expr.Parameter" value="false">
         </property>
         <property name="scheduleCacheSize" class="ptolemy.data.expr.Parameter" value="2">
         </property>
@@ -154,22 +154,22 @@
                 </property>
             </property>
         </property>
-        <property name="_tableauFactory" class="ptolemy.vergil.fsm.modal.ModalTableauFactory">
+        <property name="_tableauFactory" class="ptolemy.vergil.modal.modal.ModalTableauFactory">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[215.0, 125.0]">
         </property>
         <port name="input" class="ptolemy.domains.modal.modal.ModalPort">
             <property name="input"/>
-            <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="2">
+            <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="6">
             </property>
         </port>
         <port name="output" class="ptolemy.domains.modal.modal.ModalPort">
             <property name="output"/>
-            <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="2">
+            <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="6">
             </property>
         </port>
         <entity name="_Controller" class="ptolemy.domains.modal.modal.ModalController">
-            <property name="initialStateName" class="ptolemy.kernel.util.StringAttribute" value="stateA">
+            <property name="initialStateName" class="ptolemy.kernel.util.StringAttribute">
             </property>
             <property name="_library" class="ptolemy.moml.LibraryAttribute">
                 <configure><entity name="state library" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/configs/basicUtilities.xml"></input><entity name="state" class="ptolemy.domains.modal.kernel.State"><property name="_centerName" class="ptolemy.kernel.util.Attribute"></property></entity></entity></configure>
@@ -205,7 +205,11 @@ to another. Then delete this annotation.</text>
             <entity name="stateA" class="ptolemy.domains.modal.kernel.State">
                 <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="stateA">
                 </property>
-                <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
+                <property name="isInitialState" class="ptolemy.data.expr.Parameter" value="true">
+                </property>
+                <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                </property>
+                <property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="145.0, 185.0">
                 </property>
@@ -213,7 +217,9 @@ to another. Then delete this annotation.</text>
             <entity name="stateB" class="ptolemy.domains.modal.kernel.State">
                 <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="stateB">
                 </property>
-                <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
+                <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                </property>
+                <property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="255.0, 190.0">
                 </property>
@@ -249,11 +255,11 @@ to another. Then delete this annotation.</text>
         </entity>
         <entity name="stateA" class="ptolemy.domains.modal.modal.Refinement">
             <property name="HDFA" class="ptolemy.domains.hdf.kernel.HDFDirector">
-                <property name="allowDisconnectedGraphs" class="ptolemy.data.expr.Parameter" value="false">
-                </property>
                 <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
                 </property>
                 <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
+                </property>
+                <property name="allowDisconnectedGraphs" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
                 <property name="scheduleCacheSize" class="ptolemy.data.expr.Parameter" value="100">
                 </property>
@@ -289,7 +295,7 @@ to another. Then delete this annotation.</text>
                         </property>
                     </property>
                 </property>
-                <property name="_tableauFactory" class="ptolemy.vergil.fsm.modal.ModalTableauFactory">
+                <property name="_tableauFactory" class="ptolemy.vergil.modal.modal.ModalTableauFactory">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="80.0, 65.0">
                 </property>
@@ -304,7 +310,7 @@ to another. Then delete this annotation.</text>
                     </property>
                 </port>
                 <entity name="_Controller" class="ptolemy.domains.modal.modal.ModalController">
-                    <property name="initialStateName" class="ptolemy.kernel.util.StringAttribute" value="stateA1">
+                    <property name="initialStateName" class="ptolemy.kernel.util.StringAttribute">
                     </property>
                     <property name="_library" class="ptolemy.moml.LibraryAttribute">
                         <configure><entity name="state library" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/configs/basicUtilities.xml"></input><entity name="state" class="ptolemy.domains.modal.kernel.State"><property name="_centerName" class="ptolemy.kernel.util.Attribute"></property></entity></entity></configure>
@@ -323,7 +329,11 @@ to another. Then delete this annotation.</text>
                     <entity name="stateA1" class="ptolemy.domains.modal.kernel.State">
                         <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="stateA1">
                         </property>
-                        <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
+                        <property name="isInitialState" class="ptolemy.data.expr.Parameter" value="true">
+                        </property>
+                        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                        </property>
+                        <property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory">
                         </property>
                         <property name="_location" class="ptolemy.kernel.util.Location" value="110.0, 140.0">
                         </property>
@@ -331,7 +341,9 @@ to another. Then delete this annotation.</text>
                     <entity name="stateA2" class="ptolemy.domains.modal.kernel.State">
                         <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="stateA2">
                         </property>
-                        <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
+                        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                        </property>
+                        <property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory">
                         </property>
                         <property name="_location" class="ptolemy.kernel.util.Location" value="260.0, 135.0">
                         </property>
@@ -367,11 +379,11 @@ to another. Then delete this annotation.</text>
                 </entity>
                 <entity name="stateA1" class="ptolemy.domains.modal.modal.Refinement">
                     <property name="HDFA1" class="ptolemy.domains.hdf.kernel.HDFDirector">
-                        <property name="allowDisconnectedGraphs" class="ptolemy.data.expr.Parameter" value="false">
-                        </property>
                         <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
                         </property>
                         <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
+                        </property>
+                        <property name="allowDisconnectedGraphs" class="ptolemy.data.expr.Parameter" value="false">
                         </property>
                         <property name="scheduleCacheSize" class="ptolemy.data.expr.Parameter" value="100">
                         </property>
@@ -436,14 +448,24 @@ to another. Then delete this annotation.</text>
                         </property>
                     </entity>
                     <relation name="relation" class="ptolemy.actor.TypedIORelation">
+                        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+                        </property>
                     </relation>
                     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+                        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+                        </property>
                     </relation>
                     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+                        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+                        </property>
                     </relation>
                     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+                        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+                        </property>
                     </relation>
                     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+                        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+                        </property>
                     </relation>
                     <link port="input" relation="relation"/>
                     <link port="output" relation="relation3"/>
@@ -458,11 +480,11 @@ to another. Then delete this annotation.</text>
                 </entity>
                 <entity name="stateA2" class="ptolemy.domains.modal.modal.Refinement">
                     <property name="HDFA2" class="ptolemy.domains.hdf.kernel.HDFDirector">
-                        <property name="allowDisconnectedGraphs" class="ptolemy.data.expr.Parameter" value="false">
-                        </property>
                         <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
                         </property>
                         <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
+                        </property>
+                        <property name="allowDisconnectedGraphs" class="ptolemy.data.expr.Parameter" value="false">
                         </property>
                         <property name="scheduleCacheSize" class="ptolemy.data.expr.Parameter" value="100">
                         </property>
@@ -527,14 +549,24 @@ to another. Then delete this annotation.</text>
                         </property>
                     </entity>
                     <relation name="relation" class="ptolemy.actor.TypedIORelation">
+                        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+                        </property>
                     </relation>
                     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+                        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+                        </property>
                     </relation>
                     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+                        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+                        </property>
                     </relation>
                     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+                        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+                        </property>
                     </relation>
                     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+                        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+                        </property>
                     </relation>
                     <link port="input" relation="relation3"/>
                     <link port="output" relation="relation5"/>
@@ -548,8 +580,12 @@ to another. Then delete this annotation.</text>
                     <link port="AddSubtract.output" relation="relation5"/>
                 </entity>
                 <relation name="inputRelation" class="ptolemy.actor.TypedIORelation">
+                    <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+                    </property>
                 </relation>
                 <relation name="outputRelation" class="ptolemy.actor.TypedIORelation">
+                    <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+                    </property>
                 </relation>
                 <link port="input" relation="inputRelation"/>
                 <link port="output" relation="outputRelation"/>
@@ -587,12 +623,20 @@ to another. Then delete this annotation.</text>
                 </property>
             </entity>
             <relation name="relation" class="ptolemy.actor.TypedIORelation">
+                <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+                </property>
             </relation>
             <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+                <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+                </property>
             </relation>
             <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+                <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+                </property>
             </relation>
             <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+                <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+                </property>
             </relation>
             <link port="input" relation="relation"/>
             <link port="output" relation="relation4"/>
@@ -605,11 +649,11 @@ to another. Then delete this annotation.</text>
         </entity>
         <entity name="stateB" class="ptolemy.domains.modal.modal.Refinement">
             <property name="HDFB" class="ptolemy.domains.hdf.kernel.HDFDirector">
-                <property name="allowDisconnectedGraphs" class="ptolemy.data.expr.Parameter" value="false">
-                </property>
                 <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
                 </property>
                 <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
+                </property>
+                <property name="allowDisconnectedGraphs" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
                 <property name="scheduleCacheSize" class="ptolemy.data.expr.Parameter" value="100">
                 </property>
@@ -667,22 +711,22 @@ to another. Then delete this annotation.</text>
                         </property>
                     </property>
                 </property>
-                <property name="_tableauFactory" class="ptolemy.vergil.fsm.modal.ModalTableauFactory">
+                <property name="_tableauFactory" class="ptolemy.vergil.modal.modal.ModalTableauFactory">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="465.0, 195.0">
                 </property>
                 <port name="input" class="ptolemy.domains.modal.modal.ModalPort">
                     <property name="input"/>
-                    <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="2">
+                    <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="1">
                     </property>
                 </port>
                 <port name="ouput" class="ptolemy.domains.modal.modal.ModalPort">
                     <property name="output"/>
-                    <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="2">
+                    <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="1">
                     </property>
                 </port>
                 <entity name="_Controller" class="ptolemy.domains.modal.modal.ModalController">
-                    <property name="initialStateName" class="ptolemy.kernel.util.StringAttribute" value="stateB1">
+                    <property name="initialStateName" class="ptolemy.kernel.util.StringAttribute">
                     </property>
                     <property name="_library" class="ptolemy.moml.LibraryAttribute">
                         <configure><entity name="state library" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/configs/basicUtilities.xml"></input><entity name="state" class="ptolemy.domains.modal.kernel.State"><property name="_centerName" class="ptolemy.kernel.util.Attribute"></property></entity></entity></configure>
@@ -701,7 +745,11 @@ to another. Then delete this annotation.</text>
                     <entity name="stateB1" class="ptolemy.domains.modal.kernel.State">
                         <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="stateB1">
                         </property>
-                        <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
+                        <property name="isInitialState" class="ptolemy.data.expr.Parameter" value="true">
+                        </property>
+                        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                        </property>
+                        <property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory">
                         </property>
                         <property name="_location" class="ptolemy.kernel.util.Location" value="110.0, 170.0">
                         </property>
@@ -709,7 +757,9 @@ to another. Then delete this annotation.</text>
                     <entity name="stateB2" class="ptolemy.domains.modal.kernel.State">
                         <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="stateB2">
                         </property>
-                        <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
+                        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                        </property>
+                        <property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory">
                         </property>
                         <property name="_location" class="ptolemy.kernel.util.Location" value="235.0, 165.0">
                         </property>
@@ -745,11 +795,11 @@ to another. Then delete this annotation.</text>
                 </entity>
                 <entity name="stateB1" class="ptolemy.domains.modal.modal.Refinement">
                     <property name="HDFB1" class="ptolemy.domains.hdf.kernel.HDFDirector">
-                        <property name="allowDisconnectedGraphs" class="ptolemy.data.expr.Parameter" value="false">
-                        </property>
                         <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
                         </property>
                         <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
+                        </property>
+                        <property name="allowDisconnectedGraphs" class="ptolemy.data.expr.Parameter" value="false">
                         </property>
                         <property name="scheduleCacheSize" class="ptolemy.data.expr.Parameter" value="100">
                         </property>
@@ -814,14 +864,24 @@ to another. Then delete this annotation.</text>
                         </property>
                     </entity>
                     <relation name="relation" class="ptolemy.actor.TypedIORelation">
+                        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+                        </property>
                     </relation>
                     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+                        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+                        </property>
                     </relation>
                     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+                        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+                        </property>
                     </relation>
                     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+                        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+                        </property>
                     </relation>
                     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+                        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+                        </property>
                     </relation>
                     <link port="input" relation="relation3"/>
                     <link port="ouput" relation="relation5"/>
@@ -836,11 +896,11 @@ to another. Then delete this annotation.</text>
                 </entity>
                 <entity name="stateB2" class="ptolemy.domains.modal.modal.Refinement">
                     <property name="HDFB2" class="ptolemy.domains.hdf.kernel.HDFDirector">
-                        <property name="allowDisconnectedGraphs" class="ptolemy.data.expr.Parameter" value="false">
-                        </property>
                         <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
                         </property>
                         <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
+                        </property>
+                        <property name="allowDisconnectedGraphs" class="ptolemy.data.expr.Parameter" value="false">
                         </property>
                         <property name="scheduleCacheSize" class="ptolemy.data.expr.Parameter" value="100">
                         </property>
@@ -905,14 +965,24 @@ to another. Then delete this annotation.</text>
                         </property>
                     </entity>
                     <relation name="relation" class="ptolemy.actor.TypedIORelation">
+                        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+                        </property>
                     </relation>
                     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+                        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+                        </property>
                     </relation>
                     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+                        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+                        </property>
                     </relation>
                     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+                        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+                        </property>
                     </relation>
                     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+                        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+                        </property>
                     </relation>
                     <link port="input" relation="relation2"/>
                     <link port="ouput" relation="relation5"/>
@@ -926,8 +996,12 @@ to another. Then delete this annotation.</text>
                     <link port="Const.output" relation="relation3"/>
                 </entity>
                 <relation name="inputRelation" class="ptolemy.actor.TypedIORelation">
+                    <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+                    </property>
                 </relation>
                 <relation name="ouputRelation" class="ptolemy.actor.TypedIORelation">
+                    <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+                    </property>
                 </relation>
                 <link port="input" relation="inputRelation"/>
                 <link port="ouput" relation="ouputRelation"/>
@@ -956,16 +1030,28 @@ to another. Then delete this annotation.</text>
                 </property>
             </entity>
             <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+                <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+                </property>
             </relation>
             <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+                <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+                </property>
             </relation>
             <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+                <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+                </property>
             </relation>
             <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+                <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+                </property>
             </relation>
             <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+                <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+                </property>
             </relation>
             <relation name="relation" class="ptolemy.actor.TypedIORelation">
+                <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+                </property>
             </relation>
             <link port="input" relation="relation6"/>
             <link port="output" relation="relation4"/>
@@ -981,8 +1067,12 @@ to another. Then delete this annotation.</text>
             <link port="Const.output" relation="relation5"/>
         </entity>
         <relation name="inputRelation" class="ptolemy.actor.TypedIORelation">
+            <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+            </property>
         </relation>
         <relation name="outputRelation" class="ptolemy.actor.TypedIORelation">
+            <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+            </property>
         </relation>
         <link port="input" relation="inputRelation"/>
         <link port="output" relation="outputRelation"/>
@@ -994,11 +1084,11 @@ to another. Then delete this annotation.</text>
         <link port="stateB.output" relation="outputRelation"/>
     </entity>
     <entity name="Ramp" class="ptolemy.actor.lib.Ramp">
-        <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="0">
-        </property>
-        <property name="init" class="ptolemy.data.expr.Parameter" value="1">
+        <property name="init" class="ptolemy.actor.parameters.PortParameter" value="1">
         </property>
         <property name="step" class="ptolemy.actor.parameters.PortParameter" value="1">
+        </property>
+        <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="0">
         </property>
         <doc>Create a sequence of tokens with increasing value</doc>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[85.0, 125.0]">
@@ -1015,10 +1105,14 @@ to another. Then delete this annotation.</text>
         </property>
     </entity>
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
         <vertex name="vertex1" value="[315.0, 125.0]">
         </vertex>
     </relation>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
     </relation>
     <link port="TopCtrl.input" relation="relation"/>
     <link port="TopCtrl.output" relation="relation5"/>

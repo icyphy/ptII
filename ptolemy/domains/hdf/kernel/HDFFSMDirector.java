@@ -29,11 +29,9 @@
  */
 package ptolemy.domains.hdf.kernel;
 
-import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
 import ptolemy.domains.modal.kernel.FSMActor;
 import ptolemy.domains.modal.kernel.MultirateFSMDirector;
-import ptolemy.domains.modal.kernel.State;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.util.ChangeRequest;
@@ -98,62 +96,6 @@ public class HDFFSMDirector extends MultirateFSMDirector {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Fire the modal model.
-     *  If the refinement of the current state of the mode controller
-     *  is ready to fire, then fire the current refinement. Overrides
-     *  the base class method by sending a request to choose a
-     *  transition to the manager.
-     *  @exception IllegalActionException If there is no controller,
-     *   or if the current state has no or more than one refinement.
-     */
-    public void fire() throws IllegalActionException {
-        CompositeActor container = (CompositeActor) getContainer();
-        FSMActor controller = getController();
-        controller.setNewIteration(_sendRequest);
-        _readInputs();
-
-        State currentState = controller.currentState();
-
-        Actor[] actors = currentState.getRefinement();
-
-        // NOTE: Paranoid coding.
-        if ((actors == null) || (actors.length != 1)) {
-            throw new IllegalActionException(this,
-                    "Current state is required to have exactly one refinement: "
-                            + currentState.getName());
-        }
-
-        if (!_stopRequested) {
-            if (actors[0].prefire()) {
-                if (_debugging) {
-                    _debug(getFullName(), " fire refinement",
-                            ((ptolemy.kernel.util.NamedObj) actors[0])
-                                    .getName());
-                }
-
-                actors[0].fire();
-                _refinementPostfire = actors[0].postfire();
-            }
-        }
-
-        _readOutputsFromRefinement();
-
-        if (_sendRequest) {
-            ChangeRequest request = new ChangeRequest(this,
-                    "choose a transition") {
-                protected void _execute() throws KernelException,
-                        IllegalActionException {
-                    FSMActor controller = getController();
-                    State currentState = controller.currentState();
-                    chooseNextNonTransientState(currentState);
-                }
-            };
-
-            request.setPersistent(false);
-            container.requestChange(request);
-        }
-    }
-
     /** Return the change context being made explicit.  This class
      *  overrides the implementation in the FSMDirector base class to
      *  report that modal models using HDFFSMDirector only make state
@@ -197,8 +139,21 @@ public class HDFFSMDirector extends MultirateFSMDirector {
                 protected void _execute() throws KernelException {
                     _sendRequest = true;
 
-                    // The super.postfire() method is called here.
-                    makeStateTransition();
+                    // FIXME: What if the refinement postfire returns false?
+                    _doPostfire();
+                    
+                    // The above only conditionally sets production and
+                    // consumption rates, based on its read of the last
+                    // chosen transitions. But they will have been cleared
+                    // by the time this executes.
+                    // FIXME: Following test doesn't seem to work because
+                    // in hierarchical models, a transition may have been
+                    // taken deep inside the hierarchy that changed the
+                    // rates. See if we can optimize this use schedule
+                    // invalidation. Use brute force solution.
+                    // if (getController().wasTransitionTaken()) {
+                        _setProductionConsumptionRates();
+                    // }
                 }
             };
 
@@ -206,7 +161,7 @@ public class HDFFSMDirector extends MultirateFSMDirector {
             container.requestChange(request);
         }
 
-        return _refinementPostfire && !_stopRequested && !_finishRequested;
+        return !_stopRequested && !_finishRequested;
     }
 
     /** Preinitialize the modal model. Set the _sendRequest flag to be true

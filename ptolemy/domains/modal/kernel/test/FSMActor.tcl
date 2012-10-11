@@ -161,7 +161,8 @@ test FSMActor-5.2 {test handling port name change} {
     $dir wrapup
     $p1 setName p0
     $dir preinitialize
-    catch {$dir initialize} msg
+    $dir initialize
+    catch {$dir iterate 1} msg
     $dir wrapup
     $p1 setName pp
     $t0 setGuardExpression "pp > 5"
